@@ -17,6 +17,9 @@ import { ConfirmationModalComponent } from '@shared/components/ta-shared-modals/
 import { ConfirmationMoveModalComponent } from '@shared/components/ta-shared-modals/confirmation-move-modal/confirmation-move-modal.component';
 import { ConfirmationActivationModalComponent } from '@shared/components/ta-shared-modals/confirmation-activation-modal/confirmation-activation-modal.component';
 
+// Modals
+import { LoadModalComponent } from '@pages/load/pages/load-modal/load-modal.component';
+
 // Services
 import { ModalService } from '@shared/services/modal.service';
 import { BrokerService } from '@pages/customer/services/broker.service';
@@ -77,6 +80,7 @@ import { ConfirmationMoveStringEnum } from '@shared/components/ta-shared-modals/
 import { TableActionsStringEnum } from '@shared/enums/table-actions-string.enum';
 import { ConfirmationModalStringEnum } from '@shared/components/ta-shared-modals/confirmation-modal/enums/confirmation-modal-string.enum';
 import { ConfirmationActivationStringEnum } from '@shared/components/ta-shared-modals/confirmation-activation-modal/enums/confirmation-activation-string.enum';
+import { BrokerModalStringEnum } from '@pages/customer/pages/broker-modal/enums/';
 
 // Helpers
 import { DropdownContentHelper } from '@shared/utils/helpers/dropdown-content.helper';
@@ -137,7 +141,7 @@ export class CustomerTableComponent
 
     public sendDataToCardsFront: CardRows[];
     public sendDataToCardsBack: CardRows[];
-    public filter: boolean = false;
+    public filter: string = null;
     public brokerActive: BrokerResponse[];
     public shipperActive: ShipperResponse[];
 
@@ -156,7 +160,7 @@ export class CustomerTableComponent
         private reviewRatingService: ReviewsRatingService,
         private DetailsDataService: DetailsDataService,
         private mapsService: MapsService,
-        private confiramtionService: ConfirmationService,
+        private confirmationService: ConfirmationService,
         private confirmationMoveService: ConfirmationMoveService,
         private confirmationActivationService: ConfirmationActivationService,
         private customerCardsModalService: CustomerCardsModalService,
@@ -214,7 +218,7 @@ export class CustomerTableComponent
     }
 
     private confirmationSubscribe(): void {
-        this.confiramtionService.confirmationData$
+        this.confirmationService.confirmationData$
             .pipe(takeUntil(this.destroy$))
             .subscribe((res) => {
                 switch (res.type) {
@@ -222,29 +226,51 @@ export class CustomerTableComponent
                         if (res.subType === TableStringEnum.BAN_LIST)
                             this.changeBanStatus(res.data);
                         else this.changeDnuStatus(res.data);
+
                         break;
                     case TableStringEnum.INFO:
                         if (this.selectedTab === TableStringEnum.ACTIVE)
                             this.changeBussinesStatusBroker(res.data);
                         else this.changeBussinesStatusShipper(res.data);
+
                         break;
                     case TableStringEnum.MULTIPLE_DELETE:
-                        if (this.selectedTab === TableStringEnum.INACTIVE)
-                            this.deleteShipperList(res.array);
-                        else this.deleteBrokerList(res.array);
+                        if (this.selectedTab === TableStringEnum.INACTIVE) {
+                            if (res?.array?.length === 1)
+                                this.deleteShipperById(res.array[0]);
+                            else this.deleteShipperList(res.array);
+                        } else {
+                            if (res?.array?.length === 1)
+                                this.deleteBrokerById(res.array[0]);
+                            else this.deleteBrokerList(res.array);
+                        }
+
                         break;
                     case TableStringEnum.CLOSE:
-                        if (this.selectedTab === TableStringEnum.INACTIVE)
-                            this.changeBussinesStatusShipper(res.data);
+                        if (this.selectedTab === TableStringEnum.INACTIVE) {
+                            if (
+                                res.template !==
+                                BrokerModalStringEnum.DELETE_REVIEW
+                            ) {
+                                this.changeBussinesStatusShipper(res.data);
+                            }
+                        }
+
                         break;
                     case TableStringEnum.OPEN:
                         if (this.selectedTab === TableStringEnum.INACTIVE)
                             this.changeBussinesStatusShipper(res.data);
+
                         break;
                     case TableStringEnum.DELETE:
-                        if (this.selectedTab === TableStringEnum.ACTIVE)
-                            this.deleteBrokerById(res.id);
-                        else this.deleteShipperById(res.id);
+                        if (
+                            res.template !== BrokerModalStringEnum.DELETE_REVIEW
+                        ) {
+                            if (this.selectedTab === TableStringEnum.ACTIVE)
+                                this.deleteBrokerById(res.id);
+                            else this.deleteShipperById(res.id);
+                        }
+
                         break;
                     default:
                         break;
@@ -255,20 +281,22 @@ export class CustomerTableComponent
             .pipe(takeUntil(this.destroy$))
             .subscribe((res) => {
                 if (res) {
-                    this.filter = false;
-                    this.tableService.sendResetSpecialFilters(true);
+                    if (res?.tableType) {
+                        this.filter = null;
+                        this.tableService.sendResetSpecialFilters(true);
 
-                    if (!res.array) {
-                        if (res.subType === TableStringEnum.BAN) {
-                            this.changeBanStatus(res.data);
+                        if (!res.array) {
+                            if (res.subType === TableStringEnum.BAN) {
+                                this.changeBanStatus(res.data);
+                            } else {
+                                this.changeDnuStatus(res.data);
+                            }
                         } else {
-                            this.changeDnuStatus(res.data);
-                        }
-                    } else {
-                        if (res.subType === TableStringEnum.BAN) {
-                            this.changeBanListStatus(res.array);
-                        } else {
-                            this.changeDnuListStatus(res.array);
+                            if (res.subType === TableStringEnum.BAN) {
+                                this.changeBanListStatus(res.array);
+                            } else {
+                                this.changeDnuListStatus(res.array);
+                            }
                         }
                     }
                 }
@@ -278,7 +306,7 @@ export class CustomerTableComponent
             .pipe(takeUntil(this.destroy$))
             .subscribe((res) => {
                 if (res) {
-                    this.filter = false;
+                    this.filter = null;
                     this.tableService.sendResetSpecialFilters(true);
 
                     if (!res.array) {
@@ -329,8 +357,7 @@ export class CustomerTableComponent
                     clearInterval(interval);
                 }, 900);
 
-                this.tableService.sendRowsSelected([]);
-                this.tableService.sendResetSelectedColumns(true);
+                this.resetTableSelectedRows();
             });
     }
 
@@ -340,16 +367,30 @@ export class CustomerTableComponent
             .pipe(takeUntil(this.destroy$))
             .subscribe((res) => {
                 this.viewData = this.viewData.map((broker) => {
-                    res?.deletedIds?.map((id) => {
-                        if (broker.id === id)
-                            broker.actionAnimation =
-                                TableStringEnum.DELETE_MULTIPLE;
-                    });
+                    if (res?.deletedIds) {
+                        res?.deletedIds?.forEach((id) => {
+                            if (broker.id === id)
+                                broker = {
+                                    ...broker,
+                                    actionAnimation:
+                                        TableStringEnum.DELETE_MULTIPLE,
+                                };
+                        });
 
-                    res?.notDeletedIds?.map((notDeletedId) => {
-                        if (broker.id === notDeletedId)
-                            broker.isSelected = false;
-                    });
+                        res?.notDeletedIds?.forEach((notDeletedId) => {
+                            if (broker.id === notDeletedId)
+                                broker = { ...broker, isSelected: false };
+                        });
+                    } else {
+                        ids.forEach((id) => {
+                            if (broker.id === id)
+                                broker = {
+                                    ...broker,
+                                    actionAnimation:
+                                        TableStringEnum.DELETE_MULTIPLE,
+                                };
+                        });
+                    }
 
                     return broker;
                 });
@@ -365,8 +406,7 @@ export class CustomerTableComponent
                     clearInterval(interval);
                 }, 900);
 
-                this.tableService.sendRowsSelected([]);
-                this.tableService.sendResetSelectedColumns(true);
+                this.resetTableSelectedRows();
             });
     }
 
@@ -394,8 +434,7 @@ export class CustomerTableComponent
                     clearInterval(interval);
                 }, 900);
 
-                this.tableService.sendRowsSelected([]);
-                this.tableService.sendResetSelectedColumns(true);
+                this.resetTableSelectedRows();
             });
     }
 
@@ -422,8 +461,7 @@ export class CustomerTableComponent
                     clearInterval(interval);
                 }, 900);
 
-                this.tableService.sendRowsSelected([]);
-                this.tableService.sendResetSelectedColumns(true);
+                this.resetTableSelectedRows();
             });
     }
 
@@ -434,8 +472,7 @@ export class CustomerTableComponent
             .subscribe(() => {
                 this.sendCustomerData();
 
-                this.tableService.sendRowsSelected([]);
-                this.tableService.sendResetSelectedColumns(true);
+                this.resetTableSelectedRows();
             });
     }
 
@@ -464,8 +501,7 @@ export class CustomerTableComponent
             .subscribe(() => {
                 this.sendCustomerData();
 
-                this.tableService.sendRowsSelected([]);
-                this.tableService.sendResetSelectedColumns(true);
+                this.resetTableSelectedRows();
             });
     }
 
@@ -501,8 +537,7 @@ export class CustomerTableComponent
 
                 this.sendCustomerData();
 
-                this.tableService.sendRowsSelected([]);
-                this.tableService.sendResetSelectedColumns(true);
+                this.resetTableSelectedRows();
             });
     }
 
@@ -517,8 +552,7 @@ export class CustomerTableComponent
             .subscribe(() => {
                 this.sendCustomerData();
 
-                this.tableService.sendRowsSelected([]);
-                this.tableService.sendResetSelectedColumns(true);
+                this.resetTableSelectedRows();
             });
     }
 
@@ -533,8 +567,7 @@ export class CustomerTableComponent
             .subscribe(() => {
                 this.sendCustomerData();
 
-                this.tableService.sendRowsSelected([]);
-                this.tableService.sendResetSelectedColumns(true);
+                this.resetTableSelectedRows();
             });
     }
 
@@ -549,8 +582,7 @@ export class CustomerTableComponent
             .subscribe(() => {
                 this.sendCustomerData();
 
-                this.tableService.sendRowsSelected([]);
-                this.tableService.sendResetSelectedColumns(true);
+                this.resetTableSelectedRows();
             });
     }
 
@@ -560,7 +592,29 @@ export class CustomerTableComponent
             .subscribe((res) => {
                 if (res?.filteredArray) {
                     if (res.selectedFilter) {
-                        this.filter = true;
+                        const resetFirstFilter =
+                            res.filterName === TableStringEnum.BAN
+                                ? TableStringEnum.DNU_FILTER
+                                : res.filterName === TableStringEnum.DNU
+                                ? TableStringEnum.CLOSED_FILTER
+                                : TableStringEnum.BAN_FILTER;
+                        const resetSecondFilter =
+                            res.filterName === TableStringEnum.BAN
+                                ? TableStringEnum.CLOSED_FILTER
+                                : res.filterName === TableStringEnum.DNU
+                                ? TableStringEnum.BAN_FILTER
+                                : TableStringEnum.DNU_FILTER;
+
+                        this.tableService.sendResetSpecialFilters(
+                            true,
+                            resetFirstFilter
+                        );
+                        this.tableService.sendResetSpecialFilters(
+                            true,
+                            resetSecondFilter
+                        );
+
+                        this.filter = res.filterName;
                         this.sendCustomerData();
                         this.viewData = this.customerTableData?.filter(
                             (customerData) =>
@@ -571,10 +625,35 @@ export class CustomerTableComponent
                         );
                     }
 
-                    if (!res.selectedFilter) {
-                        this.filter = false;
+                    if (!res.selectedFilter && res.filterName === this.filter) {
+                        this.filter = null;
                         this.viewData = this.customerTableData;
                         this.sendCustomerData();
+                    }
+
+                    if (res.filterName === TableStringEnum.BAN) {
+                        this.backBrokerFilterQuery.ban = res.selectedFilter
+                            ? 0
+                            : null;
+
+                        this.backBrokerFilterQuery.dnu = null;
+                        this.backBrokerFilterQuery.status = null;
+                    } else if (res.filterName === TableStringEnum.DNU) {
+                        this.backBrokerFilterQuery.dnu = res.selectedFilter
+                            ? 0
+                            : null;
+
+                        this.backBrokerFilterQuery.ban = null;
+                        this.backBrokerFilterQuery.status = null;
+                    } else if (
+                        res.filterName === TableStringEnum.CLOSED_ARRAY
+                    ) {
+                        this.backBrokerFilterQuery.status = res.selectedFilter
+                            ? 0
+                            : null;
+
+                        this.backBrokerFilterQuery.ban = null;
+                        this.backBrokerFilterQuery.dnu = null;
                     }
 
                     if (this.selectedTab === TableStringEnum.ACTIVE) {
@@ -767,7 +846,7 @@ export class CustomerTableComponent
                     res.tab === TableStringEnum.BROKER
                 ) {
                     if (this.filter) {
-                        this.filter = false;
+                        this.filter = null;
                         this.tableService.sendResetSpecialFilters(true);
                     } else {
                         this.viewData.push(this.mapBrokerData(res.data));
@@ -1124,11 +1203,10 @@ export class CustomerTableComponent
                 ? this.getTabData(TableStringEnum.ACTIVE)
                 : [];
 
-        const filteredBrokerData = this.filter
-            ? brokerActiveData
-            : this.filterBanDnuBrokerData(
-                  this.getTabData(TableStringEnum.ACTIVE)
-              );
+        const filteredBrokerData = this.filterBanDnuBrokerData(
+            this.getTabData(TableStringEnum.ACTIVE),
+            this.filter
+        );
 
         const shipperActiveData =
             this.selectedTab === TableStringEnum.INACTIVE
@@ -1186,6 +1264,8 @@ export class CustomerTableComponent
 
         this.setCustomerData(td);
         this.updateCardView();
+
+        this.resetTableSelectedRows();
     }
 
     private getTabData(dataType: string): BrokerResponse[] {
@@ -1257,9 +1337,10 @@ export class CustomerTableComponent
                 }
             );
 
-            if (!this.filter) {
-                this.viewData = this.filterBanDnuBrokerData(this.viewData);
-            }
+            this.viewData = this.filterBanDnuBrokerData(
+                this.viewData,
+                this.filter
+            );
 
             // Set data for cards based on tab active
             this.selectedTab === TableStringEnum.ACTIVE
@@ -1287,7 +1368,7 @@ export class CustomerTableComponent
                 ? {
                       hasBanDnu: data?.ban || data?.dnu || !data?.status,
                       isDnu: data?.dnu,
-                      isClosed: data?.status === 0 ?? false,
+                      isClosed: data?.status === 0 || false,
                       name: data?.businessName
                           ? data.businessName
                           : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
@@ -1302,7 +1383,7 @@ export class CustomerTableComponent
                   ' ' +
                   data.mainPoBox.state +
                   ' ' +
-                  data.mainPoBox.zipCode
+                  (data.mainPoBox.zipCode ?? TableStringEnum.EMPTY_STRING_PLACEHOLDER)
                 : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
             tableAddressBilling: data?.billingAddress?.address
                 ? data.billingAddress.address
@@ -1360,6 +1441,16 @@ export class CustomerTableComponent
                   this.thousandSeparator.transform(data.revenue)
                 : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
             reviews: data?.ratingReviews,
+            tableRaiting: {
+                hasLiked: data.currentCompanyUserRating === 1,
+                hasDislike: data.currentCompanyUserRating === -1,
+                likeCount: data?.upCount
+                    ? data.upCount
+                    : TableStringEnum.NUMBER_0,
+                dislikeCount: data?.downCount
+                    ? data.downCount
+                    : TableStringEnum.NUMBER_0,
+            },
             tableContactData: data?.brokerContacts,
             tableAdded: data.createdAt
                 ? this.datePipe.transform(
@@ -1387,7 +1478,7 @@ export class CustomerTableComponent
                 ? {
                       hasBanDnu: !data?.status,
                       isDnu: false,
-                      isClosed: data?.status === 0 ?? false,
+                      isClosed: data?.status === 0 || false,
                       name: data?.businessName
                           ? data.businessName
                           : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
@@ -1434,22 +1525,20 @@ export class CustomerTableComponent
             DropdownContentHelper.getDropdownBrokerContent(data);
 
         dropdownContent.map((dropItem) => {
-            if (
+            const firstDisableCondition =
                 dropItem.name === TableStringEnum.CREATE_LOAD &&
-                (data.ban || data.dnu)
-            )
-                dropItem.mutedStyle = true;
-            else dropItem.mutedStyle = false;
-
-            if (
+                (data.ban || data.dnu);
+            const secondDisableCondition =
                 !data.status &&
                 [
+                    TableStringEnum.EDIT_CUSTOMER_OR_SHIPPER.toString(),
                     TableStringEnum.CREATE_LOAD.toString(),
                     TableStringEnum.ADD_CONTRACT.toString(),
                     TableStringEnum.WRITE_REVIEW.toString(),
                     TableStringEnum.MOVE_TO_BAN_LIST.toString(),
-                ].includes(dropItem.name)
-            )
+                ].includes(dropItem.name);
+
+            if (firstDisableCondition || secondDisableCondition)
                 dropItem.mutedStyle = true;
             else dropItem.mutedStyle = false;
 
@@ -1543,6 +1632,11 @@ export class CustomerTableComponent
 
                     this.viewData = [...newData];
                 }
+
+                this.viewData = this.filterBanDnuBrokerData(
+                    this.viewData,
+                    this.filter
+                );
             });
     }
 
@@ -1624,7 +1718,7 @@ export class CustomerTableComponent
             this.backBrokerFilterQuery.pageIndex = 1;
             this.backShipperFilterQuery.pageIndex = 1;
 
-            this.filter = false;
+            this.filter = null;
 
             this.sendCustomerData();
         } else if (event.action === TableStringEnum.VIEW_MODE) {
@@ -1635,7 +1729,7 @@ export class CustomerTableComponent
             this.tableOptions.toolbarActions.hideSearch =
                 event.mode == TableStringEnum.MAP;
 
-            this.filter = false;
+            this.filter = null;
 
             if (
                 this.selectedTab === TableStringEnum.ACTIVE &&
@@ -1723,10 +1817,10 @@ export class CustomerTableComponent
                             event.type === TableStringEnum.ADD_CONTRACT ||
                             event.type === TableStringEnum.EDIT_CONTACT ||
                             event.type === TableStringEnum.DELTETE_CONTACT
-                                ? TableStringEnum.CONTRACT
+                                ? TableStringEnum.ADDITIONAL
                                 : event.type === TableStringEnum.WRITE_REVIEW
                                 ? TableStringEnum.REVIEW
-                                : TableStringEnum.DETAIL,
+                                : TableStringEnum.BASIC,
                     }
                 );
             }
@@ -1739,11 +1833,13 @@ export class CustomerTableComponent
                         ...event,
                         type: TableStringEnum.EDIT,
                         openedTab:
-                            event.type === TableStringEnum.ADD_CONTRACT
-                                ? TableStringEnum.CONTRACT
+                            event.type === TableStringEnum.ADD_CONTRACT ||
+                            event.type === TableStringEnum.EDIT_CONTACT ||
+                            event.type === TableStringEnum.DELTETE_CONTACT
+                                ? TableStringEnum.ADDITIONAL
                                 : event.type === TableStringEnum.WRITE_REVIEW
                                 ? TableStringEnum.REVIEW
-                                : TableStringEnum.DETAIL,
+                                : TableStringEnum.BASIC,
                     }
                 );
             }
@@ -1901,6 +1997,14 @@ export class CustomerTableComponent
 
                     this.mapsService.addRating(res);
                 });
+        } else if (event.type === TableStringEnum.CREATE_LOAD) {
+            this.modalService.openModal(
+                LoadModalComponent,
+                { size: TableStringEnum.LOAD },
+                {
+                    data: { broker: event.data },
+                }
+            );
         }
     }
 
@@ -2024,8 +2128,7 @@ export class CustomerTableComponent
             clearInterval(interval);
         }, 900);
 
-        this.tableService.sendRowsSelected([]);
-        this.tableService.sendResetSelectedColumns(true);
+        this.resetTableSelectedRows();
     }
 
     private rowsSelected(): void {
@@ -2098,11 +2201,20 @@ export class CustomerTableComponent
             });
     }
 
-    private filterBanDnuBrokerData(data: BrokerResponse[]): BrokerResponse[] {
-        const filteredData = data.filter(
-            (brokerItem) =>
-                !brokerItem.ban && !brokerItem.dnu && brokerItem.status
-        );
+    private filterBanDnuBrokerData(
+        data: BrokerResponse[],
+        activeFilter?: string
+    ): BrokerResponse[] {
+        const filteredData = data.filter((brokerItem) => {
+            if (activeFilter) {
+                if (activeFilter === TableStringEnum.BAN) return brokerItem.ban;
+                else if (activeFilter === TableStringEnum.DNU)
+                    return brokerItem.dnu;
+                else if (activeFilter === TableStringEnum.CLOSED_ARRAY)
+                    return !brokerItem.status;
+            } else
+                return !brokerItem.ban && !brokerItem.dnu && brokerItem.status;
+        });
 
         return filteredData;
     }
@@ -2238,5 +2350,13 @@ export class CustomerTableComponent
                 break;
         }
         this.customerCardsModalService.updateTab(this.selectedTab);
+    }
+
+    private resetTableSelectedRows(): void {
+        this.tableService.sendDnuListSelectedRows([]);
+        this.tableService.sendBanListSelectedRows([]);
+        this.tableService.sendBussinessSelectedRows([]);
+        this.tableService.sendRowsSelected([]);
+        this.tableService.sendResetSelectedColumns(true);
     }
 }

@@ -754,30 +754,27 @@ table.truckassist-table-body-style {
 
                         // USER STATUS COLUMN
                         .user-status-container {
-                            min-width: 68px;
-                            height: 18px;
-                            border-radius: 1px;
-                            background: $bw6-3;
                             color: $bw6-2;
                             font-size: 11px;
-                            font-weight: 700;
-                            display: flex;
-                            justify-content: center;
-                            align-items: center;
-                            padding: 0 4px;
                             overflow: hidden;
                             white-space: nowrap;
                             text-overflow: ellipsis;
+                            text-transform: uppercase;
 
                             &::selection {
                                 color: $bw6-2;
-                                background: $bw6-2;
+                                background: $bw6-3;
                             }
                         }
 
-                        .user-invited {
-                            background: $ta-orange-6 !important;
-                            color: $special-filter-orange !important;
+                        .user-activity-container {
+                            .online-icon {
+                                width: 10px;
+                                height: 10px;
+
+                                border-radius: 100%;
+                                background-color: $ta-green;
+                            }
                         }
 
                         // NAME LINK

@@ -32,5 +32,7 @@ export interface ApiFuelFuelstopUpdatePutRequest {
     Note?: string;
     Longitude?: number;
     Latitude?: number;
+    Cover?: Blob;
+    CoverIdForDelete?: number;
 }
 

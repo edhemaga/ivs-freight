@@ -84,7 +84,8 @@ export class TableDoubleHeadPipe implements PipeTransform {
                 (tableHeadTitle === TableHeadTitleStringEnum.PHONE ||
                     tableHeadTitle === TableHeadTitleStringEnum.EMAIL ||
                     tableHeadTitle === TableHeadTitleStringEnum.OFFICE ||
-                    tableHeadTitle == TableHeadTitleStringEnum.PAY_TYPE);
+                    tableHeadTitle === TableHeadTitleStringEnum.PAY_TYPE ||
+                tableHeadTitle === TableHeadTitleStringEnum.NAME);
 
             if (
                 contactsTableColumnsCondition ||
@@ -179,7 +180,8 @@ export class TableDoubleHeadPipe implements PipeTransform {
                 (tableHeadTitle !== TableHeadTitleStringEnum.PHONE &&
                     tableHeadTitle !== TableHeadTitleStringEnum.EMAIL &&
                     tableHeadTitle !== TableHeadTitleStringEnum.OFFICE &&
-                    tableHeadTitle !== TableHeadTitleStringEnum.PAY_TYPE);
+                    tableHeadTitle !== TableHeadTitleStringEnum.PAY_TYPE &&
+                    tableHeadTitle !== TableHeadTitleStringEnum.NAME);
 
             return (
                 contactsTableColumnsCondition &&

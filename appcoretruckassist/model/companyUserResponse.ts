@@ -43,7 +43,6 @@ export interface CompanyUserResponse {
     startDate?: string;
     userType?: EnumValue;
     isAdmin?: boolean;
-    isUser?: boolean;
     avatar?: string | null;
     avatarFile?: FileResponse;
     note?: string | null;

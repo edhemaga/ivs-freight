@@ -103,7 +103,7 @@ export class DropdownContentHelper {
         return [
             {
                 title: TableStringEnum.EDIT_2,
-                name: 'edit-cutomer-or-shipper',
+                name: TableStringEnum.EDIT_CUSTOMER_OR_SHIPPER,
                 svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Edit.svg',
                 svgStyle: {
                     width: 18,

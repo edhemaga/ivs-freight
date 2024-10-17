@@ -34,7 +34,7 @@
                 [tooltipMarginTop]="'5px'"
             >
                 <svg-icon
-                    src="assets/svg/common/ic_plus.svg"
+                    [src]="svgRoutes.plus"
                     class="settings-plus-button svg-fill-blue-13 svg-hover-blue-15 d-flex align-items-center justify-content-center c-pointer"
                     (click)="onAction({ modalName: 'parking' })"
                 ></svg-icon>
@@ -43,116 +43,181 @@
     </div>
     <span class="settings-body">
         <app-ta-common-card
-            *ngFor="let item of parkingData?.data; trackBy: identity"
+            *ngFor="
+                let item of parkingData?.data;
+                trackBy: identity;
+                let i = index
+            "
             [settingsIcon]="item.isOwner ? 'ic_company.svg' : ''"
             [cardNameCommon]="item.name"
             [hasFooter]="false"
             [haveHeaderText]="true"
             [optionsId]="item.id"
-            [options]="parkingActions"
-            (dropActions)="optionsEvent($event, 'parking')"
+            [options]="options"
             [paddingDots]="'8px 0px 0px 0px'"
+            (dropActions)="optionsEvent($event, 'parking', item)"
+            (isCardOpenEmitter)="onCardToggle(i)"
         >
             <div class="settings-body-items">
-                <div *ngIf="item.phone" class="single-item">
-                    <svg-icon
-                        class="mr-3 svg-fill-light-grey-2"
-                        src="assets/svg/common/ic_phone.svg"
-                    ></svg-icon>
-                    <app-ta-copy
-                        [copyValue]="item?.phone"
-                        [textColor]="'#2f2f2f'"
-                    >
-                    </app-ta-copy>
-                </div>
-                <div *ngIf="item.email" class="single-item">
-                    <svg-icon
-                        class="mr-3 svg-fill-light-grey-2"
-                        src="assets/svg/common/ic_email.svg"
-                    ></svg-icon>
-                    <app-ta-copy
-                        [copyValue]="item?.email"
-                        [textColor]="'#2f2f2f'"
-                    >
-                    </app-ta-copy>
-                </div>
-                <div *ngIf="item.address" class="single-item">
-                    <svg-icon
-                        class="mr-3 svg-fill-light-grey-2"
-                        src="assets/svg/truckassist-table/location-icon.svg"
-                    ></svg-icon>
-                    <span>{{ item.address.address }}</span>
-                </div>
+                <ng-container *ngIf="item.phone">
+                    <div class="single-item">
+                        <svg-icon
+                            class="mr-3 svg-fill-muted svg-size-18"
+                            [src]="svgRoutes.phone"
+                        ></svg-icon>
+                        <app-ta-copy
+                            [arrayText]="true"
+                            [textColor]="'#2f2f2f'"
+                            [copyValue]="[
+                                item.phone,
+                                item.extensionPhone
+                                    ? ' x' + item.extensionPhone
+                                    : ''
+                            ]"
+                            type="Contacts"
+                        >
+                        </app-ta-copy>
+                    </div>
+                </ng-container>
+                <ng-container *ngIf="item.email">
+                    <div class="single-item">
+                        <svg-icon
+                            class="mr-3 svg-fill-muted svg-size-18"
+                            [src]="svgRoutes.email"
+                        ></svg-icon>
+                        <app-ta-copy
+                            [copyValue]="item?.email"
+                            [textColor]="'#2f2f2f'"
+                        >
+                        </app-ta-copy>
+                    </div>
+                </ng-container>
+                <ng-container *ngIf="item.address">
+                    <div class="single-item">
+                        <svg-icon
+                            class="mr-3 svg-fill-muted svg-size-18"
+                            [src]="svgRoutes.location"
+                        ></svg-icon>
+                        <span class="text-size-14 text-color-black-2">{{
+                            item.address.address
+                        }}</span>
+                    </div>
+                </ng-container>
             </div>
             <app-ta-custom-card
                 [hasCounter]="item.parkingSlotCount + item.fullParkingSlotCount"
                 [cardName]="'Parking Slot'"
-                [isCardOpen]="true"
                 [bodyTemplate]="'card'"
                 [customClass]="'detailsPadding'"
+                [isCardOpen]="!!isParkingCardOpened[i]"
+                (onOpenCard)="isParkingCardOpened[i] = $event"
             >
                 <div
                     class="parking-template-data"
                     [ngClass]="{ 'no-divider': !item.rent }"
                 >
                     <div class="parking-template-item">
-                        <p class="parking-template-number">
+                        <p
+                            class="ta-font-semi-bold text-size-16"
+                            [ngClass]="
+                                item.parkingSlotCount
+                                    ? ' text-color-black'
+                                    : 'text-color-light-grey-6'
+                            "
+                        >
                             {{
                                 item.parkingSlotCount
                                     ? item.parkingSlotCount
                                     : 0
                             }}
                         </p>
-                        <p class="parking-template-text text-color-black-2">Parking Slot</p>
+                        <p
+                            class="parking-template-text text-size-14 text-color-black-2"
+                            [ngClass]="{
+                                'cross-out text-color-light-grey-6':
+                                    !item.parkingSlotCount
+                            }"
+                        >
+                            Single Slot
+                        </p>
                     </div>
                     <div class="parking-template-item">
-                        <p class="parking-template-number">
+                        <p
+                            class="ta-font-semi-bold text-size-16"
+                            [ngClass]="
+                                item.fullParkingSlotCount
+                                    ? ' text-color-black'
+                                    : 'text-color-light-grey-6'
+                            "
+                        >
                             {{
                                 item.fullParkingSlotCount
                                     ? item.fullParkingSlotCount
                                     : 0
                             }}
                         </p>
-                        <p class="parking-template-text text-color-black-2">Full Parking Slot</p>
+                        <p
+                            class="parking-template-text text-size-14"
+                            [ngClass]="
+                                item.fullParkingSlotCount
+                                    ? ' text-color-black'
+                                    : 'text-color-light-grey-6'
+                            "
+                            [ngClass]="{
+                                'cross-out text-color-light-grey-6':
+                                    !item.fullParkingSlotCount
+                            }"
+                        >
+                            Full Slot
+                        </p>
                     </div>
                     <div class="parking-template-item">
                         <svg-icon
-                            class="parking-template-svg"
+                            class="parking-template-svg svg-fill-muted"
                             [ngClass]="{ disabled: !item.securityCamera }"
-                            src="assets/svg/common/ic_security-camera.svg"
+                            [src]="svgRoutes.securityCamera"
                         ></svg-icon>
                         <p
-                            class="parking-template-text text-color-black-2"
-                            [ngClass]="{ 'cross-out': !item.securityCamera }"
+                            class="parking-template-text text-color-black-2 text-color-black-2"
+                            [ngClass]="{
+                                'cross-out text-color-light-grey-6':
+                                    !item.securityCamera
+                            }"
                         >
                             Security Camera
                         </p>
                     </div>
                     <div class="parking-template-item">
                         <svg-icon
-                            class="parking-template-svg"
+                            class="parking-template-svg svg-fill-muted"
                             [ngClass]="{ disabled: !item.gate }"
-                            src="assets/svg/common/ic_security-gate.svg"
+                            [src]="svgRoutes.securityGate"
                         ></svg-icon>
                         <p
-                            class="parking-template-text text-color-black-2"
-                            [ngClass]="{ 'cross-out': !item.gate }"
+                            class="parking-template-text text-color-black-2 text-color-black-2"
+                            [ngClass]="{
+                                'cross-out text-color-light-grey-6': !item.gate
+                            }"
                         >
                             Gate
                         </p>
                     </div>
                 </div>
             </app-ta-custom-card>
-            <div *ngIf="item.rent" class="divider"></div>
-            <div *ngIf="item.rent" class="settings-progress-container">
-                <app-ta-progress-expiration
-                    [expireDate]="getRentDate(item.monthlyDay?.id)"
-                    [startDate]="currentDate"
-                    [expiresSettings]="'settings-parking'"
-                    [customText]="generateTextForProgressBar(item)"
-                    [darkText]="true"
-                ></app-ta-progress-expiration>
-            </div>
+            <ng-container
+                *ngIf="!item.isOwner && (item.monthlyDay || item.weeklyDay)"
+            >
+                <div class="divider"></div>
+                <div class="settings-progress-container">
+                    <app-ta-progress-expiration
+                        [expireDate]="getRentDate(item.monthlyDay?.id)"
+                        [startDate]="currentDate"
+                        [expiresSettings]="'settings-parking'"
+                        [customText]="generateTextForProgressBar(item)"
+                        [darkText]="true"
+                    ></app-ta-progress-expiration>
+                </div>
+            </ng-container>
         </app-ta-common-card>
     </span>
 </div>

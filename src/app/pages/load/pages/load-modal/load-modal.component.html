@@ -19,7 +19,7 @@
     [saveAndAddNew]="true"
     (additionalPartVisibility)="additionalPartVisibility($event)"
     (action)="onModalAction($event)"
-    [enableClickWhileFormInvalid]="true"
+    [isClickEnabledWhileFormInvalid]="true"
     (runFormValidation)="runFormValidation()"
 >
     <!-- Origin Tab -->
@@ -681,7 +681,7 @@
                                         "
                                         [preventOpening]="isDragAndDropActive"
                                         [firstOrLast]="false"
-                                        [stopNumber]="indx + 2"
+                                        [stopNumber]="extraStopNumbers?.[indx] ?? 1"
                                         [isDelivery]="
                                             selectExtraStopType[indx]
                                                 ?.toString()

@@ -100,6 +100,7 @@
                             marginTop: '0',
                             marginBottom: '0'
                         }"
+                        [disabledCard]="!selectedDispatches"
                         (onOpenCard)="toggleAssignList()"
                         (onActionEvent)="onReorderAction($event)"
                         (cdkDropListDropped)="dropAssigned($event)"

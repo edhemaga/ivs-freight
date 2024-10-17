@@ -163,13 +163,43 @@ export class DispatcherService {
     }
 
     public reorderDispatchboard(
-        reorder: ReorderDispatchesCommand
+        reorderData: ReorderDispatchesCommand,
+        dispatchBoardId?: number
     ): Observable<any> {
-        return this.dispatchService.apiDispatchReorderPut(reorder);
+        return this.dispatchService.apiDispatchReorderPut(reorderData).pipe(
+            tap(() => {
+                this.getDispatchBoardByDispatcherList(
+                    dispatchBoardId
+                ).subscribe((res) => {
+                    this.dispatcherStore.update((store) => {
+                        return {
+                            ...store,
+                            dispatchList: {
+                                ...store.dispatchList.dispatchBoards,
+                                dispatchBoards:
+                                    store.dispatchList.dispatchBoards.map(
+                                        (dispatchBoard) => {
+                                            return dispatchBoard.id === res.id
+                                                ? {
+                                                      ...dispatchBoard,
+                                                      dispatches:
+                                                          res.dispatches,
+                                                  }
+                                                : dispatchBoard;
+                                        }
+                                    ),
+                            },
+                        };
+                    });
+                });
+            })
+        );
     }
 
-    switchDispathboard(swithcData: SwitchDispatchesCommand) {
-        return this.dispatchService.apiDispatchSwitchPut(swithcData);
+    public switchDispathboard(
+        switchData: SwitchDispatchesCommand
+    ): Observable<any> {
+        return this.dispatchService.apiDispatchSwitchPut(switchData);
     }
 
     deleteDispatchboard(dispatchId: number) {
@@ -317,6 +347,7 @@ export class DispatcherService {
                             item.dispatches.push({ ...boardData.item });
                         }
                     }
+
                     return item;
                 }),
             },

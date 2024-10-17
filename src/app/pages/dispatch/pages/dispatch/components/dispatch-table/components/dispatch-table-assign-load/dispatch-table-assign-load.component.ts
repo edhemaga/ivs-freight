@@ -35,18 +35,19 @@ export class DispatchTableAssignLoadComponent implements OnInit, OnDestroy {
     @Input() isActiveLoad: LoadShortResponse;
     @Input() dispatchId: number;
     @Input() isHoveringRow: boolean;
+    @Input() isUnlockable: boolean;
 
     public svgRoutes = DispatchTableSvgRoutes;
 
     private destroy$ = new Subject<void>();
 
-    constructor(
-        private modalService: ModalService
-    ) {}
+    constructor(private modalService: ModalService) {}
 
     ngOnInit(): void {}
 
     public get isButtonDisabled(): boolean {
+        if (!this.isUnlockable) return true;
+
         if (!this.driver) return true;
 
         if (!this.truck) return true;

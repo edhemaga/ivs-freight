@@ -36,6 +36,22 @@
                 color: $bw5;
             }
         }
+
+        &-light-grey-2 {
+            color: $ta-light-grey-2;
+        }
+
+        &-light-grey-6 {
+            color: $ta-light-grey-6;
+            &::-moz-selection {
+                color: $bw4;
+                background: rgb(183, 183, 183, 0.2) !important;
+            }
+            &::selection {
+                color: $bw4;
+                background: rgb(183, 183, 183, 0.2) !important;
+            }
+        }
     }
 
     // Sizes

@@ -152,14 +152,26 @@ body {
     text-align: right !important;
 }
 
-html body app-ta-modal .ta-custom-card .ta-card-body.scroll-x-axis {
-    overflow-x: scroll !important;
-    scrollbar-width: thin !important;
-    overflow-x: scroll;
-    margin-left: 196px;
-    overflow-x: visible;
-    padding: 0;
-    scrollbar-width: thin !important;
+html {
+    body {
+        app-ta-modal {
+            .ta-custom-card {
+                .ta-card-body.scroll-x-axis {
+                    overflow-x: scroll !important;
+                    scrollbar-width: thin !important;
+                    overflow-x: scroll;
+                    margin-left: 196px;
+                    overflow-x: visible;
+                    padding: 0;
+                    scrollbar-width: thin !important;
+
+                    &.department-contacts-x-axis {
+                        margin-left: 160px !important;
+                    }
+                }
+            }
+        }
+    }
 }
 
 .stop-items-number {
@@ -482,5 +494,14 @@ app-load-modal {
 .pl {
     &-0 {
         padding-left: 0 !important;
+    }
+}
+
+// Use case for deleting modal opening from modal
+html ngb-modal-backdrop {
+    opacity: 0 !important;
+
+    &:first-of-type {
+        opacity: var(--bs-backdrop-opacity) !important;
     }
 }

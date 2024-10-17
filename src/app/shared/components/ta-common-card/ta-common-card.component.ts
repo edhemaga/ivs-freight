@@ -22,8 +22,8 @@ import { cardComponentAnimation } from '@shared/animations/card-component.animat
 // services
 import { DetailsDataService } from '@shared/services/details-data.service';
 
-//components
-import { TaAppTooltipComponent } from '@shared/components/ta-app-tooltip/ta-app-tooltip.component';
+//components 
+import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
 import { TaDetailsDropdownComponent } from '@shared/components/ta-details-dropdown/ta-details-dropdown.component';
 
 // modules
@@ -37,7 +37,7 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
     imports: [
         CommonModule,
         FormsModule,
-        TaAppTooltipComponent,
+        TaAppTooltipV2Component,
         TaDetailsDropdownComponent,
         AngularSvgIconModule,
         NgbModule,
@@ -148,6 +148,7 @@ export class TaCommonCardComponent implements OnInit {
         isCardOpen: boolean;
         id: number;
     }>();
+    public isDropdownVisible: boolean;
 
     constructor(
         private clipboard: Clipboard,
@@ -242,6 +243,10 @@ export class TaCommonCardComponent implements OnInit {
         event.stopPropagation();
         this.copiedCommon = true;
         this.clipboard.copy(val);
+    }
+
+    public onPopoverVisiblityChange(isVisible: boolean): void {
+        this.isDropdownVisible = isVisible;
     }
 
     toggleDropdown() {

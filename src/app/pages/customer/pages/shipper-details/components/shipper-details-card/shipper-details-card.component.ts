@@ -20,6 +20,13 @@ import { ShipperMinimalListQuery } from '@pages/customer/state/shipper-state/shi
 // Services
 import { DetailsPageService } from '@shared/services/details-page.service';
 import { ShipperService } from '@pages/customer/services/shipper.service';
+import { ModalService } from '@shared/services/modal.service';
+
+// Components
+import { ShipperModalComponent } from '@pages/customer/pages/shipper-modal/shipper-modal.component';
+
+// Enums
+import { TableStringEnum } from '@shared/enums/table-string.enum';
 
 @Component({
     selector: 'app-shipper-details-card',
@@ -160,6 +167,7 @@ export class ShipperDetailsCardComponent
         // Services
         private detailsPageDriverSer: DetailsPageService,
         private shipperService: ShipperService,
+        private modalService: ModalService,
 
         // Store
         private shipperMinimalListQuery: ShipperMinimalListQuery
@@ -232,6 +240,14 @@ export class ShipperDetailsCardComponent
     }
     public onSelectedShipper(event: any) {
         if (event && event.id !== this.shipper.id) {
+            if (event.name === TableStringEnum.ADD_NEW_3) {
+                this.modalService.openModal(ShipperModalComponent, {
+                    size: TableStringEnum.MEDIUM,
+                });
+
+                return;
+            }
+
             this.shipperList = this.shipperMinimalListQuery
                 .getAll()
                 .map((item) => {

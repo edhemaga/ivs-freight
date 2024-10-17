@@ -59,6 +59,9 @@ import { LoadModalStringEnum } from '@pages/load/pages/load-modal/enums';
 import { AssignedLoadResponse } from 'appcoretruckassist';
 import { TaModalActionEnums } from './enums';
 
+// Directive
+import { PreventMultipleclicksDirective } from '@shared/directives/prevent-multipleclicks.directive';
+
 @Component({
     selector: 'app-ta-modal',
     templateUrl: './ta-modal.component.html',
@@ -84,6 +87,9 @@ import { TaModalActionEnums } from './enums';
         TaFilterComponent,
         TaSearchComponent,
         CaFilterComponent,
+
+        // Directives
+        PreventMultipleclicksDirective,
     ],
     animations: [
         trigger('widthGrow', [
@@ -108,7 +114,13 @@ import { TaModalActionEnums } from './enums';
     providers: [AuthGuard],
 })
 export class TaModalComponent implements OnInit, OnDestroy {
-    private destroy$ = new Subject<void>();
+    @Input() set isResetDnuBtn(isReset: boolean) {
+        if (isReset) this.isDNU = !this.isDNU;
+    }
+    @Input() set isResetBfbBtn(isReset: boolean) {
+        if (isReset) this.isBFB = !this.isBFB;
+    }
+
     @Input() modalTitle: string;
     @Input() editName: string;
     @Input() loadModalTemplate: boolean;
@@ -128,8 +140,6 @@ export class TaModalComponent implements OnInit, OnDestroy {
     @Input() disableDelete: boolean;
     @Input() isFinishOrder?: boolean = false;
     @Input() isDeactivated: boolean;
-    @Input() isDNU: boolean;
-    @Input() isBFB: boolean;
     @Input() editDate: boolean;
     @Input() resendEmail: boolean;
     @Input() modalAdditionalPart: boolean;
@@ -151,10 +161,11 @@ export class TaModalComponent implements OnInit, OnDestroy {
     @Input() isResetFormCards: boolean = false;
     @Input() cardsSecTitle: string;
     @Input() showCloseBusinessButton = false;
-    @Input() isAdditionalAssignLoadModalVisible = false;    
+    @Input() isAdditionalAssignLoadModalVisible = false;
     @Input() isAssignLoadModal: boolean = false;
     @Input() isReorderingActive: boolean = false;
-    
+    @Input() isDisableButtonHidden: boolean = false;
+    @Input() isDeactivateOnly: boolean;
     // -----------------
 
     @Input() specificCaseModalName: boolean;
@@ -174,7 +185,7 @@ export class TaModalComponent implements OnInit, OnDestroy {
     @Input() isBluredNotice: boolean = true;
 
     // Use case when we want user to submit form and run validation and show form errors
-    @Input() enableClickWhileFormInvalid: boolean = false;
+    @Input() isClickEnabledWhileFormInvalid: boolean = false;
 
     // Header filters
     @Input() hasTimeFilter: boolean = false;
@@ -207,6 +218,8 @@ export class TaModalComponent implements OnInit, OnDestroy {
 
     @Output() filterActions = new EventEmitter<any>();
 
+    private destroy$ = new Subject<void>();
+
     public saveSpinnerVisibility: boolean = false;
     public saveAddNewSpinnerVisibility: boolean = false;
     public deleteSpinnerVisibility: boolean = false;
@@ -216,6 +229,9 @@ export class TaModalComponent implements OnInit, OnDestroy {
     public setMapRouteSpinnerVisibility: boolean = false;
 
     public stepperCounter: number = 0;
+
+    public isDNU: boolean;
+    public isBFB: boolean;
 
     // Drag & Drop properties
     public isDropZoneVisible: boolean = false;
@@ -332,7 +348,7 @@ export class TaModalComponent implements OnInit, OnDestroy {
     }
 
     public onAction(action: string) {
-        if (!this.isModalValid && this.enableClickWhileFormInvalid)
+        if (!this.isModalValid && this.isClickEnabledWhileFormInvalid)
             this.runFormValidation.emit(true);
 
         switch (action) {
@@ -357,7 +373,7 @@ export class TaModalComponent implements OnInit, OnDestroy {
                 break;
             }
             case 'deactivate': {
-                this.isDeactivated = !this.isDeactivated;
+                if(!this.isDeactivateOnly) this.isDeactivated = !this.isDeactivated;
                 this.action.emit({
                     action: action,
                     bool: this.isDeactivated,
@@ -476,18 +492,22 @@ export class TaModalComponent implements OnInit, OnDestroy {
             }
             case 'change-status': {
                 this.confirmationAction.emit(this.confirmationData);
+
                 break;
             }
             case LoadModalStringEnum.DISPATCH_LOAD_SAVE_AND_ASSIGN_NEW: {
                 this.action.emit({ action: action, bool: false });
+
                 break;
             }
             case LoadModalStringEnum.DISPATCH_LOAD_CREATE_LOAD: {
                 this.action.emit({ action: action, bool: false });
+
                 break;
             }
             case LoadModalStringEnum.DISPATCH_LOAD_SAVE_CHANGES: {
                 this.action.emit({ action: action, bool: false });
+
                 break;
             }
             default: {

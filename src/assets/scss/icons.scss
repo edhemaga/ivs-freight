@@ -27,6 +27,9 @@
 .svg {
     // Colors
     &-fill {
+        &-black {
+            @include svg-fill($black);
+        }
         &-muted {
             @include svg-fill($muted);
         }
@@ -39,10 +42,19 @@
         &-blue-13 {
             @include svg-fill($ta-blue-13);
         }
+        &-blue-19 {
+            @include svg-fill($ta-blue-19);
+        }
+        &-blue-26 {
+            @include svg-fill($ta-blue-26);
+        }
     }
 
     // Hovers
     &-hover {
+        &-muted {
+            @include svg-hover($muted);
+        }
         &-black {
             @include svg-hover($ta-black);
         }
@@ -55,15 +67,24 @@
         &-trash-red {
             @include svg-hover($settings-trash-red);
         }
+        &-red-14 {
+            @include svg-hover($ta-red-14);
+        }
     }
 
     // Sizes
     &-size {
+        &-12 {
+            @include svg-size(12px, 12px);
+        }
         &-14 {
             @include svg-size(14px, 14px);
         }
         &-16 {
             @include svg-size(16px, 16px);
+        }
+        &-18 {
+            @include svg-size(18px, 18px);
         }
     }
 }

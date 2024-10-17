@@ -17,7 +17,6 @@ import {
 import { Subject, switchMap, takeUntil } from 'rxjs';
 
 // modules
-import { CroppieOptions } from 'croppie';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
@@ -34,6 +33,7 @@ import { TaInputComponent } from '@shared/components/ta-input/ta-input.component
 import { TaInputAddressDropdownComponent } from '@shared/components/ta-input-address-dropdown/ta-input-address-dropdown.component';
 import { TaInputDropdownLabelComponent } from '@shared/components/ta-input-dropdown-label/ta-input-dropdown-label.component';
 import { TaModalTableComponent } from '@shared/components/ta-modal-table/ta-modal-table.component';
+import { CaUploadFilesComponent } from 'ca-components';
 
 // validations
 import {
@@ -71,6 +71,9 @@ import {
 } from 'appcoretruckassist';
 import { EditData } from '@shared/models/edit-data.model';
 
+// utils
+import { MethodsGlobalHelper } from '@shared/utils/helpers/methods-global.helper';
+
 @Component({
     selector: 'app-contact-modal',
     templateUrl: './contacts-modal.component.html',
@@ -98,6 +101,7 @@ import { EditData } from '@shared/models/edit-data.model';
         TaInputAddressDropdownComponent,
         TaInputDropdownLabelComponent,
         TaModalTableComponent,
+        CaUploadFilesComponent,
     ],
 })
 export class ContactsModalComponent implements OnInit, OnDestroy {
@@ -105,14 +109,12 @@ export class ContactsModalComponent implements OnInit, OnDestroy {
 
     private destroy$ = new Subject<void>();
 
+    public uploadOptionsConstants = ContactsModalConstants.UPLOAD_OPTIONS;
     public contactForm: UntypedFormGroup;
     public isFormDirty: boolean;
 
     public isFormValidationDisabled: boolean = false;
     public isCardAnimationDisabled: boolean = false;
-
-    public croppieOptions: CroppieOptions =
-        ContactsModalConstants.CROPIE_OPTIONS;
 
     public contactLabels: EnumValue[] = [];
     public selectedContactLabel: CompanyContactLabelResponse = null;
@@ -128,16 +130,16 @@ export class ContactsModalComponent implements OnInit, OnDestroy {
     public isPhoneRowCreated: boolean = false;
     public isEachPhoneRowValid: boolean = true;
     public contactPhones: ContactPhoneResponse[] = [];
-    public updateContactPhones: ContactPhoneResponse[] = [];
+    public updatedContactPhones: ContactPhoneResponse[] = [];
 
     public isEmailRowCreated: boolean = false;
     public isEachEmailRowValid: boolean = true;
     public contactEmails: ContactEmailResponse[] = [];
-    public updateContactEmails: ContactEmailResponse[] = [];
+    public updatedContactEmails: ContactEmailResponse[] = [];
 
     // enums
     public modalTableTypeEnum = ModalTableTypeEnum;
-    
+
     private isUploadInProgress: boolean;
 
     constructor(
@@ -179,7 +181,7 @@ export class ContactsModalComponent implements OnInit, OnDestroy {
     }
 
     public onModalAction(data: { action: string; bool: boolean }): void {
-        if(this.isUploadInProgress) return;
+        if (this.isUploadInProgress) return;
 
         switch (data.action) {
             case ContactsModalStringEnum.CLOSE:
@@ -387,8 +389,8 @@ export class ContactsModalComponent implements OnInit, OnDestroy {
                     this.selectedAddress = res.address;
                     this.selectedSharedDepartment = res.departmentContacts;
 
-                    this.updateContactPhones = res.contactPhones;
-                    this.updateContactEmails = res.contactEmails;
+                    this.updatedContactPhones = res.contactPhones;
+                    this.updatedContactEmails = res.contactEmails;
 
                     this.inputService.changeValidators(
                         this.contactForm.get(
@@ -602,7 +604,10 @@ export class ContactsModalComponent implements OnInit, OnDestroy {
     }
 
     public onUploadImage(event) {
-        this.contactForm.get(ContactsModalStringEnum.AVATAR).patchValue(event);
+        const base64Data = MethodsGlobalHelper.getBase64DataFromEvent(event);
+        this.contactForm
+            .get(ContactsModalStringEnum.AVATAR)
+            .patchValue(base64Data);
         this.contactForm.get(ContactsModalStringEnum.AVATAR).setErrors(null);
     }
 

@@ -11,6 +11,8 @@ export enum ConfirmationModalStringEnum {
     DELETE_BROKER = 'Delete Broker',
     DELETE_SHIPPER = 'Delete Shipper',
     REPAIR_SHOP_REVIEW = 'repair shop review',
+    BROKER_REVIEW = 'broker review',
+    SHIPPER_REVIEW = 'shipper review',
     QUESTION_MARK = '?',
     VOID_CDL = 'Void CDL',
     ACTIVATE_CDL = 'Activate CDL',

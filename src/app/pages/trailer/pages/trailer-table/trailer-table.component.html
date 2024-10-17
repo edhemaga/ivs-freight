@@ -24,6 +24,7 @@
             [selectedTab]="selectedTab"
             (bodyActions)="onTableBodyActions($event)"
             [tableData]="tableData"
+            (saveValueNote)="saveValueNote($event)"
         ></app-ta-table-body>
     </ng-container>
     <ng-container *ngIf="activeViewMode === 'Card'">
@@ -36,6 +37,7 @@
                 [displayRowsBack]="(displayRows$ | async).displayRowsBack"
                 [page]="page"
                 [selectedTab]="selectedTab"
+                (saveValueNote)="saveValueNote($event)"
             >
             </app-trailer-card>
             <!-- Show More -->

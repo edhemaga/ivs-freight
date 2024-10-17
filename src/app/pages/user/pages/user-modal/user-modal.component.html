@@ -4,6 +4,7 @@
     [editName]="userFullName"
     [isModalValid]="userForm.valid && isFormDirty"
     [disableDelete]="selectedUserType?.name === 'Owner'"
+    [isDeactivateOnly]="editData?.isDeactivateOnly"
     (action)="onModalAction($event)"
 >
     <div origin>
@@ -38,7 +39,6 @@
                                         textTransform: 'lowercase',
                                         autoFocus: editData?.type !== 'edit'
                                     }"
-                                    (clear)="resetDataByEmail($event)"
                                 ></app-ta-input>
                             </div>
                         </div>
@@ -316,8 +316,8 @@
                                 userForm.get('includeInPayroll').value
                             "
                             [animationMarginParams]="{
-                                marginTop: '18px',
-                                marginBottom: '22px'
+                                marginTop: userForm.get('includeInPayroll').value ? '18px' : '0px',
+                                marginBottom: userForm.get('includeInPayroll').value ? '22px' : '0px'
                             }"
                         >
                             <ng-container body>

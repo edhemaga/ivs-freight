@@ -1,8 +1,13 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import {
+    ChangeDetectorRef,
+    Component,
+    Input,
+    OnDestroy,
+    OnInit,
+} from '@angular/core';
 import {
     FormsModule,
     ReactiveFormsModule,
-    UntypedFormArray,
     UntypedFormBuilder,
     UntypedFormGroup,
     Validators,
@@ -25,12 +30,13 @@ import { TaInputComponent } from '@shared/components/ta-input/ta-input.component
 import { TaModalComponent } from '@shared/components/ta-modal/ta-modal.component';
 import { TaTabSwitchComponent } from '@shared/components/ta-tab-switch/ta-tab-switch.component';
 import { UserModalComponent } from '@pages/user/pages/user-modal/user-modal.component';
+import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-custom-card.component';
+import { TaModalTableComponent } from '@shared/components/ta-modal-table/ta-modal-table.component';
 
 // validations
 import {
     addressUnitValidation,
     addressValidation,
-    departmentValidation,
     officeNameValidation,
     phoneExtension,
     phoneFaxRegex,
@@ -43,9 +49,12 @@ import {
     CompanyOfficeModalResponse,
     CompanyOfficeResponse,
     CreateCompanyOfficeCommand,
+    DepartmentResponse,
     EnumValue,
     UpdateCompanyOfficeCommand,
 } from 'appcoretruckassist';
+import { ITaInput } from '@shared/components/ta-input/config/ta-input.config';
+import { OfficeContactExtended } from '@pages/settings/pages/settings-modals/settings-location-modals/settings-office-modal/models/office-contact-extended.model';
 
 // icons
 import { AngularSvgIconModule } from 'angular-svg-icon';
@@ -55,6 +64,20 @@ import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calcula
 
 // animations
 import { tabsModalAnimation } from '@shared/animations/tabs-modal.animation';
+
+// Form configuration
+import { SettingsOfficeConfig } from './config';
+
+// Svg routes
+import { SettingsLocationSvgRoutes } from '@pages/settings/pages/settings-location/utils';
+import { RepairShopModalSvgRoutes } from '@pages/repair/pages/repair-modals/repair-shop-modal/utils/svg-routes/repair-shop-modal-svg-routes';
+
+// Enums
+import { ModalTableTypeEnum } from '@shared/enums/modal-table-type.enum';
+import { SettingsOfficeModalStringEnum } from './enums/settings-office-modal-string.enum';
+import { TableStringEnum } from '@shared/enums/table-string.enum';
+import { TaModalActionEnums } from '@shared/components/ta-modal/enums';
+import { SettingsFormEnum } from '@pages/settings/pages/settings-modals/enums';
 
 @Component({
     selector: 'app-settings-office-modal',
@@ -77,6 +100,8 @@ import { tabsModalAnimation } from '@shared/animations/tabs-modal.animation';
         TaTabSwitchComponent,
         TaCheckboxCardComponent,
         TaInputAddressDropdownComponent,
+        TaCustomCardComponent,
+        TaModalTableComponent,
     ],
 })
 export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
@@ -96,7 +121,6 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
     public monthlyDays: EnumValue[] = [];
     public selectedDay: EnumValue = null;
 
-    public departments: any[] = [];
     public selectedDepartmentFormArray: any[] = [];
     public isDepartmentContactCardOpen: boolean = false;
 
@@ -106,17 +130,17 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
 
     public isDepartmentCardsScrolling: boolean = false;
 
-    public disableCardAnimation: boolean = false;
+    public isCardAnimationDisabled: boolean = false;
 
     public tabs: any[] = [
         {
             id: 1,
-            name: 'Basic',
+            name: 'Detail',
             checked: true,
         },
         {
             id: 2,
-            name: 'Additional',
+            name: 'Contact',
         },
     ];
 
@@ -129,8 +153,41 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
 
     private destroy$ = new Subject<void>();
 
+    public svgRoutes = SettingsLocationSvgRoutes;
+
+    public formConfig = SettingsOfficeConfig;
+
+    public phoneConfig: ITaInput = SettingsOfficeConfig.getPhoneInputConfig();
+    public phoneExtConfig: ITaInput =
+        SettingsOfficeConfig.getPhoneExtInputConfig();
+    public emailConfig: ITaInput = SettingsOfficeConfig.getEmailInputConfig();
+    public addressConfig: ITaInput =
+        SettingsOfficeConfig.getAddressInputConfig();
+    public addressUnitConfig: ITaInput =
+        SettingsOfficeConfig.getAddressUnitInputConfig();
+    public payPeriodConfig: ITaInput =
+        SettingsOfficeConfig.getPayPeriodInputConfig();
+    public rentConfig: ITaInput = SettingsOfficeConfig.getRentConfig();
+
+    public repairShopModalSvgRoutes = RepairShopModalSvgRoutes;
+    public modalTableTypeEnum = ModalTableTypeEnum;
+
+    // contacts
+    public departmentContacts: OfficeContactExtended[] = [];
+    public updatedDepartmentContacts: OfficeContactExtended[] = [];
+
+    public isNewContactAdded: boolean = false;
+    public isEachContactRowValid: boolean = true;
+
+    public departmentOptions: DepartmentResponse[] = [];
+
     constructor(
         private formBuilder: UntypedFormBuilder,
+
+        // change detection
+        private cdRef: ChangeDetectorRef,
+
+        // services
         private inputService: TaInputService,
         private modalService: ModalService,
         private settingsLocationService: SettingsLocationService,
@@ -139,151 +196,91 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
         this.createForm();
+
         this.getCompanyOfficeDropdowns();
     }
 
-    private createForm() {
+    private createForm(): void {
         this.officeForm = this.formBuilder.group({
             isOwner: [false],
             name: [null, [Validators.required, ...officeNameValidation]],
             address: [null, [Validators.required, ...addressValidation]],
             addressUnit: [null, [...addressUnitValidation]],
-            phone: [null, [Validators.required, phoneFaxRegex]],
+            phone: [null, phoneFaxRegex],
             extensionPhone: [null, [...phoneExtension]],
             email: [null],
-            departmentContacts: this.formBuilder.array([]),
             rent: [null, rentValidation],
             payPeriod: [null],
             monthlyDay: [null],
             weeklyDay: [null],
+            contacts: [null],
         });
 
         this.inputService.customInputValidator(
-            this.officeForm.get('email'),
-            'email',
+            this.officeForm.get(TableStringEnum.EMAIL_2),
+            TableStringEnum.EMAIL_2,
             this.destroy$
         );
     }
 
     public tabChange(event: any): void {
         this.selectedTab = event.id;
-        let dotAnimation = document.querySelector('.animation-two-tabs');
+
+        const dotAnimation = document.querySelector('.animation-two-tabs');
+
         this.animationObject = {
             value: this.selectedTab,
             params: { height: `${dotAnimation.getClientRects()[0].height}px` },
         };
     }
 
-    public onModalAction(data: { action: string; bool: boolean }): void {
-        switch (data.action) {
-            case 'close': {
-                if (this.editData?.canOpenModal) {
-                    switch (this.editData?.key) {
-                        case 'user-modal': {
-                            this.modalService.setProjectionModal({
-                                action: 'close',
-                                payload: {
-                                    key: this.editData?.key,
-                                    value: null,
-                                },
-                                component: UserModalComponent,
-                                size: 'small',
-                                type: this.editData?.type,
-                                closing: 'fastest',
-                            });
-                            break;
-                        }
-                        default: {
-                            break;
-                        }
-                    }
-                }
-                break;
-            }
-            case 'save': {
-                if (this.officeForm.invalid || !this.isFormDirty) {
-                    this.inputService.markInvalid(this.officeForm);
-                    return;
-                }
-                if (this.editData?.type === 'edit') {
-                    this.updateCompanyOffice(this.editData.id);
-                    this.modalService.setModalSpinner({
-                        action: null,
-                        status: true,
-                        close: false,
-                    });
-                } else {
-                    this.addCompanyOffice();
-                    this.modalService.setModalSpinner({
-                        action: null,
-                        status: true,
-                        close: false,
-                    });
-                }
-                break;
-            }
-            case 'delete': {
-                this.deleteCompanyOfficeById(this.editData.id);
-                this.modalService.setModalSpinner({
-                    action: 'delete',
-                    status: true,
-                    close: false,
-                });
+    public onModalAction({ action }: { action: string }): void {
+        if (action === TaModalActionEnums.CLOSE) {
+            this.handleModalClose();
+        } else if (action === TaModalActionEnums.SAVE) {
+            this.handleModalSave();
+        } else if (action === TaModalActionEnums.SAVE_AND_ADD_NEW) {
+            this.handleModalSave(true);
+        } else if (action === TaModalActionEnums.DELETE) {
+            this.deleteCompanyOfficeById(this.editData.id);
+            this.setModalSpinner({
+                action: TaModalActionEnums.DELETE,
+                status: true,
+                close: false,
+            });
+        }
+    }
 
-                break;
-            }
-            default: {
-                break;
+    private handleModalClose(): void {
+        if (this.editData?.canOpenModal) {
+            switch (this.editData?.key) {
+                case 'user-modal':
+                    this.modalService.setProjectionModal({
+                        action: TableStringEnum.CLOSE,
+                        payload: { key: this.editData.key, value: null },
+                        component: UserModalComponent,
+                        size: TableStringEnum.SMALL,
+                        type: this.editData.type,
+                        closing: 'fastest',
+                    });
+                    break;
+                default:
+                    break;
             }
         }
     }
 
-    public get departmentContacts(): UntypedFormArray {
-        return this.officeForm.get('departmentContacts') as UntypedFormArray;
-    }
-
-    private createDepartmentContacts(data?: {
-        id: any;
-        departmentId: any;
-        phone: any;
-        extensionPhone: any;
-        email: any;
-    }): UntypedFormGroup {
-        return this.formBuilder.group({
-            id: [data?.id ? data.id : 0],
-            departmentId: [
-                data?.departmentId ? data.departmentId : null,
-                [Validators.required, ...departmentValidation],
-            ],
-            phone: [
-                data?.phone ? data.phone : null,
-                [Validators.required, phoneFaxRegex],
-            ],
-            extensionPhone: [data?.extensionPhone ? data.extensionPhone : null],
-            email: [data?.email ? data.email : null, [Validators.required]],
-        });
-    }
-
-    public addDepartmentContacts(event: { check: boolean; action: string }) {
-        const form = this.createDepartmentContacts();
-        if (event.check) {
-            this.departmentContacts.push(this.createDepartmentContacts());
+    private handleModalSave(addNew?: boolean): void {
+        if (this.officeForm.invalid || !this.isFormDirty) {
+            this.inputService.markInvalid(this.officeForm);
+            return;
         }
-
-        this.inputService.customInputValidator(
-            form.get('email'),
-            'email',
-            this.destroy$
-        );
-    }
-
-    public removeDepartmentContacts(id: number) {
-        this.departmentContacts.removeAt(id);
-        this.selectedDepartmentFormArray.splice(id, 1);
-    }
-
-    public onSelectContactDepartment(event: any, index: number) {
-        this.selectedDepartmentFormArray[index] = event;
+        if (this.editData?.type === TableStringEnum.EDIT) {
+            this.updateCompanyOffice(this.editData.id);
+        } else {
+            this.addCompanyOffice(addNew);
+        }
+        this.setModalSpinner({ action: null, status: true, close: false });
     }
 
     public onHandleAddress(event: {
@@ -293,192 +290,207 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
         if (event.valid) this.selectedAddress = event.address;
     }
 
-    public onSelectDropdown(event: EnumValue, action: string) {
+    public onSelectDropdown(event: EnumValue, action: string): void {
         switch (action) {
-            case 'pay-period': {
-                this.selectedPayPeriod = event;
-
-                this.officeForm.get('monthlyDay').patchValue(null);
-                this.officeForm.get('weeklyDay').patchValue(null);
-                this.selectedDay = null;
-                this.dayOptions =
-                    event?.name === 'Weekly'
-                        ? this.weeklyDays
-                        : this.monthlyDays;
+            case SettingsOfficeModalStringEnum.PAY_PERIOD:
+                this.handlePayPeriodSelection(event);
                 break;
-            }
-            case 'day': {
+            case SettingsOfficeModalStringEnum.DAY:
                 this.selectedDay = event;
                 break;
-            }
-            default: {
+            default:
                 break;
-            }
         }
     }
 
-    private updateCompanyOffice(id: number) {
-        const { addressUnit, departmentContacts, rent, ...form } =
-            this.officeForm.value;
+    private handlePayPeriodSelection(event: EnumValue): void {
+        this.selectedPayPeriod = event;
 
-        let newData: UpdateCompanyOfficeCommand = {
-            id: id,
-            ...form,
-            address: { ...this.selectedAddress, addressUnit: addressUnit },
-            payPeriod: this.selectedPayPeriod
-                ? this.selectedPayPeriod.id
-                : null,
-            monthlyDay:
-                this.selectedPayPeriod?.name === 'Monthly'
-                    ? this.selectedDay
-                        ? this.selectedDay.id
-                        : null
-                    : null,
-            weeklyDay:
-                this.selectedPayPeriod?.name === 'Weekly'
-                    ? this.selectedDay
-                        ? this.selectedDay.id
-                        : null
-                    : null,
+        this.officeForm
+            .get(SettingsOfficeModalStringEnum.MONTHLY_DAY)
+            .patchValue(null);
+
+        this.officeForm
+            .get(SettingsOfficeModalStringEnum.WEEKLY_DAY)
+            .patchValue(null);
+
+        this.selectedDay = null;
+
+        this.dayOptions =
+            event.name === SettingsOfficeModalStringEnum.WEEKLY
+                ? this.weeklyDays
+                : this.monthlyDays;
+
+        this.inputService.changeValidators(
+            this.officeForm.get(SettingsOfficeModalStringEnum.MONTHLY_DAY),
+            true
+        );
+    }
+
+    private updateCompanyOffice(id: number): void {
+        const { addressUnit, rent, ...formValues } = this.officeForm.value;
+
+        const departmentContacts = this.mapContacts(this.departmentContacts);
+
+        const updatedOffice: UpdateCompanyOfficeCommand = {
+            id,
+            ...formValues,
+            address: { ...this.selectedAddress, addressUnit },
+            payPeriod: this.selectedPayPeriod?.id || null,
+            monthlyDay: this.getSelectedDay(
+                SettingsOfficeModalStringEnum.MONTHLY
+            ),
+            weeklyDay: this.getSelectedDay(
+                SettingsOfficeModalStringEnum.WEEKLY
+            ),
             rent: rent
                 ? MethodsCalculationsHelper.convertThousanSepInNumber(rent)
                 : null,
-        };
-
-        for (let index = 0; index < departmentContacts.length; index++) {
-            departmentContacts[index].departmentId =
-                this.selectedDepartmentFormArray[index].id;
-        }
-
-        newData = {
-            ...newData,
             departmentContacts,
         };
 
         this.settingsLocationService
-            .updateCompanyOffice(newData)
+            .updateCompanyOffice(updatedOffice)
             .pipe(takeUntil(this.destroy$))
             .subscribe({
-                next: () => {
-                    this.modalService.setModalSpinner({
+                next: () =>
+                    this.setModalSpinner({
                         action: null,
                         status: true,
                         close: true,
-                    });
-                },
-                error: () => {
-                    this.modalService.setModalSpinner({
+                    }),
+                error: () =>
+                    this.setModalSpinner({
                         action: null,
                         status: false,
                         close: false,
-                    });
-                },
+                    }),
             });
     }
 
-    private addCompanyOffice() {
-        const { addressUnit, departmentContacts, rent, ...form } =
-            this.officeForm.value;
+    private addCompanyOffice(addNew?: boolean): void {
+        const { addressUnit, rent, ...formValues } = this.officeForm.value;
 
-        let newData: CreateCompanyOfficeCommand = {
-            ...form,
-            address: { ...this.selectedAddress, addressUnit: addressUnit },
-            payPeriod: this.selectedPayPeriod
-                ? this.selectedPayPeriod.id
-                : null,
-            monthlyDay:
-                this.selectedPayPeriod?.name === 'Monthly'
-                    ? this.selectedDay
-                        ? this.selectedDay.id
-                        : null
-                    : null,
-            weeklyDay:
-                this.selectedPayPeriod?.name === 'Weekly'
-                    ? this.selectedDay
-                        ? this.selectedDay.id
-                        : null
-                    : null,
+        const departmentContacts = this.mapContacts(this.departmentContacts);
+
+        const newOffice: CreateCompanyOfficeCommand = {
+            ...formValues,
+            address: { ...this.selectedAddress, addressUnit },
+            payPeriod: this.selectedPayPeriod?.id || null,
+            monthlyDay: this.getSelectedDay(
+                SettingsOfficeModalStringEnum.MONTHLY
+            ),
+            weeklyDay: this.getSelectedDay(
+                SettingsOfficeModalStringEnum.WEEKLY
+            ),
             rent: rent
                 ? MethodsCalculationsHelper.convertThousanSepInNumber(rent)
                 : null,
-        };
-
-        for (let index = 0; index < departmentContacts.length; index++) {
-            departmentContacts[index].departmentId =
-                this.selectedDepartmentFormArray[index].id;
-        }
-
-        newData = {
-            ...newData,
             departmentContacts,
         };
 
         this.settingsLocationService
-            .addCompanyOffice(newData)
+            .addCompanyOffice(newOffice)
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
-                    if (this.editData?.canOpenModal) {
-                        switch (this.editData?.key) {
-                            case 'user-modal': {
-                                this.modalService.setProjectionModal({
-                                    action: 'close',
-                                    payload: {
-                                        key: this.editData?.key,
-                                        value: null,
-                                    },
-                                    component: UserModalComponent,
-                                    size: 'small',
-                                    type: this.editData?.type,
-                                    closing: 'slowlest',
-                                });
-                                break;
-                            }
-                            default: {
-                                break;
-                            }
-                        }
-                    } else {
-                        this.modalService.setModalSpinner({
+                    if (addNew) {
+                        this.officeForm.reset();
+
+                        this.officeForm
+                            .get(SettingsFormEnum.IS_OWNER)
+                            .patchValue(true);
+
+                        this.setModalSpinner({
                             action: null,
-                            status: true,
-                            close: true,
+                            status: false,
+                            close: false,
                         });
+                    } else {
+                        this.handleModalResponse();
                     }
                 },
-                error: () => {
-                    this.modalService.setModalSpinner({
+                error: () =>
+                    this.setModalSpinner({
                         action: null,
                         status: false,
                         close: false,
-                    });
-                },
+                    }),
             });
     }
 
-    private deleteCompanyOfficeById(id: number) {
+    private handleModalResponse(): void {
+        if (this.editData?.canOpenModal) {
+            this.modalService.setProjectionModal({
+                action: TableStringEnum.CLOSE,
+                payload: { key: this.editData.key, value: null },
+                component: UserModalComponent,
+                size: TableStringEnum.SMALL,
+                type: this.editData.type,
+                closing: 'slowlest',
+            });
+        } else {
+            this.setModalSpinner({ action: null, status: true, close: true });
+        }
+    }
+
+    private mapContacts(
+        contacts: OfficeContactExtended[],
+        isFormPatch: boolean = false
+    ): OfficeContactExtended[] {
+        return contacts.map((contact, index) => {
+            const { department, phone, extensionPhone, email, phoneExt } =
+                contact;
+
+            return isFormPatch
+                ? {
+                      department: (department as DepartmentResponse).name,
+                      phone,
+                      phoneExt:
+                          extensionPhone ??
+                          SettingsOfficeModalStringEnum.EMPTY_STRING,
+                      email,
+                  }
+                : {
+                      id: this.updatedDepartmentContacts[index]?.id,
+                      departmentId: this.departmentOptions.find(
+                          (item) => item.name === department
+                      )?.id,
+                      phone,
+                      extensionPhone: phoneExt,
+                      email,
+                  };
+        });
+    }
+
+    private getSelectedDay(payPeriodName: string): number | null {
+        return this.selectedPayPeriod?.name === payPeriodName &&
+            this.selectedDay
+            ? this.selectedDay.id
+            : null;
+    }
+
+    private deleteCompanyOfficeById(id: number): void {
         this.settingsLocationService
             .deleteCompanyOfficeById(id)
             .pipe(takeUntil(this.destroy$))
             .subscribe({
-                next: () => {
-                    this.modalService.setModalSpinner({
-                        action: 'delete',
+                next: () =>
+                    this.setModalSpinner({
+                        action: TableStringEnum.DELETE,
                         status: true,
                         close: true,
-                    });
-                },
-                error: () => {
-                    this.modalService.setModalSpinner({
-                        action: 'delete',
+                    }),
+                error: () =>
+                    this.setModalSpinner({
+                        action: TableStringEnum.DELETE,
                         status: false,
                         close: false,
-                    });
-                },
+                    }),
             });
     }
 
-    private editCompanyOfficeById(id: number) {
+    private editCompanyOfficeById(id: number): void {
         this.settingsLocationService
             .getCompanyOfficeById(id)
             .pipe(takeUntil(this.destroy$))
@@ -498,62 +510,48 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
                               )
                             : null,
                         payPeriod: res.payPeriod ? res.payPeriod.name : null,
-                        monthlyDay: res.payPeriod?.name
-                            ? res.payPeriod.name === 'Monthly'
-                                ? res.monthlyDay.name
-                                : res.weeklyDay.name
-                            : null,
+                        monthlyDay:
+                            res.payPeriod?.name ===
+                            SettingsOfficeModalStringEnum.MONTHLY
+                                ? res.monthlyDay?.name
+                                : null,
+                        weeklyDay:
+                            res.payPeriod?.name ===
+                            SettingsOfficeModalStringEnum.WEEKLY
+                                ? res.weeklyDay?.name
+                                : null,
+                        contacts: this.mapContacts(
+                            res.departmentContacts,
+                            true
+                        ),
                     });
+
                     this.officeName = res.name;
                     this.selectedAddress = res.address;
                     this.selectedPayPeriod = res.payPeriod;
-
-                    this.selectedDay = res.payPeriod
-                        ? res.payPeriod.name === 'Monthly'
+                    this.selectedDay =
+                        res.payPeriod?.name ===
+                        SettingsOfficeModalStringEnum.MONTHLY
                             ? res.monthlyDay
-                            : res.weeklyDay
-                        : null;
+                            : res.weeklyDay;
 
                     if (res.extensionPhone) {
                         this.isPhoneExtExist = true;
                     }
 
-                    for (
-                        let index = 0;
-                        index < res.departmentContacts.length;
-                        index++
-                    ) {
-                        this.departmentContacts.push(
-                            this.createDepartmentContacts({
-                                id: res.departmentContacts[index].id,
-                                departmentId:
-                                    res.departmentContacts[index].department
-                                        .name,
-                                phone: res.departmentContacts[index].phone,
-                                extensionPhone:
-                                    res.departmentContacts[index]
-                                        .extensionPhone,
-                                email: res.departmentContacts[index].email,
-                            })
-                        );
+                    this.updatedDepartmentContacts = res.departmentContacts;
 
-                        this.selectedDepartmentFormArray[index] = {
-                            ...res.departmentContacts[index],
-                            name: res.departmentContacts[index].department.name,
-                            duplicateId:
-                                res.departmentContacts[index].department.id,
-                        };
-                    }
                     setTimeout(() => {
                         this.startFormChanges();
-                        this.disableCardAnimation = false;
+
+                        this.isCardAnimationDisabled = false;
                     }, 1000);
                 },
                 error: () => {},
             });
     }
 
-    private getCompanyOfficeDropdowns() {
+    private getCompanyOfficeDropdowns(): void {
         this.settingsLocationService
             .getModalDropdowns()
             .pipe(takeUntil(this.destroy$))
@@ -561,31 +559,62 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
                 next: (res: CompanyOfficeModalResponse) => {
                     this.monthlyDays = res.payPeriodMonthly;
                     this.payPeriods = res.payPeriod;
-                    this.departments = res.departments;
                     this.weeklyDays = res.dayOfWeek;
 
-                    if (this.editData?.type === 'edit') {
-                        this.disableCardAnimation = true;
+                    this.departmentOptions = res.departments;
+
+                    if (this.editData?.type === TableStringEnum.EDIT) {
                         this.editCompanyOfficeById(this.editData.id);
                     } else {
                         this.startFormChanges();
                     }
                 },
-                error: () => {},
             });
     }
 
-    public onScrollingBrokerContacts(event: any) {
-        this.isDepartmentCardsScrolling = event.target.scrollLeft > 1;
-    }
-
-    private startFormChanges() {
+    private startFormChanges(): void {
         this.formService.checkFormChange(this.officeForm);
         this.formService.formValueChange$
             .pipe(takeUntil(this.destroy$))
-            .subscribe((isFormChange: boolean) => {
-                this.isFormDirty = isFormChange;
+            .subscribe((isFormDirty: boolean) => {
+                this.isFormDirty = isFormDirty;
             });
+    }
+
+    public addContact(): void {
+        if (!this.isEachContactRowValid) return;
+
+        this.isNewContactAdded = true;
+
+        setTimeout(() => {
+            this.isNewContactAdded = false;
+        }, 400);
+    }
+
+    public handleModalTableValueEmit(
+        modalTableDataValue: OfficeContactExtended[]
+    ): void {
+        this.departmentContacts = modalTableDataValue;
+
+        this.officeForm
+            .get(SettingsOfficeModalStringEnum.CONTACTS)
+            .patchValue(this.departmentContacts);
+
+        this.cdRef.detectChanges();
+    }
+
+    public handleModalTableValidStatusEmit(
+        isEachContactRowValid: boolean
+    ): void {
+        this.isEachContactRowValid = isEachContactRowValid;
+    }
+
+    private setModalSpinner(config: {
+        action: string;
+        status: boolean;
+        close: boolean;
+    }): void {
+        this.modalService.setModalSpinner(config);
     }
 
     ngOnDestroy(): void {

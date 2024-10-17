@@ -1632,6 +1632,12 @@
     right: -4px !important;
 }
 
+.pickup-delivery-popover {
+    .sidemenu.pickup-delivery {
+        right: -182px !important;
+    }
+}
+
 .tags_popover_vertical {
     background-color: transparent !important;
     .popover-body {

@@ -15,6 +15,7 @@ import { PayrollLoadMinimalResponse } from './payrollLoadMinimalResponse';
 import { PayrollCommissionTotalSum } from './payrollCommissionTotalSum';
 import { PayrollCreditMinimalResponse } from './payrollCreditMinimalResponse';
 import { EnumValue } from './enumValue';
+import { OwnerResponse } from './ownerResponse';
 import { PayrollMapLocation } from './payrollMapLocation';
 import { TruckShortResponse } from './truckShortResponse';
 import { PayrollFuelMinimalResponse } from './payrollFuelMinimalResponse';
@@ -23,7 +24,7 @@ import { PayrollFuelMinimalResponse } from './payrollFuelMinimalResponse';
 export interface PayrollOwnerClosedResponse { 
     id?: number;
     previousLoadId?: number | null;
-    owner?: string | null;
+    owner?: OwnerResponse;
     truck?: TruckShortResponse;
     payrollNumber?: string | null;
     periodStart?: string;

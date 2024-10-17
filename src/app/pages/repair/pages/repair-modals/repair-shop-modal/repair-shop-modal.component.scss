@@ -6,58 +6,29 @@
         bottom: 1px;
     }
 
-    // Override tabs to match figma design
-    &__contact-table {
-        width: 600px;
-        overflow-x: scroll;
-        overflow-x: visible;
-        padding: 0;
-        scrollbar-width: thin !important;
-        .contact-table-header {
-            .table-header-box {
-                &:nth-child(1),
-                &:nth-child(2) {
-                    position: absolute;
-                    left: 0;
-                    top: auto;
-                    border-top-width: 1px;
-                    margin-top: -1px;
-                    background-color: $white;
-                }
-
-                &:nth-child(1) {
-                    width: 26px;
-                }
-                &:nth-child(2) {
-                    width: 170px;
-                    left: 26px;
-                }
-            }
-        }
-
-        .contact-table-container {
-            .contact-pinned {
-                position: absolute;
-                left: 0;
-                top: auto;
-                border-top-width: 1px;
-                margin-top: -1px;
-                background-color: $white;
-                z-index: 11;
-            }
-            .contact-number {
-                width: 26px;
-            }
-            .contact-name {
-                width: 170px;
-                left: 26px;
-            }
-        }
-    }
-
     &-address {
         display: grid;
         grid-template-columns: 364px 1fr;
+    }
+}
+
+.repair-shop-card {
+    .no-review-repair-shop {
+        width: 460px;
+        height: 120px;
+        margin: 4px 0;
+
+        .no-review-svg {
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+
+            svg {
+                width: 460px;
+                height: 120px;
+            }
+        }
     }
 }
 

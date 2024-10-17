@@ -27,7 +27,7 @@ export class ModalTableConstants {
     static CONTACT_TABLE_HEADER_ITEMS: string[] = [
         '#',
         'FULL NAME',
-        'DEPARTMANT',
+        'DEPARTMENT',
         'PHONE',
         'EXT',
         'EMAIL',
@@ -63,7 +63,7 @@ export class ModalTableConstants {
     static PREVIOUS_ADDRESSES_TABLE_HEADER_ITEMS: string[] = [
         '#',
         'ADDRESS, CITY, STATE ZIP',
-        'UNIT'
+        'UNIT',
     ];
 
     static LOAD_ITEM_TABLE_HEADER_ITEMS: string[] = [
@@ -80,9 +80,17 @@ export class ModalTableConstants {
         'BOL NO',
         'PICKUP NO',
         'SEAL NO',
-        'CODE'
+        'CODE',
     ];
-    
+
+    static DEPARTMENT_CONTACT_TABLE_HEADER_ITEMS: string[] = [
+        '#',
+        'DEPARTMENT',
+        'PHONE',
+        'EXT',
+        'EMAIL',
+    ];
+
     static IS_INPUT_HOVER_ROW_PHONE: boolean[] = [false, false, false];
     static IS_INPUT_HOVER_ROW_EMAIL: boolean[] = [false, false];
     static IS_INPUT_HOVER_ROW_REPAIR_BILL: boolean[] = [false, false, false];
@@ -91,5 +99,25 @@ export class ModalTableConstants {
     static IS_INPUT_HOVER_ROW_OFF_DUTY_LOCATION: boolean[] = [false, false];
     static IS_INPUT_HOVER_ROW_FUEL_CARD: boolean[] = [false];
     static IS_INPUT_HOVER_ROW_PREVIOUS_ADDRESSES: boolean[] = [false, false];
-    static IS_INPUT_HOVER_ROW_LOAD_ITEMS: boolean[] = [false, false,false, false,false, false,false, false,false, false,false, false,false];
+    static IS_INPUT_HOVER_ROW_LOAD_ITEMS: boolean[] = [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+    ];
+    static IS_INPUT_HOVER_ROW_DEPARTMENT_CONTACTS: boolean[] = [
+        false,
+        false,
+        false,
+        false,
+    ];
 }

@@ -10,7 +10,8 @@ export function getDispatchColumnDefinition() {
             hidden: false,
             isPined: true,
             resizable: true,
-            width: 320,
+            width: 120,
+            maxWidth: 320,
             minWidth: 100,
         },
         {
@@ -20,6 +21,7 @@ export function getDispatchColumnDefinition() {
             groupName: 'Truck ',
             name: 'Year ',
             hidden: true,
+            width: 40,
         },
         {
             ngTemplate: 'text',
@@ -31,7 +33,8 @@ export function getDispatchColumnDefinition() {
             hidden: false,
             isPined: true,
 
-            width: 320,
+            width: 120,
+            maxWidth: 320,
             minWidth: 100,
         },
         {
@@ -41,6 +44,7 @@ export function getDispatchColumnDefinition() {
             groupName: 'Trailer',
             name: 'Year',
             hidden: true,
+            width: 40,
         },
 
         {
@@ -53,7 +57,8 @@ export function getDispatchColumnDefinition() {
             hidden: false,
             isPined: true,
 
-            width: 400,
+            width: 240,
+            maxWidth: 400,
             minWidth: 160,
         },
         {
@@ -73,6 +78,7 @@ export function getDispatchColumnDefinition() {
             name: 'Endorsements ',
             sortName: 'driver',
             hidden: true,
+            width: 60,
         },
 
         {
@@ -111,6 +117,7 @@ export function getDispatchColumnDefinition() {
             name: 'Pre-Trip Insp. ',
             hidden: true,
             width: 34,
+            maxWidth: 34,
             minWidth: 34,
         },
         {
@@ -122,7 +129,8 @@ export function getDispatchColumnDefinition() {
             hidden: false,
             isPined: true,
 
-            width: 300,
+            width: 160,
+            maxWidth: 300,
             minWidth: 140,
         },
         {
@@ -133,7 +141,8 @@ export function getDispatchColumnDefinition() {
             hidden: false,
             isPined: true,
 
-            width: 200,
+            width: 140,
+            maxWidth: 200,
             minWidth: 120,
         },
         {
@@ -144,7 +153,8 @@ export function getDispatchColumnDefinition() {
             hidden: false,
             isPined: true,
 
-            width: 420,
+            width: 340,
+            maxWidth: 420,
             minWidth: 300,
         },
         {
@@ -154,7 +164,8 @@ export function getDispatchColumnDefinition() {
             name: 'Progress ',
             hidden: false,
 
-            width: 326,
+            width: 226,
+            maxWidth: 326,
             minWidth: 196,
         },
         {
@@ -166,7 +177,8 @@ export function getDispatchColumnDefinition() {
             sortName: 'parkingSlot',
             hidden: false,
 
-            width: 200,
+            width: 100,
+            maxWidth: 200,
             minWidth: 90,
         },
         {
@@ -178,6 +190,7 @@ export function getDispatchColumnDefinition() {
 
             hidden: false,
             width: 34,
+            maxWidth: 34,
             minWidth: 34,
         },
         {
@@ -187,7 +200,8 @@ export function getDispatchColumnDefinition() {
 
             name: 'Note',
             hidden: false,
-            width: 326,
+            width: 236,
+            maxWidth: 326,
             minWidth: 194,
         },
     ];

@@ -6,5 +6,4 @@ export class SettingsLocationSvgRoutes {
     static securityCamera: string  = "assets/svg/common/ic_security-camera.svg";
     static securityGate: string  = "assets/svg/common/ic_security-gate.svg";
     static plus: string  = "assets/svg/common/ic_plus.svg";
-    
 }

@@ -44,10 +44,7 @@ export interface ApiRepairshopPostRequest {
     PayPeriod?: PayPeriod;
     WeeklyDay?: DayOfWeek;
     MonthlyDay?: number;
-    OpenHoursSameAllDays?: boolean;
     OpenAlways?: boolean;
-    StartTimeAllDays?: string;
-    EndTimeAllDays?: string;
     ServiceTypes?: Array<RepairShopServiceTypeCommand>;
     OpenHours?: Array<RepairShopOpenHoursCommand>;
     Contacts?: Array<RepairShopContactCommand>;

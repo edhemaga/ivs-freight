@@ -49,6 +49,8 @@ export class DispatchTableStatusComponent implements OnInit, OnDestroy {
     @Input() dispatchBoardId?: number;
 
     @Input() isHoveringRow: boolean;
+    
+    @Input() isUnlockable: boolean;
 
     private destroy$ = new Subject<void>();
 
@@ -186,9 +188,9 @@ export class DispatchTableStatusComponent implements OnInit, OnDestroy {
             trailerId: trailer?.id ?? null,
             driverId: driver?.id ?? null,
             coDriverId: coDriver?.id ?? null,
-            location: newLocation?.address ?? null,
-            latitude: newLocation?.longLat?.latitude ?? null,
-            longitude: newLocation?.longLat?.longitude ?? null,
+            location: newLocation?.address ?? location,
+            latitude: newLocation?.longLat?.latitude ?? latitude,
+            longitude: newLocation?.longLat?.longitude ?? longitude,
             note,
             loadIds: [],
             hoursOfService: null,

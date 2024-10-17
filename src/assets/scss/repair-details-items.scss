@@ -123,13 +123,8 @@ $transition: all 0.3s ease-in-out;
     .repair-items-wrapper {
         overflow-y: scroll;
         max-height: calc(96vh - 62px);
-        // min-height: calc(24vh - 8px);
         min-height: fit-content;
         overflow-x: hidden;
-
-        &::-webkit-scrollbar {
-            //width: 4px;
-        }
 
         &::-webkit-scrollbar-track {
             border-radius: 1px;
@@ -229,7 +224,6 @@ $transition: all 0.3s ease-in-out;
         .date-description {
             font-size: $font-size14;
             font-weight: 400;
-            //color: $color-gray-dark;
             color: #2f2f2f;
             max-width: 294px;
             overflow: hidden;
@@ -239,7 +233,6 @@ $transition: all 0.3s ease-in-out;
         .date {
             font-size: $font-size14;
             font-weight: 400;
-            //color: $color-gray-dark;
             color: #2f2f2f;
             white-space: nowrap;
             display: flex;
@@ -272,7 +265,7 @@ $transition: all 0.3s ease-in-out;
             line-height: 18px;
             display: flex;
             justify-content: flex-end;
-            align-items: end;
+            align-items: flex-end;
             &::-moz-selection {
                 color: #2f2f2f;
                 background: rgb(183, 183, 183, 0.2);

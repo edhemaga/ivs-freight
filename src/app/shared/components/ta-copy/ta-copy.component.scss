@@ -48,21 +48,15 @@
     }
 
     .card-icon-copy {
-        display: none;
+        opacity: 0;
+        visibility: hidden;
         cursor: pointer;
-        svg {
-            width: 18px;
-            height: 18px;
-            &:hover {
-                path {
-                    fill: #6c6c6c;
-                }
-            }
-        }
+        transition: opacity .3s;
     }
     &:hover {
         .card-icon-copy {
-            display: flex;
+            opacity: 1;
+            visibility: visible;
         }
     }
 }

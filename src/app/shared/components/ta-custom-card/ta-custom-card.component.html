@@ -74,9 +74,7 @@
                 [count]="hasCounter"
                 [countBackground]="'#6C6C6C'"
                 [countColor]="'#ffffff'"
-                [countHeight]="'18px'"
-                [countWidth]="'18px'"
-                [countBorderRadius]="'50%'"
+                countBorderRadius="60px"
                 [marginLeft]="'4px'"
             ></app-ta-counter>
 
@@ -317,6 +315,7 @@
         [ngClass]="{
             scroll: hasScrollBody,
             'scroll-x-axis scrollable': hasScrollBodyXAxis && _isCardOpen,
+            'department-contacts-x-axis': isDepartmentContactsCard,
             'scrollable-element overflow-auto': isInheritingParentSize,
             'set-max-height': isInheritingParentSize
         }"

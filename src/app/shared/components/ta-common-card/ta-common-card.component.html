@@ -2,13 +2,7 @@
     class="card-container-cmp"
     [ngClass]="{ 'card-flex': !isCardOpen && !forcedOpen }"
 >
-    <div
-        ngbTooltip
-        [mainTooltip]="isCardOpen ? 'Close Card' : 'Open Card'"
-        [customClass]="'mb-2'"
-        position="bottom"
-        [tooltipBackground]="'#424242'"
-        class="tooltipClose"
+    <div 
     >
         <div
             class="name-dots disable-selection"
@@ -18,6 +12,11 @@
                 class="text-icon-common"
                 (click)="toggleCard($event)"
                 [ngClass]="{ copied: copiedCommon }"
+                ngbTooltip
+                [mainTooltip]="isDropdownVisible ? '' : isCardOpen ? 'Close Card' : 'Open Card'"
+                [tooltipMarginTop]="'5px'"
+                position="bottom"
+                [tooltipBackground]="'#424242'"
             >
                 <div class="content-wrapper">
                     <span
@@ -76,7 +75,7 @@
                             *ngIf="isCardOpen || haveHeaderText || forcedOpen"
                         >
                             <span
-                                class="open-name disable-selection"
+                                class="open-name text-color-light-grey-2 disable-selection"
                                 [class.openedTitle]="isCardOpen"
                             >
                                 <span
@@ -213,14 +212,14 @@
                         </span>
                     </ng-container>
 
-                    <ng-container *ngIf="settingsIcon && isCardOpen">
+                    <ng-container *ngIf="settingsIcon">
                         <span
                             ngbTooltip
                             [mainTooltip]="'Company Owned'"
                             position="bottom"
                             [tooltipBackground]="'#6c6c6c'"
                         >
-                            <ng-container *ngIf="settingsIcon && isCardOpen">
+                            <ng-container *ngIf="settingsIcon">
                                 <svg-icon
                                     src="{{ settingsIcon }}"
                                     class="settings-icon"
@@ -267,6 +266,7 @@
                         (dropDownActions)="dropAct($event)"
                         [customClassDropDown]="'drop-down-details-single'"
                         (click)="toggleDropdown()"
+                        (onPopoverVisiblityChange)="onPopoverVisiblityChange($event)"
                     >
                     </app-ta-details-dropdown>
                 </div>

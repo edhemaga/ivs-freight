@@ -33,11 +33,13 @@ import { TaCheckboxCardComponent } from '@shared/components/ta-checkbox-card/ta-
 import { TaLogoChangeComponent } from '@shared/components/ta-logo-change/ta-logo-change.component';
 import { TaCheckboxComponent } from '@shared/components/ta-checkbox/ta-checkbox.component';
 import { TaNgxSliderComponent } from '@shared/components/ta-ngx-slider/ta-ngx-slider.component';
+import { CaUploadFilesComponent } from 'ca-components';
 
 // animations
 import { tabsModalAnimation } from '@shared/animations/tabs-modal.animation';
 
 // utils
+import { MethodsGlobalHelper } from '@shared/utils/helpers/methods-global.helper';
 import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calculations.helper';
 
 // validations
@@ -92,7 +94,6 @@ import {
     BankResponse,
     EnumValue,
 } from 'appcoretruckassist';
-import { CroppieOptions } from 'croppie';
 import { Tabs } from '@shared/models/tabs.model';
 import { EditData } from '@shared/models/edit-data.model';
 import { AnimationOptions } from '@shared/models/animation-options.model';
@@ -125,6 +126,7 @@ import { SettingsModalSvgRoutes } from '@pages/settings/pages/settings-modals/se
         TaInputAddressDropdownComponent,
         TaCustomCardComponent,
         TaLogoChangeComponent,
+        CaUploadFilesComponent,
     ],
 })
 export class SettingsBasicModalComponent implements OnInit, OnDestroy {
@@ -133,6 +135,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
 
     public companyForm: UntypedFormGroup;
+    public uploadOptionsConstants = SettingsModalConstants.UPLOAD_OPTIONS;
 
     public isFormDirty: boolean = false;
     public isSetupCompany: boolean = false;
@@ -202,7 +205,6 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
     public selectedFleetType: string = null;
 
     // logo actions
-    public croppieOptions: CroppieOptions;
     public displayDeleteAction: boolean = false;
     public displayUploadZone: boolean = false;
 
@@ -248,7 +250,6 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
         this.commonOptions = SettingsModalConstants.COMMON_OPTIONS;
         this.dispatcherOptions = SettingsModalConstants.DISPATCHER_OPTIONS;
         this.managerOptions = SettingsModalConstants.MANAGER_OPTIONS;
-        this.croppieOptions = SettingsModalConstants.CROPPIE_OPTIONS;
 
         this.animationObject = SettingsModalConstants.ANIMATION_OPTIONS;
 
@@ -273,9 +274,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
                     clearTimeout(timeout);
                 });
             } else if (this.editData.type === SettingsModalEnum.NEW_DIVISION) {
-                this.companyForm
-                    .get('starting')
-                    .setValue('100');
+                this.companyForm.get('starting').setValue('100');
             }
         } else {
             this.onPrefferedLoadCheck({ name: SettingsModalEnum.FTL });
@@ -609,16 +608,16 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
     }
 
     public addDepartmentContacts(event: { check: boolean; action: string }) {
-        const form = this.createDepartmentContacts();
-        if (event.check) {
+        if (event.check && this.departmentContacts.valid) {
+            const form = this.createDepartmentContacts();
             this.departmentContacts.push(form);
-        }
 
-        this.inputService.customInputValidator(
-            form.get(SettingsModalEnum.EMAIL),
-            SettingsModalEnum.EMAIL,
-            this.destroy$
-        );
+            this.inputService.customInputValidator(
+                form.get(SettingsModalEnum.EMAIL),
+                SettingsModalEnum.EMAIL,
+                this.destroy$
+            );
+        }
     }
 
     public removeDepartmentContacts(id: number) {
@@ -679,20 +678,24 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
     }): UntypedFormGroup {
         return this.formBuilder.group({
             id: [data?.id ? data.id : 0],
-            bankId: [data?.bankId ? data.bankId : null, [...bankValidation]],
+            bankId: [
+                data?.bankId ? data.bankId : null,
+                [Validators.required, ...bankValidation], 
+            ],
             routing: [
                 data?.routing ? data.routing : null,
-                [...routingBankValidation],
+                [Validators.required, ...routingBankValidation],
             ],
             account: [
                 data?.account ? data.account : null,
-                [...accountBankValidation],
+                [Validators.required, ...accountBankValidation], 
             ],
         });
     }
 
     public addBankAccount(event: { check: boolean; action: string }) {
-        if (event.check) this.bankAccounts.push(this.createBankAccount());
+        if (event.check && this.bankAccounts.valid)
+            this.bankAccounts.push(this.createBankAccount());
     }
 
     public removeBankAccount(id: number) {
@@ -734,19 +737,29 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
             id: [data?.id ? data.id : 0],
             nickname: [
                 data?.nickname ? data.nickname : null,
-                nicknameValidation,
+                [Validators.required, ...nicknameValidation], 
             ],
             card: [
                 data?.card ? data.card : null,
-                [Validators.minLength(15), Validators.maxLength(16)],
+                [
+                    Validators.minLength(15),
+                    Validators.maxLength(16),
+                    Validators.required,
+                ],
             ],
-            cvc: [data?.cvc ? data.cvc : null, cvcValidation],
-            expireDate: [data?.expireDate ? data.expireDate : null],
+            cvc: [
+                data?.cvc ? data.cvc : null,
+                [Validators.required, ...cvcValidation], 
+            ],
+            expireDate: [
+                data?.expireDate ? data.expireDate : null,
+                [Validators.required],
+            ],
         });
     }
 
     public addBankCard(event: { check: boolean; action: string }) {
-        if (event.check) {
+        if (event.check && this.bankCards.valid) {
             this.bankCards.push(this.createBankCard());
         }
     }
@@ -1026,7 +1039,8 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
     }
 
     public onUploadImage(event: any) {
-        this.companyForm.get('logo').patchValue(event);
+        const base64Data = MethodsGlobalHelper.getBase64DataFromEvent(event);
+        this.companyForm.get('logo').patchValue(base64Data);
         this.companyForm.get('logo').setErrors(null);
     }
 
@@ -1206,7 +1220,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
                 customerCredit,
                 mvrMonths,
                 truckInspectionMonths,
-                trailerInspectionMonths
+                trailerInspectionMonths,
             },
             departmentContacts,
             bankAccounts,
@@ -1237,7 +1251,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
         }
 
         this.settingsCompanyService
-            .addCompanyDivision({...newData})
+            .addCompanyDivision({ ...newData })
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
@@ -1258,10 +1272,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
     }
 
     private editCompanyDivision() {
-        const {
-            additionalInfo,
-            ...company
-        } = this.editData?.company;
+        const { additionalInfo, ...company } = this.editData?.company;
 
         this.companyForm.patchValue({
             // -------------------- Basic Tab
@@ -1280,19 +1291,15 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
             toll: company.toll,
             scac: company.scac,
             timeZone:
-                company.timeZone?.id !== 0
-                    ? company.timeZone?.name
-                    : null,
+                company.timeZone?.id !== 0 ? company.timeZone?.name : null,
             currency:
-                company.currency?.id !== 0
-                    ? company.currency?.name
-                    : null,
+                company.currency?.id !== 0 ? company.currency?.name : null,
             logo: /* this.editData.company.logo
                 ? this.editData.company.logo
                 : */ null,
             // Additional Info Tab
             prefix: additionalInfo?.prefix,
-            starting: additionalInfo?.starting + 1,
+            starting: additionalInfo?.starting,
             suffix: additionalInfo?.sufix,
             autoInvoicing: additionalInfo?.autoInvoicing,
             factorByDefault: additionalInfo?.factorByDefault,
@@ -1302,7 +1309,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
             customerCredit: additionalInfo?.customerCredit,
             mvrMonths: additionalInfo?.mvrMonths,
             truckInspectionMonths: additionalInfo?.truckInspectionMonths,
-            trailerInspectionMonths: additionalInfo?.trailerInspectionMonths
+            trailerInspectionMonths: additionalInfo?.trailerInspectionMonths,
         });
 
         this.selectedAddress = this.editData.company.address;
@@ -1402,7 +1409,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
             ...form
         } = this.companyForm.value;
 
-        const newData : UpdateDivisionCompanyCommand = {
+        const newData: UpdateDivisionCompanyCommand = {
             id,
             ...form,
             additionalInfo: {
@@ -1417,7 +1424,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
                 customerCredit,
                 mvrMonths,
                 truckInspectionMonths,
-                trailerInspectionMonths
+                trailerInspectionMonths,
             },
             departmentContacts,
             bankAccounts,
@@ -1448,7 +1455,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
         }
 
         this.settingsCompanyService
-            .updateCompanyDivision({...newData})
+            .updateCompanyDivision({ ...newData })
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
@@ -1827,7 +1834,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
             bankAccounts: [],
             bankCards: [],
             prefix: data.additionalInfo.prefix,
-            starting: data.additionalInfo.starting + 1,
+            starting: data.additionalInfo.starting,
             suffix: data.additionalInfo.sufix,
             autoInvoicing: data.additionalInfo.autoInvoicing,
             preferredLoadType: data.additionalInfo.preferredLoadType,

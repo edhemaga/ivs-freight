@@ -3,6 +3,7 @@ $settings-background: #ffffff;
 
 $settings-white-dark: #b7b7b7;
 $settings-white-dark-2: #dadada;
+$settings-white-dark-3: #cccccc;
 
 $settings-white-light: #f7f7f7;
 $settings-white-light-2: #f3f3f3;
@@ -52,9 +53,6 @@ p {
 
     &-grid {
         width: 100%;
-        display: grid;
-        grid-template-rows: 32px auto;
-        row-gap: 12px;
     }
 
     .settings-col-1 {
@@ -69,7 +67,7 @@ p {
 .settings-progress-container {
     padding: 0px 4px;
     padding-bottom: 16px;
-    padding-top: 7px;
+    padding-top: 16px;
 }
 
 // Settings Header global
@@ -78,13 +76,14 @@ p {
     background-color: $settings-background;
     border-radius: $settings-borderRadius;
     height: 100%;
+    margin-bottom: 12px;
 
     .no-factoring-data {
         justify-content: flex-end !important;
     }
 
     .settings-name {
-        padding: 7px 8px;
+        padding: 5px 8px;
         user-select: none;
     }
 
@@ -155,7 +154,7 @@ p {
 .toolbar-general-cmp {
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    align-items: flex-start;
     //max-width: 440px;
     width: 100%;
 
@@ -270,29 +269,6 @@ p {
             align-items: center;
             height: auto;
             margin-bottom: 12px;
-            svg {
-                path {
-                    fill: #aaaaaa;
-                }
-                &:hover {
-                    path {
-                        fill: $settings-gray-dark;
-                    }
-                }
-            }
-            span {
-                font-size: 14px;
-                font-weight: 400;
-                color: $settings-gray-dark;
-                &::-moz-selection {
-                    color: $settings-gray-dark;
-                    background: rgb(108, 108, 108, 0.2);
-                }
-                &::selection {
-                    color: $settings-gray-dark;
-                    background: rgb(108, 108, 108, 0.2);
-                }
-            }
         }
 
         &.factoring-body-padding {
@@ -491,7 +467,6 @@ p {
     display: grid;
     grid-template-columns: 170px 152px;
     row-gap: 12px;
-    padding-left: 10px;
     column-gap: 50px;
     .office-template-item {
         display: flex;
@@ -522,7 +497,7 @@ p {
     grid-row-gap: 6px;
     row-gap: 6px;
     column-gap: 50px;
-    
+
     .parking-template-item {
         display: flex;
         align-items: center;
@@ -538,18 +513,9 @@ p {
         .parking-template-text {
             margin-left: 7px;
             white-space: nowrap;
-            
+
             &.cross-out {
                 text-decoration: line-through;
-                color: $settings-white-dark;
-                &::-moz-selection {
-                    color: $settings-white-dark !important;
-                    background: rgb(183, 183, 183, 0.2) !important;
-                }
-                &::selection {
-                    color: $settings-white-dark !important;
-                    background: rgb(183, 183, 183, 0.2) !important;
-                }
             }
         }
 

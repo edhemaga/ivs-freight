@@ -92,7 +92,13 @@
                 </div>
 
                 <div class="modal-header-rightside">
-                    <ng-container *ngIf="editDate && (editData.data?.createdAt || editData.data?.updatedAt)">
+                    <ng-container
+                        *ngIf="
+                            editDate &&
+                            (editData.data?.createdAt ||
+                                editData.data?.updatedAt)
+                        "
+                    >
                         <div
                             ngbTooltip
                             mainTooltip="Added    {{
@@ -146,7 +152,7 @@
                     <ng-container *ngIf="hasFutureTimeFilter">
                         <div class="me-1">
                             <app-ca-filter
-                            [type]="'timeFilter'"
+                                [type]="'timeFilter'"
                                 [icon]="'ic_time'"
                                 [filterTitle]="'Time Filter'"
                                 [timeSubType]="'future'"
@@ -453,7 +459,12 @@
 
                             <!-- Deactivated -->
 
-                            <ng-container *ngIf="editData?.disableButton">
+                            <ng-container
+                                *ngIf="
+                                    editData?.disableButton &&
+                                    !isDisableButtonHidden
+                                "
+                            >
                                 <button
                                     (click)="onAction('deactivate')"
                                     class="modal-deactivate-btn"
@@ -474,10 +485,6 @@
                                     (click)="onAction('dnu')"
                                     class="modal-deactivate-btn"
                                     type="button"
-                                    ngbTooltip
-                                    mainTooltip="Do Not Use List"
-                                    tooltipBackground="#6c6c6c"
-                                    position="top"
                                 >
                                     {{
                                         isDNU
@@ -494,10 +501,6 @@
                                     (click)="onAction('bfb')"
                                     class="modal-deactivate-btn"
                                     type="button"
-                                    ngbTooltip
-                                    mainTooltip="Banned from Broker List"
-                                    tooltipBackground="#6c6c6c"
-                                    position="top"
                                 >
                                     {{
                                         isBFB
@@ -563,7 +566,11 @@
                                     (click)="onAction('assign-create-load')"
                                     class="d-flex align-items-center ta-font-bold dispatch-create-load"
                                     type="button"
-                                    [ngClass]="isReorderingActive ? 'modal-save-btn' : 'modal-convert-to-template-btn'"
+                                    [ngClass]="
+                                        isReorderingActive
+                                            ? 'modal-save-btn'
+                                            : 'modal-convert-to-template-btn'
+                                    "
                                 >
                                     Create Load
                                 </button>
@@ -584,6 +591,13 @@
                                 class="d-flex align-items-center justify-content-center ta-font-bold modal-save-btn modal-save-btn-add-new"
                                 [ngClass]="{ valid: isModalValid }"
                                 type="button"
+                                [ngStyle]="{
+                                    'pointer-events':
+                                        isClickEnabledWhileFormInvalid ||
+                                        isModalValid
+                                            ? 'all'
+                                            : 'none'
+                                }"
                             >
                                 {{
                                     saveAddNewSpinnerVisibility
@@ -718,13 +732,15 @@
                             "
                         >
                             <button
-                                (click)="onAction('save')"
+                                appPreventMultipleclicks
+                                [cooldownDuration]="500"
+                                (cooldownComplete)="onAction('save')"
                                 class="d-flex align-items-center justify-content-center ta-font-bold modal-save-btn"
                                 [ngClass]="{ valid: isModalValid }"
                                 type="button"
                                 [ngStyle]="{
                                     'pointer-events':
-                                        enableClickWhileFormInvalid ||
+                                        isClickEnabledWhileFormInvalid ||
                                         isModalValid
                                             ? 'all'
                                             : 'none'
@@ -863,12 +879,18 @@
                                     'cdl',
                                     'load',
                                     'comment',
-                                    'Company Terminal'
+                                    'Company Terminal',
+                                    'Company Parking',
+                                    'Company Office',
+                                    'delete-review',
+                                    'User',
+                                    'broker contact',
+                                    'shipper contact'
                                 ].includes(confirmationData?.template)
                             }"
                             type="button"
                         >
-                            No 
+                            No
                         </button>
                     </ng-container>
 
@@ -929,9 +951,11 @@
                                 'modal-gray-btn': ['reset'].includes(
                                     confirmationData?.type
                                 ),
-                                'modal-red-btn': ['load', 'comment'].includes(
-                                    confirmationData.template
-                                ),
+                                'modal-red-btn': [
+                                    'load',
+                                    'comment',
+                                    'delete-review'
+                                ].includes(confirmationData.template),
                                 'not-clickable': disableDelete
                             }"
                         >

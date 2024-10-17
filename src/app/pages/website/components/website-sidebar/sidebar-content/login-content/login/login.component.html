@@ -57,14 +57,15 @@
             <app-ta-checkbox formControlName="stayLoggedIn"></app-ta-checkbox>
 
             <p
-                class="m-0"
+                class="m-0 c-pointer"
                 [ngStyle]="{
                     color: loginForm.get('stayLoggedIn').value
                         ? '#424242'
                         : '#919191'
                 }"
+                (click)="toggleLoggedIn()"
             >
-                Stay loggedin
+            Stay logged in
             </p>
         </div>
 
