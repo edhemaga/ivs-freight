@@ -144,4 +144,4 @@ import { HoverSvgDirective } from '@shared/directives/hover-svg.directive';
         StoreModule.forFeature('chat', chatDataReducer),
     ],
 })
-export class ChatModule { }
+export class ChatModule {}

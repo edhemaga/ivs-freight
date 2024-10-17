@@ -30,9 +30,9 @@ export class ChatProfileResourcesComponent implements OnInit {
 
     public isExpanded: boolean = false;
 
-    constructor() { }
+    constructor() {}
 
-    ngOnInit(): void { }
+    ngOnInit(): void {}
 
     public toggleShowAll(): void {
         this.isExpanded = !this.isExpanded;
