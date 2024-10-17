@@ -2,6 +2,8 @@ import { createAction, props } from '@ngrx/store';
 import { PayrollSoloMileageDriverEnum } from '../enums/payroll_solo_mileage_driver.enums';
 import { PayrollDriverMileageListResponse } from 'appcoretruckassist';
 import { PayrollDriverMileageResponse } from 'appcoretruckassist/model/payrollDriverMileageResponse';
+import { PayrollMileageDriverCollapsedListEnum } from '../enums/payroll_mileage_driver_collapsed.enums';
+import { PayrollDriverMileageCollapsedListResponse } from '../models/payroll.model';
 
 export const getPayrollSoloMileageDriver = createAction(
     PayrollSoloMileageDriverEnum.GET_PAYROLL_SOLO_MILEAGE_DRIVER
@@ -15,6 +17,19 @@ export const getPayrollSoloMileageDriverSuccess = createAction(
 export const getPayrollSoloMileageDriverError = createAction(
     PayrollSoloMileageDriverEnum.GET_PAYROLL_SOLO_MILEAGE_DRIVER_ERROR,
     props<any>()
+);
+
+// GET DRIVER MILEAGE COLLAPSED LIDST
+export const getPayrollMileageDriverCollapsedList = createAction(
+    PayrollMileageDriverCollapsedListEnum.GET_PAYROLL_MILEAGE_COLLAPSED_LIST_DRIVER
+);
+export const getPayrollMileageDriverCollapsedListSuccess = createAction(
+    PayrollMileageDriverCollapsedListEnum.GET_PAYROLL_MILEAGE_COLLAPSED_LIST_DRIVER_SUCCESS,
+    props<{ data: PayrollDriverMileageCollapsedListResponse[] }>()
+);
+export const getPayrollMileageDriverCollapsedListError = createAction(
+    PayrollMileageDriverCollapsedListEnum.GET_PAYROLL_MILEAGE_COLLAPSED_LIST_DRIVER_ERROR,
+    props<{ error: string }>()
 );
 
 // GET DRIVER MILEAGE REPORT

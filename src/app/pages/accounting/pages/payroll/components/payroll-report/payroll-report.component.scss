@@ -418,7 +418,7 @@
                     align-items: center;
                     justify-content: center;
 
-                    background-color: #eeeeee;
+                    //background-color: #eeeeee;
                     border-radius: 2px;
 
                     svg-icon {
@@ -426,6 +426,36 @@
                             width: 18px;
                             height: 18px;
                             display: flex;
+
+                            path{
+                                fill: #919191;
+                            }
+                        }
+                    }
+
+                    &.active{
+                        background-color: #6C6C6C;
+                        svg-icon{
+                            svg{
+                                path{
+                                    fill: #DADADA;
+                                }
+                            }
+                        }
+                    }
+
+                    &.burger_menu{
+                        position: relative;
+                        padding-left: 19px;
+
+                        &::after{
+                            content: '';
+                            position: absolute;
+                            top: 50%;
+                            transform: translateY(-50%);
+                            height: 100%;
+                            width: 1px;
+                            border-radius: 1px;
                         }
                     }
                 }
@@ -523,11 +553,14 @@
     }
 }
 
-app-ca-main-table {
-    --cdk-preview-bgcolor: #424242;
-    --cdk-preview-textColor: #fff;
-    --cdk-drag-preview-box-shadow: none;
-    --under-reorder-opacity: 0.4;
+.small-table-holder-main {
+    app-ca-main-table {
+        --cdk-preview-bgcolor: #424242;
+        --cdk-preview-textColor: #fff;
+        --cdk-drag-preview-box-shadow: none;
+        --under-reorder-opacity: 0.4;
+        --opacity-first-row: 0.4;
+    }
 }
 
 .custom-load-index {

@@ -70,20 +70,33 @@
                 }"
                 class="ta-font-bold modal-save-btn flex-1 modal-default-button"
                 type="button"
-                (click)="closeUnpaid()"
+                (click)="closePayroll(true)"
             >
-                Close Unpaid
+                <div class="d-inline-block" *ngIf="loading">
+                    <app-ta-spinner
+                        [size]="'small'"
+                        [color]="'black'"
+                    ></app-ta-spinner>
+                </div>
+                <span *ngIf="!loading">Close Unpaid</span>
             </button>
             <button
                 [ngStyle]="{
                     'pointer-events': paymentForm.valid ? 'all' : 'none'
                 }"
                 (click)="closePayroll()"
-                class="ta-font-bold modal-save-btn flex-1 modal-deactivate-btn"
+                class="ta-font-bold modal-save-btn flex-1 modal-deactivate-btn align"
                 type="button"
                 [class.modal-blue-btn]="paymentForm.valid"
             >
-                Pay in Full
+                <div class="d-inline-block" *ngIf="loading">
+                    <app-ta-spinner
+                        [size]="'small'"
+                        [color]="'black'"
+                    ></app-ta-spinner>
+                </div>
+
+                <span *ngIf="!loading">Pay in Full</span>
             </button>
         </div>
     </div>

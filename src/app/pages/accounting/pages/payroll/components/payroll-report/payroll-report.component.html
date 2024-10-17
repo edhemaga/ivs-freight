@@ -53,13 +53,29 @@
                                 "
                             ></svg-icon>
                         </div>
+                        <div
+                            class="edit"
+                            [class.active]="showMap"
+                            (click)="showMap = !showMap"
+                        >
+                            <svg-icon
+                                [src]="'assets/svg/common/load/ic_load_map.svg'"
+                            ></svg-icon>
+                        </div>
+                        <div
+                            class="edit burger_menu"
+                        >
+                            <svg-icon
+                                [src]="'assets/svg/truckassist-table/burger-icon.svg'"
+                            ></svg-icon>
+                        </div>
                     </div>
                 </div>
             </div>
             <div class="small-table-holder-main">
                 <app-ca-main-table
-                    [sortPredicate]="customSortPredicate"
                     *ngIf="!(loading$ | async)"
+                    [sortPredicate]="customSortPredicate"
                     [columns]="columns"
                     [data$]="payrollMileageDriverLoads$"
                     [reorderTemplate]="reorderTemplate"
@@ -68,7 +84,7 @@
                     (onReorder)="onReorderDone($event)"
                 ></app-ca-main-table>
             </div>
-            <div class="map-holder">
+            <div class="map-holder" *ngIf="showMap">
                 <app-ca-map [data]="data"></app-ca-map>
                 <!-- <agm-map
                     [latitude]="mapLatitude"
@@ -128,6 +144,7 @@
         [class.delivery]="data.stopType.id == 2"
     >
         <svg-icon
+            *ngIf="data.orderNumber"
             src="assets/svg/svg_numbers/olddash/svg_num_box_{{
                 data.orderNumber
             }}.svg"

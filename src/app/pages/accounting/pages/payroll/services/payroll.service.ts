@@ -7,6 +7,7 @@ import {
 import { PayrollDriverMileageResponse } from 'appcoretruckassist/model/payrollDriverMileageResponse';
 import { Observable, of } from 'rxjs';
 import { environment } from 'src/environments/environment';
+import { PayrollDriverMileageCollapsedListResponse } from '../state/models/payroll.model';
 
 @Injectable({ providedIn: 'root' })
 export class PayrollService {
@@ -25,6 +26,14 @@ export class PayrollService {
     > {
         return this.http.get<PayrollDriverMileageListResponse[]>(
             `${environment.API_ENDPOINT}/api/payroll/driver/mileage/solo`
+        );
+    }
+
+    public getPayrollSoloMileageDriverCollapsedList(): Observable<
+        PayrollDriverMileageListResponse[]
+    > {
+        return this.http.get<PayrollDriverMileageCollapsedListResponse[]>(
+            `${environment.API_ENDPOINT}/api/payroll/driver/mileage/closed/collapsed/list`
         );
     }
 
@@ -77,9 +86,9 @@ export class PayrollService {
         const body = {
             id: reportId,
             lastLoadDate: lastLoadDate,
-            // selectedDeductionIds: selectedDeducionIds,
-            // selectedCreditIds: selectedCreditIds,
-            // selectedBonusIds: selectedBonusIds,
+            selectedDeductionIds: selectedDeducionIds,
+            selectedCreditIds: selectedCreditIds,
+            selectedBonusIds: selectedBonusIds,
             pay: {
                 type: 'Manual',
                 //date: '2024-10-15T16:09:54.299Z',

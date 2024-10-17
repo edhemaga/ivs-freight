@@ -3,12 +3,15 @@ import { Store, select } from '@ngrx/store';
 import * as PayrollActions from '../actions/payroll.actions';
 import * as PayrollDriverMileageSolo from '../actions/payroll_solo_mileage_driver.actions';
 import {
+    selectClosingReportStatus,
+    selectDriverMileageCollapsedTable,
     selectPayrollCounts,
     selectPayrollDriverMileageStops,
     selectPayrollLoad,
     selectPayrollOpenedReport,
     selectPayrollReportLoading,
     selectPayrollReportsIncludedStops,
+    selectPayrollReportTableExpanded,
     selectPayrollState,
     selectSoloDriverMileage,
     seletPayrollTabsCount,
@@ -41,9 +44,18 @@ export class PayrollFacadeService {
         select(selectPayrollLoad)
     );
 
+    public reportTableExpanded$: Observable<boolean> = this.store.pipe(
+        select(selectPayrollReportTableExpanded)
+    );
+
     public payrollReportLoading$: Observable<boolean> = this.store.pipe(
         select(selectPayrollReportLoading)
     );
+
+    public selectPayrollReportStates$: Observable<{
+        loading: boolean;
+        error: boolean;
+    }> = this.store.pipe(select(selectClosingReportStatus));
 
     public selectPayrollOpenedReport$: Observable<PayrollDriverMileageResponse> =
         this.store.pipe(select(selectPayrollOpenedReport));
@@ -66,6 +78,12 @@ export class PayrollFacadeService {
         PayrollDriverMileageListResponse[]
     > = this.store.pipe(select(selectSoloDriverMileage));
 
+    public selectPayrollDriverMileageCollapsed$: Observable<
+        PayrollDriverMileageListResponse[]
+    > = this.store.pipe(select(selectDriverMileageCollapsedTable));
+
+    
+
     public getPayrollCounts(showOpen: boolean) {
         this.store.dispatch(
             PayrollActions.getPayrollCounts({ ShowOpen: showOpen })
@@ -75,6 +93,18 @@ export class PayrollFacadeService {
     public getPayrollDriverMileageSoloList() {
         this.store.dispatch(
             PayrollDriverMileageSolo.getPayrollSoloMileageDriver()
+        );
+    }
+
+    public getPayrollDriverMileageCollapsedList() {
+        this.store.dispatch(
+            PayrollDriverMileageSolo.getPayrollMileageDriverCollapsedList()
+        );
+    }
+
+    public setPayrollReportTableExpanded(expanded: boolean) {
+        this.store.dispatch(
+            PayrollActions.setTableReportExpanded({ expanded })
         );
     }
 

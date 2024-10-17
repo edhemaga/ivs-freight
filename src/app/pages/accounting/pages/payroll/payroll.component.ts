@@ -10,8 +10,9 @@ import {
     inject,
     ComponentRef,
     ChangeDetectorRef,
+    OnDestroy,
 } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { Observable, takeUntil, Subject } from 'rxjs';
 
 // Pipes
 import { NameInitialsPipe } from '@shared/pipes/name-initials.pipe';
@@ -29,6 +30,7 @@ import { PayrollFacadeService } from './state/services/payroll.service';
 import { IPayrollCountsSelector } from './state/models/payroll.model';
 import { DriverMileageSoloTableComponent } from './components/tables/driver-mileage-solo-table/driver-mileage-solo-table.component';
 import { PayrollListSummaryOverview } from 'ca-components';
+import { DriverMileageCollapsedTableComponent } from './components/tables/driver-mileage-collapsed-table/driver-mileage-collapsed-table.component';
 @Component({
     selector: 'app-payroll',
     templateUrl: './payroll.component.html',
@@ -37,7 +39,7 @@ import { PayrollListSummaryOverview } from 'ca-components';
     encapsulation: ViewEncapsulation.None,
     providers: [NameInitialsPipe],
 })
-export class PayrollComponent implements OnInit, AfterViewInit {
+export class PayrollComponent implements OnInit, AfterViewInit, OnDestroy {
     @ViewChild('container', { read: ViewContainerRef, static: false })
     container!: ViewContainerRef;
 
@@ -66,10 +68,11 @@ export class PayrollComponent implements OnInit, AfterViewInit {
     }>;
     payrollData: Observable<any>;
 
-    tableExpanded: boolean = true;
     reportTableData: any = {};
-    tableExpanded$ = new BehaviorSubject<boolean>(true);
+    reportTableExpanded$: Observable<boolean>;
     openedIndex: number = -1;
+
+    private destroy$ = new Subject<void>();
 
     constructor(
         // Store
@@ -86,19 +89,25 @@ export class PayrollComponent implements OnInit, AfterViewInit {
     ) {}
 
     public subscribeToStoreData() {
+        this.reportTableExpanded$ =
+            this.payrollFacadeService.reportTableExpanded$;
         this.payrollFacadeService.getPayrollCounts(this.selectedTab === 'open');
         this.payrollCountsResponse$ =
             this.payrollFacadeService.selectPayrollCounts$;
-        this.payrollFacadeService.selectPayrollCounts$.subscribe((res) => {
-            console.log('fsdfsdfdsfsdfsd', res);
-        });
+        this.payrollFacadeService.selectPayrollCounts$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((res) => {
+                console.log('fsdfsdfdsfsdfsd', res);
+            });
 
-        this.payrollFacadeService.selectPayrollTabCounts$.subscribe((res) => {
-            if (this.tableData.length) {
-                this.tableData[0].length = res.open;
-                this.tableData[1].length = res.closed;
-            }
-        });
+        this.payrollFacadeService.selectPayrollTabCounts$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((res) => {
+                if (this.tableData.length) {
+                    this.tableData[0].length = res.open;
+                    this.tableData[1].length = res.closed;
+                }
+            });
     }
 
     ngOnInit(): void {
@@ -154,25 +163,37 @@ export class PayrollComponent implements OnInit, AfterViewInit {
             this.container.clear();
 
             const payrollType = `${data.payrollSummary.text} ${data.payrollSummary.type}`;
+
+            console.log("payrollType", payrollType);
             switch (payrollType) {
                 case 'Driver Miles':
-                    this.componentRef = this.container.createComponent(
-                        DriverMileageSoloTableComponent,
-                        {
-                            environmentInjector: this.environmentInjector,
-                        }
-                    );
+                    if (this.selectedTab === 'open') {
+                        this.componentRef = this.container.createComponent(
+                            DriverMileageSoloTableComponent,
+                            {
+                                environmentInjector: this.environmentInjector,
+                            }
+                        );
+                    } else {
+                        this.componentRef = this.container.createComponent(
+                            DriverMileageCollapsedTableComponent,
+                            {
+                                environmentInjector: this.environmentInjector,
+                            }
+                        );
+                    }
 
                     // Set inputs and subscribe to outputs if componentRef is created
                     if (this.componentRef) {
                         // Setting Inputs
-                        this.componentRef.instance.expandTable =
-                            this.tableExpanded; // Example input property
+                        this.componentRef.instance.expandTable = false; // Example input property
 
                         // Bind the expandTable input using an Observable
-                        this.tableExpanded$.subscribe((value) => {
-                            this.componentRef!.instance.expandTable = value; // The input is updated automatically
-                        });
+                        this.reportTableExpanded$
+                            .pipe(takeUntil(this.destroy$))
+                            .subscribe((value) => {
+                                this.componentRef!.instance.expandTable = value; // The input is updated automatically
+                            });
 
                         this.componentRef.instance.expandTableEvent.subscribe(
                             (event: any) => this.expandTable(event)
@@ -186,11 +207,12 @@ export class PayrollComponent implements OnInit, AfterViewInit {
     expandTable(data?: any) {
         if (data) {
             this.reportTableData = data;
-            this.tableExpanded = !this.tableExpanded;
-            this.tableExpanded$.next(this.tableExpanded);
+            this.payrollFacadeService.setPayrollReportTableExpanded(true);
+            // this.tableExpanded = !this.tableExpanded;
+            // this.tableExpanded$.next(this.tableExpanded);
         } else {
-            this.tableExpanded = true;
-            this.tableExpanded$.next(true);
+            // this.tableExpanded = true;
+            // this.tableExpanded$.next(true);
         }
     }
 
@@ -482,4 +504,9 @@ export class PayrollComponent implements OnInit, AfterViewInit {
     }
 
     openPayrollReport() {}
+
+    ngOnDestroy(): void {
+        this.destroy$.next();
+        this.destroy$.complete();
+    }
 }

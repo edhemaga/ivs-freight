@@ -3,13 +3,14 @@ import {
     Component,
     ElementRef,
     Input,
+    OnDestroy,
     OnInit,
     ViewChild,
     ViewEncapsulation,
 } from '@angular/core';
 import { UntypedFormControl } from '@angular/forms';
 import { CdkDragDrop } from '@angular/cdk/drag-drop';
-import { Observable } from 'rxjs';
+import { Observable, takeUntil, Subject } from 'rxjs';
 
 // services
 import { PayrollService } from '@pages/accounting/services/payroll.service';
@@ -36,7 +37,7 @@ import { PayrollProccessPaymentModalComponent } from '../../payroll-modals/payro
     styleUrls: ['./payroll-report.component.scss'],
     encapsulation: ViewEncapsulation.None,
 })
-export class PayrollReportComponent implements OnInit {
+export class PayrollReportComponent implements OnInit, OnDestroy {
     columns: ColumnConfig[];
     @Input() reportId: number;
     payrollReport$: Observable<PayrollDriverMileageByIdResponse>;
@@ -45,6 +46,7 @@ export class PayrollReportComponent implements OnInit {
     public loading$: Observable<boolean>;
     payrollReportList: MilesStopShortReponseWithRowType[] = [];
     allowedLoadIds: number[];
+    showMap: boolean = false;
 
     @ViewChild('customCountTemplate', { static: false })
     public readonly customCountTemplate!: ElementRef;
@@ -63,6 +65,7 @@ export class PayrollReportComponent implements OnInit {
     tableSettings: any[] = [];
     tableSettingsResizable: any[] = [];
     title: string = '';
+    private destroy$ = new Subject<void>();
 
     data: ICaMapProps = {
         center: {
@@ -487,12 +490,12 @@ export class PayrollReportComponent implements OnInit {
         this.payrollReport$ =
             this.payrollFacadeService.selectPayrollOpenedReport$;
 
-        this.payrollFacadeService.selectPayrollOpenedReport$.subscribe(
-            (payroll) => {
+        this.payrollFacadeService.selectPayrollOpenedReport$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((payroll) => {
                 this.openedPayroll = payroll;
                 console.log('PAYROLL MAIN INFO', payroll);
-            }
-        );
+            });
 
         this.payrollMileageDriverLoads$ =
             this.payrollFacadeService.selectPayrollReportDriverMileageLoads$;
@@ -500,13 +503,14 @@ export class PayrollReportComponent implements OnInit {
         this.includedLoads$ =
             this.payrollFacadeService.selectPayrollReportIncludedLoads$;
 
-        this.payrollFacadeService.selectPayrollReportDriverMileageLoads$.subscribe(
-            (aa) => {
+        this.payrollFacadeService.selectPayrollReportDriverMileageLoads$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((aa) => {
                 console.log('LOAD INFO', aa);
-            }
-        );
-        this.payrollFacadeService.selectPayrollReportDriverMileageLoads$.subscribe(
-            (payrollLoadList) => {
+            });
+        this.payrollFacadeService.selectPayrollReportDriverMileageLoads$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((payrollLoadList) => {
                 const filteredPayrollList = payrollLoadList.filter(
                     (load) => !(load as any).rowType
                 );
@@ -525,9 +529,7 @@ export class PayrollReportComponent implements OnInit {
                         const currentLoadId = load.loadId;
                         const nextLoadId = nextLoad?.loadId;
 
-                        if (!prevLoad) {
-                            return index;
-                        } else if (nextLoadId != currentLoadId) {
+                       if (nextLoadId != currentLoadId) {
                             return index + 1;
                         }
 
@@ -536,8 +538,7 @@ export class PayrollReportComponent implements OnInit {
                     .filter((loadId) => loadId != null);
 
                 this.payrollReportList = payrollLoadList;
-            }
-        );
+            });
     }
 
     onReorderDone(drag: CdkDragDrop<any[] | null, any, any>) {
@@ -611,5 +612,10 @@ export class PayrollReportComponent implements OnInit {
                 data: payrollData, // da ne bi morao da pozivam kod sebe get by id, samo javi kad zavrsis
             }
         );
+    }
+
+    ngOnDestroy(): void {
+        this.destroy$.next();
+        this.destroy$.complete();
     }
 }

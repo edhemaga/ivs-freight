@@ -1,7 +1,7 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
 const payrollNamesData = {
-    soloMiles: 'Driver (Miles)',
+    soloMiles: 'Driver (Mile)',
     soloFlatRate: 'Driver (Flat Rate)',
     soloCommission: 'Driver (Commission)',
     owner: 'Owner',

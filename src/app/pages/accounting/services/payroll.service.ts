@@ -20,8 +20,8 @@ export class PayrollService {
             count: 'payrollDriverCommissionsCount',
         },
         payrollDriverMileages: {
-            title: 'Driver (Miles)',
-            short_title: 'Driver (Miles)',
+            title: 'Driver (Mile)',
+            short_title: 'Driver (Mile)',
             count: 'payrollDriverMileagesCount',
         },
         payrollOwners: {
@@ -77,7 +77,7 @@ export class PayrollService {
 
     getTableDefinitions(title) {
         switch (title) {
-            case 'Driver (Miles)':
+            case 'Driver (Mile)':
                 return PayrollDriverMilesTableSettingsConstants;
             case 'Driver (Commission)':
                 return PayrollDriverCommisionTableSettingsConstants;

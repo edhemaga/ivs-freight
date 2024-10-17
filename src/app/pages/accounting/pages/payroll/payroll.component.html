@@ -1,5 +1,5 @@
 <div class="table-container d-flex">
-    <div class="payroll-main" [class.open]="!tableExpanded">
+    <div class="payroll-main" [class.open]="reportTableExpanded$ | async">
         <app-ta-table-toolbar
             (toolBarAction)="onToolBarAction($event)"
             [options]="tableOptions"
@@ -28,7 +28,7 @@
             </ng-container>
         </div>
     </div>
-    <div class="report-hold" *ngIf="!tableExpanded">
+    <div class="report-hold" *ngIf="reportTableExpanded$ | async">
         <app-payroll-report
             [reportId]="reportTableData?.id"
             [reportTableData]="reportTableData"

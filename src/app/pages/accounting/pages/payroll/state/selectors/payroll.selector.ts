@@ -7,6 +7,7 @@ import { PayrollDriverMilesTableSettingsConstants } from '@pages/accounting/util
 import { PayrollDriverCommisionTableSettingsConstants } from '@pages/accounting/utils/constants/payroll-driver-commision-table-settings.constants';
 import { PayrollOwnerTableSettingsConstants } from '@pages/accounting/utils/constants/payroll-owner-table-settings.constants';
 import {
+    LoadWithMilesStopResponse,
     MilesStopShortResponse,
     PayrollCountItemResponse,
     PayrollCountsResponse,
@@ -48,6 +49,11 @@ export const selectPayrollReportLoading = createSelector(
     }
 );
 
+export const selectPayrollReportTableExpanded = createSelector(
+    selectPayrollState,
+    (state) => state.expandedReportTable
+);
+
 export const selectPayrollOpenedReport = createSelector(
     selectPayrollState,
     (state) => {
@@ -79,14 +85,21 @@ export const selectPayrollDriverMileageStops = createSelector(
         if (!state.payrollOpenedReport) return [];
         const includedLoads = state.payrollOpenedReport?.includedLoads.reduce(
             (load, old) => {
-                return [...load as MilesStopShortResponse[], ...old.milesStops];
+                const firstStop = old.isStartPoint;
+                const nextMilesStop = JSON.parse(
+                    JSON.stringify(old.milesStops)
+                );
+                if (firstStop) {
+                    nextMilesStop[0].loadId = -1;
+                }
+                return [...load, ...nextMilesStop];
             },
             [] as MilesStopShortReponseWithRowType[]
         );
 
         const excludedLoads = state.payrollOpenedReport?.excludedLoads.reduce(
             (load, old) => {
-                return [...load as MilesStopShortResponse[], ...old.milesStops];
+                return [...load, ...old.milesStops];
             },
             [] as MilesStopShortReponseWithRowType[]
         );
@@ -105,6 +118,16 @@ export const seletPayrollTabsCount = createSelector(
         return {
             open: payrollCounts.opentPayrollCount,
             closed: payrollCounts.closedPayrollCount,
+        };
+    }
+);
+
+export const selectClosingReportStatus = createSelector(
+    selectPayrollState,
+    (state) => {
+        return {
+            loading: state.closeReportPaymentLoading,
+            error: state.closeReportPaymentError,
         };
     }
 );
@@ -144,6 +167,13 @@ export const selectSoloDriverMileage = createSelector(
     }
 );
 
+export const selectDriverMileageCollapsedTable = createSelector(
+    selectPayrollState,
+    (state) => {
+        return state.driverMileageCollapsedList
+    }
+)
+
 function getPayrollTableItem(
     payrollTitle: string,
     item?: PayrollCountItemResponse
@@ -166,7 +196,7 @@ function getStatus(item) {
 
 function getTableDefinitions(title) {
     switch (title) {
-        case 'Driver (Miles)':
+        case 'Driver (Mile)':
             return PayrollDriverMilesTableSettingsConstants;
         case 'Driver (Commission)':
             return PayrollDriverCommisionTableSettingsConstants;

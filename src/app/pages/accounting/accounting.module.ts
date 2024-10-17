@@ -28,11 +28,13 @@ import { PayrollEffect } from './pages/payroll/state/effects/payroll.effect';
 import { PayrollTableNamesPipe } from './pages/payroll/pipes/payroll-table-names/payroll-table-names.pipe';
 import { DriverMileageSoloTableComponent } from './pages/payroll/components/tables/driver-mileage-solo-table/driver-mileage-solo-table.component';
 import { PayrollTableTotalPipe } from './pages/payroll/pipes/payroll-table-total/payroll-table-total.pipe';
+import { DriverMileageCollapsedTableComponent } from './pages/payroll/components/tables/driver-mileage-collapsed-table/driver-mileage-collapsed-table.component';
 import {
     CaMapComponent,
     CaMainTableComponent,
     CaPeriodContentComponent,
     CaPayrollListSummaryOverviewComponent,
+    CaProfileImageComponent
 } from 'ca-components';
 @NgModule({
     declarations: [
@@ -49,6 +51,7 @@ import {
         PayrollTableNamesPipe,
         DriverMileageSoloTableComponent,
         PayrollTableTotalPipe,
+        DriverMileageCollapsedTableComponent,
     ],
     imports: [
         // Modules
@@ -68,6 +71,7 @@ import {
         CaMainTableComponent,
         CaPeriodContentComponent,
         CaPayrollListSummaryOverviewComponent,
+        CaProfileImageComponent
     ],
     exports: [PayrollTableComponent],
 })

@@ -95,13 +95,15 @@ export class RefreshTokenInterceptor implements HttpInterceptor {
                         );
                     }),
                     catchError((err: HttpErrorResponse) => {
-                        if (err.status === 404 || err.status === 500) {
-                            this.ngbModal.dismissAll();
+                        // if (err.status === 404 || err.status === 500 || err.status === 401) {
 
-                            localStorage.clear();
+                        // }
 
-                            this.websiteAuthService.accountLogout();
-                        }
+                        this.ngbModal.dismissAll();
+
+                        localStorage.clear();
+
+                        this.websiteAuthService.accountLogout();
 
                         return throwError(() => err);
                     })

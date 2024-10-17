@@ -16,3 +16,8 @@ export const getPayrollCountsError = createAction(
     PayrollEnum.GET_PAYROLL_COUNTS_ERROR,
     props<any>()
 );
+
+export const setTableReportExpanded = createAction(
+    PayrollEnum.SET_TABLE_REPORT_EXPANDED,
+    props<{ expanded: boolean }>()
+);

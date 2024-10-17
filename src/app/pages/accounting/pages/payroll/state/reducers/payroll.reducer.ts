@@ -6,8 +6,11 @@ import { PayrollState } from '../models/payroll.model';
 export const payrollState: PayrollState = {
     payrollCounts: {},
     payrollDriverMileage: [],
+    driverMileageCollapsedList: [],
     loading: false,
     reportLoading: false,
+    expandedReportTable: false,
+    closeReportPaymentLoading: false,
 };
 
 export const payrollReducer = createReducer(
@@ -69,7 +72,70 @@ export const payrollReducer = createReducer(
                 reportLoading: false,
             };
         }
+    ),
+    on(PayrollActions.setTableReportExpanded, (state, data) => {
+        return {
+            ...state,
+            expandedReportTable: data.expanded,
+        };
+    }),
+    on(
+        PayrollSoloMileageDriver.closePayrollSoloMileageReportDriver,
+        (state) => {
+            return {
+                ...state,
+                closeReportPaymentLoading: true,
+                closeReportPaymentError: false,
+            };
+        }
+    ),
+    on(
+        PayrollSoloMileageDriver.closePayrollSoloMileageReportDriverSuccess,
+        (state) => {
+            return {
+                ...state,
+                expandedReportTable: false,
+                closeReportPaymentLoading: false,
+            };
+        }
+    ),
+    on(
+        PayrollSoloMileageDriver.closePayrollSoloMileageReportDriverError,
+        (state) => {
+            return {
+                ...state,
+                closeReportPaymentLoading: false,
+                closeReportPaymentError: true,
+            };
+        }
+    ),
+    on(
+        PayrollSoloMileageDriver.getPayrollMileageDriverCollapsedList,
+        (state) => {
+            return {
+                ...state,
+                loading: true,
+            };
+        }
+    ),
+    on(
+        PayrollSoloMileageDriver.getPayrollMileageDriverCollapsedListSuccess,
+        (state, data) => {
+            console.log('WHAT IS RESULT FROM HEREE', data);
+            return {
+                ...state,
+                driverMileageCollapsedList: data.data,
+                loading: false,
+            };
+        }
+    ),
+    on(
+        PayrollSoloMileageDriver.getPayrollMileageDriverCollapsedListError,
+        (state) => {
+            return {
+                ...state,
+                loading: false,
+            };
+        }
     )
 );
-
-//

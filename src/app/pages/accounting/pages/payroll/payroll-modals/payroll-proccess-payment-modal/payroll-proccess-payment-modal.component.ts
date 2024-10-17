@@ -5,6 +5,7 @@ import {
     Component,
     ElementRef,
     Input,
+    OnDestroy,
     ViewChild,
 } from '@angular/core';
 import {
@@ -14,23 +15,35 @@ import {
     UntypedFormGroup,
     Validators,
 } from '@angular/forms';
+import { skip, Subject, takeUntil } from 'rxjs';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+
+// Modules
+import { AngularSvgIconModule } from 'angular-svg-icon';
+
+// Animations
 import { tabsModalAnimation } from '@shared/animations';
+
+// Components
 import { TaInputDropdownComponent } from '@shared/components/ta-input-dropdown/ta-input-dropdown.component';
 import { TaInputComponent } from '@shared/components/ta-input/ta-input.component';
 import { TaModalComponent } from '@shared/components/ta-modal/ta-modal.component';
 import { TaTabSwitchComponent } from '@shared/components/ta-tab-switch/ta-tab-switch.component';
-import { EditData } from '@shared/models/edit-data.model';
-import { Tabs } from '@shared/models/tabs.model';
-import { TaInputService } from '@shared/services/ta-input.service';
-import { AngularSvgIconModule } from 'angular-svg-icon';
-import { PayrollDriverMileageByIdResponse } from 'appcoretruckassist';
 import {
     CaInputComponent,
     CaInputDropdownComponent,
     CaModalComponent,
 } from 'ca-components';
+
+// Models
+import { EditData } from '@shared/models/edit-data.model';
+import { Tabs } from '@shared/models/tabs.model';
+import { PayrollDriverMileageByIdResponse } from 'appcoretruckassist';
+
+// Services
 import { PayrollFacadeService } from '../../state/services/payroll.service';
+import { TaInputService } from '@shared/services/ta-input.service';
+import { TaSpinnerComponent } from '@shared/components/ta-spinner/ta-spinner.component';
 
 @Component({
     selector: 'app-payroll-proccess-payment-modal',
@@ -53,13 +66,16 @@ import { PayrollFacadeService } from '../../state/services/payroll.service';
         CaInputComponent,
         CaModalComponent,
         CaInputDropdownComponent,
+        TaSpinnerComponent
     ],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class PayrollProccessPaymentModalComponent {
+export class PayrollProccessPaymentModalComponent implements OnDestroy {
     @ViewChild('tabCustomTemplate', { static: true })
     public readonly tabCustomTemplate!: ElementRef;
     @Input() editData: EditData<PayrollDriverMileageByIdResponse>;
+
+    private destroy$ = new Subject<void>();
 
     constructor(
         private formBuilder: UntypedFormBuilder,
@@ -171,13 +187,32 @@ export class PayrollProccessPaymentModalComponent {
         },
     ];
 
+    public loading: boolean;
+
     ngOnInit() {
         this.tabs[0].tabTemplate = this.tabCustomTemplate;
         this.createForm();
 
+        this.subscribeToStore();
+
         setTimeout(() => {
             this.chDetRef.detectChanges();
         }, 200);
+    }
+
+    private subscribeToStore() {
+        this.payrollFacadeService.selectPayrollReportStates$
+            .pipe(skip(1), takeUntil(this.destroy$))
+            .subscribe(({ loading, error }) => {
+                console.log("is this falseee", loading, error);
+                if (!loading && !error) {
+                    this.loading = false;
+                    this.onCloseModal();
+                }else if(error){
+                    this.loading = false;
+                    this.chDetRef.detectChanges();
+                }
+            });
     }
 
     public tabChange(event: any): void {
@@ -221,14 +256,11 @@ export class PayrollProccessPaymentModalComponent {
         this.ngbActiveModal.close();
     }
 
-    closeUnpaid() {
-        console.log('CLLSE UNPPAID');
-    }
-
-    closePayroll() {
+    closePayroll(isUnpaid?: boolean) {
         const formData = this.paymentForm.getRawValue();
+        this.loading = true;
         this.payrollFacadeService.closePayrollDriverMileageReport({
-            amount: formData.amount,
+            amount: isUnpaid ? 0 : formData.amount,
             reportId: this.modalData.id,
         });
     }
@@ -236,7 +268,11 @@ export class PayrollProccessPaymentModalComponent {
     selectedItem(dd: any) {}
 
     get modalData(): PayrollDriverMileageByIdResponse {
-        //console.log('WHAT IS EDIT DATA', this.editData.data);
         return this.editData.data;
+    }
+
+    ngOnDestroy(): void {
+        this.destroy$.next();
+        this.destroy$.complete();
     }
 }
