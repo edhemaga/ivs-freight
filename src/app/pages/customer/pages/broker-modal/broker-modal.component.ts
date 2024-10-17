@@ -1742,43 +1742,43 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
                         currentCompanyUserRating: res.currentCompanyUserRating,
                     });
 
-                    this.tabCreditChange(
-                        this.billingCredit.find(
-                            (item) => item.name === res.creditType.name
-                        )
-                    );
-
-                    this.tabPhysicalAddressChange(
-                        this.selectedPhysicalAddress.address
-                            ? {
-                                  id: 3,
-                                  name: 'Physical Address',
-                                  checked: true,
-                              }
-                            : {
-                                  id: 4,
-                                  name: 'PO Box Physical',
-                                  checked: false,
-                              }
-                    );
-
-                    this.tabBillingAddressChange(
-                        this.selectedBillingAddressTab === 5 ||
-                            res.mainAddress.address ===
-                                res.billingAddress.address
-                            ? {
-                                  id: 5,
-                                  name: 'Billing Address',
-                                  checked: true,
-                              }
-                            : {
-                                  id: 6,
-                                  name: 'PO Box Billing',
-                                  checked: false,
-                              }
-                    );
-
                     setTimeout(() => {
+                        this.tabPhysicalAddressChange(
+                            this.selectedPhysicalAddress.address
+                                ? {
+                                      id: 3,
+                                      name: 'Physical Address',
+                                      checked: true,
+                                  }
+                                : {
+                                      id: 4,
+                                      name: 'PO Box Physical',
+                                      checked: false,
+                                  }
+                        );
+
+                        this.tabBillingAddressChange(
+                            this.selectedBillingAddressTab === 5 ||
+                                res.mainAddress.address ===
+                                    res.billingAddress.address
+                                ? {
+                                      id: 5,
+                                      name: 'Billing Address',
+                                      checked: true,
+                                  }
+                                : {
+                                      id: 6,
+                                      name: 'PO Box Billing',
+                                      checked: false,
+                                  }
+                        );
+
+                        this.tabCreditChange(
+                            this.billingCredit.find(
+                                (item) => item.name === res.creditType.name
+                            )
+                        );
+
                         this.brokerForm.patchValue({
                             businessName: res.businessName,
                             dbaName: res.dbaName,
@@ -1821,9 +1821,9 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
                         });
 
                         this.startFormChanges();
-
-                        this.cdRef.detectChanges();
                     }, 100);
+
+                    this.cdRef.detectChanges();
 
                     setTimeout(() => {
                         this.isCardAnimationDisabled = false;
