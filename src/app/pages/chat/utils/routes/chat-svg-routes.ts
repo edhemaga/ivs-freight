@@ -75,4 +75,10 @@ export class ChatSvgRoutes {
     static radioCheckedButtonIcon: string =
         'assets/svg/chat/radio-button-checked-icon.svg';
     static checkMarkIcon: string = 'assets/svg/chat/checkmark-icon.svg';
+
+    // Activity status
+    static activeIcon: string = 'assets/svg/chat/active-icon.svg';
+    static onlineIcon: string = 'assets/svg/chat/online-icon.svg';
+    static busyIcon: string = 'assets/svg/chat/busy-icon.svg';
+    static offlineIcon: string = 'assets/svg/chat/offline-icon.svg';
 }

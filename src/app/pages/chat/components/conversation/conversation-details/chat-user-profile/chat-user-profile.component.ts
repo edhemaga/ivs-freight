@@ -1,8 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-
-// Store
-import { Store } from '@ngrx/store';
-import { closeAllProfileInformation } from '@pages/chat/store';
+import { Component, Input, OnInit } from '@angular/core';
 
 // Models
 import { ConversationInfoResponse } from 'appcoretruckassist';
