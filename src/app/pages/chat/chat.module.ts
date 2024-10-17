@@ -23,7 +23,7 @@ import { ChatListItemComponent } from '@pages/chat/components/shared/chat-list/c
 import { ChatVerticalDividerComponent } from '@pages/chat/components/shared/chat-vertical-divider/chat-vertical-divider.component';
 
 // Conversation details
-import { ChatProfileResourcesComponent } from '@pages/chat/components/conversation/conversation-details/chat-user-profile/chat-profile-resources/chat-profile-resources.component';
+import { ChatProfileResourcesComponent } from '@pages/chat/components/conversation/conversation-details/chat-profile-resources/chat-profile-resources.component';
 import { ChatChannelParticipantListComponent } from '@pages/chat/components/conversation/conversation-details/chat-channel-participant-list/chat-channel-participant-list.component';
 
 //Shared components
