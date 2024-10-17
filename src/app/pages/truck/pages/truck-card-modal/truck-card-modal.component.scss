@@ -60,6 +60,10 @@ app-ta-modal .modal-container {
 }
 
 .modal-cards {
+    .front-side-body {
+        margin-bottom: 21px !important;
+    }
+
     .inputs-holder {
         gap: 0px 12px;
         grid-template-columns: repeat(auto-fill, minmax(47%, 1fr));

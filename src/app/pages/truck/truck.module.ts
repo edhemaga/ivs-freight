@@ -24,6 +24,10 @@ import { ThousandSeparatorPipe } from '@shared/pipes/thousand-separator.pipe';
 import { FormatDatePipe } from '@shared/pipes/format-date.pipe';
 import { CardValuePipe } from '@shared/pipes/card-value.pipe';
 
+//store
+import { StoreModule } from '@ngrx/store';
+import { truckCardModalReducer } from '@pages/truck/pages/truck-card-modal/state/truck-card-modal.reducer';
+
 @NgModule({
     declarations: [TruckTableComponent, TruckCardComponent],
     imports: [
@@ -48,6 +52,8 @@ import { CardValuePipe } from '@shared/pipes/card-value.pipe';
         FlipCardsPipe,
         FormatDatePipe,
         CardValuePipe,
+
+        StoreModule.forFeature('truckCardData', truckCardModalReducer),
     ],
 })
 export class TruckModule {}
