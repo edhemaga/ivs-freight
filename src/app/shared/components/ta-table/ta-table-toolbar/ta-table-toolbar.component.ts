@@ -53,9 +53,6 @@ import { UserCardModalComponent } from '@pages/user/pages/user-card-modal/user-c
 // enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
 
-// constants
-import { TableToolbarConstants } from './utils/constants/table-toolbar.constants';
-
 // models
 import { TableType } from 'appcoretruckassist';
 import { OptionsPopupContent } from '@shared/components/ta-table/ta-table-toolbar/models/options-popup-content.model';
@@ -70,6 +67,12 @@ import {
 
 // Directive
 import { PreventMultipleclicksDirective } from '@shared/directives/prevent-multipleclicks.directive';
+
+// Const
+import {
+    TableToolbarRoutes,
+    TableToolbarConstants,
+} from '@shared/components/ta-table/ta-table-toolbar/utils/constants';
 
 @Titles()
 @Component({
@@ -95,12 +98,13 @@ import { PreventMultipleclicksDirective } from '@shared/directives/prevent-multi
 
         // Pipes
         ListNameCasePipe,
-        
+
         // Directives
-        PreventMultipleclicksDirective
+        PreventMultipleclicksDirective,
     ],
 })
 export class TaTableToolbarComponent implements OnInit, OnChanges, OnDestroy {
+    public svgRoutes = TableToolbarRoutes;
     @ViewChild('op') popover: NgbPopover;
 
     private destroy$ = new Subject<void>();
