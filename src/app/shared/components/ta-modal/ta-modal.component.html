@@ -299,7 +299,7 @@
                         >
                             <svg-icon
                                 class="d-flex justify-content-center align-items-center modal-calendar-icon"
-                                src="assets/svg/common/ic_date.svg"
+                                [src]="modalSvgRoutes.calendarRoute"
                                 (click)="onAction('calendar')"
                             ></svg-icon>
                         </div>
@@ -310,7 +310,7 @@
                     <ng-container *ngIf="!isCloseIconRemoved">
                         <svg-icon
                             class="modal-close"
-                            src="assets/svg/ic_x.svg"
+                            [src]="modalSvgRoutes.closeRoute"
                             (click)="onAction('close')"
                         ></svg-icon>
                     </ng-container>
