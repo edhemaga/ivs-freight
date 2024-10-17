@@ -181,13 +181,13 @@
             <div class="profile-details-wrapper d-flex">
                 <ng-container *ngIf="isProfileDetailsDisplayed$ | async">
                     <div class="profile-details">
-                        <app-chat-user-profile
+                        <app-chat-conversation-details
                             [data]="conversationProfileDetails$ | async"
                             [profileDetailsType]="
                                 chatConversationProfileDetailsType.SAFETY
                             "
                             (isProfileDetailsClosed)="closeProfileDetails()"
-                        ></app-chat-user-profile>
+                        ></app-chat-conversation-details>
                     </div>
                 </ng-container>
                 <ng-container

@@ -16,7 +16,7 @@ import { ChatMessageComponent } from '@pages/chat/components/conversation/conver
 import { ChatMessagesComponent } from '@pages/chat/components/conversation/conversation-content/chat-messages/chat-messages.component';
 import { ChatContentFooterComponent } from '@pages/chat/components/conversation/conversation-content/chat-content-footer/chat-content-footer.component';
 import { ChatMessageAttachmentPreviewComponent } from '@pages/chat/components/shared/chat-message-attachment-preview/chat-message-attachment-preview.component';
-import { ChatUserProfileComponent } from '@pages/chat/components/conversation/conversation-details/chat-user-profile/chat-user-profile.component';
+import { ChatConversationDetailsComponent } from '@pages/chat/components/conversation/conversation-details/chat-conversation-details.component';
 import { ChatHeaderComponent } from '@pages/chat/components/shared/chat-header/chat-header.component';
 import { ChatListComponent } from '@pages/chat/components/shared/chat-list/chat-list.component';
 import { ChatListItemComponent } from '@pages/chat/components/shared/chat-list/chat-list-item/chat-list-item.component';
@@ -82,7 +82,7 @@ import { HoverSvgDirective } from '@shared/directives/hover-svg.directive';
         ChatMessageAttachmentPreviewComponent,
 
         // Conversation details
-        ChatUserProfileComponent,
+        ChatConversationDetailsComponent,
         ChatChannelParticipantListComponent,
 
         // Auxillary components
@@ -144,4 +144,4 @@ import { HoverSvgDirective } from '@shared/directives/hover-svg.directive';
         StoreModule.forFeature('chat', chatDataReducer),
     ],
 })
-export class ChatModule {}
+export class ChatModule { }

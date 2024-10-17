@@ -26,13 +26,13 @@ export class ChatProfileResourcesComponent implements OnInit {
     @Input() resources: Array<FileResponse | ChatLink | null>;
 
     // Assets
-    public ChatSvgRoutes = ChatSvgRoutes;
+    public chatSvgRoutes = ChatSvgRoutes;
 
     public isExpanded: boolean = false;
 
-    constructor() {}
+    constructor() { }
 
-    ngOnInit(): void {}
+    ngOnInit(): void { }
 
     public toggleShowAll(): void {
         this.isExpanded = !this.isExpanded;
