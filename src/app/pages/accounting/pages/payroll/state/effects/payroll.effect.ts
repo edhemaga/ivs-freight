@@ -98,6 +98,7 @@ export class PayrollEffect {
                 switchMap((action) => {
                     return this.payrollService
                         .closePayrollSoloMileageDriverReport(
+                            action.amount,
                             action.reportId,
                             action.lastLoadDate,
                             action.selectedCreditIds,

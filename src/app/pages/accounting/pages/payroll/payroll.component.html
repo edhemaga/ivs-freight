@@ -11,11 +11,14 @@
         <div class="payroll-tables-holder">
             <ng-container
                 *ngFor="
-                    let payroll of (payrollCountsResponse$ | async).payrollData
+                    let payroll of (payrollCountsResponse$ | async).payrollData;
+                    let indx = index
                 "
             >
                 <div class="card-holder">
                     <app-ca-payroll-list-summary-overview
+                        [index]="indx"
+                        [isExpanded]="openedIndex === indx"
                         [item]="payroll"
                         (toggle)="hideShowTables($event)"
                     >

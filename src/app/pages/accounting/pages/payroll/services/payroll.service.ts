@@ -5,7 +5,7 @@ import {
     PayrollDriverMileageListResponse,
 } from 'appcoretruckassist';
 import { PayrollDriverMileageResponse } from 'appcoretruckassist/model/payrollDriverMileageResponse';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { environment } from 'src/environments/environment';
 
 @Injectable({ providedIn: 'root' })
@@ -67,6 +67,7 @@ export class PayrollService {
     }
 
     public closePayrollSoloMileageDriverReport(
+        amount: number,
         reportId: number,
         lastLoadDate: string,
         selectedCreditIds?: number[],
@@ -76,15 +77,18 @@ export class PayrollService {
         const body = {
             id: reportId,
             lastLoadDate: lastLoadDate,
-            selectedDeductionIds: selectedDeducionIds,
-            selectedCreditIds: selectedCreditIds,
-            selectedBonusIds: selectedBonusIds,
+            // selectedDeductionIds: selectedDeducionIds,
+            // selectedCreditIds: selectedCreditIds,
+            // selectedBonusIds: selectedBonusIds,
             pay: {
                 type: 'Manual',
-                date: '2024-10-15T16:09:54.299Z',
-                amount: 200,
+                //date: '2024-10-15T16:09:54.299Z',
+                amount: amount,
             },
         };
+
+        console.log('body', body);
+        //return of();
 
         return this.http.put<PayrollDriverMileageResponse>(
             `${environment.API_ENDPOINT}/api/payroll/driver/mileage/close`,

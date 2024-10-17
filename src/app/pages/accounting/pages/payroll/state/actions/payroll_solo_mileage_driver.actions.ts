@@ -43,6 +43,7 @@ export const getPayrollSoloMileageReportDriverError = createAction(
 export const closePayrollSoloMileageReportDriver = createAction(
     PayrollSoloMileageDriverEnum.CLOSE_PAYROLL_SOLO_MILEAGE_DRIVER_REPORT,
     props<{
+        amount: number;
         reportId: number;
         lastLoadDate: string;
         selectedCreditIds?: number[];

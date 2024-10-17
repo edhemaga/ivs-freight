@@ -226,7 +226,9 @@ export class PayrollProccessPaymentModalComponent {
     }
 
     closePayroll() {
+        const formData = this.paymentForm.getRawValue();
         this.payrollFacadeService.closePayrollDriverMileageReport({
+            amount: formData.amount,
             reportId: this.modalData.id,
         });
     }
@@ -234,7 +236,7 @@ export class PayrollProccessPaymentModalComponent {
     selectedItem(dd: any) {}
 
     get modalData(): PayrollDriverMileageByIdResponse {
-        console.log('WHAT IS EDIT DATA', this.editData.data);
+        //console.log('WHAT IS EDIT DATA', this.editData.data);
         return this.editData.data;
     }
 }

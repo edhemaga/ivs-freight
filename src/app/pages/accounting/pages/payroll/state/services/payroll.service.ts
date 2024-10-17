@@ -110,13 +110,20 @@ export class PayrollFacadeService {
             });
     }
 
-    public closePayrollDriverMileageReport({ reportId }: { reportId: number }) {
+    public closePayrollDriverMileageReport({
+        reportId,
+        amount,
+    }: {
+        reportId: number;
+        amount: number;
+    }) {
         this.store
             .pipe(select(selectPayrollState), take(1))
             .subscribe((payrollState) => {
                 this.store.dispatch(
                     PayrollDriverMileageSolo.closePayrollSoloMileageReportDriver(
                         {
+                            amount,
                             reportId,
                             lastLoadDate: payrollState.lastLoadDate,
                             selectedCreditIds: payrollState.selectedCreditIds,

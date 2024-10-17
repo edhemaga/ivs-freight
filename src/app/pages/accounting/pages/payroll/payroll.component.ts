@@ -9,6 +9,7 @@ import {
     ViewContainerRef,
     inject,
     ComponentRef,
+    ChangeDetectorRef,
 } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 
@@ -68,6 +69,7 @@ export class PayrollComponent implements OnInit, AfterViewInit {
     tableExpanded: boolean = true;
     reportTableData: any = {};
     tableExpanded$ = new BehaviorSubject<boolean>(true);
+    openedIndex: number = -1;
 
     constructor(
         // Store
@@ -79,7 +81,8 @@ export class PayrollComponent implements OnInit, AfterViewInit {
         private nameInitialsPipe: NameInitialsPipe,
 
         // Services
-        private payrollFacadeService: PayrollFacadeService
+        private payrollFacadeService: PayrollFacadeService,
+        private chRef: ChangeDetectorRef
     ) {}
 
     public subscribeToStoreData() {
@@ -133,10 +136,6 @@ export class PayrollComponent implements OnInit, AfterViewInit {
                 gridColumns: [],
             },
         ];
-
-        const td = this.tableData.find((t) => t.field === this.selectedTab);
-
-        this.setDriverData(td);
     }
 
     ngAfterViewInit(): void {
@@ -148,7 +147,9 @@ export class PayrollComponent implements OnInit, AfterViewInit {
     public hideShowTables(data: {
         payrollSummary: PayrollListSummaryOverview;
         status: boolean;
+        index: number;
     }) {
+        this.openedIndex = this.openedIndex === data.index ? -1 : data.index;
         if (data.status) {
             this.container.clear();
 
@@ -182,10 +183,15 @@ export class PayrollComponent implements OnInit, AfterViewInit {
         }
     }
 
-    expandTable(data: any) {
-        this.reportTableData = data;
-        this.tableExpanded = !this.tableExpanded;
-        this.tableExpanded$.next(this.tableExpanded);
+    expandTable(data?: any) {
+        if (data) {
+            this.reportTableData = data;
+            this.tableExpanded = !this.tableExpanded;
+            this.tableExpanded$.next(this.tableExpanded);
+        } else {
+            this.tableExpanded = true;
+            this.tableExpanded$.next(true);
+        }
     }
 
     observTableContainer() {
@@ -196,21 +202,6 @@ export class PayrollComponent implements OnInit, AfterViewInit {
         });
 
         this.resizeObserver.observe(document.querySelector('.table-container'));
-    }
-
-    setDriverData(td: any) {
-        this.columns = td.gridColumns;
-
-        if (td.data.length) {
-            this.viewData = td.data;
-            this.viewData = this.viewData.map((data: any, index: number) => {
-                return this.selectedTab === 'open'
-                    ? this.mapApplicantsData(data, index)
-                    : this.mapApplicantsData(data, index);
-            });
-        } else {
-            this.viewData = [];
-        }
     }
 
     getTabData(dataType: string) {
@@ -238,6 +229,11 @@ export class PayrollComponent implements OnInit, AfterViewInit {
     onToolBarAction(event: any) {
         if (event.action === 'tab-selected') {
             this.selectedTab = event.tabData.field;
+            this.openedIndex = -1;
+            this.expandTable();
+            this.payrollFacadeService.getPayrollCounts(
+                event.tabData.field === 'open'
+            );
         }
     }
 
