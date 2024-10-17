@@ -395,6 +395,7 @@ export enum TableStringEnum {
 
     // Contact
     DELTETE_CONTACT = 'delete-contact',
+    DELTETE_CONTACT_2 = 'Delete Contact',
     CONTACT = 'contact',
     CONTACT_2 = 'Contact',
     ADD_CONTACT = 'add-contact',
@@ -550,6 +551,9 @@ export enum TableStringEnum {
     EXPIRED = 'Expired',
     ZERO = '0',
 
+    BROKER_CONTACT = 'broker contact',
+    SHIPPER_CONTACT = 'shipper contact',
+    
     // Card States
     CUSTOMER_CARD_STATE = 'customerCardState',
     DRIVER_CARD_STATE = 'driverCardState',
