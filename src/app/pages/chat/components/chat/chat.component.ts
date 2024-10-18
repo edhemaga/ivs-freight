@@ -56,8 +56,7 @@ import {
 })
 export class ChatComponent
     extends UnsubscribeHelper
-    implements OnInit, OnDestroy
-{
+    implements OnInit, OnDestroy {
     public title!: string;
 
     // Data
@@ -188,7 +187,6 @@ export class ChatComponent
 
                 const selectedConversation: ChatSelectedConversation = {
                     id: conversation?.id,
-                    conversationType,
                     group,
                 };
                 this.chatStoreService.setConversation(selectedConversation);
