@@ -23,7 +23,7 @@ import { DetailsDataService } from '@shared/services/details-data.service';
 // store
 import { TruckActiveQuery } from '@pages/truck/state/truck-active-state/truck-active.query';
 import { TruckInactiveQuery } from '@pages/truck/state/truck-inactive-state/truck-inactive.query';
-import { TruckActiveState } from '@pages/truck/state/truck-active-state/truck-active.store';
+import { TruckActiveState, TruckActiveStore } from '@pages/truck/state/truck-active-state/truck-active.store';
 import { TruckInactiveState } from '@pages/truck/state/truck-inactive-state/truck-inactive.store';
 import { TruckInactiveStore } from '@pages/truck/state/truck-inactive-state/truck-inactive.store';
 import { select, Store } from '@ngrx/store';
@@ -127,6 +127,7 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
         private truckActiveQuery: TruckActiveQuery,
         private truckInactiveQuery: TruckInactiveQuery,
         private truckInactiveStore: TruckInactiveStore,
+        private truckActiveStore: TruckActiveStore,
         private store: Store,
 
         // Pipes
@@ -234,7 +235,7 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
     public setTableFilter(): void {
         this.tableService.currentSetTableFilter
-            .pipe(takeUntil(this.destroy$))
+            .pipe(skip(1), takeUntil(this.destroy$))
             .subscribe((res) => {
                 if (res?.filterType) {
                     this.backFilterQuery.truckType = res.queryParams;
@@ -334,34 +335,7 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
                         clearInterval(inetval);
                     }, 1000);
                 } else if (res?.animation === TableStringEnum.UPDATE_STATUS) {
-                    let truckIndex: number;
-
-                    this.viewData = this.viewData.map(
-                        (truck: any, index: number) => {
-                            if (truck.id === res.id) {
-                                truck.actionAnimation =
-                                    this.selectedTab === TableStringEnum.ACTIVE
-                                        ? TableStringEnum.DEACTIVATE
-                                        : TableStringEnum.ACTIVATE;
-                                truckIndex = index;
-                            }
-
-                            return truck;
-                        }
-                    );
-
                     this.updateDataCount();
-
-                    const inetval = setInterval(() => {
-                        this.viewData =
-                            MethodsGlobalHelper.closeAnimationAction(
-                                false,
-                                this.viewData
-                            );
-
-                        this.viewData.splice(truckIndex, 1);
-                        clearInterval(inetval);
-                    }, 900);
                 } else if (res?.animation === TableStringEnum.DELETE) {
                     let truckIndex: number;
 
@@ -920,7 +894,8 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
             searchTwo: string | undefined;
             searchThree: string | undefined;
         },
-        isShowMore?: boolean
+        isShowMore?: boolean,
+        updateTruckTable?: boolean
     ): void {
         this.truckService
             .getTruckList(
@@ -938,7 +913,8 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
             .subscribe((trucks) => {
                 if (!isShowMore) {
                     this.viewData = trucks.pagination.data;
-
+                    this.truckInactiveStore.set(this.viewData);
+                    this.truckActiveStore.set(this.viewData);
                     this.viewData = this.viewData.map((data) => {
                         return this.mapTruckData(data);
                     });
@@ -954,6 +930,8 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 this.tableService.sendSelectOrDeselect(
                     TableStringEnum.DESELECT
                 );
+                
+                if (updateTruckTable) this.sendTruckData();
             });
     }
 
@@ -974,26 +952,17 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
             this.backFilterQuery.active =
                 this.selectedTab === TableStringEnum.ACTIVE ? 1 : 0;
 
+                this.caSearchMultipleStatesService.deleteAllChips();
             if (
                 this.selectedTab === TableStringEnum.INACTIVE &&
                 !this.inactiveTabClicked
             ) {
-                this.truckService
-                    .getTruckList(0, null, 1, 25)
-                    .pipe(takeUntil(this.destroy$))
-                    .subscribe((truckPagination: TruckListResponse) => {
-                        this.truckInactiveStore.set(
-                            truckPagination.pagination.data
-                        );
-
-                        this.sendTruckData();
-                    });
+                this.truckBackFilter(this.backFilterQuery, false, true)
             } else {
                 this.sendTruckData();
             }
 
             // on tab change we need to reset chips and truck type filters
-            this.caSearchMultipleStatesService.deleteAllChips();
             this.truckService.updateTableFilters();
         }
         // Change View Mode
