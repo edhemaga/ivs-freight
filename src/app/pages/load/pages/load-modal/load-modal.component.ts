@@ -705,6 +705,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     public modalTitle: string;
     public isActiveLoad: boolean;
     public editName: string;
+    public isMilesLoading: boolean = false;
 
     constructor(
         private formBuilder: UntypedFormBuilder,
@@ -3091,7 +3092,11 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             .subscribe((value: LoadAdditionalPayment[]) => {
                 const paymentTotals = value.reduce(
                     (acc, val) => {
-                        const pay =  val.pay ? MethodsCalculationsHelper.convertThousanSepInNumber(val.pay as string) : 0;
+                        const pay = val.pay
+                            ? MethodsCalculationsHelper.convertThousanSepInNumber(
+                                  val.pay as string
+                              )
+                            : 0;
                         switch (val.paymentType) {
                             case LoadModalPaymentEnum.PAID_IN_FULL:
                                 acc.paidInFull += pay;
@@ -3791,6 +3796,8 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     }
 
     public drawStopOnMap(): void {
+        this.isMilesLoading = true;
+
         const routes: LoadStopRoutes[] = [];
 
         // dispatches
@@ -3941,7 +3948,10 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                                             LoadModalStringEnum.PICKUP_LEG_COST
                                         )
                                         .patchValue(item.cost);
-                                } else if(index === res.legs.length - 1 || res.legs.length === 2){
+                                } else if (
+                                    index === res.legs.length - 1 ||
+                                    res.legs.length === 2
+                                ) {
                                     this.loadForm
                                         .get(
                                             LoadModalStringEnum.DELIVERY_LEG_MILES
@@ -4003,6 +4013,8 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                                 }, this.debounceDelay);
                             });
                         }
+
+                        this.isMilesLoading = false;
                     },
                 });
         }
@@ -5237,7 +5249,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                 : null,
 
             // billing & payment
-            baseRate: baseRate  ?? null,
+            baseRate: baseRate ?? null,
             advancePay: advancePay ?? null,
             driverRate: driverRate ?? null,
             adjustedRate: adjustedRate ?? null,
