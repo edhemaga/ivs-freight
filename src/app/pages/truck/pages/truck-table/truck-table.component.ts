@@ -768,6 +768,8 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 hasContent: true,
                 content: this.getDropdownTruckContent(),
             },
+            createdAt,
+            updatedAt
         };
     }
 
