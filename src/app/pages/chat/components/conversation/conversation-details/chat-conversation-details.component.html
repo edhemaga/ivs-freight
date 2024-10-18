@@ -146,7 +146,6 @@
                     </div>
                 </ng-container>
             </ng-container>
-            {{ conversation.conversationType }}
 
             <ng-conversation
                 *ngIf="
@@ -154,19 +153,16 @@
                     conversationTypeEnum.CHANNEL
                 "
             >
-                <div class="participants-list">
-                    <ng-container
-                        *ngFor="
-                            let participant of conversation.participants;
-                            let ind = index;
-                            trackBy: '' | trackByProperty
-                        "
-                    >
-                        {{ participant | json }}
-                    </ng-container>
-                </div>
             </ng-conversation>
 
+            <app-chat-profile-resources
+                [title]="'Participants'"
+                [customClass]="''"
+                [count]="data.userAdditionalInformation?.length"
+                [resources]="data.userAdditionalInformation"
+                [type]="ChatUserProfileResourceTypeEnum.PARTICIPANTS"
+            >
+            </app-chat-profile-resources>
             <app-chat-profile-resources
                 [title]="'Media'"
                 [customClass]="'media-content'"

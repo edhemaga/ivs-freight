@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 
 // Models
-import { FileResponse } from 'appcoretruckassist';
+import { CompanyUserShortResponse, FileResponse } from 'appcoretruckassist';
 import { ChatLink } from '@pages/chat/models';
 
 // Enums
@@ -23,10 +23,15 @@ export class ChatProfileResourcesComponent implements OnInit {
     @Input() public type: ChatUserProfileResourceTypeEnum;
 
     // Resources
-    @Input() resources: Array<FileResponse | ChatLink | null>;
+    @Input() resources: Array<
+        FileResponse | ChatLink | CompanyUserShortResponse | null
+    >;
 
     // Assets
     public chatSvgRoutes = ChatSvgRoutes;
+
+    // Enums
+    public chatUserProfileResourceTypeEnum = ChatUserProfileResourceTypeEnum;
 
     public isExpanded: boolean = false;
 

@@ -6,7 +6,10 @@
         {{ title }}
     </div>
     <ng-container *ngIf="count">
-        <div class="data-count" [ngClass]="isExpanded && 'data-count-focused'">
+        <div
+            class="data-count ta-font-bold"
+            [ngClass]="isExpanded && 'data-count-focused'"
+        >
             {{ count }}
         </div>
         <div
@@ -33,18 +36,24 @@
         }
     "
 >
-    <ng-container
-        *ngFor="
-            let item of resources;
-            let ind = index;
-            trackBy: '' | trackByProperty
-        "
-    >
-        <ng-container [ngSwitch]="type">
-            <ng-container *ngSwitchCase="'media'">
+    <ng-container [ngSwitch]="type">
+        <ng-container
+            *ngFor="
+                let item of resources;
+                let ind = index;
+                trackBy: '' | trackByProperty
+            "
+        >
+            <ng-container
+                *ngSwitchCase="chatUserProfileResourceTypeEnum.PARTICIPANTS"
+            >
+                {{ item | json }}
+            </ng-container>
+
+            <ng-container *ngSwitchCase="chatUserProfileResourceTypeEnum.MEDIA">
                 <img [src]="item?.url" [alt]="item?.fileName" />
             </ng-container>
-            <ng-container *ngSwitchCase="'files'">
+            <ng-container *ngSwitchCase="chatUserProfileResourceTypeEnum.FILES">
                 <div class="attachment-wrapper">
                     <app-chat-message-attachment-preview
                         [index]="ind"
@@ -57,7 +66,7 @@
                     ></app-chat-message-attachment-preview>
                 </div>
             </ng-container>
-            <ng-container *ngSwitchCase="'links'">
+            <ng-container *ngSwitchCase="chatUserProfileResourceTypeEnum.LINKS">
                 <div class="links d-flex align-items-center">
                     <div class="link-thumbnail">
                         <div class="link-thumbnail-content">
@@ -94,7 +103,6 @@
                     </div>
                 </div>
             </ng-container>
-            <ng-container *ngSwitchDefault></ng-container>
         </ng-container>
     </ng-container>
 </div>

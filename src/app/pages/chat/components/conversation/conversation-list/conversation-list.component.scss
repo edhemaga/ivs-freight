@@ -166,8 +166,11 @@
 
 .icon {
     &-regular {
-        width: 26px;
-        margin: 2px auto;
+        margin-left: 2px;
+
+        &-arrow {
+            margin: auto;
+        }
 
         .activitiy-status-icon {
             position: relative;
