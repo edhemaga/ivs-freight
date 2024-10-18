@@ -54,13 +54,16 @@ import { AuthGuard } from '@core/guards/authentication.guard';
 import { DropZoneConfig } from '@shared/components/ta-upload-files/models/dropzone-config.model';
 import { UploadFile } from '@shared/components/ta-upload-files/models/upload-file.model';
 
-// Enums
+// enums
 import { LoadModalStringEnum } from '@pages/load/pages/load-modal/enums';
 import { AssignedLoadResponse } from 'appcoretruckassist';
 import { TaModalActionEnums } from './enums';
 
-// Directive
+// directive
 import { PreventMultipleclicksDirective } from '@shared/directives/prevent-multipleclicks.directive';
+
+// svg routes
+import { ModalSvgRoutes } from '@shared/components/ta-modal/utils/svg-routes';
 
 @Component({
     selector: 'app-ta-modal',
@@ -149,6 +152,7 @@ export class TaModalComponent implements OnInit, OnDestroy {
     @Input() isStepper: boolean = false;
     @Input() isCloseIconRemoved: boolean = false;
     @Input() isVoidBtn: boolean = false;
+    @Input() hasCalendarIcon: boolean = false;
 
     // Routing Map Props
     @Input() mapSettingsModal: boolean = false;
@@ -219,6 +223,8 @@ export class TaModalComponent implements OnInit, OnDestroy {
     @Output() filterActions = new EventEmitter<any>();
 
     private destroy$ = new Subject<void>();
+
+    public modalSvgRoutes = ModalSvgRoutes;
 
     public saveSpinnerVisibility: boolean = false;
     public saveAddNewSpinnerVisibility: boolean = false;

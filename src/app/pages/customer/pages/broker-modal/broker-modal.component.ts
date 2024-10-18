@@ -449,32 +449,40 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
 
         if (this.selectedPhysicalAddressTab === 3) {
             this.inputService.changeValidators(
-                this.brokerForm.get('physicalAddress')
+                this.brokerForm.get(BrokerModalStringEnum.PHYSICAL_ADDRESS)
             );
 
+            this.brokerForm
+                .get(BrokerModalStringEnum.PHYSICAL_ADDRESS)
+                .patchValue(this.selectedPhysicalAddress?.address);
+
             this.inputService.changeValidators(
-                this.brokerForm.get('physicalPoBox'),
+                this.brokerForm.get(BrokerModalStringEnum.PHYSICAL_PO_BOX),
+                false,
+                [],
                 false
             );
 
             this.inputService.changeValidators(
-                this.brokerForm.get('physicalPoBoxCity'),
+                this.brokerForm.get(BrokerModalStringEnum.PHYSICAL_PO_BOX_CITY),
+                false,
+                [],
                 false
             );
         } else {
             this.inputService.changeValidators(
-                this.brokerForm.get('physicalAddress'),
-                false
-            );
-
-            this.brokerForm.get('physicalAddressUnit').reset();
-
-            this.inputService.changeValidators(
-                this.brokerForm.get('physicalPoBox')
+                this.brokerForm.get(BrokerModalStringEnum.PHYSICAL_ADDRESS),
+                false,
+                [],
+                true
             );
 
             this.inputService.changeValidators(
-                this.brokerForm.get('physicalPoBoxCity')
+                this.brokerForm.get(BrokerModalStringEnum.PHYSICAL_PO_BOX)
+            );
+
+            this.inputService.changeValidators(
+                this.brokerForm.get(BrokerModalStringEnum.PHYSICAL_PO_BOX_CITY)
             );
         }
 
@@ -973,7 +981,9 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
                         ? this.selectedPhysicalPoBox.zipCode
                         : null,
                     poBox: this.selectedPhysicalPoBox
-                        ? this.brokerForm.get('physicalPoBox').value
+                        ? this.brokerForm.get(
+                              BrokerModalStringEnum.PHYSICAL_PO_BOX
+                          ).value
                         : null,
                 };
 
@@ -1002,7 +1012,9 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
                         : null,
                     poBox: this.brokerForm.get('isCheckedBillingAddress').value
                         ? this.selectedPhysicalPoBox
-                            ? this.brokerForm.get('physicalPoBox').value
+                            ? this.brokerForm.get(
+                                  BrokerModalStringEnum.PHYSICAL_PO_BOX
+                              ).value
                             : null
                         : this.brokerForm.get('billingPoBox').value,
                 };
@@ -1057,7 +1069,9 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
                         ? this.selectedPhysicalPoBox.zipCode
                         : null,
                     poBox: this.selectedPhysicalPoBox
-                        ? this.brokerForm.get('physicalPoBox').value
+                        ? this.brokerForm.get(
+                              BrokerModalStringEnum.PHYSICAL_PO_BOX
+                          ).value
                         : null,
                 };
             }
@@ -1159,7 +1173,9 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
                         : null,
                     poBox: this.brokerForm.get('isCheckedBillingAddress').value
                         ? this.selectedPhysicalPoBox
-                            ? this.brokerForm.get('physicalPoBox').value
+                            ? this.brokerForm.get(
+                                  BrokerModalStringEnum.PHYSICAL_PO_BOX
+                              ).value
                             : null
                         : this.brokerForm.get('billingPoBox').value,
                 };

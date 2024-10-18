@@ -242,7 +242,11 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 );
                 const isTruckTrailerDriverSelected = !!foundObject.driver;
 
-                if (isAssignedStatusSelected && !isTruckTrailerDriverSelected) {
+                const isPaidOrShortPaid = [LoadStatusEnum[13], LoadStatusEnum[16]].includes(
+                    status.dataBack
+                );
+
+                if ((isAssignedStatusSelected && !isTruckTrailerDriverSelected) || isPaidOrShortPaid) {
                     this.onTableBodyActions({
                         type: TableStringEnum.EDIT,
                         id: foundObject.id,

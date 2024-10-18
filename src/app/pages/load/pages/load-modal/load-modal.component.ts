@@ -3091,15 +3091,16 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             .subscribe((value: LoadAdditionalPayment[]) => {
                 const paymentTotals = value.reduce(
                     (acc, val) => {
+                        const pay =  val.pay ? MethodsCalculationsHelper.convertThousanSepInNumber(val.pay as string) : 0;
                         switch (val.paymentType) {
                             case LoadModalPaymentEnum.PAID_IN_FULL:
-                                acc.paidInFull += val.pay;
+                                acc.paidInFull += pay;
                                 break;
                             case LoadModalPaymentEnum.SHORT_PAID:
-                                acc.shortPaid += val.pay;
+                                acc.shortPaid += pay;
                                 break;
                             case LoadModalPaymentEnum.ADVANCE_PAYMENT:
-                                acc.advance += val.pay;
+                                acc.advance += pay;
                                 break;
                             default:
                                 break;

@@ -398,11 +398,35 @@ ngb-modal-window[aria-hidden='true'] {
                         }
                     }
 
+                    .modal-calendar-container {
+                        margin-right: 4px;
+                        padding-right: 4px;
+                        border-right: 1px solid $ta-light-grey-6;
+
+                        .modal-calendar-icon {
+                            cursor: pointer;
+                            width: 26px;
+                            height: 26px;
+                            background: transparent;
+                            border-radius: 2px;
+                            transition: background 0.3s ease-in-out;
+
+                            svg {
+                                path {
+                                    fill: $bw5;
+                                }
+                            }
+
+                            &:hover {
+                                background: $bw2;
+                            }
+                        }
+                    }
+
                     .modal-close {
                         position: relative;
                         right: 1px;
                         cursor: pointer;
-                        transition: all 0.3s ease-in-out;
 
                         svg {
                             width: 26px;
@@ -1076,4 +1100,3 @@ ngb-modal-window.modal {
         }
     }
 }
-
