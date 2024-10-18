@@ -1284,6 +1284,11 @@
                         height: 26px;
                         border-radius: 2px;
 
+                        .highlight-text-45632 {
+                            font-weight: 500;
+                            color: $ta-blue-7 !important;
+                        }
+
                         &:hover {
                             background-color: #1d1d1d;
                             cursor: pointer;
