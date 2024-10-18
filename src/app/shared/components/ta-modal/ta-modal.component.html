@@ -180,22 +180,20 @@
 
                     <ng-container *ngIf="hasDispatcherFilter">
                         <div class="me-1">
-                            <app-ca-filter
-                                [type]="'dispatcherFilter'"
-                                [icon]="'user'"
+                            <app-ta-filter
+                                [type]="'userFilter'"
                                 [searchState]="true"
                                 [filterTitle]="'Dispatcher Filter'"
                                 [defFilterHolder]="true"
                                 (setFilter)="setFilterValue($event)"
-                                (clearAll)="setFilterValue($event)"
                             >
-                            </app-ca-filter>
+                            </app-ta-filter>
                         </div>
                     </ng-container>
 
                     <ng-container *ngIf="hasTruckTypeFilter">
                         <div class="me-1">
-                            <app-ca-filter
+                            <app-ta-filter
                                 [type]="'truckTypeFilter'"
                                 [icon]="'truck'"
                                 [filterTitle]="'Truck Type Filter'"
@@ -205,15 +203,14 @@
                                 [isDispatchFilter]="!isAssignLoadModal"
                                 [isRepairFilter]="false"
                                 (setFilter)="setFilterValue($event)"
-                                (clearAll)="setFilterValue($event)"
                             >
-                            </app-ca-filter>
+                            </app-ta-filter>
                         </div>
                     </ng-container>
 
                     <ng-container *ngIf="hasTrailerTypeFilter">
                         <div class="me-1">
-                            <app-ca-filter
+                            <app-ta-filter
                                 [type]="'trailerTypeFilter'"
                                 [icon]="'trailer'"
                                 [filterTitle]="'Trailer Type Filter'"
@@ -223,9 +220,8 @@
                                 [isDispatchFilter]="!isAssignLoadModal"
                                 [isRepairFilter]="false"
                                 (setFilter)="setFilterValue($event)"
-                                (clearAll)="setFilterValue($event)"
                             >
-                            </app-ca-filter>
+                            </app-ta-filter>
                         </div>
                     </ng-container>
 

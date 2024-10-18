@@ -139,7 +139,6 @@ export class TaToolbarFiltersComponent implements OnInit, OnChanges, OnDestroy {
         this.tableSevice.currentActionAnimation
             .pipe(takeUntil(this.destroy$))
             .subscribe((res: any) => {
-                console.log(res?.animation, 'res?.animation');
                 if (res?.animation === 'dispatch-data-update') {
                     const newData = res.data.map((type: any) => {
                         type['name'] =

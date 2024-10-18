@@ -71,7 +71,7 @@
         [ngClass]="{ 'active-option': truckFilterActive }"
         *ngIf="!options.toolbarActions.hideTruckFilter"
     >
-        <app-ca-filter
+        <app-ta-filter
             [type]="'truckTypeFilter'"
             [filterTitle]="'Truck Type Legend'"
             [defFilterHolder]="true"
@@ -80,9 +80,8 @@
             [largeLeftIcon]="true"
             [legendView]="true"
             (setFilter)="setFilterEvent($event)"
-            (clearAll)="setFilterEvent($event)"
         >
-        </app-ca-filter>
+        </app-ta-filter>
     </div>
 
     <!-- TRAILER FILTER -->
@@ -91,7 +90,7 @@
         [ngClass]="{ 'active-option': trailerFilterActive }"
         *ngIf="!options.toolbarActions.hideTrailerFilter"
     >
-        <app-ca-filter
+        <app-ta-filter
             [type]="'trailerTypeFilter'"
             [filterTitle]="'Trailer Type Legend'"
             [defFilterHolder]="true"
@@ -100,9 +99,8 @@
             [largeLeftIcon]="true"
             [legendView]="true"
             (setFilter)="setFilterEvent($event)"
-            (clearAll)="setFilterEvent($event)"
         >
-        </app-ca-filter>
+        </app-ta-filter>
     </div>
 
     <!-- DRIVER FILTER -->

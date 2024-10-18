@@ -311,32 +311,29 @@
                         <ng-container *ngIf="dispatcherFilter">
                             <span class="ic-hed">
                                 <!-- DISPECHER FILTER -->
-                                <app-ca-filter
-                                    [type]="'dispatcherFilter'"
-                                    [icon]="'user'"
+                                <app-ta-filter
+                                    [type]="'userFilter'"
                                     [searchState]="true"
                                     [filterTitle]="'Dispatcher Filter'"
                                     [defFilterHolder]="true"
                                     (setFilter)="setFilterValue($event)"
-                                    (clearAll)="setFilterValue($event)"
                                 >
-                                </app-ca-filter>
+                                </app-ta-filter>
                             </span>
                         </ng-container>
 
                         <ng-container *ngIf="statusFilter">
                             <span class="ic-hed">
                                 <!-- STATUS FILTER -->
-                                <app-ca-filter
+                                <app-ta-filter
                                     [type]="'statusFilter'"
                                     [icon]="'broker-half-circle'"
                                     [filterTitle]="'Status Filter'"
                                     [defFilterHolder]="true"
                                     [noLeftIcon]="false"
                                     (setFilter)="setFilterValue($event)"
-                                    (clearAll)="setFilterValue($event)"
                                 >
-                                </app-ca-filter>
+                                </app-ta-filter>
                             </span>
                         </ng-container>
 
@@ -396,6 +393,7 @@
                                     [isMoneyFilter]="true"
                                     [isLoadType]="true"
                                     (setFilter)="setFilterValue($event)"
+                                    (clearAll)="setFilterValue($event)"
                                 >
                                 </app-ca-filter>
                             </span>
