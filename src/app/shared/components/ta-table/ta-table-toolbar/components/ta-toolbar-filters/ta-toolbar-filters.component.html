@@ -176,7 +176,7 @@
     </app-ta-filter>
 
     <!-- STATE FILTER -->
-    <app-ta-filter
+    <app-ca-filter
         *ngIf="options.toolbarActions.showStateFilter"
         [type]="'stateFilter'"
         [icon]="'state'"
@@ -184,13 +184,16 @@
         [defFilterHolder]="true"
         [leftSideIcon]="true"
         (setFilter)="onFilter($event)"
+        (clearAll)="onFilter($event)"
         [class]="
             options?.toolbarActions?.filtersOrder?.state
                 ? 'order-' + options.toolbarActions.filtersOrder.state
                 : ''
         "
+        [usaStates]="usaStates"
+        [canadaStates]="canadaStates"
     >
-    </app-ta-filter>
+    </app-ca-filter>
 
     <!-- ARHIVE FILTER -->
     <app-ta-special-filter

@@ -23,6 +23,7 @@ import {
 // enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
 import { LoadFilterStringEnum } from '@pages/load/pages/load-table/enums/load-filter-string.enum';
+import { ToolbarFilterStringEnum } from '@shared/components/ta-filter/enums/toolbar-filter-string.enum';
 
 // pipes
 import { MoneyFilterPipe } from '@shared/pipes/money-filter.pipe';
@@ -82,6 +83,8 @@ export class TaToolbarFiltersComponent implements OnInit, OnChanges, OnDestroy {
     public unselectedDispatcher: ArrayStatus[];
     public truckTypeArray: any;
     public trailerTypeArray: any;
+    public usaStates: ArrayStatus[];
+    public canadaStates: ArrayStatus[];
 
     constructor(
         private tableSevice: TruckassistTableService,
@@ -104,6 +107,10 @@ export class TaToolbarFiltersComponent implements OnInit, OnChanges, OnDestroy {
 
         if (this.options.toolbarActions.showDispatcherFilter) {
             this.filterService.getDispatchData();
+        }
+
+        if (this.options.toolbarActions.showStateFilter) {
+            this.filterService.getStateData();
         }
 
         if (
@@ -132,6 +139,7 @@ export class TaToolbarFiltersComponent implements OnInit, OnChanges, OnDestroy {
         this.tableSevice.currentActionAnimation
             .pipe(takeUntil(this.destroy$))
             .subscribe((res: any) => {
+                console.log(res?.animation, 'res?.animation');
                 if (res?.animation === 'dispatch-data-update') {
                     const newData = res.data.map((type: any) => {
                         type['name'] =
@@ -190,6 +198,9 @@ export class TaToolbarFiltersComponent implements OnInit, OnChanges, OnDestroy {
                             item.trailerType.logoName,
                     }));
                 }
+                if (res?.animation === 'state-data-update') {
+                    this.handleStateDataUpdate(res);
+                }
             });
     }
 
@@ -205,6 +216,22 @@ export class TaToolbarFiltersComponent implements OnInit, OnChanges, OnDestroy {
         ) {
             this.activeTableData = changes.activeTableData.currentValue;
         }
+    }
+
+    public handleStateDataUpdate(res: any): void {
+        const usaArray = [];
+        const canadaArray = [];
+
+        res.data.map((state) => {
+            if (state.countryType.name === ToolbarFilterStringEnum.CANADA_2) {
+                canadaArray.push(state);
+            } else {
+                usaArray.push(state);
+            }
+        });
+
+        this.usaStates = [...usaArray];
+        this.canadaStates = [...canadaArray];
     }
 
     // On Change Mode View
@@ -255,6 +282,7 @@ export class TaToolbarFiltersComponent implements OnInit, OnChanges, OnDestroy {
 
     // On Filter
     onFilter(event: any) {
+        console.log('event', event);
         this.tableSevice.sendCurrentSetTableFilter(event);
     }
 
