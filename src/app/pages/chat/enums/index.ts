@@ -19,3 +19,4 @@ export * from './shared/chat-local-storage-value.enum';
 export * from './conversation/conversation-content/chat-message-action.enum';
 export * from './shared/chat-message-type.enum';
 export * from './shared/chat-department-type.enum';
+export * from './shared/chat-activity-status.enum';

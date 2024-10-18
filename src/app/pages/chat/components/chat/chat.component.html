@@ -182,6 +182,7 @@
                 <ng-container *ngIf="isProfileDetailsDisplayed$ | async">
                     <div class="profile-details">
                         <app-chat-conversation-details
+                            [conversation]="conversation$ | async"
                             [data]="conversationProfileDetails$ | async"
                             [profileDetailsType]="
                                 chatConversationProfileDetailsType.SAFETY

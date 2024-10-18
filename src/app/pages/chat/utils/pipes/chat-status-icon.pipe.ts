@@ -1,5 +1,8 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
+// Enums
+import { ChatActivityStatusEnum } from '@pages/chat/enums';
+
 // Routes
 import { ChatSvgRoutes } from '@pages/chat/utils/routes';
 
@@ -7,15 +10,15 @@ import { ChatSvgRoutes } from '@pages/chat/utils/routes';
     name: 'chatStatusIcon',
 })
 export class ChatStatusIconPipe implements PipeTransform {
-    transform(status: string): string {
-        switch (status?.toLowerCase()) {
-            case 'active':
+    transform(status: ChatActivityStatusEnum): string {
+        switch (status) {
+            case ChatActivityStatusEnum.ACTIVE:
                 return ChatSvgRoutes.activeIcon;
-            case 'online':
+            case ChatActivityStatusEnum.ONLINE:
                 return ChatSvgRoutes.onlineIcon;
-            case 'busy':
+            case ChatActivityStatusEnum.BUSY:
                 return ChatSvgRoutes.busyIcon;
-            case 'offline':
+            case ChatActivityStatusEnum.OFFLINE:
                 return ChatSvgRoutes.offlineIcon;
             default:
                 return ChatSvgRoutes.offlineIcon;

@@ -34,10 +34,8 @@
                             color: '#9E47EC66'
                         }"
                         [textShortName]="
-                            data.userAdditionalInformation[0]?.firstName.concat(
-                                ' ',
-                                data.userAdditionalInformation[0]?.lastName
-                            ) | nameInitials
+                            data.userAdditionalInformation[0]?.fullName
+                                | nameInitials
                         "
                         [size]="74"
                         [fontSize]="30"
@@ -63,7 +61,7 @@
                                 *ngTemplateOutlet="
                                     icon;
                                     context: {
-                                        path: chatSvgRoutes.circleOfflineIcon,
+                                        path: activityStatus | chatStatusIcon,
                                         width: 10,
                                         height: 10
                                     }
@@ -78,69 +76,96 @@
             </div>
             <div class="horizontal-border"></div>
 
-            <ng-container [ngSwitch]="profileDetailsType">
-                <div class="additional-info">
-                    <ng-container
-                        *ngSwitchCase="
-                            chatConversationProfileDetailsType.COMPANY_OR_DRIVER
-                        "
-                    >
+            <ng-container
+                *ngIf="
+                    conversation.conversationType ===
+                    conversationTypeEnum.SINGLE_CHAT
+                "
+            >
+                <ng-container [ngSwitch]="profileDetailsType">
+                    <div class="additional-info">
                         <ng-container
-                            *ngTemplateOutlet="
-                                phoneAndEmail;
-                                context: {
-                                    item: data?.userAdditionalInformation
-                                }
+                            *ngSwitchCase="
+                                chatConversationProfileDetailsType.COMPANY_OR_DRIVER
                             "
-                        ></ng-container>
-                    </ng-container>
-                    <ng-container
-                        *ngSwitchCase="
-                            chatConversationProfileDetailsType.REPAIR
-                        "
-                    >
+                        >
+                            <ng-container
+                                *ngTemplateOutlet="
+                                    phoneAndEmail;
+                                    context: {
+                                        item: data?.userAdditionalInformation
+                                    }
+                                "
+                            ></ng-container>
+                        </ng-container>
                         <ng-container
-                            *ngTemplateOutlet="
-                                userRepair;
-                                context: {
-                                    item: data?.userAdditionalInformation
-                                }
+                            *ngSwitchCase="
+                                chatConversationProfileDetailsType.REPAIR
                             "
-                        ></ng-container>
-                    </ng-container>
+                        >
+                            <ng-container
+                                *ngTemplateOutlet="
+                                    userRepair;
+                                    context: {
+                                        item: data?.userAdditionalInformation
+                                    }
+                                "
+                            ></ng-container>
+                        </ng-container>
 
-                    <ng-container
-                        *ngSwitchCase="
-                            chatConversationProfileDetailsType.DISPATCH_BOARD
-                        "
-                    >
                         <ng-container
-                            *ngTemplateOutlet="
-                                dispatch;
-                                context: {
-                                    item: data?.userAdditionalInformation
-                                }
+                            *ngSwitchCase="
+                                chatConversationProfileDetailsType.DISPATCH_BOARD
                             "
-                        ></ng-container>
-                    </ng-container>
+                        >
+                            <ng-container
+                                *ngTemplateOutlet="
+                                    dispatch;
+                                    context: {
+                                        item: data?.userAdditionalInformation
+                                    }
+                                "
+                            ></ng-container>
+                        </ng-container>
 
-                    <ng-container
-                        *ngSwitchCase="
-                            chatConversationProfileDetailsType.SAFETY
-                        "
-                    >
                         <ng-container
-                            *ngTemplateOutlet="
-                                safety;
-                                context: {
-                                    item: data?.userAdditionalInformation
-                                }
+                            *ngSwitchCase="
+                                chatConversationProfileDetailsType.SAFETY
                             "
-                        ></ng-container>
-                    </ng-container>
-                    <div class="horizontal-border"></div>
-                </div>
+                        >
+                            <ng-container
+                                *ngTemplateOutlet="
+                                    safety;
+                                    context: {
+                                        item: data?.userAdditionalInformation
+                                    }
+                                "
+                            ></ng-container>
+                        </ng-container>
+                        <div class="horizontal-border"></div>
+                    </div>
+                </ng-container>
             </ng-container>
+            {{ conversation.conversationType }}
+
+            <ng-conversation
+                *ngIf="
+                    conversation.conversationType ===
+                    conversationTypeEnum.CHANNEL
+                "
+            >
+                <div class="participants-list">
+                    <ng-container
+                        *ngFor="
+                            let participant of conversation.participants;
+                            let ind = index;
+                            trackBy: '' | trackByProperty
+                        "
+                    >
+                        {{ participant | json }}
+                    </ng-container>
+                </div>
+            </ng-conversation>
 
             <app-chat-profile-resources
                 [title]="'Media'"

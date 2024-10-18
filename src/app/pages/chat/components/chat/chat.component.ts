@@ -71,6 +71,7 @@ export class ChatComponent
     public unreadCount!: number;
     public selectedConversation: number;
     public conversation$!: Observable<ChatSelectedConversation>;
+    public conversation: ChatSelectedConversation;
 
     public ConversationTypeEnum = ConversationTypeEnum;
 
@@ -146,7 +147,10 @@ export class ChatComponent
 
         this.conversation$
             .pipe(takeUntil(this.destroy$))
-            .subscribe(() => this.chatStoreService.closeAttachmentUpload());
+            .subscribe((conversation) => {
+                this.conversation = conversation;
+                this.chatStoreService.closeAttachmentUpload();
+            });
     }
 
     private getDataOnLoad(): void {
@@ -195,8 +199,6 @@ export class ChatComponent
                 ]);
             });
     }
-
-    private getConversationData(): void {}
 
     private getUnreadCount(
         users: CompanyUserChatResponsePaginationReduced,
@@ -258,7 +260,7 @@ export class ChatComponent
                         return {
                             ...data,
                             userAdditionalInformation: [
-                                { ...data.userAdditionalInformation },
+                                ...this.conversation.participants,
                             ],
                         };
                     }
