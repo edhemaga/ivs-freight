@@ -355,20 +355,23 @@
     </app-ta-filter>
 
     <!-- DISPECHER FILTER -->
-    <app-ta-filter
+    <app-ca-filter
         *ngIf="options.toolbarActions.showDispatcherFilter"
-        [type]="'userFilter'"
+        [type]="'dispatcherFilter'"
+        [icon]="'user'"
         [searchState]="true"
         [filterTitle]="'Dispatcher Filter'"
         [defFilterHolder]="true"
         (setFilter)="onFilter($event)"
+        (clearAll)="onFilter($event)"
         [class]="
             options?.toolbarActions?.filtersOrder?.dispatcher
                 ? 'order-' + options.toolbarActions.filtersOrder.location
                 : ''
         "
+        [unselectedUser]="unselectedDispatcher"
     >
-    </app-ta-filter>
+    </app-ca-filter>
 
     <!-- STATUS FILTER -->
     <app-ca-filter

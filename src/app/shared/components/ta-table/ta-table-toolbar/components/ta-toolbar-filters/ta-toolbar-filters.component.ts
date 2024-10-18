@@ -36,6 +36,9 @@ import { TruckassistTableService } from '@shared/services/truckassist-table.serv
 import { Subject, takeUntil } from 'rxjs';
 import { FilterStateService } from '@shared/components/ta-filter/services/filter-state.service';
 
+// models
+import { ArrayStatus } from 'ca-components/lib/models/array-status.model';
+
 @Component({
     selector: 'app-ta-toolbar-filters',
     templateUrl: './ta-toolbar-filters.component.html',
@@ -76,6 +79,7 @@ export class TaToolbarFiltersComponent implements OnInit, OnChanges, OnDestroy {
     private destroy$ = new Subject<void>();
 
     public loadStatusOptionsArray: any;
+    public unselectedDispatcher: ArrayStatus[];
     public truckTypeArray: any;
     public trailerTypeArray: any;
 
@@ -97,6 +101,10 @@ export class TaToolbarFiltersComponent implements OnInit, OnChanges, OnDestroy {
     ngOnInit(): void {
         let truckResData;
         let trailerResData;
+
+        if (this.options.toolbarActions.showDispatcherFilter) {
+            this.filterService.getDispatchData();
+        }
 
         if (
             this.options.toolbarActions.showTruckPmFilter ||
@@ -124,6 +132,17 @@ export class TaToolbarFiltersComponent implements OnInit, OnChanges, OnDestroy {
         this.tableSevice.currentActionAnimation
             .pipe(takeUntil(this.destroy$))
             .subscribe((res: any) => {
+                if (res?.animation === 'dispatch-data-update') {
+                    const newData = res.data.map((type: any) => {
+                        type['name'] =
+                            type?.fullName ??
+                            `${type?.driver?.firstName} ${type?.driver?.lastName}`;
+                        type['count'] = type.loadCount;
+                        return type;
+                    });
+
+                    this.unselectedDispatcher = newData;
+                }
                 if (res?.animation === 'list-update') {
                     this.loadStatusOptionsArray = res.data.statuses;
                 }

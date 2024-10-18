@@ -708,7 +708,7 @@ export class DispatchAssignLoadModalComponent implements OnInit, OnDestroy {
 
     public setFilter(data): void {
         switch (data?.filterType) {
-            case LoadFilterStringEnum.USER_FILTER:
+            case LoadFilterStringEnum.DISPATCHER_FILTER:
                 this.backLoadFilterQuery.dispatchersId = data.queryParams
                     ? data.queryParams
                     : null;

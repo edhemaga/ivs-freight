@@ -516,7 +516,7 @@ export class BrokerDetailsComponent implements OnInit, OnDestroy {
 
     public setFilter(data): void {
         switch (data?.filterType) {
-            case LoadFilterStringEnum.USER_FILTER:
+            case LoadFilterStringEnum.DISPATCHER_FILTER:
                 this.backLoadFilterQuery.dispatcherIds =
                     data.queryParams ?? null;
 

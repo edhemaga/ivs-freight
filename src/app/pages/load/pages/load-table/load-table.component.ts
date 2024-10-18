@@ -39,7 +39,7 @@ import {
 import {
     CardDetails,
     DeleteComment,
-    DropdownItem, 
+    DropdownItem,
 } from '@shared/models/card-models/card-table-data.model';
 import { GridColumn } from '@shared/models/table-models/grid-column.model';
 import { TableToolbarActions } from '@shared/models/table-models/table-toolbar-actions.model';
@@ -227,19 +227,24 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 filter((statusAction) => statusAction !== null)
             )
             .subscribe((status) => {
-                const foundObject= this.viewData.find(
+                const foundObject = this.viewData.find(
                     (item) => item.id === status.id
                 );
 
                 if (!foundObject) return;
 
-                // if user selects Assigend status and 
+                // if user selects Assigend status and
                 // Load does not already have a truck, trailer and driver assigned we should show load modal
-                const isAssignedStatusSelected = [LoadStatusEnum[2]].includes(status.dataBack)
+                const isAssignedStatusSelected = [LoadStatusEnum[2]].includes(
+                    status.dataBack
+                );
                 const isTruckTrailerDriverSelected = !!foundObject.driver;
 
-                if(isAssignedStatusSelected && !isTruckTrailerDriverSelected) {
-                    this.onTableBodyActions({type: TableStringEnum.EDIT, id: foundObject.id})
+                if (isAssignedStatusSelected && !isTruckTrailerDriverSelected) {
+                    this.onTableBodyActions({
+                        type: TableStringEnum.EDIT,
+                        id: foundObject.id,
+                    });
                     return;
                 }
 
@@ -377,7 +382,7 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe((res) => {
                 switch (res?.filterType) {
-                    case LoadFilterStringEnum.USER_FILTER:
+                    case LoadFilterStringEnum.DISPATCHER_FILTER:
                         this.backLoadFilterQuery.dispatcherIds =
                             res.queryParams ?? null;
 

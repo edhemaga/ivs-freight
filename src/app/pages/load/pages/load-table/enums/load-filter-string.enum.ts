@@ -8,6 +8,7 @@ export enum LoadFilterStringEnum {
     TIME_FILTER_FUTURE = 'hasFutureTimeFilter',
     STATUS_FILTER = 'statusFilter',
     USER_FILTER = 'userFilter',
+    DISPATCHER_FILTER = 'dispatcherFilter',
     MONEY_FILTER = 'moneyFilter',
     LOAD_TYPE_FILTER = 'loadTypeFilter',
     PICKUP_FILTER = 'pickupFilter',

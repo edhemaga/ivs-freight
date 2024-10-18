@@ -179,14 +179,16 @@
 
                     <ng-container *ngIf="hasDispatcherFilter">
                         <div class="me-1">
-                            <app-ta-filter
-                                [type]="'userFilter'"
+                            <app-ca-filter
+                                [type]="'dispatcherFilter'"
+                                [icon]="'user'"
                                 [searchState]="true"
                                 [filterTitle]="'Dispatcher Filter'"
                                 [defFilterHolder]="true"
                                 (setFilter)="setFilterValue($event)"
+                                (clearAll)="setFilterValue($event)"
                             >
-                            </app-ta-filter>
+                            </app-ca-filter>
                         </div>
                     </ng-container>
 

@@ -311,15 +311,17 @@
                         <ng-container *ngIf="dispatcherFilter">
                             <span class="ic-hed">
                                 <!-- DISPECHER FILTER -->
-                                <app-ta-filter
-                                    [type]="'userFilter'"
+                                <app-ca-filter
+                                    [type]="'dispatcherFilter'"
+                                    [icon]="'user'"
                                     [searchState]="true"
                                     [filterTitle]="'Dispatcher Filter'"
                                     [defFilterHolder]="true"
                                     (setFilter)="setFilterValue($event)"
+                                    (clearAll)="setFilterValue($event)"
                                 >
-                                </app-ta-filter
-                            ></span>
+                                </app-ca-filter>
+                            </span>
                         </ng-container>
 
                         <ng-container *ngIf="statusFilter">
