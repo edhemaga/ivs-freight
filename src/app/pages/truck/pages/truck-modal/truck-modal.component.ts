@@ -65,6 +65,12 @@ import { TaNgxSliderComponent } from '@shared/components/ta-ngx-slider/ta-ngx-sl
 // models
 import { GetTruckModalResponse, VinDecodeResponse } from 'appcoretruckassist';
 
+// Enums
+import { TruckModalForm } from '@pages/truck/pages/truck-modal/enums';
+
+// Const
+import { TruckModalConstants } from '@pages/truck/pages/truck-modal/const';
+
 @Component({
     selector: 'app-truck-modal',
     templateUrl: './truck-modal.component.html',
@@ -93,6 +99,7 @@ import { GetTruckModalResponse, VinDecodeResponse } from 'appcoretruckassist';
     ],
 })
 export class TruckModalComponent implements OnInit, OnDestroy {
+    public truckTypesWithLength = TruckModalConstants.truckTypesWithLength;
     @Input() editData: any;
 
     public truckForm: UntypedFormGroup;
@@ -392,31 +399,33 @@ export class TruckModalComponent implements OnInit, OnDestroy {
 
     public onSelectDropdown(event: any, action: string) {
         switch (action) {
-            case 'truck-type': {
+            case 'truck-type': 
                 this.selectedTruckType = event;
 
-                if (this.selectedTruckType?.name === 'Box Truck') {
+                if (this.isLengthRequired) {
                     this.inputService.changeValidators(
-                        this.truckForm.get('truckLengthId')
+                        this.truckForm.get(TruckModalForm.TRUCK_TRAILER_LENGTH)
                     );
                 } else {
                     this.inputService.changeValidators(
-                        this.truckForm.get('truckLengthId'),
+                        this.truckForm.get(TruckModalForm.TRUCK_TRAILER_LENGTH),
                         false
                     );
                     this.selectedTruckLengthId = null;
                 }
+
+                if (this.isLengthRequired) {
+                    this.selectedTruckLengthId = null;
+                    this.truckForm.get(TruckModalForm.TRUCK_TRAILER_LENGTH).patchValue(null);
+                }
                 break;
-            }
-            case 'truck-make': {
+            case 'truck-make': 
                 this.selectedTruckMake = event;
                 break;
-            }
-            case 'color': {
+            case 'color': 
                 this.selectedColor = event;
                 break;
-            }
-            case 'owner': {
+            case 'owner': 
                 if (event?.canOpenModal) {
                     this.ngbActiveModal.close();
 
@@ -458,63 +467,52 @@ export class TruckModalComponent implements OnInit, OnDestroy {
                     this.selectedOwner = event;
                 }
                 break;
-            }
-            case 'gross-weight': {
+            case 'gross-weight': 
                 this.selectedTruckGrossWeight = event;
                 break;
-            }
-            case 'tire-size': {
+            case 'tire-size': 
                 this.selectedTireSize = event;
                 break;
-            }
-            case 'shifter': {
+            case 'shifter': 
                 this.selectedShifter = event;
                 break;
-            }
-            case 'engine-model': {
+            case 'engine-model': 
                 this.selectedtruckEngineModelId = event;
                 break;
-            }
-            case 'engine-oil-type': {
+            case 'engine-oil-type': 
                 this.selectedEngineOilType = event;
                 break;
-            }
-            case 'ap-unit': {
+            case 'ap-unit': 
                 this.selectedAPUnit = event;
                 break;
-            }
-            case 'gear-ratio': {
+            case 'gear-ratio': 
                 this.selectedGearRatio = event;
                 break;
-            }
-            case 'toll-transponder': {
+            case 'toll-transponder': 
                 this.selectedTollTransponders = event;
                 break;
-            }
-            case 'brakes': {
+            case 'brakes': 
                 this.selectedBrakes = event;
                 break;
-            }
-            case 'front-wheels': {
+            case 'front-wheels': 
                 this.selectedFrontWheels = event;
                 break;
-            }
-            case 'rear-wheels': {
+            case 'rear-wheels': 
                 this.selectedRearWheels = event;
                 break;
-            }
-            case 'fuel-type': {
+            case 'fuel-type': 
                 this.selectedFuelType = event;
                 break;
-            }
-            case 'truck-length': {
+            case 'truck-length': 
                 this.selectedTruckLengthId = event;
+                this.inputService.changeValidators(
+                    this.truckForm.get(TruckModalForm.TRUCK_TRAILER_LENGTH),
+                    this.isLengthRequired
+                );
                 break;
-            }
 
-            default: {
+            default: 
                 break;
-            }
         }
     }
 
@@ -765,6 +763,10 @@ export class TruckModalComponent implements OnInit, OnDestroy {
                 },
                 error: () => {},
             });
+    }
+
+    public get isLengthRequired(): boolean {
+        return this.truckTypesWithLength.includes(this.selectedTruckType?.name);
     }
 
     private populateStorageData(res: any) {
