@@ -272,6 +272,7 @@ export class TrailerModalConfig {
             isDropdown: true,
             placeholderIcon: 'date',
             customClass: 'datetimeclass',
+            isFutureDateDisabled: true
         };
     }
     static getTrailerPurchasePriceConfig(): ITaInput {

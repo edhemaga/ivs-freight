@@ -369,7 +369,7 @@ export class TaInputComponent
                 this.selectionInput = -1;
             }
 
-            this.toggleDropdownOptions()
+            this.toggleDropdownOptions();
         }
 
         // Dropdown
@@ -503,27 +503,33 @@ export class TaInputComponent
         if (this._inputConfig.removeLeadingZero) {
             const currentValue = this.getSuperControl.value;
 
-            if(!currentValue) {
+            if (!currentValue) {
                 this.getSuperControl.patchValue('');
                 this.getSuperControl.setErrors(null);
                 return;
             }
-    
+
             if (this._inputConfig.negativeLeadingZero) {
                 const isNegative = currentValue.startsWith('-');
-    
+
                 if (isNegative) {
-                     // Get the part after the negative sign
+                    // Get the part after the negative sign
                     const numberPart = currentValue.slice(1);
                     // Remove leading zeros
-                    const transformedNumber = numberPart.replace(/^0+(?=\d)/, ''); 
-                    this.getSuperControl.patchValue(`-${transformedNumber}`); 
+                    const transformedNumber = numberPart.replace(
+                        /^0+(?=\d)/,
+                        ''
+                    );
+                    this.getSuperControl.patchValue(`-${transformedNumber}`);
                 } else {
-                    this.getSuperControl.patchValue(currentValue.replace(/^0+(?=\d)/, ''));
+                    this.getSuperControl.patchValue(
+                        currentValue.replace(/^0+(?=\d)/, '')
+                    );
                 }
-    
             } else {
-                this.getSuperControl.patchValue(currentValue.replace(/^0+(?!$)/, ''));
+                this.getSuperControl.patchValue(
+                    currentValue.replace(/^0+(?!$)/, '')
+                );
             }
         }
     }
@@ -944,7 +950,7 @@ export class TaInputComponent
                     this.getSuperControl.setErrors({ min: 2 });
                 } else if (parseInt(value) > 17) {
                     this.getSuperControl.setErrors({ max: 17 });
-               }
+                }
             } else {
                 this.getSuperControl.setErrors(null);
             }
@@ -1187,10 +1193,11 @@ export class TaInputComponent
             ].includes(this._inputConfig.name.toLowerCase())
         ) {
             // Only numbers
-            if (this.inputService
+            if (
+                this.inputService
                     .getInputRegexPattern('qty')
                     .test(String.fromCharCode(event.charCode))
-            ) { 
+            ) {
                 return true;
             }
 
@@ -1485,7 +1492,9 @@ export class TaInputComponent
             return false;
         }
 
-        if(['full contact name'].includes(this._inputConfig.name.toLowerCase())) {
+        if (
+            ['full contact name'].includes(this._inputConfig.name.toLowerCase())
+        ) {
             if (
                 this.inputService
                     .getInputRegexPattern('full contact name')
@@ -2185,7 +2194,6 @@ export class TaInputComponent
     selectionInput: number = -1;
 
     setSelection(e) {
-
         const element = e.target;
         this.focusInput = true;
 
@@ -2860,14 +2868,21 @@ export class TaInputComponent
                     !isNaN(this.span3?.nativeElement.innerHTML)
                 ) {
                     if (
-                        this._inputConfig.expiredDateInvalid &&
-                        moment(this.dateTimeInputDate).isBefore(moment())
+                        this._inputConfig.isFutureDateDisabled &&
+                        moment(this.dateTimeInputDate).isAfter(moment())
                     ) {
-                        this.getSuperControl.setErrors({ invalid: true }); // don't accept expired dates
+                        this.getSuperControl.setErrors({ invalid: true }); // don't accept future dates
                     } else {
-                        this.calendarService.dateChanged.next(
-                            this.dateTimeInputDate
-                        );
+                        if (
+                            this._inputConfig.expiredDateInvalid &&
+                            moment(this.dateTimeInputDate).isBefore(moment())
+                        ) {
+                            this.getSuperControl.setErrors({ invalid: true }); // don't accept expired dates
+                        } else {
+                            this.calendarService.dateChanged.next(
+                                this.dateTimeInputDate
+                            );
+                        }
                     }
                 } else {
                     this.span1.nativeElement.innerHTML = 'mm';
