@@ -8,13 +8,15 @@
     [saveAndAddNew]="editData?.type !== 'edit'"
     [customClass]="'modal-container-M'"
     [isClickEnabledWhileFormInvalid]="true"
+    [topDivider]="false"
     (action)="onModalAction($event)"
 >
     <div origin>
         <app-ta-tab-switch
             [tabs]="tabs"
-            (switchClicked)="tabChange($event)"
             [type]="'type1-modal-popup'"
+            [isMarginTopDisabled]="true"
+            (switchClicked)="tabChange($event)"
         >
         </app-ta-tab-switch>
 

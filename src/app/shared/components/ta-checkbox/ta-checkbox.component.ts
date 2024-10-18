@@ -9,6 +9,10 @@ import {
 } from '@angular/core';
 import { FormsModule, NgControl, ReactiveFormsModule } from '@angular/forms';
 import { ControlValueAccessor } from '@angular/forms';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+
+// components
+import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
 
 // modules
 import { AngularSvgIconModule } from 'angular-svg-icon';
@@ -25,6 +29,10 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
         FormsModule,
         ReactiveFormsModule,
         AngularSvgIconModule,
+        NgbModule,
+
+        // components
+        TaAppTooltipV2Component,
     ],
 })
 export class TaCheckboxComponent implements ControlValueAccessor {

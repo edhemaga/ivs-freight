@@ -4,7 +4,7 @@
     [editName]="editData?.data?.truckNumber"
     [isModalValid]="truckForm.valid && isFormDirty"
     [saveAndAddNew]="editData?.type !== 'edit'"
-    [editDate]="editData?.type === 'edit'"
+    [isEditDate]="editData?.type === 'edit'"
     (action)="onModalAction($event)"
 >
     <div origin class="origin-part-modal">
