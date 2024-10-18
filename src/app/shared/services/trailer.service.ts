@@ -163,29 +163,6 @@ export class TrailerService implements OnDestroy {
                     .pipe(takeUntil(this.destroy$))
                     .subscribe({
                         next: (trailer: any) => {
-                            this.trailerActiveStore.remove(
-                                ({ id }) => id === data.id
-                            );
-
-                            this.trailerMinimalStore.remove(
-                                ({ id }) => id === data.id
-                            );
-
-                            trailer.registrations =
-                                storedTrailerData.registrations;
-                            trailer.titles = storedTrailerData.titles;
-                            trailer.inspections = storedTrailerData.inspections;
-
-                            trailer = {
-                                ...trailer,
-                                fileCount: trailer?.filesCountForList
-                                    ? trailer.filesCountForList
-                                    : 0,
-                            };
-
-                            this.trailerActiveStore.add(trailer);
-                            this.trailerMinimalStore.add(trailer);
-                            this.tadl.replace(trailer.id, trailer);
                             this.tableService.sendActionAnimation({
                                 animation: 'update',
                                 data: trailer,
@@ -206,24 +183,13 @@ export class TrailerService implements OnDestroy {
     ): Observable<any> {
         return this.trailerService.apiTrailerIdDelete(trailerId).pipe(
             tap(() => {
-                this.trailerMinimalStore.remove(({ id }) => id === trailerId);
-                this.trailerItemStore.remove(({ id }) => id === trailerId);
-                this.tadl.remove(({ id }) => id === trailerId);
                 const trailerCount = JSON.parse(
                     localStorage.getItem('trailerTableCount')
                 );
 
                 if (tableSelectedTab === 'active') {
-                    this.trailerActiveStore.remove(
-                        ({ id }) => id === trailerId
-                    );
-
                     trailerCount.active--;
                 } else if (tableSelectedTab === 'inactive') {
-                    this.trailerInactiveStore.remove(
-                        ({ id }) => id === trailerId
-                    );
-
                     trailerCount.inactive--;
                 }
 
@@ -258,22 +224,13 @@ export class TrailerService implements OnDestroy {
     ): Observable<TrailerResponse> {
         return this.trailerService.apiTrailerIdDelete(trailerId).pipe(
             tap(() => {
-                this.tadl.remove(({ id }) => id === trailerId);
                 const trailerCount = JSON.parse(
                     localStorage.getItem('trailerTableCount')
                 );
 
                 if (tableSelectedTab === 'active') {
-                    this.trailerActiveStore.remove(
-                        ({ id }) => id === trailerId
-                    );
-
                     trailerCount.active--;
                 } else if (tableSelectedTab === 'inactive') {
-                    this.trailerInactiveStore.remove(
-                        ({ id }) => id === trailerId
-                    );
-
                     trailerCount.inactive--;
                 }
 
@@ -300,19 +257,9 @@ export class TrailerService implements OnDestroy {
                 );
 
                 trailersToDelete.map((trailerId) => {
-                    this.tadl.remove(({ id }) => id === trailerId);
-
                     if (tableSelectedTab === 'active') {
-                        this.trailerActiveStore.remove(
-                            ({ id }) => id === trailerId
-                        );
-
                         trailerCount.active--;
                     } else if (tableSelectedTab === 'inactive') {
-                        this.trailerInactiveStore.remove(
-                            ({ id }) => id === trailerId
-                        );
-
                         trailerCount.inactive--;
                     }
                 });
@@ -438,36 +385,6 @@ export class TrailerService implements OnDestroy {
                         localStorage.getItem('trailerTableCount')
                     );
 
-                    /* Get Data From Store To Update */
-                    let trailerUpdate =
-                        tabSelected === 'active'
-                            ? this.trailerActiveQuery.getAll({
-                                  filterBy: ({ id }) => id === trailerId,
-                              })
-                            : this.trailerInactiveQuery.getAll({
-                                  filterBy: ({ id }) => id === trailerId,
-                              });
-
-                    /* Remove Data From Store */
-                    tabSelected === 'active'
-                        ? this.trailerActiveStore.remove(
-                              ({ id }) => id === trailerId
-                          )
-                        : this.trailerInactiveStore.remove(
-                              ({ id }) => id === trailerId
-                          );
-
-                    /* Add Data To New Store */
-                    tabSelected === 'active'
-                        ? this.trailerInactiveStore.add({
-                              ...trailerUpdate[0],
-                              status: 1,
-                          })
-                        : this.trailerActiveStore.add({
-                              ...trailerUpdate[0],
-                              status: 0,
-                          });
-
                     /* Update Table Tab Count */
                     if (tabSelected === 'active') {
                         trailerCount.active--;
@@ -525,30 +442,6 @@ export class TrailerService implements OnDestroy {
                         .pipe(takeUntil(this.destroy$))
                         .subscribe({
                             next: (trailer: any) => {
-                                this.trailerActiveStore.remove(
-                                    ({ id }) => id === trailerId
-                                );
-
-                                this.trailerMinimalStore.remove(
-                                    ({ id }) => id === trailerId
-                                );
-
-                                trailer.registrations =
-                                    storedTrailerData.registrations;
-                                trailer.titles = storedTrailerData.titles;
-                                trailer.inspections =
-                                    storedTrailerData.inspections;
-
-                                trailer = {
-                                    ...trailer,
-                                    fileCount: trailer?.filesCountForList
-                                        ? trailer.filesCountForList
-                                        : 0,
-                                };
-
-                                this.trailerActiveStore.add(trailer);
-                                this.trailerMinimalStore.add(trailer);
-                                this.tadl.replace(trailer.id, trailer);
                                 this.tableService.sendActionAnimation({
                                     animation: 'update',
                                     data: trailer,
@@ -580,10 +473,13 @@ export class TrailerService implements OnDestroy {
                           ...entity,
                           note: data.value,
                       }))
-                    : this.trailerInactiveStore.update(trailer.id, (entity) => ({
-                          ...entity,
-                          note: data.value,
-                      }));
+                    : this.trailerInactiveStore.update(
+                          trailer.id,
+                          (entity) => ({
+                              ...entity,
+                              note: data.value,
+                          })
+                      );
             }
         });
     }

@@ -116,6 +116,7 @@
                         </div>
                         <div class="modal-date-border"></div>
                     </ng-container>
+
                     <!-- Hazardous Logo -->
 
                     <ng-container *ngIf="isVisibleHazardous">
@@ -237,6 +238,7 @@
                     </ng-container>
 
                     <!-- Assign load modal on dispatch board -->
+
                     <ng-container *ngIf="isAssignLoadModal">
                         <div
                             ngbTooltip
@@ -291,10 +293,24 @@
 
                     <!-- Header close -->
 
+                    <ng-container *ngIf="hasCalendarIcon">
+                        <div
+                            class="d-flex align-items-center modal-calendar-container"
+                        >
+                            <svg-icon
+                                class="d-flex justify-content-center align-items-center modal-calendar-icon"
+                                [src]="modalSvgRoutes.calendarRoute"
+                                (click)="onAction('calendar')"
+                            ></svg-icon>
+                        </div>
+                    </ng-container>
+
+                    <!-- Header close -->
+
                     <ng-container *ngIf="!isCloseIconRemoved">
                         <svg-icon
                             class="modal-close"
-                            src="assets/svg/ic_x.svg"
+                            [src]="modalSvgRoutes.closeRoute"
                             (click)="onAction('close')"
                         ></svg-icon>
                     </ng-container>
@@ -884,6 +900,8 @@
                                     'Company Office',
                                     'delete-review',
                                     'User',
+                                    'broker contact',
+                                    'shipper contact'
                                 ].includes(confirmationData?.template)
                             }"
                             type="button"

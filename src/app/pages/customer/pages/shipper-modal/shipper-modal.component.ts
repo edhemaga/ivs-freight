@@ -1075,11 +1075,12 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
 
                     this.startFormChanges();
 
+                    this.cdRef.detectChanges();
+
                     setTimeout(() => {
                         this.isCardAnimationDisabled = false;
                     }, 1000);
                 },
-                error: () => {},
             });
     }
 
