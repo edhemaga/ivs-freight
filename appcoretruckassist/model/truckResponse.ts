@@ -40,6 +40,7 @@ export interface TruckResponse {
     purchaseDate?: string | null;
     purchasePrice?: number | null;
     truckGrossWeight?: TruckGrossWeightResponse;
+    volume?: number | null;
     emptyWeight?: number | null;
     truckEngineModel?: TruckEngineModelResponse;
     tireSize?: TireSizeResponse;

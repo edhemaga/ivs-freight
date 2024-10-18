@@ -34,6 +34,7 @@ export interface TruckShortResponse {
     owner?: OwnerShortResponse;
     commission?: number | null;
     truckGrossWeight?: TruckGrossWeightResponse;
+    volume?: number | null;
     emptyWeight?: number | null;
     truckEngineModel?: TruckEngineModelResponse;
     engineOilType?: EnumValue;

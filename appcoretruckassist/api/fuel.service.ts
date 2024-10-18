@@ -2537,14 +2537,13 @@ export class FuelService {
     /**
      * @param id 
      * @param favourite 
-     * @param note 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiFuelFuelstopPut(id?: number, favourite?: boolean, note?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<object>;
-    public apiFuelFuelstopPut(id?: number, favourite?: boolean, note?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<object>>;
-    public apiFuelFuelstopPut(id?: number, favourite?: boolean, note?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<object>>;
-    public apiFuelFuelstopPut(id?: number, favourite?: boolean, note?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
+    public apiFuelFuelstopPut(id?: number, favourite?: boolean, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<object>;
+    public apiFuelFuelstopPut(id?: number, favourite?: boolean, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<object>>;
+    public apiFuelFuelstopPut(id?: number, favourite?: boolean, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<object>>;
+    public apiFuelFuelstopPut(id?: number, favourite?: boolean, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
         let localVarQueryParameters = new HttpParams({encoder: this.encoder});
 
@@ -2603,9 +2602,6 @@ export class FuelService {
         }
         if (favourite !== undefined) {
             localVarFormParams = localVarFormParams.append('Favourite', <any>favourite) as any || localVarFormParams;
-        }
-        if (note !== undefined) {
-            localVarFormParams = localVarFormParams.append('Note', <any>note) as any || localVarFormParams;
         }
 
         let responseType_: 'text' | 'json' | 'blob' = 'json';

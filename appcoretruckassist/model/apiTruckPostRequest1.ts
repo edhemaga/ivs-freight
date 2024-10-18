@@ -32,6 +32,7 @@ export interface ApiTruckPostRequest1 {
     PurchaseDate?: string;
     PurchasePrice?: number;
     TruckGrossWeightId?: number;
+    Volume?: number;
     EmptyWeight?: number;
     TruckEngineModelId?: number;
     TireSizeId?: number;
