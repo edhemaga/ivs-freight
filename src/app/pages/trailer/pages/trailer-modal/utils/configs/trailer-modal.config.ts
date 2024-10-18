@@ -249,6 +249,7 @@ export class TrailerModalConfig {
             label: 'FHWA Exp.',
             isRequired: true,
             hideClear: true,
+            removeLeadingZero: true,
             commands: {
                 active: true,
                 type: 'months',

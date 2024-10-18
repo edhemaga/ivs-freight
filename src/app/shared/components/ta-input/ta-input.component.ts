@@ -1183,6 +1183,7 @@ export class TaInputComponent
                 'multiformsecondto',
                 'multiformthirdfrom',
                 'multiformthirdto',
+                'months',
             ].includes(this._inputConfig.name.toLowerCase())
         ) {
             // Only numbers
