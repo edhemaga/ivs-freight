@@ -384,7 +384,10 @@ export class CustomerCardModalComponent implements OnInit, OnDestroy {
                     this.setDefaultDataBack = data.back_side;
                 })
         );
-        this.cardsAllData = CustomerCardsModalData.allDataLoad;
+        this.cardsAllData =
+            this.tabSelected === TableStringEnum.ACTIVE
+                ? CustomerCardsModalData.allDataLoadBroker
+                : CustomerCardsModalData.allDataLoad;
     }
 
     public identity(item: CardRows): number {
