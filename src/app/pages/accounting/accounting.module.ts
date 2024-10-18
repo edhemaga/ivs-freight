@@ -36,6 +36,7 @@ import {
     CaPayrollListSummaryOverviewComponent,
     CaProfileImageComponent
 } from 'ca-components';
+import { DriverMileageExpandedTableComponent } from './pages/payroll/components/tables/driver-mileage-expanded-table/driver-mileage-expanded-table.component';
 @NgModule({
     declarations: [
         // Components
@@ -52,6 +53,7 @@ import {
         DriverMileageSoloTableComponent,
         PayrollTableTotalPipe,
         DriverMileageCollapsedTableComponent,
+        DriverMileageExpandedTableComponent,
     ],
     imports: [
         // Modules

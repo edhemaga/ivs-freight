@@ -7,6 +7,7 @@ export const payrollState: PayrollState = {
     payrollCounts: {},
     payrollDriverMileage: [],
     driverMileageCollapsedList: [],
+    driverMileageExpandedList: [],
     loading: false,
     reportLoading: false,
     expandedReportTable: false,
@@ -131,6 +132,34 @@ export const payrollReducer = createReducer(
     ),
     on(
         PayrollSoloMileageDriver.getPayrollMileageDriverCollapsedListError,
+        (state) => {
+            return {
+                ...state,
+                loading: false,
+            };
+        }
+    ),
+    on(
+        PayrollSoloMileageDriver.getPayrollMileageDriverExpandedList,
+        (state) => {
+            return {
+                ...state,
+                loading: true,
+            };
+        }
+    ),
+    on(
+        PayrollSoloMileageDriver.getPayrollMileageDriverExpandedListSuccess,
+        (state, data) => {
+            return {
+                ...state,
+                driverMileageExpandedList: data.data,
+                loading: false,
+            };
+        }
+    ),
+    on(
+        PayrollSoloMileageDriver.getPayrollMileageDriverExpandedListError,
         (state) => {
             return {
                 ...state,

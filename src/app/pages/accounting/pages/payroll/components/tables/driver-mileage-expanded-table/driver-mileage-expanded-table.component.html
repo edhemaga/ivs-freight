@@ -11,41 +11,42 @@
     [data$]="tableData$"
 ></app-ca-main-table>
 
-<ng-template #customDriverTemplate let-data>
-    <div class="driver-solo-info d-flex">
-        <app-ca-profile-image
-            [avatarColor]="{ background: '#DFC2F9', color: '#9E47EC66' }"
-            [textShortName]="'FJ'"
-            [size]="20"
-            [isRound]="false" 
-            [isHoverEffect]="false"
-        ></app-ca-profile-image>
-        <span class="driver-solo-info-text">{{ data.driver.fullName }}</span>
-        <div class="payroll_count d-flex justify-content-center align-items-center">{{data.payrollCount}}</div>
-    </div>
-</ng-template>
-
 <ng-template #customStatus let-data>
     <div class="custom-status-holder d-flex align-itemst-center">
         <svg-icon
             class="payment_done"
-            *ngIf="data === '0'"
+            *ngIf="data.name === 'Paid'"
             src="assets/svg/common/dropdown-done-icon.svg"
         ></svg-icon>
         <svg-icon
             class="caution"
-            *ngIf="data > 0"
+            *ngIf="data.name === 'ShortPaid' || data.name === 'NotPaid'"
             src="assets/svg/common/ic_feedback_mark_incorrect.svg"
         ></svg-icon>
-        <div
-            *ngIf="data !== 0"
+        <!-- <div
+            *ngIf="data.numberOfDays !== 0"
             class="custom-status-text"
-            [ngClass]="{ 'past-payment': data > 0 }"
+            [ngClass]="{ 'past-payment': data.numberOfDays < 0 }"
         >
-            {{ Math.abs(data) }} UNPAID
+            {{ Math.abs(data.numberOfDays) }} DAYS
+        </div> -->
+        <div
+            *ngIf="data.name === 'Paid'"
+            class="custom-status-text ready-payment"
+        >
+            PAID
         </div>
-        <div *ngIf="data === 0" class="custom-status-text ready-payment">
-            all paid
+        <div
+            *ngIf="data.name === 'ShortPaid'"
+            class="custom-status-text past-payment"
+        >
+            SHORT-P
+        </div>
+        <div
+            *ngIf="data.name === 'NotPaid'"
+            class="custom-status-text past-payment"
+        >
+            UNPAID
         </div>
     </div>
 </ng-template>

@@ -5,6 +5,7 @@ import * as PayrollDriverMileageSolo from '../actions/payroll_solo_mileage_drive
 import {
     selectClosingReportStatus,
     selectDriverMileageCollapsedTable,
+    selectDriverMileageExpandedTable,
     selectPayrollCounts,
     selectPayrollDriverMileageStops,
     selectPayrollLoad,
@@ -25,6 +26,7 @@ import { Injectable } from '@angular/core';
 import {
     IPayrollCountsSelector,
     MilesStopShortReponseWithRowType,
+    PayrollDriverMileageExpandedListResponse,
 } from '../models/payroll.model';
 import { PayrollDriverMileageResponse } from 'appcoretruckassist/model/payrollDriverMileageResponse';
 
@@ -82,7 +84,9 @@ export class PayrollFacadeService {
         PayrollDriverMileageListResponse[]
     > = this.store.pipe(select(selectDriverMileageCollapsedTable));
 
-    
+    public selectPayrollDriverMileageExpanded$: Observable<
+     PayrollDriverMileageExpandedListResponse[]
+    > = this.store.pipe(select(selectDriverMileageExpandedTable));
 
     public getPayrollCounts(showOpen: boolean) {
         this.store.dispatch(
@@ -99,6 +103,14 @@ export class PayrollFacadeService {
     public getPayrollDriverMileageCollapsedList() {
         this.store.dispatch(
             PayrollDriverMileageSolo.getPayrollMileageDriverCollapsedList()
+        );
+    }
+
+    public getPayrollDriverMileageExpandedList(driverId: number) {
+        this.store.dispatch(
+            PayrollDriverMileageSolo.getPayrollMileageDriverExpandedList({
+                driverId,
+            })
         );
     }
 

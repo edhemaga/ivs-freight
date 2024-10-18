@@ -7,7 +7,10 @@ import {
 import { PayrollDriverMileageResponse } from 'appcoretruckassist/model/payrollDriverMileageResponse';
 import { Observable, of } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { PayrollDriverMileageCollapsedListResponse } from '../state/models/payroll.model';
+import {
+    PayrollDriverMileageCollapsedListResponse,
+    PayrollDriverMileageExpandedListResponse,
+} from '../state/models/payroll.model';
 
 @Injectable({ providedIn: 'root' })
 export class PayrollService {
@@ -34,6 +37,14 @@ export class PayrollService {
     > {
         return this.http.get<PayrollDriverMileageCollapsedListResponse[]>(
             `${environment.API_ENDPOINT}/api/payroll/driver/mileage/closed/collapsed/list`
+        );
+    }
+
+    public getPayrollSoloMileageDriverExpandedList(
+        driverId: number
+    ): Observable<PayrollDriverMileageExpandedListResponse[]> {
+        return this.http.get<PayrollDriverMileageExpandedListResponse[]>(
+            `${environment.API_ENDPOINT}/api/payroll/driver/mileage/closed/expanded/list?Driverid=${driverId}`
         );
     }
 

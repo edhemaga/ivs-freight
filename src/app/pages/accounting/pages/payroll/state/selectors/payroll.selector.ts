@@ -174,6 +174,13 @@ export const selectDriverMileageCollapsedTable = createSelector(
     }
 )
 
+export const selectDriverMileageExpandedTable = createSelector(
+    selectPayrollState,
+    (state) => {
+        return state.driverMileageExpandedList
+    }
+)
+
 function getPayrollTableItem(
     payrollTitle: string,
     item?: PayrollCountItemResponse

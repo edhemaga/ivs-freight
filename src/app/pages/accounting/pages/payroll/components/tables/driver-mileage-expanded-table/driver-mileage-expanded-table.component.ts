@@ -9,68 +9,61 @@ import {
     Output,
     ViewChild,
 } from '@angular/core';
-
-// Services
 import { PayrollFacadeService } from '../../../state/services/payroll.service';
 import { Observable } from 'rxjs';
-import { PayrollDriverMileageCollapsedListResponse } from '../../../state/models/payroll.model';
+import { PayrollDriverMileageExpandedListResponse } from '../../../state/models/payroll.model';
 import { ColumnConfig } from 'ca-components';
 
 @Component({
-    selector: 'app-driver-mileage-collapsed-table',
-    templateUrl: './driver-mileage-collapsed-table.component.html',
-    styleUrls: ['./driver-mileage-collapsed-table.component.scss'],
+    selector: 'app-driver-mileage-expanded-table',
+    templateUrl: './driver-mileage-expanded-table.component.html',
+    styleUrls: ['./driver-mileage-expanded-table.component.scss'],
 })
-export class DriverMileageCollapsedTableComponent
+export class DriverMileageExpandedTableComponent
     implements OnInit, AfterViewInit, OnDestroy
 {
-    // Expose Javascript Math to template
-    Math = Math;
-
+    @Input() driverId: number;
     @Output() expandTableEvent: EventEmitter<any> = new EventEmitter<any>();
     @Input() title: string;
     @Input() expandTable: boolean;
 
-    public loading$: Observable<boolean>;
-    tableData$: Observable<PayrollDriverMileageCollapsedListResponse[]>;
-    columns: ColumnConfig[];
-
-    @ViewChild('customDriverTemplate', { static: false })
-    public readonly customDriverTemplate!: ElementRef;
     @ViewChild('customStatus', { static: false })
     public readonly customStatusTemplate!: ElementRef;
     @ViewChild('customMileageHeader', { static: false })
     public readonly customMileageHeaderTemplate!: ElementRef;
+
+    public loading$: Observable<boolean>;
+    tableData$: Observable<PayrollDriverMileageExpandedListResponse[]>;
+    columns: ColumnConfig[];
 
     constructor(private payrollFacadeService: PayrollFacadeService) {}
 
     ngAfterViewInit() {
         this.columns = [
             {
-                row: true,
-                header: 'Name',
-                field: 'driver',
-                sortable: false,
-                cellType: 'template',
-                template: this.customDriverTemplate, // Pass the template reference
+                header: 'Payroll',
+                field: 'payrollNumber',
+                cellType: 'text',
+                cellCustomClasses: 'text-left',
+                textCustomClasses: 'b-600',
             },
             {
-                header: 'First',
-                field: 'firstPayroll',
+                header: 'Period',
+                field: 'periodStart',
                 pipeType: 'date',
                 pipeString: 'MM/dd/yy',
                 cellType: 'text', // Pass the template reference
             },
             {
-                header: 'Last',
-                field: 'lastPayroll',
+                header: 'Closed',
+                field: 'periodEnd',
                 pipeType: 'date',
                 pipeString: 'MM/dd/yy',
                 cellType: 'text', // Pass the template reference
             },
             {
                 header: 'Status',
-                field: 'statusUnpaidCount',
+                field: 'payrollStatus',
                 cellType: 'template',
                 template: this.customStatusTemplate, // Pass the template reference
             },
@@ -133,6 +126,7 @@ export class DriverMileageCollapsedTableComponent
                 cellType: 'text',
                 cellCustomClasses: 'text-right',
                 textCustomClasses: 'b-600',
+                hiddeOnTableReduce: true,
             },
             {
                 header: 'Debt',
@@ -142,6 +136,7 @@ export class DriverMileageCollapsedTableComponent
                 cellType: 'text',
                 cellCustomClasses: 'text-right',
                 textCustomClasses: 'b-600',
+                hiddeOnTableReduce: true,
             },
         ];
     }
@@ -151,16 +146,18 @@ export class DriverMileageCollapsedTableComponent
     }
 
     subscribeToStoreData() {
-        this.payrollFacadeService.getPayrollDriverMileageCollapsedList();
+        this.payrollFacadeService.getPayrollDriverMileageExpandedList(
+            this.driverId
+        );
 
         this.loading$ = this.payrollFacadeService.payrollLoading$;
         this.tableData$ =
-            this.payrollFacadeService.selectPayrollDriverMileageCollapsed$;
+            this.payrollFacadeService.selectPayrollDriverMileageExpanded$;
     }
+
+    ngOnDestroy(): void {}
 
     selectPayrollReport(report: any) {
         this.expandTableEvent.emit(report);
     }
-
-    ngOnDestroy(): void {}
 }

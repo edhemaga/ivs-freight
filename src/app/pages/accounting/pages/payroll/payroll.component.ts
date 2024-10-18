@@ -29,8 +29,11 @@ import { PayrollQuery } from '@pages/accounting/pages/payroll/state/payroll.quer
 import { PayrollFacadeService } from './state/services/payroll.service';
 import { IPayrollCountsSelector } from './state/models/payroll.model';
 import { DriverMileageSoloTableComponent } from './components/tables/driver-mileage-solo-table/driver-mileage-solo-table.component';
-import { PayrollListSummaryOverview } from 'ca-components';
 import { DriverMileageCollapsedTableComponent } from './components/tables/driver-mileage-collapsed-table/driver-mileage-collapsed-table.component';
+
+import { PayrollListSummaryOverview } from 'ca-components';
+import { DriverShortResponse } from 'appcoretruckassist';
+import { DriverMileageExpandedTableComponent } from './components/tables/driver-mileage-expanded-table/driver-mileage-expanded-table.component';
 @Component({
     selector: 'app-payroll',
     templateUrl: './payroll.component.html',
@@ -160,54 +163,95 @@ export class PayrollComponent implements OnInit, AfterViewInit, OnDestroy {
     }) {
         this.openedIndex = this.openedIndex === data.index ? -1 : data.index;
         if (data.status) {
-            this.container.clear();
+            this.payrollType = `${data.payrollSummary.text} ${data.payrollSummary.type}`;
+            this.handleTableShow();
+        }
+    }
 
-            const payrollType = `${data.payrollSummary.text} ${data.payrollSummary.type}`;
+    payrollType: string;
+    selectedDriver: DriverShortResponse;
 
-            console.log("payrollType", payrollType);
-            switch (payrollType) {
-                case 'Driver Miles':
-                    if (this.selectedTab === 'open') {
-                        this.componentRef = this.container.createComponent(
-                            DriverMileageSoloTableComponent,
-                            {
-                                environmentInjector: this.environmentInjector,
-                            }
-                        );
-                    } else {
-                        this.componentRef = this.container.createComponent(
-                            DriverMileageCollapsedTableComponent,
-                            {
-                                environmentInjector: this.environmentInjector,
-                            }
-                        );
-                    }
+    handleTableShow() {
+        this.container.clear();
+        switch (this.payrollType) {
+            case 'Driver Miles':
+                if (this.selectedTab === 'open') {
+                    this.componentRef = this.container.createComponent(
+                        DriverMileageSoloTableComponent,
+                        {
+                            environmentInjector: this.environmentInjector,
+                        }
+                    );
 
                     // Set inputs and subscribe to outputs if componentRef is created
                     if (this.componentRef) {
-                        // Setting Inputs
-                        this.componentRef.instance.expandTable = false; // Example input property
-
-                        // Bind the expandTable input using an Observable
-                        this.reportTableExpanded$
-                            .pipe(takeUntil(this.destroy$))
-                            .subscribe((value) => {
-                                this.componentRef!.instance.expandTable = value; // The input is updated automatically
-                            });
-
                         this.componentRef.instance.expandTableEvent.subscribe(
                             (event: any) => this.expandTable(event)
                         );
                     }
-                    return;
-            }
+                } else if (this.selectedDriver) {
+                    this.componentRef = this.container.createComponent(
+                        DriverMileageExpandedTableComponent,
+                        {
+                            environmentInjector: this.environmentInjector,
+                        }
+                    );
+                    if (this.componentRef) {
+                        this.componentRef.instance.driverId =
+                            this.selectedDriver.id; // Example input property
+
+                        this.componentRef.instance.expandTableEvent.subscribe(
+                            (event: any) => {
+                                this.reportTableData = event;
+                                this.payrollFacadeService.setPayrollReportTableExpanded(
+                                    true
+                                );
+                                console.log(
+                                    'EVENT FROM EXAPNDED TABLE BLAH',
+                                    event
+                                );
+                            }
+                        );
+                    }
+                } else {
+                    this.componentRef = this.container.createComponent(
+                        DriverMileageCollapsedTableComponent,
+                        {
+                            environmentInjector: this.environmentInjector,
+                        }
+                    );
+
+                    this.componentRef.instance.expandTableEvent.subscribe(
+                        (event: any) => this.expandTable(event)
+                    );
+                }
+
+                // Set inputs and subscribe to outputs if componentRef is created
+                if (this.componentRef) {
+                    // Setting Inputs
+                    this.componentRef.instance.expandTable = false; // Example input property
+
+                    // Bind the expandTable input using an Observable
+                    this.reportTableExpanded$
+                        .pipe(takeUntil(this.destroy$))
+                        .subscribe((value) => {
+                            this.componentRef!.instance.expandTable = value; // The input is updated automatically
+                        });
+                }
         }
     }
 
     expandTable(data?: any) {
         if (data) {
-            this.reportTableData = data;
-            this.payrollFacadeService.setPayrollReportTableExpanded(true);
+            if (this.selectedTab === 'open') {
+                this.reportTableData = data;
+                this.payrollFacadeService.setPayrollReportTableExpanded(true);
+            } else {
+                console.log('WHAT IS DATAA HEREEE', data.driver);
+                this.selectedDriver = data.driver;
+                this.handleTableShow();
+            }
+
             // this.tableExpanded = !this.tableExpanded;
             // this.tableExpanded$.next(this.tableExpanded);
         } else {

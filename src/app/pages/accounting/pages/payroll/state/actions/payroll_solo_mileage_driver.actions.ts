@@ -3,7 +3,8 @@ import { PayrollSoloMileageDriverEnum } from '../enums/payroll_solo_mileage_driv
 import { PayrollDriverMileageListResponse } from 'appcoretruckassist';
 import { PayrollDriverMileageResponse } from 'appcoretruckassist/model/payrollDriverMileageResponse';
 import { PayrollMileageDriverCollapsedListEnum } from '../enums/payroll_mileage_driver_collapsed.enums';
-import { PayrollDriverMileageCollapsedListResponse } from '../models/payroll.model';
+import { PayrollDriverMileageCollapsedListResponse, PayrollDriverMileageExpandedListResponse } from '../models/payroll.model';
+import { PayrollMileageDriverExpandedListEnum } from '../enums/payroll_mileage_driver_expanded.enums';
 
 export const getPayrollSoloMileageDriver = createAction(
     PayrollSoloMileageDriverEnum.GET_PAYROLL_SOLO_MILEAGE_DRIVER
@@ -19,7 +20,7 @@ export const getPayrollSoloMileageDriverError = createAction(
     props<any>()
 );
 
-// GET DRIVER MILEAGE COLLAPSED LIDST
+// GET DRIVER MILEAGE COLLAPSED LIST
 export const getPayrollMileageDriverCollapsedList = createAction(
     PayrollMileageDriverCollapsedListEnum.GET_PAYROLL_MILEAGE_COLLAPSED_LIST_DRIVER
 );
@@ -29,6 +30,20 @@ export const getPayrollMileageDriverCollapsedListSuccess = createAction(
 );
 export const getPayrollMileageDriverCollapsedListError = createAction(
     PayrollMileageDriverCollapsedListEnum.GET_PAYROLL_MILEAGE_COLLAPSED_LIST_DRIVER_ERROR,
+    props<{ error: string }>()
+);
+
+// GET DRIVER MILEAGE Expanded LIST
+export const getPayrollMileageDriverExpandedList = createAction(
+    PayrollMileageDriverExpandedListEnum.GET_PAYROLL_MILEAGE_EXPANDED_LIST_DRIVER,
+    props<{ driverId: number }>()
+);
+export const getPayrollMileageDriverExpandedListSuccess = createAction(
+    PayrollMileageDriverExpandedListEnum.GET_PAYROLL_MILEAGE_EXPANDED_LIST_DRIVER_SUCCESS,
+    props<{ data: PayrollDriverMileageExpandedListResponse[] }>()
+);
+export const getPayrollMileageDriverExpandedListError = createAction(
+    PayrollMileageDriverExpandedListEnum.GET_PAYROLL_MILEAGE_EXPANDED_LIST_DRIVER_ERROR,
     props<{ error: string }>()
 );
 

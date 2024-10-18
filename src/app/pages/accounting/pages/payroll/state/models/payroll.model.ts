@@ -5,7 +5,6 @@ import {
     PayrollDriverMileageByIdResponse,
     PayrollDriverMileageListResponse,
 } from 'appcoretruckassist';
-import { PayrollDriverMileageResponse } from 'appcoretruckassist/model/payrollDriverMileageResponse';
 
 export interface PayrollState {
     payrollCounts: PayrollCountsResponse;
@@ -21,6 +20,7 @@ export interface PayrollState {
     closeReportPaymentLoading?: boolean;
     closeReportPaymentError?: boolean;
     driverMileageCollapsedList?: PayrollDriverMileageCollapsedListResponse[];
+    driverMileageExpandedList?: PayrollDriverMileageExpandedListResponse[];
 }
 
 export interface IPayrollCountsSelector {
@@ -60,3 +60,35 @@ export interface PayrollDriverMileageCollapsedListResponse {
     paid?: number | null;
     debt?: number | null;
 }
+
+export interface PayrollDriverMileageExpandedListResponse {
+    id: number
+    payrollNumber: string
+    periodStart: string
+    periodEnd: string
+    closedDate: string
+    payrollStatus: PayrollStatus
+    perMileEmpty: number
+    perMileLoaded: number
+    perMileStop: number
+    emptyMiles: number
+    loadedMiles: number
+    totalMiles: number
+    stopCount: number
+    emptyPay: number
+    loadedPay: number
+    milePay: number
+    stopPay: number
+    bonus: number
+    salary: number
+    credit: number
+    deduction: number
+    earnings: number
+    paid: number
+    debt: number
+  }
+  
+  export interface PayrollStatus {
+    name: string
+    id: number
+  }

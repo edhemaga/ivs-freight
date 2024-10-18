@@ -45,6 +45,44 @@ export class PayrollEffect {
             )
     );
 
+    public getPayrollMileageDriverExpandedList$ = createEffect(
+        (): Observable<Action> =>
+            this.actions$.pipe(
+                ofType(
+                    PayrollSoloMileageDriver.getPayrollMileageDriverExpandedList
+                ),
+                switchMap((action) => {
+                    return this.payrollService
+                        .getPayrollSoloMileageDriverExpandedList(
+                            action.driverId
+                        )
+                        .pipe(
+                            map((data) => {
+                                return PayrollSoloMileageDriver.getPayrollMileageDriverExpandedListSuccess(
+                                    {
+                                        data: data,
+                                    }
+                                );
+                            }),
+                            // tap((data) => {
+                            //     // this.store.dispatch(
+                            //     //   PaymentActions.restartRefreshDataSuccess({ flag: false })
+                            //     // );
+                            // }),
+                            catchError((error) =>
+                                of(
+                                    PayrollSoloMileageDriver.getPayrollMileageDriverExpandedListError(
+                                        {
+                                            error,
+                                        }
+                                    )
+                                )
+                            )
+                        );
+                })
+            )
+    );
+
     public getPayrollMileageDriverCollapsedList$ = createEffect(
         (): Observable<Action> =>
             this.actions$.pipe(
