@@ -2870,19 +2870,19 @@ export class TaInputComponent
                     if (
                         this._inputConfig.isFutureDateDisabled &&
                         moment(this.dateTimeInputDate).isAfter(moment())
-                    ) {
-                        this.getSuperControl.setErrors({ invalid: true }); // don't accept future dates
-                    } else {
+                    )  this.getSuperControl.setErrors({ invalid: true }); // don't accept future dates
+                      else {
                         if (
                             this._inputConfig.expiredDateInvalid &&
                             moment(this.dateTimeInputDate).isBefore(moment())
-                        ) {
-                            this.getSuperControl.setErrors({ invalid: true }); // don't accept expired dates
-                        } else {
+                        )
+                            this.getSuperControl.setErrors({
+                                invalid: true,
+                            }); // don't accept expired dates
+                        else
                             this.calendarService.dateChanged.next(
                                 this.dateTimeInputDate
                             );
-                        }
                     }
                 } else {
                     this.span1.nativeElement.innerHTML = 'mm';
