@@ -165,29 +165,6 @@ export class TruckService implements OnDestroy {
                     .pipe(takeUntil(this.destroy$))
                     .subscribe({
                         next: (truck: any) => {
-                            this.truckActiveStore.remove(
-                                ({ id }) => id === data.id
-                            );
-
-                            this.truckMinimalStore.remove(
-                                ({ id }) => id === data.id
-                            );
-
-                            truck.registrations = storedTruckData.registrations;
-                            truck.titles = storedTruckData.titles;
-                            truck.inspections = storedTruckData.inspections;
-
-                            truck = {
-                                ...truck,
-                                fileCount: truck?.filesCountForList
-                                    ? truck.filesCountForList
-                                    : 0,
-                            };
-
-                            this.truckMinimalStore.add(truck);
-                            this.tdlStore.add(truck);
-                            this.truckItem.set([truck]);
-
                             this.tableService.sendActionAnimation({
                                 animation: 'update',
                                 data: truck,
@@ -210,15 +187,10 @@ export class TruckService implements OnDestroy {
                 const truckCount = JSON.parse(
                     localStorage.getItem('truckTableCount')
                 );
-                this.truckMinimalStore.remove(({ id }) => id === truckId);
-                this.truckItem.remove(({ id }) => id === truckId);
-                this.tdlStore.remove(({ id }) => id === truckId);
                 if (tableSelectedTab === 'active') {
-                    this.truckActiveStore.remove(({ id }) => id === truckId);
 
                     truckCount.active--;
                 } else if (tableSelectedTab === 'inactive') {
-                    this.truckInactiveStore.remove(({ id }) => id === truckId);
 
                     truckCount.inactive--;
                 }
@@ -288,14 +260,10 @@ export class TruckService implements OnDestroy {
                 const truckCount = JSON.parse(
                     localStorage.getItem('truckTableCount')
                 );
-                this.truckMinimalStore.remove(({ id }) => id === truckId);
-                this.tdlStore.remove(({ id }) => id === truckId);
                 if (tableSelectedTab === 'active') {
-                    this.truckActiveStore.remove(({ id }) => id === truckId);
 
                     truckCount.active--;
                 } else if (tableSelectedTab === 'inactive') {
-                    this.truckInactiveStore.remove(({ id }) => id === truckId);
 
                     truckCount.inactive--;
                 }
@@ -323,19 +291,10 @@ export class TruckService implements OnDestroy {
                 );
 
                 trucksToDelete.map((truckId) => {
-                    this.tdlStore.remove(({ id }) => id === truckId);
 
                     if (tableSelectedTab === 'active') {
-                        this.truckActiveStore.remove(
-                            ({ id }) => id === truckId
-                        );
-
                         truckCount.active--;
                     } else if (tableSelectedTab === 'inactive') {
-                        this.truckInactiveStore.remove(
-                            ({ id }) => id === truckId
-                        );
-
                         truckCount.inactive--;
                     }
                 });
@@ -390,34 +349,6 @@ export class TruckService implements OnDestroy {
                 const truckCount = JSON.parse(
                     localStorage.getItem('truckTableCount')
                 );
-
-                /* Get Data From Store To Update */
-                let truckToUpdate =
-                    tabSelected === 'active'
-                        ? this.truckActiveQuery.getAll({
-                              filterBy: ({ id }) => id === truckId,
-                          })
-                        : this.truckInactiveQuery.getAll({
-                              filterBy: ({ id }) => id === truckId,
-                          });
-
-                /* Remove Data From Store */
-                tabSelected === 'active'
-                    ? this.truckActiveStore.remove(({ id }) => id === truckId)
-                    : this.truckInactiveStore.remove(
-                          ({ id }) => id === truckId
-                      );
-
-                /* Add Data To New Store */
-                tabSelected === 'active'
-                    ? this.truckInactiveStore.add({
-                          ...truckToUpdate[0],
-                          status: 0,
-                      })
-                    : this.truckActiveStore.add({
-                          ...truckToUpdate[0],
-                          status: 1,
-                      });
 
                 /* Update Table Tab Count */
                 if (tabSelected === 'active') {
