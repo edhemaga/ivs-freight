@@ -27,4 +27,6 @@ export enum SettingsModalEnum {
     EMAIL = 'email',
     WEB_URL = 'webUrl',
     URL = 'url',
+
+    PAY_TERM = 'pay-term',
 }

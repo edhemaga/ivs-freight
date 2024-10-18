@@ -49,8 +49,6 @@ import {
     addressValidation,
     bankValidation,
     customerCreditValidation,
-    customerPayTermValidation,
-    daysValidRegex,
     defaultBaseValidation,
     departmentValidation,
     iftaValidation,
@@ -182,6 +180,44 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
     public currencies: EnumValue[] = [];
     public departments: EnumValue[] = [];
     public companyData: EnumValue[] = [];
+    public payTermOptions: EnumValue[] = [
+        {
+            name: '5 Days',
+            id: 1,
+        },
+        {
+            name: '10 Days',
+            id: 2,
+        },
+        {
+            name: '15 Days',
+            id: 3,
+        },
+        {
+            name: '30 Days',
+            id: 4,
+        },
+        {
+            name: '45 Days',
+            id: 5,
+        },
+        {
+            name: '60 Days',
+            id: 6,
+        },
+        {
+            name: '90 Days',
+            id: 7,
+        },
+        {
+            name: '120 Days',
+            id: 8,
+        },
+        {
+            name: 'Unlimited',
+            id: 9,
+        },
+    ];
 
     public selectedCompanyData: EnumValue = null;
     public selectedDriverPayPeriod: EnumValue = null;
@@ -203,6 +239,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
     public selectedOtherPayPeriod: EnumValue = null;
     public selectedOtherEndingIn: EnumValue = null;
     public selectedFleetType: string = null;
+    public selectedPayTerm: EnumValue;
 
     // logo actions
     public displayDeleteAction: boolean = false;
@@ -376,10 +413,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
             preferredLoadType: [SettingsModalEnum.FTL],
             fleetType: [SettingsModalEnum.SOLO],
             hazMat: [false],
-            customerPayTerm: [
-                null,
-                [daysValidRegex, ...customerPayTermValidation],
-            ],
+            customerPayTerm: [null],
             customerCredit: [null, customerCreditValidation],
             mvrMonths: [12, [Validators.required, monthsValidRegex]],
             truckInspectionMonths: [
@@ -680,7 +714,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
             id: [data?.id ? data.id : 0],
             bankId: [
                 data?.bankId ? data.bankId : null,
-                [Validators.required, ...bankValidation], 
+                [Validators.required, ...bankValidation],
             ],
             routing: [
                 data?.routing ? data.routing : null,
@@ -688,7 +722,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
             ],
             account: [
                 data?.account ? data.account : null,
-                [Validators.required, ...accountBankValidation], 
+                [Validators.required, ...accountBankValidation],
             ],
         });
     }
@@ -737,7 +771,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
             id: [data?.id ? data.id : 0],
             nickname: [
                 data?.nickname ? data.nickname : null,
-                [Validators.required, ...nicknameValidation], 
+                [Validators.required, ...nicknameValidation],
             ],
             card: [
                 data?.card ? data.card : null,
@@ -749,7 +783,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
             ],
             cvc: [
                 data?.cvc ? data.cvc : null,
-                [Validators.required, ...cvcValidation], 
+                [Validators.required, ...cvcValidation],
             ],
             expireDate: [
                 data?.expireDate ? data.expireDate : null,
@@ -897,6 +931,11 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
                 this.selectedCompanyData = event;
 
                 break;
+            case SettingsModalEnum.PAY_TERM:
+                this.selectedPayTerm = event;
+
+                break;
+
             default:
                 break;
         }
