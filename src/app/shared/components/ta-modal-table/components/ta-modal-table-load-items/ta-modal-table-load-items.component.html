@@ -1,14 +1,11 @@
 <form
     [formGroup]="modalTableForm"
     class="table-body load-modal-table-items-container"
-> 
+>
     <div class="d-flex flex-column">
         <ng-container
             [formArrayName]="'loadModalTableItems'"
-            *ngFor="
-                let loadModalItemStop of formArray.controls;
-                let i = index;
-            "
+            *ngFor="let loadModalItemStop of formArray.controls; let i = index"
         >
             <div
                 class="align-items-center table-item"
@@ -44,15 +41,18 @@
                             formControlName="hazardousMaterialId"
                             [template]="'svgtext-template'"
                             [inputConfig]="descriptionInputConfig"
-                            [options]="stopItemDropdownLists?.hazardousDropdownList"
+                            [options]="
+                                stopItemDropdownLists?.hazardousDropdownList
+                            "
                             [activeItem]="selectedHazardous[i]"
                         ></app-ta-input-dropdown>
                     </ng-template>
-                    
                 </div>
 
                 <div>
-                    <ng-container *ngIf="!selectedQuantity[i] else quantityTemplate">
+                    <ng-container
+                        *ngIf="!selectedQuantity[i]; else quantityTemplate"
+                    >
                         <app-ta-input-dropdown
                             formControlName="units"
                             [inputConfig]="quantityInputConfig"

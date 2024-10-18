@@ -214,6 +214,79 @@
                                 </ng-container>
                             </ng-container>
 
+                            <ng-container *ngSwitchCase="'User'">
+                                <div class="d-flex align-items-center">
+                                    <ng-container
+                                        *ngIf="
+                                            editData?.data?.avatarFile?.url;
+                                            else noImage
+                                        "
+                                    >
+                                        <img
+                                            class="avatar"
+                                            [src]="
+                                                editData?.data?.avatarFile?.url
+                                            "
+                                        />
+                                    </ng-container>
+
+                                    <ng-template #noImage>
+                                        <div
+                                            class="d-flex align-items-center justify-content-center no-avatar"
+                                            [ngStyle]="{
+                                                background:
+                                                    editData?.data?.avatarColor
+                                                        ?.background
+                                            }"
+                                        >
+                                            <p
+                                                class="m-0 ta-font-extra-bold"
+                                                [ngStyle]="{
+                                                    color: editData?.data
+                                                        ?.avatarColor?.color
+                                                }"
+                                            >
+                                                {{
+                                                    editData?.data
+                                                        ?.textShortName
+                                                }}
+                                            </p>
+                                        </div>
+                                    </ng-template>
+
+                                    <div
+                                        class="d-flex flex-column title-container"
+                                    >
+                                        <div class="d-flex align-items-center">
+                                            <p
+                                                class="title-text m-0 ta-font-bold"
+                                            >
+                                                {{ editData?.data?.name }}
+                                            </p>
+                                            <ng-container
+                                                *ngIf="
+                                                    editData?.type ===
+                                                    'activate'
+                                                "
+                                            >
+                                                <svg-icon
+                                                    class="d-flex ms-1"
+                                                    [src]="
+                                                        confirmationImageRoutes.confirmationDeactivationSvg
+                                                    "
+                                                ></svg-icon>
+                                            </ng-container>
+                                        </div>
+
+                                        <p
+                                            class="second-title-text m-0 ta-font-medium"
+                                        >
+                                            {{ editData?.data?.tableTableDept }}
+                                        </p>
+                                    </div>
+                                </div>
+                            </ng-container>
+
                             <ng-container *ngSwitchDefault>
                                 <div
                                     class="d-flex align-items-center w-100 gap-1"
@@ -285,7 +358,8 @@
                     >
                         <ng-container
                             *ngIf="
-                                editData?.template === 'Driver';
+                                editData?.template === 'Driver' ||
+                                    editData?.template === 'User';
                                 else regularTemplate
                             "
                         >
@@ -295,7 +369,7 @@
                                 >
                                     <img
                                         class="avatar"
-                                        [src]="item.avatarImg"
+                                        [src]="item.avatarImg?.url ?? item.avatarImg"
                                     />
                                 </ng-container>
 
@@ -341,7 +415,12 @@
                                     <p
                                         class="second-title-text m-0 ta-font-medium"
                                     >
-                                        {{ item?.dateOfBirth | formatDateP }}
+                                        {{
+                                            showDepartment
+                                                ? item?.tableTableDept
+                                                : (item?.dateOfBirth
+                                                  | formatDateP)
+                                        }}
                                     </p>
                                 </div>
                             </div>

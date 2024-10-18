@@ -4,11 +4,13 @@
     "
     [editData]="editData"
     [editName]="brokerName"
-    [isModalValid]="brokerForm.valid && isFormDirty"
+    [isModalValid]="isModalValidToSubmit"
     [saveAndAddNew]="editData?.type !== 'edit'"
     [customClass]="'modal-container-M'"
     [isResetDnuBtn]="isResetDnuBtn"
     [isResetBfbBtn]="isResetBfbBtn"
+    [isClickEnabledWhileFormInvalid]="true"
+    [hasCalendarIcon]="!!editData"
     (action)="onModalAction($event)"
 >
     <div origin>
@@ -21,9 +23,10 @@
 
         <form
             [formGroup]="brokerForm"
-            class="form-container form-container-without-mb"
+            class="form-container"
             [ngClass]="{
-                'tab-2': selectedTab !== 1
+                'tab-2': selectedTab !== 1,
+                'form-container-with-card-2': selectedTab === 2
             }"
         >
             <div
@@ -33,7 +36,8 @@
                 [@animationTabsModal]="animationObject"
             >
                 <!-------------------------------- Details Tab -------------------------------->
-                <div class="m-tab" *ngIf="selectedTab === 1">
+
+                <div class="m-tab" [hidden]="selectedTab !== 1">
                     <div class="row">
                         <div class="col-12">
                             <app-ta-input
@@ -51,6 +55,7 @@
                             ></app-ta-input>
                         </div>
                     </div>
+
                     <div class="row">
                         <div class="col-6">
                             <app-ta-input
@@ -91,6 +96,7 @@
                             ></app-ta-input>
                         </div>
                     </div>
+
                     <div class="row last-row">
                         <div class="col-6">
                             <app-ta-input
@@ -121,6 +127,7 @@
                             ></app-ta-input>
                         </div>
                     </div>
+
                     <!---------------------------- PHYSICAL TABS ---------------------------->
 
                     <app-ta-tab-switch
@@ -130,8 +137,9 @@
                     ></app-ta-tab-switch>
 
                     <!-- Physical address -->
+
                     <div
-                        *ngIf="selectedPhysicalAddressTab === 3"
+                        [hidden]="selectedPhysicalAddressTab !== 3"
                         class="animation-checkbox-card-tabs"
                         [ngClass]="{
                             'fade-checkbox-inputs':
@@ -178,9 +186,11 @@
                             </div>
                         </div>
                     </div>
+
                     <!-- Physical PO Box -->
+
                     <div
-                        *ngIf="selectedPhysicalAddressTab === 4"
+                        [hidden]="selectedPhysicalAddressTab !== 4"
                         class="animation-checkbox-card-tabs"
                         [ngClass]="{
                             'fade-checkbox-inputs':
@@ -227,7 +237,9 @@
                             </div>
                         </div>
                     </div>
+
                     <!---------------------------- Billing address TABS ---------------------------->
+
                     <app-ta-checkbox
                         formControlName="isCheckedBillingAddress"
                         [customClass]="
@@ -366,16 +378,19 @@
                                     brokerForm.get('availableCredit').value
                             }"
                         >
-                            <div class="broker-billing-field credit">
-                                <p>Credit</p>
+                            <div
+                                class="align-items-center broker-billing-field credit"
+                            >
+                                <p class="m-0 ta-font-medium">CREDIT</p>
 
                                 <app-ta-tab-switch
                                     [tabs]="billingCredit"
-                                    (switchClicked)="isCredit($event)"
+                                    (switchClicked)="tabCreditChange($event)"
                                     [type]="'type2-modal-popup'"
                                 >
                                 </app-ta-tab-switch>
                             </div>
+
                             <div class="broker-billing-field">
                                 <app-ta-input
                                     formControlName="creditLimit"
@@ -394,9 +409,12 @@
                                         minLength: 4,
                                         maxLength: 11
                                     }"
-                                    (blurInput)="onBlurCreditLimit()"
+                                    (blurInput)="
+                                        editData && onBlurCreditLimit()
+                                    "
                                 ></app-ta-input>
                             </div>
+
                             <div class="broker-billing-field">
                                 <app-ta-input-dropdown
                                     formControlName="payTerm"
@@ -407,33 +425,37 @@
                                         isDropdown: true,
                                         dropdownWidthClass: 'w-col-163'
                                     }"
-                                    [options]="labelsPayTerms"
+                                    [options]="payTermOptions"
                                     [activeItem]="selectedPayTerm"
-                                    (selectedItem)="
-                                        onSelectDropDown($event, 'paytype')
-                                    "
+                                    (selectedItem)="onSelectDropDown($event)"
                                 ></app-ta-input-dropdown>
                             </div>
-                            <div
+
+                            <ng-container
                                 *ngIf="
+                                    editData &&
                                     this.brokerForm.get('creditType').value ===
                                         'Custom' &&
                                     brokerForm.get('creditLimit').value &&
                                     brokerForm.get('availableCredit').value
                                 "
-                                class="broker-billing-field"
-                                style="grid-column: 1 / -1"
                             >
-                                <app-ta-currency-progress-bar
-                                    [totalAmount]="
-                                        brokerForm.get('creditLimit').value
-                                    "
-                                    [paidSoFarAmount]="
-                                        brokerForm.get('availableCredit').value
-                                    "
-                                    [progressBarName]="'Available Credit'"
-                                ></app-ta-currency-progress-bar>
-                            </div>
+                                <div
+                                    class="broker-billing-field"
+                                    style="grid-column: 1 / -1"
+                                >
+                                    <app-ta-currency-progress-bar
+                                        [totalAmount]="
+                                            brokerForm.get('creditLimit').value
+                                        "
+                                        [paidSoFarAmount]="
+                                            brokerForm.get('availableCredit')
+                                                .value
+                                        "
+                                        [progressBarName]="'Available Credit'"
+                                    ></app-ta-currency-progress-bar>
+                                </div>
+                            </ng-container>
                         </div>
                     </app-ta-custom-card>
 
@@ -470,189 +492,82 @@
                         "
                     ></app-ta-input-note>
                 </div>
+
                 <!-------------------------------- Contact Tab -------------------------------->
-                <div class="m-tab" *ngIf="selectedTab === 2">
+
+                <div class="m-tab" [hidden]="selectedTab !== 2">
                     <app-ta-custom-card
-                        [hasCounter]="brokerContacts.length ?? 0"
                         [cardName]="'Contact'"
-                        [hasActionSvg]="'assets/svg/common/ic_plus.svg'"
+                        [hasCounter]="brokerContacts?.length"
+                        [hasActionSvg]="true"
                         [hasArrow]="false"
-                        [isCardOpen]="brokerContacts.length"
-                        [hasScrollBody]="brokerContacts.length > 10"
-                        [hasBodyData]="brokerContacts.length"
-                        [disabledCard]="!brokerContacts.length"
+                        [isCardOpen]="!!brokerContacts?.length"
+                        [hasScrollBody]="brokerContacts?.length > 10"
+                        [disabledCard]="!brokerContacts?.length"
                         [disableAnimation]="isCardAnimationDisabled"
+                        [hasScrollBodyXAxis]="true"
                         [animationMarginParams]="{
                             marginTop: '10px',
                             marginBottom: '5px'
                         }"
-                        (onActionEvent)="addBrokerContacts($event)"
+                        (onActionEvent)="addContact()"
                     >
-                        <div
-                            formArrayName="brokerContacts"
-                            class="common-fake-table-modal common-fake-table-modal-broker"
-                            *ngIf="brokerContacts.length"
-                            (scroll)="onScrollingBrokerContacts($event)"
+                        <app-ta-modal-table
+                            [tableType]="modalTableTypeEnum.CONTACT"
+                            [modalTableData]="updatedBrokerContacts"
+                            [dropdownData]="departmentOptions"
+                            [isNewRowCreated]="isNewContactAdded"
+                            (modalTableValueEmitter)="
+                                handleModalTableValueEmit($event)
+                            "
+                            (modalTableValidStatusEmitter)="
+                                handleModalTableValidStatusEmit($event)
+                            "
                         >
-                            <div class="common-fake-table-label">
-                                <p>FULL NAME <span>*</span></p>
-                                <p>DEPARTMENT <span>*</span></p>
-                                <p>PHONE <span>*</span></p>
-                                <p>EXT</p>
-                                <p>EMAIL</p>
-                            </div>
-                            <div class="common-fake-table-body">
-                                <div
-                                    *ngFor="
-                                        let brokerContact of brokerContacts.controls;
-                                        let ind = index
-                                    "
-                                >
-                                    <div
-                                        [formGroupName]="ind"
-                                        class="common-fake-table-card"
-                                    >
-                                        <app-ta-input
-                                            formControlName="contactName"
-                                            [inputConfig]="{
-                                                id: 'Full Name' + ind,
-                                                name: 'Full Contact Name',
-                                                type: 'text',
-                                                textTransform: 'capitalize',
-                                                minLength: 2,
-                                                maxLength: 32,
-                                                hideRequiredCheck: true,
-                                                hideErrorMessage: true
-                                            }"
-                                        ></app-ta-input>
-                                        <app-ta-input-dropdown
-                                            formControlName="departmentId"
-                                            [inputConfig]="{
-                                                id: 'Input Dropdown' + ind,
-                                                name: 'Input Dropdown Department',
-                                                type: 'text',
-                                                textTransform: 'capitalize',
-                                                isDropdown: true,
-                                                dropdownWidthClass: 'w-col-120',
-                                                minLength: 2,
-                                                maxLength: 36,
-                                                hideRequiredCheck: true,
-                                                hideErrorMessage: true
-                                            }"
-                                            [activeItem]="
-                                                selectedContactDepartmentFormArray[
-                                                    ind
-                                                ]
-                                            "
-                                            [options]="labelsDepartments"
-                                            (selectedItem)="
-                                                onSelectDropDown(
-                                                    $event,
-                                                    'contact-department',
-                                                    ind
-                                                )
-                                            "
-                                        ></app-ta-input-dropdown>
-                                        <app-ta-input
-                                            formControlName="phone"
-                                            [inputConfig]="{
-                                                id: 'Phone' + ind,
-                                                name: 'Phone',
-                                                type: 'text',
-                                                mask: '(000) 000-0000',
-                                                maxLength: 14,
-                                                hideRequiredCheck: true,
-                                                hideErrorMessage: true
-                                            }"
-                                        ></app-ta-input>
-                                        <app-ta-input
-                                            formControlName="extensionPhone"
-                                            [inputConfig]="{
-                                                id: 'Phone Extension' + ind,
-                                                name: 'phone-extension',
-                                                type: 'text',
-                                                minLength: 1,
-                                                maxLength: 8,
-                                                hideRequiredCheck: true,
-                                                hideErrorMessage: true
-                                            }"
-                                        ></app-ta-input>
-                                        <app-ta-input
-                                            formControlName="email"
-                                            [inputConfig]="{
-                                                id: 'Email' + ind,
-                                                name: 'Email',
-                                                type: 'text',
-                                                hideRequiredCheck: true,
-                                                blackInput: true,
-                                                hideErrorMessage: true,
-                                                minLength: 5,
-                                                maxLength: 64,
-                                                textTransform: 'lowercase'
-                                            }"
-                                        ></app-ta-input>
-                                        <div
-                                            ngbTooltip
-                                            mainTooltip="Delete"
-                                            position="top"
-                                            tooltipBackground="#EF5350"
-                                            class="common-fake-table-delete"
-                                            [ngClass]="{
-                                                scrolling:
-                                                    isContactCardsScrolling
-                                            }"
-                                        >
-                                            <svg-icon
-                                                src="assets/svg/common/ic_trash.svg"
-                                                (click)="
-                                                    removeBrokerContacts(ind)
-                                                "
-                                            ></svg-icon>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        </app-ta-modal-table>
                     </app-ta-custom-card>
+
+                    <ng-container *ngIf="!brokerContacts?.length">
+                        <div class="no-review-broker">
+                            <svg-icon
+                                class="no-review-svg"
+                                [src]="brokerModalSvgRoutes.noContactIcon"
+                            ></svg-icon>
+                        </div>
+                    </ng-container>
                 </div>
+
                 <!-------------------------------- Review Tab -------------------------------->
-                <div class="m-tab" *ngIf="selectedTab === 3 && editData">
+
+                <div class="m-tab" [hidden]="selectedTab !== 3">
                     <app-ta-custom-card
-                        [hasCounter]="reviews.length ?? 0"
                         [cardName]="'Review'"
-                        [hasActionSvg]="'assets/svg/common/ic_plus.svg'"
+                        [hasCounter]="reviews?.length"
+                        [hasActionSvg]="true"
                         [hasArrow]="false"
                         [hasLikeDislike]="false"
                         [isCardOpen]="true"
-                        [hasBodyData]="reviews.length"
-                        [hasScrollBody]="reviews.length > 6"
+                        [hasBodyData]="reviews?.length"
+                        [hasScrollBody]="reviews?.length > 6"
                         [disableMultipleReviews]="isOneMoreReviewDisabled"
                         [disableAnimation]="isCardAnimationDisabled"
-                        [animationMarginParams]="{
-                            marginTop: '10px',
-                            marginBottom: '12px'
-                        }"
                         (onActionEvent)="createReview()"
                     >
-                        <ng-container *ngIf="!reviews.length; else reviewsData">
-                            <div class="no-review-broker">
-                                <svg-icon
-                                    class="no-review-svg"
-                                    src="assets/svg/common/ic_no_review.svg"
-                                ></svg-icon>
-                            </div>
-                        </ng-container>
-
-                        <ng-template #reviewsData>
-                            <app-ta-user-review
-                                [reviewData]="reviews"
-                                [isNewReview]="reviews[0]?.isNewReview"
-                                (changeReviewsEvent)="
-                                    changeReviewsEvent($event)
-                                "
-                            ></app-ta-user-review>
-                        </ng-template>
+                        <app-ta-user-review
+                            [reviewData]="reviews"
+                            [isNewReview]="reviews[0]?.isNewReview"
+                            (changeReviewsEvent)="changeReviewsEvent($event)"
+                        ></app-ta-user-review>
                     </app-ta-custom-card>
+
+                    <ng-container *ngIf="!reviews?.length">
+                        <div class="no-review-broker">
+                            <svg-icon
+                                class="no-review-svg"
+                                [src]="brokerModalSvgRoutes.noReviewsIcon"
+                            ></svg-icon>
+                        </div>
+                    </ng-container>
                 </div>
             </div>
         </form>

@@ -1,6 +1,6 @@
 import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Subject, take, takeUntil } from 'rxjs';
+import { catchError, forkJoin, of, Subject, take, takeUntil, tap } from 'rxjs';
 
 // components
 import { TtFhwaInspectionModalComponent } from '@shared/components/ta-shared-modals/truck-trailer-modals/modals/tt-fhwa-inspection-modal/tt-fhwa-inspection-modal.component';
@@ -30,6 +30,7 @@ import { TruckDetailsEnum } from '@pages/truck/pages/truck-details/enums/truck-d
 import { TrailerConfigData } from '@pages/trailer/pages/trailer-details/models/trailer-config-data.model';
 import { TrailerResponse } from 'appcoretruckassist';
 import { TrailerDetailsConfig } from '@pages/trailer/pages/trailer-details/models/trailer-details-config.model';
+import { TrailerUiData, TrailerCombinedData } from '@pages/trailer/pages/trailer-modal/models/';
 
 @Component({
     selector: 'app-trailer-details',
@@ -67,19 +68,7 @@ export class TrailerDetailsComponent implements OnInit, OnDestroy {
         private trailerMinimalQuery: TrailersMinimalListQuery,
         private trailerMinimalStore: TrailersMinimalListStore,
         private trailerItemStore: TrailerItemStore
-    ) {
-        let storeData$ = this.trailerItemStore._select((state) => state);
-
-        storeData$.subscribe((state) => {
-            let newTrailerData = { ...state.entities[this.newTrailerId] };
-
-            if (!this.isEmpty(newTrailerData)) {
-                this.DetailsDataService.setNewData(newTrailerData);
-                this.trailerConf(newTrailerData);
-                this.initTableOptions(newTrailerData);
-            }
-        });
-    }
+    ) {}
 
     ngOnInit(): void {
         this.setTableData();
@@ -141,10 +130,6 @@ export class TrailerDetailsComponent implements OnInit, OnDestroy {
 
     /**Function for dots in cards */
     public initTableOptions(data: any): void {
-        this.currentIndex = this.trailerList.findIndex(
-            (trailer) => trailer.id === data.id
-        );
-        //this.getTrailerById(data.id);
         this.dataHeaderDropDown = {
             disabledMutedStyle: null,
             toolbarActions: {
@@ -228,10 +213,40 @@ export class TrailerDetailsComponent implements OnInit, OnDestroy {
         };
     }
 
-    public getTrailerById(id: number) {
-        this.trailerService
-            .getTrailerById(id, true)
-            .subscribe((item) => (this.trailerObject = item));
+    public getTrailerById(trid: number) {
+        const trailerData$ = this.trailerService
+            .getTrailerById(trid)
+            .pipe(take(1));
+        const trailerRegistration$ = this.trailerService
+            .getTrailerRegistrationsById(trid)
+            .pipe(take(1));
+        const trailerInspection$ = this.trailerService
+            .getTrailerInspectionsById(trid)
+            .pipe(take(1));
+        const trailerTitles$ = this.trailerService
+            .getTrailerTitlesById(trid)
+            .pipe(take(1));
+
+        forkJoin({
+            trailerData: trailerData$,
+            trailerRegistrations: trailerRegistration$,
+            trailerInspection: trailerInspection$,
+            trailerTitles: trailerTitles$,
+        })
+            .pipe(
+                tap((data: TrailerCombinedData) => {
+                    let trailerData= data.trailerData as TrailerUiData;
+                    trailerData.registrations = data.trailerRegistrations;
+                    trailerData.inspections = data.trailerInspection;
+                    trailerData.titles = data.trailerTitles;
+                    this.initTableOptions(trailerData);
+                    this.trailerConf(trailerData);
+                }),
+                catchError((error) => {
+                    return of(null); 
+                })
+            )
+            .subscribe();
     }
 
     public deleteTrailerById(id: number) {
@@ -341,6 +356,7 @@ export class TrailerDetailsComponent implements OnInit, OnDestroy {
         const trailerData = {
             ...this.trailerItemStore?.getValue()?.entities[dataId],
         };
+
         this.initTableOptions(trailerData);
 
         this.trailerConf(trailerData);
@@ -351,9 +367,7 @@ export class TrailerDetailsComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe((res) => {
                 if (res?.animation) {
-                    this.trailerConf(res.data);
-                    this.initTableOptions(res.data);
-                    this.cdRef.detectChanges();
+                    this.getTrailerById(res.data.id);
                 }
             });
     }

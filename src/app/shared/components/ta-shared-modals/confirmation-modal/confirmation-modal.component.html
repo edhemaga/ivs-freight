@@ -13,7 +13,8 @@
               editData?.template !== 'repair' &&
               editData?.template !== 'repair_shop' &&
               editData?.template !== 'truck' &&
-              editData?.template !== 'driver'
+              editData?.template !== 'driver' &&
+              editData?.template !== 'user'
             ? 'Delete'
             : editData?.template === 'void'
             ? editData.type === 'activate'
@@ -54,6 +55,8 @@
             ? 'Delete Repair Shop'
             : editData?.template === 'delete-review'
             ? 'Delete Review'
+            : editData?.template === 'user'
+            ? 'Delete User'
             : 'Confirmation'
     "
     [specificCaseModalName]="editData.modalHeader"
@@ -276,7 +279,7 @@
                                     {{ editData?.data?.name }}
                                 </p>
                                 <p class="m-0 confirmation-text-2 large-text-2">
-                                    {{ editData?.data?.username }}
+                                    {{ editData?.data?.tableTableDept }}
                                 </p>
                             </div>
                         </ng-container>
@@ -1031,6 +1034,40 @@
                                 </ng-container>
                             </div>
                         </ng-container>
+
+                        <!-- Broker and Shipper Contact -->
+
+                        <ng-container
+                            *ngSwitchCase="
+                                ['broker contact', 'shipper contact'].includes(
+                                    editData?.template
+                                )
+                                    ? editData?.template
+                                    : ''
+                            "
+                        >
+                            <div class="confirmation-info">
+                                <p class="m-0 confirmation-text-1 large-text-1">
+                                    {{ editData?.data?.fullName }}
+                                </p>
+
+                                <p class="m-0 confirmation-text-2 large-text-2">
+                                    {{ editData?.data?.department?.name }}
+                                </p>
+
+                                <ng-container
+                                    *ngIf="editData?.data?.businessName"
+                                >
+                                    <div
+                                        class="item-card mt-2 d-flex align-items-center justify-content-center"
+                                    >
+                                        <p class="uppercase ta-font-bold">
+                                            {{ editData?.data?.businessName }}
+                                        </p>
+                                    </div>
+                                </ng-container>
+                            </div>
+                        </ng-container>
                     </ng-container>
                 </ng-container>
 
@@ -1204,7 +1241,7 @@
                                     <p
                                         class="m-0 confirmation-text-2 large-text-2"
                                     >
-                                        {{ item?.data?.username }}
+                                        {{ item?.data?.tableTableDept }}
                                     </p>
                                 </ng-container>
                             </div>

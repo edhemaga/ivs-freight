@@ -22,8 +22,10 @@
 
         <form
             [formGroup]="repairShopForm"
-            [ngClass]="{ 'tab-2': selectedTab === TableStringEnum.CONTACT }"
-            class="form-container form-container-without-mb"
+            [ngClass]="{
+                'tab-2 form-container-with-card-2': selectedTab === TableStringEnum.CONTACT,
+            }"
+            class="form-container"
         >
             <div
                 [@animationTabsModal]="animationObject"
@@ -589,149 +591,61 @@
                         [formControlName]="RepairShopModalStringEnum.NOTE"
                     ></app-ta-input-note>
                 </div>
+
                 <div
                     [hidden]="selectedTab !== TableStringEnum.CONTACT"
                     class="m-tab"
                     class="repair-shop-card"
                 >
                     <app-ta-custom-card
-                        [animationMarginParams]="{
-                            marginTop: '0',
-                            marginBottom: '0'
-                        }"
-                        [cardName]="'Cover Photo'"
-                        [isCardOpen]="true"
+                        [cardName]="'Contact'"
+                        [hasCounter]="repairShopContacts?.length"
+                        [hasActionSvg]="true"
                         [hasArrow]="false"
-                    >
-                        <app-ca-upload-files
-                            [isVisibleCropAndDrop]="true"
-                            [files]="[]"
-                            [slider]="{
-                                dontUseSlider: false,
-                                hasCarouselBottomTabs: false
-                            }"
-                            [carouselConfig]="{
-                                files: [],
-                                customClass: 'medium',
-                                customDetailsPageClass: 'modals',
-                                hasCarouselBottomTabs: true
-                            }"
-                            [hasCrop]="true"
-                            [isRoundCrop]="false"
-                            [dropzoneConf]="[
-                                {
-                                    template: 'imageCropTemplate',
-                                    config: {
-                                        dropzone: {
-                                            dropZoneType: 'image',
-                                            multiple: true,
-                                            globalDropZone: false,
-                                            dropZonePages: 'cdl'
-                                        },
-                                        dropzoneOption: {
-                                            customClassName:
-                                                'documents-dropzone',
-                                            size: 'medium',
-                                            modalSize: 'lg',
-                                            showDropzone: true,
-                                            dropzoneClose: false
-                                        }
-                                    }
-                                }
-                            ]"
-                            [review]="{
-                                isReview: true,
-                                reviewMode: 'REVIEW_MODE',
-                                feedbackText: 'Sample feedback text',
-                                categoryTag: 'General'
-                            }"
-                            [configFile]="{
-                                id: 111,
-                                customClassName: 'modals',
-                                file: {
-                                    url: '',
-                                    incorrect: false,
-                                    lastHovered: false,
-                                    fileSize: 1200,
-                                    fileName: ''
-                                },
-                                hasTagsDropdown: false,
-                                hasNumberOfPages: true,
-                                activePage: 1,
-                                tags: ['Example'],
-                                type: 'modal',
-                                hasLandscapeOption: false,
-                                tagsOptions: [
-                                    {
-                                        tagName: 'HOS Agreement',
-                                        checked: false
-                                    },
-                                    {
-                                        tagName: 'Unsafe Driving AGT',
-                                        checked: false
-                                    }
-                                ]
-                            }"
-                            [size]="'medium'"
-                            [slideWidth]="180"
-                            (onFileEvent)="onUploadCoverPhoto($event)"
-                        >
-                        </app-ca-upload-files>
-                    </app-ta-custom-card>
-
-                    <app-ta-custom-card
-                        (onActionEvent)="addContact()"
+                        [isCardOpen]="!!repairShopContacts?.length"
+                        [hasScrollBody]="repairShopContacts?.length > 10"
+                        [disabledCard]="!repairShopContacts?.length"
+                        [hasScrollBodyXAxis]="true"
                         [animationMarginParams]="{
                             marginTop: '10px',
                             marginBottom: '5px'
                         }"
-                        [cardName]="'Contact'"
-                        [disableAnimation]="disableCardAnimation"
-                        [hasActionSvg]="repairShopModalSvgRoutes.plusIcon"
-                        [hasArrow]="false"
-                        [hasCounter]="contacts.length"
-                        [hasScrollBody]="contacts.length > 10"
-                        [isCardOpen]="!!departmentContactsVisible"
-                        [hasScrollBodyXAxis]="true"
+                        (onActionEvent)="addContact()"
                     >
-                        <div
-                            (scroll)="onScrollingContacts($event)"
-                            class="repair-shop__contact-table"
+                        <app-ta-modal-table
+                            [tableType]="modalTableTypeEnum.CONTACT"
+                            [modalTableData]="updatedRepairShopContacts"
+                            [dropdownData]="departments"
+                            [isNewRowCreated]="isNewContactAdded"
+                            (modalTableValueEmitter)="
+                                handleModalTableValueEmit($event)
+                            "
+                            (modalTableValidStatusEmitter)="
+                                handleModalTableValidStatusEmit($event)
+                            "
                         >
-                            <app-ta-modal-table
-                                [tableType]="modalTableTypeEnum.CONTACT"
-                                [modalTableData]="contacts"
-                                [isNewRowCreated]="isNewContactAdded"
-                                (modalTableValueEmitter)="
-                                    handleModalTableValueEmit($event)
-                                "
-                                (modalTableValidStatusEmitter)="
-                                    handleModalTableValidStatusEmit($event)
-                                "
-                            >
-                            </app-ta-modal-table>
-                        </div>
+                        </app-ta-modal-table>
                     </app-ta-custom-card>
-                    <ng-container *ngIf="!departmentContactsVisible">
-                        <svg-icon
-                            class="no-review-svg"
-                            [src]="repairShopModalSvgRoutes.noContactIcon"
-                        ></svg-icon>
+
+                    <ng-container *ngIf="!repairShopContacts?.length">
+                        <div class="no-review-repair-shop">
+                            <svg-icon
+                                class="no-review-svg"
+                                [src]="repairShopModalSvgRoutes.noContactIcon"
+                            ></svg-icon>
+                        </div>
                     </ng-container>
                 </div>
+
                 <div
                     [hidden]="selectedTab !== TableStringEnum.REVIEW"
                     class="m-tab"
+                    class="repair-shop-card"
                 >
                     <app-ta-custom-card
-                        (onActionEvent)="createReview()"
-                        [animationMarginParams]="{
-                            marginTop: '10px',
-                            marginBottom: '12px'
-                        }"
                         [cardName]="'Rating & Review'"
                         [disableAnimation]="disableCardAnimation"
-                        [disableMultipleReviews]="disableOneMoreReview"
+                        [disableMultipleReviews]="isOneMoreReviewDisabled"
                         [hasActionSvg]="repairShopModalSvgRoutes.plusIcon"
                         [hasArrow]="false"
                         [hasBodyData]="reviews.length"
@@ -739,20 +653,23 @@
                         [hasLikeDislike]="true"
                         [hasScrollBody]="reviews.length > 6"
                         [isCardOpen]="true"
+                        (onActionEvent)="createReview()"
                     >
-                        <div *ngIf="!reviews.length" class="no-review-broker">
+                        <app-ta-user-review
+                            [reviewData]="reviews"
+                            [isNewReview]="reviews[0]?.isNewReview"
+                            (changeReviewsEvent)="changeReviewsEvent($event)"
+                        ></app-ta-user-review>
+                    </app-ta-custom-card>
+
+                    <ng-container *ngIf="!reviews.length">
+                        <div class="no-review-repair-shop">
                             <svg-icon
                                 class="no-review-svg"
                                 [src]="repairShopModalSvgRoutes.noReviewsIcon"
                             ></svg-icon>
                         </div>
-                        <app-ta-user-review
-                            (changeReviewsEvent)="changeReviewsEvent($event)"
-                            *ngIf="reviews.length"
-                            [isNewReview]="reviews[0].isNewReview"
-                            [reviewData]="reviews"
-                        ></app-ta-user-review>
-                    </app-ta-custom-card>
+                    </ng-container>
                 </div>
             </div>
         </form>

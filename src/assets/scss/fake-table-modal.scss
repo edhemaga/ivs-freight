@@ -304,9 +304,8 @@
         }
     }
 
-    // Shipper & Broker Template
-    &-shipper,
-    &-broker {
+    // Shipper Template
+    &-shipper {
         .common-fake-table-label {
             p {
                 &:nth-child(2) {

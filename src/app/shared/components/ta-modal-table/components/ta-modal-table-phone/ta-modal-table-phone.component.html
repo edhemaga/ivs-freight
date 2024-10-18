@@ -2,10 +2,7 @@
     <div class="d-flex flex-column phone-table-container">
         <ng-container
             formArrayName="phoneTableItems"
-            *ngFor="
-                let phoneItemsRow of formArray.controls;
-                let i = index;
-            "
+            *ngFor="let phoneItemsRow of formArray.controls; let i = index"
         >
             <div
                 class="align-items-center table-item"
@@ -21,7 +18,7 @@
 
                     <svg-icon
                         class="delete-icon"
-                        src="assets/svg/truckassist-table/dropdown/content/delete-hover-new.svg"
+                        [src]="svgRoutes.deleteIcon"
                         [svgStyle]="{
                             'width.px': 18,
                             'height.px': 18
@@ -45,8 +42,7 @@
                         hideRequiredCheck: true,
                         hideErrorMessage: true,
                         isInputBackgroundRemoved:
-                            phoneItemsRow.valid &&
-                            !isInputHoverRows[i][0],
+                            phoneItemsRow.valid && !isInputHoverRows[i][0],
                         blackInput:
                             formArray.at(i).get('phone').value &&
                             !isInputHoverRows[i][0]
@@ -94,11 +90,10 @@
                             hideRequiredCheck: true,
                             hideErrorMessage: true,
                             isInputBackgroundRemoved:
-                                phoneItemsRow.valid &&
-                                !isInputHoverRows[i][1],
+                                phoneItemsRow.valid && !isInputHoverRows[i][1],
                             blackInput:
-                                formArray.at(i).get('phoneExt')
-                                    .value && !isInputHoverRows[i][1]
+                                formArray.at(i).get('phoneExt').value &&
+                                !isInputHoverRows[i][1]
                         }"
                         (mouseenter)="emitOnInputHover(true, i, 1)"
                         (mouseleave)="emitOnInputHover(false, i, 1)"
@@ -120,15 +115,14 @@
                         hideErrorMessage: true,
                         hideRequiredCheck: true,
                         isInputBackgroundRemoved:
-                            phoneItemsRow.valid &&
-                            !isInputHoverRows[i][2],
+                            phoneItemsRow.valid && !isInputHoverRows[i][2],
                         blackInput:
-                            formArray.at(i).get('contactPhoneType')
-                                .value && !isInputHoverRows[i][2]
+                            formArray.at(i).get('contactPhoneType').value &&
+                            !isInputHoverRows[i][2]
                     }"
                     [activeItem]="selectedContactPhoneType[i]"
                     [options]="contactPhoneTypeOptions"
-                    (selectedItem)="emitOnSelectDropdown($event,i)"
+                    (selectedItem)="emitOnSelectDropdown($event, i)"
                     (mouseenter)="emitOnInputHover(true, i, 2)"
                     (mouseleave)="emitOnInputHover(false, i, 2)"
                 ></app-ta-input-dropdown>

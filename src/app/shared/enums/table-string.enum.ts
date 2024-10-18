@@ -193,10 +193,12 @@ export enum TableStringEnum {
     DELETE_REVIEW = 'delete-review',
     DETAILS = 'Details',
     DETAIL = 'Detail',
+    BASIC = 'Basic',
     CONTRACT = 'Contact',
     CREATE_LOAD = 'create-load',
     CREATE_LOAD_2 = 'Create Load',
     CLOSE_BUSINESS = 'close-business',
+    ADDITIONAL = 'Additional',
     CLOSE = 'close',
     OPEN = 'open',
     BUSINESS = 'business',
@@ -254,10 +256,12 @@ export enum TableStringEnum {
     ADD_REGISTRATION = 'add-registration',
     ADD_REGISTRATION_2 = 'Add Registration',
     REGISTRATION = 'Registration',
+    REGISTRATION_2 = 'registration',
 
     ADD_INSPECTION = 'add-inspection',
     ADD_INSPECTION_2 = 'Add Inspection',
     INSPECTION = 'Inspection',
+    INSPECTION_2 = 'inspection',
 
     TITLE = 'Title',
 
@@ -391,6 +395,7 @@ export enum TableStringEnum {
 
     // Contact
     DELTETE_CONTACT = 'delete-contact',
+    DELTETE_CONTACT_2 = 'Delete Contact',
     CONTACT = 'contact',
     CONTACT_2 = 'Contact',
     ADD_CONTACT = 'add-contact',
@@ -422,6 +427,8 @@ export enum TableStringEnum {
     INCOMPLETE = 'Incomplete',
     MULTIPLE_DELETE = 'multiple delete',
     USER_TABLE_COUNT = 'userTableCount',
+    FORM_TYPE_1 = '1099',
+    W_2 = 'W-2',
 
     // Styles
     STYLES = 'font-weight: 900; text-transform: uppercase;',
@@ -472,6 +479,9 @@ export enum TableStringEnum {
     CLOSED_ARRAY = 'closedArray',
     DRIVER_ARCHIVED_ARRAY = 'driverArhivedArray',
     DEACTIVATED_ARHIVED_ARRAY = 'deactivatedUserArray',
+    DNU_FILTER = 'dnu-filter',
+    BAN_FILTER = 'ban-filter',
+    CLOSED_FILTER = 'closed-filter',
 
     // Cards
     INNER_DROPDOWN_ACTION = '.inner-dropdown-action-title',
@@ -540,4 +550,18 @@ export enum TableStringEnum {
     INVITED = 'Invited',
     EXPIRED = 'Expired',
     ZERO = '0',
+
+    BROKER_CONTACT = 'broker contact',
+    SHIPPER_CONTACT = 'shipper contact',
+    VOIDED = 'VOIDED',
+    
+    // Card States
+    CUSTOMER_CARD_STATE = 'customerCardState',
+    DRIVER_CARD_STATE = 'driverCardState',
+    LOAD_CARD_STATE = 'loadCardState',
+
+    REPAIR_CARD_STATE = "repairCardState",
+    TRAILER_CARD_STATE = "trailerCardState",
+    USER_CARD_STATE = "userCardState",
+    TRUCK_CARD_STATE = "truckCardState",
 }

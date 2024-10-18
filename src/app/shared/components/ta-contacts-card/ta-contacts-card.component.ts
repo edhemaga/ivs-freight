@@ -14,10 +14,12 @@ import { FormatPhonePipe } from '@shared/pipes/format-phone.pipe';
 
 //Models
 import { DepartmentContacts } from '@shared/models/department-contacts.model';
+import { BrokerResponse, ShipperResponse } from 'appcoretruckassist';
 
 //Services
 import { DropDownService } from '@shared/services/drop-down.service';
 import { ModalService } from '@shared/services/modal.service';
+import { DetailsDataService } from '@shared/services/details-data.service';
 
 //Enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
@@ -49,14 +51,16 @@ import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
     ],
 })
 export class TaContactsCardComponent {
+    @Input() public type: string;
     @Input() public departmentContacts: DepartmentContacts[];
-    @Input() public parentId: number;
+    @Input() public viewData: BrokerResponse | ShipperResponse;
 
     public contactsImageRoutes = ContactsCardSvgRoutes;
 
     constructor(
         private dropDownService: DropDownService,
         private modalService: ModalService,
+        private DetailsDataService: DetailsDataService
     ) {}
 
     public identity(index: number, item: DepartmentContacts): number {
@@ -65,27 +69,38 @@ export class TaContactsCardComponent {
 
     public editContact(): void {
         const eventObject = {
-            data: null,
-            id: this.parentId,
+            data: this.viewData,
+            id: this.viewData.id,
             type: TableStringEnum.EDIT,
-            openedTab: TableStringEnum.CONTACT_2,
+            openedTab: TableStringEnum.ADDITIONAL,
         };
         setTimeout(() => {
             this.dropDownService.dropActionsHeaderShipperBroker(
                 eventObject,
-                null,
-                TableStringEnum.SHIPPER
+                this.viewData,
+                this.type
             );
         }, 100);
     }
 
-    public deleteContactModal(): void {
+    public deleteContactModal(contactData): void {
+        this.DetailsDataService.setContactName(contactData.fullName);
+
+        const mappedEvent = {
+            id: contactData.id,
+            data: { ...contactData, businessName: this.viewData.businessName },
+        };
+
         this.modalService.openModal(
             ConfirmationModalComponent,
             { size: TableStringEnum.SMALL },
             {
-                ...event,
-                template: TableStringEnum.CONTACT,
+                ...mappedEvent,
+                modalHeaderTitle: TableStringEnum.DELTETE_CONTACT_2,
+                template:
+                    this.type === TableStringEnum.BROKER
+                        ? TableStringEnum.BROKER_CONTACT
+                        : TableStringEnum.SHIPPER_CONTACT,
                 type: TableStringEnum.DELETE,
                 svg: true,
             }

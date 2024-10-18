@@ -1,0 +1,25 @@
+.form-container-truck {
+
+    &-normal {
+        grid-template-columns: 150px 294px;
+        column-gap: 12px;
+    }
+    &-length {
+        grid-template-columns: 120px 212px 100px;
+        column-gap: 12px;
+    }
+
+    &-year {
+        grid-template-columns: 76px 200px 156px;
+        column-gap: 12px;
+    }
+
+    &-model {
+        grid-template-columns: 280px 164px;
+        column-gap: 12px;
+    }
+}
+
+.mb-32 {
+    margin-bottom: 32px;
+}

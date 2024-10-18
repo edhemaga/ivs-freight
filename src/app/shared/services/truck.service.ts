@@ -30,6 +30,7 @@ import {
     TruckAutocompleteModelResponse,
 } from 'appcoretruckassist';
 import { DispatcherService } from '@pages/dispatch/services/dispatcher.service';
+import { FilterStateService } from '@shared/components/ta-filter/services/filter-state.service';
 
 @Injectable({ providedIn: 'root' })
 export class TruckService implements OnDestroy {
@@ -58,7 +59,9 @@ export class TruckService implements OnDestroy {
         private TitleService: TitleService,
         private InspectionService: InspectionService,
         private formDataService: FormDataService,
-        private dispatcherService: DispatcherService
+        private dispatcherService: DispatcherService,
+
+        private filterService: FilterStateService
     ) {}
 
     //Get Truck Minimal List
@@ -133,6 +136,8 @@ export class TruckService implements OnDestroy {
                                     id: truck.id,
                                 });
                                 this.router.navigate(['/list/truck']);
+                                // update truck filters
+                                this.updateTableFilters();
                             } else {
                                 this.dispatcherService.updateDispatcherData =
                                     true;
@@ -141,6 +146,11 @@ export class TruckService implements OnDestroy {
                     });
             })
         );
+    }
+
+    public updateTableFilters(): void {
+        this.filterService.updateTruckFilters.next(true);
+        this.filterService.getTruckData();
     }
 
     public updateTruck(data: any): Observable<any> {
@@ -155,35 +165,12 @@ export class TruckService implements OnDestroy {
                     .pipe(takeUntil(this.destroy$))
                     .subscribe({
                         next: (truck: any) => {
-                            this.truckActiveStore.remove(
-                                ({ id }) => id === data.id
-                            );
-
-                            this.truckMinimalStore.remove(
-                                ({ id }) => id === data.id
-                            );
-
-                            truck.registrations = storedTruckData.registrations;
-                            truck.titles = storedTruckData.titles;
-                            truck.inspections = storedTruckData.inspections;
-
-                            truck = {
-                                ...truck,
-                                fileCount: truck?.filesCountForList
-                                    ? truck.filesCountForList
-                                    : 0,
-                            };
-
-                            this.truckMinimalStore.add(truck);
-                            this.tdlStore.add(truck);
-                            this.truckItem.set([truck]);
-
                             this.tableService.sendActionAnimation({
                                 animation: 'update',
                                 data: truck,
                                 id: truck.id,
                             });
-
+                            this.updateTableFilters();
                             subTruck.unsubscribe();
                         },
                     });
@@ -200,15 +187,10 @@ export class TruckService implements OnDestroy {
                 const truckCount = JSON.parse(
                     localStorage.getItem('truckTableCount')
                 );
-                this.truckMinimalStore.remove(({ id }) => id === truckId);
-                this.truckItem.remove(({ id }) => id === truckId);
-                this.tdlStore.remove(({ id }) => id === truckId);
                 if (tableSelectedTab === 'active') {
-                    this.truckActiveStore.remove(({ id }) => id === truckId);
 
                     truckCount.active--;
                 } else if (tableSelectedTab === 'inactive') {
-                    this.truckInactiveStore.remove(({ id }) => id === truckId);
 
                     truckCount.inactive--;
                 }
@@ -231,6 +213,7 @@ export class TruckService implements OnDestroy {
                             });
 
                             subTruck.unsubscribe();
+                            this.updateTableFilters();
                         },
                     });
             })
@@ -277,14 +260,10 @@ export class TruckService implements OnDestroy {
                 const truckCount = JSON.parse(
                     localStorage.getItem('truckTableCount')
                 );
-                this.truckMinimalStore.remove(({ id }) => id === truckId);
-                this.tdlStore.remove(({ id }) => id === truckId);
                 if (tableSelectedTab === 'active') {
-                    this.truckActiveStore.remove(({ id }) => id === truckId);
 
                     truckCount.active--;
                 } else if (tableSelectedTab === 'inactive') {
-                    this.truckInactiveStore.remove(({ id }) => id === truckId);
 
                     truckCount.inactive--;
                 }
@@ -296,6 +275,7 @@ export class TruckService implements OnDestroy {
                         inactive: truckCount.inactive,
                     })
                 );
+                this.updateTableFilters();
             })
         );
     }
@@ -311,19 +291,10 @@ export class TruckService implements OnDestroy {
                 );
 
                 trucksToDelete.map((truckId) => {
-                    this.tdlStore.remove(({ id }) => id === truckId);
 
                     if (tableSelectedTab === 'active') {
-                        this.truckActiveStore.remove(
-                            ({ id }) => id === truckId
-                        );
-
                         truckCount.active--;
                     } else if (tableSelectedTab === 'inactive') {
-                        this.truckInactiveStore.remove(
-                            ({ id }) => id === truckId
-                        );
-
                         truckCount.inactive--;
                     }
                 });
@@ -335,6 +306,7 @@ export class TruckService implements OnDestroy {
                         inactive: truckCount.inactive,
                     })
                 );
+                this.updateTableFilters();
             })
         );
         return of(null);
@@ -378,34 +350,6 @@ export class TruckService implements OnDestroy {
                     localStorage.getItem('truckTableCount')
                 );
 
-                /* Get Data From Store To Update */
-                let truckToUpdate =
-                    tabSelected === 'active'
-                        ? this.truckActiveQuery.getAll({
-                              filterBy: ({ id }) => id === truckId,
-                          })
-                        : this.truckInactiveQuery.getAll({
-                              filterBy: ({ id }) => id === truckId,
-                          });
-
-                /* Remove Data From Store */
-                tabSelected === 'active'
-                    ? this.truckActiveStore.remove(({ id }) => id === truckId)
-                    : this.truckInactiveStore.remove(
-                          ({ id }) => id === truckId
-                      );
-
-                /* Add Data To New Store */
-                tabSelected === 'active'
-                    ? this.truckInactiveStore.add({
-                          ...truckToUpdate[0],
-                          status: 0,
-                      })
-                    : this.truckActiveStore.add({
-                          ...truckToUpdate[0],
-                          status: 1,
-                      });
-
                 /* Update Table Tab Count */
                 if (tabSelected === 'active') {
                     truckCount.active--;
@@ -439,6 +383,8 @@ export class TruckService implements OnDestroy {
                             subTruck.unsubscribe();
                         },
                     });
+
+                this.updateTableFilters();
             })
         );
     }
@@ -529,6 +475,8 @@ export class TruckService implements OnDestroy {
                     data: truck,
                     id: truck.id,
                 });
+
+                this.updateTableFilters();
             });
     }
 

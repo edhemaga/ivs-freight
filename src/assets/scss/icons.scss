@@ -45,6 +45,12 @@
         &-blue-13 {
             @include svg-fill($ta-blue-13);
         }
+        &-blue-19 {
+            @include svg-fill($ta-blue-19);
+        }
+        &-blue-26 {
+            @include svg-fill($ta-blue-26);
+        }
     }
 
     // Hovers
@@ -63,6 +69,9 @@
         }
         &-trash-red {
             @include svg-hover($settings-trash-red);
+        }
+        &-red-14 {
+            @include svg-hover($ta-red-14);
         }
     }
 

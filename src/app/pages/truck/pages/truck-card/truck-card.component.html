@@ -77,8 +77,7 @@
 
                     <!-- Card body front-->
 
-                    <div class="flipped card-body-content">
-                        <!-- Card body item -->
+                    <div class="card-body-content flipped">
                         <ng-container
                             *ngFor="
                                 let cardRow of displayRowsFront
@@ -96,127 +95,245 @@
                                         {{ cardRow.title }}
                                     </div>
                                 </div>
-
                                 <div
+                                    #parentElement
                                     class="bottom-item-body d-flex align-items-center"
-                                    [ngClass]="{
-                                        gap: cardRow.title !== 'VIN No.',
-                                        'line-height': cardRow.title === 'Fleet'
-                                    }"
                                 >
-                                    <ng-container [ngSwitch]="cardRow.title">
-                                        <ng-container *ngSwitchCase="'VIN No.'">
-                                            <span>
-                                                {{ card[cardRow.key] }}
-                                            </span>
-                                            <span class="ta-font-semi-bold">
-                                                {{ card[cardRow.secondKey] }}
-                                            </span>
-                                        </ng-container>
+                                    <ng-container
+                                        *ngIf="cardRow.title === 'VIN'"
+                                    >
+                                        <span>
+                                            {{
+                                                card[cardRow.key][
+                                                    cardRow.secondKey
+                                                ]
+                                            }}
+                                        </span>
+                                        <span class="ta-font-semi-bold">
+                                            {{
+                                                card[cardRow.key][
+                                                    cardRow.thirdKey
+                                                ]
+                                            }}
+                                        </span>
+                                    </ng-container>
 
-                                        <ng-container *ngSwitchCase="'Mileage'">
-                                            <span>
-                                                {{ card[cardRow.key] }}
-                                            </span>
+                                    <ng-container
+                                        *ngIf="
+                                            cardRow.title ===
+                                            'Assigned • Driver'
+                                        "
+                                    >
+                                        <div
+                                            class="d-flex justify-content-center align-items-center gap-1"
+                                        >
                                             <ng-container
-                                                *ngIf="cardRow.key !== '/'"
+                                                *ngIf="
+                                                    card[cardRow.secondKey];
+                                                    else noAvatar
+                                                "
                                             >
-                                                <span class="muted">mi</span>
+                                                <img
+                                                    class="driver-avatar-svg"
+                                                    [src]="
+                                                        card[cardRow.secondKey]
+                                                    "
+                                                    alt="driver-image"
+                                                />
                                             </ng-container>
-                                        </ng-container>
 
-                                        <ng-container
-                                            *ngSwitchCase="'Date Added'"
-                                        >
-                                            {{
-                                                !card[cardRow.key]
-                                                    ? '/'
-                                                    : (card[cardRow.key]
-                                                      | formatDateP)
-                                            }}
-                                        </ng-container>
-                                        <ng-container
-                                            *ngSwitchCase="'Date Edited'"
-                                        >
-                                            {{
-                                                !card[cardRow.key]
-                                                    ? '/'
-                                                    : (card[cardRow.key]
-                                                      | formatDateP)
-                                            }}
-                                        </ng-container>
-                                        <ng-container
-                                            *ngSwitchCase="
-                                                'Title - Purchase Date'
-                                            "
-                                        >
-                                            {{
-                                                !card[cardRow.key]
-                                                    ? '/'
-                                                    : (card[cardRow.key]
-                                                      | formatDateP)
-                                            }}
-                                        </ng-container>
-
-                                        <ng-container *ngSwitchCase="'Type'">
-                                            <svg-icon
-                                                [src]="
-                                                    truckCardImageRoutes.truckSVG +
-                                                    card.truckType.logoName
-                                                "
-                                            ></svg-icon>
-                                            {{ card.truckType.name }}
-                                        </ng-container>
-
-                                        <ng-container *ngSwitchCase="'Color'">
-                                            <div
-                                                class="color-name"
-                                                [style.background-color]="
-                                                    card?.color?.code
-                                                "
-                                            ></div>
-                                            {{ card?.color?.name }}
-                                        </ng-container>
-
-                                        <ng-container
-                                            *ngSwitchCase="'Features'"
-                                        >
-                                            <ng-container
-                                                *ngIf="card.features.length"
-                                            >
-                                                <div class="d-flex flex-row">
-                                                    <ng-container
-                                                        *ngFor="
-                                                            let features of card.features
+                                            <ng-template #noAvatar>
+                                                <ng-container
+                                                    *ngIf="card[cardRow.key]"
+                                                >
+                                                    <app-ta-profile-images
+                                                        [indx]="i"
+                                                        [size]="'small'"
+                                                        [type]="'driver'"
+                                                        [name]="
+                                                            card[cardRow.key]
                                                         "
-                                                    >
-                                                        <div
-                                                            class="d-flex"
-                                                            ngbTooltip
-                                                            mainContent
-                                                            [mainTooltip]="
-                                                                features.name
-                                                            "
-                                                            position="bottom"
-                                                            tooltipBackground="#424242"
-                                                            tooltipColor="#ffff"
-                                                            tooltipTextAlign="center"
-                                                        >
-                                                            <svg-icon
-                                                                [src]="
-                                                                    truckCardImageRoutes.commonSVG +
-                                                                    features.image
-                                                                "
-                                                            ></svg-icon>
-                                                        </div>
-                                                    </ng-container>
-                                                </div>
-                                            </ng-container>
-                                        </ng-container>
+                                                    ></app-ta-profile-images>
+                                                </ng-container>
+                                            </ng-template>
+                                            {{
+                                                card[cardRow.key] &&
+                                                card[cardRow.key] !== ''
+                                                    ? card[cardRow.key]
+                                                    : '/'
+                                            }}
+                                        </div>
+                                    </ng-container>
 
-                                        <ng-container *ngSwitchDefault>
-                                            {{ card | cardValue : cardRow }}
+                                    <ng-container
+                                        *ngIf="
+                                            cardRow.title ===
+                                                'FHWA Inspection • Expiration' ||
+                                            cardRow.title ===
+                                                'Licence Detail • Expiration'
+                                        "
+                                    >
+                                        <ng-container
+                                            *ngIf="
+                                        !card[cardRow.key]?.[
+                                            cardRow.secondKey
+                                        ];
+                                        else progressBar
+                                    "
+                                            >/</ng-container
+                                        >
+                                        <ng-template #progressBar>
+                                            <app-ta-progres-bar
+                                                [percents]="
+                                                    card[cardRow.key][
+                                                        cardRow.secondKey
+                                                    ]
+                                                "
+                                                [text]="
+                                                    card[cardRow.key][
+                                                        cardRow.thirdKey
+                                                    ]
+                                                "
+                                            ></app-ta-progres-bar>
+                                        </ng-template>
+                                    </ng-container>
+
+                                    <ng-container
+                                        *ngIf="cardRow.title === 'Color'"
+                                    >
+                                        <ng-container
+                                            *ngIf="card?.[cardRow.key]?.[cardRow.secondKey]"
+                                        >
+                                            <span
+                                                class="color-circle"
+                                                [style.background]="
+                                                    card[cardRow.key][
+                                                        cardRow.secondKey
+                                                    ]
+                                                "
+                                            ></span>
                                         </ng-container>
+                                        <span
+                                            >{{ card?.[cardRow.key]?.[cardRow.thirdKey] ?? '/' }}</span
+                                        >
+                                    </ng-container>
+
+                                    <ng-container
+                                        *ngIf="
+                                            cardRow.title ===
+                                                'Title • State Issued' ||
+                                            cardRow.title ===
+                                                'Licence Detail • State Issued'
+                                        "
+                                    >
+                                        <ng-container
+                                            *ngIf="
+                                                !card[cardRow.key];
+                                                else titleState
+                                            "
+                                            >/</ng-container
+                                        >
+                                        <ng-template #titleState>
+                                            <div
+                                                class="d-flex justify-content-center align-items-center gap-1"
+                                            >
+                                                <app-ta-state-image-text
+                                                    [stateAbbreviation]="
+                                                card?.[cardRow.key]
+                                                "
+                                                >
+                                                </app-ta-state-image-text>
+                                                <span class="small-muted"
+                                                    >•</span
+                                                >
+                                                <span class="small-muted">
+                                                    {{ card?.[cardRow.secondKey] }}</span
+                                                >
+                                            </div>
+                                        </ng-template>
+                                    </ng-container>
+
+                                    <ng-container
+                                        *ngIf="cardRow.title === 'Type'"
+                                    >
+                                        <svg-icon
+                                            [ngStyle]="{
+                                                'margin-right': '4px'
+                                            }"
+                                            [src]="
+                                                '
+                                                /assets/svg/common/trucks/' +
+                                                card.truckTypeIcon
+                                            "
+                                        ></svg-icon>
+                                        {{ card.tableTruckName }}
+                                    </ng-container>
+
+                                    <ng-container
+                                        *ngIf="cardRow.title === 'Features'"
+                                    >
+                                        <ng-container
+                                            *ngIf="
+                                                !card.tableFeatures
+                                                    ?.length;
+                                                else features
+                                            "
+                                            >/</ng-container
+                                        >
+                                        <ng-template #features>
+                                            <div class="d-flex gap-1">
+                                                <ng-container
+                                                    *ngFor="
+                                                        let features of card.tableFeatures
+                                                    "
+                                                >
+                                                    <div
+                                                        ngbTooltip
+                                                        class="features-icon"
+                                                        mainContent
+                                                        [mainTooltip]="
+                                                            features.name
+                                                        "
+                                                        position="bottom"
+                                                        tooltipBackground="#424242"
+                                                        tooltipColor="#ffff"
+                                                        tooltipTextAlign="center"
+                                                    >
+                                                        <svg-icon
+                                                            [src]="
+                                                                'assets/svg/common/' +
+                                                                features.image
+                                                            "
+                                                            [svgStyle]="{
+                                                                'width.px': 18,
+                                                                'height.px': 18
+                                                            }"
+                                                        ></svg-icon>
+                                                    </div>
+                                                </ng-container>
+                                            </div>
+                                        </ng-template>
+                                    </ng-container>
+
+                                    <ng-container
+                                        *ngIf="
+                                            cardRow.title !== 'VIN' &&
+                                            cardRow.title !==
+                                                'FHWA Inspection • Expiration' &&
+                                            cardRow.title !==
+                                                'Licence Detail • Expiration' &&
+                                            cardRow.title !== 'Color' &&
+                                            cardRow.title !== 'Type' &&
+                                            cardRow.title !==
+                                                'Title • State Issued' &&
+                                            cardRow.title !==
+                                                'Licence Detail • State Issued' &&
+                                            cardRow.title !==
+                                                'Assigned • Driver' &&
+                                            cardRow.title !== 'Features'
+                                        "
+                                    >
+                                        {{ card | cardValue : cardRow }}
                                     </ng-container>
                                 </div>
                             </div>
@@ -244,11 +361,29 @@
                                 [note]="card.note"
                                 [mainData]="card"
                                 [entityId]="card.id"
+                                [entityType]="'Truck'"
                                 [openedAll]="false"
                                 [parking]="false"
                             >
                             </app-ta-note>
                         </div>
+
+                        <ng-container *ngIf="card.fileCount">
+                            <div
+                                class="card-attachments-icon-container d-flex flex-column align-items-center"
+                            >
+                                <svg-icon
+                                    [src]="truckCardImageRoutes.attachment"
+                                    [svgStyle]="{
+                                        'width.px': '18',
+                                        'height.px': '18'
+                                    }"
+                                ></svg-icon>
+                                <div class="file_count">
+                                    {{ card.fileCount }}
+                                </div>
+                            </div>
+                        </ng-container>
 
                         <!-- Expand element -->
 

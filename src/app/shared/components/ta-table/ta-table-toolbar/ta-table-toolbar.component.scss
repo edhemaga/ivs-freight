@@ -280,15 +280,20 @@
         .new-load {
             width: 36px;
             height: 36px;
-            background-color: $ta-blue-5;
+            background-color: $ta-blue-13;
             border-radius: 3px;
             align-self: center;
             cursor: pointer;
+            transition: $transition;
 
             &-locked {
-                background-color: $ta-light-grey-6;
+                background-color: $ta-light-grey-6 !important;
                 cursor: none;
                 pointer-events: none;
+            }
+
+            &:not(.new-load-disabled):hover {
+                background-color: $ta-blue-15;
             }
 
             svg-icon {

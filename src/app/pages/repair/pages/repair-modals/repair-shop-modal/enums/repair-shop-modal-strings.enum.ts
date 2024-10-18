@@ -1,4 +1,3 @@
-
 export enum RepairShopModalStringEnum {
     OPEN_HOURS = 'openHours',
     START_TIME = 'startTime',
@@ -37,5 +36,6 @@ export enum RepairShopModalStringEnum {
     HOLIDAY_LABEL = 'Holiday',
     DAY_LABEL = 'dayLabel',
     DAY_OF_WEEK = 'dayOfWeek',
-    COVER = 'cover'
+    COVER = 'cover',
+    EMPTY_STRING = '',
 }

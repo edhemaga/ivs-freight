@@ -48,6 +48,7 @@ import {
     DisplayServiceTab,
     RepairShopModalAction,
     CreateShopModel,
+    RepairShopContactExtended,
 } from '@pages/repair/pages/repair-modals/repair-shop-modal/models';
 
 // Services
@@ -92,6 +93,7 @@ import { TaCheckboxComponent } from '@shared/components/ta-checkbox/ta-checkbox.
 import { CaUploadFilesComponent } from 'ca-components';
 import { TaUserReviewComponent } from '@shared/components/ta-user-review/ta-user-review.component';
 import { ConfirmationActivationModalComponent } from '@shared/components/ta-shared-modals/confirmation-activation-modal/confirmation-activation-modal.component';
+import { TaCheckboxCardComponent } from '@shared/components/ta-checkbox-card/ta-checkbox-card.component';
 
 // Modules
 import { AngularSvgIconModule } from 'angular-svg-icon';
@@ -118,7 +120,6 @@ import { RepairShopModalSvgRoutes } from './utils/svg-routes/repair-shop-modal-s
 // Types
 import { OpenedTab } from '@pages/repair/pages/repair-modals/repair-shop-modal/types/open-tabs.type';
 import { ITaInput } from '@shared/components/ta-input/config/ta-input.config';
-import { TaCheckboxCardComponent } from '@shared/components/ta-checkbox-card/ta-checkbox-card.component';
 import { ContactsModalConstants } from '@pages/contacts/pages/contacts-modal/utils/constants/contacts-modal.constants';
 import { MethodsGlobalHelper } from '@shared/utils/helpers/methods-global.helper';
 
@@ -168,6 +169,11 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
     // Inputs
     @Input() editData: RepeairShopModalInput;
 
+    public companyUser: SignInResponse;
+
+    public isRequestInProgress: boolean;
+    public showPhoneExt: boolean = false;
+
     // Tabs
     public tabs: RepairShopTabs[];
     public selectedTab: OpenedTab = TableStringEnum.DETAILS;
@@ -199,52 +205,60 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
     public isBankSelected: boolean;
 
     // Contact Tab
-    public contactAddedCounter: number = 0;
-    public isNewContactAdded: boolean;
-    public isDaysVisible: boolean;
-    public showPhoneExt: boolean = false;
+    public repairShopContacts: RepairShopContactResponse[] = [];
+    public updatedRepairShopContacts: RepairShopContactResponse[] = [];
+
+    public isNewContactAdded: boolean = false;
+    public isEachContactRowValid: boolean = true;
+
+    private departments: DepartmentResponse[];
+
     // Reviews
     public reviews: any[] = [];
-    public contacts = [];
-    public isRequestInProgress: boolean;
-    private departments: DepartmentResponse[];
-    private isContactFormValid: boolean = true;
-    public disableOneMoreReview: boolean;
+    public isOneMoreReviewDisabled: boolean;
+
+    // documents
     public files: UploadFile[] | FileResponse[] = [];
     public coverPhoto: UploadFile | FileResponse;
     public filesForDelete: any[] = [];
-    public companyUser: SignInResponse = null;
+
     public daysOfWeekDropdown: EnumValue[];
     public payPeriodsDropdown: EnumValue[];
     public daysOfMonthDropdown: EnumValue[];
+
     public selectedPayPeriod: EnumValue;
     public selectedWeeklyDay: EnumValue;
     public selectedMonthlyDays: EnumValue;
+
     public isMonthlyPeriodSeleced: boolean;
+
     public workingDaysLabel = RepairShopConstants.DEFAULT_OPEN_HOUR_DAYS;
 
     public openHoursFormField: ITaInput =
         RepairShopConfig.getOpenHoursFormField();
-    public departmentContactsVisible: boolean;
-    public isCreatedNewDepartmentRow: boolean;
     public businessStatus: number;
     private repairShop: RepairShopResponse;
+
     constructor(
         private formBuilder: UntypedFormBuilder,
+
+        // change detection
+        private cdr: ChangeDetectorRef,
+
+        // services
         private shopService: RepairService,
         private bankVerificationService: BankVerificationService,
-        private cdr: ChangeDetectorRef,
         private modalService: ModalService,
         private taLikeDislikeService: TaLikeDislikeService,
         private formService: FormService,
         private reviewRatingService: ReviewsRatingService
     ) {}
 
-    public get isModalValidToSubmit() {
+    public get isModalValidToSubmit(): boolean {
         return (
             this.repairShopForm.valid &&
             this.repairShopForm.dirty &&
-            this.isContactFormValid
+            this.isEachContactRowValid
         );
     }
 
@@ -404,8 +418,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
             [RepairShopModalStringEnum.RENT]: [null],
             [RepairShopModalStringEnum.OPEN_HOURS]: this.formBuilder.array([]),
             [RepairShopModalStringEnum.COVER]: [null],
-        });
-
+        }); 
         this.tabTitle = this.editData?.data?.name;
     }
 
@@ -426,6 +439,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
                         dropdowns,
                         true
                     );
+
                     this.repairTypes = dropdowns.shopServiceTypes;
                     this.banks = dropdowns.banks;
                     this.departments = dropdowns.departments;
@@ -453,7 +467,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
                                 repairShop.account,
                             [RepairShopModalStringEnum.NOTE]: repairShop.note,
                             [RepairShopModalStringEnum.CONTACTS]: [
-                                this.formBuilder.array([]),
+                                this.mapContacts(repairShop.contacts, true),
                             ],
                             [RepairShopModalStringEnum.FILES]: repairShop.files,
                             [RepairShopModalStringEnum.SHOP_SERVICE_TYPE]:
@@ -480,6 +494,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
 
                         this.mapEditData(repairShop);
                     }
+
                     this.preSelectService(repairShop?.shopServiceType);
                 },
             });
@@ -492,6 +507,9 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
         this.selectedAddress = res.address;
         this.isBankSelected = !!res.bank;
         this.files = res.files;
+
+        this.updatedRepairShopContacts = res.contacts;
+
         if (res.payPeriod) {
             this.selectedPayPeriod =
                 this.payPeriodsDropdown.find(
@@ -528,20 +546,6 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
             },
         });
 
-        this.repairShopForm.setControl(
-            RepairShopModalStringEnum.CONTACTS,
-            this.formBuilder.array(
-                res.contacts.map((contact) => ({
-                    ...contact,
-                    departmentId: this.departments.find(
-                        (department) =>
-                            department.name === contact.department.name
-                    )?.id,
-                }))
-            )
-        );
-
-        this.contacts = res.contacts;
         this.checkForPayPeriodMethod(res.payPeriod);
         this.mapRatings(res);
     }
@@ -552,9 +556,11 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
 
     private preSelectService(shopServiceType?: EnumValue): void {
         const service = shopServiceType ?? this.repairTypes[0];
+
         this.repairTypes.forEach(
             (repairType) => (repairType.checked = repairType.id === service.id)
         );
+
         this.repairShopForm
             .get(RepairShopModalStringEnum.SHOP_SERVICE_TYPE)
             .patchValue(service.id);
@@ -970,10 +976,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
             longitude: this.getFromFieldValue(
                 RepairShopModalStringEnum.LONGITUDE
             ),
-            // openAlways: this.getFromFieldValue(
-            //     RepairShopModalStringEnum.OPEN_ALWAYS
-            // ),
-            contacts: this.mapContacts(),
+            contacts: this.mapContacts(this.repairShopContacts),
             shopServiceType: this.getFromFieldValue(
                 RepairShopModalStringEnum.SHOP_SERVICE_TYPE
             ),
@@ -993,8 +996,10 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
             rent: this.getFromFieldValue(RepairShopModalStringEnum.RENT),
             cover: this.convertCoverDocumentForRequest(),
         };
+
         return repairModel;
     }
+
     private formatOpenHours(): RepairShopOpenHoursCommand[] {
         const formattedOpenHours: RepairShopOpenHoursCommand[] = [];
         const openHours = [...this.openHours.value];
@@ -1015,34 +1020,47 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
         return formattedOpenHours;
     }
 
+
     private createDocumentsForRequest(): Array<Blob> {
         let documents: Array<Blob> = [];
+
         (this.files as UploadFile[]).map((item) => {
             if (item.realFile) documents.push(item.realFile);
         });
+
         return documents;
     }
 
     private convertCoverDocumentForRequest(): any {
         return this.repairShopForm.get(RepairShopModalStringEnum.COVER).value;
     }
+    
+    private mapContacts(
+        contacts: RepairShopContactExtended[],
+        isFormPatch: boolean = false
+    ): RepairShopContactExtended[] {
+        return contacts.map((contact, index) => {
+            const { department, phone, email, fullName, phoneExt } = contact;
 
-    private mapContacts(): RepairShopContactCommand[] {
-        const contacts: RepairShopContactResponse[] = this.getFromFieldValue(
-            RepairShopModalStringEnum.CONTACTS
-        );
-     
-        if(!contacts.length) {
-            return [];
-        }
-
-        return contacts.map((contact) => {
-            return {
-                ...contact,
-                departmentId: this.departments.find(
-                    (d) => d.name === contact.department
-                )?.id,
-            };
+            return isFormPatch
+                ? {
+                      fullName,
+                      department: (department as DepartmentResponse).name,
+                      phone,
+                      phoneExt:
+                          phoneExt ?? RepairShopModalStringEnum.EMPTY_STRING,
+                      email,
+                  }
+                : {
+                      id: this.updatedRepairShopContacts[index]?.id,
+                      fullName,
+                      departmentId: this.departments.find(
+                          (item) => item.name === department
+                      )?.id,
+                      phone,
+                      extensionPhone: phoneExt,
+                      email,
+                  };
         });
     }
 
@@ -1056,7 +1074,6 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
                     if (addNewShop) {
                         this.formService.resetForm(this.repairShopForm);
                         this.tabChange(this.tabs[0]);
-                        this.contacts = [];
                         this.showPhoneExt = false;
                         this.selectedAddress = null;
                         this.isBankSelected = null;
@@ -1146,54 +1163,32 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
 
     // Contact tab
     public addContact(): void {
-        if (this.isContactFormValid) {
-            this.isNewContactAdded = true;
-            this.isCreatedNewDepartmentRow = true;
-            this.departmentContactsVisible = true;
+        if (!this.isEachContactRowValid) return;
+        this.repairShopForm.markAsDirty();
+        this.isNewContactAdded = true;
 
             setTimeout(() => {
                 this.isNewContactAdded = false;
-                this.isCreatedNewDepartmentRow = false;
             }, 400);
-        }
     }
 
     public handleModalTableValueEmit(
-        modalTableDataValue: RepairShopContactListResponse[]
+        modalTableDataValue: RepairShopContactCommand[]
     ): void {
-        const departmentContactsArray = this.repairShopForm.get(
-            RepairShopModalStringEnum.CONTACTS
-        ) as FormArray;
+        this.repairShopContacts = modalTableDataValue;
 
-        departmentContactsArray.clear();
+        this.repairShopForm
+            .get(RepairShopModalStringEnum.CONTACTS)
+            .patchValue(this.repairShopContacts);
 
-        modalTableDataValue.forEach(
-            (
-                contact: RepairShopContactListResponse & { department: string }
-            ) => {
-                departmentContactsArray.push(
-                    this.createDepartmentContactFormGroup(contact)
-                );
-            }
-        );
 
-        this.departmentContactsVisible = !!modalTableDataValue.length;
+        this.cdr.detectChanges();
     }
 
-    private createDepartmentContactFormGroup(
-        contact: RepairShopContactListResponse & { department: string }
-    ): FormGroup {
-        return this.formBuilder.group({
-            fullName: [contact.fullName || null],
-            department: [contact.department || null],
-            phone: [contact.phone || null],
-            phoneExt: [contact.phoneExt || null],
-            email: [contact.email || null],
-        });
-    }
-
-    public handleModalTableValidStatusEmit(validStatus: boolean): void {
-        this.isContactFormValid = validStatus;
+    public handleModalTableValidStatusEmit(
+        isEachContactRowValid: boolean
+    ): void {
+        this.isEachContactRowValid = isEachContactRowValid;
     }
 
     public changeReviewsEvent(reviews: ReviewComment): void {
@@ -1218,7 +1213,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
     public createReview(): void {
         if (
             this.reviews.some((item) => item.isNewReview) ||
-            this.disableOneMoreReview
+            this.isOneMoreReviewDisabled
         ) {
             return;
         }
@@ -1261,7 +1256,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
                         return item;
                     });
 
-                    this.disableOneMoreReview = true;
+                    this.isOneMoreReviewDisabled = true;
                 },
                 error: () => {},
             });
@@ -1269,7 +1264,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
 
     private deleteReview(reviews: ReviewComment): void {
         this.reviews = reviews.sortData;
-        this.disableOneMoreReview = false;
+        this.isOneMoreReviewDisabled = false;
         this.reviewRatingService
             .deleteReview(reviews.data)
             .pipe(takeUntil(this.destroy$))

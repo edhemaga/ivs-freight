@@ -1,12 +1,12 @@
 import {
     FormsModule,
     ReactiveFormsModule,
-    UntypedFormArray,
     UntypedFormBuilder,
     UntypedFormGroup,
     Validators,
 } from '@angular/forms';
 import {
+    ChangeDetectorRef,
     Component,
     Input,
     OnDestroy,
@@ -14,43 +14,27 @@ import {
     ViewEncapsulation,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { debounceTime, Subject, takeUntil, switchMap } from 'rxjs';
+import { Subject, takeUntil, switchMap } from 'rxjs';
 
 // Modules
 import { AngularSvgIconModule } from 'angular-svg-icon';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 // Enums
-import { ShipperModalString } from '@pages/customer/pages/shipper-modal/enums/shipper-modal-string.enum';
+import { ShipperModalString } from '@pages/customer/pages/shipper-modal/enums';
 
 // Validators
 import {
     addressUnitValidation,
     addressValidation,
     businessNameValidation,
-    departmentValidation,
     phoneExtension,
     phoneFaxRegex,
-    fullNameValidation,
 } from '@shared/components/ta-input/validators/ta-input.regex-validations';
 import {
     latitudeValidator,
     longitudeValidator,
 } from '@shared/validators/long-lat-validations';
-
-// Models
-import {
-    ShipperModalResponse,
-    AddressEntity,
-    CreateRatingCommand,
-    CreateReviewCommand,
-    SignInResponse,
-    UpdateReviewCommand,
-    ShipperResponse,
-    ReviewResponse,
-} from 'appcoretruckassist';
-import { ReviewComment } from '@shared/models/review-comment.model';
-import { Tabs } from '@shared/models/tabs.model';
 
 // Services
 import { TaInputService } from '@shared/services/ta-input.service';
@@ -62,6 +46,8 @@ import {
 import { ShipperService } from '@pages/customer/services/shipper.service';
 import { ReviewsRatingService } from '@shared/services/reviews-rating.service';
 import { FormService } from '@shared/services/form.service';
+import { AddressService } from '@shared/services/address.service';
+import { ConfirmationService } from '@shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
 
 // Animations
 import { tabsModalAnimation } from '@shared/animations/tabs-modal.animation';
@@ -80,21 +66,41 @@ import { TaUploadFilesComponent } from '@shared/components/ta-upload-files/ta-up
 import { TaInputNoteComponent } from '@shared/components/ta-input-note/ta-input-note.component';
 import { TaInputDropdownComponent } from '@shared/components/ta-input-dropdown/ta-input-dropdown.component';
 import { ConfirmationModalComponent } from '@shared/components/ta-shared-modals/confirmation-modal/confirmation-modal.component';
+import { TaModalTableComponent } from '@shared/components/ta-modal-table/ta-modal-table.component';
 
 // Helpers
 import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calculations.helper';
 
 // Constants
-import { ShipperModalConfiguration } from '@pages/customer/pages/shipper-modal/utils/constants/shipper-modal-configuration.constants';
+import { ShipperModalConfiguration } from '@pages/customer/pages/shipper-modal/utils/constants';
 
 // Config
 import { ITaInput } from '@shared/components/ta-input/config/ta-input.config';
-import { ShipperModalConfig } from '@pages/customer/pages/shipper-modal/utils/configs/shipper-modal.config';
-import { AddressService } from '@shared/services/address.service';
+import { ShipperModalConfig } from '@pages/customer/pages/shipper-modal/utils/configs';
 
 // Enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
 import { ConfirmationModalStringEnum } from '@shared/components/ta-shared-modals/confirmation-modal/enums/confirmation-modal-string.enum';
+import { ModalTableTypeEnum } from '@shared/enums/modal-table-type.enum';
+
+// svg routes
+import { BrokerModalSvgRoutes } from '@pages/customer/pages/broker-modal/utils/svg-routes/';
+
+// Models
+import {
+    ShipperModalResponse,
+    AddressEntity,
+    CreateRatingCommand,
+    CreateReviewCommand,
+    SignInResponse,
+    UpdateReviewCommand,
+    ShipperResponse,
+    ReviewResponse,
+    DepartmentResponse,
+} from 'appcoretruckassist';
+import { ReviewComment } from '@shared/models/review-comment.model';
+import { Tabs } from '@shared/models/tabs.model';
+import { ShipperContactExtended } from '@pages/customer/pages/shipper-modal/models';
 
 @Component({
     selector: 'app-shipper-modal',
@@ -124,63 +130,75 @@ import { ConfirmationModalStringEnum } from '@shared/components/ta-shared-modals
         TaInputNoteComponent,
         TaUserReviewComponent,
         TaInputDropdownComponent,
+        TaModalTableComponent,
     ],
 })
 export class ShipperModalComponent implements OnInit, OnDestroy {
-    @Input() editData: any = null;
+    @Input() editData;
+
+    private destroy$ = new Subject<void>();
 
     public shipperForm: UntypedFormGroup;
+    public shipperName: string;
+
+    public companyUser: SignInResponse;
+
+    public modalTableTypeEnum = ModalTableTypeEnum;
+    public brokerModalSvgRoutes = BrokerModalSvgRoutes;
 
     public selectedTab: number = 1;
-    public tabs: Tabs[] = [...ShipperModalConfiguration.shipperTabs];
+    public tabs: Tabs[] = JSON.parse(
+        JSON.stringify(ShipperModalConfiguration.TABS)
+    );
+
+    public selectedPhysicalAddressTab: number = 1;
+    public physicalAddressTabs: Tabs[] = [
+        ...ShipperModalConfiguration.physicalAddressTabs,
+    ];
+
+    public selectedAddress: AddressEntity;
+
+    public isAppointmentReceiving: boolean = false;
+    public isAppointmentShipping: boolean = false;
+
+    public isFormDirty: boolean;
+    public isCardAnimationDisabled: boolean = false;
+    public isPhoneExtExist: boolean = false;
+
+    public addNewAfterSave: boolean = false;
+    public isOneMoreReviewDisabled: boolean = false;
 
     public animationObject = {
         value: this.selectedTab,
         params: { height: '0px' },
     };
 
-    public selectedAddress: AddressEntity = null;
-
-    public isAppointmentReceiving: boolean = false;
-    public isAppointmentShipping: boolean = false;
-
-    public selectedContractDepartmentFormArray: any[] = [];
-
-    public labelsDepartments: any[] = [];
-    public isContactCardsScrolling: boolean = false;
-
-    public reviews: any[] = [];
-
-    public isPhoneExtExist: boolean = false;
-
-    public companyUser: SignInResponse = null;
-
-    public isFormDirty: boolean;
-
-    public disableOneMoreReview: boolean = false;
-
-    public documents: any[] = [];
-    public fileModified: boolean = false;
-    public filesForDelete: any[] = [];
     public longitude: number;
     public latitude: number;
 
-    public addNewAfterSave: boolean = false;
+    // documents
+    public documents: any[] = [];
+    public fileModified: boolean = false;
+    public filesForDelete: any[] = [];
 
-    public disableCardAnimation: boolean = false;
+    // contacts
+    public shipperContacts: ShipperContactExtended[] = [];
+    public updatedShipperContacts: ShipperContactExtended[] = [];
 
-    public shipperName: string = '';
+    public isNewContactAdded: boolean = false;
+    public isEachContactRowValid: boolean = true;
 
-    public physicalAddressTabs: Tabs[] = [
-        ...ShipperModalConfiguration.physicalAddressTabs,
-    ];
+    public departmentOptions: DepartmentResponse[] = [];
 
-    public selectedPhysicalAddressTab: number = 1;
-
-    private destroy$ = new Subject<void>();
+    // reviews
+    public reviews: any[] = [];
+    public previousReviews: any[] = [];
 
     constructor(
         private formBuilder: UntypedFormBuilder,
+
+        // change detection
+        private cdRef: ChangeDetectorRef,
 
         //Services
         private inputService: TaInputService,
@@ -189,20 +207,28 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
         private taLikeDislikeService: TaLikeDislikeService,
         private reviewRatingService: ReviewsRatingService,
         private formService: FormService,
-        private addressService: AddressService
+        private addressService: AddressService,
+        private confirmationService: ConfirmationService
     ) {}
 
     ngOnInit() {
         this.createForm();
-        this.getShipperDropdowns();
-        this.companyUser = JSON.parse(localStorage.getItem('user'));
 
-        this.shipperForm
-            .get(ShipperModalString.LONGITUDE)
-            .valueChanges.subscribe(() => this.longLatChanged());
-        this.shipperForm
-            .get(ShipperModalString.LATITUDE)
-            .valueChanges.subscribe(() => this.longLatChanged());
+        this.getShipperDropdowns();
+
+        this.getCompanyUser();
+
+        this.monitorLatAndLong();
+
+        this.confirmationSubscribe();
+    }
+
+    get isModalValidToSubmit(): boolean {
+        return (
+            this.shipperForm.valid &&
+            this.isFormDirty &&
+            this.isEachContactRowValid
+        );
     }
 
     private createForm() {
@@ -229,8 +255,8 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
             shippingFrom: [null],
             shippingTo: [null],
             note: [null],
-            shipperContacts: this.formBuilder.array([]),
             files: [null],
+            contacts: [null],
         });
 
         this.inputService.customInputValidator(
@@ -238,6 +264,45 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
             'email',
             this.destroy$
         );
+    }
+
+    private confirmationSubscribe(): void {
+        this.confirmationService.confirmationData$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe({
+                next: (res) => {
+                    const { template, action } = res;
+
+                    if (template === ShipperModalString.DELETE_REVIEW) {
+                        const review = {
+                            action: res.type,
+                            data: res.data.id,
+                            sortData: [],
+                        };
+
+                        this.deleteReview(false, review);
+                    }
+
+                    if (action === ShipperModalString.CLOSE)
+                        this.reviews = this.previousReviews;
+                },
+            });
+    }
+
+    private monitorLatAndLong(): void {
+        this.shipperForm
+            .get(ShipperModalString.LONGITUDE)
+            .valueChanges.pipe(takeUntil(this.destroy$))
+            .subscribe(() => this.longLatChanged());
+
+        this.shipperForm
+            .get(ShipperModalString.LATITUDE)
+            .valueChanges.pipe(takeUntil(this.destroy$))
+            .subscribe(() => this.longLatChanged());
+    }
+
+    private getCompanyUser(): void {
+        this.companyUser = JSON.parse(localStorage.getItem('user'));
     }
 
     public onModalAction(data: { action: string; bool: boolean }) {
@@ -269,12 +334,15 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
                 this.inputService.markInvalid(this.shipperForm);
                 return;
             }
+
             this.addShipper(true);
+
             this.modalService.setModalSpinner({
                 action: 'save and add new',
                 status: true,
                 close: false,
             });
+
             this.addNewAfterSave = true;
         } else {
             // Save & Update
@@ -326,7 +394,8 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
 
     public tabChange(event: any): void {
         this.selectedTab = event.id;
-        let dotAnimation = document.querySelector(
+
+        const dotAnimation = document.querySelector(
             this.editData ? '.animation-three-tabs' : '.animation-two-tabs'
         );
 
@@ -336,59 +405,60 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
         };
     }
 
-    public get shipperContacts(): UntypedFormArray {
-        return this.shipperForm.get('shipperContacts') as UntypedFormArray;
+    public addContact(): void {
+        if (!this.isEachContactRowValid) return;
+
+        this.isNewContactAdded = true;
+
+        setTimeout(() => {
+            this.isNewContactAdded = false;
+        }, 400);
     }
 
-    private createShipperContacts(data?: {
-        fullName: any;
-        departmentId: any;
-        phone: any;
-        phoneExt: any;
-        email: any;
-    }): UntypedFormGroup {
-        return this.formBuilder.group({
-            fullName: [
-                data?.fullName ? data.fullName : null,
-                [Validators.required, ...fullNameValidation],
-            ],
-            departmentId: [
-                data?.departmentId ? data.departmentId : null,
-                [Validators.required, ...departmentValidation],
-            ],
-            phone: [
-                data?.phone ? data?.phone : null,
-                [Validators.required, phoneFaxRegex],
-            ],
-            phoneExt: [data?.phoneExt ? data.phoneExt : null],
-            email: [data?.email ? data.email : null],
+    public handleModalTableValueEmit(
+        modalTableDataValue: ShipperContactExtended[]
+    ): void {
+        this.shipperContacts = modalTableDataValue;
+
+        this.shipperForm
+            .get(ShipperModalString.CONTACTS)
+            .patchValue(this.shipperContacts);
+
+        this.cdRef.detectChanges();
+    }
+
+    public handleModalTableValidStatusEmit(
+        isEachContactRowValid: boolean
+    ): void {
+        this.isEachContactRowValid = isEachContactRowValid;
+    }
+
+    private mapContacts(
+        contacts: ShipperContactExtended[],
+        isFormPatch: boolean = false
+    ): ShipperContactExtended[] {
+        return contacts.map((contact, index) => {
+            const { department, phone, email, fullName, phoneExt } = contact;
+
+            return isFormPatch
+                ? {
+                      fullName,
+                      department: (department as DepartmentResponse).name,
+                      phone,
+                      phoneExt: phoneExt ?? ShipperModalString.EMPTY_STRING,
+                      email,
+                  }
+                : {
+                      id: this.updatedShipperContacts[index]?.id,
+                      fullName,
+                      departmentId: this.departmentOptions.find(
+                          (item) => item.name === department
+                      )?.id,
+                      phone,
+                      phoneExt,
+                      email,
+                  };
         });
-    }
-
-    public addShipperContacts(event: { check: boolean; action: string }) {
-        if (this.shipperContacts.valid) {
-            const form = this.createShipperContacts();
-            if (event.check) {
-                this.shipperContacts.push(form);
-            }
-
-            this.inputService.customInputValidator(
-                form.get('email'),
-                'email',
-                this.destroy$
-            );
-        }
-    }
-
-    public removeShipperContacts(id: number) {
-        this.shipperContacts.removeAt(id);
-        this.selectedContractDepartmentFormArray.splice(id, 1);
-    }
-
-    public trackShipperContactEmail() {}
-
-    public onScrollingShipperContacts(event: any) {
-        this.isContactCardsScrolling = event.target.scrollLeft > 1;
     }
 
     public onHandleAddress(event: {
@@ -403,55 +473,30 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
         }
     }
 
-    public onSelectContactDepartment(event: any, ind: number) {
-        this.selectedContractDepartmentFormArray[ind] = event;
-    }
+    public changeReviewsEvent(review: ReviewComment): void {
+        switch (review.action) {
+            case 'delete':
+                this.deleteReview(true, review);
 
-    public changeReviewsEvent(reviews: ReviewComment) {
-        switch (reviews.action) {
-            case 'delete': {
-                this.deleteReview(reviews);
                 break;
-            }
-            case 'add': {
-                this.addReview(reviews);
+            case 'add':
+                this.addReview(review);
+
                 break;
-            }
-            case 'update': {
-                this.updateReview(reviews);
+            case 'update':
+                this.updateReview(review);
+
                 break;
-            }
-            default: {
+            case 'cancel':
+                this.reviews = this.reviews.filter((review) => review.id);
+
                 break;
-            }
+            default:
+                break;
         }
     }
 
-    // ------- Review ------
-    public createReview() {
-        if (
-            this.reviews.some((item) => item.isNewReview) ||
-            this.disableOneMoreReview
-        ) {
-            return;
-        }
-
-        this.reviews.unshift({
-            companyUser: {
-                fullName: this.companyUser.firstName.concat(
-                    ' ',
-                    this.companyUser.lastName
-                ),
-                /* avatar: this.companyUser.avatar, */
-            },
-            commentContent: '',
-            createdAt: new Date().toISOString(),
-            updatedAt: new Date().toISOString(),
-            isNewReview: true,
-        });
-    }
-
-    private ratingChanges() {
+    private ratingChanges(): void {
         this.taLikeDislikeService.userLikeDislike$
             .pipe(takeUntil(this.destroy$))
             .subscribe((action: LikeDislikeModel) => {
@@ -503,7 +548,7 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
                                 );
 
                                 if (reviewIndex !== -1) {
-                                    this.disableOneMoreReview = true;
+                                    this.isOneMoreReviewDisabled = true;
                                 }
                             }
 
@@ -514,24 +559,46 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
                                     res.currentCompanyUserRating,
                             });
                         },
-                        error: () => {},
                     });
             });
     }
 
-    private addReview(reviews: ReviewComment) {
-        const review: CreateReviewCommand = {
-            entityTypeReviewId: 3,
+    public createReview(): void {
+        if (
+            this.reviews.some((item) => item.isNewReview) ||
+            this.isOneMoreReviewDisabled
+        ) {
+            return;
+        }
+
+        this.reviews.unshift({
+            companyUser: {
+                fullName: this.companyUser.firstName.concat(
+                    ' ',
+                    this.companyUser.lastName
+                ),
+                /*                 avatar: this.companyUser.avatar, */
+            },
+            commentContent: '',
+            createdAt: new Date().toISOString(),
+            updatedAt: new Date().toISOString(),
+            isNewReview: true,
+        });
+    }
+
+    private addReview(review: ReviewComment): void {
+        const reviewData: CreateReviewCommand = {
+            entityTypeReviewId: 1,
             entityTypeId: this.editData.id,
-            comment: reviews.data.commentContent,
+            comment: review.data.commentContent,
         };
 
         this.reviewRatingService
-            .addReview(review)
+            .addReview(reviewData)
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: (res: any) => {
-                    this.reviews = reviews.sortData.map((item, index) => {
+                    this.reviews = review.sortData.map((item, index) => {
                         if (index === 0) {
                             return {
                                 ...item,
@@ -540,37 +607,140 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
                         }
                         return item;
                     });
-                    this.disableOneMoreReview = true;
+
+                    this.isOneMoreReviewDisabled = true;
                 },
-                error: () => {},
             });
     }
 
-    private deleteReview(reviews: ReviewComment) {
-        this.reviews = reviews.sortData;
-        this.disableOneMoreReview = false;
-        this.reviewRatingService
-            .deleteReview(reviews.data)
-            .pipe(takeUntil(this.destroy$))
-            .subscribe();
+    private deleteReview(isOpenModal: boolean, review?: ReviewComment): void {
+        if (isOpenModal) {
+            const { id, companyUser, updatedAt } = this.reviews.find(
+                (reviewItem) => reviewItem.id === review.data
+            );
+
+            const data = {
+                id,
+                reviewer: companyUser.fullName,
+                updatedAt,
+                businessName: this.shipperForm.get(
+                    ShipperModalString.BUSINESS_NAME
+                ).value,
+            };
+
+            this.previousReviews = [...this.reviews];
+
+            this.modalService.openModal(
+                ConfirmationModalComponent,
+                {
+                    size: ShipperModalString.SMALL,
+                },
+                {
+                    type: ShipperModalString.DELETE,
+                    subType: ShipperModalString.SHIPPER,
+                    data,
+                    template: ShipperModalString.DELETE_REVIEW,
+                }
+            );
+        } else {
+            this.reviews = review.sortData;
+            this.isOneMoreReviewDisabled = false;
+
+            this.reviewRatingService
+                .deleteReview(review.data)
+                .pipe(takeUntil(this.destroy$))
+                .subscribe();
+        }
     }
 
-    private updateReview(reviews: ReviewComment) {
-        this.reviews = reviews.sortData;
-        const review: UpdateReviewCommand = {
-            id: reviews.data.id,
-            comment: reviews.data.commentContent,
+    private updateReview(review: ReviewComment): void {
+        this.reviews = review.sortData;
+
+        const reviewData: UpdateReviewCommand = {
+            id: review.data.id,
+            comment: review.data.commentContent,
         };
 
         this.reviewRatingService
-            .updateReview(review)
+            .updateReview(reviewData)
             .pipe(takeUntil(this.destroy$))
             .subscribe();
     }
 
+    private getShipperDropdowns(): void {
+        this.shipperService
+            .getShipperDropdowns()
+            .pipe(takeUntil(this.destroy$))
+            .subscribe({
+                next: (res: ShipperModalResponse) => {
+                    this.departmentOptions = res.departments;
+
+                    // From Another Modal Data
+                    if (this.editData?.type === 'edit-contact') {
+                        this.isCardAnimationDisabled = true;
+
+                        this.editShipperById(this.editData.id);
+
+                        setTimeout(() => {
+                            this.tabs = this.tabs.map((item, index) => {
+                                return {
+                                    ...item,
+                                    disabled: index !== 1,
+                                    checked: index === 1,
+                                };
+                            });
+
+                            this.selectedTab = 2;
+                        }, 50);
+                    }
+                    // Normal Get By Id
+                    else {
+                        if (this.editData?.id) {
+                            this.isCardAnimationDisabled = true;
+
+                            this.editShipperById(this.editData.id);
+
+                            this.tabs.push({
+                                id: 3,
+                                name: 'Review',
+                            });
+
+                            this.ratingChanges();
+                        } else {
+                            this.startFormChanges();
+                        }
+                    }
+
+                    if (this.editData) {
+                        this.tabs = this.tabs.map((tab) => ({
+                            ...tab,
+                            checked: tab.name === this.editData?.openedTab,
+                        }));
+                    }
+
+                    // Open Tab Position
+                    if (this.editData?.openedTab) {
+                        setTimeout(() => {
+                            this.tabChange({
+                                id:
+                                    this.editData?.openedTab === 'Additional'
+                                        ? 2
+                                        : this.editData?.openedTab === 'Review'
+                                        ? 3
+                                        : 1,
+                            });
+
+                            this.isCardAnimationDisabled = true;
+                        });
+                    }
+                },
+            });
+    }
+
     private addShipper(isSaveAndAddNew?: boolean) {
-        const { addressUnit, shipperContacts, longitude, latitude, ...form } =
+        const { addressUnit, longitude, latitude, ...form } =
             this.shipperForm.value;
+
         let receivingShipping = this.receivingShippingObject();
 
         let documents = [];
@@ -580,7 +750,9 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
             }
         });
 
-        let newData: any = {
+        const shipperContacts = this.mapContacts(this.shipperContacts);
+
+        const newData = {
             ...form,
             address: {
                 ...this.selectedAddress,
@@ -603,15 +775,6 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
                     ? this.latitude
                     : latitude,
             locationType: this.selectedPhysicalAddressTab,
-        };
-
-        for (let index = 0; index < shipperContacts.length; index++) {
-            shipperContacts[index].departmentId =
-                this.selectedContractDepartmentFormArray[index].id;
-        }
-
-        newData = {
-            ...newData,
             shipperContacts,
         };
 
@@ -651,9 +814,6 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
                         this.formService.resetForm(this.shipperForm);
 
                         this.selectedAddress = null;
-                        this.selectedContractDepartmentFormArray = [];
-
-                        this.shipperContacts.controls = [];
 
                         this.isPhoneExtExist = false;
 
@@ -662,6 +822,7 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
                             .patchValue(true);
 
                         this.selectedTab = 1;
+
                         this.tabs = this.tabs.map((item, index) => {
                             return {
                                 ...item,
@@ -696,8 +857,7 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
     }
 
     private updateShipper(id: number) {
-        const { addressUnit, shipperContacts, ...form } =
-            this.shipperForm.value;
+        const { addressUnit, ...form } = this.shipperForm.value;
 
         let documents = [];
         this.documents.map((item) => {
@@ -708,7 +868,9 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
 
         let receivingShipping = this.receivingShippingObject();
 
-        let newData: any = {
+        const shipperContacts = this.mapContacts(this.shipperContacts);
+
+        const newData = {
             id: id,
             ...form,
             address: {
@@ -733,15 +895,6 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
                 this.selectedPhysicalAddressTab === 1
                     ? this.latitude
                     : this.shipperForm.get(ShipperModalString.LATITUDE).value,
-        };
-
-        for (let index = 0; index < shipperContacts.length; index++) {
-            shipperContacts[index].departmentId =
-                this.selectedContractDepartmentFormArray[index].id;
-        }
-
-        newData = {
-            ...newData,
             shipperContacts,
         };
 
@@ -799,7 +952,7 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
             .getShipperById(id)
             .pipe(takeUntil(this.destroy$))
             .subscribe({
-                next: (res: any) => {
+                next: (res) => {
                     this.shipperForm.patchValue({
                         businessName: res.businessName,
                         phone: res.phone,
@@ -829,18 +982,22 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
                             res.shippingHoursSameReceiving &&
                             res.shippingAppointment
                                 ? null
-                                : MethodsCalculationsHelper.convertTimeFromBackend(
+                                : res.shippingFrom
+                                ? MethodsCalculationsHelper.convertTimeFromBackend(
                                       res.shippingFrom
-                                  ),
+                                  )
+                                : null,
                         shippingTo:
                             res.shippingHoursSameReceiving &&
                             res.shippingAppointment
                                 ? null
-                                : MethodsCalculationsHelper.convertTimeFromBackend(
+                                : res.shippingTo
+                                ? MethodsCalculationsHelper.convertTimeFromBackend(
                                       res.shippingTo
-                                  ),
+                                  )
+                                : null,
                         note: res.note,
-                        shipperContacts: [],
+                        contacts: this.mapContacts(res.shipperContacts, true),
                     });
 
                     this.shipperName = res.businessName;
@@ -855,25 +1012,6 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
                         this.isPhoneExtExist = true;
                     }
 
-                    if (res.shipperContacts.length) {
-                        for (const contact of res.shipperContacts) {
-                            this.shipperContacts.push(
-                                this.createShipperContacts({
-                                    fullName: contact.fullName,
-                                    departmentId: contact.department
-                                        ? contact.department.name
-                                        : null,
-                                    phone: contact.phone,
-                                    phoneExt: contact.phoneExt,
-                                    email: contact.email,
-                                })
-                            );
-                            this.selectedContractDepartmentFormArray.push(
-                                contact.department
-                            );
-                        }
-                    }
-
                     if (res.receivingAppointment) {
                         this.isAppointmentReceiving = true;
                     }
@@ -885,14 +1023,19 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
                         this.isAppointmentShipping = true;
                     }
 
-                    this.reviews = res?.reviews?.map((item: any) => ({
+                    // Contacts
+                    this.updatedShipperContacts = res.shipperContacts;
+
+                    // Review
+                    this.reviews = res.ratingReviews.map((item) => ({
                         ...item,
+                        id: item.reviewId,
                         companyUser: {
                             ...item.companyUser,
-                            avatar: item.companyUser.avatar,
+                            /*   avatar: item.companyUser.avatar, */
                         },
                         commentContent: item.comment,
-                        rating: item.ratingFromTheReviewer,
+                        rating: item.thumb,
                     }));
 
                     const reviewIndex = this.reviews?.findIndex(
@@ -902,7 +1045,7 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
                     );
 
                     if (reviewIndex !== -1) {
-                        this.disableOneMoreReview = true;
+                        this.isOneMoreReviewDisabled = true;
                     }
 
                     this.taLikeDislikeService.populateLikeDislikeEvent({
@@ -923,6 +1066,7 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
                     this.selectedPhysicalAddressTab = res.locationType.id;
 
                     this.setAddressValidations(res.locationType.name);
+
                     if (this.selectedPhysicalAddressTab === 2)
                         this.shipperForm.patchValue({
                             longitude: res.longitude,
@@ -930,77 +1074,13 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
                         });
 
                     this.startFormChanges();
+
+                    this.cdRef.detectChanges();
+
                     setTimeout(() => {
-                        this.disableCardAnimation = false;
+                        this.isCardAnimationDisabled = false;
                     }, 1000);
                 },
-                error: () => {},
-            });
-    }
-
-    private getShipperDropdowns() {
-        this.shipperService
-            .getShipperDropdowns()
-            .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: (res: ShipperModalResponse) => {
-                    this.labelsDepartments = res.departments;
-
-                    // From Another Modal Data
-                    if (this.editData?.type === 'edit-contact') {
-                        this.disableCardAnimation = true;
-                        this.editShipperById(this.editData.id);
-                        setTimeout(() => {
-                            this.tabs = this.tabs.map((item, index) => {
-                                return {
-                                    ...item,
-                                    disabled: index !== 1,
-                                    checked: index === 1,
-                                };
-                            });
-                            this.selectedTab = 2;
-                        }, 50);
-                    }
-                    // Normal Get By Id
-                    else {
-                        if (this.editData?.id) {
-                            this.disableCardAnimation = true;
-                            this.editShipperById(this.editData.id);
-                            // this.tabs.push({
-                            //     id: 3,
-                            //     name: 'Review',
-                            // }); this is not going into first spring
-                            this.ratingChanges();
-                        } else {
-                            this.startFormChanges();
-                        }
-                    }
-                    this.tabs = this.tabs.map((tab) => {
-                        if (
-                            this.editData?.openedTab &&
-                            tab.name === this.editData.openedTab
-                        ) {
-                            return { ...tab, checked: true };
-                        } else {
-                            return { ...tab, checked: false };
-                        }
-                    });
-                    // Open Tab Position
-                    if (this.editData?.openedTab) {
-                        setTimeout(() => {
-                            this.tabChange({
-                                id:
-                                    this.editData?.openedTab === 'Contact'
-                                        ? 2
-                                        : this.editData?.openedTab === 'Review'
-                                        ? 3
-                                        : 1,
-                            });
-                            this.disableCardAnimation = true;
-                        });
-                    }
-                },
-                error: () => {},
             });
     }
 
@@ -1074,8 +1154,10 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
                     shippingOpenTwentyFourHours: this.shipperForm.get(
                         'shippingOpenTwentyFourHours'
                     ).value,
-                    shippingFrom: this.shipperForm.get('shippingFrom').value,
-                    shippingTo: this.shipperForm.get('shippingTo').value,
+                    shippingFrom:
+                        this.shipperForm.get('shippingFrom').value ?? null,
+                    shippingTo:
+                        this.shipperForm.get('shippingTo').value ?? null,
                 };
             }
         }

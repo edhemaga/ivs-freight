@@ -116,7 +116,7 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
     @Input() set columns(value: DispatchColumn[] | null) {
         if (value) {
             this.columnsToShow = value;
-            
+
             this.shownFields = value
                 .slice(10, 15)
                 .filter((item) => item.hidden === false);
@@ -260,8 +260,6 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
 
     private initDispatchData(data: DispatchBoardResponse): void {
         this.dispatchData = JSON.parse(JSON.stringify(data));
-
-        console.log('this.dispatchData', this.dispatchData);
 
         this.parkingCount = this.dispatchData?.dispatches?.filter(
             (item) => item.parkingSlot
@@ -747,34 +745,6 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
         this.updateOrAddDispatchBoardAndSend('driverId', null, indx);
     }
 
-    private reorderDispatchBoard(): void {
-        const dispatchBoardId = this.dispatchData.id;
-        const dispatches = this.dispatchData.dispatches.map(
-            (dispatch, index) => {
-                return {
-                    id: dispatch.id,
-                    order: index + 1,
-                };
-            }
-        );
-
-        const data = {
-            dispatchBoardId,
-            dispatches,
-        };
-
-        this.isDispatchBoardChangeInProgress = true;
-
-        this.dispatcherService
-            .reorderDispatchboard(data)
-            .pipe(takeUntil(this.destroy$))
-            .subscribe(() => {
-                this.isDispatchBoardChangeInProgress = false;
-
-                this.cdRef.detectChanges();
-            });
-    }
-
     // CDL DRAG AND DROP
 
     public dragStartRow(): void {
@@ -832,7 +802,7 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
         this.isDispatchBoardChangeInProgress = true;
 
         this.dispatcherService
-            .reorderDispatchboard(data)
+            .reorderDispatchboard(data, dispatchBoardId)
             .pipe(takeUntil(this.destroy$))
             .subscribe(() => {
                 this.isDispatchBoardChangeInProgress = false;

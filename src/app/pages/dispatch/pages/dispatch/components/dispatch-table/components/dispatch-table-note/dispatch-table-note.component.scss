@@ -29,14 +29,14 @@
         .padding-inside {
             &.hovering {
                 .info-item {
-                    transition: background 0.2s ease-in;
+                    transition: $transition;
                     background: $bw2;
                 }
             }
 
             &.hovering-note {
                 .note-container {
-                    transition: background 0.2s ease-in;
+                    transition: $transition;
                     background: $bw2;
                 }
             }
