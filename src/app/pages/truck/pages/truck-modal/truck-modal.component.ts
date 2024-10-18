@@ -592,6 +592,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
                     this.tollTransponders = res.ezPass.map((item) => {
                         return {
                             ...item,
+                            groups: item.tollTransponders,
                             items: item.tollTransponders,
                         };
                     });

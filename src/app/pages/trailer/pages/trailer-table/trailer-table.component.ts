@@ -704,6 +704,8 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 hasContent: true,
                 content: this.getDropdownTrailerContent(),
             },
+            createdAt,
+            updatedAt
         };
     }
 
