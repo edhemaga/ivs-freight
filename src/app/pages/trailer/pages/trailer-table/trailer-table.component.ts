@@ -1,5 +1,5 @@
 import { DatePipe } from '@angular/common';
-import { Observable, Subject, takeUntil } from 'rxjs';
+import { Observable, skip, Subject, takeUntil } from 'rxjs';
 import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
 import { Router } from '@angular/router';
 
@@ -23,7 +23,10 @@ import { DetailsDataService } from '@shared/services/details-data.service';
 
 // store
 import { TrailerActiveQuery } from '@pages/trailer/state/trailer-active-state/trailer-active.query';
-import { TrailerActiveState } from '@pages/trailer/state/trailer-active-state/trailer-active.store';
+import {
+    TrailerActiveState,
+    TrailerActiveStore,
+} from '@pages/trailer/state/trailer-active-state/trailer-active.store';
 import { TrailerInactiveQuery } from '@pages/trailer/state/trailer-inactive-state/trailer-inactive.query';
 import { TrailerInactiveState } from '@pages/trailer/state/trailer-inactive-state/trailer-inactive.store';
 import { TrailerInactiveStore } from '@pages/trailer/state/trailer-inactive-state/trailer-inactive.store';
@@ -126,13 +129,14 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
         private confirmationService: ConfirmationService,
         private trailerCardsModalService: TrailerCardsModalService,
         private confirmationActivationService: ConfirmationActivationService,
-        private caSearchMultipleStatesService: CaSearchMultipleStatesService,        
+        private caSearchMultipleStatesService: CaSearchMultipleStatesService,
         private detailsDataService: DetailsDataService,
-        
+
         //Store
         private trailerActiveQuery: TrailerActiveQuery,
         private trailerInactiveQuery: TrailerInactiveQuery,
         private trailerInactiveStore: TrailerInactiveStore,
+        private trailerActiveStore: TrailerActiveStore,
         private store: Store,
 
         //Pipes
@@ -168,7 +172,7 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
     public setTableFilter(): void {
         this.tableService.currentSetTableFilter
-            .pipe(takeUntil(this.destroy$))
+            .pipe(skip(1), takeUntil(this.destroy$))
             .subscribe((res) => {
                 if (res?.filterType) {
                     this.backFilterQuery.trailerTypeIds = res.queryParams;
@@ -318,34 +322,7 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 }
                 // Update Trailer Status
                 else if (res?.animation === TableStringEnum.UPDATE_STATUS) {
-                    let trailerIndex: number;
-
-                    this.viewData = this.viewData.map(
-                        (trailer: any, index: number) => {
-                            if (trailer.id === res.id) {
-                                trailer.actionAnimation =
-                                    this.selectedTab === TableStringEnum.ACTIVE
-                                        ? TableStringEnum.DEACTIVATE
-                                        : TableStringEnum.ACTIVATE;
-                                trailerIndex = index;
-                            }
-
-                            return trailer;
-                        }
-                    );
-
                     this.updateDataCount();
-
-                    const inetval = setInterval(() => {
-                        this.viewData =
-                            MethodsGlobalHelper.closeAnimationAction(
-                                false,
-                                this.viewData
-                            );
-
-                        this.viewData.splice(trailerIndex, 1);
-                        clearInterval(inetval);
-                    }, 900);
                 }
             });
     }
@@ -384,7 +361,7 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
     private search(): void {
         this.caSearchMultipleStatesService.selectedChips$
-            .pipe(takeUntil(this.destroy$))
+            .pipe(skip(1), takeUntil(this.destroy$))
             .subscribe((res) => {
                 this.backFilterQuery.searchOne = res[0] ?? null;
                 this.backFilterQuery.searchTwo = res[1] ?? null;
@@ -431,9 +408,12 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
         );
         if (tableView) {
             this.selectedTab = tableView.tabSelected;
-            this.backFilterQuery.active = this.selectedTab === TableStringEnum.ACTIVE ? 1 : 0;
+            this.backFilterQuery.active =
+                this.selectedTab === TableStringEnum.ACTIVE ? 1 : 0;
             this.activeViewMode = tableView.viewMode;
-            this.detailsDataService.setActivation(!(!!this.backFilterQuery.active));
+            this.detailsDataService.setActivation(
+                !!!this.backFilterQuery.active
+            );
         }
 
         this.initTableOptions();
@@ -724,6 +704,8 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 hasContent: true,
                 content: this.getDropdownTrailerContent(),
             },
+            createdAt,
+            updatedAt
         };
     }
 
@@ -855,7 +837,8 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
             searchTwo: string | undefined;
             searchThree: string | undefined;
         },
-        isShowMore?: boolean
+        isShowMore?: boolean,
+        updateTrailerTable?: boolean
     ): void {
         this.trailerService
             .getTrailers(
@@ -873,7 +856,8 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
             .subscribe((trailer: TrailerListResponse) => {
                 if (!isShowMore) {
                     this.viewData = trailer.pagination.data;
-
+                    this.trailerActiveStore.set(this.viewData);
+                    this.trailerInactiveStore.set(this.viewData);
                     this.viewData = this.viewData.map((data: any) => {
                         return this.mapTrailerData(data);
                     });
@@ -886,7 +870,7 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
                     this.viewData = [...newData];
                 }
-
+                if (updateTrailerTable) this.sendTrailerData();
                 this.tableService.sendSelectOrDeselect(
                     TableStringEnum.DESELECT
                 );
@@ -908,26 +892,18 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
             this.backFilterQuery.sort = null;
             this.backFilterQuery.active =
                 this.selectedTab === TableStringEnum.ACTIVE ? 1 : 0;
+            this.caSearchMultipleStatesService.deleteAllChips();
 
             if (
                 this.selectedTab === TableStringEnum.INACTIVE &&
                 !this.inactiveTabClicked
             ) {
-                this.trailerService
-                    .getTrailers(0, null, 1, 25)
-                    .pipe(takeUntil(this.destroy$))
-                    .subscribe((trailerPagination) => {
-                        this.trailerInactiveStore.set(
-                            trailerPagination.pagination.data
-                        );
-                        this.sendTrailerData();
-                    });
+                this.trailerBackFilter(this.backFilterQuery, false, true);
             } else {
                 this.sendTrailerData();
             }
 
             // on tab change we need to reset chips and trailer type filters
-            this.caSearchMultipleStatesService.deleteAllChips();
             this.trailerService.updateTableFilters();
         }
         // View Mode

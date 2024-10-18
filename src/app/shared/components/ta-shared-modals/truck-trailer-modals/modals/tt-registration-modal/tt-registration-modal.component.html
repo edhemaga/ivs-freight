@@ -75,7 +75,8 @@
                         placeholderIcon: 'date',
                         isDropdown: true,
                         isRequired: true,
-                        customClass: 'datetimeclass'
+                        customClass: 'datetimeclass',
+                        isFutureDateDisabled: true
                     }"
                     formControlName="issueDate"
                 ></app-ta-input>
@@ -103,7 +104,8 @@
                         label: 'Expiration Date',
                         placeholderIcon: 'date',
                         isRequired: !registrationExpirationDate ? false : true,
-                        customClass: 'datetimeclass'
+                        customClass: 'datetimeclass',
+                        expiredDateInvalid: true
                     }"
                     formControlName="expDate"
                 ></app-ta-input>

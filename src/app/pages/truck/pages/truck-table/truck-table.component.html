@@ -34,9 +34,10 @@
                 [viewData]="viewData"
                 [rows]="rows"
                 [cardTitle]="cardTitle"
-                [displayRowsFront]="sendDataToCardsFront"
-                [displayRowsBack]="sendDataToCardsBack"
+                [displayRowsFront]="(displayRows$ | async).displayRowsFront"
+                [displayRowsBack]="(displayRows$ | async).displayRowsBack"
                 [page]="page"
+                [selectedTab]="selectedTab"
                 (onCardAction)="onTableBodyActions($event)"
             >
             </app-truck-card>

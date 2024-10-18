@@ -360,14 +360,15 @@ export class TaFilterComponent implements OnInit, OnDestroy {
     }
 
     private clearTrailerFilters(): void {
-        this.filterService.updateTrailerFilter.subscribe(() => {
-            this.clearAll(ToolbarFilterStringEnum.CLEAR_ALL, false);
+        this.filterService.updateTrailerFilter.subscribe((trailer: boolean) => {
+            if (trailer)
+                this.clearAll(ToolbarFilterStringEnum.CLEAR_ALL, false);
         });
     }
 
     private clearTruckFilters(): void {
-        this.filterService.updateTruckFilters.subscribe(() => {
-            this.clearAll(ToolbarFilterStringEnum.CLEAR_ALL, false);
+        this.filterService.updateTruckFilters.subscribe((truck: boolean) => {
+            if (truck) this.clearAll(ToolbarFilterStringEnum.CLEAR_ALL, false);
         });
     }
 

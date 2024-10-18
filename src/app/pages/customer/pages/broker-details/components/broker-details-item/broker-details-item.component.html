@@ -240,7 +240,9 @@
                 <div *ngSwitchCase="'contact'" class="contact">
                     <div *ngIf="brokerContacts.length" class="contact-wrapper">
                         <app-ta-contacts-card
+                            [type]="'broker'"
                             [departmentContacts]="departmentContacts"
+                            [viewData]="broker.data"
                         ></app-ta-contacts-card>
                     </div>
                 </div>

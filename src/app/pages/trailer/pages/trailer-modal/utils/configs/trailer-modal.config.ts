@@ -8,12 +8,12 @@ export class TrailerModalConfig {
             'Hopper',
             'Bottom Dump',
             'End Dump',
-            'Pneumatic Tanker'
-        ]
+            'Pneumatic Tanker',
+        ];
     }
-    
+
     static getIsDoorAndLiftGate(): string[] {
-        return ['Dry Van', 'Reefer']
+        return ['Dry Van', 'Reefer', 'Container'];
     }
 
     static getTrailerNumberConfig(options: TrailerConfigInterface): ITaInput {
@@ -173,8 +173,8 @@ export class TrailerModalConfig {
                     ? 'gal'
                     : 'cu_ft'
                 : null,
-                priceSeparator: true,
-                priceSeparatorLimitation: 6, 
+            priceSeparator: true,
+            priceSeparatorLimitation: 6,
         };
     }
     static getTrailerWeightConfig(options: TrailerConfigInterface): ITaInput {
@@ -228,7 +228,7 @@ export class TrailerModalConfig {
             maxLength: 10,
             placeholderText: 'mi',
             priceSeparator: true,
-            priceSeparatorLimitation: 6, 
+            priceSeparatorLimitation: 6,
         };
     }
     static getTrailerInsurancePolicyConfig(): ITaInput {
@@ -249,6 +249,7 @@ export class TrailerModalConfig {
             label: 'FHWA Exp.',
             isRequired: true,
             hideClear: true,
+            removeLeadingZero: true,
             commands: {
                 active: true,
                 type: 'months',
@@ -271,6 +272,7 @@ export class TrailerModalConfig {
             isDropdown: true,
             placeholderIcon: 'date',
             customClass: 'datetimeclass',
+            isFutureDateDisabled: true
         };
     }
     static getTrailerPurchasePriceConfig(): ITaInput {
@@ -280,7 +282,7 @@ export class TrailerModalConfig {
             label: 'Purchase Price',
             maxLength: 14,
             priceSeparator: true,
-            priceSeparatorLimitation: 6, 
+            priceSeparatorLimitation: 6,
             placeholderIcon: 'dollar',
         };
     }

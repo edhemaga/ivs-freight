@@ -2,6 +2,9 @@ import { Injectable } from '@angular/core';
 
 import { BehaviorSubject, Subject } from 'rxjs';
 
+// Enums
+import { TableStringEnum } from '@shared/enums/table-string.enum';
+
 @Injectable({
     providedIn: 'root',
 })
@@ -18,6 +21,7 @@ export class DetailsDataService {
     public unitValue: any;
     public cdlId: any;
     public isActivationInProgress = true;
+    public contactName: string = TableStringEnum.EMPTY_STRING_PLACEHOLDER;
 
     constructor() {}
 
@@ -25,7 +29,7 @@ export class DetailsDataService {
         this.mainData = { ...newData };
     }
 
-    public setActivation(isActive: boolean): void  {
+    public setActivation(isActive: boolean): void {
         this.isActivationInProgress = isActive;
     }
 
@@ -81,5 +85,9 @@ export class DetailsDataService {
 
     dropdownOpened(data) {
         this.dropdownOpenedChange.next(data);
+    }
+
+    public setContactName(contactName: string): void {
+        this.contactName = contactName;
     }
 }
