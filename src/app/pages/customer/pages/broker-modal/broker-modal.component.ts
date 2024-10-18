@@ -1835,10 +1835,8 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
                               }
                     );
 
-                    this.startFormChanges();
-
-                    if (res.mainPoBox?.city) {
-                        setTimeout(() => {
+                    setTimeout(() => {
+                        if (res.mainPoBox?.city) {
                             this.brokerForm
                                 .get(BrokerModalStringEnum.PHYSICAL_PO_BOX_CITY)
                                 .patchValue(
@@ -1847,10 +1845,10 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
                                         res.mainPoBox.state,
                                     ].join(', ')
                                 );
+                        }
 
-                            this.cdRef.detectChanges();
-                        }, 200);
-                    }
+                        this.startFormChanges();
+                    }, 200);
 
                     this.cdRef.detectChanges();
 

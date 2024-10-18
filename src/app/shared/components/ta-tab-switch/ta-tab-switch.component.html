@@ -1,7 +1,7 @@
 <div
     class="tab-switch-holder {{ type }}"
     [ngClass]="{ 'dashboard-height': dashboardHeight, disabled: isDisabled }"
-    [ngStyle]="{ 'margin-top': isMarginTopDisabled ? 0 : '12px' }"
+    [ngStyle]="{ 'margin-top': isMarginTopDisabled ? 0 : '' }"
 >
     <div
         *ngFor="let item of tabs; let indx = index"
