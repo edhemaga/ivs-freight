@@ -3,7 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { map, Observable, takeUntil } from 'rxjs';
 
 // Models
-import { ConversationInfoResponse } from 'appcoretruckassist';
+import { ConversationInfoResponse, EnumValue } from 'appcoretruckassist';
 import {
     ChatResolvedData,
     CompanyUserChatResponsePaginationReduced,
@@ -120,6 +120,7 @@ export class ChatComponent
                 this.drivers = res.drivers;
                 this.companyUsers = res.users;
                 this.departments = res.departments;
+                this.chatStoreService.addDepartments(this.departments);
                 this.tabs[0].count =
                     this.drivers.count +
                     this.companyUsers.count +
@@ -173,7 +174,9 @@ export class ChatComponent
     public createUserConversation(
         participantsId: number[],
         conversationType: ConversationTypeEnum,
-        group: ChatGroupEnum
+        group: ChatGroupEnum,
+        name: string,
+        channelType?: EnumValue
     ): void {
         if (!participantsId?.length) return;
 
@@ -189,6 +192,8 @@ export class ChatComponent
                 const selectedConversation: ChatSelectedConversation = {
                     id: conversation?.id,
                     group,
+                    name,
+                    channelType,
                 };
                 this.chatStoreService.setConversation(selectedConversation);
 

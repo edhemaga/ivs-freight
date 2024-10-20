@@ -64,13 +64,14 @@
                             >
                             </svg-icon>
                         </div>
-
                         <ng-container
                             *ngTemplateOutlet="
                                 headerLeftSide;
                                 context: {
-                                    name: (conversation$ | async)
-                                        ?.participants[0]?.fullName
+                                    name:
+                                        (conversation$ | async)?.name ??
+                                        (conversation$ | async)
+                                            ?.conversationType?.name
                                 }
                             "
                         ></ng-container>
@@ -142,19 +143,25 @@
 
 <ng-template #headerRightSide let-participants="participants">
     <div class="right-icons d-flex">
-        <div class="d-flex" (click)="displayGroupParticipants()">
+        <div
+            class="d-flex"
+            [ngStyle]="{
+                position: 'relative',
+                right: -participants?.length * 6 + 8 + 'px'
+            }"
+        >
             <ng-container *ngIf="participants">
                 <ng-container
                     *ngTemplateOutlet="
                         participantsIconList;
                         context: {
-                            participants: participants
+                            participants
                         }
                     "
                 ></ng-container>
-                <app-chat-vertical-divider></app-chat-vertical-divider>
             </ng-container>
         </div>
+        <app-chat-vertical-divider></app-chat-vertical-divider>
         <div
             class="icon-wrapper d-flex justify-content-center align-items-center"
         >
@@ -210,13 +217,16 @@
                 </ng-container>
                 <ng-container *ngSwitchCase="ind === 5">
                     <div
-                        class="remaining-participants-number profile-image-wrapper d-flex align-content-center justify-content-center ta-font-extra-bold"
+                        class="remaining-participants d-flex align-content-center justify-content-center ta-font-extra-bold"
                         [ngStyle]="{
+                            position: 'relative',
                             'border-radius': true && '50px',
                             left: '-30px'
                         }"
                     >
-                        <div>+{{ participants?.length - 5 }}</div>
+                        <div class="remaining-participants-number">
+                            +{{ participants?.length - 5 }}
+                        </div>
                     </div>
                 </ng-container>
             </ng-container>

@@ -244,6 +244,11 @@
                 [isHoverEffect]="false"
                 [isRound]="item?.isRound"
             ></app-ca-profile-image>
+            <div class="activity-status-icon">
+                <svg-icon
+                    [src]="participant?.status | chatStatusIcon"
+                ></svg-icon>
+            </div>
             <div class="fullname ta-font-regular">
                 {{ item.fullName }}
             </div>

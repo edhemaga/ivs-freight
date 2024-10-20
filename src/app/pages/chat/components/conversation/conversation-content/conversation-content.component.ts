@@ -139,10 +139,6 @@ export class ConversationContentComponent
             });
     }
 
-    public displayGroupParticipants(): void {
-        this.chatStoreService.displayConversationParticipants();
-    }
-
     public addAttachments(files: UploadFile[]): void {
         files.forEach((file: UploadFile) => {
             this.chatStoreService.setAttachment(file);

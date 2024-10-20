@@ -32,16 +32,20 @@ import {
     openAttachmentUpload,
     closeAttachmentUpload,
     selectAttachmentUploadStatus,
+    getAllDepartments,
+    setDepartment,
+    setConversationNameAndType,
 } from '@pages/chat/store';
 
 // Models
 import {
+    ChatCompanyChannelExtended,
     ChatConversationDetails,
     ChatMessage,
     ChatMessageResponse,
     ChatSelectedConversation,
 } from '@pages/chat/models';
-import { ConversationInfoResponse } from 'appcoretruckassist';
+import { EnumValue } from 'appcoretruckassist';
 import { UploadFile } from '@shared/components/ta-upload-files/models/upload-file.model';
 
 @Injectable({
@@ -49,6 +53,7 @@ import { UploadFile } from '@shared/components/ta-upload-files/models/upload-fil
 })
 export class ChatStoreService {
     private conversation$: Observable<ChatSelectedConversation>;
+    private departments$: Observable<ChatCompanyChannelExtended[]>;
     private messages$!: Observable<ChatMessageResponse>;
     private isProfileDetailsDisplayed$: Observable<boolean>;
     private isParticipantsDisplayed$: Observable<boolean>;
@@ -78,6 +83,12 @@ export class ChatStoreService {
         selectedConversation: ChatSelectedConversation
     ): void {
         this.store.dispatch(setConversation(selectedConversation));
+    }
+
+    public addDepartments(departments: ChatCompanyChannelExtended[]): void {
+        departments.forEach((department: ChatCompanyChannelExtended) => {
+            this.store.dispatch(setDepartment(department));
+        });
     }
 
     public setMessageResponse(data: ChatMessageResponse): void {
@@ -151,6 +162,12 @@ export class ChatStoreService {
         if (!this.conversation$)
             this.conversation$ = this.store.select(getSelectedConversation);
         return this.conversation$;
+    }
+
+    public selectAllDepartments(): Observable<ChatCompanyChannelExtended[]> {
+        if (!this.departments$)
+            this.departments$ = this.store.select(getAllDepartments);
+        return this.departments$;
     }
     public selectIsProfileDetailsDisplayed(): Observable<boolean> {
         if (!this.isProfileDetailsDisplayed$)

@@ -4,7 +4,14 @@
 >
     <app-chat-header>
         <div class="d-flex">
-            <div class="header-text ta-font-extra-bold">Profile</div>
+            <div class="header-text ta-font-extra-bold">
+                <ng-container
+                    *ngIf="conversation?.conversationType?.name === 'Channel'"
+                >
+                    Channel</ng-container
+                >
+                Profile
+            </div>
             <ng-container *ngIf="data">
                 <div
                     class="d-flex header-close-icon"
@@ -47,8 +54,7 @@
                     ></app-ca-profile-image>
                     <div class="text">
                         <div class="text-name ta-font-bold">
-                            {{ data.userAdditionalInformation[0]?.firstName }}
-                            {{ data.userAdditionalInformation[0]?.lastName }}
+                            {{ data.name }}
                         </div>
                         <div class="text-type ta-font-medium">
                             {{

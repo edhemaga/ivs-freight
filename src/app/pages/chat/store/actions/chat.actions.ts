@@ -2,13 +2,14 @@ import { createAction, props } from '@ngrx/store';
 
 // Models
 import {
+    ChatCompanyChannelExtended,
     ChatConversationDetails,
     ChatMessage,
     ChatMessageResponse,
     ChatSelectedConversation,
 } from '@pages/chat/models';
 import { UploadFile } from '@shared/components/ta-upload-files/models/upload-file.model';
-import { ConversationInfoResponse } from 'appcoretruckassist';
+import { ConversationInfoResponse, EnumValue } from 'appcoretruckassist';
 
 export const setMessageResponse = createAction(
     '[Chat] Set Message Response',
@@ -44,6 +45,11 @@ export const setConversation = createAction(
     props<ChatSelectedConversation>()
 );
 
+export const setConversationNameAndType = createAction(
+    '[Chat] Set Conversation Name And Type',
+    props<{ name: string; conversationType: EnumValue }>()
+);
+
 export const displayProfileDetails = createAction(
     '[Chat] Display Profile Details'
 );
@@ -68,6 +74,11 @@ export const setUnreadCount = createAction(
 export const setUserTyping = createAction(
     '[Chat] Set User Typing',
     props<{ name: string }>()
+);
+
+export const setDepartment = createAction(
+    '[Chat] Set Departments',
+    props<ChatCompanyChannelExtended>()
 );
 
 export const openAttachmentUpload = createAction(

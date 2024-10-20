@@ -46,7 +46,9 @@ export class ChatConversationDetailsComponent {
 
     constructor(private chatStoreService: ChatStoreService) {}
 
-    ngOnInit(): void {}
+    ngOnInit(): void {
+        console.log(this.conversation);
+    }
 
     public closeProfileDetails(): void {
         this.chatStoreService.closeAllProfileInformation();

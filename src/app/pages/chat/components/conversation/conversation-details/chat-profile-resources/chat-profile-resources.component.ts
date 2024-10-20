@@ -85,7 +85,10 @@ export class ChatProfileResourcesComponent
         this.groupUsersByType();
     }
 
-    private groupUsersByType(): void {
+    public groupUsersByType(): void {
+        this.drivers = [];
+        this.companyUsers = [];
+
         if (!this.conversation) return;
         this.conversation?.participants?.forEach((participant) => {
             if (participant.userType?.name === 'Driver') {
@@ -110,6 +113,7 @@ export class ChatProfileResourcesComponent
             .subscribe((search: { searchTerm: string }) => {
                 if (!search.searchTerm) {
                     this.groupUsersByType();
+                    return;
                 }
                 const searchTerm: string = search.searchTerm
                     ?.toLowerCase()

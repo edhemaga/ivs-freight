@@ -150,7 +150,7 @@
     }
 
     .fullname {
-        margin: auto auto auto 8px;
+        margin: auto;
         font-size: 14px;
     }
 
@@ -175,4 +175,10 @@
             }
         }
     }
+}
+
+.activity-status-icon {
+    position: relative;
+    top: 7px;
+    right: 8px;
 }

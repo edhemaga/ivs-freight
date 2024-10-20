@@ -16,9 +16,9 @@ import { ChatViewTypeEnum } from '@pages/chat/enums';
 
 export type ChatState = {
     // Conversation list
-    departments?: ChatCompanyChannelExtended;
-    truckChannel?: ChatCompanyChannelExtended;
-    dispatchBoardChannel?: ChatCompanyChannelExtended;
+    departments?: ChatCompanyChannelExtended[];
+    truckChannel?: ChatCompanyChannelExtended[];
+    dispatchBoardChannel?: ChatCompanyChannelExtended[];
     companyUsers?: CompanyUserChatResponsePagination;
     drivers?: CompanyUserChatResponsePagination;
 
