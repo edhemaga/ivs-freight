@@ -40,18 +40,21 @@
         <ng-container
             *ngSwitchCase="chatUserProfileResourceTypeEnum.PARTICIPANTS"
         >
-            <div class="search">
-                <div class="form-wrapper" [formGroup]="searchForm">
-                    <app-ta-input
-                        formControlName="searchTerm"
-                        [inputConfig]="
-                            chatInput.userSearchInput(
-                                chatSearchPlaceHolders.PARTICIPANT
-                            )
-                        "
-                    ></app-ta-input>
+            <!-- TODO Dodati neku animaciju myb -->
+            <ng-container *ngIf="isExpanded">
+                <div class="search">
+                    <div class="form-wrapper" [formGroup]="searchForm">
+                        <app-ta-input
+                            formControlName="searchTerm"
+                            [inputConfig]="
+                                chatInput.userSearchInput(
+                                    chatSearchPlaceHolders.PARTICIPANT
+                                )
+                            "
+                        ></app-ta-input>
+                    </div>
                 </div>
-            </div>
+            </ng-container>
             <div class="company-user-wrapper">
                 <ng-container
                     *ngTemplateOutlet="
@@ -65,26 +68,28 @@
                         }
                     "
                 ></ng-container>
-                <ng-container
-                    *ngFor="
-                        let user of companyUsers;
-                        let ind = index;
-                        trackBy: '' | trackByProperty
-                    "
-                >
+                <ng-container *ngIf="isExpanded">
                     <ng-container
-                        *ngTemplateOutlet="
-                            participantItem;
-                            context: {
-                                item: {
-                                    avatar: user?.avatar,
-                                    fullName: user?.fullName,
-                                    isRound: true,
-                                    id: user.id
-                                }
-                            }
+                        *ngFor="
+                            let user of companyUsers;
+                            let ind = index;
+                            trackBy: '' | trackByProperty
                         "
-                    ></ng-container>
+                    >
+                        <ng-container
+                            *ngTemplateOutlet="
+                                participantItem;
+                                context: {
+                                    item: {
+                                        avatar: user?.avatar,
+                                        fullName: user?.fullName,
+                                        isRound: true,
+                                        id: user.id
+                                    }
+                                }
+                            "
+                        ></ng-container>
+                    </ng-container>
                 </ng-container>
             </div>
             <div class="drivers-wrapper">
@@ -100,26 +105,28 @@
                         }
                     "
                 ></ng-container>
-                <ng-container
-                    *ngFor="
-                        let driver of drivers;
-                        let ind = index;
-                        trackBy: '' | trackByProperty
-                    "
-                >
+                <ng-container *ngIf="isExpanded">
                     <ng-container
-                        *ngTemplateOutlet="
-                            participantItem;
-                            context: {
-                                item: {
-                                    avatar: driver?.avatar,
-                                    fullName: driver?.fullName,
-                                    isRound: false,
-                                    id: driver.id
-                                }
-                            }
+                        *ngFor="
+                            let driver of drivers;
+                            let ind = index;
+                            trackBy: '' | trackByProperty
                         "
-                    ></ng-container>
+                    >
+                        <ng-container
+                            *ngTemplateOutlet="
+                                participantItem;
+                                context: {
+                                    item: {
+                                        avatar: driver?.avatar,
+                                        fullName: driver?.fullName,
+                                        isRound: false,
+                                        id: driver.id
+                                    }
+                                }
+                            "
+                        ></ng-container>
+                    </ng-container>
                 </ng-container>
             </div>
         </ng-container>

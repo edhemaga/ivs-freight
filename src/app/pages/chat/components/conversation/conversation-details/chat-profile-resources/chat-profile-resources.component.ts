@@ -35,7 +35,8 @@ import { Router } from '@angular/router';
 })
 export class ChatProfileResourcesComponent
     extends UnsubscribeHelper
-    implements OnInit {
+    implements OnInit
+{
     @Input() public title!: string;
     @Input() public hasHorizontalBorder: boolean = true;
     @Input() public customClass!: string;
@@ -107,14 +108,20 @@ export class ChatProfileResourcesComponent
         this.searchForm.valueChanges
             .pipe(takeUntil(this.destroy$), debounceTime(350))
             .subscribe((search: { searchTerm: string }) => {
+                if (!search.searchTerm) {
+                    this.groupUsersByType();
+                }
                 const searchTerm: string = search.searchTerm
-                    .toLowerCase()
-                    .trim();
+                    ?.toLowerCase()
+                    ?.trim();
 
-                // this.searchConversationParticipants =
-                //     this.conversationParticipants.filter((participant) =>
-                //         participant.fullName.toLowerCase().includes(searchTerm)
-                //     );
+                this.companyUsers = this.companyUsers.filter((participant) =>
+                    participant.fullName.toLowerCase().includes(searchTerm)
+                );
+
+                this.drivers = this.drivers.filter((participant) =>
+                    participant.fullName.toLowerCase().includes(searchTerm)
+                );
             });
     }
 
