@@ -18,9 +18,9 @@
             (click)="toggleShowAll()"
         >
             <ng-container *ngIf="isExpanded; else showAll"
-                >Show less</ng-container
+                >Close less</ng-container
             >
-            <ng-template #showAll>Show all</ng-template>
+            <ng-template #showAll>View all</ng-template>
         </div>
     </ng-container>
 </div>
@@ -65,8 +65,29 @@
                         }
                     "
                 ></ng-container>
+                <ng-container
+                    *ngFor="
+                        let user of companyUsers;
+                        let ind = index;
+                        trackBy: '' | trackByProperty
+                    "
+                >
+                    <ng-container
+                        *ngTemplateOutlet="
+                            participantItem;
+                            context: {
+                                item: {
+                                    avatar: user?.avatar,
+                                    fullName: user?.fullName,
+                                    isRound: true,
+                                    id: user.id
+                                }
+                            }
+                        "
+                    ></ng-container>
+                </ng-container>
             </div>
-            <div class="dirvers-wrapper">
+            <div class="drivers-wrapper">
                 <ng-container
                     *ngTemplateOutlet="
                         participantsTitle;
@@ -79,6 +100,27 @@
                         }
                     "
                 ></ng-container>
+                <ng-container
+                    *ngFor="
+                        let driver of drivers;
+                        let ind = index;
+                        trackBy: '' | trackByProperty
+                    "
+                >
+                    <ng-container
+                        *ngTemplateOutlet="
+                            participantItem;
+                            context: {
+                                item: {
+                                    avatar: driver?.avatar,
+                                    fullName: driver?.fullName,
+                                    isRound: false,
+                                    id: driver.id
+                                }
+                            }
+                        "
+                    ></ng-container>
+                </ng-container>
             </div>
         </ng-container>
 
@@ -172,6 +214,60 @@
             <div>
                 {{ item?.count }}
             </div>
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #participantItem let-item="item">
+    <div
+        class="item-wrapper d-flex justify-content-between align-content-center w-100"
+        (mouseenter)="toggleHover(item?.id)"
+        (mouseleave)="toggleHover(0)"
+    >
+        <div class="d-flex">
+            <app-ca-profile-image
+                [avatarImg]="item?.avatarFile?.url"
+                [avatarColor]="{
+                    background: '#DFC2F9',
+                    color: '#9E47EC66'
+                }"
+                [textShortName]="item?.fullName | nameInitials"
+                [size]="22"
+                [fontSize]="9"
+                [isHoverEffect]="false"
+                [isRound]="item?.isRound"
+            ></app-ca-profile-image>
+            <div class="fullname ta-font-regular">
+                {{ item.fullName }}
+            </div>
+        </div>
+        <div class="icon d-flex justify-content-center align-content-center">
+            <ng-container *ngIf="item?.isFavourite && !isUserHovered">
+                <svg-icon
+                    class="d-flex justify-content-center align-items-center"
+                    [svgStyle]="{
+                        'width.px': 13,
+                        'height.px': 13
+                    }"
+                    [src]="chatSvgRoutes.favoriteIcon"
+                >
+                </svg-icon>
+            </ng-container>
+            <ng-container *ngIf="hoveredUserId === item?.id">
+                <div
+                    class="d-flex justify-content-center align-items-center"
+                    (click)="selectConversation(item?.id)"
+                >
+                    <svg-icon
+                        [svgStyle]="{
+                            'width.px': 13,
+                            'height.px': 13
+                        }"
+                        [src]="chatSvgRoutes.directMessageIcon"
+                    >
+                    </svg-icon>
+                </div>
+            </ng-container>
         </div>
     </div>
 </ng-template>

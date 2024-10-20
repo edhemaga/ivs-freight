@@ -8,8 +8,10 @@ import { ChatLink, ChatSelectedConversation } from '@pages/chat/models';
 
 // Enums
 import {
+    ChatRoutesEnum,
     ChatSearchPlaceHolders,
     ChatUserProfileResourceTypeEnum,
+    ConversationTypeEnum,
 } from '@pages/chat/enums';
 
 // Assets
@@ -17,7 +19,14 @@ import { ChatSvgRoutes } from '@pages/chat/utils/routes';
 import { ChatInput } from '@pages/chat/utils/configs';
 
 // Helpers
-import { UnsubscribeHelper } from '@pages/chat/utils/helpers';
+import {
+    GetCurrentUserHelper,
+    UnsubscribeHelper,
+} from '@pages/chat/utils/helpers';
+
+// Services
+import { ChatStoreService, UserChatService } from '@pages/chat/services';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-chat-profile-resources',
@@ -26,8 +35,7 @@ import { UnsubscribeHelper } from '@pages/chat/utils/helpers';
 })
 export class ChatProfileResourcesComponent
     extends UnsubscribeHelper
-    implements OnInit
-{
+    implements OnInit {
     @Input() public title!: string;
     @Input() public hasHorizontalBorder: boolean = true;
     @Input() public customClass!: string;
@@ -47,14 +55,26 @@ export class ChatProfileResourcesComponent
     // Assets
     public chatInput = ChatInput;
     public chatSvgRoutes = ChatSvgRoutes;
+    private getCurrentUserHelper = GetCurrentUserHelper;
 
     // Enums
     public chatUserProfileResourceTypeEnum = ChatUserProfileResourceTypeEnum;
     public chatSearchPlaceHolders = ChatSearchPlaceHolders;
 
+    // Settings
     public isExpanded: boolean = false;
+    public hoveredUserId: number = 0;
 
-    constructor(private formBuilder: UntypedFormBuilder) {
+    constructor(
+        private formBuilder: UntypedFormBuilder,
+
+        // Router
+        private router: Router,
+
+        // Services
+        private chatService: UserChatService,
+        private chatStoreService: ChatStoreService
+    ) {
         super();
     }
 
@@ -100,5 +120,37 @@ export class ChatProfileResourcesComponent
 
     public toggleShowAll(): void {
         this.isExpanded = !this.isExpanded;
+    }
+
+    public toggleHover(value: number): void {
+        this.hoveredUserId = value;
+    }
+
+    public selectConversation(userId: number): void {
+        const currentUser: number = this.getCurrentUserHelper.currentUserId;
+        if (!userId || !currentUser) return;
+
+        const participantIds: number[] = [userId];
+        this.chatService
+            .createConversation(
+                participantIds,
+                ConversationTypeEnum.SINGLE_CHAT
+            )
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((conversation) => {
+                if (!conversation?.id) return;
+
+                this.chatStoreService.closeAllProfileInformation();
+
+                const selectedConversation: ChatSelectedConversation = {
+                    id: conversation?.id,
+                };
+                this.chatStoreService.setConversation(selectedConversation);
+
+                this.router.navigate([
+                    ChatRoutesEnum.CONVERSATION,
+                    conversation.id,
+                ]);
+            });
     }
 }

@@ -115,8 +115,10 @@
     margin-top: 4px;
 }
 
-.company-user-wrapper {
+.company-user-wrapper,
+.drivers-wrapper {
     .title {
+        height: 26px;
         margin: 6px;
 
         .text {
@@ -129,12 +131,48 @@
         .count {
             width: 14px;
             height: 14px;
-            margin-left: 8px;
             font-size: 9px;
-            color: $white;
+            color: $white !important;
             border-radius: 50px;
             background-color: $bw5;
             margin: auto auto auto 0;
+        }
+    }
+}
+
+.item-wrapper {
+    height: 30px;
+    width: 100px;
+    padding: 4px;
+
+    &:hover {
+        background-color: $bw2;
+    }
+
+    .fullname {
+        margin: auto auto auto 8px;
+        font-size: 14px;
+    }
+
+    .icon {
+        padding-left: 2px;
+        svg-icon {
+            svg {
+                path {
+                    fill: $ta-light-grey-6;
+                }
+            }
+        }
+
+        &:hover {
+            cursor: pointer;
+            svg-icon {
+                svg {
+                    path {
+                        fill: $bw5 !important;
+                    }
+                }
+            }
         }
     }
 }
