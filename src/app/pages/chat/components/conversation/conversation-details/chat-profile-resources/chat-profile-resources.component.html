@@ -46,11 +46,39 @@
                         formControlName="searchTerm"
                         [inputConfig]="
                             chatInput.userSearchInput(
-                                chatSearchPlaceHolders.USER
+                                chatSearchPlaceHolders.PARTICIPANT
                             )
                         "
                     ></app-ta-input>
                 </div>
+            </div>
+            <div class="company-user-wrapper">
+                <ng-container
+                    *ngTemplateOutlet="
+                        participantsTitle;
+                        context: {
+                            item: {
+                                name: 'Company users',
+                                icon: chatSvgRoutes.companyUserIcon,
+                                count: companyUsers?.length
+                            }
+                        }
+                    "
+                ></ng-container>
+            </div>
+            <div class="dirvers-wrapper">
+                <ng-container
+                    *ngTemplateOutlet="
+                        participantsTitle;
+                        context: {
+                            item: {
+                                name: 'Drivers',
+                                icon: chatSvgRoutes.steeringWheelIcon,
+                                count: drivers?.length
+                            }
+                        }
+                    "
+                ></ng-container>
             </div>
         </ng-container>
 
@@ -120,3 +148,30 @@
 <ng-container *ngIf="hasHorizontalBorder">
     <div class="horizontal-border"></div>
 </ng-container>
+
+<ng-template #participantsTitle let-item="item">
+    <div class="title d-flex align-content-center">
+        <svg-icon
+            class="d-flex justify-content-center align-items-center"
+            [svgStyle]="{
+                'width.px': 14,
+                'height.px': 14
+            }"
+            [src]="item?.icon"
+        >
+        </svg-icon>
+        <div
+            class="text d-flex align-content-center justify-content-center ta-font-bold"
+        >
+            <div>{{ item?.name | uppercase }}</div>
+        </div>
+        <div
+            class="count d-flex align-content-center justify-content-center ta-font-semi-bold"
+            [ngStyle]="!item?.count && { color: '#aaaaaa' }"
+        >
+            <div>
+                {{ item?.count }}
+            </div>
+        </div>
+    </div>
+</ng-template>

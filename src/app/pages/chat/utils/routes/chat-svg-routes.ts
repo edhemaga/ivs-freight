@@ -48,6 +48,7 @@ export class ChatSvgRoutes {
     static carHaulerIcon: string = 'assets/svg/chat/car-hauler-icon.svg';
     static reeferTruckIcon: string = 'assets/svg/chat/reefer-truck-icon.svg';
     static peopleIcon: string = 'assets/svg/chat/people-icon.svg';
+    static companyUserIcon: string = 'assets/svg/chat/company-user-icon.svg';
 
     // Groups
     static notificationIcon: string = 'assets/svg/chat/notification-icon.svg';
