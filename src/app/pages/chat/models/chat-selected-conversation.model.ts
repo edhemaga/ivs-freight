@@ -3,6 +3,5 @@ import { ConversationResponse } from 'appcoretruckassist';
 
 export interface ChatSelectedConversation extends ConversationResponse {
     group?: ChatGroupEnum;
-    isArchived?: boolean;
     hasLeft?: boolean;
 }

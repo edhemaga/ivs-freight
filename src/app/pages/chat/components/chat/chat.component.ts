@@ -56,7 +56,8 @@ import {
 })
 export class ChatComponent
     extends UnsubscribeHelper
-    implements OnInit, OnDestroy {
+    implements OnInit, OnDestroy
+{
     public title!: string;
 
     // Data

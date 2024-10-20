@@ -179,35 +179,47 @@
             trackBy: '' | trackByProperty
         "
     >
-        <ng-container [ngSwitch]="true">
-            <ng-container *ngSwitchCase="ind <= 4">
-                <!-- TODO Add border radius if driver, participant?.userType.name -->
-                <div
-                    class="profile-illustration-wrapper"
-                    [ngClass]="ind > 0 && 'left-offset'"
-                >
-                    <app-ca-profile-image
-                        [avatarImg]="participant?.avatarFile?.url"
-                        [avatarColor]="{
-                            background: '#DFC2F9',
-                            color: '#9E47EC66'
+        <div class="d-flex justify-content-center align-content-center">
+            <ng-container [ngSwitch]="true">
+                <ng-container *ngSwitchCase="ind <= 4">
+                    <div
+                        class="profile-illustration-wrapper"
+                        [ngClass]="ind > 0 && 'left-offset'"
+                        [ngStyle]="{
+                            'border-radius':
+                                participant?.userType?.name !== 'Driver' &&
+                                '50px',
+                            left: -ind * 6 + 'px'
                         }"
-                        [textShortName]="participant?.fullName | nameInitials"
-                        [size]="22"
-                        [fontSize]="9"
-                        [isHoverEffect]="false"
-                        [isRound]="true"
-                    ></app-ca-profile-image>
-                </div>
+                    >
+                        <app-ca-profile-image
+                            [avatarImg]="participant?.avatarFile?.url"
+                            [avatarColor]="{
+                                background: '#DFC2F9',
+                                color: '#9E47EC66'
+                            }"
+                            [textShortName]="
+                                participant?.fullName | nameInitials
+                            "
+                            [size]="22"
+                            [fontSize]="9"
+                            [isHoverEffect]="false"
+                            [isRound]="participant?.userType?.name !== 'Driver'"
+                        ></app-ca-profile-image>
+                    </div>
+                </ng-container>
+                <ng-container *ngSwitchCase="ind === 5">
+                    <div
+                        class="remaining-participants-number profile-image-wrapper d-flex align-content-center justify-content-center ta-font-extra-bold"
+                        [ngStyle]="{
+                            'border-radius': true && '50px',
+                            left: '-30px'
+                        }"
+                    >
+                        <div>+{{ participants?.length - 5 }}</div>
+                    </div>
+                </ng-container>
             </ng-container>
-            <ng-container *ngSwitchCase="ind === 5">
-                <div
-                    class="remaining-participants-number profile-image-wrapper align-content-center ta-font-extra-bold"
-                    [ngStyle]="{ 'border-radius': true && '50px' }"
-                >
-                    <div>+{{ participants?.length - 5 }}</div>
-                </div>
-            </ng-container>
-        </ng-container>
+        </div>
     </ng-container>
 </ng-template>

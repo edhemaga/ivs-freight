@@ -78,7 +78,7 @@
 
             <ng-container
                 *ngIf="
-                    conversation.conversationType ===
+                    conversation.conversationType?.name ===
                     conversationTypeEnum.SINGLE_CHAT
                 "
             >
@@ -146,23 +146,21 @@
                     </div>
                 </ng-container>
             </ng-container>
-
             <ng-conversation
                 *ngIf="
-                    conversation.conversationType ===
+                    conversation.conversationType?.name ===
                     conversationTypeEnum.CHANNEL
                 "
             >
+                <app-chat-profile-resources
+                    [title]="'Participants'"
+                    [count]="data.userAdditionalInformation?.length"
+                    [conversation]="conversation"
+                    [type]="ChatUserProfileResourceTypeEnum.PARTICIPANTS"
+                >
+                </app-chat-profile-resources>
             </ng-conversation>
 
-            <app-chat-profile-resources
-                [title]="'Participants'"
-                [customClass]="''"
-                [count]="data.userAdditionalInformation?.length"
-                [resources]="data.userAdditionalInformation"
-                [type]="ChatUserProfileResourceTypeEnum.PARTICIPANTS"
-            >
-            </app-chat-profile-resources>
             <app-chat-profile-resources
                 [title]="'Media'"
                 [customClass]="'media-content'"

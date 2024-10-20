@@ -38,18 +38,29 @@
 >
     <ng-container [ngSwitch]="type">
         <ng-container
+            *ngSwitchCase="chatUserProfileResourceTypeEnum.PARTICIPANTS"
+        >
+            <div class="search">
+                <div class="form-wrapper" [formGroup]="searchForm">
+                    <app-ta-input
+                        formControlName="searchTerm"
+                        [inputConfig]="
+                            chatInput.userSearchInput(
+                                chatSearchPlaceHolders.USER
+                            )
+                        "
+                    ></app-ta-input>
+                </div>
+            </div>
+        </ng-container>
+
+        <ng-container
             *ngFor="
                 let item of resources;
                 let ind = index;
                 trackBy: '' | trackByProperty
             "
         >
-            <ng-container
-                *ngSwitchCase="chatUserProfileResourceTypeEnum.PARTICIPANTS"
-            >
-                {{ item | json }}
-            </ng-container>
-
             <ng-container *ngSwitchCase="chatUserProfileResourceTypeEnum.MEDIA">
                 <img [src]="item?.url" [alt]="item?.fileName" />
             </ng-container>
