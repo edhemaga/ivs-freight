@@ -8,7 +8,8 @@
         loadForm.valid &&
         isFormDirty &&
         isEachStopItemsRowValid &&
-        !reorderingStarted
+        !reorderingStarted &&
+        !isMilesLoading
     "
     [customClass]="loadModalSize"
     [partClass]="'load-modal-origin-part'"
