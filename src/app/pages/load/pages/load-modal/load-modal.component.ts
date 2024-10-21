@@ -4979,9 +4979,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                     this.originalStatus === LoadStatusEnum[8] &&
                     this.isPreviousStatus;
                     
-                if (isUserReversingFromInvoicedStatus) {
-                    newData.invoicedDate = null;
-                }
+                if (isUserReversingFromInvoicedStatus) newData.invoicedDate = null;
 
                 if (this.isLoadClosed)
                     newData.statusHistory = response.statusHistory;
