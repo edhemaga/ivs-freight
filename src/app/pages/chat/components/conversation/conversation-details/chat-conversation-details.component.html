@@ -32,26 +32,72 @@
         <div class="user-profile-content">
             <div class="basic-info">
                 <div class="d-flex align-content-center align-items-center">
-                    <app-ca-profile-image
-                        [avatarImg]="
-                            data.userAdditionalInformation[0]?.avatarFile?.url
-                        "
-                        [avatarColor]="{
-                            background: '#DFC2F9',
-                            color: '#9E47EC66'
-                        }"
-                        [textShortName]="
-                            data.userAdditionalInformation[0]?.fullName
-                                | nameInitials
-                        "
-                        [size]="74"
-                        [fontSize]="30"
-                        [isHoverEffect]="false"
-                        [isRound]="
-                            data.userAdditionalInformation[0]?.userType
-                                ?.name !== 'Driver'
-                        "
-                    ></app-ca-profile-image>
+                    <ng-container
+                        [ngSwitch]="conversation?.conversationType?.name"
+                    >
+                        <ng-container *ngSwitchCase="'SingleChat'">
+                            <app-ca-profile-image
+                                [avatarImg]="
+                                    data.userAdditionalInformation[0]
+                                        ?.avatarFile?.url
+                                "
+                                [avatarColor]="{
+                                    background: '#DFC2F9',
+                                    color: '#9E47EC66'
+                                }"
+                                [textShortName]="
+                                    data.userAdditionalInformation[0]?.fullName
+                                        | nameInitials
+                                "
+                                [size]="74"
+                                [fontSize]="30"
+                                [isHoverEffect]="false"
+                                [isRound]="
+                                    data.userAdditionalInformation[0]?.userType
+                                        ?.name !== 'Driver'
+                                "
+                            ></app-ca-profile-image
+                        ></ng-container>
+                        <ng-container *ngSwitchCase="'Channel'">
+                            <ng-container
+                                [ngSwitch]="conversation?.channelType?.name"
+                            >
+                                <ng-container *ngSwitchCase="'Department'">
+                                    <div>
+                                        <svg-icon
+                                            class="d-flex justify-content-center align-items-center"
+                                            [svgStyle]="{
+                                                'width.px': width ?? 14,
+                                                'height.px': 14 ?? height
+                                            }"
+                                            [src]="chatSvgRoutes.hashIcon"
+                                        >
+                                        </svg-icon>
+                                    </div>
+                                </ng-container>
+                                <ng-container
+                                    *ngSwitchCase="'Truck'"
+                                ></ng-container>
+                                <ng-container
+                                    *ngSwitchCase="'Dispatch'"
+                                ></ng-container>
+                                <ng-container *ngSwitchDefault>
+                                    <div>
+                                        <svg-icon
+                                            class="d-flex justify-content-center align-items-center"
+                                            [svgStyle]="{
+                                                'width.px': 64,
+                                                'height.px': 64
+                                            }"
+                                            [src]="chatSvgRoutes.hashIcon"
+                                        >
+                                        </svg-icon>
+                                    </div>
+                                </ng-container>
+                            </ng-container>
+                        </ng-container>
+                    </ng-container>
+
                     <div class="text">
                         <div class="text-name ta-font-bold">
                             {{ data.name }}
