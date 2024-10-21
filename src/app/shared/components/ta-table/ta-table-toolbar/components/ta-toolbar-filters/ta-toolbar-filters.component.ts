@@ -184,12 +184,11 @@ export class TaToolbarFiltersComponent implements OnInit, OnChanges, OnDestroy {
                         res?.animation ===
                         ToolbarFilterStringEnum.TRUCK_LIST_UPDATE
                     ) {
+                        this.truckTypeArray = truckResData;
                         if (
                             this.options.toolbarActions.showTruckPmFilter ||
                             this.options.toolbarActions.showTrailerPmFilter
                         ) {
-                            this.truckTypeArray = truckResData;
-
                             this.truckTypeArray = res.data.map(
                                 (
                                     type: any
@@ -200,17 +199,25 @@ export class TaToolbarFiltersComponent implements OnInit, OnChanges, OnDestroy {
                                     return type;
                                 }
                             );
+                        } else {
+                            this.truckTypeArray = res.data.map((item) => ({
+                                ...item.truckType,
+                                count: item.count,
+                                icon:
+                                    FilterIconRoutes.truckSVG +
+                                    item.truckType.logoName,
+                            }));
                         }
                     }
                     if (
                         res?.animation ===
                         ToolbarFilterStringEnum.TRAILER_LIST_UPDATE
                     ) {
+                        this.trailerTypeArray = trailerResData;
                         if (
                             this.options.toolbarActions.showTruckPmFilter ||
                             this.options.toolbarActions.showTrailerPmFilter
                         ) {
-                            this.trailerTypeArray = trailerResData;
                             this.trailerTypeArray = res.data.map(
                                 (
                                     type: any
@@ -221,6 +228,14 @@ export class TaToolbarFiltersComponent implements OnInit, OnChanges, OnDestroy {
                                     return type;
                                 }
                             );
+                        } else {
+                            this.trailerTypeArray = res.data.map((item) => ({
+                                ...item.trailerType,
+                                count: item.count,
+                                icon:
+                                    FilterIconRoutes.trailerSVG +
+                                    item.trailerType.logoName,
+                            }));
                         }
                     }
                     if (
