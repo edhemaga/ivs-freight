@@ -26,6 +26,7 @@ export interface ApiTruckPostRequest1 {
     Model?: string;
     Year?: number;
     ColorId?: number;
+    ExcludeFromIftaFuelTaxReport?: boolean;
     OwnerId?: number;
     Commission?: number;
     Note?: string;
