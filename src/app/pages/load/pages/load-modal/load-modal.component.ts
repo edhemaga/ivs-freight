@@ -155,7 +155,7 @@ import {
 
 // Svg Routes
 import { LoadModalSvgRoutes } from '@pages/load/pages/load-modal/utils/svg-routes/load-modal-svg-routes';
-import { CaMapComponent, ICaMapProps } from 'ca-components';
+import { CaMapComponent, ICaMapProps, CaInputDropdownComponent, CaInputComponent  } from 'ca-components';
 
 @Component({
     selector: 'app-load-modal',
@@ -174,8 +174,6 @@ import { CaMapComponent, ICaMapProps } from 'ca-components';
         TaAppTooltipV2Component,
         TaModalComponent,
         TaTabSwitchComponent,
-        TaInputDropdownComponent,
-        TaInputComponent,
         TaCustomCardComponent,
         TaCheckboxComponent,
         LoadModalStopComponent,
@@ -191,6 +189,8 @@ import { CaMapComponent, ICaMapProps } from 'ca-components';
         TaInputDropdownStatusComponent,
         TaModalTableComponent,
         CaMapComponent,
+        CaInputDropdownComponent,
+        CaInputComponent,
 
         // pipes
         FinancialCalculationPipe,
