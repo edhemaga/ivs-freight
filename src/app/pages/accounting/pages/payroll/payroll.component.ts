@@ -9,7 +9,6 @@ import {
     ViewContainerRef,
     inject,
     ComponentRef,
-    ChangeDetectorRef,
     OnDestroy,
 } from '@angular/core';
 import { Observable, takeUntil, Subject } from 'rxjs';
@@ -27,12 +26,15 @@ import { DriversInactiveQuery } from '@pages/driver/state/driver-inactive-state/
 import { DriversInactiveState } from '@pages/driver/state/driver-inactive-state/driver-inactive.store';
 import { PayrollQuery } from '@pages/accounting/pages/payroll/state/payroll.query';
 import { PayrollFacadeService } from './state/services/payroll.service';
-import { IPayrollCountsSelector } from './state/models/payroll.model';
-import { DriverMileageSoloTableComponent } from './components/tables/driver-mileage-solo-table/driver-mileage-solo-table.component';
-import { DriverMileageCollapsedTableComponent } from './components/tables/driver-mileage-collapsed-table/driver-mileage-collapsed-table.component';
 
-import { PayrollListSummaryOverview } from 'ca-components';
+// Models
+import { IPayrollCountsSelector } from './state/models/payroll.model';
+import { DriverMileageCollapsedTableComponent } from './components/tables/driver-mileage-collapsed-table/driver-mileage-collapsed-table.component';
 import { DriverShortResponse } from 'appcoretruckassist';
+
+// Components
+import { PayrollListSummaryOverview } from 'ca-components';
+import { DriverMileageSoloTableComponent } from './components/tables/driver-mileage-solo-table/driver-mileage-solo-table.component';
 import { DriverMileageExpandedTableComponent } from './components/tables/driver-mileage-expanded-table/driver-mileage-expanded-table.component';
 @Component({
     selector: 'app-payroll',
@@ -51,6 +53,8 @@ export class PayrollComponent implements OnInit, AfterViewInit, OnDestroy {
     environmentInjector = inject(EnvironmentInjector); // Inject the EnvironmentInjector
 
     tableOptions: any = {};
+    payrollType: string;
+    selectedOpenFromList: any;
 
     selectedTab = 'open';
     activeViewMode: string = 'List';
@@ -87,14 +91,13 @@ export class PayrollComponent implements OnInit, AfterViewInit, OnDestroy {
         private nameInitialsPipe: NameInitialsPipe,
 
         // Services
-        private payrollFacadeService: PayrollFacadeService,
-        private chRef: ChangeDetectorRef
+        private payrollFacadeService: PayrollFacadeService
     ) {}
 
     public subscribeToStoreData() {
         this.reportTableExpanded$ =
             this.payrollFacadeService.reportTableExpanded$;
-        this.payrollFacadeService.getPayrollCounts(this.selectedTab === 'open');
+        this.payrollFacadeService.getPayrollCounts();
         this.payrollCountsResponse$ =
             this.payrollFacadeService.selectPayrollCounts$;
         this.payrollFacadeService.selectPayrollCounts$
@@ -111,6 +114,12 @@ export class PayrollComponent implements OnInit, AfterViewInit, OnDestroy {
                     this.tableData[1].length = res.closed;
                 }
             });
+
+        this.payrollFacadeService.selectPayrollOpenedTab$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((tab) => {
+                this.selectedTab = tab;
+            });
     }
 
     ngOnInit(): void {
@@ -119,15 +128,12 @@ export class PayrollComponent implements OnInit, AfterViewInit, OnDestroy {
 
         this.payrollData = this.payrollQuery.payrolldata$;
 
-        const driverActiveData =
-            this.selectedTab === 'open' ? this.getTabData('active') : [];
-
         this.tableData = [
             {
                 title: 'Open',
                 field: 'open',
                 length: 0,
-                data: driverActiveData,
+                data: [],
                 extended: true,
                 gridNameTitle: 'Payroll',
                 stateName: 'open',
@@ -168,9 +174,6 @@ export class PayrollComponent implements OnInit, AfterViewInit, OnDestroy {
         }
     }
 
-    payrollType: string;
-    selectedDriver: DriverShortResponse;
-
     handleTableShow() {
         this.container.clear();
         switch (this.payrollType) {
@@ -189,7 +192,7 @@ export class PayrollComponent implements OnInit, AfterViewInit, OnDestroy {
                             (event: any) => this.expandTable(event)
                         );
                     }
-                } else if (this.selectedDriver) {
+                } else if (this.selectedOpenFromList) {
                     this.componentRef = this.container.createComponent(
                         DriverMileageExpandedTableComponent,
                         {
@@ -198,7 +201,7 @@ export class PayrollComponent implements OnInit, AfterViewInit, OnDestroy {
                     );
                     if (this.componentRef) {
                         this.componentRef.instance.driverId =
-                            this.selectedDriver.id; // Example input property
+                            this.selectedOpenFromList.driver.id; // Example input property
 
                         this.componentRef.instance.expandTableEvent.subscribe(
                             (event: any) => {
@@ -247,8 +250,8 @@ export class PayrollComponent implements OnInit, AfterViewInit, OnDestroy {
                 this.reportTableData = data;
                 this.payrollFacadeService.setPayrollReportTableExpanded(true);
             } else {
-                console.log('WHAT IS DATAA HEREEE', data.driver);
-                this.selectedDriver = data.driver;
+                console.log('WHAT IS DATAA HEREEE', data);
+                this.selectedOpenFromList = data;
                 this.handleTableShow();
             }
 
@@ -270,36 +273,14 @@ export class PayrollComponent implements OnInit, AfterViewInit, OnDestroy {
         this.resizeObserver.observe(document.querySelector('.table-container'));
     }
 
-    getTabData(dataType: string) {
-        if (dataType === 'active') {
-            this.driversActive = this.driversActiveQuery.getAll();
-
-            return this.driversActive?.length ? this.driversActive : [];
-        } else if (dataType === 'inactive') {
-            this.driversInactive = this.driversInactiveQuery.getAll();
-
-            return this.driversInactive?.length ? this.driversInactive : [];
-        } else {
-            let mockData = [];
-
-            for (let i = 0; i < 10; i++) {
-                mockData.push({});
-            }
-
-            return mockData;
-        }
-    }
-
     public summaryControll() {}
 
     onToolBarAction(event: any) {
         if (event.action === 'tab-selected') {
-            this.selectedTab = event.tabData.field;
+            this.payrollFacadeService.setPayrollOpenedTab(event.tabData.field);
             this.openedIndex = -1;
             this.expandTable();
-            this.payrollFacadeService.getPayrollCounts(
-                event.tabData.field === 'open'
-            );
+            this.payrollFacadeService.getPayrollCounts();
         }
     }
 
@@ -401,156 +382,19 @@ export class PayrollComponent implements OnInit, AfterViewInit, OnDestroy {
               ];
     }
 
-    mapApplicantsData(data: any, index: number) {
-        return {
-            fullName: 'Angelo Trotter',
-            payroll: 'LA59OSK',
-            period: '04/04/44',
-            total: '2,300.2',
-            empty: '500',
-            salary: '2,300.2',
-            loaded: '1,500.2',
-            'MI Pay': '$1,842.06',
-            dob: '04/04/44',
-            textShortName: this.nameInitialsPipe.transform('Angelo Trotter'),
-            avatarColor: this.getAvatarColors(),
-            status: '444 DAYS',
-            email: 'angelo.T@gmail.com',
-            applicantProgress: [
-                {
-                    title: 'App.',
-                    status: 'Done',
-                    width: 34,
-                    class: 'complete-icon',
-                    percentage: 34,
-                },
-                {
-                    title: 'Mvr',
-                    status: 'In Progres',
-                    width: 34,
-                    class: 'complete-icon',
-                    percentage: 34,
-                },
-                {
-                    title: 'Psp',
-                    status: 'Wrong',
-                    width: 29,
-                    class: 'wrong-icon',
-                    percentage: 34,
-                },
-                {
-                    title: 'Sph',
-                    status: 'No Started',
-                    width: 30,
-                    class: 'complete-icon',
-                    percentage: 34,
-                },
-                {
-                    title: 'Hos',
-                    status: 'Done',
-                    width: 32,
-                    class: 'done-icon',
-                    percentage: 34,
-                },
-                {
-                    title: 'Ssn',
-                    status: 'Done',
-                    width: 29,
-                    class: 'wrong-icon',
-                    percentage: 34,
-                },
-            ],
-            // Complete, Done, Wrong, In Progres, Not Started
-            medical: {
-                class:
-                    index === 0
-                        ? 'complete-icon'
-                        : index === 1
-                        ? 'done-icon'
-                        : index === 2
-                        ? 'wrong-icon'
-                        : '',
-                hideProgres: index !== 3,
-                isApplicant: true,
-                expirationDays: '3233',
-                percentage: 34,
-            },
-            cdl: {
-                class:
-                    index === 0
-                        ? 'complete-icon'
-                        : index === 1
-                        ? 'done-icon'
-                        : index === 2
-                        ? 'wrong-icon'
-                        : '',
-                hideProgres: index !== 3,
-                isApplicant: true,
-                expirationDays: '22',
-                percentage: 10,
-            },
-            rev: {
-                title:
-                    index === 0
-                        ? 'Reviewed'
-                        : index === 1
-                        ? 'Finished'
-                        : index === 2
-                        ? 'Incomplete'
-                        : 'Ready',
-                iconLink:
-                    index === 0 || index === 2
-                        ? 'assets/svg/truckassist-table/applicant-wrong-icon.svg'
-                        : 'assets/svg/truckassist-table/applicant-done-icon.svg',
-            },
-            hire: true,
-            favorite: false,
-        };
-    }
-    // Get Avatar Color
-    getAvatarColors() {
-        let textColors: string[] = [
-            '#6D82C7',
-            '#4DB6A2',
-            '#E57373',
-            '#E3B00F',
-            '#BA68C8',
-            '#BEAB80',
-            '#81C784',
-            '#FF8A65',
-            '#64B5F6',
-            '#F26EC2',
-            '#A1887F',
-            '#919191',
-        ];
-
-        let backgroundColors: string[] = [
-            '#DAE0F1',
-            '#D2EDE8',
-            '#F9DCDC',
-            '#F8EBC2',
-            '#EED9F1',
-            '#EFEADF',
-            '#DFF1E0',
-            '#FFE2D8',
-            '#D8ECFD',
-            '#FCDAF0',
-            '#E7E1DF',
-            '#E3E3E3',
-        ];
-
-        this.mapingIndex = this.mapingIndex <= 11 ? this.mapingIndex : 0;
-
-        return {
-            background: backgroundColors[this.mapingIndex],
-            color: textColors[this.mapingIndex],
-        };
-    }
-
     openPayrollReport() {}
 
     ngOnDestroy(): void {
         this.destroy$.next();
         this.destroy$.complete();
+    }
+
+    closeOpenPreview(e: any) {
+        e.preventDefault();
+        e.stopPropagation();
+
+        this.selectedOpenFromList = undefined;
+        this.payrollFacadeService.setPayrollReportTableExpanded(false);
+        this.handleTableShow();
     }
 }

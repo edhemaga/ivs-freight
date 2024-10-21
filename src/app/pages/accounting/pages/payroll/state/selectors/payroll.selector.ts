@@ -167,6 +167,13 @@ export const selectSoloDriverMileage = createSelector(
     }
 );
 
+export const selectPayrollOpenedTab = createSelector(
+    selectPayrollState,
+    (state) => {
+        return state.payrollOpenedTab;
+    }
+);
+
 export const selectDriverMileageCollapsedTable = createSelector(
     selectPayrollState,
     (state) => {

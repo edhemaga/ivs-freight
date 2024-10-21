@@ -12,6 +12,7 @@ export const payrollState: PayrollState = {
     reportLoading: false,
     expandedReportTable: false,
     closeReportPaymentLoading: false,
+    payrollOpenedTab: 'open',
 };
 
 export const payrollReducer = createReducer(
@@ -20,6 +21,10 @@ export const payrollReducer = createReducer(
     on(PayrollActions.getPayrollCounts, (state) => ({
         ...state,
         loading: true,
+    })),
+    on(PayrollActions.setPayrollopenedTab, (state, data) => ({
+        ...state,
+        payrollOpenedTab: data.tabStatus,
     })),
     on(PayrollActions.getPayrollCountsSuccess, (state, results) => ({
         ...state,

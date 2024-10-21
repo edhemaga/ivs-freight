@@ -10,6 +10,7 @@ import {
     selectPayrollDriverMileageStops,
     selectPayrollLoad,
     selectPayrollOpenedReport,
+    selectPayrollOpenedTab,
     selectPayrollReportLoading,
     selectPayrollReportsIncludedStops,
     selectPayrollReportTableExpanded,
@@ -75,6 +76,9 @@ export class PayrollFacadeService {
         closed: number;
     }> = this.store.pipe(select(seletPayrollTabsCount));
 
+    public selectPayrollOpenedTab$: Observable<'open' | 'closed'> =
+        this.store.pipe(select(selectPayrollOpenedTab));
+
     // Select Driver Mileage Solo
     public selectPayrollDriverSoloMileage$: Observable<
         PayrollDriverMileageListResponse[]
@@ -85,13 +89,23 @@ export class PayrollFacadeService {
     > = this.store.pipe(select(selectDriverMileageCollapsedTable));
 
     public selectPayrollDriverMileageExpanded$: Observable<
-     PayrollDriverMileageExpandedListResponse[]
+        PayrollDriverMileageExpandedListResponse[]
     > = this.store.pipe(select(selectDriverMileageExpandedTable));
 
-    public getPayrollCounts(showOpen: boolean) {
-        this.store.dispatch(
-            PayrollActions.getPayrollCounts({ ShowOpen: showOpen })
-        );
+    public getPayrollCounts() {
+        this.store
+            .pipe(select(selectPayrollState), take(1))
+            .subscribe((payrollState) => {
+                this.store.dispatch(
+                    PayrollActions.getPayrollCounts({
+                        ShowOpen: payrollState.payrollOpenedTab === 'open',
+                    })
+                );
+            });
+    }
+
+    public setPayrollOpenedTab(tabStatus: 'open' | 'closed') {
+        this.store.dispatch(PayrollActions.setPayrollopenedTab({ tabStatus }));
     }
 
     public getPayrollDriverMileageSoloList() {

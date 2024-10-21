@@ -21,3 +21,8 @@ export const setTableReportExpanded = createAction(
     PayrollEnum.SET_TABLE_REPORT_EXPANDED,
     props<{ expanded: boolean }>()
 );
+
+export const setPayrollopenedTab = createAction(
+    PayrollEnum.SET_PAYROLL_TAB,
+    props<{ tabStatus: 'open' | 'closed' }>()
+);

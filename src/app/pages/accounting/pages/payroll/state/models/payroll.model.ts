@@ -21,6 +21,7 @@ export interface PayrollState {
     closeReportPaymentError?: boolean;
     driverMileageCollapsedList?: PayrollDriverMileageCollapsedListResponse[];
     driverMileageExpandedList?: PayrollDriverMileageExpandedListResponse[];
+    payrollOpenedTab: "open" | "closed";
 }
 
 export interface IPayrollCountsSelector {

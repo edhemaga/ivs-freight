@@ -12,7 +12,7 @@
                 left: 0 !important;
             }
 
-            .header-arrow{
+            .header-arrow {
                 width: 22px !important;
             }
 
@@ -33,6 +33,69 @@
                 }
             }
         }
+
+        .driver-opened-payroll-sumary {
+            align-items: center;
+            .close_open_payroll_arrow {
+                width: 26px;
+                height: 26px;
+                align-items: center;
+                justify-content: center;
+                border-radius: 2px;
+                background-color: #6c6c6c;
+                margin-right: 4px;
+
+                svg-icon {
+                    svg {
+                        display: flex;
+                        width: 16px;
+                        height: 16px;
+                        path {
+                            fill: #fff;
+                        }
+                    }
+                }
+            }
+
+            .table-text {
+                color: #fff !important;
+                position: relative;
+                padding-right: 8px;
+
+                &.with-border {
+                    &::after {
+                        position: absolute;
+                        content: '';
+                        width: 1px;
+                        border-radius: 1px;
+                        background-color: #6c6c6c;
+                        height: 100%;
+                        right: 0;
+                    }
+                }
+            }
+
+            .driver-info {
+                margin-left: 8px;
+
+                .table-text{
+                    margin-left: 8px;
+                } 
+
+                .item-count{
+                    align-items: center;
+                    justify-content: center;
+                    margin-left: 4px;
+                    padding: 2px 5px;
+                    background-color: #DADADA;
+                    color: #424242;
+                    border-radius: 100%;
+                    font-size: 11px;
+                    line-height: 14px;
+                    min-width: 20px;
+                }
+            }
+        }
     }
 }
 
@@ -41,10 +104,10 @@
     position: absolute;
     top: 0;
 
-    app-ca-main-table{
+    app-ca-main-table {
         width: 100%;
 
-        cdk-virtual-scroll-viewport{
+        cdk-virtual-scroll-viewport {
             height: 500px;
         }
     }
@@ -53,21 +116,21 @@
         height: 28px !important;
     }
 
-    .ta-card-header{
-        &.active ~ .ta-card-body{
+    .ta-card-header {
+        &.active ~ .ta-card-body {
             margin-bottom: 10px;
         }
     }
-    .payroll-main{
+    .payroll-main {
         flex: 1;
         max-width: 60%;
 
-        &.open{
+        &.open {
             max-width: 500px;
         }
     }
 
-    .report-hold{
+    .report-hold {
         flex: 1;
     }
 }
