@@ -249,6 +249,7 @@ export class TrailerModalConfig {
             label: 'FHWA Exp.',
             isRequired: true,
             hideClear: true,
+            removeLeadingZero: true,
             commands: {
                 active: true,
                 type: 'months',
@@ -271,6 +272,7 @@ export class TrailerModalConfig {
             isDropdown: true,
             placeholderIcon: 'date',
             customClass: 'datetimeclass',
+            isFutureDateDisabled: true
         };
     }
     static getTrailerPurchasePriceConfig(): ITaInput {

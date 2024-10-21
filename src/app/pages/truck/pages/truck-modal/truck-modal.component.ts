@@ -65,6 +65,12 @@ import { TaNgxSliderComponent } from '@shared/components/ta-ngx-slider/ta-ngx-sl
 // models
 import { GetTruckModalResponse, VinDecodeResponse } from 'appcoretruckassist';
 
+// Enums
+import { TruckModalForm } from '@pages/truck/pages/truck-modal/enums';
+
+// Const
+import { TruckModalConstants } from '@pages/truck/pages/truck-modal/const';
+
 @Component({
     selector: 'app-truck-modal',
     templateUrl: './truck-modal.component.html',
@@ -93,6 +99,7 @@ import { GetTruckModalResponse, VinDecodeResponse } from 'appcoretruckassist';
     ],
 })
 export class TruckModalComponent implements OnInit, OnDestroy {
+    public truckTypesWithLength = TruckModalConstants.truckTypesWithLength;
     @Input() editData: any;
 
     private fuelTypeTrucks: string[] = [
@@ -231,6 +238,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
                 [Validators.required, ...yearValidation, yearValidRegex],
             ],
             volume: [null],
+            excludeFromIftaFuelTaxReport: [null],
             colorId: [null],
             ownerId: [null],
             commission: [14.5],
@@ -406,16 +414,16 @@ export class TruckModalComponent implements OnInit, OnDestroy {
 
     public onSelectDropdown(event: any, action: string) {
         switch (action) {
-            case 'truck-type': {
+            case 'truck-type': 
                 this.selectedTruckType = event;
 
-                if (this.selectedTruckType?.name === 'Box Truck') {
+                if (this.isLengthRequired) {
                     this.inputService.changeValidators(
-                        this.truckForm.get('truckLengthId')
+                        this.truckForm.get(TruckModalForm.TRUCK_TRAILER_LENGTH)
                     );
                 } else {
                     this.inputService.changeValidators(
-                        this.truckForm.get('truckLengthId'),
+                        this.truckForm.get(TruckModalForm.TRUCK_TRAILER_LENGTH),
                         false
                     );
                     this.selectedTruckLengthId = null;
@@ -425,17 +433,23 @@ export class TruckModalComponent implements OnInit, OnDestroy {
                     this.selectedFuelType = null;
                     this.truckForm.get('fuelType').setValue(null);
                 }
+
+                if (this.isLengthRequired) {
+                    this.selectedTruckLengthId = null;
+                    this.truckForm.get(TruckModalForm.TRUCK_TRAILER_LENGTH).patchValue(null);
+                }
+
+                if(!this.isSpecialTruckType) {
+                    this.truckForm.get('volume').setValue(null);
+                }
                 break;
-            }
-            case 'truck-make': {
+            case 'truck-make': 
                 this.selectedTruckMake = event;
                 break;
-            }
-            case 'color': {
+            case 'color': 
                 this.selectedColor = event;
                 break;
-            }
-            case 'owner': {
+            case 'owner': 
                 if (event?.canOpenModal) {
                     this.ngbActiveModal.close();
 
@@ -477,63 +491,52 @@ export class TruckModalComponent implements OnInit, OnDestroy {
                     this.selectedOwner = event;
                 }
                 break;
-            }
-            case 'gross-weight': {
+            case 'gross-weight': 
                 this.selectedTruckGrossWeight = event;
                 break;
-            }
-            case 'tire-size': {
+            case 'tire-size': 
                 this.selectedTireSize = event;
                 break;
-            }
-            case 'shifter': {
+            case 'shifter': 
                 this.selectedShifter = event;
                 break;
-            }
-            case 'engine-model': {
+            case 'engine-model': 
                 this.selectedtruckEngineModelId = event;
                 break;
-            }
-            case 'engine-oil-type': {
+            case 'engine-oil-type': 
                 this.selectedEngineOilType = event;
                 break;
-            }
-            case 'ap-unit': {
+            case 'ap-unit': 
                 this.selectedAPUnit = event;
                 break;
-            }
-            case 'gear-ratio': {
+            case 'gear-ratio': 
                 this.selectedGearRatio = event;
                 break;
-            }
-            case 'toll-transponder': {
+            case 'toll-transponder': 
                 this.selectedTollTransponders = event;
                 break;
-            }
-            case 'brakes': {
+            case 'brakes': 
                 this.selectedBrakes = event;
                 break;
-            }
-            case 'front-wheels': {
+            case 'front-wheels': 
                 this.selectedFrontWheels = event;
                 break;
-            }
-            case 'rear-wheels': {
+            case 'rear-wheels': 
                 this.selectedRearWheels = event;
                 break;
-            }
-            case 'fuel-type': {
+            case 'fuel-type': 
                 this.selectedFuelType = event;
                 break;
-            }
-            case 'truck-length': {
+            case 'truck-length': 
                 this.selectedTruckLengthId = event;
+                this.inputService.changeValidators(
+                    this.truckForm.get(TruckModalForm.TRUCK_TRAILER_LENGTH),
+                    this.isLengthRequired
+                );
                 break;
-            }
 
-            default: {
+            default: 
                 break;
-            }
         }
     }
 
@@ -613,6 +616,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
                     this.tollTransponders = res.ezPass.map((item) => {
                         return {
                             ...item,
+                            groups: item.tollTransponders,
                             items: item.tollTransponders,
                         };
                     });
@@ -735,6 +739,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
                         pto: res.pto,
                         fhwaExp: res.fhwaExp ? res.fhwaExp : 12,
                         volume: res.volume ?? null,
+                        excludeFromIftaFuelTaxReport: res.excludeFromIftaFuelTaxReport
                     });
 
                     this.selectedAPUnit = res.apUnit ? res.apUnit : null;
@@ -801,6 +806,10 @@ export class TruckModalComponent implements OnInit, OnDestroy {
     public get isBoxTruck(): boolean {
         return this.truckForm.get('truckTypeId').value === 'Box Truck';
     }
+    
+    public get isLengthRequired(): boolean {
+        return this.truckTypesWithLength.includes(this.selectedTruckType?.name);
+    }
 
     private populateStorageData(res: any) {
         const timeout = setTimeout(() => {
@@ -850,6 +859,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
                 blower: res.blower,
                 pto: res.pto,
                 volume: res.volume,
+                excludeFromIftaFuelTaxReport: res.excludeFromIftaFuelTaxReport 
             });
 
             if (res.id) {
@@ -995,6 +1005,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
             files: documents,
             tags: tagsArray,
             volume: this.truckForm.get('volume').value,
+            excludeFromIftaFuelTaxReport: this.truckForm.get('excludeFromIftaFuelTaxReport').value 
         };
 
         this.truckModalService
@@ -1206,6 +1217,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
                 : null,
             year: parseInt(this.truckForm.get('year').value),
             volume: parseInt(this.truckForm.get('volume').value),
+            excludeFromIftaFuelTaxReport: this.truckForm.get('excludeFromIftaFuelTaxReport').value,
             purchaseDate: this.truckForm.get('companyOwned').value
                 ? this.truckForm.get('purchaseDate').value
                     ? MethodsCalculationsHelper.convertDateToBackend(

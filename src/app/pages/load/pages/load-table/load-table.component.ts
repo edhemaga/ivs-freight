@@ -242,7 +242,16 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 );
                 const isTruckTrailerDriverSelected = !!foundObject.driver;
 
-                if (isAssignedStatusSelected && !isTruckTrailerDriverSelected) {
+                const isPaidOrShortPaid = [
+                    LoadStatusEnum[13],
+                    LoadStatusEnum[16],
+                ].includes(status.dataBack);
+
+                if (
+                    (isAssignedStatusSelected &&
+                        !isTruckTrailerDriverSelected) ||
+                    isPaidOrShortPaid
+                ) {
                     this.onTableBodyActions({
                         type: TableStringEnum.EDIT,
                         id: foundObject.id,
@@ -402,7 +411,7 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe((res) => {
                 switch (res?.filterType) {
-                    case LoadFilterStringEnum.USER_FILTER:
+                    case LoadFilterStringEnum.DISPATCHER_FILTER:
                         this.backLoadFilterQuery.dispatcherIds =
                             res.queryParams ?? null;
 
@@ -436,19 +445,19 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
                         break;
                     case LoadFilterStringEnum.MONEY_FILTER:
                         this.backLoadFilterQuery.rateFrom =
-                            res.queryParams?.firstFormFrom ?? null;
+                            res.queryParams?.moneyArray[0].from ?? null;
                         this.backLoadFilterQuery.rateTo =
-                            res.queryParams?.firstFormTo ?? null;
+                            res.queryParams?.moneyArray[0].to ?? null;
 
                         this.backLoadFilterQuery.paidFrom =
-                            res.queryParams?.secondFormFrom ?? null;
+                            res.queryParams?.moneyArray[1].from ?? null;
                         this.backLoadFilterQuery.paidTo =
-                            res.queryParams?.secondFormTo ?? null;
+                            res.queryParams?.moneyArray[1].to ?? null;
 
                         this.backLoadFilterQuery.dueFrom =
-                            res.queryParams?.thirdFormFrom ?? null;
+                            res.queryParams?.moneyArray[2].from ?? null;
                         this.backLoadFilterQuery.dueTo =
-                            res.queryParams?.thirdFormTo ?? null;
+                            res.queryParams?.moneyArray[2].to ?? null;
 
                         this.loadBackFilter(this.backLoadFilterQuery);
 
