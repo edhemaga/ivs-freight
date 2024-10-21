@@ -699,6 +699,7 @@ model/mobileRepairShopDetailsResponsePagination.ts
 model/mobileRepairShopExpensesChartResponse.ts
 model/mobileRepairShopExpensesResponse.ts
 model/mobileRepairShopListResponse.ts
+model/mobileRepairTruckTrailerListResponse.ts
 model/mobileTransactionListResponse.ts
 model/models.ts
 model/moveMultipleToApplicantsCommand.ts

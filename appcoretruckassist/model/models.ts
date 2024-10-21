@@ -626,6 +626,7 @@ export * from './mobileRepairShopDetailsResponsePagination';
 export * from './mobileRepairShopExpensesChartResponse';
 export * from './mobileRepairShopExpensesResponse';
 export * from './mobileRepairShopListResponse';
+export * from './mobileRepairTruckTrailerListResponse';
 export * from './mobileTransactionListResponse';
 export * from './moveMultipleToApplicantsCommand';
 export * from './moveToApplicantsCommand';

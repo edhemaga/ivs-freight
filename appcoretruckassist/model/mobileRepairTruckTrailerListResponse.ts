@@ -9,10 +9,12 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { MobileFuelTrailerResponse } from './mobileFuelTrailerResponse';
+import { MobileFuelTruckResponse } from './mobileFuelTruckResponse';
 
 
-export interface ApiFuelFuelstopPostRequest { 
-    Id?: number;
-    Favourite?: boolean;
+export interface MobileRepairTruckTrailerListResponse { 
+    trucks?: Array<MobileFuelTruckResponse> | null;
+    trailers?: Array<MobileFuelTrailerResponse> | null;
 }
 
