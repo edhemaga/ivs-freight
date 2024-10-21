@@ -32,7 +32,7 @@
         padding: 0 6px;
 
         .text {
-            padding-top: 6px;
+            max-width: 220px;
             padding-left: 12px;
 
             &-name {
@@ -49,13 +49,15 @@
                 color: $ta-light-grey-2;
             }
 
-            .status {
+            .activity {
                 line-height: 18px;
 
                 &-text {
+                    .icon-wrapper {
+                        padding-right: 4px;
+                    }
                     font-size: 11px;
                     color: $ta-black;
-                    margin-left: 4px;
                 }
             }
         }
@@ -114,4 +116,30 @@
         rgba(238, 238, 238, 1) 50%,
         rgba(238, 238, 238, 1) 100%
     );
+}
+
+.dot {
+    margin: auto 4px;
+    text-align: center;
+    position: relative;
+    top: -3px;
+}
+
+.profile-illustration-wrapper {
+    position: relative;
+    border: 1px solid $white;
+}
+.remaining-participants {
+    height: 25px;
+    width: 25px;
+    border: 1px solid $white;
+    background-color: $ta-light-grey-2;
+    color: $white;
+    line-height: 11px;
+    font-size: 9px;
+
+    &-number {
+        height: min-content;
+        margin: auto;
+    }
 }
