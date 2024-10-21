@@ -98,6 +98,7 @@ import {
 import { ModalTableTypeEnum } from '@shared/enums/modal-table-type.enum';
 import { TableStringEnum } from '@shared/enums/table-string.enum';
 import { TaModalActionEnums } from '@shared/components/ta-modal/enums';
+import { LoadStatusEnum } from '@shared/enums/load-status.enum';
 
 // models
 import {
@@ -4973,6 +4974,14 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                         stop.depart = _stop.depart;
                     }
                 });
+
+                const isUserReversingFromInvoicedStatus =
+                    this.originalStatus === LoadStatusEnum[8] &&
+                    this.isPreviousStatus;
+                    
+                if (isUserReversingFromInvoicedStatus) {
+                    newData.invoicedDate = null;
+                }
 
                 if (this.isLoadClosed)
                     newData.statusHistory = response.statusHistory;
