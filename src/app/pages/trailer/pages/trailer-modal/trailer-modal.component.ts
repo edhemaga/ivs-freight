@@ -70,6 +70,10 @@ import { TrailerModalConfig } from '@pages/trailer/pages/trailer-modal/utils/con
 import { TrailerFormFieldEnum } from '@pages/trailer/pages/trailer-modal/enums';
 import { TableStringEnum } from '@shared/enums/table-string.enum';
 
+import {
+    CaInputComponent,
+} from 'ca-components';
+
 @Component({
     selector: 'app-trailer-modal',
     templateUrl: './trailer-modal.component.html',
@@ -94,6 +98,7 @@ import { TableStringEnum } from '@shared/enums/table-string.enum';
         TaUploadFilesComponent,
         TaInputNoteComponent,
         TaCheckboxComponent,
+        CaInputComponent
     ],
 })
 export class TrailerModalComponent implements OnInit, OnDestroy {
