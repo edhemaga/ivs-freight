@@ -1236,22 +1236,31 @@ export class TaInputDropdownComponent
                 searchText?.length &&
                 this.getSuperControl.value?.toLowerCase()
             ) {
+               
                 if (this._template === 'groups') {
                     this._options = this.originalOptions
                         .map((element) => {
-                            return {
-                                ...element,
-                                groups: element.groups.filter((subElement) =>
+                            const filteredGroups = element.groups.filter(
+                                (subElement) =>
                                     subElement.name
                                         .toLowerCase()
                                         .includes(searchText.toLowerCase())
-                                ),
+                            );
+                            return {
+                                ...element,
+                                groups: filteredGroups,
+                                items: filteredGroups,
                             };
                         })
                         .filter((item) => item.groups.length);
-
                     if (!this._options.length) {
                         this._options.push({
+                            items: [
+                                {
+                                    id: 7654,
+                                    name: 'No Results',
+                                },
+                            ],
                             groups: [
                                 {
                                     id: 7654,

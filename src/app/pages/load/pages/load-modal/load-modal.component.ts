@@ -98,6 +98,7 @@ import {
 import { ModalTableTypeEnum } from '@shared/enums/modal-table-type.enum';
 import { TableStringEnum } from '@shared/enums/table-string.enum';
 import { TaModalActionEnums } from '@shared/components/ta-modal/enums';
+import { LoadStatusEnum } from '@shared/enums/load-status.enum';
 
 // models
 import {
@@ -705,6 +706,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     public modalTitle: string;
     public isActiveLoad: boolean;
     public editName: string;
+    public isMilesLoading: boolean = false;
 
     constructor(
         private formBuilder: UntypedFormBuilder,
@@ -3091,15 +3093,20 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             .subscribe((value: LoadAdditionalPayment[]) => {
                 const paymentTotals = value.reduce(
                     (acc, val) => {
+                        const pay = val.pay
+                            ? MethodsCalculationsHelper.convertThousanSepInNumber(
+                                  val.pay as string
+                              )
+                            : 0;
                         switch (val.paymentType) {
                             case LoadModalPaymentEnum.PAID_IN_FULL:
-                                acc.paidInFull += val.pay;
+                                acc.paidInFull += pay;
                                 break;
                             case LoadModalPaymentEnum.SHORT_PAID:
-                                acc.shortPaid += val.pay;
+                                acc.shortPaid += pay;
                                 break;
                             case LoadModalPaymentEnum.ADVANCE_PAYMENT:
-                                acc.advance += val.pay;
+                                acc.advance += pay;
                                 break;
                             default:
                                 break;
@@ -3790,6 +3797,8 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     }
 
     public drawStopOnMap(): void {
+        this.isMilesLoading = true;
+
         const routes: LoadStopRoutes[] = [];
 
         // dispatches
@@ -3940,7 +3949,10 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                                             LoadModalStringEnum.PICKUP_LEG_COST
                                         )
                                         .patchValue(item.cost);
-                                } else if(index === res.legs.length - 1 || res.legs.length === 2){
+                                } else if (
+                                    index === res.legs.length - 1 ||
+                                    res.legs.length === 2
+                                ) {
                                     this.loadForm
                                         .get(
                                             LoadModalStringEnum.DELIVERY_LEG_MILES
@@ -4002,6 +4014,8 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                                 }, this.debounceDelay);
                             });
                         }
+
+                        this.isMilesLoading = false;
                     },
                 });
         }
@@ -4961,6 +4975,12 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                     }
                 });
 
+                const isUserReversingFromInvoicedStatus =
+                    this.originalStatus === LoadStatusEnum[8] &&
+                    this.isPreviousStatus;
+                    
+                if (isUserReversingFromInvoicedStatus) newData.invoicedDate = null;
+
                 if (this.isLoadClosed)
                     newData.statusHistory = response.statusHistory;
 
@@ -5236,7 +5256,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                 : null,
 
             // billing & payment
-            baseRate: baseRate  ?? null,
+            baseRate: baseRate ?? null,
             advancePay: advancePay ?? null,
             driverRate: driverRate ?? null,
             adjustedRate: adjustedRate ?? null,
