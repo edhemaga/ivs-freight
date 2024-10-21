@@ -33,6 +33,7 @@ export interface TruckResponse {
     model?: string | null;
     year?: number;
     color?: ColorResponse;
+    excludeFromIftaFuelTaxReport?: boolean;
     owner?: OwnerDetailsResponse;
     commission?: number | null;
     note?: string | null;
@@ -40,6 +41,7 @@ export interface TruckResponse {
     purchaseDate?: string | null;
     purchasePrice?: number | null;
     truckGrossWeight?: TruckGrossWeightResponse;
+    volume?: number | null;
     emptyWeight?: number | null;
     truckEngineModel?: TruckEngineModelResponse;
     tireSize?: TireSizeResponse;

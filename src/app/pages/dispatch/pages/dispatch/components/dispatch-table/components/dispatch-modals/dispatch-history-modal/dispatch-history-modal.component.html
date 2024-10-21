@@ -16,7 +16,7 @@
                 <!-- Time -->
 
                 <div class="time-container" (click)="handleTimeDropdown(true)">
-                    <app-ta-input-dropdown
+                    <app-ca-input-dropdown
                         formControlName="time"
                         [inputConfig]="dispatchHistoryTimeConfig"
                         [options]="timesDropdownList"
@@ -28,7 +28,7 @@
                             )
                         "
                         (closeDropdown)="handleTimeDropdown(false)"
-                    ></app-ta-input-dropdown>
+                    ></app-ca-input-dropdown>
 
                     <ng-container *ngIf="isDisplayingCustomPeriodRange">
                         <div class="custom-period-range-container">
@@ -48,7 +48,7 @@
                 <!-- Dispatch Board -->
 
                 <div (click)="handleTimeDropdown(true)">
-                    <app-ta-input-dropdown
+                    <app-ca-input-dropdown
                         formControlName="dispatchBoard"
                         [inputConfig]="dispatchHistoryDispatchBoardConfig"
                         [options]="dispatchBoardsDropdownList"
@@ -60,13 +60,13 @@
                             )
                         "
                         (closeDropdown)="handleTimeDropdown(false)"
-                    ></app-ta-input-dropdown>
+                    ></app-ca-input-dropdown>
                 </div>
 
                 <!-- Truck -->
 
                 <div (click)="handleTimeDropdown(true)">
-                    <app-ta-input-dropdown
+                    <app-ca-input-dropdown
                         formControlName="truck"
                         [inputConfig]="dispatchHistoryTruckConfig"
                         [options]="trucksDropdownList"
@@ -78,13 +78,13 @@
                             )
                         "
                         (closeDropdown)="handleTimeDropdown(false)"
-                    ></app-ta-input-dropdown>
+                    ></app-ca-input-dropdown>
                 </div>
 
                 <!-- Trailer -->
 
                 <div (click)="handleTimeDropdown(true)">
-                    <app-ta-input-dropdown
+                    <app-ca-input-dropdown
                         formControlName="trailer"
                         [inputConfig]="dispatchHistoryTrailerConfig"
                         [options]="trailersDropdownList"
@@ -96,13 +96,13 @@
                             )
                         "
                         (closeDropdown)="handleTimeDropdown(false)"
-                    ></app-ta-input-dropdown>
+                    ></app-ca-input-dropdown>
                 </div>
 
                 <!-- Driver -->
 
                 <div (click)="handleTimeDropdown(true)">
-                    <app-ta-input-dropdown
+                    <app-ca-input-dropdown
                         formControlName="driver"
                         [inputConfig]="dispatchHistoryDriverConfig"
                         [options]="driversDropdownList"
@@ -114,7 +114,7 @@
                             )
                         "
                         (closeDropdown)="handleTimeDropdown(false)"
-                    ></app-ta-input-dropdown>
+                    ></app-ca-input-dropdown>
                 </div>
             </div>
 

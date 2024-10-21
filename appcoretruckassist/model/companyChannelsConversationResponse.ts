@@ -10,6 +10,7 @@
  * Do not edit the class manually.
  */
 import { CompanyUserChatShortResponse } from './companyUserChatShortResponse';
+import { EnumValue } from './enumValue';
 
 
 export interface CompanyChannelsConversationResponse { 
@@ -17,6 +18,7 @@ export interface CompanyChannelsConversationResponse {
     participants?: Array<CompanyUserChatShortResponse> | null;
     name?: string | null;
     description?: string | null;
+    channelType?: EnumValue;
     createdAt?: string;
     updatedAt?: string;
 }

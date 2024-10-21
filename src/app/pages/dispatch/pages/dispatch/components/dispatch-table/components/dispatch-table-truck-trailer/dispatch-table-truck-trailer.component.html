@@ -196,7 +196,7 @@
     <!-- Dropdown -->
 
     <ng-template #dropdown>
-        <app-ta-input-dropdown
+        <app-ca-input-dropdown
             [formControl]="truckTrailerFormControl"
             [template]="'svgtext-dispatch-template'"
             [inputConfig]="truckTrailerInputConfig"
@@ -206,6 +206,6 @@
             (selectedItem)="
                 type === 'truck' ? addTruck($event) : addTrailer($event)
             "
-        ></app-ta-input-dropdown>
+        ></app-ca-input-dropdown> 
     </ng-template>
 </div>
