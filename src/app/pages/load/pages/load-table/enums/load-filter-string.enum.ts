@@ -8,13 +8,14 @@ export enum LoadFilterStringEnum {
     TIME_FILTER_FUTURE = 'hasFutureTimeFilter',
     STATUS_FILTER = 'statusFilter',
     USER_FILTER = 'userFilter',
+    DISPATCHER_FILTER = 'dispatcherFilter',
     MONEY_FILTER = 'moneyFilter',
     LOAD_TYPE_FILTER = 'loadTypeFilter',
     PICKUP_FILTER = 'pickupFilter',
     DELIVERY_FILTER = 'deliveryFilter',
     LOCATION_FILTER = 'locationFilter',
-    TRUCK_FILTER = 'truckFilter',
-    TRAILER_FILTER = 'trailerFilter',
+    TRUCK_TYPE_FILTER = 'truckTypeFilter',
+    TRAILER_TYPE_FILTER = 'trailerTypeFilter',
 
     // Load Tabs
     PENDING = 'pending',
