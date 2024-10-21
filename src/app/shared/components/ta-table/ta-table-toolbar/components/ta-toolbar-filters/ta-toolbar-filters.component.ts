@@ -40,6 +40,7 @@ import { StateResponse } from 'appcoretruckassist/model/stateResponse';
 import { FilterStateService } from '@shared/components/ta-filter/services/filter-state.service';
 
 @Component({
+    selector: 'app-ta-toolbar-filters',
     templateUrl: './ta-toolbar-filters.component.html',
     styleUrls: ['./ta-toolbar-filters.component.scss'],
     standalone: true,
