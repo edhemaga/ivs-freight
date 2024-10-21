@@ -11,6 +11,7 @@ import {
 import { FormsModule } from '@angular/forms';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 import { OnDestroy } from '@angular/core';
+import { Subject, takeUntil } from 'rxjs';
 
 //Components
 
@@ -34,11 +35,11 @@ import { FilterIconRoutes } from '@shared/components/ta-filter/utils/constants/f
 
 // services
 import { TruckassistTableService } from '@shared/services/truckassist-table.service';
-import { Subject, takeUntil } from 'rxjs';
 import { FilterStateService } from '@shared/components/ta-filter/services/filter-state.service';
 
 // models
-import { ArrayStatus } from 'ca-components/lib/models/array-status.model';
+import { ArrayStatus } from '@shared/components/ta-filter/models/array-status.model';
+import { StateResponse } from 'appcoretruckassist/model/stateResponse';
 
 @Component({
     selector: 'app-ta-toolbar-filters',
@@ -79,10 +80,10 @@ export class TaToolbarFiltersComponent implements OnInit, OnChanges, OnDestroy {
     public showFtl: boolean = true;
     private destroy$ = new Subject<void>();
 
-    public loadStatusOptionsArray: any;
+    public loadStatusOptionsArray: ArrayStatus[];
     public unselectedDispatcher: ArrayStatus[];
-    public truckTypeArray: any;
-    public trailerTypeArray: any;
+    public truckTypeArray: ArrayStatus[];
+    public trailerTypeArray: ArrayStatus[];
     public usaStates: ArrayStatus[];
     public canadaStates: ArrayStatus[];
 
@@ -102,16 +103,32 @@ export class TaToolbarFiltersComponent implements OnInit, OnChanges, OnDestroy {
 
     // --------------------------------NgOnInit---------------------------------
     ngOnInit(): void {
+        this.handleFilterInitialization();
+    }
+
+    // --------------------------------NgOnChanges---------------------------------
+    ngOnChanges(changes: SimpleChanges) {
+        if (!changes?.options?.firstChange && changes?.options) {
+            this.options = changes.options.currentValue;
+        }
+
+        if (
+            !changes?.activeTableData?.firstChange &&
+            changes?.activeTableData
+        ) {
+            this.activeTableData = changes.activeTableData.currentValue;
+        }
+    }
+
+    public handleFilterInitialization(): void {
         let truckResData;
         let trailerResData;
 
-        if (this.options.toolbarActions.showDispatcherFilter) {
+        if (this.options.toolbarActions.showDispatcherFilter)
             this.filterService.getDispatchData();
-        }
 
-        if (this.options.toolbarActions.showStateFilter) {
+        if (this.options.toolbarActions.showStateFilter)
             this.filterService.getStateData();
-        }
 
         if (
             this.options.toolbarActions.showTruckPmFilter ||
@@ -131,102 +148,126 @@ export class TaToolbarFiltersComponent implements OnInit, OnChanges, OnDestroy {
         this.tableSevice.currentLoadStatusFilterOptions
             .pipe(takeUntil(this.destroy$))
             .subscribe((res) => {
-                if (res) {
-                    this.loadStatusOptionsArray = [...res.options];
-                }
+                if (res) this.loadStatusOptionsArray = [...res.options];
             });
 
         this.tableSevice.currentActionAnimation
             .pipe(takeUntil(this.destroy$))
-            .subscribe((res: any) => {
-                if (res?.animation === 'dispatch-data-update') {
-                    const newData = res.data.map((type: any) => {
-                        type['name'] =
-                            type?.fullName ??
-                            `${type?.driver?.firstName} ${type?.driver?.lastName}`;
-                        type['count'] = type.loadCount;
-                        return type;
-                    });
-
-                    this.unselectedDispatcher = newData;
-                }
-                if (res?.animation === 'list-update') {
-                    this.loadStatusOptionsArray = res.data.statuses;
-                }
-                if (res?.animation === 'truck-list-update') {
+            .subscribe(
+                (
+                    res: any // leave any for now
+                ) => {
                     if (
-                        this.options.toolbarActions.showTruckPmFilter ||
-                        this.options.toolbarActions.showTrailerPmFilter
+                        res?.animation ===
+                        ToolbarFilterStringEnum.DISPATCH_DATA_UPDATE
+                    ) {
+                        const newData = res.data.map(
+                            (
+                                type: any
+                                // leave any for now
+                            ) => {
+                                type[ToolbarFilterStringEnum.NAME] =
+                                    type?.fullName ??
+                                    `${type?.driver?.firstName} ${type?.driver?.lastName}`;
+                                type[ToolbarFilterStringEnum.COUNT] =
+                                    type.loadCount;
+                                return type;
+                            }
+                        );
+
+                        this.unselectedDispatcher = newData;
+                    }
+                    if (res?.animation === ToolbarFilterStringEnum.LIST_UPDATE)
+                        this.loadStatusOptionsArray = res.data.statuses;
+
+                    if (
+                        res?.animation ===
+                        ToolbarFilterStringEnum.TRUCK_LIST_UPDATE
+                    ) {
+                        if (
+                            this.options.toolbarActions.showTruckPmFilter ||
+                            this.options.toolbarActions.showTrailerPmFilter
+                        ) {
+                            this.truckTypeArray = truckResData;
+
+                            this.truckTypeArray = res.data.map(
+                                (
+                                    type: any
+                                    // leave any for now
+                                ) => {
+                                    type[ToolbarFilterStringEnum.NAME] =
+                                        type.truckNumber;
+                                    return type;
+                                }
+                            );
+                        }
+                    }
+                    if (
+                        res?.animation ===
+                        ToolbarFilterStringEnum.TRAILER_LIST_UPDATE
+                    ) {
+                        if (
+                            this.options.toolbarActions.showTruckPmFilter ||
+                            this.options.toolbarActions.showTrailerPmFilter
+                        ) {
+                            this.trailerTypeArray = trailerResData;
+                            this.trailerTypeArray = res.data.map(
+                                (
+                                    type: any
+                                    // leave any for now
+                                ) => {
+                                    type[ToolbarFilterStringEnum.NAME] =
+                                        type.trailerNumber;
+                                    return type;
+                                }
+                            );
+                        }
+                    }
+                    if (
+                        res?.animation ===
+                        ToolbarFilterStringEnum.TRUCK_TYPE_UPDATE
                     ) {
                         this.truckTypeArray = truckResData;
-
-                        this.truckTypeArray = res.data.map((type: any) => {
-                            type['name'] = type.truckNumber;
-                            return type;
-                        });
+                        this.truckTypeArray = res.data.map((item) => ({
+                            ...item.truckType,
+                            count: item.count,
+                            icon:
+                                FilterIconRoutes.truckSVG +
+                                item.truckType.logoName,
+                        }));
                     }
-                }
-                if (res?.animation === 'trailer-list-update') {
                     if (
-                        this.options.toolbarActions.showTruckPmFilter ||
-                        this.options.toolbarActions.showTrailerPmFilter
+                        res?.animation ===
+                        ToolbarFilterStringEnum.TRAILER_TYPE_UPDATE
                     ) {
                         this.trailerTypeArray = trailerResData;
-                        this.trailerTypeArray = res.data.map((type: any) => {
-                            type['name'] = type.trailerNumber;
-                            return type;
-                        });
+                        this.trailerTypeArray = res.data.map((item) => ({
+                            ...item.trailerType,
+                            count: item.count,
+                            icon:
+                                FilterIconRoutes.trailerSVG +
+                                item.trailerType.logoName,
+                        }));
                     }
+                    if (
+                        res?.animation ===
+                        ToolbarFilterStringEnum.STATE_DATA_UPDATE
+                    )
+                        this.handleStateDataUpdate(res);
                 }
-                if (res?.animation === 'truck-type-update') {
-                    this.truckTypeArray = truckResData;
-                    this.truckTypeArray = res.data.map((item) => ({
-                        ...item.truckType,
-                        count: item.count,
-                        icon:
-                            FilterIconRoutes.truckSVG + item.truckType.logoName,
-                    }));
-                }
-                if (res?.animation === 'trailer-type-update') {
-                    this.trailerTypeArray = trailerResData;
-                    this.trailerTypeArray = res.data.map((item) => ({
-                        ...item.trailerType,
-                        count: item.count,
-                        icon:
-                            FilterIconRoutes.trailerSVG +
-                            item.trailerType.logoName,
-                    }));
-                }
-                if (res?.animation === 'state-data-update') {
-                    this.handleStateDataUpdate(res);
-                }
-            });
+            );
     }
 
-    // --------------------------------NgOnChanges---------------------------------
-    ngOnChanges(changes: SimpleChanges) {
-        if (!changes?.options?.firstChange && changes?.options) {
-            this.options = changes.options.currentValue;
-        }
-
-        if (
-            !changes?.activeTableData?.firstChange &&
-            changes?.activeTableData
-        ) {
-            this.activeTableData = changes.activeTableData.currentValue;
-        }
-    }
-
-    public handleStateDataUpdate(res: any): void {
+    public handleStateDataUpdate(
+        res: any // leave any for now
+    ): void {
         const usaArray = [];
         const canadaArray = [];
 
-        res.data.map((state) => {
-            if (state.countryType.name === ToolbarFilterStringEnum.CANADA_2) {
+        res.data.forEach((state: StateResponse) => {
+            if (state.countryType.name === ToolbarFilterStringEnum.CANADA_2)
                 canadaArray.push(state);
-            } else {
-                usaArray.push(state);
-            }
+            else usaArray.push(state);
         });
 
         this.usaStates = [...usaArray];
@@ -281,7 +322,6 @@ export class TaToolbarFiltersComponent implements OnInit, OnChanges, OnDestroy {
 
     // On Filter
     onFilter(event: any) {
-        console.log('event', event);
         this.tableSevice.sendCurrentSetTableFilter(event);
     }
 
