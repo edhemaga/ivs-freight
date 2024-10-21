@@ -137,12 +137,12 @@ export class DispatchComponent
             .subscribe((res) => {
                 if (res?.filterType && res.action !== TableStringEnum.CLEAR) {
                     switch (res.filterType) {
-                        case ToolbarFilterStringEnum.TRUCK_FILTER:
+                        case ToolbarFilterStringEnum.TRUCK_TYPE_FILTER:
                             this.backFilterQuery.truckTypes = res.queryParams;
                             this.dispatchFilters(this.backFilterQuery);
 
                             break;
-                        case ToolbarFilterStringEnum.TRAILER_FILTER:
+                        case ToolbarFilterStringEnum.TRAILER_TYPE_FILTER:
                             this.backFilterQuery.trailerTypes = res.queryParams;
                             this.dispatchFilters(this.backFilterQuery);
 
