@@ -20,3 +20,4 @@ export * from './conversation/conversation-content/chat-message-action.enum';
 export * from './shared/chat-message-type.enum';
 export * from './shared/chat-department-type.enum';
 export * from './shared/chat-activity-status.enum';
+export * from './shared/chat-user-type.enum';

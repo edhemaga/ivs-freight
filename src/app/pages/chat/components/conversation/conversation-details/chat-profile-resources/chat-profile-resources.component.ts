@@ -11,6 +11,7 @@ import {
     ChatRoutesEnum,
     ChatSearchPlaceHolders,
     ChatUserProfileResourceTypeEnum,
+    ChatUserTypeEnum,
     ConversationTypeEnum,
 } from '@pages/chat/enums';
 
@@ -91,11 +92,9 @@ export class ChatProfileResourcesComponent
 
         if (!this.conversation) return;
         this.conversation?.participants?.forEach((participant) => {
-            if (participant.userType?.name === 'Driver') {
+            if (participant.userType?.name === ChatUserTypeEnum.DRIVER)
                 this.drivers = [...this.drivers, participant];
-            } else {
-                this.companyUsers = [...this.companyUsers, participant];
-            }
+            else this.companyUsers = [...this.companyUsers, participant];
         });
     }
 
