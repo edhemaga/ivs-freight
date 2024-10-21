@@ -37,7 +37,8 @@ export class UserConstants {
                 },
                 mutedStyle:
                     data.userStatus === TableStringEnum.EXPIRED ||
-                    data.userStatus === TableStringEnum.INVITED,
+                    data.userStatus === TableStringEnum.INVITED ||
+                    selectedTab === TableStringEnum.INACTIVE,
             },
             {
                 title: 'Resend Invitation',
