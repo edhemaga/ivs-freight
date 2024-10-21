@@ -166,13 +166,15 @@
 
                     <ng-container *ngIf="hasTimeFilter">
                         <div class="me-1">
-                            <app-ta-filter
+                            <app-ca-filter
                                 [type]="'timeFilter'"
                                 [icon]="'ic_time'"
                                 [filterTitle]="'Time Filter'"
+                                [timeSubType]="'past'"
                                 (setFilter)="setFilterValue($event)"
+                                (clearAll)="setFilterValue($event)"
                             >
-                            </app-ta-filter>
+                            </app-ca-filter>
                         </div>
                     </ng-container>
 
@@ -192,7 +194,7 @@
                     <ng-container *ngIf="hasTruckTypeFilter">
                         <div class="me-1">
                             <app-ta-filter
-                                [type]="'truckFilter'"
+                                [type]="'truckTypeFilter'"
                                 [icon]="'truck'"
                                 [filterTitle]="'Truck Type Filter'"
                                 [defFilterHolder]="true"
@@ -209,7 +211,7 @@
                     <ng-container *ngIf="hasTrailerTypeFilter">
                         <div class="me-1">
                             <app-ta-filter
-                                [type]="'trailerFilter'"
+                                [type]="'trailerTypeFilter'"
                                 [icon]="'trailer'"
                                 [filterTitle]="'Trailer Type Filter'"
                                 [defFilterHolder]="true"

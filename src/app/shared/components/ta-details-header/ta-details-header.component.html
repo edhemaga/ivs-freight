@@ -257,13 +257,15 @@
 
                         <ng-container *ngIf="timeFilter">
                             <span class="ic-hed">
-                                <app-ta-filter
+                                <app-ca-filter
                                     [type]="'timeFilter'"
                                     [icon]="'ic_time'"
                                     [filterTitle]="'Time Filter'"
+                                    [timeSubType]="'past'"
                                     (setFilter)="setFilterValue($event)"
+                                    (clearAll)="setFilterValue($event)"
                                 >
-                                </app-ta-filter>
+                                </app-ca-filter>
                             </span>
                         </ng-container>
 
@@ -316,8 +318,8 @@
                                     [defFilterHolder]="true"
                                     (setFilter)="setFilterValue($event)"
                                 >
-                                </app-ta-filter
-                            ></span>
+                                </app-ta-filter>
+                            </span>
                         </ng-container>
 
                         <ng-container *ngIf="statusFilter">
@@ -383,16 +385,17 @@
 
                         <ng-container *ngIf="moneyFilter">
                             <span class="ic-hed">
-                                <app-ta-filter
+                                <app-ca-filter
                                     [type]="'moneyFilter'"
                                     [icon]="'dollar'"
                                     [filterTitle]="'Money Filter'"
                                     [subType]="'all'"
-                                    [moneyFilter]="true"
-                                    [loadType]="true"
+                                    [isMoneyFilter]="true"
+                                    [isLoadType]="true"
                                     (setFilter)="setFilterValue($event)"
+                                    (clearAll)="setFilterValue($event)"
                                 >
-                                </app-ta-filter>
+                                </app-ca-filter>
                             </span>
                         </ng-container>
                     </div>

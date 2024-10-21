@@ -1144,6 +1144,8 @@ export class CustomerTableComponent
                 showRemoveFromDnuList:
                     this.selectedTab === TableStringEnum.ACTIVE,
                 hideActivationButton: true,
+                fuelMoneyFilter: false,
+                loadMoneyFilter: false,
                 viewModeOptions: this.getViewModeOptions(),
             },
         };

@@ -14,7 +14,6 @@ import { DispatchTableComponent } from '@pages/dispatch/pages/dispatch/component
 import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
 import { DispatchHistoryModalNoGroupComponent } from './pages/dispatch/components/dispatch-table/components/dispatch-modals/dispatch-history-modal/components/dispatch-history-modal-no-group/dispatch-history-modal-no-group.component';
 import { TaTableToolbarComponent } from '@shared/components/ta-table/ta-table-toolbar/ta-table-toolbar.component';
-import { TaInputDropdownComponent } from '@shared/components/ta-input-dropdown/ta-input-dropdown.component';
 import { TaInputAddressDropdownComponent } from '@shared/components/ta-input-address-dropdown/ta-input-address-dropdown.component';
 import { TaGpsProgressbarComponent } from '@shared/components/ta-gps-progressbar/ta-gps-progressbar.component';
 import { TaCustomPeriodRangeComponent } from '@shared/components/ta-custom-period-range/ta-custom-period-range.component';
@@ -24,7 +23,6 @@ import { TaPickupDeliveryComponent } from '@shared/components/ta-pickup-delivery
 import { DispatchTableDriverComponent } from '@pages/dispatch/pages/dispatch/components/dispatch-table/components/dispatch-table-driver/dispatch-table-driver.component';
 import { DispatchTableNoteComponent } from '@pages/dispatch/pages/dispatch/components/dispatch-table/components/dispatch-table-note/dispatch-table-note.component';
 import { DispatchTableParkingComponent } from '@pages/dispatch/pages/dispatch/components/dispatch-table/components/dispatch-table-parking/dispatch-table-parking.component';
-import { TaInputComponent } from '@shared/components/ta-input/ta-input.component';
 import { TaStatusComponentComponent } from '@shared/components/ta-status-component/ta-status-component.component';
 import { DispatchTableTruckTrailerComponent } from '@pages/dispatch/pages/dispatch/components/dispatch-table/components/dispatch-table-truck-trailer/dispatch-table-truck-trailer.component';
 import { DispatchTableAddNewComponent } from '@pages/dispatch/pages/dispatch/components/dispatch-table/components/dispatch-table-add-new/dispatch-table-add-new.component';
@@ -46,6 +44,7 @@ import { DispatchTableInfoComponent } from '@pages/dispatch/pages/dispatch/compo
 import { DispatchTableStatusComponent } from '@pages/dispatch/pages/dispatch/components/dispatch-table/components/dispatch-table-status/dispatch-table-status.component';
 import {
     CaInputComponent,
+    CaInputDropdownComponent,
     PickupDeliveryBlockComponent,
     ProgressBarComponent,
 } from 'ca-components';
@@ -126,12 +125,10 @@ import { ResizableDirective } from '@pages/dispatch/pages/dispatch/components/di
         // components
         TaAppTooltipV2Component,
         TaTableToolbarComponent,
-        TaInputDropdownComponent,
         TaInputAddressDropdownComponent,
         TaGpsProgressbarComponent,
         TaNoteComponent,
         TaPickupDeliveryComponent,
-        TaInputComponent,
         TaModalComponent,
         TaCustomCardComponent,
         TaResizerComponent,
@@ -140,6 +137,7 @@ import { ResizableDirective } from '@pages/dispatch/pages/dispatch/components/di
         TaStatusComponentComponent,
 
         CaInputComponent,
+        CaInputDropdownComponent,
 
         LoadDetailsItemStopsMainComponent,
         LoadStatusStringComponent,

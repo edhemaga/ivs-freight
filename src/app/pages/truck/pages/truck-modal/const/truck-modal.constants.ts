@@ -7,4 +7,16 @@ export class TruckModalConstants {
         'Garbage Truck',
         'Car Hauler',
     ];
+
+    static fuelTypeTrucks: string[] = [
+        'Box Truck',
+        'Cargo Van',
+        'Reefer Truck',
+    ];
+    static truckTypesWithAdditionalColumns: string[] = [
+        'Dump Truck',
+        'Cement Truck',
+        'Garbage Truck',
+    ];
+
 }

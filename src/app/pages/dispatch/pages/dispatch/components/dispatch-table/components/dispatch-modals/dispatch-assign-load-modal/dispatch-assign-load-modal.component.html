@@ -18,14 +18,14 @@
     <div origin>
         <div class="dispatch-load">
             <form [formGroup]="assignLoadForm" class="mb-1">
-                <app-ta-input-dropdown
+                <app-ca-input-dropdown
                     formControlName="dispatchId"
                     [template]="'load-dispatches-ttd'"
                     [inputConfig]="loadDispatchesTTDInputConfig"
                     [options]="labelsDispatches"
                     [activeItem]="selectedDispatches"
                     (selectedItem)="selectNewDispatcher($event)"
-                ></app-ta-input-dropdown>
+                ></app-ca-input-dropdown>
             </form>
 
             <!-- Table header -->

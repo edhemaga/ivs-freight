@@ -628,6 +628,11 @@ export class DirectiveConstants {
             name: 'Step Deck',
             icon: 'assets/svg/common/trailers/ic_trailer_step-deck.svg',
         },
+        {
+            id: 13,
+            name: 'Tanker Pneumatic',
+            icon: 'assets/svg/common/trailers/ic_trailer_tanker-pneumatic.svg',
+        },
     ];
 
     static USA_STATES: ArrayStatus[] = [
