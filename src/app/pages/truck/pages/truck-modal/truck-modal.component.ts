@@ -428,9 +428,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
                     this.truckForm.get(TruckModalForm.TRUCK_TRAILER_LENGTH).patchValue(null);
                 }
 
-                if(!this.isSpecialTruckType) {
-                    this.truckForm.get(TruckModalForm.VOLUME).setValue(null);
-                }
+                if(!this.isSpecialTruckType)  this.truckForm.get(TruckModalForm.VOLUME).setValue(null);
                 break;
             case 'truck-make': 
                 this.selectedTruckMake = event;
