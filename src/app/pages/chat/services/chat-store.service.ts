@@ -32,15 +32,20 @@ import {
     openAttachmentUpload,
     closeAttachmentUpload,
     selectAttachmentUploadStatus,
+    getAllDepartments,
+    setDepartment,
+    setConversationNameAndType,
 } from '@pages/chat/store';
 
 // Models
 import {
+    ChatCompanyChannelExtended,
+    ChatConversationDetails,
     ChatMessage,
     ChatMessageResponse,
     ChatSelectedConversation,
 } from '@pages/chat/models';
-import { ConversationInfoResponse } from 'appcoretruckassist';
+import { EnumValue } from 'appcoretruckassist';
 import { UploadFile } from '@shared/components/ta-upload-files/models/upload-file.model';
 
 @Injectable({
@@ -48,10 +53,11 @@ import { UploadFile } from '@shared/components/ta-upload-files/models/upload-fil
 })
 export class ChatStoreService {
     private conversation$: Observable<ChatSelectedConversation>;
+    private departments$: Observable<ChatCompanyChannelExtended[]>;
     private messages$!: Observable<ChatMessageResponse>;
     private isProfileDetailsDisplayed$: Observable<boolean>;
     private isParticipantsDisplayed$: Observable<boolean>;
-    private conversationProfileDetails$: Observable<ConversationInfoResponse>;
+    private conversationProfileDetails$: Observable<ChatConversationDetails>;
     private editMessage$: Observable<ChatMessage>;
     private replyMessage$: Observable<ChatMessage>;
     private activeReplyOrEdit$: Observable<number>;
@@ -79,6 +85,12 @@ export class ChatStoreService {
         this.store.dispatch(setConversation(selectedConversation));
     }
 
+    public addDepartments(departments: ChatCompanyChannelExtended[]): void {
+        departments.forEach((department: ChatCompanyChannelExtended) => {
+            this.store.dispatch(setDepartment(department));
+        });
+    }
+
     public setMessageResponse(data: ChatMessageResponse): void {
         this.store.dispatch(setMessageResponse(data));
     }
@@ -91,7 +103,7 @@ export class ChatStoreService {
         this.store.dispatch(displayConversationParticipants());
     }
 
-    public setProfileDetails(data: ConversationInfoResponse): void {
+    public setProfileDetails(data: ChatConversationDetails): void {
         this.store.dispatch(setProfileDetails(data));
     }
 
@@ -151,6 +163,12 @@ export class ChatStoreService {
             this.conversation$ = this.store.select(getSelectedConversation);
         return this.conversation$;
     }
+
+    public selectAllDepartments(): Observable<ChatCompanyChannelExtended[]> {
+        if (!this.departments$)
+            this.departments$ = this.store.select(getAllDepartments);
+        return this.departments$;
+    }
     public selectIsProfileDetailsDisplayed(): Observable<boolean> {
         if (!this.isProfileDetailsDisplayed$)
             this.isProfileDetailsDisplayed$ = this.store.select(
@@ -167,7 +185,7 @@ export class ChatStoreService {
         return this.isParticipantsDisplayed$;
     }
 
-    public selectConversationProfileDetails(): Observable<ConversationInfoResponse> {
+    public selectConversationProfileDetails(): Observable<ChatConversationDetails> {
         if (!this.conversationProfileDetails$)
             this.conversationProfileDetails$ = this.store.select(
                 getConversationProfileDetails

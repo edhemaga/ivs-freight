@@ -14,6 +14,7 @@
         color: $white;
         padding: 0px 5px;
         margin: auto auto auto 4px;
+        text-align: center;
 
         &-focused {
             background-color: $bw6-2;
@@ -108,4 +109,76 @@
             white-space: nowrap;
         }
     }
+}
+
+.search {
+    margin-top: 4px;
+}
+
+.company-user-wrapper,
+.drivers-wrapper {
+    .title {
+        height: 26px;
+        margin: 6px;
+
+        .text {
+            margin: auto 6px;
+            line-height: 14px;
+            font-size: 11px;
+            margin-left: 4px;
+        }
+
+        .count {
+            width: 14px;
+            height: 14px;
+            font-size: 9px;
+            color: $white !important;
+            border-radius: 50px;
+            background-color: $bw5;
+            margin: auto auto auto 0;
+        }
+    }
+}
+
+.item-wrapper {
+    height: 30px;
+    width: 100px;
+    padding: 4px;
+
+    &:hover {
+        background-color: $bw2;
+    }
+
+    .fullname {
+        margin: auto;
+        font-size: 14px;
+    }
+
+    .icon {
+        padding-left: 2px;
+        svg-icon {
+            svg {
+                path {
+                    fill: $ta-light-grey-6;
+                }
+            }
+        }
+
+        &:hover {
+            cursor: pointer;
+            svg-icon {
+                svg {
+                    path {
+                        fill: $bw5 !important;
+                    }
+                }
+            }
+        }
+    }
+}
+
+.activity-status-icon {
+    position: relative;
+    top: 7px;
+    right: 8px;
 }

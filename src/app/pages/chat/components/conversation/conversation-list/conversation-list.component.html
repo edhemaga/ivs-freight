@@ -107,7 +107,7 @@
     <!-- Since title uses enum values, it is unique and therefore can be used as id -->
     <div class="header d-flex">
         <div
-            class="icon-regular d-flex justify-content-center align-items-center"
+            class="icon-regular-arrow d-flex justify-content-center align-items-center"
             (click)="toggleChatGroupState(item.title, true)"
         >
             <ng-container
@@ -213,6 +213,11 @@
                             [isHoverEffect]="false"
                             [isRound]="item.isRound"
                         ></app-ca-profile-image>
+                        <div class="activity-status-icon">
+                            <svg-icon
+                                [src]="item.status | chatStatusIcon"
+                            ></svg-icon>
+                        </div>
                     </ng-container>
                     <ng-container *ngSwitchCase="conversationTypeEnum.CHANNEL">
                         <ng-container

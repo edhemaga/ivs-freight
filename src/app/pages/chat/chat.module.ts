@@ -16,14 +16,14 @@ import { ChatMessageComponent } from '@pages/chat/components/conversation/conver
 import { ChatMessagesComponent } from '@pages/chat/components/conversation/conversation-content/chat-messages/chat-messages.component';
 import { ChatContentFooterComponent } from '@pages/chat/components/conversation/conversation-content/chat-content-footer/chat-content-footer.component';
 import { ChatMessageAttachmentPreviewComponent } from '@pages/chat/components/shared/chat-message-attachment-preview/chat-message-attachment-preview.component';
-import { ChatUserProfileComponent } from '@pages/chat/components/conversation/conversation-details/chat-user-profile/chat-user-profile.component';
+import { ChatConversationDetailsComponent } from '@pages/chat/components/conversation/conversation-details/chat-conversation-details.component';
 import { ChatHeaderComponent } from '@pages/chat/components/shared/chat-header/chat-header.component';
 import { ChatListComponent } from '@pages/chat/components/shared/chat-list/chat-list.component';
 import { ChatListItemComponent } from '@pages/chat/components/shared/chat-list/chat-list-item/chat-list-item.component';
 import { ChatVerticalDividerComponent } from '@pages/chat/components/shared/chat-vertical-divider/chat-vertical-divider.component';
 
 // Conversation details
-import { ChatProfileResourcesComponent } from '@pages/chat/components/conversation/conversation-details/chat-user-profile/chat-profile-resources/chat-profile-resources.component';
+import { ChatProfileResourcesComponent } from '@pages/chat/components/conversation/conversation-details/chat-profile-resources/chat-profile-resources.component';
 import { ChatChannelParticipantListComponent } from '@pages/chat/components/conversation/conversation-details/chat-channel-participant-list/chat-channel-participant-list.component';
 
 //Shared components
@@ -56,6 +56,8 @@ import {
     ChatRemoveFullnamePipe,
     ChatDepartmentIconPipe,
     ChatHighlightPipe,
+    ChatStatusIconPipe,
+    ChatActiveParticipantCountPipe,
 } from '@pages/chat/utils/pipes';
 
 // Directives
@@ -81,7 +83,7 @@ import { HoverSvgDirective } from '@shared/directives/hover-svg.directive';
         ChatMessageAttachmentPreviewComponent,
 
         // Conversation details
-        ChatUserProfileComponent,
+        ChatConversationDetailsComponent,
         ChatChannelParticipantListComponent,
 
         // Auxillary components
@@ -105,6 +107,8 @@ import { HoverSvgDirective } from '@shared/directives/hover-svg.directive';
         ChatRemoveFullnamePipe,
         ChatDepartmentIconPipe,
         ChatHighlightPipe,
+        ChatStatusIconPipe,
+        ChatActiveParticipantCountPipe,
     ],
     providers: [
         // Pipes

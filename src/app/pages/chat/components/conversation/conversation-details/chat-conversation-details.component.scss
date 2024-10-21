@@ -27,36 +27,37 @@
     }
 
     .basic-info {
-        min-height: 88px;
         height: fit-content;
 
         padding: 0 6px;
 
         .text {
-            padding-top: 6px;
+            max-width: 220px;
             padding-left: 12px;
 
             &-name {
-                height: 28px;
                 line-height: 20px;
                 font-size: 16px;
+                padding-bottom: 4px;
                 color: $ta-black;
             }
 
             &-type {
-                height: 26px;
                 line-height: 18px;
                 font-size: 14px;
+                padding-bottom: 4px;
                 color: $ta-light-grey-2;
             }
 
-            .status {
+            .activity {
                 line-height: 18px;
 
                 &-text {
+                    .icon-wrapper {
+                        padding-right: 4px;
+                    }
                     font-size: 11px;
                     color: $ta-black;
-                    margin-left: 4px;
                 }
             }
         }
@@ -115,4 +116,30 @@
         rgba(238, 238, 238, 1) 50%,
         rgba(238, 238, 238, 1) 100%
     );
+}
+
+.dot {
+    margin: auto 4px;
+    text-align: center;
+    position: relative;
+    top: -3px;
+}
+
+.profile-illustration-wrapper {
+    position: relative;
+    border: 1px solid $white;
+}
+.remaining-participants {
+    height: 25px;
+    width: 25px;
+    border: 1px solid $white;
+    background-color: $ta-light-grey-2;
+    color: $white;
+    line-height: 11px;
+    font-size: 9px;
+
+    &-number {
+        height: min-content;
+        margin: auto;
+    }
 }

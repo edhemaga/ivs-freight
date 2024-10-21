@@ -1,6 +1,7 @@
 // Models
 import {
     ChatCompanyChannelExtended,
+    ChatConversationDetails,
     ChatMessage,
     ChatSelectedConversation,
 } from '@pages/chat/models';
@@ -15,9 +16,9 @@ import { ChatViewTypeEnum } from '@pages/chat/enums';
 
 export type ChatState = {
     // Conversation list
-    departments?: ChatCompanyChannelExtended;
-    truckChannel?: ChatCompanyChannelExtended;
-    dispatchBoardChannel?: ChatCompanyChannelExtended;
+    departments?: ChatCompanyChannelExtended[];
+    truckChannel?: ChatCompanyChannelExtended[];
+    dispatchBoardChannel?: ChatCompanyChannelExtended[];
     companyUsers?: CompanyUserChatResponsePagination;
     drivers?: CompanyUserChatResponsePagination;
 
@@ -35,7 +36,7 @@ export type ChatState = {
     // Conversation details
     isProfileDetailsDisplayed?: boolean;
     isConversationParticipantsDisplayed?: boolean;
-    profileDetails: ConversationInfoResponse | null;
+    profileDetails: ChatConversationDetails;
     userTyping: string;
 
     // Actions

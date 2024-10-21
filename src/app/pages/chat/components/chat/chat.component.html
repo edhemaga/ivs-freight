@@ -158,7 +158,13 @@
                 [companyUsers]="companyUsers"
                 [drivers]="drivers"
                 (selectedConversation)="
-                    createUserConversation($event.id, $event.type, $event.group)
+                    createUserConversation(
+                        $event.id,
+                        $event.type,
+                        $event.group,
+                        $event.name,
+                        $event.conversationType
+                    )
                 "
             ></app-conversation-list>
         </div>
@@ -181,13 +187,14 @@
             <div class="profile-details-wrapper d-flex">
                 <ng-container *ngIf="isProfileDetailsDisplayed$ | async">
                     <div class="profile-details">
-                        <app-chat-user-profile
+                        <app-chat-conversation-details
+                            [conversation]="conversation$ | async"
                             [data]="conversationProfileDetails$ | async"
                             [profileDetailsType]="
-                                chatConversationProfileDetailsType.SAFETY
+                                chatConversationProfileDetailsType.COMPANY_OR_DRIVER
                             "
                             (isProfileDetailsClosed)="closeProfileDetails()"
-                        ></app-chat-user-profile>
+                        ></app-chat-conversation-details>
                     </div>
                 </ng-container>
                 <ng-container

@@ -1,7 +1,7 @@
 <div class="chat-footer-wrapper">
     <!-- [ngSwitch]="true" -->
     <ng-container [ngSwitch]="true">
-        <ng-container *ngSwitchCase="conversation.isArchived">
+        <ng-container *ngSwitchCase="conversation?.isArchived">
             <ng-container
                 *ngTemplateOutlet="
                     archivedChannel;

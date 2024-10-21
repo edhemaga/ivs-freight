@@ -131,13 +131,12 @@ export class ConversationContentComponent
                     description: res.information?.description,
                     createdAt: res.information?.createdAt,
                     updatedAt: res.information?.updatedAt,
+                    isArchived: res.information?.isArchived,
+                    channelType: res.information?.channelType,
+                    conversationType: res.information?.conversationType,
                 };
                 this.chatStoreService.setConversation(selectedConversation);
             });
-    }
-
-    public displayGroupParticipants(): void {
-        this.chatStoreService.displayConversationParticipants();
     }
 
     public addAttachments(files: UploadFile[]): void {

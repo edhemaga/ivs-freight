@@ -2,6 +2,8 @@ import { createSelector, createFeatureSelector } from '@ngrx/store';
 
 // Models
 import {
+    ChatCompanyChannelExtended,
+    ChatConversationDetails,
     ChatMessage,
     ChatMessageResponse,
     ChatSelectedConversation,
@@ -45,6 +47,11 @@ export const getSelectedConversation = createSelector(
     (state: ChatState): ChatSelectedConversation => state.conversation
 );
 
+export const getAllDepartments = createSelector(
+    selectChatState,
+    (state: ChatState): ChatCompanyChannelExtended[] => state.departments
+);
+
 export const getIsProfileDetailsDisplayed = createSelector(
     selectChatState,
     (state: ChatState): boolean => state.isProfileDetailsDisplayed
@@ -57,7 +64,7 @@ export const getIsConversationParticipantsDisplayed = createSelector(
 
 export const getConversationProfileDetails = createSelector(
     selectChatState,
-    (state: ChatState): ConversationInfoResponse => state.profileDetails
+    (state: ChatState): ChatConversationDetails => state.profileDetails
 );
 
 export const getUnreadCount = createSelector(

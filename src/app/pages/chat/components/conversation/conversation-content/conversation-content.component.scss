@@ -18,6 +18,7 @@
 
         .right-icons {
             z-index: 0;
+
             &:hover {
                 cursor: pointer;
             }
@@ -64,25 +65,23 @@
 }
 
 .profile-illustration-wrapper {
-    height: 22px;
-    width: 22px;
     position: relative;
     border: 1px solid $white;
 }
 
-.left-offset {
-    left: -6px;
-}
-
-.remaining-participants-number {
-    height: 22px;
-    width: 22px;
-    border-radius: 50px;
+.remaining-participants {
+    height: 25px;
+    width: 25px;
+    border: 1px solid $white;
     background-color: $ta-light-grey-2;
     color: $white;
     line-height: 11px;
     font-size: 9px;
-    text-align: center;
+
+    &-number {
+        height: min-content;
+        margin: auto;
+    }
 }
 
 .upload-wrapper {

@@ -12,6 +12,7 @@ import { ChatInput } from '@pages/chat/utils/configs';
 import {
     CompanyUserChatResponse,
     CompanyUserChatResponsePagination,
+    EnumValue,
 } from 'appcoretruckassist';
 
 // Models
@@ -37,7 +38,7 @@ import { chatFadeVerticallyAnimation } from '@shared/animations/chat-fade-vertic
 import { UnsubscribeHelper } from '@pages/chat/utils/helpers';
 
 // Services
-import { ChatHubService } from '@pages/chat/services';
+import { ChatHubService, ChatStoreService } from '@pages/chat/services';
 import { ChatConversationGroupStateConstant } from '@pages/chat/utils/constants';
 
 @Component({
@@ -61,6 +62,8 @@ export class ConversationListComponent
         id: number[];
         type: ConversationTypeEnum;
         group: ChatGroupEnum;
+        name: string;
+        channelType?: EnumValue;
     }>();
 
     public searchForm!: UntypedFormGroup;
@@ -83,7 +86,10 @@ export class ConversationListComponent
     private chatObjectPropertyEnum = ChatObjectPropertyEnum;
     public chatSearchPlaceholdersEnum = ChatSearchPlaceHolders;
 
-    constructor(private formBuilder: UntypedFormBuilder) {
+    constructor(
+        private formBuilder: UntypedFormBuilder,
+        private chatStoreService: ChatStoreService
+    ) {
         super();
     }
 
@@ -227,6 +233,8 @@ export class ConversationListComponent
                 ],
                 type,
                 group,
+                name: item.name,
+                channelType: item.channelType,
             });
             return;
         }
@@ -236,6 +244,7 @@ export class ConversationListComponent
                 id: [item.id],
                 type,
                 group,
+                name: item.name,
             });
             return;
         }

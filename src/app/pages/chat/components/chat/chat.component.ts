@@ -1,9 +1,9 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Observable, takeUntil } from 'rxjs';
+import { map, Observable, takeUntil } from 'rxjs';
 
 // Models
-import { ConversationInfoResponse } from 'appcoretruckassist';
+import { ConversationInfoResponse, EnumValue } from 'appcoretruckassist';
 import {
     ChatResolvedData,
     CompanyUserChatResponsePaginationReduced,
@@ -11,6 +11,7 @@ import {
     ChatCompanyChannelExtended,
     ChatSelectedConversation,
     ChatPreferenceItem,
+    ChatConversationDetails,
 } from '@pages/chat/models';
 
 // Enums
@@ -70,6 +71,7 @@ export class ChatComponent
     public unreadCount!: number;
     public selectedConversation: number;
     public conversation$!: Observable<ChatSelectedConversation>;
+    public conversation: ChatSelectedConversation;
 
     public ConversationTypeEnum = ConversationTypeEnum;
 
@@ -77,7 +79,7 @@ export class ChatComponent
     public isProfileDetailsDisplayed$!: Observable<boolean>;
     public isParticipantsDisplayed$!: Observable<boolean>;
 
-    public conversationProfileDetails$!: Observable<ConversationInfoResponse>;
+    public conversationProfileDetails$!: Observable<ChatConversationDetails>;
 
     public isAttachmentUploadActive$: Observable<boolean>;
     public isHamburgerMenuActive: boolean = false;
@@ -118,6 +120,7 @@ export class ChatComponent
                 this.drivers = res.drivers;
                 this.companyUsers = res.users;
                 this.departments = res.departments;
+                this.chatStoreService.addDepartments(this.departments);
                 this.tabs[0].count =
                     this.drivers.count +
                     this.companyUsers.count +
@@ -145,7 +148,10 @@ export class ChatComponent
 
         this.conversation$
             .pipe(takeUntil(this.destroy$))
-            .subscribe(() => this.chatStoreService.closeAttachmentUpload());
+            .subscribe((conversation) => {
+                this.conversation = conversation;
+                this.chatStoreService.closeAttachmentUpload();
+            });
     }
 
     private getDataOnLoad(): void {
@@ -168,7 +174,9 @@ export class ChatComponent
     public createUserConversation(
         participantsId: number[],
         conversationType: ConversationTypeEnum,
-        group: ChatGroupEnum
+        group: ChatGroupEnum,
+        name: string,
+        channelType?: EnumValue
     ): void {
         if (!participantsId?.length) return;
 
@@ -183,8 +191,9 @@ export class ChatComponent
 
                 const selectedConversation: ChatSelectedConversation = {
                     id: conversation?.id,
-                    conversationType,
                     group,
+                    name,
+                    channelType,
                 };
                 this.chatStoreService.setConversation(selectedConversation);
 
@@ -194,8 +203,6 @@ export class ChatComponent
                 ]);
             });
     }
-
-    private getConversationData(): void {}
 
     private getUnreadCount(
         users: CompanyUserChatResponsePaginationReduced,
@@ -249,8 +256,22 @@ export class ChatComponent
 
         this.chatService
             .getAllConversationFiles(this.selectedConversation)
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((data: ConversationInfoResponse) => {
+            .pipe(
+                map(
+                    (
+                        data: ConversationInfoResponse
+                    ): ChatConversationDetails => {
+                        return {
+                            ...data,
+                            userAdditionalInformation: [
+                                ...this.conversation.participants,
+                            ],
+                        };
+                    }
+                ),
+                takeUntil(this.destroy$)
+            )
+            .subscribe((data: ChatConversationDetails) => {
                 this.chatStoreService.setProfileDetails(data);
             })
             .add(() => this.chatStoreService.displayProfileDetails());

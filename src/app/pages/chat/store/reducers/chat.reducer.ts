@@ -21,13 +21,22 @@ import {
     setAttachment,
     deleteAttachment,
     deleteAllAttachments,
+    setDepartment,
+    setConversationNameAndType,
 } from '@pages/chat/store/actions/chat.actions';
 
 // Models
 import { ChatState } from '@pages/chat/models';
 
 const initialState: ChatState = {
-    conversation: null,
+    conversation: {
+        id: 0,
+        name: '',
+        participants: [],
+        isArchived: false,
+        hasLeft: false,
+    },
+    departments: [],
     messageResponsePageIndex: 0,
     messageResponsePageSize: 0,
     messageResponseCount: 0,
@@ -163,10 +172,20 @@ export const chatDataReducer = createReducer(
         messageToReply: null,
         messageToEdit: null,
     })),
+    on(setConversationNameAndType, (state, newState) => ({
+        ...state,
+        conversation: {
+            ...state.conversation,
+            name: newState.name,
+            conversationType: newState.conversationType,
+        },
+    })),
     on(setConversation, (state, newState) => ({
         ...state,
         conversation: {
             ...state.conversation,
+            name: state.conversation.name ?? newState.name,
+            channelType: state.conversation.channelType ?? newState.channelType,
             ...newState,
         },
     })),
@@ -251,5 +270,9 @@ export const chatDataReducer = createReducer(
     on(setUserTyping, (state, newState) => ({
         ...state,
         userTyping: newState.name,
+    })),
+    on(setDepartment, (state, newState) => ({
+        ...state,
+        departments: [...state.departments, newState],
     }))
 );

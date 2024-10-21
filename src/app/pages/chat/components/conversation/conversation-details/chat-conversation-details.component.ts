@@ -1,30 +1,36 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 // Models
 import { ConversationInfoResponse } from 'appcoretruckassist';
+import { ChatSelectedConversation } from '@pages/chat/models';
+
+// Enums
+import {
+    ChatActivityStatusEnum,
+    ChatConversationProfileDetailsType,
+    ChatSearchPlaceHolders,
+    ChatUserProfileResourceTypeEnum,
+    ConversationTypeEnum,
+} from '@pages/chat/enums';
+
+// Services
+import { ChatStoreService } from '@pages/chat/services';
 
 // Assets routes
 import { ChatSvgRoutes } from '@pages/chat/utils/routes';
 
-// Enums
-import {
-    ChatConversationProfileDetailsType,
-    ChatSearchPlaceHolders,
-    ChatUserProfileResourceTypeEnum,
-} from '@pages/chat/enums';
-import { ChatStoreService } from '@pages/chat/services';
-
 @Component({
-    selector: 'app-chat-user-profile',
-    templateUrl: './chat-user-profile.component.html',
-    styleUrls: ['./chat-user-profile.component.scss'],
+    selector: 'app-chat-conversation-details',
+    templateUrl: './chat-conversation-details.component.html',
+    styleUrls: ['./chat-conversation-details.component.scss'],
 })
-export class ChatUserProfileComponent implements OnInit {
+export class ChatConversationDetailsComponent {
+    @Input() conversation!: ChatSelectedConversation;
     @Input() data: ConversationInfoResponse;
     @Input() profileDetailsType!: ChatConversationProfileDetailsType;
 
     // TODO connect to hub, replace dummy value
-    public activityStatus: string = 'Offline';
+    public activityStatus: string = ChatActivityStatusEnum.OFFLINE;
 
     // Assets route
     public chatSvgRoutes = ChatSvgRoutes;
@@ -33,6 +39,7 @@ export class ChatUserProfileComponent implements OnInit {
     public chatSearchPlaceHolders = ChatSearchPlaceHolders;
     public chatConversationProfileDetailsType =
         ChatConversationProfileDetailsType;
+    public conversationTypeEnum = ConversationTypeEnum;
 
     // Attachment and links status
     public ChatUserProfileResourceTypeEnum = ChatUserProfileResourceTypeEnum;
