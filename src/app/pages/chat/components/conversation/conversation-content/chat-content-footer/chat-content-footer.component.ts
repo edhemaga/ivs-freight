@@ -39,7 +39,11 @@ import moment from 'moment';
 import { ChatSvgRoutes } from '@pages/chat/utils/routes';
 
 // Enums
-import { ChatAttachmentCustomClassEnum, ChatStringTypeEnum, ChatTimeUnitEnum } from '@pages/chat/enums';
+import {
+    ChatAttachmentCustomClassEnum,
+    ChatStringTypeEnum,
+    ChatTimeUnitEnum,
+} from '@pages/chat/enums';
 
 // Configs
 import { ChatInput } from '@pages/chat/utils/configs';
@@ -52,7 +56,8 @@ import { ChatInput } from '@pages/chat/utils/configs';
 })
 export class ChatContentFooterComponent
     extends UnsubscribeHelper
-    implements OnInit, OnDestroy {
+    implements OnInit, OnDestroy
+{
     @Input() public conversation!: ChatSelectedConversation;
     public conversationRemoveInDate!: string;
     public currentUserTyping!: Observable<string>;
@@ -139,8 +144,7 @@ export class ChatContentFooterComponent
         this.editMessage$
             .pipe(
                 concatMap((editMessage: ChatMessage) => {
-                    if (editMessage)
-                        this.editMessage(editMessage.id);
+                    if (editMessage) this.editMessage(editMessage.id);
 
                     return this.replyMessage$;
                 }),
