@@ -68,11 +68,12 @@
             <div
                 class="icon-wrapper d-flex justify-content-center align-items-center"
                 [ngStyle]="{
-                    backgroundColor: isProfileDetailsDisplayed
-                        ? '#424242'
-                        : '#ffffff'
+                    backgroundColor:
+                        (isProfileDetailsDisplayed$ | async)
+                            ? '#424242'
+                            : '#ffffff'
                 }"
-                (click)="displayProfileDetails(true)"
+                (click)="displayProfileDetails()"
             >
                 <svg-icon
                     class="d-flex"
@@ -89,13 +90,33 @@
 
             <div
                 class="icon-wrapper d-flex justify-content-center align-items-center"
+                [ngStyle]="{
+                    'background-color': isHamburgerMenuActive
+                        ? '#424242'
+                        : '#fff'
+                }"
             >
-                <svg-icon
-                    class="d-flex justify-content-center align-items-center"
-                    [svgStyle]="{ 'width.px': 18, 'height.px': 18 }"
-                    [src]="chatSvgRoutes.burgerMenuIcon"
-                >
-                </svg-icon>
+                <div (click)="toggleChatPreferences()">
+                    <svg-icon
+                        class="d-flex justify-content-center align-items-center"
+                        [svgStyle]="{ 'width.px': 18, 'height.px': 18 }"
+                        [src]="chatSvgRoutes.burgerMenuIcon"
+                    >
+                    </svg-icon>
+                </div>
+
+                <ng-container *ngIf="isHamburgerMenuActive">
+                    <div class="preferences-wrapper">
+                        <ng-container
+                            *ngTemplateOutlet="
+                                preferences;
+                                context: {
+                                    item: {}
+                                }
+                            "
+                        ></ng-container>
+                    </div>
+                </ng-container>
             </div>
 
             <app-chat-vertical-divider></app-chat-vertical-divider>
@@ -124,7 +145,8 @@
         class="chat-main-content"
         [ngStyle]="{
             'grid-template-columns':
-                isProfileDetailsDisplayed || isGroupMembersDisplayed
+                (isProfileDetailsDisplayed$ | async) ||
+                (isParticipantsDisplayed$ | async)
                     ? chatGridLayout.MAX_AUTO_MAX
                     : chatGridLayout.MAX_AUTO
         }"
@@ -136,7 +158,13 @@
                 [companyUsers]="companyUsers"
                 [drivers]="drivers"
                 (selectedConversation)="
-                    createUserConversation($event.id, $event.type, $event.group)
+                    createUserConversation(
+                        $event.id,
+                        $event.type,
+                        $event.group,
+                        $event.name,
+                        $event.conversationType
+                    )
                 "
             ></app-conversation-list>
         </div>
@@ -144,7 +172,7 @@
         <!-- Messages -->
         <div class="conversation-wrapper">
             <ng-container *ngIf="selectedConversation; else noConversation">
-                <router-outlet (activate)="onActivate($event)"></router-outlet>
+                <router-outlet></router-outlet>
             </ng-container>
 
             <ng-template #noConversation>
@@ -155,47 +183,44 @@
         </div>
 
         <!-- Profile details -->
-        <div>
-            <ng-container *ngIf="!attachmentUploadActive">
-                <div class="profile-details-wrapper d-flex">
-                    <ng-container *ngIf="isProfileDetailsDisplayed">
-                        <div class="profile-details">
-                            <app-chat-user-profile
-                                [data]="userProfileData | async"
-                                [profileDetailsType]="
-                                    chatConversationProfileDetailsType.SAFETY
-                                "
-                                (isProfileDetailsClosed)="
-                                    displayProfileDetails($event)
-                                "
-                            ></app-chat-user-profile>
-                        </div>
-                    </ng-container>
-
-                    <ng-container
-                        *ngIf="
-                            isGroupMembersDisplayed &&
-                            conversationParticipants.length
-                        "
-                    >
-                        <div class="profile-details">
-                            <app-chat-channel-participant-list
-                                [@fadeInOutHorizontal]
-                                [conversationParticipants]="
-                                    conversationParticipants
-                                "
-                                (closeGroupMembersOverviewEvent)="
-                                    closeGroupMembersOverview($event.value)
-                                "
-                            ></app-chat-channel-participant-list>
-                        </div>
-                    </ng-container>
-                </div>
-            </ng-container>
-        </div>
+        <ng-container *ngIf="!(isAttachmentUploadActive$ | async)">
+            <div class="profile-details-wrapper d-flex">
+                <ng-container *ngIf="isProfileDetailsDisplayed$ | async">
+                    <div class="profile-details">
+                        <app-chat-conversation-details
+                            [conversation]="conversation$ | async"
+                            [data]="conversationProfileDetails$ | async"
+                            [profileDetailsType]="
+                                chatConversationProfileDetailsType.COMPANY_OR_DRIVER
+                            "
+                            (isProfileDetailsClosed)="closeProfileDetails()"
+                        ></app-chat-conversation-details>
+                    </div>
+                </ng-container>
+                <ng-container
+                    *ngIf="
+                        (isParticipantsDisplayed$ | async) &&
+                        (conversation$ | async)?.participants?.length
+                    "
+                >
+                    <div class="profile-details">
+                        <app-chat-channel-participant-list
+                            [@fadeInOutHorizontal]
+                            [conversationParticipants]="
+                                (conversation$ | async)?.participants
+                            "
+                            (closeGroupMembersOverviewEvent)="
+                                closeGroupMembersOverview($event.value)
+                            "
+                        ></app-chat-channel-participant-list>
+                    </div>
+                </ng-container>
+            </div>
+        </ng-container>
     </div>
 </div>
 
+<!-- Templates -->
 <ng-template #conversationNotSelected>
     <div class="not-selected-wrapper">
         <app-chat-header>
@@ -220,3 +245,140 @@
         </div>
     </div>
 </ng-template>
+
+<ng-template #preferences let-item="item">
+    <ng-container
+        *ngFor="
+            let preference of chatPreferencesConfig;
+            let ind = index;
+            trackBy: '' | trackByProperty
+        "
+    >
+        <div
+            class="item-wrapper"
+            [ngClass]="{
+                'border-bottom': preference.borderBottom,
+                'border-top': preference.borderTop,
+                'focused-background':
+                    preference.isExpandable && preference.value
+            }"
+        >
+            <div
+                class="d-flex justify-content-between align-content-center"
+                (click)="preference.toggleValue()"
+            >
+                <div [ngClass]="{ 'ta-font-bold': preference.isHighlighted }">
+                    {{ preference?.name }}
+                </div>
+                <ng-container *ngIf="preference.icon">
+                    <div
+                        [ngClass]="
+                            preference.isExpandable && preference.value
+                                ? 'rotate-180deg'
+                                : 'rotate-0deg'
+                        "
+                    >
+                        <svg-icon
+                            class="d-flex justify-content-center align-items-center"
+                            [svgStyle]="{ 'width.px': 18, 'height.px': 18 }"
+                            [src]="preference.icon"
+                        >
+                        </svg-icon>
+                    </div>
+                </ng-container>
+            </div>
+            <ng-container *ngIf="preference?.items && preference?.value">
+                <div [@fadeInOutVertical]>
+                    <ng-container
+                        *ngFor="
+                            let preferenceItem of preference?.items;
+                            let ind = index;
+                            trackBy: '' | trackByProperty
+                        "
+                    >
+                        <div
+                            class="preference-item d-flex"
+                            (click)="preferenceItem.toggleValue()"
+                        >
+                            <div
+                                class="d-flex justify-content-center align-content-center"
+                            >
+                                <ng-container
+                                    *ngIf="preferenceItem?.isRadioButton"
+                                >
+                                    <ng-container
+                                        *ngIf="
+                                            !preferenceItem?.value;
+                                            else radioChecked
+                                        "
+                                    >
+                                        <div
+                                            class="d-flex justify-content-center align-items-center"
+                                        >
+                                            <div
+                                                [ngStyle]="{
+                                                    'border-radius': '50px'
+                                                }"
+                                                class="value-indicator"
+                                            ></div>
+                                        </div>
+                                    </ng-container>
+                                    <ng-template #radioChecked>
+                                        <svg-icon
+                                            class="d-flex justify-content-center align-items-center"
+                                            [svgStyle]="{
+                                                'width.px': 14,
+                                                'height.px': 14
+                                            }"
+                                            [src]="
+                                                chatSvgRoutes.radioCheckedButtonIcon
+                                            "
+                                        >
+                                        </svg-icon>
+                                    </ng-template>
+                                </ng-container>
+                                <ng-container
+                                    *ngIf="preferenceItem?.isCheckmark"
+                                >
+                                    <ng-container
+                                        *ngIf="
+                                            !preferenceItem?.value;
+                                            else checkmarkChecked
+                                        "
+                                    >
+                                        <div
+                                            class="d-flex justify-content-center align-items-center"
+                                        >
+                                            <div class="value-indicator"></div>
+                                        </div>
+                                    </ng-container>
+                                    <ng-template #checkmarkChecked>
+                                        <svg-icon
+                                            class="d-flex justify-content-center align-items-center"
+                                            [svgStyle]="{
+                                                'width.px': 14,
+                                                'height.px': 14
+                                            }"
+                                            [src]="chatSvgRoutes.checkMarkIcon"
+                                        >
+                                        </svg-icon>
+                                    </ng-template>
+                                </ng-container>
+                            </div>
+                            <div
+                                class="preference-item-name"
+                                [ngClass]="{
+                                    'ta-font-bold': preferenceItem.isHighlighted
+                                }"
+                            >
+                                {{ preferenceItem.name }}
+                            </div>
+                        </div>
+                    </ng-container>
+                </div>
+            </ng-container>
+        </div>
+    </ng-container>
+</ng-template>
+
+<ng-template #preferencesExpandable></ng-template>

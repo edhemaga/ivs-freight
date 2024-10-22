@@ -1,17 +1,18 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, takeUntil } from 'rxjs';
 
 // Assets
 import { ChatSvgRoutes } from '@pages/chat/utils/routes';
 
 // Config
-import { ChatInput } from '@pages/chat/utils/config';
+import { ChatInput } from '@pages/chat/utils/configs';
 
 // Models
 import {
     CompanyUserChatResponse,
     CompanyUserChatResponsePagination,
+    EnumValue,
 } from 'appcoretruckassist';
 
 // Models
@@ -37,7 +38,7 @@ import { chatFadeVerticallyAnimation } from '@shared/animations/chat-fade-vertic
 import { UnsubscribeHelper } from '@pages/chat/utils/helpers';
 
 // Services
-import { ChatHubService } from '@pages/chat/services';
+import { ChatHubService, ChatStoreService } from '@pages/chat/services';
 import { ChatConversationGroupStateConstant } from '@pages/chat/utils/constants';
 
 @Component({
@@ -57,21 +58,18 @@ export class ConversationListComponent
     @Input() public companyUsers: CompanyUserChatResponsePagination;
     @Input() public drivers: CompanyUserChatResponsePagination;
 
-    // New message emitted from hub
-    @Input() public newMessage: BehaviorSubject<ChatMessageResponse> =
-        new BehaviorSubject(null);
-
     @Output() selectedConversation = new EventEmitter<{
         id: number[];
         type: ConversationTypeEnum;
         group: ChatGroupEnum;
+        name: string;
+        channelType?: EnumValue;
     }>();
 
     public searchForm!: UntypedFormGroup;
 
     // Assets
-    public ChatSvgRoutes = ChatSvgRoutes;
-    //TODO create enum?
+    public chatSvgRoutes = ChatSvgRoutes;
     public titleIcon: string;
 
     // Config
@@ -88,25 +86,21 @@ export class ConversationListComponent
     private chatObjectPropertyEnum = ChatObjectPropertyEnum;
     public chatSearchPlaceholdersEnum = ChatSearchPlaceHolders;
 
-    constructor(private formBuilder: UntypedFormBuilder) {
+    constructor(
+        private formBuilder: UntypedFormBuilder,
+        private chatStoreService: ChatStoreService
+    ) {
         super();
     }
 
     ngOnInit(): void {
         this.initializeChatGroupStates();
         this.creteForm();
-        this.listenForNewMessage();
     }
 
     private creteForm(): void {
         this.searchForm = this.formBuilder.group({
             searchTerm: [null],
-        });
-    }
-
-    private listenForNewMessage(): void {
-        ChatHubService.receiveMessage().subscribe((arg) => {
-            console.log(arg);
         });
     }
 
@@ -197,7 +191,7 @@ export class ConversationListComponent
         ChatCompanyChannelExtended[] | CompanyUserChatResponsePagination
     > {
         return this.groupsState.find((group) => {
-            console.log(group);
+            return group;
         });
     }
 
@@ -239,6 +233,8 @@ export class ConversationListComponent
                 ],
                 type,
                 group,
+                name: item.name,
+                channelType: item.channelType,
             });
             return;
         }
@@ -248,6 +244,7 @@ export class ConversationListComponent
                 id: [item.id],
                 type,
                 group,
+                name: item.name,
             });
             return;
         }

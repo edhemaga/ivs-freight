@@ -1,0 +1,390 @@
+<div class="chat-footer-wrapper">
+    <!-- [ngSwitch]="true" -->
+    <ng-container [ngSwitch]="true">
+        <ng-container *ngSwitchCase="conversation?.isArchived">
+            <ng-container
+                *ngTemplateOutlet="
+                    archivedChannel;
+                    context: {
+                        conversation
+                    }
+                "
+            ></ng-container>
+        </ng-container>
+        <ng-container *ngSwitchCase="conversation.hasLeft">
+            <ng-container
+                *ngTemplateOutlet="
+                    unsubscribedChannel;
+                    context: {
+                        conversation
+                    }
+                "
+            ></ng-container>
+        </ng-container>
+        <ng-container *ngSwitchDefault>
+            <ng-container *ngIf="currentUserTyping | async">
+                <ng-container
+                    *ngTemplateOutlet="
+                        isTyping;
+                        context: {
+                            user: currentUserTyping
+                        }
+                    "
+                ></ng-container>
+            </ng-container>
+            <ng-container *ngIf="replyMessage$ | async">
+                <ng-container
+                    *ngTemplateOutlet="
+                        messageReplyEdit;
+                        context: {
+                            item: {
+                                text:
+                                    'Replying to ' +
+                                    (replyMessage$ | async)?.sender?.fullName,
+                                message: (replyMessage$ | async).content
+                            }
+                        }
+                    "
+                ></ng-container>
+            </ng-container>
+
+            <ng-container *ngIf="editMessage$ | async">
+                <ng-container
+                    *ngTemplateOutlet="
+                        messageReplyEdit;
+                        context: {
+                            item: {
+                                text: 'Edit message',
+                                message: (editMessage$ | async).content
+                            }
+                        }
+                    "
+                ></ng-container>
+            </ng-container>
+
+            <div class="chat-footer d-flex">
+                <div class="left-side d-flex">
+                    <ng-container
+                        *ngIf="!isChatTypingActivated; else chatInputField"
+                    >
+                        <div
+                            (click)="enableChatInput()"
+                            class="input-placeholder-not-touched ta-font-regular"
+                        >
+                            Type your message here
+                        </div>
+                    </ng-container>
+
+                    <ng-template #chatInputField>
+                        <div class="form-wrapper" [formGroup]="messageForm">
+                            <ng-container
+                                *ngIf="(attachments$ | async)?.length"
+                            >
+                                <div class="attachment-list d-flex">
+                                    <ng-container
+                                        *ngFor="
+                                            let attachment of attachments$
+                                                | async;
+                                            let ind = index;
+                                            trackBy: 'fileName'
+                                                | trackByProperty
+                                        "
+                                    >
+                                        <div
+                                            class="attachment-preview-container pointer d-flex"
+                                            [ngClass]="
+                                                attachment.extension ===
+                                                    'jpg' ||
+                                                attachment.extension ===
+                                                    'jpeg' ||
+                                                attachment.extension === 'png'
+                                                    ? 'attachment-preview-container-short'
+                                                    : 'attachment-preview-container-long'
+                                            "
+                                        >
+                                            <app-chat-message-attachment-preview
+                                                [index]="ind"
+                                                [attachment]="attachment"
+                                                [isNameReduced]="true"
+                                                [isFocused]="false"
+                                                [isInMessage]="false"
+                                            ></app-chat-message-attachment-preview>
+                                            <div class="close-attachment">
+                                                <div
+                                                    class="close-attachment-wrapper d-flex justify-content-center align-items-center"
+                                                >
+                                                    <svg-icon
+                                                        class="d-flex justify-content-center align-items-center"
+                                                        [svgStyle]="{
+                                                            'width.px': 7,
+                                                            'height.px': 7
+                                                        }"
+                                                        [src]="
+                                                            chatSvgRoutes.noBorderXIcon
+                                                        "
+                                                        (click)="
+                                                            removeAttachment(
+                                                                attachment
+                                                            )
+                                                        "
+                                                    ></svg-icon>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </ng-container>
+                                </div>
+                            </ng-container>
+
+                            <ng-container *ngIf="isMentionActive">
+                                <ng-container
+                                    *ngTemplateOutlet="
+                                        mention;
+                                        context: {
+                                            item: {
+                                                participants:
+                                                    mentionParticipants
+                                            }
+                                        }
+                                    "
+                                ></ng-container>
+                            </ng-container>
+
+                            <app-ta-input
+                                #messagesInput
+                                formControlName="message"
+                                [inputConfig]="
+                                    chatInput.messageInput(
+                                        isChatTypingActivated,
+                                        (attachments$ | async)?.length
+                                    )
+                                "
+                                (clear)="clearInput()"
+                                (blurInput)="blurInput()"
+                                (focusInput)="focusInput()"
+                                (keyup.enter)="handleSend()"
+                            ></app-ta-input>
+                        </div>
+                    </ng-template>
+                </div>
+
+                <div
+                    class="right-side d-flex"
+                    [ngClass]="
+                        isChatTypingActivated && (attachments$ | async)?.length
+                            ? 'align-items-end'
+                            : 'align-items-center'
+                    "
+                >
+                    <div class="d-flex align-items-center">
+                        <ng-container
+                            *ngTemplateOutlet="
+                                iconAction;
+                                context: {
+                                    item: {
+                                        icon: chatSvgRoutes.faceEmojiIcon,
+                                    },
+                                    action: openEmojiSelection
+                                }
+                            "
+                        ></ng-container>
+                        <app-chat-vertical-divider></app-chat-vertical-divider>
+
+                        <ng-container
+                            *ngTemplateOutlet="
+                                iconAction;
+                                context: {
+                                    item: {
+                                        icon: chatSvgRoutes.documentIcon,
+                                    },
+                                    action: uploadAttachmentUpload
+                                }
+                            "
+                        ></ng-container>
+
+                        <app-chat-vertical-divider></app-chat-vertical-divider>
+
+                        <ng-container
+                            *ngIf="editMessage$ | async; else sendMessage"
+                        >
+                            <!-- TODO Change icon -->
+                            <ng-container
+                                *ngTemplateOutlet="
+                                    iconAction;
+                                    context: {
+                                        item: {
+                                            text: 'Save Changes',
+                                            icon: chatSvgRoutes.sendMessageIcon,
+                                            customClass:
+                                            isMessageSendable &&
+                                            ChatAttachmentCustomClassEnum.BLUE
+                                        },
+                                        action: editMessage,
+                                    }
+                                "
+                            ></ng-container
+                        ></ng-container>
+
+                        <ng-template #sendMessage>
+                            <ng-container
+                                *ngTemplateOutlet="
+                                    iconAction;
+                                    context: {
+                                        item: {
+                                            text: 'Send Message',
+                                            icon: chatSvgRoutes.sendMessageIcon,
+                                            customClass:
+                                            isMessageSendable &&
+                                            ChatAttachmentCustomClassEnum.BLUE
+                                        },
+                                        action: sendMessage,
+                                    }
+                                "
+                            ></ng-container>
+                        </ng-template>
+                    </div>
+                </div>
+            </div>
+        </ng-container>
+    </ng-container>
+</div>
+
+<!-- Templates -->
+<ng-template #isTyping let-user="user">
+    <div class="typing-placeholder-wrapper">
+        <div class="typing-placeholder ta-font-bold">
+            {{ user | async }} is typing...
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #messageReplyEdit let-item="item">
+    <div class="reply-wrapper">
+        <div class="d-flex justify-content-between align-content-center">
+            <div class="reply-placeholder ta-font-semi-bold">
+                {{ item.text }}
+            </div>
+            <div class="reply-x-icon" (click)="closeReplyAndEdit()">
+                <svg-icon
+                    class="d-flex justify-content-center align-items-center"
+                    [svgStyle]="{ 'width.px': 18, 'height.px': 18 }"
+                    [src]="chatSvgRoutes.noBorderXIcon"
+                >
+                </svg-icon>
+            </div>
+        </div>
+        <div class="reply-message ta-font-regular">
+            {{ item.message }}
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #iconAction let-item="item" let-action="action">
+    <div
+        class="action-wrapper gray d-flex justify-content-center align-content-center"
+        (click)="action()"
+        [ngClass]="item.customClass"
+    >
+        <div class="action d-flex justify-content-center align-content-center">
+            <ng-container *ngIf="item.text">
+                <div class="action-text ta-font-bold">
+                    {{ item.text }}
+                </div>
+            </ng-container>
+            <svg-icon
+                class="pointer d-flex justify-content-center align-items-center"
+                [svgStyle]="{
+                    'width.px': 18,
+                    'height.px': 18
+                }"
+                [src]="item.icon"
+            ></svg-icon>
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #archivedChannel let-conversation="conversation">
+    <div class="archived d-flex justify-content-center align-content-center">
+        <div>
+            <!-- TODO prebaciti na updatedAt? -->
+            <div class="archived-date ta-font-medium">
+                {{ conversation?.updatedAt | formatDateP : 'date-time' }}
+            </div>
+            <div class="archived-text ta-font-regular">
+                Conversation
+                <span class="archived-text-highlighted ta-font-bold">{{
+                    conversation?.name
+                }}</span>
+            </div>
+            <div class="archived-removed-text ta-font-regular">
+                Will be removed in
+                <span class="archived-removed-text-red ta-font-medium">{{
+                    conversationRemoveInDate | formatDateP : 'difference-days'
+                }}</span>
+            </div>
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #unsubscribedChannel let-conversation="conversation">
+    <div
+        class="unsubscribed d-flex justify-content-center align-content-center"
+    >
+        <div>
+            <div class="unsubscribed-text">
+                You are viewing
+                <span class="ta-font-bold">{{ conversation?.name }}</span>
+            </div>
+            <div class="d-flex justify-content-center align-content-center">
+                <button
+                    class="unsubscribed-button ta-font-bold"
+                    type="button"
+                    (click)="joinChannel(conversation.id)"
+                >
+                    Join Channel
+                </button>
+            </div>
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #messageArea></ng-template>
+
+<ng-template #mention let-item="item">
+    <div class="mention">
+        <ng-container
+            *ngFor="
+                let participant of item?.participants;
+                let ind = index;
+                trackBy: 'userId' | trackByProperty
+            "
+        >
+            <div
+                class="mention-wrapper d-flex w-100"
+                (click)="selectMentionUser(participant)"
+            >
+                <div class="mention-avatar">
+                    <app-ca-profile-image
+                        [avatarImg]="participant?.avatarFile?.url"
+                        [avatarColor]="{
+                            background: '#DFC2F9',
+                            color: '#9E47EC66'
+                        }"
+                        [textShortName]="participant?.fullName | nameInitials"
+                        [size]="22"
+                        [fontSize]="9"
+                        [isHoverEffect]="false"
+                        [isRound]="participant?.userType?.name === 'Driver'"
+                    ></app-ca-profile-image>
+                </div>
+                <div class="mention-text d-flex ta-font-regular">
+                    <div
+                        [innerHTML]="
+                            participant?.fullName
+                                | chatHighlight : mentionSearchTerm
+                        "
+                    ></div>
+                </div>
+            </div>
+        </ng-container>
+    </div>
+</ng-template>

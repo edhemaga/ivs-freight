@@ -1,0 +1,318 @@
+@import 'src/theme/variables';
+
+.chat-footer-wrapper {
+    height: auto;
+
+    margin: auto 8px;
+    border-top: 1px solid $bw-9;
+
+    .typing-placeholder-wrapper {
+        margin: auto 12px;
+        height: 14px;
+
+        .typing-placeholder {
+            line-height: 14px;
+            font-size: 11px;
+            color: $bw6-2;
+        }
+    }
+    .chat-footer {
+        min-height: 46px;
+
+        .left-side {
+            width: 100%;
+            margin: auto auto auto 6px;
+
+            .input-placeholder-not-touched {
+                padding-left: 12px;
+                line-height: 18px;
+                font-size: 14px;
+            }
+
+            .form-wrapper {
+                flex: 1;
+                width: 100%;
+
+                .attachment-list {
+                    width: 100%;
+                    min-height: 46px;
+                    height: fit-content;
+                    border-radius: 2px;
+                    padding: 4px 2px 2px 4px;
+                    margin: 8px auto;
+                    overflow-x: scroll;
+                    overflow-y: hidden;
+
+                    .attachment-preview-container {
+                        width: 100%;
+
+                        .close-attachment {
+                            height: 14px;
+                            width: 14px;
+                            border-radius: 50px;
+                            border: 2px solid $white;
+                            display: none;
+                            position: relative;
+                            top: -2px;
+                            left: -5px;
+                            background-color: $bw5;
+
+                            .close-attachment-wrapper {
+                                height: 11px;
+                                width: 14px;
+                                position: relative;
+                                left: -1.5px;
+                            }
+
+                            &:hover {
+                                background-color: $ta-black;
+                            }
+
+                            svg-icon {
+                                svg {
+                                    path {
+                                        fill: $white;
+                                    }
+                                }
+                            }
+                        }
+
+                        &:hover {
+                            background-color: $dark-2;
+
+                            .close-attachment {
+                                display: block;
+                            }
+                        }
+
+                        &-long {
+                            width: 132px;
+                        }
+
+                        &-short {
+                            width: 40px;
+                        }
+
+                        margin-right: 8px;
+                        padding: 1px;
+                        border-radius: 2px;
+
+                        &-document {
+                            height: 36px;
+                            width: 132px;
+                            padding-left: 6px;
+
+                            &-info {
+                                line-height: 14px;
+                                font-size: 11px;
+                                width: 84px;
+                                height: 14px;
+
+                                .text {
+                                    white-space: nowrap;
+                                    text-overflow: ellipsis;
+                                    overflow: hidden;
+                                }
+
+                                .name {
+                                    padding: 4px;
+                                }
+
+                                .size {
+                                    color: $bw5;
+                                    padding: 0 4px;
+                                }
+                            }
+
+                            &-thumbnail {
+                                height: 40px;
+                                padding-right: 6px;
+                            }
+                        }
+
+                        &:hover {
+                            cursor: pointer;
+                        }
+                    }
+
+                    .hovered-overlay-dark {
+                        background-color: lighten($bw5, 20%) !important;
+                    }
+
+                    .hovered-overlay-light {
+                        background-color: $ta-black !important;
+                    }
+                }
+            }
+        }
+
+        .right-side {
+            .action-wrapper {
+                height: 26px;
+                min-width: 26px;
+                width: max-content;
+
+                margin: auto 6px;
+                border-radius: 2px;
+
+                &:hover {
+                    background-color: $bw2;
+                }
+
+                .action {
+                    width: 100%;
+                    margin: 4px;
+
+                    &-text {
+                        line-height: 18px;
+                        padding-right: 8px;
+                        font-size: 14px;
+                        color: $ta-light-grey-6;
+                    }
+                }
+
+                svg-icon:hover {
+                    cursor: pointer;
+                }
+
+                .blue {
+                    svg {
+                        path {
+                            fill: $ta-blue-13;
+                        }
+                    }
+
+                    &:hover {
+                        background-color: $ta-blue-16;
+                        svg {
+                            path {
+                                fill: $ta-blue-15;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+.reply-wrapper {
+    margin: 8px 10px auto 14px;
+
+    .reply {
+        &-placeholder {
+            font-size: 14px;
+        }
+
+        &-x-icon {
+            height: 18px;
+            width: 18px;
+            border-radius: 2px;
+
+            svg-icon {
+                margin: auto !important;
+            }
+
+            &:hover {
+                background-color: $bw2;
+                svg {
+                    path {
+                        fill: $ta-black;
+                    }
+                }
+                cursor: pointer;
+            }
+        }
+
+        &-message {
+            font-size: 11px;
+            color: $ta-black-2;
+
+            margin-top: 2px;
+        }
+    }
+}
+
+.archived,
+.unsubscribed {
+    padding: 18px;
+    &-date {
+        line-height: 14px;
+        font-size: 11px;
+        color: $bw5;
+        text-align: center;
+        padding-bottom: 6px;
+    }
+
+    &-text {
+        line-height: 18px;
+        font-size: 14px;
+        color: $ta-black-2;
+        text-align: center;
+        padding-bottom: 6px;
+
+        &-highlighted {
+            color: $ta-black;
+        }
+    }
+
+    &-removed-text {
+        line-height: 18px;
+        font-size: 14px;
+        color: $bw5;
+
+        &-red {
+            color: $ta-red-11;
+            text-align: center;
+        }
+    }
+
+    &-button {
+        width: 120px;
+        line-height: 20px;
+        font-size: 14px;
+        margin-top: 6px;
+        color: $white;
+        background-color: $ta-blue-13;
+        padding: 6px;
+        border: none;
+        border-radius: 2px;
+
+        &:hover {
+            background-color: $ta-blue-15;
+        }
+    }
+}
+
+.mention {
+    height: fit-content;
+    width: 240px;
+    position: absolute;
+    bottom: 52px;
+    border-radius: 3px;
+    padding: 4px;
+    background-color: $ta-black-2;
+
+    &-wrapper {
+        &:hover {
+            cursor: pointer;
+            background-color: $ta-black !important;
+        }
+    }
+    &-text {
+        margin: auto auto auto 2px;
+        font-size: 14px;
+        color: $white;
+        div {
+            .highlight {
+                line-height: 18px;
+                color: $ta-blue-19 !important;
+                background-color: rgba(59, 115, 237, 0.2) !important;
+                font-weight: bold;
+            }
+        }
+    }
+    &-avatar {
+        margin: 4px 4px 4px 6px;
+    }
+}

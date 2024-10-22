@@ -1,12 +1,19 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot } from '@angular/router';
-import { Observable } from 'rxjs';
+import { map, Observable } from 'rxjs';
 
 // Models
-import { ChatMessageResponse } from '@pages/chat/models/chat-message-reponse.model';
+import {
+    ChatMessagePaginationResponse,
+    ChatMessageResponse,
+} from '@pages/chat/models';
+import { ChatMessage } from '@pages/chat/models';
 
 // Service
 import { UserChatService } from '@pages/chat/services';
+
+// Helpers
+import { chatMessageSenderFullname } from '@pages/chat/utils/helpers';
 
 @Injectable({
     providedIn: 'root',
@@ -14,10 +21,26 @@ import { UserChatService } from '@pages/chat/services';
 export class ChatConversationResolver {
     constructor(private userChatService: UserChatService) {}
 
-    resolve(route: ActivatedRouteSnapshot): Observable<ChatMessageResponse[]> {
+    resolve(route: ActivatedRouteSnapshot): Observable<ChatMessageResponse> {
         const conversationId: number = route.params['conversationId'] ?? 0;
         if (conversationId === 0) return;
 
-        return this.userChatService.getMessages(conversationId);
+        return this.userChatService.getMessages(conversationId).pipe(
+            map((res: ChatMessagePaginationResponse) => {
+                const messages = res?.pagination?.data.map(
+                    (message: ChatMessage) => {
+                        return chatMessageSenderFullname(
+                            res?.pagination?.data,
+                            message
+                        );
+                    }
+                );
+                const modifiedResponse: ChatMessageResponse = {
+                    ...res.pagination,
+                    data: messages,
+                };
+                return modifiedResponse;
+            })
+        );
     }
 }

@@ -12,7 +12,10 @@ import {
     CreateResponse,
     UserType,
 } from 'appcoretruckassist';
-import { ChatMessageResponse } from '@pages/chat/models';
+import {
+    ChatMessagePaginationResponse,
+    ChatMessageResponse,
+} from '@pages/chat/models';
 import { UploadFile } from '@shared/components/ta-upload-files/models/upload-file.model';
 
 // Services
@@ -81,13 +84,15 @@ export class UserChatService {
         );
     }
 
-    public getMessages(id: number): Observable<ChatMessageResponse[]> {
+    public getMessages(
+        conversationId: number
+    ): Observable<ChatMessagePaginationResponse> {
         const params: HttpParams = new HttpParams({
             fromObject: {
-                'MessageSpecParams.ConversationId': id,
+                'MessageSpecParams.ConversationId': conversationId,
             },
         });
-        return this.http.get<ChatMessageResponse[]>(
+        return this.http.get<ChatMessagePaginationResponse>(
             `${environment.API_ENDPOINT}/api/chat/message/list`,
             {
                 params,
@@ -114,10 +119,12 @@ export class UserChatService {
 
     public sendMessage(
         conversationId: number,
+        messageType: number,
         content: string,
         attachmentsList?: UploadFile[],
-        linksList?: string[]
-    ): Observable<any> {
+        linksList?: string[],
+        parentMessageId?: number
+    ): Observable<{}> {
         if (!conversationId) return;
 
         const attachments: File[] = attachmentsList.map((item) => {
@@ -130,7 +137,14 @@ export class UserChatService {
             };
         });
 
-        const data = { conversationId, content, attachments, links };
+        const data = {
+            conversationId,
+            messageType,
+            content,
+            attachments,
+            links,
+            parentMessageId,
+        };
 
         this.formDataService.extractFormDataFromFunction(data);
 
@@ -141,11 +155,41 @@ export class UserChatService {
         );
     }
 
+    public editMessage(messageId: number, content: string): Observable<Object> {
+        return this.http.put(
+            `${environment.API_ENDPOINT}/api/chat/message`,
+            {
+                id: messageId,
+                content,
+            },
+            { headers: this.headers }
+        );
+    }
+
+    public deleteMessage(messageId: number): Observable<any> {
+        return this.http.delete(
+            `${environment.API_ENDPOINT}/api/chat/message/${messageId}`,
+            {
+                headers: this.headers,
+            }
+        );
+    }
+
     public getAllConversationFiles(
         conversationId: number
     ): Observable<ConversationInfoResponse> {
         return this.http.get<ConversationInfoResponse>(
             `${environment.API_ENDPOINT}/api/chat/conversation/${conversationId}/files`,
+            {
+                headers: this.headers,
+            }
+        );
+    }
+
+    public joinChannel(conversationId: number): Observable<{}> {
+        return this.http.put(
+            `${environment.API_ENDPOINT}/api/chat/conversation/join`,
+            { conversationId },
             {
                 headers: this.headers,
             }
