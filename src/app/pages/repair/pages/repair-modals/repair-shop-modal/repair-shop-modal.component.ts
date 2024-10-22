@@ -219,7 +219,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
 
     // documents
     public files: UploadFile[] | FileResponse[] = [];
-    public coverPhoto: UploadFile | FileResponse;
+    public coverPhoto: any;
     public filesForDelete: any[] = [];
 
     public daysOfWeekDropdown: EnumValue[];
@@ -507,6 +507,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
         this.selectedAddress = res.address;
         this.isBankSelected = !!res.bank;
         this.files = res.files;
+        this.coverPhoto = [res.cover];
 
         this.updatedRepairShopContacts = res.contacts;
 
@@ -867,7 +868,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
     }
 
     public onUploadCoverPhoto(event): void {
-        this.coverPhoto = event;
+        this.coverPhoto = [event.files[0].realFile];
         this.repairShopForm
             .get(RepairShopModalStringEnum.COVER)
             .patchValue(event);
@@ -1032,7 +1033,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
     }
 
     private convertCoverDocumentForRequest(): any {
-        return this.repairShopForm.get(RepairShopModalStringEnum.COVER).value;
+        return this.coverPhoto;
     }
     
     private mapContacts(

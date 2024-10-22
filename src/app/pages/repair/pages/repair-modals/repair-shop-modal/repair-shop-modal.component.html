@@ -627,6 +627,93 @@
                         </app-ta-modal-table>
                     </app-ta-custom-card>
 
+                    <app-ta-custom-card
+                    [animationMarginParams]="{
+                        marginTop: '0',
+                        marginBottom: '0'
+                    }"
+                    [cardName]="'Cover Photo'"
+                    [isCardOpen]="true"
+                    [hasArrow]="false"
+                >
+                    <app-ca-upload-files
+                        [isVisibleCropAndDrop]="true"
+                        [hasBlobUrl]="true"
+                        [files]="[coverPhoto]"
+                        [slider]="{
+                            dontUseSlider: false,
+                            hasCarouselBottomTabs: false
+                        }"
+                        [carouselConfig]="{
+                            files: [],
+                            customClass: 'medium',
+                            customDetailsPageClass: 'modals',
+                            hasCarouselBottomTabs: true
+                        }"
+                        [hasCrop]="true"
+                        [isRoundCrop]="false"
+                        [dropzoneConf]="[
+                            {
+                                template: 'imageCropTemplate',
+                                config: {
+                                    dropzone: {
+                                        dropZoneType: 'image',
+                                        multiple: true,
+                                        globalDropZone: false,
+                                        dropZonePages: 'cdl'
+                                    },
+                                    dropzoneOption: {
+                                        customClassName:
+                                            'documents-dropzone',
+                                        size: 'medium',
+                                        modalSize: 'lg',
+                                        showDropzone: true,
+                                        dropzoneClose: false
+                                    }
+                                }
+                            }
+                        ]"
+                        [review]="{
+                            isReview: true,
+                            reviewMode: 'REVIEW_MODE',
+                            feedbackText: 'Sample feedback text',
+                            categoryTag: 'General'
+                        }"
+                        [configFile]="{
+                            id: 111,
+                            customClassName: 'modals',
+                            file: {
+                                url: '',
+                                incorrect: false,
+                                lastHovered: false,
+                                fileSize: 1200,
+                                fileName: ''
+                            },
+                            hasTagsDropdown: false,
+                            hasNumberOfPages: true,
+                            activePage: 1,
+                            tags: ['Example'],
+                            type: 'modal',
+                            hasLandscapeOption: false,
+                            tagsOptions: [
+                                {
+                                    tagName: 'HOS Agreement',
+                                    checked: false
+                                },
+                                {
+                                    tagName: 'Unsafe Driving AGT',
+                                    checked: false
+                                }
+                            ]
+                        }"
+                        [size]="'medium'"
+                        [slideWidth]="180"
+                        (onFileEvent)="onUploadCoverPhoto($event)"
+                    >
+                    </app-ca-upload-files>
+                </app-ta-custom-card>
+
+
                     <ng-container *ngIf="!repairShopContacts?.length">
                         <div class="no-review-repair-shop">
                             <svg-icon
