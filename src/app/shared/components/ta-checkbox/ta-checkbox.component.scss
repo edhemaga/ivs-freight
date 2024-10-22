@@ -86,7 +86,8 @@
     }
 
     .ta-checkbox:checked ~ .ta-checkbox-label {
-        color: #2f2f2f !important;
+        color: $ta-black !important;
+        font-weight: 500 !important;
     }
 
     .ta-checkbox:checked ~ .ta-mark {
@@ -160,7 +161,7 @@
         }
 
         .ta-checkbox-label {
-            color: #dadada !important;
+            color: $ta-light-grey-2 !important;
         }
 
         &.disabled-valid {
@@ -241,8 +242,8 @@
         }
 
         .ta-checkbox-label {
+            color: $ta-light-grey-2;
             font-weight: 400;
-            color: #6c6c6c;
         }
     }
 
@@ -311,14 +312,14 @@
     &.line-height-18 {
         .ta-checkbox-label {
             line-height: 18px;
-            
+
             &::before {
                 content: '';
                 display: block;
                 height: 0;
                 width: 0;
                 margin-top: calc((1 - 1.285) * 0.5em);
-              }
+            }
         }
     }
 }
