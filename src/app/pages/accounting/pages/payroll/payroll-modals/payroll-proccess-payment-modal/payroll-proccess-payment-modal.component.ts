@@ -201,7 +201,7 @@ export class PayrollProccessPaymentModalComponent implements OnDestroy {
     private createForm(): void {
         this.paymentForm = this.formBuilder.group({
             // Basic Tab
-            amount: [null, [Validators.required]],
+            amount: [this.modalData.totalEarnings, [Validators.required]],
             option: [null],
         });
         this.chDetRef.detectChanges();
@@ -211,14 +211,12 @@ export class PayrollProccessPaymentModalComponent implements OnDestroy {
         this.ngbActiveModal.close();
     }
 
-    get paymentFormControlls(){
+    get paymentFormControlls() {
         return this.paymentForm.controls;
     }
 
     closePayroll(isUnpaid?: boolean) {
         const formData = this.paymentForm.getRawValue();
-
-        console.log('WHAT IS ROW VALUE', formData);
         if (isUnpaid) this.loadingCloseUnpaid = true;
         else this.loading = true;
 
@@ -233,8 +231,7 @@ export class PayrollProccessPaymentModalComponent implements OnDestroy {
     selectedItem(dd: any) {}
 
     get modalData(): PayrollDriverMileageByIdResponse {
-        console.log("dfsafsadf", this.editData.data);
-        return this.editData.data;
+        return this.editData.data as PayrollDriverMileageByIdResponse;
     }
 
     ngOnDestroy(): void {

@@ -12,6 +12,7 @@
 import { PayrollDeductionMinimalResponse } from './payrollDeductionMinimalResponse';
 import { PayrollCreditMinimalResponse } from './payrollCreditMinimalResponse';
 import { PayrollBonusMinimalResponse } from './payrollBonusMinimalResponse';
+import { EnumValue } from './enumValue';
 import { PayrollMileageTotalSum } from './payrollMileageTotalSum';
 import { DriverShortResponse } from './driverShortResponse';
 import { LoadWithMilesStopResponse } from './loadWithMilesStopResponse';
@@ -26,6 +27,7 @@ export interface PayrollDriverMileageByIdResponse {
     periodStart?: string;
     periodEnd?: string;
     payrollNumber?: string | null;
+    status?: EnumValue;
     payrollDeadLine?: PayrollDeadlineShortResponse;
     mileagePay?: number | null;
     totalEarnings?: number | null;

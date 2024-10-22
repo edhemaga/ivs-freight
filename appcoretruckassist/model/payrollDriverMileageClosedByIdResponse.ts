@@ -34,12 +34,13 @@ export interface PayrollDriverMileageClosedByIdResponse {
     salary?: number | null;
     extraStopPay?: number | null;
     extraStopCount?: number | null;
+    loadCount?: number | null;
     perMilesEntity?: PerMileEntity;
     includedDeductions?: Array<PayrollDeductionMinimalResponse> | null;
     totalDeduction?: number | null;
     includedCredits?: Array<PayrollCreditMinimalResponse> | null;
     totalCredits?: number | null;
-    includedBonuses?: Array<PayrollBonusMinimalResponse> | null;
+    includedBonus?: Array<PayrollBonusMinimalResponse> | null;
     totalBonus?: number | null;
     includedLoads?: Array<LoadWithMilesStopResponse> | null;
     mapLocations?: Array<PayrollMapLocation> | null;

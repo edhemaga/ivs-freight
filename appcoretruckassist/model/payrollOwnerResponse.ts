@@ -13,6 +13,7 @@ import { PayrollDeductionMinimalResponse } from './payrollDeductionMinimalRespon
 import { PayrollLoadMinimalResponse } from './payrollLoadMinimalResponse';
 import { PayrollCommissionTotalSum } from './payrollCommissionTotalSum';
 import { PayrollCreditMinimalResponse } from './payrollCreditMinimalResponse';
+import { EnumValue } from './enumValue';
 import { OwnerResponse } from './ownerResponse';
 import { PayrollMapLocation } from './payrollMapLocation';
 import { PayrollDeadlineShortResponse } from './payrollDeadlineShortResponse';
@@ -29,6 +30,7 @@ export interface PayrollOwnerResponse {
     periodStart?: string;
     periodEnd?: string;
     payrollDeadLine?: PayrollDeadlineShortResponse;
+    status?: EnumValue;
     total?: number | null;
     commission?: number | null;
     salary?: number | null;
