@@ -341,6 +341,27 @@
             "iconPath": "/assets/svg/common/trailers/ic_trailer_tanker.svg"
         },
         {
+            "iconName": "ic_trailer_tanker-pneumatic.svg",
+            "iconPath": "/assets/svg/common/trailers/ic_trailer_tanker-pneumatic.svg"
+        },
+        {
+            "iconName": "ic_trailer_end-dump.svg",
+            "iconPath": "/assets/svg/common/trailers/ic_trailer_end-dump.svg"
+        },
+        {
+            "iconName": "ic_trailer_bottom-dump.svg",
+            "iconPath": "/assets/svg/common/trailers/ic_trailer_bottom-dump.svg"
+        },
+        {
+            "iconName": "ic_trailer_hopper.svg",
+            "iconPath": "/assets/svg/common/trailers/ic_trailer_hopper.svg"
+        },
+        {
+            "iconName": "ic_trailer_carhauler-stinger.svg",
+            "iconPath": "/assets/svg/common/trailers/ic_trailer_carhauler-stinger.svg"
+        },
+        
+        {
             "iconName": "ic_truck_box-truck.svg",
             "iconPath": "/assets/svg/common/trucks/ic_truck_box-truck.svg"
         },
@@ -364,6 +385,23 @@
             "iconName": "ic_truck_tow-truck.svg",
             "iconPath": "/assets/svg/common/trucks/ic_truck_tow-truck.svg"
         },
+        {
+            "iconName": "ic_truck_reefer.svg",
+            "iconPath": "/assets/svg/common/trucks/ic_truck_reefer.svg"
+        },
+        {
+            "iconName": "ic_truck_dump.svg",
+            "iconPath": "/assets/svg/common/trucks/ic_truck_dump.svg"
+        },
+        {
+            "iconName": "ic_truck_cement.svg",
+            "iconPath": "/assets/svg/common/trucks/ic_truck_cement.svg"
+        },
+        {
+            "iconName": "ic_truck_garbage.svg",
+            "iconPath": "/assets/svg/common/trucks/ic_truck_garbage.svg"
+        },
+        
         {
             "iconName": "ic_truck_car-hauler.svg",
             "iconPath": "/assets/svg/common/trucks/ic_truck_car-hauler.svg"
