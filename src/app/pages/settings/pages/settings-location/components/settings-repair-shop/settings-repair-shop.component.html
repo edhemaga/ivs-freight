@@ -124,8 +124,7 @@
                 <div>Time here</div>
             </app-ta-custom-card>
 
-            <!-- TODO: Once bankend is ready change this to item.bank data-->
-            <ng-container *ngIf="item.bankName">
+            <ng-container *ngIf="item.bankResponse">
                 <app-ta-custom-card
                     [cardName]="'Bank Info'"
                     [isCardOpen]="isBankingInfoOpened[i]"
@@ -133,19 +132,19 @@
                     [bodyTemplate]="'card'"
                 >
                     <div class="row">
-                        <div class="col-6">
+                        <div class="col-6 mb-3">
                             <div>
                                 <div
                                     class="ta-font-bold text-size-11 text-color-black-2"
                                 >
                                     Bank
                                 </div>
-                                <!-- TODO: Once bankend is ready change this to item.bank data-->
-                                <!-- <svg-icon
-                                [src]="svgRoutes + item.bank.logoName"
-                                class="settings-plus-button svg-fill-blue-13 svg-hover-blue-15 d-flex align-items-center justify-content-center c-pointer"
-                                (click)="onAction({ modalName: 'repairshop' })"
-                            ></svg-icon> -->
+                                <svg-icon
+                                    [src]="
+                                        'assets/svg/common/banks/' +
+                                        item.bankResponse.logoName
+                                    "
+                                ></svg-icon>
                             </div>
                         </div>
                         <div class="col-6">
@@ -259,9 +258,7 @@
                 <form [formGroup]="repairShopForm">
                     <div [formArrayName]="RepairShopModalStringEnum.NOTE">
                         <app-ta-input-note
-                            [isVisibleNote]="
-                                isVisibleNoteCard[i]
-                            "
+                            [isVisibleNote]="isVisibleNoteCard[i]"
                             [note]="
                                 repairShopForm.get(
                                     RepairShopModalStringEnum.NOTE

@@ -1,5 +1,5 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 import { takeUntil } from 'rxjs';
 
@@ -64,6 +64,7 @@ export class SettingsRepairShopComponent
         public FormatCurrencyPipe: FormatCurrencyPipe,
         private formBuilder: UntypedFormBuilder,
         private confirmationActivationService: ConfirmationActivationService,
+        public router: Router,
     ) {
         super(
             tableService,
@@ -72,7 +73,8 @@ export class SettingsRepairShopComponent
             activatedRoute,
             settingsLocationService,
             dropDownService,
-            FormatCurrencyPipe
+            FormatCurrencyPipe,
+            router
         );
     }
 
