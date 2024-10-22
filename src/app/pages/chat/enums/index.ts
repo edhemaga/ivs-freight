@@ -21,3 +21,5 @@ export * from './shared/chat-message-type.enum';
 export * from './shared/chat-department-type.enum';
 export * from './shared/chat-activity-status.enum';
 export * from './shared/chat-user-type.enum';
+export * from './shared/chat-time-unit.enum';
+export * from './shared/chat-string-type.enum';

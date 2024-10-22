@@ -1,7 +1,7 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
 // Enums
-import { ChatDepartmentTypeEnum } from '@pages/chat/enums';
+import { ChatDepartmentTypeEnum, ChatStringTypeEnum } from '@pages/chat/enums';
 
 // Assets
 import { ChatSvgRoutes } from '@pages/chat/utils/routes';
@@ -11,11 +11,10 @@ import { ChatSvgRoutes } from '@pages/chat/utils/routes';
 })
 export class ChatDepartmentIconPipe implements PipeTransform {
     transform(departmentName: string): string {
-        if (!departmentName) {
-            return '';
-        }
+        if (!departmentName)
+            return ChatStringTypeEnum.EMPTY;
 
-        const normalizedDepartmentName = departmentName.trim().toLowerCase();
+        const normalizedDepartmentName = departmentName?.trim()?.toLowerCase();
 
         switch (normalizedDepartmentName) {
             case ChatDepartmentTypeEnum.General:
@@ -31,7 +30,7 @@ export class ChatDepartmentIconPipe implements PipeTransform {
             case ChatDepartmentTypeEnum.Accounting:
                 return ChatSvgRoutes.accountingIcon;
             default:
-                return '';
+                return ChatStringTypeEnum.EMPTY;
         }
     }
 }

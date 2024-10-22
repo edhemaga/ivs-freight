@@ -39,7 +39,7 @@ import moment from 'moment';
 import { ChatSvgRoutes } from '@pages/chat/utils/routes';
 
 // Enums
-import { ChatAttachmentCustomClassEnum } from '@pages/chat/enums';
+import { ChatAttachmentCustomClassEnum, ChatStringTypeEnum, ChatTimeUnitEnum } from '@pages/chat/enums';
 
 // Configs
 import { ChatInput } from '@pages/chat/utils/configs';
@@ -52,8 +52,7 @@ import { ChatInput } from '@pages/chat/utils/configs';
 })
 export class ChatContentFooterComponent
     extends UnsubscribeHelper
-    implements OnInit, OnDestroy
-{
+    implements OnInit, OnDestroy {
     @Input() public conversation!: ChatSelectedConversation;
     public conversationRemoveInDate!: string;
     public currentUserTyping!: Observable<string>;
@@ -114,7 +113,7 @@ export class ChatContentFooterComponent
         this.listenForTyping();
         this.getDataFromStore();
         this.conversationRemoveInDate = moment(this.conversation?.updatedAt)
-            .subtract(45, 'days')
+            .subtract(45, ChatTimeUnitEnum.DAYS)
             .format();
         this.mentionParticipants = this.conversation.participants;
     }
@@ -140,9 +139,9 @@ export class ChatContentFooterComponent
         this.editMessage$
             .pipe(
                 concatMap((editMessage: ChatMessage) => {
-                    if (editMessage) {
+                    if (editMessage)
                         this.editMessage(editMessage.id);
-                    }
+
                     return this.replyMessage$;
                 }),
                 takeUntil(this.destroy$ || isComplete)
@@ -255,7 +254,7 @@ export class ChatContentFooterComponent
                             );
                 } else {
                     this.isMentionActive = false;
-                    this.mentionSearchTerm = '';
+                    this.mentionSearchTerm = ChatStringTypeEnum.EMPTY;
                     this.mentionParticipants = this.conversation?.participants;
                 }
             });

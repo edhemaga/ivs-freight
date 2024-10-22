@@ -1,5 +1,8 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
+// Enums
+import { ChatStringTypeEnum } from '@pages/chat/enums';
+
 @Pipe({
     name: 'chatMessageClass',
 })
@@ -11,7 +14,7 @@ export class ChatMessageClassPipe implements PipeTransform {
     ): string {
         const isCurrentUser: boolean = currentUserId === senderId;
 
-        let classString = '';
+        let classString: string = ChatStringTypeEnum.EMPTY;
 
         switch (true) {
             case isCurrentUser && isSelected:
