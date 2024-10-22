@@ -504,10 +504,10 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
         // This fields are custom and cannot be part of the form so we need to remap it
         this.showPhoneExt = !!res.phoneExt;
         this.services = RepairShopHelper.mapServices(res, false);
-        this.selectedAddress = res.address;
+        this.selectedAddress = res.address; 
         this.isBankSelected = !!res.bank;
         this.files = res.files;
-        this.coverPhoto = [res.cover];
+        this.coverPhoto = res.cover;
 
         this.updatedRepairShopContacts = res.contacts;
 
@@ -868,7 +868,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
     }
 
     public onUploadCoverPhoto(event): void {
-        this.coverPhoto = [event.files[0].realFile];
+        this.coverPhoto = [event.files.length ? event.files[0].realFile : {url: ''}];
         this.repairShopForm
             .get(RepairShopModalStringEnum.COVER)
             .patchValue(event);

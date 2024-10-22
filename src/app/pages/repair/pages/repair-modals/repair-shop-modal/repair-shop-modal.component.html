@@ -639,7 +639,9 @@
                     <app-ca-upload-files
                         [isVisibleCropAndDrop]="true"
                         [hasBlobUrl]="true"
-                        [files]="[coverPhoto]"
+                        [files]="[
+                            { url: coverPhoto?.url }
+                        ]"
                         [slider]="{
                             dontUseSlider: false,
                             hasCarouselBottomTabs: false
