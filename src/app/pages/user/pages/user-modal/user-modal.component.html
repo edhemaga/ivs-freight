@@ -413,10 +413,11 @@
                                 </div>
                                 <ng-container
                                     *ngIf="
-                                        !selectedDepartment?.name ||
-                                        selectedDepartment?.name ===
+                                        selectedDepartment?.name &&
+                                        (selectedDepartment?.name ===
                                             'Dispatch' ||
-                                        selectedDepartment?.name === 'Manager'
+                                            selectedDepartment?.name ===
+                                                'Manager')
                                     "
                                 >
                                     <div class="row">
