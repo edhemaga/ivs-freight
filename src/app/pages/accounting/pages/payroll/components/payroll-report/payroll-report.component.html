@@ -18,7 +18,6 @@
                     <div class="payroll_chip">
                         {{ payroll_report.loadCount }} LOAD
                     </div>
-                    <!-- <div class="payroll_chip blue">+1 DAY</div> -->
                 </div>
                 <div
                     class="report-count-item-load d-flex"
@@ -62,11 +61,11 @@
                                 [src]="'assets/svg/common/load/ic_load_map.svg'"
                             ></svg-icon>
                         </div>
-                        <div
-                            class="edit burger_menu"
-                        >
+                        <div class="edit burger_menu">
                             <svg-icon
-                                [src]="'assets/svg/truckassist-table/burger-icon.svg'"
+                                [src]="
+                                    'assets/svg/truckassist-table/burger-icon.svg'
+                                "
                             ></svg-icon>
                         </div>
                     </div>
@@ -78,6 +77,7 @@
                     [sortPredicate]="customSortPredicate"
                     [columns]="columns"
                     [data$]="payrollMileageDriverLoads$"
+                    [disableReorderRow]="selectedTab === 'closed'"
                     [reorderTemplate]="reorderTemplate"
                     [reorderTemplatePreview]="reorderTemplatePreview"
                     [transparentTable]="true"
@@ -86,16 +86,6 @@
             </div>
             <div class="map-holder" *ngIf="showMap">
                 <app-ca-map [data]="data"></app-ca-map>
-                <!-- <agm-map
-                    [latitude]="mapLatitude"
-                    [longitude]="mapLongitude"
-                    [restriction]="mapRestrictions"
-                    [streetViewControl]="false"
-                    [styles]="styles"
-                    [zoom]="mapZoom"
-                    [usePanning]="true"
-                    [keyboardShortcuts]="false"
-                ></agm-map> -->
             </div>
         </div>
     </div>
@@ -118,7 +108,7 @@
                 <app-ca-period-content
                     (reorderedDataEmiter)="onReorderItem($event)"
                     (proccessPayroll)="onProccessPayroll($event)"
-                    [isOpen]="true"
+                    [isOpen]="selectedTab === 'open'"
                     [type]="'MILEAGE'"
                     [componentData]="payrollReport$ | async"
                 ></app-ca-period-content>
@@ -161,7 +151,7 @@
 <ng-template #reorderTemplatePreview let-row="row" let-index="index">
     <td class="text-center">
         <div class="td-container">
-            <div class="td-content-container">
+            <div class="td-content-container with-padding">
                 <svg-icon
                     [src]="'assets/ca-components/svg/common/ic_two_arrows.svg'"
                     [svgStyle]="{ color: '#919191', display: 'flex' }"
@@ -194,7 +184,7 @@
                     : (payrollReport$ | async).perMilesEntity as payroll_totals
         "
     >
-        <td class="text-center">
+        <td class="text-center" *ngIf="selectedTab === 'open'">
             <div class="td-container">
                 <div class="td-content-container">
                     <svg-icon
@@ -206,7 +196,7 @@
                 </div>
             </div>
         </td>
-        <td colspan="4">
+        <td [attr.colspan]="selectedTab === 'open' ? 4 : 5">
             <div class="td-container">
                 <div class="td-content-container">
                     <div class="custom-load-index text b-600">Total</div>

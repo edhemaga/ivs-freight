@@ -45,6 +45,42 @@ export class PayrollEffect {
             )
     );
 
+    public getPayrollMileageClosedPayrollById$ = createEffect(
+        (): Observable<Action> =>
+            this.actions$.pipe(
+                ofType(
+                    PayrollSoloMileageDriver.getPayrollMileageDriverClosedPayroll
+                ),
+                switchMap((action) => {
+                    return this.payrollService
+                        .getPayrollSoloMileageDriverClosedById(action.payrollId)
+                        .pipe(
+                            map((data) => {
+                                return PayrollSoloMileageDriver.getPayrollMileageDriverClosedPayrollSuccess(
+                                    {
+                                        payroll: data,
+                                    }
+                                );
+                            }),
+                            // tap((data) => {
+                            //     // this.store.dispatch(
+                            //     //   PaymentActions.restartRefreshDataSuccess({ flag: false })
+                            //     // );
+                            // }),
+                            catchError((error) =>
+                                of(
+                                    PayrollSoloMileageDriver.getPayrollMileageDriverClosedPayrollError(
+                                        {
+                                            error,
+                                        }
+                                    )
+                                )
+                            )
+                        );
+                })
+            )
+    );
+
     public getPayrollMileageDriverExpandedList$ = createEffect(
         (): Observable<Action> =>
             this.actions$.pipe(
@@ -175,7 +211,9 @@ export class PayrollEffect {
                             action.lastLoadDate,
                             action.selectedCreditIds,
                             action.selectedDeducionIds,
-                            action.selectedBonusIds
+                            action.selectedBonusIds,
+                            action.paymentType,
+                            action.otherPaymentType
                         )
                         .pipe(
                             map((data) => {
@@ -185,11 +223,11 @@ export class PayrollEffect {
                                     }
                                 );
                             }),
-                            // tap((data) => {
-                            //     // this.store.dispatch(
-                            //     //   PaymentActions.restartRefreshDataSuccess({ flag: false })
-                            //     // );
-                            // }),
+                            tap((data) => {
+                                // this.store.dispatch(
+                                //   PaymentActions.restartRefreshDataSuccess({ flag: false })
+                                // );
+                            }),
                             catchError((error) =>
                                 of(
                                     PayrollSoloMileageDriver.closePayrollSoloMileageReportDriverError(

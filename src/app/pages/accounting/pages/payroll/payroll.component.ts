@@ -20,9 +20,7 @@ import { NameInitialsPipe } from '@shared/pipes/name-initials.pipe';
 import { getPayrollDriverMilesDefinition } from '@shared/utils/settings/table-settings/payroll-columns';
 
 // Store
-import { DriverQuery } from '@pages/driver/state/driver-state/driver.query';
 import { DriverState } from '@pages/driver/state/driver-state/driver.store';
-import { DriversInactiveQuery } from '@pages/driver/state/driver-inactive-state/driver-inactive.query';
 import { DriversInactiveState } from '@pages/driver/state/driver-inactive-state/driver-inactive.store';
 import { PayrollQuery } from '@pages/accounting/pages/payroll/state/payroll.query';
 import { PayrollFacadeService } from './state/services/payroll.service';
@@ -30,7 +28,6 @@ import { PayrollFacadeService } from './state/services/payroll.service';
 // Models
 import { IPayrollCountsSelector } from './state/models/payroll.model';
 import { DriverMileageCollapsedTableComponent } from './components/tables/driver-mileage-collapsed-table/driver-mileage-collapsed-table.component';
-import { DriverShortResponse } from 'appcoretruckassist';
 
 // Components
 import { PayrollListSummaryOverview } from 'ca-components';
@@ -57,7 +54,6 @@ export class PayrollComponent implements OnInit, AfterViewInit, OnDestroy {
     selectedOpenFromList: any;
 
     selectedTab = 'open';
-    activeViewMode: string = 'List';
     tableData: any[] = [];
     columns: any[] = [];
     tableContainerWidth: number = 0;
@@ -73,7 +69,6 @@ export class PayrollComponent implements OnInit, AfterViewInit, OnDestroy {
         open: number;
         closed: number;
     }>;
-    payrollData: Observable<any>;
 
     reportTableData: any = {};
     reportTableExpanded$: Observable<boolean>;
@@ -82,14 +77,6 @@ export class PayrollComponent implements OnInit, AfterViewInit, OnDestroy {
     private destroy$ = new Subject<void>();
 
     constructor(
-        // Store
-        private driversActiveQuery: DriverQuery,
-        private driversInactiveQuery: DriversInactiveQuery,
-        private payrollQuery: PayrollQuery,
-
-        // Pipes
-        private nameInitialsPipe: NameInitialsPipe,
-
         // Services
         private payrollFacadeService: PayrollFacadeService
     ) {}
@@ -102,8 +89,8 @@ export class PayrollComponent implements OnInit, AfterViewInit, OnDestroy {
             this.payrollFacadeService.selectPayrollCounts$;
         this.payrollFacadeService.selectPayrollCounts$
             .pipe(takeUntil(this.destroy$))
-            .subscribe((res) => {
-                console.log('fsdfsdfdsfsdfsd', res);
+            .subscribe(() => {
+                this.openedIndex = -1;
             });
 
         this.payrollFacadeService.selectPayrollTabCounts$
@@ -125,8 +112,6 @@ export class PayrollComponent implements OnInit, AfterViewInit, OnDestroy {
     ngOnInit(): void {
         this.initTableOptions();
         this.subscribeToStoreData();
-
-        this.payrollData = this.payrollQuery.payrolldata$;
 
         this.tableData = [
             {
@@ -250,7 +235,6 @@ export class PayrollComponent implements OnInit, AfterViewInit, OnDestroy {
                 this.reportTableData = data;
                 this.payrollFacadeService.setPayrollReportTableExpanded(true);
             } else {
-                console.log('WHAT IS DATAA HEREEE', data);
                 this.selectedOpenFromList = data;
                 this.handleTableShow();
             }
@@ -281,6 +265,7 @@ export class PayrollComponent implements OnInit, AfterViewInit, OnDestroy {
             this.openedIndex = -1;
             this.expandTable();
             this.payrollFacadeService.getPayrollCounts();
+            this.payrollFacadeService.setPayrollReportTableExpanded(false);
         }
     }
 

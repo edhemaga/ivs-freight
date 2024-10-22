@@ -1,5 +1,4 @@
 import {
-    ChangeDetectorRef,
     Component,
     ElementRef,
     Input,
@@ -13,7 +12,8 @@ import { CdkDragDrop } from '@angular/cdk/drag-drop';
 import { Observable, takeUntil, Subject } from 'rxjs';
 
 // services
-import { PayrollService } from '@pages/accounting/services/payroll.service';
+import { PayrollFacadeService } from '../../state/services/payroll.service';
+import { ModalService } from '@shared/services/modal.service';
 
 // models
 import { MilesStopShortReponseWithRowType } from '../../state/models/payroll.model';
@@ -21,14 +21,10 @@ import {
     MilesStopShortResponse,
     PayrollDriverMileageByIdResponse,
 } from 'appcoretruckassist';
-
-// constants
-import { PayrollFacadeService } from '../../state/services/payroll.service';
-
 import { ICaMapProps, ColumnConfig } from 'ca-components';
 import { PayrollReportTableResponse } from 'ca-components/lib/components/ca-period-content/models/payroll-report-tables.type';
 
-import { ModalService } from '@shared/services/modal.service';
+// components
 import { PayrollProccessPaymentModalComponent } from '../../payroll-modals/payroll-proccess-payment-modal/payroll-proccess-payment-modal.component';
 
 @Component({
@@ -40,6 +36,8 @@ import { PayrollProccessPaymentModalComponent } from '../../payroll-modals/payro
 export class PayrollReportComponent implements OnInit, OnDestroy {
     columns: ColumnConfig[];
     @Input() reportId: number;
+    @Input() selectedTab: 'open' | 'closed';
+
     payrollReport$: Observable<PayrollDriverMileageByIdResponse>;
     payrollMileageDriverLoads$: Observable<MilesStopShortReponseWithRowType[]>;
     includedLoads$: Observable<MilesStopShortResponse[]>;
@@ -335,18 +333,7 @@ export class PayrollReportComponent implements OnInit, OnDestroy {
 
     public payAmount: UntypedFormControl = new UntypedFormControl();
 
-    // @Input() set reportTableData(value) {
-    //     if (value.id) {
-    //         this.getDataBasedOnTitle(value);
-    //     }
-    // }
-
     constructor(
-        // Services
-        private payrollService: PayrollService,
-
-        // Ref
-        private dch: ChangeDetectorRef,
         // Services
         private payrollFacadeService: PayrollFacadeService,
         private modalService: ModalService
@@ -476,7 +463,7 @@ export class PayrollReportComponent implements OnInit, OnDestroy {
         this.subscribeToStoreData();
     }
 
-    customSortPredicate = (index: number, item: CdkDragDrop<any>): boolean => {
+    customSortPredicate = (index: number, _: CdkDragDrop<any>): boolean => {
         return this.allowedLoadIds.includes(index);
     };
 
@@ -529,7 +516,7 @@ export class PayrollReportComponent implements OnInit, OnDestroy {
                         const currentLoadId = load.loadId;
                         const nextLoadId = nextLoad?.loadId;
 
-                       if (nextLoadId != currentLoadId) {
+                        if (nextLoadId != currentLoadId && prevLoad) {
                             return index + 1;
                         }
 

@@ -66,7 +66,7 @@ import { TaSpinnerComponent } from '@shared/components/ta-spinner/ta-spinner.com
         CaInputComponent,
         CaModalComponent,
         CaInputDropdownComponent,
-        TaSpinnerComponent
+        TaSpinnerComponent,
     ],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -111,57 +111,7 @@ export class PayrollProccessPaymentModalComponent implements OnDestroy {
         {
             id: 1,
             companyId: null,
-            name: '20 ft',
-        },
-        {
-            id: 2,
-            companyId: null,
-            name: '22 ft',
-        },
-        {
-            id: 3,
-            companyId: null,
-            name: '24 ft',
-        },
-        {
-            id: 4,
-            companyId: null,
-            name: '26 ft',
-        },
-        {
-            id: 5,
-            companyId: null,
-            name: '28 ft',
-        },
-        {
-            id: 6,
-            companyId: null,
-            name: '40 ft',
-        },
-        {
-            id: 7,
-            companyId: null,
-            name: '42 ft',
-        },
-        {
-            id: 8,
-            companyId: null,
-            name: '43 ft',
-        },
-        {
-            id: 9,
-            companyId: null,
-            name: '45 ft',
-        },
-        {
-            id: 10,
-            companyId: null,
-            name: '48 ft',
-        },
-        {
-            id: 11,
-            companyId: null,
-            name: '53 ft',
+            name: 'WireTransfer',
         },
     ];
 
@@ -188,6 +138,7 @@ export class PayrollProccessPaymentModalComponent implements OnDestroy {
     ];
 
     public loading: boolean;
+    public loadingCloseUnpaid: boolean;
 
     ngOnInit() {
         this.tabs[0].tabTemplate = this.tabCustomTemplate;
@@ -204,13 +155,17 @@ export class PayrollProccessPaymentModalComponent implements OnDestroy {
         this.payrollFacadeService.selectPayrollReportStates$
             .pipe(skip(1), takeUntil(this.destroy$))
             .subscribe(({ loading, error }) => {
-                console.log("is this falseee", loading, error);
                 if (!loading && !error) {
                     this.loading = false;
+                    this.loadingCloseUnpaid = false;
+                    this.payrollFacadeService.getPayrollCounts();
                     this.onCloseModal();
-                }else if(error){
-                    this.loading = false;
+                    this.destroy$.next();
+                    this.destroy$.complete();
+                } else if (error) {
                     this.chDetRef.detectChanges();
+                    this.loading = false;
+                    this.loadingCloseUnpaid = false;
                 }
             });
     }
@@ -256,18 +211,29 @@ export class PayrollProccessPaymentModalComponent implements OnDestroy {
         this.ngbActiveModal.close();
     }
 
+    get paymentFormControlls(){
+        return this.paymentForm.controls;
+    }
+
     closePayroll(isUnpaid?: boolean) {
         const formData = this.paymentForm.getRawValue();
-        this.loading = true;
+
+        console.log('WHAT IS ROW VALUE', formData);
+        if (isUnpaid) this.loadingCloseUnpaid = true;
+        else this.loading = true;
+
         this.payrollFacadeService.closePayrollDriverMileageReport({
             amount: isUnpaid ? 0 : formData.amount,
             reportId: this.modalData.id,
+            paymentType: this.selectedTab === 2 ? 'Manual' : 'Ach',
+            otherPaymentType: this.selectedTab === 2 ? formData.option : null,
         });
     }
 
     selectedItem(dd: any) {}
 
     get modalData(): PayrollDriverMileageByIdResponse {
+        console.log("dfsafsadf", this.editData.data);
         return this.editData.data;
     }
 

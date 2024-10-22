@@ -2,6 +2,10 @@ import { createReducer, on } from '@ngrx/store';
 import * as PayrollActions from '../actions/payroll.actions';
 import * as PayrollSoloMileageDriver from '../actions/payroll_solo_mileage_driver.actions';
 import { PayrollState } from '../models/payroll.model';
+import {
+    closePayrollSoloMileageReportDriverSuccess,
+    getPayrollMileageDriverClosedPayrollSuccess,
+} from '../actions/payroll_solo_mileage_driver.actions';
 
 export const payrollState: PayrollState = {
     payrollCounts: {},
@@ -102,6 +106,11 @@ export const payrollReducer = createReducer(
                 ...state,
                 expandedReportTable: false,
                 closeReportPaymentLoading: false,
+                payrollCounts: {},
+                selectedDeducionIds: [],
+                selectedBonusIds: [],
+                selectedCreditIds: [],
+                lastLoadDate: undefined,
             };
         }
     ),
@@ -171,5 +180,17 @@ export const payrollReducer = createReducer(
                 loading: false,
             };
         }
+    ),
+    on(
+        PayrollSoloMileageDriver.getPayrollMileageDriverClosedPayrollSuccess,
+        (state, data) => {
+            return {
+                ...state,
+                payrollOpenedReport: data.payroll,
+                reportLoading: false,
+            };
+        }
     )
 );
+
+//

@@ -9,14 +9,15 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { PayrollOtherPaymentType } from './payrollOtherPaymentType';
-import { PayrollPaymentType } from './payrollPaymentType';
 
 
-export interface PayrollPaymentCommand { 
-    type?: PayrollPaymentType;
-    otherPaymentType?: PayrollOtherPaymentType;
+export interface PayrollDeductionChildResponse { 
+    id?: number;
     date?: string;
-    amount?: number;
+    currentRecurrance?: number | null;
+    allRecurrance?: number | null;
+    limitedAmount?: number | null;
+    isPaid?: boolean | null;
+    isMoved?: boolean | null;
 }
 

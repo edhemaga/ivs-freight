@@ -31,13 +31,13 @@ export interface PayrollDriverFlatRateClosedByIdResponse {
     salary?: number | null;
     rate?: string | null;
     flatPay?: number | null;
-    deductions?: Array<PayrollDeductionMinimalResponse> | null;
+    includedDeductions?: Array<PayrollDeductionMinimalResponse> | null;
     totalDeduction?: number;
-    credits?: Array<PayrollCreditMinimalResponse> | null;
+    includedCredits?: Array<PayrollCreditMinimalResponse> | null;
     totalCredits?: number;
-    bonuses?: Array<PayrollBonusMinimalResponse> | null;
+    includedBonuses?: Array<PayrollBonusMinimalResponse> | null;
     totalBonuses?: number;
-    loads?: Array<PayrollLoadMinimalResponse> | null;
+    includedLoads?: Array<PayrollLoadMinimalResponse> | null;
     mapLocations?: Array<PayrollMapLocation> | null;
     sums?: PayrollFlatRateTotalSum;
     totalPayments?: number;

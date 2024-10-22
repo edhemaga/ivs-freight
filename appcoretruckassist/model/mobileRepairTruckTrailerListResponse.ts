@@ -9,14 +9,12 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { PayrollOtherPaymentType } from './payrollOtherPaymentType';
-import { PayrollPaymentType } from './payrollPaymentType';
+import { MobileFuelTrailerResponse } from './mobileFuelTrailerResponse';
+import { MobileFuelTruckResponse } from './mobileFuelTruckResponse';
 
 
-export interface PayrollPaymentCommand { 
-    type?: PayrollPaymentType;
-    otherPaymentType?: PayrollOtherPaymentType;
-    date?: string;
-    amount?: number;
+export interface MobileRepairTruckTrailerListResponse { 
+    trucks?: Array<MobileFuelTruckResponse> | null;
+    trailers?: Array<MobileFuelTrailerResponse> | null;
 }
 

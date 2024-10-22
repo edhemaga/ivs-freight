@@ -72,13 +72,13 @@
                 type="button"
                 (click)="closePayroll(true)"
             >
-                <div class="d-inline-block" *ngIf="loading">
+                <div class="d-inline-block" *ngIf="loadingCloseUnpaid">
                     <app-ta-spinner
                         [size]="'small'"
                         [color]="'black'"
                     ></app-ta-spinner>
                 </div>
-                <span *ngIf="!loading">Close Unpaid</span>
+                <span *ngIf="!loadingCloseUnpaid">Close Unpaid</span>
             </button>
             <button
                 [ngStyle]="{
@@ -95,8 +95,20 @@
                         [color]="'black'"
                     ></app-ta-spinner>
                 </div>
-
-                <span *ngIf="!loading">Pay in Full</span>
+                <span
+                    *ngIf="
+                        paymentForm.get('amount').value >=
+                            modalData?.totalEarnings && !loading
+                    "
+                    >Pay in Full</span
+                >
+                <span
+                    *ngIf="
+                        paymentForm.get('amount').value <
+                            modalData?.totalEarnings && !loading
+                    "
+                    >Short Pay</span
+                >
             </button>
         </div>
     </div>
@@ -107,16 +119,3 @@
         carrier<span>a.</span> <span class="ahc">ACH</span>
     </div>
 </ng-template>
-<!-- [ngClass]="{
-    'modal-blue-btn':
-        confirmationData?.type === 'open',
-    'modal-gray-btn':
-        confirmationData?.type !== 'open'
-}" -->
-
-<!-- </app-ta-modal> -->
-
-<!-- [editData]="editData"
-    [isModalValid]="payrollDeductionForm.valid && isFormDirty"
-    [saveAndAddNew]="!editData?.type.includes('edit')"
-    (action)="onModalAction($event)" -->

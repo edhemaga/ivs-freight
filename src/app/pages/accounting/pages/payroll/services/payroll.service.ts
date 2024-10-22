@@ -48,6 +48,12 @@ export class PayrollService {
         );
     }
 
+    public getPayrollSoloMileageDriverClosedById(payrollId: number) {
+        return this.http.get<any>(
+            `${environment.API_ENDPOINT}/api/payroll/driver/mileage/closed/${payrollId}`
+        );
+    }
+
     public getPayrollSoloMileageDriverReport(
         reportId: string,
         lastLoadDate: string,
@@ -92,7 +98,9 @@ export class PayrollService {
         lastLoadDate: string,
         selectedCreditIds?: number[],
         selectedDeducionIds?: number[],
-        selectedBonusIds?: number[]
+        selectedBonusIds?: number[],
+        paymentType?: string,
+        otherPaymentType?: string
     ): Observable<PayrollDriverMileageResponse> {
         const body = {
             id: reportId,
@@ -101,15 +109,12 @@ export class PayrollService {
             selectedCreditIds: selectedCreditIds,
             selectedBonusIds: selectedBonusIds,
             pay: {
-                type: 'Manual',
+                type: paymentType,
+                otherPaymentType,
                 //date: '2024-10-15T16:09:54.299Z',
                 amount: amount,
             },
         };
-
-        console.log('body', body);
-        //return of();
-
         return this.http.put<PayrollDriverMileageResponse>(
             `${environment.API_ENDPOINT}/api/payroll/driver/mileage/close`,
             body

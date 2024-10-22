@@ -14,6 +14,5 @@
 export interface ApiFuelFuelstopPostRequest { 
     Id?: number;
     Favourite?: boolean;
-    Note?: string;
 }
 

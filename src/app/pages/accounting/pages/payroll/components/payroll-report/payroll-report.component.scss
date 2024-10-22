@@ -420,6 +420,7 @@
 
                     //background-color: #eeeeee;
                     border-radius: 2px;
+                    cursor: pointer;
 
                     svg-icon {
                         svg {
@@ -446,16 +447,18 @@
 
                     &.burger_menu{
                         position: relative;
-                        padding-left: 19px;
+                        margin-left: 10px;
 
                         &::after{
-                            content: '';
+                            content: "";
                             position: absolute;
                             top: 50%;
                             transform: translateY(-50%);
-                            height: 100%;
+                            height: 18px;
                             width: 1px;
                             border-radius: 1px;
+                            background-color: #CCCCCC;
+                            left: -5px;
                         }
                     }
                 }
@@ -530,7 +533,7 @@
         .load-description-address,
         .load-description-stop-type {
             font-size: 11px;
-            font-weight: 700;
+            font-weight: 600;
             line-height: 12px;
             color: #424242;
         }
@@ -560,6 +563,25 @@
         --cdk-drag-preview-box-shadow: none;
         --under-reorder-opacity: 0.4;
         --opacity-first-row: 0.4;
+
+        --td-height: 30px;
+        --td-padding: 0px;
+
+        --td-container-height: 30px;
+        --td-container-padding: 0px;
+
+        --td-container-padding: 0px;
+        --td-container-height: 30px;
+
+        --td-container-content-min-height: 30px;
+        --td-container-content-padding: 0 4px 0 0;
+
+        --td-cointainer-first-child-padding-left: 0px;
+
+        --table-preview-row-border-top: 1px solid #DADADA;
+        --td-cointainer-last-child-padding-right: 0;
+
+        --table-preview-row-first-td-padding: 0 8px;
     }
 }
 

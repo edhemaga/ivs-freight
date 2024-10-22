@@ -1,7 +1,11 @@
+import { Injectable } from '@angular/core';
+import { Observable, take } from 'rxjs';
 import { Store, select } from '@ngrx/store';
 
 import * as PayrollActions from '../actions/payroll.actions';
 import * as PayrollDriverMileageSolo from '../actions/payroll_solo_mileage_driver.actions';
+
+// SELECTORS
 import {
     selectClosingReportStatus,
     selectDriverMileageCollapsedTable,
@@ -18,12 +22,12 @@ import {
     selectSoloDriverMileage,
     seletPayrollTabsCount,
 } from '../selectors/payroll.selector';
-import { Observable, take } from 'rxjs';
+
+// MODELS
 import {
     MilesStopShortResponse,
     PayrollDriverMileageListResponse,
 } from 'appcoretruckassist';
-import { Injectable } from '@angular/core';
 import {
     IPayrollCountsSelector,
     MilesStopShortReponseWithRowType,
@@ -134,6 +138,18 @@ export class PayrollFacadeService {
         );
     }
 
+    public getPayrollDriverMileageClosedPayroll({
+        reportId,
+    }: {
+        reportId: string;
+    }) {
+        this.store.dispatch(
+            PayrollDriverMileageSolo.getPayrollMileageDriverClosedPayroll({
+                payrollId: +reportId,
+            })
+        );
+    }
+
     public getPayrollDriverMileageReport({
         reportId,
         lastLoadDate,
@@ -150,28 +166,47 @@ export class PayrollFacadeService {
         this.store
             .pipe(select(selectPayrollState), take(1))
             .subscribe((payrollState) => {
-                this.store.dispatch(
-                    PayrollDriverMileageSolo.getPayrollSoloMileageReportDriver({
-                        reportId,
-                        lastLoadDate: lastLoadDate ?? payrollState.lastLoadDate,
-                        selectedCreditIds:
-                            selectedCreditIds ?? payrollState.selectedCreditIds,
-                        selectedBonusIds:
-                            selectedBonusIds ?? payrollState.selectedBonusIds,
-                        selectedDeducionIds:
-                            selectedDeducionIds ??
-                            payrollState.selectedDeducionIds,
-                    })
-                );
+                if (payrollState.payrollOpenedTab === 'closed') {
+                    this.store.dispatch(
+                        PayrollDriverMileageSolo.getPayrollMileageDriverClosedPayroll(
+                            {
+                                payrollId: +reportId,
+                            }
+                        )
+                    );
+                } else {
+                    this.store.dispatch(
+                        PayrollDriverMileageSolo.getPayrollSoloMileageReportDriver(
+                            {
+                                reportId,
+                                lastLoadDate:
+                                    lastLoadDate ?? payrollState.lastLoadDate,
+                                selectedCreditIds:
+                                    selectedCreditIds ??
+                                    payrollState.selectedCreditIds,
+                                selectedBonusIds:
+                                    selectedBonusIds ??
+                                    payrollState.selectedBonusIds,
+                                selectedDeducionIds:
+                                    selectedDeducionIds ??
+                                    payrollState.selectedDeducionIds,
+                            }
+                        )
+                    );
+                }
             });
     }
 
     public closePayrollDriverMileageReport({
         reportId,
         amount,
+        paymentType,
+        otherPaymentType
     }: {
         reportId: number;
         amount: number;
+        paymentType: string,
+        otherPaymentType?: string
     }) {
         this.store
             .pipe(select(selectPayrollState), take(1))
@@ -186,6 +221,8 @@ export class PayrollFacadeService {
                             selectedBonusIds: payrollState.selectedBonusIds,
                             selectedDeducionIds:
                                 payrollState.selectedDeducionIds,
+                            paymentType,
+                            otherPaymentType
                         }
                     )
                 );

@@ -97,12 +97,12 @@ export const selectPayrollDriverMileageStops = createSelector(
             [] as MilesStopShortReponseWithRowType[]
         );
 
-        const excludedLoads = state.payrollOpenedReport?.excludedLoads.reduce(
-            (load, old) => {
-                return [...load, ...old.milesStops];
-            },
-            [] as MilesStopShortReponseWithRowType[]
-        );
+        const excludedReportLoads =
+            state.payrollOpenedReport?.excludedLoads ?? [];
+
+        const excludedLoads = excludedReportLoads.reduce((load, old) => {
+            return [...load, ...old.milesStops];
+        }, [] as MilesStopShortReponseWithRowType[]);
 
         const reorderRow = {
             rowType: 'reorder',
@@ -177,16 +177,16 @@ export const selectPayrollOpenedTab = createSelector(
 export const selectDriverMileageCollapsedTable = createSelector(
     selectPayrollState,
     (state) => {
-        return state.driverMileageCollapsedList
+        return state.driverMileageCollapsedList;
     }
-)
+);
 
 export const selectDriverMileageExpandedTable = createSelector(
     selectPayrollState,
     (state) => {
-        return state.driverMileageExpandedList
+        return state.driverMileageExpandedList;
     }
-)
+);
 
 function getPayrollTableItem(
     payrollTitle: string,
@@ -196,7 +196,7 @@ function getPayrollTableItem(
         text: payrollNamesData[payrollTitle].text,
         type: payrollNamesData[payrollTitle].type,
         //data: data[item].pagination.data,
-        itemCount: item?.valueCount || 0,
+        itemCount: item?.totalCount || 0,
         money: item?.value,
         date: item.date,
         status: getStatus(item?.status.name),
