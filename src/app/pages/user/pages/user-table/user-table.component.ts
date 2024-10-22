@@ -950,10 +950,7 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
         // User Resend Ivitation
         else if (event.type === TableStringEnum.RESEND_INVITATION) {
             this.userService
-                .userResendIvitation({
-                    email: event.data.email,
-                    isResendConfirmation: true,
-                })
+                .userResendIvitation(event.data.id)
                 .pipe(takeUntil(this.destroy$))
                 .subscribe(() => {});
         }
