@@ -56,7 +56,7 @@ export class UserCardComponent implements OnInit, OnDestroy {
         private userService: UserService,
 
         // helpers
-        private cardHelper: CardHelper,
+        private cardHelper: CardHelper
     ) {}
 
     ngOnInit() {
@@ -143,10 +143,7 @@ export class UserCardComponent implements OnInit, OnDestroy {
         // User Resend Ivitation
         else if (event.type === TableStringEnum.RESEND_INVITATION) {
             this.userService
-                .userResendIvitation({
-                    email: event.data.email,
-                    isResendConfirmation: true,
-                })
+                .userResendIvitation(event.data.id)
                 .pipe(takeUntil(this.destroy$))
                 .subscribe();
         }
