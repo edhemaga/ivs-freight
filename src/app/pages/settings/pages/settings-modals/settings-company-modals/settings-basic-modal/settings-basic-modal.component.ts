@@ -1344,7 +1344,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
             factorByDefault: additionalInfo?.factorByDefault,
             preferredLoadType: additionalInfo?.preferredLoadType,
             fleetType: additionalInfo?.fleetType,
-            customerPayTerm: additionalInfo?.customerPayTerm,
+            /*  customerPayTerm: additionalInfo?.customerPayTerm, */
             customerCredit: additionalInfo?.customerCredit,
             mvrMonths: additionalInfo?.mvrMonths,
             truckInspectionMonths: additionalInfo?.truckInspectionMonths,

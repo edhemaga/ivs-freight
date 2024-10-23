@@ -1975,12 +1975,8 @@ export class CustomerTableComponent
                             data.tableRaiting = {
                                 hasLiked: res.currentCompanyUserRating === 1,
                                 hasDislike: res.currentCompanyUserRating === -1,
-                                likeCount: res?.upCount
-                                    ? res.upCount
-                                    : TableStringEnum.NUMBER_0,
-                                dislikeCount: res?.downCount
-                                    ? res.downCount
-                                    : TableStringEnum.NUMBER_0,
+                                likeCount: res?.upCount,
+                                dislikeCount: res?.downCount,
                             };
                         }
                     });
