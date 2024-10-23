@@ -271,7 +271,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
                     this.disableCardAnimation = true;
 
                     this.editCompanyDivision();
-                }, 200);
+                }, 300);
             } else if (this.editData.type === SettingsModalEnum.NEW_DIVISION) {
                 this.companyForm.get('starting').setValue('100');
             }
@@ -285,7 +285,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
         if (this.editData.type === SettingsModalEnum.EDIT_COMPANY) {
             setTimeout(() => {
                 this.editCompany(this.editData.company);
-            }, 200);
+            }, 300);
 
             this.disableCardAnimation = true;
         }
@@ -295,7 +295,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
 
             setTimeout(() => {
                 this.editCompany(this.editData.company);
-            }, 200);
+            }, 300);
 
             this.disableCardAnimation = true;
         }
@@ -312,7 +312,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
                 .subscribe((data: CompanyResponse) => {
                     setTimeout(() => {
                         this.editCompany(data);
-                    }, 200);
+                    }, 300);
 
                     this.editData.data = data;
                 });
@@ -326,7 +326,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
                 .subscribe((isFormChange: boolean) => {
                     this.isFormDirty = isFormChange;
                 });
-        }, 200);
+        }, 300);
     }
 
     private createDivisionForm(): void {
@@ -1326,9 +1326,11 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
             factorByDefault: additionalInfo?.factorByDefault,
             preferredLoadType: additionalInfo?.preferredLoadType,
             fleetType: additionalInfo?.fleetType,
-            payTerm: this.payTermOptions?.find(
-                (payTerm) => payTerm.id === additionalInfo?.payTerm
-            )?.name,
+            payTerm: additionalInfo?.payTerm
+                ? this.payTermOptions?.find(
+                      (payTerm) => payTerm.id === additionalInfo?.payTerm
+                  )?.name
+                : null,
             customerCredit: additionalInfo?.customerCredit,
             mvrMonths: additionalInfo?.mvrMonths,
             truckInspectionMonths: additionalInfo?.truckInspectionMonths,
@@ -1870,9 +1872,11 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
             driverMiles: data.driverMiles,
             driverComission: data.driverComission,
             driverFlatRate: data.driverFlatRate,
-            payTerm: this.payTermOptions?.find(
-                (payTerm) => payTerm.id === data.additionalInfo?.payTerm
-            )?.name,
+            payTerm: data.additionalInfo?.payTerm
+                ? this.payTermOptions?.find(
+                      (payTerm) => payTerm.id === data.additionalInfo?.payTerm
+                  )?.name
+                : null,
             customerCredit: data.additionalInfo.customerCredit,
             mvrMonths: data.additionalInfo.mvrMonths,
             truckInspectionMonths: data.additionalInfo.truckInspectionMonths,

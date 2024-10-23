@@ -1457,11 +1457,24 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: (res: BrokerModalResponse) => {
-                    this.departmentOptions = res.departments;
-                    this.payTermOptions = res.payTerms;
+                    const { departments, payTerms, selectedPayTerm } = res;
+
+                    this.departmentOptions = departments;
+                    this.payTermOptions = payTerms;
+
+                    this.selectedPayTerm = this.payTermOptions?.find(
+                        (payTerm) => payTerm.id === selectedPayTerm
+                    );
+
+                    this.brokerForm
+                        .get(BrokerModalStringEnum.PAY_TERM)
+                        .patchValue(this.selectedPayTerm?.name ?? null);
 
                     // From Another Modal Data
-                    if (this.editData?.type === 'edit-contact') {
+                    if (
+                        this.editData?.type ===
+                        BrokerModalStringEnum.EDIT_CONTACT
+                    ) {
                         this.isCardAnimationDisabled = true;
 
                         this.editBrokerById(this.editData.id);

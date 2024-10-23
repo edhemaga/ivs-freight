@@ -3,6 +3,8 @@ export enum BrokerModalStringEnum {
     DELETE = 'delete',
     CLOSE = 'close',
 
+    EDIT_CONTACT = 'edit-contact',
+
     BROKER = 'broker',
     CONTACTS = 'contacts',
 
@@ -20,4 +22,6 @@ export enum BrokerModalStringEnum {
     PHYSICAL_ADDRESS = 'physicalAddress',
     PHYSICAL_PO_BOX = 'physicalPoBox',
     PHYSICAL_PO_BOX_CITY = 'physicalPoBoxCity',
+
+    PAY_TERM = 'payTerm',
 }
