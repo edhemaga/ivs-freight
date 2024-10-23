@@ -7,38 +7,45 @@
     <!-- TODO: Dodati datum ako je edit -->
     <div origin>
         <div class="divider divider--dark divider--small"></div>
-        <app-ta-tab-switch
-            [tabs]="tabs"
-            (switchClicked)="onTabChange($event)"
-            [type]="'type2-modal-popup type2-modal-popup-header'"
-        >
-        </app-ta-tab-switch>
+
+        <ng-container *ngIf="isDropdownEnabled">
+            <app-ta-tab-switch
+                [tabs]="tabs"
+                (switchClicked)="onTabChange($event)"
+                [type]="'type2-modal-popup type2-modal-popup-header'"
+            >
+            </app-ta-tab-switch>
+        </ng-container>
 
         <form [formGroup]="payrollCreditForm" class="payroll-credit--body">
             <div class="row">
-                <div class="col-12 payroll-mb-32">
-                    <ng-container *ngIf="selectedTab?.id === 1; else showTruck">
-                        <app-ca-input-dropdown
-                            formControlName="driverId"
-                            [template]="'load-dispatcher'"
-                            [inputConfig]="driverConfig"
-                            [options]="driversDropdownList"
-                            [activeItem]="selectedDriver"
-                            (selectedItem)="selectDriver($event)"
-                        ></app-ca-input-dropdown>
-                    </ng-container>
+                <ngc-container *ngIf="isDropdownEnabled">
+                    <div class="col-12 payroll-mb-32">
+                        <ng-container
+                            *ngIf="selectedTab?.id === 1; else showTruck"
+                        >
+                            <app-ca-input-dropdown
+                                formControlName="driverId"
+                                [template]="'load-dispatcher'"
+                                [inputConfig]="driverConfig"
+                                [options]="driversDropdownList"
+                                [activeItem]="selectedDriver"
+                                (selectedItem)="selectDriver($event)"
+                            ></app-ca-input-dropdown>
+                        </ng-container>
 
-                    <ng-template #showTruck>
-                        <app-ca-input-dropdown
-                            formControlName="truckId"
-                            [template]="'load-dispatcher'"
-                            [inputConfig]="payrollCreditConst.truckConfig"
-                            [options]="trucksDropdownList"
-                            [activeItem]="selectedTruck"
-                            (selectedItem)="selectTruck($event)"
-                        ></app-ca-input-dropdown>
-                    </ng-template>
-                </div>
+                        <ng-template #showTruck>
+                            <app-ca-input-dropdown
+                                formControlName="truckId"
+                                [template]="'load-dispatcher'"
+                                [inputConfig]="payrollCreditConst.truckConfig"
+                                [options]="trucksDropdownList"
+                                [activeItem]="selectedTruck"
+                                (selectedItem)="selectTruck($event)"
+                            ></app-ca-input-dropdown>
+                        </ng-template>
+                    </div>
+                </ngc-container>
 
                 <div class="col-12 payroll-mb-32">
                     <app-ca-input
@@ -87,7 +94,31 @@
 <!-- Modal footer template -->
 <ng-template #footerContent>
     <div class="modal-footer">
-        <ng-container *ngIf="!isEditMode">
+        <ng-container *ngIf="isEditMode; else showCreateButtons">
+            <button
+                class="modal-save-btn ta-font-bold"
+                (click)="saveCredit(taModalActionEnums.DELETE)"
+                [class.valid]="payrollCreditForm.valid"
+            >
+                DELETE
+            </button>
+            <button
+                class="modal-save-btn ta-font-bold"
+                (click)="saveCredit(taModalActionEnums.MOVE_TO_PERIOD)"
+                [class.valid]="payrollCreditForm.valid"
+            >
+                Move to This Period
+            </button>
+            <button
+                class="modal-save-btn ta-font-bold"
+                (click)="saveCredit(taModalActionEnums.UPDATE)"
+                [class.valid]="payrollCreditForm.valid"
+            >
+                Save Changes
+            </button>
+        </ng-container>
+
+        <ng-template #showCreateButtons>
             <button
                 class="ta-font-bold modal-save-btn modal-save-btn-add-new mr-12"
                 [class.valid]="payrollCreditForm.valid"
@@ -102,6 +133,6 @@
             >
                 Save
             </button>
-        </ng-container>
+        </ng-template>
     </div>
 </ng-template>

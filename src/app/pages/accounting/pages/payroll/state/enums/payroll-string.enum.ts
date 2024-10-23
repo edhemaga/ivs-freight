@@ -7,5 +7,7 @@ export enum PayrollStringEnum {
     TRUCK_ID = 'truckId',
     DATE = 'date',
     DESCRIPTION = 'description',
-    AMOUNT = 'amount'
-} 
+    AMOUNT = 'amount',
+    EDIT = 'edit',
+    CREATE = 'create',
+}
