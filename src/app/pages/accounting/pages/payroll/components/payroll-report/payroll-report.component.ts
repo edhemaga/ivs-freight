@@ -587,16 +587,19 @@ export class PayrollReportComponent implements OnInit, OnDestroy {
     }
 
     onProccessPayroll(payrollData: PayrollDriverMileageByIdResponse) {
-        console.log('open payroll', payrollData);
-
         this.modalService.openModal(
             PayrollProccessPaymentModalComponent,
             {
                 size: 'small',
             },
             {
-                type: 'new', // 'edit' stavljas ako treba kad se azurira postojeci
-                data: payrollData, // da ne bi morao da pozivam kod sebe get by id, samo javi kad zavrsis
+                type: 'new',
+                data: {
+                    id: payrollData.id,
+                    totalEarnings:
+                        (payrollData as any).debt ?? payrollData.totalEarnings,
+                    payrollNumber: payrollData.payrollNumber,
+                },
             }
         );
     }

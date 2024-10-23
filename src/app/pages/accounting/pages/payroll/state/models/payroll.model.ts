@@ -93,3 +93,9 @@ export interface PayrollDriverMileageExpandedListResponse {
     name: string
     id: number
   }
+
+  export interface IPayrollProccessPaymentModal{
+    id: number,
+    totalEarnings: number,
+    payrollNumber: string;
+  }

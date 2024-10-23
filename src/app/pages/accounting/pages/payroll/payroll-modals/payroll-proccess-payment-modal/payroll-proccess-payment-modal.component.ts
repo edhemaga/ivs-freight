@@ -38,12 +38,12 @@ import {
 // Models
 import { EditData } from '@shared/models/edit-data.model';
 import { Tabs } from '@shared/models/tabs.model';
-import { PayrollDriverMileageByIdResponse } from 'appcoretruckassist';
 
 // Services
 import { PayrollFacadeService } from '../../state/services/payroll.service';
 import { TaInputService } from '@shared/services/ta-input.service';
 import { TaSpinnerComponent } from '@shared/components/ta-spinner/ta-spinner.component';
+import { IPayrollProccessPaymentModal } from '../../state/models/payroll.model';
 
 @Component({
     selector: 'app-payroll-proccess-payment-modal',
@@ -73,7 +73,7 @@ import { TaSpinnerComponent } from '@shared/components/ta-spinner/ta-spinner.com
 export class PayrollProccessPaymentModalComponent implements OnDestroy {
     @ViewChild('tabCustomTemplate', { static: true })
     public readonly tabCustomTemplate!: ElementRef;
-    @Input() editData: EditData<PayrollDriverMileageByIdResponse>;
+    @Input() editData: EditData<IPayrollProccessPaymentModal>;
 
     private destroy$ = new Subject<void>();
 
@@ -95,7 +95,7 @@ export class PayrollProccessPaymentModalComponent implements OnDestroy {
         placeholderIcon: 'dollar',
         placeholderIconColor: 'blue',
         hideErrorMessage: true,
-        hideRequiredCheck: true,
+        hideRequiredCheck: true
     };
 
     dropDownInputConfig = {
@@ -230,8 +230,9 @@ export class PayrollProccessPaymentModalComponent implements OnDestroy {
 
     selectedItem(dd: any) {}
 
-    get modalData(): PayrollDriverMileageByIdResponse {
-        return this.editData.data as PayrollDriverMileageByIdResponse;
+    get modalData(): IPayrollProccessPaymentModal {
+        console.log('REPORT DATA', this.editData.data);
+        return this.editData.data as IPayrollProccessPaymentModal;
     }
 
     ngOnDestroy(): void {
