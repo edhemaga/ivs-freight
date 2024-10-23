@@ -1223,3 +1223,21 @@ gridster {
         top: 44px;
     }
 }
+
+.payroll {
+    &-number {
+        background-color: #919191;
+        border-radius: 2px;
+        padding: 4px 8px;
+    }
+
+    &-credit {
+        &--body {
+            margin: 22px 0;
+        }
+    }
+
+    &-mb-32 {
+        margin-bottom: 32px;
+    }
+}

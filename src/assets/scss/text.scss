@@ -3,6 +3,10 @@
 .text {
     // Colors
     &-color {
+        &-white {
+            color: $white;
+        }
+
         &-muted {
             color: $muted;
         }

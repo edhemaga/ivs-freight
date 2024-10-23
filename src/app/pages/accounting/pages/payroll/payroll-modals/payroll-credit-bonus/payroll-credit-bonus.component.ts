@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, OnDestroy } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import {
     FormsModule,
     ReactiveFormsModule,
@@ -7,29 +7,34 @@ import {
     Validators,
 } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { AngularSvgIconModule } from 'angular-svg-icon';
 import { Subject, takeUntil } from 'rxjs';
 
 // Services
-import { TaInputService } from '@shared/services/ta-input.service';
-import { ModalService } from '@shared/services/modal.service';
-import { FormService } from '@shared/services/form.service';
-import { PayrollCreditService } from '@pages/accounting/pages/payroll/payroll-modals/payroll-credit-bonus/services/payroll-credit.service';
+import { PayrollCreditService } from './services/payroll-credit.service';
 
 // Models
+import { TabOptions } from '@shared/components/ta-tab-switch/models/tab-options.model';
 import {
+    DriverMinimalResponse,
+    EnumValue,
     PayrollCreditModalResponse,
-    PayrollCreditResponse,
+    TruckMinimalResponse,
 } from 'appcoretruckassist';
-import { ITaInput } from '@shared/components/ta-input/config/ta-input.config';
 
 // Helpers
-import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calculations.helper';
+import { PayrollSvgRoutes } from '@pages/accounting/pages/payroll/state/utils';
+import { PayrollStringEnum } from '@pages/accounting/pages/payroll/state/enums';
+import { PayrollCreditConst } from '@pages/accounting/pages/payroll/state/utils/consts';
 
 // Components
-import { TaModalComponent } from '@shared/components/ta-modal/ta-modal.component';
+import {
+    CaInputComponent,
+    CaInputDropdownComponent,
+    CaModalComponent,
+} from 'ca-components';
 import { TaTabSwitchComponent } from '@shared/components/ta-tab-switch/ta-tab-switch.component';
-import { TaInputComponent } from '@shared/components/ta-input/ta-input.component';
-import { TaInputDropdownComponent } from '@shared/components/ta-input-dropdown/ta-input-dropdown.component';
 
 @Component({
     selector: 'app-payroll-credit-bonus',
@@ -41,459 +46,132 @@ import { TaInputDropdownComponent } from '@shared/components/ta-input-dropdown/t
         CommonModule,
         FormsModule,
         ReactiveFormsModule,
+        AngularSvgIconModule,
 
         // Component
-        TaModalComponent,
+        CaModalComponent,
         TaTabSwitchComponent,
-        TaInputComponent,
-        TaInputDropdownComponent,
+        CaInputComponent,
+        CaInputDropdownComponent,
     ],
 })
-export class PayrollCreditBonusComponent implements OnInit, OnDestroy {
+export class PayrollCreditBonusComponent implements OnInit {
+    // Inputs
     @Input() editData: any;
 
-    public payrollCreditForm: UntypedFormGroup;
-
-    public selectedTab: number = 1;
-    public tabs: any[] = [
-        {
-            id: 1,
-            name: 'DRIVER',
-            checked: true,
-            color: '3074D3',
-        },
-        {
-            id: 2,
-            name: 'TRUCK',
-            checked: false,
-            color: '3074D3',
-        },
-    ];
-
-    public labelsTrucks: any[] = [];
-    public labelsDriver: any[] = [];
-
-    public selectedDriver: any = null;
-    public selectedTruck: any = null;
+    // Utils
+    public svgRoutes = PayrollSvgRoutes;
+    public payrollStrings = PayrollStringEnum;
 
     private destroy$ = new Subject<void>();
 
-    public addNewAfterSave: boolean = false;
+    // State
+    public creditTitle: string = '';
+    public payrollCreditConst = PayrollCreditConst;
 
-    public isFormDirty: boolean = false;
+    // Tabs
+    public tabs = this.payrollCreditConst.tabs;
+    public selectedTab: TabOptions = this.tabs[0];
 
-    public truckDropdownsConfig: ITaInput = {
-        name: 'Input Dropdown',
-        type: 'text',
-        label: 'Truck',
-        isDropdown: true,
-        isRequired: true,
-        textTransform: 'capitalize',
-        blackInput: true,
-        dropdownWidthClass: 'w-col-256',
-    };
+    // Form
+    public payrollCreditForm: UntypedFormGroup;
+
+    // Driver
+    public selectedDriver: any;
+    public driversDropdownList: EnumValue[];
+
+    // Trucks
+    public selectedTruck: EnumValue;
+    public trucksDropdownList: { id: number; name: string }[];
 
     constructor(
-        // Form
-        private formBuilder: UntypedFormBuilder,
-
-        // Services
-        private inputService: TaInputService,
-        private modalService: ModalService,
-        private formService: FormService,
-        private payrolCreditService: PayrollCreditService
+        private payrolCreditService: PayrollCreditService,
+        private ngbActiveModal: NgbActiveModal,
+        private formBuilder: UntypedFormBuilder
     ) {}
 
     ngOnInit() {
-        this.createForm();
         this.getModalDropdowns();
+        this.createForm();
     }
 
-    public tabChange(event: any): void {
-        this.selectedTab = event.id;
-
-        this.tabs = this.tabs.map((item) => {
-            return {
-                ...item,
-                checked: item.id === event.id,
-            };
-        });
-
-        if (this.selectedTab === 1) {
-            this.inputService.changeValidators(
-                this.payrollCreditForm.get('truckId'),
-                false,
-                [],
-                false
-            );
-            this.inputService.changeValidators(
-                this.payrollCreditForm.get('driverId'),
-                true,
-                [],
-                false
-            );
-        }
-
-        if (this.selectedTab === 2) {
-            this.inputService.changeValidators(
-                this.payrollCreditForm.get('truckId'),
-                true,
-                [],
-                false
-            );
-            this.inputService.changeValidators(
-                this.payrollCreditForm.get('driverId'),
-                false,
-                [],
-                false
-            );
-        }
-    }
-
-    private createForm() {
+    private createForm(): void {
         this.payrollCreditForm = this.formBuilder.group({
             driverId: [null, Validators.required],
-            truckId: [null],
+            truckId: [null, Validators.required],
             date: [new Date(), Validators.required],
             description: [null, Validators.required],
             amount: [null, Validators.required],
         });
-
-        this.formService.checkFormChange(this.payrollCreditForm);
-        this.formService.formValueChange$
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((isFormChange: boolean) => {
-                this.isFormDirty = isFormChange;
-            });
     }
 
-    public onModalAction(data: { action: string; bool: boolean }) {
-        switch (data.action) {
-            case 'close': {
-                break;
-            }
-            case 'save and add new': {
-                if (this.payrollCreditForm.invalid || !this.isFormDirty) {
-                    this.inputService.markInvalid(this.payrollCreditForm);
-                    return;
-                }
-                this.addCredit();
-                this.modalService.setModalSpinner({
-                    action: 'save and add new',
-                    status: true,
-                    close: false,
-                });
-                this.addNewAfterSave = true;
-                break;
-            }
-            case 'save': {
-                if (this.payrollCreditForm.invalid || !this.isFormDirty) {
-                    this.inputService.markInvalid(this.payrollCreditForm);
-                    return;
-                }
-                if (this.editData?.type === 'edit') {
-                    this.updateCredit(this.editData?.data?.id);
-                    this.modalService.setModalSpinner({
-                        action: null,
-                        status: true,
-                        close: false,
-                    });
-                } else {
-                    this.addCredit();
-                    this.modalService.setModalSpinner({
-                        action: null,
-                        status: true,
-                        close: false,
-                    });
-                }
-                break;
-            }
-            case 'delete': {
-                this.deletePayrollCreeditById(this.editData?.data.id);
-                this.modalService.setModalSpinner({
-                    action: 'delete',
-                    status: true,
-                    close: false,
-                });
-                break;
-            }
-            default: {
-                break;
-            }
-        }
-    }
-
-    public updateCredit(id: number) {
-        this.payrolCreditService
-            .updatePayrollCredit({
-                ...this.payrollCreditForm.value,
-                id: id,
-                type: this.tabs.find((item) => item.checked).id,
-                driverId:
-                    this.tabs.find((item) => item.checked).id === 1
-                        ? this.selectedDriver
-                            ? this.selectedDriver.id
-                            : null
-                        : null,
-                truckId:
-                    this.tabs.find((item) => item.checked).id === 2
-                        ? this.selectedTruck
-                            ? this.selectedTruck.id
-                            : null
-                        : null,
-                date: MethodsCalculationsHelper.convertDateToBackend(
-                    this.payrollCreditForm.get('date').value
-                ),
-                amount: MethodsCalculationsHelper.convertThousanSepInNumber(
-                    this.payrollCreditForm.get('amount').value
-                ),
-            })
-            .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: () => {
-                    this.modalService.setModalSpinner({
-                        action: null,
-                        status: true,
-                        close: true,
-                    });
-                },
-                error: () => {
-                    this.modalService.setModalSpinner({
-                        action: null,
-                        status: false,
-                        close: false,
-                    });
-                },
-            });
-    }
-
-    public addCredit() {
-        this.payrolCreditService
-            .addPayrollCredit({
-                ...this.payrollCreditForm.value,
-                type: this.tabs.find((item) => item.checked).id,
-                driverId:
-                    this.tabs.find((item) => item.checked).id === 1
-                        ? this.selectedDriver
-                            ? this.selectedDriver.id
-                            : null
-                        : null,
-                truckId:
-                    this.tabs.find((item) => item.checked).id === 2
-                        ? this.selectedTruck
-                            ? this.selectedTruck.id
-                            : null
-                        : null,
-                date: MethodsCalculationsHelper.convertDateToBackend(
-                    this.payrollCreditForm.get('date').value
-                ),
-                amount: MethodsCalculationsHelper.convertThousanSepInNumber(
-                    this.payrollCreditForm.get('amount').value
-                ),
-            })
-            .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: () => {
-                    if (this.addNewAfterSave) {
-                        this.formService.resetForm(this.payrollCreditForm);
-                        this.selectedDriver = null;
-                        this.selectedTruck = null;
-                        this.tabChange({ id: 1 });
-                        this.modalService.setModalSpinner({
-                            action: 'save and add new',
-                            status: false,
-                            close: false,
-                        });
-                    } else {
-                        this.modalService.setModalSpinner({
-                            action: null,
-                            status: true,
-                            close: true,
-                        });
-                    }
-                },
-                error: () => {
-                    this.modalService.setModalSpinner({
-                        action: null,
-                        status: false,
-                        close: false,
-                    });
-                },
-            });
-    }
-
-    public getByIdCredit(id: number) {
-        this.payrolCreditService
-            .getPayrollCreditById(id)
-            .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: (res: PayrollCreditResponse) => {
-                    this.payrollCreditForm.patchValue({
-                        driverId: res.driver
-                            ? res.driver.firstName.concat(
-                                  ' ',
-                                  res.driver.lastName
-                              )
-                            : null,
-                        // truckId: res.truck ? res.truck.truckNumber : null,
-                        date: MethodsCalculationsHelper.convertDateFromBackend(
-                            res.date
-                        ),
-                        description: res.description,
-                        amount: MethodsCalculationsHelper.convertNumberInThousandSep(
-                            res.amount
-                        ),
-                    });
-
-                    if (res.driver) {
-                        this.selectedDriver = {
-                            id: res.driver.id,
-                            name: res.driver.firstName.concat(
-                                ' ',
-                                res.driver.lastName
-                            ),
-                            /*logoName:
-                                 res.driver.avatar === null ||
-                                res.driver.avatar === undefined ||
-                                res.driver.avatar === ''
-                                    ? null
-                                    : res.driver.avatar, */
-                            isDriver: true,
-                        };
-                    }
-
-                    if (res.truck) {
-                        this.selectedTruck = {
-                            ...res.truck,
-                            name: res.truck.truckNumber,
-                            additionalText: res.truck.owner,
-                        };
-
-                        this.truckDropdownsConfig = {
-                            ...this.truckDropdownsConfig,
-                            multipleInputValues: {
-                                options: [
-                                    {
-                                        value: res.truck?.truckNumber,
-                                    },
-                                    {
-                                        value: res?.truck?.owner,
-                                    },
-                                ],
-                                customClass: 'double-text-dropdown',
-                            },
-                        };
-                    }
-
-                    setTimeout(() => {
-                        this.tabChange({ id: res.type.id });
-                    }, 150);
-                },
-                error: () => {},
-            });
-    }
-
-    public getModalDropdowns() {
+    private getModalDropdowns(): void {
         this.payrolCreditService
             .getPayrollCreditModal()
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: (res: PayrollCreditModalResponse) => {
-                    this.labelsDriver = res.drivers.map((item) => {
-                        return {
-                            id: item.id,
-                            name: item.firstName.concat(' ', item.lastName),
-                            /*   logoName:
-                                item.avatar === null ||
-                                item.avatar === undefined ||
-                                item.avatar === ''
-                                    ? null
-                                    : item.avatar, */
-                            isDriver: true,
-                        };
-                    });
-                    this.labelsTrucks = res.trucks.map((item) => {
-                        return {
-                            ...item,
-                            name: item.truckNumber,
-                        };
-                    });
-
-                    // If Add New By Id
-                    if (
-                        this.editData?.data?.driverId &&
-                        this.editData?.type === 'new'
-                    ) {
-                        this.labelsDriver = this.labelsDriver.filter(
-                            (item) => item.id === this.editData?.data?.driverId
-                        );
-                        this.selectedDriver = this.labelsDriver[0];
-                        this.payrollCreditForm.patchValue({
-                            driverId: this.labelsDriver[0].name,
-                        });
-                        this.selectedTruck = null;
-                    }
-
-                    if (this.editData?.type === 'edit') {
-                        this.getByIdCredit(this.editData.data.id);
-                    }
+                    this.mapDrivers(res.drivers);
+                    this.mapTrucks(res.trucks);
                 },
                 error: () => {},
             });
     }
 
-    public deletePayrollCreeditById(id: number) {
-        this.payrolCreditService
-            .deletePayrollCreditById(id)
-            .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: () => {
-                    this.modalService.setModalSpinner({
-                        action: 'delete',
-                        status: true,
-                        close: true,
-                    });
-                },
-                error: () => {},
-            });
+    private mapTrucks(trucks: TruckMinimalResponse[]): void {
+        this.trucksDropdownList = trucks.map(({ id, truckNumber }) => {
+            return {
+                id,
+                name: truckNumber,
+            };
+        });
     }
 
-    public onSelectDropdown(event: any, action: string) {
-        switch (action) {
-            case 'driver': {
-                this.selectedDriver = event;
-                break;
+    private mapDrivers(drivers: DriverMinimalResponse[]): void {
+        this.driversDropdownList = drivers.map(
+            ({ id, firstName, lastName, avatarFile }) => {
+                return {
+                    id,
+                    logoName: avatarFile?.url,
+                    name: firstName + ' ' + lastName,
+                    avatarFile: avatarFile?.url,
+                };
             }
-            case 'truck': {
-                this.selectedTruck = event;
-                if (this.selectedTruck) {
-                    this.truckDropdownsConfig = {
-                        ...this.truckDropdownsConfig,
-                        multipleInputValues: {
-                            options: [
-                                {
-                                    value: event?.name,
-                                },
-                                {
-                                    value: event?.additionalText,
-                                },
-                            ],
-                            customClass: 'double-text-dropdown',
-                        },
-                    };
-                } else {
-                    this.truckDropdownsConfig = {
-                        ...this.truckDropdownsConfig,
-                        multipleInputValues: null,
-                    };
-                }
+        );
+        console.log(this.driversDropdownList);
+    }
 
-                break;
-            }
-            default: {
-                break;
-            }
-        }
+    public selectDriver(driver: any) {
+        this.selectedDriver = driver;
+        console.log(this.selectedDriver);
+    }
+
+    // Getters
+    public get isEditMode(): boolean {
+        return false;
+    }
+
+    // TODO: Check this on load to avoid re-rendering
+    public get modalTitle(): string {
+        if (this.isEditMode) return this.payrollStrings.EDIT_CREDIT;
+
+        return this.payrollStrings.ADD_CREDIT;
+    }
+
+    public get driverConfig() {
+        return this.payrollCreditConst.driverConfig(
+            this.selectedDriver?.logoName,
+            this.selectedDriver?.name
+        );
+    }
+
+    // Tabs
+    public onTabChange(tab: TabOptions): void {
+        this.selectedTab = tab;
+    }
+
+    public onCloseModal(): void {
+        this.ngbActiveModal.close();
     }
 
     ngOnDestroy(): void {
