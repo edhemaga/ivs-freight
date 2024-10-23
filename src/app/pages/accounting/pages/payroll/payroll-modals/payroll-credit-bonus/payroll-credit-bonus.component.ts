@@ -259,13 +259,13 @@ export class PayrollCreditBonusComponent implements OnInit {
     }
 
     public saveCredit(action: PayrollActionType): void {
-        const data = this.generateCreditModel();
         const addNew =
             action === TaModalActionEnums.SAVE ||
             action === TaModalActionEnums.SAVE_AND_ADD_NEW;
 
-        if (addNew)
+        if (addNew) {
             // Don't clear if we have preselected driver or truck
+            const data = this.generateCreditModel();
             this.payrolCreditService.addPayrollCredit(data).subscribe(() => {
                 if (action === TaModalActionEnums.SAVE_AND_ADD_NEW) {
                     if (this.isDropdownEnabled) {
@@ -288,6 +288,13 @@ export class PayrollCreditBonusComponent implements OnInit {
                     this.onCloseModal();
                 }
             });
+        } else if (action === TaModalActionEnums.UPDATE) {
+            console.log('update');
+        } else if (action === TaModalActionEnums.MOVE_TO_THIS_PERIOD) {
+            console.log('MOVE_TO_THIS_PERIOD');
+        } else if (action === TaModalActionEnums.DELETE) {
+            console.log('DELETE');
+        }
     }
 
     private generateCreditModel(): CreatePayrollCreditCommand {

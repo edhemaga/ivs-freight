@@ -93,22 +93,24 @@
 
 <!-- Modal footer template -->
 <ng-template #footerContent>
-    <div class="modal-footer">
+    <div class="modal-footer" [class.justify-content-between]="isEditMode">
         <ng-container *ngIf="isEditMode; else showCreateButtons">
-            <button
-                class="modal-save-btn ta-font-bold"
-                (click)="saveCredit(taModalActionEnums.DELETE)"
-                [class.valid]="payrollCreditForm.valid"
-            >
-                DELETE
-            </button>
-            <button
-                class="modal-save-btn ta-font-bold"
-                (click)="saveCredit(taModalActionEnums.MOVE_TO_PERIOD)"
-                [class.valid]="payrollCreditForm.valid"
-            >
-                Move to This Period
-            </button>
+            <div>
+                <button
+                    class="modal-delete-btn ta-font-bold mr-12"
+                    (click)="saveCredit(taModalActionEnums.DELETE)"
+                    [class.valid]="payrollCreditForm.valid"
+                >
+                    Delete
+                </button>
+                <button
+                    class="modal-convert-to-template-btn ta-font-bold"
+                    (click)="saveCredit(taModalActionEnums.MOVE_TO_THIS_PERIOD)"
+                    [class.valid]="payrollCreditForm.valid"
+                >
+                    Move to This Period
+                </button>
+            </div>
             <button
                 class="modal-save-btn ta-font-bold"
                 (click)="saveCredit(taModalActionEnums.UPDATE)"
