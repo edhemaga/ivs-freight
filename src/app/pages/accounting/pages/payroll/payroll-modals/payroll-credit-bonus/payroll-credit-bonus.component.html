@@ -69,7 +69,7 @@
 
 <!-- Modal header templates -->
 <ng-template #leftModalContent>
-    <ng-container *ngIf="isEditMode">
+    <ng-container *ngIf="creditTitle">
         <div class="payroll-number text-color-white text-size-14 ta-font-bold">
             {{ creditTitle }}
         </div>
@@ -87,6 +87,21 @@
 <!-- Modal footer template -->
 <ng-template #footerContent>
     <div class="modal-footer">
-        <div class="button_holder d-flex gap-2 w-100">Save</div>
+        <ng-container *ngIf="!isEditMode">
+            <button
+                class="ta-font-bold modal-save-btn modal-save-btn-add-new mr-12"
+                [class.valid]="payrollCreditForm.valid"
+                (click)="saveCredit(taModalActionEnums.SAVE_AND_ADD_NEW)"
+            >
+                Save and Add New
+            </button>
+            <button
+                class="modal-save-btn ta-font-bold"
+                (click)="saveCredit(taModalActionEnums.SAVE)"
+                [class.valid]="payrollCreditForm.valid"
+            >
+                Save
+            </button>
+        </ng-container>
     </div>
 </ng-template>
