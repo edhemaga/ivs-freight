@@ -84,6 +84,24 @@
 </ng-template>
 
 <ng-template #rightModalContent>
+    <!-- TODO: Test date -->
+    <ng-container *ngIf="isEditMode">
+        <div
+            ngbTooltip
+            mainTooltip="Added    {{
+                editData?.editCredit?.createdAt | formatDateP
+            }} <br> Edited    {{
+                editData?.editCredit?.updatedAt | formatDateP
+            }}"
+            tooltipBackground="#424242"
+            position="bottom"
+            class="modal-date-logo"
+        >
+            <svg-icon [src]="svgRoutes.dateIcon"></svg-icon>
+        </div>
+        <div class="modal-date-border"></div>
+    </ng-container>
+
     <svg-icon
         class="modal-close"
         [src]="svgRoutes.closeIcon"

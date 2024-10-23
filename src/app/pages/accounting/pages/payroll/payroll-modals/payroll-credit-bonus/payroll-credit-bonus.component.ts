@@ -47,6 +47,9 @@ import {
 } from 'ca-components';
 import { TaTabSwitchComponent } from '@shared/components/ta-tab-switch/ta-tab-switch.component';
 
+// Pipes
+import { FormatDatePipe } from '@shared/pipes/format-date.pipe';
+
 @Component({
     selector: 'app-payroll-credit-bonus',
     templateUrl: './payroll-credit-bonus.component.html',
@@ -64,6 +67,8 @@ import { TaTabSwitchComponent } from '@shared/components/ta-tab-switch/ta-tab-sw
         TaTabSwitchComponent,
         CaInputComponent,
         CaInputDropdownComponent,
+
+        FormatDatePipe,
     ],
 })
 export class PayrollCreditBonusComponent implements OnInit {
@@ -198,7 +203,7 @@ export class PayrollCreditBonusComponent implements OnInit {
     }
 
     public get isEditMode(): boolean {
-        return this.editData?.type === PayrollStringEnum.EDIT;
+        return !!this.editData?.editCredit;
     }
 
     public get modalTitle(): string {
@@ -289,11 +294,20 @@ export class PayrollCreditBonusComponent implements OnInit {
                 }
             });
         } else if (action === TaModalActionEnums.UPDATE) {
-            console.log('update');
+            const data = this.generateCreditModel();
+            this.payrolCreditService
+                .updatePayrollCredit(data)
+                .subscribe((response) => {
+                    this.onCloseModal();
+                });
         } else if (action === TaModalActionEnums.MOVE_TO_THIS_PERIOD) {
             console.log('MOVE_TO_THIS_PERIOD');
         } else if (action === TaModalActionEnums.DELETE) {
-            console.log('DELETE');
+            this.payrolCreditService
+                .deletePayrollCreditById(this.editData.editCredit.id)
+                .subscribe((res) => {
+                    this.onCloseModal();
+                });
         }
     }
 

@@ -1,6 +1,7 @@
 import {
     CreatePayrollCreditCommand,
     DriverMinimalResponse,
+    PayrollCreditResponse,
     PayrollCreditType,
     TruckMinimalResponse,
 } from 'appcoretruckassist';
@@ -11,7 +12,8 @@ export type PayrollModalAction =
     | PayrollStringEnum.CREATE;
 
 export interface PayrollModal {
-    // Foe edit mode pass value to form
+    editCredit: PayrollCreditResponse;
+    // When creating new credit for selected truck or driver
     data: CreatePayrollCreditCommand;
     // Based on type we know which endpoint to call
     type: PayrollModalAction;
