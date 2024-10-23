@@ -12,6 +12,9 @@ export class TableHeadBorderPipe implements PipeTransform {
                 tableHeadTitle === 'HIRED' ||
                 tableHeadTitle === 'INVITED');
 
-        return driverTableColumnsCondition;
+        const brokerTableColumnsCondition =
+            gridNameTitle === 'Customer' && tableHeadTitle === 'LOAD';
+
+        return driverTableColumnsCondition || brokerTableColumnsCondition;
     }
 }

@@ -620,7 +620,7 @@
                             .columns-options-label {
                                 width: 14px;
                                 height: 14px;
-                                background-color: $muted; 
+                                background-color: $muted;
                                 margin-bottom: 0;
                                 border-radius: 2px;
                                 cursor: pointer;
@@ -785,6 +785,10 @@
                                 &:hover {
                                     background: $ta-light-grey-10;
                                     transition: 0.25s;
+                                }
+
+                                &.remove-padding {
+                                    padding: 0 !important;
                                 }
                             }
                         }

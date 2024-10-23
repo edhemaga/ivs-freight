@@ -28,7 +28,7 @@ table.truckassist-table-body-style {
 
                 .not-pined-columns {
                     .space-left {
-                        margin-left: 11px;
+                        margin-left: 10px;
                     }
 
                     td {
@@ -57,9 +57,19 @@ table.truckassist-table-body-style {
                         height: 100%;
                         align-items: center;
                         padding: 4px;
+
+                        &.space-left {
+                            margin-left: 6px;
+                        }
+
+                        &.reset-space-left {
+                            margin-left: -6px;
+                        }
+
                         .input-dropdown-arrow svg {
                             display: none;
                         }
+
                         //nput dropdown label
                         app-ta-input-dropdown-label {
                             .input-custom-group .input-icon::after {
@@ -506,6 +516,7 @@ table.truckassist-table-body-style {
                         }
 
                         // APPLICANT PROGRESS COLUMN
+
                         .applicant-progress-container {
                             margin-right: 8px;
 
@@ -530,33 +541,41 @@ table.truckassist-table-body-style {
                         }
 
                         // WORK HOUR COLUMN
+
                         .work-hour-container {
-                            width: fit-content;
                             height: 18px;
-                            display: flex;
 
                             .work-hour-icon {
                                 margin-right: 4px;
-                                width: 18px;
-                                height: 18px;
-                                background-repeat: no-repeat;
-                                background-position: center;
-                                background-image: url('/assets/svg/truckassist-table/customer/calendar.svg');
+
+                                &.receiving {
+                                    svg {
+                                        path {
+                                            fill: $ta-yellow-1;
+                                        }
+                                    }
+                                }
+
+                                svg {
+                                    path {
+                                        fill: $bw5;
+                                    }
+                                }
                             }
 
-                            .work-hour-time {
-                                color: $bw6-2;
-                                height: 18px;
+                            p {
+                                color: $ta-black-2;
                                 line-height: 18px;
                                 font-size: 14px;
-                                font-weight: 400;
-                                overflow: hidden;
-                                white-space: nowrap;
-                                text-overflow: ellipsis;
+
+                                &::-moz-selection {
+                                    color: $ta-black-2;
+                                    background: rgb(47, 47, 47, 0.2);
+                                }
 
                                 &::selection {
-                                    color: $bw6-2;
-                                    background: $bw6-3;
+                                    color: $ta-black-2;
+                                    background: rgb(47, 47, 47, 0.2);
                                 }
                             }
                         }
@@ -1777,10 +1796,8 @@ table.truckassist-table-body-style {
 
                         // RAITING
                         .raiting-container {
-                            display: flex;
                             width: fit-content;
                             height: 18px;
-                            justify-self: center;
 
                             .raiting-icon {
                                 cursor: pointer;
@@ -2187,6 +2204,45 @@ table.truckassist-table-body-style {
                                 }
                             }
                         }
+
+                        .shipper-load-container {
+                            display: grid;
+                            grid-template-columns: repeat(3, 46px);
+                            grid-gap: 12px;
+                            padding-left: 6px;
+
+                            &-box {
+                                &:nth-child(3) {
+                                    .icon {
+                                        svg {
+                                            path {
+                                                fill: $ta-red-10;
+                                            }
+                                        }
+                                    }
+                                }
+
+                                .icon {
+                                    margin-right: 4px;
+                                }
+
+                                p {
+                                    font-size: 11px;
+                                    line-height: 14px;
+                                    color: $ta-black;
+
+                                    &::-moz-selection {
+                                        color: $ta-black;
+                                        background: rgb(66, 66, 66, 0.2);
+                                    }
+
+                                    &::selection {
+                                        color: $ta-black;
+                                        background: rgb(66, 66, 66, 0.2);
+                                    }
+                                }
+                            }
+                        }
                     }
 
                     // GENERAl
@@ -2202,9 +2258,7 @@ table.truckassist-table-body-style {
             .attachemnt-dropdown,
             .media-dropdown,
             .insurance-dropdown {
-                /*  width: 100%; */
                 width: 0px;
-                /* height: fit-content; */
                 max-height: 0px;
                 overflow: hidden;
                 transition: max-height 0.2s ease-in-out;

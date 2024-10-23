@@ -23,5 +23,6 @@ export interface CompanyModalResponse {
     insurancePolicyAddonTypes?: Array<EnumValue> | null;
     companyTypes?: Array<EnumValue> | null;
     banks?: Array<BankResponse> | null;
+    payTerms?: Array<EnumValue> | null;
 }
 
