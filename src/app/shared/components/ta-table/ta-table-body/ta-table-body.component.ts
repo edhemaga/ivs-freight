@@ -100,6 +100,9 @@ import { TaStateImageTextComponent } from '@shared/components/ta-state-image-tex
 // Directive
 import { PreventMultipleclicksDirective } from '@shared/directives/prevent-multipleclicks.directive';
 
+// svg routes
+import { TableBodySvgRoutes } from '@shared/components/ta-table/ta-table-body/utils/svg-routes';
+
 @Titles()
 @Component({
     selector: 'app-ta-table-body',
@@ -142,7 +145,7 @@ import { PreventMultipleclicksDirective } from '@shared/directives/prevent-multi
         TableLoadStatusPipe,
 
         // Directives
-        PreventMultipleclicksDirective
+        PreventMultipleclicksDirective,
     ],
     providers: [
         {
@@ -223,10 +226,13 @@ export class TaTableBodyComponent
     public popoverDescriptionItems: { title: string; className: string }[] =
         RepairDescriptionPopoverConstants.descriptionItems;
 
+    public tableBodySvgRoutes = TableBodySvgRoutes;
+
     // Scroll Lines
     public isLeftScrollLineShown = false;
     public isRightScrollLineShown = false;
     public loadId: number;
+
     constructor(
         private router: Router,
         private tableService: TruckassistTableService,
@@ -240,6 +246,8 @@ export class TaTableBodyComponent
 
     // --------------------------------NgOnInit---------------------------------
     ngOnInit(): void {
+        console.log('tableData', this.tableData);
+        console.log('viewData', this.viewData);
         // Get Selected Tab Data
         this.getSelectedTabTableData();
         this.viewDataEmpty = this.viewData.length ? false : true;
@@ -404,26 +412,6 @@ export class TaTableBodyComponent
 
     // --------------------------------NgAfterViewInit---------------------------------
     ngAfterViewInit(): void {
-        // For Virtual Scroll
-        // setTimeout(() => {
-        //     if (this.viewData.length) {
-        //         const tableContainer =
-        //             document.querySelector('.table-container');
-
-        //         const cdkVirtualScrollSpacer = document.querySelector(
-        //             '.cdk-virtual-scroll-spacer'
-        //         );
-
-        //         const pageHeight =
-        //             tableContainer.clientHeight -
-        //             1018 +
-        //             cdkVirtualScrollSpacer.clientHeight;
-
-        //         this.sharedService.emitUpdateScrollHeight.emit({
-        //             tablePageHeight: pageHeight,
-        //         });
-        //     }
-        // }, 10);
         this.getNotPinedMaxWidth();
     }
     // Render Row One By One
@@ -939,7 +927,6 @@ export class TaTableBodyComponent
 
     // Dropdown Actions
     onDropAction(action: any) {
-
         // To Unselect All Selected Rows
         if (action.name === 'activate-item') {
             this.mySelection = [];
@@ -968,7 +955,6 @@ export class TaTableBodyComponent
         this.tooltip.close();
     }
 
-    
     // On Show Inner Dropdown
     onShowInnerDropdown(action) {
         this.onRemoveClickEventListener();

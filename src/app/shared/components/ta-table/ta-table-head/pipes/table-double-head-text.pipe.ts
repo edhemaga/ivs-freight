@@ -1,6 +1,8 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { TableHeadTitleStringEnum } from '../enums/table-head-title-string.enum';
-1;
+
+// enums
+import { TableHeadTitleStringEnum } from '@shared/components/ta-table/ta-table-head/enums/table-head-title-string.enum';
+
 @Pipe({ name: 'tableDoubleHeadText', standalone: true })
 export class TableDoubleHeadTextPipe implements PipeTransform {
     transform(column: any, tableData: any): string {
@@ -94,6 +96,12 @@ export class TableDoubleHeadTextPipe implements PipeTransform {
             : tableHeadTitle === TableHeadTitleStringEnum.NAME &&
               gridNameTitle === TableHeadTitleStringEnum.USER
             ? TableHeadTitleStringEnum.BANK
+            : tableHeadTitle === TableHeadTitleStringEnum.PICKUP &&
+              gridNameTitle === TableHeadTitleStringEnum.CUSTOMER
+            ? TableHeadTitleStringEnum.AVG_WAIT_TIME
+            : tableHeadTitle === TableHeadTitleStringEnum.SHIPPING &&
+              gridNameTitle === TableHeadTitleStringEnum.CUSTOMER
+            ? TableHeadTitleStringEnum.AVAILABLE_HOURS
             : TableHeadTitleStringEnum.MVR;
     }
 }

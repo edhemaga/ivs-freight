@@ -323,6 +323,7 @@
                             mainTooltip="Close"
                             tooltipBackground="#424242"
                             position="bottom"
+                            (click)="onAction('close')"
                         >
                             <svg-icon
                                 class="modal-close"
@@ -331,7 +332,6 @@
                                     'width.px': '13',
                                     'height.px': '13'
                                 }"
-                                (click)="onAction('close')"
                             ></svg-icon>
                         </div>
                     </ng-container>
