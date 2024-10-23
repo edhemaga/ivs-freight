@@ -271,7 +271,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
                     this.disableCardAnimation = true;
 
                     this.editCompanyDivision();
-                }, 300);
+                }, 500);
             } else if (this.editData.type === SettingsModalEnum.NEW_DIVISION) {
                 this.companyForm.get('starting').setValue('100');
             }
@@ -285,7 +285,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
         if (this.editData.type === SettingsModalEnum.EDIT_COMPANY) {
             setTimeout(() => {
                 this.editCompany(this.editData.company);
-            }, 300);
+            }, 500);
 
             this.disableCardAnimation = true;
         }
@@ -295,7 +295,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
 
             setTimeout(() => {
                 this.editCompany(this.editData.company);
-            }, 300);
+            }, 500);
 
             this.disableCardAnimation = true;
         }
@@ -312,7 +312,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
                 .subscribe((data: CompanyResponse) => {
                     setTimeout(() => {
                         this.editCompany(data);
-                    }, 300);
+                    }, 500);
 
                     this.editData.data = data;
                 });
@@ -326,7 +326,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
                 .subscribe((isFormChange: boolean) => {
                     this.isFormDirty = isFormChange;
                 });
-        }, 300);
+        }, 500);
     }
 
     private createDivisionForm(): void {
