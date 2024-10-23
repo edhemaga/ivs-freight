@@ -992,7 +992,7 @@
                                 <div class="row last-row">
                                     <div class="col-6">
                                         <app-ta-input-dropdown
-                                            formControlName="customerPayTerm"
+                                            formControlName="payTerm"
                                             [inputConfig]="{
                                                 name: 'Input Dropdown',
                                                 type: 'text',
@@ -1003,7 +1003,7 @@
                                             [options]="payTermOptions"
                                             [activeItem]="selectedPayTerm"
                                             (selectedItem)="
-                                                onSelectDropDown(
+                                                onSelectDropdown(
                                                     $event,
                                                     'pay-term'
                                                 )
