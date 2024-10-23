@@ -67,8 +67,13 @@ export class FilterStateService implements OnDestroy {
     //     this.filterStateStore.remove(id);
     // }
 
-    public getTruckType() {
-        const truckType = this.TruckTypeService.apiTrucktypeFilterGet()
+    public getTruckType(isDispatchFilter?) {
+        const truckType = this.TruckTypeService.apiTrucktypeFilterGet(
+            '',
+            !isDispatchFilter
+                ? this.getSelectedTab(TableStringEnum.TRUCK_TABLE_VIEW)
+                : 1
+        )
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: (data: any) => {
@@ -81,8 +86,13 @@ export class FilterStateService implements OnDestroy {
             });
     }
 
-    public getTrailerType() {
-        const trailerType = this.TrailerTypeService.apiTrailertypeFilterGet()
+    public getTrailerType(isDispatchFilter?) {
+        const trailerType = this.TrailerTypeService.apiTrailertypeFilterGet(
+            '',
+            !isDispatchFilter
+                ? this.getSelectedTab(TableStringEnum.TRAILER_TAB_VIEW)
+                : 1
+        )
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: (data: any) => {

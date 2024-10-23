@@ -1,0 +1,145 @@
+@import 'src/theme/variables';
+
+.user-profile-wrapper {
+    width: 318px;
+    height: 100%;
+
+    .header {
+        padding-left: 6px;
+        padding-right: 6px;
+
+        &-text {
+            margin: auto auto auto 0;
+        }
+        &-close-icon {
+            margin: auto 2px auto auto;
+            &:hover {
+                cursor: pointer;
+            }
+        }
+    }
+
+    .user-profile-content {
+        height: fit-content;
+        overflow-y: auto;
+
+        padding: 6px;
+    }
+
+    .basic-info {
+        height: fit-content;
+
+        padding: 0 6px;
+
+        .text {
+            max-width: 220px;
+            padding-left: 12px;
+
+            &-name {
+                line-height: 20px;
+                font-size: 16px;
+                padding-bottom: 4px;
+                color: $ta-black;
+            }
+
+            &-type {
+                line-height: 18px;
+                font-size: 14px;
+                padding-bottom: 4px;
+                color: $ta-light-grey-2;
+            }
+
+            .activity {
+                line-height: 18px;
+
+                &-text {
+                    .icon-wrapper {
+                        padding-right: 4px;
+                    }
+                    font-size: 11px;
+                    color: $ta-black;
+                }
+            }
+        }
+    }
+
+    .title {
+        line-height: 18px;
+        font-size: 14px;
+        padding: 4px 6px;
+        margin: auto 0 auto 0;
+    }
+
+    .horizontal-border {
+        height: 8px;
+        width: auto;
+        margin: 4px 2px;
+        border-bottom: 1px solid $bw-9;
+    }
+
+    .additional-info {
+        height: fit-content;
+
+        &-row {
+            height: 26px;
+            line-height: 18px;
+            font-size: 14px;
+            padding: 4px 6px;
+
+            svg-icon {
+                margin-right: 4px;
+            }
+
+            &-text {
+                font-size: 11px;
+
+                &.highlighted {
+                    color: $ta-black;
+                }
+
+                &.muted {
+                    color: $bw5;
+                }
+            }
+        }
+    }
+}
+
+.white-background {
+    background-color: $white;
+}
+
+.gradient-background {
+    background: linear-gradient(
+        180deg,
+        rgba(255, 255, 255, 1) 0%,
+        rgba(238, 238, 238, 1) 50%,
+        rgba(238, 238, 238, 1) 100%
+    );
+}
+
+.dot {
+    margin: auto 4px;
+    text-align: center;
+    position: relative;
+    top: -3px;
+}
+
+.profile-illustration-wrapper {
+    position: relative;
+    border: 1px solid $white;
+}
+.remaining-participants {
+    height: 25px;
+    width: 25px;
+    border: 1px solid $white;
+    background-color: $ta-light-grey-2;
+    color: $white;
+    line-height: 11px;
+    font-size: 9px;
+
+    &-number {
+        height: min-content;
+        margin: auto;
+    }
+}

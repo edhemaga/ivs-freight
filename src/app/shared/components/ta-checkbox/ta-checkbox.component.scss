@@ -160,7 +160,7 @@
         }
 
         .ta-checkbox-label {
-            color: #dadada !important;
+            color: $ta-light-grey-2 !important;
         }
 
         &.disabled-valid {
@@ -241,6 +241,7 @@
         }
 
         .ta-checkbox-label {
+            color: $ta-light-grey-2;
             font-weight: 400;
             color: $bw6-2;
         }

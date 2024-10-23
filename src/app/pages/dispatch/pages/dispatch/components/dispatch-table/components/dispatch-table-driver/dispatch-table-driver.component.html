@@ -251,7 +251,7 @@
     </ng-container>
 
     <ng-template #driverDropdown>
-        <app-ta-input-dropdown
+        <app-ca-input-dropdown
             [formControl]="driverFormControl"
             [template]="'svgtext-dispatch-template'"
             [inputConfig]="driverInputConfig"
@@ -260,7 +260,7 @@
             [canOpenModal]="true"
             [activeItem]="null"
             (selectedItem)="addDriver($event)"
-        ></app-ta-input-dropdown>
+        ></app-ca-input-dropdown>
     </ng-template>
 </div>
 

@@ -98,6 +98,7 @@ import {
 import { ModalTableTypeEnum } from '@shared/enums/modal-table-type.enum';
 import { TableStringEnum } from '@shared/enums/table-string.enum';
 import { TaModalActionEnums } from '@shared/components/ta-modal/enums';
+import { LoadStatusEnum } from '@shared/enums/load-status.enum';
 
 // models
 import {
@@ -155,7 +156,7 @@ import {
 
 // Svg Routes
 import { LoadModalSvgRoutes } from '@pages/load/pages/load-modal/utils/svg-routes/load-modal-svg-routes';
-import { CaMapComponent, ICaMapProps } from 'ca-components';
+import { CaMapComponent, ICaMapProps, CaInputDropdownComponent, CaInputComponent  } from 'ca-components';
 
 @Component({
     selector: 'app-load-modal',
@@ -174,8 +175,6 @@ import { CaMapComponent, ICaMapProps } from 'ca-components';
         TaAppTooltipV2Component,
         TaModalComponent,
         TaTabSwitchComponent,
-        TaInputDropdownComponent,
-        TaInputComponent,
         TaCustomCardComponent,
         TaCheckboxComponent,
         LoadModalStopComponent,
@@ -191,6 +190,8 @@ import { CaMapComponent, ICaMapProps } from 'ca-components';
         TaInputDropdownStatusComponent,
         TaModalTableComponent,
         CaMapComponent,
+        CaInputDropdownComponent,
+        CaInputComponent,
 
         // pipes
         FinancialCalculationPipe,
@@ -4973,6 +4974,12 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                         stop.depart = _stop.depart;
                     }
                 });
+
+                const isUserReversingFromInvoicedStatus =
+                    this.originalStatus === LoadStatusEnum[8] &&
+                    this.isPreviousStatus;
+                    
+                if (isUserReversingFromInvoicedStatus) newData.invoicedDate = null;
 
                 if (this.isLoadClosed)
                     newData.statusHistory = response.statusHistory;

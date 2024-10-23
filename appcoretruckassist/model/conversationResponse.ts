@@ -9,15 +9,19 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { CompanyUserShortResponse } from './companyUserShortResponse';
+import { CompanyUserChatShortResponse } from './companyUserChatShortResponse';
+import { EnumValue } from './enumValue';
 
 
 export interface ConversationResponse { 
     id?: number;
-    participants?: Array<CompanyUserShortResponse> | null;
+    participants?: Array<CompanyUserChatShortResponse> | null;
     name?: string | null;
     description?: string | null;
     createdAt?: string;
     updatedAt?: string;
+    conversationType?: EnumValue;
+    channelType?: EnumValue;
+    isArchived?: boolean | null;
 }
 
