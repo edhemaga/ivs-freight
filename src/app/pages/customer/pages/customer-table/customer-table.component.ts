@@ -1330,8 +1330,6 @@ export class CustomerTableComponent
     private setCustomerData(td: CardTableData): void {
         this.columns = td.gridColumns;
 
-        console.log('this.columns ', this.columns);
-
         if (td.data.length) {
             this.viewData = td.data;
             this.viewData = this.viewData.map(
@@ -1366,8 +1364,6 @@ export class CustomerTableComponent
     }
 
     private mapBrokerData(data: BrokerResponse): MappedShipperBroker {
-        console.log('BROKER data', data);
-
         return {
             ...data,
             isSelected: false,
@@ -1460,8 +1456,6 @@ export class CustomerTableComponent
     }
 
     private mapShipperData(data: ShipperResponse): MappedShipperBroker {
-        console.log('SHIPPER data', data);
-
         return {
             ...data,
             isSelected: false,
