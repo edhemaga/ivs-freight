@@ -1197,6 +1197,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                 filter.active,
                 filter.pinned,
                 filter.companyOwned,
+                false,
                 filter.categoryIds,
                 filter.long,
                 filter.lat,
