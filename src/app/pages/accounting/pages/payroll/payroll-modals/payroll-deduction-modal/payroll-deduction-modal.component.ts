@@ -8,14 +8,20 @@ import {
 } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 
+// Models
+import { CreatePayrollDeductionCommand } from 'appcoretruckassist';
+
+// Services
+import { PayrollDeductionService } from './services/payroll-deduction.service';
+
 // Enums
 import { PayrollStringEnum } from '@pages/accounting/pages/payroll/state/enums';
 
-// Components
-import { PayrollBaseModalComponent } from '../payroll-base-modal/payroll-base-modal.component';
-import { PayrollDeductionService } from './services/payroll-deduction.service';
-import { CreatePayrollDeductionCommand } from 'appcoretruckassist';
+// Helpers
 import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calculations.helper';
+
+// Components
+import { PayrollBaseModalComponent } from '@pages/accounting/pages/payroll/payroll-modals/payroll-base-modal/payroll-base-modal.component';
 
 @Component({
     selector: 'app-payroll-deduction-modal',
@@ -61,7 +67,6 @@ export class PayrollDeductionModalComponent implements OnInit {
 
     private generateModel(): CreatePayrollDeductionCommand {
       return {
-        // TODO: GET VALUES DYNAMIC FOR THIS 4 FIELDS, ALSO SET VALIDATORS BASED ON CHECKBOXES 
           type: this.payrollCreditForm.get(PayrollStringEnum.SELECTED_TYPE_ID).value,
           recurringType: this.payrollCreditForm.get(PayrollStringEnum.RECURRING_TYPE).value,
           driverId: this.payrollCreditForm.get(PayrollStringEnum.SELECTED_DRIVER_ID).value,

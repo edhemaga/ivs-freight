@@ -7,6 +7,8 @@ import {
     Validators,
 } from '@angular/forms';
 import { AngularSvgIconModule } from 'angular-svg-icon';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { Subject, takeUntil } from 'rxjs';
 
 // Components
 import {
@@ -16,9 +18,14 @@ import {
 } from 'ca-components';
 import { TaTabSwitchComponent } from '@shared/components/ta-tab-switch/ta-tab-switch.component';
 import { TaCheckboxComponent } from '@shared/components/ta-checkbox/ta-checkbox.component';
+import { TaInputComponent } from '@shared/components/ta-input/ta-input.component';
 
+// Const
 import { PayrollCreditConst } from '@pages/accounting/pages/payroll/state/utils/consts';
 import { PayrollStringEnum } from '@pages/accounting/pages/payroll/state/enums';
+import { PayrollSvgRoutes } from '@pages/accounting/pages/payroll/state/utils';
+
+// Models
 import { TabOptions } from '@shared/components/ta-tab-switch/models/tab-options.model';
 import {
     DriverMinimalResponse,
@@ -26,10 +33,10 @@ import {
     PayrollCreditModalResponse,
     TruckMinimalResponse,
 } from 'appcoretruckassist';
-import { Subject, takeUntil } from 'rxjs';
-import { PayrollCreditService } from '../payroll-credit-bonus/services/payroll-credit.service';
-import { PayrollSvgRoutes } from '../../state/utils';
-import { TaInputComponent } from '@shared/components/ta-input/ta-input.component';
+import { ITaInput } from '@shared/components/ta-input/config/ta-input.config';
+
+// Services
+import { PayrollCreditService } from '@pages/accounting/pages/payroll/payroll-modals/payroll-credit-bonus/services/payroll-credit.service';
 
 @Component({
     selector: 'app-payroll-base-modal',
@@ -72,7 +79,8 @@ export class PayrollBaseModalComponent implements OnInit {
     public creditTitle: string = '';
     public periodTabs: TabOptions[];
 
-    constructor(private payrolCreditService: PayrollCreditService) {}
+    constructor(private payrolCreditService: PayrollCreditService, 
+        private ngbActiveModal: NgbActiveModal) {}
 
     ngOnInit() {
         this.initForm();
@@ -96,12 +104,18 @@ export class PayrollBaseModalComponent implements OnInit {
     }
 
     private setupEventListeners(): void {
+        this.setupDeductionListeners();
+    }
+
+    private setupDeductionListeners() {
+        if(!this.isDeductionModal) return;
+
         this.baseForm
             .get(PayrollStringEnum.RECURRING)
             .valueChanges.subscribe((value) => {
                 const payAmount = this.baseForm.get(PayrollStringEnum.LIMITED_AMOUNT);
                 const numberOfPayments = this.baseForm.get(PayrollStringEnum.LIMITED_NUMBER);
-                
+
                 if (value) {
                     const tabToCheck = this.periodTabs[0];
                     tabToCheck.checked = true;
@@ -120,8 +134,6 @@ export class PayrollBaseModalComponent implements OnInit {
                 payAmount.updateValueAndValidity();
                 numberOfPayments.updateValueAndValidity();
             });
-
- 
     }
 
     private driverAndTruckDropdowns(): void {
@@ -132,7 +144,6 @@ export class PayrollBaseModalComponent implements OnInit {
                 next: (res: PayrollCreditModalResponse) => {
                     this.mapDrivers(res.drivers);
                     this.mapTrucks(res.trucks);
-                    // this.populateForm();
                 },
                 error: () => {},
             });
@@ -217,13 +228,17 @@ export class PayrollBaseModalComponent implements OnInit {
     }
 
     public get isNotRecuringPayment(): boolean {
-        return !this.baseForm.get(PayrollStringEnum.RECURRING).value;
+        return this.isDeductionModal && !this.baseForm.get(PayrollStringEnum.RECURRING)?.value;
     }
 
-    public get driverConfig() {
+    public get driverConfig(): ITaInput {
         return this.payrollCreditConst.driverConfig(
             this.selectedDriver?.logoName,
             this.selectedDriver?.name
         );
+    }
+
+    public onCloseModal(): void {
+        this.ngbActiveModal.close();
     }
 }

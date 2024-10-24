@@ -9,47 +9,30 @@ import {
 import { CommonModule } from '@angular/common';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { AngularSvgIconModule } from 'angular-svg-icon';
-import { Subject, takeUntil } from 'rxjs';
+import { Subject } from 'rxjs';
 
 // Services
-import { PayrollCreditService } from './services/payroll-credit.service';
+import { PayrollCreditService } from '@pages/accounting/pages/payroll/payroll-modals/payroll-credit-bonus/services/payroll-credit.service';
 
 // Models
-import { TabOptions } from '@shared/components/ta-tab-switch/models/tab-options.model';
 import {
     PayrollActionType,
     PayrollModal,
 } from '@pages/accounting/pages/payroll/state/models';
 import {
     CreatePayrollCreditCommand,
-    DriverMinimalResponse,
-    EnumValue,
-    PayrollCreditModalResponse,
-    PayrollCreditType,
     PayrollService,
-    TruckMinimalResponse,
 } from 'appcoretruckassist';
 
 // Helpers
+import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calculations.helper';
+
+// Enums
 import { PayrollStringEnum } from '@pages/accounting/pages/payroll/state/enums';
 import { TaModalActionEnums } from '@shared/components/ta-modal/enums';
 
-import { PayrollSvgRoutes } from '@pages/accounting/pages/payroll/state/utils';
-
-import { PayrollCreditConst } from '@pages/accounting/pages/payroll/state/utils/consts';
-
-import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calculations.helper';
-
 // Components
-import {
-    CaInputComponent,
-    CaInputDropdownComponent,
-    CaModalComponent,
-} from 'ca-components';
-import { TaTabSwitchComponent } from '@shared/components/ta-tab-switch/ta-tab-switch.component';
-
-// Pipes
-import { FormatDatePipe } from '@shared/pipes/format-date.pipe';
+import { PayrollBaseModalComponent } from '@pages/accounting/pages/payroll/payroll-modals/payroll-base-modal/payroll-base-modal.component';
 
 @Component({
     selector: 'app-payroll-credit-bonus',
@@ -64,12 +47,7 @@ import { FormatDatePipe } from '@shared/pipes/format-date.pipe';
         AngularSvgIconModule,
 
         // Component
-        CaModalComponent,
-        TaTabSwitchComponent,
-        CaInputComponent,
-        CaInputDropdownComponent,
-
-        FormatDatePipe,
+        PayrollBaseModalComponent,
     ],
 })
 export class PayrollCreditBonusComponent implements OnInit {
@@ -77,30 +55,12 @@ export class PayrollCreditBonusComponent implements OnInit {
     @Input() editData: PayrollModal;
 
     // Utils
-    public svgRoutes = PayrollSvgRoutes;
-    public payrollStrings = PayrollStringEnum;
     public taModalActionEnums = TaModalActionEnums;
 
     private destroy$ = new Subject<void>();
 
-    // State
-    public creditTitle: string = '';
-    public payrollCreditConst = PayrollCreditConst;
-
-    // Tabs
-    public tabs = this.payrollCreditConst.tabs;
-    public selectedTab: TabOptions = this.tabs[0];
-
     // Form
     public payrollCreditForm: UntypedFormGroup;
-
-    // Driver
-    public selectedDriver: any;
-    public driversDropdownList: EnumValue[];
-
-    // Trucks
-    public selectedTruck: EnumValue;
-    public trucksDropdownList: { id: number; name: string }[];
 
     constructor(
         private payrolCreditService: PayrollCreditService,
@@ -111,7 +71,6 @@ export class PayrollCreditBonusComponent implements OnInit {
 
     ngOnInit() {
         this.createForm();
-        this.getModalDropdowns();
     }
 
     private createForm(): void {
@@ -121,144 +80,24 @@ export class PayrollCreditBonusComponent implements OnInit {
             [PayrollStringEnum.DATE]: [new Date(), Validators.required],
             [PayrollStringEnum.DESCRIPTION]: [null, Validators.required],
             [PayrollStringEnum.AMOUNT]: [null, Validators.required],
+            [PayrollStringEnum.SELECTED_DRIVER_ID]: [null],
+            [PayrollStringEnum.SELECTED_TRUCK_ID]: [null],
+            [PayrollStringEnum.SELECTED_TYPE_ID]: ['Driver'],
         });
-    }
-
-    private populateForm(): void {
-        if (this.editData) {
-            const { data, creditType, selectedValue } = this.editData;
-
-            this.payrollCreditForm.patchValue({
-                [PayrollStringEnum.DATE]: new Date(data?.date ?? new Date()),
-                [PayrollStringEnum.DESCRIPTION]: data?.description ?? null,
-                [PayrollStringEnum.AMOUNT]: data?.amount ?? null,
-                [PayrollStringEnum.DRIVER_ID]: data?.driverId ?? null,
-                [PayrollStringEnum.TRUCK_ID]: data?.truckId ?? null,
-            });
-
-            if (creditType === PayrollCreditType.Driver) {
-                this.onTabChange(this.tabs[0]);
-                const driver = this.driversDropdownList.find(
-                    (_driver) => _driver.id === selectedValue.id
-                );
-                this.selectDriver(driver);
-            } else {
-                this.onTabChange(this.tabs[1]);
-                const truck = this.trucksDropdownList.find(
-                    (_truck) => _truck.id === selectedValue.id
-                );
-                this.selectTruck(truck);
-            }
-        }
-    }
-
-    private getModalDropdowns(): void {
-        this.payrolCreditService
-            .getPayrollCreditModal()
-            .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: (res: PayrollCreditModalResponse) => {
-                    this.mapDrivers(res.drivers);
-                    this.mapTrucks(res.trucks);
-                    this.populateForm();
-                },
-                error: () => {},
-            });
-    }
-
-    public selectTruck(truck: any): void {
-        this.selectedTruck = truck;
-        this.payrollCreditForm
-            .get(PayrollStringEnum.TRUCK_ID)
-            .patchValue(truck?.id ?? null);
-        this.creditTitle = truck?.name;
-    }
-
-    private mapTrucks(trucks: TruckMinimalResponse[]): void {
-        this.trucksDropdownList = trucks.map(({ id, truckNumber }) => {
-            return {
-                id,
-                name: truckNumber,
-            };
-        });
-    }
-
-    public selectDriver(driver: any): void {
-        this.selectedDriver = driver;
-        this.payrollCreditForm
-            .get(PayrollStringEnum.DRIVER_ID)
-            .patchValue(driver?.id ?? null);
-        this.creditTitle = driver?.name;
-    }
-
-    private mapDrivers(drivers: DriverMinimalResponse[]): void {
-        this.driversDropdownList = drivers.map(
-            ({ id, firstName, lastName, avatarFile }) => {
-                return {
-                    id,
-                    logoName: avatarFile?.url,
-                    name: firstName + ' ' + lastName,
-                    avatarFile: avatarFile?.url,
-                };
-            }
-        );
     }
 
     public get isEditMode(): boolean {
         return !!this.editData?.editCredit;
     }
 
-    public get modalTitle(): string {
-        if (this.isEditMode) return this.payrollStrings.EDIT_CREDIT;
-
-        return this.payrollStrings.ADD_CREDIT;
-    }
-
     public get isDropdownEnabled(): boolean {
-        return !this.editData?.selectedValue;
+        return true;
     }
 
-    public get driverConfig() {
-        return this.payrollCreditConst.driverConfig(
-            this.selectedDriver?.logoName,
-            this.selectedDriver?.name
-        );
-    }
+    public get modalTitle(): string {
+        if (this.isEditMode) return PayrollStringEnum.EDIT_CREDIT;
 
-    private clearValidators(): void {
-        this.payrollCreditForm
-            .get(PayrollStringEnum.DRIVER_ID)
-            .clearValidators();
-        this.payrollCreditForm
-            .get(PayrollStringEnum.TRUCK_ID)
-            .clearValidators();
-    }
-
-    // Tabs
-    public onTabChange(tab: TabOptions): void {
-        this.selectedTab = tab;
-
-        this.clearValidators();
-
-        if (tab.id === 1) {
-            this.payrollCreditForm
-                .get(PayrollStringEnum.DRIVER_ID)
-                .setValidators(Validators.required);
-        } else if (tab.id === 2) {
-            this.payrollCreditForm
-                .get(PayrollStringEnum.TRUCK_ID)
-                .setValidators(Validators.required);
-        }
-
-        // Re-validate the form to apply changes
-        this.payrollCreditForm
-            .get(PayrollStringEnum.DRIVER_ID)
-            .updateValueAndValidity();
-        this.payrollCreditForm
-            .get(PayrollStringEnum.TRUCK_ID)
-            .updateValueAndValidity();
-
-        this.creditTitle = null;
+        return PayrollStringEnum.ADD_CREDIT;
     }
 
     public onCloseModal(): void {
@@ -278,8 +117,8 @@ export class PayrollCreditBonusComponent implements OnInit {
                     if (this.isDropdownEnabled) {
                         // TODO: CHECK THIS, validators stays here all the time
                         this.createForm();
-                        this.selectDriver('');
-                        this.selectTruck('');
+                        // this.selectDriver('');
+                        // this.selectTruck('');
                     } else {
                         this.payrollCreditForm
                             .get(PayrollStringEnum.DATE)
@@ -303,9 +142,11 @@ export class PayrollCreditBonusComponent implements OnInit {
                     this.onCloseModal();
                 });
         } else if (action === TaModalActionEnums.MOVE_TO_THIS_PERIOD) {
-            this.payrollService.apiPayrollBonusMoveIdPut(this.editData.editCredit.id).subscribe(response => {
-                this.onCloseModal();
-            })
+            this.payrollService
+                .apiPayrollBonusMoveIdPut(this.editData.editCredit.id)
+                .subscribe((response) => {
+                    this.onCloseModal();
+                });
         } else if (action === TaModalActionEnums.DELETE) {
             this.payrolCreditService
                 .deletePayrollCreditById(this.editData.editCredit.id)
@@ -317,9 +158,14 @@ export class PayrollCreditBonusComponent implements OnInit {
 
     private generateCreditModel(): CreatePayrollCreditCommand {
         return {
-            type: this.selectedTab.name as PayrollCreditType,
-            driverId: this.selectedTab.id === 1 ? this.selectedDriver.id : null,
-            truckId: this.selectedTab.id === 2 ? this.selectedTruck.id : null,
+            type: this.payrollCreditForm.get(PayrollStringEnum.SELECTED_TYPE_ID)
+                .value,
+            driverId: this.payrollCreditForm.get(
+                PayrollStringEnum.SELECTED_DRIVER_ID
+            ).value,
+            truckId: this.payrollCreditForm.get(
+                PayrollStringEnum.SELECTED_TRUCK_ID
+            ).value,
             description: this.payrollCreditForm.get(
                 PayrollStringEnum.DESCRIPTION
             ).value,
