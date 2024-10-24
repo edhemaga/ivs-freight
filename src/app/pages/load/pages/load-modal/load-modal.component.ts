@@ -1610,7 +1610,6 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                 break;
             case LoadModalStringEnum.DISPATCHER:
                 this.selectedDispatcher = event;
-                console.log(this.selectedDispatcher);
                 if (this.selectedDispatcher) {
                     this.labelsDispatches = this.originLabelsDispatches.filter(
                         (item) =>
@@ -4418,8 +4417,6 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                             logoName: item?.avatarFile?.url,
                         };
                     });
-
-                    console.log(this.labelsDispatcher);
 
                     this.paymentMethodsDropdownList = res.paymentMethods;
 
