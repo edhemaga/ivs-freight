@@ -4579,7 +4579,7 @@
                                             column.title !== 'Endorsement' &&
                                             column.title !== 'Restriction'
                                         "
-                                        >
+                                    >
                                         <div
                                             class="d-flex align-items-center td-content"
                                             [ngStyle]="{
@@ -5575,29 +5575,32 @@
                                     </div>
 
                                     <!-- COMMENT COLUMN -->
-                                    <div
-                                        class="td-content set-right"
+
+                                    <ng-container
                                         *ngIf="column.ngTemplate === 'comment'"
-                                        [ngStyle]="{
-                                            width: column.width + 'px',
-                                            'min-width.px': column?.minWidth
-                                                ? column.minWidth
-                                                : 'unset'
-                                        }"
                                     >
-                                        <div class="comment-container">
-                                            <app-ta-input-dropdown-table
-                                                [data]="row"
-                                                [type]="'comment'"
-                                                [searchPlaceholder]="
-                                                    'Find Title'
-                                                "
-                                                [svg]="
-                                                    'assets/svg/detail-cards/comment - count.svg'
-                                                "
-                                            ></app-ta-input-dropdown-table>
+                                        <div
+                                            class="td-content"
+                                            [ngStyle]="{
+                                                width: column.width + 'px',
+                                                'min-width.px':
+                                                    column?.minWidth ?? 'unset'
+                                            }"
+                                        >
+                                            <div class="comment-container">
+                                                <app-ta-input-dropdown-table
+                                                    [data]="row"
+                                                    [type]="'comment'"
+                                                    [searchPlaceholder]="
+                                                        'Find Title'
+                                                    "
+                                                    [svg]="
+                                                        'assets/svg/detail-cards/comment - count.svg'
+                                                    "
+                                                ></app-ta-input-dropdown-table>
+                                            </div>
                                         </div>
-                                    </div>
+                                    </ng-container>
 
                                     <!-- HIRE COLUMN -->
                                     <div

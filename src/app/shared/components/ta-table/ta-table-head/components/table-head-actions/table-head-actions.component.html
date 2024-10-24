@@ -5,6 +5,13 @@
             tableHeadActionsData?.tableData[0].gridNameTitle
             | tableDoubleHeadHeight
     }"
+    [ngStyle]="{
+        'margin-left':
+            tableHeadActionsData?.tableData[0].gridNameTitle === 'Truck' ||
+            tableHeadActionsData?.tableData[0].gridNameTitle === 'Trailer'
+                ? '-4px'
+                : '-12px'
+    }"
 >
     <ng-container
         *ngFor="
@@ -19,9 +26,6 @@
                 width: column.isAction ? column.width + 'px' : '0px',
                 'min-width.px': column?.width ?? 'unset',
                 display: column.isAction ? 'flex' : 'none'
-            }"
-            [ngClass]="{
-                'column-unlocked': !tableHeadActionsData?.locked
             }"
         >
             <ng-container *ngIf="column.isAction && column?.headIconStyle">

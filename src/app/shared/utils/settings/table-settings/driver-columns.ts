@@ -1127,8 +1127,8 @@ export function getDriverColumnsDefinition(tableData: DriverResponse[]) {
             field: 'note',
             name: '',
             hidden: false,
-            width: 40,
-            minWidth: 40,
+            width: 26,
+            minWidth: 26,
             headIconStyle: {
                 width: 14,
                 height: 14,
