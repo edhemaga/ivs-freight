@@ -51,7 +51,8 @@ export interface RepairShopListDto {
     stateShortName?: string | null;
     pinned?: boolean;
     note?: string | null;
-    companyOwned?: boolean;
+    companyOwned?: boolean | null;
+    isCompanyRelated?: boolean | null;
     currentCompanyUserRating?: number | null;
     latitude?: number | null;
     longitude?: number | null;
