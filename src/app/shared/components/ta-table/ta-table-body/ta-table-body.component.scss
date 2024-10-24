@@ -533,7 +533,7 @@ table.truckassist-table-body-style {
                             .work-hour-icon {
                                 margin-right: 4px;
 
-                                &.receiving {
+                                &.appointment {
                                     svg {
                                         path {
                                             fill: $ta-yellow-1;
@@ -2196,7 +2196,7 @@ table.truckassist-table-body-style {
                             display: grid;
                             grid-template-columns: repeat(3, 46px);
                             grid-gap: 12px;
-                            padding-left: 6px;
+                            padding-left: 2px;
 
                             &-box {
                                 &:nth-child(3) {

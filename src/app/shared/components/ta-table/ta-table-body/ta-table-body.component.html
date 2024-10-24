@@ -1106,7 +1106,11 @@
                                                     [tooltipColor]="'#ffff'"
                                                     position="bottom"
                                                 >
-                                                    {{ row[column.field] }}
+                                                    {{
+                                                        row[column.field]
+                                                            ?.name ||
+                                                            row[column.field]
+                                                    }}
                                                 </div>
                                             </ng-container>
 
@@ -3895,21 +3899,39 @@
                                                 <div
                                                     class="d-flex align-items-center work-hour-container"
                                                 >
-                                                    <svg-icon
-                                                        class="work-hour-icon"
-                                                        [ngClass]="{
-                                                            receiving:
-                                                                column.title ===
-                                                                'Receiving'
-                                                        }"
-                                                        [src]="
-                                                            tableBodySvgRoutes.workHourRoute
+                                                    <div
+                                                        ngbTooltip
+                                                        [mainTooltip]="
+                                                            (column?.title ===
+                                                                'Shipping' &&
+                                                                row?.shippingAppointment) ||
+                                                            (column?.title ===
+                                                                'Receiving' &&
+                                                                row?.receivingAppointment)
+                                                                ? 'Appointment'
+                                                                : 'Open Hours'
                                                         "
-                                                        [svgStyle]="{
-                                                            'width.px': 14,
-                                                            'height.px': 14
-                                                        }"
-                                                    ></svg-icon>
+                                                        tooltipBackground="#424242"
+                                                        position="bottom"
+                                                    >
+                                                        <svg-icon
+                                                            class="work-hour-icon"
+                                                            [ngClass]="{
+                                                                appointment:
+                                                                    column?.title ===
+                                                                    'Shipping'
+                                                                        ? row?.shippingAppointment
+                                                                        : row.receivingAppointment
+                                                            }"
+                                                            [src]="
+                                                                tableBodySvgRoutes.workHourRoute
+                                                            "
+                                                            [svgStyle]="{
+                                                                'width.px': 14,
+                                                                'height.px': 14
+                                                            }"
+                                                        ></svg-icon>
+                                                    </div>
 
                                                     <p class="m-0">
                                                         {{ row[column.field] }}

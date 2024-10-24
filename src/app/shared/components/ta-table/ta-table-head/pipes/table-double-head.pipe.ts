@@ -3,7 +3,13 @@ import { TableHeadTitleStringEnum } from '../enums/table-head-title-string.enum'
 
 @Pipe({ name: 'tableDoubleHead', standalone: true })
 export class TableDoubleHeadPipe implements PipeTransform {
-    transform(column: any, tableData: any, isOuterCondition: boolean): boolean {
+    transform<
+        T extends {
+            tableHeadTitle: string;
+            index: number;
+            gridNameTitle: string;
+        }
+    >(column: T, tableData: T, isOuterCondition: boolean): boolean {
         const { tableHeadTitle, index } = column;
         const { gridNameTitle } = tableData;
 

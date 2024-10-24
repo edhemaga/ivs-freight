@@ -6,11 +6,7 @@
             | tableDoubleHeadHeight
     }"
     [ngStyle]="{
-        'margin-left':
-            tableHeadActionsData?.tableData[0].gridNameTitle === 'Truck' ||
-            tableHeadActionsData?.tableData[0].gridNameTitle === 'Trailer'
-                ? '-4px'
-                : '-12px'
+        'margin-left': isDisplayBorder ? '-4px' : '-12px'
     }"
 >
     <ng-container

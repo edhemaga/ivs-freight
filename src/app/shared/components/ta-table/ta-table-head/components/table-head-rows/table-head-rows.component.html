@@ -136,6 +136,13 @@
                     >
                         <div
                             class="d-flex flex-column justify-content-center th-title-double"
+                            [ngClass]="{
+                                'sort-active':
+                                    column.sortDirection !== '' &&
+                                    column.sortDirection,
+                                'th-title-locked-cursor':
+                                    tableHeadRowsData?.locked
+                            }"
                             [ngStyle]="{
                                 'width.px':
                                     column.resizable &&
