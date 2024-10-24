@@ -1,0 +1,15 @@
+.d-grid {
+    column-gap: 12px;
+
+    &-pay-period {
+        grid-template-columns: 91px 353px; 
+    }
+
+    &-two-cols {
+        grid-template-columns: 222px 222px;
+    }
+
+    &-limited {
+        grid-template-columns: 91px 191px 150px;
+    }
+}

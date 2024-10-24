@@ -26,6 +26,7 @@ import {
     EnumValue,
     PayrollCreditModalResponse,
     PayrollCreditType,
+    PayrollService,
     TruckMinimalResponse,
 } from 'appcoretruckassist';
 
@@ -103,6 +104,7 @@ export class PayrollCreditBonusComponent implements OnInit {
 
     constructor(
         private payrolCreditService: PayrollCreditService,
+        private payrollService: PayrollService,
         private ngbActiveModal: NgbActiveModal,
         private formBuilder: UntypedFormBuilder
     ) {}
@@ -301,7 +303,9 @@ export class PayrollCreditBonusComponent implements OnInit {
                     this.onCloseModal();
                 });
         } else if (action === TaModalActionEnums.MOVE_TO_THIS_PERIOD) {
-            console.log('MOVE_TO_THIS_PERIOD');
+            this.payrollService.apiPayrollBonusMoveIdPut(this.editData.editCredit.id).subscribe(response => {
+                this.onCloseModal();
+            })
         } else if (action === TaModalActionEnums.DELETE) {
             this.payrolCreditService
                 .deletePayrollCreditById(this.editData.editCredit.id)

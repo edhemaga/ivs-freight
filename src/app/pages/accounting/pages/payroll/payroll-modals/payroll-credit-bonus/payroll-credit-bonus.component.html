@@ -9,17 +9,19 @@
         <div class="divider divider--dark divider--small"></div>
 
         <ng-container *ngIf="isDropdownEnabled">
-            <app-ta-tab-switch
-                [tabs]="tabs"
-                (switchClicked)="onTabChange($event)"
-                [type]="'type2-modal-popup type2-modal-popup-header'"
-            >
-            </app-ta-tab-switch>
+            <div class="payroll-credit--body">
+                <app-ta-tab-switch
+                    [tabs]="tabs"
+                    (switchClicked)="onTabChange($event)"
+                    [type]="'type2-modal-popup type2-modal-popup-header'"
+                >
+                </app-ta-tab-switch>
+            </div>
         </ng-container>
 
-        <form [formGroup]="payrollCreditForm" class="payroll-credit--body">
+        <form [formGroup]="payrollCreditForm">
             <div class="row">
-                <ngc-container *ngIf="isDropdownEnabled">
+                <ng-container *ngIf="isDropdownEnabled">
                     <div class="col-12 payroll-mb-32">
                         <ng-container
                             *ngIf="selectedTab?.id === 1; else showTruck"
@@ -45,7 +47,7 @@
                             ></app-ca-input-dropdown>
                         </ng-template>
                     </div>
-                </ngc-container>
+                </ng-container>
 
                 <div class="col-12 payroll-mb-32">
                     <app-ca-input

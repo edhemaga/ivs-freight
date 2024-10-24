@@ -1,6 +1,7 @@
-import { TabOptions } from "@shared/components/ta-tab-switch/models/tab-options.model";
+import { TabOptions } from '@shared/components/ta-tab-switch/models/tab-options.model';
 import { PayrollStringEnum } from '@pages/accounting/pages/payroll/state/enums';
-import { ITaInput } from "@shared/components/ta-input/config/ta-input.config";
+import { ITaInput } from '@shared/components/ta-input/config/ta-input.config';
+import { PayrollDeductionRecurringType } from 'appcoretruckassist';
 
 export class PayrollCreditConst {
     static tabs: TabOptions[] = [
@@ -16,24 +17,39 @@ export class PayrollCreditConst {
         },
     ];
 
+    static periodTabs: TabOptions[] = [
+        {
+            value: PayrollDeductionRecurringType.Weekly,
+            name: 'WEEKLY',
+            checked: false,
+            id: 1,
+        },
+        {
+            id: 2,
+            value: PayrollDeductionRecurringType.Monthly,
+            name: 'MONTHLY',
+            checked: false,
+        },
+    ];
+
     static driverConfig(logoName: string, name: string): ITaInput {
         return {
             name: 'Input Dropdown',
-        type: 'text',
-        label: 'Driver',
-        isDropdown: true,
-        dropdownWidthClass: 'w-col-456',
-        dropdownImageInput: {
-            withText: true,
-            svg: false,
-            image: true,
-            url: logoName,
-            nameInitialsInsteadUrl: !logoName ? name : null,
-            template: 'user',
-        },
-        isBlueDropdown: true,
-        isRequired: true
-        }
+            type: 'text',
+            label: 'Driver',
+            isDropdown: true,
+            dropdownWidthClass: 'w-col-456',
+            dropdownImageInput: {
+                withText: true,
+                svg: false,
+                image: true,
+                url: logoName,
+                nameInitialsInsteadUrl: !logoName ? name : null,
+                template: 'user',
+            },
+            isBlueDropdown: true,
+            isRequired: true,
+        };
     }
 
     static truckConfig: ITaInput = {
@@ -43,8 +59,8 @@ export class PayrollCreditConst {
         isDropdown: true,
         dropdownWidthClass: 'w-col-456',
         isBlueDropdown: true,
-        isRequired: true
-    }
+        isRequired: true,
+    };
 
     static descriptionField: ITaInput = {
         name: 'Description',
@@ -53,8 +69,8 @@ export class PayrollCreditConst {
         minLength: 2,
         maxLength: 160,
         textTransform: 'capitalize',
-        isRequired: true
-    }
+        isRequired: true,
+    };
 
     static datepickerField: ITaInput = {
         name: 'datepicker',
@@ -63,8 +79,8 @@ export class PayrollCreditConst {
         isDropdown: true,
         placeholderIcon: 'date',
         isRequired: true,
-        customClass: 'datetimeclass'
-    }
+        customClass: 'datetimeclass',
+    };
 
     static ammountField: ITaInput = {
         name: 'Amount',
@@ -75,5 +91,50 @@ export class PayrollCreditConst {
         isRequired: true,
         thousandSeparator: true,
         placeholderIcon: 'dollar',
+    };
+
+    static limitedAmountField(isDisabled): ITaInput {
+        return {
+            isDisabled,
+            name: 'Pay Amount',
+            label: 'Pay Amount',
+            type: 'text',
+            minLength: 4,
+            maxLength: 11,
+            isRequired: true,
+            thousandSeparator: true,
+            placeholderIcon: 'dollar',
+        };
+    }
+
+    static limitedNumberField(
+        svgRoutes: {
+            iconDecrementSvgRoute: string;
+            iconIncrementSvgRoute: string;
+        },
+        isDisabled: boolean
+    ): ITaInput {
+        return {
+            id: 'No. of Payments',
+            name: 'numberOfPayments',
+            type: 'text',
+            placeholderText: 'months',
+            label: 'No. of Payments',
+            isRequired: true,
+            hideClear: true,
+            isDisabled,
+            commands: {
+                active: true,
+                type: 'months',
+                firstCommand: {
+                    name: 'minus',
+                    svg: svgRoutes.iconDecrementSvgRoute,
+                },
+                secondCommand: {
+                    name: 'plus',
+                    svg: svgRoutes.iconIncrementSvgRoute,
+                },
+            },
+        };
     }
 }

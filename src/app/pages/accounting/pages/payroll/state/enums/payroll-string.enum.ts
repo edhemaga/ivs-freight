@@ -10,4 +10,12 @@ export enum PayrollStringEnum {
     AMOUNT = 'amount',
     EDIT = 'edit',
     CREATE = 'create',
+    RECURRING = 'recurring',
+    LIMITED = 'limited',
+    LIMITED_NUMBER = 'limitedNumber',
+    LIMITED_AMOUNT = 'limitedAmount',
+    RECURRING_TYPE = 'reccuringType',
+    SELECTED_DRIVER_ID = 'selected-driver-id',
+    SELECTED_TRUCK_ID = 'selected-truck-id',
+    SELECTED_TYPE_ID = 'selected-type-id',
 }
