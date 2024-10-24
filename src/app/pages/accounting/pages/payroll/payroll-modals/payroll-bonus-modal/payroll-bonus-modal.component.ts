@@ -7,10 +7,9 @@ import {
     Validators,
 } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { PayrollBaseModalComponent } from '../payroll-base-modal/payroll-base-modal.component';
-import { PayrollCreditConst } from '../../state/utils/consts';
 
 // Components
+import { PayrollBaseModalComponent } from '@pages/accounting/pages/payroll/payroll-modals/payroll-base-modal/payroll-base-modal.component';
 
 @Component({
     selector: 'app-payroll-bonus-modal',

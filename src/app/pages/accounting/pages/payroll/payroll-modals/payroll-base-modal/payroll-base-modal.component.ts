@@ -79,8 +79,10 @@ export class PayrollBaseModalComponent implements OnInit {
     public creditTitle: string = '';
     public periodTabs: TabOptions[];
 
-    constructor(private payrolCreditService: PayrollCreditService, 
-        private ngbActiveModal: NgbActiveModal) {}
+    constructor(
+        private payrolCreditService: PayrollCreditService,
+        private ngbActiveModal: NgbActiveModal
+    ) {}
 
     ngOnInit() {
         this.initForm();
@@ -108,13 +110,17 @@ export class PayrollBaseModalComponent implements OnInit {
     }
 
     private setupDeductionListeners() {
-        if(!this.isDeductionModal) return;
+        if (!this.isDeductionModal) return;
 
         this.baseForm
             .get(PayrollStringEnum.RECURRING)
             .valueChanges.subscribe((value) => {
-                const payAmount = this.baseForm.get(PayrollStringEnum.LIMITED_AMOUNT);
-                const numberOfPayments = this.baseForm.get(PayrollStringEnum.LIMITED_NUMBER);
+                const payAmount = this.baseForm.get(
+                    PayrollStringEnum.LIMITED_AMOUNT
+                );
+                const numberOfPayments = this.baseForm.get(
+                    PayrollStringEnum.LIMITED_NUMBER
+                );
 
                 if (value) {
                     const tabToCheck = this.periodTabs[0];
@@ -228,7 +234,10 @@ export class PayrollBaseModalComponent implements OnInit {
     }
 
     public get isNotRecuringPayment(): boolean {
-        return this.isDeductionModal && !this.baseForm.get(PayrollStringEnum.RECURRING)?.value;
+        return (
+            this.isDeductionModal &&
+            !this.baseForm.get(PayrollStringEnum.RECURRING)?.value
+        );
     }
 
     public get driverConfig(): ITaInput {
