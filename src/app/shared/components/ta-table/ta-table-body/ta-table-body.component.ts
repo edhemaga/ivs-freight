@@ -197,7 +197,6 @@ export class TaTableBodyComponent
     activeDescriptionDropdown: number = -1;
     descriptionTooltip: any;
     descriptionPopoverOpen: number = -1;
-    invoiceAgingTooltip: any;
     invoiceDropdownActive: number = -1;
     invoiceDropdownType: string = null;
     invoiceDropdownData: any;
@@ -246,6 +245,9 @@ export class TaTableBodyComponent
 
     // --------------------------------NgOnInit---------------------------------
     ngOnInit(): void {
+        console.log('VIEWDATA', this.viewData);
+        console.log('TABLEDATA', this.tableData);
+
         // Get Selected Tab Data
         this.getSelectedTabTableData();
         this.viewDataEmpty = this.viewData.length ? false : true;
@@ -459,6 +461,9 @@ export class TaTableBodyComponent
     trackTableActionsColumns(item: any) {
         return item.columnId;
     }
+
+    public trackByIdentity = <T>(index: number, _: T): number => index;
+
     public labelDropdown(): void {
         this.selectedContactLabel = [];
 
@@ -910,17 +915,58 @@ export class TaTableBodyComponent
         row: any,
         column: any
     ): void {
-        this.invoiceAgingTooltip = tooltip;
-
-        if (tooltip.isOpen()) {
-            tooltip.close();
-        } else {
-            tooltip.open();
-        }
+        tooltip.isOpen() ? tooltip.close() : tooltip.open();
 
         this.invoiceDropdownActive = tooltip.isOpen() ? row.id : -1;
         this.invoiceDropdownType = tooltip.isOpen() ? column.field : null;
-        this.invoiceDropdownData = row[column.field];
+
+        let shipperData = row[column.field];
+
+        shipperData = {
+            ...shipperData,
+            invoiceAgeingGroupOne: {
+                percentage: 15,
+                periodOfDays: '0-30',
+                countInvoice: 7,
+                totalSum: 12453.43,
+                averageDays: null,
+            },
+            invoiceAgeingGroupTwo: {
+                percentage: 30,
+                periodOfDays: '31-60',
+                countInvoice: 18,
+                totalSum: 245593.56,
+                averageDays: null,
+            },
+            invoiceAgeingGroupThree: {
+                percentage: 45,
+                periodOfDays: '61-90',
+                countInvoice: 38,
+                totalSum: 53593.56,
+                averageDays: null,
+            },
+            invoiceAgeingGroupFour: {
+                percentage: 25,
+                periodOfDays: '91+',
+                countInvoice: 13,
+                totalSum: 23424.34,
+                averageDays: null,
+            },
+        };
+
+        const {
+            invoiceAgeingGroupOne,
+            invoiceAgeingGroupTwo,
+            invoiceAgeingGroupThree,
+            invoiceAgeingGroupFour,
+        } = shipperData;
+
+        this.invoiceDropdownData = [
+            invoiceAgeingGroupOne,
+            invoiceAgeingGroupTwo,
+            invoiceAgeingGroupThree,
+            invoiceAgeingGroupFour,
+        ];
     }
 
     // Dropdown Actions

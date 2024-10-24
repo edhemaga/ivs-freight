@@ -250,8 +250,8 @@ export function getBrokerColumnDefinition() {
             sortName: 'term',
             hidden: true,
             isPined: false,
-            width: 62,
-            minWidth: 62,
+            width: 82,
+            minWidth: 82,
             pdfWidth: 15,
             filter: '',
             isNumeric: true,
@@ -269,7 +269,7 @@ export function getBrokerColumnDefinition() {
         },
         {
             ngTemplate: 'progressCredit',
-            title: 'Avail Credit',
+            title: 'Available Credit',
             field: 'tablePaymentDetailAvailCredit',
             name: 'Available Credit',
             sortName: 'licenseExpDate',
@@ -298,7 +298,7 @@ export function getBrokerColumnDefinition() {
             linkField: null,
         },
         {
-            ngTemplate: 'inv-ageing',
+            ngTemplate: 'inv-aging',
             title: 'Unpaid Aging',
             field: 'tableUnpaidInvAging',
             name: 'Unpaid Invoice Aging',
@@ -322,7 +322,7 @@ export function getBrokerColumnDefinition() {
             resizable: true,
         },
         {
-            ngTemplate: 'inv-ageing',
+            ngTemplate: 'inv-aging',
             title: 'Paid Aging',
             field: 'tablePaidInvAging',
             name: 'Paid Invoice Aging',

@@ -15,7 +15,7 @@ import { TableDoubleHeadTextPipe } from '@shared/components/ta-table/ta-table-he
 import { TableDoubleHeadHeightPipe } from '@shared/components/ta-table/ta-table-head/pipes/table-double-head-height.pipe';
 import { TableHeadConditionsPipe } from '@shared/components/ta-table/ta-table-head/pipes/table-head-conditions.pipe';
 import { TableHeadBorderPipe } from '@shared/components/ta-table/ta-table-head/pipes/table-head-border.pipe';
-import { TableDoubleHeadPayrollPipe } from '@shared/components/ta-table/ta-table-head/pipes/table-double-head-payroll.pipe';
+import { TableHeadAdditionalTextPipe } from '@shared/components/ta-table/ta-table-head/pipes/table-head-additional-text.pipe';
 
 // components
 import { TableHeadRowsPopoverComponent } from '@shared/components/ta-table/ta-table-head/components/table-head-rows-popover/table-head-rows-popover.component';
@@ -46,7 +46,7 @@ import { TableHeadRowsActionEmit } from '@shared/components/ta-table/ta-table-he
         TableDoubleHeadHeightPipe,
         TableHeadConditionsPipe,
         TableHeadBorderPipe,
-        TableDoubleHeadPayrollPipe,
+        TableHeadAdditionalTextPipe,
 
         // components
         TableHeadRowsPopoverComponent,
@@ -60,6 +60,10 @@ export class TableHeadRowsComponent {
         new EventEmitter();
 
     constructor() {}
+
+    ngOnInit() {
+        console.log('tableHeadRowsData', this.tableHeadRowsData);
+    }
 
     public trackByIdentity(_: number, item: any): string {
         return item.name || item.title;

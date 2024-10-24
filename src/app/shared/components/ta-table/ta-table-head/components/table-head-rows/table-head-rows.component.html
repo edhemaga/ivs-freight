@@ -157,21 +157,17 @@
                                 }}
                             </p>
 
-                            <p
-                                class="m-0 ta-font-bold th-title"
-                                [innerHTML]="
-                                    column.tableHeadTitle
-                                        | tableDoubleHeadPayroll
-                                "
-                            >
+                            <p class="m-0 ta-font-bold th-title">
+                                {{ column.tableHeadTitle }}
+
                                 <span
                                     class="th-title-double-subtitle-additional"
                                 >
                                     {{
-                                        column.tableHeadTitle === 'TERM' ||
-                                        column.tableHeadTitle === 'TERM '
-                                            ? 'mo.'
-                                            : ''
+                                        tableHeadRowsData?.tableData[0]
+                                            .gridNameTitle
+                                            | tableHeadAdditionalText
+                                                : column.tableHeadTitle
                                     }}
                                 </span>
                             </p>
@@ -218,10 +214,18 @@
                                     tableHeadRowsData?.tableData[0]
                                         .gridNameTitle !== 'User'
                             }"
-                            [innerHTML]="
-                                column.tableHeadTitle | tableDoubleHeadPayroll
-                            "
-                        ></div>
+                        >
+                            {{ column.tableHeadTitle }}
+
+                            <span class="th-title-double-subtitle-additional">
+                                {{
+                                    tableHeadRowsData?.tableData[0]
+                                        .gridNameTitle
+                                        | tableHeadAdditionalText
+                                            : column.tableHeadTitle
+                                }}
+                            </span>
+                        </div>
                     </ng-container>
                 </ng-container>
             </ng-template>
