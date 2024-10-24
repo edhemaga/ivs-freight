@@ -58,14 +58,6 @@ table.truckassist-table-body-style {
                         align-items: center;
                         padding: 4px;
 
-                        &.space-left {
-                            margin-left: 6px;
-                        }
-
-                        &.reset-space-left {
-                            margin-left: -6px;
-                        }
-
                         .input-dropdown-arrow svg {
                             display: none;
                         }
@@ -366,6 +358,7 @@ table.truckassist-table-body-style {
                         }
 
                         // VIOLATION STATE COLUMN
+
                         .violation-state-container {
                             width: fit-content;
                             height: 28px;
@@ -382,13 +375,21 @@ table.truckassist-table-body-style {
                             }
                         }
 
-                        // INV. AGEING COLUMN
+                        /* CREDIT PROGRESS BAR COLUMN */
+
+                        .credit-progress-bar-container {
+                            margin-left: -2px;
+                            cursor: pointer;
+                        }
+
+                        // INV. AGING COLUMN
+
                         .inv-aging-container {
                             height: 26px;
                             border-radius: 2px;
                             transition: background 0.2s;
                             padding: 0 4px;
-                            margin-left: -4px;
+                            margin-left: -2px;
 
                             .inv-aging-text {
                                 p {
@@ -517,6 +518,11 @@ table.truckassist-table-body-style {
                                     color: $ta-red-11;
                                 }
                             }
+                        }
+
+                        // CONTACTS COLUMN
+                        .contacts-container {
+                            margin-left: -4px;
                         }
 
                         // WORK HOUR COLUMN
@@ -710,6 +716,7 @@ table.truckassist-table-body-style {
                             margin-right: 6px;
                             display: flex;
                             align-items: center;
+                            margin-left: -2px;
 
                             &:hover {
                                 transform: scale(1.8);
@@ -784,6 +791,7 @@ table.truckassist-table-body-style {
                             white-space: nowrap;
                             text-overflow: ellipsis;
                             align-items: center;
+                            margin-left: -2px;
 
                             &::selection {
                                 color: $ta-black;
@@ -1228,7 +1236,7 @@ table.truckassist-table-body-style {
                             text-overflow: ellipsis;
                             height: 18px;
                             line-height: 18px;
-                            margin-right: 7px;
+                            margin: 0 7px 0 -2px;
 
                             &:hover {
                                 color: $ta-blue;

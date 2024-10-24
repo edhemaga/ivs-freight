@@ -14,7 +14,6 @@ import { TableDoubleHeadPipe } from '@shared/components/ta-table/ta-table-head/p
 import { TableDoubleHeadTextPipe } from '@shared/components/ta-table/ta-table-head/pipes/table-double-head-text.pipe';
 import { TableDoubleHeadHeightPipe } from '@shared/components/ta-table/ta-table-head/pipes/table-double-head-height.pipe';
 import { TableHeadConditionsPipe } from '@shared/components/ta-table/ta-table-head/pipes/table-head-conditions.pipe';
-import { TableHeadBorderPipe } from '@shared/components/ta-table/ta-table-head/pipes/table-head-border.pipe';
 import { TableHeadAdditionalTextPipe } from '@shared/components/ta-table/ta-table-head/pipes/table-head-additional-text.pipe';
 
 // components
@@ -45,7 +44,6 @@ import { TableHeadRowsActionEmit } from '@shared/components/ta-table/ta-table-he
         TableDoubleHeadTextPipe,
         TableDoubleHeadHeightPipe,
         TableHeadConditionsPipe,
-        TableHeadBorderPipe,
         TableHeadAdditionalTextPipe,
 
         // components

@@ -149,13 +149,12 @@
                         >
                             <p
                                 class="m-0 ta-font-extra-bold th-title-double-subtitle"
-                            >
-                                {{
+                                [innerHTML]="
                                     column
                                         | tableDoubleHeadText
                                             : tableHeadRowsData?.tableData[0]
-                                }}
-                            </p>
+                                "
+                            ></p>
 
                             <p class="m-0 ta-font-bold th-title">
                                 {{ column.tableHeadTitle }}
@@ -203,10 +202,6 @@
                                 'th-title-locked-cursor':
                                     tableHeadRowsData?.locked,
                                 'set-center-th-title': column.setCenter,
-                                'border-left':
-                                    tableHeadRowsData?.tableData[0]
-                                        .gridNameTitle
-                                    | tableHeadBorder : column.tableHeadTitle,
                                 'pickup-delivery':
                                     column.tableHeadTitle === 'PICKUP DELIVERY',
                                 status:

@@ -28,6 +28,12 @@ export class TableDoubleHeadPipe implements PipeTransform {
                     tableHeadTitle === TableHeadTitleStringEnum.TRUCK_2 ||
                     tableHeadTitle === TableHeadTitleStringEnum.NAME_2 ||
                     tableHeadTitle === TableHeadTitleStringEnum.TERM_2 ||
+                    tableHeadTitle === TableHeadTitleStringEnum.DRIVER_TYPE ||
+                    tableHeadTitle ===
+                        TableHeadTitleStringEnum.OFF_DUTY_LOCATION ||
+                    tableHeadTitle === TableHeadTitleStringEnum.TWIC_EXP ||
+                    tableHeadTitle === TableHeadTitleStringEnum.MEDICAL_EXP ||
+                    tableHeadTitle === TableHeadTitleStringEnum.HIRED ||
                     index === 12);
 
             const truckTableColumnsCondition =
@@ -70,7 +76,8 @@ export class TableDoubleHeadPipe implements PipeTransform {
             const brokerTableColumnsCondition =
                 gridNameTitle === TableHeadTitleStringEnum.CUSTOMER &&
                 (tableHeadTitle === TableHeadTitleStringEnum.PHYSICAL ||
-                    tableHeadTitle === TableHeadTitleStringEnum.CREDIT_LIMIT);
+                    tableHeadTitle === TableHeadTitleStringEnum.CREDIT_LIMIT ||
+                    tableHeadTitle === TableHeadTitleStringEnum.LOAD_2);
 
             const shipperTableColumnsCondition =
                 gridNameTitle === TableHeadTitleStringEnum.CUSTOMER &&
@@ -131,6 +138,12 @@ export class TableDoubleHeadPipe implements PipeTransform {
                     tableHeadTitle !== TableHeadTitleStringEnum.TRUCK_2 &&
                     tableHeadTitle !== TableHeadTitleStringEnum.NAME_2 &&
                     tableHeadTitle !== TableHeadTitleStringEnum.TERM_2 &&
+                    tableHeadTitle !== TableHeadTitleStringEnum.DRIVER_TYPE &&
+                    tableHeadTitle !==
+                        TableHeadTitleStringEnum.OFF_DUTY_LOCATION &&
+                    tableHeadTitle !== TableHeadTitleStringEnum.TWIC_EXP &&
+                    tableHeadTitle !== TableHeadTitleStringEnum.MEDICAL_EXP &&
+                    tableHeadTitle !== TableHeadTitleStringEnum.HIRED &&
                     index !== 12);
 
             const truckTableColumnsCondition =
@@ -173,7 +186,8 @@ export class TableDoubleHeadPipe implements PipeTransform {
             const brokerTableColumnsCondition =
                 gridNameTitle !== TableHeadTitleStringEnum.CUSTOMER ||
                 (tableHeadTitle !== TableHeadTitleStringEnum.PHYSICAL &&
-                    tableHeadTitle !== TableHeadTitleStringEnum.CREDIT_LIMIT);
+                    tableHeadTitle !== TableHeadTitleStringEnum.CREDIT_LIMIT &&
+                    tableHeadTitle !== TableHeadTitleStringEnum.LOAD_2);
 
             const shipperTableColumnsCondition =
                 gridNameTitle !== TableHeadTitleStringEnum.CUSTOMER ||
