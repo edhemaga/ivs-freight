@@ -935,7 +935,7 @@
                                     <app-ta-checkbox
                                         formControlName="factorByDefault"
                                         [name]="'FactorByDefault'"
-                                        [label]="'Factor By Default'"
+                                        [label]="'Factor by Def.'"
                                         [customClass]="'medium'"
                                     ></app-ta-checkbox>
                                 </div>
@@ -984,6 +984,9 @@
                                         [name]="'hazmat'"
                                         [label]="'HazMat'"
                                         [customClass]="'medium'"
+                                        [disabled]="
+                                            editData.type.includes('division')
+                                        "
                                     ></app-ta-checkbox>
                                 </div>
 
@@ -998,6 +1001,10 @@
                                                 type: 'text',
                                                 label: 'Customer Pay Term',
                                                 isDropdown: true,
+                                                isDisabled:
+                                                    editData.type.includes(
+                                                        'division'
+                                                    ),
                                                 dropdownWidthClass: 'w-col-293'
                                             }"
                                             [options]="payTermOptions"
@@ -1020,6 +1027,10 @@
                                                 label: 'Customer Credit',
                                                 placeholderIcon: 'dollar',
                                                 thousandSeparator: true,
+                                                isDisabled:
+                                                    editData.type.includes(
+                                                        'division'
+                                                    ),
                                                 minLength: 4,
                                                 maxLength: 11
                                             }"
@@ -1045,6 +1056,10 @@
                                                     label: 'MVR',
                                                     isRequired: true,
                                                     hideClear: true,
+                                                    isDisabled:
+                                                        editData.type.includes(
+                                                            'division'
+                                                        ),
                                                     commands: {
                                                         active: true,
                                                         type: 'months',
@@ -1072,6 +1087,10 @@
                                                     label: 'Truck Inspection',
                                                     isRequired: true,
                                                     hideClear: true,
+                                                    isDisabled:
+                                                        editData.type.includes(
+                                                            'division'
+                                                        ),
                                                     commands: {
                                                         active: true,
                                                         type: 'months',
@@ -1099,6 +1118,10 @@
                                                     label: 'Trailer Inspection',
                                                     isRequired: true,
                                                     hideClear: true,
+                                                    isDisabled:
+                                                        editData.type.includes(
+                                                            'division'
+                                                        ),
                                                     commands: {
                                                         active: true,
                                                         type: 'months',

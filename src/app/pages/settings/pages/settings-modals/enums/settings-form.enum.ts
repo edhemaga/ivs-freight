@@ -1,5 +1,5 @@
 export enum SettingsFormEnum {
-    EMAIL= 'email',
+    EMAIL = 'email',
     OFFICE_CHECKED = 'officeChecked',
     OFFICE_EMAIL = 'officeEmail',
     OFFICE_PHONE = 'officePhone',
@@ -15,4 +15,10 @@ export enum SettingsFormEnum {
     FUEL_STATION_CHECKED = 'fuelStationChecked',
     TERMINAL_PARKING_STOP = 'terminalParkingSlot',
     TERMINAL_FULL_PARKING_STOP = 'terminalFullParkingSlot',
+
+    STARTING_NO = '100',
+    FLEET_TYPE = 'fleetType',
+    PREFERRED_LOAD_TYPE = 'preferredLoadType',
+
+    DIVISION = 'division',
 }

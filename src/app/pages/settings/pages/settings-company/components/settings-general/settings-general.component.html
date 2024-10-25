@@ -45,7 +45,7 @@
                         onAction({
                             modalName: 'basic',
                             type: 'new-division',
-                            company: null
+                            company: companyData
                         })
                     "
                 ></svg-icon>
@@ -442,7 +442,10 @@
                         <p class="additional-template-value-name">Bank Name</p>
                         <svg-icon
                             class="additional-template-value bank-logo-settings"
-                            [src]="svgRoutes.bankLogoNameSvgRouteBase + bank.bank.logoName"
+                            [src]="
+                                svgRoutes.bankLogoNameSvgRouteBase +
+                                bank.bank.logoName
+                            "
                         ></svg-icon>
                     </div>
                     <div class="additional-template-item">
