@@ -176,8 +176,12 @@
                                 [hasDownload]="
                                     'assets/svg/common/ic_download.svg'
                                 "
+                                (onActionEvent)="
+                                    driverCdlFiles?.downloadAllFiles()
+                                "
                             >
                                 <app-ta-upload-files
+                                    #driverCdlFiles
                                     [files]="cdl?.files"
                                     [customClassName]="'driver-details-pdf'"
                                     [hasCarouselBottomTabs]="true"
