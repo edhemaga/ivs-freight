@@ -7,6 +7,7 @@ export enum TableHeadTitleStringEnum {
     CUSTOMER = 'Customer',
     TRAILER = 'Trailer',
     LOAD = 'load',
+    LOAD_2 = 'LOAD',
     USER = 'User',
     PICKUP_DELIVERY = 'PICKUP DELIVERY',
     PRIMARY = 'PRIMARY ',
@@ -85,4 +86,10 @@ export enum TableHeadTitleStringEnum {
     AVG_WAIT_TIME = 'AVG WAIT TIME',
     SHIPPING = 'SHIPPING',
     AVAILABLE_HOURS = 'AVAILABLE HOURS',
+    EMPTY_STRING_CODE = '&nbsp;',
+    DRIVER_TYPE = 'DRIVER TYPE',
+    OFF_DUTY_LOCATION = 'OFF DUTY LOCATION',
+    TWIC_EXP = 'TWIC EXP',
+    MEDICAL_EXP = 'MEDICAL EXP',
+    HIRED = 'HIRED',
 }
