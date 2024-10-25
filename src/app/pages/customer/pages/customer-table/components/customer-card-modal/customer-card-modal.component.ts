@@ -39,6 +39,7 @@ import { CardsModalData } from '@shared/components/ta-shared-modals/cards-modal/
 // Constants
 import { CustomerCardsModalData } from '@pages/customer/pages/customer-table/components/customer-card-modal/constants/customer-cards-modal.constants';
 import { CardsModalConstants } from '@shared/utils/constants/cards-modal-config.constants';
+import { CustomerCardsModalConfig } from '@pages/customer/pages/customer-table/components/customer-card-modal/constants/customer-cards-modal.config';
 
 //Store
 import { Store } from '@ngrx/store';
@@ -263,7 +264,7 @@ export class CustomerCardModalComponent implements OnInit, OnDestroy {
                 this.updateStore();
                 break;
             case CardsModalStringEnum.RESET_TO_DEFAULT:
-                this.setTodefaultCards();
+                this.resetToDefault();
                 break;
             default:
                 break;
@@ -282,18 +283,18 @@ export class CustomerCardModalComponent implements OnInit, OnDestroy {
         this.modalService.updateStore(this.cardsForm.value, this.tabSelected);
     }
 
-    private setTodefaultCards(): void {
+    private resetToDefault(): void {
         const cardsData = {
             numberOfRows: CardsModalConstants.defaultCardsValues.numberOfRows,
             checked: true,
             front_side:
                 this.tabSelected === TableStringEnum.ACTIVE
-                    ? CustomerCardsModalData.frontDataBroker
-                    : CustomerCardsModalData.frontDataShipper,
+                    ? CustomerCardsModalConfig.displayRowsFrontActive
+                    : CustomerCardsModalConfig.displayRowsFrontInactive,
             back_side:
                 this.tabSelected === TableStringEnum.ACTIVE
-                    ? CustomerCardsModalData.backDataBroker
-                    : CustomerCardsModalData.backDataShipper,
+                    ? CustomerCardsModalConfig.displayRowsBackActive
+                    : CustomerCardsModalConfig.displayRowsBackInactive,
         };
 
         this.createForm(cardsData);
@@ -345,12 +346,16 @@ export class CustomerCardModalComponent implements OnInit, OnDestroy {
 
     private compareDataInStoreAndDefaultData(): void {
         const isFrontSidesEqual = CompareObjectsModal.areArraysOfObjectsEqual(
-            this.defaultCardsValues.front_side,
+            this.tabSelected === TableStringEnum.ACTIVE
+                ? CustomerCardsModalConfig.displayRowsFrontActive
+                : CustomerCardsModalConfig.displayRowsFrontInactive,
             this.setDefaultDataFront
         );
 
         const areBackSidesEqual = CompareObjectsModal.areArraysOfObjectsEqual(
-            this.defaultCardsValues.back_side,
+            this.tabSelected === TableStringEnum.ACTIVE
+                ? CustomerCardsModalConfig.displayRowsBackActive
+                : CustomerCardsModalConfig.displayRowsBackInactive,
             this.setDefaultDataBack
         );
 
@@ -375,20 +380,14 @@ export class CustomerCardModalComponent implements OnInit, OnDestroy {
                 .pipe(takeUntil(this.destroy$), first())
                 .subscribe((data) => {
                     this.createForm(data);
+                    this.setDefaultDataFront = data.front_side;
+                    this.setDefaultDataBack = data.back_side;
                 })
         );
         this.cardsAllData =
-            type === TableStringEnum.ACTIVE
+            this.tabSelected === TableStringEnum.ACTIVE
                 ? CustomerCardsModalData.allDataLoadBroker
                 : CustomerCardsModalData.allDataLoad;
-        this.setDefaultDataFront =
-            type === TableStringEnum.ACTIVE
-                ? CustomerCardsModalData.frontDataBroker
-                : CustomerCardsModalData.frontDataShipper;
-        this.setDefaultDataBack =
-            type === TableStringEnum.ACTIVE
-                ? CustomerCardsModalData.backDataBroker
-                : CustomerCardsModalData.backDataShipper;
     }
 
     public identity(item: CardRows): number {

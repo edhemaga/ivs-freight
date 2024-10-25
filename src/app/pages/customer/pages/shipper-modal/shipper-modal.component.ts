@@ -741,9 +741,11 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
         const { addressUnit, longitude, latitude, ...form } =
             this.shipperForm.value;
 
-        let receivingShipping = this.receivingShippingObject();
+        const receivingShipping = this.receivingShippingObject();
 
-        let documents = [];
+        console.log('receivingShipping', receivingShipping);
+
+        const documents = [];
         this.documents.map((item) => {
             if (item.realFile) {
                 documents.push(item.realFile);
@@ -859,14 +861,14 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
     private updateShipper(id: number) {
         const { addressUnit, ...form } = this.shipperForm.value;
 
-        let documents = [];
+        const receivingShipping = this.receivingShippingObject();
+
+        const documents = [];
         this.documents.map((item) => {
             if (item.realFile) {
                 documents.push(item.realFile);
             }
         });
-
-        let receivingShipping = this.receivingShippingObject();
 
         const shipperContacts = this.mapContacts(this.shipperContacts);
 

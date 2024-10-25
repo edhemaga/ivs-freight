@@ -143,7 +143,7 @@ export class TaModalComponent implements OnInit, OnDestroy {
     @Input() disableDelete: boolean;
     @Input() isFinishOrder?: boolean = false;
     @Input() isDeactivated: boolean;
-    @Input() editDate: boolean;
+    @Input() isEditDate: boolean;
     @Input() resendEmail: boolean;
     @Input() modalAdditionalPart: boolean;
     @Input() topDivider: boolean = true;

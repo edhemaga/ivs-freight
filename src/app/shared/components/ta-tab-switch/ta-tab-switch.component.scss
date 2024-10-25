@@ -32,6 +32,8 @@ $tab-colors: '26A690', 'EF5350', '3074D3';
     }
 
     .tab-switch-items-holder {
+        width: 50% !important;
+
         .tab-switch-text {
             pointer-events: none;
 

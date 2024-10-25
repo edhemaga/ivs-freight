@@ -200,6 +200,7 @@ export class TaTableToolbarComponent implements OnInit, OnChanges, OnDestroy {
 
             const td = this.tableData.find((t) => t.field === this.selectedTab);
             if (!td) return;
+
             this.listName = td.gridNameTitle;
 
             if (td.isUpperCaseTitle) this.isUpperCaseTitle = true;

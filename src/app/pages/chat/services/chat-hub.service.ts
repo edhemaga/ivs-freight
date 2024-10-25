@@ -5,7 +5,7 @@ import { Injectable } from '@angular/core';
 import * as signalR from '@microsoft/signalr';
 
 // Models
-import { ChatMessageResponse } from '@pages/chat/models';
+import { ChatMessage } from '@pages/chat/models';
 
 // Env
 import { environment } from 'src/environments/environment';
@@ -29,6 +29,7 @@ export class ChatHubService {
                 accessTokenFactory: () => this.token,
             })
             .withAutomaticReconnect()
+            .configureLogging(6) // No logs at all; none
             .build();
     }
 
@@ -46,7 +47,7 @@ export class ChatHubService {
         )
             return;
 
-        ChatHubService.hubConnection.start().then();
+        ChatHubService.hubConnection.start();
 
         ChatHubService.hubConnection.onclose(() => {
             ChatHubService.hubConnection.start();
@@ -57,21 +58,20 @@ export class ChatHubService {
         ChatHubService.hubConnection.stop().then();
     }
 
-    public static receiveMessage(): Observable<ChatMessageResponse> {
-        return new Observable<ChatMessageResponse>((observer) => {
+    public static receiveMessage(): Observable<ChatMessage> {
+        return new Observable<ChatMessage>((observer) => {
             ChatHubService.hubConnection.on(
                 'ReceiveMessage',
-                (newMessage: ChatMessageResponse) => {
+                (newMessage: ChatMessage) => {
                     return observer.next(newMessage);
                 }
             );
         });
     }
 
-    public notifyTyping(conversationId: number): void {
+    public static notifyTyping(conversationId: number): void {
         // If function within a hub is called 'invoke' is a must
-        // invoke(name of the function, arguments)
-        // Send not working
+        // invoke(name of the function, arguments), send not working
         ChatHubService.hubConnection.invoke(`NotifyTyping`, conversationId);
     }
 

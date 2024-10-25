@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 
-
 import { Observable, of, catchError, tap } from 'rxjs';
 
 // store
@@ -19,9 +18,7 @@ import { RepairShopNewListResponse } from 'appcoretruckassist';
 @Injectable({
     providedIn: 'root',
 })
-export class CompanyRepairShopResolver
-    
-{
+export class CompanyRepairShopResolver {
     pageIndex: number = 1;
     pageSize: number = 25;
     companyId: number = this.companyStore.getValue().ids[0];
@@ -36,6 +33,7 @@ export class CompanyRepairShopResolver
                 1,
                 undefined,
                 true,
+                false,
                 undefined,
                 undefined,
                 undefined,

@@ -91,10 +91,28 @@
                     </ng-container>
                 </div>
 
+                <!-- Header close -->
+
+                <!--  <ng-container *ngIf="hasCalendarIcon">
+                        <div
+                            class="d-flex align-items-center modal-calendar-container"
+                        >
+                            <svg-icon
+                                class="d-flex justify-content-center align-items-center modal-calendar-icon"
+                                [src]="modalSvgRoutes.calendarRoute"
+                                [svgStyle]="{
+                                    'width.px': '14',
+                                    'height.px': '16'
+                                }"
+                                (click)="onAction('calendar')"
+                            ></svg-icon>
+                        </div>
+                    </ng-container> -->
+
                 <div class="modal-header-rightside">
                     <ng-container
                         *ngIf="
-                            editDate &&
+                            isEditDate &&
                             (editData.data?.createdAt ||
                                 editData.data?.updatedAt)
                         "
@@ -111,9 +129,14 @@
                             class="modal-date-logo"
                         >
                             <svg-icon
-                                src="assets/svg/common/date.svg"
+                                [src]="modalSvgRoutes.calendarRoute"
+                                [svgStyle]="{
+                                    'width.px': '14',
+                                    'height.px': '16'
+                                }"
                             ></svg-icon>
                         </div>
+
                         <div class="modal-date-border"></div>
                     </ng-container>
 
@@ -166,13 +189,15 @@
 
                     <ng-container *ngIf="hasTimeFilter">
                         <div class="me-1">
-                            <app-ta-filter
+                            <app-ca-filter
                                 [type]="'timeFilter'"
                                 [icon]="'ic_time'"
                                 [filterTitle]="'Time Filter'"
+                                [timeSubType]="'past'"
                                 (setFilter)="setFilterValue($event)"
+                                (clearAll)="setFilterValue($event)"
                             >
-                            </app-ta-filter>
+                            </app-ca-filter>
                         </div>
                     </ng-container>
 
@@ -192,7 +217,7 @@
                     <ng-container *ngIf="hasTruckTypeFilter">
                         <div class="me-1">
                             <app-ta-filter
-                                [type]="'truckFilter'"
+                                [type]="'truckTypeFilter'"
                                 [icon]="'truck'"
                                 [filterTitle]="'Truck Type Filter'"
                                 [defFilterHolder]="true"
@@ -209,7 +234,7 @@
                     <ng-container *ngIf="hasTrailerTypeFilter">
                         <div class="me-1">
                             <app-ta-filter
-                                [type]="'trailerFilter'"
+                                [type]="'trailerTypeFilter'"
                                 [icon]="'trailer'"
                                 [filterTitle]="'Trailer Type Filter'"
                                 [defFilterHolder]="true"
@@ -293,26 +318,24 @@
 
                     <!-- Header close -->
 
-                    <ng-container *ngIf="hasCalendarIcon">
+                    <ng-container *ngIf="!isCloseIconRemoved">
                         <div
-                            class="d-flex align-items-center modal-calendar-container"
+                            class="d-flex justify-content-center align-items-center modal-close-container"
+                            ngbTooltip
+                            mainTooltip="Cancel"
+                            tooltipBackground="#424242"
+                            position="bottom"
+                            (click)="onAction('close')"
                         >
                             <svg-icon
-                                class="d-flex justify-content-center align-items-center modal-calendar-icon"
-                                [src]="modalSvgRoutes.calendarRoute"
-                                (click)="onAction('calendar')"
+                                class="modal-close"
+                                [src]="modalSvgRoutes.closeRoute"
+                                [svgStyle]="{
+                                    'width.px': '13',
+                                    'height.px': '13'
+                                }"
                             ></svg-icon>
                         </div>
-                    </ng-container>
-
-                    <!-- Header close -->
-
-                    <ng-container *ngIf="!isCloseIconRemoved">
-                        <svg-icon
-                            class="modal-close"
-                            [src]="modalSvgRoutes.closeRoute"
-                            (click)="onAction('close')"
-                        ></svg-icon>
                     </ng-container>
                 </div>
             </div>

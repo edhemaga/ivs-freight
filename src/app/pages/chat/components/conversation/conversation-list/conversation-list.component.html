@@ -107,7 +107,7 @@
     <!-- Since title uses enum values, it is unique and therefore can be used as id -->
     <div class="header d-flex">
         <div
-            class="icon-regular d-flex justify-content-center align-items-center"
+            class="icon-regular-arrow d-flex justify-content-center align-items-center"
             (click)="toggleChatGroupState(item.title, true)"
         >
             <ng-container
@@ -213,6 +213,11 @@
                             [isHoverEffect]="false"
                             [isRound]="item.isRound"
                         ></app-ca-profile-image>
+                        <div class="activity-status-icon">
+                            <svg-icon
+                                [src]="item.status | chatStatusIcon"
+                            ></svg-icon>
+                        </div>
                     </ng-container>
                     <ng-container *ngSwitchCase="conversationTypeEnum.CHANNEL">
                         <ng-container
@@ -222,7 +227,7 @@
                                     item: {
                                         width: 18,
                                         height: 18,
-                                        route: ChatSvgRoutes.hashIcon
+                                        route: chatSvgRoutes.hashIcon
                                     }
                                 }
                             "
@@ -285,7 +290,7 @@
                                     item: {
                                         width: 29,
                                         height: 29,
-                                        route: ChatSvgRoutes.hashIcon
+                                        route: chatSvgRoutes.hashIcon
                                     }
                                 }
                             "
@@ -339,7 +344,7 @@
                                     item: {
                                         width: 13,
                                         height: 13,
-                                        route: ChatSvgRoutes.favoriteIcon
+                                        route: chatSvgRoutes.favoriteIcon
                                     }
                                 }
                             "
@@ -353,7 +358,7 @@
                                     item: {
                                         width: 6,
                                         height: 6,
-                                        route: ChatSvgRoutes.circleIcon
+                                        route: chatSvgRoutes.circleIcon
                                     }
                                 }
                             "
@@ -395,7 +400,7 @@
                     item: {
                         width: 18,
                         height: 18,
-                        route: ChatSvgRoutes.headerArrowDownIcon,
+                        route: chatSvgRoutes.headerArrowDownIcon,
                         state
                     }
                 }

@@ -4,7 +4,7 @@
     [editName]="editData?.data?.truckNumber"
     [isModalValid]="truckForm.valid && isFormDirty"
     [saveAndAddNew]="editData?.type !== 'edit'"
-    [editDate]="editData?.type === 'edit'"
+    [isEditDate]="editData?.type === 'edit'"
     (action)="onModalAction($event)"
 >
     <div origin class="origin-part-modal">
@@ -159,7 +159,7 @@
                             "
                         ></app-ta-input-dropdown>
                     </div>
-                    <div class="d-grid form-container-truck-model mb-32">
+                    <div class="d-grid form-container-truck-model mb-4">
                         <app-ta-input
                             formControlName="model"
                             [inputConfig]="{
@@ -198,6 +198,16 @@
                             (selectedItem)="onSelectDropdown($event, 'color')"
                         ></app-ta-input-dropdown>
                     </div>
+
+                    <div class="mb-2">
+                        <app-ta-checkbox
+                            formControlName="excludeFromIftaFuelTaxReport"
+                            [name]="'Exclude from IFTA fuel tax report'"
+                            [label]="'Exclude from IFTA fuel tax report'"
+                            [customClass]="'regular'"
+                        ></app-ta-checkbox>
+                    </div>
+
                     <!-- Is Company Owned -->
                     <app-ta-checkbox-card
                         formControlName="companyOwned"
@@ -295,7 +305,13 @@
                 <!-------------------------------- Additional Tab -------------------------------->
                 <div class="m-tab" *ngIf="selectedTab === 2">
                     <!-- First Row -->
-                    <div class="truck-additional-two-columns">
+                    <div
+                        [ngClass]="
+                            isSpecialTruckType
+                                ? ' truck-additional-three-columns'
+                                : 'truck-additional-two-columns'
+                        "
+                    >
                         <app-ta-input-dropdown
                             formControlName="truckGrossWeightId"
                             [inputConfig]="{
@@ -311,6 +327,20 @@
                                 onSelectDropdown($event, 'gross-weight')
                             "
                         ></app-ta-input-dropdown>
+                        <ng-container *ngIf="isSpecialTruckType">
+                            <app-ta-input
+                                formControlName="volume"
+                                [inputConfig]="{
+                                name: 'trailer-volume',
+                                type: 'text',
+                                label: 'Volume',
+                                minLength: 5,
+                                maxLength: 7,
+                                priceSeparator: true,
+                                priceSeparatorLimitation: 6,
+                            }"
+                            ></app-ta-input>
+                        </ng-container>
 
                         <app-ta-input
                             formControlName="emptyWeight"
@@ -370,7 +400,8 @@
                                 type: 'text',
                                 label: 'Fuel Type',
                                 isDropdown: true,
-                                dropdownWidthClass: 'w-col-164'
+                                dropdownWidthClass: 'w-col-164',
+                                isDisabled: !isFuelTypeEnabled
                             }"
                             [options]="fuelTypes"
                             [activeItem]="selectedFuelType"
@@ -535,6 +566,7 @@
                             [name]="'Double Bunk'"
                             [label]="'Double Bunk'"
                             [customClass]="'regular'"
+                            [disabled]="isBoxTruck"
                         ></app-ta-checkbox>
 
                         <app-ta-checkbox
@@ -556,6 +588,7 @@
                             [name]="'PTO'"
                             [label]="'PTO'"
                             [customClass]="'regular'"
+                            [disabled]="isBoxTruck"
                         ></app-ta-checkbox>
                     </div>
 
@@ -573,6 +606,7 @@
                             [name]="'Headache Rack'"
                             [label]="'Headache Rack'"
                             [customClass]="'regular'"
+                            [disabled]="isBoxTruck"
                         ></app-ta-checkbox>
 
                         <app-ta-checkbox

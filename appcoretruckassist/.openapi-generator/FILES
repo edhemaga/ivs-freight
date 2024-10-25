@@ -669,6 +669,7 @@ model/medicalCertificateReviewResponse.ts
 model/medicalResponse.ts
 model/messageResponse.ts
 model/messageTypeResponse.ts
+model/mileStopType.ts
 model/milesByStateResponse.ts
 model/milesByUnitListResponse.ts
 model/milesByUnitPaginatedStopsResponse.ts
@@ -699,6 +700,7 @@ model/mobileRepairShopDetailsResponsePagination.ts
 model/mobileRepairShopExpensesChartResponse.ts
 model/mobileRepairShopExpensesResponse.ts
 model/mobileRepairShopListResponse.ts
+model/mobileRepairTruckTrailerListResponse.ts
 model/mobileTransactionListResponse.ts
 model/models.ts
 model/moveMultipleToApplicantsCommand.ts
@@ -766,6 +768,7 @@ model/payrollCreditResponse.ts
 model/payrollCreditType.ts
 model/payrollDeadlinePeriod.ts
 model/payrollDeadlineShortResponse.ts
+model/payrollDeductionChildResponse.ts
 model/payrollDeductionDescriptionAutocompleteResponse.ts
 model/payrollDeductionMinimalResponse.ts
 model/payrollDeductionModalResponse.ts
@@ -786,6 +789,7 @@ model/payrollLoadMinimalResponse.ts
 model/payrollLoadStopMinimalResponse.ts
 model/payrollMapLocation.ts
 model/payrollMileageTotalSum.ts
+model/payrollOtherPaymentType.ts
 model/payrollOwnerClosedResponse.ts
 model/payrollOwnerResponse.ts
 model/payrollPaymentCommand.ts

@@ -81,6 +81,7 @@ import { TableActionsStringEnum } from '@shared/enums/table-actions-string.enum'
 import { ConfirmationModalStringEnum } from '@shared/components/ta-shared-modals/confirmation-modal/enums/confirmation-modal-string.enum';
 import { ConfirmationActivationStringEnum } from '@shared/components/ta-shared-modals/confirmation-activation-modal/enums/confirmation-activation-string.enum';
 import { BrokerModalStringEnum } from '@pages/customer/pages/broker-modal/enums/';
+import { CustomerTableStringEnum } from '@pages/customer/pages/customer-table/enums';
 
 // Helpers
 import { DropdownContentHelper } from '@shared/utils/helpers/dropdown-content.helper';
@@ -1144,6 +1145,8 @@ export class CustomerTableComponent
                 showRemoveFromDnuList:
                     this.selectedTab === TableStringEnum.ACTIVE,
                 hideActivationButton: true,
+                fuelMoneyFilter: false,
+                loadMoneyFilter: false,
                 viewModeOptions: this.getViewModeOptions(),
             },
         };
@@ -1369,101 +1372,82 @@ export class CustomerTableComponent
                       hasBanDnu: data?.ban || data?.dnu || !data?.status,
                       isDnu: data?.dnu,
                       isClosed: data?.status === 0 || false,
-                      name: data?.businessName
-                          ? data.businessName
-                          : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
+                      name: data?.businessName,
                   }
                 : data?.businessName,
-            tableAddressPhysical: data?.mainAddress?.address
-                ? data.mainAddress.address
-                : data?.mainPoBox?.poBox
-                ? data.mainPoBox.poBox +
-                  ' ' +
-                  data.mainPoBox.city +
-                  ' ' +
-                  data.mainPoBox.state +
-                  ' ' +
-                  (data.mainPoBox.zipCode ?? TableStringEnum.EMPTY_STRING_PLACEHOLDER)
-                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-            tableAddressBilling: data?.billingAddress?.address
-                ? data.billingAddress.address
-                : data?.billingPoBox?.poBox
-                ? data.mainPoBox.poBox +
-                  ' ' +
-                  data.mainPoBox.city +
-                  ' ' +
-                  data.mainPoBox.state +
-                  ' ' +
-                  data.mainPoBox.zipCode
-                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-            tablePaymentDetailAvailCredit: {
-                expirationCredit: data.availableCredit,
-                expirationCreditText: this.formatCurrencyPipe.transform(
-                    data.availableCredit
-                ),
-                totalValueText:
-                    (
-                        (+data.availableCredit / +data.creditLimit) *
-                        100
-                    ).toString() + TableStringEnum.PERCENTS,
-                percentage: (+data.availableCredit / +data.creditLimit) * 100,
-            },
+            tableAddressPhysical:
+                data?.mainAddress?.address ??
+                (data?.mainPoBox
+                    ? `${data?.mainPoBox.poBox} ${data?.mainPoBox.city} ${
+                          data?.mainPoBox.state
+                      } ${data?.mainPoBox.zipCode ?? null}`
+                    : null),
+            tableAddressBilling:
+                data?.billingAddress?.address ??
+                (data?.billingPoBox
+                    ? `${data?.billingPoBox.poBox} ${data?.billingPoBox.city} ${
+                          data?.billingPoBox.state
+                      } ${data?.billingPoBox.zipCode ?? null}`
+                    : null),
             tablePaymentDetailCreditLimit: data?.creditLimit
                 ? TableStringEnum.DOLLAR_SIGN +
                   this.thousandSeparator.transform(data.creditLimit)
-                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
+                : CustomerTableStringEnum.UNLIMITED,
             tablePaymentDetailTerm: data?.payTerm?.name
-                ? data.payTerm.name
-                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-            tablePaymentDetailDTP: data?.daysToPay
-                ? data.daysToPay + TableStringEnum.DAY
-                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-            tablePaidInvAging: {
-                ...data.brokerPaidInvoiceAgeing,
-                tablePayTerm: data?.payTerm,
+                ? data?.payTerm?.name.match(/\d+/)?.[0]
+                : null,
+            tablePaymentDetailAvailCredit: {
+                expirationCredit: data?.availableCredit,
+                expirationCreditText: data?.availableCredit
+                    ? this.formatCurrencyPipe.transform(data?.availableCredit)
+                    : null,
+                totalValueText:
+                    (
+                        (+data?.availableCredit / +data.creditLimit) *
+                        100
+                    ).toString() + TableStringEnum.PERCENTS,
+                percentage: (+data?.availableCredit / +data?.creditLimit) * 100,
             },
             tableUnpaidInvAging: {
                 ...data.brokerUnpaidInvoiceAgeing,
                 tablePayTerm: data?.payTerm,
             },
+            tablePaidInvAging: {
+                ...data.brokerPaidInvoiceAgeing,
+                tablePayTerm: data?.payTerm,
+            },
             tableLoads: data?.loadCount
                 ? this.thousandSeparator.transform(data.loadCount)
-                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
+                : null,
             tableMiles: data?.miles
                 ? this.thousandSeparator.transform(data.miles)
-                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
+                : null,
             tablePPM: data?.pricePerMile
                 ? TableStringEnum.DOLLAR_SIGN +
                   this.thousandSeparator.transform(data.pricePerMile)
-                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-            tableRevenue: data?.revenue
-                ? TableStringEnum.DOLLAR_SIGN +
-                  this.thousandSeparator.transform(data.revenue)
-                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-            reviews: data?.ratingReviews,
+                : null,
             tableRaiting: {
                 hasLiked: data.currentCompanyUserRating === 1,
                 hasDislike: data.currentCompanyUserRating === -1,
-                likeCount: data?.upCount
-                    ? data.upCount
-                    : TableStringEnum.NUMBER_0,
-                dislikeCount: data?.downCount
-                    ? data.downCount
-                    : TableStringEnum.NUMBER_0,
+                likeCount: data?.upCount,
+                dislikeCount: data?.downCount,
             },
             tableContactData: data?.brokerContacts,
-            tableAdded: data.createdAt
-                ? this.datePipe.transform(
-                      data.createdAt,
-                      TableStringEnum.DATE_FORMAT
-                  )
-                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
+            tableRevenue: data?.revenue
+                ? TableStringEnum.DOLLAR_SIGN +
+                  this.thousandSeparator.transform(data.revenue)
+                : null,
+            reviews: data?.ratingReviews,
+            tableAdded: this.datePipe.transform(
+                data.createdAt,
+                TableStringEnum.DATE_FORMAT
+            ),
             tableEdited: data.updatedAt
                 ? this.datePipe.transform(
                       data.updatedAt,
                       TableStringEnum.DATE_FORMAT
                   )
-                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
+                : null,
             tableDropdownContent: {
                 hasContent: true,
                 content: this.getDropdownBrokerContent(data),
@@ -1474,45 +1458,53 @@ export class CustomerTableComponent
     private mapShipperData(data: ShipperResponse): MappedShipperBroker {
         return {
             ...data,
+            isSelected: false,
             businessName: this.filter
                 ? {
                       hasBanDnu: !data?.status,
                       isDnu: false,
                       isClosed: data?.status === 0 || false,
-                      name: data?.businessName
-                          ? data.businessName
-                          : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
+                      name: data?.businessName ?? null,
                   }
                 : data?.businessName,
-            isSelected: false,
-            tableAddress: data?.address?.address
-                ? data.address.address
-                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-            tableLoads: TableStringEnum.NA,
+            tableAddress: data?.address?.address ?? null,
+            tableLoads: {
+                loads: 0,
+                pickups: data?.pickups,
+                deliveries: data?.deliveries,
+            },
             tableAverageWatingTimePickup: data?.avgPickupTimeInMin
                 ? data.avgPickupTimeInMin.toString()
-                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
+                : null,
             tableAverageWatingTimeDelivery: data?.avgDeliveryTimeInMin
                 ? data.avgDeliveryTimeInMin.toString()
-                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-
+                : null,
             tableAvailableHoursShipping:
                 data?.shippingFrom && data?.shippingTo
                     ? data?.shippingFrom + ' - ' + data?.shippingTo
-                    : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
+                    : null,
             tableAvailableHoursReceiving:
                 data?.receivingFrom && data?.receivingTo
                     ? data?.receivingFrom + ' - ' + data?.receivingTo
-                    : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-            reviews: null,
+                    : null,
+            reviews: data?.ratingReviews,
+            tableRaiting: {
+                hasLiked: data?.currentCompanyUserRating === 1,
+                hasDislike: data?.currentCompanyUserRating === -1,
+                likeCount: data?.upCount,
+                dislikeCount: data?.downCount,
+            },
             tableContactData: data?.shipperContacts,
-            tableAdded: data.createdAt
+            tableAdded: this.datePipe.transform(
+                data?.createdAt,
+                TableStringEnum.DATE_FORMAT
+            ),
+            tableEdited: data?.updatedAt
                 ? this.datePipe.transform(
-                      data.createdAt,
+                      data?.updatedAt,
                       TableStringEnum.DATE_FORMAT
                   )
-                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-            tableEdited: TableStringEnum.NA,
+                : null,
             tableDropdownContent: {
                 hasContent: true,
                 content: this.getDropdownShipperContent(data),
@@ -1973,12 +1965,8 @@ export class CustomerTableComponent
                             data.tableRaiting = {
                                 hasLiked: res.currentCompanyUserRating === 1,
                                 hasDislike: res.currentCompanyUserRating === -1,
-                                likeCount: res?.upCount
-                                    ? res.upCount
-                                    : TableStringEnum.NUMBER_0,
-                                dislikeCount: res?.downCount
-                                    ? res.downCount
-                                    : TableStringEnum.NUMBER_0,
+                                likeCount: res?.upCount,
+                                dislikeCount: res?.downCount,
                             };
                         }
                     });

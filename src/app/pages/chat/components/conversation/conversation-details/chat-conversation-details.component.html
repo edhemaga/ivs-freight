@@ -1,0 +1,669 @@
+<div
+    class="user-profile-wrapper"
+    [ngClass]="data ? 'white-background ' : 'gradient-background'"
+>
+    <app-chat-header>
+        <div class="d-flex">
+            <div class="header-text ta-font-extra-bold">
+                <ng-container
+                    *ngIf="conversation?.conversationType?.name === 'Channel'"
+                >
+                    Channel</ng-container
+                >
+                Profile
+            </div>
+            <ng-container *ngIf="data">
+                <div
+                    class="d-flex header-close-icon"
+                    (click)="closeProfileDetails()"
+                >
+                    <svg-icon
+                        class="d-flex justify-content-center align-items-center"
+                        [svgStyle]="{ 'width.px': 18, 'height.px': 18 }"
+                        [src]="chatSvgRoutes.noBorderXIcon"
+                    >
+                    </svg-icon>
+                </div>
+            </ng-container>
+        </div>
+    </app-chat-header>
+
+    <ng-container *ngIf="data">
+        <div class="user-profile-content">
+            <div class="basic-info">
+                <div class="d-flex align-content-center align-items-center">
+                    <ng-container
+                        [ngSwitch]="conversation?.conversationType?.name"
+                    >
+                        <ng-container *ngSwitchCase="'SingleChat'">
+                            <app-ca-profile-image
+                                [avatarImg]="
+                                    data.userAdditionalInformation[0]
+                                        ?.avatarFile?.url
+                                "
+                                [avatarColor]="{
+                                    background: '#DFC2F9',
+                                    color: '#9E47EC66'
+                                }"
+                                [textShortName]="
+                                    data.userAdditionalInformation[0]?.fullName
+                                        | nameInitials
+                                "
+                                [size]="74"
+                                [fontSize]="30"
+                                [isHoverEffect]="false"
+                                [isRound]="
+                                    data.userAdditionalInformation[0]?.userType
+                                        ?.name !== 'Driver'
+                                "
+                            ></app-ca-profile-image
+                        ></ng-container>
+                        <ng-container *ngSwitchCase="'Channel'">
+                            <ng-container
+                                [ngSwitch]="conversation?.channelType?.name"
+                            >
+                                <ng-container *ngSwitchCase="'Department'">
+                                    <div>
+                                        <svg-icon
+                                            class="d-flex justify-content-center align-items-center"
+                                            [svgStyle]="{
+                                                'width.px': width ?? 14,
+                                                'height.px': 14 ?? height
+                                            }"
+                                            [src]="chatSvgRoutes.hashIcon"
+                                        >
+                                        </svg-icon>
+                                    </div>
+                                </ng-container>
+                                <ng-container
+                                    *ngSwitchCase="'Truck'"
+                                ></ng-container>
+                                <ng-container
+                                    *ngSwitchCase="'Dispatch'"
+                                ></ng-container>
+                                <ng-container *ngSwitchDefault>
+                                    <div>
+                                        <svg-icon
+                                            class="d-flex justify-content-center align-items-center"
+                                            [svgStyle]="{
+                                                'width.px': 64,
+                                                'height.px': 64
+                                            }"
+                                            [src]="chatSvgRoutes.hashIcon"
+                                        >
+                                        </svg-icon>
+                                    </div>
+                                </ng-container>
+                            </ng-container>
+                        </ng-container>
+                    </ng-container>
+
+                    <div class="text w-100">
+                        <div class="text-name ta-font-bold">
+                            {{ data.name || conversation?.name }}
+                        </div>
+                        <div class="text-type ta-font-medium">
+                            <ng-container
+                                *ngIf="
+                                    conversation?.conversationType?.name ===
+                                    'SingleChat'
+                                "
+                            >
+                                {{
+                                    data.userAdditionalInformation[0]?.userType
+                                        ?.name || chatSearchPlaceHolders.USER
+                                }}</ng-container
+                            >
+                            <ng-container
+                                *ngIf="
+                                    conversation?.conversationType?.name ===
+                                    'Channel'
+                                "
+                                >{{
+                                    conversation.channelType?.name
+                                }}</ng-container
+                            >
+                        </div>
+                        <div
+                            class="status d-flex justify-content-between align-content-center ta-font-semi-bold"
+                        >
+                            <div
+                                class="activity-text d-flex align-content-center"
+                            >
+                                <div class="icon-wrapper d-flex">
+                                    <ng-container
+                                        *ngTemplateOutlet="
+                                            icon;
+                                            context: {
+                                                path:
+                                                    activityStatus
+                                                    | chatStatusIcon,
+                                                width: 10,
+                                                height: 10
+                                            }
+                                        "
+                                    ></ng-container>
+                                </div>
+                                <ng-container
+                                    *ngIf="
+                                        conversation?.conversationType?.name ===
+                                        'SingleChat'
+                                    "
+                                >
+                                    {{ activityStatus | uppercase }}
+                                </ng-container>
+                                <ng-container
+                                    *ngIf="
+                                        conversation?.conversationType?.name ===
+                                        'Channel'
+                                    "
+                                >
+                                    <div class="m-auto">ACTIVE</div>
+                                    <div class="d-flex">
+                                        <div class="dot">.</div>
+                                    </div>
+                                    <div class="m-auto">
+                                        {{
+                                            conversation.participants
+                                                | chatActiveParticipantCount
+                                        }}
+                                    </div>
+                                </ng-container>
+                            </div>
+                            <ng-container
+                                *ngIf="
+                                    conversation?.conversationType?.name ===
+                                    'Channel'
+                                "
+                            >
+                                <div
+                                    class="d-flex"
+                                    [ngStyle]="{
+                                        position: 'relative',
+                                        right:
+                                            -conversation?.participants
+                                                ?.length *
+                                                6 +
+                                            8 +
+                                            'px'
+                                    }"
+                                >
+                                    <ng-container
+                                        *ngIf="conversation?.participants"
+                                    >
+                                        <ng-container
+                                            *ngTemplateOutlet="
+                                                participantsIconList;
+                                                context: {
+                                                    participants:
+                                                        conversation?.participants
+                                                }
+                                            "
+                                        ></ng-container>
+                                    </ng-container>
+                                </div>
+                            </ng-container>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="horizontal-border"></div>
+
+            <ng-container
+                *ngIf="
+                    conversation.conversationType?.name ===
+                    conversationTypeEnum.SINGLE_CHAT
+                "
+            >
+                <ng-container [ngSwitch]="profileDetailsType">
+                    <div class="additional-info">
+                        <ng-container
+                            *ngSwitchCase="
+                                chatConversationProfileDetailsType.COMPANY_OR_DRIVER
+                            "
+                        >
+                            <ng-container
+                                *ngTemplateOutlet="
+                                    phoneAndEmail;
+                                    context: {
+                                        item: data?.userAdditionalInformation
+                                    }
+                                "
+                            ></ng-container>
+                        </ng-container>
+                        <ng-container
+                            *ngSwitchCase="
+                                chatConversationProfileDetailsType.REPAIR
+                            "
+                        >
+                            <ng-container
+                                *ngTemplateOutlet="
+                                    userRepair;
+                                    context: {
+                                        item: data?.userAdditionalInformation
+                                    }
+                                "
+                            ></ng-container>
+                        </ng-container>
+
+                        <ng-container
+                            *ngSwitchCase="
+                                chatConversationProfileDetailsType.DISPATCH_BOARD
+                            "
+                        >
+                            <ng-container
+                                *ngTemplateOutlet="
+                                    dispatch;
+                                    context: {
+                                        item: data?.userAdditionalInformation
+                                    }
+                                "
+                            ></ng-container>
+                        </ng-container>
+
+                        <ng-container
+                            *ngSwitchCase="
+                                chatConversationProfileDetailsType.SAFETY
+                            "
+                        >
+                            <ng-container
+                                *ngTemplateOutlet="
+                                    safety;
+                                    context: {
+                                        item: data?.userAdditionalInformation
+                                    }
+                                "
+                            ></ng-container>
+                        </ng-container>
+                        <div class="horizontal-border"></div>
+                    </div>
+                </ng-container>
+            </ng-container>
+            <ng-conversation
+                *ngIf="
+                    conversation.conversationType?.name ===
+                    conversationTypeEnum.CHANNEL
+                "
+            >
+                <app-chat-profile-resources
+                    [title]="'Participants'"
+                    [count]="data.userAdditionalInformation?.length"
+                    [conversation]="conversation"
+                    [type]="ChatUserProfileResourceTypeEnum.PARTICIPANTS"
+                >
+                </app-chat-profile-resources>
+            </ng-conversation>
+
+            <app-chat-profile-resources
+                [title]="'Media'"
+                [customClass]="'media-content'"
+                [count]="data.mediaCount"
+                [resources]="data.media"
+                [type]="ChatUserProfileResourceTypeEnum.MEDIA"
+            ></app-chat-profile-resources>
+
+            <app-chat-profile-resources
+                [title]="'Files'"
+                [customClass]="'files-content'"
+                [count]="data.filesCount"
+                [resources]="data.files"
+                [type]="ChatUserProfileResourceTypeEnum.FILES"
+            ></app-chat-profile-resources>
+
+            <app-chat-profile-resources
+                [title]="'Links'"
+                [customClass]="'links-content'"
+                [count]="data?.linksCount"
+                [resources]="data?.links"
+                [type]="ChatUserProfileResourceTypeEnum.LINKS"
+                [hasHorizontalBorder]="false"
+            ></app-chat-profile-resources>
+        </div>
+    </ng-container>
+</div>
+
+<!-- Templates for different conversation types -->
+<ng-template #userOrDriver let-data="data">
+    <ng-container
+        *ngTemplateOutlet="
+            phoneAndEmail;
+            context: {
+                item: data
+            }
+        "
+    ></ng-container>
+</ng-template>
+
+<ng-template #userRepair let-data="data">
+    <ng-container
+        *ngTemplateOutlet="
+            row;
+            context: {
+                item: {
+                    title: 'Office' | uppercase,
+                    path: chatSvgRoutes.starIcon,
+                    value: data?.office,
+                    noDataMessage: 'No office provided',
+                    isHighlighted: true
+                }
+            }
+        "
+    ></ng-container>
+
+    <ng-container
+        *ngTemplateOutlet="
+            phoneAndEmail;
+            context: {
+                item: data
+            }
+        "
+    ></ng-container>
+</ng-template>
+
+<ng-template #dispatch let-data="data">
+    <ng-container
+        *ngTemplateOutlet="
+            row;
+            context: {
+                item: {
+                    leftSideIcon: {
+                        path: chatSvgRoutes.truckIcon
+                    },
+                    rightSideIcon: {
+                        path: chatSvgRoutes.carHaulerIcon,
+                        width: 40,
+                        height: 16
+                    },
+                    value: data?.isCarHauler && 'Car Hauler',
+                    noDataMessage: 'No car hauler provided',
+                    isHighlighted: true
+                }
+            }
+        "
+    ></ng-container>
+    <ng-container
+        *ngTemplateOutlet="
+            row;
+            context: {
+                item: {
+                    title: 'Dispatch Board',
+                    leftSideIcon: {
+                        path: chatSvgRoutes.peopleIcon
+                    },
+                    value: data?.teamBoard && 'Team Board',
+                    noDataMessage: 'No team board provided',
+                    isHighlighted: true
+                }
+            }
+        "
+    ></ng-container>
+    <ng-container
+        *ngTemplateOutlet="
+            row;
+            context: {
+                item: {
+                    title: 'Driver',
+                    leftSideIcon: {
+                        path: chatSvgRoutes.steeringWheelIcon
+                    },
+                    value: data?.driver?.fullName,
+                    noDataMessage: 'No driver provided',
+                    isHighlighted: true
+                }
+            }
+        "
+    ></ng-container>
+    <ng-container
+        *ngTemplateOutlet="
+            phoneAndEmail;
+            context: {
+                item: data?.userAdditionalInformation
+            }
+        "
+    ></ng-container>
+</ng-template>
+
+<ng-template #safety let-data="data">
+    <ng-container
+        *ngTemplateOutlet="
+            row;
+            context: {
+                item: {
+                    leftSideIcon: {
+                        path: chatSvgRoutes.truckIcon
+                    },
+                    rightSideIcon: {
+                        path: chatSvgRoutes.reeferTruckIcon,
+                        width: 40,
+                        height: 16
+                    },
+                    value: data?.isReeferTruck && 'Reefer Truck',
+                    noDataMessage: 'No reefer truck provided',
+                    isHighlighted: true
+                }
+            }
+        "
+    ></ng-container>
+    <ng-container
+        *ngTemplateOutlet="
+            row;
+            context: {
+                item: {
+                    title: 'Dispatch Board',
+                    leftSideIcon: {
+                        path: chatSvgRoutes.dispatchBoardIcon
+                    },
+                    value: data?.teamBoard && 'Team Board',
+                    noDataMessage: 'No team board provided',
+                    isHighlighted: true
+                }
+            }
+        "
+    ></ng-container>
+    <ng-container
+        *ngTemplateOutlet="
+            row;
+            context: {
+                item: {
+                    title: 'Driver',
+                    leftSideIcon: {
+                        path: chatSvgRoutes.steeringWheelIcon
+                    },
+                    value: data?.driver,
+                    noDataMessage: 'No driver provided',
+                    isHighlighted: true
+                }
+            }
+        "
+    ></ng-container>
+    <ng-container
+        *ngTemplateOutlet="
+            phoneAndEmail;
+            context: {
+                item: data?.userAdditionalInformation
+            }
+        "
+    ></ng-container>
+    <ng-container
+        *ngTemplateOutlet="
+            row;
+            context: {
+                item: {
+                    title: 'Co-Driver',
+                    leftSideIcon: {
+                        path: chatSvgRoutes.steeringWheelCIcon
+                    },
+                    value: data?.codriver?.fullName,
+                    noDataMessage: 'No co-driver provided',
+                    isHighlighted: true
+                }
+            }
+        "
+    ></ng-container>
+    <ng-container
+        *ngTemplateOutlet="
+            phoneAndEmail;
+            context: {
+                item: data?.userAdditionalInformation
+            }
+        "
+    ></ng-container>
+</ng-template>
+
+<!-- Shared elements -->
+<ng-template #phoneAndEmail let-item="item">
+    <ng-container
+        *ngTemplateOutlet="
+            row;
+            context: {
+                item: {
+                    title: 'Phone',
+                    leftSideIcon: {
+                        path: chatSvgRoutes.phoneIcon
+                    },
+                    value: item?.phone,
+                    noDataMessage: 'No phone provided'
+                }
+            }
+        "
+    >
+    </ng-container>
+
+    <ng-container
+        *ngTemplateOutlet="
+            row;
+            context: {
+                item: {
+                    title: 'E-mail',
+                    leftSideIcon: {
+                        path: chatSvgRoutes.emailIcon
+                    },
+                    value: item?.email,
+                    noDataMessage: 'No e-mail provided'
+                }
+            }
+        "
+    >
+    </ng-container>
+</ng-template>
+
+<ng-template #row let-item="item">
+    <div
+        class="additional-info-row d-flex justify-content-between align-content-center ta-font-regular"
+    >
+        <div class="d-flex">
+            <ng-container
+                *ngTemplateOutlet="
+                    icon;
+                    context: {
+                        path: item?.leftSideIcon?.path
+                    }
+                "
+            ></ng-container>
+            <div
+                class="additional-info-row-text d-flex align-content-center"
+                [ngClass]="item.isHighlighted && 'ta-font-bold highlighted'"
+            >
+                {{ item?.value || item.noDataMessage }}
+            </div>
+        </div>
+        <ng-container
+            *ngTemplateOutlet="
+                rowRightSide;
+                context: {
+                    item: {
+                        title: item.title,
+                        path: item.rightSideIcon?.path,
+                        width: item.rightSideIcon?.width,
+                        height: item.rightSideIcon?.height
+                    }
+                }
+            "
+        ></ng-container>
+    </div>
+</ng-template>
+
+<ng-template #rowRightSide let-item="item">
+    <ng-container *ngIf="item.title">
+        <div class="additional-info-row-text muted ta-font-regular">
+            {{ item.title }}
+        </div>
+    </ng-container>
+    <ng-container *ngIf="item.path && !item.title">
+        <ng-container
+            *ngTemplateOutlet="
+                icon;
+                context: {
+                    path: item.path,
+                    width: item.width,
+                    height: item.height
+                }
+            "
+        ></ng-container>
+    </ng-container>
+</ng-template>
+
+<ng-template #icon let-path="path" let-width="width" let-height="height">
+    <svg-icon
+        class="d-flex justify-content-center align-items-center"
+        [svgStyle]="{ 'width.px': width ?? 14, 'height.px': height ?? 14 }"
+        [src]="path"
+    >
+    </svg-icon>
+</ng-template>
+
+<ng-template #participantsIconList let-participants="participants">
+    <ng-container
+        *ngFor="
+            let participant of participants;
+            let ind = index;
+            trackBy: '' | trackByProperty
+        "
+    >
+        <div class="d-flex justify-content-center align-content-center">
+            <ng-container [ngSwitch]="true">
+                <ng-container *ngSwitchCase="ind <= 4">
+                    <div
+                        class="profile-illustration-wrapper"
+                        [ngClass]="ind > 0 && 'left-offset'"
+                        [ngStyle]="{
+                            'border-radius':
+                                participant?.userType?.name !== 'Driver' &&
+                                '50px',
+                            left: -ind * 6 + 'px'
+                        }"
+                    >
+                        <app-ca-profile-image
+                            [avatarImg]="participant?.avatarFile?.url"
+                            [avatarColor]="{
+                                background: '#DFC2F9',
+                                color: '#9E47EC66'
+                            }"
+                            [textShortName]="
+                                participant?.fullName | nameInitials
+                            "
+                            [size]="22"
+                            [fontSize]="9"
+                            [isHoverEffect]="false"
+                            [isRound]="participant?.userType?.name !== 'Driver'"
+                        ></app-ca-profile-image>
+                    </div>
+                </ng-container>
+                <ng-container *ngSwitchCase="ind === 5">
+                    <div
+                        class="remaining-participants d-flex align-content-center justify-content-center ta-font-extra-bold"
+                        [ngStyle]="{
+                            position: 'relative',
+                            'border-radius': true && '50px',
+                            left: '-30px'
+                        }"
+                    >
+                        <div class="remaining-participants-number">
+                            +{{ participants?.length - 5 }}
+                        </div>
+                    </div>
+                </ng-container>
+            </ng-container>
+        </div>
+    </ng-container>
+</ng-template>

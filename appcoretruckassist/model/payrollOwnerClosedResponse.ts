@@ -35,11 +35,11 @@ export interface PayrollOwnerClosedResponse {
     salary?: number | null;
     earnings?: number | null;
     debt?: number | null;
-    deductions?: Array<PayrollDeductionMinimalResponse> | null;
+    includedDeductions?: Array<PayrollDeductionMinimalResponse> | null;
     totalDeduction?: number | null;
-    credits?: Array<PayrollCreditMinimalResponse> | null;
+    includedCredits?: Array<PayrollCreditMinimalResponse> | null;
     totalCredits?: number | null;
-    loads?: Array<PayrollLoadMinimalResponse> | null;
+    includedLoads?: Array<PayrollLoadMinimalResponse> | null;
     totalFuels?: number | null;
     fuels?: Array<PayrollFuelMinimalResponse> | null;
     totalTransactions?: number | null;

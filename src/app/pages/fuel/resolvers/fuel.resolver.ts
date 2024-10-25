@@ -14,49 +14,16 @@ export class FuelResolver {
 
     resolve(): Observable<any> {
         return forkJoin([
-            this.fuelService.getFuelTransactionsList(
-                undefined,
-                undefined,
-                undefined,
-                undefined,
-                undefined,
-                undefined,
-                undefined,
-                undefined,
-                undefined,
-                undefined,
-                undefined,
-                undefined,
-                undefined,
-                undefined,
-                1,
-                25
-            ),
-            this.fuelService.getFuelStopsList(
-                undefined,
-                undefined,
-                undefined,
-                undefined,
-                undefined,
-                undefined,
-                undefined,
-                undefined,
-                undefined,
-                undefined,
-                undefined,
-                undefined,
-                undefined,
-                1,
-                25
-            ),
+            this.fuelService.getFuelTransactionsList(),
+            this.fuelService.getFuelStopsList(),
         ]).pipe(
             tap(([fuelTransactions, fuelStops]) => {
                 localStorage.setItem(
                     'fuelTableCount',
                     JSON.stringify({
                         fuelTransactions: fuelTransactions.fuelTransactionCount,
-                        fuelStops: fuelStops.fuelStopCount,
-                        fuelCard: fuelStops.fuelCardCount,
+                        fuelStops: fuelStops?.fuelStopCount,
+                        fuelCard: fuelStops?.fuelCardCount,
                     })
                 );
 
