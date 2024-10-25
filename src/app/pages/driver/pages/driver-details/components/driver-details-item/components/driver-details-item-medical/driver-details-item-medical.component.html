@@ -57,8 +57,12 @@
                                 [hasDownload]="
                                     'assets/svg/common/ic_download.svg'
                                 "
+                                (onActionEvent)="
+                                    driverMedicalFiles?.downloadAllFiles()
+                                "
                             >
                                 <app-ta-upload-files
+                                    #driverMedicalFiles
                                     [files]="medical?.files"
                                     [customClassName]="'driver-details-pdf'"
                                     [hasCarouselBottomTabs]="true"

@@ -62,8 +62,12 @@
                                 [hasDownload]="
                                     'assets/svg/common/ic_download.svg'
                                 "
+                                (onActionEvent)="
+                                    driverTestFiles?.downloadAllFiles()
+                                "
                             >
                                 <app-ta-upload-files
+                                    #driverTestFiles
                                     [files]="test?.files"
                                     [customClassName]="'driver-details-pdf'"
                                     [hasCarouselBottomTabs]="true"
