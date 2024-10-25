@@ -19,7 +19,11 @@ import { ReviewsRatingService } from '@shared/services/reviews-rating.service';
 import { MapsService } from '@shared/services/maps.service';
 import { RepairCardsModalService } from '@pages/repair/pages/repair-card-modal/services/repair-cards-modal.service';
 import { ConfirmationActivationService } from '@shared/components/ta-shared-modals/confirmation-activation-modal/services/confirmation-activation.service';
-import { CaSearchMultipleStatesService } from 'ca-components';
+import {
+    CaMapComponent,
+    CaSearchMultipleStatesService,
+    ICaMapProps,
+} from 'ca-components';
 
 // store
 import { RepairShopQuery } from '@pages/repair/state/repair-shop-state/repair-shop.query';
@@ -55,6 +59,8 @@ import { TableActionsStringEnum } from '@shared/enums/table-actions-string.enum'
 import { TableDropdownComponentConstants } from '@shared/utils/constants/table-dropdown-component.constants';
 import { RepairCardConfigConstants } from '@pages/repair/utils/constants/repair-card-config.constants';
 import { RepairConfiguration } from '@pages/repair/pages/repair-table/utils/constants/repair-configuration.constants';
+import { MapConstants } from '@shared/utils/constants/map.constants';
+import { RepairShopMapConfig } from '@pages/repair/pages/repair-table/utils/constants/repair-shop-map.config';
 
 // helpers
 import { DataFilterHelper } from '@shared/utils/helpers/data-filter.helper';
@@ -90,6 +96,7 @@ import { TableColumnConfig } from '@shared/models/table-models/table-column-conf
 import { RepairTableHelper } from '@pages/repair/pages/repair-table/utils/helpers/repair-table.helper';
 import { RepairTableDateFormaterHelper } from '@pages/repair/pages/repair-table/utils/helpers/repair-table-date-formater.helper';
 import { RepairTableBackFilterDataHelper } from '@pages/repair/pages/repair-table/utils/helpers/repair-table-back-filter-data.helper';
+import { RepairShopMapMarkersHelper } from './utils/helpers/repair-shop-map-markers.helper';
 
 @Component({
     selector: 'app-repair-table',
@@ -102,7 +109,8 @@ import { RepairTableBackFilterDataHelper } from '@pages/repair/pages/repair-tabl
 })
 export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
     private destroy$ = new Subject<void>();
-    @ViewChild('mapsComponent', { static: false }) public mapsComponent: any;
+    @ViewChild('mapsComponent', { static: false })
+    public mapsComponent: CaMapComponent;
     public reapirTableData: any[] = [];
 
     public tableOptions;
@@ -163,6 +171,8 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
 
     public displayRows$: Observable<any>; //leave this as any for now
 
+    public mapData: ICaMapProps = RepairShopMapConfig.repairShopMapConfig;
+
     constructor(
         // Router
         public router: Router,
@@ -214,6 +224,8 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
         this.confirmationSubscribe();
 
         this.deleteSelectedRows();
+
+        if (this.selectedTab === TableStringEnum.REPAIR_SHOP) this.getMapData();
     }
 
     // TODO - Add to store logic
@@ -820,7 +832,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                 tableConfiguration: 'REPAIR_SHOP',
                 isActive: this.selectedTab === TableStringEnum.REPAIR_SHOP,
                 gridColumns: this.getGridColumns('REPAIR_SHOP'),
-                inactive: true,
+                //inactive: true,
             },
         ];
 
@@ -828,6 +840,8 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
 
         this.setRepairData(td);
         this.updateCardView();
+
+        if (this.selectedTab === TableStringEnum.REPAIR_SHOP) this.getMapData();
     }
 
     // Check If Selected Tab Has Active View Mode
@@ -1661,51 +1675,50 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     // MAP Find parameter type
-    public selectItem(data: any): void {
-        this.mapsComponent.clickedMarker(data[0]);
+    public selectItem(data: any, index: number): void {
+        this.mapsComponent.onMarkerClick(
+            index,
+            null,
+            this.mapData.markers[index]
+        );
 
         this.mapListData.map((item) => {
             if (item.id == data[0]) {
-                let itemIndex = this.mapsComponent.viewData.findIndex(
-                    (item2) => item2.id === item.id
-                );
-
-                if (
-                    itemIndex > -1 &&
-                    this.mapsComponent.viewData[itemIndex].showMarker
-                ) {
-                    item.isSelected =
-                        this.mapsComponent.viewData[itemIndex].isSelected;
-                } else {
-                    this.mapsComponent.clusterMarkers.map((cluster) => {
-                        const clusterData = cluster.pagination.data;
-
-                        let clusterItemIndex = clusterData.findIndex(
-                            (item2) => item2.id === data[0]
-                        );
-
-                        if (clusterItemIndex > -1) {
-                            if (!data[1]) {
-                                if (
-                                    !cluster.isSelected ||
-                                    (cluster.isSelected &&
-                                        cluster.detailedInfo?.id == data[0])
-                                ) {
-                                    this.mapsComponent.clickedCluster(cluster);
-                                }
-
-                                if (cluster.isSelected) {
-                                    this.mapsComponent.showClusterItemInfo([
-                                        cluster,
-                                        clusterData[clusterItemIndex],
-                                    ]);
-                                }
-                            }
-
-                            item.isSelected = cluster.isSelected;
-                        }
-                    });
-                }
+                // let itemIndex = this.mapsComponent.viewData.findIndex(
+                //     (item2) => item2.id === item.id
+                // );
+                // if (
+                //     itemIndex > -1 &&
+                //     this.mapsComponent.viewData[itemIndex].showMarker
+                // ) {
+                //     item.isSelected =
+                //         this.mapsComponent.viewData[itemIndex].isSelected;
+                // } else {
+                //     this.mapsComponent.clusterMarkers.map((cluster) => {
+                //         const clusterData = cluster.pagination.data;
+                //         let clusterItemIndex = clusterData.findIndex(
+                //             (item2) => item2.id === data[0]
+                //         );
+                //         if (clusterItemIndex > -1) {
+                //             if (!data[1]) {
+                //                 if (
+                //                     !cluster.isSelected ||
+                //                     (cluster.isSelected &&
+                //                         cluster.detailedInfo?.id == data[0])
+                //                 ) {
+                //                     this.mapsComponent.clickedCluster(cluster);
+                //                 }
+                //                 if (cluster.isSelected) {
+                //                     this.mapsComponent.showClusterItemInfo([
+                //                         cluster,
+                //                         clusterData[clusterItemIndex],
+                //                     ]);
+                //                 }
+                //             }
+                //             item.isSelected = cluster.isSelected;
+                //         }
+                //     });
+                // }
             }
         });
     }
@@ -1781,5 +1794,31 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                 break;
         }
         this.repairCardsModalService.updateTab(this.selectedTab);
+    }
+
+    public getMapData(): void {
+        const mapMarkers = this.viewData.map((data) => {
+            return {
+                position: { lat: data.latitude, lng: data.longitude },
+                icon: {
+                    url: RepairShopMapMarkersHelper.getMapMarker(data),
+                    labelOrigin: new google.maps.Point(80, 18),
+                },
+                infoWindowContent: null,
+                label: {
+                    text: data.name,
+                    fontSize: '11px',
+                    color: '#424242',
+                    fontWeight: '500',
+                },
+                labelOrigin: { x: 90, y: 15 },
+            };
+        });
+
+        this.mapData = {
+            ...this.mapData,
+            viewData: [...this.viewData],
+            markers: mapMarkers,
+        };
     }
 }

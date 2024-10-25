@@ -89,7 +89,7 @@
                     [sortCategory]="activeSortType"
                     [locationFilterOn]="locationFilterOn"
                     (bodyActions)="onTableBodyActions($event)"
-                    (clickedMarker)="selectItem($event)"
+                    (clickedMarker)="selectItem($event, i)"
                     [ngStyle]="{
                         display:
                             locationFilterOn && latlong?.isShown == false
@@ -98,7 +98,10 @@
                     }"
                 ></app-ta-map-list-card>
             </app-ta-map-list>
-<!-- 
+
+            <app-ca-map #mapsComponent [data]="mapData"></app-ca-map>
+
+            <!-- 
             <app-ta-maps
                 #mapsComponent
                 [_viewData]="viewData"

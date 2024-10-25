@@ -4,7 +4,7 @@ import { ICaMapProps } from 'ca-components';
 export class RepairShopMapConfig {
     static repairShopMapConfig: ICaMapProps = {
         markers: [],
-        clustermarkers: [],
+        clusterMarkers: [],
         routingMarkers: [],
         mapType: 'repair-shop',
     };

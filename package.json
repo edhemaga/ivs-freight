@@ -62,7 +62,7 @@
         "angular2-chartjs": "^0.5.1",
         "bank-routing-number-validator": "0.0.4",
         "bootstrap": "^5.2.3",
-        "ca-components": "^0.0.76",
+        "ca-components": "file:../carriera-components-library/dist/ca-components",
         "chart.js": "^2.9.3",
         "chartjs-plugin-annotation": "^0.5.7",
         "chartjs-plugin-datalabels": "^1.0.0",

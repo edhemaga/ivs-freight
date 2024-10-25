@@ -134,6 +134,8 @@ export class TaMapListCardComponent implements OnInit, OnDestroy {
 
         const selectId = this.isSelected ? 0 : this.item.id;
         this.mapsService.selectedMapListCard(selectId);
+
+        this.clickedMarker.emit(this.item);
     }
 
     showMoreOptions() {

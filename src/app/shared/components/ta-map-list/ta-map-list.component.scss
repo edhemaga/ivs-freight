@@ -151,15 +151,11 @@
 .gm-style div[aria-hidden='true'] {
     width: 90px;
 
-    color: $ta-blue-2 !important;
-    //color: #F44336 !important;
-    margin-left: 120px;
+    // margin-left: -32px;
     text-shadow: 1px 1px 0px $white, 1px -1px 0px $white, -1px -1px 0px $white,
         -1px 1px 0px $white;
     text-transform: uppercase;
-    font-size: 11px !important;
     line-height: 12px;
-    font-weight: 600;
     text-align: left;
 
     white-space: nowrap;
