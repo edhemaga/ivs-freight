@@ -245,9 +245,6 @@ export class TaTableBodyComponent
 
     // --------------------------------NgOnInit---------------------------------
     ngOnInit(): void {
-        console.log('VIEWDATA', this.viewData);
-        console.log('TABLEDATA', this.tableData);
-
         // Get Selected Tab Data
         this.getSelectedTabTableData();
         this.viewDataEmpty = this.viewData.length ? false : true;
