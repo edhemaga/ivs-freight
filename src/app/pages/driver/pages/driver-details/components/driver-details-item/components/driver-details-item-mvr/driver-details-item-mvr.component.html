@@ -53,8 +53,12 @@
                                 [hasDownload]="
                                     'assets/svg/common/ic_download.svg'
                                 "
+                                (onActionEvent)="
+                                    driverMvrFiles?.downloadAllFiles()
+                                "
                             >
                                 <app-ta-upload-files
+                                    #driverMvrFiles
                                     [files]="mvr?.files"
                                     [customClassName]="'driver-details-pdf'"
                                     [hasCarouselBottomTabs]="true"
