@@ -1,8 +1,14 @@
-<app-ca-modal [modalTitle]="modalTitle" [footerTemplate]="footerTemplate" [rightHeaderTemplate]="rightModalContent">
+<app-ca-modal
+    [modalTitle]="modalTitle"
+    [footerTemplate]="footerTemplate"
+    [rightHeaderTemplate]="rightModalContent"
+>
     <div origin>
         <div class="divider divider--dark divider--small"></div>
 
         <form [formGroup]="baseForm" class="payroll-credit--body">
+            <ng-container *ngIf="isBonusModal"> </ng-container>
+
             <ng-container *ngIf="isDriverAndTruckTabs">
                 <div class="payroll-mb-32">
                     <app-ta-tab-switch
@@ -104,12 +110,19 @@ Monthly -->
                     <app-ta-input
                         formControlName="limitedNumber"
                         [inputConfig]="
-                            payrollCreditConst.limitedNumberField(svgRoutes, isNotRecuringPayment)
+                            payrollCreditConst.limitedNumberField(
+                                svgRoutes,
+                                isNotRecuringPayment
+                            )
                         "
                     ></app-ta-input>
                     <app-ca-input
                         formControlName="limitedAmount"
-                        [inputConfig]="payrollCreditConst.limitedAmountField(isNotRecuringPayment)"
+                        [inputConfig]="
+                            payrollCreditConst.limitedAmountField(
+                                isNotRecuringPayment
+                            )
+                        "
                     ></app-ca-input>
                 </div>
             </ng-container>

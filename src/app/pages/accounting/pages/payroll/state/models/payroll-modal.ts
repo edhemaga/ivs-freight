@@ -11,6 +11,10 @@ export type PayrollModalAction =
     | PayrollStringEnum.EDIT
     | PayrollStringEnum.CREATE;
 
+export type PayrollModalType =
+    | PayrollStringEnum.MODAL_DEDUCTION
+    | PayrollStringEnum.MODAL_BONUS;
+
 export interface PayrollModal {
     editCredit: PayrollCreditResponse;
     // When creating new credit for selected truck or driver

@@ -34,9 +34,11 @@ import {
     TruckMinimalResponse,
 } from 'appcoretruckassist';
 import { ITaInput } from '@shared/components/ta-input/config/ta-input.config';
+import { PayrollModalType } from '@pages/accounting/pages/payroll/state/models';
 
 // Services
 import { PayrollCreditService } from '@pages/accounting/pages/payroll/payroll-modals/payroll-credit-bonus/services/payroll-credit.service';
+import { PayrollBonusService } from '@pages/accounting/pages/payroll/payroll-modals/payroll-bonus-modal/services/payroll-bonus.service';
 
 @Component({
     selector: 'app-payroll-base-modal',
@@ -63,7 +65,7 @@ export class PayrollBaseModalComponent implements OnInit {
     @Input() baseForm: FormGroup;
     @Input() modalTitle: string;
     @Input() isDriverAndTruckTabs: boolean;
-    @Input() isDeductionModal: boolean;
+    @Input() modalType: PayrollModalType;
     public payrollCreditConst = PayrollCreditConst;
     public svgRoutes = PayrollSvgRoutes;
     public tabs = [];
@@ -81,6 +83,7 @@ export class PayrollBaseModalComponent implements OnInit {
 
     constructor(
         private payrolCreditService: PayrollCreditService,
+        private payrollBonusService: PayrollBonusService,
         private ngbActiveModal: NgbActiveModal
     ) {}
 
@@ -102,6 +105,10 @@ export class PayrollBaseModalComponent implements OnInit {
 
         if (this.isDeductionModal) {
             this.periodTabs = [...this.payrollCreditConst.periodTabs];
+        }
+
+        if (this.isBonusModal) {
+            this.getEmployeesDropdown();
         }
     }
 
@@ -140,6 +147,12 @@ export class PayrollBaseModalComponent implements OnInit {
                 payAmount.updateValueAndValidity();
                 numberOfPayments.updateValueAndValidity();
             });
+    }
+
+    private getEmployeesDropdown(): void {
+        this.payrollBonusService.getPayrollBonusModal().subscribe((res) => {
+            console.log(res);
+        });
     }
 
     private driverAndTruckDropdowns(): void {
@@ -245,6 +258,14 @@ export class PayrollBaseModalComponent implements OnInit {
             this.selectedDriver?.logoName,
             this.selectedDriver?.name
         );
+    }
+
+    public get isDeductionModal(): boolean {
+        return this.modalType === PayrollStringEnum.MODAL_DEDUCTION;
+    }
+
+    public get isBonusModal(): boolean {
+        return this.modalType === PayrollStringEnum.MODAL_BONUS;
     }
 
     public onCloseModal(): void {

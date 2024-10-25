@@ -18,4 +18,6 @@ export enum PayrollStringEnum {
     SELECTED_DRIVER_ID = 'selected-driver-id',
     SELECTED_TRUCK_ID = 'selected-truck-id',
     SELECTED_TYPE_ID = 'selected-type-id',
+    MODAL_DEDUCTION = 'MODAL_DEDUCTION',
+    MODAL_BONUS = 'MODAL_BONUS',
 }
