@@ -21,6 +21,7 @@ import {
 } from '@pages/accounting/pages/payroll/state/models';
 import {
     CreatePayrollCreditCommand,
+    PayrollDeductionType,
     PayrollService,
 } from 'appcoretruckassist';
 
@@ -82,7 +83,7 @@ export class PayrollCreditBonusComponent implements OnInit {
             [PayrollStringEnum.AMOUNT]: [null, Validators.required],
             [PayrollStringEnum.SELECTED_DRIVER_ID]: [null],
             [PayrollStringEnum.SELECTED_TRUCK_ID]: [null],
-            [PayrollStringEnum.SELECTED_TYPE_ID]: ['Driver'],
+            [PayrollStringEnum.SELECTED_TYPE_ID]: [PayrollDeductionType.Driver],
         });
     }
 

@@ -22,22 +22,19 @@ import { PayrollBaseModalComponent } from '@pages/accounting/pages/payroll/payro
         FormsModule,
         ReactiveFormsModule,
 
-        PayrollBaseModalComponent
+        PayrollBaseModalComponent,
     ],
 })
 export class PayrollBonusModalComponent implements OnInit {
     public payrollCreditForm: FormGroup;
-  
-    constructor(private fb: FormBuilder) {}
-  
-    ngOnInit(): void {
-      this.payrollCreditForm = this.fb.group({
-        description: ['', Validators.required],
-        date: ['', Validators.required],
-        amount: ['', [Validators.required, Validators.min(0)]],
-      });
 
-      this.payrollCreditForm.valueChanges.subscribe(a => console.log(a));
+    constructor(private fb: FormBuilder) {}
+
+    ngOnInit(): void {
+        this.payrollCreditForm = this.fb.group({
+            description: ['', Validators.required],
+            date: ['', Validators.required],
+            amount: ['', [Validators.required, Validators.min(0)]],
+        });
     }
-   
 }

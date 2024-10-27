@@ -22,7 +22,11 @@ import { TaInputComponent } from '@shared/components/ta-input/ta-input.component
 
 // Const
 import { PayrollCreditConst } from '@pages/accounting/pages/payroll/state/utils/consts';
+
+// Enums
 import { PayrollStringEnum } from '@pages/accounting/pages/payroll/state/enums';
+
+// Utils
 import { PayrollSvgRoutes } from '@pages/accounting/pages/payroll/state/utils';
 
 // Models
@@ -34,7 +38,10 @@ import {
     TruckMinimalResponse,
 } from 'appcoretruckassist';
 import { ITaInput } from '@shared/components/ta-input/config/ta-input.config';
-import { PayrollModalType } from '@pages/accounting/pages/payroll/state/models';
+import {
+    PayrollDriver,
+    PayrollModalType,
+} from '@pages/accounting/pages/payroll/state/models';
 
 // Services
 import { PayrollCreditService } from '@pages/accounting/pages/payroll/payroll-modals/payroll-credit-bonus/services/payroll-credit.service';
@@ -61,7 +68,7 @@ import { PayrollBonusService } from '@pages/accounting/pages/payroll/payroll-mod
     styleUrls: ['./payroll-base-modal.component.scss'],
 })
 export class PayrollBaseModalComponent implements OnInit {
-    @Input() footerTemplate: TemplateRef<any>;
+    @Input() footerTemplate: TemplateRef<Element>;
     @Input() baseForm: FormGroup;
     @Input() modalTitle: string;
     @Input() isDriverAndTruckTabs: boolean;
@@ -72,11 +79,11 @@ export class PayrollBaseModalComponent implements OnInit {
     public selectedTab: TabOptions;
 
     // Drivers
-    public selectedDriver: any;
-    public driversDropdownList: EnumValue[];
+    public selectedDriver: PayrollDriver;
+    public driversDropdownList: PayrollDriver[];
     // Trucks
     public selectedTruck: EnumValue;
-    public trucksDropdownList: { id: number; name: string }[];
+    public trucksDropdownList: EnumValue[];
     private destroy$ = new Subject<void>();
     public creditTitle: string = '';
     public periodTabs: TabOptions[];
@@ -103,13 +110,10 @@ export class PayrollBaseModalComponent implements OnInit {
             this.selectedTab = this.tabs[0];
         }
 
-        if (this.isDeductionModal) {
+        if (this.isDeductionModal)
             this.periodTabs = [...this.payrollCreditConst.periodTabs];
-        }
 
-        if (this.isBonusModal) {
-            this.getEmployeesDropdown();
-        }
+        if (this.isBonusModal) this.getEmployeesDropdown();
     }
 
     private setupEventListeners(): void {
@@ -121,7 +125,8 @@ export class PayrollBaseModalComponent implements OnInit {
 
         this.baseForm
             .get(PayrollStringEnum.RECURRING)
-            .valueChanges.subscribe((value) => {
+            .valueChanges.pipe(takeUntil(this.destroy$))
+            .subscribe((value) => {
                 const payAmount = this.baseForm.get(
                     PayrollStringEnum.LIMITED_AMOUNT
                 );
@@ -150,9 +155,7 @@ export class PayrollBaseModalComponent implements OnInit {
     }
 
     private getEmployeesDropdown(): void {
-        this.payrollBonusService.getPayrollBonusModal().subscribe((res) => {
-            console.log(res);
-        });
+        this.payrollBonusService.getPayrollBonusModal().subscribe((res) => {});
     }
 
     private driverAndTruckDropdowns(): void {
@@ -181,7 +184,7 @@ export class PayrollBaseModalComponent implements OnInit {
         );
     }
 
-    public selectDriver(driver: any): void {
+    public selectDriver(driver: PayrollDriver): void {
         this.selectedDriver = driver;
         this.baseForm
             .get(PayrollStringEnum.SELECTED_DRIVER_ID)
@@ -198,7 +201,7 @@ export class PayrollBaseModalComponent implements OnInit {
         });
     }
 
-    public selectTruck(truck: any): void {
+    public selectTruck(truck: EnumValue): void {
         this.selectedTruck = truck;
         this.baseForm
             .get(PayrollStringEnum.SELECTED_TRUCK_ID)
