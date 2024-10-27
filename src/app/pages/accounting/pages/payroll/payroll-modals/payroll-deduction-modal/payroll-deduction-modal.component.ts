@@ -11,6 +11,7 @@ import { CommonModule } from '@angular/common';
 // Models
 import {
     CreatePayrollDeductionCommand,
+    PayrollDeductionRecurringType,
     PayrollDeductionType,
 } from 'appcoretruckassist';
 
@@ -59,7 +60,9 @@ export class PayrollDeductionModalComponent implements OnInit {
             [PayrollStringEnum.DESCRIPTION]: [null, Validators.required],
             [PayrollStringEnum.AMOUNT]: [null, Validators.required],
             [PayrollStringEnum.RECURRING]: [false],
-            [PayrollStringEnum.RECURRING_TYPE]: [false],
+            [PayrollStringEnum.RECURRING_TYPE]: [
+                PayrollDeductionRecurringType.Weekly,
+            ],
             [PayrollStringEnum.LIMITED]: [false],
             [PayrollStringEnum.LIMITED_NUMBER]: [null],
             [PayrollStringEnum.LIMITED_AMOUNT]: [null],
@@ -93,10 +96,10 @@ export class PayrollDeductionModalComponent implements OnInit {
             limited: this.payrollCreditForm.get(PayrollStringEnum.LIMITED)
                 .value,
             limitedAmount: this.payrollCreditForm.get(
-                PayrollStringEnum.LIMITED_NUMBER
+                PayrollStringEnum.LIMITED_AMOUNT
             ).value,
             limitedNumber: this.payrollCreditForm.get(
-                PayrollStringEnum.LIMITED_AMOUNT
+                PayrollStringEnum.LIMITED_NUMBER
             ).value,
         };
     }
