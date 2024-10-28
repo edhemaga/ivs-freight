@@ -145,9 +145,8 @@ export class SettingsGeneralComponent implements OnInit, OnDestroy, OnChanges {
                     if (
                         res?.type === SettingsGeneralStringEnum.DELETE &&
                         res.template === SettingsGeneralStringEnum.COMPANY
-                    ) {
+                    )
                         this.deleteDivisionCompanyById(res.id);
-                    }
                 },
             });
     }
