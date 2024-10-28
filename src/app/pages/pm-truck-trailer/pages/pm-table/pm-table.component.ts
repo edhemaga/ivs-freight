@@ -206,6 +206,9 @@ export class PmTableComponent implements OnInit, AfterViewInit, OnDestroy {
         if (tableView) {
             this.selectedTab = tableView.tabSelected;
             this.activeViewMode = tableView.viewMode;
+
+            this.pmTruckBackFilterQuery.pageIndex = 1;
+            this.pmTrailerBackFilterQuery.pageIndex = 1;
         }
 
         this.initTableOptions();
