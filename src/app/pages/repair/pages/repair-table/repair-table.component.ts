@@ -1805,7 +1805,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                     url: RepairShopMapMarkersHelper.getMapMarker(data),
                     labelOrigin: new google.maps.Point(80, 18),
                 },
-                infoWindowContent: null,
+                infoWindowContent: RepairShopMapConfig.repairShopMapColumns,
                 label: {
                     text: data.name,
                     fontSize: '11px',
@@ -1813,12 +1813,12 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                     fontWeight: '500',
                 },
                 labelOrigin: { x: 90, y: 15 },
+                data,
             };
         });
 
         this.mapData = {
             ...this.mapData,
-            viewData: [...this.viewData],
             markers: mapMarkers,
         };
     }

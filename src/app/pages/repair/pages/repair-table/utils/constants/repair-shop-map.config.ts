@@ -1,5 +1,6 @@
 // Models
 import { ICaMapProps } from 'ca-components';
+import { MapDropdownContent } from 'ca-components/lib/components/ca-map-dropdown/models';
 
 export class RepairShopMapConfig {
     static repairShopMapConfig: ICaMapProps = {
@@ -7,5 +8,72 @@ export class RepairShopMapConfig {
         clusterMarkers: [],
         routingMarkers: [],
         mapType: 'repair-shop',
+    };
+
+    static repairShopMapColumns: MapDropdownContent = {
+        mainContent: [
+            { template: 'header-title', field: 'name' },
+            { template: 'rating-review', field: 'tableShopRaiting' },
+            { template: 'divider', field: '' },
+            { template: 'repair-shop-services', field: 'tableShopServices' },
+            { template: 'divider', field: '' },
+            {
+                template: 'icon-text',
+                field: 'phone',
+                url: 'assets/ca-components/svg/map/phone.svg',
+            },
+            {
+                template: 'icon-text',
+                field: 'email',
+                url: 'assets/ca-components/svg/map/email.svg',
+            },
+            {
+                template: 'icon-text',
+                field: 'tableAddress',
+                url: 'assets/ca-components/svg/map/address.svg',
+            },
+        ],
+        expandedContent: [
+            { template: 'divider', field: '' },
+            {
+                template: 'subtitle',
+                field: 'openHours',
+                title: 'Working Hours',
+            },
+            { template: 'divider', field: '' },
+            {
+                template: 'side-by-side',
+                field: '',
+                sideBySideInfo: {
+                    leftSide: {
+                        template: 'title-count',
+                        field: 'order',
+                        title: 'Repair',
+                    },
+                    rightSide: {
+                        template: 'money-text',
+                        field: 'tableExpense',
+                        title: 'Expense',
+                    },
+                },
+            },
+            { template: 'divider', field: '' },
+            {
+                template: 'side-by-side',
+                field: '',
+                sideBySideInfo: {
+                    leftSide: {
+                        template: 'icon-text',
+                        field: 'tableEdited',
+                        url: 'assets/ca-components/svg/map/calender_last_used.svg',
+                    },
+                    rightSide: {
+                        template: 'icon-text',
+                        field: 'tableAdded',
+                        url: 'assets/ca-components/svg/map/accident_calender.svg',
+                    },
+                },
+            },
+        ],
     };
 }
