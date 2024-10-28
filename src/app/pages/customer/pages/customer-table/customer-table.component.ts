@@ -1464,14 +1464,10 @@ export class CustomerTableComponent
                       hasBanDnu: !data?.status,
                       isDnu: false,
                       isClosed: data?.status === 0 || false,
-                      name:
-                          data?.businessName ??
-                          TableStringEnum.EMPTY_STRING_PLACEHOLDER,
+                      name: data?.businessName ?? null,
                   }
                 : data?.businessName,
-            tableAddress:
-                data?.address?.address ??
-                TableStringEnum.EMPTY_STRING_PLACEHOLDER,
+            tableAddress: data?.address?.address ?? null,
             tableLoads: {
                 loads: 0,
                 pickups: data?.pickups,
@@ -1479,18 +1475,18 @@ export class CustomerTableComponent
             },
             tableAverageWatingTimePickup: data?.avgPickupTimeInMin
                 ? data.avgPickupTimeInMin.toString()
-                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
+                : null,
             tableAverageWatingTimeDelivery: data?.avgDeliveryTimeInMin
                 ? data.avgDeliveryTimeInMin.toString()
-                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
+                : null,
             tableAvailableHoursShipping:
                 data?.shippingFrom && data?.shippingTo
                     ? data?.shippingFrom + ' - ' + data?.shippingTo
-                    : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
+                    : null,
             tableAvailableHoursReceiving:
                 data?.receivingFrom && data?.receivingTo
                     ? data?.receivingFrom + ' - ' + data?.receivingTo
-                    : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
+                    : null,
             reviews: data?.ratingReviews,
             tableRaiting: {
                 hasLiked: data?.currentCompanyUserRating === 1,

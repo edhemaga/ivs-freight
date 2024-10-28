@@ -9,4 +9,6 @@ export enum SettingsGeneralStringEnum {
     TWENTY = 'twenty',
 
     COMPANY = 'company',
+
+    DELETE = 'delete',
 }

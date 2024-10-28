@@ -120,7 +120,7 @@ export class TaTableToolbarComponent implements OnInit, OnChanges, OnDestroy {
     }
     @Input() dispathcboardTableLocked: boolean;
 
-    public listName: string = '';
+    @Input() listName: string = '';
     public optionsPopup: string | TemplateRef<any>;
     public dispatchPopoup: string | TemplateRef<any>;
     public dispatchPopoverOpen: boolean = false;
@@ -200,6 +200,7 @@ export class TaTableToolbarComponent implements OnInit, OnChanges, OnDestroy {
 
             const td = this.tableData.find((t) => t.field === this.selectedTab);
             if (!td) return;
+
             this.listName = td.gridNameTitle;
 
             if (td.isUpperCaseTitle) this.isUpperCaseTitle = true;
