@@ -3736,7 +3736,9 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                     : null,
                 stopType: deliveryStop,
                 stopOrder: stops.length + 1,
-                stopLoadOrder: this.loadExtraStops().length + 2,
+                stopLoadOrder: this.loadForm.get(
+                    LoadModalStringEnum.DELIVERY_STOP_ORDER
+                ).value,
                 shipperId: this.selectedDeliveryShipper.id,
                 shipper: this.originalShippers.find(
                     (shipper) => shipper.id === this.selectedDeliveryShipper.id

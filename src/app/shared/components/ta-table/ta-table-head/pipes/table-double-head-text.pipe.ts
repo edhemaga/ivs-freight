@@ -9,7 +9,20 @@ export class TableDoubleHeadTextPipe implements PipeTransform {
         const { tableHeadTitle, index } = column;
         const { gridNameTitle } = tableData;
 
-        return tableHeadTitle === TableHeadTitleStringEnum.PRIMARY
+        const emptyStringCondition =
+            (gridNameTitle === TableHeadTitleStringEnum.CUSTOMER &&
+                tableHeadTitle === TableHeadTitleStringEnum.LOAD_2) ||
+            (gridNameTitle === TableHeadTitleStringEnum.DRIVER &&
+                (tableHeadTitle === TableHeadTitleStringEnum.DRIVER_TYPE ||
+                    tableHeadTitle ===
+                        TableHeadTitleStringEnum.OFF_DUTY_LOCATION ||
+                    tableHeadTitle === TableHeadTitleStringEnum.TWIC_EXP ||
+                    tableHeadTitle === TableHeadTitleStringEnum.MEDICAL_EXP ||
+                    tableHeadTitle === TableHeadTitleStringEnum.HIRED));
+
+        return emptyStringCondition
+            ? TableHeadTitleStringEnum.EMPTY_STRING_CODE
+            : tableHeadTitle === TableHeadTitleStringEnum.PRIMARY
             ? TableHeadTitleStringEnum.PHONE
             : tableHeadTitle === TableHeadTitleStringEnum.PRIMARY_2
             ? TableHeadTitleStringEnum.EMAIL
