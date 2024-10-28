@@ -1349,7 +1349,6 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                 break;
             case LoadModalStringEnum.DISPATCHER:
                 this.selectedDispatcher = event;
-
                 if (this.selectedDispatcher) {
                     this.labelsDispatches = this.originLabelsDispatches.filter(
                         (item) =>

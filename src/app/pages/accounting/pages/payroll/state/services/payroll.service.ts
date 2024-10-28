@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, take } from 'rxjs';
+import { Observable, Subject, take } from 'rxjs';
 import { Store, select } from '@ngrx/store';
 
 import * as PayrollActions from '../actions/payroll.actions';
@@ -40,7 +40,14 @@ import { PayrollDriverMileageResponse } from 'appcoretruckassist/model/payrollDr
     providedIn: 'root',
 })
 export class PayrollFacadeService {
+    private payrollModalFormSubmited: Subject<boolean> = new Subject<null>();
+    public payrollModalFormSubmited$: Observable<boolean> = this.payrollModalFormSubmited.asObservable();
+
     constructor(private store: Store) {}
+
+    public resetForm(): void {
+        this.payrollModalFormSubmited.next(true);
+    }
 
     // SELECTORS
 
