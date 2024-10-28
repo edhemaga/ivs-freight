@@ -13,6 +13,7 @@ import { Subject } from 'rxjs';
 
 // Services
 import { PayrollCreditService } from '@pages/accounting/pages/payroll/payroll-modals/payroll-credit-bonus/services/payroll-credit.service';
+import { PayrollFacadeService } from '@pages/accounting/pages/payroll/state/services/payroll.service';
 
 // Models
 import {
@@ -67,7 +68,8 @@ export class PayrollCreditBonusComponent implements OnInit {
         private payrolCreditService: PayrollCreditService,
         private payrollService: PayrollService,
         private ngbActiveModal: NgbActiveModal,
-        private formBuilder: UntypedFormBuilder
+        private formBuilder: UntypedFormBuilder,
+        private payrollFacadeService: PayrollFacadeService
     ) {}
 
     ngOnInit() {
@@ -118,6 +120,7 @@ export class PayrollCreditBonusComponent implements OnInit {
                     if (this.isDropdownEnabled) {
                         // TODO: CHECK THIS, validators stays here all the time
                         this.createForm();
+                        this.payrollFacadeService.resetForm();
                         // this.selectDriver('');
                         // this.selectTruck('');
                     } else {

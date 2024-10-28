@@ -46,6 +46,7 @@ import {
 // Services
 import { PayrollCreditService } from '@pages/accounting/pages/payroll/payroll-modals/payroll-credit-bonus/services/payroll-credit.service';
 import { PayrollBonusService } from '@pages/accounting/pages/payroll/payroll-modals/payroll-bonus-modal/services/payroll-bonus.service';
+import { PayrollFacadeService } from '@pages/accounting/pages/payroll/state/services/payroll.service';
 
 @Component({
     selector: 'app-payroll-base-modal',
@@ -91,7 +92,8 @@ export class PayrollBaseModalComponent implements OnInit {
     constructor(
         private payrolCreditService: PayrollCreditService,
         private payrollBonusService: PayrollBonusService,
-        private ngbActiveModal: NgbActiveModal
+        private ngbActiveModal: NgbActiveModal,
+        private payrollFacadeService: PayrollFacadeService
     ) {}
 
     ngOnInit() {
@@ -118,6 +120,16 @@ export class PayrollBaseModalComponent implements OnInit {
 
     private setupEventListeners(): void {
         this.setupDeductionListeners();
+        this.truckDriverListeners();
+    }
+
+    private truckDriverListeners() {
+        this.payrollFacadeService.payrollModalFormSubmited$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe(() => {
+                this.selectedDriver = null;
+                this.selectedTruck = null;
+            });
     }
 
     private setupDeductionListeners() {
