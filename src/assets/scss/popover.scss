@@ -620,7 +620,7 @@
                             .columns-options-label {
                                 width: 14px;
                                 height: 14px;
-                                background-color: $muted; 
+                                background-color: $muted;
                                 margin-bottom: 0;
                                 border-radius: 2px;
                                 cursor: pointer;
@@ -785,6 +785,10 @@
                                 &:hover {
                                     background: $ta-light-grey-10;
                                     transition: 0.25s;
+                                }
+
+                                &.remove-padding {
+                                    padding: 0 !important;
                                 }
                             }
                         }
@@ -1391,37 +1395,65 @@
 
 .table-invoice-aging-popover {
     .popover-body {
+        position: absolute;
+        top: -4px;
+        left: 2px;
+        width: 258px;
+
         .invoice-aging-dropdown {
-            padding: 8px 8px 12px 8px;
+            padding: 8px;
             background-color: $ta-black-2;
             border-radius: 3px;
 
             .invoice-aging-dropdown-content {
-                .invoice-aging-dropdown-content-item {
-                    .days-count {
-                        width: 35%;
-                        color: $white;
+                gap: 12px;
 
-                        span {
+                .invoice-aging-dropdown-content-item {
+                    gap: 8px;
+
+                    &.has-value {
+                        .invoice-aging-item-header {
+                            .days-count {
+                                color: $white !important;
+                            }
+
+                            .invoice-count {
+                                color: $ta-light-grey-2 !important;
+                            }
+
+                            .total-amount {
+                                color: $white !important;
+                            }
+                        }
+                    }
+
+                    .invoice-aging-item-header {
+                        display: grid;
+                        grid-template-columns: repeat(3, 1fr);
+                        grid-gap: 12px;
+
+                        .days-count {
+                            color: $bw5;
+
+                            span {
+                                color: $bw5;
+                            }
+                        }
+
+                        .invoice-count {
+                            text-align: center;
+                            color: $bw6-2;
+                        }
+
+                        .total-amount {
+                            text-align: right;
                             color: $bw5;
                         }
                     }
 
-                    .invoice-count {
-                        width: 30%;
-                        color: $bw5;
-                        text-align: center;
-                    }
-
-                    .total-amount {
-                        width: 35%;
-                        color: $white;
-                        text-align: right;
-                    }
-
                     .invoice-aging-item-progress-bar-container {
                         position: relative;
-                        width: 252px;
+                        width: 100%;
                         height: 8px;
                         border-radius: 2px;
                         background: $dark-2;

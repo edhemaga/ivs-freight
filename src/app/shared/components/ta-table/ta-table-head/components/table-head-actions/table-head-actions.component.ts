@@ -26,6 +26,7 @@ import { TableHeadActionsData } from '@shared/components/ta-table/ta-table-head/
 })
 export class TableHeadActionsComponent {
     @Input() tableHeadActionsData: TableHeadActionsData;
+    @Input() isDisplayBorder: boolean;
 
     constructor() {}
 

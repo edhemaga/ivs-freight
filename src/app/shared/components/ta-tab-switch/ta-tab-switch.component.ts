@@ -52,6 +52,7 @@ export class TaTabSwitchComponent implements AfterViewChecked, OnChanges {
     @Input() clearCustomPeriodRangeValue?: boolean = false;
     @Input() isDisabled?: boolean = false;
     @Input() isBold: boolean = false;
+    @Input() isMarginTopDisabled: boolean = false;
 
     @Output() switchClicked = new EventEmitter<any>();
     @Output() customPeriodRangeEmitter = new EventEmitter<CustomPeriodRange>();

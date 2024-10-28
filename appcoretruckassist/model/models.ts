@@ -596,6 +596,7 @@ export * from './medicalCertificateReviewResponse';
 export * from './medicalResponse';
 export * from './messageResponse';
 export * from './messageTypeResponse';
+export * from './mileStopType';
 export * from './milesByStateResponse';
 export * from './milesByUnitListResponse';
 export * from './milesByUnitPaginatedStopsResponse';

@@ -254,5 +254,5 @@ export function getPayrollDriverMilesDefinition() {
             export: true,
             resizable: true,
         },
-    ] as any[];
+    ];
 }

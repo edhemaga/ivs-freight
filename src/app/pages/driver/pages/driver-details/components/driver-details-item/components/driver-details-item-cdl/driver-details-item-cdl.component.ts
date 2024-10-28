@@ -5,6 +5,7 @@ import {
     OnDestroy,
     OnInit,
     SimpleChanges,
+    ViewChild,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, UntypedFormControl } from '@angular/forms';
@@ -70,6 +71,8 @@ import { DetailsDropdownOptions } from '@pages/driver/pages/driver-details/model
 export class DriverDetailsItemCdlComponent
     implements OnInit, OnChanges, OnDestroy
 {
+    @ViewChild('driverCdlFiles') driverCdlFiles: TaUploadFilesComponent;
+
     @Input() cardsData: CdlResponse[];
     @Input() driver: DriverResponse;
 

@@ -398,56 +398,30 @@ ngb-modal-window[aria-hidden='true'] {
                         }
                     }
 
-                    .modal-calendar-container {
-                        margin-right: 4px;
-                        padding-right: 4px;
-                        border-right: 1px solid $ta-light-grey-6;
+                    .modal-close-container {
+                        position: relative;
+                        right: 1px;
+                        width: 26px;
+                        height: 26px;
+                        background: transparent;
+                        border-radius: 2px;
+                        cursor: pointer;
+                        transition: background 0.3s ease-in-out;
 
-                        .modal-calendar-icon {
-                            cursor: pointer;
-                            width: 26px;
-                            height: 26px;
-                            background: transparent;
-                            border-radius: 2px;
-                            transition: background 0.3s ease-in-out;
+                        &:hover {
+                            background: $bw2;
 
                             svg {
                                 path {
-                                    fill: $bw5;
+                                    fill: $ta-black;
                                 }
                             }
-
-                            &:hover {
-                                background: $bw2;
-                            }
                         }
-                    }
-
-                    .modal-close {
-                        position: relative;
-                        right: 1px;
-                        cursor: pointer;
 
                         svg {
-                            width: 26px;
-                            height: 26px;
-
                             path {
                                 fill: $bw5;
-                            }
-
-                            rect {
-                                fill: transparent;
-                                border-radius: 2px;
                                 transition: fill 0.3s ease-in-out;
-                            }
-                        }
-
-                        &:hover {
-                            svg {
-                                rect {
-                                    fill: $bw2;
-                                }
                             }
                         }
                     }
@@ -1095,7 +1069,7 @@ ngb-modal-window.modal {
             height: 100vh;
 
             .modal-container {
-                margin: 75px auto 60px auto;
+                margin: 60px auto;
             }
         }
     }

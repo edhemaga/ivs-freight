@@ -16,5 +16,6 @@ import { DepartmentResponse } from './departmentResponse';
 export interface BrokerModalResponse { 
     departments?: Array<DepartmentResponse> | null;
     payTerms?: Array<EnumValue> | null;
+    selectedPayTerm?: number | null;
 }
 

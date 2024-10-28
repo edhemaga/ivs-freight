@@ -935,7 +935,7 @@
                                     <app-ta-checkbox
                                         formControlName="factorByDefault"
                                         [name]="'FactorByDefault'"
-                                        [label]="'Factor By Default'"
+                                        [label]="'Factor by Def.'"
                                         [customClass]="'medium'"
                                     ></app-ta-checkbox>
                                 </div>
@@ -984,6 +984,9 @@
                                         [name]="'hazmat'"
                                         [label]="'HazMat'"
                                         [customClass]="'medium'"
+                                        [disabled]="
+                                            editData.type.includes('division')
+                                        "
                                     ></app-ta-checkbox>
                                 </div>
 
@@ -991,17 +994,28 @@
 
                                 <div class="row last-row">
                                     <div class="col-6">
-                                        <app-ta-input
-                                            formControlName="customerPayTerm"
+                                        <app-ta-input-dropdown
+                                            formControlName="payTerm"
                                             [inputConfig]="{
-                                                name: 'Customer Pay Term',
+                                                name: 'Input Dropdown',
                                                 type: 'text',
                                                 label: 'Customer Pay Term',
-                                                placeholderText: 'days',
-                                                minLength: 1,
-                                                maxLength: 3
+                                                isDropdown: true,
+                                                isDisabled:
+                                                    editData.type.includes(
+                                                        'division'
+                                                    ),
+                                                dropdownWidthClass: 'w-col-293'
                                             }"
-                                        ></app-ta-input>
+                                            [options]="payTermOptions"
+                                            [activeItem]="selectedPayTerm"
+                                            (selectedItem)="
+                                                onSelectDropdown(
+                                                    $event,
+                                                    'pay-term'
+                                                )
+                                            "
+                                        ></app-ta-input-dropdown>
                                     </div>
 
                                     <div class="col-6">
@@ -1013,6 +1027,10 @@
                                                 label: 'Customer Credit',
                                                 placeholderIcon: 'dollar',
                                                 thousandSeparator: true,
+                                                isDisabled:
+                                                    editData.type.includes(
+                                                        'division'
+                                                    ),
                                                 minLength: 4,
                                                 maxLength: 11
                                             }"
@@ -1038,6 +1056,10 @@
                                                     label: 'MVR',
                                                     isRequired: true,
                                                     hideClear: true,
+                                                    isDisabled:
+                                                        editData.type.includes(
+                                                            'division'
+                                                        ),
                                                     commands: {
                                                         active: true,
                                                         type: 'months',
@@ -1065,6 +1087,10 @@
                                                     label: 'Truck Inspection',
                                                     isRequired: true,
                                                     hideClear: true,
+                                                    isDisabled:
+                                                        editData.type.includes(
+                                                            'division'
+                                                        ),
                                                     commands: {
                                                         active: true,
                                                         type: 'months',
@@ -1092,6 +1118,10 @@
                                                     label: 'Trailer Inspection',
                                                     isRequired: true,
                                                     hideClear: true,
+                                                    isDisabled:
+                                                        editData.type.includes(
+                                                            'division'
+                                                        ),
                                                     commands: {
                                                         active: true,
                                                         type: 'months',

@@ -927,6 +927,12 @@
                                     >
                                         <div
                                             class="group-column"
+                                            [ngClass]="{
+                                                'remove-padding':
+                                                    tableData[0]
+                                                        ?.tableConfiguration ===
+                                                    'broker'
+                                            }"
                                             (click)="
                                                 onToaggleGroupColumn(
                                                     columnGroup,
@@ -982,7 +988,7 @@
                                                 [ngClass]="{
                                                     'selectable-text':
                                                         !columnGroup.isPined,
-                                                    'ta-font-bold':
+                                                    'ta-font-semi-bold':
                                                         !columnGroup.hidden
                                                 }"
                                             >

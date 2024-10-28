@@ -669,6 +669,7 @@ model/medicalCertificateReviewResponse.ts
 model/medicalResponse.ts
 model/messageResponse.ts
 model/messageTypeResponse.ts
+model/mileStopType.ts
 model/milesByStateResponse.ts
 model/milesByUnitListResponse.ts
 model/milesByUnitPaginatedStopsResponse.ts
