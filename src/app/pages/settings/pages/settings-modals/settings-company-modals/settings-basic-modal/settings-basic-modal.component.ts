@@ -79,6 +79,7 @@ import { SettingsModalConstants } from '@pages/settings/pages/settings-company/u
 
 // enums
 import { SettingsModalEnum } from '@pages/settings/pages/settings-company/enums/settings-modal.enum';
+import { SettingsFormEnum } from '@pages/settings/pages/settings-modals/enums';
 
 // models
 import {
@@ -87,7 +88,6 @@ import {
     CreateResponse,
     UpdateCompanyCommand,
     UpdateDivisionCompanyCommand,
-    CompanyResponse,
     BankResponse,
     EnumValue,
 } from 'appcoretruckassist';
@@ -258,67 +258,76 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
     }
 
     private checkForCompany(): void {
-        if (
-            [
-                SettingsModalEnum.NEW_DIVISION as string,
-                SettingsModalEnum.EDIT_DIVISION,
-            ].includes(this.editData.type)
-        ) {
-            this.createDivisionForm();
-
-            if (this.editData.type === SettingsModalEnum.EDIT_DIVISION) {
-                setTimeout(() => {
-                    this.disableCardAnimation = true;
-
-                    this.editCompanyDivision();
-                }, 500);
-            } else if (this.editData.type === SettingsModalEnum.NEW_DIVISION) {
-                this.companyForm.get('starting').setValue('100');
-            }
-        } else {
-            this.onPrefferedLoadCheck({ name: SettingsModalEnum.FTL });
-            this.onFleetTypeCheck({ id: 1 });
-            this.validateMiles();
-            this.onSamePerMileCheck();
-        }
-
-        if (this.editData.type === SettingsModalEnum.EDIT_COMPANY) {
-            setTimeout(() => {
-                this.editCompany(this.editData.company);
-            }, 500);
-
-            this.disableCardAnimation = true;
-        }
-
-        if (this.editData?.type === SettingsModalEnum.PAYROLL_TAB) {
-            this.tabChange({ id: 3 });
-
-            setTimeout(() => {
-                this.editCompany(this.editData.company);
-            }, 500);
-
-            this.disableCardAnimation = true;
-        }
-
-        if (
-            this.editData?.type === SettingsModalEnum.EDIT_COMPANY_FIRST_LOGIN
-        ) {
-            this.isSetupCompany = true;
-            this.disableCardAnimation = true;
-
-            this.settingsCompanyService
-                .getCompany()
-                .pipe(takeUntil(this.destroy$))
-                .subscribe((data: CompanyResponse) => {
-                    setTimeout(() => {
-                        this.editCompany(data);
-                    }, 500);
-
-                    this.editData.data = data;
-                });
-        }
-
         setTimeout(() => {
+            switch (this.editData.type) {
+                case SettingsModalEnum.NEW_DIVISION:
+                case SettingsModalEnum.EDIT_DIVISION:
+                    this.createDivisionForm();
+
+                    const handleCompanyPreselectedValues = () => {
+                        const {
+                            company: {
+                                additionalInfo: {
+                                    payTerm,
+                                    customerCredit,
+                                    mvrMonths,
+                                    truckInspectionMonths,
+                                    trailerInspectionMonths,
+                                },
+                            },
+                        } = this.editData;
+
+                        this.selectedPayTerm = this.payTermOptions?.find(
+                            (payTermOption) => payTermOption?.id === payTerm
+                        );
+
+                        this.companyForm.patchValue({
+                            starting: SettingsFormEnum.STARTING_NO,
+                            payTerm: this.selectedPayTerm?.name ?? null,
+                            customerCredit,
+                            mvrMonths,
+                            truckInspectionMonths,
+                            trailerInspectionMonths,
+                        });
+                    };
+
+                    this.editData.type === SettingsModalEnum.NEW_DIVISION
+                        ? handleCompanyPreselectedValues()
+                        : this.editCompanyDivision();
+
+                    break;
+                case SettingsModalEnum.EDIT_COMPANY:
+                case SettingsModalEnum.PAYROLL_TAB:
+                    this.editCompany(this.editData.company);
+
+                    if (this.editData.type === SettingsModalEnum.PAYROLL_TAB)
+                        this.tabChange({ id: 3 });
+
+                    break;
+                case SettingsModalEnum.EDIT_COMPANY_FIRST_LOGIN:
+                    this.isSetupCompany = true;
+
+                    this.settingsCompanyService
+                        .getCompany()
+                        .pipe(takeUntil(this.destroy$))
+                        .subscribe((data) => {
+                            this.editCompany(data);
+
+                            this.editData.data = data;
+                        });
+
+                    break;
+                default:
+                    break;
+            }
+
+            if (!this.editData.type.includes(SettingsFormEnum.DIVISION)) {
+                this.validateMiles();
+                this.onSamePerMileCheck();
+            }
+
+            this.disableCardAnimation = true;
+
             this.formService.checkFormChange(this.companyForm);
 
             this.formService.formValueChange$
@@ -396,9 +405,15 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
                 12,
                 [Validators.required, monthsValidRegex],
             ],
-            driverMiles: [true],
-            driverComission: [true],
-            driverFlatRate: [false],
+            driverMiles: [
+                !this.editData.type.includes(SettingsFormEnum.DIVISION),
+            ],
+            driverComission: [
+                !this.editData.type.includes(SettingsFormEnum.DIVISION),
+            ],
+            driverFlatRate: [
+                !this.editData.type.includes(SettingsFormEnum.DIVISION),
+            ],
             // payroll tab
             useACHPayout: [true],
             // driver & owner
@@ -1055,7 +1070,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
         this.companyForm.get('logo').setErrors(null);
     }
 
-    public onImageValidation(event: boolean) {
+    public onImageValidation(event: boolean): void {
         if (!event) {
             this.companyForm.get('logo').setErrors({ invalid: true });
         } else {
@@ -1066,17 +1081,19 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
         }
     }
 
-    public onSaveLogoAction(event: any) {
+    public onSaveLogoAction(event: any): void {
         if (event) {
             this.displayDeleteAction = true;
         }
     }
 
-    public onPrefferedLoadCheck(event: any) {
+    public onPrefferedLoadCheck(event: Tabs): void {
         this.prefferedLoadTabs = this.prefferedLoadTabs.map((item) => {
-            if (item.name === event.name) {
-                this.companyForm.get('preferredLoadType').patchValue(item.name);
-            }
+            if (item.name === event.name)
+                this.companyForm
+                    .get(SettingsFormEnum.PREFERRED_LOAD_TYPE)
+                    .patchValue(item.name);
+
             return {
                 ...item,
                 checked: item.id === event.id,
@@ -1084,12 +1101,15 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
         });
     }
 
-    public onFleetTypeCheck(event: any) {
+    public onFleetTypeCheck(event: Tabs): void {
         this.fleetTypeTabs = this.fleetTypeTabs.map((item) => {
-            if (item.id === event.id)
-                this.companyForm.get('fleetType').patchValue(item.name);
+            if (item.id === event.id) {
+                this.companyForm
+                    .get(SettingsFormEnum.FLEET_TYPE)
+                    .patchValue(item.name);
 
-            if (item.id === event.id) this.selectedFleetType = item.name;
+                this.selectedFleetType = item.name;
+            }
 
             return {
                 ...item,
@@ -1098,7 +1118,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
         });
     }
 
-    private onSamePerMileCheck() {
+    private onSamePerMileCheck(): void {
         this.companyForm
             .get('loadedAndEmptySameRate')
             .valueChanges.pipe(takeUntil(this.destroy$))
@@ -1385,12 +1405,15 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
                             this.editData.company.bankAccounts[index].account,
                     })
                 );
+
                 this.selectedBankAccountFormArray.push(
                     this.editData.company.bankAccounts[index].bank
                 );
+
                 this.isBankSelectedFormArray.push(
                     this.editData.company.bankAccounts[index].id ? true : false
                 );
+
                 this.onBankSelected(index);
             }
         }
@@ -1412,6 +1435,18 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
                 );
             }
         }
+
+        // tabs
+        const selectedPrefferedLoadTypeTab = this.prefferedLoadTabs.find(
+            (tab) => tab.name === additionalInfo?.preferredLoadType
+        );
+        const selectedFleetTypeTab = this.fleetTypeTabs.find(
+            (tab) => tab.name === additionalInfo?.fleetType
+        );
+
+        this.onPrefferedLoadCheck(selectedPrefferedLoadTypeTab);
+        this.onFleetTypeCheck(selectedFleetTypeTab);
+
         setTimeout(() => {
             this.disableCardAnimation = false;
         }, 1000);
@@ -1587,8 +1622,8 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
                   )
                 : null,
             preferredLoadType:
-                this.companyForm.get('preferredLoadType').value ===
-                SettingsModalEnum.FTL
+                this.companyForm.get(SettingsFormEnum.PREFERRED_LOAD_TYPE)
+                    .value === SettingsModalEnum.FTL
                     ? 1
                     : 2,
         };
@@ -1831,7 +1866,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
             });
     }
 
-    private editCompany(data: any) {
+    private editCompany(data: any): void {
         this.companyForm.patchValue({
             // -------------------- Basic Tab
             name: data.name,
@@ -1857,7 +1892,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
                       data.dateOfIncorporation
                   )
                 : null,
-            logo: data.logo ? data.logo : null,
+            logo: data.logo ?? null,
             //-------------------- Additional Tab
             departmentContacts: [],
             bankAccounts: [],
