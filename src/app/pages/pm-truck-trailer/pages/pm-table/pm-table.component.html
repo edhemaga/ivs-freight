@@ -45,7 +45,7 @@
                     class="show-more-container d-flex align-items-center justify-content-between"
                     [ngStyle]="{ 'width.px': tableWidth }"
                 >
-                    <div class="showing ta-font-semi-bold">
+                    <div class="showing ta-font-semi-bold text-color-dark-grey">
                         {{ viewData?.length }} OF
                         {{ tableDataLength }}
                     </div>
@@ -53,7 +53,7 @@
                         *ngIf="viewData?.length < tableDataLength"
                     >
                         <div
-                            class="show-more ta-font-bold w-fit-content align-items-center d-flex justify-content-between"
+                            class="show-more ta-font-bold text-color-black w-fit-content align-items-center d-flex justify-content-between"
                             (click)="onShowMore()"
                         >
                             SHOW MORE

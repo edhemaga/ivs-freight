@@ -18,14 +18,12 @@
 
     .showing {
         font-size: 11px;
-        color: $bw6-2;
         min-width: 80px;
     }
 
     .show-more {
         cursor: pointer;
         font-size: 11px;
-        color: $ta-black;
 
         &:hover {
             color: $light-blue;
