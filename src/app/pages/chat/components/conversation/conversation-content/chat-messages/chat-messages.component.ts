@@ -76,7 +76,7 @@ export class ChatMessagesComponent
     public messages$!: Observable<ChatMessageResponse>;
     public messages: ChatMessage[] = [];
     public messageIdActionsDisplayed!: number;
-    public messageDateHovered!: ChatMessageResponse;
+    public messageDateHovered!: ChatMessage;
 
     public conversationTypeEnum = ConversationTypeEnum;
 
@@ -132,7 +132,9 @@ export class ChatMessagesComponent
                     const transformedMessage: ChatMessage =
                         chatMessageSenderFullname(this.messages, message);
                     return {
+                        id: 0,
                         ...transformedMessage,
+                        isReceivedFromHub: true,
                         messageType: message.messageType ?? {
                             name: ChatMessageTypeEnum.TEXT,
                             id: 1,
@@ -179,7 +181,8 @@ export class ChatMessagesComponent
         this.messageIdActionsDisplayed = data.message?.id;
     }
 
-    public hoverOverMessageDate(message: ChatMessageResponse): void {
+    public hoverOverMessageDate(message: ChatMessage): void {
+        if (message?.isReceivedFromHub) return;
         this.messageDateHovered = message;
     }
 

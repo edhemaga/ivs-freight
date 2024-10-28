@@ -29,80 +29,97 @@
                     <ng-container *ngIf="message">
                         <ng-container
                             *ngIf="
-                                (message?.createdAt | chatDatePipe) !==
-                                    '01/01/1' &&
-                                (message.createdAt | chatDatePipe) !==
-                                    ((messages$ | async).data[ind - 1]
-                                        ?.createdAt | chatDatePipe)
+                                !message?.isDeleted &&
+                                !(messages$ | async).data[ind - 1]?.isDeleted
                             "
                         >
-                            <div
-                                class="d-flex justify-content-center align-content-center"
+                            <ng-container
+                                *ngIf="
+                                    (message.createdAt | chatDatePipe) !==
+                                        ((messages$ | async).data[ind - 1]
+                                            ?.createdAt | chatDatePipe) ||
+                                    message?.isReceivedFromHub !==
+                                        (messages$ | async).data[ind - 1]
+                                            .isReceivedFromHub
+                                "
                             >
                                 <div
-                                    class="d-flex justify-content-center align-content-center w-100"
+                                    class="d-flex justify-content-center align-content-center"
                                 >
                                     <div
-                                        class="gradient gradient-to-left w-100"
-                                    ></div>
-                                </div>
-                                <ng-container
-                                    *ngIf="
-                                        messageDateHovered !== message;
-                                        else dateOptions
-                                    "
-                                >
-                                    <div
-                                        class="message-date ta-font-medium"
-                                        (mouseenter)="
-                                            hoverOverMessageDate(message)
+                                        class="d-flex justify-content-center align-content-center w-100"
+                                    >
+                                        <div
+                                            class="gradient gradient-to-left w-100"
+                                        ></div>
+                                    </div>
+                                    <ng-container
+                                        *ngIf="
+                                            messageDateHovered !== message;
+                                            else dateOptions
                                         "
                                     >
-                                        {{ message.createdAt | chatDatePipe }}
-                                    </div>
-                                </ng-container>
-                                <ng-template #dateOptions>
-                                    <div class="d-flex">
-                                        <svg-icon
-                                            class="d-flex justify-content-center align-items-center"
-                                            [svgStyle]="{
-                                                'width.px': 14,
-                                                'height.px': 14
-                                            }"
-                                            [src]="chatSvgRoutes.calendarIcon"
-                                        >
-                                        </svg-icon>
                                         <div
-                                            class="message-date message-date-selection"
+                                            class="message-date ta-font-medium align-content-center"
+                                            (mouseenter)="
+                                                hoverOverMessageDate(message)
+                                            "
+                                        >
+                                            {{
+                                                message.createdAt
+                                                    | chatDatePipe
+                                                        : message.isReceivedFromHub
+                                            }}
+                                        </div>
+                                    </ng-container>
+                                    <ng-template #dateOptions>
+                                        <div
+                                            class="d-flex message-date-selection"
                                             (mouseleave)="
                                                 hoverOverMessageDate(null)
                                             "
                                         >
-                                            {{
-                                                message.createdAt | chatDatePipe
-                                            }}
+                                            <svg-icon
+                                                class="d-flex justify-content-center align-items-center"
+                                                [svgStyle]="{
+                                                    'width.px': 14,
+                                                    'height.px': 14
+                                                }"
+                                                [src]="
+                                                    chatSvgRoutes.calendarIcon
+                                                "
+                                            >
+                                            </svg-icon>
+                                            <div
+                                                class="message-date align-content-center"
+                                            >
+                                                {{
+                                                    message.createdAt
+                                                        | chatDatePipe
+                                                }}
+                                            </div>
+                                            <svg-icon
+                                                class="d-flex justify-content-center align-items-center"
+                                                [svgStyle]="{
+                                                    'width.px': 14,
+                                                    'height.px': 14
+                                                }"
+                                                [src]="
+                                                    chatSvgRoutes.headerArrowDownIcon
+                                                "
+                                            >
+                                            </svg-icon>
                                         </div>
-                                        <svg-icon
-                                            class="d-flex justify-content-center align-items-center"
-                                            [svgStyle]="{
-                                                'width.px': 14,
-                                                'height.px': 14
-                                            }"
-                                            [src]="
-                                                chatSvgRoutes.headerArrowDownIcon
-                                            "
-                                        >
-                                        </svg-icon>
-                                    </div>
-                                </ng-template>
-                                <div
-                                    class="d-flex justify-content-center align-content-center w-100"
-                                >
+                                    </ng-template>
                                     <div
-                                        class="gradient gradient-to-right w-100"
-                                    ></div>
+                                        class="d-flex justify-content-center align-content-center w-100"
+                                    >
+                                        <div
+                                            class="gradient gradient-to-right w-100"
+                                        ></div>
+                                    </div>
                                 </div>
-                            </div>
+                            </ng-container>
                         </ng-container>
 
                         <app-chat-message
@@ -246,3 +263,5 @@
         </div>
     </div>
 </ng-template>
+
+<ng-template #dateOptions> </ng-template>

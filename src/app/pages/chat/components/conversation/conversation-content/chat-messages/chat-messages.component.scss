@@ -32,14 +32,19 @@
             }
 
             .message-date {
-                height: 26px;
-                padding: 6px;
+                min-height: 26px;
+                margin: auto 6px;
                 color: $ta-black;
                 font-size: 11px;
 
                 &-selection {
+                    padding: 0 4px;
                     border-radius: 2px;
                     background-color: $bw2;
+
+                    &:hover {
+                        cursor: pointer;
+                    }
                 }
             }
 
