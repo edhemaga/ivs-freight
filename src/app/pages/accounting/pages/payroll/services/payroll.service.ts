@@ -8,9 +8,12 @@ import { PayrollDriverMileageResponse } from 'appcoretruckassist/model/payrollDr
 import { Observable, of } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import {
+    IAddPayrollClosedPayment,
     PayrollDriverMileageCollapsedListResponse,
     PayrollDriverMileageExpandedListResponse,
 } from '../state/models/payroll.model';
+import { IDriverOwnerList } from '../state/models/driver_owner.model';
+import { IDriverCommissionList } from '../state/models/driver_commission.model';
 
 @Injectable({ providedIn: 'root' })
 export class PayrollService {
@@ -29,6 +32,20 @@ export class PayrollService {
     > {
         return this.http.get<PayrollDriverMileageListResponse[]>(
             `${environment.API_ENDPOINT}/api/payroll/driver/mileage/solo`
+        );
+    }
+
+    public addPayrollMileageDriverPayment(
+        data: IAddPayrollClosedPayment
+    ): Observable<boolean> {
+        const body = {
+            ...data,
+            type: data.paymentType,
+        };
+
+        return this.http.post<boolean>(
+            `${environment.API_ENDPOINT}/api/payroll/payment`,
+            body
         );
     }
 
@@ -51,6 +68,21 @@ export class PayrollService {
     public getPayrollSoloMileageDriverClosedById(payrollId: number) {
         return this.http.get<any>(
             `${environment.API_ENDPOINT}/api/payroll/driver/mileage/closed/${payrollId}`
+        );
+    }
+
+    // COMMISSION DRIVER
+
+    public getPayrollCommissionDriverList(): Observable<IDriverCommissionList> {
+        return this.http.get<IDriverCommissionList>(
+            `${environment.API_ENDPOINT}/api/payroll/driver/commission/list`
+        );
+    }
+
+    // OWNER DRIVER
+    public getPayrollOwnerDriverList(): Observable<IDriverOwnerList> {
+        return this.http.get<IDriverOwnerList>(
+            `${environment.API_ENDPOINT}/api/payroll/owner/list/open`
         );
     }
 

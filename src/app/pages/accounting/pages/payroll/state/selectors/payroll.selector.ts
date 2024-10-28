@@ -7,7 +7,6 @@ import { PayrollDriverMilesTableSettingsConstants } from '@pages/accounting/util
 import { PayrollDriverCommisionTableSettingsConstants } from '@pages/accounting/utils/constants/payroll-driver-commision-table-settings.constants';
 import { PayrollOwnerTableSettingsConstants } from '@pages/accounting/utils/constants/payroll-owner-table-settings.constants';
 import {
-    LoadWithMilesStopResponse,
     MilesStopShortResponse,
     PayrollCountItemResponse,
     PayrollCountsResponse,
@@ -195,7 +194,6 @@ function getPayrollTableItem(
     return {
         text: payrollNamesData[payrollTitle].text,
         type: payrollNamesData[payrollTitle].type,
-        //data: data[item].pagination.data,
         itemCount: item?.totalCount || 0,
         money: item?.value,
         date: item.date,

@@ -5,11 +5,15 @@ import {
     PayrollDriverMileageByIdResponse,
     PayrollDriverMileageListResponse,
 } from 'appcoretruckassist';
+import { IDriverCommissionList } from './driver_commission.model';
+import { IDriverOwnerList } from './driver_owner.model';
 
 export interface PayrollState {
     payrollCounts: PayrollCountsResponse;
     payrollDriverMileage: PayrollDriverMileageListResponse[];
     payrollOpenedReport?: PayrollDriverMileageByIdResponse;
+    payrollCommissionDriverList: IDriverCommissionList;
+    ownerPayrollList: IDriverOwnerList;
     loading: boolean;
     reportLoading: boolean;
     lastLoadDate?: string;
@@ -21,7 +25,7 @@ export interface PayrollState {
     closeReportPaymentError?: boolean;
     driverMileageCollapsedList?: PayrollDriverMileageCollapsedListResponse[];
     driverMileageExpandedList?: PayrollDriverMileageExpandedListResponse[];
-    payrollOpenedTab: "open" | "closed";
+    payrollOpenedTab: 'open' | 'closed';
 }
 
 export interface IPayrollCountsSelector {
@@ -63,39 +67,59 @@ export interface PayrollDriverMileageCollapsedListResponse {
 }
 
 export interface PayrollDriverMileageExpandedListResponse {
-    id: number
-    payrollNumber: string
-    periodStart: string
-    periodEnd: string
-    closedDate: string
-    payrollStatus: PayrollStatus
-    perMileEmpty: number
-    perMileLoaded: number
-    perMileStop: number
-    emptyMiles: number
-    loadedMiles: number
-    totalMiles: number
-    stopCount: number
-    emptyPay: number
-    loadedPay: number
-    milePay: number
-    stopPay: number
-    bonus: number
-    salary: number
-    credit: number
-    deduction: number
-    earnings: number
-    paid: number
-    debt: number
-  }
-  
-  export interface PayrollStatus {
-    name: string
-    id: number
-  }
-
-  export interface IPayrollProccessPaymentModal{
-    id: number,
-    totalEarnings: number,
+    id: number;
     payrollNumber: string;
-  }
+    periodStart: string;
+    periodEnd: string;
+    closedDate: string;
+    payrollStatus: PayrollStatus;
+    perMileEmpty: number;
+    perMileLoaded: number;
+    perMileStop: number;
+    emptyMiles: number;
+    loadedMiles: number;
+    totalMiles: number;
+    stopCount: number;
+    emptyPay: number;
+    loadedPay: number;
+    milePay: number;
+    stopPay: number;
+    bonus: number;
+    salary: number;
+    credit: number;
+    deduction: number;
+    earnings: number;
+    paid: number;
+    debt: number;
+}
+
+export interface PayrollStatus {
+    name: string;
+    id: number;
+}
+
+export interface IPayrollProccessPaymentModal {
+    id: number;
+    totalEarnings: number;
+    payrollNumber: string;
+    selectedTab: 'open' | 'closed';
+}
+
+export interface IAddPayrollClosedPayment {
+    payrollDriverMileageId?: number;
+    payrollDriverCommissionId?: number;
+    payrollOwnerId?: number;
+    paymentType?: string;
+    type?: string;
+    date?: string;
+    amount?: number;
+    otherPaymentType?: string;
+}
+
+export interface IGet_Payroll_Solo_Mileage_Driver_Report {
+    reportId: string;
+    lastLoadDate: string;
+    selectedCreditIds?: number[];
+    selectedDeducionIds?: number[];
+    selectedBonusIds?: number[];
+}

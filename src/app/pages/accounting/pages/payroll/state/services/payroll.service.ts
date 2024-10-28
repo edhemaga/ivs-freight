@@ -29,6 +29,7 @@ import {
     PayrollDriverMileageListResponse,
 } from 'appcoretruckassist';
 import {
+    IAddPayrollClosedPayment,
     IPayrollCountsSelector,
     MilesStopShortReponseWithRowType,
     PayrollDriverMileageExpandedListResponse,
@@ -197,16 +198,22 @@ export class PayrollFacadeService {
             });
     }
 
+    public addPayrollClosedPayment(body: IAddPayrollClosedPayment) {
+        this.store.dispatch(
+            PayrollDriverMileageSolo.driverMileagePayrollClosedPayments(body)
+        );
+    }
+
     public closePayrollDriverMileageReport({
         reportId,
         amount,
         paymentType,
-        otherPaymentType
+        otherPaymentType,
     }: {
         reportId: number;
         amount: number;
-        paymentType: string,
-        otherPaymentType?: string
+        paymentType: string;
+        otherPaymentType?: string;
     }) {
         this.store
             .pipe(select(selectPayrollState), take(1))
@@ -222,7 +229,7 @@ export class PayrollFacadeService {
                             selectedDeducionIds:
                                 payrollState.selectedDeducionIds,
                             paymentType,
-                            otherPaymentType
+                            otherPaymentType,
                         }
                     )
                 );

@@ -95,7 +95,7 @@ export class PayrollProccessPaymentModalComponent implements OnDestroy {
         placeholderIcon: 'dollar',
         placeholderIconColor: 'blue',
         hideErrorMessage: true,
-        hideRequiredCheck: true
+        hideRequiredCheck: true,
     };
 
     dropDownInputConfig = {
@@ -220,12 +220,25 @@ export class PayrollProccessPaymentModalComponent implements OnDestroy {
         if (isUnpaid) this.loadingCloseUnpaid = true;
         else this.loading = true;
 
-        this.payrollFacadeService.closePayrollDriverMileageReport({
-            amount: isUnpaid ? 0 : formData.amount,
-            reportId: this.modalData.id,
-            paymentType: this.selectedTab === 2 ? 'Manual' : 'Ach',
-            otherPaymentType: this.selectedTab === 2 ? formData.option : null,
-        });
+        const isOpen = this.modalData.selectedTab;
+
+        if (isOpen === 'open') {
+            this.payrollFacadeService.closePayrollDriverMileageReport({
+                amount: isUnpaid ? 0 : formData.amount,
+                reportId: this.modalData.id,
+                paymentType: this.selectedTab === 2 ? 'Manual' : 'Ach',
+                otherPaymentType:
+                    this.selectedTab === 2 ? formData.option : null,
+            });
+        } else {
+            this.payrollFacadeService.addPayrollClosedPayment({
+                amount: formData.amount,
+                paymentType: this.selectedTab === 2 ? 'Manual' : 'Ach',
+                payrollDriverMileageId: this.modalData.id,
+                otherPaymentType:
+                    this.selectedTab === 2 ? formData.option : null,
+            });
+        }
     }
 
     selectedItem(dd: any) {}

@@ -1,278 +1,82 @@
 import { Injectable } from '@angular/core';
-import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { Action, Store } from '@ngrx/store';
-import { Observable, of } from 'rxjs';
-import { switchMap, map, tap, catchError } from 'rxjs/operators';
-import * as PayrollActions from '../actions/payroll.actions';
-import * as PayrollSoloMileageDriver from '../actions/payroll_solo_mileage_driver.actions';
+import { Actions } from '@ngrx/effects';
 import { PayrollService } from '../../services/payroll.service';
+
+// Effects
+import * as PayrollMileageDriverEffects from './payroll_effects/driver_mileage.effects';
+import * as PayrollMainEffects from './payroll_effects/payroll_main.effects';
+import * as PayrollCommissionDriverEffect from './payroll_effects/driver_commission.effects';
+import * as PayrollOwnerDriverEffect from './payroll_effects/driver_owner.effect';
 
 @Injectable()
 export class PayrollEffect {
     constructor(
         private actions$: Actions,
-        private store: Store,
         private payrollService: PayrollService
     ) {}
 
-    public getPayrollCounts$ = createEffect(
-        (): Observable<Action> =>
-            this.actions$.pipe(
-                ofType(PayrollActions.getPayrollCounts),
-                switchMap((action) => {
-                    return this.payrollService
-                        .getPayrollCounts(action.ShowOpen)
-                        .pipe(
-                            map((data) => {
-                                return PayrollActions.getPayrollCountsSuccess({
-                                    payrollCounts: data,
-                                });
-                            }),
-                            // tap((data) => {
-                            //     // this.store.dispatch(
-                            //     //   PaymentActions.restartRefreshDataSuccess({ flag: false })
-                            //     // );
-                            // }),
-                            catchError((error) =>
-                                of(
-                                    PayrollActions.getPayrollCountsError({
-                                        error,
-                                    })
-                                )
-                            )
-                        );
-                })
-            )
+    // Payroll Main Effects
+    public getPayrollCounts$ = PayrollMainEffects.getPayrollCountsEffect(
+        this.actions$,
+        this.payrollService
     );
 
-    public getPayrollMileageClosedPayrollById$ = createEffect(
-        (): Observable<Action> =>
-            this.actions$.pipe(
-                ofType(
-                    PayrollSoloMileageDriver.getPayrollMileageDriverClosedPayroll
-                ),
-                switchMap((action) => {
-                    return this.payrollService
-                        .getPayrollSoloMileageDriverClosedById(action.payrollId)
-                        .pipe(
-                            map((data) => {
-                                return PayrollSoloMileageDriver.getPayrollMileageDriverClosedPayrollSuccess(
-                                    {
-                                        payroll: data,
-                                    }
-                                );
-                            }),
-                            // tap((data) => {
-                            //     // this.store.dispatch(
-                            //     //   PaymentActions.restartRefreshDataSuccess({ flag: false })
-                            //     // );
-                            // }),
-                            catchError((error) =>
-                                of(
-                                    PayrollSoloMileageDriver.getPayrollMileageDriverClosedPayrollError(
-                                        {
-                                            error,
-                                        }
-                                    )
-                                )
-                            )
-                        );
-                })
-            )
-    );
+    // Payroll Driver Mileage Effects
 
-    public getPayrollMileageDriverExpandedList$ = createEffect(
-        (): Observable<Action> =>
-            this.actions$.pipe(
-                ofType(
-                    PayrollSoloMileageDriver.getPayrollMileageDriverExpandedList
-                ),
-                switchMap((action) => {
-                    return this.payrollService
-                        .getPayrollSoloMileageDriverExpandedList(
-                            action.driverId
-                        )
-                        .pipe(
-                            map((data) => {
-                                return PayrollSoloMileageDriver.getPayrollMileageDriverExpandedListSuccess(
-                                    {
-                                        data: data,
-                                    }
-                                );
-                            }),
-                            // tap((data) => {
-                            //     // this.store.dispatch(
-                            //     //   PaymentActions.restartRefreshDataSuccess({ flag: false })
-                            //     // );
-                            // }),
-                            catchError((error) =>
-                                of(
-                                    PayrollSoloMileageDriver.getPayrollMileageDriverExpandedListError(
-                                        {
-                                            error,
-                                        }
-                                    )
-                                )
-                            )
-                        );
-                })
-            )
-    );
+    public getPayrollMileageClosedPayrollById$ =
+        PayrollMileageDriverEffects.getPayrollMileageClosedPayrollByIdEffect(
+            this.actions$,
+            this.payrollService
+        );
 
-    public getPayrollMileageDriverCollapsedList$ = createEffect(
-        (): Observable<Action> =>
-            this.actions$.pipe(
-                ofType(
-                    PayrollSoloMileageDriver.getPayrollMileageDriverCollapsedList
-                ),
-                switchMap((action) => {
-                    return this.payrollService
-                        .getPayrollSoloMileageDriverCollapsedList()
-                        .pipe(
-                            map((data) => {
-                                return PayrollSoloMileageDriver.getPayrollMileageDriverCollapsedListSuccess(
-                                    {
-                                        data: data,
-                                    }
-                                );
-                            }),
-                            // tap((data) => {
-                            //     // this.store.dispatch(
-                            //     //   PaymentActions.restartRefreshDataSuccess({ flag: false })
-                            //     // );
-                            // }),
-                            catchError((error) =>
-                                of(
-                                    PayrollSoloMileageDriver.getPayrollMileageDriverCollapsedListError(
-                                        {
-                                            error,
-                                        }
-                                    )
-                                )
-                            )
-                        );
-                })
-            )
-    );
+    public getPayrollMileageDriverExpandedList$ =
+        PayrollMileageDriverEffects.getPayrollMileageDriverExpandedListEffect(
+            this.actions$,
+            this.payrollService
+        );
 
-    public getPayrollSoloMileageReport$ = createEffect(
-        (): Observable<Action> =>
-            this.actions$.pipe(
-                ofType(
-                    PayrollSoloMileageDriver.getPayrollSoloMileageReportDriver
-                ),
-                switchMap((action) => {
-                    return this.payrollService
-                        .getPayrollSoloMileageDriverReport(
-                            action.reportId,
-                            action.lastLoadDate,
-                            action.selectedCreditIds,
-                            action.selectedDeducionIds,
-                            action.selectedBonusIds
-                        )
-                        .pipe(
-                            map((data) => {
-                                return PayrollSoloMileageDriver.getPayrollSoloMileageReportDriverSuccess(
-                                    {
-                                        payroll: data,
-                                    }
-                                );
-                            }),
-                            // tap((data) => {
-                            //     // this.store.dispatch(
-                            //     //   PaymentActions.restartRefreshDataSuccess({ flag: false })
-                            //     // );
-                            // }),
-                            catchError((error) =>
-                                of(
-                                    PayrollSoloMileageDriver.getPayrollSoloMileageReportDriverError(
-                                        {
-                                            error,
-                                        }
-                                    )
-                                )
-                            )
-                        );
-                })
-            )
-    );
+    public getPayrollMileageDriverCollapsedList$ =
+        PayrollMileageDriverEffects.getPayrollMileageDriverCollapsedListEffect(
+            this.actions$,
+            this.payrollService
+        );
 
-    public closePayrollSoloMileageReport$ = createEffect(
-        (): Observable<Action> =>
-            this.actions$.pipe(
-                ofType(
-                    PayrollSoloMileageDriver.closePayrollSoloMileageReportDriver
-                ),
-                switchMap((action) => {
-                    return this.payrollService
-                        .closePayrollSoloMileageDriverReport(
-                            action.amount,
-                            action.reportId,
-                            action.lastLoadDate,
-                            action.selectedCreditIds,
-                            action.selectedDeducionIds,
-                            action.selectedBonusIds,
-                            action.paymentType,
-                            action.otherPaymentType
-                        )
-                        .pipe(
-                            map((data) => {
-                                return PayrollSoloMileageDriver.closePayrollSoloMileageReportDriverSuccess(
-                                    {
-                                        payroll: data,
-                                    }
-                                );
-                            }),
-                            tap((data) => {
-                                // this.store.dispatch(
-                                //   PaymentActions.restartRefreshDataSuccess({ flag: false })
-                                // );
-                            }),
-                            catchError((error) =>
-                                of(
-                                    PayrollSoloMileageDriver.closePayrollSoloMileageReportDriverError(
-                                        {
-                                            error,
-                                        }
-                                    )
-                                )
-                            )
-                        );
-                })
-            )
-    );
+    public getPayrollSoloMileageReport$ =
+        PayrollMileageDriverEffects.getPayrollSoloMileageReportEffect(
+            this.actions$,
+            this.payrollService
+        );
 
-    public getPayrollSoloMileage$ = createEffect(
-        (): Observable<Action> =>
-            this.actions$.pipe(
-                ofType(PayrollSoloMileageDriver.getPayrollSoloMileageDriver),
-                switchMap((action) => {
-                    return this.payrollService
-                        .getPayrollSoloMileageDriver()
-                        .pipe(
-                            map((data) => {
-                                return PayrollSoloMileageDriver.getPayrollSoloMileageDriverSuccess(
-                                    {
-                                        payroll: data,
-                                    }
-                                );
-                            }),
-                            // tap((data) => {
-                            //     // this.store.dispatch(
-                            //     //   PaymentActions.restartRefreshDataSuccess({ flag: false })
-                            //     // );
-                            // }),
-                            catchError((error) =>
-                                of(
-                                    PayrollSoloMileageDriver.getPayrollSoloMileageDriverError(
-                                        {
-                                            error,
-                                        }
-                                    )
-                                )
-                            )
-                        );
-                })
-            )
-    );
+    public closePayrollSoloMileageReport$ =
+        PayrollMileageDriverEffects.closePayrollSoloMileageReportEffect(
+            this.actions$,
+            this.payrollService
+        );
+
+    public addPayrollMileageClosedPayrollPayment =
+        PayrollMileageDriverEffects.addPayrollMileageClosedPayrollPaymentEffect(
+            this.actions$,
+            this.payrollService
+        );
+
+    public getPayrollSoloMileage$ =
+        PayrollMileageDriverEffects.getPayrollSoloMileageEffect(
+            this.actions$,
+            this.payrollService
+        );
+
+    // Payroll Commission Driver
+
+    public getPayrollCommissionDriverListEffect$ =
+        PayrollCommissionDriverEffect.getPayrollCommissionDriverListEffect(
+            this.actions$,
+            this.payrollService
+        );
+
+    // Payroll Owner Driver
+    public getPayrollOwnerDriverListEffect$ =
+        PayrollOwnerDriverEffect.getPayrollOwnerDriverListEffect(
+            this.actions$,
+            this.payrollService
+        );
 }

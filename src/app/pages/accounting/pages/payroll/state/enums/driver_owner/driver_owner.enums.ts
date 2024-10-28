@@ -1,0 +1,17 @@
+export enum PayrollOwnerDriverEnum {
+    GET_PAYROLL_OWNER_DRIVER = '[Payroll Owner Driver Page] Get Payroll Owner Driver',
+    GET_PAYROLL_OWNER_DRIVER_SUCCESS = '[Payroll Owner Driver Page] Get Payroll Owner Driver Success',
+    GET_PAYROLL_OWNER_DRIVER_ERROR = '[Payroll Owner Driver Page] Get Payroll Owner Driver Error',
+
+    GET_PAYROLL_OWNER_DRIVER_REPORT = '[Payroll Owner Driver Page] Get Payroll Owner Driver Report',
+    GET_PAYROLL_OWNER_DRIVER_REPORT_SUCCESS = '[Payroll Owner Driver Page] Get Payroll Owner Driver Report Success',
+    GET_PAYROLL_OWNER_DRIVER_REPORT_ERROR = '[Payroll Owner Driver Page] Get Payroll Owner Driver Report Error',
+
+    CLOSE_PAYROLL_OWNER_DRIVER_REPORT = '[Payroll Owner Driver Page] Close Payroll Owner Driver Report',
+    CLOSE_PAYROLL_OWNER_DRIVER_REPORT_SUCCESS = '[Payroll Owner Driver Page] Close Payroll Owner Driver Report Success',
+    CLOSE_PAYROLL_OWNER_DRIVER_REPORT_ERROR = '[Payroll Owner Driver Page] Close Payroll Owner Driver Report Error',
+
+    CLOSE_PAYROLL_OWNER_DRIVER_PAYMENT = '[Payroll Owner Driver Page] Payroll Owner Driver Report Payment',
+    CLOSE_PAYROLL_OWNER_DRIVER_PAYMENT_SUCCESS = '[Payroll Owner Driver Page] Payroll Owner Driver Report Payment Success',
+    CLOSE_PAYROLL_OWNER_DRIVER_PAYMENT_ERROR = '[Payroll Owner Driver Page] Payroll Owner Driver Report Payment Error',
+}

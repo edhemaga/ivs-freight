@@ -10,6 +10,8 @@ import {
     inject,
     ComponentRef,
     OnDestroy,
+    ViewChildren,
+    QueryList,
 } from '@angular/core';
 import { Observable, takeUntil, Subject } from 'rxjs';
 
@@ -33,6 +35,8 @@ import { DriverMileageCollapsedTableComponent } from './components/tables/driver
 import { PayrollListSummaryOverview } from 'ca-components';
 import { DriverMileageSoloTableComponent } from './components/tables/driver-mileage-solo-table/driver-mileage-solo-table.component';
 import { DriverMileageExpandedTableComponent } from './components/tables/driver-mileage-expanded-table/driver-mileage-expanded-table.component';
+import { DriverCommissionSoloTableComponent } from './components/tables/driver-commission-solo-table/driver-commission-solo-table.component';
+import { DriverOwnerTableComponent } from './components/tables/driver-owner-table/driver-owner-table.component';
 @Component({
     selector: 'app-payroll',
     templateUrl: './payroll.component.html',
@@ -42,8 +46,8 @@ import { DriverMileageExpandedTableComponent } from './components/tables/driver-
     providers: [NameInitialsPipe],
 })
 export class PayrollComponent implements OnInit, AfterViewInit, OnDestroy {
-    @ViewChild('container', { read: ViewContainerRef, static: false })
-    container!: ViewContainerRef;
+    @ViewChildren('container', { read: ViewContainerRef })
+    containers!: QueryList<ViewContainerRef>;
 
     componentRef: ComponentRef<any> | null = null;
 
@@ -155,16 +159,21 @@ export class PayrollComponent implements OnInit, AfterViewInit, OnDestroy {
         this.openedIndex = this.openedIndex === data.index ? -1 : data.index;
         if (data.status) {
             this.payrollType = `${data.payrollSummary.text} ${data.payrollSummary.type}`;
-            this.handleTableShow();
+            this.handleTableShow(data.index);
         }
     }
 
-    handleTableShow() {
-        this.container.clear();
+    handleTableShow(index?: number) {
+        const containersArray = this.containers.toArray();
+        const mainIndx = typeof index != undefined ? index : this.openedIndex;
+
+        const cointainer = containersArray[mainIndx];
+        cointainer.clear();
+
         switch (this.payrollType) {
             case 'Driver Miles':
                 if (this.selectedTab === 'open') {
-                    this.componentRef = this.container.createComponent(
+                    this.componentRef = cointainer.createComponent(
                         DriverMileageSoloTableComponent,
                         {
                             environmentInjector: this.environmentInjector,
@@ -178,7 +187,7 @@ export class PayrollComponent implements OnInit, AfterViewInit, OnDestroy {
                         );
                     }
                 } else if (this.selectedOpenFromList) {
-                    this.componentRef = this.container.createComponent(
+                    this.componentRef = cointainer.createComponent(
                         DriverMileageExpandedTableComponent,
                         {
                             environmentInjector: this.environmentInjector,
@@ -202,7 +211,7 @@ export class PayrollComponent implements OnInit, AfterViewInit, OnDestroy {
                         );
                     }
                 } else {
-                    this.componentRef = this.container.createComponent(
+                    this.componentRef = cointainer.createComponent(
                         DriverMileageCollapsedTableComponent,
                         {
                             environmentInjector: this.environmentInjector,
@@ -213,19 +222,55 @@ export class PayrollComponent implements OnInit, AfterViewInit, OnDestroy {
                         (event: any) => this.expandTable(event)
                     );
                 }
+                break;
+            case 'Driver Commission':
+                if (this.selectedTab === 'open') {
+                    this.componentRef = cointainer.createComponent(
+                        DriverCommissionSoloTableComponent,
+                        {
+                            environmentInjector: this.environmentInjector,
+                        }
+                    );
 
-                // Set inputs and subscribe to outputs if componentRef is created
-                if (this.componentRef) {
-                    // Setting Inputs
-                    this.componentRef.instance.expandTable = false; // Example input property
-
-                    // Bind the expandTable input using an Observable
-                    this.reportTableExpanded$
-                        .pipe(takeUntil(this.destroy$))
-                        .subscribe((value) => {
-                            this.componentRef!.instance.expandTable = value; // The input is updated automatically
-                        });
+                    // Set inputs and subscribe to outputs if componentRef is created
+                    if (this.componentRef) {
+                        this.componentRef.instance.expandTableEvent.subscribe(
+                            (event: any) => this.expandTable(event)
+                        );
+                    }
                 }
+            break;
+            case 'Owner ':
+                console.log("HI OWNER");
+                if (this.selectedTab === 'open') {
+                    this.componentRef = cointainer.createComponent(
+                        DriverOwnerTableComponent,
+                        {
+                            environmentInjector: this.environmentInjector,
+                        }
+                    );
+
+                    // Set inputs and subscribe to outputs if componentRef is created
+                    if (this.componentRef) {
+                        this.componentRef.instance.expandTableEvent.subscribe(
+                            (event: any) => this.expandTable(event)
+                        );
+                    }
+                }
+            break;
+        }
+
+        // Set inputs and subscribe to outputs if componentRef is created
+        if (this.componentRef) {
+            // Setting Inputs
+            this.componentRef.instance.expandTable = false; // Example input property
+
+            // Bind the expandTable input using an Observable
+            this.reportTableExpanded$
+                .pipe(takeUntil(this.destroy$))
+                .subscribe((value) => {
+                    this.componentRef!.instance.expandTable = value; // The input is updated automatically
+                });
         }
     }
 

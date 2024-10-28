@@ -9,11 +9,17 @@ import {
     Output,
     ViewChild,
 } from '@angular/core';
-import { PayrollFacadeService } from '../../../state/services/payroll.service';
 import { Observable, Subject, takeUntil } from 'rxjs';
-import { PayrollDriverMileageListResponse } from 'appcoretruckassist';
 import { AfterViewInit } from '@angular/core';
+
+// Models
+import { PayrollDriverMileageListResponse } from 'appcoretruckassist';
+
+// Servvices
 import { TemplateManagerService } from '@shared/services/template-manager.service';
+import { PayrollFacadeService } from '../../../state/services/payroll.service';
+
+// Components
 import { ColumnConfig } from 'ca-components';
 
 @Component({
@@ -28,7 +34,8 @@ export class DriverMileageSoloTableComponent
     // Expose Javascript Math to template
     Math = Math;
 
-    @Output() expandTableEvent: EventEmitter<any> = new EventEmitter<any>();
+    @Output() expandTableEvent: EventEmitter<PayrollDriverMileageListResponse> =
+        new EventEmitter<PayrollDriverMileageListResponse>();
 
     @Input() title: string;
     @Input() expandTable: boolean;
@@ -129,8 +136,7 @@ export class DriverMileageSoloTableComponent
                 pipeString: 'USD',
                 cellType: 'text',
                 cellCustomClasses: 'text-right',
-                textCustomClasses: 'b-600',
-                // Pass the template reference
+                textCustomClasses: 'b-600'
             },
         ];
     }
@@ -161,7 +167,7 @@ export class DriverMileageSoloTableComponent
             });
     }
 
-    selectPayrollReport(report: any) {
+    selectPayrollReport(report: PayrollDriverMileageListResponse) {
         console.log('reportt', report);
         this.expandTableEvent.emit(report);
     }

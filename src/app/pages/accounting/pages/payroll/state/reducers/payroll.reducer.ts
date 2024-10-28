@@ -1,15 +1,26 @@
 import { createReducer, on } from '@ngrx/store';
+
+// Actions
 import * as PayrollActions from '../actions/payroll.actions';
 import * as PayrollSoloMileageDriver from '../actions/payroll_solo_mileage_driver.actions';
+import * as PyarollCommissionDriverActions from '../actions/payroll_commission_driver.actions';
+import * as PayrollOwnerDriverActions from '../actions/payroll_owner_driver.action';
+
+// Models
 import { PayrollState } from '../models/payroll.model';
-import {
-    closePayrollSoloMileageReportDriverSuccess,
-    getPayrollMileageDriverClosedPayrollSuccess,
-} from '../actions/payroll_solo_mileage_driver.actions';
+
+// Reducers
+import * as PayrollMileageDriverReducers from './payroll_reducers/driver_mileage.reducer';
+import * as PayrollMainReducers from './payroll_reducers/payroll_main.reducer';
+import * as PayrollCommissionDriverReducers from './payroll_reducers/driver_commission.reducer';
+import * as PayrollOwnerDriverReducers from './payroll_reducers/driver_owner.reducer';
+import { getPayrollOwnerDriverListSuccess } from '../actions/payroll_owner_driver.action';
 
 export const payrollState: PayrollState = {
     payrollCounts: {},
     payrollDriverMileage: [],
+    payrollCommissionDriverList: [],
+    ownerPayrollList: [],
     driverMileageCollapsedList: [],
     driverMileageExpandedList: [],
     loading: false,
@@ -21,176 +32,113 @@ export const payrollState: PayrollState = {
 
 export const payrollReducer = createReducer(
     payrollState,
-    // Payroll Get Counts Actions
-    on(PayrollActions.getPayrollCounts, (state) => ({
-        ...state,
-        loading: true,
-    })),
-    on(PayrollActions.setPayrollopenedTab, (state, data) => ({
-        ...state,
-        payrollOpenedTab: data.tabStatus,
-    })),
-    on(PayrollActions.getPayrollCountsSuccess, (state, results) => ({
-        ...state,
-        payrollCounts: results.payrollCounts,
-        loading: false,
-    })),
-    on(PayrollSoloMileageDriver.getPayrollSoloMileageDriver, (state) => ({
-        ...state,
-        loading: true,
-    })),
-    // Payroll Get Driver Solo Mileage
+
+    // PAYROLL MAIN REDUCERS
+    on(PayrollActions.getPayrollCounts, PayrollMainReducers.onGetPayrollCounts),
     on(
-        PayrollSoloMileageDriver.getPayrollSoloMileageDriverSuccess,
-        (state, data) => ({
-            ...state,
-            payrollDriverMileage: data.payroll,
-            loading: false,
-        })
+        PayrollActions.getPayrollCountsSuccess,
+        PayrollMainReducers.onGetPayrollCountsSuccess
+    ),
+    on(
+        PayrollActions.setPayrollopenedTab,
+        PayrollMainReducers.onSetPayrollopenedTab
+    ),
+    on(
+        PayrollActions.setTableReportExpanded,
+        PayrollMainReducers.onSetTableReportExpanded
     ),
 
+    // DRIVER PAY BY MILEAGE
+    on(
+        PayrollSoloMileageDriver.getPayrollSoloMileageDriver,
+        PayrollMileageDriverReducers.onGetPayrollSoloMileageDriver
+    ),
+    on(
+        PayrollSoloMileageDriver.getPayrollSoloMileageDriverSuccess,
+        PayrollMileageDriverReducers.onGetPayrollSoloMileageDriverSuccess
+    ),
     on(
         PayrollSoloMileageDriver.getPayrollSoloMileageReportDriver,
-        (state, params) => {
-            return {
-                ...state,
-                // reportLoading: true,
-                lastLoadDate: params.lastLoadDate,
-                selectedDeducionIds:
-                    params.selectedDeducionIds ?? state.selectedDeducionIds,
-                selectedBonusIds:
-                    params.selectedBonusIds ?? state.selectedBonusIds,
-                selectedCreditIds:
-                    params.selectedCreditIds ?? state.selectedCreditIds,
-            };
-        }
+        PayrollMileageDriverReducers.onGetPayrollSoloMileageReportDriver
+    ),
+    on(
+        PayrollSoloMileageDriver.getPayrollSoloMileageReportDriverSuccess,
+        PayrollMileageDriverReducers.onGetPayrollSoloMileageReportDriverErrorSuccess
     ),
     on(
         PayrollSoloMileageDriver.getPayrollSoloMileageReportDriverError,
-        (state) => ({
-            ...state,
-            reportLoading: false,
-        })
+        PayrollMileageDriverReducers.onGetPayrollSoloMileageReportDriverError
     ),
-    // Payroll Get Driver Solo Mileage
-    on(
-        PayrollSoloMileageDriver.getPayrollSoloMileageReportDriverSuccess,
-        (state, data) => {
-            return {
-                ...state,
-                payrollOpenedReport: data.payroll,
-                reportLoading: false,
-            };
-        }
-    ),
-    on(PayrollActions.setTableReportExpanded, (state, data) => {
-        return {
-            ...state,
-            expandedReportTable: data.expanded,
-        };
-    }),
     on(
         PayrollSoloMileageDriver.closePayrollSoloMileageReportDriver,
-        (state) => {
-            return {
-                ...state,
-                closeReportPaymentLoading: true,
-                closeReportPaymentError: false,
-            };
-        }
+        PayrollMileageDriverReducers.onClosePayrollSoloMileageReportDriver
     ),
     on(
         PayrollSoloMileageDriver.closePayrollSoloMileageReportDriverSuccess,
-        (state) => {
-            return {
-                ...state,
-                expandedReportTable: false,
-                closeReportPaymentLoading: false,
-                payrollCounts: {},
-                selectedDeducionIds: [],
-                selectedBonusIds: [],
-                selectedCreditIds: [],
-                lastLoadDate: undefined,
-            };
-        }
+        PayrollMileageDriverReducers.onClosePayrollSoloMileageReportDriverSuccess
     ),
     on(
         PayrollSoloMileageDriver.closePayrollSoloMileageReportDriverError,
-        (state) => {
-            return {
-                ...state,
-                closeReportPaymentLoading: false,
-                closeReportPaymentError: true,
-            };
-        }
+        PayrollMileageDriverReducers.onClosePayrollSoloMileageReportDriverError
+    ),
+    on(
+        PayrollSoloMileageDriver.driverMileagePayrollClosedPayments,
+        PayrollMileageDriverReducers.onDriverMileagePayrollClosedPayments
+    ),
+    on(
+        PayrollSoloMileageDriver.driverMileagePayrollClosedPaymentsSuccess,
+        PayrollMileageDriverReducers.onDriverMileagePayrollClosedPaymentsSuccess
+    ),
+    on(
+        PayrollSoloMileageDriver.driverMileagePayrollClosedPaymentsError,
+        PayrollMileageDriverReducers.onDriverMileagePayrollClosedPaymentsError
     ),
     on(
         PayrollSoloMileageDriver.getPayrollMileageDriverCollapsedList,
-        (state) => {
-            return {
-                ...state,
-                loading: true,
-            };
-        }
+        PayrollMileageDriverReducers.onGetPayrollMileageDriverCollapsedList
     ),
     on(
         PayrollSoloMileageDriver.getPayrollMileageDriverCollapsedListSuccess,
-        (state, data) => {
-            console.log('WHAT IS RESULT FROM HEREE', data);
-            return {
-                ...state,
-                driverMileageCollapsedList: data.data,
-                loading: false,
-            };
-        }
+        PayrollMileageDriverReducers.onGetPayrollMileageDriverCollapsedListSuccess
     ),
     on(
         PayrollSoloMileageDriver.getPayrollMileageDriverCollapsedListError,
-        (state) => {
-            return {
-                ...state,
-                loading: false,
-            };
-        }
+        PayrollMileageDriverReducers.onGetPayrollMileageDriverCollapsedListError
     ),
     on(
         PayrollSoloMileageDriver.getPayrollMileageDriverExpandedList,
-        (state) => {
-            return {
-                ...state,
-                loading: true,
-            };
-        }
+        PayrollMileageDriverReducers.onGetPayrollMileageDriverExpandedList
     ),
     on(
         PayrollSoloMileageDriver.getPayrollMileageDriverExpandedListSuccess,
-        (state, data) => {
-            return {
-                ...state,
-                driverMileageExpandedList: data.data,
-                loading: false,
-            };
-        }
+        PayrollMileageDriverReducers.onGetPayrollMileageDriverExpandedListSuccess
     ),
     on(
         PayrollSoloMileageDriver.getPayrollMileageDriverExpandedListError,
-        (state) => {
-            return {
-                ...state,
-                loading: false,
-            };
-        }
+        PayrollMileageDriverReducers.onGetPayrollMileageDriverExpandedListError
     ),
     on(
         PayrollSoloMileageDriver.getPayrollMileageDriverClosedPayrollSuccess,
-        (state, data) => {
-            return {
-                ...state,
-                payrollOpenedReport: data.payroll,
-                reportLoading: false,
-            };
-        }
-    )
-);
+        PayrollMileageDriverReducers.onGetPayrollMileageDriverClosedPayrollSuccess
+    ),
+    // DRIVER PAY BY COMMISSION
+    on(
+        PyarollCommissionDriverActions.getPayrollCommissionDriverSuccess,
+        PayrollCommissionDriverReducers.onGetPayrollSoloMileageDriverSuccess
+    ),
+    on(
+        PyarollCommissionDriverActions.getPayrollCommissionDriver,
+        PayrollCommissionDriverReducers.onGetPayrollSoloMileageDriver
+    ),
 
-//
+    // DRIVER OWNER
+    on(
+        PayrollOwnerDriverActions.getPayrollOwnerDriverList,
+        PayrollOwnerDriverReducers.onGetPayrollOwnerDriverList
+    ),
+    on(
+        PayrollOwnerDriverActions.getPayrollOwnerDriverListSuccess,
+        PayrollOwnerDriverReducers.onGetPayrollOwnerDriverListSuccess
+    ),
+
+);
