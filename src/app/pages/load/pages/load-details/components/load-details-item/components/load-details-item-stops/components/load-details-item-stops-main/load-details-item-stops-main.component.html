@@ -97,7 +97,7 @@
                 <ng-template #notDeadhead>
                     <ng-container *ngIf="!stop?.depart; else completedStop">
                         <p class="m-0 ta-font-bold">
-                            {{ stop?.stopOrder }}
+                            {{ stop?.stopLoadOrder }}
                         </p>
                     </ng-container>
 
@@ -106,7 +106,7 @@
                             *ngIf="itemHoveringIndex === i; else notHovering"
                         >
                             <p class="m-0 ta-font-bold">
-                                {{ stop?.stopOrder }}
+                                {{ stop?.stopLoadOrder }}
                             </p>
                         </ng-container>
 
