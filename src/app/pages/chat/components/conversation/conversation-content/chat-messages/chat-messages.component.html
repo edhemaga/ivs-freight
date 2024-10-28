@@ -46,9 +46,55 @@
                                         class="gradient gradient-to-left w-100"
                                     ></div>
                                 </div>
-                                <div class="message-date ta-font-medium">
-                                    {{ message.createdAt | chatDatePipe }}
-                                </div>
+                                <ng-container
+                                    *ngIf="
+                                        messageDateHovered !== message;
+                                        else dateOptions
+                                    "
+                                >
+                                    <div
+                                        class="message-date ta-font-medium"
+                                        (mouseenter)="
+                                            hoverOverMessageDate(message)
+                                        "
+                                    >
+                                        {{ message.createdAt | chatDatePipe }}
+                                    </div>
+                                </ng-container>
+                                <ng-template #dateOptions>
+                                    <div class="d-flex">
+                                        <svg-icon
+                                            class="d-flex justify-content-center align-items-center"
+                                            [svgStyle]="{
+                                                'width.px': 14,
+                                                'height.px': 14
+                                            }"
+                                            [src]="chatSvgRoutes.calendarIcon"
+                                        >
+                                        </svg-icon>
+                                        <div
+                                            class="message-date message-date-selection"
+                                            (mouseleave)="
+                                                hoverOverMessageDate(null)
+                                            "
+                                        >
+                                            {{
+                                                message.createdAt | chatDatePipe
+                                            }}
+                                        </div>
+                                        <svg-icon
+                                            class="d-flex justify-content-center align-items-center"
+                                            [svgStyle]="{
+                                                'width.px': 14,
+                                                'height.px': 14
+                                            }"
+                                            [src]="
+                                                chatSvgRoutes.headerArrowDownIcon
+                                            "
+                                        >
+                                        </svg-icon>
+                                    </div>
+                                </ng-template>
                                 <div
                                     class="d-flex justify-content-center align-content-center w-100"
                                 >

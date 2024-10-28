@@ -36,6 +36,11 @@
                 padding: 6px;
                 color: $ta-black;
                 font-size: 11px;
+
+                &-selection {
+                    border-radius: 2px;
+                    background-color: $bw2;
+                }
             }
 
             .gradient {

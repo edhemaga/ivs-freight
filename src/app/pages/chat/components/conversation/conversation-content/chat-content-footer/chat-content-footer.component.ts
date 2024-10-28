@@ -241,8 +241,9 @@ export class ChatContentFooterComponent
                     const messageSplitted: string[] = message.split(' ');
                     this.mentionSearchTerm =
                         messageSplitted[messageSplitted?.length - 1];
-                    this.isMentionActive =
-                        this.mentionSearchTerm?.includes('@');
+                    this.isMentionActive = this.mentionSearchTerm?.includes(
+                        ChatStringTypeEnum.AT_SIGN
+                    );
                     if (this.isMentionActive)
                         this.mentionParticipants =
                             this.conversation?.participants?.filter(

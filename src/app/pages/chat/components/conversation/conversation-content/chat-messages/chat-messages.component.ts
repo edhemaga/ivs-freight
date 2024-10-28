@@ -9,7 +9,7 @@ import {
     Input,
 } from '@angular/core';
 import { UntypedFormGroup } from '@angular/forms';
-import { Observable, takeUntil, debounceTime, map, tap } from 'rxjs';
+import { Observable, takeUntil, debounceTime, map } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 
 // Assets routes
@@ -17,7 +17,6 @@ import { ChatSvgRoutes, ChatPngRoutes } from '@pages/chat/utils/routes';
 
 // Services
 import {
-    UserChatService,
     ChatHubService,
     UserProfileService,
     ChatStoreService,
@@ -38,6 +37,7 @@ import {
 import {
     ChatAttachmentCustomClassEnum,
     ChatMessageTypeEnum,
+    ChatStringTypeEnum,
     ConversationTypeEnum,
 } from '@pages/chat/enums';
 
@@ -76,6 +76,7 @@ export class ChatMessagesComponent
     public messages$!: Observable<ChatMessageResponse>;
     public messages: ChatMessage[] = [];
     public messageIdActionsDisplayed!: number;
+    public messageDateHovered!: ChatMessageResponse;
 
     public conversationTypeEnum = ConversationTypeEnum;
 
@@ -167,13 +168,19 @@ export class ChatMessagesComponent
             })
             .add(() => {
                 setTimeout(() => {
-                    this.chatStoreService.setUserTyping('');
+                    this.chatStoreService.setUserTyping(
+                        ChatStringTypeEnum.EMPTY
+                    );
                 }, 1000);
             });
     }
 
     public handleMessageReplyOrEdit(data: ChatConversationMessageAction): void {
         this.messageIdActionsDisplayed = data.message?.id;
+    }
+
+    public hoverOverMessageDate(message: ChatMessageResponse): void {
+        this.messageDateHovered = message;
     }
 
     ngOnDestroy(): void {
