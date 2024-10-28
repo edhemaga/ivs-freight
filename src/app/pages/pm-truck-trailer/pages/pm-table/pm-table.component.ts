@@ -105,6 +105,7 @@ export class PmTableComponent implements OnInit, AfterViewInit, OnDestroy {
     public pmTrailerBackFilterQuery: PMTrailerFilter = {
         ...PMTrailerFilterConstants.pmTrailerFilterQuery,
     };
+    public tableDataLength: number;
 
     constructor(
         // Services
@@ -296,6 +297,8 @@ export class PmTableComponent implements OnInit, AfterViewInit, OnDestroy {
             (table) => table.field === this.selectedTab
         );
 
+        this.tableDataLength = activeTableData.length;
+
         this.setPmData(activeTableData);
 
         this.updateCardView();
@@ -335,6 +338,20 @@ export class PmTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
     public onTableBodyActions(event: PmTableAction): void {
         switch (event.type) {
+            case TableStringEnum.SHOW_MORE:
+                if (this.selectedTab === TableStringEnum.ACTIVE) {
+                    this.pmTruckBackFilterQuery.pageIndex++;
+
+                    this.pmTruckBackFilter(this.pmTruckBackFilterQuery, true);
+                } else {
+                    this.pmTrailerBackFilterQuery.pageIndex++;
+
+                    this.pmTrailerBackFilter(
+                        this.pmTrailerBackFilterQuery,
+                        true
+                    );
+                }
+                break;
             case TableStringEnum.CONFIGURE:
                 if (this.selectedTab === TableStringEnum.ACTIVE) {
                     this.modalService.openModal(
@@ -849,7 +866,10 @@ export class PmTableComponent implements OnInit, AfterViewInit, OnDestroy {
             });
     }
 
-    private pmTruckBackFilter(filter: PMTruckFilter): void {
+    private pmTruckBackFilter(
+        filter: PMTruckFilter,
+        isShowMore?: boolean
+    ): void {
         this.pmService
             .getPMTruckUnitList(
                 filter.truckId,
@@ -865,17 +885,28 @@ export class PmTableComponent implements OnInit, AfterViewInit, OnDestroy {
             )
             .pipe(takeUntil(this.destroy$))
             .subscribe((res) => {
-                const newData = [];
+                if (!isShowMore) {
+                    this.viewData = res.pagination.data;
 
-                res.pagination.data.map((data) => {
-                    newData.push(this.mapPmTruckData(data));
-                });
+                    this.viewData = this.viewData.map((data: PMTruckUnitResponse) => {
+                        return this.mapPmTruckData(data);
+                    });
+                } else {
+                    const newData = [...this.viewData];
 
-                this.viewData = [...newData];
+                    res.pagination.data.forEach((data: PMTruckUnitResponse) => {
+                        newData.push(this.mapPmTruckData(data));
+                    });
+
+                    this.viewData = [...newData];
+                }
             });
     }
 
-    private pmTrailerBackFilter(filter: PMTrailerFilter): void {
+    private pmTrailerBackFilter(
+        filter: PMTrailerFilter,
+        isShowMore?: boolean
+    ): void {
         this.pmService
             .getPMTrailerUnitList(
                 filter.trailerId,
@@ -891,13 +922,21 @@ export class PmTableComponent implements OnInit, AfterViewInit, OnDestroy {
             )
             .pipe(takeUntil(this.destroy$))
             .subscribe((res) => {
-                const newData = [];
+                if (!isShowMore) {
+                    this.viewData = res.pagination.data;
 
-                res.pagination.data.map((data) => {
-                    newData.push(this.mapPmTrailerData(data));
-                });
+                    this.viewData = this.viewData.map((data: PMTrailerUnitResponse) => {
+                        return this.mapPmTrailerData(data);
+                    });
+                } else {
+                    const newData = [...this.viewData];
 
-                this.viewData = [...newData];
+                    res.pagination.data.forEach((data: PMTrailerUnitResponse) => {
+                        newData.push(this.mapPmTrailerData(data));
+                    });
+
+                    this.viewData = [...newData];
+                }
             });
     }
 
@@ -944,6 +983,12 @@ export class PmTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     }
                 }
             });
+    }
+
+    public onShowMore(): void {
+        this.onTableBodyActions({
+            type: TableStringEnum.SHOW_MORE,
+        });
     }
 
     ngOnDestroy(): void {
