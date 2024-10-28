@@ -50,7 +50,12 @@
                                         class="d-flex justify-content-center align-content-center w-100"
                                     >
                                         <div
-                                            class="gradient gradient-to-left w-100"
+                                            class="gradient w-100"
+                                            [ngClass]="
+                                                message?.isReceivedFromHub
+                                                    ? 'gradient-to-left-blue'
+                                                    : 'gradient-to-left'
+                                            "
                                         ></div>
                                     </div>
                                     <ng-container
@@ -64,6 +69,11 @@
                                             (mouseenter)="
                                                 hoverOverMessageDate(message)
                                             "
+                                            [ngStyle]="{
+                                                color:
+                                                    message?.isReceivedFromHub &&
+                                                    '#3B73ED'
+                                            }"
                                         >
                                             {{
                                                 message.createdAt
@@ -115,7 +125,12 @@
                                         class="d-flex justify-content-center align-content-center w-100"
                                     >
                                         <div
-                                            class="gradient gradient-to-right w-100"
+                                            class="gradient w-100"
+                                            [ngClass]="
+                                                message?.isReceivedFromHub
+                                                    ? 'gradient-to-right-blue'
+                                                    : 'gradient-to-right'
+                                            "
                                         ></div>
                                     </div>
                                 </div>

@@ -52,13 +52,32 @@
                 height: 1px;
 
                 &-to-left {
-                    margin: auto 12px auto auto;
                     background: linear-gradient(to left, $bw-9, $white);
+                    margin: auto 12px auto auto;
+
+                    &-blue {
+                        margin: auto 12px auto auto;
+
+                        background: linear-gradient(
+                            to left,
+                            $ta-blue-17,
+                            $white
+                        );
+                    }
                 }
 
                 &-to-right {
                     margin: auto auto auto 12px;
                     background: linear-gradient(to right, $bw-9, $white);
+                    &-blue {
+                        margin: auto auto auto 12px;
+
+                        background: linear-gradient(
+                            to right,
+                            $ta-blue-17,
+                            $white
+                        );
+                    }
                 }
             }
         }
