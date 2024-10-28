@@ -1,3 +1,6 @@
+// svg routes
+import { AccountingFuelColumnSvgRoutes } from "@shared/utils/svg-routes";
+
 export function getFuelTransactionColumnDefinition() {
     return [
         {
@@ -531,13 +534,8 @@ export function getFuelStopColumnDefinition() {
             field: 'isFavorite',
             name: '',
             hidden: false,
-            width: 26,
-            minWidth: 26,
-            headIconStyle: {
-                width: 14,
-                height: 14,
-                imgPath: '',
-            },
+            width: 25,
+            minWidth: 25,
             filter: '',
             isNumeric: false,
             index: 17,
@@ -554,18 +552,41 @@ export function getFuelStopColumnDefinition() {
             isAction: true,
         },
         {
+            ngTemplate: 'note',
+            title: 'Note',
+            field: 'note',
+            name: '',
+            hidden: false,
+            width: 35,
+            minWidth: 35,
+            filter: '',
+            isNumeric: false,
+            index: 18,
+            sortable: false,
+            isActionColumn: true,
+            isSelectColumn: false,
+            avatar: null,
+            progress: null,
+            hoverTemplate: null,
+            filterable: true,
+            disabled: false,
+            export: true,
+            resizable: false,
+            isAction: true,
+            headIconStyle: {
+                width: 14,
+                height: 14,
+                imgPath: AccountingFuelColumnSvgRoutes.ICON_NOTE,
+            },
+        },
+        {
             ngTemplate: 'actions',
             title: 'Actions',
             field: 'action',
             name: '',
             hidden: false,
-            width: 26,
-            minWidth: 26,
-            headIconStyle: {
-                width: 22,
-                height: 6,
-                imgPath: '',
-            },
+            width: 30,
+            minWidth: 30,
             filter: '',
             isNumeric: false,
             index: 10,
