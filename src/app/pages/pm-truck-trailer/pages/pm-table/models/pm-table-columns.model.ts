@@ -1,4 +1,4 @@
-import { TableBodyColumnsImageHover } from "@shared/components/ta-table/ta-table-body/models/table-body-columns-image-hover.model";
+import { TableBodyColumnsImageHover } from '@shared/components/ta-table/ta-table-body/models/table-body-columns-image-hover.model';
 
 export interface PmTableColumns {
     ngTemplate: string;
@@ -8,6 +8,11 @@ export interface PmTableColumns {
     hidden: boolean;
     isPined?: boolean;
     width: number;
+    headIconStyle?: {
+        width: number;
+        height: number;
+        imgPath: string;
+    };
     filter?: string;
     isNumeric?: boolean;
     index: number;

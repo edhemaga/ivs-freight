@@ -1,0 +1,131 @@
+@import 'src/theme/variables.scss';
+
+.text {
+    &-color {
+        &-muted {
+            color: $muted !important;
+
+            &::-moz-selection {
+                background-color: rgb(145, 145, 145, 0.2) !important;
+                color: $muted !important;
+            }
+
+            &::selection {
+                background-color: rgb(145, 145, 145, 0.2) !important;
+                color: $muted !important;
+            }
+        }
+
+        &-green {
+            color: $ta-green !important;
+
+            &::-moz-selection {
+                background-color: rgb(86, 180, 172, 0.2) !important;
+                color: $ta-green !important;
+            }
+
+            &::selection {
+                background-color: rgb(86, 180, 172, 0.2) !important;
+                color: $ta-green !important;
+            }
+        }
+
+        &-blue-18 {
+            color: $ta-blue-18 !important;
+
+            &::-moz-selection {
+                background-color: rgb(59, 115, 237, 0.2) !important;
+                color: $ta-blue-18 !important;
+            }
+
+            &::selection {
+                background-color: rgb(59, 115, 237, 0.2) !important;
+                color: $ta-blue-18 !important;
+            }
+        }
+
+        &-red-10 {
+            color: $ta-red-10 !important;
+
+            &::-moz-selection {
+                background-color: rgb(230, 103, 103, 0.2) !important;
+                color: $ta-red-10 !important;
+            }
+
+            &::selection {
+                background-color: rgb(230, 103, 103, 0.2) !important;
+                color: $ta-red-10 !important;
+            }
+        }
+
+        &-black {
+            color: $ta-black !important;
+
+            &::-moz-selection {
+                background-color: rgb(66, 66, 66, 0.2) !important;
+                color: $ta-black !important;
+            }
+
+            &::selection {
+                background-color: rgb(66, 66, 66, 0.2) !important;
+                color: $ta-black !important;
+            }
+        }
+
+        &-black-2 {
+            color: $ta-black-2 !important;
+
+            &::-moz-selection {
+                background-color: rgb(47, 47, 47, 0.2) !important;
+                color: $ta-black-2 !important;
+            }
+
+            &::selection {
+                background-color: rgb(47, 47, 47, 0.2) !important;
+                color: $ta-black-2 !important;
+            }
+        }
+
+        &-light-grey-2 {
+            color: $ta-light-grey-2 !important;
+
+            &::-moz-selection {
+                background-color: rgb(170, 170, 170, 0.2) !important;
+                color: $ta-light-grey-2;
+            }
+
+            &::selection {
+                background-color: rgb(170, 170, 170, 0.2) !important;
+                color: $ta-light-grey-2;
+            }
+        }
+
+        &-light-grey-6 {
+            color: $ta-light-grey-6 !important;
+
+            &::-moz-selection {
+                color: $ta-light-grey-6 !important;
+                background: rgb(170, 170, 170, 0.2) !important;
+            }
+
+            &::selection {
+                color: $ta-light-grey-6 !important;
+                background: rgb(170, 170, 170, 0.2) !important;
+            }
+        }
+
+        &-white {
+            color: $white !important;
+
+            &::-moz-selection {
+                color: $white !important;
+                background: rgb(255, 255, 255, 0.2) !important;
+            }
+
+            &::selection {
+                color: $white !important;
+                background: rgb(255, 255, 255, 0.2) !important;
+            }
+        }
+    }
+}

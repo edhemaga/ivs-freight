@@ -42,7 +42,7 @@ export interface UpdateCompanyCommand {
     preferredLoadType?: PreferredLoadType;
     fleetType?: FleetType;
     factorByDefault?: boolean | null;
-    customerPayTerm?: string | null;
+    payTerm?: number | null;
     customerCredit?: string | null;
     driverMiles?: boolean | null;
     driverComission?: boolean | null;

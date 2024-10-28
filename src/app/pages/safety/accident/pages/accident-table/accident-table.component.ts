@@ -337,8 +337,8 @@ export class AccidentTableComponent
             isSelected: false,
             tableReport: data?.report ? data.report : 'No Report',
             tableDriverName: data?.driver_FullName ? data.driver_FullName : '',
-            truckNumber: 'Nije povezano',
-            trailerNumber: 'Nije povezano',
+            truckNumber: null,
+            trailerNumber: null,
             tableDate: data?.date
                 ? this.datePipe.transform(data.date, 'MM/dd/yy')
                 : '',

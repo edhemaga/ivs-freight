@@ -21,8 +21,6 @@ import {
     CreateCompanyUserCommand,
     CreateResponse,
     ForgotPasswordCommand,
-    // GetCompanyUserListResponse,
-    ResendSignUpCompanyOrUserCommand,
     UpdateCompanyUserCommand,
     UserResponse,
 } from 'appcoretruckassist';
@@ -375,12 +373,8 @@ export class UserService {
             );
     }
 
-    public userResendIvitation(
-        email: ResendSignUpCompanyOrUserCommand
-    ): Observable<any> {
-        return this.accountUserService.apiAccountResendsignupcompanyoruserPut(
-            email
-        );
+    public userResendIvitation(id: number): Observable<any> {
+        return this.userService.apiCompanyuserIdResendInvitationPatch(id);
     }
 
     public userResetPassword(email: ForgotPasswordCommand): Observable<any> {

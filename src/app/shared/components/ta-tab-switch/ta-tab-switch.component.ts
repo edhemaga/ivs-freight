@@ -48,6 +48,7 @@ export class TaTabSwitchComponent implements AfterViewChecked, OnChanges {
     @Input() clearCustomPeriodRangeValue?: boolean = false;
     @Input() isDisabled?: boolean = false;
     @Input() isBold: boolean = false;
+    @Input() isMarginTopDisabled: boolean = false;
 
     @Output() switchClicked = new EventEmitter<any>();
     @Output() customPeriodRangeEmitter = new EventEmitter<CustomPeriodRange>();
@@ -89,7 +90,6 @@ export class TaTabSwitchComponent implements AfterViewChecked, OnChanges {
     public switchTab(e, indx, item): void {
         e.stopPropagation();
         this.indexSwitch = indx;
-
 
         this.tabs.map((tab) => {
             if (tab.id === item.id) tab.checked = true;

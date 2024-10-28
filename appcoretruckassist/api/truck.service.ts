@@ -11,13 +11,12 @@
  */
 /* tslint:disable:no-unused-variable member-ordering */
 
-import { Inject, Injectable, Optional } from '@angular/core';
-import {
-    HttpClient, HttpHeaders, HttpParams,
-    HttpResponse, HttpEvent, HttpParameterCodec, HttpContext
-} from '@angular/common/http';
-import { CustomHttpParameterCodec } from '../encoder';
-import { Observable } from 'rxjs';
+import { Inject, Injectable, Optional }                      from '@angular/core';
+import { HttpClient, HttpHeaders, HttpParams,
+         HttpResponse, HttpEvent, HttpParameterCodec, HttpContext 
+        }       from '@angular/common/http';
+import { CustomHttpParameterCodec }                          from '../encoder';
+import { Observable }                                        from 'rxjs';
 
 // @ts-ignore
 import { ApUnit } from '../model/apUnit';
@@ -61,13 +60,13 @@ import { TruckRevenueResponse } from '../model/truckRevenueResponse';
 import { WheelsType } from '../model/wheelsType';
 
 // @ts-ignore
-import { BASE_PATH, COLLECTION_FORMATS } from '../variables';
-import { Configuration } from '../configuration';
+import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
+import { Configuration }                                     from '../configuration';
 
 
 
 @Injectable({
-    providedIn: 'root'
+  providedIn: 'root'
 })
 export class TruckService {
 
@@ -76,7 +75,7 @@ export class TruckService {
     public configuration = new Configuration();
     public encoder: HttpParameterCodec;
 
-    constructor(protected httpClient: HttpClient, @Optional() @Inject(BASE_PATH) basePath: string | string[], @Optional() configuration: Configuration) {
+    constructor(protected httpClient: HttpClient, @Optional()@Inject(BASE_PATH) basePath: string|string[], @Optional() configuration: Configuration) {
         if (configuration) {
             this.configuration = configuration;
         }
@@ -124,15 +123,15 @@ export class TruckService {
 
         if (typeof value === "object") {
             if (Array.isArray(value)) {
-                (value as any[]).forEach(elem => httpParams = this.addToHttpParamsRecursive(httpParams, elem, key));
+                (value as any[]).forEach( elem => httpParams = this.addToHttpParamsRecursive(httpParams, elem, key));
             } else if (value instanceof Date) {
                 if (key != null) {
                     httpParams = httpParams.append(key, (value as Date).toISOString().substr(0, 10));
                 } else {
-                    throw Error("key may not be null if value is Date");
+                   throw Error("key may not be null if value is Date");
                 }
             } else {
-                Object.keys(value).forEach(k => httpParams = this.addToHttpParamsRecursive(
+                Object.keys(value).forEach( k => httpParams = this.addToHttpParamsRecursive(
                     httpParams, value[k], key != null ? `${key}.${k}` : k));
             }
         } else if (key != null) {
@@ -148,15 +147,15 @@ export class TruckService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiTruckAutocompleteModelModelGet(model: string, observe?: 'body', reportProgress?: boolean, options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext }): Observable<TruckAutocompleteModelResponse>;
-    public apiTruckAutocompleteModelModelGet(model: string, observe?: 'response', reportProgress?: boolean, options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext }): Observable<HttpResponse<TruckAutocompleteModelResponse>>;
-    public apiTruckAutocompleteModelModelGet(model: string, observe?: 'events', reportProgress?: boolean, options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext }): Observable<HttpEvent<TruckAutocompleteModelResponse>>;
-    public apiTruckAutocompleteModelModelGet(model: string, observe: any = 'body', reportProgress: boolean = false, options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext }): Observable<any> {
+    public apiTruckAutocompleteModelModelGet(model: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<TruckAutocompleteModelResponse>;
+    public apiTruckAutocompleteModelModelGet(model: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<TruckAutocompleteModelResponse>>;
+    public apiTruckAutocompleteModelModelGet(model: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<TruckAutocompleteModelResponse>>;
+    public apiTruckAutocompleteModelModelGet(model: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
         if (model === null || model === undefined) {
             throw new Error('Required parameter model was null or undefined when calling apiTruckAutocompleteModelModelGet.');
         }
 
-        let localVarQueryParameters = new HttpParams({ encoder: this.encoder });
+        let localVarQueryParameters = new HttpParams({encoder: this.encoder});
 
         let localVarHeaders = this.defaultHeaders;
 
@@ -204,7 +203,7 @@ export class TruckService {
             }
         }
 
-        let localVarPath = `/api/truck/autocomplete/model/${this.configuration.encodeParam({ name: "model", value: model, in: "path", style: "simple", explode: false, dataType: "string", dataFormat: undefined })}`;
+        let localVarPath = `/api/truck/autocomplete/model/${this.configuration.encodeParam({name: "model", value: model, in: "path", style: "simple", explode: false, dataType: "string", dataFormat: undefined})}`;
         return this.httpClient.request<TruckAutocompleteModelResponse>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
@@ -223,15 +222,15 @@ export class TruckService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiTruckCheckTrucknumberTruckNumberGet(truckNumber: string, observe?: 'body', reportProgress?: boolean, options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext }): Observable<boolean>;
-    public apiTruckCheckTrucknumberTruckNumberGet(truckNumber: string, observe?: 'response', reportProgress?: boolean, options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext }): Observable<HttpResponse<boolean>>;
-    public apiTruckCheckTrucknumberTruckNumberGet(truckNumber: string, observe?: 'events', reportProgress?: boolean, options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext }): Observable<HttpEvent<boolean>>;
-    public apiTruckCheckTrucknumberTruckNumberGet(truckNumber: string, observe: any = 'body', reportProgress: boolean = false, options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext }): Observable<any> {
+    public apiTruckCheckTrucknumberTruckNumberGet(truckNumber: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<boolean>;
+    public apiTruckCheckTrucknumberTruckNumberGet(truckNumber: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<boolean>>;
+    public apiTruckCheckTrucknumberTruckNumberGet(truckNumber: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<boolean>>;
+    public apiTruckCheckTrucknumberTruckNumberGet(truckNumber: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
         if (truckNumber === null || truckNumber === undefined) {
             throw new Error('Required parameter truckNumber was null or undefined when calling apiTruckCheckTrucknumberTruckNumberGet.');
         }
 
-        let localVarQueryParameters = new HttpParams({ encoder: this.encoder });
+        let localVarQueryParameters = new HttpParams({encoder: this.encoder});
 
         let localVarHeaders = this.defaultHeaders;
 
@@ -279,7 +278,7 @@ export class TruckService {
             }
         }
 
-        let localVarPath = `/api/truck/check/trucknumber/${this.configuration.encodeParam({ name: "truckNumber", value: truckNumber, in: "path", style: "simple", explode: false, dataType: "string", dataFormat: undefined })}`;
+        let localVarPath = `/api/truck/check/trucknumber/${this.configuration.encodeParam({name: "truckNumber", value: truckNumber, in: "path", style: "simple", explode: false, dataType: "string", dataFormat: undefined})}`;
         return this.httpClient.request<boolean>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
@@ -298,15 +297,15 @@ export class TruckService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiTruckCheckVinVinGet(vin: string, observe?: 'body', reportProgress?: boolean, options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext }): Observable<boolean>;
-    public apiTruckCheckVinVinGet(vin: string, observe?: 'response', reportProgress?: boolean, options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext }): Observable<HttpResponse<boolean>>;
-    public apiTruckCheckVinVinGet(vin: string, observe?: 'events', reportProgress?: boolean, options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext }): Observable<HttpEvent<boolean>>;
-    public apiTruckCheckVinVinGet(vin: string, observe: any = 'body', reportProgress: boolean = false, options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext }): Observable<any> {
+    public apiTruckCheckVinVinGet(vin: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<boolean>;
+    public apiTruckCheckVinVinGet(vin: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<boolean>>;
+    public apiTruckCheckVinVinGet(vin: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<boolean>>;
+    public apiTruckCheckVinVinGet(vin: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
         if (vin === null || vin === undefined) {
             throw new Error('Required parameter vin was null or undefined when calling apiTruckCheckVinVinGet.');
         }
 
-        let localVarQueryParameters = new HttpParams({ encoder: this.encoder });
+        let localVarQueryParameters = new HttpParams({encoder: this.encoder});
 
         let localVarHeaders = this.defaultHeaders;
 
@@ -354,7 +353,7 @@ export class TruckService {
             }
         }
 
-        let localVarPath = `/api/truck/check/vin/${this.configuration.encodeParam({ name: "vin", value: vin, in: "path", style: "simple", explode: false, dataType: "string", dataFormat: undefined })}`;
+        let localVarPath = `/api/truck/check/vin/${this.configuration.encodeParam({name: "vin", value: vin, in: "path", style: "simple", explode: false, dataType: "string", dataFormat: undefined})}`;
         return this.httpClient.request<boolean>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
@@ -374,19 +373,19 @@ export class TruckService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiTruckExpensesGet(id?: number, chartTimeDetailPages?: number, observe?: 'body', reportProgress?: boolean, options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext }): Observable<TruckExpensesResponse>;
-    public apiTruckExpensesGet(id?: number, chartTimeDetailPages?: number, observe?: 'response', reportProgress?: boolean, options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext }): Observable<HttpResponse<TruckExpensesResponse>>;
-    public apiTruckExpensesGet(id?: number, chartTimeDetailPages?: number, observe?: 'events', reportProgress?: boolean, options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext }): Observable<HttpEvent<TruckExpensesResponse>>;
-    public apiTruckExpensesGet(id?: number, chartTimeDetailPages?: number, observe: any = 'body', reportProgress: boolean = false, options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext }): Observable<any> {
+    public apiTruckExpensesGet(id?: number, chartTimeDetailPages?: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<TruckExpensesResponse>;
+    public apiTruckExpensesGet(id?: number, chartTimeDetailPages?: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<TruckExpensesResponse>>;
+    public apiTruckExpensesGet(id?: number, chartTimeDetailPages?: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<TruckExpensesResponse>>;
+    public apiTruckExpensesGet(id?: number, chartTimeDetailPages?: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
-        let localVarQueryParameters = new HttpParams({ encoder: this.encoder });
+        let localVarQueryParameters = new HttpParams({encoder: this.encoder});
         if (id !== undefined && id !== null) {
-            localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-                <any>id, 'Id');
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>id, 'Id');
         }
         if (chartTimeDetailPages !== undefined && chartTimeDetailPages !== null) {
-            localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-                <any>chartTimeDetailPages, 'ChartTimeDetailPages');
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>chartTimeDetailPages, 'ChartTimeDetailPages');
         }
 
         let localVarHeaders = this.defaultHeaders;
@@ -454,15 +453,15 @@ export class TruckService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiTruckFilesIdGet(id: number, observe?: 'body', reportProgress?: boolean, options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext }): Observable<Array<FileResponse>>;
-    public apiTruckFilesIdGet(id: number, observe?: 'response', reportProgress?: boolean, options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext }): Observable<HttpResponse<Array<FileResponse>>>;
-    public apiTruckFilesIdGet(id: number, observe?: 'events', reportProgress?: boolean, options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext }): Observable<HttpEvent<Array<FileResponse>>>;
-    public apiTruckFilesIdGet(id: number, observe: any = 'body', reportProgress: boolean = false, options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext }): Observable<any> {
+    public apiTruckFilesIdGet(id: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<Array<FileResponse>>;
+    public apiTruckFilesIdGet(id: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<Array<FileResponse>>>;
+    public apiTruckFilesIdGet(id: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<Array<FileResponse>>>;
+    public apiTruckFilesIdGet(id: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
         if (id === null || id === undefined) {
             throw new Error('Required parameter id was null or undefined when calling apiTruckFilesIdGet.');
         }
 
-        let localVarQueryParameters = new HttpParams({ encoder: this.encoder });
+        let localVarQueryParameters = new HttpParams({encoder: this.encoder});
 
         let localVarHeaders = this.defaultHeaders;
 
@@ -510,7 +509,7 @@ export class TruckService {
             }
         }
 
-        let localVarPath = `/api/truck/files/${this.configuration.encodeParam({ name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int32" })}`;
+        let localVarPath = `/api/truck/files/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int32"})}`;
         return this.httpClient.request<Array<FileResponse>>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
@@ -533,31 +532,31 @@ export class TruckService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiTruckFilterGet(active?: number, pageIndex?: number, pageSize?: number, companyId?: number, search?: string, observe?: 'body', reportProgress?: boolean, options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext }): Observable<TruckFilterListResponse>;
-    public apiTruckFilterGet(active?: number, pageIndex?: number, pageSize?: number, companyId?: number, search?: string, observe?: 'response', reportProgress?: boolean, options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext }): Observable<HttpResponse<TruckFilterListResponse>>;
-    public apiTruckFilterGet(active?: number, pageIndex?: number, pageSize?: number, companyId?: number, search?: string, observe?: 'events', reportProgress?: boolean, options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext }): Observable<HttpEvent<TruckFilterListResponse>>;
-    public apiTruckFilterGet(active?: number, pageIndex?: number, pageSize?: number, companyId?: number, search?: string, observe: any = 'body', reportProgress: boolean = false, options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext }): Observable<any> {
+    public apiTruckFilterGet(active?: number, pageIndex?: number, pageSize?: number, companyId?: number, search?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<TruckFilterListResponse>;
+    public apiTruckFilterGet(active?: number, pageIndex?: number, pageSize?: number, companyId?: number, search?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<TruckFilterListResponse>>;
+    public apiTruckFilterGet(active?: number, pageIndex?: number, pageSize?: number, companyId?: number, search?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<TruckFilterListResponse>>;
+    public apiTruckFilterGet(active?: number, pageIndex?: number, pageSize?: number, companyId?: number, search?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
-        let localVarQueryParameters = new HttpParams({ encoder: this.encoder });
+        let localVarQueryParameters = new HttpParams({encoder: this.encoder});
         if (active !== undefined && active !== null) {
-            localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-                <any>active, 'Active');
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>active, 'Active');
         }
         if (pageIndex !== undefined && pageIndex !== null) {
-            localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-                <any>pageIndex, 'PageIndex');
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>pageIndex, 'PageIndex');
         }
         if (pageSize !== undefined && pageSize !== null) {
-            localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-                <any>pageSize, 'PageSize');
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>pageSize, 'PageSize');
         }
         if (companyId !== undefined && companyId !== null) {
-            localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-                <any>companyId, 'CompanyId');
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>companyId, 'CompanyId');
         }
         if (search !== undefined && search !== null) {
-            localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-                <any>search, 'Search');
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>search, 'Search');
         }
 
         let localVarHeaders = this.defaultHeaders;
@@ -626,19 +625,19 @@ export class TruckService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiTruckFuelconsumptionGet(id?: number, chartTimeDetailPages?: number, observe?: 'body', reportProgress?: boolean, options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext }): Observable<TruckFuelConsumptionResponse>;
-    public apiTruckFuelconsumptionGet(id?: number, chartTimeDetailPages?: number, observe?: 'response', reportProgress?: boolean, options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext }): Observable<HttpResponse<TruckFuelConsumptionResponse>>;
-    public apiTruckFuelconsumptionGet(id?: number, chartTimeDetailPages?: number, observe?: 'events', reportProgress?: boolean, options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext }): Observable<HttpEvent<TruckFuelConsumptionResponse>>;
-    public apiTruckFuelconsumptionGet(id?: number, chartTimeDetailPages?: number, observe: any = 'body', reportProgress: boolean = false, options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext }): Observable<any> {
+    public apiTruckFuelconsumptionGet(id?: number, chartTimeDetailPages?: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<TruckFuelConsumptionResponse>;
+    public apiTruckFuelconsumptionGet(id?: number, chartTimeDetailPages?: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<TruckFuelConsumptionResponse>>;
+    public apiTruckFuelconsumptionGet(id?: number, chartTimeDetailPages?: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<TruckFuelConsumptionResponse>>;
+    public apiTruckFuelconsumptionGet(id?: number, chartTimeDetailPages?: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
-        let localVarQueryParameters = new HttpParams({ encoder: this.encoder });
+        let localVarQueryParameters = new HttpParams({encoder: this.encoder});
         if (id !== undefined && id !== null) {
-            localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-                <any>id, 'Id');
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>id, 'Id');
         }
         if (chartTimeDetailPages !== undefined && chartTimeDetailPages !== null) {
-            localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-                <any>chartTimeDetailPages, 'ChartTimeDetailPages');
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>chartTimeDetailPages, 'ChartTimeDetailPages');
         }
 
         let localVarHeaders = this.defaultHeaders;
@@ -706,15 +705,15 @@ export class TruckService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiTruckIdDelete(id: number, observe?: 'body', reportProgress?: boolean, options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext }): Observable<any>;
-    public apiTruckIdDelete(id: number, observe?: 'response', reportProgress?: boolean, options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext }): Observable<HttpResponse<any>>;
-    public apiTruckIdDelete(id: number, observe?: 'events', reportProgress?: boolean, options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext }): Observable<HttpEvent<any>>;
-    public apiTruckIdDelete(id: number, observe: any = 'body', reportProgress: boolean = false, options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext }): Observable<any> {
+    public apiTruckIdDelete(id: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any>;
+    public apiTruckIdDelete(id: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<any>>;
+    public apiTruckIdDelete(id: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<any>>;
+    public apiTruckIdDelete(id: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
         if (id === null || id === undefined) {
             throw new Error('Required parameter id was null or undefined when calling apiTruckIdDelete.');
         }
 
-        let localVarQueryParameters = new HttpParams({ encoder: this.encoder });
+        let localVarQueryParameters = new HttpParams({encoder: this.encoder});
 
         let localVarHeaders = this.defaultHeaders;
 
@@ -762,7 +761,7 @@ export class TruckService {
             }
         }
 
-        let localVarPath = `/api/truck/${this.configuration.encodeParam({ name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int32" })}`;
+        let localVarPath = `/api/truck/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int32"})}`;
         return this.httpClient.request<any>('delete', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
@@ -781,15 +780,15 @@ export class TruckService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiTruckIdGet(id: number, observe?: 'body', reportProgress?: boolean, options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext }): Observable<TruckResponse>;
-    public apiTruckIdGet(id: number, observe?: 'response', reportProgress?: boolean, options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext }): Observable<HttpResponse<TruckResponse>>;
-    public apiTruckIdGet(id: number, observe?: 'events', reportProgress?: boolean, options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext }): Observable<HttpEvent<TruckResponse>>;
-    public apiTruckIdGet(id: number, observe: any = 'body', reportProgress: boolean = false, options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext }): Observable<any> {
+    public apiTruckIdGet(id: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<TruckResponse>;
+    public apiTruckIdGet(id: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<TruckResponse>>;
+    public apiTruckIdGet(id: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<TruckResponse>>;
+    public apiTruckIdGet(id: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
         if (id === null || id === undefined) {
             throw new Error('Required parameter id was null or undefined when calling apiTruckIdGet.');
         }
 
-        let localVarQueryParameters = new HttpParams({ encoder: this.encoder });
+        let localVarQueryParameters = new HttpParams({encoder: this.encoder});
 
         let localVarHeaders = this.defaultHeaders;
 
@@ -837,7 +836,7 @@ export class TruckService {
             }
         }
 
-        let localVarPath = `/api/truck/${this.configuration.encodeParam({ name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int32" })}`;
+        let localVarPath = `/api/truck/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int32"})}`;
         return this.httpClient.request<TruckResponse>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
@@ -856,12 +855,12 @@ export class TruckService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiTruckImportPost(truckXls?: Blob, observe?: 'body', reportProgress?: boolean, options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext }): Observable<object>;
-    public apiTruckImportPost(truckXls?: Blob, observe?: 'response', reportProgress?: boolean, options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext }): Observable<HttpResponse<object>>;
-    public apiTruckImportPost(truckXls?: Blob, observe?: 'events', reportProgress?: boolean, options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext }): Observable<HttpEvent<object>>;
-    public apiTruckImportPost(truckXls?: Blob, observe: any = 'body', reportProgress: boolean = false, options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext }): Observable<any> {
+    public apiTruckImportPost(truckXls?: Blob, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<object>;
+    public apiTruckImportPost(truckXls?: Blob, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<object>>;
+    public apiTruckImportPost(truckXls?: Blob, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<object>>;
+    public apiTruckImportPost(truckXls?: Blob, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
-        let localVarQueryParameters = new HttpParams({ encoder: this.encoder });
+        let localVarQueryParameters = new HttpParams({encoder: this.encoder});
 
         let localVarHeaders = this.defaultHeaders;
 
@@ -913,7 +912,7 @@ export class TruckService {
         if (localVarUseForm) {
             localVarFormParams = new FormData();
         } else {
-            localVarFormParams = new HttpParams({ encoder: this.encoder });
+            localVarFormParams = new HttpParams({encoder: this.encoder});
         }
 
         if (truckXls !== undefined) {
@@ -951,16 +950,16 @@ export class TruckService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiTruckListDelete(ids?: Array<number>, observe?: 'body', reportProgress?: boolean, options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext }): Observable<any>;
-    public apiTruckListDelete(ids?: Array<number>, observe?: 'response', reportProgress?: boolean, options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext }): Observable<HttpResponse<any>>;
-    public apiTruckListDelete(ids?: Array<number>, observe?: 'events', reportProgress?: boolean, options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext }): Observable<HttpEvent<any>>;
-    public apiTruckListDelete(ids?: Array<number>, observe: any = 'body', reportProgress: boolean = false, options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext }): Observable<any> {
+    public apiTruckListDelete(ids?: Array<number>, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any>;
+    public apiTruckListDelete(ids?: Array<number>, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<any>>;
+    public apiTruckListDelete(ids?: Array<number>, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<any>>;
+    public apiTruckListDelete(ids?: Array<number>, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
-        let localVarQueryParameters = new HttpParams({ encoder: this.encoder });
+        let localVarQueryParameters = new HttpParams({encoder: this.encoder});
         if (ids) {
             ids.forEach((element) => {
                 localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-                    <any>element, 'Ids');
+                  <any>element, 'Ids');
             })
         }
 
@@ -1039,57 +1038,57 @@ export class TruckService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiTruckListGet(active?: number, truckTypes?: Array<number>, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, sortOrder?: SortOrder, sortBy?: object, search?: string, search1?: string, search2?: string, observe?: 'body', reportProgress?: boolean, options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext }): Observable<TruckListResponse>;
-    public apiTruckListGet(active?: number, truckTypes?: Array<number>, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, sortOrder?: SortOrder, sortBy?: object, search?: string, search1?: string, search2?: string, observe?: 'response', reportProgress?: boolean, options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext }): Observable<HttpResponse<TruckListResponse>>;
-    public apiTruckListGet(active?: number, truckTypes?: Array<number>, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, sortOrder?: SortOrder, sortBy?: object, search?: string, search1?: string, search2?: string, observe?: 'events', reportProgress?: boolean, options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext }): Observable<HttpEvent<TruckListResponse>>;
-    public apiTruckListGet(active?: number, truckTypes?: Array<number>, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, sortOrder?: SortOrder, sortBy?: object, search?: string, search1?: string, search2?: string, observe: any = 'body', reportProgress: boolean = false, options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext }): Observable<any> {
+    public apiTruckListGet(active?: number, truckTypes?: Array<number>, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, sortOrder?: SortOrder, sortBy?: object, search?: string, search1?: string, search2?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<TruckListResponse>;
+    public apiTruckListGet(active?: number, truckTypes?: Array<number>, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, sortOrder?: SortOrder, sortBy?: object, search?: string, search1?: string, search2?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<TruckListResponse>>;
+    public apiTruckListGet(active?: number, truckTypes?: Array<number>, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, sortOrder?: SortOrder, sortBy?: object, search?: string, search1?: string, search2?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<TruckListResponse>>;
+    public apiTruckListGet(active?: number, truckTypes?: Array<number>, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, sortOrder?: SortOrder, sortBy?: object, search?: string, search1?: string, search2?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
-        let localVarQueryParameters = new HttpParams({ encoder: this.encoder });
+        let localVarQueryParameters = new HttpParams({encoder: this.encoder});
         if (active !== undefined && active !== null) {
-            localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-                <any>active, 'Active');
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>active, 'Active');
         }
         if (truckTypes) {
             truckTypes.forEach((element) => {
                 localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-                    <any>element, 'TruckTypes');
+                  <any>element, 'TruckTypes');
             })
         }
         if (pageIndex !== undefined && pageIndex !== null) {
-            localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-                <any>pageIndex, 'PageIndex');
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>pageIndex, 'PageIndex');
         }
         if (pageSize !== undefined && pageSize !== null) {
-            localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-                <any>pageSize, 'PageSize');
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>pageSize, 'PageSize');
         }
         if (companyId !== undefined && companyId !== null) {
-            localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-                <any>companyId, 'CompanyId');
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>companyId, 'CompanyId');
         }
         if (sort !== undefined && sort !== null) {
-            localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-                <any>sort, 'Sort');
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>sort, 'Sort');
         }
         if (sortOrder !== undefined && sortOrder !== null) {
-            localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-                <any>sortOrder, 'SortOrder');
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>sortOrder, 'SortOrder');
         }
         if (sortBy !== undefined && sortBy !== null) {
-            localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-                <any>sortBy, 'SortBy');
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>sortBy, 'SortBy');
         }
         if (search !== undefined && search !== null) {
-            localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-                <any>search, 'Search');
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>search, 'Search');
         }
         if (search1 !== undefined && search1 !== null) {
-            localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-                <any>search1, 'Search1');
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>search1, 'Search1');
         }
         if (search2 !== undefined && search2 !== null) {
-            localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-                <any>search2, 'Search2');
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>search2, 'Search2');
         }
 
         let localVarHeaders = this.defaultHeaders;
@@ -1160,27 +1159,27 @@ export class TruckService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiTruckListMinimalGet(pageIndex?: number, pageSize?: number, companyId?: number, search?: string, observe?: 'body', reportProgress?: boolean, options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext }): Observable<TruckMinimalListResponse>;
-    public apiTruckListMinimalGet(pageIndex?: number, pageSize?: number, companyId?: number, search?: string, observe?: 'response', reportProgress?: boolean, options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext }): Observable<HttpResponse<TruckMinimalListResponse>>;
-    public apiTruckListMinimalGet(pageIndex?: number, pageSize?: number, companyId?: number, search?: string, observe?: 'events', reportProgress?: boolean, options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext }): Observable<HttpEvent<TruckMinimalListResponse>>;
-    public apiTruckListMinimalGet(pageIndex?: number, pageSize?: number, companyId?: number, search?: string, observe: any = 'body', reportProgress: boolean = false, options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext }): Observable<any> {
+    public apiTruckListMinimalGet(pageIndex?: number, pageSize?: number, companyId?: number, search?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<TruckMinimalListResponse>;
+    public apiTruckListMinimalGet(pageIndex?: number, pageSize?: number, companyId?: number, search?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<TruckMinimalListResponse>>;
+    public apiTruckListMinimalGet(pageIndex?: number, pageSize?: number, companyId?: number, search?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<TruckMinimalListResponse>>;
+    public apiTruckListMinimalGet(pageIndex?: number, pageSize?: number, companyId?: number, search?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
-        let localVarQueryParameters = new HttpParams({ encoder: this.encoder });
+        let localVarQueryParameters = new HttpParams({encoder: this.encoder});
         if (pageIndex !== undefined && pageIndex !== null) {
-            localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-                <any>pageIndex, 'PageIndex');
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>pageIndex, 'PageIndex');
         }
         if (pageSize !== undefined && pageSize !== null) {
-            localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-                <any>pageSize, 'PageSize');
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>pageSize, 'PageSize');
         }
         if (companyId !== undefined && companyId !== null) {
-            localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-                <any>companyId, 'CompanyId');
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>companyId, 'CompanyId');
         }
         if (search !== undefined && search !== null) {
-            localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-                <any>search, 'Search');
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>search, 'Search');
         }
 
         let localVarHeaders = this.defaultHeaders;
@@ -1247,12 +1246,12 @@ export class TruckService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiTruckModalGet(observe?: 'body', reportProgress?: boolean, options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext }): Observable<GetTruckModalResponse>;
-    public apiTruckModalGet(observe?: 'response', reportProgress?: boolean, options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext }): Observable<HttpResponse<GetTruckModalResponse>>;
-    public apiTruckModalGet(observe?: 'events', reportProgress?: boolean, options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext }): Observable<HttpEvent<GetTruckModalResponse>>;
-    public apiTruckModalGet(observe: any = 'body', reportProgress: boolean = false, options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext }): Observable<any> {
+    public apiTruckModalGet(observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<GetTruckModalResponse>;
+    public apiTruckModalGet(observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<GetTruckModalResponse>>;
+    public apiTruckModalGet(observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<GetTruckModalResponse>>;
+    public apiTruckModalGet(observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
-        let localVarQueryParameters = new HttpParams({ encoder: this.encoder });
+        let localVarQueryParameters = new HttpParams({encoder: this.encoder});
 
         let localVarHeaders = this.defaultHeaders;
 
@@ -1320,19 +1319,19 @@ export class TruckService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiTruckPerformanceGet(id?: number, chartTimeDetailPages?: number, observe?: 'body', reportProgress?: boolean, options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext }): Observable<TruckPerformanceResponse>;
-    public apiTruckPerformanceGet(id?: number, chartTimeDetailPages?: number, observe?: 'response', reportProgress?: boolean, options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext }): Observable<HttpResponse<TruckPerformanceResponse>>;
-    public apiTruckPerformanceGet(id?: number, chartTimeDetailPages?: number, observe?: 'events', reportProgress?: boolean, options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext }): Observable<HttpEvent<TruckPerformanceResponse>>;
-    public apiTruckPerformanceGet(id?: number, chartTimeDetailPages?: number, observe: any = 'body', reportProgress: boolean = false, options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext }): Observable<any> {
+    public apiTruckPerformanceGet(id?: number, chartTimeDetailPages?: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<TruckPerformanceResponse>;
+    public apiTruckPerformanceGet(id?: number, chartTimeDetailPages?: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<TruckPerformanceResponse>>;
+    public apiTruckPerformanceGet(id?: number, chartTimeDetailPages?: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<TruckPerformanceResponse>>;
+    public apiTruckPerformanceGet(id?: number, chartTimeDetailPages?: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
-        let localVarQueryParameters = new HttpParams({ encoder: this.encoder });
+        let localVarQueryParameters = new HttpParams({encoder: this.encoder});
         if (id !== undefined && id !== null) {
-            localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-                <any>id, 'Id');
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>id, 'Id');
         }
         if (chartTimeDetailPages !== undefined && chartTimeDetailPages !== null) {
-            localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-                <any>chartTimeDetailPages, 'ChartTimeDetailPages');
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>chartTimeDetailPages, 'ChartTimeDetailPages');
         }
 
         let localVarHeaders = this.defaultHeaders;
@@ -1445,12 +1444,12 @@ export class TruckService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiTruckPost(companyOwned?: boolean, truckNumber?: string, truckTypeId?: number, vin?: string, truckMakeId?: number, truckLengthId?: number, model?: string, year?: number, colorId?: number, excludeFromIftaFuelTaxReport?: boolean, ownerId?: number, commission?: number, note?: string, purchaseDate?: string, purchasePrice?: number, truckGrossWeightId?: number, volume?: number, emptyWeight?: number, truckEngineModelId?: number, tireSizeId?: number, fuelTankSize?: number, brakes?: Brakes, frontWheels?: WheelsType, rearWheels?: WheelsType, transmissionModel?: string, fuelType?: FuelType, shifter?: number, axles?: number, fhwaExp?: number, insurancePolicy?: string, mileage?: number, wheelBase?: number, engineOilType?: number, gearRatio?: number, apUnit?: ApUnit, tollTransponder?: number, tollTransponderDeviceNo?: string, doubleBunk?: boolean, refrigerator?: boolean, dcInverter?: boolean, headacheRack?: boolean, dashCam?: boolean, blower?: boolean, pto?: boolean, files?: Array<Blob>, tags?: Array<CreateTagCommand>, observe?: 'body', reportProgress?: boolean, options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext }): Observable<CreateWithUploadsResponse>;
-    public apiTruckPost(companyOwned?: boolean, truckNumber?: string, truckTypeId?: number, vin?: string, truckMakeId?: number, truckLengthId?: number, model?: string, year?: number, colorId?: number, excludeFromIftaFuelTaxReport?: boolean, ownerId?: number, commission?: number, note?: string, purchaseDate?: string, purchasePrice?: number, truckGrossWeightId?: number, volume?: number, emptyWeight?: number, truckEngineModelId?: number, tireSizeId?: number, fuelTankSize?: number, brakes?: Brakes, frontWheels?: WheelsType, rearWheels?: WheelsType, transmissionModel?: string, fuelType?: FuelType, shifter?: number, axles?: number, fhwaExp?: number, insurancePolicy?: string, mileage?: number, wheelBase?: number, engineOilType?: number, gearRatio?: number, apUnit?: ApUnit, tollTransponder?: number, tollTransponderDeviceNo?: string, doubleBunk?: boolean, refrigerator?: boolean, dcInverter?: boolean, headacheRack?: boolean, dashCam?: boolean, blower?: boolean, pto?: boolean, files?: Array<Blob>, tags?: Array<CreateTagCommand>, observe?: 'response', reportProgress?: boolean, options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext }): Observable<HttpResponse<CreateWithUploadsResponse>>;
-    public apiTruckPost(companyOwned?: boolean, truckNumber?: string, truckTypeId?: number, vin?: string, truckMakeId?: number, truckLengthId?: number, model?: string, year?: number, colorId?: number, excludeFromIftaFuelTaxReport?: boolean, ownerId?: number, commission?: number, note?: string, purchaseDate?: string, purchasePrice?: number, truckGrossWeightId?: number, volume?: number, emptyWeight?: number, truckEngineModelId?: number, tireSizeId?: number, fuelTankSize?: number, brakes?: Brakes, frontWheels?: WheelsType, rearWheels?: WheelsType, transmissionModel?: string, fuelType?: FuelType, shifter?: number, axles?: number, fhwaExp?: number, insurancePolicy?: string, mileage?: number, wheelBase?: number, engineOilType?: number, gearRatio?: number, apUnit?: ApUnit, tollTransponder?: number, tollTransponderDeviceNo?: string, doubleBunk?: boolean, refrigerator?: boolean, dcInverter?: boolean, headacheRack?: boolean, dashCam?: boolean, blower?: boolean, pto?: boolean, files?: Array<Blob>, tags?: Array<CreateTagCommand>, observe?: 'events', reportProgress?: boolean, options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext }): Observable<HttpEvent<CreateWithUploadsResponse>>;
-    public apiTruckPost(companyOwned?: boolean, truckNumber?: string, truckTypeId?: number, vin?: string, truckMakeId?: number, truckLengthId?: number, model?: string, year?: number, colorId?: number, excludeFromIftaFuelTaxReport?: boolean, ownerId?: number, commission?: number, note?: string, purchaseDate?: string, purchasePrice?: number, truckGrossWeightId?: number, volume?: number, emptyWeight?: number, truckEngineModelId?: number, tireSizeId?: number, fuelTankSize?: number, brakes?: Brakes, frontWheels?: WheelsType, rearWheels?: WheelsType, transmissionModel?: string, fuelType?: FuelType, shifter?: number, axles?: number, fhwaExp?: number, insurancePolicy?: string, mileage?: number, wheelBase?: number, engineOilType?: number, gearRatio?: number, apUnit?: ApUnit, tollTransponder?: number, tollTransponderDeviceNo?: string, doubleBunk?: boolean, refrigerator?: boolean, dcInverter?: boolean, headacheRack?: boolean, dashCam?: boolean, blower?: boolean, pto?: boolean, files?: Array<Blob>, tags?: Array<CreateTagCommand>, observe: any = 'body', reportProgress: boolean = false, options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext }): Observable<any> {
+    public apiTruckPost(companyOwned?: boolean, truckNumber?: string, truckTypeId?: number, vin?: string, truckMakeId?: number, truckLengthId?: number, model?: string, year?: number, colorId?: number, excludeFromIftaFuelTaxReport?: boolean, ownerId?: number, commission?: number, note?: string, purchaseDate?: string, purchasePrice?: number, truckGrossWeightId?: number, volume?: number, emptyWeight?: number, truckEngineModelId?: number, tireSizeId?: number, fuelTankSize?: number, brakes?: Brakes, frontWheels?: WheelsType, rearWheels?: WheelsType, transmissionModel?: string, fuelType?: FuelType, shifter?: number, axles?: number, fhwaExp?: number, insurancePolicy?: string, mileage?: number, wheelBase?: number, engineOilType?: number, gearRatio?: number, apUnit?: ApUnit, tollTransponder?: number, tollTransponderDeviceNo?: string, doubleBunk?: boolean, refrigerator?: boolean, dcInverter?: boolean, headacheRack?: boolean, dashCam?: boolean, blower?: boolean, pto?: boolean, files?: Array<Blob>, tags?: Array<CreateTagCommand>, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<CreateWithUploadsResponse>;
+    public apiTruckPost(companyOwned?: boolean, truckNumber?: string, truckTypeId?: number, vin?: string, truckMakeId?: number, truckLengthId?: number, model?: string, year?: number, colorId?: number, excludeFromIftaFuelTaxReport?: boolean, ownerId?: number, commission?: number, note?: string, purchaseDate?: string, purchasePrice?: number, truckGrossWeightId?: number, volume?: number, emptyWeight?: number, truckEngineModelId?: number, tireSizeId?: number, fuelTankSize?: number, brakes?: Brakes, frontWheels?: WheelsType, rearWheels?: WheelsType, transmissionModel?: string, fuelType?: FuelType, shifter?: number, axles?: number, fhwaExp?: number, insurancePolicy?: string, mileage?: number, wheelBase?: number, engineOilType?: number, gearRatio?: number, apUnit?: ApUnit, tollTransponder?: number, tollTransponderDeviceNo?: string, doubleBunk?: boolean, refrigerator?: boolean, dcInverter?: boolean, headacheRack?: boolean, dashCam?: boolean, blower?: boolean, pto?: boolean, files?: Array<Blob>, tags?: Array<CreateTagCommand>, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<CreateWithUploadsResponse>>;
+    public apiTruckPost(companyOwned?: boolean, truckNumber?: string, truckTypeId?: number, vin?: string, truckMakeId?: number, truckLengthId?: number, model?: string, year?: number, colorId?: number, excludeFromIftaFuelTaxReport?: boolean, ownerId?: number, commission?: number, note?: string, purchaseDate?: string, purchasePrice?: number, truckGrossWeightId?: number, volume?: number, emptyWeight?: number, truckEngineModelId?: number, tireSizeId?: number, fuelTankSize?: number, brakes?: Brakes, frontWheels?: WheelsType, rearWheels?: WheelsType, transmissionModel?: string, fuelType?: FuelType, shifter?: number, axles?: number, fhwaExp?: number, insurancePolicy?: string, mileage?: number, wheelBase?: number, engineOilType?: number, gearRatio?: number, apUnit?: ApUnit, tollTransponder?: number, tollTransponderDeviceNo?: string, doubleBunk?: boolean, refrigerator?: boolean, dcInverter?: boolean, headacheRack?: boolean, dashCam?: boolean, blower?: boolean, pto?: boolean, files?: Array<Blob>, tags?: Array<CreateTagCommand>, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<CreateWithUploadsResponse>>;
+    public apiTruckPost(companyOwned?: boolean, truckNumber?: string, truckTypeId?: number, vin?: string, truckMakeId?: number, truckLengthId?: number, model?: string, year?: number, colorId?: number, excludeFromIftaFuelTaxReport?: boolean, ownerId?: number, commission?: number, note?: string, purchaseDate?: string, purchasePrice?: number, truckGrossWeightId?: number, volume?: number, emptyWeight?: number, truckEngineModelId?: number, tireSizeId?: number, fuelTankSize?: number, brakes?: Brakes, frontWheels?: WheelsType, rearWheels?: WheelsType, transmissionModel?: string, fuelType?: FuelType, shifter?: number, axles?: number, fhwaExp?: number, insurancePolicy?: string, mileage?: number, wheelBase?: number, engineOilType?: number, gearRatio?: number, apUnit?: ApUnit, tollTransponder?: number, tollTransponderDeviceNo?: string, doubleBunk?: boolean, refrigerator?: boolean, dcInverter?: boolean, headacheRack?: boolean, dashCam?: boolean, blower?: boolean, pto?: boolean, files?: Array<Blob>, tags?: Array<CreateTagCommand>, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
-        let localVarQueryParameters = new HttpParams({ encoder: this.encoder });
+        let localVarQueryParameters = new HttpParams({encoder: this.encoder});
 
         let localVarHeaders = this.defaultHeaders;
 
@@ -1502,7 +1501,7 @@ export class TruckService {
         if (localVarUseForm) {
             localVarFormParams = new FormData();
         } else {
-            localVarFormParams = new HttpParams({ encoder: this.encoder });
+            localVarFormParams = new HttpParams({encoder: this.encoder});
         }
 
         if (companyOwned !== undefined) {
@@ -1726,12 +1725,12 @@ export class TruckService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiTruckPut(id?: number, companyOwned?: boolean, truckNumber?: string, truckTypeId?: number, vin?: string, truckMakeId?: number, truckLengthId?: number, model?: string, year?: number, colorId?: number, excludeFromIftaFuelTaxReport?: boolean, ownerId?: number, commission?: number, note?: string, purchaseDate?: string, purchasePrice?: number, truckGrossWeightId?: number, volume?: number, emptyWeight?: number, truckEngineModelId?: number, tireSizeId?: number, fuelTankSize?: number, brakes?: Brakes, frontWheels?: WheelsType, rearWheels?: WheelsType, transmissionModel?: string, fuelType?: FuelType, shifter?: number, axles?: number, insurancePolicy?: string, mileage?: number, wheelBase?: number, fhwaExp?: number, engineOilType?: number, gearRatio?: number, apUnit?: ApUnit, tollTransponder?: number, tollTransponderDeviceNo?: string, doubleBunk?: boolean, refrigerator?: boolean, dcInverter?: boolean, headacheRack?: boolean, dashCam?: boolean, blower?: boolean, pto?: boolean, files?: Array<Blob>, tags?: Array<CreateTagCommand>, filesForDeleteIds?: Array<number>, observe?: 'body', reportProgress?: boolean, options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext }): Observable<CreateWithUploadsResponse>;
-    public apiTruckPut(id?: number, companyOwned?: boolean, truckNumber?: string, truckTypeId?: number, vin?: string, truckMakeId?: number, truckLengthId?: number, model?: string, year?: number, colorId?: number, excludeFromIftaFuelTaxReport?: boolean, ownerId?: number, commission?: number, note?: string, purchaseDate?: string, purchasePrice?: number, truckGrossWeightId?: number, volume?: number, emptyWeight?: number, truckEngineModelId?: number, tireSizeId?: number, fuelTankSize?: number, brakes?: Brakes, frontWheels?: WheelsType, rearWheels?: WheelsType, transmissionModel?: string, fuelType?: FuelType, shifter?: number, axles?: number, insurancePolicy?: string, mileage?: number, wheelBase?: number, fhwaExp?: number, engineOilType?: number, gearRatio?: number, apUnit?: ApUnit, tollTransponder?: number, tollTransponderDeviceNo?: string, doubleBunk?: boolean, refrigerator?: boolean, dcInverter?: boolean, headacheRack?: boolean, dashCam?: boolean, blower?: boolean, pto?: boolean, files?: Array<Blob>, tags?: Array<CreateTagCommand>, filesForDeleteIds?: Array<number>, observe?: 'response', reportProgress?: boolean, options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext }): Observable<HttpResponse<CreateWithUploadsResponse>>;
-    public apiTruckPut(id?: number, companyOwned?: boolean, truckNumber?: string, truckTypeId?: number, vin?: string, truckMakeId?: number, truckLengthId?: number, model?: string, year?: number, colorId?: number, excludeFromIftaFuelTaxReport?: boolean, ownerId?: number, commission?: number, note?: string, purchaseDate?: string, purchasePrice?: number, truckGrossWeightId?: number, volume?: number, emptyWeight?: number, truckEngineModelId?: number, tireSizeId?: number, fuelTankSize?: number, brakes?: Brakes, frontWheels?: WheelsType, rearWheels?: WheelsType, transmissionModel?: string, fuelType?: FuelType, shifter?: number, axles?: number, insurancePolicy?: string, mileage?: number, wheelBase?: number, fhwaExp?: number, engineOilType?: number, gearRatio?: number, apUnit?: ApUnit, tollTransponder?: number, tollTransponderDeviceNo?: string, doubleBunk?: boolean, refrigerator?: boolean, dcInverter?: boolean, headacheRack?: boolean, dashCam?: boolean, blower?: boolean, pto?: boolean, files?: Array<Blob>, tags?: Array<CreateTagCommand>, filesForDeleteIds?: Array<number>, observe?: 'events', reportProgress?: boolean, options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext }): Observable<HttpEvent<CreateWithUploadsResponse>>;
-    public apiTruckPut(id?: number, companyOwned?: boolean, truckNumber?: string, truckTypeId?: number, vin?: string, truckMakeId?: number, truckLengthId?: number, model?: string, year?: number, colorId?: number, excludeFromIftaFuelTaxReport?: boolean, ownerId?: number, commission?: number, note?: string, purchaseDate?: string, purchasePrice?: number, truckGrossWeightId?: number, volume?: number, emptyWeight?: number, truckEngineModelId?: number, tireSizeId?: number, fuelTankSize?: number, brakes?: Brakes, frontWheels?: WheelsType, rearWheels?: WheelsType, transmissionModel?: string, fuelType?: FuelType, shifter?: number, axles?: number, insurancePolicy?: string, mileage?: number, wheelBase?: number, fhwaExp?: number, engineOilType?: number, gearRatio?: number, apUnit?: ApUnit, tollTransponder?: number, tollTransponderDeviceNo?: string, doubleBunk?: boolean, refrigerator?: boolean, dcInverter?: boolean, headacheRack?: boolean, dashCam?: boolean, blower?: boolean, pto?: boolean, files?: Array<Blob>, tags?: Array<CreateTagCommand>, filesForDeleteIds?: Array<number>, observe: any = 'body', reportProgress: boolean = false, options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext }): Observable<any> {
+    public apiTruckPut(id?: number, companyOwned?: boolean, truckNumber?: string, truckTypeId?: number, vin?: string, truckMakeId?: number, truckLengthId?: number, model?: string, year?: number, colorId?: number, excludeFromIftaFuelTaxReport?: boolean, ownerId?: number, commission?: number, note?: string, purchaseDate?: string, purchasePrice?: number, truckGrossWeightId?: number, volume?: number, emptyWeight?: number, truckEngineModelId?: number, tireSizeId?: number, fuelTankSize?: number, brakes?: Brakes, frontWheels?: WheelsType, rearWheels?: WheelsType, transmissionModel?: string, fuelType?: FuelType, shifter?: number, axles?: number, insurancePolicy?: string, mileage?: number, wheelBase?: number, fhwaExp?: number, engineOilType?: number, gearRatio?: number, apUnit?: ApUnit, tollTransponder?: number, tollTransponderDeviceNo?: string, doubleBunk?: boolean, refrigerator?: boolean, dcInverter?: boolean, headacheRack?: boolean, dashCam?: boolean, blower?: boolean, pto?: boolean, files?: Array<Blob>, tags?: Array<CreateTagCommand>, filesForDeleteIds?: Array<number>, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<CreateWithUploadsResponse>;
+    public apiTruckPut(id?: number, companyOwned?: boolean, truckNumber?: string, truckTypeId?: number, vin?: string, truckMakeId?: number, truckLengthId?: number, model?: string, year?: number, colorId?: number, excludeFromIftaFuelTaxReport?: boolean, ownerId?: number, commission?: number, note?: string, purchaseDate?: string, purchasePrice?: number, truckGrossWeightId?: number, volume?: number, emptyWeight?: number, truckEngineModelId?: number, tireSizeId?: number, fuelTankSize?: number, brakes?: Brakes, frontWheels?: WheelsType, rearWheels?: WheelsType, transmissionModel?: string, fuelType?: FuelType, shifter?: number, axles?: number, insurancePolicy?: string, mileage?: number, wheelBase?: number, fhwaExp?: number, engineOilType?: number, gearRatio?: number, apUnit?: ApUnit, tollTransponder?: number, tollTransponderDeviceNo?: string, doubleBunk?: boolean, refrigerator?: boolean, dcInverter?: boolean, headacheRack?: boolean, dashCam?: boolean, blower?: boolean, pto?: boolean, files?: Array<Blob>, tags?: Array<CreateTagCommand>, filesForDeleteIds?: Array<number>, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<CreateWithUploadsResponse>>;
+    public apiTruckPut(id?: number, companyOwned?: boolean, truckNumber?: string, truckTypeId?: number, vin?: string, truckMakeId?: number, truckLengthId?: number, model?: string, year?: number, colorId?: number, excludeFromIftaFuelTaxReport?: boolean, ownerId?: number, commission?: number, note?: string, purchaseDate?: string, purchasePrice?: number, truckGrossWeightId?: number, volume?: number, emptyWeight?: number, truckEngineModelId?: number, tireSizeId?: number, fuelTankSize?: number, brakes?: Brakes, frontWheels?: WheelsType, rearWheels?: WheelsType, transmissionModel?: string, fuelType?: FuelType, shifter?: number, axles?: number, insurancePolicy?: string, mileage?: number, wheelBase?: number, fhwaExp?: number, engineOilType?: number, gearRatio?: number, apUnit?: ApUnit, tollTransponder?: number, tollTransponderDeviceNo?: string, doubleBunk?: boolean, refrigerator?: boolean, dcInverter?: boolean, headacheRack?: boolean, dashCam?: boolean, blower?: boolean, pto?: boolean, files?: Array<Blob>, tags?: Array<CreateTagCommand>, filesForDeleteIds?: Array<number>, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<CreateWithUploadsResponse>>;
+    public apiTruckPut(id?: number, companyOwned?: boolean, truckNumber?: string, truckTypeId?: number, vin?: string, truckMakeId?: number, truckLengthId?: number, model?: string, year?: number, colorId?: number, excludeFromIftaFuelTaxReport?: boolean, ownerId?: number, commission?: number, note?: string, purchaseDate?: string, purchasePrice?: number, truckGrossWeightId?: number, volume?: number, emptyWeight?: number, truckEngineModelId?: number, tireSizeId?: number, fuelTankSize?: number, brakes?: Brakes, frontWheels?: WheelsType, rearWheels?: WheelsType, transmissionModel?: string, fuelType?: FuelType, shifter?: number, axles?: number, insurancePolicy?: string, mileage?: number, wheelBase?: number, fhwaExp?: number, engineOilType?: number, gearRatio?: number, apUnit?: ApUnit, tollTransponder?: number, tollTransponderDeviceNo?: string, doubleBunk?: boolean, refrigerator?: boolean, dcInverter?: boolean, headacheRack?: boolean, dashCam?: boolean, blower?: boolean, pto?: boolean, files?: Array<Blob>, tags?: Array<CreateTagCommand>, filesForDeleteIds?: Array<number>, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
-        let localVarQueryParameters = new HttpParams({ encoder: this.encoder });
+        let localVarQueryParameters = new HttpParams({encoder: this.encoder});
 
         let localVarHeaders = this.defaultHeaders;
 
@@ -1783,7 +1782,7 @@ export class TruckService {
         if (localVarUseForm) {
             localVarFormParams = new FormData();
         } else {
-            localVarFormParams = new HttpParams({ encoder: this.encoder });
+            localVarFormParams = new HttpParams({encoder: this.encoder});
         }
 
         if (id !== undefined) {
@@ -1969,19 +1968,19 @@ export class TruckService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiTruckRevenueGet(id?: number, chartTimeDetailPages?: number, observe?: 'body', reportProgress?: boolean, options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext }): Observable<TruckRevenueResponse>;
-    public apiTruckRevenueGet(id?: number, chartTimeDetailPages?: number, observe?: 'response', reportProgress?: boolean, options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext }): Observable<HttpResponse<TruckRevenueResponse>>;
-    public apiTruckRevenueGet(id?: number, chartTimeDetailPages?: number, observe?: 'events', reportProgress?: boolean, options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext }): Observable<HttpEvent<TruckRevenueResponse>>;
-    public apiTruckRevenueGet(id?: number, chartTimeDetailPages?: number, observe: any = 'body', reportProgress: boolean = false, options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext }): Observable<any> {
+    public apiTruckRevenueGet(id?: number, chartTimeDetailPages?: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<TruckRevenueResponse>;
+    public apiTruckRevenueGet(id?: number, chartTimeDetailPages?: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<TruckRevenueResponse>>;
+    public apiTruckRevenueGet(id?: number, chartTimeDetailPages?: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<TruckRevenueResponse>>;
+    public apiTruckRevenueGet(id?: number, chartTimeDetailPages?: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
-        let localVarQueryParameters = new HttpParams({ encoder: this.encoder });
+        let localVarQueryParameters = new HttpParams({encoder: this.encoder});
         if (id !== undefined && id !== null) {
-            localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-                <any>id, 'Id');
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>id, 'Id');
         }
         if (chartTimeDetailPages !== undefined && chartTimeDetailPages !== null) {
-            localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-                <any>chartTimeDetailPages, 'ChartTimeDetailPages');
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>chartTimeDetailPages, 'ChartTimeDetailPages');
         }
 
         let localVarHeaders = this.defaultHeaders;
@@ -2049,15 +2048,15 @@ export class TruckService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiTruckStatusIdPut(id: number, observe?: 'body', reportProgress?: boolean, options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext }): Observable<any>;
-    public apiTruckStatusIdPut(id: number, observe?: 'response', reportProgress?: boolean, options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext }): Observable<HttpResponse<any>>;
-    public apiTruckStatusIdPut(id: number, observe?: 'events', reportProgress?: boolean, options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext }): Observable<HttpEvent<any>>;
-    public apiTruckStatusIdPut(id: number, observe: any = 'body', reportProgress: boolean = false, options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext }): Observable<any> {
+    public apiTruckStatusIdPut(id: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any>;
+    public apiTruckStatusIdPut(id: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<any>>;
+    public apiTruckStatusIdPut(id: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<any>>;
+    public apiTruckStatusIdPut(id: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
         if (id === null || id === undefined) {
             throw new Error('Required parameter id was null or undefined when calling apiTruckStatusIdPut.');
         }
 
-        let localVarQueryParameters = new HttpParams({ encoder: this.encoder });
+        let localVarQueryParameters = new HttpParams({encoder: this.encoder});
 
         let localVarHeaders = this.defaultHeaders;
 
@@ -2105,7 +2104,7 @@ export class TruckService {
             }
         }
 
-        let localVarPath = `/api/truck/status/${this.configuration.encodeParam({ name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int32" })}`;
+        let localVarPath = `/api/truck/status/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int32"})}`;
         return this.httpClient.request<any>('put', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
@@ -2124,12 +2123,12 @@ export class TruckService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiTruckStatusListPut(multipleChangeTruckStatusCommand?: MultipleChangeTruckStatusCommand, observe?: 'body', reportProgress?: boolean, options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext }): Observable<any>;
-    public apiTruckStatusListPut(multipleChangeTruckStatusCommand?: MultipleChangeTruckStatusCommand, observe?: 'response', reportProgress?: boolean, options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext }): Observable<HttpResponse<any>>;
-    public apiTruckStatusListPut(multipleChangeTruckStatusCommand?: MultipleChangeTruckStatusCommand, observe?: 'events', reportProgress?: boolean, options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext }): Observable<HttpEvent<any>>;
-    public apiTruckStatusListPut(multipleChangeTruckStatusCommand?: MultipleChangeTruckStatusCommand, observe: any = 'body', reportProgress: boolean = false, options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext }): Observable<any> {
+    public apiTruckStatusListPut(multipleChangeTruckStatusCommand?: MultipleChangeTruckStatusCommand, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any>;
+    public apiTruckStatusListPut(multipleChangeTruckStatusCommand?: MultipleChangeTruckStatusCommand, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<any>>;
+    public apiTruckStatusListPut(multipleChangeTruckStatusCommand?: MultipleChangeTruckStatusCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<any>>;
+    public apiTruckStatusListPut(multipleChangeTruckStatusCommand?: MultipleChangeTruckStatusCommand, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
-        let localVarQueryParameters = new HttpParams({ encoder: this.encoder });
+        let localVarQueryParameters = new HttpParams({encoder: this.encoder});
 
         let localVarHeaders = this.defaultHeaders;
 
