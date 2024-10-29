@@ -127,5 +127,19 @@
                 background: rgb(255, 255, 255, 0.2) !important;
             }
         }
+
+        &-dark-grey {
+            color: $bw6-2 !important;
+
+            &::-moz-selection {
+                color: $bw6-2 !important;
+                background: rgb(108, 108, 108, 0.2) !important;
+            }
+
+            &::selection {
+                color: $bw6-2 !important;
+                background: rgb(108, 108, 108, 0.2) !important;
+            }
+        }
     }
 }
