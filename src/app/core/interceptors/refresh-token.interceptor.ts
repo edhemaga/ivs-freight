@@ -70,7 +70,7 @@ export class RefreshTokenInterceptor implements HttpInterceptor {
         httpRequest: HttpRequest<any>,
         next: HttpHandler
     ) {
-        if (err.status === 401 && user) {
+        if (err.status === 401 && user && user.refreshToken) {
             return this.accountService
                 .apiAccountRefreshPost({
                     refreshToken: user.refreshToken,
