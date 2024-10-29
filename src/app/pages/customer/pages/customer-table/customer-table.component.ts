@@ -1476,14 +1476,21 @@ export class CustomerTableComponent
             tableAverageWatingTimePickup: data?.avgPickupTime,
             tableAverageWatingTimeDelivery: data?.avgDeliveryTime,
             tableAvailableHoursShipping:
-                data?.shippingFrom && data?.shippingTo
-                    ? data?.shippingFrom + ' - ' + data?.shippingTo
+                data?.shippingFrom || data?.shippingTo
+                    ? (data?.shippingFrom ??
+                          CustomerTableStringEnum.EMPTY_STRING) +
+                      CustomerTableStringEnum.FROM_TO +
+                      (data?.shippingTo ?? CustomerTableStringEnum.EMPTY_STRING)
                     : data?.shippingAppointment
                     ? CustomerTableStringEnum.APPOINTMENT
                     : null,
             tableAvailableHoursReceiving:
-                data?.receivingFrom && data?.receivingTo
-                    ? data?.receivingFrom + ' - ' + data?.receivingTo
+                data?.receivingFrom || data?.receivingTo
+                    ? (data?.receivingFrom ??
+                          CustomerTableStringEnum.EMPTY_STRING) +
+                      CustomerTableStringEnum.FROM_TO +
+                      (data?.receivingTo ??
+                          CustomerTableStringEnum.EMPTY_STRING)
                     : data?.receivingAppointment
                     ? CustomerTableStringEnum.APPOINTMENT
                     : null,
