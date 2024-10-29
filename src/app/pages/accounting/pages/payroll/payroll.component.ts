@@ -166,12 +166,11 @@ export class PayrollComponent implements OnInit, AfterViewInit, OnDestroy {
 
     handleTableShow(index?: number) {
         const containersArray = this.containers.toArray();
-        const mainIndx = typeof index != undefined ? index : this.openedIndex;
+        const mainIndx =
+            typeof index !== 'undefined' ? index : this.openedIndex;
 
         const cointainer = containersArray[mainIndx];
         cointainer.clear();
-
-        console.log(this.payrollType);
 
         switch (this.payrollType) {
             case 'Driver Miles':
