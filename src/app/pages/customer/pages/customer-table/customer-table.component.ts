@@ -1455,9 +1455,7 @@ export class CustomerTableComponent
         };
     }
 
-    private mapShipperData(data: ShipperResponse) /* : MappedShipperBroker */ {
-        console.log('SHIPPER data', data);
-
+    private mapShipperData(data: ShipperResponse): MappedShipperBroker {
         return {
             ...data,
             isSelected: false,
@@ -1471,16 +1469,12 @@ export class CustomerTableComponent
                 : data?.businessName,
             tableAddress: data?.address?.address ?? null,
             tableLoads: {
-                loads: 0,
+                loads: data?.loads,
                 pickups: data?.pickups,
                 deliveries: data?.deliveries,
             },
-            tableAverageWatingTimePickup: /* data?.avgPickupTimeInMin
-                ? data.avgPickupTimeInMin.toString()
-                :  */ null,
-            tableAverageWatingTimeDelivery: /* data?.avgDeliveryTimeInMin
-                ? data.avgDeliveryTimeInMin.toString()
-                : */ null,
+            tableAverageWatingTimePickup: data?.avgPickupTime,
+            tableAverageWatingTimeDelivery: data?.avgDeliveryTime,
             tableAvailableHoursShipping:
                 data?.shippingFrom && data?.shippingTo
                     ? data?.shippingFrom + ' - ' + data?.shippingTo
@@ -2034,9 +2028,8 @@ export class CustomerTableComponent
     // Add Shipper Or Broker To Viewdata
     private addData(dataId: number): void {
         this.viewData = this.viewData.map((data: CustomerViewDataResponse) => {
-            if (data.id === dataId) {
-                data.actionAnimation = TableStringEnum.ADD;
-            }
+            if (data.id === dataId) data.actionAnimation = TableStringEnum.ADD;
+
             return data;
         });
 
@@ -2053,10 +2046,7 @@ export class CustomerTableComponent
     }
 
     // Update Shipper Or Broker In Viewdata
-    private updateData(
-        dataId: number,
-        updatedData /* : MappedShipperBroker */
-    ): void {
+    private updateData(dataId: number, updatedData: MappedShipperBroker): void {
         this.viewData = this.viewData.map((data) => {
             if (data.id === dataId) {
                 data = updatedData;
