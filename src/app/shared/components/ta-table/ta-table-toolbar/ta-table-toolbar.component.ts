@@ -120,7 +120,7 @@ export class TaTableToolbarComponent implements OnInit, OnChanges, OnDestroy {
     }
     @Input() dispathcboardTableLocked: boolean;
 
-    public listName: string = '';
+    @Input() listName: string = '';
     public optionsPopup: string | TemplateRef<any>;
     public dispatchPopoup: string | TemplateRef<any>;
     public dispatchPopoverOpen: boolean = false;

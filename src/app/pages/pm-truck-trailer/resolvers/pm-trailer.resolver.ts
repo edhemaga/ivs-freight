@@ -29,7 +29,7 @@ export class PmTrailerResolver {
     ) {}
     resolve(): Observable<[PMTrailerUnitListResponse, PMTrailerListResponse]> {
         return forkJoin([
-            this.pmService.getPMTrailerUnitList(undefined, undefined, 1),
+            this.pmService.getPMTrailerUnitList(),
             this.pmService.getPMTrailerList(),
         ]).pipe(
             tap(([pmTrailerPagination, trailerPmList]) => {
