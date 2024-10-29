@@ -45,9 +45,10 @@
                             >
                                 <div
                                     class="d-flex justify-content-center align-content-center"
+                                    [ngStyle]="{ height: '26px' }"
                                 >
                                     <div
-                                        class="d-flex justify-content-center align-content-center w-100"
+                                        class="gradient-width d-flex justify-content-center align-content-center"
                                     >
                                         <div
                                             class="gradient w-100"
@@ -60,7 +61,9 @@
                                     </div>
                                     <ng-container
                                         *ngIf="
-                                            messageDateHovered !== message;
+                                            messageDateHovered !== message &&
+                                                messageOptionsSelected !==
+                                                    message;
                                             else dateOptions
                                         "
                                     >
@@ -84,9 +87,17 @@
                                     </ng-container>
                                     <ng-template #dateOptions>
                                         <div
-                                            class="d-flex message-date-selection"
+                                            class="d-flex align-items-center justify-content-around"
+                                            [ngClass]="
+                                                messageOptionsSelected
+                                                    ? 'message-date-selection-focused'
+                                                    : 'message-date-selection'
+                                            "
                                             (mouseleave)="
                                                 hoverOverMessageDate(null)
+                                            "
+                                            (click)="
+                                                toggleDateSelection(message)
                                             "
                                         >
                                             <svg-icon
@@ -100,13 +111,29 @@
                                                 "
                                             >
                                             </svg-icon>
-                                            <div
-                                                class="message-date align-content-center"
-                                            >
-                                                {{
-                                                    message.createdAt
-                                                        | chatDatePipe
-                                                }}
+                                            <div class="message-date">
+                                                <div
+                                                    class="d-flex align-content-center justify-content-center h-100"
+                                                >
+                                                    <div class="m-auto h-auto">
+                                                        {{
+                                                            message.createdAt
+                                                                | chatDatePipe
+                                                        }}
+                                                    </div>
+                                                </div>
+                                                <ng-container
+                                                    *ngIf="
+                                                        messageOptionsSelected ===
+                                                        message
+                                                    "
+                                                >
+                                                    <ng-container
+                                                        *ngTemplateOutlet="
+                                                            dateOptionsList
+                                                        "
+                                                    ></ng-container>
+                                                </ng-container>
                                             </div>
                                             <svg-icon
                                                 class="d-flex justify-content-center align-items-center"
@@ -122,7 +149,7 @@
                                         </div>
                                     </ng-template>
                                     <div
-                                        class="d-flex justify-content-center align-content-center w-100"
+                                        class="gradient-width d-flex justify-content-center align-content-center"
                                     >
                                         <div
                                             class="gradient w-100"
@@ -133,12 +160,6 @@
                                             "
                                         ></div>
                                     </div>
-                                    <ng-container
-                                        *ngTemplateOutlet="
-                                            dateOptionsList;
-                                            context: {}
-                                        "
-                                    ></ng-container>
                                 </div>
                             </ng-container>
                         </ng-container>
@@ -185,7 +206,12 @@
                                             ?.avatarFile?.url,
                                     isRound:
                                         item?.conversation?.participants[0]
-                                            ?.userType == 'Driver'
+                                            ?.userType == 'Driver',
+                                    name: item?.conversation?.participants[0]
+                                        ?.fullName,
+                                    department:
+                                        item?.conversation?.participants[0]
+                                            ?.department
                                 }
                             }
                         "
@@ -199,7 +225,10 @@
                             conversationInfoIcon;
                             context: {
                                 item: {
-                                    name: item?.conversation?.name
+                                    name: item?.conversation?.name,
+                                    department:
+                                        item?.conversation?.participants[0]
+                                            ?.department
                                 }
                             }
                         "
@@ -207,16 +236,6 @@
                     </ng-container>
                 </ng-container>
             </ng-container>
-            <div
-                class="conversation-name d-flex justify-content-center align-content-center ta-font-bold"
-            >
-                {{ conversation.name }} Conversation Name
-            </div>
-            <div
-                class="conversation-details d-flex justify-content-center align-content-center ta-font-medium"
-            >
-                Department Name
-            </div>
         </div>
     </div>
 </ng-template>
@@ -239,6 +258,16 @@
                 alt="Contact placeholder"
             />
         </ng-template>
+    </div>
+    <div
+        class="conversation-name d-flex justify-content-center align-content-center ta-font-bold"
+    >
+        {{ item.name }}
+    </div>
+    <div
+        class="conversation-details d-flex justify-content-center align-content-center ta-font-medium"
+    >
+        {{ item.department }} Department Name
     </div>
 </ng-template>
 
@@ -286,5 +315,22 @@
 </ng-template>
 
 <ng-template #dateOptionsList>
-    <div class="date-options">Today</div>
+    <div class="date-options-wrapper">
+        <div class="date-options-list">
+            <ng-container
+                *ngFor="
+                    let option of chatDateOptionConstant;
+                    let ind = index;
+                    trackBy: '' | trackByProperty
+                "
+            >
+                <div
+                    class="date-options ta-font-regular text-size-14"
+                    (click)="selectDateFilter(option)"
+                >
+                    {{ option }}
+                </div>
+            </ng-container>
+        </div>
+    </div>
 </ng-template>

@@ -32,18 +32,30 @@
             }
 
             .message-date {
-                min-height: 26px;
+                height: 26px;
                 margin: auto 6px;
-                color: $ta-black;
                 font-size: 11px;
 
                 &-selection {
+                    width: 110px;
                     padding: 0 4px;
                     border-radius: 2px;
                     background-color: $bw2;
+                    color: $ta-black-2;
 
                     &:hover {
                         cursor: pointer;
+                    }
+
+                    &-focused {
+                        width: 110px;
+                        padding: 0 4px;
+                        border-radius: 2px;
+                        background-color: $ta-black;
+                        color: $white;
+                        &:hover {
+                            cursor: pointer;
+                        }
                     }
                 }
             }
@@ -79,6 +91,9 @@
                         );
                     }
                 }
+                &-width {
+                    width: calc(50% - 55px);
+                }
             }
         }
     }
@@ -110,11 +125,31 @@
 }
 
 .date-options {
-    background-color: red;
-    width: 110px;
-    position: relative;
-    top: 30px;
-    left: -50%;
+    color: $white;
+    padding: 4px;
+
+    &:hover {
+        background-color: $ta-black;
+    }
+
+    &-list {
+        width: 110px;
+        background-color: $ta-black-2;
+        border-radius: 3px;
+        padding: 4px;
+
+        &:hover {
+            cursor: pointer;
+        }
+    }
+
+    &-wrapper {
+        width: 0px !important;
+        position: relative;
+        top: 4px;
+        left: -39px;
+        z-index: 10;
+    }
 }
 
 @media only screen and (max-width: 1280px) {

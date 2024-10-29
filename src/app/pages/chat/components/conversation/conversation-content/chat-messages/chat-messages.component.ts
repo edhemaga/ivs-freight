@@ -35,7 +35,7 @@ import {
 
 // Enums
 import {
-    ChatAttachmentCustomClassEnum,
+    ChatMessageArrivalTypeEnum,
     ChatMessageTypeEnum,
     ChatStringTypeEnum,
     ConversationTypeEnum,
@@ -47,6 +47,8 @@ import {
     GetCurrentUserHelper,
     UnsubscribeHelper,
 } from '@pages/chat/utils/helpers';
+import { ChatDateOptionConstant } from '@pages/chat/utils/constants';
+import moment from 'moment';
 
 @Component({
     changeDetection: ChangeDetectionStrategy.OnPush,
@@ -77,14 +79,12 @@ export class ChatMessagesComponent
     public messages: ChatMessage[] = [];
     public messageIdActionsDisplayed!: number;
     public messageDateHovered!: ChatMessage;
-
+    public messageOptionsSelected!: ChatMessage;
     public conversationTypeEnum = ConversationTypeEnum;
+    public chatDateOptionConstant: string[] = ChatDateOptionConstant.options;
 
     // Form
     public messageForm!: UntypedFormGroup;
-
-    // Custom classes
-    public ChatAttachmentCustomClassEnum = ChatAttachmentCustomClassEnum;
 
     constructor(
         // Ref
@@ -186,8 +186,42 @@ export class ChatMessagesComponent
         this.messageDateHovered = message;
     }
 
+    public toggleDateSelection(message: ChatMessage): void {
+        if (this.messageOptionsSelected) {
+            this.messageOptionsSelected = null;
+            return;
+        }
+        this.messageOptionsSelected = message;
+    }
+
+    public selectDateFilter(option: string): void {
+        let dateFilter: string;
+
+        switch (option) {
+            case ChatMessageArrivalTypeEnum.TODAY:
+                dateFilter = this.calculateDateOnDiff(0);
+                break;
+            case ChatMessageArrivalTypeEnum.YESTERDAY:
+                dateFilter = this.calculateDateOnDiff(1);
+                break;
+            case ChatMessageArrivalTypeEnum.LAST_WEEK:
+                dateFilter = this.calculateDateOnDiff(7);
+                break;
+            case ChatMessageArrivalTypeEnum.LAST_MONTH:
+                dateFilter = this.calculateDateOnDiff(30);
+                break;
+            default:
+                break;
+        }
+        console.log(dateFilter);
+    }
+
+    // TODO maybe move to helpers if there is another use
+    private calculateDateOnDiff(daysDiff: number): string {
+        return moment().subtract(daysDiff, 'days').format('DD-MM-YYYY');
+    }
+
     ngOnDestroy(): void {
-        this.chatHubService.disconnect();
         this.completeSubject();
     }
 }
