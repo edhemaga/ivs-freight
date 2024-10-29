@@ -13,7 +13,8 @@
               editData?.template !== 'repair' &&
               editData?.template !== 'repair_shop' &&
               editData?.template !== 'truck' &&
-              editData?.template !== 'driver'
+              editData?.template !== 'driver' &&
+              editData?.template !== 'user'
             ? 'Delete'
             : editData?.template === 'void'
             ? editData.type === 'activate'
@@ -45,11 +46,15 @@
             : editData?.template === 'comment'
             ? 'Delete Comment'
             : editData?.template === 'Company Terminal'
-            ? 'Delete Terminal' 
+            ? 'Delete Terminal'
             : editData?.template === 'Company Parking'
             ? 'Delete Parking'
             : editData?.template === 'Company Office'
             ? 'Delete Office'
+            : editData?.template === 'delete-review'
+            ? 'Delete Review'
+            : editData?.template === 'user'
+            ? 'Delete User'
             : 'Confirmation'
     "
     [specificCaseModalName]="editData.modalHeader"
@@ -78,6 +83,7 @@
     [confirmationData]="editData"
     [isCloseIconRemoved]="true"
     (confirmationAction)="onModalAction($event)"
+    (action)="onModalAction($event)"
 >
     <div
         origin
@@ -271,7 +277,7 @@
                                     {{ editData?.data?.name }}
                                 </p>
                                 <p class="m-0 confirmation-text-2 large-text-2">
-                                    {{ editData?.data?.username }}
+                                    {{ editData?.data?.tableTableDept }}
                                 </p>
                             </div>
                         </ng-container>
@@ -910,28 +916,26 @@
                             </div>
                         </ng-container>
 
-                        <!-- Repair Shop Review -->
+                        <!-- Repair Shop Review,  Broker-Shipper Review-->
 
-                        <ng-container *ngSwitchCase="'repair-review'">
+                        <ng-container *ngSwitchCase="'delete-review'">
                             <div class="confirmation-body-content">
                                 <div class="d-flex align-items-center">
                                     <p
-                                        class="m-0 text-1 ta-font-bold limit-text"
+                                        class="text-1 ta-font-bold limit-text mr-1"
                                     >
-                                        {{ editData?.data?.comment }}
+                                        {{ editData?.data?.reviewer }}
                                     </p>
 
-                                    <span>
-                                        <svg-icon
-                                            [src]="
-                                                confirmationImageRoutes.confirmationReviewLikeSvg
-                                            "
-                                            [svgStyle]="{
-                                                'width.px': 18,
-                                                'height.px': 18
-                                            }"
-                                        ></svg-icon>
-                                    </span>
+                                    <svg-icon
+                                        [src]="
+                                            confirmationImageRoutes.confirmationReviewLikeSvg
+                                        "
+                                        [svgStyle]="{
+                                            'width.px': 18,
+                                            'height.px': 18
+                                        }"
+                                    ></svg-icon>
                                 </div>
 
                                 <p class="m-0 text-2">
@@ -940,6 +944,18 @@
                                             | formatDateP : 'date-time'
                                     }}
                                 </p>
+
+                                <ng-container
+                                    *ngIf="editData?.data?.businessName"
+                                >
+                                    <div
+                                        class="item-card mt-3 mb-1 d-flex justify-content-center align-items-center"
+                                    >
+                                        <p class="m-0 ta-font-bold">
+                                            {{ editData?.data?.businessName }}
+                                        </p>
+                                    </div>
+                                </ng-container>
                             </div>
                         </ng-container>
 
@@ -1011,6 +1027,40 @@
                                     >
                                         <p class="uppercase ta-font-bold">
                                             {{ editData?.data?.loadNumber }}
+                                        </p>
+                                    </div>
+                                </ng-container>
+                            </div>
+                        </ng-container>
+
+                        <!-- Broker and Shipper Contact -->
+
+                        <ng-container
+                            *ngSwitchCase="
+                                ['broker contact', 'shipper contact'].includes(
+                                    editData?.template
+                                )
+                                    ? editData?.template
+                                    : ''
+                            "
+                        >
+                            <div class="confirmation-info">
+                                <p class="m-0 confirmation-text-1 large-text-1">
+                                    {{ editData?.data?.fullName }}
+                                </p>
+
+                                <p class="m-0 confirmation-text-2 large-text-2">
+                                    {{ editData?.data?.department?.name }}
+                                </p>
+
+                                <ng-container
+                                    *ngIf="editData?.data?.businessName"
+                                >
+                                    <div
+                                        class="item-card mt-2 d-flex align-items-center justify-content-center"
+                                    >
+                                        <p class="uppercase ta-font-bold">
+                                            {{ editData?.data?.businessName }}
                                         </p>
                                     </div>
                                 </ng-container>
@@ -1189,7 +1239,7 @@
                                     <p
                                         class="m-0 confirmation-text-2 large-text-2"
                                     >
-                                        {{ item?.data?.username }}
+                                        {{ item?.data?.tableTableDept }}
                                     </p>
                                 </ng-container>
                             </div>

@@ -15,5 +15,6 @@ import { LoadStatus } from './loadStatus';
 export interface RevertLoadStatusCommand { 
     id?: number;
     status?: LoadStatus;
+    dispatchId?: number | null;
 }
 

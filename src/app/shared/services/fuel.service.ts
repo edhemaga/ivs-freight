@@ -2,7 +2,7 @@ import { Observable, of, tap } from 'rxjs';
 import { Injectable } from '@angular/core';
 
 // models
-import { FuelStopResponse } from 'appcoretruckassist';
+import { FuelStopResponse, SortOrder } from 'appcoretruckassist';
 import {
     FuelService as FuelBackendService,
     FuelStopListResponse,
@@ -160,6 +160,7 @@ export class FuelService {
     public getFuelStopsList(
         truckIds?: Array<number>,
         categoryIds?: Array<number>,
+        franchiseIds?: Array<number>,
         dateFrom?: any,
         dateTo?: string,
         _long?: any,
@@ -175,13 +176,15 @@ export class FuelService {
         pageSize?: any,
         companyId?: number,
         sort?: any,
+        sortOrder?: SortOrder,
         search?: any,
         search1?: string,
         search2?: string
     ): Observable<FuelStopListResponse> {
-        return of(null); /* this.fuelService.apiFuelFuelstopListGet(
+        return this.fuelService.apiFuelFuelstopListGet(
             truckIds,
             categoryIds,
+            franchiseIds,
             dateFrom,
             dateTo,
             _long,
@@ -193,14 +196,16 @@ export class FuelService {
             costTo,
             ppgFrom,
             ppgTo,
+            closed,
             pageIndex,
             pageSize,
             companyId,
             sort,
+            sortOrder,
             search,
             search1,
             search2
-        );*/
+        );
     }
 
     public getFuelStopById(fuelId: number): Observable<FuelStopResponse> {

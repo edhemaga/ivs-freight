@@ -10,9 +10,14 @@ import {
     ShipperContactResponse,
     ShipperResponse,
 } from 'appcoretruckassist';
-import { CreditProgressData, DropdownItem } from '@shared/models/card-models/card-table-data.model';
+import {
+    CreditProgressData,
+    DropdownItem,
+} from '@shared/models/card-models/card-table-data.model';
 import { LoadBroker } from '@shared/models/load-broker.model';
-import { TimeOnly } from '@pages/customer/pages/customer-table/models/time-only.model';
+
+// Enums
+import { TableStringEnum } from '@shared/enums/table-string.enum';
 
 export interface MappedShipperBroker {
     id?: number;
@@ -61,17 +66,20 @@ export interface MappedShipperBroker {
     fileCount?: number | null;
     isSelected?: boolean;
     tableAddress?: string;
-    tableLoads?: string;
+    tableLoads?: {
+        loads: number;
+        pickups: number;
+        deliveries: number;
+    };
     tableAddressPhysical?: string;
     tableAddressBilling?: string;
-    tableAverageWatingTimePickup?: string | TimeOnly;
-    tableAverageWatingTimeDelivery?: string | TimeOnly;
+    tableAverageWatingTimePickup?: string;
+    tableAverageWatingTimeDelivery?: string;
     tableAvailableHoursShipping?: string;
     tableAvailableHoursReceiving?: string;
     tablePaymentDetailAvailCredit?: CreditProgressData;
     tablePaymentDetailCreditLimit?: string;
     tablePaymentDetailTerm?: string;
-    tablePaymentDetailDTP?: string;
     tablePaidInvAging?: {
         id?: number;
         mcNumber?: string | null;
@@ -125,20 +133,10 @@ export interface MappedShipperBroker {
         tablePayTerm?: EnumValue;
     };
     tableRaiting?: {
-        id: 1;
-        fullName: string;
-        date: string;
-        me: boolean;
-        avatar: string;
-        noAvatar: {
-            color: string;
-            backgroundColor: string;
-            textShort: string;
-        };
-        liked: boolean;
-        disliked: boolean;
-        comment: string;
-        edited: boolean;
+        hasLiked: boolean;
+        hasDislike: boolean;
+        likeCount: number | TableStringEnum;
+        dislikeCount: number | TableStringEnum;
     };
     tableContactData?: ShipperContactResponse[] | BrokerContactResponse[];
     tableAdded?: string;

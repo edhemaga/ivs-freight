@@ -17,12 +17,12 @@ import {
 import { AngularSvgIconModule } from 'angular-svg-icon';
 
 // Const
-import { LoadStopItemsConfig } from '@pages/load/pages/load-modal/utils/constants'; 
+import { LoadStopItemsConfig } from '@pages/load/pages/load-modal/utils/constants';
 
 // Enums
-import { TaModalTableStringEnum } from '@shared/components/ta-modal-table/enums/ta-modal-table-string.enum';
+import { TaModalTableStringEnum } from '@shared/components/ta-modal-table/enums/';
 
-// Models 
+// Models
 import { LoadStopItemDropdownLists } from '@pages/load/pages/load-modal/models';
 import { ITaInput } from '@shared/components/ta-input/config/ta-input.config';
 import { EnumValue, TrailerTypeResponse } from 'appcoretruckassist';
@@ -33,6 +33,9 @@ import { TaInputComponent } from '@shared/components/ta-input/ta-input.component
 
 // Svg routes
 import { LoadModalSvgRoutes } from '@pages/load/pages/load-modal/utils/svg-routes/load-modal-svg-routes';
+
+// svg routes
+import { ModalTableSvgRoutes } from '@shared/components/ta-modal-table/utils/svg-routes';
 
 @Component({
     selector: 'app-ta-modal-table-load-items',
@@ -71,19 +74,26 @@ export class TaModalTableLoadItemsComponent implements OnInit, OnChanges {
     @Output() unitsChanged: EventEmitter<{ unit: EnumValue; index: number }> =
         new EventEmitter();
 
+    public svgRoutes = ModalTableSvgRoutes;
+
     // input configurations
     public descriptionInputConfig: ITaInput =
         LoadStopItemsConfig.DESCRIPTION_INPUT_CONFIG;
-    public quantityInputConfig: ITaInput = LoadStopItemsConfig.QUANTITY_INPUT_CONFIG;
+    public quantityInputConfig: ITaInput =
+        LoadStopItemsConfig.QUANTITY_INPUT_CONFIG;
     public bolInputConfig: ITaInput = LoadStopItemsConfig.BOL_INPUT_CONFIG;
-    public weightInputConfig: ITaInput = LoadStopItemsConfig.WEIGHT_INPUT_CONFIG;
-    public lengthInputConfig: ITaInput = LoadStopItemsConfig.LENGTH_INPUT_CONFIG;
-    public heightInputConfig: ITaInput = LoadStopItemsConfig.HEIGHT_INPUT_CONFIG;
+    public weightInputConfig: ITaInput =
+        LoadStopItemsConfig.WEIGHT_INPUT_CONFIG;
+    public lengthInputConfig: ITaInput =
+        LoadStopItemsConfig.LENGTH_INPUT_CONFIG;
+    public heightInputConfig: ITaInput =
+        LoadStopItemsConfig.HEIGHT_INPUT_CONFIG;
     public tarpInputConfig: ITaInput;
     public codeInputConfig: ITaInput = LoadStopItemsConfig.CODE_INPUT_CONFIG;
     public sealNumberInputConfig: ITaInput =
         LoadStopItemsConfig.SEAL_NUMBER_INPUT_CONFIG;
-    public pickupInputConfig: ITaInput = LoadStopItemsConfig.PICKUP_INPUT_CONFIG;
+    public pickupInputConfig: ITaInput =
+        LoadStopItemsConfig.PICKUP_INPUT_CONFIG;
     public secureInputConfig: ITaInput;
     public stackableInputConfig: ITaInput =
         LoadStopItemsConfig.STACKABLE_INPUT_CONFIG;
@@ -94,6 +104,7 @@ export class TaModalTableLoadItemsComponent implements OnInit, OnChanges {
 
     ngOnInit(): void {
         this.createDynamicFields();
+
         setTimeout(() => this.fieldValidators(false), 1);
     }
 
@@ -191,6 +202,8 @@ export class TaModalTableLoadItemsComponent implements OnInit, OnChanges {
     }
 
     public unitInputConfig(i: number): ITaInput {
-        return LoadStopItemsConfig.getUnitsInputConfig(this.selectedQuantity[i].name);
+        return LoadStopItemsConfig.getUnitsInputConfig(
+            this.selectedQuantity[i].name
+        );
     }
 }

@@ -82,12 +82,6 @@ export class RepairService {
                                 repairShops: repairCount.repairShops,
                                 repairTrucks: repairCount.repairTrucks,
                                 repairTrailers: repairCount.repairTrailers,
-                                truckMoneyTotal: repair?.truckMoneyTotal
-                                    ? repair.truckMoneyTotal
-                                    : 'NA',
-                                trailerMoneyTotal: repair?.trailerMoneyTotal
-                                    ? repair.trailerMoneyTotal
-                                    : 'NA',
                             })
                         );
 
@@ -228,8 +222,6 @@ export class RepairService {
                     JSON.stringify({
                         repairTrucks: repairCount.repairTrucks,
                         repairTrailers: repairCount.repairTrailers,
-                        truckMoneyTotal: repairCount.truckMoneyTotal,
-                        trailerMoneyTotal: repairCount.trailerMoneyTotal,
                         repairShops: repairCount.repairShops,
                     })
                 );
@@ -274,8 +266,6 @@ export class RepairService {
                         JSON.stringify({
                             repairTrucks: repairCount.repairTrucks,
                             repairTrailers: repairCount.repairTrailers,
-                            truckMoneyTotal: repairCount.truckMoneyTotal,
-                            trailerMoneyTotal: repairCount.trailerMoneyTotal,
                             repairShops: repairCount.repairShops,
                         })
                     );
@@ -311,9 +301,6 @@ export class RepairService {
                             JSON.stringify({
                                 repairTrucks: repairCount.repairTrucks,
                                 repairTrailers: repairCount.repairTrailers,
-                                truckMoneyTotal: repairCount.truckMoneyTotal,
-                                trailerMoneyTotal:
-                                    repairCount.trailerMoneyTotal,
                                 repairShops: repairCount.repairShops,
                             })
                         );
@@ -396,6 +383,7 @@ export class RepairService {
         active?: number,
         pinned?: boolean,
         companyOwned?: boolean,
+        isCompanyRelated?: boolean,
         categoryIds?: Array<number>,
         _long?: number,
         lat?: number,
@@ -416,6 +404,7 @@ export class RepairService {
             active,
             pinned,
             companyOwned,
+            isCompanyRelated,
             categoryIds,
             _long,
             lat,
@@ -524,8 +513,6 @@ export class RepairService {
                     JSON.stringify({
                         repairTrucks: repairCount.repairTrucks,
                         repairTrailers: repairCount.repairTrailers,
-                        truckMoneyTotal: repairCount.truckMoneyTotal,
-                        trailerMoneyTotal: repairCount.trailerMoneyTotal,
                         repairShops: repairCount.repairShops,
                     })
                 );
@@ -558,8 +545,6 @@ export class RepairService {
                         JSON.stringify({
                             repairTrucks: repairCount.repairTrucks,
                             repairTrailers: repairCount.repairTrailers,
-                            truckMoneyTotal: repairCount.truckMoneyTotal,
-                            trailerMoneyTotal: repairCount.trailerMoneyTotal,
                             repairShops: repairCount.repairShops,
                         })
                     );

@@ -1,9 +1,7 @@
-
 import { Tabs } from '@shared/models/tabs.model';
-import { ShipperModalString } from '@pages/customer/pages/shipper-modal/enums/shipper-modal-string.enum';
+import { ShipperModalString } from '@pages/customer/pages/shipper-modal/enums';
 
 export class ShipperModalConfiguration {
-
     static physicalAddressTabs: Tabs[] = [
         {
             id: 1,
@@ -15,19 +13,18 @@ export class ShipperModalConfiguration {
             name: ShipperModalString.COORDINATES,
             checked: false,
         },
-    ]
+    ];
 
-    static shipperTabs: Tabs[] = [
+    static TABS: Tabs[] = [
         {
             id: 1,
-            name: ShipperModalString.DETAILS,
+            name: ShipperModalString.BASIC,
             checked: true,
         },
         {
             id: 2,
-            name: ShipperModalString.CONTACT,
+            name: ShipperModalString.ADDITIONAL,
             checked: false,
         },
-    ]
-    
+    ];
 }

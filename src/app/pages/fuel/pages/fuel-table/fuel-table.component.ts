@@ -35,7 +35,7 @@ import { MethodsGlobalHelper } from '@shared/utils/helpers/methods-global.helper
 import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calculations.helper';
 
 //Models
-import { FuelStopListResponse } from 'appcoretruckassist';
+import { EntityTypeNote, FuelStopListResponse } from 'appcoretruckassist';
 import { FuelTransactionListResponse } from 'appcoretruckassist';
 import { TableColumnConfig } from '@shared/models/table-models/table-column-config.model';
 import { DropdownItem } from '@shared/models/card-models/card-table-data.model';
@@ -474,7 +474,7 @@ export class FuelTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 field: TableStringEnum.ACTIVE,
                 length: fuelCount.fuelTransactions,
                 data: this.fuelData,
-                gridNameTitle: TableStringEnum.FUEL,
+                gridNameTitle: EntityTypeNote.FuelStopStore,
                 fuelArray: DataFilterHelper.checkSpecialFilterArray(
                     this.fuelData,
                     TableStringEnum.ARCHIVED_DATA
@@ -490,7 +490,7 @@ export class FuelTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 field: TableStringEnum.INACTIVE,
                 length: fuelCount.fuelStops,
                 data: this.fuelData,
-                gridNameTitle: TableStringEnum.FUEL,
+                gridNameTitle: EntityTypeNote.FuelStopStore,
                 closedArray: DataFilterHelper.checkSpecialFilterArray(
                     this.fuelData,
                     TableStringEnum.IS_CLOSED

@@ -2,15 +2,16 @@
     class="d-flex align-items-center justify-content-between add-new-container"
     (click)="handleAddClick()"
 >
-    <p class="m-0 ta-font-medium">ADD</p>
+    <ng-container *ngIf="!isDrag">
+        <p class="m-0 ta-font-medium">ADD</p>
 
-    <svg-icon
-        *ngIf="!isDrag"
-        class="icon"
-        [src]="dispatchTableSvgRoutes.plusSvgRoute"
-        [svgStyle]="{
-            'width.px': '16',
-            'height.px': '16'
-        }"
-    ></svg-icon>
+        <svg-icon
+            class="icon"
+            [src]="dispatchTableSvgRoutes.plusSvgRoute"
+            [svgStyle]="{
+                'width.px': '16',
+                'height.px': '16'
+            }"
+        ></svg-icon>
+    </ng-container>
 </div>

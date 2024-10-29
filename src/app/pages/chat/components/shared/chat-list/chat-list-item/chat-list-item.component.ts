@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 
 // Enums
-import { ChatAttachmentType } from '@pages/chat/enums/conversation/conversation-content/chat-attachment-type.enum';
+import { ChatAttachmentTypeEnum } from '@pages/chat/enums/conversation/conversation-content/chat-attachment-type.enum';
 
 // Models
 import { ChatListItem } from '@pages/chat/models/chat-list-item.model';
@@ -14,7 +14,7 @@ import { ChatListItem } from '@pages/chat/models/chat-list-item.model';
 export class ChatListItemComponent implements OnInit {
     @Input() item!: ChatListItem;
 
-    public chatAttachmentType = ChatAttachmentType;
+    public ChatAttachmentTypeEnum = ChatAttachmentTypeEnum;
 
     constructor() {}
 

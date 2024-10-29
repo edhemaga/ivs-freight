@@ -1,5 +1,5 @@
 <tr
-    class="d-flex tr"
+    class="d-flex tr align-items-end"
     cdkDropList
     cdkDropListOrientation="horizontal"
     [id]="tableHeadRowsData?.notPinedColumns ? 'scroll' : null"
@@ -136,6 +136,13 @@
                     >
                         <div
                             class="d-flex flex-column justify-content-center th-title-double"
+                            [ngClass]="{
+                                'sort-active':
+                                    column.sortDirection !== '' &&
+                                    column.sortDirection,
+                                'th-title-locked-cursor':
+                                    tableHeadRowsData?.locked
+                            }"
                             [ngStyle]="{
                                 'width.px':
                                     column.resizable &&
@@ -149,29 +156,24 @@
                         >
                             <p
                                 class="m-0 ta-font-extra-bold th-title-double-subtitle"
-                            >
-                                {{
+                                [innerHTML]="
                                     column
                                         | tableDoubleHeadText
                                             : tableHeadRowsData?.tableData[0]
-                                }}
-                            </p>
-
-                            <p
-                                class="m-0 ta-font-bold th-title"
-                                [innerHTML]="
-                                    column.tableHeadTitle
-                                        | tableDoubleHeadPayroll
                                 "
-                            >
+                            ></p>
+
+                            <p class="m-0 ta-font-bold th-title">
+                                {{ column.tableHeadTitle }}
+
                                 <span
                                     class="th-title-double-subtitle-additional"
                                 >
                                     {{
-                                        column.tableHeadTitle === 'TERM' ||
-                                        column.tableHeadTitle === 'TERM '
-                                            ? 'mo.'
-                                            : ''
+                                        tableHeadRowsData?.tableData[0]
+                                            .gridNameTitle
+                                            | tableHeadAdditionalText
+                                                : column.tableHeadTitle
                                     }}
                                 </span>
                             </p>
@@ -207,10 +209,6 @@
                                 'th-title-locked-cursor':
                                     tableHeadRowsData?.locked,
                                 'set-center-th-title': column.setCenter,
-                                'border-left':
-                                    tableHeadRowsData?.tableData[0]
-                                        .gridNameTitle
-                                    | tableHeadBorder : column.tableHeadTitle,
                                 'pickup-delivery':
                                     column.tableHeadTitle === 'PICKUP DELIVERY',
                                 status:
@@ -218,10 +216,18 @@
                                     tableHeadRowsData?.tableData[0]
                                         .gridNameTitle !== 'User'
                             }"
-                            [innerHTML]="
-                                column.tableHeadTitle | tableDoubleHeadPayroll
-                            "
-                        ></div>
+                        >
+                            {{ column.tableHeadTitle }}
+
+                            <span class="th-title-double-subtitle-additional">
+                                {{
+                                    tableHeadRowsData?.tableData[0]
+                                        .gridNameTitle
+                                        | tableHeadAdditionalText
+                                            : column.tableHeadTitle
+                                }}
+                            </span>
+                        </div>
                     </ng-container>
                 </ng-container>
             </ng-template>
@@ -249,6 +255,7 @@
                                     ? column.width - 55
                                     : column.width - 20
                         }"
+                        (click)="handleTableHeadRowsActionClick(column, 'sort')"
                     >
                         <svg-icon
                             [svgStyle]="{
@@ -534,6 +541,7 @@
                         [ngClass]="{
                             'icon-hover': column.ngTemplate !== 'hire'
                         }"
+                        (click)="handleTableHeadRowsActionClick(column, 'sort')"
                     >
                         <svg-icon
                             [svgStyle]="{

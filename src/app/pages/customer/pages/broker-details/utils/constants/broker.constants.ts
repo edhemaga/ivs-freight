@@ -1,15 +1,16 @@
-//Models
+// Models
 import { LoadsSortDropdownModel } from '@pages/customer/models/loads-sort-dropdown.model';
 import { DoughnutChartConfig } from '@pages/dashboard/models/dashboard-chart-models/doughnut-chart.model';
 import { MultipleSelectDetailsDropdownItem } from '@pages/load/pages/load-details/components/load-details-item/models/multiple-select-details-dropdown-item.model';
 
-//Enums
+// Enums
 import { ChartAxisPositionEnum } from '@shared/components/ta-chart/enums/chart-axis-position-string.enum';
 import { ChartColorsStringEnum } from '@shared/components/ta-chart/enums/chart-colors-string.enum';
 import { ChartDefaultStringEnum } from '@shared/components/ta-chart/enums/chart-default-string.enum';
 import { ChartImagesStringEnum } from '@shared/components/ta-chart/enums/chart-images-string.enum';
 import { ChartLegendDataStringEnum } from '@shared/components/ta-chart/enums/chart-legend-data-string.enum';
 import { ChartTypesStringEnum } from '@shared/components/ta-chart/enums/chart-types-string.enum';
+
 export class BrokerConstants {
     // static MILEAGE_CHART_CONFIG: DoughnutChartConfig = {
     //     dataProperties: [

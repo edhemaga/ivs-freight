@@ -97,6 +97,12 @@ import { TableBodyColumns } from '@shared/components/ta-table/ta-table-body/mode
 import { RepairDescriptionPopoverConstants } from '@shared/components/ta-table/ta-table-body/utils/repair-description-popover.constants';
 import { TaStateImageTextComponent } from '@shared/components/ta-state-image-text/ta-state-image-text.component';
 
+// Directive
+import { PreventMultipleclicksDirective } from '@shared/directives/prevent-multipleclicks.directive';
+
+// svg routes
+import { TableBodySvgRoutes } from '@shared/components/ta-table/ta-table-body/utils/svg-routes';
+
 @Titles()
 @Component({
     selector: 'app-ta-table-body',
@@ -137,6 +143,9 @@ import { TaStateImageTextComponent } from '@shared/components/ta-state-image-tex
         ThousandToShortFormatPipe,
         LoadStatusColorPipe,
         TableLoadStatusPipe,
+
+        // Directives
+        PreventMultipleclicksDirective,
     ],
     providers: [
         {
@@ -188,7 +197,6 @@ export class TaTableBodyComponent
     activeDescriptionDropdown: number = -1;
     descriptionTooltip: any;
     descriptionPopoverOpen: number = -1;
-    invoiceAgingTooltip: any;
     invoiceDropdownActive: number = -1;
     invoiceDropdownType: string = null;
     invoiceDropdownData: any;
@@ -217,11 +225,13 @@ export class TaTableBodyComponent
     public popoverDescriptionItems: { title: string; className: string }[] =
         RepairDescriptionPopoverConstants.descriptionItems;
 
+    public tableBodySvgRoutes = TableBodySvgRoutes;
+
     // Scroll Lines
     public isLeftScrollLineShown = false;
     public isRightScrollLineShown = false;
     public loadId: number;
-    public isActionInProgress: boolean = false;
+
     constructor(
         private router: Router,
         private tableService: TruckassistTableService,
@@ -399,26 +409,6 @@ export class TaTableBodyComponent
 
     // --------------------------------NgAfterViewInit---------------------------------
     ngAfterViewInit(): void {
-        // For Virtual Scroll
-        // setTimeout(() => {
-        //     if (this.viewData.length) {
-        //         const tableContainer =
-        //             document.querySelector('.table-container');
-
-        //         const cdkVirtualScrollSpacer = document.querySelector(
-        //             '.cdk-virtual-scroll-spacer'
-        //         );
-
-        //         const pageHeight =
-        //             tableContainer.clientHeight -
-        //             1018 +
-        //             cdkVirtualScrollSpacer.clientHeight;
-
-        //         this.sharedService.emitUpdateScrollHeight.emit({
-        //             tablePageHeight: pageHeight,
-        //         });
-        //     }
-        // }, 10);
         this.getNotPinedMaxWidth();
     }
     // Render Row One By One
@@ -468,6 +458,9 @@ export class TaTableBodyComponent
     trackTableActionsColumns(item: any) {
         return item.columnId;
     }
+
+    public trackByIdentity = <T>(index: number, _: T): number => index;
+
     public labelDropdown(): void {
         this.selectedContactLabel = [];
 
@@ -919,24 +912,62 @@ export class TaTableBodyComponent
         row: any,
         column: any
     ): void {
-        this.invoiceAgingTooltip = tooltip;
-
-        if (tooltip.isOpen()) {
-            tooltip.close();
-        } else {
-            tooltip.open();
-        }
+        tooltip.isOpen() ? tooltip.close() : tooltip.open();
 
         this.invoiceDropdownActive = tooltip.isOpen() ? row.id : -1;
         this.invoiceDropdownType = tooltip.isOpen() ? column.field : null;
-        this.invoiceDropdownData = row[column.field];
+
+        let shipperData = row[column.field];
+
+        shipperData = {
+            ...shipperData,
+            invoiceAgeingGroupOne: {
+                percentage: 15,
+                periodOfDays: '0-30',
+                countInvoice: 7,
+                totalSum: 12453.43,
+                averageDays: null,
+            },
+            invoiceAgeingGroupTwo: {
+                percentage: 30,
+                periodOfDays: '31-60',
+                countInvoice: 18,
+                totalSum: 245593.56,
+                averageDays: null,
+            },
+            invoiceAgeingGroupThree: {
+                percentage: 45,
+                periodOfDays: '61-90',
+                countInvoice: 38,
+                totalSum: 53593.56,
+                averageDays: null,
+            },
+            invoiceAgeingGroupFour: {
+                percentage: 25,
+                periodOfDays: '91+',
+                countInvoice: 13,
+                totalSum: 23424.34,
+                averageDays: null,
+            },
+        };
+
+        const {
+            invoiceAgeingGroupOne,
+            invoiceAgeingGroupTwo,
+            invoiceAgeingGroupThree,
+            invoiceAgeingGroupFour,
+        } = shipperData;
+
+        this.invoiceDropdownData = [
+            invoiceAgeingGroupOne,
+            invoiceAgeingGroupTwo,
+            invoiceAgeingGroupThree,
+            invoiceAgeingGroupFour,
+        ];
     }
 
     // Dropdown Actions
     onDropAction(action: any) {
-        if (this.isActionInProgress) return;
-        this.isActionInProgress = true;
-
         // To Unselect All Selected Rows
         if (action.name === 'activate-item') {
             this.mySelection = [];
@@ -962,15 +993,9 @@ export class TaTableBodyComponent
             });
         }
 
-        this.enableNewAction();
         this.tooltip.close();
     }
-    private enableNewAction(): void {
-        setTimeout(() => {
-            this.isActionInProgress = false;
-        }, 300);
-    }
-    
+
     // On Show Inner Dropdown
     onShowInnerDropdown(action) {
         this.onRemoveClickEventListener();

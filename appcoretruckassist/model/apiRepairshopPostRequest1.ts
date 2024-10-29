@@ -34,6 +34,7 @@ export interface ApiRepairshopPostRequest1 {
     Pinned?: boolean;
     Note?: string;
     CompanyOwned?: boolean;
+    IsCompanyRelated?: boolean;
     BankId?: number;
     Account?: string;
     Routing?: string;

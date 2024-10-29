@@ -1,19 +1,13 @@
 @import 'src/theme/variables';
 
 .actions-columns-container {
-    padding: 2px 2px 2px 1px;
-    margin-left: 6px;
     height: 30px;
 
-    &-height-2 {
+    &.tr-height-2 {
         height: 37px;
     }
 
     th {
-        &.column-unlocked {
-            cursor: grab;
-        }
-
         .icons {
             cursor: pointer;
         }

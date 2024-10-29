@@ -1,9 +1,14 @@
 <div
     class="main_inside truck-trailer-container"
-    [class.filled]="type === 'truck' ? !!truck : !!trailer"
-    [ngStyle]="{
-        background:
-            isTrailerAddNewHidden || (!truck && isBoardLocked) ? '' : '#fff'
+    [ngClass]="{
+        filled: type === 'truck' ? !!truck : !!trailer,
+        'drop-disabled':
+            ((type === 'truck' ? !!truck : !!trailer) &&
+                isDrag &&
+                isActiveLoad) ||
+            isTrailerAddNewHidden ||
+            (isDrag && !isTrailerDropAllowed),
+        'active-load': type === 'trailer' && isActiveLoad
     }"
 >
     <ng-container
@@ -191,7 +196,7 @@
     <!-- Dropdown -->
 
     <ng-template #dropdown>
-        <app-ta-input-dropdown
+        <app-ca-input-dropdown
             [formControl]="truckTrailerFormControl"
             [template]="'svgtext-dispatch-template'"
             [inputConfig]="truckTrailerInputConfig"
@@ -201,6 +206,6 @@
             (selectedItem)="
                 type === 'truck' ? addTruck($event) : addTrailer($event)
             "
-        ></app-ta-input-dropdown>
+        ></app-ca-input-dropdown> 
     </ng-template>
 </div>

@@ -8,4 +8,5 @@ export interface ConfirmationMove {
     subTypeStatus: string;
     data: any;
     array?: any[];
+    action?: string;
 }

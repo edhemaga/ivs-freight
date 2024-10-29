@@ -38,8 +38,8 @@ export const bankCardTypeValidation = (cardNumber: string): string => {
         }
     }
 
-    return "unknown";
-}
+    return 'unknown';
+};
 
 //---------------- Bussiness Name, Repair Shop, Fuel Stop
 export const businessNameValidation = [
@@ -65,8 +65,8 @@ export const ssnNumberRegex = Validators.pattern(/^\d{3}\-\d{2}\-\d{4}$/);
 
 //---------------- MC/FF
 export const mcFFValidation = [
-    Validators.minLength(5),
-    Validators.maxLength(6),
+    Validators.minLength(6),
+    Validators.maxLength(7),
 ];
 
 //---------------- Phone/Fax Regex & Phone Extension

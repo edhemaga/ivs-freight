@@ -268,6 +268,7 @@ model/companyAccountResponse.ts
 model/companyAccountResponsePagination.ts
 model/companyAdditionalInfo.ts
 model/companyAdditionalInfoResponse.ts
+model/companyChannelsConversationResponse.ts
 model/companyContactLabelCountResponse.ts
 model/companyContactLabelCountResponsePagination.ts
 model/companyContactLabelResponse.ts
@@ -300,6 +301,7 @@ model/companyUserActivityLogResponse.ts
 model/companyUserActivityLogResponsePagination.ts
 model/companyUserChatResponse.ts
 model/companyUserChatResponsePagination.ts
+model/companyUserChatShortResponse.ts
 model/companyUserForChatListResponse.ts
 model/companyUserListItemResponse.ts
 model/companyUserListItemResponsePagination.ts
@@ -543,7 +545,6 @@ model/getCompanyContactLabelListResponse.ts
 model/getCompanyContactListResponse.ts
 model/getDriverModalResponse.ts
 model/getEFSTransactionCommand.ts
-model/getFileManagerSubfoldersQuery.ts
 model/getFuelModalResponse.ts
 model/getFuelStopModalResponse.ts
 model/getHazardousMaterialDropdownModalQuery.ts
@@ -557,7 +558,6 @@ model/getOwnerListResponse.ts
 model/getRatingReviewModalResponse.ts
 model/getRouteListResponse.ts
 model/getRoutePolygonQuery.ts
-model/getSearchFileManagerQuery.ts
 model/getStopListResponse.ts
 model/getTestModalResponse.ts
 model/getTrailerModalResponse.ts
@@ -669,6 +669,7 @@ model/medicalCertificateReviewResponse.ts
 model/medicalResponse.ts
 model/messageResponse.ts
 model/messageTypeResponse.ts
+model/mileStopType.ts
 model/milesByStateResponse.ts
 model/milesByUnitListResponse.ts
 model/milesByUnitPaginatedStopsResponse.ts
@@ -680,6 +681,7 @@ model/milesStateFilterResponse.ts
 model/milesStopDetailsResponse.ts
 model/milesStopItemResponse.ts
 model/milesStopItemResponsePagination.ts
+model/milesStopResponse.ts
 model/milesStopShortResponse.ts
 model/mobileFuelStopExpensesChartResponse.ts
 model/mobileFuelStopExpensesResponse.ts
@@ -698,6 +700,7 @@ model/mobileRepairShopDetailsResponsePagination.ts
 model/mobileRepairShopExpensesChartResponse.ts
 model/mobileRepairShopExpensesResponse.ts
 model/mobileRepairShopListResponse.ts
+model/mobileRepairTruckTrailerListResponse.ts
 model/mobileTransactionListResponse.ts
 model/models.ts
 model/moveMultipleToApplicantsCommand.ts
@@ -710,6 +713,7 @@ model/mvrAuthFeedbackResponse.ts
 model/mvrResponse.ts
 model/notificationEntity.ts
 model/openHoursDayOfWeek.ts
+model/openHoursTodayResponse.ts
 model/ownerDetailsResponse.ts
 model/ownerHistoryResponse.ts
 model/ownerIntervalResponse.ts
@@ -764,6 +768,7 @@ model/payrollCreditResponse.ts
 model/payrollCreditType.ts
 model/payrollDeadlinePeriod.ts
 model/payrollDeadlineShortResponse.ts
+model/payrollDeductionChildResponse.ts
 model/payrollDeductionDescriptionAutocompleteResponse.ts
 model/payrollDeductionMinimalResponse.ts
 model/payrollDeductionModalResponse.ts
@@ -784,6 +789,7 @@ model/payrollLoadMinimalResponse.ts
 model/payrollLoadStopMinimalResponse.ts
 model/payrollMapLocation.ts
 model/payrollMileageTotalSum.ts
+model/payrollOtherPaymentType.ts
 model/payrollOwnerClosedResponse.ts
 model/payrollOwnerResponse.ts
 model/payrollPaymentCommand.ts
@@ -848,7 +854,6 @@ model/repairShopListDtoPagination.ts
 model/repairShopListResponse.ts
 model/repairShopMinimalListResponse.ts
 model/repairShopMinimalResponse.ts
-model/repairShopMinimalResponsePagination.ts
 model/repairShopModalResponse.ts
 model/repairShopNewListResponse.ts
 model/repairShopOpenHoursCommand.ts
@@ -859,6 +864,7 @@ model/repairShopResponsePagination.ts
 model/repairShopServiceTypeCommand.ts
 model/repairShopServiceTypeResponse.ts
 model/repairShopShortResponse.ts
+model/repairShopShortResponsePagination.ts
 model/repairShortResponse.ts
 model/repairTrailerFilterListResponse.ts
 model/repairTrailerFilterResponse.ts

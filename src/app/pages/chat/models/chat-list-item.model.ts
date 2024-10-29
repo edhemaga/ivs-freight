@@ -1,5 +1,8 @@
 // Enums
-import { ChatAttachmentType, ChatConversationStatus } from '@pages/chat/enums';
+import {
+    ChatAttachmentTypeEnum,
+    ChatConversationStatusEnum,
+} from '@pages/chat/enums';
 
 export interface ChatListItem {
     id: number;
@@ -9,8 +12,8 @@ export interface ChatListItem {
         createdAt: string;
     };
     notificationCount?: number;
-    status: ChatConversationStatus;
+    status: ChatConversationStatusEnum;
     pathToAsset: string;
-    assetExtension: ChatAttachmentType;
+    assetExtension: ChatAttachmentTypeEnum;
     isRound?: boolean;
 }

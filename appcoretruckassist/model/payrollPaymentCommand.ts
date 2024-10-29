@@ -9,11 +9,13 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { PayrollOtherPaymentType } from './payrollOtherPaymentType';
 import { PayrollPaymentType } from './payrollPaymentType';
 
 
 export interface PayrollPaymentCommand { 
     type?: PayrollPaymentType;
+    otherPaymentType?: PayrollOtherPaymentType;
     date?: string;
     amount?: number;
 }

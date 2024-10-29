@@ -104,6 +104,9 @@ export class TaNoticeOfAsignmentComponent
         // This is done to avoid reseting caret position by always setting innerHTML on text change
         if (this.noticeRef.nativeElement.innerHTML === TaNoticeOfAssignmentConstants.STRING_EMPTY) {
             this.noticeRef.nativeElement.innerHTML = obj;
+        } else if (this.noticeRef.nativeElement.innerHTML === TaNoticeOfAssignmentConstants.HTML_ELEMENT_BR) {
+            this.noticeRef.nativeElement.innerHTML = null;
+            this.superControl.control.setValue(null);
         } else {
             this.noticeRef.nativeElement.value = obj;
         }
@@ -181,7 +184,7 @@ export class TaNoticeOfAsignmentComponent
                     });
 
                     if (!checkAlign) {
-                        if (this.value.replace('<br>', TaNoticeOfAssignmentConstants.STRING_EMPTY) === TaNoticeOfAssignmentConstants.STRING_EMPTY) {
+                        if (this.value.replace(TaNoticeOfAssignmentConstants.HTML_ELEMENT_BR, TaNoticeOfAssignmentConstants.STRING_EMPTY) === TaNoticeOfAssignmentConstants.STRING_EMPTY) {
                             this.selectionTaken.removeAllRanges();
                         }
                         document.execCommand('styleWithCSS', false, 'false');
@@ -194,7 +197,7 @@ export class TaNoticeOfAsignmentComponent
                     this.toolbarActions[action] = !this.toolbarActions[action];
 
                     if (!this.toolbarActions[action]) {
-                        if (this.value.replace('<br>', TaNoticeOfAssignmentConstants.STRING_EMPTY) === TaNoticeOfAssignmentConstants.STRING_EMPTY) {
+                        if (this.value.replace(TaNoticeOfAssignmentConstants.HTML_ELEMENT_BR, TaNoticeOfAssignmentConstants.STRING_EMPTY) === TaNoticeOfAssignmentConstants.STRING_EMPTY) {
                             this.selectionTaken.removeAllRanges();
                         }   
                         document.execCommand('styleWithCSS', false, 'false');

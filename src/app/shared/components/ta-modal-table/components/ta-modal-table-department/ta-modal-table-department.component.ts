@@ -6,25 +6,22 @@ import {
     UntypedFormGroup,
 } from '@angular/forms';
 
-//modules
+// modules
 import { AngularSvgIconModule } from 'angular-svg-icon';
 
-//components
+// components
 import { TaInputDropdownComponent } from '@shared/components/ta-input-dropdown/ta-input-dropdown.component';
 import { TaInputComponent } from '@shared/components/ta-input/ta-input.component';
 
-//enums
-import { TaModalTableStringEnum } from '@shared/components/ta-modal-table/enums/ta-modal-table-string.enum';
+// enums
+import { TaModalTableStringEnum } from '@shared/components/ta-modal-table/enums/';
 
-//models
+// models
 import { ModalTableDropdownOption } from '@shared/models/pm-dropdown-options.model';
 import { DepartmentResponse } from 'appcoretruckassist';
 
-// Const
-import { ModalTableFieldsConstants } from '@shared/components/ta-modal-table/utils/constants/';
-
-// Svg routes
-import { TaModalTableSvgRoutes } from '@shared/components/ta-modal-table/utils/svg.routes';
+// svg routes
+import { ModalTableSvgRoutes } from '@shared/components/ta-modal-table/utils/svg-routes/';
 
 @Component({
     selector: 'app-ta-modal-table-department',
@@ -43,13 +40,11 @@ import { TaModalTableSvgRoutes } from '@shared/components/ta-modal-table/utils/s
     ],
 })
 export class TaModalTableDepartmentComponent {
-
-    public svgRoutes = TaModalTableSvgRoutes;
-
     @Input() modalTableForm: UntypedFormGroup;
     @Input() arrayName: TaModalTableStringEnum;
     @Input() isInputHoverRows: boolean[][];
-    @Input() departments: DepartmentResponse[]; 
+    @Input() departmentOptions: DepartmentResponse[];
+    @Input() selectedDepartment: DepartmentResponse[] = [];
 
     @Output() onSelectDropdown: EventEmitter<{
         dropdownEvent: ModalTableDropdownOption;
@@ -64,11 +59,7 @@ export class TaModalTableDepartmentComponent {
         inputIndex: number;
     }> = new EventEmitter();
 
-    // Fields
-    public departmentField = ModalTableFieldsConstants.getDepartmentField();
-    public phoneField = ModalTableFieldsConstants.getPhoneField();
-    public phoneExtField = ModalTableFieldsConstants.getPhoneExtField();
-    public emailField = ModalTableFieldsConstants.getEmailField();
+    public svgRoutes = ModalTableSvgRoutes;
 
     get formArray() {
         return this.modalTableForm?.get(this.arrayName) as UntypedFormArray;
@@ -98,7 +89,7 @@ export class TaModalTableDepartmentComponent {
     ): void {
         this.onSelectDropdown.emit({
             dropdownEvent,
-            action: TaModalTableStringEnum.CONTACT_EMAIL_TYPE,
+            action: TaModalTableStringEnum.CONTACT_DEPARTMENT_TYPE,
             index,
         });
     }

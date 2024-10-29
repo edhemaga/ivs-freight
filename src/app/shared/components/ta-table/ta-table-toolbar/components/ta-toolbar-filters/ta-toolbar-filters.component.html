@@ -141,6 +141,7 @@
     </ng-container>
 
     <!-- LOCATION FILTER -->
+
     <app-ta-filter
         *ngIf="options.toolbarActions.showLocationFilter"
         [type]="'locationFilter'"
@@ -175,7 +176,7 @@
     </app-ta-filter>
 
     <!-- STATE FILTER -->
-    <app-ta-filter
+    <app-ca-filter
         *ngIf="options.toolbarActions.showStateFilter"
         [type]="'stateFilter'"
         [icon]="'state'"
@@ -183,13 +184,16 @@
         [defFilterHolder]="true"
         [leftSideIcon]="true"
         (setFilter)="onFilter($event)"
+        (clearAll)="onFilter($event)"
         [class]="
             options?.toolbarActions?.filtersOrder?.state
                 ? 'order-' + options.toolbarActions.filtersOrder.state
                 : ''
         "
+        [usaStates]="usaStates"
+        [canadaStates]="canadaStates"
     >
-    </app-ta-filter>
+    </app-ca-filter>
 
     <!-- ARHIVE FILTER -->
     <app-ta-special-filter
@@ -205,42 +209,41 @@
     ></app-ta-special-filter>
 
     <!-- TIME FILTER -->
-    <app-ta-filter
+    <app-ca-filter
         *ngIf="options.toolbarActions.showTimeFilter"
         [type]="'timeFilter'"
         [icon]="'ic_time'"
         [filterTitle]="'Time Filter'"
+        [timeSubType]="'past'"
         (setFilter)="onFilter($event)"
-        [class]="
-            options?.toolbarActions?.filtersOrder?.time
-                ? 'order-' + options.toolbarActions.filtersOrder.time
-                : ''
-        "
+        (clearAll)="onFilter($event)"
     >
-    </app-ta-filter>
+    </app-ca-filter>
 
     <!-- TRUCK FILTER -->
-    <app-ta-filter
+    <app-ca-filter
         *ngIf="
             options.toolbarActions.showTruckFilter ||
             options.toolbarActions.showTruckPmFilter ||
             options.toolbarActions.showTruckDispatchFilter
         "
-        [type]="'truckFilter'"
+        [type]="'truckTypeFilter'"
         [icon]="'truck'"
         [filterTitle]="'Truck Type Filter'"
         [defFilterHolder]="true"
         [noLeftIcon]="true"
         (setFilter)="onFilter($event)"
-        [isRepairFilter]="options.toolbarActions.showTruckPmFilter"
+        (clearAll)="onFilter($event)"
+        [isRepairFilter]="!!options.toolbarActions.showTruckPmFilter"
         [isDispatchFilter]="options.toolbarActions.showTruckDispatchFilter"
         [class]="
             options?.toolbarActions?.filtersOrder?.truck
                 ? 'order-' + options.toolbarActions.filtersOrder.truck
                 : ''
         "
+        [truckTypeArray]="truckTypeArray"
     >
-    </app-ta-filter>
+    </app-ca-filter>
 
     <!-- VACATION FILTER -->
     <app-ta-filter
@@ -258,18 +261,19 @@
     </app-ta-filter>
 
     <!-- TRAILER FILTER -->
-    <app-ta-filter
+    <app-ca-filter
         *ngIf="
             options.toolbarActions.showTrailerFilter ||
             options.toolbarActions.showTrailerPmFilter ||
             options.toolbarActions.showTrailerDispatchFilter
         "
-        [type]="'trailerFilter'"
+        [type]="'trailerTypeFilter'"
         [icon]="'trailer'"
         [filterTitle]="'Trailer Type Filter'"
         [defFilterHolder]="true"
         [noLeftIcon]="true"
         (setFilter)="onFilter($event)"
+        (clearAll)="onFilter($event)"
         [isRepairFilter]="options.toolbarActions.showTrailerPmFilter"
         [isDispatchFilter]="options.toolbarActions.showTrailerDispatchFilter"
         [class]="
@@ -277,8 +281,9 @@
                 ? 'order-' + options.toolbarActions.filtersOrder.trailer
                 : ''
         "
+        [trailerTypeArray]="trailerTypeArray"
     >
-    </app-ta-filter>
+    </app-ca-filter>
 
     <!-- INJURY FILTER -->
     <app-ta-filter
@@ -353,23 +358,26 @@
     </app-ta-filter>
 
     <!-- DISPECHER FILTER -->
-    <app-ta-filter
+    <app-ca-filter
         *ngIf="options.toolbarActions.showDispatcherFilter"
-        [type]="'userFilter'"
+        [type]="'dispatcherFilter'"
+        [icon]="'user'"
         [searchState]="true"
         [filterTitle]="'Dispatcher Filter'"
         [defFilterHolder]="true"
         (setFilter)="onFilter($event)"
+        (clearAll)="onFilter($event)"
         [class]="
             options?.toolbarActions?.filtersOrder?.dispatcher
                 ? 'order-' + options.toolbarActions.filtersOrder.location
                 : ''
         "
+        [unselectedUser]="unselectedDispatcher"
     >
-    </app-ta-filter>
+    </app-ca-filter>
 
     <!-- STATUS FILTER -->
-    <app-ta-filter
+    <app-ca-filter
         *ngIf="
             options.toolbarActions.showStatusFilter ||
             options.toolbarActions.showStatusDispatchFilter
@@ -380,14 +388,16 @@
         [defFilterHolder]="true"
         [noLeftIcon]="false"
         (setFilter)="onFilter($event)"
+        (clearAll)="onFilter($event)"
         [isDispatchFilter]="options.toolbarActions.showStatusDispatchFilter"
         [class]="
             options?.toolbarActions?.filtersOrder?.status
                 ? 'order-' + options.toolbarActions.filtersOrder.status
                 : ''
         "
+        [loadStatusOptionsArray]="loadStatusOptionsArray"
     >
-    </app-ta-filter>
+    </app-ca-filter>
 
     <!-- PARKING FILTER -->
     <app-ta-filter
@@ -407,7 +417,7 @@
     </app-ta-filter>
 
     <!-- TRUCK TYPE FILTER -->
-    <app-ta-filter
+    <app-ca-filter
         *ngIf="options.toolbarActions.showTruckTypeFilter"
         [type]="'truckTypeFilter'"
         [icon]="'truck'"
@@ -417,16 +427,18 @@
         [leftSideIcon]="true"
         [largeLeftIcon]="true"
         (setFilter)="onFilter($event)"
+        (clearAll)="onFilter($event)"
         [class]="
             options?.toolbarActions?.filtersOrder?.truckType
                 ? 'order-' + options.toolbarActions.filtersOrder.truckType
                 : ''
         "
+        [truckTypeArray]="truckTypeArray"
     >
-    </app-ta-filter>
+    </app-ca-filter>
 
     <!-- TRAILER TYPE FILTER -->
-    <app-ta-filter
+    <app-ca-filter
         *ngIf="options.toolbarActions.showTrailerTypeFilter"
         [type]="'trailerTypeFilter'"
         [icon]="'trailer'"
@@ -436,25 +448,29 @@
         [leftSideIcon]="true"
         [largeLeftIcon]="true"
         (setFilter)="onFilter($event)"
+        (clearAll)="onFilter($event)"
         [class]="
             options?.toolbarActions?.filtersOrder?.trailerType
                 ? 'order-' + options.toolbarActions.filtersOrder.trailerType
                 : ''
         "
+        [trailerTypeArray]="trailerTypeArray"
     >
-    </app-ta-filter>
+    </app-ca-filter>
 
     <!-- MONEY FILTER -->
-    <app-ta-filter
+    <app-ca-filter
         *ngIf="options.toolbarActions.showMoneyFilter"
         [type]="'moneyFilter'"
         [icon]="'dollar'"
         [filterTitle]="'Money Filter'"
         [subType]="options.toolbarActions.hideMoneySubType ? '' : 'all'"
-        [moneyFilter]="true"
-        [fuelType]="options.toolbarActions.fuelMoneyFilter"
-        [loadType]="options.toolbarActions.loadMoneyFilter"
+        [isMoneyFilter]="true"
+        [isMilesFilter]="false"
+        [isFuelType]="!!options.toolbarActions.fuelMoneyFilter"
+        [isLoadType]="!!options.toolbarActions.loadMoneyFilter"
         (setFilter)="onFilter($event)"
+        (clearAll)="onFilter($event)"
         [isRepairFilter]="
             options.toolbarActions.showTrailerPmFilter ||
             options.toolbarActions.showTruckPmFilter
@@ -465,7 +481,7 @@
                 : ''
         "
     >
-    </app-ta-filter>
+    </app-ca-filter>
 
     <!-- FILTER -->
     <ng-container *ngIf="options.toolbarActions.showLtlFilter">
@@ -520,7 +536,7 @@
             options.toolbarActions.showBrokerFilter &&
             this.activeTableData?.bannedArray?.filteredArray?.length > 0
         "
-        [type]="'archiveFilter'"
+        [type]="'ban-filter'"
         [icon]="'ic_banned_broker'"
         [filterTitle]="'Banned'"
         [dataArray]="this.activeTableData.bannedArray"
@@ -533,7 +549,7 @@
             options.toolbarActions.showBrokerFilter &&
             this.activeTableData?.dnuArray?.filteredArray?.length > 0
         "
-        [type]="'broker-filter'"
+        [type]="'dnu-filter'"
         [icon]="'ic_dnu_broker'"
         [filterTitle]="'Do not use'"
         [dataArray]="this.activeTableData.dnuArray"
@@ -549,7 +565,7 @@
                 options.toolbarActions.showFuelPermanentlyClosed) &&
             this.activeTableData?.closedArray?.filteredArray?.length > 0
         "
-        [type]="'broker-filter'"
+        [type]="'closed-filter'"
         [icon]="'ic_closed_broker'"
         [filterTitle]="'Permanently Closed'"
         [dataArray]="this.activeTableData.closedArray"

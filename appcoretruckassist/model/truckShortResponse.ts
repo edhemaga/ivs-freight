@@ -29,11 +29,13 @@ export interface TruckShortResponse {
     model?: string | null;
     year?: number;
     color?: ColorResponse;
+    excludeFromIftaFuelTaxReport?: boolean;
     truckLength?: EnumValue;
     companyOwned?: boolean;
     owner?: OwnerShortResponse;
     commission?: number | null;
     truckGrossWeight?: TruckGrossWeightResponse;
+    volume?: number | null;
     emptyWeight?: number | null;
     truckEngineModel?: TruckEngineModelResponse;
     engineOilType?: EnumValue;

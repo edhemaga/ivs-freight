@@ -1,4 +1,11 @@
-<div class="main_inside driver-container" [class.filled]="driver">
+<div
+    class="main_inside driver-container"
+    [ngClass]="{
+        filled: driver,
+        'drop-disabled': driver && isDrag && isActiveLoad,
+        'active-load': isActiveLoad
+    }"
+>
     <ng-container
         *ngIf="openedDriverDropdown !== rowIndex; else driverDropdown"
     >
@@ -150,7 +157,7 @@
                                 driverHover.txt === 'phone'
                             "
                         >
-                            <div class="copy_divs">
+                            <div class="copy_divs text-size-14">
                                 {{ phone }}
                             </div>
                         </ng-container>
@@ -160,7 +167,7 @@
                                 driverHover.txt === 'email'
                             "
                         >
-                            <div class="copy_divs">
+                            <div class="copy_divs text-size-14">
                                 {{ email }}
                             </div>
                         </ng-container>
@@ -244,7 +251,7 @@
     </ng-container>
 
     <ng-template #driverDropdown>
-        <app-ta-input-dropdown
+        <app-ca-input-dropdown
             [formControl]="driverFormControl"
             [template]="'svgtext-dispatch-template'"
             [inputConfig]="driverInputConfig"
@@ -253,7 +260,7 @@
             [canOpenModal]="true"
             [activeItem]="null"
             (selectedItem)="addDriver($event)"
-        ></app-ta-input-dropdown>
+        ></app-ca-input-dropdown>
     </ng-template>
 </div>
 

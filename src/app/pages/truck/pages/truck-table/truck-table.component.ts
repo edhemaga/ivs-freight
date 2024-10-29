@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
-import { Subject, takeUntil } from 'rxjs';
+import { Observable, skip, Subject, takeUntil } from 'rxjs';
 import { Router } from '@angular/router';
 
 // components
@@ -15,21 +15,27 @@ import { TruckService } from '@shared/services/truck.service';
 import { ModalService } from '@shared/services/modal.service';
 import { TruckassistTableService } from '@shared/services/truckassist-table.service';
 import { ConfirmationService } from '@shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
-import { TruckCardsModalService } from '@pages/truck/pages/truck-card-modal/service/truck-cards-modal.service';
 import { ConfirmationActivationService } from '@shared/components/ta-shared-modals/confirmation-activation-modal/services/confirmation-activation.service';
 import { CaSearchMultipleStatesService } from 'ca-components';
+import { TruckCardsModalService } from '@pages/truck/pages/truck-card-modal/service/truck-cards-modal.service';
+import { DetailsDataService } from '@shared/services/details-data.service';
 
 // store
 import { TruckActiveQuery } from '@pages/truck/state/truck-active-state/truck-active.query';
 import { TruckInactiveQuery } from '@pages/truck/state/truck-inactive-state/truck-inactive.query';
-import { TruckActiveState } from '@pages/truck/state/truck-active-state/truck-active.store';
+import { TruckActiveState, TruckActiveStore } from '@pages/truck/state/truck-active-state/truck-active.store';
 import { TruckInactiveState } from '@pages/truck/state/truck-inactive-state/truck-inactive.store';
 import { TruckInactiveStore } from '@pages/truck/state/truck-inactive-state/truck-inactive.store';
-import { truckCardModalQuery } from '@pages/truck/pages/truck-card-modal/state/truck-card-modal.query';
+import { select, Store } from '@ngrx/store';
+import {
+    selectActiveTabCards,
+    selectInactiveTabCards,
+} from '@pages/truck/pages/truck-card-modal/state/truck-card-modal.selectors';
 
 // constants
 import { TruckCardDataConstants } from '@pages/truck/pages/truck-table/utils/constants/truck-card-data.constants';
 import { TableDropdownComponentConstants } from '@shared/utils/constants/table-dropdown-component.constants';
+import { TruckCardsModalConfig } from '@pages/truck/pages/truck-card-modal/utils/constants/truck-cards-modal.config';
 
 // pipes
 import { DatePipe } from '@angular/common';
@@ -54,7 +60,6 @@ import { TableColumnConfig } from '@shared/models/table-models/table-column-conf
 import { TruckFilter } from '@pages/truck/pages/truck-table/models/truck-filter.model';
 import { DropdownItem } from '@shared/models/card-models/card-table-data.model';
 import { TableToolbarActions } from '@shared/models/table-models/table-toolbar-actions.model';
-import { TruckBodyResponse } from '@pages/truck/pages/truck-table/models/truck-body-response.model';
 
 @Component({
     selector: 'app-truck-table',
@@ -83,6 +88,10 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
     public resizeObserver: ResizeObserver;
 
     //Data to display from model Truck Active
+    public displayRowsFront: CardRows[] =
+        TruckCardDataConstants.displayRowsFrontActive;
+    public displayRowsBack: CardRows[] =
+        TruckCardsModalConfig.displayRowsBackActive;
     public displayRowsFrontActive: CardRows[] =
         TruckCardDataConstants.displayRowsFrontActive;
     public displayRowsBackActive: CardRows[] =
@@ -100,26 +109,33 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
     public sendDataToCardsFront: CardRows[];
     public sendDataToCardsBack: CardRows[];
 
+    public displayRows$: Observable<any>; //leave this as any for now
+
     constructor(
-        private modalService: ModalService,
         private router: Router,
+
+        private modalService: ModalService,
         private tableService: TruckassistTableService,
         private truckService: TruckService,
         private confirmationService: ConfirmationService,
+        private truckCardsModalService: TruckCardsModalService,
+        private confirmationActivationService: ConfirmationActivationService,
+        private caSearchMultipleStatesService: CaSearchMultipleStatesService,
+        private detailsDataService: DetailsDataService,
+
+        // Store
         private truckActiveQuery: TruckActiveQuery,
         private truckInactiveQuery: TruckInactiveQuery,
         private truckInactiveStore: TruckInactiveStore,
+        private truckActiveStore: TruckActiveStore,
+        private store: Store,
+
+        // Pipes
         private thousandSeparator: ThousandSeparatorPipe,
         public datePipe: DatePipe,
-        private TruckCardsModalService: TruckCardsModalService,
-        private truckCardModalQuery: truckCardModalQuery,
-        private confirmationActivationService: ConfirmationActivationService,
-        private caSearchMultipleStatesService: CaSearchMultipleStatesService
     ) {}
 
     ngOnInit(): void {
-        this.updateCardView();
-
         this.sendTruckData();
 
         this.confirmationSubscribe();
@@ -150,56 +166,22 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
     public updateCardView(): void {
         switch (this.selectedTab) {
             case TableStringEnum.ACTIVE:
-                this.activeTabCardsConfig();
+                this.displayRows$ = this.store.pipe(
+                    select(selectActiveTabCards)
+                );
                 break;
 
             case TableStringEnum.INACTIVE:
-                this.inactiveTabCardsConfig();
+                this.displayRows$ = this.store.pipe(
+                    select(selectInactiveTabCards)
+                );
                 break;
-
             default:
                 break;
         }
-        this.TruckCardsModalService.updateTab(this.selectedTab);
+        this.truckCardsModalService.updateTab(this.selectedTab);
     }
 
-    private activeTabCardsConfig(): void {
-        this.truckCardModalQuery.active$
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((res) => {
-                if (res) {
-                    const filteredCardRowsFront =
-                        res.front_side.filter(Boolean);
-
-                    const filteredCardRowsBack = res.back_side.filter(Boolean);
-
-                    this.cardTitle = TableStringEnum.TRUCK_NUMBER;
-
-                    this.sendDataToCardsFront = filteredCardRowsFront;
-
-                    this.sendDataToCardsBack = filteredCardRowsBack;
-                }
-            });
-    }
-
-    private inactiveTabCardsConfig(): void {
-        this.truckCardModalQuery.inactive$
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((res) => {
-                if (res) {
-                    const filteredCardRowsFront =
-                        res.front_side.filter(Boolean);
-
-                    const filteredCardRowsBack = res.back_side.filter(Boolean);
-
-                    this.cardTitle = TableStringEnum.TRUCK_NUMBER;
-
-                    this.sendDataToCardsFront = filteredCardRowsFront;
-
-                    this.sendDataToCardsBack = filteredCardRowsBack;
-                }
-            });
-    }
     // Confirmation Subscribe
     private confirmationSubscribe(): void {
         this.confirmationService.confirmationData$
@@ -228,10 +210,12 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
             .subscribe((res) => {
                 if (res) {
                     if (!res.array) {
+                        this.detailsDataService.setNewData(res.data);
                         this.changeTruckStatus(res.data.id);
                     } else {
-                        res.array.map((e) => {
-                            this.changeTruckStatus(e.id);
+                        res.array.map((truck) => {
+                            this.detailsDataService.setNewData(truck);
+                            this.changeTruckStatus(truck.id);
                         });
                     }
                 }
@@ -251,16 +235,11 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
     public setTableFilter(): void {
         this.tableService.currentSetTableFilter
-            .pipe(takeUntil(this.destroy$))
+            .pipe(skip(1), takeUntil(this.destroy$))
             .subscribe((res) => {
                 if (res?.filterType) {
-                    if (res.action === TableStringEnum.SET) {
-                        this.backFilterQuery.truckType = res.queryParams;
-                        this.truckBackFilter(this.backFilterQuery);
-                    }
-
-                    if (res.action === TableStringEnum.CLEAR)
-                        this.viewData = this.truckData;
+                    this.backFilterQuery.truckType = res.queryParams;
+                    this.truckBackFilter(this.backFilterQuery);
                 }
             });
     }
@@ -356,34 +335,7 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
                         clearInterval(inetval);
                     }, 1000);
                 } else if (res?.animation === TableStringEnum.UPDATE_STATUS) {
-                    let truckIndex: number;
-
-                    this.viewData = this.viewData.map(
-                        (truck: any, index: number) => {
-                            if (truck.id === res.id) {
-                                truck.actionAnimation =
-                                    this.selectedTab === TableStringEnum.ACTIVE
-                                        ? TableStringEnum.DEACTIVATE
-                                        : TableStringEnum.ACTIVATE;
-                                truckIndex = index;
-                            }
-
-                            return truck;
-                        }
-                    );
-
                     this.updateDataCount();
-
-                    const inetval = setInterval(() => {
-                        this.viewData =
-                            MethodsGlobalHelper.closeAnimationAction(
-                                false,
-                                this.viewData
-                            );
-
-                        this.viewData.splice(truckIndex, 1);
-                        clearInterval(inetval);
-                    }, 900);
                 } else if (res?.animation === TableStringEnum.DELETE) {
                     let truckIndex: number;
 
@@ -447,29 +399,13 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
     // Search
     private search(): void {
-        this.caSearchMultipleStatesService.currentSearchTableData
-            .pipe(takeUntil(this.destroy$))
+        this.caSearchMultipleStatesService.selectedChips$
+            .pipe(skip(1), takeUntil(this.destroy$))
             .subscribe((res) => {
-                if (res) {
-                    this.backFilterQuery.active =
-                        this.selectedTab === TableStringEnum.ACTIVE ? 1 : 0;
-                    this.backFilterQuery.pageIndex = 1;
-
-                    const searchEvent = MethodsGlobalHelper.tableSearch(
-                        res,
-                        this.backFilterQuery
-                    );
-
-                    if (searchEvent) {
-                        if (searchEvent.action === TableStringEnum.API) {
-                            this.truckBackFilter(searchEvent.query);
-                        } else if (
-                            searchEvent.action === TableStringEnum.STORE
-                        ) {
-                            this.sendTruckData();
-                        }
-                    }
-                }
+                this.backFilterQuery.searchOne = res[0] ?? null;
+                this.backFilterQuery.searchTwo = res[1] ?? null;
+                this.backFilterQuery.searchThree = res[2] ?? null;
+                this.truckBackFilter(this.backFilterQuery);
             });
     }
 
@@ -512,7 +448,10 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
         if (tableView) {
             this.selectedTab = tableView.tabSelected;
+            this.backFilterQuery.active =
+                this.selectedTab === TableStringEnum.ACTIVE ? 1 : 0;
             this.activeViewMode = tableView.viewMode;
+            this.detailsDataService.setActivation(!(!!this.backFilterQuery.active));
         }
 
         this.initTableOptions();
@@ -621,7 +560,6 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
     // TODO any type
     private mapTruckData(data: any): any {
-        console.log('data', data);
         const {
             id,
             axles,
@@ -674,6 +612,9 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
             truckType,
             apUnit,
             truckGrossWeight,
+            wheelBase,
+            driverAvatarFile,
+            deactivatedAt,
         } = data;
 
         return {
@@ -705,11 +646,14 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
             textYear: year,
             tableColor: color?.code,
             colorName: color?.name,
+            color: color,
+            wheelBase: wheelBase,
             tableDriver: driver
                 ? driverAvatar
                     ? driverAvatar + driver
                     : driver
                 : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
+            tableDriverAvatar: driverAvatarFile?.url,
             tableTrailer: trailerNumber,
             tabelOwnerDetailsName: owner?.name,
             tabelOwnerDetailsComm: commission
@@ -812,12 +756,20 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
                       TableStringEnum.DATE_FORMAT
                   )
                 : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
+            tableDeactivated: deactivatedAt
+                ? this.datePipe.transform(
+                      updatedAt,
+                      TableStringEnum.DATE_FORMAT
+                  )
+                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
             tableAttachments: files ? files : [],
             fileCount: fileCount,
             tableDropdownContent: {
                 hasContent: true,
                 content: this.getDropdownTruckContent(),
             },
+            createdAt,
+            updatedAt
         };
     }
 
@@ -944,7 +896,8 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
             searchTwo: string | undefined;
             searchThree: string | undefined;
         },
-        isShowMore?: boolean
+        isShowMore?: boolean,
+        updateTruckTable?: boolean
     ): void {
         this.truckService
             .getTruckList(
@@ -962,7 +915,8 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
             .subscribe((trucks) => {
                 if (!isShowMore) {
                     this.viewData = trucks.pagination.data;
-
+                    this.truckInactiveStore.set(this.viewData);
+                    this.truckActiveStore.set(this.viewData);
                     this.viewData = this.viewData.map((data) => {
                         return this.mapTruckData(data);
                     });
@@ -975,11 +929,11 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
                     this.viewData = [...newData];
                 }
-                this.backFilterQuery = JSON.parse(
-                    JSON.stringify(
-                        TableDropdownComponentConstants.BACK_FILTER_QUERY
-                    )
+                this.tableService.sendSelectOrDeselect(
+                    TableStringEnum.DESELECT
                 );
+                
+                if (updateTruckTable) this.sendTruckData();
             });
     }
 
@@ -995,27 +949,23 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
             this.selectedTab = event.tabData.field;
 
             this.backFilterQuery.pageIndex = 1;
+            this.backFilterQuery.sort = null;
 
             this.backFilterQuery.active =
                 this.selectedTab === TableStringEnum.ACTIVE ? 1 : 0;
 
+                this.caSearchMultipleStatesService.deleteAllChips();
             if (
                 this.selectedTab === TableStringEnum.INACTIVE &&
                 !this.inactiveTabClicked
             ) {
-                this.truckService
-                    .getTruckList(0, null, 1, 25)
-                    .pipe(takeUntil(this.destroy$))
-                    .subscribe((truckPagination: TruckListResponse) => {
-                        this.truckInactiveStore.set(
-                            truckPagination.pagination.data
-                        );
-
-                        this.sendTruckData();
-                    });
+                this.truckBackFilter(this.backFilterQuery, false, true)
             } else {
                 this.sendTruckData();
             }
+
+            // on tab change we need to reset chips and truck type filters
+            this.truckService.updateTableFilters();
         }
         // Change View Mode
         else if (event.action === TableStringEnum.VIEW_MODE) {
@@ -1063,16 +1013,11 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
         direction: string;
     }): void {
         if (event.action === TableStringEnum.SORT) {
-            if (event.direction) {
-                this.backFilterQuery.active =
-                    this.selectedTab === TableStringEnum.ACTIVE ? 1 : 0;
-                this.backFilterQuery.pageIndex = 1;
-                this.backFilterQuery.sort = event.direction;
-
-                this.truckBackFilter(this.backFilterQuery);
-            } else {
-                this.sendTruckData();
-            }
+            this.backFilterQuery.sort = event.direction ?? null;
+            this.backFilterQuery.active =
+                this.selectedTab === TableStringEnum.ACTIVE ? 1 : 0;
+            this.backFilterQuery.pageIndex = 1;
+            this.truckBackFilter(this.backFilterQuery);
         }
     }
 

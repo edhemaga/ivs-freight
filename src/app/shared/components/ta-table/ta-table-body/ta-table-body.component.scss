@@ -28,7 +28,7 @@ table.truckassist-table-body-style {
 
                 .not-pined-columns {
                     .space-left {
-                        margin-left: 11px;
+                        margin-left: 10px;
                     }
 
                     td {
@@ -57,9 +57,11 @@ table.truckassist-table-body-style {
                         height: 100%;
                         align-items: center;
                         padding: 4px;
+
                         .input-dropdown-arrow svg {
                             display: none;
                         }
+
                         //nput dropdown label
                         app-ta-input-dropdown-label {
                             .input-custom-group .input-icon::after {
@@ -356,6 +358,7 @@ table.truckassist-table-body-style {
                         }
 
                         // VIOLATION STATE COLUMN
+
                         .violation-state-container {
                             width: fit-content;
                             height: 28px;
@@ -372,64 +375,29 @@ table.truckassist-table-body-style {
                             }
                         }
 
-                        // INV. AGEING COLUMN
-                        .inv-ageing-container {
-                            width: 100%;
+                        /* CREDIT PROGRESS BAR COLUMN */
+
+                        .credit-progress-bar-container {
+                            margin-left: -2px;
+                            cursor: pointer;
+                        }
+
+                        // INV. AGING COLUMN
+
+                        .inv-aging-container {
                             height: 26px;
-                            padding: 4px;
                             border-radius: 2px;
                             transition: background 0.2s;
+                            padding: 0 4px;
+                            margin-left: -2px;
 
-                            .bfb-container,
-                            .dnu-container {
-                                cursor: pointer;
-                                min-width: 18px;
-                                width: fit-content;
-                                height: 18px;
-                                padding: 2px;
-                                color: $white;
-                                display: flex;
-                                align-items: center;
-                                justify-content: center;
-                                font-size: 11px;
-                                font-weight: bold;
-
-                                &::selection {
-                                    color: $white;
-                                    background: $white-5;
+                            .inv-aging-text {
+                                p {
+                                    font-size: 14px;
+                                    line-height: 14px;
+                                    white-space: nowrap;
+                                    color: $ta-black-2;
                                 }
-                            }
-
-                            .bfb-container {
-                                margin-right: 2px;
-                                border-radius: 2px 0 0 2px;
-                                background: $bc1;
-
-                                &:hover {
-                                    background: $ta-blue;
-                                    transition: 0.25s;
-                                }
-                            }
-
-                            .dnu-container {
-                                margin-right: 4px;
-                                border-radius: 0 2px 2px 0;
-                                background: $ta-red;
-
-                                &:hover {
-                                    background: $ta-red-2;
-                                    transition: 0.25s;
-                                }
-                            }
-
-                            .inv-ageing-text {
-                                font-size: 14px;
-                                line-height: 18px;
-                                color: $ta-black-2;
-                                overflow: hidden;
-                                white-space: nowrap;
-                                text-overflow: ellipsis;
-                                transition: color 0.2s;
 
                                 &::selection {
                                     color: $bw6-2;
@@ -437,12 +405,15 @@ table.truckassist-table-body-style {
                                 }
 
                                 &.total-amount-text {
+                                    font-size: 14px;
                                     width: 74px;
+                                    line-height: 18px;
                                 }
                             }
 
                             .inv-aging-group {
                                 width: 30px;
+                                height: 18px;
                                 font-size: 11px;
                                 line-height: 14px;
                                 text-align: center;
@@ -450,7 +421,7 @@ table.truckassist-table-body-style {
                                 user-select: none;
 
                                 &.group-1 {
-                                    color: $ta-blue-13;
+                                    color: $ta-blue-18;
                                 }
 
                                 &.group-2 {
@@ -471,6 +442,7 @@ table.truckassist-table-body-style {
                                 }
 
                                 &.main-group {
+                                    width: 34px;
                                     padding: 2px;
                                     background: $dark-2;
                                     color: $ta-black-2;
@@ -480,7 +452,7 @@ table.truckassist-table-body-style {
 
                             .inv-aging-group-border {
                                 width: 1px;
-                                height: 100%;
+                                height: 14px;
                                 background: $dark-3;
                                 border-radius: 1px;
                             }
@@ -498,6 +470,24 @@ table.truckassist-table-body-style {
                             &.invoice-popover-open {
                                 background: $ta-black-2;
 
+                                .inv-aging-group {
+                                    &.group-1 {
+                                        color: $ta-blue-19;
+                                    }
+
+                                    &.group-2 {
+                                        color: $ta-yellow-4;
+                                    }
+
+                                    &.group-3 {
+                                        color: $ta-orange-3;
+                                    }
+
+                                    &.group-4 {
+                                        color: $ta-red-13;
+                                    }
+                                }
+
                                 .total-amount-text,
                                 .main-group {
                                     color: $white;
@@ -506,6 +496,7 @@ table.truckassist-table-body-style {
                         }
 
                         // APPLICANT PROGRESS COLUMN
+
                         .applicant-progress-container {
                             margin-right: 8px;
 
@@ -529,34 +520,47 @@ table.truckassist-table-body-style {
                             }
                         }
 
+                        // CONTACTS COLUMN
+                        .contacts-container {
+                            margin-left: -4px;
+                        }
+
                         // WORK HOUR COLUMN
+
                         .work-hour-container {
-                            width: fit-content;
                             height: 18px;
-                            display: flex;
 
                             .work-hour-icon {
                                 margin-right: 4px;
-                                width: 18px;
-                                height: 18px;
-                                background-repeat: no-repeat;
-                                background-position: center;
-                                background-image: url('/assets/svg/truckassist-table/customer/calendar.svg');
+
+                                &.appointment {
+                                    svg {
+                                        path {
+                                            fill: $ta-yellow-1;
+                                        }
+                                    }
+                                }
+
+                                svg {
+                                    path {
+                                        fill: $bw5;
+                                    }
+                                }
                             }
 
-                            .work-hour-time {
-                                color: $bw6-2;
-                                height: 18px;
+                            p {
+                                color: $ta-black-2;
                                 line-height: 18px;
                                 font-size: 14px;
-                                font-weight: 400;
-                                overflow: hidden;
-                                white-space: nowrap;
-                                text-overflow: ellipsis;
+
+                                &::-moz-selection {
+                                    color: $ta-black-2;
+                                    background: rgb(47, 47, 47, 0.2);
+                                }
 
                                 &::selection {
-                                    color: $bw6-2;
-                                    background: $bw6-3;
+                                    color: $ta-black-2;
+                                    background: rgb(47, 47, 47, 0.2);
                                 }
                             }
                         }
@@ -712,6 +716,7 @@ table.truckassist-table-body-style {
                             margin-right: 6px;
                             display: flex;
                             align-items: center;
+                            margin-left: -2px;
 
                             &:hover {
                                 transform: scale(1.8);
@@ -786,6 +791,7 @@ table.truckassist-table-body-style {
                             white-space: nowrap;
                             text-overflow: ellipsis;
                             align-items: center;
+                            margin-left: -2px;
 
                             &::selection {
                                 color: $ta-black;
@@ -1230,7 +1236,7 @@ table.truckassist-table-body-style {
                             text-overflow: ellipsis;
                             height: 18px;
                             line-height: 18px;
-                            margin-right: 7px;
+                            margin: 0 7px 0 -2px;
 
                             &:hover {
                                 color: $ta-blue;
@@ -1777,10 +1783,8 @@ table.truckassist-table-body-style {
 
                         // RAITING
                         .raiting-container {
-                            display: flex;
                             width: fit-content;
                             height: 18px;
-                            justify-self: center;
 
                             .raiting-icon {
                                 cursor: pointer;
@@ -2187,6 +2191,45 @@ table.truckassist-table-body-style {
                                 }
                             }
                         }
+
+                        .shipper-load-container {
+                            display: grid;
+                            grid-template-columns: repeat(3, 46px);
+                            grid-gap: 12px;
+                            padding-left: 2px;
+
+                            &-box {
+                                &:nth-child(3) {
+                                    .icon {
+                                        svg {
+                                            path {
+                                                fill: $ta-red-10;
+                                            }
+                                        }
+                                    }
+                                }
+
+                                .icon {
+                                    margin-right: 4px;
+                                }
+
+                                p {
+                                    font-size: 11px;
+                                    line-height: 14px;
+                                    color: $ta-black;
+
+                                    &::-moz-selection {
+                                        color: $ta-black;
+                                        background: rgb(66, 66, 66, 0.2);
+                                    }
+
+                                    &::selection {
+                                        color: $ta-black;
+                                        background: rgb(66, 66, 66, 0.2);
+                                    }
+                                }
+                            }
+                        }
                     }
 
                     // GENERAl
@@ -2202,9 +2245,7 @@ table.truckassist-table-body-style {
             .attachemnt-dropdown,
             .media-dropdown,
             .insurance-dropdown {
-                /*  width: 100%; */
                 width: 0px;
-                /* height: fit-content; */
                 max-height: 0px;
                 overflow: hidden;
                 transition: max-height 0.2s ease-in-out;

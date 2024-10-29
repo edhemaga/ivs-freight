@@ -54,10 +54,16 @@ import { AuthGuard } from '@core/guards/authentication.guard';
 import { DropZoneConfig } from '@shared/components/ta-upload-files/models/dropzone-config.model';
 import { UploadFile } from '@shared/components/ta-upload-files/models/upload-file.model';
 
-// Enums
+// enums
 import { LoadModalStringEnum } from '@pages/load/pages/load-modal/enums';
 import { AssignedLoadResponse } from 'appcoretruckassist';
 import { TaModalActionEnums } from './enums';
+
+// directive
+import { PreventMultipleclicksDirective } from '@shared/directives/prevent-multipleclicks.directive';
+
+// svg routes
+import { ModalSvgRoutes } from '@shared/components/ta-modal/utils/svg-routes';
 
 @Component({
     selector: 'app-ta-modal',
@@ -84,6 +90,9 @@ import { TaModalActionEnums } from './enums';
         TaFilterComponent,
         TaSearchComponent,
         CaFilterComponent,
+
+        // Directives
+        PreventMultipleclicksDirective,
     ],
     animations: [
         trigger('widthGrow', [
@@ -108,7 +117,13 @@ import { TaModalActionEnums } from './enums';
     providers: [AuthGuard],
 })
 export class TaModalComponent implements OnInit, OnDestroy {
-    private destroy$ = new Subject<void>();
+    @Input() set isResetDnuBtn(isReset: boolean) {
+        if (isReset) this.isDNU = !this.isDNU;
+    }
+    @Input() set isResetBfbBtn(isReset: boolean) {
+        if (isReset) this.isBFB = !this.isBFB;
+    }
+
     @Input() modalTitle: string;
     @Input() editName: string;
     @Input() loadModalTemplate: boolean;
@@ -128,9 +143,7 @@ export class TaModalComponent implements OnInit, OnDestroy {
     @Input() disableDelete: boolean;
     @Input() isFinishOrder?: boolean = false;
     @Input() isDeactivated: boolean;
-    @Input() isDNU: boolean;
-    @Input() isBFB: boolean;
-    @Input() editDate: boolean;
+    @Input() isEditDate: boolean;
     @Input() resendEmail: boolean;
     @Input() modalAdditionalPart: boolean;
     @Input() topDivider: boolean = true;
@@ -139,6 +152,7 @@ export class TaModalComponent implements OnInit, OnDestroy {
     @Input() isStepper: boolean = false;
     @Input() isCloseIconRemoved: boolean = false;
     @Input() isVoidBtn: boolean = false;
+    @Input() hasCalendarIcon: boolean = false;
 
     // Routing Map Props
     @Input() mapSettingsModal: boolean = false;
@@ -151,12 +165,11 @@ export class TaModalComponent implements OnInit, OnDestroy {
     @Input() isResetFormCards: boolean = false;
     @Input() cardsSecTitle: string;
     @Input() showCloseBusinessButton = false;
-    @Input() isAdditionalAssignLoadModalVisible = false;    
+    @Input() isAdditionalAssignLoadModalVisible = false;
     @Input() isAssignLoadModal: boolean = false;
     @Input() isReorderingActive: boolean = false;
     @Input() isDisableButtonHidden: boolean = false;
-    
-    
+    @Input() isDeactivateOnly: boolean;
     // -----------------
 
     @Input() specificCaseModalName: boolean;
@@ -176,7 +189,7 @@ export class TaModalComponent implements OnInit, OnDestroy {
     @Input() isBluredNotice: boolean = true;
 
     // Use case when we want user to submit form and run validation and show form errors
-    @Input() enableClickWhileFormInvalid: boolean = false;
+    @Input() isClickEnabledWhileFormInvalid: boolean = false;
 
     // Header filters
     @Input() hasTimeFilter: boolean = false;
@@ -209,6 +222,10 @@ export class TaModalComponent implements OnInit, OnDestroy {
 
     @Output() filterActions = new EventEmitter<any>();
 
+    private destroy$ = new Subject<void>();
+
+    public modalSvgRoutes = ModalSvgRoutes;
+
     public saveSpinnerVisibility: boolean = false;
     public saveAddNewSpinnerVisibility: boolean = false;
     public deleteSpinnerVisibility: boolean = false;
@@ -218,6 +235,9 @@ export class TaModalComponent implements OnInit, OnDestroy {
     public setMapRouteSpinnerVisibility: boolean = false;
 
     public stepperCounter: number = 0;
+
+    public isDNU: boolean;
+    public isBFB: boolean;
 
     // Drag & Drop properties
     public isDropZoneVisible: boolean = false;
@@ -334,7 +354,7 @@ export class TaModalComponent implements OnInit, OnDestroy {
     }
 
     public onAction(action: string) {
-        if (!this.isModalValid && this.enableClickWhileFormInvalid)
+        if (!this.isModalValid && this.isClickEnabledWhileFormInvalid)
             this.runFormValidation.emit(true);
 
         switch (action) {
@@ -359,7 +379,8 @@ export class TaModalComponent implements OnInit, OnDestroy {
                 break;
             }
             case 'deactivate': {
-                this.isDeactivated = !this.isDeactivated;
+                if (!this.isDeactivateOnly)
+                    this.isDeactivated = !this.isDeactivated;
                 this.action.emit({
                     action: action,
                     bool: this.isDeactivated,
@@ -478,18 +499,22 @@ export class TaModalComponent implements OnInit, OnDestroy {
             }
             case 'change-status': {
                 this.confirmationAction.emit(this.confirmationData);
+
                 break;
             }
             case LoadModalStringEnum.DISPATCH_LOAD_SAVE_AND_ASSIGN_NEW: {
                 this.action.emit({ action: action, bool: false });
+
                 break;
             }
             case LoadModalStringEnum.DISPATCH_LOAD_CREATE_LOAD: {
                 this.action.emit({ action: action, bool: false });
+
                 break;
             }
             case LoadModalStringEnum.DISPATCH_LOAD_SAVE_CHANGES: {
                 this.action.emit({ action: action, bool: false });
+
                 break;
             }
             default: {

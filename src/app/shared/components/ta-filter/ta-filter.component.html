@@ -8,7 +8,7 @@
     (openFilter)="onFilterShown()"
     [ngClass]="{
         'active-options': activeFilter,
-        'clear-colors': hoverClose,
+        'clear-colors': isHoverClose,
         'filter-active-colors':
             filterActiveArray.length > 0 ||
             filterActiveTime !== '' ||
@@ -39,7 +39,7 @@
         mainContent
         ngbTooltip
         mainTooltip="{{
-            !hoverClose
+            !isHoverClose
                 ? totalFiltersNum > 0
                     ? activeFilter
                         ? 'Close Filter'
@@ -51,7 +51,7 @@
         }}"
         position="bottom"
         tooltipBackground="{{
-            activeFilter ? '#B7B7B7' : !hoverClose ? '#2F2F2F' : '#2F2F2F'
+            activeFilter ? '#B7B7B7' : !isHoverClose ? '#2F2F2F' : '#2F2F2F'
         }}"
         tooltipColor="{{ activeFilter ? '#2F2F2F' : '#FFFFFF' }}"
         tooltipTextAlign="center"
@@ -94,7 +94,7 @@
                     singleFormActive ||
                     destLongValSet ||
                     activeFormNum > 0) &&
-                !hoverClose
+                !isHoverClose
             "
         >
             <div
@@ -132,8 +132,8 @@
         >
             <div
                 class="filters-selected-value-holder justify-content-center align-items-center clear-filter-icon"
-                (mouseenter)="hoverClose = true"
-                (mouseleave)="hoverClose = false"
+                (mouseenter)="isHoverClose = true"
+                (mouseleave)="isHoverClose = false"
                 (click)="clearAll($event, true)"
                 [ngClass]="{
                     'd-none': !activeFilter && !hoverFilter,

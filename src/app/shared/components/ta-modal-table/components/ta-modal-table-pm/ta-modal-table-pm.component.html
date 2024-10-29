@@ -2,16 +2,12 @@
     <div class="d-flex flex-column pm-table-container">
         <ng-container
             formArrayName="pmTableItems"
-            *ngFor="
-                let pmItemRow of formArray.controls;
-                let i = index;
-            "
+            *ngFor="let pmItemRow of formArray.controls; let i = index"
         >
             <div
                 class="align-items-center table-item pm-item"
                 [class.hide-delete-icon]="
-                    isEdit ||
-                    pmItemRow.value.status?.name === 'Default'
+                    isEdit || pmItemRow.value.status?.name === 'Default'
                 "
                 [class.pm-item-new]="!pmItemRow.value.id"
                 [formGroupName]="i"
@@ -24,13 +20,12 @@
                     <ng-container
                         *ngIf="
                             !isEdit &&
-                            pmItemRow.value.status?.name !==
-                                'Default'
+                            pmItemRow.value.status?.name !== 'Default'
                         "
                     >
                         <svg-icon
                             class="delete-icon"
-                            src="assets/svg/truckassist-table/dropdown/content/delete-hover-new.svg"
+                            [src]="svgRoutes.deleteIcon"
                             [svgStyle]="{
                                 'width.px': 18,
                                 'height.px': 18
@@ -44,21 +39,12 @@
                     formControlName="isChecked"
                     [name]="i + 'new'"
                     [customClass]="
-                        (isPMTruckTable && i < 4) ||
-                        (isPMTrailerTable && i < 1)
+                        (isPMTruckTable && i < 4) || (isPMTrailerTable && i < 1)
                             ? 'disabled-valid'
                             : 'regular'
                     "
-                    [svg]="
-                        !pmItemRow.value.id
-                            ? null
-                            : pmItemRow.value.svg
-                    "
-                    [label]="
-                        !pmItemRow.value.id
-                            ? null
-                            : pmItemRow.value.title
-                    "
+                    [svg]="!pmItemRow.value.id ? null : pmItemRow.value.svg"
+                    [label]="!pmItemRow.value.id ? null : pmItemRow.value.title"
                     [disabled]="isPMTruckTable ? i < 4 : i < 1"
                     [moveIconDown]="!!pmItemRow.value.id"
                 >
@@ -74,20 +60,16 @@
                             label: 'Title',
                             isDropdown: true,
                             placeholderInsteadOfLabel: true,
-                            placeholderIcon: !activePmDropdownItem[
-                                i
-                            ]?.logoName
+                            placeholderIcon: !activePmDropdownItem[i]?.logoName
                                 ? 'repair-pm/ic_custom_pm.svg'
                                 : '',
                             dropdownImageInput: {
                                 withText: true,
                                 svg: true,
                                 image: false,
-                                url: activePmDropdownItem[i]
-                                    ?.logoName
+                                url: activePmDropdownItem[i]?.logoName
                                     ? 'assets/svg/common/repair-pm/' +
-                                      activePmDropdownItem[i]
-                                          ?.logoName
+                                      activePmDropdownItem[i]?.logoName
                                     : '',
                                 nameInitialsInsteadUrl: false,
                                 template: 'pm'
@@ -100,12 +82,10 @@
                             autocomplete: 'off'
                         }"
                         [options]="
-                            isPMTruckTable
-                                ? pmTruckOptions
-                                : pmTrailerOptions
+                            isPMTruckTable ? pmTruckOptions : pmTrailerOptions
                         "
                         [activeItem]="activePmDropdownItem[i]"
-                        (selectedItem)="emitOnSelectDropdown($event,i)"
+                        (selectedItem)="emitOnSelectDropdown($event, i)"
                     ></app-ta-input-dropdown>
                 </ng-container>
 

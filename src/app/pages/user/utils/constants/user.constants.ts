@@ -7,7 +7,8 @@ import { UserTableDropdown } from '@pages/user/models/user-table-dropdown.model'
 
 export class UserConstants {
     static getUserTableDropdown(
-        data: CompanyUserResponse
+        data: CompanyUserResponse,
+        selectedTab: string
     ): UserTableDropdown[] {
         return [
             {
@@ -20,6 +21,7 @@ export class UserConstants {
                 },
                 svgClass: TableStringEnum.REGULAR,
                 hasBorder: true,
+                mutedStyle: selectedTab === TableStringEnum.INACTIVE,
             },
             {
                 title: 'Reset Password',
@@ -33,45 +35,68 @@ export class UserConstants {
                 tableListDropdownContentStyle: {
                     'margin-bottom.px': 4,
                 },
-                mutedStyle: !data.verified,
+                mutedStyle:
+                    data.userStatus === TableStringEnum.EXPIRED ||
+                    data.userStatus === TableStringEnum.INVITED ||
+                    selectedTab === TableStringEnum.INACTIVE,
             },
             {
                 title: 'Resend Invitation',
                 name: TableStringEnum.RESEND_INVITATION,
-                svgUrl: !data.verified
-                    ? 'assets/svg/truckassist-table/new-list-dropdown/Email - Invitation.svg'
-                    : 'assets/svg/truckassist-table/new-list-dropdown/Check.svg',
+                svgUrl:
+                    data.userStatus === TableStringEnum.EXPIRED ||
+                    data.userStatus === TableStringEnum.INVITED
+                        ? 'assets/svg/truckassist-table/new-list-dropdown/Email - Invitation.svg'
+                        : 'assets/svg/truckassist-table/new-list-dropdown/Check.svg',
                 svgStyle: {
-                    width: !data.verified ? 18 : 14,
-                    height: !data.verified ? 18 : 14,
+                    width:
+                        data.userStatus === TableStringEnum.EXPIRED ||
+                        data.userStatus === TableStringEnum.INVITED
+                            ? 18
+                            : 14,
+                    height:
+                        data.userStatus === TableStringEnum.EXPIRED ||
+                        data.userStatus === TableStringEnum.INVITED
+                            ? 18
+                            : 14,
                 },
-                svgClass: data.verified
-                    ? TableStringEnum.CHECK
-                    : TableStringEnum.REGULAR,
+                svgClass:
+                    data.userStatus !== TableStringEnum.EXPIRED &&
+                    data.userStatus !== TableStringEnum.INVITED
+                        ? TableStringEnum.CHECK
+                        : TableStringEnum.REGULAR,
                 hasBorder: true,
-                mutedStyle: data.verified,
+                mutedStyle:
+                    data.userStatus !== TableStringEnum.EXPIRED &&
+                    data.userStatus !== TableStringEnum.INVITED,
             },
             {
-                title: data.status
-                    ? TableStringEnum.DEACTIVATE_2
-                    : TableStringEnum.ACTIVATE_2,
-                name: data.status
-                    ? TableStringEnum.DEACTIVATE
-                    : TableStringEnum.ACTIVATE,
+                title:
+                    selectedTab === TableStringEnum.ACTIVE
+                        ? TableStringEnum.DEACTIVATE_2
+                        : TableStringEnum.ACTIVATE_2,
+                name:
+                    selectedTab === TableStringEnum.ACTIVE
+                        ? TableStringEnum.DEACTIVATE
+                        : TableStringEnum.ACTIVATE,
                 svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Deactivate.svg',
                 svgStyle: {
                     width: 18,
                     height: 18,
                 },
-                svgClass: !data.verified
-                    ? TableStringEnum.REGULAR
-                    : data.status
-                    ? TableStringEnum.DEACTIVATE
-                    : TableStringEnum.ACTIVATE,
+                svgClass:
+                    data.userStatus === TableStringEnum.EXPIRED ||
+                    data.userStatus === TableStringEnum.INVITED
+                        ? TableStringEnum.REGULAR
+                        : selectedTab === TableStringEnum.ACTIVE
+                        ? TableStringEnum.DEACTIVATE
+                        : TableStringEnum.ACTIVATE,
                 tableListDropdownContentStyle: {
                     'margin-bottom.px': 4,
                 },
-                mutedStyle: !data.verified,
+                mutedStyle:
+                    data.userStatus === TableStringEnum.EXPIRED ||
+                    data.userStatus === TableStringEnum.INVITED,
             },
             {
                 title: TableStringEnum.DELETE_2,
@@ -113,22 +138,38 @@ export class UserConstants {
                 tableListDropdownContentStyle: {
                     'margin-bottom.px': 4,
                 },
-                mutedStyle: !data.verified,
+                mutedStyle:
+                    data.userStatus === TableStringEnum.EXPIRED ||
+                    data.userStatus === TableStringEnum.INVITED,
             },
             {
                 title: 'Resend Invitation',
                 name: TableStringEnum.RESEND_INVITATION,
-                svgUrl: !data.verified
-                    ? 'assets/svg/truckassist-table/new-list-dropdown/Email - Invitation.svg'
-                    : 'assets/svg/truckassist-table/new-list-dropdown/Check.svg',
+                svgUrl:
+                    data.userStatus === TableStringEnum.EXPIRED ||
+                    data.userStatus === TableStringEnum.INVITED
+                        ? 'assets/svg/truckassist-table/new-list-dropdown/Email - Invitation.svg'
+                        : 'assets/svg/truckassist-table/new-list-dropdown/Check.svg',
                 svgStyle: {
-                    width: !data.verified ? 18 : 14,
-                    height: !data.verified ? 18 : 14,
+                    width:
+                        data.userStatus === TableStringEnum.EXPIRED ||
+                        data.userStatus === TableStringEnum.INVITED
+                            ? 18
+                            : 14,
+                    height:
+                        data.userStatus === TableStringEnum.EXPIRED ||
+                        data.userStatus === TableStringEnum.INVITED
+                            ? 18
+                            : 14,
                 },
-                svgClass: data.verified
-                    ? TableStringEnum.CHECK
-                    : TableStringEnum.REGULAR,
-                mutedStyle: data.verified,
+                svgClass:
+                    data.userStatus !== TableStringEnum.EXPIRED &&
+                    data.userStatus !== TableStringEnum.INVITED
+                        ? TableStringEnum.CHECK
+                        : TableStringEnum.REGULAR,
+                mutedStyle:
+                    data.userStatus !== TableStringEnum.EXPIRED &&
+                    data.userStatus !== TableStringEnum.INVITED,
             },
         ];
     }

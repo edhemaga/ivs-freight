@@ -10,6 +10,7 @@
  * Do not edit the class manually.
  */
 import { EnumValue } from './enumValue';
+import { MileStopType } from './mileStopType';
 
 
 export interface MilesStopShortResponse { 
@@ -17,6 +18,7 @@ export interface MilesStopShortResponse {
     address?: string | null;
     loadId?: number;
     stopType?: EnumValue;
+    type?: MileStopType;
     orderNumber?: number;
     date?: string | null;
     time?: string | null;
@@ -26,5 +28,11 @@ export interface MilesStopShortResponse {
     miles?: number;
     extraStopFee?: number | null;
     subtotal?: number | null;
+    latitude?: number;
+    longitude?: number;
+    isLoaded?: boolean;
+    isExtraStop?: boolean;
+    isLoad?: boolean;
+    loadNumber?: string | null;
 }
 

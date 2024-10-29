@@ -78,15 +78,15 @@
     }
 
     &:hover .ta-checkbox ~ .ta-mark {
-        background-color: #919191;
+        background-color: $bw5;
     }
 
-    &:hover .ta-checkbox ~ .ta-mark:after {
-        display: block;
+    &:hover .ta-checkbox ~ .ta-checkbox-label {
+        color: $ta-black;
     }
 
     .ta-checkbox:checked ~ .ta-checkbox-label {
-        color: #2f2f2f !important;
+        color: $ta-black !important;
     }
 
     .ta-checkbox:checked ~ .ta-mark {
@@ -112,7 +112,7 @@
 
     .ta-checkbox-label {
         cursor: pointer;
-        color: #6c6c6c;
+        color: $bw6-2;
         font-weight: 800;
         font-size: 14px;
         margin-left: 6px;
@@ -120,12 +120,12 @@
         line-height: 14px;
 
         &::-moz-selection {
-            color: #6c6c6c;
+            color: $bw6-2;
             background: rgb(108, 108, 108, 0.2);
         }
 
         &::selection {
-            color: #6c6c6c;
+            color: $bw6-2;
             background: rgb(108, 108, 108, 0.2);
         }
 
@@ -160,7 +160,7 @@
         }
 
         .ta-checkbox-label {
-            color: #dadada !important;
+            color: $ta-light-grey-2 !important;
         }
 
         &.disabled-valid {
@@ -172,7 +172,7 @@
 
             .ta-checkbox-label {
                 font-weight: 500;
-                color: #6c6c6c !important;
+                color: $bw6-2 !important;
             }
         }
     }
@@ -231,7 +231,7 @@
     &.medium {
         .ta-checkbox-label {
             font-weight: 500;
-            color: #aaaaaa;
+            color: $bw6-2;
         }
     }
 
@@ -241,15 +241,16 @@
         }
 
         .ta-checkbox-label {
+            color: $ta-light-grey-2;
             font-weight: 400;
-            color: #6c6c6c;
+            color: $bw6-2;
         }
     }
 
     &.billing-address {
         margin-bottom: 12px;
         position: relative;
-        left: 6px;
+        left: 1px;
         top: 0px;
 
         &.checked {
@@ -311,14 +312,14 @@
     &.line-height-18 {
         .ta-checkbox-label {
             line-height: 18px;
-            
+
             &::before {
                 content: '';
                 display: block;
                 height: 0;
                 width: 0;
                 margin-top: calc((1 - 1.285) * 0.5em);
-              }
+            }
         }
     }
 }

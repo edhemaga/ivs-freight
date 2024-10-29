@@ -6,7 +6,7 @@
     [editName]="tabTitle"
     [specificCaseModalName]="isEditMode"
     [editData]="editData"
-    [editDate]="!!editData"
+    [isEditDate]="!!editData"
     [showCloseBusinessButton]="isEditMode"
 >
     <ng-container origin *ngIf="repairShopForm">
@@ -20,8 +20,10 @@
 
         <form
             [formGroup]="repairShopForm"
-            [ngClass]="{ 'tab-2': selectedTab === TableStringEnum.CONTACT }"
-            class="form-container form-container-without-mb"
+            [ngClass]="{
+                'tab-2 form-container-with-card-2': selectedTab === TableStringEnum.CONTACT,
+            }"
+            class="form-container"
         >
             <div
                 [@animationTabsModal]="animationObject"
@@ -747,66 +749,61 @@
                         [formControlName]="RepairShopModalStringEnum.NOTE"
                     ></app-ta-input-note>
                 </div>
+
                 <div
                     [hidden]="selectedTab !== TableStringEnum.CONTACT"
                     class="m-tab"
                     class="repair-shop-card"
                 >
                     <app-ta-custom-card
-                        (onActionEvent)="addContact()"
+                        [cardName]="'Contact'"
+                        [hasCounter]="repairShopContacts?.length"
+                        [hasActionSvg]="true"
+                        [hasArrow]="false"
+                        [isCardOpen]="!!repairShopContacts?.length"
+                        [hasScrollBody]="repairShopContacts?.length > 10"
+                        [disabledCard]="!repairShopContacts?.length"
+                        [hasScrollBodyXAxis]="true"
                         [animationMarginParams]="{
                             marginTop: '10px',
                             marginBottom: '5px'
                         }"
-                        [cardName]="'Contact'"
-                        [disableAnimation]="disableCardAnimation"
-                        [disabledCard]="!contactAddedCounter"
-                        [hasActionSvg]="repairShopModalSvgRoutes.plusIcon"
-                        [hasArrow]="false"
-                        [hasCounter]="contactAddedCounter"
-                        [hasScrollBody]="contactAddedCounter > 10"
-                        [isCardOpen]="contactAddedCounter"
-                        [isCommentData]="true"
-                        [hasScrollBodyXAxis]="true"
+                        (onActionEvent)="addContact()"
                     >
-                        <div
-                            (scroll)="onScrollingContacts($event)"
-                            class="repair-shop__contact-table"
+                        <app-ta-modal-table
+                            [tableType]="modalTableTypeEnum.CONTACT"
+                            [modalTableData]="updatedRepairShopContacts"
+                            [dropdownData]="departments"
+                            [isNewRowCreated]="isNewContactAdded"
+                            (modalTableValueEmitter)="
+                                handleModalTableValueEmit($event)
+                            "
+                            (modalTableValidStatusEmitter)="
+                                handleModalTableValidStatusEmit($event)
+                            "
                         >
-                            <app-ta-modal-table
-                                [tableType]="modalTableTypeEnum.CONTACT"
-                                [modalTableData]="contacts"
-                                [isNewRowCreated]="isNewContactAdded"
-                                (modalTableValueEmitter)="
-                                    handleModalTableValueEmit($event)
-                                "
-                                (modalTableValidStatusEmitter)="
-                                    handleModalTableValidStatusEmit($event)
-                                "
-                            >
-                            </app-ta-modal-table>
-                        </div>
+                        </app-ta-modal-table>
                     </app-ta-custom-card>
-                    <ng-container *ngIf="!contactAddedCounter">
-                        <svg-icon
-                            class="no-review-svg"
-                            [src]="repairShopModalSvgRoutes.noContactIcon"
-                        ></svg-icon>
+
+                    <ng-container *ngIf="!repairShopContacts?.length">
+                        <div class="no-review-repair-shop">
+                            <svg-icon
+                                class="no-review-svg"
+                                [src]="repairShopModalSvgRoutes.noContactIcon"
+                            ></svg-icon>
+                        </div>
                     </ng-container>
                 </div>
+
                 <div
                     [hidden]="selectedTab !== TableStringEnum.REVIEW"
                     class="m-tab"
+                    class="repair-shop-card"
                 >
                     <app-ta-custom-card
-                        (onActionEvent)="createReview()"
-                        [animationMarginParams]="{
-                            marginTop: '10px',
-                            marginBottom: '12px'
-                        }"
                         [cardName]="'Rating & Review'"
                         [disableAnimation]="disableCardAnimation"
-                        [disableMultipleReviews]="disableOneMoreReview"
+                        [disableMultipleReviews]="isOneMoreReviewDisabled"
                         [hasActionSvg]="repairShopModalSvgRoutes.plusIcon"
                         [hasArrow]="false"
                         [hasBodyData]="reviews.length"
@@ -814,21 +811,23 @@
                         [hasLikeDislike]="true"
                         [hasScrollBody]="reviews.length > 6"
                         [isCardOpen]="true"
-                        [isCommentData]="true"
+                        (onActionEvent)="createReview()"
                     >
-                        <div *ngIf="!reviews.length" class="no-review-broker">
+                        <app-ta-user-review
+                            [reviewData]="reviews"
+                            [isNewReview]="reviews[0]?.isNewReview"
+                            (changeReviewsEvent)="changeReviewsEvent($event)"
+                        ></app-ta-user-review>
+                    </app-ta-custom-card>
+
+                    <ng-container *ngIf="!reviews.length">
+                        <div class="no-review-repair-shop">
                             <svg-icon
                                 class="no-review-svg"
                                 [src]="repairShopModalSvgRoutes.noReviewsIcon"
                             ></svg-icon>
                         </div>
-                        <app-ta-user-review
-                            (changeReviewsEvent)="changeReviewsEvent($event)"
-                            *ngIf="reviews.length"
-                            [isNewReview]="reviews[0].isNewReview"
-                            [reviewData]="reviews"
-                        ></app-ta-user-review>
-                    </app-ta-custom-card>
+                    </ng-container>
                 </div>
             </div>
         </form>

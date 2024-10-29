@@ -1,0 +1,285 @@
+<div class="header d-flex align-items-center">
+    <div
+        class="title ta-font-extra-bold"
+        [ngStyle]="!count && { color: '#aaaaaa' }"
+    >
+        {{ title }}
+    </div>
+    <ng-container *ngIf="count">
+        <div
+            class="data-count ta-font-bold"
+            [ngClass]="isExpanded && 'data-count-focused'"
+        >
+            {{ count }}
+        </div>
+        <div
+            class="show-all ta-font-bold"
+            [ngClass]="isExpanded ? 'show-all-focused' : 'show-all-unfocused'"
+            (click)="toggleShowAll()"
+        >
+            <ng-container *ngIf="isExpanded; else showAll"
+                >Close less</ng-container
+            >
+            <ng-template #showAll>View all</ng-template>
+        </div>
+    </ng-container>
+</div>
+<div
+    [className]="customClass"
+    [ngClass]="
+        !isExpanded && resources?.length > 3 && customClass + '-not-empty'
+    "
+    [ngStyle]="
+        isExpanded && {
+            height: 'fit-content',
+            'overflow-y': 'none'
+        }
+    "
+>
+    <ng-container [ngSwitch]="type">
+        <ng-container
+            *ngSwitchCase="chatUserProfileResourceTypeEnum.PARTICIPANTS"
+        >
+            <!-- TODO Dodati neku animaciju myb -->
+            <ng-container *ngIf="isExpanded">
+                <div class="search">
+                    <div class="form-wrapper" [formGroup]="searchForm">
+                        <app-ta-input
+                            formControlName="searchTerm"
+                            [inputConfig]="
+                                chatInput.userSearchInput(
+                                    chatSearchPlaceHolders.PARTICIPANT
+                                )
+                            "
+                        ></app-ta-input>
+                    </div>
+                </div>
+            </ng-container>
+            <div class="company-user-wrapper">
+                <ng-container
+                    *ngTemplateOutlet="
+                        participantsTitle;
+                        context: {
+                            item: {
+                                name: 'Company users',
+                                icon: chatSvgRoutes.companyUserIcon,
+                                count: companyUsers?.length
+                            }
+                        }
+                    "
+                ></ng-container>
+                <ng-container *ngIf="isExpanded">
+                    <ng-container
+                        *ngFor="
+                            let user of companyUsers;
+                            let ind = index;
+                            trackBy: '' | trackByProperty
+                        "
+                    >
+                        <ng-container
+                            *ngTemplateOutlet="
+                                participantItem;
+                                context: {
+                                    item: {
+                                        avatar: user?.avatar,
+                                        fullName: user?.fullName,
+                                        isRound: true,
+                                        id: user.id
+                                    }
+                                }
+                            "
+                        ></ng-container>
+                    </ng-container>
+                </ng-container>
+            </div>
+            <div class="drivers-wrapper">
+                <ng-container
+                    *ngTemplateOutlet="
+                        participantsTitle;
+                        context: {
+                            item: {
+                                name: 'Drivers',
+                                icon: chatSvgRoutes.steeringWheelIcon,
+                                count: drivers?.length
+                            }
+                        }
+                    "
+                ></ng-container>
+                <ng-container *ngIf="isExpanded">
+                    <ng-container
+                        *ngFor="
+                            let driver of drivers;
+                            let ind = index;
+                            trackBy: '' | trackByProperty
+                        "
+                    >
+                        <ng-container
+                            *ngTemplateOutlet="
+                                participantItem;
+                                context: {
+                                    item: {
+                                        avatar: driver?.avatar,
+                                        fullName: driver?.fullName,
+                                        isRound: false,
+                                        id: driver.id
+                                    }
+                                }
+                            "
+                        ></ng-container>
+                    </ng-container>
+                </ng-container>
+            </div>
+        </ng-container>
+
+        <ng-container
+            *ngFor="
+                let item of resources;
+                let ind = index;
+                trackBy: '' | trackByProperty
+            "
+        >
+            <ng-container *ngSwitchCase="chatUserProfileResourceTypeEnum.MEDIA">
+                <img [src]="item?.url" [alt]="item?.fileName" />
+            </ng-container>
+            <ng-container *ngSwitchCase="chatUserProfileResourceTypeEnum.FILES">
+                <div class="attachment-wrapper">
+                    <app-chat-message-attachment-preview
+                        [index]="ind"
+                        [attachment]="item"
+                        [isNameReduced]="false"
+                        [isInMessage]="false"
+                        [isFocused]="false"
+                        [isDateDisplayed]="true"
+                        [isSizeDisplayed]="false"
+                    ></app-chat-message-attachment-preview>
+                </div>
+            </ng-container>
+            <ng-container *ngSwitchCase="chatUserProfileResourceTypeEnum.LINKS">
+                <div class="links d-flex align-items-center">
+                    <div class="link-thumbnail">
+                        <div class="link-thumbnail-content">
+                            <ng-container
+                                *ngIf="item.metadata?.imageUrl; else linkIcon"
+                            >
+                                <img
+                                    [src]="item.metadata?.imageUrl"
+                                    [alt]="item.metadata.title"
+                                    width="36"
+                                    height="32"
+                                />
+                            </ng-container>
+                            <ng-template #linkIcon>
+                                <svg-icon
+                                    class="d-flex justify-content-center align-items-center"
+                                    [svgStyle]="{
+                                        'width.px': 29,
+                                        'height.px': 29
+                                    }"
+                                    [src]="chatSvgRoutes.linkIcon"
+                                >
+                                </svg-icon>
+                            </ng-template>
+                        </div>
+                    </div>
+                    <div class="link-information">
+                        <div class="ta-font-medium">
+                            {{ item.metadata?.title || item.url }}
+                        </div>
+                        <div class="ta-font-regular">
+                            {{ item.time | formatDateP : 'date-time' }}
+                        </div>
+                    </div>
+                </div>
+            </ng-container>
+        </ng-container>
+    </ng-container>
+</div>
+<ng-container *ngIf="hasHorizontalBorder">
+    <div class="horizontal-border"></div>
+</ng-container>
+
+<ng-template #participantsTitle let-item="item">
+    <div class="title d-flex align-content-center">
+        <svg-icon
+            class="d-flex justify-content-center align-items-center"
+            [svgStyle]="{
+                'width.px': 14,
+                'height.px': 14
+            }"
+            [src]="item?.icon"
+        >
+        </svg-icon>
+        <div
+            class="text d-flex align-content-center justify-content-center ta-font-bold"
+        >
+            <div>{{ item?.name | uppercase }}</div>
+        </div>
+        <div
+            class="count d-flex align-content-center justify-content-center ta-font-semi-bold"
+            [ngStyle]="!item?.count && { color: '#aaaaaa' }"
+        >
+            <div>
+                {{ item?.count }}
+            </div>
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #participantItem let-item="item">
+    <div
+        class="item-wrapper d-flex justify-content-between align-content-center w-100"
+        (mouseenter)="toggleHover(item?.id)"
+        (mouseleave)="toggleHover(0)"
+    >
+        <div class="d-flex">
+            <app-ca-profile-image
+                [avatarImg]="item?.avatarFile?.url"
+                [avatarColor]="{
+                    background: '#DFC2F9',
+                    color: '#9E47EC66'
+                }"
+                [textShortName]="item?.fullName | nameInitials"
+                [size]="22"
+                [fontSize]="9"
+                [isHoverEffect]="false"
+                [isRound]="item?.isRound"
+            ></app-ca-profile-image>
+            <div class="activity-status-icon">
+                <svg-icon
+                    [src]="participant?.status | chatStatusIcon"
+                ></svg-icon>
+            </div>
+            <div class="fullname ta-font-regular">
+                {{ item.fullName }}
+            </div>
+        </div>
+        <div class="icon d-flex justify-content-center align-content-center">
+            <ng-container *ngIf="item?.isFavourite && !isUserHovered">
+                <svg-icon
+                    class="d-flex justify-content-center align-items-center"
+                    [svgStyle]="{
+                        'width.px': 13,
+                        'height.px': 13
+                    }"
+                    [src]="chatSvgRoutes.favoriteIcon"
+                >
+                </svg-icon>
+            </ng-container>
+            <ng-container *ngIf="hoveredUserId === item?.id">
+                <div
+                    class="d-flex justify-content-center align-items-center"
+                    (click)="selectConversation(item?.id)"
+                >
+                    <svg-icon
+                        [svgStyle]="{
+                            'width.px': 13,
+                            'height.px': 13
+                        }"
+                        [src]="chatSvgRoutes.directMessageIcon"
+                    >
+                    </svg-icon>
+                </div>
+            </ng-container>
+        </div>
+    </div>
+</ng-template>

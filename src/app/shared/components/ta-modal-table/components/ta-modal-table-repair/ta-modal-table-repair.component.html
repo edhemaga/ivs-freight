@@ -25,7 +25,7 @@
 
                     <svg-icon
                         class="delete-icon"
-                        src="assets/svg/truckassist-table/dropdown/content/delete-hover-new.svg"
+                        [src]="svgRoutes.deleteIcon"
                         [svgStyle]="{
                             'width.px': 18,
                             'height.px': 18
@@ -47,15 +47,14 @@
                         hideErrorMessage: true,
                         hideRequiredCheck: true,
                         isInputBackgroundRemoved:
-                            repairBillItemRow.valid &&
-                            !isInputHoverRows[i][0],
+                            repairBillItemRow.valid && !isInputHoverRows[i][0],
                         isBlueText:
                             repairBillItemRow.valid &&
                             !isInputHoverRows[i][0] &&
                             selectedTruckTrailerRepairPm[i],
                         blackInput:
-                            formArray.at(i).get('description')
-                                .value && !isInputHoverRows[i][0]
+                            formArray.at(i).get('description').value &&
+                            !isInputHoverRows[i][0]
                     }"
                     (mouseenter)="emitOnInputHover(true, i, 0)"
                     (mouseleave)="emitOnInputHover(false, i, 0)"
@@ -82,11 +81,9 @@
                             hideClear: true,
                             isDropdown: true,
                             isIconInput: true,
-                            isValidIcon:
-                                selectedTruckTrailerRepairPm[i],
+                            isValidIcon: selectedTruckTrailerRepairPm[i],
                             inputIcon:
-                                selectedTruckTrailerRepairPm[i]
-                                    ?.logoName ||
+                                selectedTruckTrailerRepairPm[i]?.logoName ||
                                 'ic_custom_pm.svg',
                             dropdownWidthClass: 'w-col-200'
                         }"
@@ -94,14 +91,12 @@
                             truckTrailerRepairPmOptions?.truckPmDropdownList &&
                             truckTrailerRepairPmOptions?.trailerPmDropdownList
                         "
-                        [activeItem]="
-                            selectedTruckTrailerRepairPm[i]
-                        "
+                        [activeItem]="selectedTruckTrailerRepairPm[i]"
                         [options]="
                             truckTrailerRepairPmOptions?.truckPmDropdownList ||
                             truckTrailerRepairPmOptions?.trailerPmDropdownList
                         "
-                        (selectedItem)="emitOnSelectDropdown($event,i)"
+                        (selectedItem)="emitOnSelectDropdown($event, i)"
                     ></app-ta-input-dropdown>
                 </div>
 
@@ -118,15 +113,14 @@
                         hideErrorMessage: true,
                         hideRequiredCheck: true,
                         isInputBackgroundRemoved:
-                            repairBillItemRow.valid &&
-                            !isInputHoverRows[i][1],
+                            repairBillItemRow.valid && !isInputHoverRows[i][1],
                         isBlueText:
                             repairBillItemRow.valid &&
                             !isInputHoverRows[i][1] &&
                             selectedTruckTrailerRepairPm[i],
                         blackInput:
-                            formArray.at(i).get('quantity')
-                                .value && !isInputHoverRows[i][1]
+                            formArray.at(i).get('quantity').value &&
+                            !isInputHoverRows[i][1]
                     }"
                     (mouseenter)="emitOnInputHover(true, i, 1)"
                     (mouseleave)="emitOnInputHover(false, i, 1)"
@@ -156,8 +150,7 @@
                                 !isInputHoverRows[i][2] &&
                                 selectedTruckTrailerRepairPm[i],
                             blackInput:
-                                formArray.at(i).get('price')
-                                    .value &&
+                                formArray.at(i).get('price').value &&
                                 !isInputHoverRows[i][2]
                         }"
                         (mouseenter)="emitOnInputHover(true, i, 2)"
@@ -171,10 +164,7 @@
                         }"
                     >
                         <p class="m-0 ta-font-semi-bold">
-                            {{
-                                subTotals[i]?.subtotal ?? 0
-                                    | currency
-                            }}
+                            {{ subTotals[i]?.subtotal ?? 0 | currency }}
                         </p>
                     </div>
                 </ng-container>
