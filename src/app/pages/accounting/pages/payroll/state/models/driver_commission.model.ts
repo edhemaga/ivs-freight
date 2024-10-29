@@ -1,4 +1,7 @@
-import { DriverShortResponse } from 'appcoretruckassist';
+import {
+    DriverShortResponse,
+    PayrollLoadMinimalResponse,
+} from 'appcoretruckassist';
 
 export type IDriverCommissionList = IDriverCommissionResponse[];
 
@@ -31,3 +34,7 @@ export interface Status {
     name: string;
     id: number;
 }
+
+export type CommissionLoadShortReponseWithRowType =
+    | PayrollLoadMinimalResponse
+    | { rowType: string };

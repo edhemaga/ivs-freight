@@ -7,6 +7,7 @@ import {
 } from 'appcoretruckassist';
 import { IDriverCommissionList } from './driver_commission.model';
 import { IDriverOwnerList } from './driver_owner.model';
+import { IDriverFlatRateList } from './driver_flat_rate.model';
 
 export interface PayrollState {
     payrollCounts: PayrollCountsResponse;
@@ -25,6 +26,7 @@ export interface PayrollState {
     closeReportPaymentError?: boolean;
     driverMileageCollapsedList?: PayrollDriverMileageCollapsedListResponse[];
     driverMileageExpandedList?: PayrollDriverMileageExpandedListResponse[];
+    driverFlatRateList?: IDriverFlatRateList;
     payrollOpenedTab: 'open' | 'closed';
 }
 

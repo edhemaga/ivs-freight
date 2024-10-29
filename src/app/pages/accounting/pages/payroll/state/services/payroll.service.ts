@@ -41,7 +41,8 @@ import { PayrollDriverMileageResponse } from 'appcoretruckassist/model/payrollDr
 })
 export class PayrollFacadeService {
     private payrollModalFormSubmited: Subject<boolean> = new Subject<null>();
-    public payrollModalFormSubmited$: Observable<boolean> = this.payrollModalFormSubmited.asObservable();
+    public payrollModalFormSubmited$: Observable<boolean> =
+        this.payrollModalFormSubmited.asObservable();
 
     constructor(private store: Store) {}
 

@@ -7,6 +7,7 @@ import * as PayrollMileageDriverEffects from './payroll_effects/driver_mileage.e
 import * as PayrollMainEffects from './payroll_effects/payroll_main.effects';
 import * as PayrollCommissionDriverEffect from './payroll_effects/driver_commission.effects';
 import * as PayrollOwnerDriverEffect from './payroll_effects/driver_owner.effect';
+import * as PayrollFlatRateEffect from './payroll_effects/driver_flat_rate.effects';
 
 @Injectable()
 export class PayrollEffect {
@@ -73,9 +74,22 @@ export class PayrollEffect {
             this.payrollService
         );
 
+    public getPayrollCommissionDriverReportEffect$ =
+        PayrollCommissionDriverEffect.getPayrollSoloMileageReportEffect(
+            this.actions$,
+            this.payrollService
+        );
+
     // Payroll Owner Driver
     public getPayrollOwnerDriverListEffect$ =
         PayrollOwnerDriverEffect.getPayrollOwnerDriverListEffect(
+            this.actions$,
+            this.payrollService
+        );
+
+    // Payroll Flat List Driver
+    public getPayrollFlatRateDriverListEffect$ =
+        PayrollFlatRateEffect.getPayrollFlatRateDriverListEffect(
             this.actions$,
             this.payrollService
         );

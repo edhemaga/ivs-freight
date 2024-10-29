@@ -1,5 +1,9 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
-import { PayrollState } from '../models/payroll.model';
+import {
+    MilesStopShortReponseWithRowType,
+    PayrollState,
+} from '../models/payroll.model';
+import { CommissionLoadShortReponseWithRowType } from '../models/driver_commission.model';
 
 export const selectPayrollState =
     createFeatureSelector<PayrollState>('payroll');
@@ -8,5 +12,40 @@ export const selectCommissionListDriver = createSelector(
     selectPayrollState,
     (state) => {
         return state.payrollCommissionDriverList;
+    }
+);
+
+export const selectPayrollDriverCommissionLoads = createSelector(
+    selectPayrollState,
+    (state) => {
+        if (!state.payrollOpenedReport) return [];
+        const includedLoads = state.payrollOpenedReport?.includedLoads ?? [];
+        // const includedLoads = state.payrollOpenedReport?.includedLoads.reduce(
+        //     (load, old) => {
+        //         const firstStop = old.isStartPoint;
+        //         const nextMilesStop = JSON.parse(
+        //             JSON.stringify(old.milesStops)
+        //         );
+        //         if (firstStop) {
+        //             nextMilesStop[0].loadId = -1;
+        //         }
+        //         return [...load, ...nextMilesStop];
+        //     },
+        //     [] as CommissionLoadShortReponseWithRowType[]
+        // );
+
+        const excludedReportLoads =
+            state.payrollOpenedReport?.excludedLoads ?? [];
+
+        const excludedLoads = excludedReportLoads;
+        // const excludedLoads = excludedReportLoads.reduce((load, old) => {
+        //     return [...load, ...old.milesStops];
+        // }, [] as CommissionLoadShortReponseWithRowType[]);
+
+        const reorderRow = {
+            rowType: 'reorder',
+        };
+
+        return [...includedLoads, reorderRow, ...excludedLoads];
     }
 );

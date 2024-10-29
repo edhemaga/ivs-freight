@@ -2,6 +2,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import {
     PayrollCountsResponse,
+    PayrollDriverCommissionByIdResponse,
     PayrollDriverMileageListResponse,
 } from 'appcoretruckassist';
 import { PayrollDriverMileageResponse } from 'appcoretruckassist/model/payrollDriverMileageResponse';
@@ -14,6 +15,7 @@ import {
 } from '../state/models/payroll.model';
 import { IDriverOwnerList } from '../state/models/driver_owner.model';
 import { IDriverCommissionList } from '../state/models/driver_commission.model';
+import { IDriverFlatRateList } from '../state/models/driver_flat_rate.model';
 
 @Injectable({ providedIn: 'root' })
 export class PayrollService {
@@ -76,6 +78,13 @@ export class PayrollService {
     public getPayrollCommissionDriverList(): Observable<IDriverCommissionList> {
         return this.http.get<IDriverCommissionList>(
             `${environment.API_ENDPOINT}/api/payroll/driver/commission/list`
+        );
+    }
+
+    // FLAT RATE DRIVER
+    public getFlatRatePayrollDriverList(): Observable<IDriverFlatRateList> {
+        return this.http.get<IDriverFlatRateList>(
+            `${environment.API_ENDPOINT}/api/payroll/driver/flatrate/list`
         );
     }
 
@@ -150,6 +159,44 @@ export class PayrollService {
         return this.http.put<PayrollDriverMileageResponse>(
             `${environment.API_ENDPOINT}/api/payroll/driver/mileage/close`,
             body
+        );
+    }
+
+    public getPayrollCommissionDriverReport(
+        reportId: string,
+        lastLoadDate: string,
+        selectedCreditIds?: number[],
+        selectedDeducionIds?: number[],
+        selectedBonusIds?: number[]
+    ): Observable<PayrollDriverCommissionByIdResponse> {
+        let params = new HttpParams();
+        if (lastLoadDate) {
+            params = params.append('LastLoadDate', lastLoadDate);
+        }
+        if (selectedCreditIds) {
+            selectedCreditIds.map(
+                (creditId) =>
+                    (params = params.append('SelectedCreditIds', creditId))
+            );
+        }
+
+        if (selectedDeducionIds) {
+            selectedDeducionIds.map(
+                (deductionId) =>
+                    (params = params.append('SelectedDeducionIds', deductionId))
+            );
+        }
+
+        if (selectedBonusIds) {
+            selectedBonusIds.map(
+                (bonusId) =>
+                    (params = params.append('SelectedBonusIds', bonusId))
+            );
+        }
+
+        return this.http.get<PayrollDriverCommissionByIdResponse>(
+            `${environment.API_ENDPOINT}/api/payroll/driver/commission/${reportId}`,
+            { params }
         );
     }
 }

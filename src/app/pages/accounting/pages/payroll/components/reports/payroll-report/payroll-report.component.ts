@@ -12,11 +12,11 @@ import { CdkDragDrop } from '@angular/cdk/drag-drop';
 import { Observable, takeUntil, Subject } from 'rxjs';
 
 // services
-import { PayrollFacadeService } from '../../state/services/payroll.service';
 import { ModalService } from '@shared/services/modal.service';
+import { PayrollFacadeService } from '../../../state/services/payroll.service';
 
 // models
-import { MilesStopShortReponseWithRowType } from '../../state/models/payroll.model';
+import { MilesStopShortReponseWithRowType } from '../../../state/models/payroll.model';
 import {
     MilesStopShortResponse,
     PayrollDriverMileageByIdResponse,
@@ -25,7 +25,7 @@ import { ICaMapProps, ColumnConfig } from 'ca-components';
 import { PayrollReportTableResponse } from 'ca-components/lib/components/ca-period-content/models/payroll-report-tables.type';
 
 // components
-import { PayrollProccessPaymentModalComponent } from '../../payroll-modals/payroll-proccess-payment-modal/payroll-proccess-payment-modal.component';
+import { PayrollProccessPaymentModalComponent } from '../../../payroll-modals/payroll-proccess-payment-modal/payroll-proccess-payment-modal.component';
 
 @Component({
     selector: 'app-payroll-report',
@@ -67,7 +67,7 @@ export class PayrollReportComponent implements OnInit, OnDestroy {
 
     data: ICaMapProps = {
         markers: [],
-        routingMarkers: []
+        routingMarkers: [],
     };
 
     public payAmount: UntypedFormControl = new UntypedFormControl();
@@ -144,57 +144,6 @@ export class PayrollReportComponent implements OnInit, OnDestroy {
                 cellCustomClasses: 'text-right',
                 textCustomClasses: 'b-600',
             },
-            // {
-            //     header: 'Status',
-            //     field: 'payrollDeadLine',
-            //     cellType: 'template',
-            //     template: this.customStatusTemplate, // Pass the template reference
-            // },
-            // {
-            //     header: 'Empty',
-            //     field: 'emptyMiles',
-            //     headerCellType: 'template',
-            //     headerTemplate: this.customMileageHeaderTemplate,
-            //     cellType: 'template',
-            //     template: this.customTextTemplate, // Pass the template reference
-            //     hiddeOnTableReduce: true,
-            // },
-            // {
-            //     header: 'Loaded',
-            //     headerCellType: 'template',
-            //     headerTemplate: this.customMileageHeaderTemplate,
-            //     field: 'loadedMiles',
-            //     cellType: 'template',
-            //     template: this.customTextTemplate, // Pass the template reference
-            //     hiddeOnTableReduce: true,
-            // },
-            // {
-            //     header: 'Total',
-            //     field: 'totalMiles',
-            //     headerCellType: 'template',
-            //     headerTemplate: this.customMileageHeaderTemplate,
-            //     cellType: 'template',
-            //     template: this.customTextTemplate, // Pass the template reference
-            //     hiddeOnTableReduce: true,
-            // },
-            // {
-            //     header: 'Salary',
-            //     field: 'salary',
-            //     pipeType: 'currency',
-            //     pipeString: 'USD',
-            //     cellCustomClasses: 'text-center',
-            //     cellType: 'text', // Pass the template reference
-            //     hiddeOnTableReduce: true,
-            // },
-            // {
-            //     header: 'Total',
-            //     field: 'total',
-            //     pipeType: 'currency',
-            //     pipeString: 'USD',
-            //     cellType: 'text',
-            //     cellCustomClasses: 'text-right',
-            //     textCustomClasses: 'b-600',
-            // },
         ];
     }
 
@@ -338,7 +287,7 @@ export class PayrollReportComponent implements OnInit, OnDestroy {
                     totalEarnings:
                         (payrollData as any).debt ?? payrollData.totalEarnings,
                     payrollNumber: payrollData.payrollNumber,
-                    selectedTab: this.selectedTab
+                    selectedTab: this.selectedTab,
                 },
             }
         );

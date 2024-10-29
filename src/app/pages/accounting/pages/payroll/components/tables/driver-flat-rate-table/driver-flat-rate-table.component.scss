@@ -1,0 +1,61 @@
+.driver-solo-info {
+    align-items: center;
+
+    .driver-solo-info-text {
+        margin-left: 4px;
+        font-size: 14px;
+        font-weight: 700;
+    }
+}
+
+.custom-text-date {
+    font-size: 14px;
+}
+
+.custom-status-holder {
+    align-items: center;
+    svg-icon {
+        display: flex;
+        align-items: center;
+        width: 14px;
+        height: 14px;
+
+        &.caution {
+            svg {
+                path {
+                    fill: #e66767;
+                }
+            }
+        }
+
+        &.payment_done {
+            svg {
+                path {
+                    fill: #6692f1;
+                }
+            }
+        }
+    }
+    .custom-status-text {
+        font-weight: 700;
+        margin-left: 4px;
+        font-size: 14px;
+        color: #6c6c6c;
+
+        &.past-payment {
+            color: #df3c3c;
+        }
+
+        &.ready-payment {
+            color: #3b73ed;
+        }
+    }
+}
+
+.custom-mileage {
+    span {
+        text-transform: lowercase;
+        color: #919191;
+        font-weight: 600;
+    }
+}

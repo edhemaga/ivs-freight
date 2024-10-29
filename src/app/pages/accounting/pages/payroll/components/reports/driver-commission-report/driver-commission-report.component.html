@@ -1,0 +1,150 @@
+<div class="report-main-holder d-flex">
+    <div class="middle-report-info">
+        <div class="report-card">
+            <div
+                class="report-card-title d-flex align-items-center justify-content-between"
+            >
+                <div
+                    *ngIf="payrollReport$ | async as payroll_report"
+                    class="d-flex align-items-center"
+                >
+                    <div class="payroll_report_title">Report</div>
+                    <!-- <div class="payroll_chip">
+                        {{ (includedLoads$ | async)?.length }} STOP ({{
+                            payroll_report.extraStopCount
+                        }}
+                        EXTRA)
+                    </div> -->
+                    <div class="payroll_chip">
+                        {{ payroll_report.includedLoads }} LOAD
+                    </div>
+                </div>
+                <div
+                    class="report-count-item-load d-flex"
+                    *ngIf="payrollReport$ | async as payroll_report"
+                >
+                    <div class="report-count-item-load-right d-flex">
+                        <div class="report-tickets">
+                            COMMISSION
+                            <span>{{ payroll_report?.commission }}%</span>
+                        </div>
+                        <!-- <div class="report-tickets">
+                            LOADED
+                            <span>{{
+                                payroll_report?.loadedMile | currency : 'USD'
+                            }}</span>
+                        </div>
+                        <div class="report-tickets">
+                            EXTRA STOP
+                            <span>{{
+                                payroll_report?.perStop | currency : 'USD'
+                            }}</span>
+                        </div> -->
+                        <div class="edit">
+                            <svg-icon
+                                [src]="
+                                    'assets/svg/truckassist-table/dropdown/content/edit-hover.svg'
+                                "
+                            ></svg-icon>
+                        </div>
+                        <div
+                            class="edit"
+                            [class.active]="showMap"
+                            (click)="showMap = !showMap"
+                        >
+                            <svg-icon
+                                [src]="'assets/svg/common/load/ic_load_map.svg'"
+                            ></svg-icon>
+                        </div>
+                        <div class="edit burger_menu">
+                            <svg-icon
+                                [src]="
+                                    'assets/svg/truckassist-table/burger-icon.svg'
+                                "
+                            ></svg-icon>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="small-table-holder-main">
+                <app-ca-main-table
+                    *ngIf="!(loading$ | async)"
+                    [sortPredicate]="customSortPredicate"
+                    [columns]="columns"
+                    [data$]="payrollMileageDriverLoads$"
+                    [disableReorderRow]="selectedTab === 'closed'"
+                    [reorderTemplate]="reorderTemplate"
+                    [reorderTemplatePreview]="reorderTemplatePreview"
+                    [transparentTable]="true"
+                    (onReorder)="onReorderDone($event)"
+                ></app-ca-main-table>
+            </div>
+            <div class="map-holder" *ngIf="showMap">
+                <app-ca-map [data]="data"></app-ca-map>
+            </div>
+        </div>
+    </div>
+    <div class="right-report-info">
+        <div class="report-card">
+            <div
+                class="report-card-title d-flex align-items-center justify-content-between"
+            >
+                <div class="d-flex align-items-center">
+                    <div class="payroll_report_title">
+                        Period
+                        {{
+                            (payrollReport$ | async).periodStart
+                                | date : 'MM/dd/yy'
+                        }}
+                    </div>
+                </div>
+            </div>
+            <div class="small-table-holder-main">
+                <app-ca-period-content
+                    (reorderedDataEmiter)="onReorderItem($event)"
+                    (proccessPayroll)="onProccessPayroll($event)"
+                    [isOpen]="selectedTab === 'open'"
+                    [type]="'MILEAGE'"
+                    [componentData]="payrollReport$ | async"
+                ></app-ca-period-content>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- TABLE TEMPLATES -->
+<ng-template #customCountTemplate let-data let-index="index">
+    <div class="custom-load-index">{{ index }}</div>
+</ng-template>
+
+<ng-template #customInvBrk let-data>
+    <div class="load-description d-flex align-items-center">
+        <div class="load-description-name">
+            <div class="load-description-address">{{ data.loadNumber }}</div>
+            <div class="load-description-stop-type">
+                {{ data.brokerName }}
+            </div>
+        </div>
+    </div>
+</ng-template>
+
+
+<ng-template #customLocationTypeLoad let-data let-index="index">
+    <div
+        class="load-description d-flex align-items-center"
+        [class.delivery]="data.stopType.id == 2"
+    >
+        <svg-icon
+            *ngIf="data.orderNumber"
+            src="assets/svg/svg_numbers/olddash/svg_num_box_{{
+                data.orderNumber
+            }}.svg"
+        ></svg-icon>
+        <div class="load-description-name">
+            <div class="load-description-address">{{ data.address }}</div>
+            <div class="load-description-stop-type">
+                {{ data.stopType.name }}
+            </div>
+        </div>
+    </div>
+</ng-template>

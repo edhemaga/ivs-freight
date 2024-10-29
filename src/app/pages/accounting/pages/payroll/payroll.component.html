@@ -33,11 +33,20 @@
         </div>
     </div>
     <div class="report-hold" *ngIf="reportTableExpanded$ | async">
-        <app-payroll-report
-            [selectedTab]="selectedTab"
-            [reportId]="reportTableData?.id"
-            [reportTableData]="reportTableData"
-        ></app-payroll-report>
+        <ng-container [ngSwitch]="payrollType">
+            <ng-container *ngSwitchCase="'Driver Miles'">
+                <app-payroll-report
+                    [selectedTab]="selectedTab"
+                    [reportId]="reportTableData?.id"
+                ></app-payroll-report>
+            </ng-container>
+            <ng-container *ngSwitchCase="'Driver Commission'">
+                <app-driver-commission-report
+                    [selectedTab]="selectedTab"
+                    [reportId]="reportTableData?.id"
+                ></app-driver-commission-report>
+            </ng-container>
+        </ng-container>
     </div>
 </div>
 
@@ -47,7 +56,11 @@
 
 <ng-template #customCell>
     <div>
-        <app-ca-note [note]="''" [openedAll]="false" [parking]="false"></app-ca-note>
+        <app-ca-note
+            [note]="''"
+            [openedAll]="false"
+            [parking]="false"
+        ></app-ca-note>
     </div>
 </ng-template>
 

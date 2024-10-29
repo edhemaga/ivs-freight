@@ -37,6 +37,7 @@ import { DriverMileageSoloTableComponent } from './components/tables/driver-mile
 import { DriverMileageExpandedTableComponent } from './components/tables/driver-mileage-expanded-table/driver-mileage-expanded-table.component';
 import { DriverCommissionSoloTableComponent } from './components/tables/driver-commission-solo-table/driver-commission-solo-table.component';
 import { DriverOwnerTableComponent } from './components/tables/driver-owner-table/driver-owner-table.component';
+import { DriverFlatRateTableComponent } from './components/tables/driver-flat-rate-table/driver-flat-rate-table.component';
 @Component({
     selector: 'app-payroll',
     templateUrl: './payroll.component.html',
@@ -170,6 +171,8 @@ export class PayrollComponent implements OnInit, AfterViewInit, OnDestroy {
         const cointainer = containersArray[mainIndx];
         cointainer.clear();
 
+        console.log(this.payrollType);
+
         switch (this.payrollType) {
             case 'Driver Miles':
                 if (this.selectedTab === 'open') {
@@ -223,6 +226,23 @@ export class PayrollComponent implements OnInit, AfterViewInit, OnDestroy {
                     );
                 }
                 break;
+            case 'Driver Flat Rate':
+                if (this.selectedTab === 'open') {
+                    this.componentRef = cointainer.createComponent(
+                        DriverFlatRateTableComponent,
+                        {
+                            environmentInjector: this.environmentInjector,
+                        }
+                    );
+
+                    // Set inputs and subscribe to outputs if componentRef is created
+                    if (this.componentRef) {
+                        this.componentRef.instance.expandTableEvent.subscribe(
+                            (event: any) => this.expandTable(event)
+                        );
+                    }
+                }
+                break;
             case 'Driver Commission':
                 if (this.selectedTab === 'open') {
                     this.componentRef = cointainer.createComponent(
@@ -239,9 +259,9 @@ export class PayrollComponent implements OnInit, AfterViewInit, OnDestroy {
                         );
                     }
                 }
-            break;
+                break;
             case 'Owner ':
-                console.log("HI OWNER");
+                console.log('HI OWNER');
                 if (this.selectedTab === 'open') {
                     this.componentRef = cointainer.createComponent(
                         DriverOwnerTableComponent,
@@ -257,7 +277,7 @@ export class PayrollComponent implements OnInit, AfterViewInit, OnDestroy {
                         );
                     }
                 }
-            break;
+                break;
         }
 
         // Set inputs and subscribe to outputs if componentRef is created

@@ -11,7 +11,6 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
 import { PayrollComponent } from '@pages/accounting/pages/payroll/payroll.component';
 import { AccountingPayrollComponent } from '@pages/accounting/pages/accounting-payroll/accounting-payroll.component';
 import { PayrollTableComponent } from '@pages/accounting/pages/payroll/components/payroll-table/payroll-table.component';
-import { PayrollReportComponent } from '@pages/accounting/pages/payroll/components/payroll-report/payroll-report.component';
 import { PayrollSmallTablesComponent } from '@pages/accounting/pages/payroll/components/payroll-small-tables/payroll-small-tables.component';
 import { TaTableToolbarComponent } from '@shared/components/ta-table/ta-table-toolbar/ta-table-toolbar.component';
 import { TaInputComponent } from '@shared/components/ta-input/ta-input.component';
@@ -39,6 +38,9 @@ import {
 import { DriverMileageExpandedTableComponent } from './pages/payroll/components/tables/driver-mileage-expanded-table/driver-mileage-expanded-table.component';
 import { DriverCommissionSoloTableComponent } from './pages/payroll/components/tables/driver-commission-solo-table/driver-commission-solo-table.component';
 import { DriverOwnerTableComponent } from './pages/payroll/components/tables/driver-owner-table/driver-owner-table.component';
+import { DriverFlatRateTableComponent } from './pages/payroll/components/tables/driver-flat-rate-table/driver-flat-rate-table.component';
+import { PayrollReportComponent } from './pages/payroll/components/reports/payroll-report/payroll-report.component';
+import { DriverCommissionReportComponent } from './pages/payroll/components/reports/driver-commission-report/driver-commission-report.component';
 @NgModule({
     declarations: [
         // Components
@@ -58,6 +60,8 @@ import { DriverOwnerTableComponent } from './pages/payroll/components/tables/dri
         DriverMileageExpandedTableComponent,
         DriverCommissionSoloTableComponent,
         DriverOwnerTableComponent,
+        DriverFlatRateTableComponent,
+        DriverCommissionReportComponent,
     ],
     imports: [
         // Modules

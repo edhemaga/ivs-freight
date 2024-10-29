@@ -3,8 +3,9 @@ import { createReducer, on } from '@ngrx/store';
 // Actions
 import * as PayrollActions from '../actions/payroll.actions';
 import * as PayrollSoloMileageDriver from '../actions/payroll_solo_mileage_driver.actions';
-import * as PyarollCommissionDriverActions from '../actions/payroll_commission_driver.actions';
+import * as PayrollCommissionDriverActions from '../actions/payroll_commission_driver.actions';
 import * as PayrollOwnerDriverActions from '../actions/payroll_owner_driver.action';
+import * as PayrollFlatRateActions from '../actions/payroll_flat_rate_driver.actions';
 
 // Models
 import { PayrollState } from '../models/payroll.model';
@@ -14,7 +15,7 @@ import * as PayrollMileageDriverReducers from './payroll_reducers/driver_mileage
 import * as PayrollMainReducers from './payroll_reducers/payroll_main.reducer';
 import * as PayrollCommissionDriverReducers from './payroll_reducers/driver_commission.reducer';
 import * as PayrollOwnerDriverReducers from './payroll_reducers/driver_owner.reducer';
-import { getPayrollOwnerDriverListSuccess } from '../actions/payroll_owner_driver.action';
+import * as PayrollFlatRateDriverReducers from './payroll_reducers/driver_flat_rate.reducer';
 
 export const payrollState: PayrollState = {
     payrollCounts: {},
@@ -23,6 +24,7 @@ export const payrollState: PayrollState = {
     ownerPayrollList: [],
     driverMileageCollapsedList: [],
     driverMileageExpandedList: [],
+    driverFlatRateList: [],
     loading: false,
     reportLoading: false,
     expandedReportTable: false,
@@ -123,14 +125,19 @@ export const payrollReducer = createReducer(
     ),
     // DRIVER PAY BY COMMISSION
     on(
-        PyarollCommissionDriverActions.getPayrollCommissionDriverSuccess,
+        PayrollCommissionDriverActions.getPayrollCommissionDriverSuccess,
         PayrollCommissionDriverReducers.onGetPayrollSoloMileageDriverSuccess
     ),
     on(
-        PyarollCommissionDriverActions.getPayrollCommissionDriver,
+        PayrollCommissionDriverActions.getPayrollCommissionDriver,
         PayrollCommissionDriverReducers.onGetPayrollSoloMileageDriver
     ),
 
+    
+    on(
+        PayrollCommissionDriverActions.getPayrollCommissionReportDriverSuccess,
+        PayrollCommissionDriverReducers.onGetPayrollCommissionReportDriverSuccess
+    ),
     // DRIVER OWNER
     on(
         PayrollOwnerDriverActions.getPayrollOwnerDriverList,
@@ -140,5 +147,13 @@ export const payrollReducer = createReducer(
         PayrollOwnerDriverActions.getPayrollOwnerDriverListSuccess,
         PayrollOwnerDriverReducers.onGetPayrollOwnerDriverListSuccess
     ),
-
+    // DRIVER FLAT RATE
+    on(
+        PayrollFlatRateActions.getPayrollFlatRateDriver,
+        PayrollFlatRateDriverReducers.onGetPayrollFlatRateDriver
+    ),
+    on(
+        PayrollFlatRateActions.getPayrollFlatRateDriverSuccess,
+        PayrollFlatRateDriverReducers.onGetPayrollFlatRateDriverSuccess
+    )
 );
