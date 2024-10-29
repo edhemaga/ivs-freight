@@ -133,6 +133,12 @@
                                             "
                                         ></div>
                                     </div>
+                                    <ng-container
+                                        *ngTemplateOutlet="
+                                            dateOptionsList;
+                                            context: {}
+                                        "
+                                    ></ng-container>
                                 </div>
                             </ng-container>
                         </ng-container>
@@ -279,4 +285,6 @@
     </div>
 </ng-template>
 
-<ng-template #dateOptions> </ng-template>
+<ng-template #dateOptionsList>
+    <div class="date-options">Today</div>
+</ng-template>
