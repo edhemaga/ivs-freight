@@ -1456,6 +1456,8 @@ export class CustomerTableComponent
     }
 
     private mapShipperData(data: ShipperResponse): MappedShipperBroker {
+        console.log('SHIPPER data', data);
+
         return {
             ...data,
             isSelected: false,
@@ -1482,10 +1484,14 @@ export class CustomerTableComponent
             tableAvailableHoursShipping:
                 data?.shippingFrom && data?.shippingTo
                     ? data?.shippingFrom + ' - ' + data?.shippingTo
+                    : data?.shippingAppointment
+                    ? CustomerTableStringEnum.APPOINTMENT
                     : null,
             tableAvailableHoursReceiving:
                 data?.receivingFrom && data?.receivingTo
                     ? data?.receivingFrom + ' - ' + data?.receivingTo
+                    : data?.receivingAppointment
+                    ? CustomerTableStringEnum.APPOINTMENT
                     : null,
             reviews: data?.ratingReviews,
             tableRaiting: {

@@ -780,6 +780,8 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
             shipperContacts,
         };
 
+        console.log('newData', newData);
+
         this.shipperService
             .addShipper(newData)
             .pipe(takeUntil(this.destroy$))
@@ -949,12 +951,14 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
             });
     }
 
-    private editShipperById(id: number) {
+    private editShipperById(id: number): void {
         this.shipperService
             .getShipperById(id)
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: (res) => {
+                    console.log('res', res);
+
                     this.shipperForm.patchValue({
                         businessName: res.businessName,
                         phone: res.phone,
@@ -969,12 +973,20 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
                             res.receivingAppointment &&
                             res.receivingOpenTwentyFourHours
                                 ? null
-                                : res.receivingFrom,
+                                : res.receivingFrom
+                                ? MethodsCalculationsHelper.convertTimeFromBackend(
+                                      res.receivingFrom
+                                  )
+                                : null,
                         receivingTo:
                             res.receivingAppointment &&
                             res.receivingOpenTwentyFourHours
                                 ? null
-                                : res.receivingTo,
+                                : res.receivingTo
+                                ? MethodsCalculationsHelper.convertTimeFromBackend(
+                                      res.receivingTo
+                                  )
+                                : null,
                         shippingHoursSameReceiving:
                             res.shippingHoursSameReceiving,
                         shippingAppointment: res.shippingAppointment,
@@ -1104,11 +1116,12 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
         receiving;
         shipping;
     } {
-        let receiving: any = null;
-        let shipping: any = null;
+        let receiving = null;
+        let shipping = null;
 
         if (
-            this.shipperForm.get('receivingAppointment').value &&
+            (this.shipperForm.get('receivingAppointment').value &&
+                this.shipperForm.get('receivingOpenTwentyFourHours').value) ||
             this.shipperForm.get('receivingOpenTwentyFourHours').value
         ) {
             receiving = {
@@ -1135,8 +1148,9 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
             };
         } else {
             if (
-                this.shipperForm.get('shippingOpenTwentyFourHours').value &&
-                this.shipperForm.get('shippingAppointment').value
+                (this.shipperForm.get('shippingOpenTwentyFourHours').value &&
+                    this.shipperForm.get('shippingAppointment').value) ||
+                this.shipperForm.get('shippingOpenTwentyFourHours').value
             ) {
                 shipping = {
                     shippingAppointment: this.shipperForm.get(
@@ -1163,6 +1177,7 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
                 };
             }
         }
+
         return { receiving, shipping };
     }
 
