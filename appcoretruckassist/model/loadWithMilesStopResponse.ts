@@ -18,6 +18,7 @@ export interface LoadWithMilesStopResponse {
     loadNumber?: string | null;
     isStartPoint?: boolean;
     date?: string | null;
+    isFromNextPeriod?: boolean;
     milesStops?: Array<MilesStopShortResponse> | null;
 }
 

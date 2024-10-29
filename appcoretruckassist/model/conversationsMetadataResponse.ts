@@ -9,15 +9,12 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { EnumValue } from './enumValue';
 
 
-export interface PayrollMapLocation { 
-    loadNumber?: string | null;
-    latitude?: number | null;
-    longitude?: number | null;
-    type?: EnumValue;
-    orderInLoad?: number | null;
-    isCancelStop?: boolean;
+export interface ConversationsMetadataResponse { 
+    conversations?: number;
+    archivedConversations?: number;
+    favouriteConversations?: number;
+    unreadConversations?: number;
 }
 

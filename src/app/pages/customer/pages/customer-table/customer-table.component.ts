@@ -1455,7 +1455,7 @@ export class CustomerTableComponent
         };
     }
 
-    private mapShipperData(data: ShipperResponse): MappedShipperBroker {
+    private mapShipperData(data: ShipperResponse) /* : MappedShipperBroker */ {
         console.log('SHIPPER data', data);
 
         return {
@@ -1475,12 +1475,12 @@ export class CustomerTableComponent
                 pickups: data?.pickups,
                 deliveries: data?.deliveries,
             },
-            tableAverageWatingTimePickup: data?.avgPickupTimeInMin
+            tableAverageWatingTimePickup: /* data?.avgPickupTimeInMin
                 ? data.avgPickupTimeInMin.toString()
-                : null,
-            tableAverageWatingTimeDelivery: data?.avgDeliveryTimeInMin
+                :  */ null,
+            tableAverageWatingTimeDelivery: /* data?.avgDeliveryTimeInMin
                 ? data.avgDeliveryTimeInMin.toString()
-                : null,
+                : */ null,
             tableAvailableHoursShipping:
                 data?.shippingFrom && data?.shippingTo
                     ? data?.shippingFrom + ' - ' + data?.shippingTo
@@ -2053,7 +2053,10 @@ export class CustomerTableComponent
     }
 
     // Update Shipper Or Broker In Viewdata
-    private updateData(dataId: number, updatedData: MappedShipperBroker): void {
+    private updateData(
+        dataId: number,
+        updatedData /* : MappedShipperBroker */
+    ): void {
         this.viewData = this.viewData.map((data) => {
             if (data.id === dataId) {
                 data = updatedData;

@@ -1443,6 +1443,7 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 filter.revenueFrom,
                 filter.revenueTo,
                 filter.truckId,
+                filter.driverId,
                 filter.rateFrom,
                 filter.rateTo,
                 filter.paidFrom,

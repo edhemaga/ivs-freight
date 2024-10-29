@@ -44,11 +44,12 @@ export interface ShipperResponse {
     commentCount?: number;
     currentCompanyUserRating?: number | null;
     rating?: number;
+    loads?: number;
     pickups?: number;
     deliveries?: number;
     totalPickupDelivery?: number;
-    avgPickupTimeInMin?: number | null;
-    avgDeliveryTimeInMin?: number | null;
+    avgPickupTime?: string | null;
+    avgDeliveryTime?: string | null;
     files?: Array<FileResponse> | null;
     fileCount?: number | null;
     cover?: FileResponse;
