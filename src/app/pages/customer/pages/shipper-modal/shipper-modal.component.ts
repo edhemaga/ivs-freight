@@ -743,8 +743,6 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
 
         const receivingShipping = this.receivingShippingObject();
 
-        console.log('receivingShipping', receivingShipping);
-
         const documents = [];
         this.documents.map((item) => {
             if (item.realFile) {
@@ -779,8 +777,6 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
             locationType: this.selectedPhysicalAddressTab,
             shipperContacts,
         };
-
-        console.log('newData', newData);
 
         this.shipperService
             .addShipper(newData)
@@ -957,8 +953,6 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: (res) => {
-                    console.log('res', res);
-
                     this.shipperForm.patchValue({
                         businessName: res.businessName,
                         phone: res.phone,
