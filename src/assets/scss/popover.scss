@@ -1393,6 +1393,31 @@
     }
 }
 
+// Open hours popover
+.table-open-hours-popover {
+    .popover-body {
+        position: absolute;
+        top: -4px;
+        left: -2px;
+        width: 184px;
+
+        .open-hours-dropdown {
+            padding: 8px 10px;
+            border-radius: 3px;
+            background: $ta-black-2;
+
+            &-item {
+                margin-bottom: 10px;
+
+                &:last-of-type {
+                    margin-bottom: 0;
+                }
+            }
+        }
+    }
+}
+
+// Invoice aging popover
 .table-invoice-aging-popover {
     .popover-body {
         position: absolute;
@@ -1488,6 +1513,7 @@
     }
 }
 
+// Contacts popover
 .table-contacts-popover {
     .popover-body {
         .table-contacts-dropdown {

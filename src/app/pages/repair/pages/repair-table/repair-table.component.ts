@@ -69,7 +69,7 @@ import { RepairShopModalComponent } from '@pages/repair/pages/repair-modals/repa
 // settings
 import {
     getRepairTruckAndTrailerColumnDefinition,
-    getRepairsShopColumnDefinition,
+    getRepairShopColumnDefinition,
 } from '@shared/utils/settings/table-settings/repair-columns';
 
 // models
@@ -886,13 +886,11 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
             configType === TableStringEnum.REPAIR_TRUCK ||
             configType === TableStringEnum.REPAIR_TRAILER
         ) {
-            return tableColumnsConfig
-                ? tableColumnsConfig
-                : getRepairTruckAndTrailerColumnDefinition();
+            return (
+                tableColumnsConfig ?? getRepairTruckAndTrailerColumnDefinition()
+            );
         } else {
-            return tableColumnsConfig
-                ? tableColumnsConfig
-                : getRepairsShopColumnDefinition();
+            return tableColumnsConfig ?? getRepairShopColumnDefinition();
         }
     }
 
@@ -1050,60 +1048,53 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
             tableAddress: data?.address?.address,
             tableShopServiceType: data?.shopServiceType?.name,
             tableShopServices: data?.serviceTypes,
-            tableOpenHours: data?.openHoursToday,
+            tableOpenHours: {
+                openHours: data?.openHours,
+                openHoursToday: data?.openHoursToday,
+            },
             tableRepairCountBill: data?.bill.toString(),
             tableRepairCountOrder: data?.order.toString(),
-
-            tableBankDetailsBankName: data?.bank?.name
-                ? data.bank.name
-                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-            tableBankDetailsRouting: data?.routing
-                ? data.routing
-                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-            tableBankDetailsAccount: data?.account
-                ? data.account
-                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-            TableDropdownComponentConstantsCountBill: TableStringEnum.NA,
-            TableDropdownComponentConstantsCountOrder: data?.order
-                ? this.thousandSeparator.transform(data.order)
-                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-            tableShopRaiting: {
-                hasLiked: data.currentCompanyUserRating === 1,
-                hasDislike: data.currentCompanyUserRating === -1,
-                likeCount: data?.upCount
-                    ? data.upCount
-                    : TableStringEnum.NUMBER_0,
-                dislikeCount: data?.downCount
-                    ? data.downCount
-                    : TableStringEnum.NUMBER_0,
+            tableBankDetailsBankName: data?.bankResponse?.name,
+            tableBankDetailsRouting: data?.routing,
+            tableBankDetailsAccount: data?.account,
+            tableRaiting: {
+                hasLiked: data?.currentCompanyUserRating === 1,
+                hasDislike: data?.currentCompanyUserRating === -1,
+                likeCount: data?.upCount,
+                dislikeCount: data?.downCount,
             },
             tableContactData: data?.contacts,
-            tableExpense: data?.cost
-                ? TableStringEnum.DOLLAR_SIGN +
-                  this.thousandSeparator.transform(data.cost)
-                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-            tableLUsed: data.lastVisited
+            tableExpense:
+                TableStringEnum.DOLLAR_SIGN +
+                (data?.cost
+                    ? this.thousandSeparator.transform(data?.cost)
+                    : data?.cost.toString()),
+            tableLastUsed: data?.lastVisited
                 ? this.datePipe.transform(
                       data.lastVisited,
                       TableStringEnum.DATE_FORMAT
                   )
-                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-            tableAdded: data.createdAt
+                : null,
+            tableDeactivated: data?.dateDeactivated
+                ? this.datePipe.transform(
+                      data.dateDeactivated,
+                      TableStringEnum.DATE_FORMAT
+                  )
+                : null,
+            tableAdded: data?.createdAt
                 ? this.datePipe.transform(
                       data.createdAt,
                       TableStringEnum.DATE_FORMAT
                   )
-                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-            tableEdited: data.updatedAt
+                : null,
+            tableEdited: data?.updatedAt
                 ? this.datePipe.transform(
                       data.updatedAt,
                       TableStringEnum.DATE_FORMAT
                   )
-                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-            isFavorite: data.pinned,
-            tableAttachments: data?.files ? data.files : [],
+                : null,
             fileCount: data?.fileCount,
-
+            isFavorite: data?.pinned,
             tableDropdownContent: {
                 hasContent: true,
                 content: this.getShopDropdownContent(data),

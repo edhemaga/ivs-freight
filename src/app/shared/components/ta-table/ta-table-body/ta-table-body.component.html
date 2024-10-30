@@ -1217,6 +1217,7 @@
                                             [placement]="'bottom-left'"
                                             popoverClass="table-invoice-aging-popover"
                                             triggers="manual"
+                                            [autoClose]="'outside'"
                                             (hidden)="
                                                 invoiceDropdownActive ===
                                                     row.id &&
@@ -1755,7 +1756,7 @@
                                                             active: service?.active
                                                         }"
                                                         [src]="
-                                                            tableBodySvgRoutes.repairServices +
+                                                            tableBodySvgRoutes.repairServicesRoute +
                                                             service?.logoName
                                                         "
                                                         [svgStyle]="{
@@ -3617,6 +3618,7 @@
                                             [placement]="'bottom-left'"
                                             popoverClass="table-invoice-aging-popover"
                                             triggers="manual"
+                                            [autoClose]="'outside'"
                                             (hidden)="
                                                 invoiceDropdownActive ===
                                                     row.id &&
@@ -4263,7 +4265,7 @@
                                                             active: service?.active
                                                         }"
                                                         [src]="
-                                                            tableBodySvgRoutes.repairServices +
+                                                            tableBodySvgRoutes.repairServicesRoute +
                                                             service?.logoName
                                                         "
                                                         [svgStyle]="{
@@ -5375,6 +5377,79 @@
                                             </div>
                                         </div>
                                     </ng-container>
+
+                                    <!-- OPEN HOURS COLUMN -->
+
+                                    <ng-container
+                                        *ngIf="
+                                            column.ngTemplate === 'open-hours'
+                                        "
+                                    >
+                                        <div
+                                            class="td-content"
+                                            [ngStyle]="{
+                                                width: column.width + 'px',
+                                                'min-width.px':
+                                                    column?.minWidth ?? 'unset'
+                                            }"
+                                        >
+                                            <div
+                                                class="w-100"
+                                                #openHoursPop="ngbPopover"
+                                                [ngbPopover]="openHoursPopover"
+                                                container="body"
+                                                [placement]="'bottom-left'"
+                                                popoverClass="table-open-hours-popover"
+                                                triggers="manual"
+                                                [autoClose]="'outside'"
+                                                (hidden)="
+                                                    openHoursDropdownActiveId ===
+                                                    row.id
+                                                        ? (openHoursDropdownActiveId =
+                                                              -1)
+                                                        : {}
+                                                "
+                                                (click)="
+                                                    onShowOpenHoursDropdown(
+                                                        openHoursPop,
+                                                        row,
+                                                        column
+                                                    )
+                                                "
+                                            >
+                                                <div
+                                                    class="d-flex align-items-center open-hours-container"
+                                                    [ngClass]="{
+                                                        active:
+                                                            openHoursDropdownActiveId ===
+                                                            row.id
+                                                    }"
+                                                    ngbTooltip
+                                                    mainTooltip="Open Hours"
+                                                    tooltipBackground="#424242"
+                                                    tooltipColor="#ffff"
+                                                    position="bottom"
+                                                >
+                                                    <svg-icon
+                                                        class="open-hours-icon"
+                                                        [src]="
+                                                            tableBodySvgRoutes.circleRoute
+                                                        "
+                                                        [svgStyle]="{
+                                                            'width.px': 10,
+                                                            'height.px': 10
+                                                        }"
+                                                    ></svg-icon>
+
+                                                    <p
+                                                        class="m-0 ta-font-semi-bold text-color-black text-size-14"
+                                                    >
+                                                        Open Now
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </ng-container>
                                 </td>
                             </ng-container>
                         </div>
@@ -5557,114 +5632,145 @@
                                     </div>
 
                                     <!-- FAVORITE COLUMN -->
-                                    <div
-                                        class="td-content set-right"
+
+                                    <ng-container
                                         *ngIf="column.ngTemplate === 'favorite'"
-                                        [ngStyle]="{
-                                            width: column.width + 'px',
-                                            'min-width.px': column?.minWidth
-                                                ? column.minWidth
-                                                : 'unset'
-                                        }"
                                     >
                                         <div
-                                            (click)="onFavorite(row)"
-                                            [ngClass]="{
-                                                'is-favorite-icon':
-                                                    row[column.field],
-                                                'not-favorite-icon':
-                                                    !row[column.field]
+                                            class="td-content set-right"
+                                            [ngStyle]="{
+                                                width: column.width + 'px',
+                                                'min-width.px':
+                                                    column?.minWidth ?? 'unset'
                                             }"
-                                        ></div>
-                                    </div>
+                                            ngbTooltip
+                                        >
+                                            <div
+                                                [mainTooltip]="
+                                                    !row[column.field]
+                                                        ? 'Mark Favorite'
+                                                        : 'Unmark'
+                                                "
+                                                tooltipBackground="#424242"
+                                                tooltipColor="#FFFFFF"
+                                                position="bottom"
+                                                (click)="onFavorite(row)"
+                                            >
+                                                <svg-icon
+                                                    class="favorite-icon"
+                                                    [ngClass]="{
+                                                        'is-favorite':
+                                                            row[column.field]
+                                                    }"
+                                                    [src]="
+                                                        tableBodySvgRoutes.favoriteRoute
+                                                    "
+                                                    [svgStyle]="{
+                                                        'width.px': 18,
+                                                        'height.px': 18
+                                                    }"
+                                                ></svg-icon>
+                                            </div>
+                                        </div>
+                                    </ng-container>
 
                                     <!-- NOTE COLUMN -->
-                                    <div
-                                        class="td-content set-right"
-                                        *ngIf="column.ngTemplate === 'note'"
-                                        [ngStyle]="{
-                                            width: column.width + 'px',
-                                            'min-width.px': column?.minWidth
-                                                ? column.minWidth
-                                                : 'unset'
-                                        }"
-                                    >
-                                        <app-ta-note
-                                            [note]="row.note"
-                                            [mainData]="row"
-                                            [entityId]="row.id"
-                                            [entityType]="
-                                                activeTableData.gridNameTitle ===
-                                                    'load' &&
-                                                selectedTab === 'template'
-                                                    ? 'LoadTemplate'
-                                                    : activeTableData?.gridNameTitle ===
-                                                          'Customer' &&
-                                                      selectedTab === 'inactive'
-                                                    ? 'Shipper'
-                                                    : activeTableData?.gridNameTitle !==
-                                                      'Repair'
-                                                    ? activeTableData?.gridNameTitle
-                                                    : activeTableData?.gridNameTitle ===
-                                                          'Repair' &&
-                                                      selectedTab ===
-                                                          'repair-shop'
-                                                    ? 'RepairShop'
-                                                    : 'Repair'
-                                            "
-                                            [openedAll]="false"
-                                            [parking]="false"
-                                            (saveNoteValue)="
-                                                saveValueNote.emit({
-                                                    value: $event,
-                                                    id: row.id
-                                                })
-                                            "
-                                        >
-                                        </app-ta-note>
-                                    </div>
 
-                                    <!-- ACTIONS COLUMN -->
-                                    <div
-                                        class="td-content set-right"
-                                        *ngIf="column.ngTemplate === 'actions'"
-                                        [ngStyle]="{
-                                            width: column.width + 'px',
-                                            'min-width.px': column?.minWidth
-                                                ? column.minWidth
-                                                : 'unset'
-                                        }"
+                                    <ng-container
+                                        *ngIf="column.ngTemplate === 'note'"
                                     >
                                         <div
-                                            #t2="ngbPopover"
-                                            (click)="toggleDropdown(t2, row)"
-                                            [autoClose]="'outside'"
-                                            [ngbPopover]="dropdownPopover"
-                                            [placement]="'bottom-right'"
-                                            class="table-dropdown-container"
-                                            [ngClass]="{
-                                                'active-drop':
-                                                    dropDownActive === row.id &&
-                                                    t2.isOpen()
+                                            class="td-content set-right"
+                                            [ngStyle]="{
+                                                width: column.width + 'px',
+                                                'min-width.px':
+                                                    column?.minWidth ?? 'unset'
                                             }"
-                                            container="body"
-                                            popoverClass="table-dropdown-popover"
-                                            triggers="manual"
-                                            (hidden)="
-                                                onRemoveClickEventListener()
-                                            "
                                         >
-                                            <svg-icon
-                                                [src]="
-                                                    'assets/svg/truckassist-table/dropdown/dropdown.svg'
+                                            <app-ta-note
+                                                [note]="row.note"
+                                                [mainData]="row"
+                                                [entityId]="row.id"
+                                                [entityType]="
+                                                    activeTableData.gridNameTitle ===
+                                                        'load' &&
+                                                    selectedTab === 'template'
+                                                        ? 'LoadTemplate'
+                                                        : activeTableData?.gridNameTitle ===
+                                                              'Customer' &&
+                                                          selectedTab ===
+                                                              'inactive'
+                                                        ? 'Shipper'
+                                                        : activeTableData?.gridNameTitle !==
+                                                          'Repair'
+                                                        ? activeTableData?.gridNameTitle
+                                                        : activeTableData?.gridNameTitle ===
+                                                              'Repair' &&
+                                                          selectedTab ===
+                                                              'repair-shop'
+                                                        ? 'RepairShop'
+                                                        : 'Repair'
                                                 "
-                                                [svgStyle]="{
-                                                    'width.px': '18',
-                                                    'height.px': '18'
-                                                }"
-                                            ></svg-icon>
+                                                [openedAll]="false"
+                                                [parking]="false"
+                                                (saveNoteValue)="
+                                                    saveValueNote.emit({
+                                                        value: $event,
+                                                        id: row.id
+                                                    })
+                                                "
+                                            >
+                                            </app-ta-note>
                                         </div>
-                                    </div>
+                                    </ng-container>
+
+                                    <!-- ACTIONS COLUMN -->
+
+                                    <ng-container
+                                        *ngIf="column.ngTemplate === 'actions'"
+                                    >
+                                        <div
+                                            class="td-content set-right"
+                                            [ngStyle]="{
+                                                width: column.width + 'px',
+                                                'min-width.px':
+                                                    column?.minWidth ?? 'unset'
+                                            }"
+                                        >
+                                            <div
+                                                #t2="ngbPopover"
+                                                (click)="
+                                                    toggleDropdown(t2, row)
+                                                "
+                                                [autoClose]="'outside'"
+                                                [ngbPopover]="dropdownPopover"
+                                                [placement]="'bottom-right'"
+                                                class="table-dropdown-container"
+                                                [ngClass]="{
+                                                    'active-drop':
+                                                        dropDownActive ===
+                                                            row.id &&
+                                                        t2.isOpen()
+                                                }"
+                                                container="body"
+                                                popoverClass="table-dropdown-popover"
+                                                triggers="manual"
+                                                (hidden)="
+                                                    onRemoveClickEventListener()
+                                                "
+                                            >
+                                                <svg-icon
+                                                    [src]="
+                                                        'assets/svg/truckassist-table/dropdown/dropdown.svg'
+                                                    "
+                                                    [svgStyle]="{
+                                                        'width.px': '18',
+                                                        'height.px': '18'
+                                                    }"
+                                                ></svg-icon>
+                                            </div>
+                                        </div>
+                                    </ng-container>
                                 </td>
                             </ng-container>
                         </div>
@@ -6154,7 +6260,8 @@
     </tbody>
 </table>
 
-<!-- DROPDOWN -->
+<!-- DROPDOWN POPOVER -->
+
 <ng-template #dropdownPopover let-data="data">
     <div class="table-list-dropdown">
         <div
@@ -6228,7 +6335,8 @@
     </div>
 </ng-template>
 
-<!-- DESCRIPTION -->
+<!-- DESCRIPTION POPOVER-->
+
 <ng-template #descriptionPopover let-data="data">
     <div
         class="description-dropdown-container"
@@ -6301,6 +6409,8 @@
     </div>
 </ng-template>
 
+<!-- DRIVER DESCRIPTION POPOVER -->
+
 <ng-template #driverDescriptionPopover let-data="data">
     <div class="description-dropdown-container">
         <ng-container *ngIf="endorsement; else tableOffDutyLocation">
@@ -6368,10 +6478,14 @@
     </div>
 </ng-template>
 
-<!-- STATUS -->
+<!-- STATUS POPOVER-->
+
 <ng-template #statusPopover>
     <app-ta-status-component [statusId]="loadId"> </app-ta-status-component>
 </ng-template>
+
+<!-- STOPS POPOVER -->
+
 <ng-template #stopsPopover>
     <div
         class="stops-titles"
@@ -6546,5 +6660,25 @@
                 </div>
             </ng-container>
         </div>
+    </div>
+</ng-template>
+
+<!-- OPEN HOURS POPOVER -->
+
+<ng-template #openHoursPopover let-data="data">
+    <div class="d-flex flex-column open-hours-dropdown">
+        <ng-container
+            *ngFor="let workingHourItem of data; trackBy: trackByIdentity"
+        >
+            <div class="d-flex flex-column open-hours-dropdown-item">
+                <p class="m-0 ta-font-bold text-color-white-4 text-size-11">
+                    {{ workingHourItem?.workingDays }}
+                </p>
+
+                <span class="text-color-white text-size-14">
+                    {{ workingHourItem?.workingHours }}
+                </span>
+            </div>
+        </ng-container>
     </div>
 </ng-template>
