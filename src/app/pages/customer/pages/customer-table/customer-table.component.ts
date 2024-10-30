@@ -1364,7 +1364,6 @@ export class CustomerTableComponent
     }
 
     private mapBrokerData(data: BrokerResponse): MappedShipperBroker {
-        console.log('BROKER data', data);
         return {
             ...data,
             isSelected: false,

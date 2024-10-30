@@ -81,6 +81,7 @@ import { TableLoadStatusPipe } from '@shared/pipes/table-load-status.pipe';
 
 // enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
+import { TableBodyStringEnum } from '@shared/components/ta-table/ta-table-body/enums';
 
 // models
 import {
@@ -913,49 +914,17 @@ export class TaTableBodyComponent
     }
 
     // Show Invoice Aging Dropdown
-    public onShowInvoiceAgingDropdown(
+    public onShowInvoiceAgingDropdown<T extends { id: number; field: string }>(
         tooltip: NgbTooltip,
-        row: any,
-        column: any
+        row: T,
+        column: T
     ): void {
         tooltip.isOpen() ? tooltip.close() : tooltip.open();
 
         this.invoiceDropdownActive = tooltip.isOpen() ? row.id : -1;
         this.invoiceDropdownType = tooltip.isOpen() ? column.field : null;
 
-        let shipperData = row[column.field];
-
-        shipperData = {
-            ...shipperData,
-            invoiceAgeingGroupOne: {
-                percentage: 15,
-                periodOfDays: '0-30',
-                countInvoice: 7,
-                totalSum: 12453.43,
-                averageDays: null,
-            },
-            invoiceAgeingGroupTwo: {
-                percentage: 30,
-                periodOfDays: '31-60',
-                countInvoice: 18,
-                totalSum: 245593.56,
-                averageDays: null,
-            },
-            invoiceAgeingGroupThree: {
-                percentage: 45,
-                periodOfDays: '61-90',
-                countInvoice: 38,
-                totalSum: 53593.56,
-                averageDays: null,
-            },
-            invoiceAgeingGroupFour: {
-                percentage: 25,
-                periodOfDays: '91+',
-                countInvoice: 13,
-                totalSum: 23424.34,
-                averageDays: null,
-            },
-        };
+        const shipperData = row[column.field];
 
         const {
             invoiceAgeingGroupOne,
@@ -964,12 +933,16 @@ export class TaTableBodyComponent
             invoiceAgeingGroupFour,
         } = shipperData;
 
-        this.invoiceDropdownData = [
-            invoiceAgeingGroupOne,
-            invoiceAgeingGroupTwo,
-            invoiceAgeingGroupThree,
-            invoiceAgeingGroupFour,
-        ];
+        this.invoiceDropdownData = {
+            isUnPaidAging:
+                column?.field === TableBodyStringEnum.TABLE_UNPAID_INV_AGING,
+            invAgingGroups: [
+                invoiceAgeingGroupOne,
+                invoiceAgeingGroupTwo,
+                invoiceAgeingGroupThree,
+                invoiceAgeingGroupFour,
+            ],
+        };
     }
 
     // Dropdown Actions
