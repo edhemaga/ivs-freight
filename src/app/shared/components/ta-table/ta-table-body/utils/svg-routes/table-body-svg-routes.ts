@@ -3,4 +3,5 @@ export class TableBodySvgRoutes {
     static pickupRoute: string = 'assets/svg/common/ic_arrow-line-left.svg';
     static deliveryRoute: string = 'assets/svg/common/ic_arrow-right-line.svg';
     static workHourRoute: string = 'assets/svg/common/ic_time.svg';
+    static repairServices: string = 'assets/svg/common/repair-services/';
 }

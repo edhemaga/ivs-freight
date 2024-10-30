@@ -1508,82 +1508,22 @@ table.truckassist-table-body-style {
 
                         // SERVICE COLUMN
                         .service-container {
-                            width: 100%;
-                            display: flex;
+                            .service-icon {
+                                margin-right: 2px;
 
-                            .img-style {
-                                width: 18px;
-                                height: 18px;
-                            }
+                                &.active {
+                                    svg {
+                                        path {
+                                            fill: $bw5;
+                                        }
+                                    }
+                                }
 
-                            .img-margin {
-                                margin-right: 6px;
-                            }
-
-                            /* Regular Type Icon */
-                            .truck {
-                                background: url('/assets/svg/truckassist-table/repair/shop-type-inactive/ic_truck_table-inactive.svg');
-                            }
-
-                            .trailer {
-                                background: url('/assets/svg/truckassist-table/repair/shop-type-inactive/ic_trailer_table-inactive.svg');
-                            }
-
-                            .mobile {
-                                background: url('/assets/svg/truckassist-table/repair/shop-type-inactive/ic_mobile_table-inactive.svg');
-                            }
-
-                            .shop {
-                                background: url('/assets/svg/truckassist-table/repair/shop-type-inactive/ic_shop_table-inactive.svg');
-                            }
-
-                            .towing {
-                                background: url('/assets/svg/truckassist-table/repair/shop-type-inactive/ic_towing_table-inactive.svg');
-                            }
-
-                            .parts {
-                                background: url('/assets/svg/truckassist-table/repair/shop-type-inactive/ic_parts_table-inactive.svg');
-                            }
-
-                            .tire {
-                                background: url('/assets/svg/truckassist-table/repair/shop-type-inactive/ic_tire_table-inactive.svg');
-                            }
-
-                            .dealer {
-                                background: url('/assets/svg/truckassist-table/repair/shop-type-inactive/ic_dealer_table-inactive.svg');
-                            }
-
-                            /* Active Type Icon */
-                            .truck-active {
-                                background: url('/assets/svg/truckassist-table/repair/shop-type-active/ic_truck_table.svg');
-                            }
-
-                            .trailer-active {
-                                background: url('/assets/svg/truckassist-table/repair/shop-type-active/ic_trailer_table.svg');
-                            }
-
-                            .mobile-active {
-                                background: url('/assets/svg/truckassist-table/repair/shop-type-active/ic_mobile_table.svg');
-                            }
-
-                            .shop-active {
-                                background: url('/assets/svg/truckassist-table/repair/shop-type-active/ic_shop_table.svg');
-                            }
-
-                            .towing-active {
-                                background: url('/assets/svg/truckassist-table/repair/shop-type-active/ic_towing_table.svg');
-                            }
-
-                            .parts-active {
-                                background: url('/assets/svg/truckassist-table/repair/shop-type-active/ic_parts_table.svg');
-                            }
-
-                            .tire-active {
-                                background: url('/assets/svg/truckassist-table/repair/shop-type-active/ic_tire_table.svg');
-                            }
-
-                            .dealer-active {
-                                background: url('/assets/svg/truckassist-table/repair/shop-type-active/ic_dealer_table.svg');
+                                svg {
+                                    path {
+                                        fill: $dark-3;
+                                    }
+                                }
                             }
                         }
 

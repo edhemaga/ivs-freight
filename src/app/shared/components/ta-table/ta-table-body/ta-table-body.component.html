@@ -1727,92 +1727,46 @@
 
                                     <!-- SERVICE COLUMN-->
 
-                                    <div
-                                        class="td-content"
+                                    <ng-container
                                         *ngIf="column.ngTemplate === 'service'"
-                                        [ngStyle]="{
-                                            width: column.width + 'px',
-                                            'min-width.px': column?.minWidth
-                                                ? column.minWidth
-                                                : 'unset'
-                                        }"
                                     >
                                         <div
-                                            class="service-container"
-                                            *ngIf="row[column.field]"
+                                            class="td-content"
+                                            [ngStyle]="{
+                                                width: column.width + 'px',
+                                                'min-width.px':
+                                                    column?.minWidth ?? 'unset'
+                                            }"
                                         >
                                             <div
-                                                class="img-style img-margin"
-                                                [class]="
-                                                    row[column.field][0]?.active
-                                                        ? 'truck-active'
-                                                        : 'truck'
-                                                "
-                                            ></div>
-
-                                            <div
-                                                class="img-style img-margin"
-                                                [class]="
-                                                    row[column.field][1]?.active
-                                                        ? 'trailer-active'
-                                                        : 'trailer'
-                                                "
-                                            ></div>
-
-                                            <div
-                                                class="img-style img-margin"
-                                                [class]="
-                                                    row[column.field][2]?.active
-                                                        ? 'mobile-active'
-                                                        : 'mobile'
-                                                "
-                                            ></div>
-                                            <div
-                                                class="img-style img-margin"
-                                                [class]="
-                                                    row[column.field][3]?.active
-                                                        ? 'shop-active'
-                                                        : 'shop'
-                                                "
-                                            ></div>
-
-                                            <div
-                                                class="img-style img-margin"
-                                                [class]="
-                                                    row[column.field][4]?.active
-                                                        ? 'towing-active'
-                                                        : 'towing'
-                                                "
-                                            ></div>
-
-                                            <div
-                                                class="img-style img-margin"
-                                                [class]="
-                                                    row[column.field][5]?.active
-                                                        ? 'parts-active'
-                                                        : 'parts'
-                                                "
-                                            ></div>
-
-                                            <div
-                                                class="img-style img-margin"
-                                                [class]="
-                                                    row[column.field][6]?.active
-                                                        ? 'tire-active'
-                                                        : 'tire'
-                                                "
-                                            ></div>
-
-                                            <div
-                                                class="img-style"
-                                                [class]="
-                                                    row[column.field][7]?.active
-                                                        ? 'dealer-active'
-                                                        : 'dealer'
-                                                "
-                                            ></div>
+                                                class="d-flex align-items-center service-container"
+                                            >
+                                                <ng-container
+                                                    *ngFor="
+                                                        let service of row[
+                                                            column.field
+                                                        ];
+                                                        trackBy: trackByIdentity
+                                                    "
+                                                >
+                                                    <svg-icon
+                                                        class="service-icon"
+                                                        [ngClass]="{
+                                                            active: service?.active
+                                                        }"
+                                                        [src]="
+                                                            tableBodySvgRoutes.repairServices +
+                                                            service?.logoName
+                                                        "
+                                                        [svgStyle]="{
+                                                            'width.px': 18,
+                                                            'height.px': 18
+                                                        }"
+                                                    ></svg-icon>
+                                                </ng-container>
+                                            </div>
                                         </div>
-                                    </div>
+                                    </ng-container>
 
                                     <!-- PPG COLUMN-->
 
@@ -4281,86 +4235,46 @@
 
                                     <!-- SERVICE COLUMN-->
 
-                                    <div
-                                        class="td-content"
+                                    <ng-container
                                         *ngIf="column.ngTemplate === 'service'"
-                                        [ngStyle]="{
-                                            width: column.width + 'px',
-                                            'min-width.px': column?.minWidth
-                                                ? column.minWidth
-                                                : 'unset'
-                                        }"
                                     >
                                         <div
-                                            class="service-container"
-                                            *ngIf="row[column.field]"
+                                            class="td-content"
+                                            [ngStyle]="{
+                                                width: column.width + 'px',
+                                                'min-width.px':
+                                                    column?.minWidth ?? 'unset'
+                                            }"
                                         >
                                             <div
-                                                class="img-style img-margin"
-                                                [class]="
-                                                    row[column.field][0]?.active
-                                                        ? 'truck-active'
-                                                        : 'truck'
-                                                "
-                                            ></div>
-                                            <div
-                                                class="img-style img-margin"
-                                                [class]="
-                                                    row[column.field][1]?.active
-                                                        ? 'trailer-active'
-                                                        : 'trailer'
-                                                "
-                                            ></div>
-                                            <div
-                                                class="img-style img-margin"
-                                                [class]="
-                                                    row[column.field][2]?.active
-                                                        ? 'mobile-active'
-                                                        : 'mobile'
-                                                "
-                                            ></div>
-                                            <div
-                                                class="img-style img-margin"
-                                                [class]="
-                                                    row[column.field][3]?.active
-                                                        ? 'shop-active'
-                                                        : 'shop'
-                                                "
-                                            ></div>
-                                            <div
-                                                class="img-style img-margin"
-                                                [class]="
-                                                    row[column.field][4]?.active
-                                                        ? 'towing-active'
-                                                        : 'towing'
-                                                "
-                                            ></div>
-                                            <div
-                                                class="img-style img-margin"
-                                                [class]="
-                                                    row[column.field][5]?.active
-                                                        ? 'parts-active'
-                                                        : 'parts'
-                                                "
-                                            ></div>
-                                            <div
-                                                class="img-style img-margin"
-                                                [class]="
-                                                    row[column.field][6]?.active
-                                                        ? 'tire-active'
-                                                        : 'tire'
-                                                "
-                                            ></div>
-                                            <div
-                                                class="img-style"
-                                                [class]="
-                                                    row[column.field][7]?.active
-                                                        ? 'dealer-active'
-                                                        : 'dealer'
-                                                "
-                                            ></div>
+                                                class="d-flex align-items-center service-container"
+                                            >
+                                                <ng-container
+                                                    *ngFor="
+                                                        let service of row[
+                                                            column.field
+                                                        ];
+                                                        trackBy: trackByIdentity
+                                                    "
+                                                >
+                                                    <svg-icon
+                                                        class="service-icon"
+                                                        [ngClass]="{
+                                                            active: service?.active
+                                                        }"
+                                                        [src]="
+                                                            tableBodySvgRoutes.repairServices +
+                                                            service?.logoName
+                                                        "
+                                                        [svgStyle]="{
+                                                            'width.px': 18,
+                                                            'height.px': 18
+                                                        }"
+                                                    ></svg-icon>
+                                                </ng-container>
+                                            </div>
                                         </div>
-                                    </div>
+                                    </ng-container>
 
                                     <!-- PPG COLUMN-->
 

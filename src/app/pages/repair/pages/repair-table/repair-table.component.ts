@@ -820,7 +820,6 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                 tableConfiguration: 'REPAIR_SHOP',
                 isActive: this.selectedTab === TableStringEnum.REPAIR_SHOP,
                 gridColumns: this.getGridColumns('REPAIR_SHOP'),
-                inactive: true,
             },
         ];
 
@@ -1042,16 +1041,19 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     // Map Shop Data
-    // TODO find parametar data type
-    private mapShopData(data: any): void {
+    private mapShopData(data): void {
+        console.log('data', data);
+
         return {
             ...data,
             isSelected: false,
-            tableAddress: data?.address?.address
-                ? data.address.address
-                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-            tableShopServices: data?.serviceTypes ? data?.serviceTypes : null,
+            tableAddress: data?.address?.address,
+            tableShopServiceType: data?.shopServiceType?.name,
+            tableShopServices: data?.serviceTypes,
             tableOpenHours: data?.openHoursToday,
+            tableRepairCountBill: data?.bill.toString(),
+            tableRepairCountOrder: data?.order.toString(),
+
             tableBankDetailsBankName: data?.bank?.name
                 ? data.bank.name
                 : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
@@ -1197,11 +1199,13 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                 filter.active,
                 filter.pinned,
                 filter.companyOwned,
-                false,
+                filter.isCompanyRelated,
                 filter.categoryIds,
                 filter.long,
                 filter.lat,
                 filter.distance,
+                '',
+                250,
                 filter.costFrom,
                 filter.costTo,
                 filter.visitedByMe,
@@ -1210,6 +1214,8 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                 filter.pageSize,
                 filter.companyId,
                 filter.sort,
+                null,
+                null,
                 filter.searchOne,
                 filter.searchTwo,
                 filter.searchThree
