@@ -310,6 +310,7 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
                                 {
                                     ...editData,
                                     avatarIndex: this.currentIndex,
+                                    isDeactivateOnly: true,
                                 }
                             );
                         })
