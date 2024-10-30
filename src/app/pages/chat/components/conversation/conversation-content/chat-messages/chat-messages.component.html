@@ -21,9 +21,9 @@
             <ng-container *ngIf="(messages$ | async)?.count">
                 <ng-container
                     *ngFor="
-                        let message of (messages$ | async).data;
+                        let message of (messages$ | async)?.data;
                         let ind = index;
-                        trackBy: 'id' | trackByProperty
+                        trackBy: '' | trackByProperty
                     "
                 >
                     <ng-container *ngIf="message">
@@ -185,6 +185,7 @@
                                 messageIdActionsDisplayed === message.id &&
                                 isReplyOrEditOpen
                             "
+                            [isArchived]="conversation.isArchived"
                         ></app-chat-message>
                     </ng-container>
                 </ng-container>
