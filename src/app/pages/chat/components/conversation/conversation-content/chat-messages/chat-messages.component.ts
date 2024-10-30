@@ -145,9 +145,9 @@ export class ChatMessagesComponent
                                 if (
                                     message.messageType.id ===
                                     arg.data[indx + 1]?.messageType?.id
-                                ) {
+                                )
                                     count++;
-                                } else {
+                                else {
                                     const modifiedMessage: ChatMessage = {
                                         ...message,
                                         content: `${
