@@ -5,4 +5,5 @@ export interface DriverModalEditData extends EditData {
     data: DriverResponse;
     avatarIndex?: number;
     isDispatchCall?: boolean;
+    isDeactivateOnly?: boolean;
 }
