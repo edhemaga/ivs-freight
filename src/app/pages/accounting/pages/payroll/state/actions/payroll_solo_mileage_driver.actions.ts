@@ -81,7 +81,7 @@ export const closePayrollSoloMileageReportDriver = createAction(
         reportId: number;
         lastLoadDate: string;
         selectedCreditIds?: number[];
-        selectedDeducionIds?: number[];
+        selectedDeductionIds?: number[];
         selectedBonusIds?: number[];
         paymentType?: string;
         otherPaymentType?: string;

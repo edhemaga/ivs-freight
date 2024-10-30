@@ -9,6 +9,7 @@ import * as PayrollCommissionActions from '../actions/payroll_commission_driver.
 import {
     selectCommissionListDriver,
     selectPayrollDriverCommissionLoads,
+    selectPayrollReportsIncludedCommissionStops,
 } from '../selectors/payroll_driver_commision.selector';
 
 // Models
@@ -20,7 +21,10 @@ import {
     selectPayrollOpenedReport,
     selectPayrollState,
 } from '../selectors/payroll.selector';
-import { PayrollDriverCommissionByIdResponse } from 'appcoretruckassist';
+import {
+    LoadWithMilesStopResponse,
+    PayrollDriverCommissionByIdResponse,
+} from 'appcoretruckassist';
 
 @Injectable({
     providedIn: 'root',
@@ -44,18 +48,20 @@ export class PayrollDriverCommissionFacadeService {
         );
     }
 
+    public selectPayrollReportIncludedLoads$: Observable<
+        LoadWithMilesStopResponse[]
+    > = this.store.pipe(select(selectPayrollReportsIncludedCommissionStops));
+
     public getPayrollDriverCommissionReport({
         reportId,
-        lastLoadDate,
+        selectedLoadIds,
         selectedCreditIds,
-        selectedBonusIds,
-        selectedDeducionIds,
+        selectedDeductionIds,
     }: {
         reportId: string;
-        lastLoadDate?: string;
+        selectedLoadIds?: number[];
         selectedCreditIds?: number[];
-        selectedBonusIds?: number[];
-        selectedDeducionIds?: number[];
+        selectedDeductionIds?: number[];
     }) {
         this.store
             .pipe(select(selectPayrollState), take(1))
@@ -73,17 +79,15 @@ export class PayrollDriverCommissionFacadeService {
                         PayrollCommissionActions.getPayrollCommissionReportDriver(
                             {
                                 reportId,
-                                lastLoadDate:
-                                    lastLoadDate ?? payrollState.lastLoadDate,
+                                selectedLoadIds:
+                                    selectedLoadIds ??
+                                    payrollState.selectedLoadIds,
                                 selectedCreditIds:
                                     selectedCreditIds ??
                                     payrollState.selectedCreditIds,
-                                selectedBonusIds:
-                                    selectedBonusIds ??
-                                    payrollState.selectedBonusIds,
-                                selectedDeducionIds:
-                                    selectedDeducionIds ??
-                                    payrollState.selectedDeducionIds,
+                                selectedDeductionIds:
+                                    selectedDeductionIds ??
+                                    payrollState.selectedDeductionIds,
                             }
                         )
                     );

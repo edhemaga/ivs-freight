@@ -4,6 +4,7 @@ import { Store, select } from '@ngrx/store';
 
 import * as PayrollActions from '../actions/payroll.actions';
 import * as PayrollDriverMileageSolo from '../actions/payroll_solo_mileage_driver.actions';
+import * as PayrollCommissionActions from '../actions/payroll_commission_driver.actions';
 
 // SELECTORS
 import {
@@ -33,6 +34,7 @@ import {
     IPayrollCountsSelector,
     MilesStopShortReponseWithRowType,
     PayrollDriverMileageExpandedListResponse,
+    PayrollTypes,
 } from '../models/payroll.model';
 import { PayrollDriverMileageResponse } from 'appcoretruckassist/model/payrollDriverMileageResponse';
 
@@ -196,9 +198,9 @@ export class PayrollFacadeService {
                                 selectedBonusIds:
                                     selectedBonusIds ??
                                     payrollState.selectedBonusIds,
-                                selectedDeducionIds:
+                                selectedDeductionIds:
                                     selectedDeducionIds ??
-                                    payrollState.selectedDeducionIds,
+                                    payrollState.selectedDeductionIds,
                             }
                         )
                     );
@@ -212,35 +214,56 @@ export class PayrollFacadeService {
         );
     }
 
-    public closePayrollDriverMileageReport({
+    public closePayrollReport({
         reportId,
         amount,
         paymentType,
         otherPaymentType,
+        payrollType,
     }: {
         reportId: number;
         amount: number;
         paymentType: string;
         otherPaymentType?: string;
+        payrollType?: PayrollTypes;
     }) {
         this.store
             .pipe(select(selectPayrollState), take(1))
             .subscribe((payrollState) => {
-                this.store.dispatch(
-                    PayrollDriverMileageSolo.closePayrollSoloMileageReportDriver(
-                        {
-                            amount,
-                            reportId,
-                            lastLoadDate: payrollState.lastLoadDate,
-                            selectedCreditIds: payrollState.selectedCreditIds,
-                            selectedBonusIds: payrollState.selectedBonusIds,
-                            selectedDeducionIds:
-                                payrollState.selectedDeducionIds,
-                            paymentType,
-                            otherPaymentType,
-                        }
-                    )
-                );
+                if (payrollType === 'miles') {
+                    this.store.dispatch(
+                        PayrollDriverMileageSolo.closePayrollSoloMileageReportDriver(
+                            {
+                                amount,
+                                reportId,
+                                lastLoadDate: payrollState.lastLoadDate,
+                                selectedCreditIds:
+                                    payrollState.selectedCreditIds,
+                                selectedBonusIds: payrollState.selectedBonusIds,
+                                selectedDeductionIds:
+                                    payrollState.selectedDeductionIds,
+                                paymentType,
+                                otherPaymentType,
+                            }
+                        )
+                    );
+                } else if (payrollType === 'commission') {
+                    this.store.dispatch(
+                        PayrollCommissionActions.closePayrollCommissionReportDriver(
+                            {
+                                amount,
+                                reportId,
+                                selectedLoadIds: payrollState.selectedLoadIds,
+                                selectedCreditIds:
+                                    payrollState.selectedCreditIds,
+                                selectedDeductionIds:
+                                    payrollState.selectedDeductionIds,
+                                paymentType,
+                                otherPaymentType,
+                            }
+                        )
+                    );
+                }
             });
     }
 }

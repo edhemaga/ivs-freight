@@ -1,5 +1,5 @@
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { catchError, map, Observable, of, switchMap } from 'rxjs';
+import { catchError, map, Observable, of, switchMap, tap } from 'rxjs';
 import { Action } from '@ngrx/store';
 
 // ACTIONS
@@ -7,7 +7,6 @@ import * as PayrollCommissionDriverActions from '../../actions/payroll_commissio
 
 // SERVICES
 import { PayrollService } from '../../../services/payroll.service';
-import { getPayrollCommissionReportDriverError } from '../../actions/payroll_commission_driver.actions';
 
 export function getPayrollCommissionDriverListEffect(
     actions$: Actions,
@@ -55,13 +54,12 @@ export function getPayrollSoloMileageReportEffect(
                 ),
                 switchMap((action) => {
                     return payrollService
-                        .getPayrollCommissionDriverReport(
-                            action.reportId,
-                            action.lastLoadDate,
-                            action.selectedCreditIds,
-                            action.selectedDeducionIds,
-                            action.selectedBonusIds
-                        )
+                        .getPayrollCommissionDriverReport({
+                            reportId: action.reportId,
+                            selectedCreditIds: action.selectedCreditIds,
+                            selectedDeductionIds: action.selectedDeductionIds,
+                            selectedLoadIds: action.selectedLoadIds,
+                        })
                         .pipe(
                             map((data) => {
                                 return PayrollCommissionDriverActions.getPayrollCommissionReportDriverSuccess(
@@ -73,6 +71,56 @@ export function getPayrollSoloMileageReportEffect(
                             catchError((error) =>
                                 of(
                                     PayrollCommissionDriverActions.getPayrollCommissionReportDriverError(
+                                        {
+                                            error,
+                                        }
+                                    )
+                                )
+                            )
+                        );
+                })
+            )
+    );
+}
+
+export function closePayrollCommissionReportEffect(
+    actions$: Actions,
+    payrollService: PayrollService
+) {
+    return createEffect(
+        (): Observable<Action> =>
+            actions$.pipe(
+                ofType(
+                    PayrollCommissionDriverActions.closePayrollCommissionReportDriver
+                ),
+                switchMap((action) => {
+                    return payrollService
+                        .closePayrollCommissionDriverReport(
+                            action.amount,
+                            action.reportId,
+                            action.selectedLoadIds,
+                            action.selectedDeductionIds,
+                            action.selectedCreditIds,
+                            action.paymentType,
+                            action.otherPaymentType
+                        )
+                        .pipe(
+                            map((data) => {
+                                return PayrollCommissionDriverActions
+                                    .closePayrollCommissionReportDriverSuccess
+                                    // {
+                                    //     payroll: data,
+                                    // }
+                                    ();
+                            }),
+                            tap((data) => {
+                                // this.store.dispatch(
+                                //   PaymentActions.restartRefreshDataSuccess({ flag: false })
+                                // );
+                            }),
+                            catchError((error) =>
+                                of(
+                                    PayrollCommissionDriverActions.closePayrollCommissionReportDriverError(
                                         {
                                             error,
                                         }

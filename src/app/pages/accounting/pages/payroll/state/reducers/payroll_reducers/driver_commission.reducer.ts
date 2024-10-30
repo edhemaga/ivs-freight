@@ -19,14 +19,15 @@ export const onGetPayrollSoloMileageDriver = (state: PayrollState) => ({
     loading: true,
 });
 
+
 export const onGetPayrollCommissionReportDriver = (
     state: PayrollState,
     params: IGet_Payroll_Solo_Mileage_Driver_Report
 ) => ({
     ...state,
     lastLoadDate: params.lastLoadDate,
-    selectedDeducionIds:
-        params.selectedDeducionIds ?? state.selectedDeducionIds,
+    selectedDeductionIds:
+        params.selectedDeductionIds ?? state.selectedDeductionIds,
     selectedBonusIds: params.selectedBonusIds ?? state.selectedBonusIds,
     selectedCreditIds: params.selectedCreditIds ?? state.selectedCreditIds,
 });
@@ -39,3 +40,4 @@ export const onGetPayrollCommissionReportDriverSuccess = (
     payrollOpenedReport: data.payroll,
     reportLoading: false,
 });
+

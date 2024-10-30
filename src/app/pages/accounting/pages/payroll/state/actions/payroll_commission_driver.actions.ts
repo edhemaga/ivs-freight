@@ -1,7 +1,10 @@
 import { createAction, props } from '@ngrx/store';
 import { PayrollCommissionDriverEnum } from '../enums/driver_commission/payroll_driver_commission.enums';
 import { IDriverCommissionList } from '../models/driver_commission.model';
-import { IGet_Payroll_Solo_Mileage_Driver_Report } from '../models/payroll.model';
+import {
+    IGet_Payroll_Commission_Driver_Report,
+    IGet_Payroll_Solo_Mileage_Driver_Report,
+} from '../models/payroll.model';
 import { PayrollDriverCommissionByIdResponse } from 'appcoretruckassist';
 
 export const getPayrollCommissionDriver = createAction(
@@ -21,7 +24,7 @@ export const getPayrollCommissionDriverError = createAction(
 // GET DRIVER MILEAGE REPORT
 export const getPayrollCommissionReportDriver = createAction(
     PayrollCommissionDriverEnum.GET_PAYROLL_COMMISSION_DRIVER_REPORT,
-    props<IGet_Payroll_Solo_Mileage_Driver_Report>()
+    props<IGet_Payroll_Commission_Driver_Report>()
 );
 
 export const getPayrollCommissionReportDriverSuccess = createAction(
@@ -46,4 +49,27 @@ export const getPayrollCommissionDriverClosedPayrollSuccess = createAction(
 export const getPayrollCommissionDriverClosedPayrollError = createAction(
     PayrollCommissionDriverEnum.GET_PAYROLL_COMMISSION_CLOSED_PAYROLL_ERROR,
     props<{ error: string }>()
+);
+
+export const closePayrollCommissionReportDriver = createAction(
+    PayrollCommissionDriverEnum.CLOSE_PAYROLL_COMMISSION_DRIVER_PAYMENT,
+    props<{
+        amount: number;
+        reportId: number;
+        selectedLoadIds?: number[];
+        selectedCreditIds?: number[];
+        selectedDeductionIds?: number[];
+        paymentType?: string;
+        otherPaymentType?: string;
+    }>()
+);
+
+export const closePayrollCommissionReportDriverSuccess = createAction(
+    PayrollCommissionDriverEnum.CLOSE_PAYROLL_COMMISSION_DRIVER_PAYMENT_SUCCESS,
+    //props<{ payroll: PayrollDriverMileageResponse }>()
+);
+
+export const closePayrollCommissionReportDriverError = createAction(
+    PayrollCommissionDriverEnum.CLOSE_PAYROLL_COMMISSION_DRIVER_PAYMENT_ERROR,
+    props<any>()
 );

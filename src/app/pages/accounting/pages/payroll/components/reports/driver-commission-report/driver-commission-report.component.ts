@@ -6,7 +6,7 @@ import {
     OnInit,
     ViewChild,
 } from '@angular/core';
-import { Observable, Subject } from 'rxjs';
+import { Observable, Subject, takeUntil } from 'rxjs';
 import { CdkDragDrop } from '@angular/cdk/drag-drop';
 
 // Components
@@ -19,13 +19,19 @@ import { PayrollFacadeService } from '../../../state/services/payroll.service';
 
 // Models
 import {
+    LoadWithMilesStopResponse,
     PayrollDriverCommissionByIdResponse,
     PayrollDriverMileageByIdResponse,
 } from 'appcoretruckassist';
 
-import { MilesStopShortReponseWithRowType } from '../../../state/models/payroll.model';
+import {
+    MilesStopShortReponseWithRowType,
+    IPayrollProccessPaymentModal,
+} from '../../../state/models/payroll.model';
 import { PayrollReportTableResponse } from 'ca-components/lib/components/ca-period-content/models/payroll-report-tables.type';
 import { CommissionLoadShortReponseWithRowType } from '../../../state/models/driver_commission.model';
+import { PayrollDriverMileageResponse } from 'appcoretruckassist/model/payrollDriverMileageResponse';
+import { PayrollProccessPaymentModalComponent } from '../../../payroll-modals/payroll-proccess-payment-modal/payroll-proccess-payment-modal.component';
 
 @Component({
     selector: 'app-driver-commission-report',
@@ -48,6 +54,8 @@ export class DriverCommissionReportComponent implements OnInit, OnDestroy {
         CommissionLoadShortReponseWithRowType[]
     >;
 
+    includedLoads$: Observable<LoadWithMilesStopResponse[]>;
+
     // Templates
     @ViewChild('customCountTemplate', { static: false })
     public readonly customCountTemplate!: ElementRef;
@@ -57,6 +65,15 @@ export class DriverCommissionReportComponent implements OnInit, OnDestroy {
 
     @ViewChild('customLocationTypeLoad', { static: false })
     public readonly customLocationTypeLoad!: ElementRef;
+
+    @ViewChild('customPickupHeaderTemplate', { static: false })
+    public readonly customPickupHeaderTemplate!: ElementRef;
+
+    @ViewChild('customDeliveryHeaderTemplate', { static: false })
+    public readonly customDeliveryHeaderTemplate!: ElementRef;
+
+    @ViewChild('cusstomLoadDescriptionTemplate', { static: false })
+    public readonly cusstomLoadDescriptionTemplate!: ElementRef;
 
     constructor(
         // Services
@@ -87,14 +104,60 @@ export class DriverCommissionReportComponent implements OnInit, OnDestroy {
                 template: this.customInvBrk, // Pass the template reference
             },
             {
-                header: 'INV, BROKER',
-                row: true,
-                sortable: false,
+                header: 'Pickup',
+                headerCellType: 'template',
+                headerTemplate: this.customPickupHeaderTemplate,
+                field: 'pickups',
                 cellType: 'template',
-                template: this.customLocationTypeLoad, // Pass the template reference
+                template: this.cusstomLoadDescriptionTemplate, // Pass the template reference
+            },
+            {
+                header: 'Delivery',
+                headerCellType: 'template',
+                headerTemplate: this.customDeliveryHeaderTemplate,
+                field: 'pickups',
+                cellType: 'template',
+                template: this.cusstomLoadDescriptionTemplate, // Pass the template reference
+            },
+            {
+                header: 'Empty',
+                field: 'emptyMiles',
+                cellType: 'text',
+                cellCustomClasses: 'text-right',
+            },
+            {
+                header: 'Loaded',
+                field: 'loadedMiles',
+                cellCustomClasses: 'text-right',
+                cellType: 'text', // Pass the template reference
+            },
+            {
+                header: 'Miles',
+                field: 'totalMiles',
+                cellCustomClasses: 'text-right',
+                cellType: 'text', // Pass the template reference
+            },
+            {
+                header: 'Revenue',
+                field: 'revenue',
+                pipeType: 'currency',
+                pipeString: 'USD',
+                cellCustomClasses: 'text-right',
+                cellType: 'text', // Pass the template reference
+            },
+            {
+                header: 'Subtotal',
+                field: 'subtotal',
+                pipeType: 'currency',
+                pipeString: 'USD',
+                cellType: 'text',
+                cellCustomClasses: 'text-right',
+                textCustomClasses: 'b-600',
             },
         ];
     }
+
+    openedPayroll: PayrollDriverCommissionByIdResponse;
 
     subscribeToStoreData() {
         this.payrollCommissionFacadeService.getPayrollDriverCommissionReport({
@@ -105,8 +168,21 @@ export class DriverCommissionReportComponent implements OnInit, OnDestroy {
         this.payrollReport$ =
             this.payrollCommissionFacadeService.selectPayrollOpenedReport$;
 
+        this.payrollFacadeService.selectPayrollOpenedReport$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((payroll) => {
+                this.openedPayroll = payroll;
+            });
+
         this.payrollMileageDriverLoads$ =
             this.payrollCommissionFacadeService.selectPayrollReportDriverCommissionLoads$;
+
+        this.includedLoads$ =
+            this.payrollCommissionFacadeService.selectPayrollReportIncludedLoads$;
+
+        this.payrollCommissionFacadeService.selectPayrollReportDriverCommissionLoads$.subscribe(
+            (res) => console.log(res, '-fsfasdfsaf')
+        );
     }
 
     ngOnDestroy(): void {
@@ -147,26 +223,48 @@ export class DriverCommissionReportComponent implements OnInit, OnDestroy {
     }
 
     onProccessPayroll(payrollData: PayrollDriverMileageByIdResponse) {
-        // this.modalService.openModal(
-        //     PayrollProccessPaymentModalComponent,
-        //     {
-        //         size: 'small',
-        //     },
-        //     {
-        //         type: 'new',
-        //         data: {
-        //             id: payrollData.id,
-        //             totalEarnings:
-        //                 (payrollData as any).debt ?? payrollData.totalEarnings,
-        //             payrollNumber: payrollData.payrollNumber,
-        //             selectedTab: this.selectedTab,
-        //         },
-        //     }
-        // );
+        this.modalService.openModal(
+            PayrollProccessPaymentModalComponent,
+            {
+                size: 'small',
+            },
+            {
+                type: 'new',
+                data: {
+                    id: payrollData.id,
+                    totalEarnings:
+                        (payrollData as any).debt ?? payrollData.totalEarnings,
+                    payrollNumber: payrollData.payrollNumber,
+                    selectedTab: this.selectedTab,
+                    payrollType: 'commission',
+                } as IPayrollProccessPaymentModal,
+            }
+        );
     }
 
     customSortPredicate = (index: number, _: CdkDragDrop<any>): boolean => {
         return true;
         //return this.allowedLoadIds.includes(index);
     };
+
+    onReorderDone(drag: CdkDragDrop<any[] | null, any, any>) {
+        const loadId = drag.container.data[drag.currentIndex - 1]?.id;
+        if (loadId) {
+            const loadList = [
+                ...this.openedPayroll.includedLoads,
+                ...this.openedPayroll.excludedLoads,
+            ]
+                .filter((load) => load.id <= loadId)
+                .map((load) => load.id);
+
+            if (loadList) {
+                this.payrollCommissionFacadeService.getPayrollDriverCommissionReport(
+                    {
+                        reportId: `${this.reportId}`,
+                        selectedLoadIds: loadList,
+                    }
+                );
+            }
+        }
+    }
 }

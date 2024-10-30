@@ -16,7 +16,10 @@ import { ModalService } from '@shared/services/modal.service';
 import { PayrollFacadeService } from '../../../state/services/payroll.service';
 
 // models
-import { MilesStopShortReponseWithRowType } from '../../../state/models/payroll.model';
+import {
+    IPayrollProccessPaymentModal,
+    MilesStopShortReponseWithRowType,
+} from '../../../state/models/payroll.model';
 import {
     MilesStopShortResponse,
     PayrollDriverMileageByIdResponse,
@@ -50,11 +53,6 @@ export class PayrollReportComponent implements OnInit, OnDestroy {
     public readonly customCountTemplate!: ElementRef;
     @ViewChild('customLocationTypeLoad', { static: false })
     public readonly customLocationTypeLoad!: ElementRef;
-    @ViewChild('reorderTemplate', { static: false })
-    public readonly reorderTemplate!: ElementRef;
-
-    @ViewChild('reorderTemplatePreview', { static: false })
-    public readonly reorderTemplatePreview!: ElementRef;
 
     @ViewChild('customFeeTemplate', { static: false })
     public readonly customFeeTemplate!: ElementRef;
@@ -217,16 +215,7 @@ export class PayrollReportComponent implements OnInit, OnDestroy {
     }
 
     onReorderDone(drag: CdkDragDrop<any[] | null, any, any>) {
-        console.log(drag.currentIndex);
-        console.log(drag.previousIndex);
-        console.log('ON DRAG FINISH', drag.container.data);
-
         const loadId = drag.container.data[drag.currentIndex - 1]?.loadId;
-        console.log('WHAT IS LOAD ID', loadId);
-        console.log([
-            ...this.openedPayroll.includedLoads,
-            ...this.openedPayroll.excludedLoads,
-        ]);
         if (loadId) {
             const load = [
                 ...this.openedPayroll.includedLoads,
@@ -251,7 +240,7 @@ export class PayrollReportComponent implements OnInit, OnDestroy {
         let dataSend = {
             reportId: `${this.reportId}`,
             selectedCreditIds: null,
-            selectedDeducionIds: null,
+            selectedDeductionIds: null,
             selectedBonusIds: null,
         };
         if (_title === 'Credit') {
@@ -262,7 +251,7 @@ export class PayrollReportComponent implements OnInit, OnDestroy {
         } else if (_title === 'Deduction') {
             dataSend = {
                 ...dataSend,
-                selectedDeducionIds: _included.map((load) => load.id),
+                selectedDeductionIds: _included.map((load) => load.id),
             };
         } else if (_title === 'Bonus') {
             dataSend = {
@@ -288,7 +277,8 @@ export class PayrollReportComponent implements OnInit, OnDestroy {
                         (payrollData as any).debt ?? payrollData.totalEarnings,
                     payrollNumber: payrollData.payrollNumber,
                     selectedTab: this.selectedTab,
-                },
+                    payrollType: 'miles',
+                } as IPayrollProccessPaymentModal,
             }
         );
     }

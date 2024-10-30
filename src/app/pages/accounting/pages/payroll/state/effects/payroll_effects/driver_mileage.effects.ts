@@ -134,7 +134,7 @@ export function getPayrollSoloMileageReportEffect(
                             action.reportId,
                             action.lastLoadDate,
                             action.selectedCreditIds,
-                            action.selectedDeducionIds,
+                            action.selectedDeductionIds,
                             action.selectedBonusIds
                         )
                         .pipe(
@@ -177,7 +177,7 @@ export function closePayrollSoloMileageReportEffect(
                             action.reportId,
                             action.lastLoadDate,
                             action.selectedCreditIds,
-                            action.selectedDeducionIds,
+                            action.selectedDeductionIds,
                             action.selectedBonusIds,
                             action.paymentType,
                             action.otherPaymentType

@@ -223,7 +223,7 @@ export class PayrollProccessPaymentModalComponent implements OnDestroy {
         const isOpen = this.modalData.selectedTab;
 
         if (isOpen === 'open') {
-            this.payrollFacadeService.closePayrollDriverMileageReport({
+            this.payrollFacadeService.closePayrollReport({
                 amount: isUnpaid ? 0 : formData.amount,
                 reportId: this.modalData.id,
                 paymentType: this.selectedTab === 2 ? 'Manual' : 'Ach',

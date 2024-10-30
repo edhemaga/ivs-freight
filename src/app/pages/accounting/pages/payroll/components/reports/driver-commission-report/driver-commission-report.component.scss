@@ -554,6 +554,18 @@
             }
         }
     }
+
+    &.normal {
+        svg-icon {
+            rect {
+                fill: #91919133 !important;
+            }
+
+            text {
+                fill: #6C6C6C !important;
+            }
+        }
+    }
 }
 
 .small-table-holder-main {
@@ -582,6 +594,9 @@
         --td-cointainer-last-child-padding-right: 0;
 
         --table-preview-row-first-td-padding: 0 8px;
+
+
+        --opacity-first-row: 1;
     }
 }
 
@@ -596,4 +611,33 @@
     background-color: #91919133;
     font-size: 11px;
     font-weight: 600;
+}
+
+
+.custom-load-header{
+    svg-icon{
+        svg{
+            display: flex;
+            width: 14px;
+            height: 14px;
+        }
+       
+        margin-right: 6px;
+    }
+
+    &.pickup{
+        svg-icon{
+            path{
+                fill: #56B4AC;
+            }
+        }
+    }
+
+    &.delivery{
+        svg-icon{
+            path{
+                fill: #E66767;
+            }
+        }
+    }
 }

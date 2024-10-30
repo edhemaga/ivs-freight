@@ -1,5 +1,6 @@
 import { PayrollDriverMileageListResponse } from 'appcoretruckassist';
 import {
+    IGet_Payroll_Commission_Driver_Report,
     IGet_Payroll_Solo_Mileage_Driver_Report,
     PayrollDriverMileageCollapsedListResponse,
     PayrollDriverMileageExpandedListResponse,
@@ -23,14 +24,13 @@ export const onGetPayrollSoloMileageDriverSuccess = (
 
 export const onGetPayrollSoloMileageReportDriver = (
     state: PayrollState,
-    params: IGet_Payroll_Solo_Mileage_Driver_Report
+    params: IGet_Payroll_Commission_Driver_Report
 ) => ({
     ...state,
-    lastLoadDate: params.lastLoadDate,
-    selectedDeducionIds:
-        params.selectedDeducionIds ?? state.selectedDeducionIds,
-    selectedBonusIds: params.selectedBonusIds ?? state.selectedBonusIds,
+    selectedLoadIds: params.selectedLoadIds,
     selectedCreditIds: params.selectedCreditIds ?? state.selectedCreditIds,
+    selectedDeductionIds:
+        params.selectedDeductionIds ?? state.selectedDeductionIds,
 });
 
 export const onGetPayrollSoloMileageReportDriverErrorSuccess = (
@@ -62,7 +62,7 @@ export const onClosePayrollSoloMileageReportDriverSuccess = (
     expandedReportTable: false,
     closeReportPaymentLoading: false,
     payrollCounts: {},
-    selectedDeducionIds: [],
+    selectedDeductionIds: [],
     selectedBonusIds: [],
     selectedCreditIds: [],
     lastLoadDate: undefined,
@@ -112,7 +112,7 @@ export const onDriverMileagePayrollClosedPaymentsSuccess = (
     expandedReportTable: false,
     closeReportPaymentLoading: false,
     payrollCounts: {},
-    selectedDeducionIds: [],
+    selectedDeductionIds: [],
     selectedBonusIds: [],
     selectedCreditIds: [],
     lastLoadDate: undefined,

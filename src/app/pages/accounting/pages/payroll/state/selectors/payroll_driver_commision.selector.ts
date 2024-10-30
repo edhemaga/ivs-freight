@@ -4,6 +4,7 @@ import {
     PayrollState,
 } from '../models/payroll.model';
 import { CommissionLoadShortReponseWithRowType } from '../models/driver_commission.model';
+import { PayrollLoadMinimalResponse } from 'appcoretruckassist';
 
 export const selectPayrollState =
     createFeatureSelector<PayrollState>('payroll');
@@ -12,6 +13,19 @@ export const selectCommissionListDriver = createSelector(
     selectPayrollState,
     (state) => {
         return state.payrollCommissionDriverList;
+    }
+);
+
+export const selectPayrollReportsIncludedCommissionStops = createSelector(
+    selectPayrollState,
+    (state) => {
+        const included_only = state.payrollOpenedReport?.includedLoads || [];
+        // let allInculdedLoads: PayrollLoadMinimalResponse[] = [];
+        // included_only.map(
+        //     (loads) =>
+        //         (allInculdedLoads = [...allInculdedLoads, ...loads.milesStops])
+        // );
+        return included_only;
     }
 );
 

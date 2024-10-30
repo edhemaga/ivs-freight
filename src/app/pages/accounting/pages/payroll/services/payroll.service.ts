@@ -16,6 +16,7 @@ import {
 import { IDriverOwnerList } from '../state/models/driver_owner.model';
 import { IDriverCommissionList } from '../state/models/driver_commission.model';
 import { IDriverFlatRateList } from '../state/models/driver_flat_rate.model';
+import { IGet_Payroll_Commission_Driver_Report } from '../state/models/payroll.model';
 
 @Injectable({ providedIn: 'root' })
 export class PayrollService {
@@ -78,6 +79,33 @@ export class PayrollService {
     public getPayrollCommissionDriverList(): Observable<IDriverCommissionList> {
         return this.http.get<IDriverCommissionList>(
             `${environment.API_ENDPOINT}/api/payroll/driver/commission/list`
+        );
+    }
+
+    public closePayrollCommissionDriverReport(
+        amount: number,
+        reportId: number,
+        selectedLoadIds?: number[],
+        selectedDeducionIds?: number[],
+        selectedCreditIds?: number[],
+        paymentType?: string,
+        otherPaymentType?: string
+    ): Observable<PayrollDriverMileageResponse> {
+        const body = {
+            id: reportId,
+            selectedDeducionIds: selectedDeducionIds,
+            selectedLoadIds: selectedLoadIds,
+            selectedCreditIds: selectedCreditIds,
+            pay: {
+                type: paymentType,
+                otherPaymentType,
+                //date: '2024-10-15T16:09:54.299Z',
+                amount: amount,
+            },
+        };
+        return this.http.put<PayrollDriverMileageResponse>(
+            `${environment.API_ENDPOINT}/api/payroll/driver/mileage/close`,
+            body
         );
     }
 
@@ -162,16 +190,19 @@ export class PayrollService {
         );
     }
 
-    public getPayrollCommissionDriverReport(
-        reportId: string,
-        lastLoadDate: string,
-        selectedCreditIds?: number[],
-        selectedDeducionIds?: number[],
-        selectedBonusIds?: number[]
-    ): Observable<PayrollDriverCommissionByIdResponse> {
+    public getPayrollCommissionDriverReport({
+        reportId,
+        selectedCreditIds,
+        selectedDeductionIds,
+        selectedLoadIds,
+    }: IGet_Payroll_Commission_Driver_Report): Observable<PayrollDriverCommissionByIdResponse> {
         let params = new HttpParams();
-        if (lastLoadDate) {
-            params = params.append('LastLoadDate', lastLoadDate);
+
+        if (selectedLoadIds) {
+            selectedLoadIds.map(
+                (creditId) =>
+                    (params = params.append('SelectedLoadIds', creditId))
+            );
         }
         if (selectedCreditIds) {
             selectedCreditIds.map(
@@ -180,17 +211,13 @@ export class PayrollService {
             );
         }
 
-        if (selectedDeducionIds) {
-            selectedDeducionIds.map(
+        if (selectedDeductionIds) {
+            selectedDeductionIds.map(
                 (deductionId) =>
-                    (params = params.append('SelectedDeducionIds', deductionId))
-            );
-        }
-
-        if (selectedBonusIds) {
-            selectedBonusIds.map(
-                (bonusId) =>
-                    (params = params.append('SelectedBonusIds', bonusId))
+                    (params = params.append(
+                        'SelectedDeductionIds',
+                        deductionId
+                    ))
             );
         }
 

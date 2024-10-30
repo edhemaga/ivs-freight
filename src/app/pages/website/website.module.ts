@@ -89,7 +89,7 @@ import { CaComponentsLibModule } from 'ca-components';
         TaCheckboxComponent,
         TaSpinnerComponent,
 
-        CaComponentsLibModule,
+       // CaComponentsLibModule,
         // ngrx effects
         EffectsModule.forFeature([AuthEffect]),
         //ngrx reducers

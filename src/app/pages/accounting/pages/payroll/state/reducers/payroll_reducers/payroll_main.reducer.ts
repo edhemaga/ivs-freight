@@ -22,7 +22,7 @@ export const onSetPayrollopenedTab = (
     ...state,
     payrollOpenedTab: data.tabStatus,
     payrollCounts: {},
-    selectedDeducionIds: [],
+    selectedDeductionIds: [],
     selectedBonusIds: [],
     selectedCreditIds: [],
     lastLoadDate: undefined,

@@ -16,7 +16,7 @@
                         EXTRA)
                     </div> -->
                     <div class="payroll_chip">
-                        {{ payroll_report.includedLoads }} LOAD
+                        {{ payroll_report.includedLoads?.length }} LOAD
                     </div>
                 </div>
                 <div
@@ -104,7 +104,7 @@
                     (reorderedDataEmiter)="onReorderItem($event)"
                     (proccessPayroll)="onProccessPayroll($event)"
                     [isOpen]="selectedTab === 'open'"
-                    [type]="'MILEAGE'"
+                    [type]="'COMMISSION'"
                     [componentData]="payrollReport$ | async"
                 ></app-ca-period-content>
             </div>
@@ -128,12 +128,8 @@
     </div>
 </ng-template>
 
-
 <ng-template #customLocationTypeLoad let-data let-index="index">
-    <div
-        class="load-description d-flex align-items-center"
-        [class.delivery]="data.stopType.id == 2"
-    >
+    <div class="load-description d-flex align-items-center">
         <svg-icon
             *ngIf="data.orderNumber"
             src="assets/svg/svg_numbers/olddash/svg_num_box_{{
@@ -147,4 +143,137 @@
             </div>
         </div>
     </div>
+</ng-template>
+
+<ng-template #customPickupHeaderTemplate>
+    <div class="custom-load-header d-flex align-items-center pickup">
+        <svg-icon src="assets/svg/common/ic_pickup.svg"></svg-icon>
+        <div>Pickup</div>
+    </div>
+</ng-template>
+<ng-template #customDeliveryHeaderTemplate>
+    <div class="custom-load-header d-flex align-items-center delivery">
+        <svg-icon src="assets/svg/common/ic_delivery.svg"></svg-icon>
+        <div>Delivery</div>
+    </div>
+</ng-template>
+
+<ng-template #cusstomLoadDescriptionTemplate let-data>
+    <div class="load-description d-flex align-items-center normal">
+        <svg-icon
+            *ngIf="data.length"
+            src="assets/svg/svg_numbers/olddash/svg_num_box_{{
+                data.length
+            }}.svg"
+        ></svg-icon>
+        <div class="load-description-name">
+            <div class="load-description-address">{{ data[0].address }}</div>
+            <div class="load-description-stop-type">
+                {{ data[0].date | date : 'MM/dd/yy hh:mm a' }}
+            </div>
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #reorderTemplatePreview let-row="row" let-index="index">
+    <td class="text-center">
+        <div class="td-container">
+            <div class="td-content-container with-padding">
+                <svg-icon
+                    [src]="'assets/ca-components/svg/common/ic_two_arrows.svg'"
+                    [svgStyle]="{ color: '#919191', display: 'flex' }"
+                ></svg-icon>
+            </div>
+        </div>
+    </td>
+    <td colspan="4">
+        <div class="td-container">
+            <div class="td-content-container">
+                <div class="custom-load-index text b-600">Total</div>
+            </div>
+        </div>
+    </td>
+    <td class="w-100 text-right">
+        <div class="td-container">
+            <div class="td-content-container">
+                <div class="dragg-move-end-period">DRAG TO MOVE END PERIOD</div>
+            </div>
+        </div>
+    </td>
+</ng-template>
+
+<ng-template #reorderTemplate let-row="row" let-index="index">
+    <ng-container
+        *ngIf="
+            includedLoads$
+                | async
+                | payrollTableCommissionTotal
+                    : (payrollReport$ | async).commission as payroll_totals
+        "
+    >
+        <td class="text-center" *ngIf="selectedTab === 'open'">
+            <div class="td-container">
+                <div class="td-content-container">
+                    <svg-icon
+                        [src]="
+                            'assets/ca-components/svg/common/ic_two_arrows.svg'
+                        "
+                        [svgStyle]="{ color: '#919191', display: 'flex' }"
+                    ></svg-icon>
+                </div>
+            </div>
+        </td>
+        <td [attr.colspan]="selectedTab === 'open' ? 3 : 4">
+            <div class="td-container">
+                <div class="td-content-container">
+                    <div class="custom-load-index text b-600">Total</div>
+                </div>
+            </div>
+        </td>
+        <td class="text-right">
+            <div class="td-container">
+                <div class="td-content-container">
+                    <div class="custom-load-index text">
+                        {{ payroll_totals.empty }}
+                    </div>
+                </div>
+            </div>
+        </td>
+        <td class="text-right">
+            <div class="td-container">
+                <div class="td-content-container">
+                    <div class="custom-load-index text">
+                        {{ payroll_totals.loaded }}
+                    </div>
+                </div>
+            </div>
+        </td>
+        <td class="text-right">
+            <div class="td-container">
+                <div class="td-content-container">
+                    <div class="custom-load-index text">
+                        {{ payroll_totals.miles }}
+                    </div>
+                </div>
+            </div>
+        </td>
+        <td class="text-right">
+            <div class="td-container">
+                <div class="td-content-container">
+                    <div class="custom-load-index text">
+                        {{ payroll_totals.revenue | currency }}
+                    </div>
+                </div>
+            </div>
+        </td>
+        <td class="text-right">
+            <div class="td-container">
+                <div class="td-content-container">
+                    <div class="custom-load-index text b-600">
+                        {{ payroll_totals.subtotal | currency }}
+                    </div>
+                </div>
+            </div>
+        </td>
+    </ng-container>
 </ng-template>

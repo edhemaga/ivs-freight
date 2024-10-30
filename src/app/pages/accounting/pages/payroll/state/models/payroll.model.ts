@@ -18,9 +18,10 @@ export interface PayrollState {
     loading: boolean;
     reportLoading: boolean;
     lastLoadDate?: string;
-    selectedDeducionIds?: number[];
+    selectedDeductionIds?: number[];
     selectedCreditIds?: number[];
     selectedBonusIds?: number[];
+    selectedLoadIds?: number[];
     expandedReportTable?: boolean;
     closeReportPaymentLoading?: boolean;
     closeReportPaymentError?: boolean;
@@ -105,6 +106,7 @@ export interface IPayrollProccessPaymentModal {
     totalEarnings: number;
     payrollNumber: string;
     selectedTab: 'open' | 'closed';
+    payrollType?: PayrollTypes
 }
 
 export interface IAddPayrollClosedPayment {
@@ -122,6 +124,14 @@ export interface IGet_Payroll_Solo_Mileage_Driver_Report {
     reportId: string;
     lastLoadDate: string;
     selectedCreditIds?: number[];
-    selectedDeducionIds?: number[];
+    selectedDeductionIds?: number[];
     selectedBonusIds?: number[];
 }
+export interface IGet_Payroll_Commission_Driver_Report {
+    reportId: string;
+    selectedLoadIds?: number[];
+    selectedCreditIds?: number[];
+    selectedDeductionIds?: number[];
+}
+
+export type PayrollTypes = 'miles' | 'commission' | 'flat rate' | 'owner';
