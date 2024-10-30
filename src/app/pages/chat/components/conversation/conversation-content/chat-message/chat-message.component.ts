@@ -104,7 +104,6 @@ export class ChatMessageComponent extends UnsubscribeHelper implements OnInit {
             else
                 this.singleImageAspectRatio =
                     ChatImageAspectRatioEnum.TwoByThree;
-
         };
     }
 
@@ -116,7 +115,10 @@ export class ChatMessageComponent extends UnsubscribeHelper implements OnInit {
     }
 
     public toggleActions(displayed: boolean): void {
-        if (this.message?.isDeleted || this.selectedMessageId === this.message.id)
+        if (
+            this.message?.isDeleted ||
+            this.selectedMessageId === this.message.id
+        )
             return;
 
         this.hasActionsDisplayed = displayed;

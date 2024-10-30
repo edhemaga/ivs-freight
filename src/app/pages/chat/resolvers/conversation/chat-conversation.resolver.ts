@@ -29,6 +29,7 @@ export class ChatConversationResolver {
             map((res: ChatMessagePaginationResponse) => {
                 const messages = res?.pagination?.data.map(
                     (message: ChatMessage) => {
+                        message.isReceivedFromHub = false;
                         return chatMessageSenderFullname(
                             res?.pagination?.data,
                             message
