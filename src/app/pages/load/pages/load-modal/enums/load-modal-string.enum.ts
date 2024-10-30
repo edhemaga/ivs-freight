@@ -216,4 +216,5 @@ export enum LoadModalStringEnum {
 
     TRUCKS_SVG_ROUTE = 'assets/svg/common/trucks/',
     TRAILERS_SVG_ROUTE = 'assets/svg/common/trailers/',
+    COMMISSION = 'Commission',
 }

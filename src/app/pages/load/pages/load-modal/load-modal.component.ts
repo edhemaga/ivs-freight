@@ -156,7 +156,12 @@ import {
 
 // Svg Routes
 import { LoadModalSvgRoutes } from '@pages/load/pages/load-modal/utils/svg-routes/load-modal-svg-routes';
-import { CaMapComponent, ICaMapProps, CaInputDropdownComponent, CaInputComponent  } from 'ca-components';
+import {
+    CaMapComponent,
+    ICaMapProps,
+    CaInputDropdownComponent,
+    CaInputComponent,
+} from 'ca-components';
 
 @Component({
     selector: 'app-load-modal',
@@ -756,8 +761,13 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         const selectedDispatcher: DispatchLoadModalResponse =
             this.selectedDispatches;
 
+        // adjusted rate option is shown in dropdown if commission driver or owner set
         if (selectedDispatcher) {
-            return !!selectedDispatcher.driver.owner;
+            return (
+                !!selectedDispatcher.driver.owner ||
+                selectedDispatcher.driver.payType.name ===
+                    LoadModalStringEnum.COMMISSION
+            );
         }
 
         return false;
@@ -766,7 +776,8 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     public get showDriverRate(): boolean {
         return (
             this.selectedDispatches &&
-            this.selectedDispatches.payType === LoadModalStringEnum.FLAT_RATE
+            this.selectedDispatches?.driver?.payType.name ===
+                LoadModalStringEnum.FLAT_RATE
         );
     }
 
@@ -2033,9 +2044,8 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                     customClass: LoadModalStringEnum.LOAD_DISPATCHES_TTD,
                 },
             };
-
             if (
-                this.selectedDispatches.payType ===
+                this.selectedDispatches?.driver?.payType.name ===
                 LoadModalStringEnum.FLAT_RATE
             ) {
                 this.inputService.changeValidators(
@@ -2775,7 +2785,6 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             case LoadModalStringEnum.FIRST_PICKUP:
                 this.isActivePickupStop = event;
 
-                this.isActiveDeliveryStop = false;
                 this.isActivePickupStop = !this.isActivePickupStop;
 
                 this.loadExtraStops().controls.filter((item) => {
@@ -2785,6 +2794,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                 break;
             case LoadModalStringEnum.FIRST_DELIVERY:
                 if (!this.selectedPickupShipper) return;
+
                 this.isActiveDeliveryStop = !this.isActiveDeliveryStop;
 
                 this.isActivePickupStop = false;
@@ -4980,8 +4990,9 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                 const isUserReversingFromInvoicedStatus =
                     this.originalStatus === LoadStatusEnum[8] &&
                     this.isPreviousStatus;
-                    
-                if (isUserReversingFromInvoicedStatus) newData.invoicedDate = null;
+
+                if (isUserReversingFromInvoicedStatus)
+                    newData.invoicedDate = null;
 
                 if (this.isLoadClosed)
                     newData.statusHistory = response.statusHistory;
