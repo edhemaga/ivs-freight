@@ -37,6 +37,7 @@ import {
 
 // Enums
 import {
+    ChatJoinedOrLeftMessageEnum,
     ChatMessageArrivalTypeEnum,
     ChatMessageTypeEnum,
     ChatStringTypeEnum,
@@ -50,8 +51,10 @@ import {
     GetCurrentUserHelper,
     UnsubscribeHelper,
 } from '@pages/chat/utils/helpers';
-import { ChatDateOptionConstant } from '@pages/chat/utils/constants';
 import moment from 'moment';
+
+// Constants
+import { ChatDateOptionConstant } from '@pages/chat/utils/constants';
 
 @Component({
     changeDetection: ChangeDetectionStrategy.OnPush,
@@ -126,7 +129,45 @@ export class ChatMessagesComponent
     }
 
     public initStoreValues(): void {
-        this.messages$ = this.chatStoreService.selectMessages();
+        this.messages$ = this.chatStoreService.selectMessages().pipe(
+            map((arg) => {
+                let count: number = 0;
+
+                return {
+                    ...arg,
+                    data: [
+                        ...arg?.data?.map((message, indx) => {
+                            if (
+                                message?.messageType?.name ===
+                                    ChatMessageTypeEnum.JOINED_OR_LEFT &&
+                                arg.data?.length !== indx
+                            ) {
+                                if (
+                                    message.messageType.id ===
+                                    arg.data[indx + 1]?.messageType?.id
+                                ) {
+                                    count++;
+                                } else {
+                                    const modifiedMessage: ChatMessage = {
+                                        ...message,
+                                        content: `${
+                                            message?.sender?.fullName
+                                        } and ${count} others ${
+                                            this.isJoined(message.content)
+                                                ? ChatJoinedOrLeftMessageEnum.JOINED
+                                                : ChatJoinedOrLeftMessageEnum.LEFT
+                                        } channel.`,
+                                    };
+                                    count = 0;
+
+                                    return modifiedMessage;
+                                }
+                            } else return { ...message };
+                        }),
+                    ],
+                };
+            })
+        );
     }
 
     private connectToHub(): void {
@@ -231,6 +272,9 @@ export class ChatMessagesComponent
         return moment()
             .subtract(daysDiff, ChatTimeUnitEnum.DAYS)
             .format(ChatTimeUnitEnum.DAY_MONTH_YEAR);
+    }
+    private isJoined(message: string): boolean {
+        return message?.includes(ChatJoinedOrLeftMessageEnum.JOINED);
     }
 
     ngOnDestroy(): void {
