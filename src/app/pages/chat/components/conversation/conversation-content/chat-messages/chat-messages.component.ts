@@ -40,6 +40,7 @@ import {
     ChatMessageArrivalTypeEnum,
     ChatMessageTypeEnum,
     ChatStringTypeEnum,
+    ChatTimeUnitEnum,
     ConversationTypeEnum,
 } from '@pages/chat/enums';
 
@@ -216,7 +217,7 @@ export class ChatMessagesComponent
                 break;
             case ChatMessageArrivalTypeEnum.BEGINNING:
                 dateFilter = moment(this.conversation?.createdAt).format(
-                    'DD-MM-YYYY'
+                    ChatTimeUnitEnum.DAY_MONTH_YEAR
                 );
                 this.scrollTop.emit();
                 break;
@@ -227,7 +228,9 @@ export class ChatMessagesComponent
 
     // TODO maybe move to helpers if there is another use
     private calculateDateOnDiff(daysDiff: number): string {
-        return moment().subtract(daysDiff, 'days').format('DD-MM-YYYY');
+        return moment()
+            .subtract(daysDiff, ChatTimeUnitEnum.DAYS)
+            .format(ChatTimeUnitEnum.DAY_MONTH_YEAR);
     }
 
     ngOnDestroy(): void {

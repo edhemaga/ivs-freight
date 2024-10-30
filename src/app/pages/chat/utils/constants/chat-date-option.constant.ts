@@ -7,6 +7,6 @@ export class ChatDateOptionConstant {
         ChatMessageArrivalTypeEnum.LAST_WEEK,
         ChatMessageArrivalTypeEnum.LAST_MONTH,
         ChatMessageArrivalTypeEnum.BEGINNING,
-        ChatMessageArrivalTypeEnum.DATE,
+        ChatMessageArrivalTypeEnum.SPECIFIC_DATE,
     ];
 }

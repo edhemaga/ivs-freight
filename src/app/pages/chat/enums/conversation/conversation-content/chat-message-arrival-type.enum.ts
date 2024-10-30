@@ -5,5 +5,5 @@ export enum ChatMessageArrivalTypeEnum {
     LAST_WEEK = 'Last week',
     LAST_MONTH = 'Last month',
     BEGINNING = 'Beginning',
-    DATE = 'Specific Date',
+    SPECIFIC_DATE = 'Specific Date',
 }
