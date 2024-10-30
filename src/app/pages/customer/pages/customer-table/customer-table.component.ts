@@ -1364,6 +1364,7 @@ export class CustomerTableComponent
     }
 
     private mapBrokerData(data: BrokerResponse): MappedShipperBroker {
+        console.log('BROKER data', data);
         return {
             ...data,
             isSelected: false,
@@ -1402,11 +1403,16 @@ export class CustomerTableComponent
                     ? this.formatCurrencyPipe.transform(data?.availableCredit)
                     : null,
                 totalValueText:
-                    (
-                        (+data?.availableCredit / +data.creditLimit) *
-                        100
-                    ).toString() + TableStringEnum.PERCENTS,
-                percentage: (+data?.availableCredit / +data?.creditLimit) * 100,
+                    data?.availableCredit > 0
+                        ? (
+                              (+data?.availableCredit / +data.creditLimit) *
+                              100
+                          ).toString() + TableStringEnum.PERCENTS
+                        : 0 + TableStringEnum.PERCENTS,
+                percentage:
+                    data?.availableCredit > 0
+                        ? (+data?.availableCredit / +data?.creditLimit) * 100
+                        : 0,
             },
             tableUnpaidInvAging: {
                 ...data.brokerUnpaidInvoiceAgeing,
