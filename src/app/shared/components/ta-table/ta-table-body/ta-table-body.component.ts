@@ -225,6 +225,8 @@ export class TaTableBodyComponent
     public popoverDescriptionItems: { title: string; className: string }[] =
         RepairDescriptionPopoverConstants.descriptionItems;
 
+    public isDropdownPositionBottom: boolean = false;
+
     public tableBodySvgRoutes = TableBodySvgRoutes;
 
     // Scroll Lines
@@ -608,6 +610,8 @@ export class TaTableBodyComponent
 
         this.tableWidth =
             this.actionsWidth + notPinedWidth + this.pinedWidth + 22;
+
+        this.isDropdownPositionBottom = this.tableWidth > 1650;
     }
 
     // Get Tab Table Data For Selected Tab
@@ -819,6 +823,8 @@ export class TaTableBodyComponent
         innerDropdownContent.forEach((content) => {
             content.removeAllListeners('click');
         });
+
+        this.dropDownActive = -1;
     }
 
     // Toggle Status Dropdown

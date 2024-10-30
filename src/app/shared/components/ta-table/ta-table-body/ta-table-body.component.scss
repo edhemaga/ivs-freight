@@ -1875,6 +1875,8 @@ table.truckassist-table-body-style {
                             cursor: pointer;
                             width: 26px;
                             height: 26px;
+                            margin-right: -4px;
+                            padding: 4px;
                             display: flex;
                             align-items: center;
                             justify-content: center;
@@ -1893,7 +1895,7 @@ table.truckassist-table-body-style {
 
                             &:hover {
                                 border-radius: 2px;
-                                background: $ta-black-4;
+                                background: $dark-2;
 
                                 transition: background 0.2s;
 
@@ -2795,6 +2797,8 @@ table.truckassist-table-body-style {
             // Hover
             &:hover {
                 .columns-container {
+                    background-color: $ta-light-grey !important;
+
                     .finish-order-action {
                         width: 98px;
                         height: 24px;
@@ -2809,12 +2813,13 @@ table.truckassist-table-body-style {
                         text-overflow: ellipsis;
                         cursor: pointer;
                     }
+
                     .td-content {
                         input {
                             background-color: $bw2;
                         }
                     }
-                    background-color: $bw2 !important;
+
                     .lable-container {
                         input {
                             background-color: $bw2;

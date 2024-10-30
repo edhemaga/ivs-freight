@@ -35,7 +35,8 @@
                     class="table-tr"
                     [ngClass]="{
                         'regular-row': !row.isSelected,
-                        'selected-row': row.isSelected,
+                        'selected-row':
+                            row.isSelected || dropDownActive === row.id,
                         'row-repair-order':
                             row.isRepairOrder && !row.actionAnimation,
                         'user-archived': row.userStatus === 0,
@@ -5744,7 +5745,11 @@
                                             (click)="toggleDropdown(t2, row)"
                                             [autoClose]="'outside'"
                                             [ngbPopover]="dropdownPopover"
-                                            [placement]="'bottom-right'"
+                                            [placement]="
+                                                isDropdownPositionBottom
+                                                    ? 'bottom-right'
+                                                    : 'right-top'
+                                            "
                                             class="table-dropdown-container"
                                             [ngClass]="{
                                                 'active-drop':
@@ -6082,7 +6087,11 @@
                                             (click)="toggleDropdown(t2, row)"
                                             [autoClose]="true"
                                             [ngbPopover]="dropdownPopover"
-                                            [placement]="'bottom-right'"
+                                            [placement]="
+                                                isDropdownPositionBottom
+                                                    ? 'bottom-right'
+                                                    : 'right-top'
+                                            "
                                             container="body"
                                             popoverClass="table-dropdown-popover"
                                             triggers="manual"
@@ -6260,7 +6269,10 @@
 
 <!-- DROPDOWN -->
 <ng-template #dropdownPopover let-data="data">
-    <div class="table-list-dropdown">
+    <div
+        class="table-list-dropdown"
+        [ngClass]="{ 'position-right': !isDropdownPositionBottom }"
+    >
         <div
             class="table-list-dropdown-content-container"
             [ngClass]="{
@@ -6294,6 +6306,7 @@
                 <div class="table-list-dropdown-content-text">
                     {{ action.title }}
                 </div>
+
                 <svg-icon
                     *ngIf="action.svgUrl"
                     [class]="action.svgClass"
