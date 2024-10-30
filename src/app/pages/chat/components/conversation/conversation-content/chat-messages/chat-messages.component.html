@@ -137,6 +137,12 @@
                                             </div>
                                             <svg-icon
                                                 class="d-flex justify-content-center align-items-center"
+                                                [ngStyle]="{
+                                                    transform:
+                                                        messageOptionsSelected
+                                                            ? 'rotate(180deg)'
+                                                            : 'rotate(0)'
+                                                }"
                                                 [svgStyle]="{
                                                     'width.px': 14,
                                                     'height.px': 14

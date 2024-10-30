@@ -7,6 +7,8 @@ import {
     ElementRef,
     ViewChild,
     Input,
+    Output,
+    EventEmitter,
 } from '@angular/core';
 import { UntypedFormGroup } from '@angular/forms';
 import { Observable, takeUntil, debounceTime, map } from 'rxjs';
@@ -66,6 +68,8 @@ export class ChatMessagesComponent
     @Input() public conversationParticipants!: CompanyUserShortResponse[];
     @Input() public conversation!: ConversationResponse;
     @Input() public wrapperHeightPx!: number;
+
+    @Output() public scrollTop: EventEmitter<void> = new EventEmitter();
 
     //User data
     public getCurrentUserHelper = GetCurrentUserHelper;
@@ -210,10 +214,15 @@ export class ChatMessagesComponent
             case ChatMessageArrivalTypeEnum.LAST_MONTH:
                 dateFilter = this.calculateDateOnDiff(30);
                 break;
+            case ChatMessageArrivalTypeEnum.BEGINNING:
+                dateFilter = moment(this.conversation?.createdAt).format(
+                    'DD-MM-YYYY'
+                );
+                this.scrollTop.emit();
+                break;
             default:
                 break;
         }
-        console.log(dateFilter);
     }
 
     // TODO maybe move to helpers if there is another use
