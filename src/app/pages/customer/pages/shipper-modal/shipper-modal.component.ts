@@ -818,7 +818,9 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
                         this.isPhoneExtExist = false;
 
                         this.shipperForm
-                            .get('shippingHoursSameReceiving')
+                            .get(
+                                ShipperModalString.SHIPPING_HOURS_SAME_RECEIVING
+                            )
                             .patchValue(true);
 
                         this.selectedTab = 1;
@@ -1095,14 +1097,14 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
     public onAppontmentShipping() {
         this.isAppointmentShipping = !this.isAppointmentShipping;
         this.shipperForm
-            .get('shippingAppointment')
+            .get(ShipperModalString.SHIPPING_APPOINTMENT)
             .patchValue(this.isAppointmentShipping);
     }
 
     public onAppontmentReceiving() {
         this.isAppointmentReceiving = !this.isAppointmentReceiving;
         this.shipperForm
-            .get('receivingAppointment')
+            .get(ShipperModalString.RECEIVING_APPOINTMENT)
             .patchValue(this.isAppointmentReceiving);
     }
 
@@ -1114,9 +1116,14 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
         let shipping = null;
 
         if (
-            (this.shipperForm.get('receivingAppointment').value &&
-                this.shipperForm.get('receivingOpenTwentyFourHours').value) ||
-            this.shipperForm.get('receivingOpenTwentyFourHours').value
+            (this.shipperForm.get(ShipperModalString.RECEIVING_APPOINTMENT)
+                .value &&
+                this.shipperForm.get(
+                    ShipperModalString.RECEIVING_OPEN_TWENTY_FOUR_HOURS
+                ).value) ||
+            this.shipperForm.get(
+                ShipperModalString.RECEIVING_OPEN_TWENTY_FOUR_HOURS
+            ).value
         ) {
             receiving = {
                 receivingFrom: null,
@@ -1124,34 +1131,48 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
             };
         } else {
             receiving = {
-                receivingFrom: this.shipperForm.get('receivingFrom').value,
-                receivingTo: this.shipperForm.get('receivingTo').value,
+                receivingFrom: this.shipperForm.get(
+                    ShipperModalString.RECEIVING_FROM
+                ).value,
+                receivingTo: this.shipperForm.get(
+                    ShipperModalString.RECEIVING_TO
+                ).value,
             };
         }
 
-        if (this.shipperForm.get('shippingHoursSameReceiving').value) {
+        if (
+            this.shipperForm.get(
+                ShipperModalString.SHIPPING_HOURS_SAME_RECEIVING
+            ).value
+        ) {
             shipping = {
                 shippingAppointment: this.shipperForm.get(
-                    'receivingAppointment'
+                    ShipperModalString.RECEIVING_APPOINTMENT
                 ).value,
                 shippingOpenTwentyFourHours: this.shipperForm.get(
-                    'receivingOpenTwentyFourHours'
+                    ShipperModalString.RECEIVING_OPEN_TWENTY_FOUR_HOURS
                 ).value,
                 shippingFrom: receiving.receivingFrom,
                 shippingTo: receiving.receivingTo,
             };
         } else {
             if (
-                (this.shipperForm.get('shippingOpenTwentyFourHours').value &&
-                    this.shipperForm.get('shippingAppointment').value) ||
-                this.shipperForm.get('shippingOpenTwentyFourHours').value
+                (this.shipperForm.get(
+                    ShipperModalString.SHIPPING_OPEN_TWENTY_FOUR_HOURS
+                ).value &&
+                    this.shipperForm.get(
+                        ShipperModalString.SHIPPING_APPOINTMENT
+                    ).value) ||
+                this.shipperForm.get(
+                    ShipperModalString.SHIPPING_OPEN_TWENTY_FOUR_HOURS
+                ).value
             ) {
                 shipping = {
                     shippingAppointment: this.shipperForm.get(
-                        'shippingAppointment'
+                        ShipperModalString.SHIPPING_APPOINTMENT
                     ).value,
                     shippingOpenTwentyFourHours: this.shipperForm.get(
-                        'shippingOpenTwentyFourHours'
+                        ShipperModalString.SHIPPING_OPEN_TWENTY_FOUR_HOURS
                     ).value,
                     shippingFrom: null,
                     shippingTo: null,
@@ -1159,15 +1180,17 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
             } else {
                 shipping = {
                     shippingAppointment: this.shipperForm.get(
-                        'shippingAppointment'
+                        ShipperModalString.SHIPPING_APPOINTMENT
                     ).value,
                     shippingOpenTwentyFourHours: this.shipperForm.get(
-                        'shippingOpenTwentyFourHours'
+                        ShipperModalString.SHIPPING_OPEN_TWENTY_FOUR_HOURS
                     ).value,
                     shippingFrom:
-                        this.shipperForm.get('shippingFrom').value ?? null,
+                        this.shipperForm.get(ShipperModalString.SHIPPING_FROM)
+                            .value ?? null,
                     shippingTo:
-                        this.shipperForm.get('shippingTo').value ?? null,
+                        this.shipperForm.get(ShipperModalString.SHIPPING_TO)
+                            .value ?? null,
                 };
             }
         }
