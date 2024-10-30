@@ -99,7 +99,11 @@
                 ></app-ta-map-list-card>
             </app-ta-map-list>
 
-            <app-ca-map #mapsComponent [data]="mapData"></app-ca-map>
+            <app-ca-map
+                #mapsComponent
+                [data]="mapData"
+                (markerClick)="onMapMarkerClick($event)"
+            ></app-ca-map>
 
             <!-- 
             <app-ta-maps

@@ -99,11 +99,9 @@ export class TaMapListCardComponent implements OnInit, OnDestroy {
                 }
             });
 
-        if (this.mapsService.selectedMarkerId) {
-            this.isSelected = this.mapsService.selectedMarkerId == this.item.id;
-            this.item.isSelected =
-                this.mapsService.selectedMarkerId == this.item.id;
-        }
+        this.isSelected = this.mapsService.selectedMarkerId == this.item.id;
+        this.item.isSelected =
+            this.mapsService.selectedMarkerId == this.item.id;
 
         this.mapsService.selectedMarkerChange
             .pipe(takeUntil(this.destroy$))
@@ -112,6 +110,10 @@ export class TaMapListCardComponent implements OnInit, OnDestroy {
                     this.detailsDropdown.dropDownActive = -1;
                     this.detailsDropdown.tooltip.close();
                 }
+
+                this.isSelected = id == this.item.id;
+                this.item = { ...this.item, isSelected: id == this.item.id };
+                this.ref.detectChanges();
             });
 
         this.mapsService.selectedMapListCardChange
@@ -121,6 +123,9 @@ export class TaMapListCardComponent implements OnInit, OnDestroy {
                     this.detailsDropdown.dropDownActive = -1;
                     this.detailsDropdown.tooltip.close();
                 }
+
+                this.isSelected = id == this.item.id;
+                this.item = { ...this.item, isSelected: id == this.item.id };
             });
 
         this.getDropdownActions();

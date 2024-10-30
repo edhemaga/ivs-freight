@@ -23,6 +23,7 @@ import {
     CaMapComponent,
     CaSearchMultipleStatesService,
     ICaMapProps,
+    IMapMarkers,
 } from 'ca-components';
 
 // store
@@ -93,10 +94,14 @@ import { CardTableData } from '@shared/models/table-models/card-table-data.model
 import { TableColumnConfig } from '@shared/models/table-models/table-column-config.model';
 
 // helpers
-import { RepairTableHelper } from '@pages/repair/pages/repair-table/utils/helpers/repair-table.helper';
-import { RepairTableDateFormaterHelper } from '@pages/repair/pages/repair-table/utils/helpers/repair-table-date-formater.helper';
-import { RepairTableBackFilterDataHelper } from '@pages/repair/pages/repair-table/utils/helpers/repair-table-back-filter-data.helper';
-import { RepairShopMapMarkersHelper } from './utils/helpers/repair-shop-map-markers.helper';
+import {
+    RepairShopMapMarkersHelper,
+    RepairShopMapDropdownHelper,
+    RepairTableBackFilterDataHelper,
+    RepairTableDateFormaterHelper,
+    RepairTableHelper,
+    RepairShopOpenHoursHelper,
+} from '@pages/repair/pages/repair-table/utils/helpers';
 
 @Component({
     selector: 'app-repair-table',
@@ -1088,6 +1093,8 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                 dislikeCount: data?.downCount
                     ? data.downCount
                     : TableStringEnum.NUMBER_0,
+                reviewCount:
+                    data.ratingReviews.length ?? TableStringEnum.NUMBER_0,
             },
             tableContactData: data?.contacts,
             tableExpense: data?.cost
@@ -1109,6 +1116,12 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
             tableEdited: data.updatedAt
                 ? this.datePipe.transform(
                       data.updatedAt,
+                      TableStringEnum.DATE_FORMAT
+                  )
+                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
+            tableDeactivated: data.dateDeactivated
+                ? this.datePipe.transform(
+                      data.dateDeactivated,
                       TableStringEnum.DATE_FORMAT
                   )
                 : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
@@ -1275,6 +1288,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
 
             this.backFilterQuery.pageIndex = 1;
             this.shopFilterQuery.pageIndex = 1;
+            this.mapsService.selectedMarker(null);
 
             // Repair Trailer Api Call
             if (
@@ -1340,6 +1354,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                 });
             }
         } else if (event.action === TableStringEnum.VIEW_MODE) {
+            this.mapsService.selectedMarker(null);
             this.activeViewMode = event.mode;
 
             this.tableOptions.toolbarActions.hideSearch =
@@ -1683,6 +1698,10 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
             this.mapData.markers[index]
         );
 
+        const mapOpenHours = RepairShopOpenHoursHelper.getRepairShopOpenHours(
+            this.mapData.markers[index].data
+        );
+
         this.mapListData.map((item) => {
             if (item.id == data[0]) {
                 // let itemIndex = this.mapsComponent.viewData.findIndex(
@@ -1798,14 +1817,17 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     public getMapData(): void {
-        const mapMarkers = this.viewData.map((data) => {
+        const mapMarkers: IMapMarkers[] = this.viewData.map((data, index) => {
             return {
                 position: { lat: data.latitude, lng: data.longitude },
                 icon: {
                     url: RepairShopMapMarkersHelper.getMapMarker(data),
                     labelOrigin: new google.maps.Point(80, 18),
                 },
-                infoWindowContent: RepairShopMapConfig.repairShopMapColumns,
+                infoWindowContent:
+                    RepairShopMapDropdownHelper.getRepairShopMapDropdownConfig(
+                        data
+                    ),
                 label: {
                     text: data.name,
                     fontSize: '11px',
@@ -1813,6 +1835,10 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                     fontWeight: '500',
                 },
                 labelOrigin: { x: 90, y: 15 },
+                options: {
+                    zIndex: index + 1,
+                    animation: google.maps.Animation.DROP,
+                },
                 data,
             };
         });
@@ -1821,5 +1847,14 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
             ...this.mapData,
             markers: mapMarkers,
         };
+    }
+
+    public onMapMarkerClick(marker: IMapMarkers): void {
+        const selectedMarkerId =
+            this.mapsService.selectedMarkerId !== marker.data.id
+                ? marker.data.id
+                : null;
+
+        this.mapsService.selectedMarker(selectedMarkerId);
     }
 }

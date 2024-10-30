@@ -12,7 +12,11 @@ export class RepairShopMapConfig {
 
     static repairShopMapColumns: MapDropdownContent = {
         mainContent: [
-            { template: 'header-title', field: 'name' },
+            {
+                template: 'header-title',
+                field: 'name',
+                customClassText: 'text-ellipsis',
+            },
             { template: 'rating-review', field: 'tableShopRaiting' },
             { template: 'divider', field: '' },
             { template: 'repair-shop-services', field: 'tableShopServices' },
@@ -21,16 +25,21 @@ export class RepairShopMapConfig {
                 template: 'icon-text',
                 field: 'phone',
                 url: 'assets/ca-components/svg/map/phone.svg',
+                customClassContainer: 'mb-2',
+                customClassText: 'text-ellipsis',
             },
             {
                 template: 'icon-text',
                 field: 'email',
                 url: 'assets/ca-components/svg/map/email.svg',
+                customClassContainer: 'mb-2',
+                customClassText: 'text-ellipsis',
             },
             {
                 template: 'icon-text',
                 field: 'tableAddress',
                 url: 'assets/ca-components/svg/map/address.svg',
+                customClassText: 'text-ellipsis two-rows-ellipsis',
             },
         ],
         expandedContent: [
