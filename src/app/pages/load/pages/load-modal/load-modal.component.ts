@@ -2097,11 +2097,9 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                 .patchValue(null);
         }
 
-        const isAdjustedRate = !!this.selectedDispatches?.driver?.owner;
-
         this.inputService.changeValidators(
             this.loadForm.get(LoadModalStringEnum.ADJUSTED_RATE),
-            isAdjustedRate
+            this.showAdjustedRate
         );
     }
 
