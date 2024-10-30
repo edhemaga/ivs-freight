@@ -32,6 +32,7 @@ export class ChatMessageComponent extends UnsubscribeHelper implements OnInit {
     @Input() chatParticipants: CompanyUserShortResponse[];
     @Input() message!: ChatMessage;
     @Input() isDateDisplayed: boolean = false;
+    @Input() isArchived: boolean = false;
 
     public messageReply!: ChatMessage | null;
     public messageEdit!: ChatMessage | null;
