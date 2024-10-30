@@ -8,6 +8,7 @@
         driverForm.valid && isFormDirty && isEachOffDutyLocationRowValid
     "
     [isDeactivated]="false"
+    [isDeactivateOnly]="editData?.isDeactivateOnly"
     (action)="onModalAction($event)"
 >
     <div origin>
