@@ -1562,8 +1562,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
 
                 if (
                     this.isEditingMode &&
-                    this.editData?.selectedTab === TableStringEnum.TEMPLATE &&
-                    this.editData.loadAction === TableStringEnum.CONVERT_TO_LOAD
+                    this.editData?.selectedTab === TableStringEnum.TEMPLATE
                 ) {
                     this.updateLoadTemplate(addNew);
                 } else if (this.isConvertedToTemplate) {
