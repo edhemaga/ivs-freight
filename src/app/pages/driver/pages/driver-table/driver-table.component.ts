@@ -1647,6 +1647,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
                         { size: TableStringEnum.MEDIUM },
                         {
                             ...editData,
+                            isDeactivateOnly: true,
                         }
                     );
                 })
