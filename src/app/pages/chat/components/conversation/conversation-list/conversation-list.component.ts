@@ -39,7 +39,9 @@ import { chatFadeVerticallyAnimation } from '@shared/animations/chat-fade-vertic
 import { UnsubscribeHelper } from '@pages/chat/utils/helpers';
 
 // Services
-import { ChatHubService, ChatStoreService } from '@pages/chat/services';
+import { ChatStoreService } from '@pages/chat/services';
+
+// Constants
 import { ChatConversationGroupStateConstant } from '@pages/chat/utils/constants';
 
 @Component({
@@ -50,7 +52,8 @@ import { ChatConversationGroupStateConstant } from '@pages/chat/utils/constants'
 })
 export class ConversationListComponent
     extends UnsubscribeHelper
-    implements OnInit {
+    implements OnInit
+{
     // Data
     @Input() public departments: ChatCompanyChannelExtended[];
     @Input() public truckChannel: ChatCompanyChannelExtended[];
