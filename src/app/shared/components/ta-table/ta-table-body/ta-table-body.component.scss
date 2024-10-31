@@ -520,6 +520,14 @@ table.truckassist-table-body-style {
                                 margin-right: 4px;
                                 line-height: 18px;
 
+                                &.closing {
+                                    svg {
+                                        circle {
+                                            fill: $ta-yellow-1;
+                                        }
+                                    }
+                                }
+
                                 svg {
                                     circle {
                                         fill: $ta-green;

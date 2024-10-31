@@ -5430,22 +5430,27 @@
                                                     tooltipColor="#ffff"
                                                     position="bottom"
                                                 >
-                                                    <svg-icon
-                                                        class="open-hours-icon"
-                                                        [src]="
-                                                            tableBodySvgRoutes.circleRoute
-                                                        "
-                                                        [svgStyle]="{
-                                                            'width.px': 10,
-                                                            'height.px': 10
-                                                        }"
-                                                    ></svg-icon>
+                                                    <ng-container>
+                                                        <!-- *ngIf="!!row[column.field]?.openHoursToday?.id" -->
+                                                        <svg-icon
+                                                            class="open-hours-icon"
+                                                            [src]="
+                                                                tableBodySvgRoutes.circleRoute
+                                                            "
+                                                            [svgStyle]="{
+                                                                'width.px': 10,
+                                                                'height.px': 10
+                                                            }"
+                                                        ></svg-icon>
+                                                        <!-- [ngClass]="{closing: row[column.field]?.openHoursToday?.id === 2}" -->
+                                                    </ng-container>
 
                                                     <p
-                                                        class="m-0 ta-font-semi-bold text-color-black text-size-14"
+                                                        class="m-0 text-color-black text-size-14"
                                                     >
                                                         Open Now
                                                     </p>
+                                                    <!-- [ngClass]="{'ta-font-semi-bold': !!row[column.field]?.openHoursToday?.id}" -->
                                                 </div>
                                             </div>
                                         </div>
