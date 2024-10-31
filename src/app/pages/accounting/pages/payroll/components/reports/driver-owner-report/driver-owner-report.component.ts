@@ -7,38 +7,32 @@ import {
     OnInit,
     ViewChild,
 } from '@angular/core';
-import { Observable, Subject, takeUntil } from 'rxjs';
-import { CdkDragDrop } from '@angular/cdk/drag-drop';
-
-// Components
+import { Observable, Subject } from 'rxjs';
 import { ColumnConfig } from 'ca-components';
 
-// Services
+//Services
 import { ModalService } from '@shared/services/modal.service';
-import { PayrollDriverCommissionFacadeService } from '../../../state/services/payroll_driver_commision.service';
 import { PayrollFacadeService } from '../../../state/services/payroll.service';
+import { PayrollDriverOwnerFacadeService } from '../../../state/services/payroll_owner.service';
 
 // Models
 import {
     LoadWithMilesStopResponse,
-    PayrollDriverCommissionByIdResponse,
     PayrollDriverMileageByIdResponse,
+    PayrollOwnerResponse,
 } from 'appcoretruckassist';
-
-import {
-    MilesStopShortReponseWithRowType,
-    IPayrollProccessPaymentModal,
-} from '../../../state/models/payroll.model';
-import { CommissionLoadShortReponseWithRowType } from '../../../state/models/driver_commission.model';
+import { CdkDragDrop } from '@angular/cdk/drag-drop';
+import { OwnerLoadShortReponseWithRowType } from '../../../state/models/driver_owner.model';
 import { PayrollProccessPaymentModalComponent } from '../../../payroll-modals/payroll-proccess-payment-modal/payroll-proccess-payment-modal.component';
+import { IPayrollProccessPaymentModal } from '../../../state/models/payroll.model';
 import { PayrollReportTableResponse } from 'ca-components/lib/components/ca-period-content/models/payroll-report-tables.type';
 
 @Component({
-    selector: 'app-driver-commission-report',
-    templateUrl: './driver-commission-report.component.html',
-    styleUrls: ['./driver-commission-report.component.scss'],
+    selector: 'app-driver-owner-report',
+    templateUrl: './driver-owner-report.component.html',
+    styleUrls: ['./driver-owner-report.component.scss'],
 })
-export class DriverCommissionReportComponent
+export class DriverOwnerReportComponent
     implements OnInit, OnDestroy, AfterViewInit
 {
     columns: ColumnConfig[];
@@ -47,16 +41,13 @@ export class DriverCommissionReportComponent
     showMap: boolean = false;
 
     public loading$: Observable<boolean>;
+    includedLoads$: Observable<LoadWithMilesStopResponse[]>;
 
     private destroy$ = new Subject<void>();
+    payrollReport$: Observable<PayrollOwnerResponse>;
 
-    payrollReport$: Observable<PayrollDriverCommissionByIdResponse>;
-    payrollReportList: MilesStopShortReponseWithRowType[] = [];
-    payrollCommissionDriverLoads$: Observable<
-        CommissionLoadShortReponseWithRowType[]
-    >;
-
-    includedLoads$: Observable<LoadWithMilesStopResponse[]>;
+    payrollOwnerDriverLoads$: Observable<OwnerLoadShortReponseWithRowType[]>;
+    openedPayroll: PayrollOwnerResponse;
 
     // Templates
     @ViewChild('customCountTemplate', { static: false })
@@ -79,13 +70,33 @@ export class DriverCommissionReportComponent
 
     constructor(
         // Services
-        private payrollCommissionFacadeService: PayrollDriverCommissionFacadeService,
+        private payrollDriverOwnerFacadeService: PayrollDriverOwnerFacadeService,
         private payrollFacadeService: PayrollFacadeService,
         private modalService: ModalService
     ) {}
 
     ngOnInit(): void {
         this.subscribeToStoreData();
+    }
+
+    subscribeToStoreData() {
+        this.payrollDriverOwnerFacadeService.getPayrollDriverOwnerReport({
+            reportId: this.reportId,
+        });
+
+        this.loading$ = this.payrollFacadeService.payrollReportLoading$;
+        this.payrollReport$ =
+            this.payrollDriverOwnerFacadeService.selectPayrollOwnerOpenedReport$;
+
+        this.payrollOwnerDriverLoads$ =
+            this.payrollDriverOwnerFacadeService.selectPayrollReportDriverCommissionLoads$;
+
+        this.includedLoads$ =
+            this.payrollDriverOwnerFacadeService.selectPayrollReportOwnerIncludedLoads$;
+
+        this.payrollDriverOwnerFacadeService.selectPayrollOwnerOpenedReport$.subscribe(
+            (owner) => console.log('OEHER', owner)
+        );
     }
 
     ngAfterViewInit() {
@@ -159,33 +170,9 @@ export class DriverCommissionReportComponent
         ];
     }
 
-    openedPayroll: PayrollDriverCommissionByIdResponse;
-
-    subscribeToStoreData() {
-        this.payrollCommissionFacadeService.getPayrollDriverCommissionReport({
-            reportId: this.reportId,
-        });
-
-        this.loading$ = this.payrollFacadeService.payrollReportLoading$;
-        this.payrollReport$ =
-            this.payrollCommissionFacadeService.selectPayrollOpenedReport$;
-
-        this.payrollFacadeService.selectPayrollOpenedReport$
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((payroll) => {
-                this.openedPayroll = payroll;
-            });
-
-        this.payrollCommissionDriverLoads$ =
-            this.payrollCommissionFacadeService.selectPayrollReportDriverCommissionLoads$;
-
-        this.includedLoads$ =
-            this.payrollCommissionFacadeService.selectPayrollReportIncludedLoads$;
-
-        this.payrollCommissionFacadeService.selectPayrollReportDriverCommissionLoads$.subscribe(
-            (res) => console.log(res, '-fsfasdfsaf')
-        );
-    }
+    customSortPredicate = (index: number, _: CdkDragDrop<any>): boolean => {
+        return true;
+    };
 
     onReorderItem({
         _included,
@@ -230,7 +217,7 @@ export class DriverCommissionReportComponent
                 data: {
                     id: payrollData.id,
                     totalEarnings:
-                        (payrollData as any).debt ?? payrollData.earnings,
+                        (payrollData as any).debt ?? payrollData.totalEarnings,
                     payrollNumber: payrollData.payrollNumber,
                     selectedTab: this.selectedTab,
                     payrollType: 'commission',
@@ -238,10 +225,6 @@ export class DriverCommissionReportComponent
             }
         );
     }
-
-    customSortPredicate = (index: number, _: CdkDragDrop<any>): boolean => {
-        return true;
-    };
 
     onReorderDone(drag: CdkDragDrop<any[] | null, any, any>) {
         const loadId = drag.container.data[drag.currentIndex - 1]?.id;
@@ -254,7 +237,7 @@ export class DriverCommissionReportComponent
                 .map((load) => load.id);
 
             if (loadList) {
-                this.payrollCommissionFacadeService.getPayrollDriverCommissionReport(
+                this.payrollDriverOwnerFacadeService.getPayrollDriverOwnerReport(
                     {
                         reportId: `${this.reportId}`,
                         selectedLoadIds: loadList,

@@ -126,8 +126,8 @@ export class DriverFlatRateTableComponent
                 hiddeOnTableReduce: true,
             },
             {
-                header: 'Total',
-                field: 'total',
+                header: 'Total', 
+                field: 'earnings',
                 pipeType: 'currency',
                 pipeString: 'USD',
                 cellType: 'text',

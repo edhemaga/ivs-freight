@@ -32,7 +32,7 @@
             </ng-container>
         </div>
     </div>
-    <div class="report-hold" *ngIf="reportTableExpanded$ | async">
+    <div class="report-hold" *ngIf="reportTableExpanded$ | async"> 
         <ng-container [ngSwitch]="payrollType">
             <ng-container *ngSwitchCase="'Driver Miles'">
                 <app-payroll-report
@@ -43,8 +43,14 @@
             <ng-container *ngSwitchCase="'Driver Commission'">
                 <app-driver-commission-report
                     [selectedTab]="selectedTab"
-                    [reportId]="reportTableData?.id"
+                    [reportId]="reportTableData?.id" 
                 ></app-driver-commission-report>
+            </ng-container>
+            <ng-container *ngSwitchCase="'Owner '">
+                <app-driver-owner-report
+                    [selectedTab]="selectedTab"
+                    [reportId]="reportTableData?.id"
+                ></app-driver-owner-report>
             </ng-container>
         </ng-container>
     </div>

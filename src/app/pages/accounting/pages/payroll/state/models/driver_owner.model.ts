@@ -1,4 +1,4 @@
-import { TruckShortResponse } from '../../../../../../../../appcoretruckassist/model/truckShortResponse';
+import { PayrollOwnerResponse, TruckShortResponse } from 'appcoretruckassist';
 export type IDriverOwnerList = IDriverOwnerResponse[];
 
 export interface IDriverOwnerResponse {
@@ -31,3 +31,7 @@ export interface PayrollDeadLine {
     numberOfDays: number;
     period: string;
 }
+
+export type OwnerLoadShortReponseWithRowType =
+    | PayrollOwnerResponse
+    | { rowType: string };

@@ -131,12 +131,12 @@ export class DriverMileageSoloTableComponent
             },
             {
                 header: 'Total',
-                field: 'total',
+                field: 'earnings',
                 pipeType: 'currency',
                 pipeString: 'USD',
                 cellType: 'text',
                 cellCustomClasses: 'text-right',
-                textCustomClasses: 'b-600'
+                textCustomClasses: 'b-600',
             },
         ];
     }

@@ -39,3 +39,43 @@ export function getPayrollOwnerDriverListEffect(
             )
     );
 }
+
+export function getPayrollOwnerReportEffect(
+    actions$: Actions,
+    payrollService: PayrollService
+) {
+    return createEffect(
+        (): Observable<Action> =>
+            actions$.pipe(
+                ofType(PayrollOwnerDriverActions.getPayrollOwnerReportDriver),
+                switchMap((action) => {
+                    return payrollService
+                        .getPayrollOwnerDriverReport({
+                            reportId: action.reportId,
+                            selectedCreditIds: action.selectedCreditIds,
+                            selectedDeductionIds: action.selectedDeductionIds,
+                            selectedLoadIds: action.selectedLoadIds,
+                            selectedFuelIds: action.selectedFuelIds,
+                        })
+                        .pipe(
+                            map((data) => {
+                                return PayrollOwnerDriverActions.getPayrollOwnerReportDriverSuccess(
+                                    {
+                                        ownerPayrollReport: data,
+                                    }
+                                );
+                            }),
+                            catchError((error) =>
+                                of(
+                                    PayrollOwnerDriverActions.getPayrollOwnerReportDriverError(
+                                        {
+                                            error,
+                                        }
+                                    )
+                                )
+                            )
+                        );
+                })
+            )
+    );
+}

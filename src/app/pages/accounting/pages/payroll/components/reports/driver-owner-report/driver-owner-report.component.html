@@ -71,7 +71,7 @@
                     *ngIf="!(loading$ | async)"
                     [sortPredicate]="customSortPredicate"
                     [columns]="columns"
-                    [data$]="payrollCommissionDriverLoads$"
+                    [data$]="payrollOwnerDriverLoads$"
                     [disableReorderRow]="selectedTab === 'closed'"
                     [reorderTemplate]="reorderTemplate"
                     [reorderTemplatePreview]="reorderTemplatePreview"
@@ -104,7 +104,7 @@
                     (reorderedDataEmiter)="onReorderItem($event)"
                     (proccessPayroll)="onProccessPayroll($event)"
                     [isOpen]="selectedTab === 'open'"
-                    [type]="'COMMISSION'"
+                    [type]="'OWNER'"
                     [componentData]="payrollReport$ | async"
                 ></app-ca-period-content>
             </div>
@@ -123,23 +123,6 @@
             <div class="load-description-address">{{ data.loadNumber }}</div>
             <div class="load-description-stop-type">
                 {{ data.brokerName }}
-            </div>
-        </div>
-    </div>
-</ng-template>
-
-<ng-template #customLocationTypeLoad let-data let-index="index">
-    <div class="load-description d-flex align-items-center">
-        <svg-icon
-            *ngIf="data.orderNumber"
-            src="assets/svg/svg_numbers/olddash/svg_num_box_{{
-                data.orderNumber
-            }}.svg"
-        ></svg-icon>
-        <div class="load-description-name">
-            <div class="load-description-address">{{ data.address }}</div>
-            <div class="load-description-stop-type">
-                {{ data.stopType.name }}
             </div>
         </div>
     </div>

@@ -5,7 +5,6 @@ import {
     ViewEncapsulation,
     AfterViewInit,
     EnvironmentInjector,
-    ViewChild,
     ViewContainerRef,
     inject,
     ComponentRef,
@@ -24,7 +23,6 @@ import { getPayrollDriverMilesDefinition } from '@shared/utils/settings/table-se
 // Store
 import { DriverState } from '@pages/driver/state/driver-state/driver.store';
 import { DriversInactiveState } from '@pages/driver/state/driver-inactive-state/driver-inactive.store';
-import { PayrollQuery } from '@pages/accounting/pages/payroll/state/payroll.query';
 import { PayrollFacadeService } from './state/services/payroll.service';
 
 // Models

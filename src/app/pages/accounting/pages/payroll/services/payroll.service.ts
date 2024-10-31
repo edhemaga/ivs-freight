@@ -4,6 +4,7 @@ import {
     PayrollCountsResponse,
     PayrollDriverCommissionByIdResponse,
     PayrollDriverMileageListResponse,
+    PayrollOwnerResponse,
 } from 'appcoretruckassist';
 import { PayrollDriverMileageResponse } from 'appcoretruckassist/model/payrollDriverMileageResponse';
 import { Observable, of } from 'rxjs';
@@ -103,6 +104,8 @@ export class PayrollService {
                 amount: amount,
             },
         };
+        console.log(body);
+        return of();
         return this.http.put<PayrollDriverMileageResponse>(
             `${environment.API_ENDPOINT}/api/payroll/driver/mileage/close`,
             body
@@ -113,13 +116,6 @@ export class PayrollService {
     public getFlatRatePayrollDriverList(): Observable<IDriverFlatRateList> {
         return this.http.get<IDriverFlatRateList>(
             `${environment.API_ENDPOINT}/api/payroll/driver/flatrate/list`
-        );
-    }
-
-    // OWNER DRIVER
-    public getPayrollOwnerDriverList(): Observable<IDriverOwnerList> {
-        return this.http.get<IDriverOwnerList>(
-            `${environment.API_ENDPOINT}/api/payroll/owner/list/open`
         );
     }
 
@@ -223,6 +219,57 @@ export class PayrollService {
 
         return this.http.get<PayrollDriverCommissionByIdResponse>(
             `${environment.API_ENDPOINT}/api/payroll/driver/commission/${reportId}`,
+            { params }
+        );
+    }
+
+    // OWNER DRIVER
+    public getPayrollOwnerDriverList(): Observable<IDriverOwnerList> {
+        return this.http.get<IDriverOwnerList>(
+            `${environment.API_ENDPOINT}/api/payroll/owner/list/open`
+        );
+    }
+
+    public getPayrollOwnerDriverReport({
+        reportId,
+        selectedCreditIds,
+        selectedDeductionIds,
+        selectedLoadIds,
+        selectedFuelIds,
+    }: IGet_Payroll_Commission_Driver_Report): Observable<PayrollDriverCommissionByIdResponse> {
+        let params = new HttpParams();
+
+        if (selectedLoadIds) {
+            selectedLoadIds.map(
+                (creditId) =>
+                    (params = params.append('SelectedLoadIds', creditId))
+            );
+        }
+        if (selectedCreditIds) {
+            selectedCreditIds.map(
+                (creditId) =>
+                    (params = params.append('SelectedCreditIds', creditId))
+            );
+        }
+
+        if (selectedDeductionIds) {
+            selectedDeductionIds.map(
+                (deductionId) =>
+                    (params = params.append(
+                        'SelectedDeductionIds',
+                        deductionId
+                    ))
+            );
+        }
+
+        if (selectedFuelIds) {
+            selectedFuelIds.map(
+                (fuel) => (params = params.append('SelectedFuelIds', fuel))
+            );
+        }
+
+        return this.http.get<PayrollOwnerResponse>(
+            `${environment.API_ENDPOINT}/api/payroll/owner/open/${reportId}`,
             { params }
         );
     }

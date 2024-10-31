@@ -318,6 +318,7 @@ model/contactPhoneType.ts
 model/conversationInfoResponse.ts
 model/conversationResponse.ts
 model/conversationType.ts
+model/conversationsMetadataResponse.ts
 model/counterResponse.ts
 model/countryType.ts
 model/createAccidentItemCommand.ts

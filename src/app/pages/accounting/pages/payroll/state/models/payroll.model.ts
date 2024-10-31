@@ -4,6 +4,7 @@ import {
     PayrollCountsResponse,
     PayrollDriverMileageByIdResponse,
     PayrollDriverMileageListResponse,
+    PayrollOwnerResponse,
 } from 'appcoretruckassist';
 import { IDriverCommissionList } from './driver_commission.model';
 import { IDriverOwnerList } from './driver_owner.model';
@@ -15,10 +16,12 @@ export interface PayrollState {
     payrollOpenedReport?: PayrollDriverMileageByIdResponse;
     payrollCommissionDriverList: IDriverCommissionList;
     ownerPayrollList: IDriverOwnerList;
+    ownerPayrollResponse?: PayrollOwnerResponse;
     loading: boolean;
     reportLoading: boolean;
     lastLoadDate?: string;
     selectedDeductionIds?: number[];
+    selectedFuelIds?: number[];
     selectedCreditIds?: number[];
     selectedBonusIds?: number[];
     selectedLoadIds?: number[];
@@ -132,6 +135,7 @@ export interface IGet_Payroll_Commission_Driver_Report {
     selectedLoadIds?: number[];
     selectedCreditIds?: number[];
     selectedDeductionIds?: number[];
+    selectedFuelIds?: number[]
 }
 
 export type PayrollTypes = 'miles' | 'commission' | 'flat rate' | 'owner';

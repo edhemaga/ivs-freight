@@ -109,7 +109,7 @@ export class DriverCommissionSoloTableComponent
             },
             {
                 header: 'Total',
-                field: 'total',
+                field: 'earnings',
                 pipeType: 'currency',
                 pipeString: 'USD',
                 cellType: 'text',
@@ -133,7 +133,6 @@ export class DriverCommissionSoloTableComponent
     }
 
     selectPayrollReport(report: any) {
-        console.log('reportt', report);
         this.expandTableEvent.emit(report);
     }
 

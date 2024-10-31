@@ -10,3 +10,42 @@ export const selectOwnerListDriver = createSelector(
         return state.ownerPayrollList;
     }
 );
+
+export const selectPayrollOwnerOpenedReport = createSelector(
+    selectPayrollState,
+    (state) => {
+        console.log(state.ownerPayrollResponse, 'state.ownerPayrollResponse');
+        return {
+            ...state.ownerPayrollResponse,
+            fullName: `${state.ownerPayrollResponse?.truck?.truckNumber} - ${state.ownerPayrollResponse?.owner.name}`,
+            // userId: state.ownerPayrollResponse?.driver?.id,
+            // avatar: state.ownerPayrollResponse?.driver?.avatarFile,
+        };
+    }
+);
+
+export const selectPayrollDriverOwnerLoads = createSelector(
+    selectPayrollState,
+    (state) => {
+        if (!state.ownerPayrollResponse) return [];
+        const includedLoads = state.ownerPayrollResponse?.includedLoads ?? [];
+        const excludedReportLoads =
+            state.ownerPayrollResponse?.excludedLoads ?? [];
+
+        const excludedLoads = excludedReportLoads;
+        const reorderRow = {
+            rowType: 'reorder',
+        };
+
+        return [...includedLoads, reorderRow, ...excludedLoads];
+    }
+);
+
+
+export const selectPayrollReportsIncludedOwnerStops = createSelector(
+    selectPayrollState,
+    (state) => {
+        const included_only = state.ownerPayrollResponse?.includedLoads || [];
+        return included_only;
+    }
+);

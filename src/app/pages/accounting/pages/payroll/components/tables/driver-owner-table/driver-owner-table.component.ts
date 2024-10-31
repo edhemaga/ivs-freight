@@ -130,7 +130,7 @@ export class DriverOwnerTableComponent
             },
             {
                 header: 'Total',
-                field: 'total',
+                field: 'earnings',
                 pipeType: 'currency',
                 pipeString: 'USD',
                 cellType: 'text',
@@ -149,6 +149,10 @@ export class DriverOwnerTableComponent
         this.loading$ = this.payrollFacadeService.payrollLoading$;
         this.tableData$ =
             this.payrollDriverOwnerFacadeService.selectOwnerDriverList$;
+    }
+
+    selectPayrollReport(report: any) {
+        this.expandTableEvent.emit(report);
     }
 
     ngOnDestroy(): void {

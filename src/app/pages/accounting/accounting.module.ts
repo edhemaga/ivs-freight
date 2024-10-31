@@ -42,6 +42,7 @@ import { DriverFlatRateTableComponent } from './pages/payroll/components/tables/
 import { PayrollReportComponent } from './pages/payroll/components/reports/payroll-report/payroll-report.component';
 import { DriverCommissionReportComponent } from './pages/payroll/components/reports/driver-commission-report/driver-commission-report.component';
 import { PayrollTableCommissionTotalPipe } from './pages/payroll/pipes/payroll-table-commission-total/payroll-table-commission-total.pipe';
+import { DriverOwnerReportComponent } from './pages/payroll/components/reports/driver-owner-report/driver-owner-report.component';
 @NgModule({
     declarations: [
         // Components
@@ -64,6 +65,7 @@ import { PayrollTableCommissionTotalPipe } from './pages/payroll/pipes/payroll-t
         DriverOwnerTableComponent,
         DriverFlatRateTableComponent,
         DriverCommissionReportComponent,
+        DriverOwnerReportComponent,
     ],
     imports: [
         // Modules

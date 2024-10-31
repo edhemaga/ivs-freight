@@ -27,5 +27,6 @@ export interface PayrollLoadMinimalResponse {
     revenue?: number;
     subtotal?: number | null;
     rate?: number | null;
+    isFromNextPeriod?: boolean;
 }
 

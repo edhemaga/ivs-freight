@@ -132,8 +132,6 @@ export const payrollReducer = createReducer(
         PayrollCommissionDriverActions.getPayrollCommissionDriver,
         PayrollCommissionDriverReducers.onGetPayrollSoloMileageDriver
     ),
-
-    
     on(
         PayrollCommissionDriverActions.getPayrollCommissionReportDriverSuccess,
         PayrollCommissionDriverReducers.onGetPayrollCommissionReportDriverSuccess
@@ -146,6 +144,14 @@ export const payrollReducer = createReducer(
     on(
         PayrollOwnerDriverActions.getPayrollOwnerDriverListSuccess,
         PayrollOwnerDriverReducers.onGetPayrollOwnerDriverListSuccess
+    ),
+    on(
+        PayrollOwnerDriverActions.getPayrollOwnerReportDriver,
+        PayrollOwnerDriverReducers.onGetPayrollOwnerReport
+    ),
+    on(
+        PayrollOwnerDriverActions.getPayrollOwnerReportDriverSuccess,
+        PayrollOwnerDriverReducers.onGetPayrollOwnerReportSuccess
     ),
     // DRIVER FLAT RATE
     on(

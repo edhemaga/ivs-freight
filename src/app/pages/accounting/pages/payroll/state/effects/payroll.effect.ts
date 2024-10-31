@@ -87,6 +87,12 @@ export class PayrollEffect {
             this.payrollService
         );
 
+    public getPayrollOwnerDriverReportEffect$ =
+        PayrollOwnerDriverEffect.getPayrollOwnerReportEffect(
+            this.actions$,
+            this.payrollService
+        );
+
     // Payroll Flat List Driver
     public getPayrollFlatRateDriverListEffect$ =
         PayrollFlatRateEffect.getPayrollFlatRateDriverListEffect(
