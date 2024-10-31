@@ -49,5 +49,5 @@ export type ChatState = {
     messageSearchTerm?: string;
 
     // Settings
-    viewType?: ChatViewTypeEnum;
+    viewType?: string;
 };

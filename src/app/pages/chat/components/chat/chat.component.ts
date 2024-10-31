@@ -20,6 +20,8 @@ import {
     ChatGridLayout,
     ChatGroupEnum,
     ChatRoutesEnum,
+    ChatStringTypeEnum,
+    ChatViewTypeEnum,
     ConversationTypeEnum,
 } from '@pages/chat/enums';
 
@@ -278,5 +280,27 @@ export class ChatComponent
     }
     public toggleChatPreferences(): void {
         this.isHamburgerMenuActive = !this.isHamburgerMenuActive;
+
+        if (this.isHamburgerMenuActive) return;
+        // On close save preferences
+        // TODO Add API call, temporary local storage
+        switch (true) {
+            case this.chatPreferencesConfig[3].items[0].value:
+                localStorage.setItem(
+                    ChatStringTypeEnum.VIEW,
+                    ChatViewTypeEnum.REGULAR
+                );
+                this.chatStoreService.setViewType(ChatViewTypeEnum.REGULAR);
+                break;
+            case this.chatPreferencesConfig[3].items[1].value:
+                localStorage.setItem(
+                    ChatStringTypeEnum.VIEW,
+                    ChatViewTypeEnum.ADVANCED
+                );
+                this.chatStoreService.setViewType(ChatViewTypeEnum.ADVANCED);
+                break;
+            default:
+                return;
+        }
     }
 }

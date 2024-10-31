@@ -175,7 +175,8 @@
                             avatarFile: item.companyUser?.avatarFile,
                             isRound: is_round,
                             isFavourite: item.isFavourite,
-                            unreadCount: item.unreadCount
+                            unreadCount: item.unreadCount,
+                            lastMessage: item?.lastMessage
                         }
                     }
                 "
@@ -304,19 +305,27 @@
                         *ngTemplateOutlet="
                             itemTitle;
                             context: {
-                                item: item
+                                item
                             }
                         "
                     ></ng-container>
                 </div>
-                <div
-                    class="conversation-list-item-advanced-details-bottom d-flex flex-grow-1 justify-content-between"
-                >
-                    <div class="mesage">{{ item.lastMessage?.content }}</div>
-                    <div class="date">
-                        {{ item.lastMessage?.createdAt | formatTime }}
+                <ng-container *ngIf="item.lastMessage">
+                    <div
+                        class="conversation-list-item-advanced-details-bottom d-flex flex-grow-1 justify-content-between"
+                    >
+                        <div class="mesage">
+                            {{
+                                item.lastMessage?.sender?.fullName
+                                    | chatUserFirstName
+                            }}:
+                            {{ item.lastMessage?.content }}
+                        </div>
+                        <div class="date">
+                            {{ item.lastMessage?.createdAt | formatTime }}
+                        </div>
                     </div>
-                </div>
+                </ng-container>
             </div>
         </div>
     </div>
