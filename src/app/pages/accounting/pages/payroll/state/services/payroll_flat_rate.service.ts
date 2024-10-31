@@ -6,11 +6,25 @@ import { Observable, take } from 'rxjs';
 import * as PayrollFlatRateActions from '../actions/payroll_flat_rate_driver.actions';
 
 // Selectors
-import { selectFlatRateListDriver } from '../selectors/payroll_driver_flat_rate.selector';
+import {
+    selectFlatRateListDriver,
+    selectPayrollDriverFlatRateLoads,
+    selectPayrollReportsIncludedFlatRateStops,
+} from '../selectors/payroll_driver_flat_rate.selector';
 
 // Models
-import { IDriverFlatRateList } from '../models/driver_flat_rate.model';
-import { selectPayrollState } from '../selectors/payroll.selector';
+import {
+    FlatRateLoadShortReponseWithRowType,
+    IDriverFlatRateList,
+} from '../models/driver_flat_rate.model';
+import {
+    selectPayrollOpenedReport,
+    selectPayrollState,
+} from '../selectors/payroll.selector';
+import {
+    LoadWithMilesStopResponse,
+    PayrollDriverCommissionByIdResponse,
+} from 'appcoretruckassist';
 
 @Injectable({
     providedIn: 'root',
@@ -20,6 +34,17 @@ export class PayrollDriverFlatRateFacadeService {
 
     public selectFlatListDriverList$: Observable<IDriverFlatRateList> =
         this.store.pipe(select(selectFlatRateListDriver));
+
+    public selectPayrollOpenedReport$: Observable<PayrollDriverCommissionByIdResponse> =
+        this.store.pipe(select(selectPayrollOpenedReport));
+
+    public selectPayrollReportDriverFlatRateLoads$: Observable<
+        FlatRateLoadShortReponseWithRowType[]
+    > = this.store.pipe(select(selectPayrollDriverFlatRateLoads));
+
+    public selectPayrollReportIncludedLoads$: Observable<
+        LoadWithMilesStopResponse[]
+    > = this.store.pipe(select(selectPayrollReportsIncludedFlatRateStops));
 
     public getPayrollDriverFlatRateList() {
         this.store.dispatch(PayrollFlatRateActions.getPayrollFlatRateDriver());

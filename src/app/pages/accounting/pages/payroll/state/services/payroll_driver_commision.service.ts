@@ -42,15 +42,16 @@ export class PayrollDriverCommissionFacadeService {
         CommissionLoadShortReponseWithRowType[]
     > = this.store.pipe(select(selectPayrollDriverCommissionLoads));
 
+    public selectPayrollReportIncludedLoads$: Observable<
+        LoadWithMilesStopResponse[]
+    > = this.store.pipe(select(selectPayrollReportsIncludedCommissionStops));
+
     public getPayrollDriverCommissionList() {
         this.store.dispatch(
             PayrollCommissionActions.getPayrollCommissionDriver()
         );
     }
 
-    public selectPayrollReportIncludedLoads$: Observable<
-        LoadWithMilesStopResponse[]
-    > = this.store.pipe(select(selectPayrollReportsIncludedCommissionStops));
 
     public getPayrollDriverCommissionReport({
         reportId,

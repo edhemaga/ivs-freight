@@ -2,6 +2,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import {
     ClosePayrollDriverCommissionCommand,
+    ClosePayrollDriverFlatRateCommand,
     PayrollCountsResponse,
     PayrollDriverCommissionByIdResponse,
     PayrollDriverFlatRateByIdResponse,
@@ -123,58 +124,6 @@ export class PayrollService {
         return this.http.put<PayrollDriverMileageResponse>(
             `${environment.API_ENDPOINT}/api/payroll/driver/commission/close`,
             body
-        );
-    }
-
-    // FLAT RATE DRIVER
-    public getFlatRatePayrollDriverList(): Observable<IDriverFlatRateList> {
-        return this.http.get<IDriverFlatRateList>(
-            `${environment.API_ENDPOINT}/api/payroll/driver/flatrate/list`
-        );
-    }
-
-    public getPayrollFlatRateDriverReport({
-        reportId,
-        selectedCreditIds,
-        selectedDeductionIds,
-        selectedLoadIds,
-        selectedBonusIds,
-    }: IGet_Payroll_Commission_Driver_Report): Observable<PayrollDriverFlatRateByIdResponse> {
-        let params = new HttpParams();
-
-        if (selectedLoadIds) {
-            selectedLoadIds.map(
-                (creditId) =>
-                    (params = params.append('SelectedLoadIds', creditId))
-            );
-        }
-        if (selectedCreditIds) {
-            selectedCreditIds.map(
-                (creditId) =>
-                    (params = params.append('SelectedCreditIds', creditId))
-            );
-        }
-
-        if (selectedDeductionIds) {
-            selectedDeductionIds.map(
-                (deductionId) =>
-                    (params = params.append(
-                        'SelectedDeductionIds',
-                        deductionId
-                    ))
-            );
-        }
-
-        if (selectedBonusIds) {
-            selectedBonusIds.map(
-                (bonusIds) =>
-                    (params = params.append('SelectedBonusIds', bonusIds))
-            );
-        }
-
-        return this.http.get<PayrollDriverFlatRateByIdResponse>(
-            `${environment.API_ENDPOINT}/api/payroll/driver/flatrate/${reportId}`,
-            { params }
         );
     }
 
@@ -366,6 +315,102 @@ export class PayrollService {
 
         return this.http.put<PayrollDriverMileageResponse>(
             `${environment.API_ENDPOINT}/api/payroll/owner/close`,
+            body
+        );
+    }
+
+    // FLAT RATE DRIVER
+    public getFlatRatePayrollDriverList(): Observable<IDriverFlatRateList> {
+        return this.http.get<IDriverFlatRateList>(
+            `${environment.API_ENDPOINT}/api/payroll/driver/flatrate/list`
+        );
+    }
+
+    public getPayrollFlatRateDriverReport({
+        reportId,
+        selectedCreditIds,
+        selectedDeductionIds,
+        selectedLoadIds,
+        selectedBonusIds,
+    }: IGet_Payroll_Commission_Driver_Report): Observable<PayrollDriverFlatRateByIdResponse> {
+        let params = new HttpParams();
+
+        if (selectedLoadIds) {
+            selectedLoadIds.map(
+                (creditId) =>
+                    (params = params.append('SelectedLoadIds', creditId))
+            );
+        }
+        if (selectedCreditIds) {
+            selectedCreditIds.map(
+                (creditId) =>
+                    (params = params.append('SelectedCreditIds', creditId))
+            );
+        }
+
+        if (selectedDeductionIds) {
+            selectedDeductionIds.map(
+                (deductionId) =>
+                    (params = params.append(
+                        'SelectedDeductionIds',
+                        deductionId
+                    ))
+            );
+        }
+
+        if (selectedBonusIds) {
+            selectedBonusIds.map(
+                (bonusIds) =>
+                    (params = params.append('SelectedBonusIds', bonusIds))
+            );
+        }
+
+        return this.http.get<PayrollDriverFlatRateByIdResponse>(
+            `${environment.API_ENDPOINT}/api/payroll/driver/flatrate/${reportId}`,
+            { params }
+        );
+    }
+
+    public closePayrollFlatRateDriverReport(
+        amount: number,
+        reportId: number,
+        selectedLoadIds?: number[],
+        selectedBonusIds?: number[],
+        selectedDeducionIds?: number[],
+        selectedCreditIds?: number[],
+        paymentType?: PayrollPaymentType,
+        otherPaymentType?: PayrollOtherPaymentType
+    ): Observable<PayrollDriverMileageResponse> {
+        const body: ClosePayrollDriverFlatRateCommand = {
+            id: reportId,
+            pay: {
+                type: paymentType,
+                otherPaymentType,
+                //date: '2024-10-15T16:09:54.299Z',
+                amount: amount,
+            },
+        };
+
+        if (selectedDeducionIds?.length) {
+            body.selectedDeducionIds = selectedDeducionIds;
+        }
+
+        if (selectedLoadIds?.length) {
+            body.selectedLoadIds = selectedLoadIds;
+        }
+
+        if (selectedCreditIds?.length) {
+            body.selectedCreditIds = selectedCreditIds;
+        }
+
+        if (selectedBonusIds?.length) {
+            body.selectedBonusIds = selectedBonusIds;
+        }
+
+        console.log(body, 'dsfsdsdsdsd');
+        // return of();
+        return this.http.put<PayrollDriverMileageResponse>(
+            `${environment.API_ENDPOINT}/api/payroll/driver/flatrate/close`,
             body
         );
     }

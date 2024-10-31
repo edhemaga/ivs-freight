@@ -1,4 +1,7 @@
-import { DriverShortResponse } from 'appcoretruckassist';
+import {
+    DriverShortResponse,
+    PayrollLoadMinimalResponse,
+} from 'appcoretruckassist';
 
 export type IDriverFlatRateList = IDriverFlatRateResponse[];
 
@@ -30,3 +33,7 @@ export interface PayrollDeadLine {
     numberOfDays: number;
     period: string;
 }
+
+export type FlatRateLoadShortReponseWithRowType =
+    | PayrollLoadMinimalResponse
+    | { rowType: string };

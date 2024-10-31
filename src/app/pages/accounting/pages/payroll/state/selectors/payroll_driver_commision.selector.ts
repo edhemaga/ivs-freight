@@ -1,10 +1,5 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
-import {
-    MilesStopShortReponseWithRowType,
-    PayrollState,
-} from '../models/payroll.model';
-import { CommissionLoadShortReponseWithRowType } from '../models/driver_commission.model';
-import { PayrollLoadMinimalResponse } from 'appcoretruckassist';
+import { PayrollState } from '../models/payroll.model';
 
 export const selectPayrollState =
     createFeatureSelector<PayrollState>('payroll');

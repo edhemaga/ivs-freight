@@ -1,5 +1,5 @@
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { catchError, map, Observable, of, switchMap } from 'rxjs';
+import { catchError, map, Observable, of, switchMap, tap } from 'rxjs';
 import { Action } from '@ngrx/store';
 
 // ACTIONS
@@ -70,6 +70,57 @@ export function getPayrollFlatRateReportEffect(
                             catchError((error) =>
                                 of(
                                     PayrollFlatRateDriverActions.getPayrollFlatRateReportDriverError(
+                                        {
+                                            error,
+                                        }
+                                    )
+                                )
+                            )
+                        );
+                })
+            )
+    );
+}
+
+export function closePayrollFlatRateReportEffect(
+    actions$: Actions,
+    payrollService: PayrollService
+) {
+    return createEffect(
+        (): Observable<Action> =>
+            actions$.pipe(
+                ofType(
+                    PayrollFlatRateDriverActions.closePayrollFlatRateReportDriver
+                ),
+                switchMap((action) => {
+                    return payrollService
+                        .closePayrollFlatRateDriverReport(
+                            action.amount,
+                            action.reportId,
+                            action.selectedLoadIds,
+                            action.selectedBonusIds,
+                            action.selectedDeductionIds,
+                            action.selectedCreditIds,
+                            action.paymentType,
+                            action.otherPaymentType
+                        )
+                        .pipe(
+                            map((data) => {
+                                return PayrollFlatRateDriverActions
+                                    .closePayrollFlatRateReportDriverSuccess
+                                    // {
+                                    //     payroll: data,
+                                    // }
+                                    ();
+                            }),
+                            tap((data) => {
+                                // this.store.dispatch(
+                                //   PaymentActions.restartRefreshDataSuccess({ flag: false })
+                                // );
+                            }),
+                            catchError((error) =>
+                                of(
+                                    PayrollFlatRateDriverActions.closePayrollFlatRateReportDriverError(
                                         {
                                             error,
                                         }

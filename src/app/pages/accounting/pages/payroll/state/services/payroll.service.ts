@@ -6,6 +6,7 @@ import * as PayrollActions from '../actions/payroll.actions';
 import * as PayrollDriverMileageSolo from '../actions/payroll_solo_mileage_driver.actions';
 import * as PayrollCommissionActions from '../actions/payroll_commission_driver.actions';
 import * as PayrollOwnerActions from '../actions/payroll_owner_driver.action';
+import * as PayrollFlatRateActions from '../actions/payroll_flat_rate_driver.actions';
 
 // SELECTORS
 import {
@@ -278,6 +279,22 @@ export class PayrollFacadeService {
                             paymentType,
                             otherPaymentType,
                         })
+                    );
+                } else if(payrollType === 'flat rate'){
+                    this.store.dispatch(
+                        PayrollFlatRateActions.closePayrollFlatRateReportDriver(
+                            {
+                                amount,
+                                reportId,
+                                selectedLoadIds: payrollState.selectedLoadIds,
+                                selectedCreditIds:
+                                    payrollState.selectedCreditIds,
+                                selectedDeductionIds:
+                                    payrollState.selectedDeductionIds,
+                                paymentType,
+                                otherPaymentType,
+                            }
+                        )
                     );
                 }
             });

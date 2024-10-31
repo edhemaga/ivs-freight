@@ -1,4 +1,4 @@
-import { PayrollOwnerResponse, TruckShortResponse } from 'appcoretruckassist';
+import { PayrollLoadMinimalResponse, TruckShortResponse } from 'appcoretruckassist';
 export type IDriverOwnerList = IDriverOwnerResponse[];
 
 export interface IDriverOwnerResponse {
@@ -33,5 +33,5 @@ export interface PayrollDeadLine {
 }
 
 export type OwnerLoadShortReponseWithRowType =
-    | PayrollOwnerResponse
+    | PayrollLoadMinimalResponse
     | { rowType: string };

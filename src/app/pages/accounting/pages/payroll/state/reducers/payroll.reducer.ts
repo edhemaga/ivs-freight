@@ -194,5 +194,28 @@ export const payrollReducer = createReducer(
     on(
         PayrollFlatRateActions.getPayrollFlatRateDriverSuccess,
         PayrollFlatRateDriverReducers.onGetPayrollFlatRateDriverSuccess
+    ),
+
+    on(
+        PayrollFlatRateActions.getPayrollFlatRateReportDriver,
+        PayrollFlatRateDriverReducers.onGetPayrollFlatRateReportDriver
+    ),
+    on(
+        PayrollFlatRateActions.getPayrollFlatRateReportDriverSuccess,
+        PayrollFlatRateDriverReducers.onGetPayrollFlatRateReportDriverSuccess
+    ),
+
+    // FLAT RATE CLOSE PAYROLL REPORT
+    on(
+        PayrollFlatRateActions.closePayrollFlatRateReportDriver,
+        PayrollFlatRateDriverReducers.onClosePayrollFlatRateReportDriver
+    ),
+    on(
+        PayrollFlatRateActions.closePayrollFlatRateReportDriverSuccess,
+        PayrollFlatRateDriverReducers.onClosePayrollFlatRateReportDriverSuccess
+    ),
+    on(
+        PayrollFlatRateActions.closePayrollFlatRateReportDriverError,
+        PayrollFlatRateDriverReducers.onClosePayrollFlatRateReportDriverError
     )
 );

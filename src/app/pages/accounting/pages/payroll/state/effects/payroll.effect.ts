@@ -116,4 +116,10 @@ export class PayrollEffect {
             this.actions$,
             this.payrollService
         );
+
+    public closePayrollFlatRateReport$ =
+        PayrollFlatRateEffect.closePayrollFlatRateReportEffect(
+            this.actions$,
+            this.payrollService
+        );
 }
