@@ -217,10 +217,10 @@ export class DriverOwnerReportComponent
                 data: {
                     id: payrollData.id,
                     totalEarnings:
-                        (payrollData as any).debt ?? payrollData.totalEarnings,
+                        (payrollData as any).debt ?? payrollData.earnings,
                     payrollNumber: payrollData.payrollNumber,
                     selectedTab: this.selectedTab,
-                    payrollType: 'commission',
+                    payrollType: 'owner',
                 } as IPayrollProccessPaymentModal,
             }
         );

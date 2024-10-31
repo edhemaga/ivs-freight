@@ -135,7 +135,8 @@ export interface IGet_Payroll_Commission_Driver_Report {
     selectedLoadIds?: number[];
     selectedCreditIds?: number[];
     selectedDeductionIds?: number[];
-    selectedFuelIds?: number[]
+    selectedFuelIds?: number[];
+    selectedBonusIds?: number[];
 }
 
 export type PayrollTypes = 'miles' | 'commission' | 'flat rate' | 'owner';

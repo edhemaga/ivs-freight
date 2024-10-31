@@ -42,7 +42,7 @@ export function getPayrollCommissionDriverListEffect(
     );
 }
 
-export function getPayrollSoloMileageReportEffect(
+export function getPayrollCommissionReportEffect(
     actions$: Actions,
     payrollService: PayrollService
 ) {
@@ -95,7 +95,7 @@ export function closePayrollCommissionReportEffect(
                 ),
                 switchMap((action) => {
                     return payrollService
-                        .closePayrollCommissionDriverReport(
+                        .closePayrollCommissionDriverReport( 
                             action.amount,
                             action.reportId,
                             action.selectedLoadIds,

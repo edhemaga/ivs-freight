@@ -75,7 +75,13 @@ export class PayrollEffect {
         );
 
     public getPayrollCommissionDriverReportEffect$ =
-        PayrollCommissionDriverEffect.getPayrollSoloMileageReportEffect(
+        PayrollCommissionDriverEffect.getPayrollCommissionReportEffect(
+            this.actions$,
+            this.payrollService
+        );
+
+    public closePayrollCommissionReport$ =
+        PayrollCommissionDriverEffect.closePayrollCommissionReportEffect(
             this.actions$,
             this.payrollService
         );
@@ -92,10 +98,21 @@ export class PayrollEffect {
             this.actions$,
             this.payrollService
         );
+    public closePayrollOwnerReport$ =
+        PayrollOwnerDriverEffect.closePayrollOwnerReportEffect(
+            this.actions$,
+            this.payrollService
+        );
 
     // Payroll Flat List Driver
     public getPayrollFlatRateDriverListEffect$ =
         PayrollFlatRateEffect.getPayrollFlatRateDriverListEffect(
+            this.actions$,
+            this.payrollService
+        );
+
+    public getPayrollFlatRateDriverReportEffect$ =
+        PayrollFlatRateEffect.getPayrollFlatRateReportEffect(
             this.actions$,
             this.payrollService
         );

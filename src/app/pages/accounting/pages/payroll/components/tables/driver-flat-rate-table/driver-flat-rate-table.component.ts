@@ -150,6 +150,10 @@ export class DriverFlatRateTableComponent
         this.loading$ = this.payrollFacadeService.payrollLoading$;
     }
 
+    selectPayrollReport(report: any) {
+        this.expandTableEvent.emit(report);
+    }
+
     ngOnDestroy(): void {
         this.destroy$.next();
         this.destroy$.complete();

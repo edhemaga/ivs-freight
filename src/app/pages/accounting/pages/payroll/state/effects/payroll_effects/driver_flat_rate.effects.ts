@@ -39,3 +39,45 @@ export function getPayrollFlatRateDriverListEffect(
             )
     );
 }
+
+export function getPayrollFlatRateReportEffect(
+    actions$: Actions,
+    payrollService: PayrollService
+) {
+    return createEffect(
+        (): Observable<Action> =>
+            actions$.pipe(
+                ofType(
+                    PayrollFlatRateDriverActions.getPayrollFlatRateReportDriver
+                ),
+                switchMap((action) => {
+                    return payrollService
+                        .getPayrollFlatRateDriverReport({
+                            reportId: action.reportId,
+                            selectedCreditIds: action.selectedCreditIds,
+                            selectedDeductionIds: action.selectedDeductionIds,
+                            selectedLoadIds: action.selectedLoadIds,
+                            selectedBonusIds: action.selectedBonusIds,
+                        })
+                        .pipe(
+                            map((data) => {
+                                return PayrollFlatRateDriverActions.getPayrollFlatRateReportDriverSuccess(
+                                    {
+                                        payroll: data,
+                                    }
+                                );
+                            }),
+                            catchError((error) =>
+                                of(
+                                    PayrollFlatRateDriverActions.getPayrollFlatRateReportDriverError(
+                                        {
+                                            error,
+                                        }
+                                    )
+                                )
+                            )
+                        );
+                })
+            )
+    );
+}

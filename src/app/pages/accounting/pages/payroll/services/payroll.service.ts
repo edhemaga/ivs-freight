@@ -1,10 +1,14 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import {
+    ClosePayrollDriverCommissionCommand,
     PayrollCountsResponse,
     PayrollDriverCommissionByIdResponse,
+    PayrollDriverFlatRateByIdResponse,
     PayrollDriverMileageListResponse,
+    PayrollOtherPaymentType,
     PayrollOwnerResponse,
+    PayrollPaymentType,
 } from 'appcoretruckassist';
 import { PayrollDriverMileageResponse } from 'appcoretruckassist/model/payrollDriverMileageResponse';
 import { Observable, of } from 'rxjs';
@@ -89,14 +93,11 @@ export class PayrollService {
         selectedLoadIds?: number[],
         selectedDeducionIds?: number[],
         selectedCreditIds?: number[],
-        paymentType?: string,
-        otherPaymentType?: string
+        paymentType?: PayrollPaymentType,
+        otherPaymentType?: PayrollOtherPaymentType
     ): Observable<PayrollDriverMileageResponse> {
-        const body = {
+        const body: ClosePayrollDriverCommissionCommand = {
             id: reportId,
-            selectedDeducionIds: selectedDeducionIds,
-            selectedLoadIds: selectedLoadIds,
-            selectedCreditIds: selectedCreditIds,
             pay: {
                 type: paymentType,
                 otherPaymentType,
@@ -104,10 +105,23 @@ export class PayrollService {
                 amount: amount,
             },
         };
-        console.log(body);
-        return of();
+
+        if (selectedDeducionIds?.length) {
+            body.selectedDeducionIds = selectedDeducionIds;
+        }
+
+        if (selectedLoadIds?.length) {
+            body.selectedLoadIds = selectedLoadIds;
+        }
+
+        if (selectedCreditIds?.length) {
+            body.selectedCreditIds = selectedCreditIds;
+        }
+
+        console.log(body, 'dsfsdsdsdsd');
+        // return of();
         return this.http.put<PayrollDriverMileageResponse>(
-            `${environment.API_ENDPOINT}/api/payroll/driver/mileage/close`,
+            `${environment.API_ENDPOINT}/api/payroll/driver/commission/close`,
             body
         );
     }
@@ -116,6 +130,51 @@ export class PayrollService {
     public getFlatRatePayrollDriverList(): Observable<IDriverFlatRateList> {
         return this.http.get<IDriverFlatRateList>(
             `${environment.API_ENDPOINT}/api/payroll/driver/flatrate/list`
+        );
+    }
+
+    public getPayrollFlatRateDriverReport({
+        reportId,
+        selectedCreditIds,
+        selectedDeductionIds,
+        selectedLoadIds,
+        selectedBonusIds,
+    }: IGet_Payroll_Commission_Driver_Report): Observable<PayrollDriverFlatRateByIdResponse> {
+        let params = new HttpParams();
+
+        if (selectedLoadIds) {
+            selectedLoadIds.map(
+                (creditId) =>
+                    (params = params.append('SelectedLoadIds', creditId))
+            );
+        }
+        if (selectedCreditIds) {
+            selectedCreditIds.map(
+                (creditId) =>
+                    (params = params.append('SelectedCreditIds', creditId))
+            );
+        }
+
+        if (selectedDeductionIds) {
+            selectedDeductionIds.map(
+                (deductionId) =>
+                    (params = params.append(
+                        'SelectedDeductionIds',
+                        deductionId
+                    ))
+            );
+        }
+
+        if (selectedBonusIds) {
+            selectedBonusIds.map(
+                (bonusIds) =>
+                    (params = params.append('SelectedBonusIds', bonusIds))
+            );
+        }
+
+        return this.http.get<PayrollDriverFlatRateByIdResponse>(
+            `${environment.API_ENDPOINT}/api/payroll/driver/flatrate/${reportId}`,
+            { params }
         );
     }
 
@@ -271,6 +330,43 @@ export class PayrollService {
         return this.http.get<PayrollOwnerResponse>(
             `${environment.API_ENDPOINT}/api/payroll/owner/open/${reportId}`,
             { params }
+        );
+    }
+
+    public closePayrollOwnerDriverReport(
+        amount: number,
+        reportId: number,
+        selectedLoadIds?: number[],
+        selectedDeducionIds?: number[],
+        selectedCreditIds?: number[],
+        paymentType?: PayrollPaymentType,
+        otherPaymentType?: PayrollOtherPaymentType
+    ): Observable<PayrollDriverMileageResponse> {
+        const body: ClosePayrollDriverCommissionCommand = {
+            id: reportId,
+            pay: {
+                type: paymentType,
+                otherPaymentType,
+                //date: '2024-10-15T16:09:54.299Z',
+                amount: amount,
+            },
+        };
+
+        if (selectedDeducionIds?.length) {
+            body.selectedDeducionIds = selectedDeducionIds;
+        }
+
+        if (selectedLoadIds?.length) {
+            body.selectedLoadIds = selectedLoadIds;
+        }
+
+        if (selectedCreditIds?.length) {
+            body.selectedCreditIds = selectedCreditIds;
+        }
+
+        return this.http.put<PayrollDriverMileageResponse>(
+            `${environment.API_ENDPOINT}/api/payroll/owner/close`,
+            body
         );
     }
 }

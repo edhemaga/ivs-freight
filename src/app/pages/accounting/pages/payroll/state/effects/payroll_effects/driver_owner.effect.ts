@@ -1,5 +1,5 @@
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { catchError, map, Observable, of, switchMap } from 'rxjs';
+import { catchError, map, Observable, of, switchMap, tap } from 'rxjs';
 import { Action } from '@ngrx/store';
 
 // ACTIONS
@@ -68,6 +68,54 @@ export function getPayrollOwnerReportEffect(
                             catchError((error) =>
                                 of(
                                     PayrollOwnerDriverActions.getPayrollOwnerReportDriverError(
+                                        {
+                                            error,
+                                        }
+                                    )
+                                )
+                            )
+                        );
+                })
+            )
+    );
+}
+
+export function closePayrollOwnerReportEffect(
+    actions$: Actions,
+    payrollService: PayrollService
+) {
+    return createEffect(
+        (): Observable<Action> =>
+            actions$.pipe(
+                ofType(PayrollOwnerDriverActions.closePayrollOwnerReportDriver),
+                switchMap((action) => {
+                    return payrollService
+                        .closePayrollOwnerDriverReport(
+                            action.amount,
+                            action.reportId,
+                            action.selectedLoadIds,
+                            action.selectedDeductionIds,
+                            action.selectedCreditIds,
+                            action.paymentType,
+                            action.otherPaymentType
+                        )
+                        .pipe(
+                            map((data) => {
+                                return PayrollOwnerDriverActions
+                                    .closePayrollOwnerReportDriverSuccess
+                                    // {
+                                    //     payroll: data,
+                                    // }
+                                    ();
+                            }),
+                            tap((data) => {
+                                // this.store.dispatch(
+                                //   PaymentActions.restartRefreshDataSuccess({ flag: false })
+                                // );
+                            }),
+                            catchError((error) =>
+                                of(
+                                    PayrollOwnerDriverActions.closePayrollOwnerReportDriverError(
                                         {
                                             error,
                                         }

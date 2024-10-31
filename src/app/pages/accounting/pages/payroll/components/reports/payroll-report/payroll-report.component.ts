@@ -274,7 +274,7 @@ export class PayrollReportComponent implements OnInit, OnDestroy {
                 data: {
                     id: payrollData.id,
                     totalEarnings:
-                        (payrollData as any).debt ?? payrollData.totalEarnings,
+                        (payrollData as any).debt ?? payrollData.earnings,
                     payrollNumber: payrollData.payrollNumber,
                     selectedTab: this.selectedTab,
                     payrollType: 'miles',

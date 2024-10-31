@@ -2,7 +2,11 @@ import { createAction, props } from '@ngrx/store';
 import { PayrollOwnerDriverEnum } from '../enums/driver_owner/driver_owner.enums';
 import { IDriverOwnerList } from '../models/driver_owner.model';
 import { IGet_Payroll_Commission_Driver_Report } from '../models/payroll.model';
-import { PayrollOwnerResponse } from 'appcoretruckassist';
+import {
+    PayrollOtherPaymentType,
+    PayrollOwnerResponse,
+    PayrollPaymentType,
+} from 'appcoretruckassist';
 
 export const getPayrollOwnerDriverList = createAction(
     PayrollOwnerDriverEnum.GET_PAYROLL_OWNER_DRIVER
@@ -46,4 +50,27 @@ export const getPayrollOwnerDriverClosedPayrollSuccess = createAction(
 export const getPayrollOwnerDriverClosedPayrollError = createAction(
     PayrollOwnerDriverEnum.GET_PAYROLL_OWNER_CLOSED_PAYROLL_ERROR,
     props<{ error: string }>()
+);
+
+export const closePayrollOwnerReportDriver = createAction(
+    PayrollOwnerDriverEnum.CLOSE_PAYROLL_OWNER_DRIVER_PAYMENT,
+    props<{
+        amount: number;
+        reportId: number;
+        selectedLoadIds?: number[];
+        selectedCreditIds?: number[];
+        selectedDeductionIds?: number[];
+        paymentType?: PayrollPaymentType;
+        otherPaymentType?: PayrollOtherPaymentType;
+    }>()
+);
+
+export const closePayrollOwnerReportDriverSuccess = createAction(
+    PayrollOwnerDriverEnum.CLOSE_PAYROLL_OWNER_DRIVER_PAYMENT_SUCCESS
+    //props<{ payroll: PayrollDriverMileageResponse }>()
+);
+
+export const closePayrollOwnerReportDriverError = createAction(
+    PayrollOwnerDriverEnum.CLOSE_PAYROLL_OWNER_DRIVER_PAYMENT_ERROR,
+    props<any>()
 );

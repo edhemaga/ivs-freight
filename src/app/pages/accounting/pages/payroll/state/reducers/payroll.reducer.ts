@@ -133,9 +133,27 @@ export const payrollReducer = createReducer(
         PayrollCommissionDriverReducers.onGetPayrollSoloMileageDriver
     ),
     on(
+        PayrollCommissionDriverActions.getPayrollCommissionReportDriver,
+        PayrollCommissionDriverReducers.onGetPayrollCommissionReportDriver
+    ),
+    on(
         PayrollCommissionDriverActions.getPayrollCommissionReportDriverSuccess,
         PayrollCommissionDriverReducers.onGetPayrollCommissionReportDriverSuccess
     ),
+    // COMMISSION CLOSE PAYROLL REPORT
+    on(
+        PayrollCommissionDriverActions.closePayrollCommissionReportDriver,
+        PayrollCommissionDriverReducers.onClosePayrollCommissionReportDriver
+    ),
+    on(
+        PayrollCommissionDriverActions.closePayrollCommissionReportDriverSuccess,
+        PayrollCommissionDriverReducers.onClosePayrollCommissionReportDriverSuccess
+    ),
+    on(
+        PayrollCommissionDriverActions.closePayrollCommissionReportDriverError,
+        PayrollCommissionDriverReducers.onClosePayrollCommissionReportDriverError
+    ),
+
     // DRIVER OWNER
     on(
         PayrollOwnerDriverActions.getPayrollOwnerDriverList,
@@ -153,6 +171,21 @@ export const payrollReducer = createReducer(
         PayrollOwnerDriverActions.getPayrollOwnerReportDriverSuccess,
         PayrollOwnerDriverReducers.onGetPayrollOwnerReportSuccess
     ),
+
+    // OWNER CLOSE PAYROLL REPORT
+    on(
+        PayrollOwnerDriverActions.closePayrollOwnerReportDriver,
+        PayrollOwnerDriverReducers.onClosePayrollOwnerReportDriver
+    ),
+    on(
+        PayrollOwnerDriverActions.closePayrollOwnerReportDriverSuccess,
+        PayrollOwnerDriverReducers.onClosePayrollOwnerReportDriverSuccess
+    ),
+    on(
+        PayrollOwnerDriverActions.closePayrollOwnerReportDriverError,
+        PayrollOwnerDriverReducers.onClosePayrollOwnerReportDriverError
+    ),
+
     // DRIVER FLAT RATE
     on(
         PayrollFlatRateActions.getPayrollFlatRateDriver,

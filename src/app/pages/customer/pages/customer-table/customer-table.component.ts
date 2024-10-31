@@ -1455,7 +1455,7 @@ export class CustomerTableComponent
         };
     }
 
-    private mapShipperData(data: ShipperResponse): MappedShipperBroker {
+    private mapShipperData(data: ShipperResponse): any {
         return {
             ...data,
             isSelected: false,
@@ -1473,11 +1473,11 @@ export class CustomerTableComponent
                 pickups: data?.pickups,
                 deliveries: data?.deliveries,
             },
-            tableAverageWatingTimePickup: data?.avgPickupTimeInMin
-                ? data.avgPickupTimeInMin.toString()
+            tableAverageWatingTimePickup: data?.avgPickupTime
+                ? data.avgPickupTime.toString()
                 : null,
-            tableAverageWatingTimeDelivery: data?.avgDeliveryTimeInMin
-                ? data.avgDeliveryTimeInMin.toString()
+            tableAverageWatingTimeDelivery: data?.avgDeliveryTime
+                ? data.avgDeliveryTime.toString()
                 : null,
             tableAvailableHoursShipping:
                 data?.shippingFrom && data?.shippingTo

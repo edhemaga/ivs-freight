@@ -44,6 +44,7 @@ import { PayrollFacadeService } from '../../state/services/payroll.service';
 import { TaInputService } from '@shared/services/ta-input.service';
 import { TaSpinnerComponent } from '@shared/components/ta-spinner/ta-spinner.component';
 import { IPayrollProccessPaymentModal } from '../../state/models/payroll.model';
+import { PayrollPaymentType } from 'appcoretruckassist';
 
 @Component({
     selector: 'app-payroll-proccess-payment-modal',
@@ -226,9 +227,13 @@ export class PayrollProccessPaymentModalComponent implements OnDestroy {
             this.payrollFacadeService.closePayrollReport({
                 amount: isUnpaid ? 0 : formData.amount,
                 reportId: this.modalData.id,
-                paymentType: this.selectedTab === 2 ? 'Manual' : 'Ach',
+                paymentType:
+                    this.selectedTab === 2
+                        ? PayrollPaymentType.Manual
+                        : PayrollPaymentType.Ach,
                 otherPaymentType:
                     this.selectedTab === 2 ? formData.option : null,
+                payrollType: this.modalData.payrollType,
             });
         } else {
             this.payrollFacadeService.addPayrollClosedPayment({
@@ -237,6 +242,7 @@ export class PayrollProccessPaymentModalComponent implements OnDestroy {
                 payrollDriverMileageId: this.modalData.id,
                 otherPaymentType:
                     this.selectedTab === 2 ? formData.option : null,
+                //payrollType: this.modalData.payrollType
             });
         }
     }
@@ -244,7 +250,6 @@ export class PayrollProccessPaymentModalComponent implements OnDestroy {
     selectedItem(dd: any) {}
 
     get modalData(): IPayrollProccessPaymentModal {
-        console.log('REPORT DATA', this.editData.data);
         return this.editData.data as IPayrollProccessPaymentModal;
     }
 

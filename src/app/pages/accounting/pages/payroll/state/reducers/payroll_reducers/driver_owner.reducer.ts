@@ -1,6 +1,9 @@
 import { PayrollOwnerResponse } from 'appcoretruckassist';
 import { IDriverOwnerList } from '../../models/driver_owner.model';
-import { PayrollState } from '../../models/payroll.model';
+import {
+    IGet_Payroll_Commission_Driver_Report,
+    PayrollState,
+} from '../../models/payroll.model';
 
 export const onGetPayrollOwnerDriverListSuccess = (
     state: PayrollState,
@@ -16,9 +19,15 @@ export const onGetPayrollOwnerDriverList = (state: PayrollState) => ({
     loading: true,
 });
 
-export const onGetPayrollOwnerReport = (state: PayrollState) => ({
+export const onGetPayrollOwnerReport = (
+    state: PayrollState,
+    params: IGet_Payroll_Commission_Driver_Report
+) => ({
     ...state,
-    loading: true,
+    selectedLoadIds: params.selectedLoadIds,
+    selectedDeductionIds:
+        params.selectedDeductionIds ?? state.selectedDeductionIds,
+    selectedCreditIds: params.selectedCreditIds ?? state.selectedCreditIds,
 });
 
 export const onGetPayrollOwnerReportSuccess = (
@@ -28,4 +37,29 @@ export const onGetPayrollOwnerReportSuccess = (
     ...state,
     loading: false,
     ownerPayrollResponse: data.ownerPayrollReport,
+});
+
+export const onClosePayrollOwnerReportDriver = (state: PayrollState) => ({
+    ...state,
+    closeReportPaymentLoading: true,
+    closeReportPaymentError: false,
+});
+
+export const onClosePayrollOwnerReportDriverSuccess = (
+    state: PayrollState
+) => ({
+    ...state,
+    expandedReportTable: false,
+    closeReportPaymentLoading: false,
+    payrollCounts: {},
+    selectedDeductionIds: [],
+    selectedBonusIds: [],
+    selectedCreditIds: [],
+    lastLoadDate: undefined,
+});
+
+export const onClosePayrollOwnerReportDriverError = (state: PayrollState) => ({
+    ...state,
+    closeReportPaymentLoading: false,
+    closeReportPaymentError: true,
 });

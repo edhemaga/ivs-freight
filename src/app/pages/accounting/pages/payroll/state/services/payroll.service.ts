@@ -5,6 +5,7 @@ import { Store, select } from '@ngrx/store';
 import * as PayrollActions from '../actions/payroll.actions';
 import * as PayrollDriverMileageSolo from '../actions/payroll_solo_mileage_driver.actions';
 import * as PayrollCommissionActions from '../actions/payroll_commission_driver.actions';
+import * as PayrollOwnerActions from '../actions/payroll_owner_driver.action';
 
 // SELECTORS
 import {
@@ -28,6 +29,8 @@ import {
 import {
     MilesStopShortResponse,
     PayrollDriverMileageListResponse,
+    PayrollOtherPaymentType,
+    PayrollPaymentType,
 } from 'appcoretruckassist';
 import {
     IAddPayrollClosedPayment,
@@ -223,8 +226,8 @@ export class PayrollFacadeService {
     }: {
         reportId: number;
         amount: number;
-        paymentType: string;
-        otherPaymentType?: string;
+        paymentType: PayrollPaymentType;
+        otherPaymentType?: PayrollOtherPaymentType;
         payrollType?: PayrollTypes;
     }) {
         this.store
@@ -262,6 +265,19 @@ export class PayrollFacadeService {
                                 otherPaymentType,
                             }
                         )
+                    );
+                } else if (payrollType === 'owner') {
+                    this.store.dispatch(
+                        PayrollOwnerActions.closePayrollOwnerReportDriver({
+                            amount,
+                            reportId,
+                            selectedLoadIds: payrollState.selectedLoadIds,
+                            selectedCreditIds: payrollState.selectedCreditIds,
+                            selectedDeductionIds:
+                                payrollState.selectedDeductionIds,
+                            paymentType,
+                            otherPaymentType,
+                        })
                     );
                 }
             });

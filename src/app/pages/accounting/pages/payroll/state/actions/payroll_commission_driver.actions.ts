@@ -1,8 +1,8 @@
 import { createAction, props } from '@ngrx/store';
 import { PayrollCommissionDriverEnum } from '../enums/driver_commission/payroll_driver_commission.enums';
 import { IDriverCommissionList } from '../models/driver_commission.model';
-import { IGet_Payroll_Commission_Driver_Report } from '../models/payroll.model';
-import { PayrollDriverCommissionByIdResponse } from 'appcoretruckassist';
+import { IGet_Payroll_Commission_Driver_Report, IGet_Payroll_Solo_Mileage_Driver_Report } from '../models/payroll.model';
+import { PayrollDriverCommissionByIdResponse, PayrollOtherPaymentType, PayrollPaymentType } from 'appcoretruckassist';
 
 export const getPayrollCommissionDriver = createAction(
     PayrollCommissionDriverEnum.GET_PAYROLL_COMMISSION_DRIVER
@@ -56,8 +56,8 @@ export const closePayrollCommissionReportDriver = createAction(
         selectedLoadIds?: number[];
         selectedCreditIds?: number[];
         selectedDeductionIds?: number[];
-        paymentType?: string;
-        otherPaymentType?: string;
+        paymentType?: PayrollPaymentType;
+        otherPaymentType?: PayrollOtherPaymentType;
     }>()
 );
 
