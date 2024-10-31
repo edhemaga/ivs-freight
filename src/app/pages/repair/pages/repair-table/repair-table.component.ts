@@ -48,13 +48,13 @@ import { ThousandSeparatorPipe } from '@shared/pipes/thousand-separator.pipe';
 // enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
 import { ConfirmationActivationStringEnum } from '@shared/components/ta-shared-modals/confirmation-activation-modal/enums/confirmation-activation-string.enum';
-import { RepairTableStringEnum } from '@pages/repair/pages/repair-table/enums/repair-table-string.enum';
+import { RepairTableStringEnum } from '@pages/repair/pages/repair-table/enums';
 import { TableActionsStringEnum } from '@shared/enums/table-actions-string.enum';
 
 // constants
 import { TableDropdownComponentConstants } from '@shared/utils/constants/table-dropdown-component.constants';
-import { RepairCardConfigConstants } from '@pages/repair/utils/constants/repair-card-config.constants';
-import { RepairConfiguration } from '@pages/repair/pages/repair-table/utils/constants/repair-configuration.constants';
+import { RepairCardConfigConstants } from '@pages/repair/pages/repair-card/utils/constants';
+import { RepairConfiguration } from '@pages/repair/pages/repair-table/utils/constants';
 
 // helpers
 import { DataFilterHelper } from '@shared/utils/helpers/data-filter.helper';
@@ -73,12 +73,14 @@ import {
 } from '@shared/utils/settings/table-settings/repair-columns';
 
 // models
-import { ShopBackFilter } from '@pages/repair/pages/repair-table/models/shop-back-filter.model';
-import { MappedTruckTrailer } from '@pages/repair/pages/repair-table/models/mapped-truck-trailer.model';
-import { MapList } from '@pages/repair/pages/repair-table/models/map-list.model';
-import { ShopBackFilterQuery } from '@pages/repair/pages/repair-table/models/shop-back-filter-query.model';
-import { RepairBackFilter } from '@pages/repair/pages/repair-table/models/repair-back-filter.model';
-import { RepairBodyResponse } from '@pages/repair/pages/repair-table/models/repair-body-response.model';
+import {
+    MapList,
+    MappedTruckTrailer,
+    ShopBackFilter,
+    ShopBackFilterQuery,
+    RepairBackFilter,
+    RepairBodyResponse,
+} from '@pages/repair/pages/repair-table/models';
 import { RepairListResponse, RepairResponse } from 'appcoretruckassist';
 import { DropdownItem } from '@shared/models/card-models/card-table-data.model';
 import { TableToolbarActions } from '@shared/models/table-models/table-toolbar-actions.model';
@@ -87,9 +89,11 @@ import { CardTableData } from '@shared/models/table-models/card-table-data.model
 import { TableColumnConfig } from '@shared/models/table-models/table-column-config.model';
 
 // helpers
-import { RepairTableHelper } from '@pages/repair/pages/repair-table/utils/helpers/repair-table.helper';
-import { RepairTableDateFormaterHelper } from '@pages/repair/pages/repair-table/utils/helpers/repair-table-date-formater.helper';
-import { RepairTableBackFilterDataHelper } from '@pages/repair/pages/repair-table/utils/helpers/repair-table-back-filter-data.helper';
+import {
+    RepairTableHelper,
+    RepairTableDateFormaterHelper,
+    RepairTableBackFilterDataHelper,
+} from '@pages/repair/pages/repair-table/utils/helpers';
 
 @Component({
     selector: 'app-repair-table',
