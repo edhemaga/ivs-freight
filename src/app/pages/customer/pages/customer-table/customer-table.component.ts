@@ -1512,7 +1512,7 @@ export class CustomerTableComponent
         };
     }
 
-    private getDropdownBrokerContent(data): DropdownItem[] {
+    private getDropdownBrokerContent(data: BrokerResponse): DropdownItem[] {
         const dropdownContent =
             DropdownContentHelper.getDropdownBrokerContent(data);
 

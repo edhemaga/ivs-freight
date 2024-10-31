@@ -299,9 +299,6 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
             ?.toLowerCase()
             ?.includes(RepairOrderModalStringEnum.TRAILER_2);
 
-        if (!this.editData.data)
-            this.onTabChange(this.unitTabs[isTrailer ? 1 : 0]);
-
         this.getRepairDropdowns(
             null,
             null,
@@ -310,6 +307,19 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
                 : RepairOrderModalStringEnum.TRUCKS,
             false
         );
+
+        if (
+            !this.editData?.data ||
+            this.editData?.type === TableStringEnum.ADD_BILL
+        ) {
+            this.onTabChange(this.unitTabs[isTrailer ? 1 : 0]);
+
+            if (this.editData?.type === TableStringEnum.ADD_BILL) {
+                this.selectedRepairShop = { id: this.editData?.data?.id };
+
+                this.getRepairShopById();
+            }
+        }
     }
 
     private checkIsFinishOrder(): void {
@@ -616,6 +626,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
             case RepairOrderModalStringEnum.REPAIR_SHOP:
                 if (event?.canOpenModal) {
                     this.ngbActiveModal.close();
+
                     this.modalService.setProjectionModal({
                         action: RepairOrderModalStringEnum.OPEN,
                         payload: {
@@ -639,59 +650,9 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
                 } else {
                     this.selectedRepairShop = event;
 
-                    if (this.selectedRepairShop) {
-                        this.repairOrderForm.patchValue({
-                            repairShopId: this.selectedRepairShop.id,
-                        });
-
-                        this.repairService
-                            .getRepairShopById(this.selectedRepairShop.id)
-                            .pipe(takeUntil(this.destroy$))
-                            .subscribe((res) => {
-                                this.selectedRepairShop = {
-                                    id: res.id,
-                                    name: res.name,
-                                    phone: res.phone,
-                                    email: res.email,
-                                    address: res.address.address,
-                                    shopServiceType: res.shopServiceType,
-                                };
-
-                                this.repairOrderForm
-                                    .get(
-                                        RepairOrderModalStringEnum.SHOP_SERVICE_TYPE
-                                    )
-                                    .patchValue(
-                                        this.selectedRepairShop.shopServiceType
-                                            .id
-                                    );
-
-                                this.serviceTabs = this.serviceTabs.map(
-                                    (serviceTab) => {
-                                        return {
-                                            ...serviceTab,
-                                            checked:
-                                                serviceTab.id ===
-                                                res.shopServiceType.id,
-                                        };
-                                    }
-                                );
-
-                                this.services = res.serviceTypes.map(
-                                    (service) => {
-                                        return {
-                                            id: service.serviceType.id,
-                                            serviceType:
-                                                service.serviceType.name,
-                                            svg: `assets/svg/common/repair-services/${service.logoName}`,
-                                            active: service.active,
-                                            isSelected: service.isSelected,
-                                        };
-                                    }
-                                );
-                            });
-                    }
+                    if (this.selectedRepairShop) this.getRepairShopById();
                 }
+
                 break;
             default:
                 break;
@@ -771,7 +732,10 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
     }
 
     public addRepairItemOnInit(): void {
-        if (!this.editData.data)
+        if (
+            !this.editData.data ||
+            this.editData.type === TableStringEnum.ADD_BILL
+        )
             setTimeout(() => {
                 this.addRepairItem();
             }, 500);
@@ -1100,6 +1064,58 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
 
                     this.editRepairById(this.editData.data);
                 } else this.startFormChanges();
+            });
+    }
+
+    private getRepairShopById(): void {
+        this.repairService
+            .getRepairShopById(this.selectedRepairShop.id)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((repairShop) => {
+                const {
+                    id,
+                    name,
+                    phone,
+                    email,
+                    address,
+                    shopServiceType,
+                    serviceTypes,
+                } = repairShop;
+
+                this.selectedRepairShop = {
+                    id,
+                    name,
+                    phone,
+                    email,
+                    address: address?.address,
+                    shopServiceType,
+                };
+
+                this.repairOrderForm.patchValue({
+                    repairShopId: this.selectedRepairShop?.id,
+                    shopServiceType:
+                        this.selectedRepairShop?.shopServiceType?.id,
+                });
+
+                this.serviceTabs = this.serviceTabs?.map((serviceTab) => {
+                    return {
+                        ...serviceTab,
+                        checked: serviceTab.id === shopServiceType?.id,
+                    };
+                });
+
+                this.services = serviceTypes.map((service) => {
+                    const { serviceType, logoName, active, isSelected } =
+                        service;
+
+                    return {
+                        id: serviceType?.id,
+                        serviceType: serviceType?.name,
+                        svg: `assets/svg/common/repair-services/${logoName}`,
+                        active,
+                        isSelected,
+                    };
+                });
             });
     }
 
