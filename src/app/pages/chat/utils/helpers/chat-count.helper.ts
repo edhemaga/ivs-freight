@@ -1,6 +1,5 @@
 export class ChatCount {
-    // TODO Maybe rename to getTotalCount
-    static getCount<T>(property: string, ...data: Array<T>): number {
+    static getTotalCount<T>(property: string, ...data: Array<T>): number {
         let totalCount = 0;
         data.forEach((item) => {
             if (!Array.isArray(item)) return;

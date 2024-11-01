@@ -191,8 +191,8 @@
         <div class="chat-lists">
             <app-conversation-list
                 [departments]="departments"
-                [companyUsers]="companyUsers"
-                [drivers]="drivers"
+                [companyUsers]="companyUsers | chatUserFilter : activeFilter"
+                [drivers]="drivers | chatUserFilter : activeFilter"
                 (selectedConversation)="
                     createUserConversation(
                         $event.id,

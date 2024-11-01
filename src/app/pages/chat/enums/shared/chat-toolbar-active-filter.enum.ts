@@ -1,4 +1,4 @@
 export enum ChatToolbarActiveFilterEnum {
-    FAVORITE,
+    FAVORITE = 1,
     UNREAD,
 }

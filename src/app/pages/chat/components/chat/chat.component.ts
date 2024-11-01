@@ -29,6 +29,7 @@ import {
     ChatViewTypeEnum,
     ConversationTypeEnum,
     ChatAttachmentCustomClassEnum,
+    ChatObjectPropertyEnum,
 } from '@pages/chat/enums';
 
 // Constants
@@ -141,10 +142,10 @@ export class ChatComponent
                     this.companyUsers.count +
                     this.departments.length;
 
-                const unreadCount = ChatCount.getCount<
+                const unreadCount = ChatCount.getTotalCount<
                     CompanyUserChatResponse[]
                 >(
-                    'hasUnreadMessage',
+                    ChatObjectPropertyEnum.HAS_UNREAD_MESSAGES,
                     this.companyUsers.data,
                     this.drivers.data
                 );
@@ -155,9 +156,13 @@ export class ChatComponent
                     .subscribe((count: number) => {
                         this.unreadCount = count;
                     });
-                const favoriteCount = ChatCount.getCount<
+                const favoriteCount = ChatCount.getTotalCount<
                     CompanyUserChatResponse[]
-                >('isFavourite', this.companyUsers.data, this.drivers.data);
+                >(
+                    ChatObjectPropertyEnum.IS_FAVORITE,
+                    this.companyUsers.data,
+                    this.drivers.data
+                );
                 this.chatStoreService.setFavoriteCount(favoriteCount);
                 this.chatStoreService
                     .selectFavoriteCount()

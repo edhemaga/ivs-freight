@@ -10,3 +10,4 @@ export * from './chat-highlight.pipe';
 export * from './chat-status-icon.pipe';
 export * from './chat-active-participant-count.pipe';
 export * from './chat-user-first-name.pipe';
+export * from './chat-user-filter.pipe';
