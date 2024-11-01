@@ -11,8 +11,10 @@ import { BrokerResolver } from '@pages/customer/resolvers/broker.resolver';
 import { ShipperResolver } from '@pages/customer/resolvers/shipper.resolver';
 import { DriverResolver } from '@pages/driver/resolvers/driver.resolver';
 import { LoadActiveResolver } from '@pages/load/resolvers/load-active.resolver';
-import { RepairTruckResolver } from '@pages/repair/resolvers/repair-truck.resolver';
-import { RepairShopResolver } from '@pages/repair/resolvers/repair-shop.resolver';
+import {
+    RepairTruckResolver,
+    RepairShopResolver,
+} from '@pages/repair/resolvers';
 import { PmTrailerResolver } from '@pages/pm-truck-trailer/resolvers/pm-trailer.resolver';
 import { PmTruckResolver } from '@pages/pm-truck-trailer/resolvers/pm-truck.resolver';
 import { FuelResolver } from '@pages/fuel/resolvers/fuel.resolver';
@@ -28,8 +30,8 @@ export class ListRoutes {
             loadChildren: () =>
                 import('@pages/load/load.module').then((m) => m.LoadModule),
             canActivate: [AuthGuard, CompanySettingsGuard],
-            resolve: { 
-                loadActive: LoadActiveResolver
+            resolve: {
+                loadActive: LoadActiveResolver,
             },
         },
         {

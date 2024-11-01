@@ -41,6 +41,7 @@ import {
     CardDetails,
     DeleteComment,
     DropdownItem,
+    Stop,
 } from '@shared/models/card-models/card-table-data.model';
 import { GridColumn } from '@shared/models/table-models/grid-column.model';
 import { TableToolbarActions } from '@shared/models/table-models/table-toolbar-actions.model';
@@ -1032,14 +1033,13 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
             loadPickup: [
                 {
-                    count: stops[0]?.stopOrder,
+                    count: this.calculatePickupstops(stops),
                     location: stops[0]?.shipper?.address?.city,
                     delivery: false,
                 },
                 {
-                    count: stops[1]?.stopOrder,
-                    location: stops[1]?.shipper?.address?.city,
-
+                    count: stops[stops.length - 1]?.stopLoadOrder,
+                    location: stops[stops.length - 1]?.shipper?.address?.city,
                     delivery: true,
                 },
             ],
@@ -1124,6 +1124,16 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
             },
         };
     }
+    private calculatePickupstops(stops: Stop[]): number {
+        let stopOrder = 0;
+        stops.forEach((stop) => {
+            if (stop.stopType.name === LoadModalStringEnum.PICKUP_2)
+                stopOrder++;
+        });
+
+        return stopOrder;
+    }
+
     private mapLoadData(data: LoadModel) /* : LoadModel */ {
         let commentsWithAvatarColor;
         if (data.comments) {

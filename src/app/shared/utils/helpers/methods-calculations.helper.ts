@@ -120,13 +120,18 @@ export class MethodsCalculationsHelper {
         date: string,
         show_am_ap?: boolean
     ) => {
-        if(!date) {
+        if (!date) {
             return null;
         }
         return moment
             .utc(date)
             .local()
             .format(show_am_ap ? 'HH:mm A' : 'HH:mm:SS');
+    };
+
+    //------------------------------- TIME FROM BACKEND WITH EXTRA SECONDS / BAD TIME FORMAT - TO TIME -------------------------------
+    static convertTimeFromBackendBadFormat = (time: string) => {
+        return moment(time.split('.')[0], 'HH:mm:ss').format('hh:mm A');
     };
 
     //------------------------------- TIME FROM BACKEND -------------------------------

@@ -3873,7 +3873,8 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                 item.latitude !== null
         );
 
-        if (validRoutes) {
+        // Backend requires min 2 routes to do calculations
+        if (validRoutes && validRoutes.length > 1) {
             this.loadService
                 .getRouting(
                     JSON.stringify(

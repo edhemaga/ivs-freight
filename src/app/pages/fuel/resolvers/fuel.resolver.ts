@@ -3,8 +3,11 @@ import { Injectable } from '@angular/core';
 import { Observable, forkJoin } from 'rxjs';
 import { tap } from 'rxjs/operators';
 
-//Services
+// models
 import { FuelService } from '@shared/services/fuel.service';
+
+// services
+import { FuelStopListResponse, FuelTransactionListResponse } from 'appcoretruckassist';
 
 @Injectable({
     providedIn: 'root',
@@ -12,7 +15,7 @@ import { FuelService } from '@shared/services/fuel.service';
 export class FuelResolver {
     constructor(private fuelService: FuelService) {}
 
-    resolve(): Observable<any> {
+    resolve(): Observable<[FuelTransactionListResponse, FuelStopListResponse]> {
         return forkJoin([
             this.fuelService.getFuelTransactionsList(),
             this.fuelService.getFuelStopsList(),
@@ -21,16 +24,14 @@ export class FuelResolver {
                 localStorage.setItem(
                     'fuelTableCount',
                     JSON.stringify({
-                        fuelTransactions: fuelTransactions.fuelTransactionCount,
+                        fuelTransactions: fuelTransactions?.fuelTransactionCount,
                         fuelStops: fuelStops?.fuelStopCount,
                         fuelCard: fuelStops?.fuelCardCount,
                     })
                 );
 
-                this.fuelService.updateStoreFuelTransactionsList =
-                    fuelTransactions.pagination.data;
-                this.fuelService.updateStoreFuelStopList =
-                    fuelStops.pagination.data;
+                this.fuelService.updateStoreFuelTransactionsList = fuelTransactions;
+                this.fuelService.updateStoreFuelStopList = fuelStops;
             })
         );
     }

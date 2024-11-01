@@ -8,6 +8,7 @@ export interface RepairDropdownTableModel {
     tableListDropdownContentStyle?: {
         [key: string]: number;
     };
+    mutedStyle?: boolean;
 }
 
 interface svgStyleModel {

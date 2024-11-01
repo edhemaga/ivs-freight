@@ -89,17 +89,21 @@ import {
     SignInResponse,
     LoadListLoadStopResponse,
     LoadPossibleStatusesResponse,
+    RepairShopOpenHoursCommand,
 } from 'appcoretruckassist';
 import { TableBodyColorLabel } from '@shared/models/table-models/table-body-color-label.model';
 import { TableBodyOptionActions } from '@shared/components/ta-table/ta-table-body/models/table-body-option-actions.model';
 import { TableBodyColumns } from '@shared/components/ta-table/ta-table-body/models/table-body-columns.model';
 
 // constants
-import { RepairDescriptionPopoverConstants } from '@shared/components/ta-table/ta-table-body/utils/repair-description-popover.constants';
 import { TaStateImageTextComponent } from '@shared/components/ta-state-image-text/ta-state-image-text.component';
+import { RepairDescriptionPopoverConstants } from '@shared/components/ta-table/ta-table-body/utils/constants';
 
-// Directive
+// directive
 import { PreventMultipleclicksDirective } from '@shared/directives/prevent-multipleclicks.directive';
+
+// helpers
+import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calculations.helper';
 
 // svg routes
 import { TableBodySvgRoutes } from '@shared/components/ta-table/ta-table-body/utils/svg-routes';
@@ -227,6 +231,7 @@ export class TaTableBodyComponent
         RepairDescriptionPopoverConstants.descriptionItems;
 
     public isDropdownPositionBottom: boolean = false;
+    public openHoursDropdownActiveId: number = -1;
 
     public tableBodySvgRoutes = TableBodySvgRoutes;
 
@@ -915,23 +920,23 @@ export class TaTableBodyComponent
 
     // Show Invoice Aging Dropdown
     public onShowInvoiceAgingDropdown<T extends { id: number; field: string }>(
-        tooltip: NgbTooltip,
+        popover: NgbPopover,
         row: T,
         column: T
     ): void {
-        tooltip.isOpen() ? tooltip.close() : tooltip.open();
+        popover.toggle();
 
-        this.invoiceDropdownActive = tooltip.isOpen() ? row.id : -1;
-        this.invoiceDropdownType = tooltip.isOpen() ? column.field : null;
+        this.invoiceDropdownActive = popover.isOpen() ? row.id : -1;
+        this.invoiceDropdownType = popover.isOpen() ? column.field : null;
 
-        const shipperData = row[column.field];
+        const columnData = row[column.field];
 
         const {
             invoiceAgeingGroupOne,
             invoiceAgeingGroupTwo,
             invoiceAgeingGroupThree,
             invoiceAgeingGroupFour,
-        } = shipperData;
+        } = columnData;
 
         this.invoiceDropdownData = {
             isUnPaidAging:
@@ -943,6 +948,41 @@ export class TaTableBodyComponent
                 invoiceAgeingGroupFour,
             ],
         };
+    }
+
+    // Open Hours Dropdown
+    public onShowOpenHoursDropdown<T extends { id: number; field: string }>(
+        popover: NgbPopover,
+        row: T,
+        column: T
+    ): void {
+        const columnData = row[column.field];
+
+        let data = [];
+
+        columnData.openHours?.forEach(
+            (dayOfWeek: RepairShopOpenHoursCommand) => {
+                const startTime =
+                    MethodsCalculationsHelper.convertTimeFromBackendBadFormat(
+                        dayOfWeek?.startTime
+                    );
+                const endTime =
+                    MethodsCalculationsHelper.convertTimeFromBackendBadFormat(
+                        dayOfWeek?.endTime
+                    );
+
+                const workingHourItem = {
+                    workingDays: dayOfWeek?.dayOfWeek,
+                    workingHours: `${startTime} - ${endTime}`,
+                };
+
+                data = [...data, workingHourItem];
+            }
+        );
+
+        popover.isOpen() ? popover.close() : popover.open({ data });
+
+        this.openHoursDropdownActiveId = popover.isOpen() ? row.id : -1;
     }
 
     // Dropdown Actions
