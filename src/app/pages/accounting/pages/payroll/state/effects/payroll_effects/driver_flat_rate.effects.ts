@@ -132,3 +132,113 @@ export function closePayrollFlatRateReportEffect(
             )
     );
 }
+
+export function getPayrollFlatRateDriverCollapsedListEffect(
+    actions$: Actions,
+    payrollService: PayrollService
+) {
+    return createEffect(
+        (): Observable<Action> =>
+            actions$.pipe(
+                ofType(
+                    PayrollFlatRateDriverActions.getPayrollFlatRateDriverCollapsedList
+                ),
+                switchMap(() => {
+                    return payrollService
+                        .getPayrollFlatRateDriverCollapsedList()
+                        .pipe(
+                            map((data) => {
+                                return PayrollFlatRateDriverActions.getPayrollFlatRateDriverCollapsedListSuccess(
+                                    {
+                                        data: data,
+                                    }
+                                );
+                            }),
+                            catchError((error) =>
+                                of(
+                                    PayrollFlatRateDriverActions.getPayrollFlatRateDriverCollapsedListError(
+                                        {
+                                            error,
+                                        }
+                                    )
+                                )
+                            )
+                        );
+                })
+            )
+    );
+}
+
+export function getPayrollFlatRateDriverExpandedListEffect(
+    actions$: Actions,
+    payrollService: PayrollService
+) {
+    return createEffect(
+        (): Observable<Action> =>
+            actions$.pipe(
+                ofType(
+                    PayrollFlatRateDriverActions.getPayrollFlatRateDriverExpandedList
+                ),
+                switchMap((action) => {
+                    return payrollService
+                        .getPayrollFlatRateDriverExpandedList(action.driverId)
+                        .pipe(
+                            map((data) => {
+                                return PayrollFlatRateDriverActions.getPayrollFlatRateDriverExpandedListSuccess(
+                                    {
+                                        data: data,
+                                    }
+                                );
+                            }),
+                            catchError((error) =>
+                                of(
+                                    PayrollFlatRateDriverActions.getPayrollFlatRateDriverExpandedListError(
+                                        {
+                                            error,
+                                        }
+                                    )
+                                )
+                            )
+                        );
+                })
+            )
+    );
+}
+
+export function getPayrollFlatRateClosedPayrollReportByIdEffect(
+    actions$: Actions,
+    payrollService: PayrollService
+) {
+    return createEffect(
+        (): Observable<Action> =>
+            actions$.pipe(
+                ofType(
+                    PayrollFlatRateDriverActions.getPayrollFlatRateReportDriverClosedPayroll
+                ),
+                switchMap((action) => {
+                    return payrollService
+                        .getPayrollFlatRateDriverClosedReportById(
+                            action.payrollId
+                        )
+                        .pipe(
+                            map((data) => {
+                                return PayrollFlatRateDriverActions.getPayrollFlatRateReportDriverClosedPayrollSuccess(
+                                    {
+                                        payroll: data,
+                                    }
+                                );
+                            }),
+                            catchError((error) =>
+                                of(
+                                    PayrollFlatRateDriverActions.getPayrollFlatRateReportDriverClosedPayrollError(
+                                        {
+                                            error,
+                                        }
+                                    )
+                                )
+                            )
+                        );
+                })
+            )
+    );
+}

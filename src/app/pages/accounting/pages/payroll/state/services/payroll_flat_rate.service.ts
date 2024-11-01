@@ -7,6 +7,8 @@ import * as PayrollFlatRateActions from '../actions/payroll_flat_rate_driver.act
 
 // Selectors
 import {
+    selectDriverFlatRateCollapsedTable,
+    selectDriverFlatRateExpandedTable,
     selectFlatRateListDriver,
     selectPayrollDriverFlatRateLoads,
     selectPayrollReportsIncludedFlatRateStops,
@@ -24,7 +26,9 @@ import {
 import {
     LoadWithMilesStopResponse,
     PayrollDriverCommissionByIdResponse,
+    PayrollDriverMileageListResponse,
 } from 'appcoretruckassist';
+import { PayrollDriverMileageExpandedListResponse } from '../models/payroll.model';
 
 @Injectable({
     providedIn: 'root',
@@ -46,8 +50,30 @@ export class PayrollDriverFlatRateFacadeService {
         LoadWithMilesStopResponse[]
     > = this.store.pipe(select(selectPayrollReportsIncludedFlatRateStops));
 
+    public selectPayrollDriverFlatRateExpanded$: Observable<
+        PayrollDriverMileageExpandedListResponse[]
+    > = this.store.pipe(select(selectDriverFlatRateExpandedTable));
+
+    public selectPayrollDriverFlatRateCollapsed$: Observable<
+        PayrollDriverMileageListResponse[]
+    > = this.store.pipe(select(selectDriverFlatRateCollapsedTable));
+
     public getPayrollDriverFlatRateList() {
         this.store.dispatch(PayrollFlatRateActions.getPayrollFlatRateDriver());
+    }
+
+    public getPayrollFlatRateMileageExpandedList(driverId: number) {
+        this.store.dispatch(
+            PayrollFlatRateActions.getPayrollFlatRateDriverExpandedList({
+                driverId,
+            })
+        );
+    }
+
+    public getPayrollDriverFlatRateCollapsedList() {
+        this.store.dispatch(
+            PayrollFlatRateActions.getPayrollFlatRateDriverCollapsedList()
+        );
     }
 
     public getPayrollDriverFlatRateReport({
@@ -65,13 +91,13 @@ export class PayrollDriverFlatRateFacadeService {
             .pipe(select(selectPayrollState), take(1))
             .subscribe((payrollState) => {
                 if (payrollState.payrollOpenedTab === 'closed') {
-                    // this.store.dispatch(
-                    //     PayrollFlatRateActions.getPayrollFlatRateReportDriver(
-                    //         {
-                    //             payrollId: +reportId,
-                    //         }
-                    //     )
-                    // );
+                    this.store.dispatch(
+                        PayrollFlatRateActions.getPayrollFlatRateReportDriverClosedPayroll(
+                            {
+                                payrollId: +reportId,
+                            }
+                        )
+                    );
                 } else {
                     this.store.dispatch(
                         PayrollFlatRateActions.getPayrollFlatRateReportDriver({

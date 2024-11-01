@@ -127,3 +127,114 @@ export function closePayrollOwnerReportEffect(
             )
     );
 }
+
+export function getPayrollOwnerDriverCollapsedListEffect(
+    actions$: Actions,
+    payrollService: PayrollService
+) {
+    return createEffect(
+        (): Observable<Action> =>
+            actions$.pipe(
+                ofType(
+                    PayrollOwnerDriverActions.getPayrollOwnerDriverCollapsedList
+                ),
+                switchMap(() => {
+                    return payrollService
+                        .getPayrollOwnerDriverCollapsedList()
+                        .pipe(
+                            map((data) => {
+                                return PayrollOwnerDriverActions.getPayrollOwnerDriverCollapsedListSuccess(
+                                    {
+                                        data: data,
+                                    }
+                                );
+                            }),
+                            catchError((error) =>
+                                of(
+                                    PayrollOwnerDriverActions.getPayrollOwnerDriverCollapsedListError(
+                                        {
+                                            error,
+                                        }
+                                    )
+                                )
+                            )
+                        );
+                })
+            )
+    );
+}
+
+export function getPayrollOwnerDriverExpandedListEffect(
+    actions$: Actions,
+    payrollService: PayrollService
+) {
+    return createEffect(
+        (): Observable<Action> =>
+            actions$.pipe(
+                ofType(
+                    PayrollOwnerDriverActions.getPayrollOwnerDriverExpandedList
+                ),
+                switchMap((action) => {
+                    return payrollService
+                        .getPayrollOwnerDriverExpandedList(action.trailerId)
+                        .pipe(
+                            map((data) => {
+                                return PayrollOwnerDriverActions.getPayrollOwnerDriverExpandedListSuccess(
+                                    {
+                                        data: data,
+                                    }
+                                );
+                            }),
+                            catchError((error) =>
+                                of(
+                                    PayrollOwnerDriverActions.getPayrollOwnerDriverExpandedListError(
+                                        {
+                                            error,
+                                        }
+                                    )
+                                )
+                            )
+                        );
+                })
+            )
+    );
+}
+
+
+export function getPayrollOwnerClosedPayrollReportByIdEffect(
+    actions$: Actions,
+    payrollService: PayrollService
+) {
+    return createEffect(
+        (): Observable<Action> =>
+            actions$.pipe(
+                ofType(
+                    PayrollOwnerDriverActions.getPayrollOwnerDriverClosedReportPayroll
+                ),
+                switchMap((action) => {
+                    return payrollService
+                        .getPayrollOwnerDriverClosedReportById(
+                            action.payrollId
+                        )
+                        .pipe(
+                            map((data) => {
+                                return PayrollOwnerDriverActions.getPayrollOwnerDriverClosedReportPayrollSuccess(
+                                    {
+                                        payroll: data,
+                                    }
+                                );
+                            }),
+                            catchError((error) =>
+                                of(
+                                    PayrollOwnerDriverActions.getPayrollOwnerDriverClosedReportPayrollError(
+                                        {
+                                            error,
+                                        }
+                                    )
+                                )
+                            )
+                        );
+                })
+            )
+    );
+}

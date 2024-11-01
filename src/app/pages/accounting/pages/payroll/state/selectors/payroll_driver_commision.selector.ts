@@ -19,6 +19,20 @@ export const selectPayrollReportsIncludedCommissionStops = createSelector(
     }
 );
 
+export const selectDriverCommissionExpandedTable = createSelector(
+    selectPayrollState,
+    (state) => {
+        return state.driverCommissionExpandedList;
+    }
+);
+
+export const selectDriverCommissionCollapsedTable = createSelector(
+    selectPayrollState,
+    (state) => {
+        return state.driverCommissionCollapsedList;
+    }
+);
+
 export const selectPayrollDriverCommissionLoads = createSelector(
     selectPayrollState,
     (state) => {

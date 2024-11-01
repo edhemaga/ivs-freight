@@ -29,7 +29,14 @@ export interface PayrollState {
     closeReportPaymentLoading?: boolean;
     closeReportPaymentError?: boolean;
     driverMileageCollapsedList?: PayrollDriverMileageCollapsedListResponse[];
+    driverCommissionCollapsedList?: PayrollDriverMileageCollapsedListResponse[];
+    driverFlatRateCollapsedList?: PayrollDriverMileageCollapsedListResponse[];
+    driverOwnerCollapsedList?: PayrollDriverMileageCollapsedListResponse[];
+
     driverMileageExpandedList?: PayrollDriverMileageExpandedListResponse[];
+    driverCommissionExpandedList?: PayrollDriverMileageExpandedListResponse[];
+    driverFlatRateExpandedList?: PayrollDriverMileageExpandedListResponse[];
+    driverOwnerExpandedList?: PayrollDriverMileageExpandedListResponse[];
     driverFlatRateList?: IDriverFlatRateList;
     payrollOpenedTab: 'open' | 'closed';
 }
@@ -109,7 +116,7 @@ export interface IPayrollProccessPaymentModal {
     totalEarnings: number;
     payrollNumber: string;
     selectedTab: 'open' | 'closed';
-    payrollType?: PayrollTypes
+    payrollType?: PayrollTypes;
 }
 
 export interface IAddPayrollClosedPayment {

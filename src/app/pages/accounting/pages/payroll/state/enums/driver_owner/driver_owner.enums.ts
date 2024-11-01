@@ -15,8 +15,15 @@ export enum PayrollOwnerDriverEnum {
     GET_PAYROLL_OWNER_CLOSED_PAYROLL_SUCCESS = '[Payroll Owner Driver Expanded Page] Get Payroll Owner Closed Payroll Success',
     GET_PAYROLL_OWNER_CLOSED_PAYROLL_ERROR = '[Payroll Owner Driver Expanded Page] Get Payroll Owner Closed Payroll Error',
 
-
     CLOSE_PAYROLL_OWNER_DRIVER_PAYMENT = '[Payroll Owner Driver Page] Payroll Owner Driver Report Payment',
     CLOSE_PAYROLL_OWNER_DRIVER_PAYMENT_SUCCESS = '[Payroll Owner Driver Page] Payroll Owner Driver Report Payment Success',
     CLOSE_PAYROLL_OWNER_DRIVER_PAYMENT_ERROR = '[Payroll Owner Driver Page] Payroll Owner Driver Report Payment Error',
+
+    GET_PAYROLL_OWNER_COLLAPSED_LIST_DRIVER = '[Payroll Owner Driver Collapsed Page] Get Payroll Owner Collapsed Driver List',
+    GET_PAYROLL_OWNER_COLLAPSED_LIST_DRIVER_SUCCESS = '[Payroll Owner Driver Collapsed Page] Get Payroll Owner Collapsed Driver List Success',
+    GET_PAYROLL_OWNER_COLLAPSED_LIST_DRIVER_ERROR = '[Payroll Owner Driver Collapsed Page] Get Payroll Owner Collapsed Driver List Error',
+
+    GET_PAYROLL_OWNER_EXPANDED_LIST_DRIVER = '[Payroll Owner Driver Expanded Page] Get Payroll Owner Expanded Driver List',
+    GET_PAYROLL_OWNER_EXPANDED_LIST_DRIVER_SUCCESS = '[Payroll Owner Driver Expanded Page] Get Payroll Owner Expanded Driver List Success',
+    GET_PAYROLL_OWNER_EXPANDED_LIST_DRIVER_ERROR = '[Payroll Owner Driver Expanded Page] Get Payroll Owner Expanded Driver List Error',
 }

@@ -80,8 +80,26 @@ export class PayrollEffect {
             this.payrollService
         );
 
+    public getPayrollCommissionClosedPayrollReportByIdEffect$ =
+        PayrollCommissionDriverEffect.getPayrollCommissionClosedPayrollReportByIdEffect(
+            this.actions$,
+            this.payrollService
+        );
+
     public closePayrollCommissionReport$ =
         PayrollCommissionDriverEffect.closePayrollCommissionReportEffect(
+            this.actions$,
+            this.payrollService
+        );
+
+    public getPayrollCommissionDriverExpandedList$ =
+        PayrollCommissionDriverEffect.getPayrollCommissionDriverExpandedListEffect(
+            this.actions$,
+            this.payrollService
+        );
+
+    public getPayrollCommissionDriverCollapsedList$ =
+        PayrollCommissionDriverEffect.getPayrollCommissionDriverCollapsedListEffect(
             this.actions$,
             this.payrollService
         );
@@ -89,6 +107,12 @@ export class PayrollEffect {
     // Payroll Owner Driver
     public getPayrollOwnerDriverListEffect$ =
         PayrollOwnerDriverEffect.getPayrollOwnerDriverListEffect(
+            this.actions$,
+            this.payrollService
+        );
+
+    public getPayrollOwnerClosedPayrollReportByIdEffect$ =
+        PayrollOwnerDriverEffect.getPayrollOwnerClosedPayrollReportByIdEffect(
             this.actions$,
             this.payrollService
         );
@@ -104,9 +128,27 @@ export class PayrollEffect {
             this.payrollService
         );
 
+    public getPayrollOwnerDriverExpandedList$ =
+        PayrollOwnerDriverEffect.getPayrollOwnerDriverExpandedListEffect(
+            this.actions$,
+            this.payrollService
+        );
+
+    public getPayrollOwnerDriverCollapsedList$ =
+        PayrollOwnerDriverEffect.getPayrollOwnerDriverCollapsedListEffect(
+            this.actions$,
+            this.payrollService
+        );
+
     // Payroll Flat List Driver
     public getPayrollFlatRateDriverListEffect$ =
         PayrollFlatRateEffect.getPayrollFlatRateDriverListEffect(
+            this.actions$,
+            this.payrollService
+        );
+
+    public getPayrollFlatRateClosedPayrollReportByIdEffect$ =
+        PayrollFlatRateEffect.getPayrollFlatRateClosedPayrollReportByIdEffect(
             this.actions$,
             this.payrollService
         );
@@ -119,6 +161,18 @@ export class PayrollEffect {
 
     public closePayrollFlatRateReport$ =
         PayrollFlatRateEffect.closePayrollFlatRateReportEffect(
+            this.actions$,
+            this.payrollService
+        );
+
+    public getPayrollFlatRateDriverExpandedList$ =
+        PayrollFlatRateEffect.getPayrollFlatRateDriverExpandedListEffect(
+            this.actions$,
+            this.payrollService
+        );
+
+    public getPayrollFlatRateDriverCollapsedList$ =
+        PayrollFlatRateEffect.getPayrollFlatRateDriverCollapsedListEffect(
             this.actions$,
             this.payrollService
         );

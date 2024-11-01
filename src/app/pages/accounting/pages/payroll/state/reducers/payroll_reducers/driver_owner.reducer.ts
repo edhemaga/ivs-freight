@@ -2,6 +2,8 @@ import { PayrollOwnerResponse } from 'appcoretruckassist';
 import { IDriverOwnerList } from '../../models/driver_owner.model';
 import {
     IGet_Payroll_Commission_Driver_Report,
+    PayrollDriverMileageCollapsedListResponse,
+    PayrollDriverMileageExpandedListResponse,
     PayrollState,
 } from '../../models/payroll.model';
 
@@ -62,4 +64,45 @@ export const onClosePayrollOwnerReportDriverError = (state: PayrollState) => ({
     ...state,
     closeReportPaymentLoading: false,
     closeReportPaymentError: true,
+});
+
+export const onGetPayrollOwnerDriverCollapsedList = (state: PayrollState) => ({
+    ...state,
+    loading: true,
+});
+
+export const onGetPayrollOwnerDriverCollapsedListSuccess = (
+    state: PayrollState,
+    data: { data: PayrollDriverMileageCollapsedListResponse[] }
+) => ({
+    ...state,
+    driverOwnerCollapsedList: data.data,
+    loading: false,
+});
+
+export const onGetPayrollOwnerDriverCollapsedListError = (
+    state: PayrollState
+) => ({
+    ...state,
+    loading: false,
+});
+
+export const onGetPayrollOwnerDriverExpandedList = (state: PayrollState) => ({
+    ...state,
+    loading: true,
+});
+
+export const onGetPayrollOwnerDriverExpandedListSuccess = (
+    state: PayrollState,
+    data: { data: PayrollDriverMileageExpandedListResponse[] }
+) => ({
+    ...state,
+    driverOwnerExpandedList: data.data,
+    loading: false,
+});
+export const onGetPayrollOwnerDriverExpandedListError = (
+    state: PayrollState
+) => ({
+    ...state,
+    loading: false,
 });

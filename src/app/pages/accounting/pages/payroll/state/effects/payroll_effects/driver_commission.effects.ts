@@ -95,7 +95,7 @@ export function closePayrollCommissionReportEffect(
                 ),
                 switchMap((action) => {
                     return payrollService
-                        .closePayrollCommissionDriverReport( 
+                        .closePayrollCommissionDriverReport(
                             action.amount,
                             action.reportId,
                             action.selectedLoadIds,
@@ -121,6 +121,116 @@ export function closePayrollCommissionReportEffect(
                             catchError((error) =>
                                 of(
                                     PayrollCommissionDriverActions.closePayrollCommissionReportDriverError(
+                                        {
+                                            error,
+                                        }
+                                    )
+                                )
+                            )
+                        );
+                })
+            )
+    );
+}
+
+export function getPayrollCommissionDriverCollapsedListEffect(
+    actions$: Actions,
+    payrollService: PayrollService
+) {
+    return createEffect(
+        (): Observable<Action> =>
+            actions$.pipe(
+                ofType(
+                    PayrollCommissionDriverActions.getPayrollCommissionDriverCollapsedList
+                ),
+                switchMap(() => {
+                    return payrollService
+                        .getPayrollCommissionDriverCollapsedList()
+                        .pipe(
+                            map((data) => {
+                                return PayrollCommissionDriverActions.getPayrollCommissionDriverCollapsedListSuccess(
+                                    {
+                                        data: data,
+                                    }
+                                );
+                            }),
+                            catchError((error) =>
+                                of(
+                                    PayrollCommissionDriverActions.getPayrollCommissionDriverCollapsedListError(
+                                        {
+                                            error,
+                                        }
+                                    )
+                                )
+                            )
+                        );
+                })
+            )
+    );
+}
+
+export function getPayrollCommissionDriverExpandedListEffect(
+    actions$: Actions,
+    payrollService: PayrollService
+) {
+    return createEffect(
+        (): Observable<Action> =>
+            actions$.pipe(
+                ofType(
+                    PayrollCommissionDriverActions.getPayrollCommissionDriverExpandedList
+                ),
+                switchMap((action) => {
+                    return payrollService
+                        .getPayrollCommissionDriverExpandedList(action.driverId)
+                        .pipe(
+                            map((data) => {
+                                return PayrollCommissionDriverActions.getPayrollCommissionDriverExpandedListSuccess(
+                                    {
+                                        data: data,
+                                    }
+                                );
+                            }),
+                            catchError((error) =>
+                                of(
+                                    PayrollCommissionDriverActions.getPayrollCommissionDriverExpandedListError(
+                                        {
+                                            error,
+                                        }
+                                    )
+                                )
+                            )
+                        );
+                })
+            )
+    );
+}
+
+export function getPayrollCommissionClosedPayrollReportByIdEffect(
+    actions$: Actions,
+    payrollService: PayrollService
+) {
+    return createEffect(
+        (): Observable<Action> =>
+            actions$.pipe(
+                ofType(
+                    PayrollCommissionDriverActions.getPayrollCommissionReportDriverClosedPayroll
+                ),
+                switchMap((action) => {
+                    return payrollService
+                        .getPayrollCommissionDriverClosedReportById(
+                            action.payrollId
+                        )
+                        .pipe(
+                            map((data) => {
+                                return PayrollCommissionDriverActions.getPayrollCommissionReportDriverClosedPayrollSuccess(
+                                    {
+                                        payroll: data,
+                                    }
+                                );
+                            }),
+                            catchError((error) =>
+                                of(
+                                    PayrollCommissionDriverActions.getPayrollCommissionReportDriverClosedPayrollError(
                                         {
                                             error,
                                         }

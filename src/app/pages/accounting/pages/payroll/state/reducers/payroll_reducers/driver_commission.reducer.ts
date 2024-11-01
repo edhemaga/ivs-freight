@@ -1,8 +1,9 @@
-import { PayrollDriverCommissionByIdResponse } from 'appcoretruckassist';
+import { PayrollDriverCommissionByIdResponse, PayrollDriverCommissionClosedByIdResponse } from 'appcoretruckassist';
 import { IDriverCommissionList } from '../../models/driver_commission.model';
 import {
     IGet_Payroll_Commission_Driver_Report,
-    IGet_Payroll_Solo_Mileage_Driver_Report,
+    PayrollDriverMileageCollapsedListResponse,
+    PayrollDriverMileageExpandedListResponse,
     PayrollState,
 } from '../../models/payroll.model';
 
@@ -40,7 +41,6 @@ export const onGetPayrollCommissionReportDriverSuccess = (
     reportLoading: false,
 });
 
-
 export const onClosePayrollCommissionReportDriver = (state: PayrollState) => ({
     ...state,
     closeReportPaymentLoading: true,
@@ -66,4 +66,58 @@ export const onClosePayrollCommissionReportDriverError = (
     ...state,
     closeReportPaymentLoading: false,
     closeReportPaymentError: true,
+});
+
+export const onGetPayrollCommissionDriverCollapsedList = (
+    state: PayrollState
+) => ({
+    ...state,
+    loading: true,
+});
+
+export const onGetPayrollCommissionDriverCollapsedListSuccess = (
+    state: PayrollState,
+    data: { data: PayrollDriverMileageCollapsedListResponse[] }
+) => ({
+    ...state,
+    driverCommissionCollapsedList: data.data,
+    loading: false,
+});
+
+export const onGetPayrollCommissionDriverCollapsedListError = (
+    state: PayrollState
+) => ({
+    ...state,
+    loading: false,
+});
+
+export const onGetPayrollCommissionDriverExpandedList = (
+    state: PayrollState
+) => ({
+    ...state,
+    loading: true,
+});
+
+export const onGetPayrollCommissionDriverExpandedListSuccess = (
+    state: PayrollState,
+    data: { data: PayrollDriverMileageExpandedListResponse[] }
+) => ({
+    ...state,
+    driverCommissionExpandedList: data.data,
+    loading: false,
+});
+export const onGetPayrollCommissionDriverExpandedListError = (
+    state: PayrollState
+) => ({
+    ...state,
+    loading: false,
+});
+
+export const onGetPayrollCommissionDriverClosedPayrollSuccess = (
+    state: PayrollState,
+    data: { payroll: PayrollDriverCommissionClosedByIdResponse }
+) => ({
+    ...state,
+    payrollOpenedReport: data.payroll,
+    reportLoading: false,
 });

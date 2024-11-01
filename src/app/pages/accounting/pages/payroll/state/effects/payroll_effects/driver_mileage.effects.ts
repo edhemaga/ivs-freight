@@ -118,98 +118,6 @@ export function getPayrollMileageDriverCollapsedListEffect(
     );
 }
 
-export function getPayrollSoloMileageReportEffect(
-    actions$: Actions,
-    payrollService: PayrollService
-) {
-    return createEffect(
-        (): Observable<Action> =>
-            actions$.pipe(
-                ofType(
-                    PayrollSoloMileageDriver.getPayrollSoloMileageReportDriver
-                ),
-                switchMap((action) => {
-                    return payrollService
-                        .getPayrollSoloMileageDriverReport(
-                            action.reportId,
-                            action.lastLoadDate,
-                            action.selectedCreditIds,
-                            action.selectedDeductionIds,
-                            action.selectedBonusIds
-                        )
-                        .pipe(
-                            map((data) => {
-                                return PayrollSoloMileageDriver.getPayrollSoloMileageReportDriverSuccess(
-                                    {
-                                        payroll: data,
-                                    }
-                                );
-                            }),
-                            catchError((error) =>
-                                of(
-                                    PayrollSoloMileageDriver.getPayrollSoloMileageReportDriverError(
-                                        {
-                                            error,
-                                        }
-                                    )
-                                )
-                            )
-                        );
-                })
-            )
-    );
-}
-
-export function closePayrollSoloMileageReportEffect(
-    actions$: Actions,
-    payrollService: PayrollService
-) {
-    return createEffect(
-        (): Observable<Action> =>
-            actions$.pipe(
-                ofType(
-                    PayrollSoloMileageDriver.closePayrollSoloMileageReportDriver
-                ),
-                switchMap((action) => {
-                    return payrollService
-                        .closePayrollSoloMileageDriverReport(
-                            action.amount,
-                            action.reportId,
-                            action.lastLoadDate,
-                            action.selectedCreditIds,
-                            action.selectedDeductionIds,
-                            action.selectedBonusIds,
-                            action.paymentType,
-                            action.otherPaymentType
-                        )
-                        .pipe(
-                            map((data) => {
-                                return PayrollSoloMileageDriver.closePayrollSoloMileageReportDriverSuccess(
-                                    {
-                                        payroll: data,
-                                    }
-                                );
-                            }),
-                            tap((data) => {
-                                // this.store.dispatch(
-                                //   PaymentActions.restartRefreshDataSuccess({ flag: false })
-                                // );
-                            }),
-                            catchError((error) =>
-                                of(
-                                    PayrollSoloMileageDriver.closePayrollSoloMileageReportDriverError(
-                                        {
-                                            error,
-                                        }
-                                    )
-                                )
-                            )
-                        );
-                })
-            )
-    );
-}
-
 export function addPayrollMileageClosedPayrollPaymentEffect(
     actions$: Actions,
     payrollService: PayrollService
@@ -279,6 +187,98 @@ export function getPayrollSoloMileageEffect(
                             )
                         )
                     );
+                })
+            )
+    );
+}
+
+export function closePayrollSoloMileageReportEffect(
+    actions$: Actions,
+    payrollService: PayrollService
+) {
+    return createEffect(
+        (): Observable<Action> =>
+            actions$.pipe(
+                ofType(
+                    PayrollSoloMileageDriver.closePayrollSoloMileageReportDriver
+                ),
+                switchMap((action) => {
+                    return payrollService
+                        .closePayrollSoloMileageDriverReport(
+                            action.amount,
+                            action.reportId,
+                            action.lastLoadDate,
+                            action.selectedCreditIds,
+                            action.selectedDeductionIds,
+                            action.selectedBonusIds,
+                            action.paymentType,
+                            action.otherPaymentType
+                        )
+                        .pipe(
+                            map((data) => {
+                                return PayrollSoloMileageDriver.closePayrollSoloMileageReportDriverSuccess(
+                                    {
+                                        payroll: data,
+                                    }
+                                );
+                            }),
+                            tap((data) => {
+                                // this.store.dispatch(
+                                //   PaymentActions.restartRefreshDataSuccess({ flag: false })
+                                // );
+                            }),
+                            catchError((error) =>
+                                of(
+                                    PayrollSoloMileageDriver.closePayrollSoloMileageReportDriverError(
+                                        {
+                                            error,
+                                        }
+                                    )
+                                )
+                            )
+                        );
+                })
+            )
+    );
+}
+
+export function getPayrollSoloMileageReportEffect(
+    actions$: Actions,
+    payrollService: PayrollService
+) {
+    return createEffect(
+        (): Observable<Action> =>
+            actions$.pipe(
+                ofType(
+                    PayrollSoloMileageDriver.getPayrollSoloMileageReportDriver
+                ),
+                switchMap((action) => {
+                    return payrollService
+                        .getPayrollSoloMileageDriverReport(
+                            action.reportId,
+                            action.lastLoadDate,
+                            action.selectedCreditIds,
+                            action.selectedDeductionIds,
+                            action.selectedBonusIds
+                        )
+                        .pipe(
+                            map((data) => {
+                                return PayrollSoloMileageDriver.getPayrollSoloMileageReportDriverSuccess(
+                                    {
+                                        payroll: data,
+                                    }
+                                );
+                            }),
+                            catchError((error) =>
+                                of(
+                                    PayrollSoloMileageDriver.getPayrollSoloMileageReportDriverError(
+                                        {
+                                            error,
+                                        }
+                                    )
+                                )
+                            )
+                        );
                 })
             )
     );

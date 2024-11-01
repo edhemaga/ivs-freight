@@ -27,15 +27,21 @@ import { PayrollFacadeService } from './state/services/payroll.service';
 
 // Models
 import { IPayrollCountsSelector } from './state/models/payroll.model';
-import { DriverMileageCollapsedTableComponent } from './components/tables/driver-mileage-collapsed-table/driver-mileage-collapsed-table.component';
+import { DriverMileageCollapsedTableComponent } from './components/tables/driver-mileage/driver-mileage-collapsed-table/driver-mileage-collapsed-table.component';
 
 // Components
 import { PayrollListSummaryOverview } from 'ca-components';
-import { DriverMileageSoloTableComponent } from './components/tables/driver-mileage-solo-table/driver-mileage-solo-table.component';
-import { DriverMileageExpandedTableComponent } from './components/tables/driver-mileage-expanded-table/driver-mileage-expanded-table.component';
-import { DriverCommissionSoloTableComponent } from './components/tables/driver-commission-solo-table/driver-commission-solo-table.component';
-import { DriverOwnerTableComponent } from './components/tables/driver-owner-table/driver-owner-table.component';
-import { DriverFlatRateTableComponent } from './components/tables/driver-flat-rate-table/driver-flat-rate-table.component';
+import { DriverMileageSoloTableComponent } from './components/tables/driver-mileage/driver-mileage-solo-table/driver-mileage-solo-table.component';
+import { DriverMileageExpandedTableComponent } from './components/tables/driver-mileage/driver-mileage-expanded-table/driver-mileage-expanded-table.component';
+import { DriverCommissionSoloTableComponent } from './components/tables/driver-commission/driver-commission-solo-table/driver-commission-solo-table.component';
+import { DriverOwnerTableComponent } from './components/tables/driver-owner/driver-owner-table/driver-owner-table.component';
+import { DriverFlatRateTableComponent } from './components/tables/driver-flat-rate/driver-flat-rate-table/driver-flat-rate-table.component';
+import { DriverCommissionCollapsedTableComponent } from './components/tables/driver-commission/driver-commission-collapsed-table/driver-commission-collapsed-table.component';
+import { DriverFlatRateCollapsedTableComponent } from './components/tables/driver-flat-rate/driver-flat-rate-collapsed-table/driver-flat-rate-collapsed-table.component';
+import { DriverOwnerCollapsedTableComponent } from './components/tables/driver-owner/driver-owner-collapsed-table/driver-owner-collapsed-table.component';
+import { DriverCommissionExpandedTableComponent } from './components/tables/driver-commission/driver-commission-expanded-table/driver-commission-expanded-table.component';
+import { DriverFlatRateExpandedTableComponent } from './components/tables/driver-flat-rate/driver-flat-rate-expanded-table/driver-flat-rate-expanded-table.component';
+import { DriverOwnerExpandedTableComponent } from './components/tables/driver-owner/driver-owner-expanded-table/driver-owner-expanded-table.component';
 @Component({
     selector: 'app-payroll',
     templateUrl: './payroll.component.html',
@@ -238,6 +244,41 @@ export class PayrollComponent implements OnInit, AfterViewInit, OnDestroy {
                             (event: any) => this.expandTable(event)
                         );
                     }
+                } else if (this.selectedOpenFromList) {
+                    this.componentRef = cointainer.createComponent(
+                        DriverFlatRateExpandedTableComponent,
+                        {
+                            environmentInjector: this.environmentInjector,
+                        }
+                    );
+                    if (this.componentRef) {
+                        this.componentRef.instance.driverId =
+                            this.selectedOpenFromList.driver.id; // Example input property
+
+                        this.componentRef.instance.expandTableEvent.subscribe(
+                            (event: any) => {
+                                this.reportTableData = event;
+                                this.payrollFacadeService.setPayrollReportTableExpanded(
+                                    true
+                                );
+                                console.log(
+                                    'EVENT FROM EXAPNDED TABLE BLAH',
+                                    event
+                                );
+                            }
+                        );
+                    }
+                } else {
+                    this.componentRef = cointainer.createComponent(
+                        DriverFlatRateCollapsedTableComponent,
+                        {
+                            environmentInjector: this.environmentInjector,
+                        }
+                    );
+
+                    this.componentRef.instance.expandTableEvent.subscribe(
+                        (event: any) => this.expandTable(event)
+                    );
                 }
                 break;
             case 'Driver Commission':
@@ -255,6 +296,41 @@ export class PayrollComponent implements OnInit, AfterViewInit, OnDestroy {
                             (event: any) => this.expandTable(event)
                         );
                     }
+                } else if (this.selectedOpenFromList) {
+                    this.componentRef = cointainer.createComponent(
+                        DriverCommissionExpandedTableComponent,
+                        {
+                            environmentInjector: this.environmentInjector,
+                        }
+                    );
+                    if (this.componentRef) {
+                        this.componentRef.instance.driverId =
+                            this.selectedOpenFromList.driver.id; // Example input property
+
+                        this.componentRef.instance.expandTableEvent.subscribe(
+                            (event: any) => {
+                                this.reportTableData = event;
+                                this.payrollFacadeService.setPayrollReportTableExpanded(
+                                    true
+                                );
+                                console.log(
+                                    'EVENT FROM EXAPNDED TABLE BLAH',
+                                    event
+                                );
+                            }
+                        );
+                    }
+                } else {
+                    this.componentRef = cointainer.createComponent(
+                        DriverCommissionCollapsedTableComponent,
+                        {
+                            environmentInjector: this.environmentInjector,
+                        }
+                    );
+
+                    this.componentRef.instance.expandTableEvent.subscribe(
+                        (event: any) => this.expandTable(event)
+                    );
                 }
                 break;
             case 'Owner ':
@@ -273,6 +349,42 @@ export class PayrollComponent implements OnInit, AfterViewInit, OnDestroy {
                             (event: any) => this.expandTable(event)
                         );
                     }
+                } else if (this.selectedOpenFromList) {
+                    this.componentRef = cointainer.createComponent(
+                        DriverOwnerExpandedTableComponent,
+                        {
+                            environmentInjector: this.environmentInjector,
+                        }
+                    );
+                    console.log(this.selectedOpenFromList, "this.selectedOpenFromList");
+                    if (this.componentRef) {
+                        this.componentRef.instance.driverId =
+                            this.selectedOpenFromList.truck.id; // Example input property
+
+                        this.componentRef.instance.expandTableEvent.subscribe(
+                            (event: any) => {
+                                this.reportTableData = event;
+                                this.payrollFacadeService.setPayrollReportTableExpanded(
+                                    true
+                                );
+                                console.log(
+                                    'EVENT FROM EXAPNDED TABLE BLAH',
+                                    event
+                                );
+                            }
+                        );
+                    }
+                } else {
+                    this.componentRef = cointainer.createComponent(
+                        DriverOwnerCollapsedTableComponent,
+                        {
+                            environmentInjector: this.environmentInjector,
+                        }
+                    );
+
+                    this.componentRef.instance.expandTableEvent.subscribe(
+                        (event: any) => this.expandTable(event)
+                    );
                 }
                 break;
         }

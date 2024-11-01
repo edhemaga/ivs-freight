@@ -7,6 +7,8 @@ import * as PayrollOwnerActions from '../actions/payroll_owner_driver.action';
 
 // Selectors
 import {
+    selectDriverOwnerCollapsedTable,
+    selectDriverOwnerExpandedTable,
     selectOwnerListDriver,
     selectPayrollDriverOwnerLoads,
     selectPayrollOwnerOpenedReport,
@@ -19,7 +21,11 @@ import {
     OwnerLoadShortReponseWithRowType,
 } from '../models/driver_owner.model';
 import { selectPayrollState } from '../selectors/payroll.selector';
-import { LoadWithMilesStopResponse } from 'appcoretruckassist';
+import {
+    LoadWithMilesStopResponse,
+    PayrollDriverMileageListResponse,
+} from 'appcoretruckassist';
+import { PayrollDriverMileageExpandedListResponse } from '../models/payroll.model';
 
 @Injectable({
     providedIn: 'root',
@@ -37,6 +43,28 @@ export class PayrollDriverOwnerFacadeService {
     public selectPayrollOwnerOpenedReport$: Observable<any> = this.store.pipe(
         select(selectPayrollOwnerOpenedReport)
     );
+
+    public selectPayrollDriverOwnerExpanded$: Observable<
+        PayrollDriverMileageExpandedListResponse[]
+    > = this.store.pipe(select(selectDriverOwnerExpandedTable));
+
+    public selectPayrollDriverOwnerCollapsed$: Observable<
+        PayrollDriverMileageListResponse[]
+    > = this.store.pipe(select(selectDriverOwnerCollapsedTable));
+
+    public getPayrollOwnerMileageExpandedList(trailerId: number) {
+        this.store.dispatch(
+            PayrollOwnerActions.getPayrollOwnerDriverExpandedList({
+                trailerId,
+            })
+        );
+    }
+
+    public getPayrollDriverOwnerCollapsedList() {
+        this.store.dispatch(
+            PayrollOwnerActions.getPayrollOwnerDriverCollapsedList()
+        );
+    }
 
     public selectPayrollReportDriverCommissionLoads$: Observable<
         OwnerLoadShortReponseWithRowType[]
@@ -64,7 +92,7 @@ export class PayrollDriverOwnerFacadeService {
             .subscribe((payrollState) => {
                 if (payrollState.payrollOpenedTab === 'closed') {
                     this.store.dispatch(
-                        PayrollOwnerActions.getPayrollOwnerDriverClosedPayroll({
+                        PayrollOwnerActions.getPayrollOwnerDriverClosedReportPayroll({
                             payrollId: +reportId,
                         })
                     );

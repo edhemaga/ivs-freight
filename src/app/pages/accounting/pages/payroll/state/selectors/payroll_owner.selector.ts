@@ -11,6 +11,20 @@ export const selectOwnerListDriver = createSelector(
     }
 );
 
+export const selectDriverOwnerExpandedTable = createSelector(
+    selectPayrollState,
+    (state) => {
+        return state.driverOwnerExpandedList;
+    }
+);
+
+export const selectDriverOwnerCollapsedTable = createSelector(
+    selectPayrollState,
+    (state) => {
+        return state.driverOwnerCollapsedList;
+    }
+);
+
 export const selectPayrollOwnerOpenedReport = createSelector(
     selectPayrollState,
     (state) => {
@@ -40,7 +54,6 @@ export const selectPayrollDriverOwnerLoads = createSelector(
         return [...includedLoads, reorderRow, ...excludedLoads];
     }
 );
-
 
 export const selectPayrollReportsIncludedOwnerStops = createSelector(
     selectPayrollState,

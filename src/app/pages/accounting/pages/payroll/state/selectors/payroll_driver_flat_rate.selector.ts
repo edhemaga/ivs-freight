@@ -19,6 +19,20 @@ export const selectPayrollReportsIncludedFlatRateStops = createSelector(
     }
 );
 
+export const selectDriverFlatRateExpandedTable = createSelector(
+    selectPayrollState,
+    (state) => {
+        return state.driverFlatRateExpandedList;
+    }
+);
+
+export const selectDriverFlatRateCollapsedTable = createSelector(
+    selectPayrollState,
+    (state) => {
+        return state.driverFlatRateCollapsedList;
+    }
+);
+
 export const selectPayrollDriverFlatRateLoads = createSelector(
     selectPayrollState,
     (state) => {

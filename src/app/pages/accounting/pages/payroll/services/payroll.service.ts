@@ -5,7 +5,9 @@ import {
     ClosePayrollDriverFlatRateCommand,
     PayrollCountsResponse,
     PayrollDriverCommissionByIdResponse,
+    PayrollDriverCommissionClosedByIdResponse,
     PayrollDriverFlatRateByIdResponse,
+    PayrollDriverFlatRateClosedByIdResponse,
     PayrollDriverMileageListResponse,
     PayrollOtherPaymentType,
     PayrollOwnerResponse,
@@ -85,6 +87,28 @@ export class PayrollService {
     public getPayrollCommissionDriverList(): Observable<IDriverCommissionList> {
         return this.http.get<IDriverCommissionList>(
             `${environment.API_ENDPOINT}/api/payroll/driver/commission/list`
+        );
+    }
+
+    public getPayrollCommissionDriverClosedReportById(payrollId: number) {
+        return this.http.get<PayrollDriverCommissionClosedByIdResponse>(
+            `${environment.API_ENDPOINT}/api/payroll/driver/commission/closed/${payrollId}`
+        );
+    }
+
+    public getPayrollCommissionDriverCollapsedList(): Observable<
+        PayrollDriverMileageListResponse[]
+    > {
+        return this.http.get<PayrollDriverMileageCollapsedListResponse[]>(
+            `${environment.API_ENDPOINT}/api/payroll/driver/commission/closed/collapsed/list`
+        );
+    }
+
+    public getPayrollCommissionDriverExpandedList(
+        driverId: number
+    ): Observable<PayrollDriverMileageExpandedListResponse[]> {
+        return this.http.get<PayrollDriverMileageExpandedListResponse[]>(
+            `${environment.API_ENDPOINT}/api/payroll/driver/commission/closed/expanded/list?Driverid=${driverId}`
         );
     }
 
@@ -238,6 +262,28 @@ export class PayrollService {
         );
     }
 
+    public getPayrollOwnerDriverClosedReportById(payrollId: number) {
+        return this.http.get<PayrollDriverCommissionClosedByIdResponse>(
+            `${environment.API_ENDPOINT}/api/payroll/owner/report/${payrollId}`
+        );
+    }
+
+    public getPayrollOwnerDriverExpandedList(
+        truckId: number
+    ): Observable<PayrollDriverMileageExpandedListResponse[]> {
+        return this.http.get<PayrollDriverMileageExpandedListResponse[]>(
+            `${environment.API_ENDPOINT}/api/payroll/owner/list/closed/expanded?TruckId=${truckId}`
+        );
+    }
+
+    public getPayrollOwnerDriverCollapsedList(): Observable<
+        PayrollDriverMileageListResponse[]
+    > {
+        return this.http.get<PayrollDriverMileageCollapsedListResponse[]>(
+            `${environment.API_ENDPOINT}/api/payroll/owner/list/closed`
+        );
+    }
+
     public getPayrollOwnerDriverReport({
         reportId,
         selectedCreditIds,
@@ -323,6 +369,28 @@ export class PayrollService {
     public getFlatRatePayrollDriverList(): Observable<IDriverFlatRateList> {
         return this.http.get<IDriverFlatRateList>(
             `${environment.API_ENDPOINT}/api/payroll/driver/flatrate/list`
+        );
+    }
+
+    public getPayrollFlatRateDriverClosedReportById(payrollId: number) {
+        return this.http.get<PayrollDriverFlatRateClosedByIdResponse>(
+            `${environment.API_ENDPOINT}/api/payroll/driver/flatrate/closed/${payrollId}`
+        );
+    }
+
+    public getPayrollFlatRateDriverExpandedList(
+        driverId: number
+    ): Observable<PayrollDriverMileageExpandedListResponse[]> {
+        return this.http.get<PayrollDriverMileageExpandedListResponse[]>(
+            `${environment.API_ENDPOINT}/api/payroll/driver/flatrate/closed/expanded/list?Driverid=${driverId}`
+        );
+    }
+
+    public getPayrollFlatRateDriverCollapsedList(): Observable<
+        PayrollDriverMileageListResponse[]
+    > {
+        return this.http.get<PayrollDriverMileageCollapsedListResponse[]>(
+            `${environment.API_ENDPOINT}/api/payroll/driver/flatrate/closed/collapsed/list`
         );
     }
 

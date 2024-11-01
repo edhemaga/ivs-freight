@@ -18,4 +18,12 @@ export enum PayrollCommissionDriverEnum {
     CLOSE_PAYROLL_COMMISSION_DRIVER_PAYMENT = '[Payroll Commission Driver Page] Payroll Commission Driver Report Payment',
     CLOSE_PAYROLL_COMMISSION_DRIVER_PAYMENT_SUCCESS = '[Payroll Commission Driver Page] Payroll Commission Driver Report Payment Success',
     CLOSE_PAYROLL_COMMISSION_DRIVER_PAYMENT_ERROR = '[Payroll Commission Driver Page] Payroll Commission Driver Report Payment Error',
+
+    GET_PAYROLL_COMMISSION_COLLAPSED_LIST_DRIVER = '[Payroll Commission Driver Collapsed Page] Get Payroll Commission Collapsed Driver List',
+    GET_PAYROLL_COMMISSION_COLLAPSED_LIST_DRIVER_SUCCESS = '[Payroll Commission Driver Collapsed Page] Get Payroll Commission Collapsed Driver List Success',
+    GET_PAYROLL_COMMISSION_COLLAPSED_LIST_DRIVER_ERROR = '[Payroll Commission Driver Collapsed Page] Get Payroll Commission Collapsed Driver List Error',
+
+    GET_PAYROLL_COMMISSION_EXPANDED_LIST_DRIVER = '[Payroll Commission Driver Expanded Page] Get Payroll Commission Expanded Driver List',
+    GET_PAYROLL_COMMISSION_EXPANDED_LIST_DRIVER_SUCCESS = '[Payroll Commission Driver Expanded Page] Get Payroll Commission Expanded Driver List Success',
+    GET_PAYROLL_COMMISSION_EXPANDED_LIST_DRIVER_ERROR = '[Payroll Commission Driver Expanded Page] Get Payroll Commission Expanded Driver List Error',
 }

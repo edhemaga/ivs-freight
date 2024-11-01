@@ -1,7 +1,12 @@
-import { PayrollDriverFlatRateByIdResponse } from 'appcoretruckassist';
+import {
+    PayrollDriverFlatRateByIdResponse,
+    PayrollDriverFlatRateClosedByIdResponse,
+} from 'appcoretruckassist';
 import { IDriverFlatRateList } from '../../models/driver_flat_rate.model';
 import {
     IGet_Payroll_Commission_Driver_Report,
+    PayrollDriverMileageCollapsedListResponse,
+    PayrollDriverMileageExpandedListResponse,
     PayrollState,
 } from '../../models/payroll.model';
 
@@ -40,7 +45,6 @@ export const onGetPayrollFlatRateReportDriverSuccess = (
     reportLoading: false,
 });
 
-
 export const onClosePayrollFlatRateReportDriver = (state: PayrollState) => ({
     ...state,
     closeReportPaymentLoading: true,
@@ -68,3 +72,56 @@ export const onClosePayrollFlatRateReportDriverError = (
     closeReportPaymentError: true,
 });
 
+export const onGetPayrollFlatRateDriverCollapsedList = (
+    state: PayrollState
+) => ({
+    ...state,
+    loading: true,
+});
+
+export const onGetPayrollFlatRateDriverCollapsedListSuccess = (
+    state: PayrollState,
+    data: { data: PayrollDriverMileageCollapsedListResponse[] }
+) => ({
+    ...state,
+    driverFlatRateCollapsedList: data.data,
+    loading: false,
+});
+
+export const onGetPayrollFlatRateDriverCollapsedListError = (
+    state: PayrollState
+) => ({
+    ...state,
+    loading: false,
+});
+
+export const onGetPayrollFlatRateDriverExpandedList = (
+    state: PayrollState
+) => ({
+    ...state,
+    loading: true,
+});
+
+export const onGetPayrollFlatRateDriverExpandedListSuccess = (
+    state: PayrollState,
+    data: { data: PayrollDriverMileageExpandedListResponse[] }
+) => ({
+    ...state,
+    driverFlatRateExpandedList: data.data,
+    loading: false,
+});
+export const onGetPayrollFlatRateDriverExpandedListError = (
+    state: PayrollState
+) => ({
+    ...state,
+    loading: false,
+});
+
+export const onGetPayrollFlatRateDriverClosedPayrollSuccess = (
+    state: PayrollState,
+    data: { payroll: PayrollDriverFlatRateClosedByIdResponse }
+) => ({
+    ...state,
+    payrollOpenedReport: data.payroll,
+    reportLoading: false,
+});

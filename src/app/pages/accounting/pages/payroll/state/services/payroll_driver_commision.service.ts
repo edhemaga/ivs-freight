@@ -8,6 +8,8 @@ import * as PayrollCommissionActions from '../actions/payroll_commission_driver.
 // Selectors
 import {
     selectCommissionListDriver,
+    selectDriverCommissionCollapsedTable,
+    selectDriverCommissionExpandedTable,
     selectPayrollDriverCommissionLoads,
     selectPayrollReportsIncludedCommissionStops,
 } from '../selectors/payroll_driver_commision.selector';
@@ -24,7 +26,9 @@ import {
 import {
     LoadWithMilesStopResponse,
     PayrollDriverCommissionByIdResponse,
+    PayrollDriverMileageListResponse,
 } from 'appcoretruckassist';
+import { PayrollDriverMileageExpandedListResponse } from '../models/payroll.model';
 
 @Injectable({
     providedIn: 'root',
@@ -46,12 +50,33 @@ export class PayrollDriverCommissionFacadeService {
         LoadWithMilesStopResponse[]
     > = this.store.pipe(select(selectPayrollReportsIncludedCommissionStops));
 
+    public selectPayrollDriverCommissionExpanded$: Observable<
+        PayrollDriverMileageExpandedListResponse[]
+    > = this.store.pipe(select(selectDriverCommissionExpandedTable));
+
+    public selectPayrollDriverCommissionCollapsed$: Observable<
+        PayrollDriverMileageListResponse[]
+    > = this.store.pipe(select(selectDriverCommissionCollapsedTable));
+
     public getPayrollDriverCommissionList() {
         this.store.dispatch(
             PayrollCommissionActions.getPayrollCommissionDriver()
         );
     }
 
+    public getPayrollCommissionMileageExpandedList(driverId: number) {
+        this.store.dispatch(
+            PayrollCommissionActions.getPayrollCommissionDriverExpandedList({
+                driverId,
+            })
+        );
+    }
+
+    public getPayrollDriverCommissionCollapsedList() {
+        this.store.dispatch(
+            PayrollCommissionActions.getPayrollCommissionDriverCollapsedList()
+        );
+    }
 
     public getPayrollDriverCommissionReport({
         reportId,
@@ -69,7 +94,7 @@ export class PayrollDriverCommissionFacadeService {
             .subscribe((payrollState) => {
                 if (payrollState.payrollOpenedTab === 'closed') {
                     this.store.dispatch(
-                        PayrollCommissionActions.getPayrollCommissionDriverClosedPayroll(
+                        PayrollCommissionActions.getPayrollCommissionReportDriverClosedPayroll(
                             {
                                 payrollId: +reportId,
                             }

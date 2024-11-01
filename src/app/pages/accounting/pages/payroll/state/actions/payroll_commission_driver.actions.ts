@@ -1,8 +1,17 @@
 import { createAction, props } from '@ngrx/store';
 import { PayrollCommissionDriverEnum } from '../enums/driver_commission/payroll_driver_commission.enums';
 import { IDriverCommissionList } from '../models/driver_commission.model';
-import { IGet_Payroll_Commission_Driver_Report, IGet_Payroll_Solo_Mileage_Driver_Report } from '../models/payroll.model';
-import { PayrollDriverCommissionByIdResponse, PayrollOtherPaymentType, PayrollPaymentType } from 'appcoretruckassist';
+import {
+    IGet_Payroll_Commission_Driver_Report,
+    PayrollDriverMileageCollapsedListResponse,
+    PayrollDriverMileageExpandedListResponse,
+} from '../models/payroll.model';
+import {
+    PayrollDriverCommissionByIdResponse,
+    PayrollDriverCommissionClosedByIdResponse,
+    PayrollOtherPaymentType,
+    PayrollPaymentType,
+} from 'appcoretruckassist';
 
 export const getPayrollCommissionDriver = createAction(
     PayrollCommissionDriverEnum.GET_PAYROLL_COMMISSION_DRIVER
@@ -35,15 +44,16 @@ export const getPayrollCommissionReportDriverError = createAction(
 );
 
 // GET DRIVER COMMISSION CLOSED PAYROLL
-export const getPayrollCommissionDriverClosedPayroll = createAction(
+export const getPayrollCommissionReportDriverClosedPayroll = createAction(
     PayrollCommissionDriverEnum.GET_PAYROLL_COMMISSION_CLOSED_PAYROLL,
     props<{ payrollId: number }>()
 );
-export const getPayrollCommissionDriverClosedPayrollSuccess = createAction(
-    PayrollCommissionDriverEnum.GET_PAYROLL_COMMISSION_CLOSED_PAYROLL_SUCCESS
-    // props<{ payroll: PayrollDriverMileageResponse }>()
-);
-export const getPayrollCommissionDriverClosedPayrollError = createAction(
+export const getPayrollCommissionReportDriverClosedPayrollSuccess =
+    createAction(
+        PayrollCommissionDriverEnum.GET_PAYROLL_COMMISSION_CLOSED_PAYROLL_SUCCESS,
+        props<{ payroll: PayrollDriverCommissionClosedByIdResponse }>()
+    );
+export const getPayrollCommissionReportDriverClosedPayrollError = createAction(
     PayrollCommissionDriverEnum.GET_PAYROLL_COMMISSION_CLOSED_PAYROLL_ERROR,
     props<{ error: string }>()
 );
@@ -69,4 +79,31 @@ export const closePayrollCommissionReportDriverSuccess = createAction(
 export const closePayrollCommissionReportDriverError = createAction(
     PayrollCommissionDriverEnum.CLOSE_PAYROLL_COMMISSION_DRIVER_PAYMENT_ERROR,
     props<any>()
+);
+
+// COMMISSSION COLLAPSED LIST
+export const getPayrollCommissionDriverCollapsedList = createAction(
+    PayrollCommissionDriverEnum.GET_PAYROLL_COMMISSION_COLLAPSED_LIST_DRIVER
+);
+export const getPayrollCommissionDriverCollapsedListSuccess = createAction(
+    PayrollCommissionDriverEnum.GET_PAYROLL_COMMISSION_COLLAPSED_LIST_DRIVER_SUCCESS,
+    props<{ data: PayrollDriverMileageCollapsedListResponse[] }>()
+);
+export const getPayrollCommissionDriverCollapsedListError = createAction(
+    PayrollCommissionDriverEnum.GET_PAYROLL_COMMISSION_COLLAPSED_LIST_DRIVER_ERROR,
+    props<{ error: string }>()
+);
+
+// GET DRIVER COMMISSION EXPANDED LIST
+export const getPayrollCommissionDriverExpandedList = createAction(
+    PayrollCommissionDriverEnum.GET_PAYROLL_COMMISSION_EXPANDED_LIST_DRIVER,
+    props<{ driverId: number }>()
+);
+export const getPayrollCommissionDriverExpandedListSuccess = createAction(
+    PayrollCommissionDriverEnum.GET_PAYROLL_COMMISSION_EXPANDED_LIST_DRIVER_SUCCESS,
+    props<{ data: PayrollDriverMileageExpandedListResponse[] }>()
+);
+export const getPayrollCommissionDriverExpandedListError = createAction(
+    PayrollCommissionDriverEnum.GET_PAYROLL_COMMISSION_EXPANDED_LIST_DRIVER_ERROR,
+    props<{ error: string }>()
 );

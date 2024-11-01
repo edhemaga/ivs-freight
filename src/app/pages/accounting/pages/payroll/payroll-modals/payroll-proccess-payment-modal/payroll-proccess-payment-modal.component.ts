@@ -29,6 +29,7 @@ import { TaInputDropdownComponent } from '@shared/components/ta-input-dropdown/t
 import { TaInputComponent } from '@shared/components/ta-input/ta-input.component';
 import { TaModalComponent } from '@shared/components/ta-modal/ta-modal.component';
 import { TaTabSwitchComponent } from '@shared/components/ta-tab-switch/ta-tab-switch.component';
+import { TaSpinnerComponent } from '@shared/components/ta-spinner/ta-spinner.component';
 import {
     CaInputComponent,
     CaInputDropdownComponent,
@@ -38,13 +39,12 @@ import {
 // Models
 import { EditData } from '@shared/models/edit-data.model';
 import { Tabs } from '@shared/models/tabs.model';
+import { IPayrollProccessPaymentModal } from '../../state/models/payroll.model';
+import { PayrollPaymentType } from 'appcoretruckassist';
 
 // Services
 import { PayrollFacadeService } from '../../state/services/payroll.service';
 import { TaInputService } from '@shared/services/ta-input.service';
-import { TaSpinnerComponent } from '@shared/components/ta-spinner/ta-spinner.component';
-import { IPayrollProccessPaymentModal } from '../../state/models/payroll.model';
-import { PayrollPaymentType } from 'appcoretruckassist';
 
 @Component({
     selector: 'app-payroll-proccess-payment-modal',
