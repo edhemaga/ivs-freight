@@ -1,12 +1,13 @@
 import { TableStringEnum } from '@shared/enums/table-string.enum';
 
-//models
+// models
 import { RepairDropdownTableModel } from '@pages/repair/pages/repair-table/models/repair-dropdown-table-model';
 
 export class RepairTableHelper {
-    static dropdownTableContent(
+    // repair
+    static getRepairTableDropdownContent(
         tabSelected: string,
-        repairType
+        repairType: string
     ): RepairDropdownTableModel[] {
         const commonDropdownContent: RepairDropdownTableModel[] = [
             {
@@ -109,5 +110,130 @@ export class RepairTableHelper {
         }
 
         return commonDropdownContent;
+    }
+
+    // repair shop
+    static getRepairShopTableDropdownContent(
+        status: number,
+        isPinned: boolean,
+        isCompanyOwned: boolean
+    ): RepairDropdownTableModel[] {
+        return [
+            {
+                title: 'Edit',
+                name: 'edit',
+                svgUrl: '/assets/svg/common/load/ic_load-pen.svg',
+                svgStyle: {
+                    width: 18,
+                    height: 18,
+                },
+                svgClass: 'regular',
+                hasBorder: true,
+                mutedStyle: !status,
+            },
+            {
+                title: 'View Details',
+                name: 'view-details',
+                svgUrl: '/assets/svg/common/confirmation/ic_confirmation_info.svg',
+                svgStyle: {
+                    width: 18,
+                    height: 18,
+                },
+                svgClass: 'regular',
+                tableListDropdownContentStyle: {
+                    'margin-bottom.px': 4,
+                },
+            },
+            {
+                title: 'Add Bill',
+                name: 'add-bill',
+                svgUrl: '/assets/svg/common/ic_plus.svg',
+                svgStyle: {
+                    width: 18,
+                    height: 18,
+                },
+                svgClass: 'favourite',
+                tableListDropdownContentStyle: {
+                    'margin-bottom.px': 4,
+                },
+                mutedStyle: !status,
+            },
+            {
+                title: isPinned ? 'Unmark Favorite' : 'Mark as Favorite',
+                name: 'favorite',
+                svgUrl: '/assets/svg/common/ic_star.svg',
+                svgStyle: {
+                    width: 18,
+                    height: 18,
+                },
+                svgClass: isPinned ? 'regular' : 'favourite',
+                tableListDropdownContentStyle: {
+                    'margin-bottom.px': 4,
+                },
+                mutedStyle: !status || isCompanyOwned,
+            },
+            {
+                title: 'Write Review',
+                name: 'write-review',
+                svgUrl: '/assets/svg/common/review-pen.svg',
+                svgStyle: {
+                    width: 18,
+                    height: 18,
+                },
+                svgClass: 'regular',
+                hasBorder: true,
+                mutedStyle: !status,
+            },
+            // not in this version
+            /*  {
+                title: 'Share',
+                name: 'share',
+                svgUrl: '/assets/svg/common/share-icon.svg',
+                svgStyle: {
+                    width: 18,
+                    height: 18,
+                },
+                svgClass: 'regular',
+                tableListDropdownContentStyle: {
+                    'margin-bottom.px': 4,
+                },
+            },
+            {
+                title: 'Print',
+                name: 'print',
+                svgUrl: '/assets/svg/common/ic_print.svg',
+                svgStyle: {
+                    width: 18,
+                    height: 18,
+                },
+                svgClass: 'regular',
+                hasBorder: true,
+            }, */
+            {
+                title: !status ? 'Open Business' : 'Close Business',
+                name: 'close-business',
+                svgUrl: !status
+                    ? '/assets/svg/common/confirm-circle_white.svg'
+                    : '/assets/svg/common/load/ic_load-broker-closed-business.svg',
+                svgStyle: {
+                    width: 18,
+                    height: 18,
+                },
+                svgClass: !status ? 'open-business' : 'delete',
+                tableListDropdownContentStyle: {
+                    'margin-bottom.px': 4,
+                },
+            },
+            {
+                title: 'Delete',
+                name: 'delete',
+                svgUrl: '/assets/svg/common/ic_trash_updated.svg',
+                svgStyle: {
+                    width: 18,
+                    height: 18,
+                },
+                svgClass: 'delete',
+            },
+        ];
     }
 }

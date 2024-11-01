@@ -156,7 +156,12 @@ import {
 
 // Svg Routes
 import { LoadModalSvgRoutes } from '@pages/load/pages/load-modal/utils/svg-routes/load-modal-svg-routes';
-import { CaMapComponent, ICaMapProps, CaInputDropdownComponent, CaInputComponent  } from 'ca-components';
+import {
+    CaMapComponent,
+    ICaMapProps,
+    CaInputDropdownComponent,
+    CaInputComponent,
+} from 'ca-components';
 
 @Component({
     selector: 'app-load-modal',
@@ -214,7 +219,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
 
     @Input() editData: EditData;
 
-    data: ICaMapProps = {
+    data /* : ICaMapProps */ = {
         center: {
             lat: 41.860119,
             lng: -87.660156,
@@ -3868,7 +3873,8 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                 item.latitude !== null
         );
 
-        if (validRoutes) {
+        // Backend requires min 2 routes to do calculations
+        if (validRoutes && validRoutes.length > 1) {
             this.loadService
                 .getRouting(
                     JSON.stringify(
@@ -4980,8 +4986,9 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                 const isUserReversingFromInvoicedStatus =
                     this.originalStatus === LoadStatusEnum[8] &&
                     this.isPreviousStatus;
-                    
-                if (isUserReversingFromInvoicedStatus) newData.invoicedDate = null;
+
+                if (isUserReversingFromInvoicedStatus)
+                    newData.invoicedDate = null;
 
                 if (this.isLoadClosed)
                     newData.statusHistory = response.statusHistory;

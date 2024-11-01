@@ -28,7 +28,7 @@ import { TableCardDropdownActionsService } from '@shared/components/ta-table-car
 import { LoadCardModalService } from '@pages/load/pages/load-card-modal/services/load-card-modal.service';
 import { ConfirmationActivationService } from '@shared/components/ta-shared-modals/confirmation-activation-modal/services/confirmation-activation.service';
 import { CaSearchMultipleStatesService } from 'ca-components';
-import { BrokerService } from '@pages/customer/services/broker.service';
+import { BrokerService } from '@pages/customer/services';
 import { CommentsService } from '@shared/services/comments.service';
 
 // Models
@@ -41,6 +41,7 @@ import {
     CardDetails,
     DeleteComment,
     DropdownItem,
+    Stop,
 } from '@shared/models/card-models/card-table-data.model';
 import { GridColumn } from '@shared/models/table-models/grid-column.model';
 import { TableToolbarActions } from '@shared/models/table-models/table-toolbar-actions.model';
@@ -1032,14 +1033,13 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
             loadPickup: [
                 {
-                    count: stops[0]?.stopOrder,
+                    count: this.calculatePickupstops(stops),
                     location: stops[0]?.shipper?.address?.city,
                     delivery: false,
                 },
                 {
-                    count: stops[1]?.stopOrder,
-                    location: stops[1]?.shipper?.address?.city,
-
+                    count: stops[stops.length - 1]?.stopLoadOrder,
+                    location: stops[stops.length - 1]?.shipper?.address?.city,
                     delivery: true,
                 },
             ],
@@ -1124,6 +1124,16 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
             },
         };
     }
+    private calculatePickupstops(stops: Stop[]): number {
+        let stopOrder = 0;
+        stops.forEach((stop) => {
+            if (stop.stopType.name === LoadModalStringEnum.PICKUP_2)
+                stopOrder++;
+        });
+
+        return stopOrder;
+    }
+
     private mapLoadData(data: LoadModel) /* : LoadModel */ {
         let commentsWithAvatarColor;
         if (data.comments) {
@@ -1443,6 +1453,7 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 filter.revenueFrom,
                 filter.revenueTo,
                 filter.truckId,
+                filter.driverId,
                 filter.rateFrom,
                 filter.rateTo,
                 filter.paidFrom,
