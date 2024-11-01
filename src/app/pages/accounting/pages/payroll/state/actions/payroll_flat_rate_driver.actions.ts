@@ -2,6 +2,7 @@ import { createAction, props } from '@ngrx/store';
 import { PayrollFlatRateDriverEnum } from '../enums/driver_flat_rate/payroll_driver_flat_rate.enums';
 import { IDriverFlatRateList } from '../models/driver_flat_rate.model';
 import {
+    IAddPayrollClosedPayment,
     IGet_Payroll_Commission_Driver_Report,
     PayrollDriverMileageCollapsedListResponse,
     PayrollDriverMileageExpandedListResponse,
@@ -106,5 +107,18 @@ export const getPayrollFlatRateDriverExpandedListSuccess = createAction(
 );
 export const getPayrollFlatRateDriverExpandedListError = createAction(
     PayrollFlatRateDriverEnum.GET_PAYROLL_FLATRATE_EXPANDED_LIST_DRIVER_ERROR,
+    props<{ error: string }>()
+);
+
+// DRIVER MILEAGE FLAT RATE CLOSED PAYMENTS
+export const driverFlatRatePayrollClosedPayments = createAction(
+    PayrollFlatRateDriverEnum.CLOSE_PAYROLL_FLAT_RATE_DRIVER_PAYMENT,
+    props<IAddPayrollClosedPayment>()
+);
+export const driverFlatRatePayrollClosedPaymentsSuccess = createAction(
+    PayrollFlatRateDriverEnum.CLOSE_PAYROLL_FLAT_RATE_DRIVER_PAYMENT_SUCCESS
+);
+export const driverFlatRatePayrollClosedPaymentsError = createAction(
+    PayrollFlatRateDriverEnum.CLOSE_PAYROLL_FLAT_RATE_DRIVER_PAYMENT_ERROR,
     props<{ error: string }>()
 );

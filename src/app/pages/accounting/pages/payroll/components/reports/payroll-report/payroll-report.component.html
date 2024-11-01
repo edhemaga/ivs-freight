@@ -176,14 +176,7 @@
 </ng-template>
 
 <ng-template #reorderTemplate let-row="row" let-index="index">
-    <ng-container
-        *ngIf="
-            includedLoads$
-                | async
-                | payrollTableTotal
-                    : (payrollReport$ | async).perMilesEntity as payroll_totals
-        "
-    >
+    <ng-container *ngIf="(payrollReport$ | async).sums as payroll_totals">
         <td class="text-center" *ngIf="selectedTab === 'open'">
             <div class="td-container">
                 <div class="td-content-container">
@@ -207,7 +200,7 @@
             <div class="td-container">
                 <div class="td-content-container">
                     <div class="custom-load-index text b-600">
-                        {{ payroll_totals.empty | currency }}
+                        {{ payroll_totals.totalEmptyMiles | currency }}
                     </div>
                 </div>
             </div>
@@ -216,7 +209,7 @@
             <div class="td-container">
                 <div class="td-content-container">
                     <div class="custom-load-index text b-600">
-                        {{ payroll_totals.loaded | currency }}
+                        {{ payroll_totals.totalLoadedMiles | currency }}
                     </div>
                 </div>
             </div>
@@ -225,7 +218,7 @@
             <div class="td-container">
                 <div class="td-content-container">
                     <div class="custom-load-index text b-600">
-                        {{ payroll_totals.miles | currency }}
+                        {{ payroll_totals.totalMiles | currency }}
                     </div>
                 </div>
             </div>
@@ -239,7 +232,7 @@
             <div class="td-container">
                 <div class="td-content-container">
                     <div class="custom-load-index text b-600">
-                        {{ payroll_totals.subtotal | currency }}
+                        {{ payroll_totals.totalSubtotal | currency }}
                     </div>
                 </div>
             </div>

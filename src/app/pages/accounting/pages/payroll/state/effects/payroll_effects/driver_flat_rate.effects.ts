@@ -242,3 +242,40 @@ export function getPayrollFlatRateClosedPayrollReportByIdEffect(
             )
     );
 }
+
+export function addPayrollFlatRateClosedPayrollPaymentEffect(
+    actions$: Actions,
+    payrollService: PayrollService
+) {
+    return createEffect(
+        (): Observable<Action> =>
+            actions$.pipe(
+                ofType(
+                    PayrollFlatRateDriverActions.driverFlatRatePayrollClosedPayments
+                ),
+                switchMap((action) => {
+                    return payrollService
+                        .addPayrollClosedReportPayment(action)
+                        .pipe(
+                            map((data) => {
+                                return PayrollFlatRateDriverActions.driverFlatRatePayrollClosedPaymentsSuccess();
+                            }),
+                            // tap((data) => {
+                            //     // this.store.dispatch(
+                            //     //   PaymentActions.restartRefreshDataSuccess({ flag: false })
+                            //     // );
+                            // }),
+                            catchError((error) =>
+                                of(
+                                    PayrollFlatRateDriverActions.driverFlatRatePayrollClosedPaymentsError(
+                                        {
+                                            error,
+                                        }
+                                    )
+                                )
+                            )
+                        );
+                })
+            )
+    );
+}

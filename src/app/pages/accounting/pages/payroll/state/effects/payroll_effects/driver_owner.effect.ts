@@ -200,7 +200,6 @@ export function getPayrollOwnerDriverExpandedListEffect(
     );
 }
 
-
 export function getPayrollOwnerClosedPayrollReportByIdEffect(
     actions$: Actions,
     payrollService: PayrollService
@@ -213,9 +212,7 @@ export function getPayrollOwnerClosedPayrollReportByIdEffect(
                 ),
                 switchMap((action) => {
                     return payrollService
-                        .getPayrollOwnerDriverClosedReportById(
-                            action.payrollId
-                        )
+                        .getPayrollOwnerDriverClosedReportById(action.payrollId)
                         .pipe(
                             map((data) => {
                                 return PayrollOwnerDriverActions.getPayrollOwnerDriverClosedReportPayrollSuccess(
@@ -227,6 +224,43 @@ export function getPayrollOwnerClosedPayrollReportByIdEffect(
                             catchError((error) =>
                                 of(
                                     PayrollOwnerDriverActions.getPayrollOwnerDriverClosedReportPayrollError(
+                                        {
+                                            error,
+                                        }
+                                    )
+                                )
+                            )
+                        );
+                })
+            )
+    );
+}
+
+export function addPayrollOwnerClosedPayrollPaymentEffect(
+    actions$: Actions,
+    payrollService: PayrollService
+) {
+    return createEffect(
+        (): Observable<Action> =>
+            actions$.pipe(
+                ofType(
+                    PayrollOwnerDriverActions.driverOwnerPayrollClosedPayments
+                ),
+                switchMap((action) => {
+                    return payrollService
+                        .addPayrollClosedReportPayment(action)
+                        .pipe(
+                            map((data) => {
+                                return PayrollOwnerDriverActions.driverOwnerPayrollClosedPaymentsSuccess();
+                            }),
+                            // tap((data) => {
+                            //     // this.store.dispatch(
+                            //     //   PaymentActions.restartRefreshDataSuccess({ flag: false })
+                            //     // );
+                            // }),
+                            catchError((error) =>
+                                of(
+                                    PayrollOwnerDriverActions.driverOwnerPayrollClosedPaymentsError(
                                         {
                                             error,
                                         }

@@ -2,6 +2,7 @@ import { createAction, props } from '@ngrx/store';
 import { PayrollCommissionDriverEnum } from '../enums/driver_commission/payroll_driver_commission.enums';
 import { IDriverCommissionList } from '../models/driver_commission.model';
 import {
+    IAddPayrollClosedPayment,
     IGet_Payroll_Commission_Driver_Report,
     PayrollDriverMileageCollapsedListResponse,
     PayrollDriverMileageExpandedListResponse,
@@ -105,5 +106,18 @@ export const getPayrollCommissionDriverExpandedListSuccess = createAction(
 );
 export const getPayrollCommissionDriverExpandedListError = createAction(
     PayrollCommissionDriverEnum.GET_PAYROLL_COMMISSION_EXPANDED_LIST_DRIVER_ERROR,
+    props<{ error: string }>()
+);
+
+// DRIVER MILEAGE COMMISSION CLOSED PAYMENTS
+export const driverCommissionPayrollClosedPayments = createAction(
+    PayrollCommissionDriverEnum.CLOSE_PAYROLL_COMMISSION_DRIVER_PAYMENT,
+    props<IAddPayrollClosedPayment>()
+);
+export const driverCommissionPayrollClosedPaymentsSuccess = createAction(
+    PayrollCommissionDriverEnum.CLOSE_PAYROLL_COMMISSION_DRIVER_PAYMENT_SUCCESS
+);
+export const driverCommissionPayrollClosedPaymentsError = createAction(
+    PayrollCommissionDriverEnum.CLOSE_PAYROLL_COMMISSION_DRIVER_PAYMENT_ERROR,
     props<{ error: string }>()
 );

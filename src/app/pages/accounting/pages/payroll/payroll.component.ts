@@ -164,6 +164,8 @@ export class PayrollComponent implements OnInit, AfterViewInit, OnDestroy {
         this.openedIndex = this.openedIndex === data.index ? -1 : data.index;
         if (data.status) {
             this.payrollType = `${data.payrollSummary.text} ${data.payrollSummary.type}`;
+
+            this.selectedOpenFromList = undefined;
             this.handleTableShow(data.index);
         }
     }
@@ -201,17 +203,13 @@ export class PayrollComponent implements OnInit, AfterViewInit, OnDestroy {
                     );
                     if (this.componentRef) {
                         this.componentRef.instance.driverId =
-                            this.selectedOpenFromList.driver.id; // Example input property
+                            this.selectedOpenFromList.id; // Example input property
 
                         this.componentRef.instance.expandTableEvent.subscribe(
                             (event: any) => {
                                 this.reportTableData = event;
                                 this.payrollFacadeService.setPayrollReportTableExpanded(
                                     true
-                                );
-                                console.log(
-                                    'EVENT FROM EXAPNDED TABLE BLAH',
-                                    event
                                 );
                             }
                         );
@@ -225,7 +223,15 @@ export class PayrollComponent implements OnInit, AfterViewInit, OnDestroy {
                     );
 
                     this.componentRef.instance.expandTableEvent.subscribe(
-                        (event: any) => this.expandTable(event)
+                        (event: any) => {
+                            this.selectedOpenFromList = {
+                                fullName: event.driver.fullName,
+                                payrollCount: event.payrollCount,
+                                id: event.driver.id,
+                                title: 'Driver (Mile)',
+                            };
+                            this.handleTableShow();
+                        }
                     );
                 }
                 break;
@@ -253,7 +259,7 @@ export class PayrollComponent implements OnInit, AfterViewInit, OnDestroy {
                     );
                     if (this.componentRef) {
                         this.componentRef.instance.driverId =
-                            this.selectedOpenFromList.driver.id; // Example input property
+                            this.selectedOpenFromList.id; // Example input property
 
                         this.componentRef.instance.expandTableEvent.subscribe(
                             (event: any) => {
@@ -277,7 +283,15 @@ export class PayrollComponent implements OnInit, AfterViewInit, OnDestroy {
                     );
 
                     this.componentRef.instance.expandTableEvent.subscribe(
-                        (event: any) => this.expandTable(event)
+                        (event: any) => {
+                            this.selectedOpenFromList = {
+                                fullName: event.driver.fullName,
+                                payrollCount: event.payrollCount,
+                                id: event.driver.id,
+                                title: 'Driver (Flat Rate)',
+                            };
+                            this.handleTableShow();
+                        }
                     );
                 }
                 break;
@@ -305,7 +319,7 @@ export class PayrollComponent implements OnInit, AfterViewInit, OnDestroy {
                     );
                     if (this.componentRef) {
                         this.componentRef.instance.driverId =
-                            this.selectedOpenFromList.driver.id; // Example input property
+                            this.selectedOpenFromList.id; // Example input property
 
                         this.componentRef.instance.expandTableEvent.subscribe(
                             (event: any) => {
@@ -329,12 +343,19 @@ export class PayrollComponent implements OnInit, AfterViewInit, OnDestroy {
                     );
 
                     this.componentRef.instance.expandTableEvent.subscribe(
-                        (event: any) => this.expandTable(event)
+                        (event: any) => {
+                            this.selectedOpenFromList = {
+                                fullName: event.driver.fullName,
+                                payrollCount: event.payrollCount,
+                                id: event.driver.id,
+                                title: 'Driver (Commission)',
+                            };
+                            this.handleTableShow();
+                        }
                     );
                 }
                 break;
             case 'Owner ':
-                console.log('HI OWNER');
                 if (this.selectedTab === 'open') {
                     this.componentRef = cointainer.createComponent(
                         DriverOwnerTableComponent,
@@ -356,20 +377,15 @@ export class PayrollComponent implements OnInit, AfterViewInit, OnDestroy {
                             environmentInjector: this.environmentInjector,
                         }
                     );
-                    console.log(this.selectedOpenFromList, "this.selectedOpenFromList");
                     if (this.componentRef) {
                         this.componentRef.instance.driverId =
-                            this.selectedOpenFromList.truck.id; // Example input property
+                            this.selectedOpenFromList.id; // Example input property
 
                         this.componentRef.instance.expandTableEvent.subscribe(
                             (event: any) => {
                                 this.reportTableData = event;
                                 this.payrollFacadeService.setPayrollReportTableExpanded(
                                     true
-                                );
-                                console.log(
-                                    'EVENT FROM EXAPNDED TABLE BLAH',
-                                    event
                                 );
                             }
                         );
@@ -383,7 +399,16 @@ export class PayrollComponent implements OnInit, AfterViewInit, OnDestroy {
                     );
 
                     this.componentRef.instance.expandTableEvent.subscribe(
-                        (event: any) => this.expandTable(event)
+                        (event: any) => {
+                            this.selectedOpenFromList = {
+                                fullName: `${event.truck.truckNumber} - ${event.owner}`,
+                                payrollCount: event.payrollCount,
+                                id: event.truck.id,
+                                title: 'Owner',
+                                hideAvatar: true,
+                            };
+                            this.handleTableShow();
+                        }
                     );
                 }
                 break;
@@ -405,19 +430,8 @@ export class PayrollComponent implements OnInit, AfterViewInit, OnDestroy {
 
     expandTable(data?: any) {
         if (data) {
-            if (this.selectedTab === 'open') {
-                this.reportTableData = data;
-                this.payrollFacadeService.setPayrollReportTableExpanded(true);
-            } else {
-                this.selectedOpenFromList = data;
-                this.handleTableShow();
-            }
-
-            // this.tableExpanded = !this.tableExpanded;
-            // this.tableExpanded$.next(this.tableExpanded);
-        } else {
-            // this.tableExpanded = true;
-            // this.tableExpanded$.next(true);
+            this.reportTableData = data;
+            this.payrollFacadeService.setPayrollReportTableExpanded(true);
         }
     }
 

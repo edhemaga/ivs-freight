@@ -46,7 +46,7 @@ export class PayrollService {
         );
     }
 
-    public addPayrollMileageDriverPayment(
+    public addPayrollClosedReportPayment(
         data: IAddPayrollClosedPayment
     ): Observable<boolean> {
         const body = {

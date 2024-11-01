@@ -2,6 +2,7 @@ import { createAction, props } from '@ngrx/store';
 import { PayrollOwnerDriverEnum } from '../enums/driver_owner/driver_owner.enums';
 import { IDriverOwnerList } from '../models/driver_owner.model';
 import {
+    IAddPayrollClosedPayment,
     IGet_Payroll_Commission_Driver_Report,
     PayrollDriverMileageCollapsedListResponse,
     PayrollDriverMileageExpandedListResponse,
@@ -20,7 +21,7 @@ export const getPayrollOwnerDriverList = createAction(
 export const getPayrollOwnerDriverListSuccess = createAction(
     PayrollOwnerDriverEnum.GET_PAYROLL_OWNER_DRIVER_SUCCESS,
     props<{ ownerPayrollList: IDriverOwnerList }>()
-); 
+);
 
 export const getPayrollOwnerDriverListError = createAction(
     PayrollOwnerDriverEnum.GET_PAYROLL_OWNER_DRIVER_ERROR,
@@ -104,5 +105,18 @@ export const getPayrollOwnerDriverExpandedListSuccess = createAction(
 );
 export const getPayrollOwnerDriverExpandedListError = createAction(
     PayrollOwnerDriverEnum.GET_PAYROLL_OWNER_EXPANDED_LIST_DRIVER_ERROR,
+    props<{ error: string }>()
+);
+
+// DRIVER OWNER FLAT RATE CLOSED PAYMENTS
+export const driverOwnerPayrollClosedPayments = createAction(
+    PayrollOwnerDriverEnum.CLOSE_PAYROLL_OWNER_DRIVER_PAYMENT,
+    props<IAddPayrollClosedPayment>()
+);
+export const driverOwnerPayrollClosedPaymentsSuccess = createAction(
+    PayrollOwnerDriverEnum.CLOSE_PAYROLL_OWNER_DRIVER_PAYMENT_SUCCESS
+);
+export const driverOwnerPayrollClosedPaymentsError = createAction(
+    PayrollOwnerDriverEnum.CLOSE_PAYROLL_OWNER_DRIVER_PAYMENT_ERROR,
     props<{ error: string }>()
 );

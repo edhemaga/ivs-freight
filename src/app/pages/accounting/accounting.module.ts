@@ -46,7 +46,6 @@ import { DriverOwnerCollapsedTableComponent } from './pages/payroll/components/t
 import { DriverCommissionExpandedTableComponent } from './pages/payroll/components/tables/driver-commission/driver-commission-expanded-table/driver-commission-expanded-table.component';
 import { DriverFlatRateExpandedTableComponent } from './pages/payroll/components/tables/driver-flat-rate/driver-flat-rate-expanded-table/driver-flat-rate-expanded-table.component';
 import { DriverOwnerExpandedTableComponent } from './pages/payroll/components/tables/driver-owner/driver-owner-expanded-table/driver-owner-expanded-table.component';
-
 @NgModule({
     declarations: [
         // Components
@@ -72,7 +71,7 @@ import { DriverOwnerExpandedTableComponent } from './pages/payroll/components/ta
         DriverOwnerCollapsedTableComponent,
         DriverCommissionExpandedTableComponent,
         DriverFlatRateExpandedTableComponent,
-        DriverOwnerExpandedTableComponent,
+        DriverOwnerExpandedTableComponent
     ],
     imports: [
         // Modules

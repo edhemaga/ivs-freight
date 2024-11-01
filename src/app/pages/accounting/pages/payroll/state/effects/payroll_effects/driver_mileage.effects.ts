@@ -118,43 +118,6 @@ export function getPayrollMileageDriverCollapsedListEffect(
     );
 }
 
-export function addPayrollMileageClosedPayrollPaymentEffect(
-    actions$: Actions,
-    payrollService: PayrollService
-) {
-    return createEffect(
-        (): Observable<Action> =>
-            actions$.pipe(
-                ofType(
-                    PayrollSoloMileageDriver.driverMileagePayrollClosedPayments
-                ),
-                switchMap((action) => {
-                    return payrollService
-                        .addPayrollMileageDriverPayment(action)
-                        .pipe(
-                            map((data) => {
-                                return PayrollSoloMileageDriver.driverMileagePayrollClosedPaymentsSuccess();
-                            }),
-                            // tap((data) => {
-                            //     // this.store.dispatch(
-                            //     //   PaymentActions.restartRefreshDataSuccess({ flag: false })
-                            //     // );
-                            // }),
-                            catchError((error) =>
-                                of(
-                                    PayrollSoloMileageDriver.driverMileagePayrollClosedPaymentsError(
-                                        {
-                                            error,
-                                        }
-                                    )
-                                )
-                            )
-                        );
-                })
-            )
-    );
-}
-
 export function getPayrollSoloMileageEffect(
     actions$: Actions,
     payrollService: PayrollService
@@ -272,6 +235,43 @@ export function getPayrollSoloMileageReportEffect(
                             catchError((error) =>
                                 of(
                                     PayrollSoloMileageDriver.getPayrollSoloMileageReportDriverError(
+                                        {
+                                            error,
+                                        }
+                                    )
+                                )
+                            )
+                        );
+                })
+            )
+    );
+}
+
+export function addPayrollMileageClosedPayrollPaymentEffect(
+    actions$: Actions,
+    payrollService: PayrollService
+) {
+    return createEffect(
+        (): Observable<Action> =>
+            actions$.pipe(
+                ofType(
+                    PayrollSoloMileageDriver.driverMileagePayrollClosedPayments
+                ),
+                switchMap((action) => {
+                    return payrollService
+                        .addPayrollClosedReportPayment(action)
+                        .pipe(
+                            map((data) => {
+                                return PayrollSoloMileageDriver.driverMileagePayrollClosedPaymentsSuccess();
+                            }),
+                            // tap((data) => {
+                            //     // this.store.dispatch(
+                            //     //   PaymentActions.restartRefreshDataSuccess({ flag: false })
+                            //     // );
+                            // }),
+                            catchError((error) =>
+                                of(
+                                    PayrollSoloMileageDriver.driverMileagePayrollClosedPaymentsError(
                                         {
                                             error,
                                         }

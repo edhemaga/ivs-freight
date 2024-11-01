@@ -212,9 +212,23 @@ export class PayrollFacadeService {
             });
     }
 
-    public addPayrollClosedPayment(body: IAddPayrollClosedPayment) {
+    public addPayrollClosedPayment(
+        body: IAddPayrollClosedPayment,
+        payrollType?: PayrollTypes
+    ) {
+        if (payrollType === 'miles') {
+            body.payrollDriverMileageId = body.modalId;
+        }else if(payrollType == 'commission'){
+            body.payrollDriverCommissionId = body.modalId;
+        }else if(payrollType == 'flat rate'){
+            //body.payro
+        }
+
+
         this.store.dispatch(
-            PayrollDriverMileageSolo.driverMileagePayrollClosedPayments(body)
+            PayrollDriverMileageSolo.driverMileagePayrollClosedPayments(
+                body
+            )
         );
     }
 
@@ -280,7 +294,7 @@ export class PayrollFacadeService {
                             otherPaymentType,
                         })
                     );
-                } else if(payrollType === 'flat rate'){
+                } else if (payrollType === 'flat rate') {
                     this.store.dispatch(
                         PayrollFlatRateActions.closePayrollFlatRateReportDriver(
                             {

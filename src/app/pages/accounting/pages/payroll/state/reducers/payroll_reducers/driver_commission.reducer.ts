@@ -1,4 +1,7 @@
-import { PayrollDriverCommissionByIdResponse, PayrollDriverCommissionClosedByIdResponse } from 'appcoretruckassist';
+import {
+    PayrollDriverCommissionByIdResponse,
+    PayrollDriverCommissionClosedByIdResponse,
+} from 'appcoretruckassist';
 import { IDriverCommissionList } from '../../models/driver_commission.model';
 import {
     IGet_Payroll_Commission_Driver_Report,
@@ -6,6 +9,11 @@ import {
     PayrollDriverMileageExpandedListResponse,
     PayrollState,
 } from '../../models/payroll.model';
+
+export const onGetPayrollSoloMileageDriver = (state: PayrollState) => ({
+    ...state,
+    loading: true,
+});
 
 export const onGetPayrollSoloMileageDriverSuccess = (
     state: PayrollState,
@@ -16,9 +24,9 @@ export const onGetPayrollSoloMileageDriverSuccess = (
     loading: false,
 });
 
-export const onGetPayrollSoloMileageDriver = (state: PayrollState) => ({
+export const onGetPayrollSoloMileageDriverError = (state: PayrollState) => ({
     ...state,
-    loading: true,
+    loading: false,
 });
 
 export const onGetPayrollCommissionReportDriver = (
@@ -120,4 +128,33 @@ export const onGetPayrollCommissionDriverClosedPayrollSuccess = (
     ...state,
     payrollOpenedReport: data.payroll,
     reportLoading: false,
+});
+
+export const onDriverCommissionPayrollClosedPayments = (
+    state: PayrollState
+) => ({
+    ...state,
+    closeReportPaymentLoading: true,
+    closeReportPaymentError: false,
+});
+
+export const onDriverCommissionPayrollClosedPaymentsSuccess = (
+    state: PayrollState
+) => ({
+    ...state,
+    expandedReportTable: false,
+    closeReportPaymentLoading: false,
+    payrollCounts: {},
+    selectedDeductionIds: [],
+    selectedBonusIds: [],
+    selectedCreditIds: [],
+    lastLoadDate: undefined,
+});
+
+export const onDriverCommissionPayrollClosedPaymentsError = (
+    state: PayrollState
+) => ({
+    ...state,
+    closeReportPaymentLoading: false,
+    closeReportPaymentError: true,
 });

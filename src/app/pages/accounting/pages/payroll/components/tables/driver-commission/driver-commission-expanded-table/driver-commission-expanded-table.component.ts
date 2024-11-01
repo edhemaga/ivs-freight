@@ -76,6 +76,7 @@ export class DriverCommissionExpandedTableComponent
             {
                 header: 'Load',
                 field: 'loadCount',
+                cellCustomClasses: 'text-center',
                 cellType: 'text', // Pass the template reference
                 hiddeOnTableReduce: true,
             },

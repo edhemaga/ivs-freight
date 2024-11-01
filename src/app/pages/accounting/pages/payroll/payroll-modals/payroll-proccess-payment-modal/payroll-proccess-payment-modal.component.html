@@ -48,7 +48,9 @@
 </app-ca-modal>
 
 <ng-template #leftModalContent>
-    <div class="payroll-number text-color-white text-size-14 ta-font-bold">{{ modalData.payrollNumber }}</div>
+    <div class="payroll-number text-color-white text-size-14 ta-font-bold">
+        {{ modalData.payrollNumber }}
+    </div>
 </ng-template>
 
 <ng-template #rightModalContent>
@@ -66,8 +68,9 @@
         <div class="button_holder d-flex gap-2 w-100">
             <button
                 [ngStyle]="{
-                    'pointer-events': modalData.selectedTab === 'open' ? 'all' : 'none',
-                    'opacity': modalData.selectedTab === 'open' ? 1 : 0
+                    'pointer-events':
+                        modalData.selectedTab === 'open' ? 'all' : 'none',
+                    opacity: modalData.selectedTab === 'open' ? 1 : 0
                 }"
                 class="ta-font-bold modal-save-btn flex-1 modal-default-button"
                 type="button"
@@ -98,14 +101,14 @@
                 </div>
                 <span
                     *ngIf="
-                        paymentForm.get('amount').value >=
+                        (paymentForm.get('amount').value | getNumbers) >=
                             modalData?.totalEarnings && !loading
                     "
                     >Pay in Full</span
                 >
                 <span
                     *ngIf="
-                        paymentForm.get('amount').value <
+                        (paymentForm.get('amount').value | getNumbers) <
                             modalData?.totalEarnings && !loading
                     "
                     >Short Pay</span

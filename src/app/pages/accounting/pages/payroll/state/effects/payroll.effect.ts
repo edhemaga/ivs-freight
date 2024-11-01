@@ -104,6 +104,12 @@ export class PayrollEffect {
             this.payrollService
         );
 
+    public addPayrollCommissionClosedPayrollPayment =
+        PayrollCommissionDriverEffect.addPayrollCommissionClosedPayrollPaymentEffect(
+            this.actions$,
+            this.payrollService
+        );
+
     // Payroll Owner Driver
     public getPayrollOwnerDriverListEffect$ =
         PayrollOwnerDriverEffect.getPayrollOwnerDriverListEffect(
@@ -136,6 +142,12 @@ export class PayrollEffect {
 
     public getPayrollOwnerDriverCollapsedList$ =
         PayrollOwnerDriverEffect.getPayrollOwnerDriverCollapsedListEffect(
+            this.actions$,
+            this.payrollService
+        );
+
+    public addPayrollOwnerClosedPayrollPayment =
+        PayrollOwnerDriverEffect.addPayrollOwnerClosedPayrollPaymentEffect(
             this.actions$,
             this.payrollService
         );
@@ -173,6 +185,12 @@ export class PayrollEffect {
 
     public getPayrollFlatRateDriverCollapsedList$ =
         PayrollFlatRateEffect.getPayrollFlatRateDriverCollapsedListEffect(
+            this.actions$,
+            this.payrollService
+        );
+
+    public addPayrollFlatRateClosedPayrollPayment =
+        PayrollFlatRateEffect.addPayrollFlatRateClosedPayrollPaymentEffect(
             this.actions$,
             this.payrollService
         );

@@ -242,3 +242,40 @@ export function getPayrollCommissionClosedPayrollReportByIdEffect(
             )
     );
 }
+
+export function addPayrollCommissionClosedPayrollPaymentEffect(
+    actions$: Actions,
+    payrollService: PayrollService
+) {
+    return createEffect(
+        (): Observable<Action> =>
+            actions$.pipe(
+                ofType(
+                    PayrollCommissionDriverActions.driverCommissionPayrollClosedPayments
+                ),
+                switchMap((action) => {
+                    return payrollService
+                        .addPayrollClosedReportPayment(action)
+                        .pipe(
+                            map((data) => {
+                                return PayrollCommissionDriverActions.driverCommissionPayrollClosedPaymentsSuccess();
+                            }),
+                            // tap((data) => {
+                            //     // this.store.dispatch(
+                            //     //   PaymentActions.restartRefreshDataSuccess({ flag: false })
+                            //     // );
+                            // }),
+                            catchError((error) =>
+                                of(
+                                    PayrollCommissionDriverActions.driverCommissionPayrollClosedPaymentsError(
+                                        {
+                                            error,
+                                        }
+                                    )
+                                )
+                            )
+                        );
+                })
+            )
+    );
+}

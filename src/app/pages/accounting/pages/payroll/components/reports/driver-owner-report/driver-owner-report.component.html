@@ -186,14 +186,7 @@
 </ng-template>
 
 <ng-template #reorderTemplate let-row="row" let-index="index">
-    <ng-container
-        *ngIf="
-            includedLoads$
-                | async
-                | payrollTableCommissionTotal
-                    : (payrollReport$ | async).commission as payroll_totals
-        "
-    >
+    <ng-container *ngIf="(payrollReport$ | async).sums as payroll_totals">
         <td class="text-center" *ngIf="selectedTab === 'open'">
             <div class="td-container">
                 <div class="td-content-container">
@@ -217,7 +210,7 @@
             <div class="td-container">
                 <div class="td-content-container">
                     <div class="custom-load-index text">
-                        {{ payroll_totals.empty }}
+                        {{ payroll_totals.totalEmptyMiles }}
                     </div>
                 </div>
             </div>
@@ -226,7 +219,7 @@
             <div class="td-container">
                 <div class="td-content-container">
                     <div class="custom-load-index text">
-                        {{ payroll_totals.loaded }}
+                        {{ payroll_totals.totalLoadedMiles }}
                     </div>
                 </div>
             </div>
@@ -235,7 +228,7 @@
             <div class="td-container">
                 <div class="td-content-container">
                     <div class="custom-load-index text">
-                        {{ payroll_totals.miles }}
+                        {{ payroll_totals.totalMiles }}
                     </div>
                 </div>
             </div>
@@ -244,7 +237,7 @@
             <div class="td-container">
                 <div class="td-content-container">
                     <div class="custom-load-index text">
-                        {{ payroll_totals.revenue | currency }}
+                        {{ payroll_totals.totalRevenue | currency }}
                     </div>
                 </div>
             </div>
@@ -253,7 +246,7 @@
             <div class="td-container">
                 <div class="td-content-container">
                     <div class="custom-load-index text b-600">
-                        {{ payroll_totals.subtotal | currency }}
+                        {{ payroll_totals.totalSubtotal | currency }}
                     </div>
                 </div>
             </div>

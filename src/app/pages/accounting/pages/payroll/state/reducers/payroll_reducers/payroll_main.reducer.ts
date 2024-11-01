@@ -31,7 +31,22 @@ export const onSetPayrollopenedTab = (
 export const onSetTableReportExpanded = (
     state: PayrollState,
     data: { expanded: boolean }
-) => ({
-    ...state,
-    expandedReportTable: data.expanded,
-});
+) => {
+    if (!data.expanded) {
+        console.log("CLOSEEEE!!!");
+        return {
+            ...state,
+            lastLoadDate: null,
+            selectedDeductionIds: [],
+            selectedFuelIds: [],
+            selectedCreditIds: [],
+            selectedBonusIds: [],
+            selectedLoadIds: [],
+            expandedReportTable: data.expanded,
+        };
+    }
+    return {
+        ...state,
+        expandedReportTable: data.expanded,
+    };
+};

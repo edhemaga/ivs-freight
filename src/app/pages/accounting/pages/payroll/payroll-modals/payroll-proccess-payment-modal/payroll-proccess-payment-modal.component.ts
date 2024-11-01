@@ -45,6 +45,8 @@ import { PayrollPaymentType } from 'appcoretruckassist';
 // Services
 import { PayrollFacadeService } from '../../state/services/payroll.service';
 import { TaInputService } from '@shared/services/ta-input.service';
+import { GetNumbersPipe } from '../../pipes/get-numbers/get-numbers.pipe';
+import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calculations.helper';
 
 @Component({
     selector: 'app-payroll-proccess-payment-modal',
@@ -68,6 +70,7 @@ import { TaInputService } from '@shared/services/ta-input.service';
         CaModalComponent,
         CaInputDropdownComponent,
         TaSpinnerComponent,
+        GetNumbersPipe,
     ],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -225,7 +228,11 @@ export class PayrollProccessPaymentModalComponent implements OnDestroy {
 
         if (isOpen === 'open') {
             this.payrollFacadeService.closePayrollReport({
-                amount: isUnpaid ? 0 : formData.amount,
+                amount: isUnpaid
+                    ? 0
+                    : MethodsCalculationsHelper.convertThousanSepInNumber(
+                          formData.amount
+                      ),
                 reportId: this.modalData.id,
                 paymentType:
                     this.selectedTab === 2
@@ -236,14 +243,18 @@ export class PayrollProccessPaymentModalComponent implements OnDestroy {
                 payrollType: this.modalData.payrollType,
             });
         } else {
-            this.payrollFacadeService.addPayrollClosedPayment({
-                amount: formData.amount,
-                paymentType: this.selectedTab === 2 ? 'Manual' : 'Ach',
-                payrollDriverMileageId: this.modalData.id,
-                otherPaymentType:
-                    this.selectedTab === 2 ? formData.option : null,
-                //payrollType: this.modalData.payrollType
-            });
+            this.payrollFacadeService.addPayrollClosedPayment(
+                {
+                    amount: MethodsCalculationsHelper.convertThousanSepInNumber(
+                        formData.amount
+                    ),
+                    paymentType: this.selectedTab === 2 ? 'Manual' : 'Ach',
+                    modalId: this.modalData.id,
+                    otherPaymentType:
+                        this.selectedTab === 2 ? formData.option : null,
+                },
+                this.modalData.payrollType
+            );
         }
     }
 
