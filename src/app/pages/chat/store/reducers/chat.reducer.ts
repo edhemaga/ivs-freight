@@ -35,7 +35,7 @@ import { ChatStringTypeEnum, ChatViewTypeEnum } from '@pages/chat/enums';
 const initialState: ChatState = {
     conversation: {
         id: 0,
-        name: '',
+        name: ChatStringTypeEnum.EMPTY,
         participants: [],
         isArchived: false,
         hasLeft: false,
@@ -53,7 +53,7 @@ const initialState: ChatState = {
     profileDetails: null,
     messageToReply: null,
     messageToEdit: null,
-    userTyping: '',
+    userTyping: ChatStringTypeEnum.EMPTY,
     viewType:
         localStorage.getItem(ChatStringTypeEnum.VIEW) ||
         ChatViewTypeEnum.REGULAR,

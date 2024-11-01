@@ -92,3 +92,8 @@ export const selectViewType = createSelector(
     selectChatState,
     (state: ChatState): string => state.viewType
 );
+
+export const selectUnreadCount = createSelector(
+    selectChatState,
+    (state: ChatState): number => state.unreadCount
+);

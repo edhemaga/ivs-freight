@@ -21,8 +21,10 @@ import {
     ChatGroupEnum,
     ChatRoutesEnum,
     ChatStringTypeEnum,
+    ChatToolbarActiveFilterEnum,
     ChatViewTypeEnum,
     ConversationTypeEnum,
+    ChatAttachmentCustomClassEnum
 } from '@pages/chat/enums';
 
 // Constants
@@ -58,8 +60,7 @@ import {
 })
 export class ChatComponent
     extends UnsubscribeHelper
-    implements OnInit, OnDestroy
-{
+    implements OnInit, OnDestroy {
     public title!: string;
 
     // Data
@@ -90,12 +91,15 @@ export class ChatComponent
     public tabs: ChatTab[] = ChatToolbarDataConstant.tabs;
     public chatPreferencesConfig: ChatPreferenceItem[] =
         ChatPreferencesConfig.items;
+    public chatToolbarActiveFilterEnum = ChatToolbarActiveFilterEnum;
+    public activeFilter: ChatToolbarActiveFilterEnum;
 
     // Assets and enums
     public chatSvgRoutes = ChatSvgRoutes;
     public chatGridLayout = ChatGridLayout;
     public chatConversationProfileDetailsType =
         ChatConversationProfileDetailsType;
+    public chatAttachmentCustomClassEnum = ChatAttachmentCustomClassEnum;
 
     constructor(
         private activatedRoute: ActivatedRoute,
@@ -118,6 +122,8 @@ export class ChatComponent
         this.activatedRoute.data
             .pipe(takeUntil(this.destroy$))
             .subscribe((res: ChatResolvedData) => {
+                this.chatStoreService.closeAllProfileInformation();
+
                 this.title = res.title;
                 this.drivers = res.drivers;
                 this.companyUsers = res.users;
@@ -132,8 +138,14 @@ export class ChatComponent
                     this.companyUsers,
                     this.drivers
                 );
+
+                // TODO move this to effect
                 this.chatStoreService.setUnreadCount(unreadCount);
-                this.chatStoreService.closeAllProfileInformation();
+                this.chatStoreService
+                    .selectUnreadCount()
+                    .subscribe((count: number) => {
+                        this.unreadCount = count;
+                    });
             });
     }
 
@@ -214,12 +226,12 @@ export class ChatComponent
     ): number {
         let totalUnreadCount = 0;
         // Users
-        totalUnreadCount = users.data.reduce((accumulator, currentObject) => {
+        totalUnreadCount += users.data.reduce((accumulator, currentObject) => {
             return accumulator + (currentObject.hasUnreadMessage ? 1 : 0);
         }, 0);
 
         if (archivedUsers)
-            totalUnreadCount = archivedUsers.data.reduce(
+            totalUnreadCount += archivedUsers.data.reduce(
                 (accumulator, currentObject) => {
                     return (
                         accumulator + (currentObject.hasUnreadMessage ? 1 : 0)
@@ -229,12 +241,15 @@ export class ChatComponent
             );
 
         // Drivers
-        totalUnreadCount = drivers.data.reduce((accumulator, currentObject) => {
-            return accumulator + (currentObject.hasUnreadMessage ? 1 : 0);
-        }, 0);
+        totalUnreadCount += drivers.data.reduce(
+            (accumulator, currentObject) => {
+                return accumulator + (currentObject.hasUnreadMessage ? 1 : 0);
+            },
+            0
+        );
 
         if (archivedDrivers)
-            totalUnreadCount = archivedUsers.data.reduce(
+            totalUnreadCount += archivedUsers.data.reduce(
                 (accumulator, currentObject) => {
                     return (
                         accumulator + (currentObject.hasUnreadMessage ? 1 : 0)
@@ -302,5 +317,16 @@ export class ChatComponent
             default:
                 return;
         }
+    }
+
+    public selectFilter(filter: ChatToolbarActiveFilterEnum): void {
+        if (this.activeFilter === filter) {
+            this.activeFilter = null;
+            return;
+        }
+
+        //TODO emit event?
+
+        this.activeFilter = filter;
     }
 }

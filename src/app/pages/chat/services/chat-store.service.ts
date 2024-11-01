@@ -36,6 +36,7 @@ import {
     setDepartment,
     setViewType,
     selectViewType,
+    selectUnreadCount,
 } from '@pages/chat/store';
 
 // Models
@@ -56,6 +57,7 @@ import { ChatViewTypeEnum } from '@pages/chat/enums';
 })
 export class ChatStoreService {
     private conversation$: Observable<ChatSelectedConversation>;
+    private unreadCount$: Observable<number>;
     private departments$: Observable<ChatCompanyChannelExtended[]>;
     private messages$!: Observable<ChatMessageResponse>;
     private isProfileDetailsDisplayed$: Observable<boolean>;
@@ -66,7 +68,7 @@ export class ChatStoreService {
     private activeReplyOrEdit$: Observable<number>;
     private attachments$: Observable<UploadFile[]>;
     private isAttachmentUploadActive$: Observable<boolean>;
-    private viewType: Observable<string>;
+    private viewType$: Observable<string>;
 
     constructor(private store: Store) {}
 
@@ -234,7 +236,13 @@ export class ChatStoreService {
     }
 
     public selectViewType(): Observable<string> {
-        if (!this.viewType) this.viewType = this.store.select(selectViewType);
-        return this.viewType;
+        if (!this.viewType$) this.viewType$ = this.store.select(selectViewType);
+        return this.viewType$;
+    }
+
+    public selectUnreadCount(): Observable<number> {
+        if (!this.unreadCount$)
+            this.unreadCount$ = this.store.select(selectUnreadCount);
+        return this.unreadCount$;
     }
 }
