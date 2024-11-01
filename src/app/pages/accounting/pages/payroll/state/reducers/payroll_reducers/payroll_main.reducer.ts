@@ -33,7 +33,7 @@ export const onSetTableReportExpanded = (
     data: { expanded: boolean }
 ) => {
     if (!data.expanded) {
-        console.log("CLOSEEEE!!!");
+        console.log('CLOSEEEE!!!');
         return {
             ...state,
             lastLoadDate: null,
@@ -43,10 +43,12 @@ export const onSetTableReportExpanded = (
             selectedBonusIds: [],
             selectedLoadIds: [],
             expandedReportTable: data.expanded,
+            payrollOpenedReport: null,
         };
     }
     return {
         ...state,
+        payrollOpenedReport: null,
         expandedReportTable: data.expanded,
     };
 };

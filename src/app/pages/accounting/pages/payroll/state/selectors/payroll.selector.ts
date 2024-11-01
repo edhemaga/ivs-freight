@@ -85,10 +85,10 @@ export const selectPayrollDriverMileageStops = createSelector(
         const includedLoads = state.payrollOpenedReport?.includedLoads.reduce(
             (load, old) => {
                 const firstStop = old.isStartPoint;
-                const nextMilesStop = JSON.parse(
+                const nextMilesStop = old.milesStops ? JSON.parse(
                     JSON.stringify(old.milesStops)
-                );
-                if (firstStop) {
+                ) : [];
+                if (firstStop && nextMilesStop.length) {
                     nextMilesStop[0].loadId = -1;
                 }
                 return [...load, ...nextMilesStop];
