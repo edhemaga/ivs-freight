@@ -1,8 +1,8 @@
-import { Injectable, OnDestroy } from '@angular/core';
+import { Injectable } from '@angular/core';
 
-import { Observable, Subject, switchMap, takeUntil, tap } from 'rxjs';
+import { Observable, switchMap, tap } from 'rxjs';
 
-// Models
+// models
 import {
     ClusterResponse,
     CreateRatingCommand,
@@ -15,36 +15,37 @@ import {
     UpdateReviewCommand,
 } from 'appcoretruckassist';
 
-// Store
+// store
 import { ShipperStore } from '@pages/customer/state/shipper-state/shipper.store';
 import { ShipperMinimalListStore } from '@pages/customer/state/shipper-state/shipper-details-state/shipper-minimal-list-state/shipper-minimal-list.store';
 import { ShipperDetailsListStore } from '@pages/customer/state/shipper-state/shipper-details-state/shipper-details-list-state/shipper-details-list.store';
 import { ShipperDetailsStore } from '@pages/customer/state/shipper-state/shipper-details-state/shipper-details.store';
 import { ShipperMinimalListQuery } from '@pages/customer/state/shipper-state/shipper-details-state/shipper-minimal-list-state/shipper-minimal-list.query';
 
-// Services
+// services
 import { TruckassistTableService } from '@shared/services/truckassist-table.service';
 import { FormDataService } from '@shared/services/form-data.service';
 import { ShipperService as ShipperMainService } from 'appcoretruckassist';
 
-// Enums
+// enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
 
 @Injectable({
     providedIn: 'root',
 })
-export class ShipperService implements OnDestroy {
+export class ShipperService {
     public shipperId: number;
     public shipperList: any;
     public currentIndex: number;
-    x;
-    private destroy$ = new Subject<void>();
 
     constructor(
+        // services
         private shipperService: ShipperMainService,
         private tableService: TruckassistTableService,
         private ratingReviewService: RatingReviewService,
         private formDataService: FormDataService,
+
+        // store
         private shipperStore: ShipperStore,
         private shipperMinimalStore: ShipperMinimalListStore,
         private sListStore: ShipperDetailsListStore,
@@ -57,40 +58,38 @@ export class ShipperService implements OnDestroy {
         this.formDataService.extractFormDataFromFunction(data);
         return this.shipperService.apiShipperPost().pipe(
             tap((res: any) => {
-                const subShipper = this.getShipperById(res.id)
-                    .pipe(takeUntil(this.destroy$))
-                    .subscribe({
-                        next: (shipper: any) => {
-                            this.shipperStore.add(shipper);
-                            this.shipperMinimalStore.add(shipper);
-                            const brokerShipperCount = JSON.parse(
-                                localStorage.getItem(
-                                    TableStringEnum.BROKER_SHIPPER_TABLE_COUNT
-                                )
+                const subShipper = this.getShipperById(res.id).subscribe({
+                    next: (shipper: any) => {
+                        this.shipperStore.add(shipper);
+                        this.shipperMinimalStore.add(shipper);
+                        const brokerShipperCount = JSON.parse(
+                            localStorage.getItem(
+                                TableStringEnum.BROKER_SHIPPER_TABLE_COUNT
+                            )
+                        );
+
+                        if (brokerShipperCount) {
+                            brokerShipperCount.shipper++;
+
+                            localStorage.setItem(
+                                TableStringEnum.BROKER_SHIPPER_TABLE_COUNT,
+                                JSON.stringify({
+                                    broker: brokerShipperCount.broker,
+                                    shipper: brokerShipperCount.shipper,
+                                })
                             );
+                        }
 
-                            if (brokerShipperCount) {
-                                brokerShipperCount.shipper++;
+                        this.tableService.sendActionAnimation({
+                            animation: 'add',
+                            tab: 'shipper',
+                            data: shipper,
+                            id: shipper.id,
+                        });
 
-                                localStorage.setItem(
-                                    TableStringEnum.BROKER_SHIPPER_TABLE_COUNT,
-                                    JSON.stringify({
-                                        broker: brokerShipperCount.broker,
-                                        shipper: brokerShipperCount.shipper,
-                                    })
-                                );
-                            }
-
-                            this.tableService.sendActionAnimation({
-                                animation: 'add',
-                                tab: 'shipper',
-                                data: shipper,
-                                id: shipper.id,
-                            });
-
-                            subShipper.unsubscribe();
-                        },
-                    });
+                        subShipper.unsubscribe();
+                    },
+                });
             })
         );
     }
@@ -103,32 +102,28 @@ export class ShipperService implements OnDestroy {
                 let shipperData = {
                     ...this.shipperDetailsStore?.getValue()?.entities[data.id],
                 };
-                const subShipper = this.getShipperById(data.id)
-                    .pipe(takeUntil(this.destroy$))
-                    .subscribe({
-                        next: (shipper: any) => {
-                            this.shipperStore.remove(
-                                ({ id }) => id === data.id
-                            );
-                            this.shipperMinimalStore.remove(
-                                ({ id }) => id === data.id
-                            );
+                const subShipper = this.getShipperById(data.id).subscribe({
+                    next: (shipper: any) => {
+                        this.shipperStore.remove(({ id }) => id === data.id);
+                        this.shipperMinimalStore.remove(
+                            ({ id }) => id === data.id
+                        );
 
-                            shipper.loadStops = shipperData.loadStops;
+                        shipper.loadStops = shipperData.loadStops;
 
-                            this.shipperStore.add(shipper);
-                            this.shipperMinimalStore.add(shipper);
-                            this.sListStore.update(shipper.id, shipper);
-                            this.tableService.sendActionAnimation({
-                                animation: 'update',
-                                tab: 'shipper',
-                                data: shipper,
-                                id: shipper.id,
-                            });
+                        this.shipperStore.add(shipper);
+                        this.shipperMinimalStore.add(shipper);
+                        this.sListStore.update(shipper.id, shipper);
+                        this.tableService.sendActionAnimation({
+                            animation: 'update',
+                            tab: 'shipper',
+                            data: shipper,
+                            id: shipper.id,
+                        });
 
-                            subShipper.unsubscribe();
-                        },
-                    });
+                        subShipper.unsubscribe();
+                    },
+                });
             })
         );
     }
@@ -184,7 +179,6 @@ export class ShipperService implements OnDestroy {
     ): Observable<any> {
         this.shipperMinimalQuery
             .selectAll()
-            .pipe(takeUntil(this.destroy$))
             .subscribe((item) => (this.shipperList = item));
         if (getIndex) {
             this.currentIndex = this.shipperList.findIndex(
@@ -259,20 +253,21 @@ export class ShipperService implements OnDestroy {
                         shipper: brokerShipperCount.shipper,
                     })
                 );
-                const subShipper = this.getShipperById(this.shipperId, true)
-                    .pipe(takeUntil(this.destroy$))
-                    .subscribe({
-                        next: (shipper: any) => {
-                            this.tableService.sendActionAnimation({
-                                animation: 'delete',
-                                tab: 'shipper',
-                                data: shipper,
-                                id: shipper.id,
-                            });
+                const subShipper = this.getShipperById(
+                    this.shipperId,
+                    true
+                ).subscribe({
+                    next: (shipper: any) => {
+                        this.tableService.sendActionAnimation({
+                            animation: 'delete',
+                            tab: 'shipper',
+                            data: shipper,
+                            id: shipper.id,
+                        });
 
-                            subShipper.unsubscribe();
-                        },
-                    });
+                        subShipper.unsubscribe();
+                    },
+                });
             })
         );
     }
@@ -315,32 +310,28 @@ export class ShipperService implements OnDestroy {
                         shipperId
                     ],
                 };
-                const subShipper = this.getShipperById(shipperId)
-                    .pipe(takeUntil(this.destroy$))
-                    .subscribe({
-                        next: (shipper) => {
-                            this.shipperStore.remove(
-                                ({ id }) => id === shipperId
-                            );
-                            this.shipperMinimalStore.remove(
-                                ({ id }) => id === shipperId
-                            );
+                const subShipper = this.getShipperById(shipperId).subscribe({
+                    next: (shipper) => {
+                        this.shipperStore.remove(({ id }) => id === shipperId);
+                        this.shipperMinimalStore.remove(
+                            ({ id }) => id === shipperId
+                        );
 
-                            shipper.loadStops = shipperData.loadStops;
+                        shipper.loadStops = shipperData.loadStops;
 
-                            this.shipperStore.add(shipper);
-                            this.shipperMinimalStore.add(shipper);
-                            this.sListStore.update(shipper.id, shipper);
-                            this.tableService.sendActionAnimation({
-                                animation: TableStringEnum.UPDATE,
-                                tab: TableStringEnum.SHIPPER,
-                                data: shipper,
-                                id: shipper.id,
-                            });
+                        this.shipperStore.add(shipper);
+                        this.shipperMinimalStore.add(shipper);
+                        this.sListStore.update(shipper.id, shipper);
+                        this.tableService.sendActionAnimation({
+                            animation: TableStringEnum.UPDATE,
+                            tab: TableStringEnum.SHIPPER,
+                            data: shipper,
+                            id: shipper.id,
+                        });
 
-                            subShipper.unsubscribe();
-                        },
-                    });
+                        subShipper.unsubscribe();
+                    },
+                });
             })
         );
     }
@@ -701,10 +692,5 @@ export class ShipperService implements OnDestroy {
                     });
                 })
             );
-    }
-
-    ngOnDestroy(): void {
-        this.destroy$.next();
-        this.destroy$.complete();
     }
 }

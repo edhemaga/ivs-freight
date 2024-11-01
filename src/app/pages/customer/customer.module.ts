@@ -45,7 +45,7 @@ import { CardValuePipe } from '@shared/pipes/card-value.pipe';
 
 //store
 import { StoreModule } from '@ngrx/store';
-import { customerCardModalReducer } from '@pages/customer/pages/customer-table/components/customer-card-modal/state/customer-card-modal.reducer';
+import { customerCardModalReducer } from '@pages/customer/pages/customer-table/components/customer-card-modal/state/';
 
 @NgModule({
     declarations: [

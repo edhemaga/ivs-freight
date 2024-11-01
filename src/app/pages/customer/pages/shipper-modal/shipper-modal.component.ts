@@ -43,7 +43,7 @@ import {
     LikeDislikeModel,
     TaLikeDislikeService,
 } from '@shared/components/ta-like-dislike/services/ta-like-dislike.service';
-import { ShipperService } from '@pages/customer/services/shipper.service';
+import { ShipperService } from '@pages/customer/services';
 import { ReviewsRatingService } from '@shared/services/reviews-rating.service';
 import { FormService } from '@shared/services/form.service';
 import { AddressService } from '@shared/services/address.service';
