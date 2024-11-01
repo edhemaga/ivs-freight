@@ -8,8 +8,8 @@ export interface FuelState extends EntityState<FuelStateModel> {}
 
 export const initialState = (): FuelState => {
     return {
-        fuelTransactions: [],
-        fuelStops: [],
+        fuelTransactions: null,
+        fuelStops: null,
     };
 };
 
