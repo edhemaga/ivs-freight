@@ -369,6 +369,10 @@
         <!-- Items -->
 
         <app-ta-custom-card
+            [cardName]="'Item'"
+            [disableAnimation]="isCardanimationDisabled"
+            [hasActionSvg]="true"
+            [hasArrow]="false"
             [hasScrollBody]="
                 (editData?.data && updatedRepairItems?.length > 10) ||
                 repairItems?.length > 10
@@ -385,10 +389,6 @@
                 (editData?.data && updatedRepairItems?.length) ||
                 repairItems?.length
             "
-            [cardName]="'Item'"
-            [disableAnimation]="isCardanimationDisabled"
-            [hasActionSvg]="true"
-            [hasArrow]="false"
             (onActionEvent)="addRepairItem()"
         >
             <app-ta-modal-table
@@ -442,7 +442,12 @@
 
             <div class="repair-shop-services">
                 <ng-container
-                    *ngFor="let repair of services; trackBy: trackByIdentity"
+                    *ngFor="
+                        let repair of services?.length > 10
+                            ? (services | slice : 2)
+                            : services;
+                        trackBy: trackByIdentity
+                    "
                 >
                     <div
                         class="d-flex align-items-center repair-shop-service"
@@ -453,7 +458,10 @@
                         }"
                         (click)="handleServiceActiveClick(repair)"
                     >
-                        <svg-icon [src]="repair?.svg"></svg-icon>
+                        <svg-icon
+                            [src]="repair?.svg"
+                            [svgStyle]="{ 'width.px': 14, 'height.px': 14 }"
+                        ></svg-icon>
 
                         <p class="ta-font-bold">{{ repair?.serviceType }}</p>
                     </div>

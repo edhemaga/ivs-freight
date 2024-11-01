@@ -3,21 +3,20 @@ import { ActivatedRouteSnapshot, Router } from '@angular/router';
 
 import { Observable, forkJoin, tap } from 'rxjs';
 
-// Services
-import { BrokerService } from '@pages/customer/services/broker.service';
+// services
+import { BrokerService } from '@pages/customer/services';
 
-// Store
+// store
 import { BrokerDetailsStore } from '@pages/customer/state/broker-details-state/broker-details.store';
 import { BrokerDetailsListStore } from '@pages/customer/state/broker-details-state/broker-details-list-state/broker-details-list.store';
-import { BrokerDetailsListQuery } from '@pages/customer/state/broker-details-state/broker-details-list-state/broker-details-list.query';
 
-// Models
+// models
 import { BrokerResponse } from 'appcoretruckassist';
 
 @Injectable({
     providedIn: 'root',
 })
-export class BrokerDetailsResolver  {
+export class BrokerDetailsResolver {
     constructor(
         // Router
         private router: Router,
@@ -27,8 +26,7 @@ export class BrokerDetailsResolver  {
 
         // Store
         private brokerDetailsStore: BrokerDetailsStore,
-        private bls: BrokerDetailsListStore,
-        private blq: BrokerDetailsListQuery
+        private bls: BrokerDetailsListStore
     ) {}
     resolve(
         route: ActivatedRouteSnapshot
@@ -62,11 +60,13 @@ export class BrokerDetailsResolver  {
         }).pipe(
             tap((data) => {
                 let brokerRespone = data.brokerData;
+
                 brokerRespone.loadStops = data.brokerLoads;
                 brokerRespone.brokerPaidInvoiceAgeing =
                     data.brokerPaidInvoiceAging;
                 brokerRespone.brokerUnpaidInvoiceAgeing =
                     data.brokerUnpaidInvoiceAging;
+
                 this.bls.add(brokerRespone);
                 this.brokerDetailsStore.set([brokerRespone]);
             })

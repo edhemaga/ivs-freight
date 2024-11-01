@@ -3,7 +3,7 @@ import { ChangeDetectorRef, Component, OnInit, OnDestroy } from '@angular/core';
 import { Subject, take, takeUntil } from 'rxjs';
 
 // Services
-import { ShipperService } from '@pages/customer/services/shipper.service';
+import { ShipperService } from '@pages/customer/services';
 import { DetailsPageService } from '@shared/services/details-page.service';
 import { DetailsDataService } from '@shared/services/details-data.service';
 import { DropDownService } from '@shared/services/drop-down.service';
@@ -522,6 +522,7 @@ export class ShipperDetailsComponent implements OnInit, OnDestroy {
                 filter.revenueFrom,
                 filter.revenueTo,
                 filter.truckId,
+                filter.driverId,
                 filter.rateFrom,
                 filter.rateTo,
                 filter.paidFrom,

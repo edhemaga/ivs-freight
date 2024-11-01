@@ -19,6 +19,7 @@ export interface CompanyChannelsConversationResponse {
     name?: string | null;
     description?: string | null;
     channelType?: EnumValue;
+    isFavourite?: boolean;
     createdAt?: string;
     updatedAt?: string;
 }

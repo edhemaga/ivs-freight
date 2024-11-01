@@ -17,7 +17,7 @@ import { BrokerMinimalListQuery } from '@pages/customer/state/broker-details-sta
 
 // Services
 import { DetailsPageService } from '@shared/services/details-page.service';
-import { BrokerService } from '@pages/customer/services/broker.service';
+import { BrokerService } from '@pages/customer/services';
 import { ModalService } from '@shared/services/modal.service';
 import { TruckassistTableService } from '@shared/services/truckassist-table.service';
 

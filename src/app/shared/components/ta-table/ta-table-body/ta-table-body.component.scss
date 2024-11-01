@@ -434,6 +434,7 @@ table.truckassist-table-body-style {
 
                                 &.group-4 {
                                     color: $ta-red-11;
+                                    margin-right: 1px;
                                 }
 
                                 &.group-5 {
@@ -491,6 +492,47 @@ table.truckassist-table-body-style {
                                 .total-amount-text,
                                 .main-group {
                                     color: $white;
+                                }
+                            }
+                        }
+
+                        // OPEN HOURS COLUMN
+
+                        .open-hours-container {
+                            border-radius: 2px;
+                            padding: 4px;
+                            margin-left: -2px;
+                            cursor: pointer;
+                            transition: background 0.2s;
+
+                            &:hover {
+                                background: $dark-2;
+                            }
+
+                            &.active {
+                                background: $ta-black-2;
+
+                                p {
+                                    color: $white !important;
+                                }
+                            }
+
+                            .open-hours-icon {
+                                margin-right: 4px;
+                                line-height: 18px;
+
+                                &.closing {
+                                    svg {
+                                        circle {
+                                            fill: $ta-yellow-1;
+                                        }
+                                    }
+                                }
+
+                                svg {
+                                    circle {
+                                        fill: $ta-green;
+                                    }
                                 }
                             }
                         }
@@ -1071,28 +1113,43 @@ table.truckassist-table-body-style {
                         }
 
                         // FAVORITE COLUMN
-                        .not-favorite-icon,
-                        .is-favorite-icon {
+
+                        .favorite-icon {
                             cursor: pointer;
-                            width: 18px;
-                            height: 18px;
-                            background-repeat: no-repeat;
-                            background-position: center;
-                        }
-
-                        .not-favorite-icon {
-                            background-image: url('/assets/svg/truckassist-table/favorite.svg');
+                            line-height: 14px;
+                            margin-right: 4px;
+                            position: relative;
+                            bottom: 1px;
 
                             &:hover {
-                                background-image: url('/assets/svg/truckassist-table/favorite-selected-row.svg');
+                                svg {
+                                    path {
+                                        fill: $ta-black;
+                                    }
+                                }
                             }
-                        }
 
-                        .is-favorite-icon {
-                            background-image: url('/assets/svg/truckassist-table/is-favorite.svg');
+                            &.is-favorite {
+                                svg {
+                                    path {
+                                        fill: $ta-blue-13;
+                                    }
+                                }
 
-                            &:hover {
-                                background-image: url('/assets/svg/truckassist-table/is-favorite-icon-hover.svg');
+                                &:hover {
+                                    svg {
+                                        path {
+                                            fill: $ta-blue-15;
+                                        }
+                                    }
+                                }
+                            }
+
+                            svg {
+                                path {
+                                    fill: $bw5;
+                                    transition: fill 0.2s ease-in;
+                                }
                             }
                         }
 
@@ -1508,82 +1565,22 @@ table.truckassist-table-body-style {
 
                         // SERVICE COLUMN
                         .service-container {
-                            width: 100%;
-                            display: flex;
+                            .service-icon {
+                                margin-right: 2px;
 
-                            .img-style {
-                                width: 18px;
-                                height: 18px;
-                            }
+                                &.active {
+                                    svg {
+                                        path {
+                                            fill: $bw5;
+                                        }
+                                    }
+                                }
 
-                            .img-margin {
-                                margin-right: 6px;
-                            }
-
-                            /* Regular Type Icon */
-                            .truck {
-                                background: url('/assets/svg/truckassist-table/repair/shop-type-inactive/ic_truck_table-inactive.svg');
-                            }
-
-                            .trailer {
-                                background: url('/assets/svg/truckassist-table/repair/shop-type-inactive/ic_trailer_table-inactive.svg');
-                            }
-
-                            .mobile {
-                                background: url('/assets/svg/truckassist-table/repair/shop-type-inactive/ic_mobile_table-inactive.svg');
-                            }
-
-                            .shop {
-                                background: url('/assets/svg/truckassist-table/repair/shop-type-inactive/ic_shop_table-inactive.svg');
-                            }
-
-                            .towing {
-                                background: url('/assets/svg/truckassist-table/repair/shop-type-inactive/ic_towing_table-inactive.svg');
-                            }
-
-                            .parts {
-                                background: url('/assets/svg/truckassist-table/repair/shop-type-inactive/ic_parts_table-inactive.svg');
-                            }
-
-                            .tire {
-                                background: url('/assets/svg/truckassist-table/repair/shop-type-inactive/ic_tire_table-inactive.svg');
-                            }
-
-                            .dealer {
-                                background: url('/assets/svg/truckassist-table/repair/shop-type-inactive/ic_dealer_table-inactive.svg');
-                            }
-
-                            /* Active Type Icon */
-                            .truck-active {
-                                background: url('/assets/svg/truckassist-table/repair/shop-type-active/ic_truck_table.svg');
-                            }
-
-                            .trailer-active {
-                                background: url('/assets/svg/truckassist-table/repair/shop-type-active/ic_trailer_table.svg');
-                            }
-
-                            .mobile-active {
-                                background: url('/assets/svg/truckassist-table/repair/shop-type-active/ic_mobile_table.svg');
-                            }
-
-                            .shop-active {
-                                background: url('/assets/svg/truckassist-table/repair/shop-type-active/ic_shop_table.svg');
-                            }
-
-                            .towing-active {
-                                background: url('/assets/svg/truckassist-table/repair/shop-type-active/ic_towing_table.svg');
-                            }
-
-                            .parts-active {
-                                background: url('/assets/svg/truckassist-table/repair/shop-type-active/ic_parts_table.svg');
-                            }
-
-                            .tire-active {
-                                background: url('/assets/svg/truckassist-table/repair/shop-type-active/ic_tire_table.svg');
-                            }
-
-                            .dealer-active {
-                                background: url('/assets/svg/truckassist-table/repair/shop-type-active/ic_dealer_table.svg');
+                                svg {
+                                    path {
+                                        fill: $dark-3;
+                                    }
+                                }
                             }
                         }
 
@@ -1875,25 +1872,27 @@ table.truckassist-table-body-style {
                             cursor: pointer;
                             width: 26px;
                             height: 26px;
+                            margin-right: -4px;
+                            padding: 4px;
                             display: flex;
                             align-items: center;
                             justify-content: center;
 
                             svg-icon {
                                 display: flex;
-
-                                transition: transform 0.1s;
+                                transition: transform 0.2s;
 
                                 svg {
                                     circle {
                                         fill: $muted;
+                                        transition: fill 0.2s;
                                     }
                                 }
                             }
 
                             &:hover {
                                 border-radius: 2px;
-                                background: $ta-black-4;
+                                background: $dark-2;
 
                                 transition: background 0.2s;
 
@@ -1901,8 +1900,21 @@ table.truckassist-table-body-style {
                                     svg {
                                         circle {
                                             fill: $ta-black;
+                                        }
+                                    }
+                                }
+                            }
 
-                                            transition: fill 0.2s;
+                            &.active-drop,
+                            &.active-drop:hover {
+                                background: $ta-black;
+
+                                svg-icon {
+                                    transform: rotateZ(90deg);
+
+                                    svg {
+                                        circle {
+                                            fill: $bw-9;
                                         }
                                     }
                                 }
@@ -2795,6 +2807,8 @@ table.truckassist-table-body-style {
             // Hover
             &:hover {
                 .columns-container {
+                    background-color: $ta-light-grey !important;
+
                     .finish-order-action {
                         width: 98px;
                         height: 24px;
@@ -2809,12 +2823,13 @@ table.truckassist-table-body-style {
                         text-overflow: ellipsis;
                         cursor: pointer;
                     }
+
                     .td-content {
                         input {
                             background-color: $bw2;
                         }
                     }
-                    background-color: $bw2 !important;
+
                     .lable-container {
                         input {
                             background-color: $bw2;
@@ -3407,17 +3422,6 @@ table.truckassist-table-body-style {
 // NG CLASS
 .pined-columns-margin {
     margin-right: 6px;
-}
-
-.active-drop {
-    background: $ta-black-4;
-    border-radius: 2px;
-
-    svg-icon {
-        transform: rotateZ(90deg);
-
-        transition: transform 0.1s;
-    }
 }
 
 .avatar-is-owner {

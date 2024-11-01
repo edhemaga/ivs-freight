@@ -2,11 +2,11 @@ import { Injectable } from '@angular/core';
 
 import { Observable, tap } from 'rxjs';
 
-// Store
+// store
 import { ShipperStore } from '@pages/customer/state/shipper-state/shipper.store';
 
-// Service
-import { ShipperService } from '@pages/customer/services/shipper.service';
+// service
+import { ShipperService } from '@pages/customer/services';
 
 // models
 import { ShipperListResponse } from 'appcoretruckassist';
@@ -17,6 +17,8 @@ import { ShipperListResponse } from 'appcoretruckassist';
 export class ShipperResolver {
     constructor(
         private shipperStore: ShipperStore,
+
+        // services
         private shipperService: ShipperService
     ) {}
     resolve(): Observable<ShipperListResponse> {
