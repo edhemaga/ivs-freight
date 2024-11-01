@@ -1880,12 +1880,12 @@ table.truckassist-table-body-style {
 
                             svg-icon {
                                 display: flex;
-
-                                transition: transform 0.1s;
+                                transition: transform 0.2s;
 
                                 svg {
                                     circle {
                                         fill: $muted;
+                                        transition: fill 0.2s;
                                     }
                                 }
                             }
@@ -1900,8 +1900,21 @@ table.truckassist-table-body-style {
                                     svg {
                                         circle {
                                             fill: $ta-black;
+                                        }
+                                    }
+                                }
+                            }
 
-                                            transition: fill 0.2s;
+                            &.active-drop,
+                            &.active-drop:hover {
+                                background: $ta-black;
+
+                                svg-icon {
+                                    transform: rotateZ(90deg);
+
+                                    svg {
+                                        circle {
+                                            fill: $bw-9;
                                         }
                                     }
                                 }
@@ -3409,17 +3422,6 @@ table.truckassist-table-body-style {
 // NG CLASS
 .pined-columns-margin {
     margin-right: 6px;
-}
-
-.active-drop {
-    background: $ta-black-4;
-    border-radius: 2px;
-
-    svg-icon {
-        transform: rotateZ(90deg);
-
-        transition: transform 0.1s;
-    }
 }
 
 .avatar-is-owner {
