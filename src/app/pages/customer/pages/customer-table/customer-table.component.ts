@@ -1402,11 +1402,16 @@ export class CustomerTableComponent
                     ? this.formatCurrencyPipe.transform(data?.availableCredit)
                     : null,
                 totalValueText:
-                    (
-                        (+data?.availableCredit / +data.creditLimit) *
-                        100
-                    ).toString() + TableStringEnum.PERCENTS,
-                percentage: (+data?.availableCredit / +data?.creditLimit) * 100,
+                    data?.availableCredit > 0
+                        ? (
+                              (+data?.availableCredit / +data.creditLimit) *
+                              100
+                          ).toString() + TableStringEnum.PERCENTS
+                        : 0 + TableStringEnum.PERCENTS,
+                percentage:
+                    data?.availableCredit > 0
+                        ? (+data?.availableCredit / +data?.creditLimit) * 100
+                        : 0,
             },
             tableUnpaidInvAging: {
                 ...data.brokerUnpaidInvoiceAgeing,
@@ -1469,23 +1474,30 @@ export class CustomerTableComponent
                 : data?.businessName,
             tableAddress: data?.address?.address ?? null,
             tableLoads: {
-                loads: 0,
+                loads: data?.loads,
                 pickups: data?.pickups,
                 deliveries: data?.deliveries,
             },
-            tableAverageWatingTimePickup: data?.avgPickupTimeInMin
-                ? data.avgPickupTimeInMin.toString()
-                : null,
-            tableAverageWatingTimeDelivery: data?.avgDeliveryTimeInMin
-                ? data.avgDeliveryTimeInMin.toString()
-                : null,
+            tableAverageWatingTimePickup: data?.avgPickupTime,
+            tableAverageWatingTimeDelivery: data?.avgDeliveryTime,
             tableAvailableHoursShipping:
-                data?.shippingFrom && data?.shippingTo
-                    ? data?.shippingFrom + ' - ' + data?.shippingTo
+                data?.shippingFrom || data?.shippingTo
+                    ? (data?.shippingFrom ??
+                          CustomerTableStringEnum.EMPTY_STRING) +
+                      CustomerTableStringEnum.FROM_TO +
+                      (data?.shippingTo ?? CustomerTableStringEnum.EMPTY_STRING)
+                    : data?.shippingAppointment
+                    ? CustomerTableStringEnum.APPOINTMENT
                     : null,
             tableAvailableHoursReceiving:
-                data?.receivingFrom && data?.receivingTo
-                    ? data?.receivingFrom + ' - ' + data?.receivingTo
+                data?.receivingFrom || data?.receivingTo
+                    ? (data?.receivingFrom ??
+                          CustomerTableStringEnum.EMPTY_STRING) +
+                      CustomerTableStringEnum.FROM_TO +
+                      (data?.receivingTo ??
+                          CustomerTableStringEnum.EMPTY_STRING)
+                    : data?.receivingAppointment
+                    ? CustomerTableStringEnum.APPOINTMENT
                     : null,
             reviews: data?.ratingReviews,
             tableRaiting: {
@@ -2028,9 +2040,8 @@ export class CustomerTableComponent
     // Add Shipper Or Broker To Viewdata
     private addData(dataId: number): void {
         this.viewData = this.viewData.map((data: CustomerViewDataResponse) => {
-            if (data.id === dataId) {
-                data.actionAnimation = TableStringEnum.ADD;
-            }
+            if (data.id === dataId) data.actionAnimation = TableStringEnum.ADD;
+
             return data;
         });
 

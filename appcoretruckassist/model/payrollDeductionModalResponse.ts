@@ -21,5 +21,6 @@ export interface PayrollDeductionModalResponse {
     trucks?: Array<TruckMinimalResponse> | null;
     trailers?: Array<TrailerMinimalResponse> | null;
     recurringTypes?: Array<EnumValue> | null;
+    companyPayPeriod?: string | null;
 }
 

@@ -219,7 +219,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
 
     @Input() editData: EditData;
 
-    data /* : ICaMapProps  */ = {
+    data /* : ICaMapProps */ = {
         center: {
             lat: 41.860119,
             lng: -87.660156,

@@ -35,7 +35,8 @@
                     class="table-tr"
                     [ngClass]="{
                         'regular-row': !row.isSelected,
-                        'selected-row': row.isSelected,
+                        'selected-row':
+                            row.isSelected || dropDownActive === row.id,
                         'row-repair-order':
                             row.isRepairOrder && !row.actionAnimation,
                         'user-archived': row.userStatus === 0,
@@ -1230,6 +1231,8 @@
                                             (click)="
                                                 row[column.field]
                                                     ?.tablePayTerm &&
+                                                    !!row[column.field]
+                                                        ?.invoiceAgeingGroupOne &&
                                                     onShowInvoiceAgingDropdown(
                                                         invoicePopover,
                                                         row,
@@ -1247,7 +1250,9 @@
                                                             column.field,
                                                     'disable-hover':
                                                         !row[column.field]
-                                                            ?.tablePayTerm
+                                                            ?.tablePayTerm ||
+                                                        !row[column.field]
+                                                            ?.invoiceAgeingGroupOne
                                                 }"
                                                 ngbTooltip
                                                 [mainTooltip]="
@@ -1290,10 +1295,23 @@
                                                         class="inv-aging-group group-1 ta-font-semi-bold d-flex align-items-center justify-content-center"
                                                     >
                                                         {{
-                                                            row[column.field]
-                                                                ?.invoiceAgeingGroupOne
-                                                                ?.countInvoice
-                                                                | thousandToShortFormatPipe
+                                                            column.field ===
+                                                            'tableUnpaidInvAging'
+                                                                ? (row[
+                                                                      column
+                                                                          .field
+                                                                  ]
+                                                                      ?.invoiceAgeingGroupOne
+                                                                      ?.countInvoice
+                                                                  | thousandToShortFormatPipe)
+                                                                : (row[
+                                                                      column
+                                                                          .field
+                                                                  ]
+                                                                      ?.invoiceAgeingGroupOne
+                                                                      ?.percentage ??
+                                                                      0) +
+                                                                  '%'
                                                         }}
                                                     </div>
 
@@ -1301,10 +1319,23 @@
                                                         class="inv-aging-group group-2 ta-font-semi-bold d-flex align-items-center justify-content-center"
                                                     >
                                                         {{
-                                                            row[column.field]
-                                                                ?.invoiceAgeingGroupTwo
-                                                                ?.countInvoice
-                                                                | thousandToShortFormatPipe
+                                                            column.field ===
+                                                            'tableUnpaidInvAging'
+                                                                ? (row[
+                                                                      column
+                                                                          .field
+                                                                  ]
+                                                                      ?.invoiceAgeingGroupTwo
+                                                                      ?.countInvoice
+                                                                  | thousandToShortFormatPipe)
+                                                                : (row[
+                                                                      column
+                                                                          .field
+                                                                  ]
+                                                                      ?.invoiceAgeingGroupTwo
+                                                                      ?.percentage ??
+                                                                      0) +
+                                                                  '%'
                                                         }}
                                                     </div>
 
@@ -1312,10 +1343,23 @@
                                                         class="inv-aging-group group-3 ta-font-semi-bold d-flex align-items-center justify-content-center"
                                                     >
                                                         {{
-                                                            row[column.field]
-                                                                ?.invoiceAgeingGroupThree
-                                                                ?.countInvoice
-                                                                | thousandToShortFormatPipe
+                                                            column.field ===
+                                                            'tableUnpaidInvAging'
+                                                                ? (row[
+                                                                      column
+                                                                          .field
+                                                                  ]
+                                                                      ?.invoiceAgeingGroupThree
+                                                                      ?.countInvoice
+                                                                  | thousandToShortFormatPipe)
+                                                                : (row[
+                                                                      column
+                                                                          .field
+                                                                  ]
+                                                                      ?.invoiceAgeingGroupThree
+                                                                      ?.percentage ??
+                                                                      0) +
+                                                                  '%'
                                                         }}
                                                     </div>
 
@@ -1323,10 +1367,23 @@
                                                         class="inv-aging-group group-4 ta-font-semi-bold d-flex align-items-center justify-content-center"
                                                     >
                                                         {{
-                                                            row[column.field]
-                                                                ?.invoiceAgeingGroupFour
-                                                                ?.countInvoice
-                                                                | thousandToShortFormatPipe
+                                                            column.field ===
+                                                            'tableUnpaidInvAging'
+                                                                ? (row[
+                                                                      column
+                                                                          .field
+                                                                  ]
+                                                                      ?.invoiceAgeingGroupFour
+                                                                      ?.countInvoice
+                                                                  | thousandToShortFormatPipe)
+                                                                : (row[
+                                                                      column
+                                                                          .field
+                                                                  ]
+                                                                      ?.invoiceAgeingGroupFour
+                                                                      ?.percentage ??
+                                                                      0) +
+                                                                  '%'
                                                         }}
                                                     </div>
                                                 </ng-container>
@@ -1454,21 +1511,39 @@
                                                 <div
                                                     class="d-flex align-items-center work-hour-container"
                                                 >
-                                                    <svg-icon
-                                                        class="work-hour-icon"
-                                                        [ngClass]="{
-                                                            receiving:
-                                                                column.title ===
-                                                                'Receiving'
-                                                        }"
-                                                        [src]="
-                                                            tableBodySvgRoutes.workHourRoute
+                                                    <div
+                                                        ngbTooltip
+                                                        [mainTooltip]="
+                                                            (column?.title ===
+                                                                'Shipping' &&
+                                                                row?.shippingAppointment) ||
+                                                            (column?.title ===
+                                                                'Receiving' &&
+                                                                row?.receivingAppointment)
+                                                                ? 'Appointment'
+                                                                : 'Open Hours'
                                                         "
-                                                        [svgStyle]="{
-                                                            'width.px': 14,
-                                                            'height.px': 14
-                                                        }"
-                                                    ></svg-icon>
+                                                        tooltipBackground="#424242"
+                                                        position="bottom"
+                                                    >
+                                                        <svg-icon
+                                                            class="work-hour-icon"
+                                                            [ngClass]="{
+                                                                appointment:
+                                                                    column?.title ===
+                                                                    'Shipping'
+                                                                        ? row?.shippingAppointment
+                                                                        : row.receivingAppointment
+                                                            }"
+                                                            [src]="
+                                                                tableBodySvgRoutes.workHourRoute
+                                                            "
+                                                            [svgStyle]="{
+                                                                'width.px': 14,
+                                                                'height.px': 14
+                                                            }"
+                                                        ></svg-icon>
+                                                    </div>
 
                                                     <p class="m-0">
                                                         {{ row[column.field] }}
@@ -3631,6 +3706,8 @@
                                             (click)="
                                                 row[column.field]
                                                     ?.tablePayTerm &&
+                                                    !!row[column.field]
+                                                        ?.invoiceAgeingGroupOne &&
                                                     onShowInvoiceAgingDropdown(
                                                         invoicePopover,
                                                         row,
@@ -3648,7 +3725,9 @@
                                                             column.field,
                                                     'disable-hover':
                                                         !row[column.field]
-                                                            ?.tablePayTerm
+                                                            ?.tablePayTerm ||
+                                                        !row[column.field]
+                                                            ?.invoiceAgeingGroupOne
                                                 }"
                                                 ngbTooltip
                                                 [mainTooltip]="
@@ -3691,10 +3770,23 @@
                                                         class="inv-aging-group group-1 ta-font-semi-bold d-flex align-items-center justify-content-center"
                                                     >
                                                         {{
-                                                            row[column.field]
-                                                                ?.invoiceAgeingGroupOne
-                                                                ?.countInvoice
-                                                                | thousandToShortFormatPipe
+                                                            column.field ===
+                                                            'tableUnpaidInvAging'
+                                                                ? (row[
+                                                                      column
+                                                                          .field
+                                                                  ]
+                                                                      ?.invoiceAgeingGroupOne
+                                                                      ?.countInvoice
+                                                                  | thousandToShortFormatPipe)
+                                                                : (row[
+                                                                      column
+                                                                          .field
+                                                                  ]
+                                                                      ?.invoiceAgeingGroupOne
+                                                                      ?.percentage ??
+                                                                      0) +
+                                                                  '%'
                                                         }}
                                                     </div>
 
@@ -3702,10 +3794,23 @@
                                                         class="inv-aging-group group-2 ta-font-semi-bold d-flex align-items-center justify-content-center"
                                                     >
                                                         {{
-                                                            row[column.field]
-                                                                ?.invoiceAgeingGroupTwo
-                                                                ?.countInvoice
-                                                                | thousandToShortFormatPipe
+                                                            column.field ===
+                                                            'tableUnpaidInvAging'
+                                                                ? (row[
+                                                                      column
+                                                                          .field
+                                                                  ]
+                                                                      ?.invoiceAgeingGroupTwo
+                                                                      ?.countInvoice
+                                                                  | thousandToShortFormatPipe)
+                                                                : (row[
+                                                                      column
+                                                                          .field
+                                                                  ]
+                                                                      ?.invoiceAgeingGroupTwo
+                                                                      ?.percentage ??
+                                                                      0) +
+                                                                  '%'
                                                         }}
                                                     </div>
 
@@ -3713,10 +3818,23 @@
                                                         class="inv-aging-group group-3 ta-font-semi-bold d-flex align-items-center justify-content-center"
                                                     >
                                                         {{
-                                                            row[column.field]
-                                                                ?.invoiceAgeingGroupThree
-                                                                ?.countInvoice
-                                                                | thousandToShortFormatPipe
+                                                            column.field ===
+                                                            'tableUnpaidInvAging'
+                                                                ? (row[
+                                                                      column
+                                                                          .field
+                                                                  ]
+                                                                      ?.invoiceAgeingGroupThree
+                                                                      ?.countInvoice
+                                                                  | thousandToShortFormatPipe)
+                                                                : (row[
+                                                                      column
+                                                                          .field
+                                                                  ]
+                                                                      ?.invoiceAgeingGroupThree
+                                                                      ?.percentage ??
+                                                                      0) +
+                                                                  '%'
                                                         }}
                                                     </div>
 
@@ -3724,10 +3842,23 @@
                                                         class="inv-aging-group group-4 ta-font-semi-bold d-flex align-items-center justify-content-center"
                                                     >
                                                         {{
-                                                            row[column.field]
-                                                                ?.invoiceAgeingGroupFour
-                                                                ?.countInvoice
-                                                                | thousandToShortFormatPipe
+                                                            column.field ===
+                                                            'tableUnpaidInvAging'
+                                                                ? (row[
+                                                                      column
+                                                                          .field
+                                                                  ]
+                                                                      ?.invoiceAgeingGroupFour
+                                                                      ?.countInvoice
+                                                                  | thousandToShortFormatPipe)
+                                                                : (row[
+                                                                      column
+                                                                          .field
+                                                                  ]
+                                                                      ?.invoiceAgeingGroupFour
+                                                                      ?.percentage ??
+                                                                      0) +
+                                                                  '%'
                                                         }}
                                                     </div>
                                                 </ng-container>
@@ -6089,7 +6220,11 @@
                                             (click)="toggleDropdown(t2, row)"
                                             [autoClose]="true"
                                             [ngbPopover]="dropdownPopover"
-                                            [placement]="'bottom-right'"
+                                            [placement]="
+                                                isDropdownPositionBottom
+                                                    ? 'bottom-right'
+                                                    : 'right-top'
+                                            "
                                             container="body"
                                             popoverClass="table-dropdown-popover"
                                             triggers="manual"
@@ -6268,7 +6403,10 @@
 <!-- DROPDOWN POPOVER -->
 
 <ng-template #dropdownPopover let-data="data">
-    <div class="table-list-dropdown">
+    <div
+        class="table-list-dropdown"
+        [ngClass]="{ 'position-right': !isDropdownPositionBottom }"
+    >
         <div
             class="table-list-dropdown-content-container"
             [ngClass]="{
@@ -6302,6 +6440,7 @@
                 <div class="table-list-dropdown-content-text">
                     {{ action.title }}
                 </div>
+
                 <svg-icon
                     *ngIf="action.svgUrl"
                     [class]="action.svgClass"
@@ -6606,7 +6745,7 @@
         <div class="invoice-aging-dropdown-content d-flex flex-column">
             <ng-container
                 *ngFor="
-                    let invoiceAgingGroup of invoiceDropdownData;
+                    let invoiceAgingGroup of invoiceDropdownData.invAgingGroups;
                     let i = index;
                     trackBy: trackByIdentity
                 "
@@ -6635,9 +6774,11 @@
                         </div>
 
                         <div class="invoice-count text-color-light-grey-2">
-                            {{ invoiceAgingGroup?.countInvoice }}
-
-                            Inv.
+                            {{
+                                invoiceDropdownData?.isUnPaidAging
+                                    ? invoiceAgingGroup?.countInvoice + '  Inv.'
+                                    : invoiceAgingGroup?.percentage + '%'
+                            }}
                         </div>
 
                         <div

@@ -609,6 +609,7 @@ export class BrokerDetailsComponent implements OnInit, OnDestroy {
                 filter.revenueFrom,
                 filter.revenueTo,
                 filter.truckId,
+                filter.driverId,
                 filter.rateFrom,
                 filter.rateTo,
                 filter.paidFrom,
