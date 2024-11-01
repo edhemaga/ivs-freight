@@ -35,7 +35,7 @@ import {
     LikeDislikeModel,
     TaLikeDislikeService,
 } from '@shared/components/ta-like-dislike/services/ta-like-dislike.service';
-import { BrokerService } from '@pages/customer/services/broker.service';
+import { BrokerService } from '@pages/customer/services';
 import { TaInputService } from '@shared/services/ta-input.service';
 import { ModalService } from '@shared/services/modal.service';
 import { ConfirmationService } from '@shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';

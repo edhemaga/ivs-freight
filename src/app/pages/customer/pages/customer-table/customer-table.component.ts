@@ -22,8 +22,7 @@ import { LoadModalComponent } from '@pages/load/pages/load-modal/load-modal.comp
 
 // Services
 import { ModalService } from '@shared/services/modal.service';
-import { BrokerService } from '@pages/customer/services/broker.service';
-import { ShipperService } from '@pages/customer/services/shipper.service';
+import { BrokerService, ShipperService } from '@pages/customer/services';
 import { TruckassistTableService } from '@shared/services/truckassist-table.service';
 import { DetailsDataService } from '@shared/services/details-data.service';
 import { ReviewsRatingService } from '@shared/services/reviews-rating.service';
@@ -32,7 +31,7 @@ import { ConfirmationService } from '@shared/components/ta-shared-modals/confirm
 import { TableCardDropdownActionsService } from '@shared/components/ta-table-card-dropdown-actions/services/table-card-dropdown-actions.service';
 import { ConfirmationMoveService } from '@shared/components/ta-shared-modals/confirmation-move-modal/services/confirmation-move.service';
 import { ConfirmationActivationService } from '@shared/components/ta-shared-modals/confirmation-activation-modal/services/confirmation-activation.service';
-import { CustomerCardsModalService } from '@pages/customer/pages/customer-table/components/customer-card-modal/services/customer-cards-modal.service';
+import { CustomerCardsModalService } from '@pages/customer/pages/customer-table/components/customer-card-modal/services';
 import { CaSearchMultipleStatesService } from 'ca-components';
 
 // Store
@@ -44,7 +43,7 @@ import { Store, select } from '@ngrx/store';
 import {
     selectActiveTabCards,
     selectInactiveTabCards,
-} from '@pages/customer/pages/customer-table/components/customer-card-modal/state/customer-card-modal.selectors';
+} from '@pages/customer/pages/customer-table/components/customer-card-modal/state/';
 
 // Models
 import {
@@ -55,7 +54,6 @@ import {
     ShipperResponse,
 } from 'appcoretruckassist';
 import { CardRows } from '@shared/models/card-models/card-rows.model';
-import { CustomerBodyResponse } from '@pages/customer/pages/customer-table/models/customer-body-response.model';
 import { CustomerUpdateRating } from '@pages/customer/pages/customer-table/models/customer-update-rating.model';
 import { CustomerViewDataResponse } from '@pages/customer/pages/customer-table/models/customer-viewdata-response.model';
 import { DropdownItem } from '@shared/models/card-models/card-table-data.model';
@@ -1316,15 +1314,12 @@ export class CustomerTableComponent
             localStorage.getItem(`table-${configType}-Configuration`)
         );
 
-        if (configType === TableStringEnum.BROKER) {
-            return tableColumnsConfig
-                ? tableColumnsConfig
-                : getBrokerColumnDefinition();
-        } else {
-            return tableColumnsConfig
-                ? tableColumnsConfig
-                : getShipperColumnDefinition();
-        }
+        return (
+            tableColumnsConfig ??
+            (configType === TableStringEnum.BROKER
+                ? getBrokerColumnDefinition()
+                : getShipperColumnDefinition())
+        );
     }
 
     private setCustomerData(td: CardTableData): void {
@@ -2008,36 +2003,21 @@ export class CustomerTableComponent
         }
     }
 
-    // Get Tab Table Data For Selected Tab
     private getSelectedTabTableData(): void {
-        if (this.tableData?.length) {
+        if (this.tableData?.length)
             this.activeTableData = this.tableData.find(
                 (table) => table.field === this.selectedTab
             );
-        }
+
         return;
     }
-    // Show More Data
+
     public onShowMore(): void {
         this.onTableBodyActions({
             type: TableStringEnum.SHOW_MORE,
         });
     }
 
-    // Get Business Name
-    private getBusinessName(
-        event: CustomerBodyResponse,
-        businessName: string
-    ): string {
-        if (!businessName) {
-            return (businessName = event.data.businessName);
-        } else {
-            return (businessName =
-                businessName + TableStringEnum.COMA + event.data.businessName);
-        }
-    }
-
-    // Add Shipper Or Broker To Viewdata
     private addData(dataId: number): void {
         this.viewData = this.viewData.map((data: CustomerViewDataResponse) => {
             if (data.id === dataId) data.actionAnimation = TableStringEnum.ADD;

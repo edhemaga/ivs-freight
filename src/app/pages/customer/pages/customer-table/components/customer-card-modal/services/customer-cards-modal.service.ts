@@ -9,7 +9,7 @@ import { Store } from '@ngrx/store';
 import {
     setActiveTabCards,
     setInactiveTabCards,
-} from '@pages/customer/pages/customer-table/components/customer-card-modal/state/customer-card-modal.actions';
+} from '@pages/customer/pages/customer-table/components/customer-card-modal/state/';
 
 //Enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
@@ -30,6 +30,7 @@ export class CustomerCardsModalService {
     public updateTab(tab: string): void {
         this.tabSubject.next(tab);
     }
+
     public updateStore(data: CardsModalData, tab: string): void {
         const sendToStore = {
             checked: data.checked,
