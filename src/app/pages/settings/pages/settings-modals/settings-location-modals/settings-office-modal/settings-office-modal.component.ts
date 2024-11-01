@@ -70,7 +70,7 @@ import { SettingsOfficeConfig } from './config';
 
 // Svg routes
 import { SettingsLocationSvgRoutes } from '@pages/settings/pages/settings-location/utils';
-import { RepairShopModalSvgRoutes } from '@pages/repair/pages/repair-modals/repair-shop-modal/utils/svg-routes/repair-shop-modal-svg-routes';
+import { RepairShopModalSvgRoutes } from '@pages/repair/pages/repair-modals/repair-shop-modal/utils/svg-routes';
 
 // Enums
 import { ModalTableTypeEnum } from '@shared/enums/modal-table-type.enum';

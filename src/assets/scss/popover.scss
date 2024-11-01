@@ -75,11 +75,18 @@
                     }
 
                     // Icon Specific Classes
-                    .regular,
+                    .regular {
+                        svg {
+                            path {
+                                fill: $bw5;
+                            }
+                        }
+                    }
+
                     .deactivate {
                         svg {
                             path {
-                                fill: $ta-light-grey-2;
+                                fill: $dark-3;
                             }
                         }
                     }
@@ -87,7 +94,7 @@
                     .delete {
                         svg {
                             path {
-                                fill: $ta-red;
+                                fill: $ta-red-10;
                             }
                         }
                     }
@@ -198,25 +205,23 @@
                     pointer-events: none !important;
 
                     .table-list-dropdown-content-text {
-                        color: $bw6-2 !important;
+                        color: $bw5 !important;
                     }
 
-                    svg {
-                        path {
-                            fill: $bw6-2 !important;
-                        }
+                    svg path {
+                        fill: $dark-3 !important;
+                    }
+
+                    .favourite svg path {
+                        fill: $ta-blue-21 !important;
                     }
 
                     .delete svg path {
                         fill: $ta-red-20 !important;
                     }
 
-                    .hire-applicant {
-                        svg {
-                            path {
-                                fill: $ta-green-5 !important;
-                            }
-                        }
+                    .hire-applicant svg path {
+                        fill: $ta-green-5 !important;
                     }
                 }
             }
@@ -1393,6 +1398,31 @@
     }
 }
 
+// Open hours popover
+.table-open-hours-popover {
+    .popover-body {
+        position: absolute;
+        top: -4px;
+        left: -2px;
+        width: 184px;
+
+        .open-hours-dropdown {
+            padding: 8px 10px;
+            border-radius: 3px;
+            background: $ta-black-2;
+
+            &-item {
+                margin-bottom: 10px;
+
+                &:last-of-type {
+                    margin-bottom: 0;
+                }
+            }
+        }
+    }
+}
+
+// Invoice aging popover
 .table-invoice-aging-popover {
     .popover-body {
         position: absolute;
@@ -1488,6 +1518,7 @@
     }
 }
 
+// Contacts popover
 .table-contacts-popover {
     .popover-body {
         .table-contacts-dropdown {

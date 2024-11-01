@@ -1,7 +1,7 @@
 import moment from 'moment';
 
-//Enums
-import { RepairTableStringEnum } from '@pages/repair/pages/repair-table/enums/repair-table-string.enum';
+// enums
+import { RepairTableStringEnum } from '@pages/repair/pages/repair-table/enums';
 
 export class RepairTableDateFormaterHelper {
     static getDateRange(
@@ -56,13 +56,10 @@ export class RepairTableDateFormaterHelper {
                 );
                 toDate = moment(today);
                 break;
-                case RepairTableStringEnum.ONE_WEEK_FUTURE:
-                    fromDate = moment(today);
-                    toDate = moment(today).add(
-                        1,
-                        RepairTableStringEnum.WEEKS
-                    );
-                    break;
+            case RepairTableStringEnum.ONE_WEEK_FUTURE:
+                fromDate = moment(today);
+                toDate = moment(today).add(1, RepairTableStringEnum.WEEKS);
+                break;
             case RepairTableStringEnum.THIS_MONTH:
                 fromDate = moment(today).startOf(RepairTableStringEnum.MONTH);
                 toDate = moment(today).endOf(RepairTableStringEnum.MONTH);
@@ -75,11 +72,10 @@ export class RepairTableDateFormaterHelper {
                     .subtract(1, RepairTableStringEnum.MONTHS)
                     .endOf(RepairTableStringEnum.MONTH);
                 break;
-                case RepairTableStringEnum.ONE_MONTH_FUTURE:
-                    fromDate = moment(today);
-                    toDate = moment(today)
-                        .add(1, RepairTableStringEnum.MONTHS);
-                    break;
+            case RepairTableStringEnum.ONE_MONTH_FUTURE:
+                fromDate = moment(today);
+                toDate = moment(today).add(1, RepairTableStringEnum.MONTHS);
+                break;
             case RepairTableStringEnum.ONE_MONTH:
                 fromDate = moment(today).subtract(
                     1,

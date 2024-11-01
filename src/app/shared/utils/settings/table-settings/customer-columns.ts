@@ -442,7 +442,7 @@ export function getBrokerColumnDefinition() {
             ngTemplate: 'contact',
             title: 'Contact',
             field: 'tableContactData',
-            name: 'Contact',
+            name: 'Contacts',
             sortName: 'contact',
             hidden: false,
             isPined: false,
