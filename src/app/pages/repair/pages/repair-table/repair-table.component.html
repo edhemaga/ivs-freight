@@ -103,6 +103,7 @@
                 #mapsComponent
                 [data]="mapData"
                 (markerClick)="onMapMarkerClick($event)"
+                (boundsChanged)="onMapBoundsChange($event)"
             ></app-ca-map>
 
             <!-- 

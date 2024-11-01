@@ -24,6 +24,7 @@ import {
     CaSearchMultipleStatesService,
     ICaMapProps,
     IMapMarkers,
+    IMapBoundsZoom,
 } from 'ca-components';
 
 // store
@@ -1817,36 +1818,38 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     public getMapData(): void {
-        const mapMarkers: IMapMarkers[] = this.viewData.map((data, index) => {
-            return {
-                position: { lat: data.latitude, lng: data.longitude },
-                icon: {
-                    url: RepairShopMapMarkersHelper.getMapMarker(data),
-                    labelOrigin: new google.maps.Point(80, 18),
-                },
-                infoWindowContent:
-                    RepairShopMapDropdownHelper.getRepairShopMapDropdownConfig(
-                        data
-                    ),
-                label: {
-                    text: data.name,
-                    fontSize: '11px',
-                    color: '#424242',
-                    fontWeight: '500',
-                },
-                labelOrigin: { x: 90, y: 15 },
-                options: {
-                    zIndex: index + 1,
-                    animation: google.maps.Animation.DROP,
-                },
-                data,
-            };
-        });
-
-        this.mapData = {
-            ...this.mapData,
-            markers: mapMarkers,
-        };
+        // const mapMarkers: IMapMarkers[] = this.viewData.map((data, index) => {
+        //     return {
+        //         position: { lat: data.latitude, lng: data.longitude },
+        //         icon: {
+        //             url: RepairShopMapMarkersHelper.getMapMarker(
+        //                 data.isFavorite,
+        //                 data.status === 0
+        //             ),
+        //             labelOrigin: new google.maps.Point(80, 18),
+        //         },
+        //         infoWindowContent:
+        //             RepairShopMapDropdownHelper.getRepairShopMapDropdownConfig(
+        //                 data
+        //             ),
+        //         label: {
+        //             text: data.name,
+        //             fontSize: '11px',
+        //             color: '#424242',
+        //             fontWeight: '500',
+        //         },
+        //         labelOrigin: { x: 90, y: 15 },
+        //         options: {
+        //             zIndex: index + 1,
+        //             animation: google.maps.Animation.DROP,
+        //         },
+        //         data,
+        //     };
+        // });
+        // this.mapData = {
+        //     ...this.mapData,
+        //     markers: mapMarkers,
+        // };
     }
 
     public onMapMarkerClick(marker: IMapMarkers): void {
@@ -1856,5 +1859,101 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                 : null;
 
         this.mapsService.selectedMarker(selectedMarkerId);
+    }
+
+    public onMapBoundsChange(event: IMapBoundsZoom): void {
+        console.log('onMapBoundsChange event', event);
+
+        const ne = event.bounds.getNorthEast(); // LatLng of the north-east corner
+        const sw = event.bounds.getSouthWest(); // LatLng of the south-west corder
+
+        const clustersObject = {
+            northEastLatitude: parseFloat(ne.lat().toFixed(6)),
+            northEastLongitude: parseFloat(ne.lng().toFixed(6)),
+            southWestLatitude: parseFloat(sw.lat().toFixed(6)),
+            southWestLongitude: parseFloat(sw.lng().toFixed(6)),
+            zoomLevel: event.zoom,
+        };
+
+        this.repairService
+            .getRepairShopClusters(
+                clustersObject.northEastLatitude,
+                clustersObject.northEastLongitude,
+                clustersObject.southWestLatitude,
+                clustersObject.southWestLongitude,
+                clustersObject.zoomLevel,
+                false, // addedNew flag
+                null, // shipperLong
+                null, // shipperLat
+                null, // shipperDistance
+                null, // shipperStates
+                [], // categoryIds?: Array<number>,
+                null, // _long?: number,
+                null, // lat?: number,
+                null, // distance?: number,
+                null, // costFrom?: number,
+                null, // costTo?: number,
+                null, // lastFrom?: number,
+                null, // lastTo?: number,
+                null, // ppgFrom?: number,
+                null, // ppgTo?: number,
+                1, // pageIndex
+                25, // pageSize
+                null, // companyId
+                null, // sortBy
+                null, // search
+                null, // search1
+                null // search2
+            )
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((clustersResponse) => {
+                console.log('clustersResponse', clustersResponse);
+
+                const clusterMarkers: IMapMarkers[] = [];
+                const markers: IMapMarkers[] = [];
+
+                clustersResponse.forEach((data, index) => {
+                    const markerData = {
+                        position: { lat: data.latitude, lng: data.longitude },
+                        icon: {
+                            url: RepairShopMapMarkersHelper.getMapMarker(
+                                data.favourite,
+                                data.isClosed,
+                                data?.count,
+                                data?.count > 1
+                            ),
+                            labelOrigin: new google.maps.Point(80, 18),
+                        },
+                        infoWindowContent: data.pagination?.data
+                            ? { clusterData: data.pagination.data }
+                            : null,
+                        label: data.name
+                            ? {
+                                  text: data.name,
+                                  fontSize: '11px',
+                                  color: '#424242',
+                                  fontWeight: '500',
+                              }
+                            : null,
+                        labelOrigin: { x: 90, y: 15 },
+                        options: {
+                            zIndex: index + 1,
+                            animation: google.maps.Animation.DROP,
+                        },
+                        data,
+                    };
+
+                    if (data.count > 1) clusterMarkers.push(markerData);
+                    else markers.push(markerData);
+                });
+
+                this.mapData = {
+                    ...this.mapData,
+                    clusterMarkers,
+                    markers,
+                };
+
+                this.ref.detectChanges();
+            });
     }
 }
