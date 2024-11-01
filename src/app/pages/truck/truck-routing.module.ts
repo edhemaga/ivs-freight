@@ -6,7 +6,6 @@ import { TruckMinimalResolver } from '@pages/truck/resolvers/truck-details-minim
 import { TruckItemsResolver } from '@pages/truck/resolvers/truck-items.resolver';
 
 // components
-import { TruckCardComponent } from '@pages/truck/pages/truck-card/truck-card.component';
 import { TruckTableComponent } from '@pages/truck/pages/truck-table/truck-table.component';
 
 const routes: Routes = [
@@ -26,11 +25,6 @@ const routes: Routes = [
             truckMinimal: TruckMinimalResolver,
         },
         data: { title: 'Truck detail' },
-    },
-    {
-        path: 'card',
-        component: TruckCardComponent,
-        data: { title: 'Truck cards' },
     },
 ];
 
