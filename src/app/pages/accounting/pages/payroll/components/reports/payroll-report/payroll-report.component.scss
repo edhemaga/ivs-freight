@@ -532,13 +532,13 @@
     .load-description-name {
         .load-description-address,
         .load-description-stop-type {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 100%;
             font-size: 11px;
             font-weight: 600;
             line-height: 12px;
-            color: #424242;
-        }
-
-        .load-description-stop-type {
             color: #919191;
         }
     }
