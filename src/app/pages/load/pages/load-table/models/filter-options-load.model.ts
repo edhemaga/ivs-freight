@@ -13,6 +13,7 @@ export interface FilterOptionsLoad {
     revenueFrom: number;
     revenueTo: number;
     truckId: number;
+    driverId: number;
     pageIndex: number;
     pageSize: number;
     companyId: number;

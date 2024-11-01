@@ -1,4 +1,19 @@
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
+
+import { Observable, tap } from 'rxjs';
+
+// store
+import { BrokerStore } from '@pages/customer/state/broker-state/broker.store';
+import { ShipperStore } from '@pages/customer/state/shipper-state/shipper.store';
+import { RepairShopStore } from '@pages/repair/state/repair-shop-state/repair-shop.store';
+
+// services
+import { BrokerService } from '@pages/customer/services';
+import { ShipperService } from '@pages/customer/services';
+import { RepairService } from '@shared/services/repair.service';
+
+// models
 import {
     CreateRatingCommand,
     CreateResponse,
@@ -9,35 +24,24 @@ import {
     ReviewResponse,
     UpdateReviewCommand,
 } from 'appcoretruckassist';
-import { Router } from '@angular/router';
-
-import { Observable, Subject, takeUntil, tap } from 'rxjs';
-
-// store
-import { BrokerStore } from '@pages/customer/state/broker-state/broker.store';
-import { ShipperStore } from '@pages/customer/state/shipper-state/shipper.store';
-import { RepairShopStore } from '@pages/repair/state/repair-shop-state/repair-shop.store';
-
-// services
-import { BrokerService } from '@pages/customer/services/broker.service';
-import { ShipperService } from '@pages/customer/services/shipper.service';
-import { RepairService } from '@shared/services/repair.service';
 
 @Injectable({
     providedIn: 'root',
 })
 export class ReviewsRatingService {
-    private destroy$ = new Subject<void>();
-
     constructor(
-        private reviewRatingService: RatingReviewService,
-        private brokerStore: BrokerStore,
-        private shipperStore: ShipperStore,
-        private repairShopStore: RepairShopStore,
         private router: Router,
+
+        // services
+        private reviewRatingService: RatingReviewService,
         private brokerService: BrokerService,
         private shipperService: ShipperService,
-        private repairService: RepairService
+        private repairService: RepairService,
+
+        // store
+        private brokerStore: BrokerStore,
+        private shipperStore: ShipperStore,
+        private repairShopStore: RepairShopStore
     ) {}
 
     public getReviewRatingModal(): Observable<GetRatingReviewModalResponse> {
@@ -111,7 +115,6 @@ export class ReviewsRatingService {
             tap((res) => {
                 this.reviewRatingService
                     .apiRatingreviewReviewIdGet(res.id)
-                    .pipe(takeUntil(this.destroy$))
                     .subscribe({
                         next: (resp) => {
                             const splitUrl = this.router.url.split('/');

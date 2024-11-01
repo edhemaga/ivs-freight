@@ -22,7 +22,7 @@ import { TableStringEnum } from '@shared/enums/table-string.enum';
 // Services
 import { ModalService } from '@shared/services/modal.service';
 import { FormService } from '@shared/services/form.service';
-import { CustomerCardsModalService } from '@pages/customer/pages/customer-table/components/customer-card-modal/services/customer-cards-modal.service';
+import { CustomerCardsModalService } from '@pages/customer/pages/customer-table/components/customer-card-modal/services';
 
 // Components
 import { ModalInputFormComponent } from '@shared/components/ta-shared-modals/cards-modal/components/modal-input-form.component';
@@ -37,9 +37,9 @@ import { CardRows } from '@shared/models/card-models/card-rows.model';
 import { CardsModalData } from '@shared/components/ta-shared-modals/cards-modal/models/cards-modal-data.model';
 
 // Constants
-import { CustomerCardsModalData } from '@pages/customer/pages/customer-table/components/customer-card-modal/constants/customer-cards-modal.constants';
+import { CustomerCardsModalData } from '@pages/customer/pages/customer-table/components/customer-card-modal/constants';
 import { CardsModalConstants } from '@shared/utils/constants/cards-modal-config.constants';
-import { CustomerCardsModalConfig } from '@pages/customer/pages/customer-table/components/customer-card-modal/constants/customer-cards-modal.config';
+import { CustomerCardsModalConfig } from '@pages/customer/pages/customer-table/components/customer-card-modal/constants';
 
 //Store
 import { Store } from '@ngrx/store';

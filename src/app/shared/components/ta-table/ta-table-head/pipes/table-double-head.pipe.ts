@@ -77,7 +77,8 @@ export class TableDoubleHeadPipe implements PipeTransform {
                 gridNameTitle === TableHeadTitleStringEnum.REPAIR &&
                 (tableHeadTitle === TableHeadTitleStringEnum.NAME_4 ||
                     tableHeadTitle === TableHeadTitleStringEnum.NUMBER_5 ||
-                    tableHeadTitle === TableHeadTitleStringEnum.DESCRIPTION);
+                    tableHeadTitle === TableHeadTitleStringEnum.DESCRIPTION ||
+                    tableHeadTitle === TableHeadTitleStringEnum.NAME);
 
             const brokerTableColumnsCondition =
                 gridNameTitle === TableHeadTitleStringEnum.CUSTOMER &&
@@ -187,7 +188,8 @@ export class TableDoubleHeadPipe implements PipeTransform {
                 gridNameTitle !== TableHeadTitleStringEnum.REPAIR ||
                 (tableHeadTitle !== TableHeadTitleStringEnum.NAME_4 &&
                     tableHeadTitle !== TableHeadTitleStringEnum.NUMBER_5 &&
-                    tableHeadTitle !== TableHeadTitleStringEnum.DESCRIPTION);
+                    tableHeadTitle !== TableHeadTitleStringEnum.DESCRIPTION &&
+                    tableHeadTitle !== TableHeadTitleStringEnum.NAME);
 
             const brokerTableColumnsCondition =
                 gridNameTitle !== TableHeadTitleStringEnum.CUSTOMER ||

@@ -3,13 +3,13 @@ import { createReducer, on } from '@ngrx/store';
 import {
     setActiveTabCards,
     setInactiveTabCards,
-} from '@pages/customer/pages/customer-table/components/customer-card-modal/state/customer-card-modal.actions';
+} from '@pages/customer/pages/customer-table/components/customer-card-modal/state/';
 
 // Constants
-import { CustomerCardsModalConfig } from '@pages/customer/pages/customer-table/components/customer-card-modal/constants/customer-cards-modal.config';
+import { CustomerCardsModalConfig } from '@pages/customer/pages/customer-table/components/customer-card-modal/constants';
 
 // Models
-import { CustomerCardData } from '@pages/customer/pages/customer-table/components/customer-card-modal/models/customer-card-data.model';
+import { CustomerCardData } from '@pages/customer/pages/customer-table/components/customer-card-modal/models';
 
 // Enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
