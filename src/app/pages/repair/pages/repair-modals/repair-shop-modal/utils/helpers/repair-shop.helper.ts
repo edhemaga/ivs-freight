@@ -1,7 +1,11 @@
-import { RepairShopResponse } from 'appcoretruckassist';
 import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
+
+// enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
 import { RepairShopModalEnum } from '@pages/repair/pages/repair-modals/repair-shop-modal/enums';
+
+// models
+import { RepairShopResponse } from 'appcoretruckassist';
 import { OpenedTab } from '@pages/repair/pages/repair-modals/repair-shop-modal/types';
 import {
     OpenHours,

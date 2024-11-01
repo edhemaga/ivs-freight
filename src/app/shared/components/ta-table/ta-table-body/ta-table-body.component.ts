@@ -980,8 +980,6 @@ export class TaTableBodyComponent
     ): void {
         const columnData = row[column.field];
 
-        console.log('columnData', columnData);
-
         let data = [];
 
         columnData.openHours?.forEach(
@@ -1003,8 +1001,6 @@ export class TaTableBodyComponent
                 data = [...data, workingHourItem];
             }
         );
-
-        console.log('data', data);
 
         popover.isOpen() ? popover.close() : popover.open({ data });
 

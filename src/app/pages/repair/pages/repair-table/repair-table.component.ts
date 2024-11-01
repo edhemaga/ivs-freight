@@ -70,6 +70,7 @@ import { ConfirmationModalComponent } from '@shared/components/ta-shared-modals/
 import { ConfirmationActivationModalComponent } from '@shared/components/ta-shared-modals/confirmation-activation-modal/confirmation-activation-modal.component';
 import { RepairOrderModalComponent } from '@pages/repair/pages/repair-modals/repair-order-modal/repair-order-modal.component';
 import { RepairShopModalComponent } from '@pages/repair/pages/repair-modals/repair-shop-modal/repair-shop-modal.component';
+/* import { TaMapsComponent } from '@shared/components/ta-maps/ta-maps.component'; */
 
 // settings
 import {
@@ -85,6 +86,7 @@ import {
     ShopBackFilterQuery,
     RepairBackFilter,
     RepairBodyResponse,
+    MappedRepairShop,
 } from '@pages/repair/pages/repair-table/models';
 import {
     RepairListResponse,
@@ -108,7 +110,7 @@ import { TableColumnConfig } from '@shared/models/table-models/table-column-conf
 })
 export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
     @ViewChild('mapsComponent', { static: false })
-    public mapsComponent: any;
+    public mapsComponent: any; // :TaMapsComponent;
 
     private destroy$ = new Subject<void>();
 
@@ -579,7 +581,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
             let viewModeOptions =
                 this.tableOptions.toolbarActions.viewModeOptions;
 
-            viewModeOptions.map((viewMode) => {
+            viewModeOptions.forEach((viewMode) => {
                 if (viewMode.name === TableStringEnum.MAP) hasMapView = true;
             });
 
@@ -641,13 +643,11 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
         if (
             configType === TableStringEnum.REPAIR_TRUCK ||
             configType === TableStringEnum.REPAIR_TRAILER
-        ) {
+        )
             return (
                 tableColumnsConfig ?? getRepairTruckAndTrailerColumnDefinition()
             );
-        } else {
-            return tableColumnsConfig ?? getRepairShopColumnDefinition();
-        }
+        else return tableColumnsConfig ?? getRepairShopColumnDefinition();
     }
 
     private getTabData(dataType: string): RepairTruckState[] {
@@ -778,7 +778,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                     TableStringEnum.ORDER_2,
                     TableStringEnum.REPAIR_TYPE
                 ),
-                stateName: 'repair_trucks',
+                stateName: RepairTableStringEnum.REPAIR_TRUCKS,
                 tableConfiguration: TableStringEnum.REPAIR_TRUCK,
                 isActive: this.selectedTab === TableStringEnum.ACTIVE,
                 gridColumns: this.getGridColumns(TableStringEnum.REPAIR_TRUCK),
@@ -796,7 +796,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                     TableStringEnum.ORDER_2,
                     TableStringEnum.REPAIR_TYPE
                 ),
-                stateName: 'repair_trailers',
+                stateName: RepairTableStringEnum.REPAIR_TRAILERS,
                 tableConfiguration: TableStringEnum.REPAIR_TRAILER,
                 isActive: this.selectedTab === TableStringEnum.INACTIVE,
                 gridColumns: this.getGridColumns(
@@ -809,14 +809,16 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                 length: repairTruckTrailerCount.repairShops,
                 data: repairShopData,
                 gridNameTitle: TableStringEnum.REPAIR,
-                stateName: 'repair_shops',
+                stateName: RepairTableStringEnum.REPAIR_SHOPS,
                 closedArray: DataFilterHelper.checkSpecialFilterArray(
                     repairShopData,
                     TableStringEnum.IS_CLOSED
                 ),
-                tableConfiguration: 'REPAIR_SHOP',
+                tableConfiguration: RepairTableStringEnum.REPAIR_SHOP,
                 isActive: this.selectedTab === TableStringEnum.REPAIR_SHOP,
-                gridColumns: this.getGridColumns('REPAIR_SHOP'),
+                gridColumns: this.getGridColumns(
+                    RepairTableStringEnum.REPAIR_SHOP
+                ),
             },
         ];
 
@@ -1506,8 +1508,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
         };
     }
 
-    private mapShopData(repairShop: RepairShopListDto) {
-        console.log('repairShop', repairShop);
+    private mapShopData(repairShop: RepairShopListDto): MappedRepairShop {
         const {
             address,
             shopServiceType,

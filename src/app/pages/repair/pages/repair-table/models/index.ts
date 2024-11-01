@@ -6,3 +6,4 @@ export * from './repair-body.model';
 export * from './repair-dropdown-table-model';
 export * from './shop-back-filter-query.model';
 export * from './shop-back-filter.model';
+export * from './mapped-repair-shop.model';
