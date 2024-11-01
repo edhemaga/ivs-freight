@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 // Resolvers
-import { RepairDetailsResolver } from '@pages/repair/resolvers/repair-details.resolver';
+import { RepairDetailsResolver } from '@pages/repair/resolvers';
 
 // Components
 import { RepairCardComponent } from '@pages/repair/pages/repair-card/repair-card.component';

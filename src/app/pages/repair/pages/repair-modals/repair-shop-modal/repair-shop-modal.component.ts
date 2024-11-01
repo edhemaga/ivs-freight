@@ -69,8 +69,8 @@ import {
 
 // Helpers
 import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calculations.helper';
-import { RepairShopHelper } from './utils/repair-shop.helper';
-import { RepairShopConfig } from '../repair-order-modal/utils/config/repair-shop-form.config';
+import { RepairShopHelper } from '@pages/repair/pages/repair-modals/repair-shop-modal/utils/helpers';
+import { RepairShopConfig } from '@pages/repair/pages/repair-modals/repair-shop-modal/utils/config';
 
 // Animation
 import { tabsModalAnimation } from '@shared/animations/tabs-modal.animation';
@@ -108,13 +108,13 @@ import {
 } from '@pages/repair/pages/repair-modals/repair-shop-modal/enums';
 
 // Constants
-import { RepairShopConstants } from './utils/constants/repair-shop-modal.constants';
+import { RepairShopConstants } from '@pages/repair/pages/repair-modals/repair-shop-modal/utils/constants';
 
 // SVG Routes
-import { RepairShopModalSvgRoutes } from './utils/svg-routes/repair-shop-modal-svg-routes';
+import { RepairShopModalSvgRoutes } from '@pages/repair/pages/repair-modals/repair-shop-modal/utils/svg-routes';
 
 // Types
-import { OpenedTab } from '@pages/repair/pages/repair-modals/repair-shop-modal/types/open-tabs.type';
+import { OpenedTab } from '@pages/repair/pages/repair-modals/repair-shop-modal/types';
 import { ITaInput } from '@shared/components/ta-input/config/ta-input.config';
 
 @Component({

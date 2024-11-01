@@ -1,4 +1,4 @@
-import { tableDropdownContent } from '@shared/models/card-models/card-table-data.model';
+import { TableDropdownContent } from '@shared/models/card-models/card-table-data.model';
 import { AccountPassword } from '@pages/account/pages/account-table/models/account-password.model';
 import { AccountLabelData } from '@pages/account/pages/account-table/models/account-label-data.model';
 
@@ -12,5 +12,5 @@ export class AccountTableData {
     note: string;
     lable?: AccountLabelData;
     accountPassword?: AccountPassword;
-    tableDropdownContent?: tableDropdownContent;
+    tableDropdownContent?: TableDropdownContent;
 }

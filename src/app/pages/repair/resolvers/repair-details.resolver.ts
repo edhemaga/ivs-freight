@@ -7,13 +7,13 @@ import { Observable, forkJoin, tap } from 'rxjs';
 import { RepairDetailsState } from '@pages/repair/state/repair-details-state/repair-details.store';
 
 // Services
-import { RepairDetailsService } from '@pages/repair/services/repair-details.service';
+import { RepairDetailsService } from '@pages/repair/services';
 import { RepairService } from '@shared/services/repair.service';
 
 @Injectable({
     providedIn: 'root',
 })
-export class RepairDetailsResolver  {
+export class RepairDetailsResolver {
     constructor(
         private repairDetailsService: RepairDetailsService,
         private repairservice: RepairService

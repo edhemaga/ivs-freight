@@ -24,4 +24,15 @@ export enum ShipperModalString {
     EMPTY_STRING = '',
 
     BUSINESS_NAME = 'businessName',
+
+    SHIPPING_OPEN_TWENTY_FOUR_HOURS = 'shippingOpenTwentyFourHours',
+    RECEIVING_OPEN_TWENTY_FOUR_HOURS = 'receivingOpenTwentyFourHours',
+    SHIPPING_APPOINTMENT = 'shippingAppointment',
+    RECEIVING_APPOINTMENT = 'receivingAppointment',
+    SHIPPING_FROM = 'shippingFrom',
+    RECEIVING_FROM = 'receivingFrom',
+    SHIPPING_TO = 'shippingTo',
+    RECEIVING_TO = 'receivingTo',
+
+    SHIPPING_HOURS_SAME_RECEIVING = 'shippingHoursSameReceiving',
 }

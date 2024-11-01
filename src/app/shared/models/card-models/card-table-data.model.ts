@@ -74,7 +74,7 @@ export interface CardDetails {
     loadNumber?: string;
     statusType?: StatusType;
     status?: number;
-    tableDropdownContent?: tableDropdownContent;
+    tableDropdownContent?: TableDropdownContent;
     dispatcher?: Dispatcher;
     company?: Company;
     dateCreated?: string;
@@ -198,7 +198,7 @@ export interface CreditProgressData {
     totalValueText: string;
 }
 
-export interface tableDropdownContent {
+export interface TableDropdownContent {
     content: DropdownItem[];
     hasContent: boolean;
 }

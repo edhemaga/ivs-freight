@@ -6,7 +6,7 @@ import {
     UpdateContactPhoneCommand,
 } from 'appcoretruckassist';
 import { ContactLabelData } from '@pages/contacts/pages/contacts-table/models/contact-label-data.model';
-import { tableDropdownContent } from '@shared/models/card-models/card-table-data.model';
+import { TableDropdownContent } from '@shared/models/card-models/card-table-data.model';
 
 export class ContactTableData {
     id: number;
@@ -29,7 +29,7 @@ export class ContactTableData {
     address?: AddressEntity;
     contactPhones?: UpdateContactPhoneCommand[] | null;
     contactEmails?: UpdateContactEmailCommand[] | null;
-    tableDropdownContent?: tableDropdownContent;
+    tableDropdownContent?: TableDropdownContent;
     companyContactLabelId?: CompanyAccountLabelResponse | null;
     colorLabels?: CompanyAccountLabelResponse[];
     colorRes?: ContactColorResponse;

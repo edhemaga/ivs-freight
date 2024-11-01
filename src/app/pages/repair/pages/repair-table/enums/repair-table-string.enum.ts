@@ -39,4 +39,10 @@ export enum RepairTableStringEnum {
     ONE_YEAR_FUTURE = '1 year future',
     LAST_YEAR = 'last year',
     YEAR_BEFORE_LAST = 'year before last',
+
+    REPAIR_TRUCKS = 'repair_trucks',
+    REPAIR_TRAILERS = 'repair_trailers',
+    REPAIR_SHOPS = 'repair_shops',
+
+    REPAIR_SHOP = 'REPAIR_SHOP',
 }
