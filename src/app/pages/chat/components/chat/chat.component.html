@@ -40,9 +40,11 @@
             </ng-container>
         </div>
 
-        <ng-container *ngIf="unreadCount">
+        <ng-container *ngIf="unreadCount || favoriteCount">
             <app-chat-vertical-divider></app-chat-vertical-divider>
+        </ng-container>
 
+        <ng-container *ngIf="unreadCount">
             <!-- TODO Refactor to template -->
             <div
                 class="d-flex notification-messages-wrapper"
@@ -68,7 +70,8 @@
                     <div class="notification-count">{{ unreadCount }}</div>
                 </div>
             </div>
-
+        </ng-container>
+        <ng-container *ngIf="favoriteCount">
             <div
                 class="d-flex notification-messages-wrapper favorite"
                 [ngClass]="
@@ -90,7 +93,7 @@
                 <div
                     class="notification-count-wrapper d-flex justify-content-center align-items-center ta-font-extra-bold"
                 >
-                    <div class="notification-count">{{ unreadCount }}</div>
+                    <div class="notification-count">{{ favoriteCount }}</div>
                 </div>
             </div>
         </ng-container>

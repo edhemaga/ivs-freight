@@ -97,3 +97,8 @@ export const selectUnreadCount = createSelector(
     selectChatState,
     (state: ChatState): number => state.unreadCount
 );
+
+export const selectFavoriteCount = createSelector(
+    selectChatState,
+    (state: ChatState): number => state.favoriteCount
+);

@@ -37,6 +37,8 @@ import {
     setViewType,
     selectViewType,
     selectUnreadCount,
+    setFavoriteCount,
+    selectFavoriteCount,
 } from '@pages/chat/store';
 
 // Models
@@ -58,6 +60,7 @@ import { ChatViewTypeEnum } from '@pages/chat/enums';
 export class ChatStoreService {
     private conversation$: Observable<ChatSelectedConversation>;
     private unreadCount$: Observable<number>;
+    private favoriteCount$: Observable<number>;
     private departments$: Observable<ChatCompanyChannelExtended[]>;
     private messages$!: Observable<ChatMessageResponse>;
     private isProfileDetailsDisplayed$: Observable<boolean>;
@@ -76,6 +79,14 @@ export class ChatStoreService {
     public setUnreadCount(count: number): void {
         this.store.dispatch(
             setUnreadCount({
+                count,
+            })
+        );
+    }
+
+    public setFavoriteCount(count: number): void {
+        this.store.dispatch(
+            setFavoriteCount({
                 count,
             })
         );
@@ -244,5 +255,11 @@ export class ChatStoreService {
         if (!this.unreadCount$)
             this.unreadCount$ = this.store.select(selectUnreadCount);
         return this.unreadCount$;
+    }
+
+    public selectFavoriteCount(): Observable<number> {
+        if (!this.favoriteCount$)
+            this.favoriteCount$ = this.store.select(selectFavoriteCount);
+        return this.favoriteCount$;
     }
 }

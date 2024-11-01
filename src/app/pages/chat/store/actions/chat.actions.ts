@@ -108,3 +108,8 @@ export const setViewType = createAction(
     '[Chat] Set View Type',
     props<{ viewType: ChatViewTypeEnum }>()
 );
+
+export const setFavoriteCount = createAction(
+    '[Chat] Set Favorite Count',
+    props<{ count: number }>()
+);

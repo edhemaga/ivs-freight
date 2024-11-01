@@ -31,6 +31,7 @@ export type ChatState = {
     messageResponseCount: number;
     messageResponseData: ChatMessage[];
     unreadCount?: number;
+    favoriteCount?: number;
     attachments: UploadFile[];
 
     // Conversation details

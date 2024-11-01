@@ -24,6 +24,7 @@ import {
     setDepartment,
     setConversationNameAndType,
     setViewType,
+    setFavoriteCount,
 } from '@pages/chat/store/actions/chat.actions';
 
 // Models
@@ -46,6 +47,7 @@ const initialState: ChatState = {
     messageResponseCount: 0,
     messageResponseData: [],
     unreadCount: 0,
+    favoriteCount: 0,
     attachments: [],
     isAttachmentUploadActive: false,
     isProfileDetailsDisplayed: false,
@@ -287,5 +289,9 @@ export const chatDataReducer = createReducer(
     on(setViewType, (state, newState) => ({
         ...state,
         viewType: newState.viewType,
+    })),
+    on(setFavoriteCount, (state, newState) => ({
+        ...state,
+        favoriteCount: newState.count,
     }))
 );

@@ -3,7 +3,11 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { map, Observable, takeUntil } from 'rxjs';
 
 // Models
-import { ConversationInfoResponse, EnumValue } from 'appcoretruckassist';
+import {
+    CompanyUserChatResponse,
+    ConversationInfoResponse,
+    EnumValue,
+} from 'appcoretruckassist';
 import {
     ChatResolvedData,
     CompanyUserChatResponsePaginationReduced,
@@ -24,7 +28,7 @@ import {
     ChatToolbarActiveFilterEnum,
     ChatViewTypeEnum,
     ConversationTypeEnum,
-    ChatAttachmentCustomClassEnum
+    ChatAttachmentCustomClassEnum,
 } from '@pages/chat/enums';
 
 // Constants
@@ -51,6 +55,7 @@ import {
     chatFadeHorizontallyAnimation,
     chatFadeVerticallyAnimation,
 } from '@shared/animations';
+import { ChatCount } from '@pages/chat/utils/helpers';
 
 @Component({
     selector: 'app-chat',
@@ -60,7 +65,8 @@ import {
 })
 export class ChatComponent
     extends UnsubscribeHelper
-    implements OnInit, OnDestroy {
+    implements OnInit, OnDestroy
+{
     public title!: string;
 
     // Data
@@ -72,6 +78,7 @@ export class ChatComponent
     public archivedDrivers!: CompanyUserChatResponsePaginationReduced;
 
     public unreadCount!: number;
+    public favoriteCount!: number;
     public selectedConversation: number;
     public conversation$!: Observable<ChatSelectedConversation>;
     public conversation: ChatSelectedConversation;
@@ -134,17 +141,28 @@ export class ChatComponent
                     this.companyUsers.count +
                     this.departments.length;
 
-                const unreadCount = this.getUnreadCount(
-                    this.companyUsers,
-                    this.drivers
+                const unreadCount = ChatCount.getCount<
+                    CompanyUserChatResponse[]
+                >(
+                    'hasUnreadMessage',
+                    this.companyUsers.data,
+                    this.drivers.data
                 );
-
                 // TODO move this to effect
                 this.chatStoreService.setUnreadCount(unreadCount);
                 this.chatStoreService
                     .selectUnreadCount()
                     .subscribe((count: number) => {
                         this.unreadCount = count;
+                    });
+                const favoriteCount = ChatCount.getCount<
+                    CompanyUserChatResponse[]
+                >('isFavourite', this.companyUsers.data, this.drivers.data);
+                this.chatStoreService.setFavoriteCount(favoriteCount);
+                this.chatStoreService
+                    .selectFavoriteCount()
+                    .subscribe((count: number) => {
+                        this.favoriteCount = count;
                     });
             });
     }
@@ -216,49 +234,6 @@ export class ChatComponent
                     conversation.id,
                 ]);
             });
-    }
-
-    private getUnreadCount(
-        users: CompanyUserChatResponsePaginationReduced,
-        drivers: CompanyUserChatResponsePaginationReduced,
-        archivedUsers?: CompanyUserChatResponsePaginationReduced,
-        archivedDrivers?: CompanyUserChatResponsePaginationReduced
-    ): number {
-        let totalUnreadCount = 0;
-        // Users
-        totalUnreadCount += users.data.reduce((accumulator, currentObject) => {
-            return accumulator + (currentObject.hasUnreadMessage ? 1 : 0);
-        }, 0);
-
-        if (archivedUsers)
-            totalUnreadCount += archivedUsers.data.reduce(
-                (accumulator, currentObject) => {
-                    return (
-                        accumulator + (currentObject.hasUnreadMessage ? 1 : 0)
-                    );
-                },
-                0
-            );
-
-        // Drivers
-        totalUnreadCount += drivers.data.reduce(
-            (accumulator, currentObject) => {
-                return accumulator + (currentObject.hasUnreadMessage ? 1 : 0);
-            },
-            0
-        );
-
-        if (archivedDrivers)
-            totalUnreadCount += archivedUsers.data.reduce(
-                (accumulator, currentObject) => {
-                    return (
-                        accumulator + (currentObject.hasUnreadMessage ? 1 : 0)
-                    );
-                },
-                0
-            );
-
-        return totalUnreadCount;
     }
 
     public closeProfileDetails(): void {
