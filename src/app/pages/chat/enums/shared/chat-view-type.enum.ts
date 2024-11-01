@@ -1,4 +1,4 @@
 export enum ChatViewTypeEnum {
-    REGULAR,
-    ADVANCED,
+    REGULAR = 'regular',
+    ADVANCED = 'advanced',
 }

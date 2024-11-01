@@ -58,6 +58,7 @@ import {
     ChatHighlightPipe,
     ChatStatusIconPipe,
     ChatActiveParticipantCountPipe,
+    ChatUserFirstNamePipe,
 } from '@pages/chat/utils/pipes';
 
 // Directives
@@ -109,6 +110,7 @@ import { HoverSvgDirective } from '@shared/directives/hover-svg.directive';
         ChatHighlightPipe,
         ChatStatusIconPipe,
         ChatActiveParticipantCountPipe,
+        ChatUserFirstNamePipe,
     ],
     providers: [
         // Pipes

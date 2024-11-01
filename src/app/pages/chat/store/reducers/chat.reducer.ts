@@ -23,10 +23,14 @@ import {
     deleteAllAttachments,
     setDepartment,
     setConversationNameAndType,
+    setViewType,
 } from '@pages/chat/store/actions/chat.actions';
 
 // Models
 import { ChatState } from '@pages/chat/models';
+
+// Enums
+import { ChatStringTypeEnum, ChatViewTypeEnum } from '@pages/chat/enums';
 
 const initialState: ChatState = {
     conversation: {
@@ -50,6 +54,9 @@ const initialState: ChatState = {
     messageToReply: null,
     messageToEdit: null,
     userTyping: '',
+    viewType:
+        localStorage.getItem(ChatStringTypeEnum.VIEW) ||
+        ChatViewTypeEnum.REGULAR,
 };
 
 // TODO deconstruct each newState
@@ -276,5 +283,9 @@ export const chatDataReducer = createReducer(
     on(setDepartment, (state, newState) => ({
         ...state,
         departments: [...state.departments, newState],
+    })),
+    on(setViewType, (state, newState) => ({
+        ...state,
+        viewType: newState.viewType,
     }))
 );

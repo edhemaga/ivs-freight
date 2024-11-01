@@ -29,6 +29,7 @@ import {
     ChatGroupStateEnum,
     ChatObjectPropertyEnum,
     ChatSearchPlaceHolders,
+    ChatViewTypeEnum,
 } from '@pages/chat/enums';
 
 // Animations
@@ -38,7 +39,9 @@ import { chatFadeVerticallyAnimation } from '@shared/animations/chat-fade-vertic
 import { UnsubscribeHelper } from '@pages/chat/utils/helpers';
 
 // Services
-import { ChatHubService, ChatStoreService } from '@pages/chat/services';
+import { ChatStoreService } from '@pages/chat/services';
+
+// Constants
 import { ChatConversationGroupStateConstant } from '@pages/chat/utils/constants';
 
 @Component({
@@ -96,6 +99,7 @@ export class ConversationListComponent
     ngOnInit(): void {
         this.initializeChatGroupStates();
         this.creteForm();
+        this.selectViewType();
     }
 
     private creteForm(): void {
@@ -135,6 +139,22 @@ export class ConversationListComponent
                 },
             },
         ];
+    }
+
+    private selectViewType(): void {
+        this.chatStoreService.selectViewType().subscribe((viewType: string) => {
+            switch (viewType) {
+                case ChatViewTypeEnum.REGULAR:
+                    this.isAdvancedView = false;
+                    break;
+                case ChatViewTypeEnum.ADVANCED:
+                    this.isAdvancedView = true;
+                    break;
+                default:
+                    this.isAdvancedView = false;
+                    return;
+            }
+        });
     }
 
     private showAllChatGroupData(

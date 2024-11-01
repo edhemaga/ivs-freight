@@ -25,7 +25,6 @@
 
         .conversation-list-item {
             border-radius: 2px;
-            padding: 4px;
 
             &-regular {
                 height: 30px;
@@ -76,7 +75,7 @@
     }
 
     &-details {
-        padding: 4px;
+        padding: 4px 0 4px 4px;
     }
 
     &-arrow {
@@ -166,7 +165,7 @@
 
 .icon {
     &-regular {
-        margin-left: 2px;
+        margin-left: 6px;
 
         &-arrow {
             margin: auto;
@@ -177,6 +176,10 @@
             top: 7px;
             right: 8px;
         }
+    }
+
+    &-advanced {
+        margin: auto auto auto 4px;
     }
 
     &-0degr {

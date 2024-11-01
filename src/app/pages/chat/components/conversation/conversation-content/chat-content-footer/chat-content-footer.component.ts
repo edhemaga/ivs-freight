@@ -238,7 +238,9 @@ export class ChatContentFooterComponent
                 if (message) {
                     ChatHubService.notifyTyping(this.conversation.id);
                     this.checkIfContainsLink(message);
-                    const messageSplitted: string[] = message.split(' ');
+                    const messageSplitted: string[] = message.split(
+                        ChatStringTypeEnum.WHITE_SPACE
+                    );
                     this.mentionSearchTerm =
                         messageSplitted[messageSplitted?.length - 1];
                     this.isMentionActive = this.mentionSearchTerm?.includes(
@@ -271,7 +273,9 @@ export class ChatContentFooterComponent
             return;
         }
 
-        const wordsList: string[] = message.trim().split(' ');
+        const wordsList: string[] = message
+            .trim()
+            .split(ChatStringTypeEnum.WHITE_SPACE);
 
         if (
             message.length < this.currentMessage?.length &&
@@ -287,7 +291,8 @@ export class ChatContentFooterComponent
                 //Shortest possible URL
                 message.length < 3 ||
                 // Check if last character is whitespace
-                message[message.length - 1] === ' ' ||
+                message[message.length - 1] ===
+                    ChatStringTypeEnum.WHITE_SPACE ||
                 // Check if two consecutive characters are the same
                 message[message.length - 2] === message[message.length - 1]
             )
