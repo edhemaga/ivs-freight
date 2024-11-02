@@ -1,4 +1,4 @@
-import { tableDropdownContent } from '@shared/models/card-models/card-table-data.model';
+import { TableDropdownContent } from '@shared/models/card-models/card-table-data.model';
 import {
     AdditionalBillingRate,
     BrokerContact,
@@ -113,7 +113,7 @@ export interface LoadTemplate extends LoadListDto {
     textDriver: string;
     comments?: Comment[];
     tableAttachments: File[];
-    tableDropdownContent: tableDropdownContent;
+    tableDropdownContent: TableDropdownContent;
     emptyMiles?: string;
     loaded?: string;
     loadTemplateName?: string;

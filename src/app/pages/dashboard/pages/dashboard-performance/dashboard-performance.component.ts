@@ -32,18 +32,6 @@ import { DropdownListItem } from '@pages/dashboard/models/dropdown-list-item.mod
 import { PerformanceDataItem } from '@pages/dashboard/pages/dashboard-performance/models/performance-data-item.model';
 import { PerformanceColorsPallete } from '@pages/dashboard/models/colors-pallete.model';
 import { CustomPeriodRange } from '@shared/models/custom-period-range.model';
-import {
-    ChartDefaultConfig,
-    LineChart,
-    LineChartAxes,
-    LineChartConfig,
-} from '@pages/dashboard/models/dashboard-chart-models/line-chart.model';
-import {
-    BarChart,
-    BarChartAxes,
-    BarChartConfig,
-    BarChartPerformanceValues,
-} from '@pages/dashboard/models/dashboard-chart-models/bar-chart.model';
 import { PerformanceApiArguments } from '@pages/dashboard/pages/dashboard-performance/models/performance-api-arguments.model';
 import { DashboardArrayHelper } from '@pages/dashboard/utils/helpers/dashboard-array-helper';
 import {
@@ -58,8 +46,6 @@ import {
     styleUrls: ['./dashboard-performance.component.scss'],
 })
 export class DashboardPerformanceComponent implements OnInit, OnDestroy {
-    @ViewChild('lineChart') public lineChart: LineChart;
-    @ViewChild('barChart') public barChart: BarChart;
 
     private destroy$: Subject<void> = new Subject<void>();
 
@@ -90,18 +76,6 @@ export class DashboardPerformanceComponent implements OnInit, OnDestroy {
     public performanceDataColors: PerformanceColorsPallete[] = [];
 
     // charts
-    public lineChartConfig: LineChartConfig;
-    public lineChartAxes: LineChartAxes;
-    public lineChartDateTitle: string;
-
-    public barChartConfig: BarChartConfig;
-    public barChartAxes: BarChartAxes;
-    private barChartLabels: string[] | string[][] = [];
-    private barChartTooltipLabels: string[];
-    private barChartValues: BarChartPerformanceValues = {
-        pricePerGallonValues: [],
-        loadRatePerMileValues: [],
-    };
 
     private axisNumber: number = -1;
     public multipleVerticalLeftAxes: number[];
@@ -151,11 +125,6 @@ export class DashboardPerformanceComponent implements OnInit, OnDestroy {
         });
 
         this.selectedPerformanceDataCount = 0;
-
-        this.barChartValues = {
-            pricePerGallonValues: [],
-            loadRatePerMileValues: [],
-        };
     }
 
     public handleSwitchTabClick(activeTab: DashboardTab): void {
@@ -290,12 +259,6 @@ export class DashboardPerformanceComponent implements OnInit, OnDestroy {
 
             this.selectedPerformanceDataCount++;
 
-            // line chart
-            this.lineChart?.insertNewChartData(
-                DashboardChartStringEnum.ADD,
-                performanceDataItem.title,
-                performanceDataItem.selectedColor.slice(1)
-            );
         } else {
             // data boxes
             performanceDataItem.selectedColor = null;
@@ -306,12 +269,6 @@ export class DashboardPerformanceComponent implements OnInit, OnDestroy {
             ).isSelected = false;
 
             this.selectedPerformanceDataCount--;
-
-            // line chart
-            this.lineChart?.insertNewChartData(
-                DashboardChartStringEnum.REMOVE,
-                performanceDataItem.title
-            );
         }
     }
 
@@ -330,24 +287,24 @@ export class DashboardPerformanceComponent implements OnInit, OnDestroy {
         if (!removeHover) {
             selectedPerformanceDataItem.isHovered = true;
 
-            if (selectedPerformanceDataItem.selectedColor) {
-                this.lineChart?.changeChartFillProperty(
-                    selectedPerformanceDataItem.title,
-                    selectedPerformanceDataItem.selectedColor.slice(1)
-                );
-            }
-        } else {
-            selectedPerformanceDataItem.isHovered = false;
+        //     if (selectedPerformanceDataItem.selectedColor) {
+        //         // this.lineChart?.changeChartFillProperty(
+        //         //     selectedPerformanceDataItem.title,
+        //         //     selectedPerformanceDataItem.selectedColor.slice(1)
+        //         // );
+        //     }
+        // } else {
+        //     selectedPerformanceDataItem.isHovered = false;
 
-            this.lineChart?.changeChartFillProperty(
-                this.performanceData[index].title,
-                DashboardChartStringEnum.EMPTY_STRING
-            );
+        //     // this.lineChart?.changeChartFillProperty(
+        //     //     this.performanceData[index].title,
+        //     //     DashboardChartStringEnum.EMPTY_STRING
+        //     // );
         }
     }
 
     public handleBarChartHover(chartDataValue: number): void {
-        this.lineChart?.showChartTooltip(chartDataValue);
+        // this.lineChart?.showChartTooltip(chartDataValue);
     }
 
     public handleRemoveChartsHover(): void {
@@ -436,70 +393,6 @@ export class DashboardPerformanceComponent implements OnInit, OnDestroy {
                 );
 
                 // charts
-                for (
-                    let i = 0;
-                    i <
-                    performanceData.performanceGraph.performanceGraphs.length;
-                    i++
-                ) {
-                    const selectedGraphMetricsData =
-                        performanceData.performanceGraph.performanceGraphs[i]
-                            .performanceGraphMetrics;
-
-                    for (let j = 0; j < selectedGraphMetricsData.length; j++) {
-                        const selectedPerformanceType =
-                            selectedGraphMetricsData[j];
-                        const performanceTypeTitleToLowerCase =
-                            selectedPerformanceType.performanceType?.toLowerCase();
-
-                        const matchedPerformanceDataItem =
-                            this.performanceData.find(
-                                (item) =>
-                                    item.title.toLowerCase() ===
-                                    performanceTypeTitleToLowerCase
-                            );
-
-                        if (matchedPerformanceDataItem) {
-                            matchedPerformanceDataItem.lineChartDataValues = [
-                                ...matchedPerformanceDataItem.lineChartDataValues,
-                                selectedPerformanceType.value,
-                            ];
-                        } else {
-                            if (
-                                selectedPerformanceType.performanceType ===
-                                DashboardChartStringEnum.BAR_LABEL_PER_GALLON
-                            ) {
-                                this.barChartValues.pricePerGallonValues = [
-                                    ...this.barChartValues.pricePerGallonValues,
-                                    Math.floor(Math.random() * 50),
-                                    /*   selectedPerformanceType.value, */
-                                ];
-                            }
-
-                            if (
-                                selectedPerformanceType.performanceType ===
-                                DashboardChartStringEnum.BAR_LABEL_LOAD_PER_MILE
-                            ) {
-                                this.barChartValues.loadRatePerMileValues = [
-                                    ...this.barChartValues
-                                        .loadRatePerMileValues,
-                                    Math.floor(Math.random() * 50),
-                                    /*  selectedPerformanceType.value, */
-                                ];
-                            }
-                        }
-                    }
-                }
-
-                this.setLineChartDateTitle(
-                    performanceData.intervalLabels[0].tooltipLabel,
-                    performanceData.intervalLabels[
-                        performanceData.intervalLabels.length - 1
-                    ].tooltipLabel
-                );
-                this.setBarChartLabels(performanceData.intervalLabels);
-
-                this.setChartsData();
             });
     }
 
@@ -568,225 +461,6 @@ export class DashboardPerformanceComponent implements OnInit, OnDestroy {
         selectedPerformanceDataColor.isSelected = true;
 
         this.selectedPerformanceDataCount++;
-
-        this.lineChart?.resetLineChartData();
-
-        setTimeout(() => {
-            this.lineChart?.insertNewChartData(
-                DashboardChartStringEnum.ADD,
-                selectedPerformanceDataItem.title,
-                this.performanceData[
-                    performanceDataItemIndex
-                ].selectedColor?.slice(1)
-            );
-        }, 50);
-    }
-
-    private setLineChartDateTitle(startInterval: string, endInterval: string) {
-        const { chartTitle } = DashboardHelper.setChartDateTitle(
-            startInterval,
-            endInterval
-        );
-
-        this.lineChartDateTitle = chartTitle;
-    }
-
-    private setLineChartConfigAndAxes(): void {
-        this.lineChartConfig = {
-            dataProperties: [],
-            showLegend: false,
-            chartValues: [2, 2],
-            defaultType: DashboardChartStringEnum.LINE,
-            chartWidth: DashboardChartStringEnum.LINE_1800_WIDTH,
-            chartHeight: DashboardChartStringEnum.LINE_1800_HEIGHT,
-            removeChartMargin: true,
-            gridHoverBackground: true,
-            allowAnimation: true,
-            hasHoverData: true,
-            offset: true,
-            multiHoverData: true,
-            multiChartHover: true,
-            tooltipOffset: { min: 134, max: 206 },
-            dataLabels: [],
-            dataTooltipLabels: this.barChartTooltipLabels,
-            pricePerGallonValue: this.barChartValues.pricePerGallonValues,
-            loadRatePerMileValue: this.barChartValues.loadRatePerMileValues,
-            noChartImage: DashboardChartStringEnum.NO_CHART_IMG,
-        };
-
-        this.lineChartConfig.dataProperties = this.performanceData.map(
-            (performanceDataItem) => {
-                return this.createLineChartData(performanceDataItem);
-            }
-        );
-
-        this.lineChartConfig.dataLabels = this.createLineChartEmptyLabels(
-            this.barChartLabels
-        ) as string[][];
-
-        const performanceDataLineChartValues = this.performanceData.map(
-            (performanceDataItem) => {
-                const lineChartMaxValue =
-                    DashboardArrayHelper.findLargestNumberInArrayOfArrays([
-                        performanceDataItem.lineChartDataValues,
-                    ]);
-
-                return lineChartMaxValue;
-            }
-        );
-
-        this.lineChartAxes = {
-            verticalLeftAxes: {
-                visible: false,
-                minValue: 0,
-                maxValue: 10,
-                stepSize: 10,
-                showGridLines: false,
-            },
-            horizontalAxes: {
-                visible: true,
-                position: DashboardChartStringEnum.BAR_AXES_POSITION_BOTTOM,
-                showGridLines: false,
-            },
-        };
-
-        this.multipleVerticalLeftAxes = performanceDataLineChartValues;
-    }
-
-    private setBarChartLabels(barChartLables: IntervalLabelResponse[]): void {
-        const selectedSubPeriod = DashboardHelper.ConvertSubPeriod(
-            this.selectedSubPeriod.name
-        );
-
-        const { filteredLabels, filteredTooltipLabels } =
-            DashboardHelper.setBarChartLabels(
-                barChartLables,
-                selectedSubPeriod
-            );
-
-        this.barChartLabels = filteredLabels;
-        this.barChartTooltipLabels = filteredTooltipLabels;
-    }
-
-    private setBarChartConfigAndAxes(
-        barChartValues: BarChartPerformanceValues
-    ): void {
-        this.barChartConfig = {
-            dataProperties: [
-                {
-                    defaultConfig: {
-                        type: DashboardChartStringEnum.BAR,
-                        data: barChartValues.pricePerGallonValues,
-                        backgroundColor:
-                            DashboardChartStringEnum.CHART_COLOR_GREY,
-                        borderColor:
-                            DashboardChartStringEnum.CHART_COLOR_GREY_4,
-                        hoverBackgroundColor:
-                            DashboardChartStringEnum.CHART_COLOR_GREY_5,
-                        hoverBorderColor:
-                            DashboardChartStringEnum.CHART_COLOR_GREY,
-                        label: DashboardChartStringEnum.BAR_LABEL_PER_GALLON,
-                    },
-                },
-                {
-                    defaultConfig: {
-                        type: DashboardChartStringEnum.BAR,
-                        data: barChartValues.loadRatePerMileValues,
-                        backgroundColor:
-                            DashboardChartStringEnum.CHART_COLOR_GREY_2,
-                        borderColor:
-                            DashboardChartStringEnum.CHART_COLOR_GREY_3,
-                        hoverBackgroundColor:
-                            DashboardChartStringEnum.CHART_COLOR_GREY,
-                        hoverBorderColor:
-                            DashboardChartStringEnum.CHART_COLOR_GREY_2,
-                        label: DashboardChartStringEnum.BAR_LABEL_LOAD_PER_MILE,
-                    },
-                },
-            ],
-            showLegend: false,
-            chartValues: [2, 2],
-            defaultType: DashboardChartStringEnum.BAR,
-            offset: true,
-            chartWidth: DashboardChartStringEnum.BAR_1800_WIDTH_2,
-            chartHeight: DashboardChartStringEnum.BAR_1800_HEIGHT_2,
-            removeChartMargin: true,
-            gridHoverBackground: true,
-            hasHoverData: true,
-            allowAnimation: true,
-            hoverOtherChart: true,
-            tooltipOffset: { min: 134, max: 206 },
-            dataLabels: this.barChartLabels,
-            noChartImage: DashboardChartStringEnum.NO_CHART_IMG,
-        };
-
-        // bar max value
-        const barChartMaxValue =
-            DashboardArrayHelper.findLargestNumberInArrayOfArrays([
-                barChartValues.pricePerGallonValues,
-                barChartValues.loadRatePerMileValues,
-            ]);
-
-        // bar axes
-        this.barChartAxes = {
-            verticalLeftAxes: {
-                visible: false,
-                minValue: 0,
-                maxValue: barChartMaxValue,
-                stepSize: 10,
-                showGridLines: false,
-            },
-            horizontalAxes: {
-                visible: true,
-                position: DashboardChartStringEnum.BAR_AXES_POSITION_BOTTOM,
-                showGridLines: false,
-            },
-        };
-    }
-
-    private setChartsData(): void {
-        this.setLineChartConfigAndAxes();
-        this.setBarChartConfigAndAxes(this.barChartValues);
-
-        this.setPerformanceDefaultStateData();
-
-        this.changeDetectorRef.detectChanges();
-    }
-
-    private createLineChartData(performanceDataItem: PerformanceDataItem): {
-        defaultConfig: ChartDefaultConfig;
-    } {
-        const selectedLineChartDataValues =
-            performanceDataItem.lineChartDataValues;
-        const selectedLineChartDataTitle = performanceDataItem.title;
-        this.axisNumber++;
-        return {
-            defaultConfig: {
-                type: DashboardChartStringEnum.LINE,
-                data: selectedLineChartDataValues,
-                borderColor: null,
-                pointBorderColor: DashboardChartStringEnum.CHART_COLOR_NONE,
-                pointBackgroundColor: DashboardChartStringEnum.CHART_COLOR_NONE,
-                pointHoverBackgroundColor:
-                    DashboardChartStringEnum.CHART_COLOR_WHITE,
-                pointHoverBorderColor: null,
-                pointHoverRadius: 3,
-                pointBorderWidth: 3,
-                fill: false,
-                hasGradiendBackground: true,
-                colors: null,
-                id: selectedLineChartDataTitle,
-                hidden: true,
-                label: selectedLineChartDataTitle,
-                yAxisID: `y-axis-${this.axisNumber}`,
-            },
-        };
-    }
-
-    private createLineChartEmptyLabels(
-        barChartLabels: string[] | string[][]
-    ): (string | string[])[] {
-        return DashboardHelper.createBarChartEmptyLabels(barChartLabels);
     }
 
     ngOnDestroy(): void {

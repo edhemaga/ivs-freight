@@ -3,29 +3,30 @@ import { Injectable } from '@angular/core';
 import { Observable, of, catchError, tap } from 'rxjs';
 import {} from 'rxjs/operators';
 
-// Services
-import { ShipperService } from '@pages/customer/services/shipper.service';
+// services
+import { ShipperService } from '@pages/customer/services';
 
-// Store
+// store
 import { ShipperMinimalListStore } from '@pages/customer/state/shipper-state/shipper-details-state/shipper-minimal-list-state/shipper-minimal-list.store';
 
-// Models
+// models
 import { ShipperMinimalListResponse } from 'appcoretruckassist';
 
 @Injectable({
     providedIn: 'root',
 })
-export class ShipperMinimalListResolver
-    
-{
-    pageIndex: number = 1;
-    pageSize: number = 25;
-    count: number;
+export class ShipperMinimalListResolver {
+    private pageIndex: number = 1;
+    private pageSize: number = 25;
+    private count: number;
 
     constructor(
         private shipperService: ShipperService,
+
+        // store
         private shipperMinimalListStore: ShipperMinimalListStore
     ) {}
+
     resolve(): Observable<ShipperMinimalListResponse> | Observable<any> {
         return this.shipperService
             .getShipperMinimalList(this.pageIndex, this.pageSize, this.count)

@@ -1,9 +1,9 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 
-//Models
-import { CustomerCardData } from '@pages/customer/pages/customer-table/components/customer-card-modal/models/customer-card-data.model';
+// Models
+import { CustomerCardData } from '@pages/customer/pages/customer-table/components/customer-card-modal/models';
 
-//Enums
+// Enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
 
 export const selectCustomerCardDataState =

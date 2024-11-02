@@ -2,24 +2,22 @@ import { Injectable } from '@angular/core';
 
 import { Observable, of, catchError, tap } from 'rxjs';
 
-// Services
-import { BrokerService } from '@pages/customer/services/broker.service';
+// services
+import { BrokerService } from '@pages/customer/services';
 
-// Store
+// store
 import { BrokerMinimalListStore } from '@pages/customer/state/broker-details-state/broker-minimal-list-state/broker-minimal-list.store';
 
-// Models
+// models
 import { BrokerMinimalListResponse } from 'appcoretruckassist';
 
 @Injectable({
     providedIn: 'root',
 })
-export class BrokerMinimalListResolver
-    
-{
-    pageIndex: number = 1;
-    pageSize: number = 25;
-    count: number;
+export class BrokerMinimalListResolver {
+    private pageIndex: number = 1;
+    private pageSize: number = 25;
+    private count: number;
 
     constructor(
         // Services
@@ -28,6 +26,7 @@ export class BrokerMinimalListResolver
         // Store
         private brokerMinimalListStore: BrokerMinimalListStore
     ) {}
+
     resolve(): Observable<BrokerMinimalListResponse> | Observable<any> {
         return this.brokerService
             .getBrokerMinimalList(this.pageIndex, this.pageSize, this.count)
