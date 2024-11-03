@@ -304,9 +304,6 @@ export class ChatComponent
             this.activeFilter = null;
             return;
         }
-
-        //TODO emit event?
-
         this.activeFilter = filter;
     }
 }

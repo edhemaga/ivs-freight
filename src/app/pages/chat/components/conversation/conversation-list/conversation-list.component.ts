@@ -1,4 +1,11 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import {
+    Component,
+    EventEmitter,
+    Input,
+    OnChanges,
+    OnInit,
+    Output,
+} from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import { BehaviorSubject, takeUntil } from 'rxjs';
 
@@ -52,7 +59,7 @@ import { ChatConversationGroupStateConstant } from '@pages/chat/utils/constants'
 })
 export class ConversationListComponent
     extends UnsubscribeHelper
-    implements OnInit
+    implements OnInit, OnChanges
 {
     // Data
     @Input() public departments: ChatCompanyChannelExtended[];
@@ -102,40 +109,45 @@ export class ConversationListComponent
         this.selectViewType();
     }
 
+    ngOnChanges(): void {
+        this.initializeChatGroupStates(25);
+    }
+
     private creteForm(): void {
         this.searchForm = this.formBuilder.group({
             searchTerm: [null],
         });
     }
 
-    private initializeChatGroupStates(): void {
+    private initializeChatGroupStates(takeItems?: number): void {
         this.groupsState = [
             {
                 ...this.findChatGroupState(ChatGroupEnum.Department),
-                groupData: this.departments?.slice(0, 6),
+                groupData: this.departments?.slice(0, takeItems || 6),
             },
             {
                 ...this.findChatGroupState(ChatGroupEnum.Truck),
-                groupData: this.truckChannel?.slice(0, 6),
+                groupData: this.truckChannel?.slice(0, takeItems || 6),
             },
             {
                 ...this.findChatGroupState(ChatGroupEnum.Dispatch),
-                groupData: this.dispatchBoardChannel?.slice(0, 6),
+                groupData: this.dispatchBoardChannel?.slice(0, takeItems || 6),
             },
             {
                 ...this.findChatGroupState(ChatGroupEnum.CompanyUser),
                 groupData: {
                     ...this.companyUsers,
-                    data: this.companyUsers?.data?.slice(0, 6),
-                    count: this.companyUsers?.data?.slice(0, 6).length,
+                    data: this.companyUsers?.data?.slice(0, takeItems || 6),
+                    count: this.companyUsers?.data?.slice(0, takeItems || 6)
+                        .length,
                 },
             },
             {
                 ...this.findChatGroupState(ChatGroupEnum.Driver),
                 groupData: {
                     ...this.drivers,
-                    data: this.drivers?.data?.slice(0, 6),
-                    count: this.drivers?.data?.slice(0, 6).length,
+                    data: this.drivers?.data?.slice(0, takeItems || 6),
+                    count: this.drivers?.data?.slice(0, takeItems || 6).length,
                 },
             },
         ];
