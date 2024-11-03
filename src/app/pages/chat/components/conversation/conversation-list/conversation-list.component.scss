@@ -149,14 +149,14 @@
 
 .item {
     height: 100%;
-    padding: 0 4px;
+    padding-left: 4px;
+    &-channel {
+        padding-left: 8px;
+    }
 }
 
 .count {
     height: 18px;
-
-    line-height: 14px;
-    font-size: 11px;
     border-radius: 60px;
     padding: 2px 5px;
     float: right;
@@ -171,7 +171,12 @@
             margin: auto;
         }
 
+        &-channel {
+            margin-left: 8px;
+        }
+
         .activity-status-icon {
+            width: 8px;
             position: relative;
             top: 7px;
             right: 8px;
@@ -195,5 +200,25 @@
     &-180degr {
         transform: rotate(180deg);
         transition: transform 0.25s ease-out;
+    }
+
+    &-blue {
+        svg-icon {
+            svg {
+                path {
+                    fill: $ta-blue-13;
+                }
+            }
+        }
+    }
+
+    &-gray {
+        svg-icon {
+            svg {
+                path {
+                    fill: $bw5;
+                }
+            }
+        }
     }
 }

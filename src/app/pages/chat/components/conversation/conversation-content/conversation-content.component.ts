@@ -102,6 +102,9 @@ export class ConversationContentComponent
     private initStoreData(): void {
         this.chatStoreService.closeAllProfileInformation();
         this.conversation$ = this.chatStoreService.selectConversation();
+        this.conversation$.subscribe(() => {
+            this.isScrollToBottomDisplayed = false;
+        });
         this.isAttachmentUploadActive$ =
             this.chatStoreService.selectAttachmentUploadStatus();
     }
@@ -179,7 +182,7 @@ export class ConversationContentComponent
 
     public messagesScroll(): void {
         // TODO Adjust later, initial idea
-        if (this.isScrollAvailable(this.wrapperHeightPx + 250))
+        if (this.isScrollAvailable(this.wrapperHeightPx + 100))
             this.isScrollToBottomDisplayed = true;
         else this.isScrollToBottomDisplayed = false;
     }

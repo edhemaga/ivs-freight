@@ -26,3 +26,4 @@ export * from './shared/chat-string-type.enum';
 export * from './conversation/conversation-content/chat-message-arrival-type.enum';
 export * from './shared/chat-joined-or-left-message.enum';
 export * from './shared/chat-toolbar-active-filter.enum';
+export * from './shared/chat-rotate-value.enum';

@@ -127,7 +127,7 @@
             <div class="title ta-font-bold">
                 {{ item.title }}
             </div>
-            <div class="count ta-font-bold">
+            <div class="count ta-font-bold text-size-11">
                 {{ item.count }}
             </div>
         </div>
@@ -170,12 +170,13 @@
                         type: type,
                         group: group_id,
                         item: {
-                            id: item.companyUser?.id,
-                            name: item.companyUser?.fullName,
+                            id: item?.companyUser?.id,
+                            name: item?.companyUser?.fullName,
                             avatarFile: item.companyUser?.avatarFile,
                             isRound: is_round,
                             isFavourite: item.isFavourite,
-                            unreadCount: item.unreadCount,
+                            hasUnreadMessage: item?.hasUnreadMessage,
+                            unreadCount: item?.unreadCount,
                             lastMessage: item?.lastMessage
                         }
                     }
@@ -197,6 +198,10 @@
         <div class="conversation-list-item-regular d-flex">
             <div
                 class="icon-regular d-flex justify-content-center align-items-center"
+                [ngClass]="
+                    type === conversationTypeEnum.CHANNEL &&
+                    'icon-regular-channel'
+                "
             >
                 <ng-container [ngSwitch]="type">
                     <ng-container
@@ -240,7 +245,8 @@
                 *ngTemplateOutlet="
                     itemTitle;
                     context: {
-                        item: item
+                        item,
+                        type
                     }
                 "
             ></ng-container>
@@ -331,8 +337,11 @@
     </div>
 </ng-template>
 
-<ng-template #itemTitle let-item="item">
-    <div class="item d-flex flex-grow-1 justify-content-between">
+<ng-template #itemTitle let-item="item" let-type="type">
+    <div
+        class="item d-flex flex-grow-1 justify-content-between"
+        [ngClass]="type === conversationTypeEnum.CHANNEL && 'item-channel'"
+    >
         <div
             class="title title-color ta-font-regular d-flex align-items-center justify-content-center"
         >
@@ -346,34 +355,54 @@
             <div>
                 <ng-container [ngSwitch]="true">
                     <ng-container *ngSwitchCase="item?.isFavourite">
-                        <ng-container
-                            *ngTemplateOutlet="
-                                icon;
-                                context: {
-                                    item: {
-                                        width: 13,
-                                        height: 13,
-                                        route: chatSvgRoutes.favoriteIcon
-                                    }
-                                }
+                        <div
+                            [ngClass]="
+                                item?.hasUnreadMessage
+                                    ? 'icon-blue'
+                                    : 'icon-gray'
                             "
-                        ></ng-container>
-                    </ng-container>
-                    <ng-container *ngSwitchCase="item?.unreadCount">
-                        <ng-container
-                            *ngTemplateOutlet="
-                                icon;
-                                context: {
-                                    item: {
-                                        width: 6,
-                                        height: 6,
-                                        route: chatSvgRoutes.circleIcon
+                            [ngStyle]="{
+                                'margin-right': isAdvancedView ? 'auto' : '5px'
+                            }"
+                        >
+                            <ng-container
+                                *ngTemplateOutlet="
+                                    icon;
+                                    context: {
+                                        item: {
+                                            width: 13,
+                                            height: 13,
+                                            route: chatSvgRoutes.favoriteIcon
+                                        }
                                     }
-                                }
-                            "
-                        ></ng-container>
+                                "
+                            ></ng-container>
+                        </div>
                     </ng-container>
-                    <ng-container *ngSwitchDefault></ng-container>
+                    <ng-container
+                        *ngSwitchCase="
+                            item?.hasUnreadMessage && !item?.isFavourite
+                        "
+                    >
+                        <div
+                            [ngStyle]="{
+                                'margin-right': isAdvancedView ? '2px' : '8px'
+                            }"
+                        >
+                            <ng-container
+                                *ngTemplateOutlet="
+                                    icon;
+                                    context: {
+                                        item: {
+                                            width: 6,
+                                            height: 6,
+                                            route: chatSvgRoutes.circleIcon
+                                        }
+                                    }
+                                "
+                            ></ng-container>
+                        </div>
+                    </ng-container>
                 </ng-container>
             </div>
         </div>
@@ -384,9 +413,12 @@
     <svg-icon
         class="d-flex justify-content-center align-items-center"
         [ngClass]="
-            (item.state === chatGroupStateEnum.Expanded && 'icon-0degr') ||
-            (item.state === chatGroupStateEnum.Collapsed && 'icon-90degr') ||
-            (item.state === chatGroupStateEnum.AllExpanded && 'icon-180degr')
+            (item.state === chatGroupStateEnum.Expanded &&
+                chatRotateValue.ICON_0DEG) ||
+            (item.state === chatGroupStateEnum.Collapsed &&
+                chatRotateValue.ICON_90DEG) ||
+            (item.state === chatGroupStateEnum.AllExpanded &&
+                chatRotateValue.ICON_180DEG)
         "
         [svgStyle]="{ 'width.px': item.width, 'height.px': item.height }"
         [src]="item.route"
