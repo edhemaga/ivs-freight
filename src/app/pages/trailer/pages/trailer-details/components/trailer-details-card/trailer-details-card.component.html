@@ -506,12 +506,12 @@
             [tooltipName]="'View in Modal'"
             [bodyTemplate]="'card'"
             [cardName]="'Fuel Consumption'"
-            [isCardOpen]="payrollChartConfig?.hasValue"
+            [isCardOpen]="true"
             [hasHeaderSvg]="'assets/svg/common/arrow_top_right.svg'"
             class="item-cards"
             [customClass]="'detailsPadding'"
         >
-            <div
+            <!-- <div
                 class="charts-template perfomance"
                 [class.p-0]="payrollChart.hoveringStatus"
             >
@@ -523,14 +523,8 @@
                     >
                     </app-ta-tab-switch>
                 </div>
-                <app-ta-chart
-                    #payrollChart
-                    [chartConfig]="payrollChartConfig"
-                    [axesProperties]="barAxes"
-                    [legendAttributes]="barChartLegend"
-                >
-                </app-ta-chart>
-            </div>
+                Chart implementation
+            </div> -->
         </app-ta-custom-card>
         <div *ngIf="templateCard">
             <div class="custom-card-single">

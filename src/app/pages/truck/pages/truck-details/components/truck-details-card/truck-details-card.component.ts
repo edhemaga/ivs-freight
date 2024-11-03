@@ -31,24 +31,14 @@ import { cardComponentAnimation } from '@shared/animations/card-component.animat
 import { TrucksMinimalListQuery } from '@pages/truck/state/truck-details-minima-list-state/truck-details-minimal.query';
 
 // enums
-import { ChartAxisPositionEnum } from '@shared/components/ta-chart/enums/chart-axis-position-string.enum';
-import { ChartLegendDataStringEnum } from '@shared/components/ta-chart/enums/chart-legend-data-string.enum';
 import { TableStringEnum } from '@shared/enums/table-string.enum';
 import { TruckDetailsEnum } from '@pages/truck/pages/truck-details/enums/truck-details.enum';
 
 // constants
-import { ChartConstants } from '@shared/components/ta-chart/utils/constants/chart.constants';
 import { TruckDetailsConstants } from '@pages/truck/pages/truck-details/utils/constants/truck-details.constants';
-
-// components
-import { TaChartComponent } from '@shared/components/ta-chart/ta-chart.component';
 
 // models
 import { TruckResponse, TruckPerformanceResponse } from 'appcoretruckassist';
-import { DoughnutChartConfig } from '@pages/dashboard/models/dashboard-chart-models/doughnut-chart.model';
-import { BarChartAxes } from '@pages/dashboard/models/dashboard-chart-models/bar-chart.model';
-import { ChartApiCall } from '@shared/components/ta-chart/models/chart-api-call.model';
-import { LegendAttributes } from '@shared/components/ta-chart/models/legend-attributes.model';
 
 @Component({
     selector: 'app-truck-details-card',
@@ -80,10 +70,7 @@ import { LegendAttributes } from '@shared/components/ta-chart/models/legend-attr
     ],
 })
 export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
-    @ViewChild('revenueChart', { static: false }) public revenueChart: any;
-    @ViewChild('stackedBarChart', { static: false })
     public stackedBarChart: any;
-    @ViewChild('payrollChart', { static: false }) public payrollChart: any;
     public noteControl: UntypedFormControl = new UntypedFormControl();
     public fhwaNote: UntypedFormControl = new UntypedFormControl();
     public registrationNote: UntypedFormControl = new UntypedFormControl();
@@ -100,7 +87,7 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
     @Input() truck: TruckResponse;
     public ownersData: any;
     public truck_list: any[] = this.truckMinimalListQuery.getAll();
-    private monthList: string[] = ChartConstants.MONTH_LIST_SHORT;
+    //private monthList: string[] = ChartConstants.MONTH_LIST_SHORT;
     public ownerCardOpened: boolean = true;
     public featureNumber: number = 0;
     payrollChartConfig: any = {
@@ -243,145 +230,6 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
         showZeroLine: true,
     };
 
-    public barChartLegend: LegendAttributes[] = [
-        {
-            title: 'Miles Per Gallon',
-            value: 0,
-            image: 'assets/svg/common/round_yellow.svg',
-            sufix: 'mi',
-            elementId: 1,
-        },
-        {
-            title: 'Cost Per Gallon',
-            value: 0,
-            image: 'assets/svg/common/round_blue.svg',
-            prefix: ChartLegendDataStringEnum.DOLLAR,
-            elementId: 0,
-        },
-    ];
-
-    public barChartLegend2: LegendAttributes[] = [
-        {
-            title: 'Miles',
-            value: 0,
-            image: 'assets/svg/common/round_blue_light.svg',
-            sufix: 'mi',
-            elementId: 1,
-        },
-        {
-            title: 'Revenue',
-            value: 0,
-            image: 'assets/svg/common/round_blue.svg',
-            prefix: ChartLegendDataStringEnum.DOLLAR,
-            elementId: 0,
-        },
-    ];
-
-    public stackedBarChartLegend: LegendAttributes[] = [
-        {
-            title: 'Fuel Cost',
-            value: 0,
-            image: 'assets/svg/common/round_yellow.svg',
-            prefix: ChartLegendDataStringEnum.DOLLAR,
-            elementId: 0,
-        },
-        {
-            title: 'Repair Cost',
-            value: 0,
-            image: 'assets/svg/common/round_blue.svg',
-            prefix: ChartLegendDataStringEnum.DOLLAR,
-            elementId: 1,
-        },
-        {
-            title: 'Total Cost',
-            value: 0,
-            prefix: ChartLegendDataStringEnum.DOLLAR,
-            elementId: 'total',
-        },
-    ];
-
-    public barAxes: BarChartAxes = {
-        verticalLeftAxes: {
-            visible: true,
-            minValue: 0,
-            maxValue: 60,
-            stepSize: 15,
-            showGridLines: false,
-        },
-        verticalRightAxes: {
-            visible: true,
-            minValue: 0,
-            maxValue: 24000,
-            stepSize: 6000,
-            showGridLines: false,
-        },
-        horizontalAxes: {
-            visible: true,
-            position: ChartAxisPositionEnum.BOTTOM,
-            showGridLines: false,
-        },
-    };
-
-    public barAxes2: BarChartAxes = {
-        verticalLeftAxes: {
-            visible: true,
-            minValue: 0,
-            maxValue: 60,
-            stepSize: 15,
-            showGridLines: false,
-        },
-        verticalRightAxes: {
-            visible: true,
-            minValue: 0,
-            maxValue: 24000,
-            stepSize: 6000,
-            showGridLines: false,
-        },
-        horizontalAxes: {
-            visible: true,
-            position: ChartAxisPositionEnum.BOTTOM,
-            showGridLines: false,
-        },
-    };
-
-    public stackedBarAxes: BarChartAxes = {
-        verticalLeftAxes: {
-            visible: true,
-            minValue: 0,
-            maxValue: 60,
-            stepSize: 15,
-            showGridLines: false,
-        },
-        verticalRightAxes: {
-            visible: true,
-            minValue: 0,
-            maxValue: 24000,
-            stepSize: 6000,
-            showGridLines: false,
-        },
-        horizontalAxes: {
-            visible: true,
-            position: ChartAxisPositionEnum.BOTTOM,
-            showGridLines: false,
-        },
-    };
-    public truckIndex: number;
-    public revenueCall: ChartApiCall = {
-        id: -1,
-        chartType: 1,
-    };
-    public performanceCall: ChartApiCall = {
-        id: -1,
-        chartType: 1,
-    };
-    public expensesCall: ChartApiCall = {
-        id: -1,
-        chartType: 1,
-    };
-    public fuelCall: ChartApiCall = {
-        id: -1,
-        chartType: 1,
-    };
     public performance: TruckPerformanceResponse;
     public isWideScreen: boolean = false;
     public ownerHistoryHeader: { label: string }[] =
@@ -401,7 +249,7 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
         this.setFeatureNumber(this.truck);
         this.checkWidth(window.innerWidth);
 
-        this.getTruckChartData(changes.truck.currentValue.id);
+        //this.getTruckChartData(changes.truck.currentValue.id);
 
         this.changeColor();
         this.truckMinimalListQuery
@@ -430,13 +278,13 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
         });
         //this.truck.ownerHistories = array1;
         this.ownersData = array1;
-        setTimeout(() => {
-            let currentIndex = this.truckDropDowns.findIndex(
-                (truck) => truck.id === this.truck.id
-            );
+        // setTimeout(() => {
+        //     let currentIndex = this.truckDropDowns.findIndex(
+        //         (truck) => truck.id === this.truck.id
+        //     );
 
-            this.truckIndex = currentIndex;
-        }, 300);
+        //     this.truckIndex = currentIndex;
+        // }, 300);
     }
 
     public sortKeys = (a, b) => {
@@ -534,110 +382,6 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
         ];
     }
 
-    public getExpensesChartData(
-        id: number,
-        chartType: number,
-        hideAnimation?: boolean
-    ) {
-        if (
-            id != this.expensesCall.id ||
-            chartType != this.expensesCall.chartType
-        ) {
-            this.expensesCall.id = id;
-            this.expensesCall.chartType = chartType;
-        } else {
-            return false;
-        }
-        this.truckService
-            .getExpenses(id, chartType)
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((item) => {
-                this.chartDataSet(
-                    this.stackedBarChart,
-                    this.stackedBarChartConfig,
-                    this.stackedBarChartLegend,
-                    this.stackedBarAxes,
-                    item,
-                    hideAnimation,
-                    false,
-                    true
-                );
-            });
-    }
-    public getPerformanceChart(id: number, chartType: number) {
-        if (
-            id != this.performanceCall.id ||
-            chartType != this.performanceCall.chartType
-        ) {
-            this.performanceCall.id = id;
-            this.performanceCall.chartType = chartType;
-        } else {
-            return false;
-        }
-        this.truckService
-            .getPerformace(id, chartType)
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((item) => {
-                this.performance = item;
-            });
-    }
-    public getFuelConsumtionChartData(
-        id: number,
-        chartType: number,
-        hideAnimation?: boolean
-    ) {
-        if (id != this.fuelCall.id || chartType != this.fuelCall.chartType) {
-            this.fuelCall.id = id;
-            this.fuelCall.chartType = chartType;
-        } else {
-            return false;
-        }
-        this.truckService
-            .getFuelConsumption(id, chartType)
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((item) => {
-                this.chartDataSet(
-                    this.payrollChart,
-                    this.payrollChartConfig,
-                    this.barChartLegend,
-                    this.barAxes,
-                    item,
-                    hideAnimation,
-                    true
-                );
-            });
-    }
-
-    public getRevenueChartData(
-        id: number,
-        chartType: number,
-        hideAnimation?: boolean
-    ) {
-        if (
-            id != this.revenueCall.id ||
-            chartType != this.revenueCall.chartType
-        ) {
-            this.revenueCall.id = id;
-            this.revenueCall.chartType = chartType;
-        } else {
-            return false;
-        }
-        this.truckService
-            .getRevenue(id, chartType)
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((item) => {
-                this.chartDataSet(
-                    this.revenueChart,
-                    this.revenueChartConfig,
-                    this.barChartLegend2,
-                    this.barAxes2,
-                    item,
-                    hideAnimation,
-                    true
-                );
-            });
-    }
-
     /**Function for dots in cards */
     public initTableOptions(): void {
         this.dataEdit = {
@@ -671,22 +415,6 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
             ],
             export: true,
         };
-    }
-    public changeTabExpenses(ev: any) {
-        const chartType = this.stackedBarChart?.detailsTimePeriod(ev.name);
-        this.getExpensesChartData(this.truck.id, chartType);
-    }
-    public changeTabPerfomance(ev: any) {
-        const chartType = this.payrollChart?.detailsTimePeriod(ev.name);
-        this.getPerformanceChart(this.truck.id, chartType);
-    }
-    public changeTabFuel(ev: any) {
-        const chartType = this.payrollChart?.detailsTimePeriod(ev.name);
-        this.getFuelConsumtionChartData(this.truck.id, chartType);
-    }
-    public changeTabRevenue(ev: any) {
-        const chartType = this.revenueChart?.detailsTimePeriod(ev.name);
-        this.getRevenueChartData(this.truck.id, chartType);
     }
 
     /**Function for toggle page in cards */
@@ -754,7 +482,7 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
                     this.onSelectedTruck({
                         id: this.truckDropDowns[currentIndex].id,
                     });
-                    this.truckIndex = currentIndex;
+                    //this.truckIndex = currentIndex;
                 }
                 break;
             }
@@ -770,7 +498,7 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
                     this.onSelectedTruck({
                         id: this.truckDropDowns[currentIndex].id,
                     });
-                    this.truckIndex = currentIndex;
+                    //this.truckIndex = currentIndex;
                 }
 
                 break;
@@ -788,138 +516,6 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
     ngOnDestroy(): void {
         this.destroy$.next();
         this.destroy$.complete();
-    }
-
-    public chartDataSet(
-        chart: TaChartComponent,
-        config: DoughnutChartConfig,
-        legend: LegendAttributes[],
-        axes: BarChartAxes,
-        item: any, //leave this any because of many responses
-        hideAnimation?: boolean,
-        reverse?: boolean,
-        stacked?: boolean
-    ): void {
-        config.dataLabels = [];
-        config.chartValues = [
-            item?.fuelCost
-                ? item.fuelCost
-                : item?.milesPerGallon
-                    ? item.milesPerGallon
-                    : item?.miles
-                        ? item.miles
-                        : 0,
-            item?.repairCost
-                ? item.repairCost
-                : item?.costPerGallon
-                    ? item.costPerGallon
-                    : item?.revenue
-                        ? item.revenue
-                        : 0,
-            item?.totalCost ? item.totalCost : null,
-        ];
-
-        if (legend.length > 2) {
-            legend[0].value = item?.fuelCost
-                ? item.fuelCost
-                : item?.milesPerGallon
-                    ? item.milesPerGallon
-                    : 0;
-            legend[1].value = item?.repairCost
-                ? item.repairCost
-                : item?.costPerGallon
-                    ? item.costPerGallon
-                    : 0;
-            legend[2].value = item?.totalCost ? item.totalCost : null;
-        } else {
-            legend[0].value = item?.fuelCost
-                ? item.fuelCost
-                : item?.milesPerGallon
-                    ? item.milesPerGallon
-                    : item?.miles
-                        ? item.miles
-                        : 0;
-            legend[1].value = item?.repairCost
-                ? item.repairCost
-                : item?.costPerGallon
-                    ? item.costPerGallon
-                    : item?.revenue
-                        ? item.revenue
-                        : 0;
-        }
-
-        let hasValue = false;
-
-        legend.map((leg) => {
-            if (leg.value > 0) hasValue = true;
-        });
-
-        config.hasValue = hasValue;
-
-        let fuelCost = [],
-            repairCost = [],
-            labels = [],
-            maxValue = 0,
-            maxValue2 = 0;
-        const mapData = item?.truckExpensesCharts
-            ? item.truckExpensesCharts
-            : item?.truckFuelConsumptionCharts
-                ? item.truckFuelConsumptionCharts
-                : item?.truckRevenueCharts
-                    ? item.truckRevenueCharts
-                    : null;
-        if (mapData?.length > 17) {
-            config.dataProperties[0].defaultConfig.barThickness = 10;
-            config.dataProperties[1].defaultConfig.barThickness = 10;
-        } else {
-            config.dataProperties[0].defaultConfig.barThickness = 18;
-            config.dataProperties[1].defaultConfig.barThickness = 18;
-        }
-        chart.toolTipData = [];
-        mapData.map((data) => {
-            chart.toolTipData.push(data);
-            let dataVal1 = data?.fuelCost
-                ? data.fuelCost
-                : data?.milesPerGallon
-                    ? data.milesPerGallon
-                    : data?.miles
-                        ? data.miles
-                        : 0;
-            let dataVal2 = data?.repairCost
-                ? data.repairCost
-                : data?.costPerGallon
-                    ? data.costPerGallon
-                    : data?.revenue
-                        ? data.revenue
-                        : 0;
-            fuelCost.push(dataVal1);
-            repairCost.push(dataVal2);
-            if (stacked && dataVal1 + dataVal2 > maxValue)
-                maxValue =
-                    dataVal1 + dataVal2 + ((dataVal1 + dataVal2) * 7) / 100;
-            else if (!stacked && dataVal1 > maxValue)
-                maxValue = dataVal1 + (dataVal1 * 7) / 100;
-            if (dataVal2 > maxValue2)
-                maxValue2 = dataVal2 + (dataVal2 * 7) / 100;
-            if (data.day)
-                labels.push([data.day, this.monthList[data.month - 1]]);
-            else labels.push([this.monthList[data.month - 1]]);
-        });
-
-        axes.verticalLeftAxes.maxValue = maxValue;
-        axes.verticalRightAxes.maxValue = maxValue2;
-
-        config.dataLabels = labels;
-        config.dataProperties[0].defaultConfig.data = reverse
-            ? repairCost
-            : fuelCost;
-        config.dataProperties[1].defaultConfig.data = reverse
-            ? fuelCost
-            : repairCost;
-        chart.chartDataCheck(config.chartValues);
-        chart.updateChartData(hideAnimation);
-        chart.saveValues = JSON.parse(JSON.stringify(legend));
-        chart.legendAttributes = JSON.parse(JSON.stringify(legend));
     }
 
     public setFeatureNumber(truck: TruckResponse): void {
@@ -958,13 +554,5 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
             lastSixChars = [mod.slice(0, firsNum), mod.slice(-6)];
         }
         return lastSixChars;
-    }
-
-    public getTruckChartData(id: number): void {
-        this.getExpensesChartData(id, this.expensesCall.chartType, false);
-        this.getPerformanceChart(id, this.performanceCall.chartType);
-
-        this.getFuelConsumtionChartData(id, this.fuelCall.chartType, false);
-        this.getRevenueChartData(id, this.revenueCall.chartType, false);
     }
 }
