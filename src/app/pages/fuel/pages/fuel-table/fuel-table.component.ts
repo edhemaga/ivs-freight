@@ -37,7 +37,7 @@ import { MethodsGlobalHelper } from '@shared/utils/helpers/methods-global.helper
 import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calculations.helper';
 
 //Models
-import { FuelService as FuelController, FuelStopListResponse, FuelTransactionResponse } from 'appcoretruckassist';
+import { FuelStopListResponse, FuelTransactionResponse } from 'appcoretruckassist';
 import { FuelTransactionListResponse } from 'appcoretruckassist';
 import { TableColumnConfig } from '@shared/models/table-models/table-column-config.model';
 import { DropdownItem } from '@shared/models/card-models/card-table-data.model';
@@ -100,8 +100,7 @@ export class FuelTableComponent implements OnInit, AfterViewInit, OnDestroy {
         private fuelQuery: FuelQuery,
         private ref: ChangeDetectorRef,
         private confiramtionService: ConfirmationService,
-        private fuelService: FuelService,
-        private fuelController: FuelController
+        private fuelService: FuelService
     ) {}
 
     //-------------------------------NG ON INIT-------------------------------
@@ -830,14 +829,16 @@ export class FuelTableComponent implements OnInit, AfterViewInit, OnDestroy {
         this.fuelData.pageIndex++;
 
         if (this.selectedTab === TableStringEnum.FUEL_TRANSACTION) {
-            this.fuelController
-                .apiFuelTransactionListGet(null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, this.fuelData.pageIndex, FuelTableConstants.TABLE_PAGE_SIZE)
+            this.fuelService
+                .getFuelTransactionsList(null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, this.fuelData.pageIndex, FuelTableConstants.TABLE_PAGE_SIZE)
+                .pipe(takeUntil(this.destroy$))
                 .subscribe(response => {
                     this.updateStoreData(response);
                 });
         } else if (this.selectedTab === TableStringEnum.FUEL_STOP) {
-            this.fuelController
-                .apiFuelFuelstopListGet(null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, this.fuelData.pageIndex, FuelTableConstants.TABLE_PAGE_SIZE)
+            this.fuelService
+                .getFuelStopsList(null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, this.fuelData.pageIndex, FuelTableConstants.TABLE_PAGE_SIZE)
+                .pipe(takeUntil(this.destroy$))
                 .subscribe(response => {
                     this.updateStoreData(response);
                 });
