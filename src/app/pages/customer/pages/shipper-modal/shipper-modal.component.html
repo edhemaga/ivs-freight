@@ -177,11 +177,14 @@
                                         placeholderIcon: 'time',
                                         isDropdown: true,
                                         isDisabled:
-                                            shipperForm.get(
+                                            (shipperForm.get(
                                                 'receivingOpenTwentyFourHours'
                                             ).value &&
+                                                shipperForm.get(
+                                                    'receivingAppointment'
+                                                ).value) ||
                                             shipperForm.get(
-                                                'receivingAppointment'
+                                                'receivingOpenTwentyFourHours'
                                             ).value,
                                         customClass: 'datetimeclass'
                                     }"
@@ -198,11 +201,14 @@
                                         placeholderIcon: 'time',
                                         isDropdown: true,
                                         isDisabled:
-                                            shipperForm.get(
+                                            (shipperForm.get(
                                                 'receivingOpenTwentyFourHours'
                                             ).value &&
+                                                shipperForm.get(
+                                                    'receivingAppointment'
+                                                ).value) ||
                                             shipperForm.get(
-                                                'receivingAppointment'
+                                                'receivingOpenTwentyFourHours'
                                             ).value,
                                         customClass: 'datetimeclass'
                                     }"
@@ -259,11 +265,14 @@
                                         placeholderIcon: 'time',
                                         isDropdown: true,
                                         isDisabled:
-                                            shipperForm.get(
+                                            (shipperForm.get(
                                                 'shippingOpenTwentyFourHours'
                                             ).value &&
+                                                shipperForm.get(
+                                                    'shippingAppointment'
+                                                ).value) ||
                                             shipperForm.get(
-                                                'shippingAppointment'
+                                                'shippingOpenTwentyFourHours'
                                             ).value,
                                         customClass: 'datetimeclass'
                                     }"
@@ -280,11 +289,14 @@
                                         placeholderIcon: 'time',
                                         isDropdown: true,
                                         isDisabled:
-                                            shipperForm.get(
+                                            (shipperForm.get(
                                                 'shippingOpenTwentyFourHours'
                                             ).value &&
+                                                shipperForm.get(
+                                                    'shippingAppointment'
+                                                ).value) ||
                                             shipperForm.get(
-                                                'shippingAppointment'
+                                                'shippingOpenTwentyFourHours'
                                             ).value,
                                         customClass: 'datetimeclass'
                                     }"

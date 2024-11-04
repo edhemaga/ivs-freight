@@ -434,6 +434,7 @@ table.truckassist-table-body-style {
 
                                 &.group-4 {
                                     color: $ta-red-11;
+                                    margin-right: 1px;
                                 }
 
                                 &.group-5 {
@@ -1871,25 +1872,27 @@ table.truckassist-table-body-style {
                             cursor: pointer;
                             width: 26px;
                             height: 26px;
+                            margin-right: -4px;
+                            padding: 4px;
                             display: flex;
                             align-items: center;
                             justify-content: center;
 
                             svg-icon {
                                 display: flex;
-
-                                transition: transform 0.1s;
+                                transition: transform 0.2s;
 
                                 svg {
                                     circle {
                                         fill: $muted;
+                                        transition: fill 0.2s;
                                     }
                                 }
                             }
 
                             &:hover {
                                 border-radius: 2px;
-                                background: $ta-black-4;
+                                background: $dark-2;
 
                                 transition: background 0.2s;
 
@@ -1897,8 +1900,21 @@ table.truckassist-table-body-style {
                                     svg {
                                         circle {
                                             fill: $ta-black;
+                                        }
+                                    }
+                                }
+                            }
 
-                                            transition: fill 0.2s;
+                            &.active-drop,
+                            &.active-drop:hover {
+                                background: $ta-black;
+
+                                svg-icon {
+                                    transform: rotateZ(90deg);
+
+                                    svg {
+                                        circle {
+                                            fill: $bw-9;
                                         }
                                     }
                                 }
@@ -2791,6 +2807,8 @@ table.truckassist-table-body-style {
             // Hover
             &:hover {
                 .columns-container {
+                    background-color: $ta-light-grey !important;
+
                     .finish-order-action {
                         width: 98px;
                         height: 24px;
@@ -2805,12 +2823,13 @@ table.truckassist-table-body-style {
                         text-overflow: ellipsis;
                         cursor: pointer;
                     }
+
                     .td-content {
                         input {
                             background-color: $bw2;
                         }
                     }
-                    background-color: $bw2 !important;
+
                     .lable-container {
                         input {
                             background-color: $bw2;
@@ -3403,17 +3422,6 @@ table.truckassist-table-body-style {
 // NG CLASS
 .pined-columns-margin {
     margin-right: 6px;
-}
-
-.active-drop {
-    background: $ta-black-4;
-    border-radius: 2px;
-
-    svg-icon {
-        transform: rotateZ(90deg);
-
-        transition: transform 0.1s;
-    }
 }
 
 .avatar-is-owner {

@@ -81,6 +81,7 @@ import { TableLoadStatusPipe } from '@shared/pipes/table-load-status.pipe';
 
 // enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
+import { TableBodyStringEnum } from '@shared/components/ta-table/ta-table-body/enums';
 
 // models
 import {
@@ -229,6 +230,7 @@ export class TaTableBodyComponent
     public popoverDescriptionItems: { title: string; className: string }[] =
         RepairDescriptionPopoverConstants.descriptionItems;
 
+    public isDropdownPositionBottom: boolean = false;
     public openHoursDropdownActiveId: number = -1;
 
     public tableBodySvgRoutes = TableBodySvgRoutes;
@@ -614,6 +616,8 @@ export class TaTableBodyComponent
 
         this.tableWidth =
             this.actionsWidth + notPinedWidth + this.pinedWidth + 22;
+
+        this.isDropdownPositionBottom = this.tableWidth > 1650;
     }
 
     // Get Tab Table Data For Selected Tab
@@ -825,6 +829,8 @@ export class TaTableBodyComponent
         innerDropdownContent.forEach((content) => {
             content.removeAllListeners('click');
         });
+
+        this.dropDownActive = -1;
     }
 
     // Toggle Status Dropdown
@@ -913,49 +919,17 @@ export class TaTableBodyComponent
     }
 
     // Show Invoice Aging Dropdown
-    public onShowInvoiceAgingDropdown(
+    public onShowInvoiceAgingDropdown<T extends { id: number; field: string }>(
         popover: NgbPopover,
-        row: any,
-        column: any
+        row: T,
+        column: T
     ): void {
         popover.toggle();
 
         this.invoiceDropdownActive = popover.isOpen() ? row.id : -1;
         this.invoiceDropdownType = popover.isOpen() ? column.field : null;
 
-        let columnData = row[column.field];
-
-        columnData = {
-            ...columnData,
-            invoiceAgeingGroupOne: {
-                percentage: 15,
-                periodOfDays: '0-30',
-                countInvoice: 7,
-                totalSum: 12453.43,
-                averageDays: null,
-            },
-            invoiceAgeingGroupTwo: {
-                percentage: 30,
-                periodOfDays: '31-60',
-                countInvoice: 18,
-                totalSum: 245593.56,
-                averageDays: null,
-            },
-            invoiceAgeingGroupThree: {
-                percentage: 45,
-                periodOfDays: '61-90',
-                countInvoice: 38,
-                totalSum: 53593.56,
-                averageDays: null,
-            },
-            invoiceAgeingGroupFour: {
-                percentage: 25,
-                periodOfDays: '91+',
-                countInvoice: 13,
-                totalSum: 23424.34,
-                averageDays: null,
-            },
-        };
+        const columnData = row[column.field];
 
         const {
             invoiceAgeingGroupOne,
@@ -964,12 +938,16 @@ export class TaTableBodyComponent
             invoiceAgeingGroupFour,
         } = columnData;
 
-        this.invoiceDropdownData = [
-            invoiceAgeingGroupOne,
-            invoiceAgeingGroupTwo,
-            invoiceAgeingGroupThree,
-            invoiceAgeingGroupFour,
-        ];
+        this.invoiceDropdownData = {
+            isUnPaidAging:
+                column?.field === TableBodyStringEnum.TABLE_UNPAID_INV_AGING,
+            invAgingGroups: [
+                invoiceAgeingGroupOne,
+                invoiceAgeingGroupTwo,
+                invoiceAgeingGroupThree,
+                invoiceAgeingGroupFour,
+            ],
+        };
     }
 
     // Open Hours Dropdown

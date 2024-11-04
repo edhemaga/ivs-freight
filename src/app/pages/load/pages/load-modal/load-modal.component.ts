@@ -219,7 +219,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
 
     @Input() editData: EditData;
 
-    data /* : ICaMapProps  */ = {
+    data /* : ICaMapProps */ = {
         center: {
             lat: 41.860119,
             lng: -87.660156,
@@ -4471,8 +4471,8 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                         );
 
                     // dispatches
-                    this.labelsDispatches = this.originLabelsDispatches =
-                        res.dispatches.map((item, index) => {
+                    this.labelsDispatches = res.dispatches.map(
+                        (item, index) => {
                             return {
                                 ...item,
                                 driver: {
@@ -4523,12 +4523,10 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                                         )
                                     ),
                             };
-                        });
-
-                    this.labelsDispatches = this.labelsDispatches.filter(
-                        (item) =>
-                            item?.dispatcherId === this.selectedDispatcher.id
+                        }
                     );
+
+                    this.originLabelsDispatches = this.labelsDispatches;
 
                     // brokers
                     this.labelsBroker = res.brokers.map((item) => {
