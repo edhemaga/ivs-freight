@@ -712,6 +712,8 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     public isActiveLoad: boolean;
     public editName: string;
     public isMilesLoading: boolean = false;
+    public showDriverRate: boolean;
+    public showAdjustedRate: boolean;
 
     constructor(
         private formBuilder: UntypedFormBuilder,
@@ -757,22 +759,29 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         );
     }
 
-    public get showAdjustedRate(): boolean {
+    public hanndleShowAdjustedRate(): void {
         const selectedDispatcher: DispatchLoadModalResponse =
             this.selectedDispatches;
 
+        // adjusted rate option is shown in dropdown if commission driver or owner set
         if (selectedDispatcher) {
-            return !!selectedDispatcher.driver.owner;
-        }
-
-        return false;
+            this.showAdjustedRate =
+                !!selectedDispatcher.driver.owner ||
+                selectedDispatcher.driver.payType.name ===
+                    LoadModalStringEnum.COMMISSION;
+        } else this.showAdjustedRate = false;
     }
 
-    public get showDriverRate(): boolean {
-        return (
+    public handleShowDriverRate(): void {
+        this.showDriverRate =
             this.selectedDispatches &&
-            this.selectedDispatches.payType === LoadModalStringEnum.FLAT_RATE
-        );
+            this.selectedDispatches?.driver?.payType.name ===
+                LoadModalStringEnum.FLAT_RATE &&
+            !this.selectedDispatches.payType.includes(
+                LoadModalStringEnum.PERCENT_PAY_TYPE
+            );
+
+        this.hanndleShowAdjustedRate();
     }
 
     public get getPickupTimeToInputConfig(): ITaInput {
@@ -1556,8 +1565,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
 
                 if (
                     this.isEditingMode &&
-                    this.editData?.selectedTab === TableStringEnum.TEMPLATE &&
-                    this.editData.loadAction === TableStringEnum.CONVERT_TO_LOAD
+                    this.editData?.selectedTab === TableStringEnum.TEMPLATE
                 ) {
                     this.updateLoadTemplate(addNew);
                 } else if (this.isConvertedToTemplate) {
@@ -2038,18 +2046,9 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                     customClass: LoadModalStringEnum.LOAD_DISPATCHES_TTD,
                 },
             };
-
-            if (
-                this.selectedDispatches.payType ===
-                LoadModalStringEnum.FLAT_RATE
-            ) {
+            if (this.showDriverRate) {
                 this.inputService.changeValidators(
                     this.loadForm.get(LoadModalStringEnum.DRIVER_RATE)
-                );
-
-                this.inputService.changeValidators(
-                    this.loadForm.get(LoadModalStringEnum.ADJUSTED_RATE),
-                    false
                 );
 
                 this.additionalBillingTypes =
@@ -2082,22 +2081,12 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                 false
             );
 
-            this.inputService.changeValidators(
-                this.loadForm.get(LoadModalStringEnum.ADJUSTED_RATE),
-                false
-            );
-
             this.loadForm
                 .get(LoadModalStringEnum.PICKUP_LEG_MILES)
                 .patchValue(null);
         }
 
-        const isAdjustedRate = !!this.selectedDispatches?.driver?.owner;
-
-        this.inputService.changeValidators(
-            this.loadForm.get(LoadModalStringEnum.ADJUSTED_RATE),
-            isAdjustedRate
-        );
+        this.handleShowDriverRate();
     }
 
     private onSelectDropdownBroker(event): void {
@@ -2780,7 +2769,6 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             case LoadModalStringEnum.FIRST_PICKUP:
                 this.isActivePickupStop = event;
 
-                this.isActiveDeliveryStop = false;
                 this.isActivePickupStop = !this.isActivePickupStop;
 
                 this.loadExtraStops().controls.filter((item) => {
@@ -2790,6 +2778,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                 break;
             case LoadModalStringEnum.FIRST_DELIVERY:
                 if (!this.selectedPickupShipper) return;
+
                 this.isActiveDeliveryStop = !this.isActiveDeliveryStop;
 
                 this.isActivePickupStop = false;
@@ -2925,11 +2914,6 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             );
 
             this.selectedAdditionalBillings.pop();
-
-            this.inputService.changeValidators(
-                this.loadForm.get(LoadModalStringEnum.ADJUSTED_RATE),
-                false
-            );
         } else {
             this.additionalBillingTypes.push(
                 this.selectedAdditionalBillings.find(
@@ -3041,10 +3025,6 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                         baseRate: 0,
                     };
 
-                    this.inputService.changeValidators(
-                        this.loadForm.get(LoadModalStringEnum.ADJUSTED_RATE),
-                        false
-                    );
                     this.inputService.changeValidators(
                         this.loadForm.get(LoadModalStringEnum.DRIVER_RATE),
                         false
