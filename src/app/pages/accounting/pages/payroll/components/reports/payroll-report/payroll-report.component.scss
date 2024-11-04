@@ -428,36 +428,36 @@
                             height: 18px;
                             display: flex;
 
-                            path{
+                            path {
                                 fill: #919191;
                             }
                         }
                     }
 
-                    &.active{
-                        background-color: #6C6C6C;
-                        svg-icon{
-                            svg{
-                                path{
-                                    fill: #DADADA;
+                    &.active {
+                        background-color: #6c6c6c;
+                        svg-icon {
+                            svg {
+                                path {
+                                    fill: #dadada;
                                 }
                             }
                         }
                     }
 
-                    &.burger_menu{
+                    &.burger_menu {
                         position: relative;
                         margin-left: 10px;
 
-                        &::after{
-                            content: "";
+                        &::after {
+                            content: '';
                             position: absolute;
                             top: 50%;
                             transform: translateY(-50%);
                             height: 18px;
                             width: 1px;
                             border-radius: 1px;
-                            background-color: #CCCCCC;
+                            background-color: #cccccc;
                             left: -5px;
                         }
                     }
@@ -578,7 +578,7 @@
 
         --td-cointainer-first-child-padding-left: 0px;
 
-        --table-preview-row-border-top: 1px solid #DADADA;
+        --table-preview-row-border-top: 1px solid #dadada;
         --td-cointainer-last-child-padding-right: 0;
 
         --table-preview-row-first-td-padding: 0 8px;
