@@ -3,24 +3,34 @@ import { Injectable } from '@angular/core';
 import { Observable, forkJoin } from 'rxjs';
 import { tap } from 'rxjs/operators';
 
-// models
-import { FuelService } from '@shared/services/fuel.service';
+// appcoretruckassist
+import { FuelService as FuelController, FuelStopListResponse, FuelTransactionListResponse } from 'appcoretruckassist';
+
+// enums
+import { TableStringEnum } from '@shared/enums/table-string.enum';
 
 // services
-import { FuelStopListResponse, FuelTransactionListResponse } from 'appcoretruckassist';
+import { FuelService } from '@shared/services/fuel.service';
 
 @Injectable({
     providedIn: 'root',
 })
 export class FuelResolver {
-    constructor(private fuelService: FuelService) {}
+    constructor(
+        private fuelController: FuelController,
+        private fuelService: FuelService
+    ) {}
 
     resolve(): Observable<[FuelTransactionListResponse, FuelStopListResponse]> {
         return forkJoin([
-            this.fuelService.getFuelTransactionsList(),
-            this.fuelService.getFuelStopsList(),
+            this.fuelController.apiFuelTransactionListGet(),
+            this.fuelController.apiFuelFuelstopListGet(),
         ]).pipe(
             tap(([fuelTransactions, fuelStops]) => {
+                const tableView = JSON.parse(
+                    localStorage.getItem(TableStringEnum.FUEL_TABLE_VIEW)
+                );
+
                 localStorage.setItem(
                     'fuelTableCount',
                     JSON.stringify({
@@ -30,8 +40,9 @@ export class FuelResolver {
                     })
                 );
 
-                this.fuelService.updateStoreFuelTransactionsList = fuelTransactions;
-                this.fuelService.updateStoreFuelStopList = fuelStops;
+                if (!tableView || tableView?.tabSelected === TableStringEnum.FUEL_TRANSACTION) 
+                    this.fuelService.updateStoreFuelTransactionsList = fuelTransactions;
+                else this.fuelService.updateStoreFuelStopList = fuelStops;
             })
         );
     }
