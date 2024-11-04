@@ -556,7 +556,7 @@ export class LoadModalConfig {
         type: 'text',
         label: 'Adjusted',
         labelInInput: true,
-        isRequired: true,
+        isRequired: false,
         priceSeparator: true,
         priceSeparatorLimitation: 6,
         placeholderIconRightSide: 'dollar',
