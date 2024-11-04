@@ -352,7 +352,28 @@
         <div
             class="ta-font-regular d-flex align-items-center justify-content-center"
         >
-            <div>
+            <div
+                class="favorite-icon"
+                [ngClass]="item?.isFavourite && 'icon-gray'"
+                [ngStyle]="{
+                    'margin-right': isAdvancedView ? 'auto' : '5px'
+                }"
+                (click)="addFavoriteConversation(item.id)"
+            >
+                <ng-container
+                    *ngTemplateOutlet="
+                        icon;
+                        context: {
+                            item: {
+                                width: 13,
+                                height: 13,
+                                route: chatSvgRoutes.favoriteIcon
+                            }
+                        }
+                    "
+                ></ng-container>
+            </div>
+            <div class="icons">
                 <ng-container [ngSwitch]="true">
                     <ng-container *ngSwitchCase="item?.isFavourite">
                         <div

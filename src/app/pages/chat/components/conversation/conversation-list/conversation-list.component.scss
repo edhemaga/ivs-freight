@@ -58,6 +58,29 @@
                     }
                 }
             }
+
+            .favorite-icon {
+                display: none;
+
+                &:hover {
+                    svg-icon {
+                        svg {
+                            path {
+                                fill: $bw5 !important;
+                            }
+                        }
+                    }
+                }
+            }
+
+            &:hover {
+                .icons {
+                    display: none;
+                }
+                .favorite-icon {
+                    display: block;
+                }
+            }
         }
     }
     &:hover {

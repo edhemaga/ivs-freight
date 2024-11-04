@@ -43,10 +43,11 @@ import { chatFadeVerticallyAnimation } from '@shared/animations/chat-fade-vertic
 import { UnsubscribeHelper } from '@pages/chat/utils/helpers';
 
 // Services
-import { ChatStoreService } from '@pages/chat/services';
+import { ChatStoreService, UserChatService } from '@pages/chat/services';
 
 // Constants
 import { ChatConversationGroupStateConstant } from '@pages/chat/utils/constants';
+import { takeUntil } from 'rxjs';
 
 @Component({
     selector: 'app-conversation-list',
@@ -86,6 +87,11 @@ export class ConversationListComponent
 
     // Create list of states for all groups available
     public groupsState = ChatConversationGroupStateConstant.groupsState;
+    public departmentHovered!: ChatCompanyChannelExtended;
+    public truckHovered!: ChatCompanyChannelExtended;
+    public dispatchBoardHovered: ChatCompanyChannelExtended;
+    public companyUserHovered!: CompanyUserChatResponse;
+    public driverHovered!: CompanyUserChatResponse;
 
     // Enums
     public chatGroupStateEnum = ChatGroupStateEnum;
@@ -97,7 +103,10 @@ export class ConversationListComponent
 
     constructor(
         private formBuilder: UntypedFormBuilder,
-        private chatStoreService: ChatStoreService
+
+        // Services
+        private chatStoreService: ChatStoreService,
+        private chatService: UserChatService
     ) {
         super();
     }
@@ -302,5 +311,12 @@ export class ConversationListComponent
             });
             return;
         }
+    }
+
+    public addFavoriteConversation(conversationId: number): void {
+        this.chatService
+            .addFavourite(conversationId)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe();
     }
 }
