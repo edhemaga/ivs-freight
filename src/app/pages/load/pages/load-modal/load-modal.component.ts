@@ -2051,11 +2051,6 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                     this.loadForm.get(LoadModalStringEnum.DRIVER_RATE)
                 );
 
-                this.inputService.changeValidators(
-                    this.loadForm.get(LoadModalStringEnum.ADJUSTED_RATE),
-                    false
-                );
-
                 this.additionalBillingTypes =
                     this.additionalBillingTypes.filter((item) => item.id !== 6);
             } else {
@@ -2086,20 +2081,10 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                 false
             );
 
-            this.inputService.changeValidators(
-                this.loadForm.get(LoadModalStringEnum.ADJUSTED_RATE),
-                false
-            );
-
             this.loadForm
                 .get(LoadModalStringEnum.PICKUP_LEG_MILES)
                 .patchValue(null);
         }
-
-        this.inputService.changeValidators(
-            this.loadForm.get(LoadModalStringEnum.ADJUSTED_RATE),
-            this.showAdjustedRate
-        );
     }
 
     private onSelectDropdownBroker(event): void {
@@ -2927,11 +2912,6 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             );
 
             this.selectedAdditionalBillings.pop();
-
-            this.inputService.changeValidators(
-                this.loadForm.get(LoadModalStringEnum.ADJUSTED_RATE),
-                false
-            );
         } else {
             this.additionalBillingTypes.push(
                 this.selectedAdditionalBillings.find(
@@ -3043,10 +3023,6 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                         baseRate: 0,
                     };
 
-                    this.inputService.changeValidators(
-                        this.loadForm.get(LoadModalStringEnum.ADJUSTED_RATE),
-                        false
-                    );
                     this.inputService.changeValidators(
                         this.loadForm.get(LoadModalStringEnum.DRIVER_RATE),
                         false
