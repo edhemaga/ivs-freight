@@ -32,7 +32,6 @@ export class RepairShopCardViewComponent
     implements OnInit, OnChanges, OnDestroy
 {
     private destroy$ = new Subject<void>();
-    @ViewChild('repairExpensesChart', { static: false })
     public repairExpensesChart: any;
     @Input() repairShopCardViewData: RepairShopResponse;
     @Input() templateCard: boolean;
@@ -349,8 +348,8 @@ export class RepairShopCardViewComponent
     }
 
     public changeRepairTabs(ev: any) {
-        const chartType = this.repairExpensesChart?.detailsTimePeriod(ev.name);
-        this.getRepairShopChartData(this.currentShopId, chartType);
+        //const chartType = this.repairExpensesChart?.detailsTimePeriod(ev.name);
+        //this.getRepairShopChartData(this.currentShopId, chartType);
     }
 
     public getRepairShopChartData(
@@ -398,9 +397,9 @@ export class RepairShopCardViewComponent
                 } else {
                     this.barChartConfig.dataProperties[1].defaultConfig.barThickness = 18;
                 }
-                this.repairExpensesChart.toolTipData = [];
+                //this.repairExpensesChart.toolTipData = [];
                 item.repairShopExpensesChartResponse.map((data) => {
-                    this.repairExpensesChart.toolTipData.push(data);
+                    //this.repairExpensesChart.toolTipData.push(data);
                     milesPerGallon.push(data.repair);
                     costPerGallon.push(data.repairCost);
                     if (data.repair > maxValue) {
@@ -424,23 +423,23 @@ export class RepairShopCardViewComponent
                     costPerGallon;
                 this.barChartConfig.dataProperties[1].defaultConfig.data =
                     milesPerGallon;
-                this.repairExpensesChart.chartDataCheck(
-                    this.barChartConfig.chartValues
-                );
-                this.repairExpensesChart.updateChartData(hideAnimation);
-                this.repairExpensesChart.saveValues = JSON.parse(
-                    JSON.stringify(this.barChartLegend)
-                );
-                this.repairExpensesChart.legendAttributes = JSON.parse(
-                    JSON.stringify(this.barChartLegend)
-                );
+                // this.repairExpensesChart.chartDataCheck(
+                //     this.barChartConfig.chartValues
+                // );
+                // this.repairExpensesChart.updateChartData(hideAnimation);
+                // this.repairExpensesChart.saveValues = JSON.parse(
+                //     JSON.stringify(this.barChartLegend)
+                // );
+                // this.repairExpensesChart.legendAttributes = JSON.parse(
+                //     JSON.stringify(this.barChartLegend)
+                // );
             });
 
         this.cdRef.detectChanges();
     }
 
     public chartHovered(event) {
-        this.repairExpensesChart.hoveringStatus = event;
+        //this.repairExpensesChart.hoveringStatus = event;
     }
 
     ngOnDestroy(): void {

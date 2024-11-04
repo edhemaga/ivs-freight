@@ -22,7 +22,6 @@ import { DetailsPageService } from '@shared/services/details-page.service';
 import { ModalService } from '@shared/services/modal.service';
 
 // components
-import { TaChartComponent } from '@shared/components/ta-chart/ta-chart.component';
 import { TaTabSwitchComponent } from '@shared/components/ta-tab-switch/ta-tab-switch.component';
 import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-custom-card.component';
 import { TaUploadFilesComponent } from '@shared/components/ta-upload-files/ta-upload-files.component';
@@ -40,8 +39,6 @@ import { DriverNotificationCardComponent } from '@pages/driver/pages/driver-deta
 import { DriverModalComponent } from '@pages/driver/pages/driver-modals/driver-modal/driver-modal.component';
 
 // constants
-import { ChartConstants } from '@shared/components/ta-chart/utils/constants/chart.constants';
-import { DriverDetailsCardConstants } from '@pages/driver/pages/driver-details/components/driver-details-card/utils/constants/driver-details-card.constants';
 import { DriverDetailsCardSvgRoutes } from '@pages/driver/pages/driver-details/components/driver-details-card/utils/svg-routes/driver-details-card-svg-routes';
 
 // store
@@ -55,10 +52,6 @@ import { DriverDetailsCardStringEnum } from '@pages/driver/pages/driver-details/
 import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calculations.helper';
 
 // models
-import { DoughnutChartConfig } from '@pages/dashboard/models/dashboard-chart-models/doughnut-chart.model';
-import { ChartApiCall } from '@shared/components/ta-chart/models/chart-api-call.model';
-import { LegendAttributes } from '@shared/components/ta-chart/models/legend-attributes.model';
-import { BarChartAxes } from '@pages/dashboard/models/dashboard-chart-models/bar-chart.model';
 import {
     DriverMinimalResponse,
     DriverPayrollResponse,
@@ -81,7 +74,6 @@ import { TabOptions } from '@shared/components/ta-tab-switch/models/tab-options.
         TaCustomCardComponent,
         TaUploadFilesComponent,
         TaInputNoteComponent,
-        TaChartComponent,
         DriverDetailsTitleCardComponent,
         DriverDetailsAssignToCardComponent,
         DriverDetailsAdditionalInfoCardComponent,
@@ -97,7 +89,6 @@ import { TabOptions } from '@shared/components/ta-tab-switch/models/tab-options.
 export class DriverDetailsCardComponent
     implements OnInit, OnChanges, OnDestroy
 {
-    @ViewChild('payrollChart') public payrollChart: TaChartComponent;
 
     @Input() driver: DriverResponse;
 
@@ -109,13 +100,6 @@ export class DriverDetailsCardComponent
     public driversDropdownList: DriverMinimalResponse[];
 
     // payroll chart card
-    public barChartTabs: TabOptions[];
-    public barChartConfig: DoughnutChartConfig;
-    public barChartLegend: LegendAttributes[];
-    public barAxes: BarChartAxes;
-
-    private barChartPayrollCall: ChartApiCall;
-    private barChartMonthList: string[];
 
     // note card
     public noteForm: UntypedFormGroup;
@@ -147,12 +131,6 @@ export class DriverDetailsCardComponent
     ngOnChanges(changes: SimpleChanges): void {
         if (!changes?.driver?.firstChange && changes?.driver.currentValue) {
             this.getDriversDropdown();
-
-            this.getDriverPayrollChartData(
-                changes.driver.currentValue.id,
-                this.barChartPayrollCall.chartType,
-                false
-            );
         }
     }
 
@@ -163,17 +141,17 @@ export class DriverDetailsCardComponent
     }
 
     private getConstantData(): void {
-        this.barChartTabs = JSON.parse(
-            JSON.stringify(DriverDetailsCardConstants.BAR_CHART_TABS)
-        );
+        // this.barChartTabs = JSON.parse(
+        //     JSON.stringify(DriverDetailsCardConstants.BAR_CHART_TABS)
+        // );
 
-        this.barChartConfig = DriverDetailsCardConstants.BAR_CHART_CONFIG;
-        this.barChartLegend = DriverDetailsCardConstants.BAR_CHART_LEGEND;
-        this.barAxes = DriverDetailsCardConstants.BAR_CHART_AXES;
-        this.barChartPayrollCall =
-            DriverDetailsCardConstants.BAR_CHART_PAYROLL_API_CALL;
+        // this.barChartConfig = DriverDetailsCardConstants.BAR_CHART_CONFIG;
+        // this.barChartLegend = DriverDetailsCardConstants.BAR_CHART_LEGEND;
+        // this.barAxes = DriverDetailsCardConstants.BAR_CHART_AXES;
+        // this.barChartPayrollCall =
+        //     DriverDetailsCardConstants.BAR_CHART_PAYROLL_API_CALL;
 
-        this.barChartMonthList = ChartConstants.MONTH_LIST_SHORT;
+        // this.barChartMonthList = ChartConstants.MONTH_LIST_SHORT;
     }
 
     private getStoreData(isInit: boolean = false): void {
@@ -229,115 +207,10 @@ export class DriverDetailsCardComponent
         );
     }
 
-    public getDriverPayrollChartData(
-        id: number,
-        chartType: number,
-        hideAnimation?: boolean
-    ): void {
-        if (
-            id !== this.barChartPayrollCall.id ||
-            chartType !== this.barChartPayrollCall.chartType
-        ) {
-            this.barChartPayrollCall.id = id;
-            this.barChartPayrollCall.chartType = chartType;
-        } else {
-            return;
-        }
-
-        this.driverService
-            .getDriverPayroll(id, chartType)
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((item) => {
-                this.setChartData(
-                    this.payrollChart,
-                    this.barChartConfig,
-                    this.barChartLegend,
-                    this.barAxes,
-                    item,
-                    hideAnimation
-                );
-            });
-    }
-
-    private setChartData(
-        chart: TaChartComponent,
-        config: DoughnutChartConfig,
-        legend: LegendAttributes[],
-        axes: BarChartAxes,
-        item: DriverPayrollResponse,
-        hideAnimation?: boolean
-    ): void {
-        config.dataLabels = [];
-        config.chartValues = [item?.miles ?? 0, item?.salary ?? 0];
-
-        legend[0].value = item?.miles ?? 0;
-        legend[1].value = item?.salary ?? 0;
-
-        let hasValue = false;
-
-        legend.map((leg) => {
-            if (leg.value > 0) hasValue = true;
-        });
-
-        config.hasValue = hasValue;
-
-        let miilesCost = [],
-            salaryCost = [],
-            labels = [],
-            first_max_value = 0,
-            second_max_value = 0;
-
-        const mapData = item?.getDriverPayrollChartResponse;
-
-        config.dataProperties[0].defaultConfig.barThickness =
-            mapData?.length > 17 ? 10 : 18;
-
-        config.dataProperties[1].defaultConfig.barThickness =
-            mapData?.length > 17 ? 10 : 18;
-
-        chart.toolTipData = [];
-
-        mapData.map((data) => {
-            chart.toolTipData.push(data);
-
-            let first_chart_value = data?.salary ?? 0;
-            let second_chart_value = data?.miles ?? 0;
-
-            miilesCost.push(first_chart_value);
-            salaryCost.push(second_chart_value);
-
-            if (first_chart_value > first_max_value)
-                first_max_value =
-                    first_chart_value + (first_chart_value * 7) / 100;
-
-            if (second_chart_value > second_max_value)
-                second_max_value =
-                    second_chart_value + (second_chart_value * 7) / 100;
-
-            if (data.day)
-                labels.push([data.day, this.barChartMonthList[data.month - 1]]);
-            else labels.push([this.barChartMonthList[data.month - 1]]);
-        });
-
-        axes.verticalLeftAxes.maxValue = second_max_value;
-        axes.verticalRightAxes.maxValue = first_max_value;
-
-        config.dataLabels = labels;
-
-        config.dataProperties[0].defaultConfig.data = miilesCost;
-        config.dataProperties[1].defaultConfig.data = salaryCost;
-
-        chart.chartDataCheck(config.chartValues);
-        chart.updateChartData(hideAnimation);
-
-        chart.saveValues = JSON.parse(JSON.stringify(legend));
-        chart.legendAttributes = JSON.parse(JSON.stringify(legend));
-    }
-
     public onPayrollTabChange(tab: TabOptions): void {
-        const chartType = this.payrollChart?.detailsTimePeriod(tab.name);
+        // const chartType = this.payrollChart?.detailsTimePeriod(tab.name);
 
-        this.getDriverPayrollChartData(this.driver.id, chartType);
+        // this.getDriverPayrollChartData(this.driver.id, chartType);
     }
 
     public onSelectedDriver(event: DriverMinimalResponse): void {
