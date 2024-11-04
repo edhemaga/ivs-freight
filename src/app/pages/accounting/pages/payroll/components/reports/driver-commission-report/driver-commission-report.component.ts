@@ -1,5 +1,6 @@
 import {
     AfterViewInit,
+    ChangeDetectionStrategy,
     Component,
     ElementRef,
     Input,
@@ -37,12 +38,25 @@ import { PayrollReportTableResponse } from 'ca-components/lib/components/ca-peri
     selector: 'app-driver-commission-report',
     templateUrl: './driver-commission-report.component.html',
     styleUrls: ['./driver-commission-report.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DriverCommissionReportComponent
     implements OnInit, OnDestroy, AfterViewInit
 {
     columns: ColumnConfig[];
-    @Input() reportId: string;
+
+    _reportId: string;
+    @Input() set reportId(report_id: string) {
+        this._reportId = report_id;
+        this.payrollCommissionFacadeService.getPayrollDriverCommissionReport({
+            reportId: this.reportId,
+        });
+    }
+
+    get reportId() {
+        return this._reportId;
+    }
+
     @Input() selectedTab: 'open' | 'closed';
     showMap: boolean = false;
 
@@ -162,10 +176,6 @@ export class DriverCommissionReportComponent
     openedPayroll: PayrollDriverCommissionByIdResponse;
 
     subscribeToStoreData() {
-        this.payrollCommissionFacadeService.getPayrollDriverCommissionReport({
-            reportId: this.reportId,
-        });
-
         this.loading$ = this.payrollFacadeService.payrollReportLoading$;
         this.payrollReport$ =
             this.payrollCommissionFacadeService.selectPayrollOpenedReport$;

@@ -123,6 +123,7 @@ export class DriverOwnerExpandedTableComponent
                 cellType: 'text',
                 cellCustomClasses: 'text-right',
                 textCustomClasses: 'b-600',
+                hiddeOnTableReduce: true
             },
             {
                 header: 'Debt',
@@ -132,6 +133,7 @@ export class DriverOwnerExpandedTableComponent
                 cellType: 'text',
                 cellCustomClasses: 'text-right',
                 textCustomClasses: 'b-600',
+                hiddeOnTableReduce: true
             },
         ];
     }

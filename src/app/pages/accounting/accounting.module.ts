@@ -13,6 +13,8 @@ import {
     CaPeriodContentComponent,
     CaPayrollListSummaryOverviewComponent,
     CaProfileImageComponent,
+    CaSearchMultipleStatesComponent,
+    CaFilterComponent,
 } from 'ca-components';
 import { PayrollComponent } from '@pages/accounting/pages/payroll/payroll.component';
 import { AccountingPayrollComponent } from '@pages/accounting/pages/accounting-payroll/accounting-payroll.component';
@@ -46,6 +48,9 @@ import { DriverOwnerCollapsedTableComponent } from './pages/payroll/components/t
 import { DriverCommissionExpandedTableComponent } from './pages/payroll/components/tables/driver-commission/driver-commission-expanded-table/driver-commission-expanded-table.component';
 import { DriverFlatRateExpandedTableComponent } from './pages/payroll/components/tables/driver-flat-rate/driver-flat-rate-expanded-table/driver-flat-rate-expanded-table.component';
 import { DriverOwnerExpandedTableComponent } from './pages/payroll/components/tables/driver-owner/driver-owner-expanded-table/driver-owner-expanded-table.component';
+import { PayrollToolbarComponent } from './pages/payroll/components/payroll-toolbar/payroll-toolbar.component';
+import { ListNameCasePipe } from '@shared/components/ta-table/ta-table-toolbar/pipes/list-name-case.pipe';
+import { TaAppTooltipComponent } from '@shared/components/ta-app-tooltip/ta-app-tooltip.component';
 @NgModule({
     declarations: [
         // Components
@@ -58,6 +63,8 @@ import { DriverOwnerExpandedTableComponent } from './pages/payroll/components/ta
         DriverMileageSoloTableComponent,
         PayrollTableTotalPipe,
         PayrollTableCommissionTotalPipe,
+
+        // Components
         DriverMileageCollapsedTableComponent,
         DriverMileageExpandedTableComponent,
         DriverCommissionSoloTableComponent,
@@ -71,7 +78,8 @@ import { DriverOwnerExpandedTableComponent } from './pages/payroll/components/ta
         DriverOwnerCollapsedTableComponent,
         DriverCommissionExpandedTableComponent,
         DriverFlatRateExpandedTableComponent,
-        DriverOwnerExpandedTableComponent
+        DriverOwnerExpandedTableComponent,
+        PayrollToolbarComponent,
     ],
     imports: [
         // Modules
@@ -80,10 +88,17 @@ import { DriverOwnerExpandedTableComponent } from './pages/payroll/components/ta
         SharedModule,
         AngularSvgIconModule,
         //AgmCoreModule,
+
+        // Pipes
+        ListNameCasePipe,
+        // Components
+        TaAppTooltipComponent,
         TaTableToolbarComponent,
+        CaSearchMultipleStatesComponent,
         TaInputComponent,
         TaProfileImagesComponent,
         TaCustomCardComponent,
+        CaFilterComponent,
         EffectsModule.forFeature([PayrollEffect]),
         StoreModule.forFeature('payroll', payrollReducer),
         CaMainTableComponent,

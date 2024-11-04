@@ -1,4 +1,5 @@
 import {
+    ChangeDetectionStrategy,
     Component,
     ElementRef,
     Input,
@@ -35,10 +36,23 @@ import { PayrollProccessPaymentModalComponent } from '../../../payroll-modals/pa
     templateUrl: './payroll-report.component.html',
     styleUrls: ['./payroll-report.component.scss'],
     encapsulation: ViewEncapsulation.None,
+    changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PayrollReportComponent implements OnInit, OnDestroy {
     columns: ColumnConfig[];
-    @Input() reportId: number;
+
+    _reportId: number;
+    @Input() set reportId(report_id: number) {
+        this._reportId = report_id;
+        this.payrollFacadeService.getPayrollDriverMileageReport({
+            reportId: `${this.reportId}`,
+        });
+    }
+
+    get reportId() {
+        return this._reportId;
+    }
+
     @Input() selectedTab: 'open' | 'closed';
 
     payrollReport$: Observable<PayrollDriverMileageByIdResponse>;
@@ -156,9 +170,6 @@ export class PayrollReportComponent implements OnInit, OnDestroy {
     openedPayroll: PayrollDriverMileageByIdResponse;
 
     subscribeToStoreData() {
-        this.payrollFacadeService.getPayrollDriverMileageReport({
-            reportId: `${this.reportId}`,
-        });
         this.loading$ = this.payrollFacadeService.payrollReportLoading$;
         this.payrollReport$ =
             this.payrollFacadeService.selectPayrollOpenedReport$;
@@ -281,6 +292,10 @@ export class PayrollReportComponent implements OnInit, OnDestroy {
                 } as IPayrollProccessPaymentModal,
             }
         );
+    }
+
+    public openAddNewModal(type: string){
+        console.log("TYPE", type);
     }
 
     ngOnDestroy(): void {

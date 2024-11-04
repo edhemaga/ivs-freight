@@ -147,6 +147,7 @@ export class DriverFlatRateCollapsedTableComponent
                 cellType: 'text',
                 cellCustomClasses: 'text-right',
                 textCustomClasses: 'b-600',
+                hiddeOnTableReduce: true
             },
             {
                 header: 'Debt',
@@ -156,6 +157,7 @@ export class DriverFlatRateCollapsedTableComponent
                 cellType: 'text',
                 cellCustomClasses: 'text-right',
                 textCustomClasses: 'b-600',
+                hiddeOnTableReduce: true
             },
         ];
     }

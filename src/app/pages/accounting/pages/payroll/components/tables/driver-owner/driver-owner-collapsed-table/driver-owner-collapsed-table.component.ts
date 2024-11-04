@@ -129,7 +129,8 @@ export class DriverOwnerCollapsedTableComponent
                 pipeType: 'currency',
                 pipeString: 'USD',
                 cellType: 'text',
-                cellCustomClasses: 'text-right'
+                cellCustomClasses: 'text-right',
+                hiddeOnTableReduce: true,
             },
             {
                 header: 'Earnings',
@@ -148,6 +149,7 @@ export class DriverOwnerCollapsedTableComponent
                 cellType: 'text',
                 cellCustomClasses: 'text-right',
                 textCustomClasses: 'b-600',
+                hiddeOnTableReduce: true,
             },
             {
                 header: 'Debt',
@@ -157,8 +159,9 @@ export class DriverOwnerCollapsedTableComponent
                 cellType: 'text',
                 cellCustomClasses: 'text-right',
                 textCustomClasses: 'b-600',
+                hiddeOnTableReduce: true,
             },
-        ]
+        ];
     }
 
     selectPayrollReport(report: any) {

@@ -1,12 +1,11 @@
 <div class="table-container d-flex">
     <div class="payroll-main" [class.open]="reportTableExpanded$ | async">
-        <app-ta-table-toolbar
-            (toolBarAction)="onToolBarAction($event)"
-            [options]="tableOptions"
-            [tableData]="tableData"
+        <app-payroll-toolbar
             [selectedTab]="selectedTab"
-            [columns]="columns"
-        ></app-ta-table-toolbar>
+            (toolBarAction)="onToolBarAction($event)"
+            [tableExpanded]="reportTableExpanded$ | async"
+        >
+        </app-payroll-toolbar>
 
         <div class="payroll-tables-holder">
             <ng-container
@@ -33,7 +32,7 @@
         </div>
     </div>
     <div class="report-hold" *ngIf="reportTableExpanded$ | async">
-        <ng-container [ngSwitch]="payrollType">
+        <ng-container [ngSwitch]="payrollReportType">
             <ng-container *ngSwitchCase="'Driver Miles'">
                 <app-payroll-report
                     [selectedTab]="selectedTab"

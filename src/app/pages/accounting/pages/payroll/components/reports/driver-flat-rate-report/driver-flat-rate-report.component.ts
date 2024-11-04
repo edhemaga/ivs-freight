@@ -1,5 +1,6 @@
 import {
     AfterViewInit,
+    ChangeDetectionStrategy,
     Component,
     ElementRef,
     Input,
@@ -29,6 +30,7 @@ import { PayrollProccessPaymentModalComponent } from '../../../payroll-modals/pa
     selector: 'app-driver-flat-rate-report',
     templateUrl: './driver-flat-rate-report.component.html',
     styleUrls: ['./driver-flat-rate-report.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DriverFlatRateReportComponent
     implements OnInit, OnDestroy, AfterViewInit

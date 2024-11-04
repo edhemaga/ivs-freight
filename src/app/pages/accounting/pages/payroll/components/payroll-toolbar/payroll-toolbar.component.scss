@@ -1,0 +1,449 @@
+@import 'src/theme/variables';
+
+.toolbar-container {
+    height: 36px;
+    margin-top: 16px;
+    user-select: none;
+
+    // LIST NAME
+    .list-name {
+        width: -moz-fit-content;
+        width: fit-content;
+        height: 34px;
+        color: $ta-black;
+        font-size: 26px;
+        margin-right: 12px;
+    }
+    .filters_and_search {
+        background-color: #fff;
+        height: 34px;
+        display: flex;
+        align-items: center;
+        padding: 0 4px;
+    }
+    .search-filter-holder{
+        padding: 0 4px;
+
+        .menu_list{
+            width: 26px;
+            height: 26px;
+            justify-content: center;
+            cursor: pointer;
+        }
+
+        .expand_table_icon{
+
+            transform: rotate(-90deg);
+        }
+    }
+
+    // TABS
+    .tab-wrapper {
+        width: fit-content;
+        height: 34px;
+        background: $white;
+        border-radius: 3px 0 0 3px;
+
+        .tab-container {
+            cursor: pointer;
+            display: flex;
+            width: fit-content;
+            .tab-input {
+                width: fit-content;
+                flex: 1;
+                padding: 4px;
+            }
+            .dispatch-img {
+                width: 18px;
+                height: 18px;
+            }
+
+            .dispatcer-name {
+                font-size: 16px;
+                line-height: 20px;
+                color: $ta-black;
+            }
+            &.disabled {
+                pointer-events: none;
+                opacity: 0.3;
+            }
+
+            .tab {
+                height: 26px;
+                width: fit-content;
+                border-radius: 3px;
+                padding: 3px 4px;
+                gap: 4px;
+
+                &:hover {
+                    .tab-title {
+                        color: $ta-black;
+                    }
+
+                    .data-count {
+                        color: $white;
+                        background: $bw6-2;
+                    }
+
+                    svg-icon {
+                        svg {
+                            path {
+                                fill: $ta-black;
+                            }
+                        }
+                    }
+                }
+
+                svg-icon {
+                    display: flex;
+                    align-items: center;
+                    margin: 0px 6px 0px 2px;
+                }
+
+                .tab-title {
+                    font-size: 16px;
+                    justify-content: center;
+                }
+
+                .data-count {
+                    font-size: 11px;
+                    line-height: 18px;
+                    height: 18px;
+                    min-width: 18px;
+                    border-radius: 50px;
+                    background: $bw5;
+                    color: $white;
+                    padding: 0px 5px;
+                }
+
+                .tab-title {
+                    color: $bw6-2;
+                }
+            }
+        }
+    }
+
+    // TABLE ACTIONS
+    .table-actions {
+        height: 34px;
+        background: $white;
+        border-radius: 0px 3px 3px 0;
+        flex-grow: 1;
+
+        .actions-container {
+            width: fit-content;
+            height: 34px;
+            gap: 4px;
+
+            .action-div {
+                cursor: pointer;
+                width: 26px;
+                height: 26px;
+
+                .action-div-icon {
+                    svg {
+                        path,
+                        rect {
+                            fill: $muted !important;
+                        }
+                    }
+                }
+
+                &.action-hover:hover {
+                    background: $bw2;
+                    border-radius: 2px;
+
+                    .ban-action-icon {
+                        svg {
+                            path {
+                                fill: $ta-black;
+                            }
+                        }
+                    }
+
+                    .dnu-action-icon,
+                    .close-bussiness-icon {
+                        svg {
+                            path {
+                                fill: $ta-red-14;
+                            }
+                        }
+                    }
+
+                    .remove-action-icon {
+                        svg {
+                            path {
+                                fill: $ta-blue-15;
+                            }
+                        }
+                    }
+
+                    .open-bussiness-icon {
+                        svg {
+                            path {
+                                fill: $special-filter-green;
+                            }
+                        }
+                    }
+                }
+            }
+
+            .border-container {
+                padding: 0;
+            }
+
+            .active-options {
+                svg-icon {
+                    width: 26px;
+                    height: 26px;
+                    padding: 4px;
+                    border-radius: 2px;
+
+                    svg {
+                        path,
+                        rect {
+                            fill: $muted !important;
+                            transition: 0.25s;
+                        }
+                    }
+                }
+
+                .dropdown-active {
+                    background: $ta-black !important;
+
+                    svg {
+                        path,
+                        rect {
+                            fill: $white-4 !important;
+                            transition: fill 0.25s;
+                        }
+                    }
+
+                    &:hover {
+                        svg {
+                            path,
+                            rect {
+                                fill: $white !important;
+                                transition: fill 0.25s;
+                            }
+                        }
+                    }
+                }
+
+                &:hover {
+                    svg-icon {
+                        background: $bw2;
+
+                        svg {
+                            path,
+                            rect {
+                                fill: $ta-black !important;
+                                transition: fill 0.25s;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        .new-load {
+            width: 36px;
+            height: 36px;
+            background-color: $ta-blue-13;
+            border-radius: 3px;
+            align-self: center;
+            cursor: pointer;
+            transition: $transition;
+
+            &-locked {
+                background-color: $ta-light-grey-6 !important;
+                cursor: none;
+                pointer-events: none;
+            }
+
+            &:not(.new-load-disabled):hover {
+                background-color: $ta-blue-15;
+            }
+
+            svg-icon {
+                display: flex;
+            }
+        }
+
+        .new-load-disabled {
+            background-color: $ta-light-grey-6;
+        }
+
+        .settings-dispatch,
+        .lock-unlock-dispatch {
+            width: 26px;
+            height: 26px;
+            cursor: pointer;
+
+            svg-icon {
+                display: flex;
+
+                svg,
+                path {
+                    width: 18px;
+                    height: 18px;
+                    fill: $muted;
+                }
+            }
+        }
+
+        .dispatch-online {
+            width: 16px;
+            height: 13px;
+
+            svg-icon {
+                svg,
+                path {
+                    fill: $ta-blue-13;
+                }
+            }
+        }
+
+        .dispach-history {
+            &:hover {
+                background-color: $bw2 !important;
+
+                svg-icon {
+                    svg,
+                    path {
+                        fill: $ta-black !important;
+                    }
+                }
+            }
+        }
+        .disabled-icon {
+            svg-icon {
+                svg,
+                path {
+                    fill: $ta-light-grey-6 !important;
+                }
+            }
+
+            cursor: disabled;
+        }
+        .unlock-dispatch {
+            background-color: $ta-blue-18;
+
+            svg-icon {
+                display: flex;
+
+                svg,
+                path {
+                    width: 18px;
+                    height: 18px;
+                    fill: $ta-blue-17;
+                }
+            }
+        }
+
+        .modal2 {
+            height: 36px;
+            width: 36px;
+
+            &.hover {
+                height: 44px;
+                width: 44px;
+            }
+        }
+
+        .modal-open-container {
+            background: $ta-blue-14;
+            height: 36px;
+            width: 36px;
+            padding: 8px;
+            border-radius: 3px;
+
+            &:hover {
+                height: 44px;
+                width: 44px;
+                padding: 12px;
+                background: $ta-blue-15;
+                transition: 0.25s;
+            }
+
+            svg-icon {
+                svg {
+                    path {
+                        fill: $white;
+                    }
+                }
+            }
+        }
+    }
+}
+
+// BORDER
+.border-container {
+    width: 2px;
+    height: 32px;
+    background: $white;
+
+    .border-stick {
+        width: 2px;
+        height: 18px;
+        border-radius: 1px;
+        background: $ta-light-grey-6;
+    }
+}
+
+// Tabs
+.tab-margin {
+    margin-right: 4px;
+}
+
+.tab-inactive {
+    padding: 4px;
+
+    &:hover {
+        .tab {
+            .data-count,
+            .tab-title {
+                color: $bw6-2;
+                transition: color 0.25s;
+            }
+        }
+    }
+}
+
+.tab-active {
+    background: $ta-black !important;
+    transition: 0.25s;
+    height: 36px !important;
+    border-radius: 3px;
+    padding: 5px 4px;
+    align-items: center;
+
+    svg-icon {
+        svg {
+            path {
+                fill: $white;
+            }
+        }
+    }
+
+    &:hover {
+        svg-icon {
+            svg {
+                path {
+                    fill: $white !important;
+                }
+            }
+        }
+    }
+
+    .tab-title {
+        color: $white !important;
+        transition: color 0.25s;
+    }
+
+    .data-count {
+        background: $white !important;
+        color: $ta-black !important;
+        transition: 0.25s;
+    }
+}

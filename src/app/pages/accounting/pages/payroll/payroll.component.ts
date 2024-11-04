@@ -17,9 +17,6 @@ import { Observable, takeUntil, Subject } from 'rxjs';
 // Pipes
 import { NameInitialsPipe } from '@shared/pipes/name-initials.pipe';
 
-// Helpers
-import { getPayrollDriverMilesDefinition } from '@shared/utils/settings/table-settings/payroll-columns';
-
 // Store
 import { DriverState } from '@pages/driver/state/driver-state/driver.store';
 import { DriversInactiveState } from '@pages/driver/state/driver-inactive-state/driver-inactive.store';
@@ -58,13 +55,11 @@ export class PayrollComponent implements OnInit, AfterViewInit, OnDestroy {
 
     environmentInjector = inject(EnvironmentInjector); // Inject the EnvironmentInjector
 
-    tableOptions: any = {};
     payrollType: string;
+    payrollReportType: string;
     selectedOpenFromList: any;
 
     selectedTab = 'open';
-    tableData: any[] = [];
-    columns: any[] = [];
     tableContainerWidth: number = 0;
     viewData: any[] = [];
     resizeObserver: ResizeObserver;
@@ -102,15 +97,6 @@ export class PayrollComponent implements OnInit, AfterViewInit, OnDestroy {
                 this.openedIndex = -1;
             });
 
-        this.payrollFacadeService.selectPayrollTabCounts$
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((res) => {
-                if (this.tableData.length) {
-                    this.tableData[0].length = res.open;
-                    this.tableData[1].length = res.closed;
-                }
-            });
-
         this.payrollFacadeService.selectPayrollOpenedTab$
             .pipe(takeUntil(this.destroy$))
             .subscribe((tab) => {
@@ -119,35 +105,7 @@ export class PayrollComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     ngOnInit(): void {
-        this.initTableOptions();
         this.subscribeToStoreData();
-
-        this.tableData = [
-            {
-                title: 'Open',
-                field: 'open',
-                length: 0,
-                data: [],
-                extended: true,
-                gridNameTitle: 'Payroll',
-                stateName: 'open',
-                tableConfiguration: 'APPLICANT',
-                isActive: this.selectedTab === 'open',
-                gridColumns: getPayrollDriverMilesDefinition(),
-            },
-            {
-                title: 'Closed',
-                field: 'closed',
-                length: 0,
-                data: [],
-                extended: false,
-                gridNameTitle: 'Payroll',
-                stateName: 'closed',
-                tableConfiguration: 'DRIVER',
-                isActive: this.selectedTab === 'closed',
-                gridColumns: [],
-            },
-        ];
     }
 
     ngAfterViewInit(): void {
@@ -191,7 +149,8 @@ export class PayrollComponent implements OnInit, AfterViewInit, OnDestroy {
                     // Set inputs and subscribe to outputs if componentRef is created
                     if (this.componentRef) {
                         this.componentRef.instance.expandTableEvent.subscribe(
-                            (event: any) => this.expandTable(event)
+                            (event: any) =>
+                                this.expandTable(this.payrollType, event)
                         );
                     }
                 } else if (this.selectedOpenFromList) {
@@ -208,6 +167,11 @@ export class PayrollComponent implements OnInit, AfterViewInit, OnDestroy {
                         this.componentRef.instance.expandTableEvent.subscribe(
                             (event: any) => {
                                 this.reportTableData = event;
+                                if (
+                                    this.payrollReportType != this.payrollType
+                                ) {
+                                    this.payrollReportType = this.payrollType;
+                                }
                                 this.payrollFacadeService.setPayrollReportTableExpanded(
                                     true
                                 );
@@ -230,6 +194,7 @@ export class PayrollComponent implements OnInit, AfterViewInit, OnDestroy {
                                 id: event.driver.id,
                                 title: 'Driver (Mile)',
                             };
+
                             this.handleTableShow();
                         }
                     );
@@ -247,7 +212,8 @@ export class PayrollComponent implements OnInit, AfterViewInit, OnDestroy {
                     // Set inputs and subscribe to outputs if componentRef is created
                     if (this.componentRef) {
                         this.componentRef.instance.expandTableEvent.subscribe(
-                            (event: any) => this.expandTable(event)
+                            (event: any) =>
+                                this.expandTable(this.payrollType, event)
                         );
                     }
                 } else if (this.selectedOpenFromList) {
@@ -264,12 +230,13 @@ export class PayrollComponent implements OnInit, AfterViewInit, OnDestroy {
                         this.componentRef.instance.expandTableEvent.subscribe(
                             (event: any) => {
                                 this.reportTableData = event;
+                                if (
+                                    this.payrollReportType != this.payrollType
+                                ) {
+                                    this.payrollReportType = this.payrollType;
+                                }
                                 this.payrollFacadeService.setPayrollReportTableExpanded(
                                     true
-                                );
-                                console.log(
-                                    'EVENT FROM EXAPNDED TABLE BLAH',
-                                    event
                                 );
                             }
                         );
@@ -290,6 +257,7 @@ export class PayrollComponent implements OnInit, AfterViewInit, OnDestroy {
                                 id: event.driver.id,
                                 title: 'Driver (Flat Rate)',
                             };
+
                             this.handleTableShow();
                         }
                     );
@@ -307,7 +275,8 @@ export class PayrollComponent implements OnInit, AfterViewInit, OnDestroy {
                     // Set inputs and subscribe to outputs if componentRef is created
                     if (this.componentRef) {
                         this.componentRef.instance.expandTableEvent.subscribe(
-                            (event: any) => this.expandTable(event)
+                            (event: any) =>
+                                this.expandTable(this.payrollType, event)
                         );
                     }
                 } else if (this.selectedOpenFromList) {
@@ -324,6 +293,11 @@ export class PayrollComponent implements OnInit, AfterViewInit, OnDestroy {
                         this.componentRef.instance.expandTableEvent.subscribe(
                             (event: any) => {
                                 this.reportTableData = event;
+                                if (
+                                    this.payrollReportType != this.payrollType
+                                ) {
+                                    this.payrollReportType = this.payrollType;
+                                }
                                 this.payrollFacadeService.setPayrollReportTableExpanded(
                                     true
                                 );
@@ -350,6 +324,7 @@ export class PayrollComponent implements OnInit, AfterViewInit, OnDestroy {
                                 id: event.driver.id,
                                 title: 'Driver (Commission)',
                             };
+
                             this.handleTableShow();
                         }
                     );
@@ -367,7 +342,8 @@ export class PayrollComponent implements OnInit, AfterViewInit, OnDestroy {
                     // Set inputs and subscribe to outputs if componentRef is created
                     if (this.componentRef) {
                         this.componentRef.instance.expandTableEvent.subscribe(
-                            (event: any) => this.expandTable(event)
+                            (event: any) =>
+                                this.expandTable(this.payrollType, event)
                         );
                     }
                 } else if (this.selectedOpenFromList) {
@@ -384,6 +360,11 @@ export class PayrollComponent implements OnInit, AfterViewInit, OnDestroy {
                         this.componentRef.instance.expandTableEvent.subscribe(
                             (event: any) => {
                                 this.reportTableData = event;
+                                if (
+                                    this.payrollReportType != this.payrollType
+                                ) {
+                                    this.payrollReportType = this.payrollType;
+                                }
                                 this.payrollFacadeService.setPayrollReportTableExpanded(
                                     true
                                 );
@@ -407,6 +388,7 @@ export class PayrollComponent implements OnInit, AfterViewInit, OnDestroy {
                                 title: 'Owner',
                                 hideAvatar: true,
                             };
+
                             this.handleTableShow();
                         }
                     );
@@ -428,10 +410,16 @@ export class PayrollComponent implements OnInit, AfterViewInit, OnDestroy {
         }
     }
 
-    expandTable(data?: any) {
+    expandTable<T>(payrollType?: string, data?: T) {
         if (data) {
             this.reportTableData = data;
             this.payrollFacadeService.setPayrollReportTableExpanded(true);
+        }
+
+        if (payrollType) {
+            if (this.payrollReportType != payrollType) {
+                this.payrollReportType = payrollType;
+            }
         }
     }
 
@@ -447,25 +435,11 @@ export class PayrollComponent implements OnInit, AfterViewInit, OnDestroy {
 
     public summaryControll() {}
 
-    onToolBarAction(event: any) {
-        if (event.action === 'tab-selected') {
-            this.payrollFacadeService.setPayrollOpenedTab(event.tabData.field);
-            this.openedIndex = -1;
-            this.expandTable();
-            this.payrollFacadeService.getPayrollCounts();
-            this.payrollFacadeService.setPayrollReportTableExpanded(false);
-        }
-    }
-
-    initTableOptions(): void {
-        this.tableOptions = {
-            toolbarActions: {
-                showMoneyFilter: true,
-                hideOpenModalButton: true,
-                hideWidth: true,
-            },
-            actions: this.getTableActions(),
-        };
+    onToolBarAction(tabStatus: 'open' | 'closed') {
+        this.payrollFacadeService.setPayrollOpenedTab(tabStatus);
+        this.openedIndex = -1;
+        this.expandTable();
+        this.payrollFacadeService.getPayrollCounts();
     }
 
     getTableActions() {
@@ -567,7 +541,6 @@ export class PayrollComponent implements OnInit, AfterViewInit, OnDestroy {
         e.stopPropagation();
 
         this.selectedOpenFromList = undefined;
-        this.payrollFacadeService.setPayrollReportTableExpanded(false);
         this.handleTableShow();
     }
 }

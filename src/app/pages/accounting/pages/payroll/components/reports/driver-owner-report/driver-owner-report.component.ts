@@ -1,5 +1,6 @@
 import {
     AfterViewInit,
+    ChangeDetectionStrategy,
     Component,
     ElementRef,
     Input,
@@ -17,6 +18,7 @@ import { PayrollDriverOwnerFacadeService } from '../../../state/services/payroll
 
 // Models
 import {
+    CreatePayrollCreditCommand,
     LoadWithMilesStopResponse,
     PayrollDriverMileageByIdResponse,
     PayrollOwnerResponse,
@@ -26,11 +28,13 @@ import { OwnerLoadShortReponseWithRowType } from '../../../state/models/driver_o
 import { PayrollProccessPaymentModalComponent } from '../../../payroll-modals/payroll-proccess-payment-modal/payroll-proccess-payment-modal.component';
 import { IPayrollProccessPaymentModal } from '../../../state/models/payroll.model';
 import { PayrollReportTableResponse } from 'ca-components/lib/components/ca-period-content/models/payroll-report-tables.type';
+import { PayrollCreditBonusComponent } from '../../../payroll-modals/payroll-credit-bonus/payroll-credit-bonus.component';
 
 @Component({
     selector: 'app-driver-owner-report',
     templateUrl: './driver-owner-report.component.html',
     styleUrls: ['./driver-owner-report.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DriverOwnerReportComponent
     implements OnInit, OnDestroy, AfterViewInit
@@ -44,6 +48,9 @@ export class DriverOwnerReportComponent
     includedLoads$: Observable<LoadWithMilesStopResponse[]>;
 
     private destroy$ = new Subject<void>();
+
+    payrollOpenedReport: PayrollOwnerResponse;
+
     payrollReport$: Observable<PayrollOwnerResponse>;
 
     payrollOwnerDriverLoads$: Observable<OwnerLoadShortReponseWithRowType[]>;
@@ -95,7 +102,7 @@ export class DriverOwnerReportComponent
             this.payrollDriverOwnerFacadeService.selectPayrollReportOwnerIncludedLoads$;
 
         this.payrollDriverOwnerFacadeService.selectPayrollOwnerOpenedReport$.subscribe(
-            (owner) => console.log('OEHER', owner)
+            (owner) => (this.payrollOpenedReport = owner)
         );
     }
 
@@ -244,6 +251,29 @@ export class DriverOwnerReportComponent
                     }
                 );
             }
+        }
+    }
+
+    public openAddNewModal(type: string) {
+        console.log(this.payrollOpenedReport);
+
+        switch (type) {
+            case 'Credit':
+                this.modalService.openModal(
+                    PayrollCreditBonusComponent,
+                    {
+                        size: 'small',
+                    },
+                    {
+                        type: 'new',
+                        data: {
+                            driverId: this.payrollOpenedReport.id,
+                            truckId: this.payrollOpenedReport.truck.id,
+                            payrollType: 'owner',
+                        } as CreatePayrollCreditCommand,
+                    }
+                );
+                return;
         }
     }
 

@@ -101,6 +101,7 @@
             </div>
             <div class="small-table-holder-main">
                 <app-ca-period-content
+                    (openModalEmiter)="openAddNewModal($event)"
                     (reorderedDataEmiter)="onReorderItem($event)"
                     (proccessPayroll)="onProccessPayroll($event)"
                     [isOpen]="selectedTab === 'open'"

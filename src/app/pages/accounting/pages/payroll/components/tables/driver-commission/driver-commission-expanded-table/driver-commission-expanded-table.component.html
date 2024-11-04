@@ -1,6 +1,8 @@
 <div *ngIf="loading$ | async">
     <svg-icon
-        src="assets/svg/truckassist-table/sceletons/payroll-table.svg"
+        src="assets/svg/truckassist-table/sceletons/{{
+            expandTable ? 'payroll-table-collapsed.svg' : 'payroll-table.svg'
+        }}"
     ></svg-icon>
 </div>
 <app-ca-main-table
