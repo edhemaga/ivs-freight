@@ -712,6 +712,8 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     public isActiveLoad: boolean;
     public editName: string;
     public isMilesLoading: boolean = false;
+    public showDriverRate: boolean;
+    public showAdjustedRate: boolean;
 
     constructor(
         private formBuilder: UntypedFormBuilder,
@@ -757,28 +759,29 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         );
     }
 
-    public get showAdjustedRate(): boolean {
+    public hanndleShowAdjustedRate(): void {
         const selectedDispatcher: DispatchLoadModalResponse =
             this.selectedDispatches;
 
         // adjusted rate option is shown in dropdown if commission driver or owner set
         if (selectedDispatcher) {
-            return (
+            this.showAdjustedRate =
                 !!selectedDispatcher.driver.owner ||
                 selectedDispatcher.driver.payType.name ===
-                    LoadModalStringEnum.COMMISSION
-            );
-        }
-
-        return false;
+                    LoadModalStringEnum.COMMISSION;
+        } else this.showAdjustedRate = false;
     }
 
-    public get showDriverRate(): boolean {
-        return (
+    public handleShowDriverRate(): void {
+        this.showDriverRate =
             this.selectedDispatches &&
             this.selectedDispatches?.driver?.payType.name ===
-                LoadModalStringEnum.FLAT_RATE
-        );
+                LoadModalStringEnum.FLAT_RATE &&
+            !this.selectedDispatches.payType.includes(
+                LoadModalStringEnum.PERCENT_PAY_TYPE
+            );
+
+        this.hanndleShowAdjustedRate();
     }
 
     public get getPickupTimeToInputConfig(): ITaInput {
@@ -2043,10 +2046,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                     customClass: LoadModalStringEnum.LOAD_DISPATCHES_TTD,
                 },
             };
-            if (
-                this.selectedDispatches?.driver?.payType.name ===
-                LoadModalStringEnum.FLAT_RATE
-            ) {
+            if (this.showDriverRate) {
                 this.inputService.changeValidators(
                     this.loadForm.get(LoadModalStringEnum.DRIVER_RATE)
                 );
@@ -2085,6 +2085,8 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                 .get(LoadModalStringEnum.PICKUP_LEG_MILES)
                 .patchValue(null);
         }
+
+        this.handleShowDriverRate();
     }
 
     private onSelectDropdownBroker(event): void {
