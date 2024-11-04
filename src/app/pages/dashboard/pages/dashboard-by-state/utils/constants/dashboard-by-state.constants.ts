@@ -1,6 +1,5 @@
 import { DashboardTab } from '@pages/dashboard/models/dashboard-tab.model';
 import { DropdownItem } from '@shared/models/dropdown-item.model';
-import { BarChartValues } from '@pages/dashboard/models/dashboard-chart-models/bar-chart.model';
 
 export class DashboardByStateConstants {
     static BY_STATE_DROPDOWN_DATA: DropdownItem[] = [
@@ -58,17 +57,4 @@ export class DashboardByStateConstants {
             checked: false,
         },
     ];
-
-    static BAR_CHART_INIT_VALUES: BarChartValues = {
-        defaultBarValues: {
-            topRatedBarValues: [],
-            otherBarValues: [],
-        },
-        defaultBarPercentages: {
-            topRatedBarPercentage: [],
-            otherBarPercentage: [],
-        },
-        selectedBarValues: [],
-        selectedBarPercentages: [],
-    };
 }

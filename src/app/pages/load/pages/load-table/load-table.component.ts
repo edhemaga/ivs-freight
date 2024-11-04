@@ -28,7 +28,7 @@ import { TableCardDropdownActionsService } from '@shared/components/ta-table-car
 import { LoadCardModalService } from '@pages/load/pages/load-card-modal/services/load-card-modal.service';
 import { ConfirmationActivationService } from '@shared/components/ta-shared-modals/confirmation-activation-modal/services/confirmation-activation.service';
 import { CaSearchMultipleStatesService } from 'ca-components';
-import { BrokerService } from '@pages/customer/services/broker.service';
+import { BrokerService } from '@pages/customer/services';
 import { CommentsService } from '@shared/services/comments.service';
 
 // Models

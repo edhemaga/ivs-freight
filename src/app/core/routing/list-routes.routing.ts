@@ -7,8 +7,7 @@ import { CompanySettingsGuard } from '@core/guards/company-settings.guard';
 // resolvers
 import { TrailerActiveResolver } from '@pages/trailer/resolvers/trailer-active.resolver';
 import { TruckActiveResolver } from '@pages/truck/resolvers/truck-active.resolver';
-import { BrokerResolver } from '@pages/customer/resolvers/broker.resolver';
-import { ShipperResolver } from '@pages/customer/resolvers/shipper.resolver';
+import { BrokerResolver, ShipperResolver } from '@pages/customer/resolvers';
 import { DriverResolver } from '@pages/driver/resolvers/driver.resolver';
 import { LoadActiveResolver } from '@pages/load/resolvers/load-active.resolver';
 import {

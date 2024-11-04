@@ -12,7 +12,6 @@ import { DashboardStringEnum } from '@pages/dashboard/enums/dashboard-string.enu
 // models
 import { DropdownListItem } from '@pages/dashboard/models/dropdown-list-item.model';
 import { FilteredSubperiod } from '@pages/dashboard/models/filtered-subperiod.model';
-import { BarChartLabels } from '@pages/dashboard/models/dashboard-chart-models/bar-chart.model';
 import { IntervalLabelResponse } from 'appcoretruckassist';
 import { ByStateListItem } from '@pages/dashboard/pages/dashboard-by-state/models/by-state-list-item.model';
 
@@ -113,58 +112,6 @@ export class DashboardHelper {
             filteredSubPeriodDropdownList,
             selectedSubPeriod,
         };
-    }
-
-    static setBarChartLabels(
-        barChartLables: IntervalLabelResponse[],
-        selectedSubPeriod: string
-    ): BarChartLabels {
-        let filteredTooltipLabels: string[] = [];
-
-        const filteredLabels = barChartLables.map((barChartLabel) => {
-            filteredTooltipLabels = [
-                ...filteredTooltipLabels,
-                barChartLabel.tooltipLabel,
-            ];
-
-            const isSelectedSubPeriodIncludedInCustomPeriodList =
-                (DashboardSubperiodConstants.CUSTOM_SUBPERIOD_LABEL_LIST.includes(
-                    selectedSubPeriod
-                ) &&
-                    !barChartLabel.label.includes(DashboardStringEnum.PM) &&
-                    !barChartLabel.label.includes(DashboardStringEnum.AM)) ||
-                DashboardSubperiodConstants.CUSTOM_SUBPERIOD_LABEL_LIST_2.includes(
-                    selectedSubPeriod
-                );
-
-            if (isSelectedSubPeriodIncludedInCustomPeriodList) {
-                const splitLabel = barChartLabel.label.split(
-                    DashboardStringEnum.EMPTY_SPACE_STRING
-                );
-
-                if (splitLabel[2]) {
-                    const concatinatedDateString = `${splitLabel[0]} ${splitLabel[1]}`;
-
-                    return [concatinatedDateString, splitLabel[2]];
-                }
-
-                return [splitLabel[0], splitLabel[1]];
-            }
-
-            return barChartLabel.label;
-        });
-
-        if (Array.isArray(filteredLabels[0])) {
-            return {
-                filteredLabels: filteredLabels as string[][],
-                filteredTooltipLabels,
-            };
-        } else {
-            return {
-                filteredLabels: filteredLabels as string[],
-                filteredTooltipLabels,
-            };
-        }
     }
 
     static createBarChartEmptyLabels(

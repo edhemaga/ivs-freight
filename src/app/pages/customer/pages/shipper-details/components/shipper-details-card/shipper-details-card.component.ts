@@ -19,7 +19,7 @@ import { ShipperMinimalListQuery } from '@pages/customer/state/shipper-state/shi
 
 // Services
 import { DetailsPageService } from '@shared/services/details-page.service';
-import { ShipperService } from '@pages/customer/services/shipper.service';
+import { ShipperService } from '@pages/customer/services';
 import { ModalService } from '@shared/services/modal.service';
 
 // Components
