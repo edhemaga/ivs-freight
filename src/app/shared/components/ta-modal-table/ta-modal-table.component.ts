@@ -142,7 +142,8 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
     @Input() stopItemDropdownLists?: LoadStopItemDropdownLists;
     @Input() isHazardous: boolean;
     @Input() selectedTrailer: TrailerTypeResponse;
-
+    @Input() isFuelTable: boolean;
+    @Input() fuelItemsDropdown: EnumValue[];
     @Output() modalTableValueEmitter = new EventEmitter<
         | CreateContactPhoneCommand[]
         | CreateContactEmailCommand[]
@@ -561,7 +562,9 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
                 break;
             case ModalTableTypeEnum.REPAIR_BILL:
                 this.modalTableHeaders =
-                    ModalTableConstants.REPAIR_BILL_TABLE_HEADER_ITEMS;
+                    ModalTableConstants.REPAIR_BILL_TABLE_HEADER_ITEMS(
+                        this.isFuelTable
+                    );
 
                 break;
             case ModalTableTypeEnum.REPAIR_ORDER:

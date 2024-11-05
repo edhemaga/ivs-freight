@@ -28,6 +28,7 @@ import { TaInputComponent } from '@shared/components/ta-input/ta-input.component
 import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-custom-card.component';
 import { TaInputDropdownComponent } from '@shared/components/ta-input-dropdown/ta-input-dropdown.component';
 import { TaUploadFilesComponent } from '@shared/components/ta-upload-files/ta-upload-files.component';
+import { TaModalTableComponent } from '@shared/components/ta-modal-table/ta-modal-table.component';
 
 //Modules
 import { CommonModule } from '@angular/common';
@@ -43,10 +44,12 @@ import {
     FuelStopFranchiseResponse,
     TruckMinimalListResponse,
     EnumValue,
+    RepairItemResponse,
 } from 'appcoretruckassist';
 import { FuelData } from '@pages/fuel/pages/fuel-modals/fuel-purchase-modal/models/fuel-data.model';
 import { FuelTruckType } from '@pages/fuel/pages/fuel-modals/fuel-purchase-modal/models/fuel-truck-type.model';
 import { Trailer } from '@shared/models/card-models/card-table-data.model';
+import { RepairSubtotal } from '@pages/repair/pages/repair-modals/repair-order-modal/models';
 
 //Pipes
 import { SumArraysPipe } from '@shared/pipes/sum-arrays.pipe';
@@ -56,6 +59,7 @@ import { FuelDataOptionsStringEnum } from '@pages/fuel/enums/fuel-data-options-s
 import { FuelDropdownOptionsStringEnum } from '@pages/fuel/pages/fuel-modals/fuel-purchase-modal/enums/fuel-dropdown-optioins-string.enum';
 import { FuelValuesStringEnum } from '@pages/fuel/pages/fuel-modals/fuel-purchase-modal/enums/fuel-values-string.enum';
 import { FuelModalActionsStringEnum } from '@pages/fuel/pages/fuel-modals/fuel-purchase-modal/enums/fuel-modal-actions-string.enum';
+import { ModalTableTypeEnum } from '@shared/enums/modal-table-type.enum';
 
 //Validations
 import { fullNameValidation } from '@shared/components/ta-input/validators/ta-input.regex-validations';
@@ -85,6 +89,7 @@ import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calcula
         TaCustomCardComponent,
         TaInputDropdownComponent,
         TaUploadFilesComponent,
+        TaModalTableComponent,
 
         // Pipe
         SumArraysPipe,
@@ -92,6 +97,8 @@ import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calcula
 })
 export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
     @Input() editData: FuelData;
+
+    public modalTableTypeEnum = ModalTableTypeEnum;
 
     public fuelForm: UntypedFormGroup;
 
@@ -116,6 +123,13 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
     public fuelTransactionName: string = null;
 
     public disableCardAnimation: boolean = false;
+
+    public isRepairBillRowCreated: boolean = false;
+
+    public isEachRepairRowValid: boolean = true;
+    public updatedRepairItems: RepairItemResponse[] = [];
+    public fuelItems: RepairItemResponse[] = [];
+    public total: number = 0;
 
     private destroy$ = new Subject<void>();
 
@@ -387,6 +401,14 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
                         subFolder: FuelValuesStringEnum.TRUCKS,
                     };
 
+                    this.updatedRepairItems = res.fuelItems.map(
+                        (repairItem) => {
+                            return {
+                                ...repairItem,
+                            };
+                        }
+                    );
+
                     this.getDriverTrailerBySelectedTruck(
                         FuelValuesStringEnum.TRUCK_ID
                     );
@@ -593,6 +615,44 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
 
     private getTransactionTime(date: string): string {
         return MethodsCalculationsHelper.convertDateToTimeFromBackend(date);
+    }
+
+    public addRepairItem(): void {
+        if (!this.isEachRepairRowValid) return;
+
+        this.isRepairBillRowCreated = true;
+
+        setTimeout(() => {
+            this.isRepairBillRowCreated = false;
+        }, 400);
+
+        // this.changeDetector.detectChanges();
+    }
+
+    public handleModalTableValueEmit(
+        modalTableDataValue: RepairItemResponse[]
+    ): void {
+        this.fuelItems = modalTableDataValue;
+
+        // this.repairOrderForm
+        //     .get(RepairOrderModalStringEnum.REPAIR_ITEMS)
+        //     .patchValue(JSON.stringify(this.repairItems));
+    }
+
+    public handleModalTableValidStatusEmit(
+        isEachRepairItemsRowValid: boolean
+    ): void {
+        this.isEachRepairRowValid = isEachRepairItemsRowValid;
+    }
+
+    public getTotalCostValueEmit(event: RepairSubtotal[]): void {
+        let total = 0;
+
+        event.forEach((item: RepairSubtotal) => {
+            total += item.subtotal;
+        });
+
+        this.total = total;
     }
 
     ngOnDestroy(): void {

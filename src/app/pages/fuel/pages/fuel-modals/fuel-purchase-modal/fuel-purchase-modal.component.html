@@ -107,7 +107,7 @@
                     [inputConfig]="{
                         name: 'Input Dropdown',
                         type: 'text',
-                        label: 'Truck Unit',
+                        label: 'Truck',
                         isDropdown: true,
                         dropdownImageInput: {
                             withText: true,
@@ -264,6 +264,54 @@
                 ></app-ta-input-dropdown>
             </div>
         </div>
+
+        <app-ta-custom-card
+            [cardName]="'Item'"
+            [disableAnimation]="disableCardAnimation"
+            [hasActionSvg]="true"
+            [hasArrow]="false"
+            [hasScrollBody]="
+                (editData?.data && updatedRepairItems?.length > 10) ||
+                fuelItems?.length > 10
+            "
+            [isCardOpen]="
+                (editData?.data && updatedRepairItems?.length) ||
+                fuelItems?.length
+            "
+            [disabledCard]="
+                (editData?.data && !updatedRepairItems?.length) ||
+                !fuelItems?.length
+            "
+            [hasCounter]="
+                (editData?.data && updatedRepairItems?.length) ||
+                fuelItems?.length
+            "
+            (onActionEvent)="addRepairItem()"
+        >
+            <app-ta-modal-table
+                [tableType]="modalTableTypeEnum.REPAIR_BILL"
+                [isNewRowCreated]="isRepairBillRowCreated"
+                [modalTableData]="updatedRepairItems"
+                [isFuelTable]="true"
+                [fuelItemsDropdown]="fuelItemsDropdown"
+                (modalTableValueEmitter)="handleModalTableValueEmit($event)"
+                (modalTableValidStatusEmitter)="
+                    handleModalTableValidStatusEmit($event)
+                "
+                (totalCostValueEmitter)="getTotalCostValueEmit($event)"
+            >
+            </app-ta-modal-table>
+
+            <div class="item-total d-flex justify-content-between">
+                <span class="item-total-title ta-font-semi-bold"
+                    >Total Cost
+                </span>
+
+                <span class="item-total-cost ta-font-bold">
+                    {{ total | currency }}
+                </span>
+            </div>
+        </app-ta-custom-card>
 
         <div class="ta-card-body-overflow-none">
             <app-ta-custom-card
