@@ -805,16 +805,6 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                     RepairTableStringEnum.REPAIR_SHOP
                 ),
             },
-
-            /*   {              
-                moneyCountSelected: false,
-                extended: false,
-                isCustomer: true,
-                closedArray: DataFilterHelper.checkSpecialFilterArray(
-                    shipperActiveData,
-                    TableStringEnum.STATUS
-                ),
-            }, */
         ];
 
         const td = this.tableData.find((t) => t.field === this.selectedTab);
@@ -889,8 +879,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                     }*/
                 }
 
-                ///////////////////////////////////////////////////////
-                /*    if (res) {
+                if (res) {
                     if (res.queryParams?.length) {
                         switch (res.filterType) {
                             case RepairTableStringEnum.CATEGORY_REPAIR_FILTER:
@@ -950,7 +939,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                         }
                     } else this.sendRepairData();
 
-                    if (res?.filteredArray) {
+                    /*      if (res?.filteredArray) {
                         if (res.selectedFilter)
                             this.viewData = this.repairTableData?.filter(
                                 (repairData) =>
@@ -961,8 +950,8 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                             );
 
                         if (!res.selectedFilter) this.sendRepairData();
-                    }
-                } */
+                    } */
+                }
             });
     }
 
