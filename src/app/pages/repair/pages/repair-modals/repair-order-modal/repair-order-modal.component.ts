@@ -855,13 +855,15 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
         const conditionaRepairShopId = this.selectedRepairShop?.id ?? null;
 
         // service types
-        const convertedServiceTypes = this.services.map((item) => {
-            return {
-                serviceType: item.serviceType,
-                active: item.active,
-                isSelected: item.isSelected,
-            };
-        });
+        const convertedServiceTypes = this.services
+            .filter((service) => service.id > 1)
+            .map((service) => {
+                return {
+                    serviceType: service.serviceType,
+                    active: service.active,
+                    isSelected: service.isSelected,
+                };
+            });
 
         // items
         const convertedItems = this.repairItems.map(
@@ -1276,6 +1278,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
             serviceTypes,
             orderNumber,
         } = editData;
+
         const selectedHeaderTab = {
             id: repairType?.id,
             name: repairType?.name,
@@ -1382,6 +1385,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
             datePaid:
                 datePaid &&
                 MethodsCalculationsHelper.convertDateFromBackend(datePaid),
+            unitType: unitType.name,
             driver: driver
                 ? driver?.firstName +
                   RepairOrderModalStringEnum.EMPTY_SPACE_STRING +
@@ -1439,6 +1443,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
                 id,
                 orderNumber,
                 repairType: RepairOrderModalStringEnum.ORDER,
+                unitType,
                 truckId: conditionaTruckId,
                 trailerId: conditionaTrailerId,
                 date: convertedDate,
@@ -1454,6 +1459,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
                 id,
                 finishOrder: this.isFinishOrder,
                 repairType: RepairOrderModalStringEnum.BILL,
+                unitType,
                 truckId: conditionaTruckId,
                 trailerId: conditionaTrailerId,
                 driverId: this.selectedDriver?.id ?? null,
