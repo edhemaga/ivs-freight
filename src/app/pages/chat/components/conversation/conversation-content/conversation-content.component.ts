@@ -11,7 +11,7 @@ import {
     AfterViewInit,
 } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { takeUntil, Observable, map } from 'rxjs';
+import { takeUntil, Observable, map, skip } from 'rxjs';
 
 // Services
 import { ChatStoreService } from '@pages/chat/services';
@@ -28,6 +28,7 @@ import {
     GetCurrentUserHelper,
     UnsubscribeHelper,
     scrollToBottom,
+    scrollToTop,
 } from '@pages/chat/utils/helpers';
 
 // Assets
@@ -70,6 +71,9 @@ export class ConversationContentComponent
     public chatSvgRoutes = ChatSvgRoutes;
     public chatDropzone = ChatDropzone;
     public wrapperHeightPx: number = 0;
+    public maxHeight: number = 0;
+    public isScrollToBottomDisplayed: boolean = false;
+    public hasNewMessages: boolean = false;
 
     constructor(
         // Router
@@ -98,6 +102,9 @@ export class ConversationContentComponent
     private initStoreData(): void {
         this.chatStoreService.closeAllProfileInformation();
         this.conversation$ = this.chatStoreService.selectConversation();
+        this.conversation$.subscribe(() => {
+            this.isScrollToBottomDisplayed = false;
+        });
         this.isAttachmentUploadActive$ =
             this.chatStoreService.selectAttachmentUploadStatus();
     }
@@ -147,8 +154,36 @@ export class ConversationContentComponent
     }
 
     private scrollOnMessage(): void {
-        this.chatStoreService.selectMessages().subscribe(() => {
-            scrollToBottom(this.messagesComponent?.nativeElement);
-        });
+        this.maxHeight = this.messagesComponent?.nativeElement?.scrollHeight;
+        scrollToBottom(this.messagesComponent?.nativeElement);
+
+        this.chatStoreService
+            .selectMessages()
+            .pipe(skip(2))
+            .subscribe(() => {
+                this.hasNewMessages = true;
+            });
+    }
+
+    public scrollToBottom(): void {
+        scrollToBottom(this.messagesComponent?.nativeElement);
+        this.hasNewMessages = false;
+    }
+
+    public scrollTop(): void {
+        scrollToTop(this.messagesComponent?.nativeElement);
+    }
+
+    private isScrollAvailable(scrollOffset?: number): boolean {
+        const scrollPx: number =
+            this.messagesComponent?.nativeElement?.scrollTop;
+        return scrollPx < this.maxHeight - scrollOffset;
+    }
+
+    public messagesScroll(): void {
+        // TODO Adjust later, initial idea
+        if (this.isScrollAvailable(this.wrapperHeightPx + 100))
+            this.isScrollToBottomDisplayed = true;
+        else this.isScrollToBottomDisplayed = false;
     }
 }

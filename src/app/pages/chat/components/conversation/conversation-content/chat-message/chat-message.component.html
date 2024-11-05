@@ -64,7 +64,7 @@
                     "
                 ></ng-container>
                 <ng-container *ngIf="!message.isDeleted">
-                    <ng-container *ngIf="hasActionsDisplayed">
+                    <ng-container *ngIf="hasActionsDisplayed && !isArchived">
                         <ng-container
                             *ngTemplateOutlet="
                                 actions;

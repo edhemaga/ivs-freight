@@ -5,5 +5,4 @@ export class TableBodySvgRoutes {
     static workHourRoute: string = 'assets/svg/common/ic_time.svg';
     static repairServicesRoute: string = 'assets/svg/common/repair-services/';
     static favoriteRoute: string = 'assets/svg/common/ic_star.svg';
-    static circleRoute: string = 'assets/svg/common/colors/ic_circle.svg';
 }

@@ -1,7 +1,11 @@
-import { ChatPreferenceItem } from '@pages/chat/models';
-
 // Assets
 import { ChatSvgRoutes } from '@pages/chat/utils/routes';
+
+// Models
+import { ChatPreferenceItem } from '@pages/chat/models';
+
+// Enums
+import { ChatStringTypeEnum } from '@pages/chat/enums';
 
 export class ChatPreferencesConfig {
     static items: ChatPreferenceItem[] = [
@@ -137,7 +141,7 @@ export class ChatPreferencesConfig {
             },
         },
         {
-            id: 'view',
+            id: ChatStringTypeEnum.VIEW,
             name: 'Chat View',
             isHighlighted: false,
             isExpandable: true,

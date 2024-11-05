@@ -40,12 +40,22 @@
             </ng-container>
         </div>
 
-        <ng-container *ngIf="unreadCount">
+        <ng-container *ngIf="unreadCount || favoriteCount">
             <app-chat-vertical-divider></app-chat-vertical-divider>
+        </ng-container>
 
-            <div class="d-flex unread-messages-wrapper">
+        <ng-container *ngIf="unreadCount">
+            <!-- TODO Refactor to template -->
+            <div
+                class="d-flex notification-messages-wrapper"
+                [ngClass]="
+                    activeFilter === chatToolbarActiveFilterEnum.UNREAD &&
+                    chatAttachmentCustomClassEnum.SELECTED_FILTER
+                "
+                (click)="selectFilter(chatToolbarActiveFilterEnum.UNREAD)"
+            >
                 <div
-                    class="unread-messages-icon d-flex justify-content-center align-items-center"
+                    class="notification-messages-icon d-flex justify-content-center align-items-center"
                 >
                     <svg-icon
                         class="d-flex justify-content-center align-items-center"
@@ -55,9 +65,35 @@
                     </svg-icon>
                 </div>
                 <div
-                    class="unread-count-wrapper d-flex justify-content-center align-items-center ta-font-extra-bold"
+                    class="notification-count-wrapper d-flex justify-content-center align-items-center ta-font-extra-bold"
                 >
-                    <div class="unread-count">{{ unreadCount }}</div>
+                    <div class="notification-count">{{ unreadCount }}</div>
+                </div>
+            </div>
+        </ng-container>
+        <ng-container *ngIf="favoriteCount">
+            <div
+                class="d-flex notification-messages-wrapper favorite"
+                [ngClass]="
+                    activeFilter === chatToolbarActiveFilterEnum.FAVORITE &&
+                    chatAttachmentCustomClassEnum.SELECTED_FILTER
+                "
+                (click)="selectFilter(chatToolbarActiveFilterEnum.FAVORITE)"
+            >
+                <div
+                    class="notification-messages-icon light-blue d-flex justify-content-center align-items-center"
+                >
+                    <svg-icon
+                        class="d-flex justify-content-center align-items-center"
+                        [svgStyle]="{ 'width.px': 18, 'height.px': 18 }"
+                        [src]="chatSvgRoutes.favoriteIcon"
+                    >
+                    </svg-icon>
+                </div>
+                <div
+                    class="notification-count-wrapper d-flex justify-content-center align-items-center ta-font-extra-bold"
+                >
+                    <div class="notification-count">{{ favoriteCount }}</div>
                 </div>
             </div>
         </ng-container>
@@ -155,8 +191,8 @@
         <div class="chat-lists">
             <app-conversation-list
                 [departments]="departments"
-                [companyUsers]="companyUsers"
-                [drivers]="drivers"
+                [companyUsers]="companyUsers | chatUserFilter : activeFilter"
+                [drivers]="drivers | chatUserFilter : activeFilter"
                 (selectedConversation)="
                     createUserConversation(
                         $event.id,
@@ -166,6 +202,7 @@
                         $event.conversationType
                     )
                 "
+                [activeFilter]="activeFilter"
             ></app-conversation-list>
         </div>
 

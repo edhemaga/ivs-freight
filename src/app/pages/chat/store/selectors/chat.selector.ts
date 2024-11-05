@@ -1,4 +1,5 @@
 import { createSelector, createFeatureSelector } from '@ngrx/store';
+import { ChatViewTypeEnum } from '@pages/chat/enums';
 
 // Models
 import {
@@ -85,4 +86,19 @@ export const selectAttachmentUploadStatus = createSelector(
 export const selectAttachments = createSelector(
     selectChatState,
     (state: ChatState): UploadFile[] => state.attachments
+);
+
+export const selectViewType = createSelector(
+    selectChatState,
+    (state: ChatState): string => state.viewType
+);
+
+export const selectUnreadCount = createSelector(
+    selectChatState,
+    (state: ChatState): number => state.unreadCount
+);
+
+export const selectFavoriteCount = createSelector(
+    selectChatState,
+    (state: ChatState): number => state.favoriteCount
 );
