@@ -105,7 +105,7 @@
 
                 <ng-template #showItemsDropdown>
                     <app-ca-input-dropdown
-                        formControlName="description"
+                        formControlName="itemfuel"
                         [inputConfig]="{
                         name: 'Input Dropdown',
                         type: 'text',
@@ -125,7 +125,7 @@
                 </ng-template>
 
                 <app-ta-input
-                    formControlName="quantity"
+                    [formControlName]="!isFuelTable ? 'quantity' : 'qty'"
                     [inputConfig]="{
                         name: 'qty',
                         type: 'text',

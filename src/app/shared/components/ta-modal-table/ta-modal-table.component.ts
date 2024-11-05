@@ -84,6 +84,7 @@ import {
     CompanyOfficeDepartmentContactResponse,
     BrokerContactResponse,
     RepairShopContactResponse,
+    FuelItemResponse,
 } from 'appcoretruckassist';
 import { RepairItemResponse } from 'appcoretruckassist';
 import { RepairSubtotal } from '@pages/repair/pages/repair-modals/repair-order-modal/models/repair-subtotal.model';
@@ -178,7 +179,7 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
     public selectedTruckTrailerRepairPm = [];
     public truckTrailerRepairPmOptions = [];
     public subTotals: RepairSubtotal[] = [];
-
+    public activeFuelItem = [];
     // pm table
     public pmTruckOptions: ModalTableDropdownOption[] = [];
     public pmTrailerOptions: ModalTableDropdownOption[] = [];
@@ -393,6 +394,11 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
                 break;
             case TaModalTableStringEnum.FUEL_CARD_TYPE:
                 this.selectedFuelCard[index] = dropdownEvent;
+
+                break;
+
+            case TaModalTableStringEnum.REPAIR_BILL_TABLE_ITEMS:
+                this.activeFuelItem[index] = dropdownEvent;
 
                 break;
             default:
@@ -763,6 +769,8 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
                     pm: [null],
                     quantity: [null, [Validators.required]],
                     price: [null, [Validators.required]],
+                    itemfuel: [null],
+                    qty: [null],
                 });
 
                 break;
@@ -903,6 +911,7 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
             case ModalTableTypeEnum.REPAIR_BILL:
             case ModalTableTypeEnum.REPAIR_ORDER:
                 this.selectedTruckTrailerRepairPm.splice(index, 1);
+                this.activeFuelItem.slice(index, 1);
 
                 break;
             case ModalTableTypeEnum.CONTACT:
@@ -1021,7 +1030,6 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
     ): void {
         modalTableData.forEach((data, i) => {
             this.createFormArrayRow();
-
             switch (this.tableType) {
                 case ModalTableTypeEnum.CONTACT:
                     this.handleContactData(data, i);
@@ -1203,6 +1211,8 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
             quantity: repairBillData?.quantity,
             price: repairBillData?.price,
             subtotal: repairBillData?.subtotal,
+            qty: (repairBillData as FuelItemResponse)?.qty,
+            itemfuel: (repairBillData as FuelItemResponse)?.itemFuel?.name,
         });
 
         this.subTotals[index] = {
@@ -1212,6 +1222,12 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
 
         this.selectedTruckTrailerRepairPm[index] =
             repairBillData?.pmTruck || repairBillData?.pmTrailer;
+
+        if (this.isFuelTable) {
+            this.activeFuelItem[index] = (
+                repairBillData as FuelItemResponse
+            )?.itemFuel;
+        }
     }
 
     private handleRepairOrderData(
@@ -1321,31 +1337,39 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
             this.modalTableForm
                 .get(TaModalTableStringEnum.REPAIR_BILL_TABLE_ITEMS)
                 .valueChanges.pipe(takeUntil(this.destroy$))
-                .subscribe((items: RepairItemResponse[]) => {
-                    if (items?.length) this.subTotals = [];
+                .subscribe(
+                    (items: RepairItemResponse[] | FuelItemResponse[]) => {
+                        if (items?.length) this.subTotals = [];
+                        items?.forEach((item, index) => {
+                            const quantity = this.isFuelTable
+                                ? item.qty
+                                : item.quantity;
+                            const calculateSubtotal =
+                                quantity *
+                                MethodsCalculationsHelper.convertThousanSepInNumber(
+                                    item.price
+                                );
 
-                    items?.forEach((item, index) => {
-                        const calculateSubtotal = item.quantity * item.price;
+                            const existingItemIndex = this.subTotals.findIndex(
+                                (item) => item.index === index
+                            );
 
-                        const existingItemIndex = this.subTotals.findIndex(
-                            (item) => item.index === index
-                        );
+                            const subtotalValue = calculateSubtotal || 0;
 
-                        const subtotalValue = calculateSubtotal || 0;
+                            if (existingItemIndex !== -1) {
+                                this.subTotals[existingItemIndex].subtotal =
+                                    subtotalValue;
+                            } else {
+                                this.subTotals.push({
+                                    subtotal: subtotalValue,
+                                    index: index,
+                                });
+                            }
 
-                        if (existingItemIndex !== -1) {
-                            this.subTotals[existingItemIndex].subtotal =
-                                subtotalValue;
-                        } else {
-                            this.subTotals.push({
-                                subtotal: subtotalValue,
-                                index: index,
-                            });
-                        }
-
-                        this.totalCostValueEmitter.emit(this.subTotals);
-                    });
-                });
+                            this.totalCostValueEmitter.emit(this.subTotals);
+                        });
+                    }
+                );
     }
 
     private resetIsRepairBillTableForm(): void {

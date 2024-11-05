@@ -247,8 +247,10 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
                     form.transactionTime
                 ),
             invoice: this.fuelForm.get(FuelValuesStringEnum.INVOICE).value,
-            total: this.sumArrays.transform(this.subtotal),
-            fuelItems: [], //TODO: leave any for now
+            total: MethodsCalculationsHelper.convertThousanSepInNumber(
+                this.total as any
+            ),
+            fuelItems: this.fuelItems, //TODO: leave any for now
             files: [],
             filesForDeleteIds: [],
         };
@@ -330,8 +332,10 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
                     form.transactionDate,
                     form.transactionTime
                 ),
-            total: this.sumArrays.transform(this.subtotal),
-            fuelItems: [], //TODO: leave any for now
+            total: MethodsCalculationsHelper.convertThousanSepInNumber(
+                this.total as any
+            ),
+            fuelItems: this.fuelItems,
             files: [],
             filesForDeleteIds: [],
         };
@@ -633,10 +637,6 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
         modalTableDataValue: RepairItemResponse[]
     ): void {
         this.fuelItems = modalTableDataValue;
-
-        // this.repairOrderForm
-        //     .get(RepairOrderModalStringEnum.REPAIR_ITEMS)
-        //     .patchValue(JSON.stringify(this.repairItems));
     }
 
     public handleModalTableValidStatusEmit(
