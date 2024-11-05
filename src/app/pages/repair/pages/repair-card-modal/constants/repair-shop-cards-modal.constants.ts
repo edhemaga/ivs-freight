@@ -5,96 +5,122 @@ export class RepairShopCardsModalData {
         {
             title: 'Phone',
             key: 'phone',
-            selected: true,
         },
         {
             title: 'Email',
             key: 'email',
-            selected: true,
         },
         {
             title: 'Address',
             key: 'address',
-            selected: true,
+            secondKey: 'address',
         },
         {
-            title: 'Length',
-            key: 'length',
-            selected: true,
+            title: 'Services',
+            key: 'serviceTypes',
         },
     ];
     static BackDataLoad: CardRows[] = [
         {
             title: 'Bill',
             key: 'bill',
-            selected: true,
         },
         {
             title: 'Expense',
             key: 'expense',
-            selected: true,
         },
         {
             title: 'Contact',
-            key: 'contact',
-            selected: true,
+            key: 'contacts',
         },
         {
             title: 'Rating & Review',
             key: 'rating',
-            selected: true,
         },
     ];
     static allDataLoad: CardRows[] = [
         {
-            id: 1,
             title: 'Phone',
             key: 'phone',
         },
         {
-            id: 2,
             title: 'Email',
             key: 'email',
         },
         {
-            id: 3,
             title: 'Address',
             key: 'address',
+            secondKey: 'address',
         },
         {
-            id: 4,
-            title: 'Length',
-            key: 'length',
+            title: 'Service Type',
+            key: 'shopServiceType',
+            secondKey: 'name',
         },
         {
-            id: 5,
+            title: 'Services',
+            key: 'serviceTypes',
+        },
+        {
+            title: 'Open Hours',
+            key: 'tableOpenHours',
+        },
+        {
             title: 'Bill',
             key: 'bill',
         },
         {
-            id: 6,
-            title: 'Expense',
-            key: 'expense',
+            title: 'Order',
+            key: 'order',
         },
         {
-            id: 7,
-            title: 'Contact',
-            key: 'contact',
+            isDropdown: true,
+            title: 'Bank Detail',
+            values: [
+                {
+                    title: 'Bank • Name',
+                    secondTitle: 'Name',
+                    key: 'tableBankDetailsBankName',
+                },
+                {
+                    title: 'Bank • Routing',
+                    secondTitle: 'Routing',
+                    key: 'tableBankDetailsRouting',
+                },
+                {
+                    title: 'Bank • Account',
+                    secondTitle: 'Account',
+                    key: 'tableBankDetailsAccount',
+                },
+            ],
         },
         {
-            id: 8,
             title: 'Rating & Review',
             key: 'rating',
         },
         {
-            id: 14,
-            title: 'Date Added',
-            key: 'createdAt',
+            title: 'Contact',
+            key: 'contacts',
         },
         {
-            id: 15,
+            title: 'Expense',
+            key: 'tableExpense',
+        },
+        {
+            title: 'Last Used',
+            key: 'tableLastUsed',
+        },
+        {
+            title: 'Date Deactivated',
+            key: 'tableDeactivated',
+        },
+        {
+            title: 'Date Added',
+            key: 'tableAdded',
+        },
+        {
             title: 'Date Edited',
-            key: 'updatedAt',
+            key: 'tableEdited',
         },
     ];
 }

@@ -21,6 +21,7 @@ import { TaTableHeadComponent } from '@shared/components/ta-table/ta-table-head/
 import { TaTableToolbarComponent } from '@shared/components/ta-table/ta-table-toolbar/ta-table-toolbar.component';
 import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
 import { TaTableCardDropdownActionsComponent } from '@shared/components/ta-table-card-dropdown-actions/ta-table-card-dropdown-actions.component';
+import { TaInputDropdownContactsComponent } from '@shared/components/ta-input-dropdown-contacts/ta-input-dropdown-contacts.component';
 
 // Pipes
 import { FormatDatePipe } from '@shared/pipes/format-date.pipe';
@@ -55,6 +56,7 @@ import { repairCardModalReducer } from '@pages/repair/pages/repair-card-modal/st
         TaNoteComponent,
         TaTableCardDropdownActionsComponent,
         TaAppTooltipV2Component,
+        TaInputDropdownContactsComponent,
 
         // Pipes
         FormatDatePipe,

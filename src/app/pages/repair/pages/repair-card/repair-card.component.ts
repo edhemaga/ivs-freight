@@ -33,7 +33,6 @@ import { TruckassistTableService } from '@shared/services/truckassist-table.serv
 import { TableStringEnum } from '@shared/enums/table-string.enum';
 
 // Helpers
-import { CardArrayHelper } from '@shared/utils/helpers/card-array-helper';
 import { CardHelper } from '@shared/utils/helpers/card-helper';
 
 //Components
@@ -121,30 +120,12 @@ export class RepairCardComponent
                 );
             });
         }, 500);
-
-        if (
-            cardChanges?.displayRowsBack?.currentValue ||
-            cardChanges?.displayRowsFront?.currentValue
-        ) {
-            this.objectsWithDropDown();
-        }
     }
 
     ngAfterViewInit(): void {
         this.windowResizeUpdateDescriptionDropdown();
 
         this.windownResizeUpdateCountNumberInCards();
-    }
-
-    public objectsWithDropDown(): void {
-        this.itemsForRepair = [];
-
-        this._viewData.forEach((row) => {
-            this.itemsForRepair = [
-                ...this.itemsForRepair,
-                CardArrayHelper.objectsWithDropDown(row, 'items'),
-            ];
-        });
     }
 
     public flipAllCards(): void {
