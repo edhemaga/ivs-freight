@@ -938,19 +938,6 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                                 break;
                         }
                     } else this.sendRepairData();
-
-                    /*      if (res?.filteredArray) {
-                        if (res.selectedFilter)
-                            this.viewData = this.repairTableData?.filter(
-                                (repairData) =>
-                                    res.filteredArray.some(
-                                        (filterData) =>
-                                            filterData.id === repairData.id
-                                    )
-                            );
-
-                        if (!res.selectedFilter) this.sendRepairData();
-                    } */
                 }
             });
     }
