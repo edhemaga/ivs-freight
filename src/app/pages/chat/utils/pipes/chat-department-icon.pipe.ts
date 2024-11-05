@@ -11,8 +11,7 @@ import { ChatSvgRoutes } from '@pages/chat/utils/routes';
 })
 export class ChatDepartmentIconPipe implements PipeTransform {
     transform(departmentName: string): string {
-        if (!departmentName)
-            return ChatStringTypeEnum.EMPTY;
+        if (!departmentName) return ChatStringTypeEnum.EMPTY;
 
         const normalizedDepartmentName = departmentName?.trim()?.toLowerCase();
 

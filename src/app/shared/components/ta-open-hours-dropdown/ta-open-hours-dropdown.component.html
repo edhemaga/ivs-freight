@@ -1,0 +1,65 @@
+<div
+    [ngStyle]="{ 'width.px': componentData?.width ?? '100%' }"
+    #openHoursPop="ngbPopover"
+    [ngbPopover]="openHoursPopover"
+    container="body"
+    [placement]="'bottom-left'"
+    popoverClass="table-open-hours-popover"
+    triggers="manual"
+    [autoClose]="'outside'"
+    (hidden)="
+        openHoursDropdownActiveId === componentData?.rowId
+            ? (openHoursDropdownActiveId = -1)
+            : {}
+    "
+    (click)="onShowOpenHoursDropdown(openHoursPop)"
+>
+    <div
+        class="d-flex align-items-center open-hours-container"
+        [ngClass]="{
+            active: openHoursDropdownActiveId === componentData?.rowId
+        }"
+        ngbTooltip
+        mainTooltip="Open Hours"
+        tooltipBackground="#424242"
+        tooltipColor="#ffff"
+        position="bottom"
+    >
+        <ng-container>
+            <!-- w8 for back -->
+            <!-- *ngIf="!!row[column.field]?.openHoursToday?.id" -->
+            <svg-icon
+                class="open-hours-icon"
+                [src]="openHoursDropdownSvgRoutes.circleRoute"
+                [svgStyle]="{
+                    'width.px': 10,
+                    'height.px': 10
+                }"
+            ></svg-icon>
+            <!-- w8 for back -->
+            <!-- [ngClass]="{closing: row[column.field]?.openHoursToday?.id === 2}" -->
+        </ng-container>
+
+        <p class="m-0 text-color-black text-size-14">Open Now</p>
+        <!-- w8 for back -->
+        <!-- [ngClass]="{'ta-font-semi-bold': !!row[column.field]?.openHoursToday?.id}" -->
+    </div>
+</div>
+
+<ng-template #openHoursPopover let-data="data">
+    <div class="d-flex flex-column open-hours-dropdown">
+        <ng-container
+            *ngFor="let workingHourItem of data; trackBy: trackByIdentity"
+        >
+            <div class="d-flex flex-column open-hours-dropdown-item">
+                <p class="m-0 ta-font-bold text-color-white-4 text-size-11">
+                    {{ workingHourItem?.workingDays }}
+                </p>
+
+                <span class="text-color-white text-size-14">
+                    {{ workingHourItem?.workingHours }}
+                </span>
+            </div>
+        </ng-container>
+    </div>
+</ng-template>

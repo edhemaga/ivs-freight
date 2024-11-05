@@ -1,4 +1,4 @@
 export enum ChatTimeUnitEnum {
-    // TODO expand further when needed
-    DAYS = 'days'
+    DAYS = 'days',
+    DAY_MONTH_YEAR = 'DD-MM-YYYY',
 }

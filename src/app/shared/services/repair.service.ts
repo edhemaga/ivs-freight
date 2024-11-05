@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 
-import { Observable, tap } from 'rxjs';
+import { Observable, switchMap, tap } from 'rxjs';
 
 // models
 import {
@@ -762,42 +762,24 @@ export class RepairService {
         return this.shopServices.apiRepairshopPinnedIdPut(shopId);
     }
 
-    public changeShopStatus(shopId: any) {
-        this.shopServices.apiRepairshopStatusIdPut(shopId).subscribe({
-            next: () => {
-                this.getRepairShopById(shopId).subscribe({
-                    next: (shop: RepairShopResponse | any) => {
-                        this.repairShopStore.remove(({ id }) => id === shopId);
-                        this.repairShopStore.add(shop);
-                        this.repairDetailsStore.update((store) => {
-                            let ind;
-                            let shopStored = JSON.parse(JSON.stringify(store));
-                            shopStored.repairShop.map(
-                                (data: any, index: any) => {
-                                    if (data.id == shop.id) {
-                                        ind = index;
-                                    }
-                                }
-                            );
+    public changeShopStatus(id: number): Observable<RepairShopResponse> {
+        return this.shopServices.apiRepairshopStatusIdPut(id).pipe(
+            switchMap(() => this.getRepairShopById(id)),
+            tap((shop: RepairShopResponse | any) => {
+                const repairShopId = id;
 
-                            shopStored.repairShop[ind] = shop;
+                this.repairShopStore.remove(({ id }) => id === repairShopId);
+                this.repairShopStore.add(shop);
+                this.repairDetailsStore.update(shop.id, shop);
 
-                            return {
-                                ...store,
-                                repairShop: [...shopStored.repairShop],
-                            };
-                        });
-
-                        this.tableService.sendActionAnimation({
-                            animation: 'update',
-                            tab: 'repair-shop',
-                            data: shop,
-                            id: shop.id,
-                        });
-                    },
+                this.tableService.sendActionAnimation({
+                    animation: 'update',
+                    tab: 'repair-shop',
+                    data: shop,
+                    id: shop.id,
                 });
-            },
-        });
+            })
+        );
     }
 
     public changePinnedStatus(shopId: any) {
