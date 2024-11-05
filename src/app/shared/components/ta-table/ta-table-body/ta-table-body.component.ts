@@ -56,6 +56,7 @@ import { TaInputDropdownContactsComponent } from '@shared/components/ta-input-dr
 import { TaPasswordAccountHiddenCharactersComponent } from '@shared/components/ta-password-account-hidden-characters/ta-password-account-hidden-characters.component';
 import { LoadStatusStringComponent } from '@pages/load/components/load-status-string/load-status-string.component';
 import { TaStatusComponentComponent } from '@shared/components/ta-status-component/ta-status-component.component';
+import { TaOpenHoursDropdownComponent } from '@shared/components/ta-open-hours-dropdown/ta-open-hours-dropdown.component';
 
 // modules
 import { AngularSvgIconModule } from 'angular-svg-icon';
@@ -139,6 +140,8 @@ import { TableBodySvgRoutes } from '@shared/components/ta-table/ta-table-body/ut
         TaPasswordAccountHiddenCharactersComponent,
         LoadStatusStringComponent,
         TaStatusComponentComponent,
+        TaOpenHoursDropdownComponent,
+
         // pipes
         TableHighlightSearchTextPipe,
         TableTextCountPipe,
@@ -231,7 +234,6 @@ export class TaTableBodyComponent
         RepairDescriptionPopoverConstants.descriptionItems;
 
     public isDropdownPositionBottom: boolean = false;
-    public openHoursDropdownActiveId: number = -1;
 
     public tableBodySvgRoutes = TableBodySvgRoutes;
 
@@ -948,41 +950,6 @@ export class TaTableBodyComponent
                 invoiceAgeingGroupFour,
             ],
         };
-    }
-
-    // Open Hours Dropdown
-    public onShowOpenHoursDropdown<T extends { id: number; field: string }>(
-        popover: NgbPopover,
-        row: T,
-        column: T
-    ): void {
-        const columnData = row[column.field];
-
-        let data = [];
-
-        columnData.openHours?.forEach(
-            (dayOfWeek: RepairShopOpenHoursCommand) => {
-                const startTime =
-                    MethodsCalculationsHelper.convertTimeFromBackendBadFormat(
-                        dayOfWeek?.startTime
-                    );
-                const endTime =
-                    MethodsCalculationsHelper.convertTimeFromBackendBadFormat(
-                        dayOfWeek?.endTime
-                    );
-
-                const workingHourItem = {
-                    workingDays: dayOfWeek?.dayOfWeek,
-                    workingHours: `${startTime} - ${endTime}`,
-                };
-
-                data = [...data, workingHourItem];
-            }
-        );
-
-        popover.isOpen() ? popover.close() : popover.open({ data });
-
-        this.openHoursDropdownActiveId = popover.isOpen() ? row.id : -1;
     }
 
     // Dropdown Actions

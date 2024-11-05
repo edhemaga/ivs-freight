@@ -32,4 +32,5 @@ export interface ChatMessage {
     mediaCount?: number;
     links?: Array<ChatLink>;
     linksCount?: number;
+    isReceivedFromHub?: boolean;
 }

@@ -23,15 +23,20 @@ import {
     deleteAllAttachments,
     setDepartment,
     setConversationNameAndType,
+    setViewType,
+    setFavoriteCount,
 } from '@pages/chat/store/actions/chat.actions';
 
 // Models
 import { ChatState } from '@pages/chat/models';
 
+// Enums
+import { ChatStringTypeEnum, ChatViewTypeEnum } from '@pages/chat/enums';
+
 const initialState: ChatState = {
     conversation: {
         id: 0,
-        name: '',
+        name: ChatStringTypeEnum.EMPTY,
         participants: [],
         isArchived: false,
         hasLeft: false,
@@ -42,6 +47,7 @@ const initialState: ChatState = {
     messageResponseCount: 0,
     messageResponseData: [],
     unreadCount: 0,
+    favoriteCount: 0,
     attachments: [],
     isAttachmentUploadActive: false,
     isProfileDetailsDisplayed: false,
@@ -49,7 +55,10 @@ const initialState: ChatState = {
     profileDetails: null,
     messageToReply: null,
     messageToEdit: null,
-    userTyping: '',
+    userTyping: ChatStringTypeEnum.EMPTY,
+    viewType:
+        localStorage.getItem(ChatStringTypeEnum.VIEW) ||
+        ChatViewTypeEnum.REGULAR,
 };
 
 // TODO deconstruct each newState
@@ -110,12 +119,14 @@ export const chatDataReducer = createReducer(
                 createdAt: newState.createdAt,
                 updatedAt: newState.updatedAt,
                 isEdited: newState.isEdited,
+                isDeleted: newState.isDeleted,
                 files: newState.files,
                 filesCount: newState.filesCount,
                 media: newState.media,
                 mediaCount: newState.mediaCount,
                 links: newState.links,
                 linksCount: newState.linksCount,
+                isReceivedFromHub: newState.isReceivedFromHub,
             },
         ],
     })),
@@ -274,5 +285,13 @@ export const chatDataReducer = createReducer(
     on(setDepartment, (state, newState) => ({
         ...state,
         departments: [...state.departments, newState],
+    })),
+    on(setViewType, (state, newState) => ({
+        ...state,
+        viewType: newState.viewType,
+    })),
+    on(setFavoriteCount, (state, newState) => ({
+        ...state,
+        favoriteCount: newState.count,
     }))
 );

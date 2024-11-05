@@ -1,6 +1,12 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import {
+    Component,
+    EventEmitter,
+    Input,
+    OnChanges,
+    OnInit,
+    Output,
+} from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
-import { BehaviorSubject, takeUntil } from 'rxjs';
 
 // Assets
 import { ChatSvgRoutes } from '@pages/chat/utils/routes';
@@ -16,11 +22,7 @@ import {
 } from 'appcoretruckassist';
 
 // Models
-import {
-    ChatCompanyChannelExtended,
-    ChatGroupState,
-    ChatMessageResponse,
-} from '@pages/chat/models';
+import { ChatCompanyChannelExtended, ChatGroupState } from '@pages/chat/models';
 
 // Enums
 import {
@@ -29,6 +31,9 @@ import {
     ChatGroupStateEnum,
     ChatObjectPropertyEnum,
     ChatSearchPlaceHolders,
+    ChatViewTypeEnum,
+    ChatToolbarActiveFilterEnum,
+    ChatRotateValue,
 } from '@pages/chat/enums';
 
 // Animations
@@ -38,8 +43,11 @@ import { chatFadeVerticallyAnimation } from '@shared/animations/chat-fade-vertic
 import { UnsubscribeHelper } from '@pages/chat/utils/helpers';
 
 // Services
-import { ChatHubService, ChatStoreService } from '@pages/chat/services';
+import { ChatStoreService, UserChatService } from '@pages/chat/services';
+
+// Constants
 import { ChatConversationGroupStateConstant } from '@pages/chat/utils/constants';
+import { takeUntil } from 'rxjs';
 
 @Component({
     selector: 'app-conversation-list',
@@ -49,7 +57,7 @@ import { ChatConversationGroupStateConstant } from '@pages/chat/utils/constants'
 })
 export class ConversationListComponent
     extends UnsubscribeHelper
-    implements OnInit
+    implements OnInit, OnChanges
 {
     // Data
     @Input() public departments: ChatCompanyChannelExtended[];
@@ -57,6 +65,7 @@ export class ConversationListComponent
     @Input() public dispatchBoardChannel: ChatCompanyChannelExtended[];
     @Input() public companyUsers: CompanyUserChatResponsePagination;
     @Input() public drivers: CompanyUserChatResponsePagination;
+    @Input() public activeFilter!: ChatToolbarActiveFilterEnum;
 
     @Output() selectedConversation = new EventEmitter<{
         id: number[];
@@ -78,24 +87,38 @@ export class ConversationListComponent
 
     // Create list of states for all groups available
     public groupsState = ChatConversationGroupStateConstant.groupsState;
+    public departmentHovered!: ChatCompanyChannelExtended;
+    public truckHovered!: ChatCompanyChannelExtended;
+    public dispatchBoardHovered: ChatCompanyChannelExtended;
+    public companyUserHovered!: CompanyUserChatResponse;
+    public driverHovered!: CompanyUserChatResponse;
 
     // Enums
     public chatGroupStateEnum = ChatGroupStateEnum;
     public chatGroupEnum = ChatGroupEnum;
     public conversationTypeEnum = ConversationTypeEnum;
-    private chatObjectPropertyEnum = ChatObjectPropertyEnum;
     public chatSearchPlaceholdersEnum = ChatSearchPlaceHolders;
+    public chatRotateValue = ChatRotateValue;
+    private chatObjectPropertyEnum = ChatObjectPropertyEnum;
 
     constructor(
         private formBuilder: UntypedFormBuilder,
-        private chatStoreService: ChatStoreService
+
+        // Services
+        private chatStoreService: ChatStoreService,
+        private chatService: UserChatService
     ) {
         super();
     }
 
     ngOnInit(): void {
-        this.initializeChatGroupStates();
+        this.setGroupChatStates();
         this.creteForm();
+        this.selectViewType();
+    }
+
+    ngOnChanges(): void {
+        this.setGroupChatStates();
     }
 
     private creteForm(): void {
@@ -104,37 +127,77 @@ export class ConversationListComponent
         });
     }
 
-    private initializeChatGroupStates(): void {
+    private setGroupChatStates(takeItems?: number): void {
+        const companyUserData: CompanyUserChatResponse[] =
+            this.companyUsers?.data?.slice(
+                0,
+                this.activeFilter
+                    ? this.companyUsers?.data?.length
+                    : takeItems || 6
+            );
+        const driverData: CompanyUserChatResponse[] = this.drivers?.data?.slice(
+            0,
+            this.activeFilter ? this.drivers?.data?.length : takeItems || 6
+        );
         this.groupsState = [
             {
                 ...this.findChatGroupState(ChatGroupEnum.Department),
-                groupData: this.departments?.slice(0, 6),
+                groupData: this.departments?.slice(
+                    0,
+                    this.activeFilter ? this.departments.length : takeItems || 6
+                ),
             },
             {
                 ...this.findChatGroupState(ChatGroupEnum.Truck),
-                groupData: this.truckChannel?.slice(0, 6),
+                groupData: this.truckChannel?.slice(
+                    0,
+                    this.activeFilter
+                        ? this.truckChannel.length
+                        : takeItems || 6
+                ),
             },
             {
                 ...this.findChatGroupState(ChatGroupEnum.Dispatch),
-                groupData: this.dispatchBoardChannel?.slice(0, 6),
+                groupData: this.dispatchBoardChannel?.slice(
+                    0,
+                    this.activeFilter
+                        ? this.dispatchBoardChannel.length
+                        : takeItems || 6
+                ),
             },
             {
                 ...this.findChatGroupState(ChatGroupEnum.CompanyUser),
                 groupData: {
                     ...this.companyUsers,
-                    data: this.companyUsers?.data?.slice(0, 6),
-                    count: this.companyUsers?.data?.slice(0, 6).length,
+                    data: companyUserData,
+                    count: companyUserData.length,
                 },
             },
             {
                 ...this.findChatGroupState(ChatGroupEnum.Driver),
                 groupData: {
-                    ...this.drivers,
-                    data: this.drivers?.data?.slice(0, 6),
-                    count: this.drivers?.data?.slice(0, 6).length,
+                    ...this.companyUsers,
+                    data: driverData,
+                    count: driverData.length,
                 },
             },
         ];
+    }
+
+    private selectViewType(): void {
+        this.chatStoreService.selectViewType().subscribe((viewType: string) => {
+            switch (viewType) {
+                case ChatViewTypeEnum.REGULAR:
+                    this.isAdvancedView = false;
+                    break;
+                case ChatViewTypeEnum.ADVANCED:
+                    this.isAdvancedView = true;
+                    break;
+                default:
+                    this.isAdvancedView = false;
+                    return;
+            }
+        });
     }
 
     private showAllChatGroupData(
@@ -208,7 +271,7 @@ export class ConversationListComponent
                     group.state = ChatGroupStateEnum.Collapsed;
                     break;
                 case ChatGroupStateEnum.Collapsed === group.state:
-                    this.initializeChatGroupStates();
+                    this.setGroupChatStates();
                     group.state = ChatGroupStateEnum.Expanded;
                     break;
                 default:
@@ -248,5 +311,12 @@ export class ConversationListComponent
             });
             return;
         }
+    }
+
+    public addFavoriteConversation(conversationId: number): void {
+        this.chatService
+            .addFavourite(conversationId)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe();
     }
 }
