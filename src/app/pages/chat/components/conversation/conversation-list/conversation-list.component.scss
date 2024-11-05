@@ -25,7 +25,6 @@
 
         .conversation-list-item {
             border-radius: 2px;
-            padding: 4px;
 
             &-regular {
                 height: 30px;
@@ -59,6 +58,29 @@
                     }
                 }
             }
+
+            .favorite-icon {
+                display: none;
+
+                &:hover {
+                    svg-icon {
+                        svg {
+                            path {
+                                fill: $bw5 !important;
+                            }
+                        }
+                    }
+                }
+            }
+
+            &:hover {
+                .icons {
+                    display: none;
+                }
+                .favorite-icon {
+                    display: block;
+                }
+            }
         }
     }
     &:hover {
@@ -76,7 +98,7 @@
     }
 
     &-details {
-        padding: 4px;
+        padding: 4px 0 4px 4px;
     }
 
     &-arrow {
@@ -150,14 +172,14 @@
 
 .item {
     height: 100%;
-    padding: 0 4px;
+    padding-left: 4px;
+    &-channel {
+        padding-left: 8px;
+    }
 }
 
 .count {
     height: 18px;
-
-    line-height: 14px;
-    font-size: 11px;
     border-radius: 60px;
     padding: 2px 5px;
     float: right;
@@ -166,17 +188,26 @@
 
 .icon {
     &-regular {
-        margin-left: 2px;
+        margin-left: 6px;
 
         &-arrow {
             margin: auto;
         }
 
+        &-channel {
+            margin-left: 8px;
+        }
+
         .activity-status-icon {
+            width: 8px;
             position: relative;
             top: 7px;
             right: 8px;
         }
+    }
+
+    &-advanced {
+        margin: auto auto auto 4px;
     }
 
     &-0degr {
@@ -192,5 +223,25 @@
     &-180degr {
         transform: rotate(180deg);
         transition: transform 0.25s ease-out;
+    }
+
+    &-blue {
+        svg-icon {
+            svg {
+                path {
+                    fill: $ta-blue-13;
+                }
+            }
+        }
+    }
+
+    &-gray {
+        svg-icon {
+            svg {
+                path {
+                    fill: $bw5;
+                }
+            }
+        }
     }
 }

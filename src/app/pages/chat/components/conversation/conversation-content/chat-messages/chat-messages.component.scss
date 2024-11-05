@@ -33,22 +33,66 @@
 
             .message-date {
                 height: 26px;
-                padding: 6px;
-                color: $ta-black;
+                margin: auto 6px;
                 font-size: 11px;
+
+                &-selection {
+                    width: 110px;
+                    padding: 0 4px;
+                    border-radius: 2px;
+                    background-color: $bw2;
+                    color: $ta-black-2;
+
+                    &:hover {
+                        cursor: pointer;
+                    }
+
+                    &-focused {
+                        width: 110px;
+                        padding: 0 4px;
+                        border-radius: 2px;
+                        background-color: $ta-black;
+                        color: $white;
+                        &:hover {
+                            cursor: pointer;
+                        }
+                    }
+                }
             }
 
             .gradient {
                 height: 1px;
 
                 &-to-left {
-                    margin: auto 12px auto auto;
                     background: linear-gradient(to left, $bw-9, $white);
+                    margin: auto 12px auto auto;
+
+                    &-blue {
+                        margin: auto 12px auto auto;
+
+                        background: linear-gradient(
+                            to left,
+                            $ta-blue-17,
+                            $white
+                        );
+                    }
                 }
 
                 &-to-right {
                     margin: auto auto auto 12px;
                     background: linear-gradient(to right, $bw-9, $white);
+                    &-blue {
+                        margin: auto auto auto 12px;
+
+                        background: linear-gradient(
+                            to right,
+                            $ta-blue-17,
+                            $white
+                        );
+                    }
+                }
+                &-width {
+                    width: calc(50% - 55px);
                 }
             }
         }
@@ -77,6 +121,34 @@
     .text {
         height: 23px;
         margin: auto;
+    }
+}
+
+.date-options {
+    color: $white;
+    padding: 4px;
+
+    &:hover {
+        background-color: $ta-black;
+    }
+
+    &-list {
+        width: 110px;
+        background-color: $ta-black-2;
+        border-radius: 3px;
+        padding: 4px;
+
+        &:hover {
+            cursor: pointer;
+        }
+    }
+
+    &-wrapper {
+        width: 0px !important;
+        position: relative;
+        top: 4px;
+        left: calc(50% - 55px);
+        z-index: 10;
     }
 }
 

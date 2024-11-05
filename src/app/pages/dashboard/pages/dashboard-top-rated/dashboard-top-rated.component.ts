@@ -26,7 +26,6 @@ import { DashboardHelper } from '@pages/dashboard/utils/helpers/dashboard.helper
 
 // enums
 import { DashboardStringEnum } from '@pages/dashboard/enums/dashboard-string.enum';
-import { DashboardChartStringEnum } from '@pages/dashboard/enums/dashboard-chart-string.enum';
 
 // models
 import { DropdownItem } from '@shared/models/dropdown-item.model';
@@ -38,19 +37,6 @@ import {
     TopRatedMainColorsPallete,
     TopRatedSecondaryColorsPallete,
 } from '@pages/dashboard/models/colors-pallete.model';
-import {
-    ChartInitProperties,
-    //DoughnutChart,
-    DoughnutChartConfig,
-    DoughnutChartPercentage,
-    DoughnutChartSigns,
-} from '@pages/dashboard/models/dashboard-chart-models/doughnut-chart.model';
-import {
-    //BarChart,
-    BarChartAxes,
-    BarChartConfig,
-    BarChartValues,
-} from '@pages/dashboard/models/dashboard-chart-models/bar-chart.model';
 import {
     DashboardTopReportType,
     IntervalLabelResponse,
@@ -66,9 +52,6 @@ import { TopRatedWithoutTabApiArguments } from '@pages/dashboard/pages/dashboard
     encapsulation: ViewEncapsulation.None,
 })
 export class DashboardTopRatedComponent implements OnInit, OnDestroy {
-    //@ViewChild('doughnutChart') public doughnutChart: DoughnutChart;
-    //@ViewChild('barChart') public barChart: BarChart;
-
     private destroy$: Subject<void> = new Subject<void>();
 
     public topRatedForm: UntypedFormGroup;
@@ -117,15 +100,6 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
     public secondaryColorsPallete: TopRatedSecondaryColorsPallete[] = [];
 
     // charts
-    public doughnutChartConfig: DoughnutChartConfig;
-
-    public barChartConfig: BarChartConfig;
-    public barChartAxes: BarChartAxes;
-    public barChartDateTitle: string;
-    private barChartLabels: string[] | string[][] = [];
-    private barChartTooltipLabels: string[];
-    private barChartValues: BarChartValues =
-        DashboardByStateConstants.BAR_CHART_INIT_VALUES;
 
     constructor(
         private formBuilder: UntypedFormBuilder,
@@ -155,27 +129,27 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
         item.name;
 
     public resetSelectedValues(): void {
-        for (let i = 0; i < this.selectedTopRatedList.length; i++) {
-            // this.barChart?.removeMultiBarData(
-            //     this.selectedTopRatedList[i],
-            //     true
-            // );
-        }
+        // for (let i = 0; i < this.selectedTopRatedList.length; i++) {
+        //     this.barChart?.removeMultiBarData(
+        //         this.selectedTopRatedList[i],
+        //         true
+        //     );
+        // }
 
         this.selectedTopRatedList = [];
 
-        this.barChartValues = {
-            defaultBarValues: {
-                topRatedBarValues: [],
-                otherBarValues: [],
-            },
-            defaultBarPercentages: {
-                topRatedBarPercentage: [],
-                otherBarPercentage: [],
-            },
-            selectedBarValues: [],
-            selectedBarPercentages: [],
-        };
+        // this.barChartValues = {
+        //     defaultBarValues: {
+        //         topRatedBarValues: [],
+        //         otherBarValues: [],
+        //     },
+        //     defaultBarPercentages: {
+        //         topRatedBarPercentage: [],
+        //         otherBarPercentage: [],
+        //     },
+        //     selectedBarValues: [],
+        //     selectedBarPercentages: [],
+        // };
 
         this.clearSearchValue = true;
     }
@@ -222,11 +196,11 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
 
             this.isDisplayingPlaceholder = false;
 
-            if (this.selectedTopRatedList.length) {
-                this.setDoughnutChartData(this.selectedTopRatedList, true);
-            } else {
-                this.setDoughnutChartData(this.topRatedList);
-            }
+            // if (this.selectedTopRatedList.length) {
+            //     this.setDoughnutChartData(this.selectedTopRatedList, true);
+            // } else {
+            //     this.setDoughnutChartData(this.topRatedList);
+            // }
         }
     }
 
@@ -439,8 +413,8 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
             100 / this.selectedTopRatedList.length
         ).toFixed(2);
 
-        this.setDoughnutChartData(this.selectedTopRatedList, true);
-        this.setBarChartData(this.selectedTopRatedList, topRatedListItemIndex);
+        // this.setDoughnutChartData(this.selectedTopRatedList, true);
+        // this.setBarChartData(this.selectedTopRatedList, topRatedListItemIndex);
     }
 
     public handleRemoveSelectedClick(
@@ -467,18 +441,18 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
             100 / this.selectedTopRatedList.length
         ).toFixed(2);
 
-        if (this.selectedTopRatedList.length) {
-            this.setDoughnutChartData(this.selectedTopRatedList, true);
-        } else {
-            this.setDoughnutChartData(this.topRatedList);
-        }
+        // if (this.selectedTopRatedList.length) {
+        //     this.setDoughnutChartData(this.selectedTopRatedList, true);
+        // } else {
+        //     this.setDoughnutChartData(this.topRatedList);
+        // }
 
-        this.setBarChartData(
-            this.selectedTopRatedList,
-            topRatedListItemIndex,
-            true,
-            topRatedListItem
-        );
+        // this.setBarChartData(
+        //     this.selectedTopRatedList,
+        //     topRatedListItemIndex,
+        //     true,
+        //     topRatedListItem
+        // );
     }
 
     public handleHoverSelected(
@@ -642,16 +616,6 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                             ];
                         }
 
-                        this.barChartValues.selectedBarValues = [
-                            ...this.barChartValues.selectedBarValues,
-                            filteredIntervalValues,
-                        ];
-
-                        this.barChartValues.selectedBarPercentages = [
-                            ...this.barChartValues.selectedBarPercentages,
-                            filteredIntervalPercentages,
-                        ];
-
                         return {
                             id: dispatcher.id,
                             name: dispatcher.name,
@@ -673,59 +637,6 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                 this.topRatedListLength = dispatcherData.pagination.count;
 
                 // intervals
-
-                for (let i = 0; i < dispatcherData.topDispatchers.length; i++) {
-                    // top rated intervals
-                    this.barChartValues.defaultBarValues.topRatedBarValues = [
-                        ...this.barChartValues.defaultBarValues
-                            .topRatedBarValues,
-                        selectedTab === DashboardStringEnum.LOAD
-                            ? dispatcherData.topDispatchers[i]
-                                  .dispatcherLoadCount
-                            : dispatcherData.topDispatchers[i]
-                                  .dispatcherRevenue,
-                    ];
-
-                    this.barChartValues.defaultBarPercentages.topRatedBarPercentage =
-                        [
-                            ...this.barChartValues.defaultBarPercentages
-                                .topRatedBarPercentage,
-                            selectedTab === DashboardStringEnum.LOAD
-                                ? dispatcherData.topDispatchers[i]
-                                      .dispatcherLoadPercentage
-                                : dispatcherData.topDispatchers[i]
-                                      .dispatcherRevenuePercentage,
-                        ];
-
-                    // other intervals
-                    this.barChartValues.defaultBarValues.otherBarValues = [
-                        ...this.barChartValues.defaultBarValues.otherBarValues,
-                        selectedTab === DashboardStringEnum.LOAD
-                            ? dispatcherData.allOthers[i].dispatcherLoadCount
-                            : dispatcherData.allOthers[i].dispatcherRevenue,
-                    ];
-
-                    this.barChartValues.defaultBarPercentages.otherBarPercentage =
-                        [
-                            ...this.barChartValues.defaultBarPercentages
-                                .otherBarPercentage,
-                            selectedTab === DashboardStringEnum.LOAD
-                                ? dispatcherData.allOthers[i]
-                                      .dispatcherLoadPercentage
-                                : dispatcherData.allOthers[i]
-                                      .dispatcherRevenuePercentage,
-                        ];
-                }
-
-                this.setBarChartDateTitle(
-                    dispatcherData.intervalLabels[0].tooltipLabel,
-                    dispatcherData.intervalLabels[
-                        dispatcherData.topDispatchers.length - 1
-                    ].tooltipLabel
-                );
-                this.setBarChartLabels(dispatcherData.intervalLabels);
-
-                this.setChartsData();
             });
     }
 
@@ -760,16 +671,6 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                         ];
                     }
 
-                    this.barChartValues.selectedBarValues = [
-                        ...this.barChartValues.selectedBarValues,
-                        filteredIntervalValues,
-                    ];
-
-                    this.barChartValues.selectedBarPercentages = [
-                        ...this.barChartValues.selectedBarPercentages,
-                        filteredIntervalPercentages,
-                    ];
-
                     return {
                         id: driver.id,
                         name: driver.name,
@@ -790,57 +691,6 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                 this.topRatedListLength = driverData.pagination.count;
 
                 // intervals
-
-                for (let i = 0; i < driverData.topDrivers.length; i++) {
-                    // top rated intervals
-                    this.barChartValues.defaultBarValues.topRatedBarValues = [
-                        ...this.barChartValues.defaultBarValues
-                            .topRatedBarValues,
-                        selectedTab === DashboardStringEnum.MILEAGE
-                            ? driverData.topDrivers[i].driverMileage
-                            : driverData.topDrivers[i].driverRevenue,
-                    ];
-
-                    this.barChartValues.defaultBarPercentages.topRatedBarPercentage =
-                        [
-                            ...this.barChartValues.defaultBarPercentages
-                                .topRatedBarPercentage,
-                            selectedTab === DashboardStringEnum.MILEAGE
-                                ? driverData.topDrivers[i]
-                                      .driverMileagePercentage
-                                : driverData.topDrivers[i]
-                                      .driverRevenuePercentage,
-                        ];
-
-                    // other intervals
-                    this.barChartValues.defaultBarValues.otherBarValues = [
-                        ...this.barChartValues.defaultBarValues.otherBarValues,
-                        selectedTab === DashboardStringEnum.MILEAGE
-                            ? driverData.allOthers[i].driverMileage
-                            : driverData.allOthers[i].driverRevenue,
-                    ];
-
-                    this.barChartValues.defaultBarPercentages.otherBarPercentage =
-                        [
-                            ...this.barChartValues.defaultBarPercentages
-                                .otherBarPercentage,
-                            selectedTab === DashboardStringEnum.MILEAGE
-                                ? driverData.allOthers[i]
-                                      .driverMileagePercentage
-                                : driverData.allOthers[i]
-                                      .driverRevenuePercentage,
-                        ];
-                }
-
-                this.setBarChartDateTitle(
-                    driverData.intervalLabels[0].tooltipLabel,
-                    driverData.intervalLabels[
-                        driverData.intervalLabels.length - 1
-                    ].tooltipLabel
-                );
-                this.setBarChartLabels(driverData.intervalLabels);
-
-                this.setChartsData();
             });
     }
 
@@ -875,16 +725,6 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                         ];
                     }
 
-                    this.barChartValues.selectedBarValues = [
-                        ...this.barChartValues.selectedBarValues,
-                        filteredIntervalValues,
-                    ];
-
-                    this.barChartValues.selectedBarPercentages = [
-                        ...this.barChartValues.selectedBarPercentages,
-                        filteredIntervalPercentages,
-                    ];
-
                     return {
                         id: truck.id,
                         name: truck.number,
@@ -905,52 +745,6 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                 this.topRatedListLength = truckData.pagination.count;
 
                 // intervals
-
-                for (let i = 0; i < truckData.topTrucks.length; i++) {
-                    // top rated intervals
-                    this.barChartValues.defaultBarValues.topRatedBarValues = [
-                        ...this.barChartValues.defaultBarValues
-                            .topRatedBarValues,
-                        selectedTab === DashboardStringEnum.MILEAGE
-                            ? truckData.topTrucks[i].truckMileage
-                            : truckData.topTrucks[i].truckRevenue,
-                    ];
-
-                    this.barChartValues.defaultBarPercentages.topRatedBarPercentage =
-                        [
-                            ...this.barChartValues.defaultBarPercentages
-                                .topRatedBarPercentage,
-                            selectedTab === DashboardStringEnum.MILEAGE
-                                ? truckData.topTrucks[i].truckMileagePercentage
-                                : truckData.topTrucks[i].truckRevenuePercentage,
-                        ];
-
-                    // other intervals
-                    this.barChartValues.defaultBarValues.otherBarValues = [
-                        ...this.barChartValues.defaultBarValues.otherBarValues,
-                        selectedTab === DashboardStringEnum.MILEAGE
-                            ? truckData.allOthers[i].truckMileage
-                            : truckData.allOthers[i].truckRevenue,
-                    ];
-
-                    this.barChartValues.defaultBarPercentages.otherBarPercentage =
-                        [
-                            ...this.barChartValues.defaultBarPercentages
-                                .otherBarPercentage,
-                            selectedTab === DashboardStringEnum.MILEAGE
-                                ? truckData.allOthers[i].truckMileagePercentage
-                                : truckData.allOthers[i].truckRevenuePercentage,
-                        ];
-                }
-
-                this.setBarChartDateTitle(
-                    truckData.intervalLabels[0].tooltipLabel,
-                    truckData.intervalLabels[truckData.topTrucks.length - 1]
-                        .tooltipLabel
-                );
-                this.setBarChartLabels(truckData.intervalLabels);
-
-                this.setChartsData();
             });
     }
 
@@ -985,16 +779,6 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                         ];
                     }
 
-                    this.barChartValues.selectedBarValues = [
-                        ...this.barChartValues.selectedBarValues,
-                        filteredIntervalValues,
-                    ];
-
-                    this.barChartValues.selectedBarPercentages = [
-                        ...this.barChartValues.selectedBarPercentages,
-                        filteredIntervalPercentages,
-                    ];
-
                     return {
                         id: broker.id,
                         name: broker.name,
@@ -1015,54 +799,6 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                 this.topRatedListLength = brokerData.pagination.count;
 
                 // intervals
-
-                for (let i = 0; i < brokerData.topBrokers.length; i++) {
-                    // top rated intervals
-                    this.barChartValues.defaultBarValues.topRatedBarValues = [
-                        ...this.barChartValues.defaultBarValues
-                            .topRatedBarValues,
-                        selectedTab === DashboardStringEnum.LOAD
-                            ? brokerData.topBrokers[i].brokerLoadCount
-                            : brokerData.topBrokers[i].brokerRevenue,
-                    ];
-
-                    this.barChartValues.defaultBarPercentages.topRatedBarPercentage =
-                        [
-                            ...this.barChartValues.defaultBarPercentages
-                                .topRatedBarPercentage,
-                            selectedTab === DashboardStringEnum.LOAD
-                                ? brokerData.topBrokers[i].brokerLoadPercentage
-                                : brokerData.topBrokers[i]
-                                      .brokerRevenuePercentage,
-                        ];
-
-                    // other intervals
-                    this.barChartValues.defaultBarValues.otherBarValues = [
-                        ...this.barChartValues.defaultBarValues.otherBarValues,
-                        selectedTab === DashboardStringEnum.LOAD
-                            ? brokerData.allOthers[i].brokerLoadCount
-                            : brokerData.allOthers[i].brokerRevenue,
-                    ];
-
-                    this.barChartValues.defaultBarPercentages.otherBarPercentage =
-                        [
-                            ...this.barChartValues.defaultBarPercentages
-                                .otherBarPercentage,
-                            selectedTab === DashboardStringEnum.LOAD
-                                ? brokerData.allOthers[i].brokerLoadPercentage
-                                : brokerData.allOthers[i]
-                                      .brokerRevenuePercentage,
-                        ];
-                }
-
-                this.setBarChartDateTitle(
-                    brokerData.intervalLabels[0].tooltipLabel,
-                    brokerData.intervalLabels[brokerData.topBrokers.length - 1]
-                        .tooltipLabel
-                );
-                this.setBarChartLabels(brokerData.intervalLabels);
-
-                this.setChartsData();
             });
     }
 
@@ -1097,16 +833,6 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                             ];
                         }
 
-                        this.barChartValues.selectedBarValues = [
-                            ...this.barChartValues.selectedBarValues,
-                            filteredIntervalValues,
-                        ];
-
-                        this.barChartValues.selectedBarPercentages = [
-                            ...this.barChartValues.selectedBarPercentages,
-                            filteredIntervalPercentages,
-                        ];
-
                         return {
                             id: shipper.id,
                             name: shipper.name,
@@ -1122,45 +848,6 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                 this.topRatedListLength = shipperData.pagination.count;
 
                 // intervals
-
-                for (let i = 0; i < shipperData.topShippers.length; i++) {
-                    // top rated intervals
-                    this.barChartValues.defaultBarValues.topRatedBarValues = [
-                        ...this.barChartValues.defaultBarValues
-                            .topRatedBarValues,
-                        shipperData.topShippers[i].shipperLoadCount,
-                    ];
-
-                    this.barChartValues.defaultBarPercentages.topRatedBarPercentage =
-                        [
-                            ...this.barChartValues.defaultBarPercentages
-                                .topRatedBarPercentage,
-                            shipperData.topShippers[i].shipperLoadPercentage,
-                        ];
-
-                    // other intervals
-                    this.barChartValues.defaultBarValues.otherBarValues = [
-                        ...this.barChartValues.defaultBarValues.otherBarValues,
-                        shipperData.allOthers[i].shipperLoadCount,
-                    ];
-
-                    this.barChartValues.defaultBarPercentages.otherBarPercentage =
-                        [
-                            ...this.barChartValues.defaultBarPercentages
-                                .otherBarPercentage,
-                            shipperData.allOthers[i].shipperLoadPercentage,
-                        ];
-                }
-
-                this.setBarChartDateTitle(
-                    shipperData.intervalLabels[0].tooltipLabel,
-                    shipperData.intervalLabels[
-                        shipperData.topShippers.length - 1
-                    ].tooltipLabel
-                );
-                this.setBarChartLabels(shipperData.intervalLabels);
-
-                this.setChartsData();
             });
     }
 
@@ -1195,16 +882,6 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                         ];
                     }
 
-                    this.barChartValues.selectedBarValues = [
-                        ...this.barChartValues.selectedBarValues,
-                        filteredIntervalValues,
-                    ];
-
-                    this.barChartValues.selectedBarPercentages = [
-                        ...this.barChartValues.selectedBarPercentages,
-                        filteredIntervalPercentages,
-                    ];
-
                     return {
                         id: owner.id,
                         name: owner.name,
@@ -1225,52 +902,6 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                 this.topRatedListLength = ownerData.pagination.count;
 
                 // intervals
-
-                for (let i = 0; i < ownerData.topOwners.length; i++) {
-                    // top rated intervals
-                    this.barChartValues.defaultBarValues.topRatedBarValues = [
-                        ...this.barChartValues.defaultBarValues
-                            .topRatedBarValues,
-                        selectedTab === DashboardStringEnum.LOAD
-                            ? ownerData.topOwners[i].ownerLoadCount
-                            : ownerData.topOwners[i].ownerRevenue,
-                    ];
-
-                    this.barChartValues.defaultBarPercentages.topRatedBarPercentage =
-                        [
-                            ...this.barChartValues.defaultBarPercentages
-                                .topRatedBarPercentage,
-                            selectedTab === DashboardStringEnum.LOAD
-                                ? ownerData.topOwners[i].ownerLoadPercentage
-                                : ownerData.topOwners[i].ownerRevenuePercentage,
-                        ];
-
-                    // other intervals
-                    this.barChartValues.defaultBarValues.otherBarValues = [
-                        ...this.barChartValues.defaultBarValues.otherBarValues,
-                        selectedTab === DashboardStringEnum.LOAD
-                            ? ownerData.allOthers[i].ownerLoadCount
-                            : ownerData.allOthers[i].ownerRevenue,
-                    ];
-
-                    this.barChartValues.defaultBarPercentages.otherBarPercentage =
-                        [
-                            ...this.barChartValues.defaultBarPercentages
-                                .otherBarPercentage,
-                            selectedTab === DashboardStringEnum.LOAD
-                                ? ownerData.allOthers[i].ownerLoadPercentage
-                                : ownerData.allOthers[i].ownerRevenuePercentage,
-                        ];
-                }
-
-                this.setBarChartDateTitle(
-                    ownerData.intervalLabels[0].tooltipLabel,
-                    ownerData.intervalLabels[ownerData.topOwners.length - 1]
-                        .tooltipLabel
-                );
-                this.setBarChartLabels(ownerData.intervalLabels);
-
-                this.setChartsData();
             });
     }
 
@@ -1306,16 +937,6 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                             ];
                         }
 
-                        this.barChartValues.selectedBarValues = [
-                            ...this.barChartValues.selectedBarValues,
-                            filteredIntervalValues,
-                        ];
-
-                        this.barChartValues.selectedBarPercentages = [
-                            ...this.barChartValues.selectedBarPercentages,
-                            filteredIntervalPercentages,
-                        ];
-
                         return {
                             id: repairShop.id,
                             name: repairShop.name,
@@ -1337,55 +958,6 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                 this.topRatedListLength = repairShopData.pagination.count;
 
                 // intervals
-
-                for (let i = 0; i < repairShopData.topRepairShops.length; i++) {
-                    // top rated intervals
-                    this.barChartValues.defaultBarValues.topRatedBarValues = [
-                        ...this.barChartValues.defaultBarValues
-                            .topRatedBarValues,
-                        selectedTab === DashboardStringEnum.VISIT
-                            ? repairShopData.topRepairShops[i].count
-                            : repairShopData.topRepairShops[i].cost,
-                    ];
-
-                    this.barChartValues.defaultBarPercentages.topRatedBarPercentage =
-                        [
-                            ...this.barChartValues.defaultBarPercentages
-                                .topRatedBarPercentage,
-                            selectedTab === DashboardStringEnum.VISIT
-                                ? repairShopData.topRepairShops[i]
-                                      .countPercentage
-                                : repairShopData.topRepairShops[i]
-                                      .costPercentage,
-                        ];
-
-                    // other intervals
-                    this.barChartValues.defaultBarValues.otherBarValues = [
-                        ...this.barChartValues.defaultBarValues.otherBarValues,
-                        selectedTab === DashboardStringEnum.VISIT
-                            ? repairShopData.allOther[i].count
-                            : repairShopData.allOther[i].cost,
-                    ];
-
-                    this.barChartValues.defaultBarPercentages.otherBarPercentage =
-                        [
-                            ...this.barChartValues.defaultBarPercentages
-                                .otherBarPercentage,
-                            selectedTab === DashboardStringEnum.VISIT
-                                ? repairShopData.allOther[i].countPercentage
-                                : repairShopData.allOther[i].costPercentage,
-                        ];
-                }
-
-                this.setBarChartDateTitle(
-                    repairShopData.intervalLabels[0].tooltipLabel,
-                    repairShopData.intervalLabels[
-                        repairShopData.topRepairShops.length - 1
-                    ].tooltipLabel
-                );
-                this.setBarChartLabels(repairShopData.intervalLabels);
-
-                this.setChartsData();
             });
     }
 
@@ -1421,16 +993,6 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                             ];
                         }
 
-                        this.barChartValues.selectedBarValues = [
-                            ...this.barChartValues.selectedBarValues,
-                            filteredIntervalValues,
-                        ];
-
-                        this.barChartValues.selectedBarPercentages = [
-                            ...this.barChartValues.selectedBarPercentages,
-                            filteredIntervalPercentages,
-                        ];
-
                         return {
                             id: fuelStop.id,
                             name: fuelStop.name,
@@ -1452,53 +1014,6 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                 this.topRatedListLength = fuelStopData.pagination.count;
 
                 // intervals
-
-                for (let i = 0; i < fuelStopData.topFuelStops.length; i++) {
-                    // top rated intervals
-                    this.barChartValues.defaultBarValues.topRatedBarValues = [
-                        ...this.barChartValues.defaultBarValues
-                            .topRatedBarValues,
-                        selectedTab === DashboardStringEnum.VISIT
-                            ? fuelStopData.topFuelStops[i].visitCount
-                            : fuelStopData.topFuelStops[i].cost,
-                    ];
-
-                    this.barChartValues.defaultBarPercentages.topRatedBarPercentage =
-                        [
-                            ...this.barChartValues.defaultBarPercentages
-                                .topRatedBarPercentage,
-                            selectedTab === DashboardStringEnum.VISIT
-                                ? fuelStopData.topFuelStops[i].visitPercentage
-                                : fuelStopData.topFuelStops[i].costPercentage,
-                        ];
-
-                    // other intervals
-                    this.barChartValues.defaultBarValues.otherBarValues = [
-                        ...this.barChartValues.defaultBarValues.otherBarValues,
-                        selectedTab === DashboardStringEnum.VISIT
-                            ? fuelStopData.allOthers[i].visitCount
-                            : fuelStopData.allOthers[i].cost,
-                    ];
-
-                    this.barChartValues.defaultBarPercentages.otherBarPercentage =
-                        [
-                            ...this.barChartValues.defaultBarPercentages
-                                .otherBarPercentage,
-                            selectedTab === DashboardStringEnum.VISIT
-                                ? fuelStopData.allOthers[i].visitPercentage
-                                : fuelStopData.allOthers[i].costPercentage,
-                        ];
-                }
-
-                this.setBarChartDateTitle(
-                    fuelStopData.intervalLabels[0].tooltipLabel,
-                    fuelStopData.intervalLabels[
-                        fuelStopData.topFuelStops.length - 1
-                    ].tooltipLabel
-                );
-                this.setBarChartLabels(fuelStopData.intervalLabels);
-
-                this.setChartsData();
             });
     }
 
@@ -1510,589 +1025,6 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
         this.selectedSubPeriod = selectedSubPeriod;
 
         this.selectedDropdownWidthSubPeriod = selectedSubPeriod;
-    }
-
-    private setDoughnutChartCenterStats(
-        isTopRatedListItemSelected: boolean,
-        topRatedList: TopRatedListItem[],
-        topTenValue: number,
-        otherValue?: number,
-        topTenPercentage?: number,
-        otherPercentage?: number
-    ): ChartInitProperties[] {
-        let chartCenterStats: ChartInitProperties[] = [];
-
-        if (isTopRatedListItemSelected) {
-            const topTenCenterStatsName =
-                this.selectedTopRatedList.length === 1
-                    ? topRatedList[0].name
-                    : topRatedList.length + DashboardChartStringEnum.SELECTED;
-
-            const { filteredTopTenValue } = this.setDoughnutChartValueSigns(
-                isTopRatedListItemSelected,
-                topTenValue
-            );
-
-            chartCenterStats = [
-                {
-                    value: filteredTopTenValue,
-                    name: topTenCenterStatsName,
-                },
-            ];
-        } else {
-            const topTenCenterStatsName =
-                topRatedList.length <= 10
-                    ? DashboardChartStringEnum.TOP_3
-                    : topRatedList.length > 10 && topRatedList.length <= 30
-                    ? DashboardChartStringEnum.TOP_5
-                    : DashboardChartStringEnum.TOP_10;
-
-            topTenPercentage = +topTenPercentage.toFixed(2);
-            otherPercentage = +otherPercentage.toFixed(2);
-
-            topTenValue = +topTenValue.toFixed(2);
-            otherValue = +otherValue.toFixed(2);
-
-            const {
-                filteredTopTenValue,
-                filteredTopTenPercentage,
-                filteredOtherPercentage,
-                filteredOtherValue,
-            } = this.setDoughnutChartValueSigns(
-                isTopRatedListItemSelected,
-                topTenValue,
-                topTenPercentage,
-                otherPercentage,
-                otherValue
-            );
-
-            chartCenterStats = [
-                {
-                    percent: filteredTopTenPercentage,
-                    value: filteredTopTenValue,
-                    name: topTenCenterStatsName,
-                },
-                {
-                    percent: filteredOtherPercentage,
-                    value: filteredOtherValue,
-                    name: DashboardChartStringEnum.ALL_OTHERS,
-                },
-            ];
-        }
-
-        return chartCenterStats;
-    }
-
-    private setDoughnutChartValueSigns(
-        isTopRatedListItemSelected: boolean,
-        topTenValue: number,
-        topTenPercentage?: number,
-        otherPercentage?: number,
-        otherValue?: number
-    ): DoughnutChartSigns {
-        const filteredTopTenPercentage =
-            topTenPercentage + DashboardChartStringEnum.PERCENTAGE_SIGN;
-        const filteredOtherPercentage =
-            otherPercentage + DashboardChartStringEnum.PERCENTAGE_SIGN;
-
-        if (isTopRatedListItemSelected) {
-            switch (this.topRatedTitle) {
-                case DashboardStringEnum.DRIVER:
-                case DashboardStringEnum.TRUCK:
-                    return {
-                        filteredTopTenValue:
-                            this.currentActiveTab.name ===
-                            DashboardStringEnum.MILEAGE
-                                ? topTenValue +
-                                  DashboardChartStringEnum.THOUSAND_SIGN
-                                : DashboardChartStringEnum.DOLLAR_SIGN +
-                                  topTenValue,
-                    };
-                case DashboardStringEnum.REPAIR_SHOP:
-                case DashboardStringEnum.BROKER:
-                case DashboardStringEnum.OWNER:
-                case DashboardStringEnum.REPAIR_SHOP:
-                case DashboardStringEnum.FUEL_STOP:
-                    return {
-                        filteredTopTenValue:
-                            this.currentActiveTab.name ===
-                                DashboardStringEnum.LOAD ||
-                            this.currentActiveTab.name ===
-                                DashboardStringEnum.VISIT
-                                ? topTenValue.toString()
-                                : DashboardChartStringEnum.DOLLAR_SIGN +
-                                  topTenValue,
-                    };
-                default:
-                    return {
-                        filteredTopTenValue: topTenValue.toString(),
-                    };
-            }
-        } else {
-            switch (this.topRatedTitle) {
-                case DashboardStringEnum.DRIVER:
-                case DashboardStringEnum.TRUCK:
-                    return {
-                        filteredTopTenPercentage,
-                        filteredTopTenValue:
-                            this.currentActiveTab.name ===
-                            DashboardStringEnum.MILEAGE
-                                ? topTenValue +
-                                  DashboardChartStringEnum.THOUSAND_SIGN
-                                : DashboardChartStringEnum.DOLLAR_SIGN +
-                                  topTenValue,
-                        filteredOtherPercentage,
-                        filteredOtherValue: DashboardStringEnum.MILEAGE
-                            ? otherValue +
-                              DashboardChartStringEnum.THOUSAND_SIGN
-                            : DashboardChartStringEnum.DOLLAR_SIGN + otherValue,
-                    };
-                case DashboardStringEnum.DISPATCHER:
-                case DashboardStringEnum.BROKER:
-                case DashboardStringEnum.OWNER:
-                case DashboardStringEnum.REPAIR_SHOP:
-                case DashboardStringEnum.FUEL_STOP:
-                    return {
-                        filteredTopTenPercentage,
-                        filteredTopTenValue:
-                            this.currentActiveTab.name ===
-                                DashboardStringEnum.LOAD ||
-                            this.currentActiveTab.name ===
-                                DashboardStringEnum.VISIT
-                                ? topTenValue.toString()
-                                : DashboardChartStringEnum.DOLLAR_SIGN +
-                                  topTenValue,
-                        filteredOtherPercentage,
-                        filteredOtherValue:
-                            this.currentActiveTab.name ===
-                                DashboardStringEnum.VISIT ||
-                            this.currentActiveTab.name ===
-                                DashboardStringEnum.LOAD
-                                ? otherValue.toString()
-                                : DashboardChartStringEnum.DOLLAR_SIGN +
-                                  otherValue,
-                    };
-                default:
-                    return {
-                        filteredTopTenPercentage,
-                        filteredTopTenValue: topTenValue.toString(),
-                        filteredOtherPercentage,
-                        filteredOtherValue: otherValue.toString(),
-                    };
-            }
-        }
-    }
-
-    private setDoughnutChartValueAndColor(
-        dataValues: number[],
-        dataColors: string[],
-        topRatedList: TopRatedListItem[]
-    ): TopRatedListItem[] {
-        let filteredTopRatedList: TopRatedListItem[] = [];
-
-        if (this.topRatedList.length <= 10) {
-            dataValues.splice(3, 7);
-            dataColors.splice(3, 7);
-
-            filteredTopRatedList = topRatedList.filter(
-                (_, index) => index <= 2
-            );
-        }
-
-        if (topRatedList.length > 10 && topRatedList.length <= 30) {
-            dataValues.splice(5);
-            dataColors.splice(5, 5);
-
-            filteredTopRatedList = topRatedList.filter(
-                (_, index) => index <= 4
-            );
-        }
-
-        if (topRatedList.length >= 30) {
-            dataValues.splice(10);
-
-            filteredTopRatedList = topRatedList.filter(
-                (_, index) => index <= 9
-            );
-        }
-
-        return filteredTopRatedList;
-    }
-
-    private setDoughnutChartPercentage(
-        topRatedList: TopRatedListItem[],
-        isTopRatedListItemSelected: boolean
-    ): DoughnutChartPercentage {
-        let topTenPercentage = 0;
-        let otherPercentage = 0;
-
-        let topTenValue = 0;
-        let otherValue = 0;
-
-        const filterdDataValues = topRatedList.map((topRatedItem, index) => {
-            if (!isTopRatedListItemSelected) {
-                if (this.topRatedList.length <= 10) {
-                    if (index <= 2) {
-                        topTenPercentage += +topRatedItem.percent;
-                        topTenValue += +topRatedItem.value;
-                    } else {
-                        otherPercentage += +topRatedItem.percent;
-                        otherValue += +topRatedItem.value;
-                    }
-                }
-
-                if (topRatedList.length > 10 && topRatedList.length <= 30) {
-                    if (index <= 4) {
-                        topTenPercentage += +topRatedItem.percent;
-                        topTenValue += +topRatedItem.value;
-                    } else {
-                        otherPercentage += +topRatedItem.percent;
-                        otherValue += +topRatedItem.value;
-                    }
-                }
-
-                if (topRatedList.length >= 30) {
-                    if (index <= 9) {
-                        topTenPercentage += +topRatedItem.percent;
-                        topTenValue += +topRatedItem.value;
-                    } else {
-                        otherPercentage += +topRatedItem.percent;
-                        otherValue += +topRatedItem.value;
-                    }
-                }
-            } else {
-                topTenValue += +topRatedItem.value;
-            }
-
-            return +topRatedItem.percent;
-        });
-
-        return {
-            filterdDataValues,
-            topTenPercentage,
-            topTenValue,
-            otherPercentage,
-            otherValue,
-        };
-    }
-
-    private setDoughnutChartFilteredList(
-        topRatedList: TopRatedListItem[]
-    ): TopRatedListItem[] {
-        return topRatedList.map((topRatedListItem) => {
-            return {
-                ...topRatedListItem,
-                value:
-                    (this.topRatedTitle === DashboardStringEnum.DRIVER &&
-                        this.currentActiveTab.name ===
-                            DashboardStringEnum.MILEAGE) ||
-                    (this.topRatedTitle === DashboardStringEnum.TRUCK &&
-                        this.currentActiveTab.name ===
-                            DashboardStringEnum.MILEAGE)
-                        ? topRatedListItem.value +
-                          DashboardChartStringEnum.THOUSAND_SIGN
-                        : (this.topRatedTitle === DashboardStringEnum.TRUCK &&
-                              this.currentActiveTab.name ===
-                                  DashboardStringEnum.REVENUE) ||
-                          (this.topRatedTitle ===
-                              DashboardStringEnum.DISPATCHER &&
-                              this.currentActiveTab.name ===
-                                  DashboardStringEnum.REVENUE) ||
-                          (this.topRatedTitle === DashboardStringEnum.BROKER &&
-                              this.currentActiveTab.name ===
-                                  DashboardStringEnum.REVENUE) ||
-                          (this.topRatedTitle ===
-                              DashboardStringEnum.REPAIR_SHOP &&
-                              this.currentActiveTab.name ===
-                                  DashboardStringEnum.COST) ||
-                          (this.topRatedTitle === DashboardStringEnum.OWNER &&
-                              this.currentActiveTab.name ===
-                                  DashboardStringEnum.REVENUE) ||
-                          (this.topRatedTitle ===
-                              DashboardStringEnum.FUEL_STOP &&
-                              this.currentActiveTab.name ===
-                                  DashboardStringEnum.COST)
-                        ? DashboardChartStringEnum.DOLLAR_SIGN +
-                          topRatedListItem.value
-                        : topRatedListItem.value,
-                percent:
-                    topRatedListItem.percent +
-                    DashboardChartStringEnum.PERCENTAGE_SIGN,
-            };
-        });
-    }
-
-    private setDoughnutChartConfig(
-        dataValues: number[],
-        dataColors: string[],
-        chartCenterStats: ChartInitProperties[],
-        topRatedList: TopRatedListItem[]
-    ): void {
-        // this.doughnutChartConfig = {
-        //     dataProperties: [
-        //         {
-        //             defaultConfig: {
-        //                 type: DashboardChartStringEnum.DOUGHNUT,
-        //                 data: dataValues,
-        //                 backgroundColor: dataColors,
-        //                 borderColor: DashboardChartStringEnum.CHART_COLOR_WHITE,
-        //                 hoverBackgroundColor: [
-        //                     DashboardChartStringEnum.CHART_COLOR_WHITE,
-        //                 ],
-        //                 hoverBorderColor:
-        //                     DashboardChartStringEnum.CHART_COLOR_WHITE,
-        //             },
-        //         },
-        //     ],
-        //     chartInnitProperties: chartCenterStats,
-        //     showLegend: true,
-        //     chartValues: [2, 2],
-        //     defaultType: DashboardChartStringEnum.DOUGHNUT,
-        //     type: DashboardChartStringEnum.DOUGHNUT,
-        //     chartWidth: DashboardChartStringEnum.DOUGHNUT_1800_DIMENSION,
-        //     chartHeight: DashboardChartStringEnum.DOUGHNUT_1800_DIMENSION,
-        //     removeChartMargin: true,
-        //     dataLabels: [],
-        //     driversList: topRatedList,
-        //     allowAnimation: true,
-        //     noChartImage: DashboardChartStringEnum.NO_CHART_IMG,
-        //     dontUseResponsive: true,
-        // };
-
-        // if (this.doughnutChart) {
-        //     this.doughnutChart.chartInnitProperties = chartCenterStats;
-        //     this.doughnutChart.chartUpdated(dataValues);
-        // }
-    }
-
-    private setDoughnutChartData(
-        topRatedList: TopRatedListItem[],
-        isTopRatedListItemSelected?: boolean
-    ): void {
-        let dataValues: number[] = [];
-        let dataColors: string[] = this.mainColorsPallete.map(
-            (color) => color.code
-        );
-
-        let chartCenterStats: ChartInitProperties[] = [];
-
-        const {
-            filterdDataValues,
-            topTenPercentage,
-            topTenValue,
-            otherPercentage,
-            otherValue,
-        } = this.setDoughnutChartPercentage(
-            topRatedList,
-            isTopRatedListItemSelected
-        );
-
-        dataValues = [...filterdDataValues];
-
-        if (isTopRatedListItemSelected) {
-            chartCenterStats = this.setDoughnutChartCenterStats(
-                isTopRatedListItemSelected,
-                topRatedList,
-                topTenValue
-            );
-        } else {
-            chartCenterStats = this.setDoughnutChartCenterStats(
-                isTopRatedListItemSelected,
-                topRatedList,
-                topTenValue,
-                otherValue,
-                topTenPercentage,
-                otherPercentage
-            );
-
-            topRatedList = this.setDoughnutChartValueAndColor(
-                dataValues,
-                dataColors,
-                topRatedList
-            );
-
-            dataValues = [...dataValues, otherPercentage];
-        }
-
-        topRatedList = this.setDoughnutChartFilteredList(topRatedList);
-
-        this.setDoughnutChartConfig(
-            dataValues,
-            dataColors,
-            chartCenterStats,
-            topRatedList
-        );
-    }
-
-    private setBarChartDateTitle(
-        startInterval: string,
-        endInterval: string
-    ): void {
-        const { chartTitle } = DashboardHelper.setChartDateTitle(
-            startInterval,
-            endInterval
-        );
-
-        this.barChartDateTitle = chartTitle;
-    }
-
-    private setBarChartLabels(barChartLables: IntervalLabelResponse[]): void {
-        const selectedSubPeriod = DashboardHelper.ConvertSubPeriod(
-            this.selectedSubPeriod.name
-        );
-
-        const { filteredLabels, filteredTooltipLabels } =
-            DashboardHelper.setBarChartLabels(
-                barChartLables,
-                selectedSubPeriod
-            );
-
-        this.barChartLabels = filteredLabels;
-        this.barChartTooltipLabels = filteredTooltipLabels;
-    }
-
-    private setBarChartConfigAndAxes(barChartValues: BarChartValues): void {
-        // this.barChartConfig = {
-        //     dataProperties: [
-        //         {
-        //             defaultConfig: {
-        //                 type: DashboardChartStringEnum.BAR,
-        //                 data: barChartValues?.defaultBarValues
-        //                     ?.topRatedBarValues,
-        //                 dataPercentages:
-        //                     barChartValues?.defaultBarPercentages
-        //                         ?.topRatedBarPercentage,
-        //                 backgroundColor:
-        //                     DashboardChartStringEnum.CHART_COLOR_GREY,
-        //                 borderColor:
-        //                     DashboardChartStringEnum.CHART_COLOR_GREY_4,
-        //                 hoverBackgroundColor:
-        //                     DashboardChartStringEnum.CHART_COLOR_GREY_5,
-        //                 hoverBorderColor:
-        //                     DashboardChartStringEnum.CHART_COLOR_GREY,
-        //                 label:
-        //                     this.topRatedList.length <= 10
-        //                         ? DashboardChartStringEnum.BAR_LABEL_TOP_3
-        //                         : this.topRatedList.length > 10 &&
-        //                           this.topRatedList.length <= 30
-        //                         ? DashboardChartStringEnum.BAR_LABEL_TOP_5
-        //                         : DashboardChartStringEnum.BAR_LABEL_TOP_10,
-        //                 id: DashboardChartStringEnum.BAR_ID_TOP,
-        //             },
-        //         },
-        //         {
-        //             defaultConfig: {
-        //                 type: DashboardChartStringEnum.BAR,
-        //                 data: barChartValues?.defaultBarValues?.otherBarValues,
-        //                 dataPercentages:
-        //                     barChartValues?.defaultBarPercentages
-        //                         ?.otherBarPercentage,
-        //                 backgroundColor:
-        //                     DashboardChartStringEnum.CHART_COLOR_GREY_2,
-        //                 borderColor:
-        //                     DashboardChartStringEnum.CHART_COLOR_GREY_3,
-        //                 hoverBackgroundColor:
-        //                     DashboardChartStringEnum.CHART_COLOR_GREY,
-        //                 hoverBorderColor:
-        //                     DashboardChartStringEnum.CHART_COLOR_GREY_2,
-        //                 label: DashboardChartStringEnum.BAR_LABEL_OTHER,
-        //                 id: DashboardChartStringEnum.BAR_ID_OTHER,
-        //             },
-        //         },
-        //     ],
-        //     showLegend: false,
-        //     chartValues: [2, 2],
-        //     defaultType: DashboardChartStringEnum.BAR,
-        //     chartWidth: DashboardChartStringEnum.BAR_1800_WIDTH,
-        //     chartHeight: DashboardChartStringEnum.BAR_1800_HEIGHT,
-        //     removeChartMargin: true,
-        //     gridHoverBackground: true,
-        //     startGridBackgroundFromZero: true,
-        //     dataMaxRows: 4,
-        //     hasHoverData: true,
-        //     hassecondTabValueage: true,
-        //     allowAnimation: true,
-        //     offset: true,
-        //     tooltipOffset: { min: 105, max: 279 },
-        //     dataLabels: this.barChartLabels,
-        //     dataTooltipLabels: this.barChartTooltipLabels,
-        //     selectedTab: this.currentActiveTab.name,
-        //     noChartImage: DashboardChartStringEnum.NO_CHART_IMG,
-        // };
-
-        // // bar max value
-        // const barChartMaxValue = +this.topRatedList[0]?.value;
-
-        // // bar axes
-        // this.barChartAxes = {
-        //     verticalLeftAxes: {
-        //         visible: true,
-        //         minValue: 0,
-        //         maxValue: barChartMaxValue,
-        //         stepSize: 10,
-        //         showGridLines: true,
-        //     },
-        //     horizontalAxes: {
-        //         visible: true,
-        //         position: DashboardChartStringEnum.BAR_AXES_POSITION_BOTTOM,
-        //         showGridLines: false,
-        //     },
-        // };
-    }
-
-    private setBarChartData(
-        topRatedList: TopRatedListItem[],
-        topRatedListItemIndex: number,
-        isRemoving?: boolean,
-        topRatedListItem?: TopRatedListItem
-    ): void {
-        if (!isRemoving) {
-            const chartValues =
-                this.barChartValues.selectedBarValues[topRatedListItemIndex];
-            const chartPercentages =
-                this.barChartValues.selectedBarPercentages[
-                    topRatedListItemIndex
-                ];
-
-            let selectedColors: string[] = [];
-            let selectedHoverColors: string[] = [];
-
-            for (let i = 0; i < topRatedList.length; i++) {
-                selectedColors = [
-                    ...selectedColors,
-                    this.secondaryColorsPallete[i].code,
-                ];
-                selectedHoverColors = [
-                    ...selectedHoverColors,
-                    this.mainColorsPallete[i].code,
-                ];
-            }
-
-            // if (this.barChart) {
-            //     this.barChart?.updateMuiliBar(
-            //         topRatedList,
-            //         chartValues,
-            //         chartPercentages,
-            //         selectedColors,
-            //         selectedHoverColors
-            //     );
-            // }
-        } else {
-            const displayChartDefaultValue =
-                this.selectedTopRatedList.length === 0;
-
-            // this.barChart?.removeMultiBarData(
-            //     topRatedListItem,
-            //     displayChartDefaultValue
-            // );
-        }
-    }
-
-    private setChartsData(): void {
-        this.setDoughnutChartData(this.topRatedList);
-        this.setBarChartConfigAndAxes(this.barChartValues);
-
-        this.changeDetectorRef.detectChanges();
     }
 
     ngOnDestroy(): void {

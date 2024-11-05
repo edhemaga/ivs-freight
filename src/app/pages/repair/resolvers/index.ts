@@ -1,0 +1,3 @@
+export * from './repair-details.resolver';
+export * from './repair-shop.resolver';
+export * from './repair-truck.resolver';

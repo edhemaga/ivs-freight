@@ -12,10 +12,7 @@ import {
     CreateResponse,
     UserType,
 } from 'appcoretruckassist';
-import {
-    ChatMessagePaginationResponse,
-    ChatMessageResponse,
-} from '@pages/chat/models';
+import { ChatMessagePaginationResponse } from '@pages/chat/models';
 import { UploadFile } from '@shared/components/ta-upload-files/models/upload-file.model';
 
 // Services
@@ -193,6 +190,13 @@ export class UserChatService {
             {
                 headers: this.headers,
             }
+        );
+    }
+
+    public addFavourite(conversationId: number): Observable<{}> {
+        return this.http.put(
+            `${environment.API_ENDPOINT}/api/chat/favorite/${conversationId}`,
+            {}
         );
     }
 }

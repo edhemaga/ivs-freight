@@ -935,7 +935,7 @@
                 [hasHeaderSvg]="'assets/svg/common/arrow_top_right.svg'"
                 [customClass]="'detailsPadding'"
             >
-                <div
+                <!-- <div
                     class="charts-template perfomance"
                     [class.p-0]="payrollChart.hoveringStatus"
                 >
@@ -947,14 +947,8 @@
                         >
                         </app-ta-tab-switch>
                     </div>
-                    <!-- <app-ta-chart
-                        #payrollChart
-                        [chartConfig]="payrollChartConfig"
-                        [axesProperties]="barAxes"
-                        [legendAttributes]="barChartLegend"
-                    >
-                    </app-ta-chart> -->
-                </div>
+                    Chart implementation
+                </div> -->
             </app-ta-custom-card>
 
             <!--------Revenue--------->
@@ -966,7 +960,7 @@
                 [isCardOpen]="revenueChartConfig?.hasValue"
                 [customClass]="'detailsPadding'"
             >
-                <div
+                <!-- <div
                     class="charts-template perfomance"
                     [class.p-0]="revenueChart.hoveringStatus"
                 >
@@ -978,14 +972,8 @@
                         >
                         </app-ta-tab-switch>
                     </div>
-                    <!-- <app-ta-chart
-                        #revenueChart
-                        [chartConfig]="revenueChartConfig"
-                        [axesProperties]="barAxes2"
-                        [legendAttributes]="barChartLegend2"
-                    >
-                    </app-ta-chart> -->
-                </div>
+                    Chart implementation
+                </div> -->
             </app-ta-custom-card>
             <!--------Perfomance--------->
             <app-ta-custom-card
@@ -993,7 +981,7 @@
                 [bodyTemplate]="'card'"
                 [isCardOpen]="stackedBarChartConfig?.hasValue"
             >
-                <div
+                <!-- <div
                     class="charts-template perfomance"
                     [class.p-0]="stackedBarChart.hoveringStatus"
                 >
@@ -1005,16 +993,8 @@
                         >
                         </app-ta-tab-switch>
                     </div>
-                    <app-ta-chart
-                        #stackedBarChart
-                        class="chart_hold"
-                        [class.extend]="stackedBarChartConfig.extendFull"
-                        [chartConfig]="stackedBarChartConfig"
-                        [axesProperties]="stackedBarAxes"
-                        [legendAttributes]="stackedBarChartLegend"
-                    >
-                    </app-ta-chart>
-                </div>
+                   Chart implementation
+                </div> -->
             </app-ta-custom-card>
             <!--------Owner History--------->
 

@@ -2,6 +2,7 @@ export interface ShopBackFilter {
     active?: number;
     pinned?: boolean | undefined;
     companyOwned?: boolean | undefined;
+    isCompanyRelated?: boolean;
     categoryIds?: Array<number> | undefined;
     long?: number | undefined;
     lat?: number | undefined;

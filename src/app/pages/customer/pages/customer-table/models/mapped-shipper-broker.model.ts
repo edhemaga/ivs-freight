@@ -62,7 +62,7 @@ export interface MappedShipperBroker {
     revenue?: number | null;
     createdAt?: string;
     updatedAt?: string;
-    loads?: Array<LoadResponse> | null;
+    loads?: number | null;
     fileCount?: number | null;
     isSelected?: boolean;
     tableAddress?: string;
