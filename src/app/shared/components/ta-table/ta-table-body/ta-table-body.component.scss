@@ -496,47 +496,6 @@ table.truckassist-table-body-style {
                             }
                         }
 
-                        // OPEN HOURS COLUMN
-
-                        .open-hours-container {
-                            border-radius: 2px;
-                            padding: 4px;
-                            margin-left: -2px;
-                            cursor: pointer;
-                            transition: background 0.2s;
-
-                            &:hover {
-                                background: $dark-2;
-                            }
-
-                            &.active {
-                                background: $ta-black-2;
-
-                                p {
-                                    color: $white !important;
-                                }
-                            }
-
-                            .open-hours-icon {
-                                margin-right: 4px;
-                                line-height: 18px;
-
-                                &.closing {
-                                    svg {
-                                        circle {
-                                            fill: $ta-yellow-1;
-                                        }
-                                    }
-                                }
-
-                                svg {
-                                    circle {
-                                        fill: $ta-green;
-                                    }
-                                }
-                            }
-                        }
-
                         // APPLICANT PROGRESS COLUMN
 
                         .applicant-progress-container {
