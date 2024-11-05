@@ -25,6 +25,7 @@ export class ChatSvgRoutes {
     static replyIcon: string = 'assets/svg/chat/reply-icon.svg';
     static editPenIcon: string = 'assets/svg/chat/edit-pen-icon.svg';
     static downloadIcon: string = 'assets/svg/chat/download-icon.svg';
+    static calendarIcon: string = 'assets/svg/chat/calendar-icon.svg';
 
     // Cancel
     static noBorderXIcon: string =

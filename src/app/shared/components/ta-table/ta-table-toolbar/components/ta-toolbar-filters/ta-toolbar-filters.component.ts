@@ -118,6 +118,8 @@ export class TaToolbarFiltersComponent implements OnInit, OnChanges, OnDestroy {
         ) {
             this.activeTableData = changes.activeTableData.currentValue;
         }
+
+        this.handleFilterInitialization();
     }
 
     public handleFilterInitialization(): void {
@@ -285,8 +287,8 @@ export class TaToolbarFiltersComponent implements OnInit, OnChanges, OnDestroy {
             else usaArray.push(state);
         });
 
-        this.usaStates = [...usaArray];
-        this.canadaStates = [...canadaArray];
+        this.usaStates = usaArray;
+        this.canadaStates = canadaArray;
     }
 
     // On Change Mode View

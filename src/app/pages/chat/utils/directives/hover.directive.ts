@@ -15,7 +15,7 @@ import { ChatStringTypeEnum } from '@pages/chat/enums';
 export class HoverDirective {
     @Input() hoverColor: string = ChatStringTypeEnum.EMPTY;
 
-    constructor(private el: ElementRef, private renderer: Renderer2) { }
+    constructor(private el: ElementRef, private renderer: Renderer2) {}
 
     // Listen for mouseenter event
     @HostListener('mouseenter') onMouseEnter() {

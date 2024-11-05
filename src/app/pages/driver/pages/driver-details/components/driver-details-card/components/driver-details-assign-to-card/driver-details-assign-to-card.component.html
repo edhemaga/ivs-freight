@@ -7,29 +7,29 @@
 >
     <div class="assign-to assign-to-container">
         <ng-container
-            *ngIf="cardData?.assignedTo?.truck?.id; else noTruckAssigned"
+            *ngIf="cardData?.assignedTo?.truckId; else noTruckAssigned"
         >
             <div class="assign-to-item">
                 <div class="icon-text-wrapper-cmp">
                     <span
                         ngbTooltip
-                        mainTooltip="Semi Truck"
+                        [mainTooltip]="cardData.assignedTo.truckType.name"
                         tooltipBackground="#424242"
                         position="bottom"
-                        class="semi-tooltip typeDetails"
+                        class="semi-tooltip typeDetails d-flex align-items-center"
                     >
                         <svg-icon
-                            class="assign-to-vehicle"
+                            class="svg-fill-light-grey-2 svg-hover-bw6-2 svg-size-44-16"
                             [src]="
-                                'assets/svg/common/trucks/' +
-                                cardData.assignedTo.truck.truckType.logoName
+                                svgRoutes.truckSVG +
+                                cardData.assignedTo.truckType.logoName
                             "
                         >
                         </svg-icon>
                     </span>
 
                     <span class="assign-to-value">{{
-                        cardData.assignedTo.truck.truckNumber
+                        cardData.assignedTo.truckNumber
                     }}</span>
                 </div>
 
@@ -56,28 +56,28 @@
         </ng-template>
 
         <ng-container
-            *ngIf="cardData?.assignedTo?.trailer?.id; else noTrailerAssigned"
+            *ngIf="cardData?.assignedTo?.trailerId; else noTrailerAssigned"
         >
             <div class="assign-to-item">
                 <div class="icon-text-wrapper-cmp">
                     <span
                         ngbTooltip
-                        mainTooltip="Container"
+                        [mainTooltip]="cardData.assignedTo.trailerType.name"
                         tooltipBackground="#424242"
                         position="bottom"
-                        class="semi-tooltip typeDetails"
+                        class="semi-tooltip typeDetails d-flex align-items-center"
                     >
                         <svg-icon
-                            class="assign-to-vehicle"
+                            class="svg-fill-light-grey-2 svg-hover-bw6-2 svg-size-44-16"
                             [src]="
-                                'assets/svg/common/trailers/' +
-                                cardData.assignedTo.trailer.trailerType.logoName
+                                svgRoutes.trailerSVG +
+                                cardData.assignedTo.trailerType.logoName
                             "
                         ></svg-icon>
                     </span>
 
                     <span class="assign-to-value container-value">
-                        {{ cardData?.assignedTo?.trailer.trailerNumber }}
+                        {{ cardData?.assignedTo?.trailerNumber }}
                     </span>
                 </div>
 
