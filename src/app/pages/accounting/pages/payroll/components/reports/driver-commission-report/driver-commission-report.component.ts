@@ -21,7 +21,9 @@ import { PayrollFacadeService } from '../../../state/services/payroll.service';
 
 // Models
 import {
+    CreatePayrollCreditCommand,
     LoadWithMilesStopResponse,
+    PayrollCreditType,
     PayrollDriverCommissionByIdResponse,
     PayrollDriverMileageByIdResponse,
 } from 'appcoretruckassist';
@@ -33,6 +35,7 @@ import {
 import { CommissionLoadShortReponseWithRowType } from '../../../state/models/driver_commission.model';
 import { PayrollProccessPaymentModalComponent } from '../../../payroll-modals/payroll-proccess-payment-modal/payroll-proccess-payment-modal.component';
 import { PayrollReportTableResponse } from 'ca-components/lib/components/ca-period-content/models/payroll-report-tables.type';
+import { PayrollCreditBonusComponent } from '../../../payroll-modals/payroll-credit-bonus/payroll-credit-bonus.component';
 
 @Component({
     selector: 'app-driver-commission-report',
@@ -271,6 +274,36 @@ export class DriverCommissionReportComponent
                     }
                 );
             }
+        }
+    }
+
+    public openAddNewModal(type: string) {
+        switch (type) {
+            case 'Credit':
+                this.modalService
+                    .openModal(
+                        PayrollCreditBonusComponent,
+                        {
+                            size: 'small',
+                        },
+                        {
+                            type: 'new',
+                            isShortModal: true,
+                            data: {
+                                driverId: this.openedPayroll.driver.id,
+                                payrollType: 'owner',
+                            } as CreatePayrollCreditCommand,
+                            creditType: PayrollCreditType.Driver,
+                        }
+                    )
+                    .then(() => {
+                        this.payrollCommissionFacadeService.getPayrollDriverCommissionReport(
+                            {
+                                reportId: this.reportId,
+                            }
+                        );
+                    });
+                return;
         }
     }
 

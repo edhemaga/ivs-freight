@@ -22,7 +22,9 @@ import {
     MilesStopShortReponseWithRowType,
 } from '../../../state/models/payroll.model';
 import {
+    CreatePayrollCreditCommand,
     MilesStopShortResponse,
+    PayrollCreditType,
     PayrollDriverMileageByIdResponse,
 } from 'appcoretruckassist';
 import { ICaMapProps, ColumnConfig } from 'ca-components';
@@ -30,6 +32,7 @@ import { PayrollReportTableResponse } from 'ca-components/lib/components/ca-peri
 
 // components
 import { PayrollProccessPaymentModalComponent } from '../../../payroll-modals/payroll-proccess-payment-modal/payroll-proccess-payment-modal.component';
+import { PayrollCreditBonusComponent } from '../../../payroll-modals/payroll-credit-bonus/payroll-credit-bonus.component';
 
 @Component({
     selector: 'app-payroll-report',
@@ -55,6 +58,7 @@ export class PayrollReportComponent implements OnInit, OnDestroy {
 
     @Input() selectedTab: 'open' | 'closed';
 
+    openedPayroll: PayrollDriverMileageByIdResponse;
     payrollReport$: Observable<PayrollDriverMileageByIdResponse>;
     payrollMileageDriverLoads$: Observable<MilesStopShortReponseWithRowType[]>;
     includedLoads$: Observable<MilesStopShortResponse[]>;
@@ -166,8 +170,6 @@ export class PayrollReportComponent implements OnInit, OnDestroy {
     customSortPredicate = (index: number, _: CdkDragDrop<any>): boolean => {
         return this.allowedLoadIds.includes(index);
     };
-
-    openedPayroll: PayrollDriverMileageByIdResponse;
 
     subscribeToStoreData() {
         this.loading$ = this.payrollFacadeService.payrollReportLoading$;
@@ -294,8 +296,34 @@ export class PayrollReportComponent implements OnInit, OnDestroy {
         );
     }
 
-    public openAddNewModal(type: string){
-        console.log("TYPE", type);
+    public openAddNewModal(type: string) {
+        switch (type) {
+            case 'Credit':
+                this.modalService
+                    .openModal(
+                        PayrollCreditBonusComponent,
+                        {
+                            size: 'small',
+                        },
+                        {
+                            type: 'new',
+                            isShortModal: true,
+                            data: {
+                                driverId: this.openedPayroll.driver.id,
+                                payrollType: 'owner',
+                            } as CreatePayrollCreditCommand,
+                            creditType: PayrollCreditType.Driver,
+                        }
+                    )
+                    .then(() => {
+                        this.payrollFacadeService.getPayrollDriverMileageReport(
+                            {
+                                reportId: `${this.reportId}`,
+                            }
+                        );
+                    });
+                return;
+        }
     }
 
     ngOnDestroy(): void {

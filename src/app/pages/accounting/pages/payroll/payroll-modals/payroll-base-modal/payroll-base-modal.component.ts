@@ -74,6 +74,7 @@ export class PayrollBaseModalComponent implements OnInit {
     @Input() modalTitle: string;
     @Input() isDriverAndTruckTabs: boolean;
     @Input() modalType: PayrollModalType;
+    @Input() isShortModal: boolean;
     public payrollCreditConst = PayrollCreditConst;
     public svgRoutes = PayrollSvgRoutes;
     public tabs = [];
@@ -176,6 +177,7 @@ export class PayrollBaseModalComponent implements OnInit {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: (res: PayrollCreditModalResponse) => {
+                    console.log("THIS DRIVERS", res.drivers);
                     this.mapDrivers(res.drivers);
                     this.mapTrucks(res.trucks);
                 },
@@ -258,7 +260,7 @@ export class PayrollBaseModalComponent implements OnInit {
     }
 
     public get isDropdownEnabled(): boolean {
-        return true;
+        return !this.isShortModal;
     }
 
     public get isNotRecuringPayment(): boolean {
