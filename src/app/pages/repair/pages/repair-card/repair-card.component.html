@@ -212,6 +212,18 @@
                                     </ng-container>
 
                                     <ng-container
+                                        *ngIf="cardRow.title === 'Open Hours'"
+                                    >
+                                        <app-ta-open-hours-dropdown
+                                            [componentData]="{
+                                                openHours: card?.openHours,
+                                                openHoursToday:
+                                                    card?.openHoursToday
+                                            }"
+                                        ></app-ta-open-hours-dropdown>
+                                    </ng-container>
+
+                                    <ng-container
                                         *ngIf="cardRow.title === 'Services'"
                                     >
                                         <ng-container
@@ -241,7 +253,8 @@
                                                 'Item Detail • Cost' &&
                                             cardRow.title !==
                                                 'Unit Detail • Type' &&
-                                            cardRow.title !== 'Contact'
+                                            cardRow.title !== 'Contact' &&
+                                            cardRow.title !== 'Open Hours'
                                         "
                                     >
                                         {{ card | cardValue : cardRow }}
