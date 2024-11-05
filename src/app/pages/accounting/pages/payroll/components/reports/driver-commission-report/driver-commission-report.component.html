@@ -101,6 +101,7 @@
             </div>
             <div class="small-table-holder-main">
                 <app-ca-period-content
+                    (openModalEmiter)="openAddNewModal($event)"
                     (reorderedDataEmiter)="onReorderItem($event)"
                     (proccessPayroll)="onProccessPayroll($event)"
                     [isOpen]="selectedTab === 'open'"
@@ -203,10 +204,7 @@
 </ng-template>
 
 <ng-template #reorderTemplate let-row="row" let-index="index">
-    <ng-container
-        *ngIf="(payrollReport$ | async).sums as payroll_totals
-        "
-    >
+    <ng-container *ngIf="(payrollReport$ | async).sums as payroll_totals">
         <td class="text-center" *ngIf="selectedTab === 'open'">
             <div class="td-container">
                 <div class="td-content-container">
