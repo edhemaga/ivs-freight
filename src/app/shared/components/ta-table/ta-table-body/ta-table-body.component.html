@@ -5880,7 +5880,11 @@
                                                 "
                                                 [autoClose]="'outside'"
                                                 [ngbPopover]="dropdownPopover"
-                                                [placement]="'bottom-right'"
+                                                [placement]="
+                                                    isDropdownPositionBottom
+                                                        ? 'bottom-right'
+                                                        : 'right-top'
+                                                "
                                                 class="table-dropdown-container"
                                                 [ngClass]="{
                                                     'active-drop':
