@@ -707,8 +707,6 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
         }
 
         this.repairTableData = this.viewData;
-
-        console.log('this.repairTableData', this.repairTableData);
     }
 
     private sendRepairData(): void {
@@ -840,7 +838,6 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
         this.tableService.currentSetTableFilter
             .pipe(takeUntil(this.destroy$))
             .subscribe((res) => {
-                console.log('res', res);
                 if (res?.filteredArray) {
                     if (res.selectedFilter) {
                         // reset filters
@@ -864,19 +861,6 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
 
                         this.sendRepairData();
                     }
-                    /*  
-                    if (res.filterName === TableStringEnum.CLOSED_ARRAY) {
-                       this.backFilterQuery.status = res.selectedFilter
-                        ? 0
-                        : null;
-
-                    this.backFilterQuery.ban = null;
-                    this.backFilterQuery.dnu = null; 
-                    }
-
-                    if (this.selectedTab === TableStringEnum.ACTIVE) {
-                        this.tableData[0].length = this.viewData.length;
-                    }*/
                 }
 
                 if (res) {

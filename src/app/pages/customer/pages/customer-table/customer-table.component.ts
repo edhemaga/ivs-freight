@@ -607,10 +607,9 @@ export class CustomerTableComponent
         this.tableService.currentSetTableFilter
             .pipe(takeUntil(this.destroy$))
             .subscribe((res) => {
-                console.log('res', res);
                 if (res?.filteredArray) {
                     if (res.selectedFilter) {
-                        /*    const resetFirstFilter =
+                        const resetFirstFilter =
                             res.filterName === TableStringEnum.BAN
                                 ? TableStringEnum.DNU_FILTER
                                 : res.filterName === TableStringEnum.DNU
@@ -632,7 +631,7 @@ export class CustomerTableComponent
                         this.tableService.sendResetSpecialFilters(
                             true,
                             resetSecondFilter
-                        ); */
+                        );
 
                         this.filter = res.filterName;
 
@@ -653,7 +652,7 @@ export class CustomerTableComponent
 
                         this.sendCustomerData();
                     }
-                    /* 
+
                     if (res.filterName === TableStringEnum.BAN) {
                         this.backBrokerFilterQuery.ban = res.selectedFilter
                             ? 0
@@ -681,7 +680,7 @@ export class CustomerTableComponent
 
                     if (this.selectedTab === TableStringEnum.ACTIVE) {
                         this.tableData[0].length = this.viewData.length;
-                    } */
+                    }
                 } else if (res?.filterType) {
                     if (res.filterType === TableStringEnum.STATE_FILTER) {
                         if (res.action === TableStringEnum.SET) {
@@ -1381,8 +1380,6 @@ export class CustomerTableComponent
         }
 
         this.customerTableData = this.viewData;
-
-        console.log('this.customerTableData', this.customerTableData);
     }
 
     private mapBrokerData(data: BrokerResponse): MappedShipperBroker {
@@ -1717,7 +1714,6 @@ export class CustomerTableComponent
     }
 
     public onToolBarAction(event: TableToolbarActions): void {
-        console.log('event', event);
         // Add Call
         if (event.action === TableStringEnum.OPEN_MODAL) {
             // Add Broker Call Modal
