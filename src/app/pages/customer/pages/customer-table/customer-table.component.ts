@@ -128,7 +128,7 @@ export class CustomerTableComponent
     public customerTableData: (BrokerState | ShipperState)[] = [];
 
     // filters
-    public filter: string = null;
+    public filter: string;
 
     public backBrokerFilterQuery: FilterOptionBroker =
         TableDropdownComponentConstants.BROKER_BACK_FILTER;
@@ -147,9 +147,6 @@ export class CustomerTableComponent
     public sendDataToCardsFront: CardRows[];
     public sendDataToCardsBack: CardRows[];
 
-    // map
-    public mapListData: MapList[] = [];
-
     public displayRowsFront: CardRows[] =
         CustomerCardDataConfigConstants.displayRowsFrontBroker;
     public displayRowsBack: CardRows[] =
@@ -159,6 +156,9 @@ export class CustomerTableComponent
         CustomerCardDataConfigConstants.displayRowsFrontShipper;
     public displayRowsBackShipper: CardRows[] =
         CustomerCardDataConfigConstants.displayRowsBackShipper;
+
+    // map
+    public mapListData: MapList[] = [];
 
     constructor(
         // ref
@@ -607,9 +607,10 @@ export class CustomerTableComponent
         this.tableService.currentSetTableFilter
             .pipe(takeUntil(this.destroy$))
             .subscribe((res) => {
+                console.log('res', res);
                 if (res?.filteredArray) {
                     if (res.selectedFilter) {
-                        const resetFirstFilter =
+                        /*    const resetFirstFilter =
                             res.filterName === TableStringEnum.BAN
                                 ? TableStringEnum.DNU_FILTER
                                 : res.filterName === TableStringEnum.DNU
@@ -631,7 +632,7 @@ export class CustomerTableComponent
                         this.tableService.sendResetSpecialFilters(
                             true,
                             resetSecondFilter
-                        );
+                        ); */
 
                         this.filter = res.filterName;
 
@@ -652,7 +653,7 @@ export class CustomerTableComponent
 
                         this.sendCustomerData();
                     }
-
+                    /* 
                     if (res.filterName === TableStringEnum.BAN) {
                         this.backBrokerFilterQuery.ban = res.selectedFilter
                             ? 0
@@ -680,7 +681,7 @@ export class CustomerTableComponent
 
                     if (this.selectedTab === TableStringEnum.ACTIVE) {
                         this.tableData[0].length = this.viewData.length;
-                    }
+                    } */
                 } else if (res?.filterType) {
                     if (res.filterType === TableStringEnum.STATE_FILTER) {
                         if (res.action === TableStringEnum.SET) {
@@ -1346,11 +1347,11 @@ export class CustomerTableComponent
         );
     }
 
-    private setCustomerData(td: CardTableData): void {
-        this.columns = td.gridColumns;
+    private setCustomerData(tdata: CardTableData): void {
+        this.columns = tdata.gridColumns;
 
-        if (td.data.length) {
-            this.viewData = td.data;
+        if (tdata.data.length) {
+            this.viewData = tdata.data;
             this.viewData = this.viewData.map(
                 (data: ShipperResponse | BrokerResponse) => {
                     return this.selectedTab === TableStringEnum.ACTIVE
@@ -1380,6 +1381,8 @@ export class CustomerTableComponent
         }
 
         this.customerTableData = this.viewData;
+
+        console.log('this.customerTableData', this.customerTableData);
     }
 
     private mapBrokerData(data: BrokerResponse): MappedShipperBroker {
@@ -1714,6 +1717,7 @@ export class CustomerTableComponent
     }
 
     public onToolBarAction(event: TableToolbarActions): void {
+        console.log('event', event);
         // Add Call
         if (event.action === TableStringEnum.OPEN_MODAL) {
             // Add Broker Call Modal
@@ -2170,16 +2174,20 @@ export class CustomerTableComponent
         switch (this.selectedTab) {
             case TableStringEnum.ACTIVE:
                 this.cardTitle = TableStringEnum.INVOICE;
+
                 this.displayRows$ = this.store.pipe(
                     select(selectActiveTabCards)
                 );
+
                 break;
 
             case TableStringEnum.INACTIVE:
                 this.cardTitle = TableStringEnum.INVOICE;
+
                 this.displayRows$ = this.store.pipe(
                     select(selectInactiveTabCards)
                 );
+
                 break;
             default:
                 break;
