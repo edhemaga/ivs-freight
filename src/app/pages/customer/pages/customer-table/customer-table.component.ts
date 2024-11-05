@@ -128,7 +128,7 @@ export class CustomerTableComponent
     public customerTableData: (BrokerState | ShipperState)[] = [];
 
     // filters
-    public filter: string = null;
+    public filter: string;
 
     public backBrokerFilterQuery: FilterOptionBroker =
         TableDropdownComponentConstants.BROKER_BACK_FILTER;
@@ -147,9 +147,6 @@ export class CustomerTableComponent
     public sendDataToCardsFront: CardRows[];
     public sendDataToCardsBack: CardRows[];
 
-    // map
-    public mapListData: MapList[] = [];
-
     public displayRowsFront: CardRows[] =
         CustomerCardDataConfigConstants.displayRowsFrontBroker;
     public displayRowsBack: CardRows[] =
@@ -159,6 +156,9 @@ export class CustomerTableComponent
         CustomerCardDataConfigConstants.displayRowsFrontShipper;
     public displayRowsBackShipper: CardRows[] =
         CustomerCardDataConfigConstants.displayRowsBackShipper;
+
+    // map
+    public mapListData: MapList[] = [];
 
     constructor(
         // ref
@@ -1346,11 +1346,11 @@ export class CustomerTableComponent
         );
     }
 
-    private setCustomerData(td: CardTableData): void {
-        this.columns = td.gridColumns;
+    private setCustomerData(tdata: CardTableData): void {
+        this.columns = tdata.gridColumns;
 
-        if (td.data.length) {
-            this.viewData = td.data;
+        if (tdata.data.length) {
+            this.viewData = tdata.data;
             this.viewData = this.viewData.map(
                 (data: ShipperResponse | BrokerResponse) => {
                     return this.selectedTab === TableStringEnum.ACTIVE
@@ -2170,16 +2170,20 @@ export class CustomerTableComponent
         switch (this.selectedTab) {
             case TableStringEnum.ACTIVE:
                 this.cardTitle = TableStringEnum.INVOICE;
+
                 this.displayRows$ = this.store.pipe(
                     select(selectActiveTabCards)
                 );
+
                 break;
 
             case TableStringEnum.INACTIVE:
                 this.cardTitle = TableStringEnum.INVOICE;
+
                 this.displayRows$ = this.store.pipe(
                     select(selectInactiveTabCards)
                 );
+
                 break;
             default:
                 break;

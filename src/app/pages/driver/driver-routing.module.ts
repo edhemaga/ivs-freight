@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 // components
-import { DriverCardComponent } from '@pages/driver/pages/driver-card/driver-card.component';
 import { DriverTableComponent } from '@pages/driver/pages/driver-table/driver-table.component';
 
 // resolvers
@@ -26,11 +25,6 @@ const routes: Routes = [
             driverMinimal: DriverMinimalResolver,
         },
         data: { title: 'Driver Details' },
-    },
-    {
-        path: 'card',
-        component: DriverCardComponent,
-        data: { title: 'Driver Cards' },
     },
 ];
 
