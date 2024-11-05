@@ -574,13 +574,13 @@
     ></app-ta-special-filter>
 
     <app-ta-special-filter
-        *ngIf="options.toolbarActions.showFuelStopFilter"
+        *ngIf="options.toolbarActions.showIntegratedFuelTransactionsFilter"
         [type]="'fuel-filter'"
         [icon]="'ic_fuel_transaction'"
         [filterTitle]="'Fuel Transaction'"
-        [dataArray]="this.activeTableData.fuelArray"
-        (setFilter)="onSpecialFilter($event, 'specialFilterArray1')"
-        [selectedFilter]="this.activeTableData.fuelArray.selectedFilter"
+        [dataArray]="activeTableData.fuelArray"
+        (setFilter)="onSpecialFilter($event, 'fuelArray')"
+        [selectedFilter]="activeTableData.fuelArray.selectedFilter"
     ></app-ta-special-filter>
 
     <app-ta-special-filter
