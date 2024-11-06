@@ -30,6 +30,7 @@ import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calcula
 import { PayrollBaseModalComponent } from '@pages/accounting/pages/payroll/payroll-modals/payroll-base-modal/payroll-base-modal.component';
 import { PayrollModal } from '../../state/models';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
     selector: 'app-payroll-deduction-modal',
@@ -48,6 +49,7 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 export class PayrollDeductionModalComponent implements OnInit {
     public payrollCreditForm: FormGroup;
     public taModalActionEnums = TaModalActionEnums;
+    private destroy$ = new Subject<void>();
     @Input() editData: PayrollModal;
 
     constructor(
@@ -126,6 +128,10 @@ export class PayrollDeductionModalComponent implements OnInit {
     public get isDropdownEnabled(): boolean {
         return true;
     }
+    
+    public get isEditMode(): boolean {
+        return !!this.editData?.editCredit;
+    }
 
     public saveDeduction(action: PayrollActionType): void {
         const addNew =
@@ -136,6 +142,7 @@ export class PayrollDeductionModalComponent implements OnInit {
         if (addNew) {
             this.payrollDeductionService
                 .addPayrollDeduction(data)
+                .pipe(takeUntil(this.destroy$))
                 .subscribe(() => {
                     if (action === TaModalActionEnums.SAVE_AND_ADD_NEW) {
                         this.createForm();
@@ -143,6 +150,18 @@ export class PayrollDeductionModalComponent implements OnInit {
                         this.onCloseModal();
                     }
                 });
+        } else if (action === TaModalActionEnums.UPDATE) {
+            this.payrollDeductionService
+                .updatePayrollDeduction(data)
+                .pipe(takeUntil(this.destroy$))
+                .subscribe(() => {
+                    this.onCloseModal();
+                });
         }
+    }
+
+    ngOnDestroy(): void {
+        this.destroy$.next();
+        this.destroy$.complete();
     }
 }
