@@ -44,7 +44,7 @@ export class PayrollService {
         PayrollDriverMileageListResponse[]
     > {
         return this.http.get<PayrollDriverMileageListResponse[]>(
-            `${environment.API_ENDPOINT}/api/payroll/driver/mileage/solo`
+            `${environment.API_ENDPOINT}/api/payroll/driver/mileage/list`
         );
     }
 

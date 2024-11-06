@@ -26,5 +26,6 @@ export interface DriverMinimalResponse {
     totalEarnings?: number | null;
     hiredAt?: string | null;
     payType?: EnumValue;
+    driverRate?: number | null;
 }
 

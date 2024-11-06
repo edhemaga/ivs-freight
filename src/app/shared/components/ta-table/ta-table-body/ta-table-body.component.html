@@ -5778,7 +5778,12 @@
                                             <app-ta-note
                                                 [note]="row.note"
                                                 [mainData]="row"
-                                                [entityId]="row.id"
+                                                [entityId]="
+                                                    activeTableData.gridNameTitle ===
+                                                    'PM'
+                                                        ? row.pmId
+                                                        : row.id
+                                                "
                                                 [entityType]="
                                                     activeTableData.gridNameTitle ===
                                                         'load' &&
@@ -5789,6 +5794,16 @@
                                                           selectedTab ===
                                                               'inactive'
                                                         ? 'Shipper'
+                                                        : activeTableData?.gridNameTitle ===
+                                                              'PM' &&
+                                                          selectedTab ===
+                                                              'active'
+                                                        ? 'PmTruckUnit'
+                                                        : activeTableData?.gridNameTitle ===
+                                                              'PM' &&
+                                                          selectedTab ===
+                                                              'inactive'
+                                                        ? 'PmTrailerUnit'
                                                         : activeTableData?.gridNameTitle !==
                                                           'Repair'
                                                         ? activeTableData?.gridNameTitle

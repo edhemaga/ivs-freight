@@ -33,6 +33,7 @@ export interface UpdateLoadTemplateCommand {
     revisedRate?: number | null;
     tonuRate?: number | null;
     driverRate?: number | null;
+    coDriverRate?: number | null;
     totalMiles?: number | null;
     totalHours?: number | null;
     totalMinutes?: number | null;

@@ -9,6 +9,7 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { FileResponse } from './fileResponse';
 
 
 export interface FuelDispatchHistoryResponse { 
@@ -16,6 +17,7 @@ export interface FuelDispatchHistoryResponse {
     driverId?: number;
     firstName?: string | null;
     lastName?: string | null;
+    avatarFile?: FileResponse;
     trailerId?: number | null;
     trailerNumber?: string | null;
     trailerTypeName?: string | null;
