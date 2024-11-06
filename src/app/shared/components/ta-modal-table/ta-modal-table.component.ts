@@ -765,12 +765,24 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
                 break;
             case ModalTableTypeEnum.REPAIR_BILL:
                 newFormArrayRow = this.formBuilder.group({
-                    description: [null, [Validators.required]],
+                    description: [
+                        null,
+                        this.isFuelTable ? null : [Validators.required],
+                    ],
                     pm: [null],
-                    quantity: [null, [Validators.required]],
+                    quantity: [
+                        null,
+                        this.isFuelTable ? null : [Validators.required],
+                    ],
                     price: [null, [Validators.required]],
-                    itemfuel: [null],
-                    qty: [null],
+                    itemfuel: [
+                        null,
+                        !this.isFuelTable ? null : [Validators.required],
+                    ],
+                    qty: [
+                        null,
+                        !this.isFuelTable ? null : [Validators.required],
+                    ],
                 });
 
                 break;

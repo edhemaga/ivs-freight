@@ -651,14 +651,13 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
         setTimeout(() => {
             this.isRepairBillRowCreated = false;
         }, 400);
-
-        // this.changeDetector.detectChanges();
     }
 
     public handleModalTableValueEmit(
         modalTableDataValue: RepairItemResponse[]
     ): void {
         this.fuelItems = modalTableDataValue;
+        this.getTotalCostValueEmit(modalTableDataValue as any);
     }
 
     public handleModalTableValidStatusEmit(
@@ -667,7 +666,7 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
         this.isEachRepairRowValid = isEachRepairItemsRowValid;
     }
 
-    public getTotalCostValueEmit(event: RepairSubtotal[]): void {
+    public getTotalCostValueEmit(event: RepairItemResponse[]): void {
         let total = 0;
 
         event.forEach((item: RepairSubtotal) => {
