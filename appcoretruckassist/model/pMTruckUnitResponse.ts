@@ -22,5 +22,6 @@ export interface PMTruckUnitResponse {
     invoice?: string | null;
     lastShop?: RepairShopPMResponse;
     lastService?: string | null;
+    note?: string | null;
 }
 
