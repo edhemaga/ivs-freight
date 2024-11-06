@@ -34,7 +34,6 @@ import { TaModalTableComponent } from '@shared/components/ta-modal-table/ta-moda
 import { CommonModule } from '@angular/common';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-
 // Svg routes
 import { FuelTableSvgRoutes } from '@pages/fuel/pages/fuel-table/utils/svg-routes/fuel-table-svg-routes';
 
@@ -109,7 +108,7 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
     public fuelStops: any[] = []; //leave any for now
 
     public selectedTruckType: FuelTruckType;
-    public selectedTrailerType: Trailer;
+    public selectedTrailerType: FuelTruckType;
     public selectedFuelStop: any = null; //leave any for now
     public selectedDispatchHistory: FuelDispatchHistoryResponse;
 
@@ -135,6 +134,7 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
     public total: number = 0;
 
     private destroy$ = new Subject<void>();
+    public trailerId: number;
 
     constructor(
         private formBuilder: UntypedFormBuilder,
@@ -322,9 +322,7 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
                 : null,
             truckId: this.selectedTruckType ? this.selectedTruckType.id : null,
             invoice: this.fuelForm.get(FuelValuesStringEnum.INVOICE).value,
-            trailerId: this.selectedTrailerType
-                ? this.selectedTrailerType.id
-                : null,
+            trailerId: this.trailerId,
             fuelStopStoreId: this.selectedFuelStop
                 ? this.selectedFuelStop.isFranchise
                     ? this.selectedFuelStop.storeId
@@ -408,6 +406,15 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
                         subFolder: FuelValuesStringEnum.TRUCKS,
                     };
 
+                    this.selectedTrailerType = {
+                        id: res.trailer.id,
+                        number: res.trailer.trailerNumber,
+                        logoName: res.trailer.trailerType.logoName,
+                        name: res.trailer.trailerNumber,
+                        folder: FuelValuesStringEnum.COMMON,
+                        subFolder: FuelValuesStringEnum.TRAILERS,
+                    };
+
                     this.updatedRepairItems = res.fuelItems.map(
                         (repairItem) => {
                             return {
@@ -451,7 +458,6 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
                     }
 
                     this.fuelTransactionType = res.fuelTransactionType;
-
                     this.fuelTransactionName = res.truck
                         ? res.truck.truckNumber
                         : null;
@@ -514,9 +520,22 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
             .subscribe((res: FuelDispatchHistoryResponse | null) => {
                 if (res) {
                     this.selectedDispatchHistory = res;
+                    console.log(res);
                     this.fuelForm
                         .get(FuelValuesStringEnum.DRIVER_FULL_NAME)
                         .patchValue(res.firstName.concat(' ', res.lastName));
+                    this.fuelForm
+                        .get(FuelValuesStringEnum.TRAILER_ID)
+                        .patchValue(res.trailerNumber);
+                    this.trailerId = res.trailerId;
+                    this.selectedTrailerType = {
+                        id: res.trailerId,
+                        number: res.trailerNumber,
+                        logoName: res.logoName,
+                        name: res.trailerNumber,
+                        folder: FuelValuesStringEnum.COMMON,
+                        subFolder: FuelValuesStringEnum.TRAILERS,
+                    };
                 }
             });
     }
