@@ -50,7 +50,6 @@ import {
 } from 'appcoretruckassist';
 import { FuelData } from '@pages/fuel/pages/fuel-modals/fuel-purchase-modal/models/fuel-data.model';
 import { FuelTruckType } from '@pages/fuel/pages/fuel-modals/fuel-purchase-modal/models/fuel-truck-type.model';
-import { Trailer } from '@shared/models/card-models/card-table-data.model';
 import { RepairSubtotal } from '@pages/repair/pages/repair-modals/repair-order-modal/models';
 
 //Pipes
@@ -254,7 +253,7 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
                 this.total as any
             ),
             fuelItems: this.fuelItems, //TODO: leave any for now
-            files: [],
+            files: this.mapDocuments(),
             filesForDeleteIds: [],
         };
 
@@ -287,7 +286,7 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
             trailerId: this.selectedTrailerType
                 ? this.selectedTrailerType.id
                 : null,
-            files: [],
+            files: this.mapDocuments(),
             filesForDeleteIds: [],
         };
 
@@ -337,7 +336,7 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
                 this.total as any
             ),
             fuelItems: this.fuelItems,
-            files: [],
+            files: this.mapDocuments(),
             filesForDeleteIds: [],
         };
         this.fuelService
@@ -414,6 +413,8 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
                         folder: FuelValuesStringEnum.COMMON,
                         subFolder: FuelValuesStringEnum.TRAILERS,
                     };
+
+                    this.documents = res.files;
 
                     this.updatedRepairItems = res.fuelItems.map(
                         (repairItem) => {
@@ -674,6 +675,16 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
         });
 
         this.total = total;
+    }
+
+    private mapDocuments(): Blob[] {
+        let documents: Blob[] = [];
+
+        this.documents?.forEach((item) => {
+            if (item.realFile) documents.push(item.realFile);
+        });
+
+        return documents;
     }
 
     ngOnDestroy(): void {
