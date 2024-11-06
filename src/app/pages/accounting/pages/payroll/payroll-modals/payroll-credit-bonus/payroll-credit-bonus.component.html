@@ -3,12 +3,13 @@
     [baseForm]="payrollCreditForm"
     [footerTemplate]="footerContent"
     [isDriverAndTruckTabs]="true"
-    [isShortModal]="editData?.isShortModal"
+    [editData]="editData"
 ></app-payroll-base-modal>
 
 <!-- Modal footer template -->
 <ng-template #footerContent>
-    <div class="modal-footer" [class.justify-content-between]="isEditMode">
+    <div class="modal-footer modal-footer-payroll" [class.justify-content-between]="isEditMode">
+        <div class="divider divider--dark divider--small"></div>
         <ng-container *ngIf="isEditMode; else showCreateButtons">
             <div>
                 <button

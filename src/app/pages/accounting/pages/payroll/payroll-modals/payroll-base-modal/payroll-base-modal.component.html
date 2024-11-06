@@ -1,5 +1,6 @@
 <app-ca-modal
     [modalTitle]="modalTitle"
+    [leftHeaderTemplate]="leftModalContent"
     [footerTemplate]="footerTemplate"
     [rightHeaderTemplate]="rightModalContent"
 >
@@ -9,7 +10,7 @@
         <form [formGroup]="baseForm" class="payroll-credit--body">
             <ng-container *ngIf="isBonusModal"> </ng-container>
 
-            <ng-container *ngIf="isDriverAndTruckTabs">
+            <ng-container *ngIf="isDropdownEnabled">
                 <div class="payroll-mb-32" *ngIf="!isShortModal">
                     <app-ta-tab-switch
                         [tabs]="tabs"
@@ -153,4 +154,12 @@
         [src]="svgRoutes.closeIcon"
         (click)="onCloseModal()"
     ></svg-icon>
+</ng-template>
+
+<ng-template #leftModalContent>
+    <ng-container *ngIf="creditTitle">
+        <div class="payroll-number text-color-white text-size-14 ta-font-bold">
+            {{ creditTitle }}
+        </div>
+    </ng-container>
 </ng-template>

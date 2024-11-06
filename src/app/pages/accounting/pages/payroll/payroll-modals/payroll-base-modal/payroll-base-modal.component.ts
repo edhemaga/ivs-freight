@@ -35,11 +35,13 @@ import {
     DriverMinimalResponse,
     EnumValue,
     PayrollCreditModalResponse,
+    PayrollCreditType,
     TruckMinimalResponse,
 } from 'appcoretruckassist';
 import { ITaInput } from '@shared/components/ta-input/config/ta-input.config';
 import {
     PayrollDriver,
+    PayrollModal,
     PayrollModalType,
 } from '@pages/accounting/pages/payroll/state/models';
 
@@ -75,6 +77,7 @@ export class PayrollBaseModalComponent implements OnInit {
     @Input() isDriverAndTruckTabs: boolean;
     @Input() modalType: PayrollModalType;
     @Input() isShortModal: boolean;
+    @Input() editData: PayrollModal;
     public payrollCreditConst = PayrollCreditConst;
     public svgRoutes = PayrollSvgRoutes;
     public tabs = [];
@@ -177,12 +180,30 @@ export class PayrollBaseModalComponent implements OnInit {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: (res: PayrollCreditModalResponse) => {
-                    console.log("THIS DRIVERS", res.drivers);
                     this.mapDrivers(res.drivers);
                     this.mapTrucks(res.trucks);
+                    this.populateData();
                 },
                 error: () => {},
             });
+    }
+
+    private populateData(): void {
+       if(!this.editData) return;
+
+       if (this.editData?.data) {
+        if (this.editData.creditType === PayrollCreditType.Driver) {
+            const driver = this.driversDropdownList.find(
+                (_driver) => _driver.id === this.editData.data.driverId
+            );
+            this.selectDriver(driver);
+        } else {
+            const truck = this.trucksDropdownList.find(
+                (_truck) => _truck.id === this.editData.data.truckId
+            );
+            this.selectTruck(truck);
+        }
+    }
     }
 
     private mapDrivers(drivers: DriverMinimalResponse[]): void {
@@ -260,7 +281,7 @@ export class PayrollBaseModalComponent implements OnInit {
     }
 
     public get isDropdownEnabled(): boolean {
-        return !this.isShortModal;
+        return !!!this.editData?.data;
     }
 
     public get isNotRecuringPayment(): boolean {

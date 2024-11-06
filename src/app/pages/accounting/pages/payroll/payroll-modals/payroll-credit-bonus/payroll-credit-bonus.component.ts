@@ -9,7 +9,7 @@ import {
 import { CommonModule } from '@angular/common';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { AngularSvgIconModule } from 'angular-svg-icon';
-import { Subject } from 'rxjs';
+import { Subject, takeUntil } from 'rxjs';
 
 // Services
 import { PayrollCreditService } from '@pages/accounting/pages/payroll/payroll-modals/payroll-credit-bonus/services/payroll-credit.service';
@@ -74,25 +74,23 @@ export class PayrollCreditBonusComponent implements OnInit {
     ) {}
 
     ngOnInit() {
-        console.log("this.editData", this.editData);
         this.createForm();
     }
 
     private createForm(): void {
-        const driverId = this.editData.data.driverId;
-        const truckId = this.editData.data.truckId;
-        const creditType = this.editData.creditType;
+        const data = this.editData ? this.editData.data : {};
+        const creditType =
+            this.editData?.creditType || PayrollCreditType.Driver;
+
         this.payrollCreditForm = this.formBuilder.group({
             [PayrollStringEnum.DRIVER_ID]: [null],
             [PayrollStringEnum.TRUCK_ID]: [null],
             [PayrollStringEnum.DATE]: [new Date(), Validators.required],
             [PayrollStringEnum.DESCRIPTION]: [null, Validators.required],
             [PayrollStringEnum.AMOUNT]: [null, Validators.required],
-            [PayrollStringEnum.SELECTED_DRIVER_ID]: [driverId],
-            [PayrollStringEnum.SELECTED_TRUCK_ID]: [truckId],
-            [PayrollStringEnum.SELECTED_TYPE_ID]: [
-                creditType || PayrollCreditType.Driver,
-            ],
+            [PayrollStringEnum.SELECTED_DRIVER_ID]: [data?.driverId ?? null],
+            [PayrollStringEnum.SELECTED_TRUCK_ID]: [data?.truckId ?? null],
+            [PayrollStringEnum.SELECTED_TYPE_ID]: [creditType],
         });
     }
 
@@ -150,18 +148,21 @@ export class PayrollCreditBonusComponent implements OnInit {
             const data = this.generateCreditModel();
             this.payrolCreditService
                 .updatePayrollCredit(data)
+                .pipe(takeUntil(this.destroy$))
                 .subscribe((response) => {
                     this.onCloseModal();
                 });
         } else if (action === TaModalActionEnums.MOVE_TO_THIS_PERIOD) {
             this.payrollService
                 .apiPayrollBonusMoveIdPut(this.editData.editCredit.id)
+                .pipe(takeUntil(this.destroy$))
                 .subscribe((response) => {
                     this.onCloseModal();
                 });
         } else if (action === TaModalActionEnums.DELETE) {
             this.payrolCreditService
                 .deletePayrollCreditById(this.editData.editCredit.id)
+                .pipe(takeUntil(this.destroy$))
                 .subscribe((res) => {
                     this.onCloseModal();
                 });
