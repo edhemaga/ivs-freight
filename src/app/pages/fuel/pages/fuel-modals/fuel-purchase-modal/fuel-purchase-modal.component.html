@@ -109,6 +109,7 @@
                         type: 'text',
                         label: 'Truck',
                         isDropdown: true,
+                        isRequired: true,
                         dropdownImageInput: {
                             withText: true,
                             svg: true,
@@ -188,7 +189,7 @@
             <div class="col-12">
                 <div
                     *ngIf="selectedFuelStop"
-                    class="d-flex flex-column selected-item-container"
+                    class="d-flex flex-column selected-item-container selected-item-container-small"
                     [ngClass]="{
                         'non-editable':
                             editData?.type === 'edit' &&
@@ -198,26 +199,28 @@
                     <div class="selected-item-label">
                         Fuel Stop <span>*</span>
                     </div>
-                    <p class="m-0 ta-font-bold selected-item-name">
-                        {{ selectedFuelStop?.businessName }}
-                        {{
-                            selectedFuelStop?.name &&
-                            selectedFuelStop.fuelStopFranchise
-                                ? '#'.concat(' ', selectedFuelStop?.name)
-                                : ''
-                        }}
+                    <p class="m-0 ta-font-bold text-size-14 text-color-black mb-1 d-flex align-items-center">
+                        <span>{{ selectedFuelStop?.businessName }}</span>
+
+                        <ng-container *ngIf="selectedFuelStop.favorite">
+                            <svg-icon
+                                class="svg-fill-blue-13 svg-size-14 ml-1 d-flex"
+                                [src]="svgRoutes.STAR"
+                            ></svg-icon>
+                        </ng-container>
                     </p>
-                    <div
-                        class="d-flex align-items-center selected-item-additional"
-                    >
+                    <div class="d-flex align-items-center">
                         <div
                             *ngIf="selectedFuelStop?.address"
                             class="d-flex align-items-center selected-item-info"
                         >
                             <svg-icon
-                                src="assets/svg/common/ic_address.svg"
+                                class="svg-fill-blue-13 svg-size-14 d-flex"
+                                [src]="svgRoutes.ADDRESS"
                             ></svg-icon>
-                            <p>
+                            <p
+                                class="ml-1 text-size-11 ta-font-medium text-color-black-2"
+                            >
                                 {{ selectedFuelStop?.fullAddress }}
                             </p>
                         </div>

@@ -77,7 +77,7 @@ export class PayrollReportComponent implements OnInit, OnDestroy {
     title: string = '';
     private destroy$ = new Subject<void>();
 
-    data: ICaMapProps = {
+    data: any = {
         markers: [],
         routingMarkers: [],
     };

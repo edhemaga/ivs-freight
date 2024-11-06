@@ -35,6 +35,9 @@ import { CommonModule } from '@angular/common';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
+// Svg routes
+import { FuelTableSvgRoutes } from '@pages/fuel/pages/fuel-table/utils/svg-routes/fuel-table-svg-routes';
+
 //Models
 import {
     FuelTransactionResponse,
@@ -97,7 +100,7 @@ import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calcula
 })
 export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
     @Input() editData: FuelData;
-
+    public svgRoutes = FuelTableSvgRoutes;
     public modalTableTypeEnum = ModalTableTypeEnum;
 
     public fuelForm: UntypedFormGroup;
