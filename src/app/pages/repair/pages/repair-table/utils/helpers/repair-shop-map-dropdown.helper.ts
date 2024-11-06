@@ -1,13 +1,17 @@
 import { MapDropdownContent } from 'ca-components/lib/components/ca-map-dropdown/models';
 
 export class RepairShopMapDropdownHelper {
-    static getRepairShopMapDropdownConfig(data): MapDropdownContent {
+    static getRepairShopMapDropdownConfig(
+        data,
+        isCluster?: boolean
+    ): MapDropdownContent {
         return {
             mainContent: [
                 {
                     template: 'header-title',
                     field: 'name',
                     customClassText: 'text-ellipsis uppercase',
+                    hasBackButton: isCluster,
                 },
                 !data?.status
                     ? {

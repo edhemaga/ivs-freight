@@ -16,10 +16,8 @@ import {
     AfterContentInit,
 } from '@angular/core';
 
-
 import { DomSanitizer } from '@angular/platform-browser';
 import { CommonModule } from '@angular/common';
-
 
 import { Subject, takeUntil } from 'rxjs';
 
@@ -37,7 +35,11 @@ import { TruckassistTableService } from '@shared/services/truckassist-table.serv
 
 // component
 import { TaInputComponent } from '@shared/components/ta-input/ta-input.component';
-import { ReactiveFormsModule, UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
+import {
+    ReactiveFormsModule,
+    UntypedFormBuilder,
+    UntypedFormGroup,
+} from '@angular/forms';
 import { FormsModule } from '@angular/forms';
 
 @Component({
@@ -51,10 +53,10 @@ import { FormsModule } from '@angular/forms';
         CommonModule,
         FormsModule,
         ReactiveFormsModule,
-       // AgmCoreModule,
+        // AgmCoreModule,
         AngularSvgIconModule,
         NgbPopoverModule,
-       // AgmSnazzyInfoWindowModule,
+        // AgmSnazzyInfoWindowModule,
 
         // Components
         TaInputComponent,
@@ -89,6 +91,7 @@ export class TaMapListComponent
     searchLoading: boolean = false;
     searchTimeout: any;
     searchResultsCount: number = 0;
+    public previousScrollTime = null;
 
     constructor(
         private formBuilder: UntypedFormBuilder,
@@ -127,19 +130,19 @@ export class TaMapListComponent
                 }, 300);
             });
 
-        this.mapsService.selectedMarkerChange
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((id) => {
-                this.listCards.map((card) => {
-                    if (card.isSelected && card.item.id != id) {
-                        card.addRemoveSelection(false);
-                    }
+        // this.mapsService.selectedMarkerChange
+        //     .pipe(takeUntil(this.destroy$))
+        //     .subscribe((id) => {
+        //         this.listCards.map((card) => {
+        //             if (card.isSelected && card.item.id != id) {
+        //                 card.addRemoveSelection(false);
+        //             }
 
-                    if (card.item.id == id) {
-                        card.addRemoveSelection(true);
-                    }
-                });
-            });
+        //             if (card.item.id == id) {
+        //                 card.addRemoveSelection(true);
+        //             }
+        //         });
+        //     });
 
         this.mapsService.searchLoadingChanged
             .pipe(takeUntil(this.destroy$))
@@ -167,7 +170,7 @@ export class TaMapListComponent
             this.highlightSearchedText();
 
             if (this.mapListExpanded) {
-                var mapListElement =
+                const mapListElement =
                     document.querySelectorAll<HTMLElement>('.map-list-body')[0];
                 mapListElement.style.height = '';
 
@@ -175,13 +178,13 @@ export class TaMapListComponent
                     this.checkResizeButton();
                 }, 100);
             } else {
-                var mapListElement =
+                const mapListElement =
                     document.querySelectorAll<HTMLElement>('.map-list-body')[0];
 
-                var childrenElements = mapListElement.children;
+                const childrenElements = mapListElement.children;
 
-                var childElementHeight = childrenElements[0].clientHeight;
-                var totalChildrenHeight =
+                const childElementHeight = childrenElements[0].clientHeight;
+                const totalChildrenHeight =
                     childElementHeight * this.listCards.length;
 
                 if (totalChildrenHeight < mapListElement.clientHeight) {
@@ -272,15 +275,15 @@ export class TaMapListComponent
     }
 
     checkResizeButton() {
-        var mapListContainer = document.querySelectorAll<HTMLElement>(
+        const mapListContainer = document.querySelectorAll<HTMLElement>(
             '.map-list-container'
         )[0];
-        var mapListElement =
+        const mapListElement =
             document.querySelectorAll<HTMLElement>('.map-list')[0];
-        var mapListScrollElement =
+        const mapListScrollElement =
             document.querySelectorAll<HTMLElement>('.map-list-body')[0];
 
-        var mapListHeight = mapListContainer.clientHeight - 80; // total height - padding
+        const mapListHeight = mapListContainer.clientHeight - 80; // total height - padding
 
         if (mapListElement.clientHeight > mapListHeight / 2) {
             this.showExpandButton = true;
@@ -293,7 +296,7 @@ export class TaMapListComponent
     }
 
     sortData() {
-        var sortType = this.sortTypes.find((b) => b.isActive === true);
+        let sortType = this.sortTypes.find((b) => b.isActive === true);
         if (!sortType) {
             this.sortTypes[0].isActive = true;
             this.activeSortType = this.sortTypes[0];
@@ -461,13 +464,13 @@ export class TaMapListComponent
                 '.map-list-card-container .title-text, .map-list-card-container .address-text'
             )
             .forEach((title: HTMLElement) => {
-                var text = title.textContent;
-                var addressElement = title.classList.contains('address-text');
+                const text = title.textContent;
+                const addressElement = title.classList.contains('address-text');
 
                 const regex = new RegExp(this.searchText, 'gi');
                 const newText = text.replace(regex, (match: string) => {
                     if (match.length >= 3) {
-                        var addressClass = addressElement
+                        const addressClass = addressElement
                             ? 'regular-weight'
                             : '';
 
@@ -502,17 +505,17 @@ export class TaMapListComponent
     }
 
     calculateMapListSize() {
-        var mapListElement =
+        const mapListElement =
             document.querySelectorAll<HTMLElement>('.map-list-body')[0];
 
-        var mapListContainer = document.querySelectorAll<HTMLElement>(
+        const mapListContainer = document.querySelectorAll<HTMLElement>(
             '.map-list-container'
         )[0];
 
-        var containerHeight = mapListContainer.clientHeight; // total height - padding
+        const containerHeight = mapListContainer.clientHeight; // total height - padding
 
-        var mapListHeight = mapListElement.clientHeight;
-        var expandedHeight = mapListElement.scrollHeight;
+        const mapListHeight = mapListElement.clientHeight;
+        const expandedHeight = mapListElement.scrollHeight;
         mapListElement.style.height = mapListHeight + 'px';
 
         if (this.mapListExpanded) {
@@ -527,13 +530,19 @@ export class TaMapListComponent
     }
 
     mapListScroll(event) {
-        var element = event.target;
+        const element = event.target;
+
+        const isDoubleScroll =
+            new Date().getTime() - this.previousScrollTime < 200;
+
         if (
             Math.abs(
                 element.scrollHeight - element.scrollTop - element.clientHeight
-            ) <= 3.0
+            ) <= 3.0 &&
+            !isDoubleScroll
         ) {
             this.mapsService.mapListScroll(this.mapListContent);
+            this.previousScrollTime = new Date().getTime();
         }
     }
 

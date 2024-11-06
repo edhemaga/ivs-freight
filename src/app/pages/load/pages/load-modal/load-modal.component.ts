@@ -3646,6 +3646,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
 
                         this.data.routingMarkers = routes.map((routes) => {
                             return {
+                                icon: null,
                                 position: {
                                     lat: routes.latitude,
                                     lng: routes.longitude,

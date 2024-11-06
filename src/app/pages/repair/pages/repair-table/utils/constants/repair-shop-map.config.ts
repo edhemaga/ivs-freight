@@ -85,4 +85,9 @@ export class RepairShopMapConfig {
             },
         ],
     };
+
+    static repairShopMapListPagination: {
+        pageIndex: number;
+        pageSize: number;
+    } = { pageIndex: 1, pageSize: 25 };
 }

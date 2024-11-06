@@ -84,7 +84,7 @@
                     [item]="latlong"
                     [index]="i"
                     [address]="latlong.address"
-                    [rating]="latlong?.shopRaiting"
+                    [rating]="latlong?.tableShopRaiting"
                     [type]="'repairShop'"
                     [sortCategory]="activeSortType"
                     [locationFilterOn]="locationFilterOn"
@@ -102,8 +102,9 @@
             <app-ca-map
                 #mapsComponent
                 [data]="mapData"
-                (markerClick)="onMapMarkerClick($event)"
+                (getInfoWindowData)="onGetInfoWindowData($event)"
                 (boundsChanged)="onMapBoundsChange($event)"
+                (resetSelectedMarkerItem)="onResetSelectedMarkerItem()"
             ></app-ca-map>
 
             <!-- 

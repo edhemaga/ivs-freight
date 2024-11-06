@@ -100,33 +100,31 @@ export class TaMapListCardComponent implements OnInit, OnDestroy {
             });
 
         this.isSelected = this.mapsService.selectedMarkerId == this.item.id;
-        this.item.isSelected =
-            this.mapsService.selectedMarkerId == this.item.id;
 
         this.mapsService.selectedMarkerChange
             .pipe(takeUntil(this.destroy$))
             .subscribe((id) => {
-                if (id != this.item.id && this.detailsDropdown?.tooltip) {
+                if (id !== this.item.id && this.detailsDropdown?.tooltip) {
                     this.detailsDropdown.dropDownActive = -1;
                     this.detailsDropdown.tooltip.close();
                 }
 
-                this.isSelected = id == this.item.id;
-                this.item = { ...this.item, isSelected: id == this.item.id };
+                this.addRemoveSelection(id == this.item.id);
+
                 this.ref.detectChanges();
             });
 
-        this.mapsService.selectedMapListCardChange
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((id) => {
-                if (id != this.item.id && this.detailsDropdown?.tooltip) {
-                    this.detailsDropdown.dropDownActive = -1;
-                    this.detailsDropdown.tooltip.close();
-                }
+        // this.mapsService.selectedMapListCardChange
+        //     .pipe(takeUntil(this.destroy$))
+        //     .subscribe((id) => {
+        //         if (id != this.item.id && this.detailsDropdown?.tooltip) {
+        //             this.detailsDropdown.dropDownActive = -1;
+        //             this.detailsDropdown.tooltip.close();
+        //         }
 
-                this.isSelected = id == this.item.id;
-                this.item = { ...this.item, isSelected: id == this.item.id };
-            });
+        //         this.isSelected = id == this.item.id;
+        //         this.item = { ...this.item, isSelected: id == this.item.id };
+        //     });
 
         this.getDropdownActions();
     }
@@ -140,7 +138,7 @@ export class TaMapListCardComponent implements OnInit, OnDestroy {
         const selectId = this.isSelected ? 0 : this.item.id;
         this.mapsService.selectedMapListCard(selectId);
 
-        this.clickedMarker.emit(this.item);
+        //this.clickedMarker.emit(this.item);
     }
 
     showMoreOptions() {

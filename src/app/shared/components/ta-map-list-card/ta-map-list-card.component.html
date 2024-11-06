@@ -31,13 +31,13 @@
             <div class="d-flex">
                 <svg-icon
                     class="favorite-svg"
-                    [ngClass]="{ active: item?.favourite }"
+                    [ngClass]="{ active: item?.isFavorite }"
                     src="assets/svg/detail-cards/favorite.svg"
                     [svgStyle]="{ 'width.px': 18, 'height.px': 18 }"
                     *ngIf="
                         sortCategory.name == 'Favorites' ||
                         sortCategory.name == 'Fuel Price' ||
-                        item?.favourite
+                        item?.isFavorite
                     "
                 ></svg-icon>
                 <div

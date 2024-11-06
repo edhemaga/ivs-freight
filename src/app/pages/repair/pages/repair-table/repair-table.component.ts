@@ -25,6 +25,7 @@ import {
     ICaMapProps,
     IMapMarkers,
     IMapBoundsZoom,
+    IMapSelectedMarkerData,
 } from 'ca-components';
 
 // store
@@ -178,6 +179,15 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
     public displayRows$: Observable<any>; //leave this as any for now
 
     public mapData: ICaMapProps = RepairShopMapConfig.repairShopMapConfig;
+    public mapListPagination: { pageIndex: number; pageSize: number } =
+        RepairShopMapConfig.repairShopMapListPagination;
+    public mapClustersObject: {
+        northEastLatitude: number;
+        northEastLongitude: number;
+        southWestLatitude: number;
+        southWestLongitude: number;
+        zoomLevel: number;
+    } = null;
 
     constructor(
         // Router
@@ -230,6 +240,10 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
         this.confirmationSubscribe();
 
         this.deleteSelectedRows();
+
+        this.addMapListScrollEvent();
+
+        this.addSelectedMarkerListener();
 
         if (this.selectedTab === TableStringEnum.REPAIR_SHOP) this.getMapData();
     }
@@ -1063,7 +1077,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
 
     // Map Shop Data
     // TODO find parametar data type
-    private mapShopData(data: any): void {
+    private mapShopData(data: any): any {
         return {
             ...data,
             isSelected: false,
@@ -1095,7 +1109,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                     ? data.downCount
                     : TableStringEnum.NUMBER_0,
                 reviewCount:
-                    data.ratingReviews.length ?? TableStringEnum.NUMBER_0,
+                    data.ratingReviews?.length ?? TableStringEnum.NUMBER_0,
             },
             tableContactData: data?.contacts,
             tableExpense: data?.cost
@@ -1693,11 +1707,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
 
     // MAP Find parameter type
     public selectItem(data: any, index: number): void {
-        this.mapsComponent.onMarkerClick(
-            index,
-            null,
-            this.mapData.markers[index]
-        );
+        //this.mapsComponent.onMarkerClick(this.mapData.markers[index]);
 
         const mapOpenHours = RepairShopOpenHoursHelper.getRepairShopOpenHours(
             this.mapData.markers[index].data
@@ -1852,13 +1862,81 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
         // };
     }
 
-    public onMapMarkerClick(marker: IMapMarkers): void {
-        const selectedMarkerId =
-            this.mapsService.selectedMarkerId !== marker.data.id
-                ? marker.data.id
-                : null;
+    public onGetInfoWindowData(markerId: number): void {
+        console.log('onGetInfoWindowData markerId', markerId);
 
-        this.mapsService.selectedMarker(selectedMarkerId);
+        this.repairService
+            .getRepairShopById(markerId)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe({
+                next: (res) => {
+                    console.log('getRepairShopById res', res);
+                    const repairShopData = this.mapShopData(res);
+
+                    let selectedMarkerData: IMapSelectedMarkerData | null =
+                        null;
+
+                    this.mapData.clusterMarkers.forEach((clusterMarker) => {
+                        const clusterItemIndex =
+                            clusterMarker.data.pagination?.data?.findIndex(
+                                (clusterItem) => clusterItem.id === markerId
+                            );
+
+                        if (clusterItemIndex > -1) {
+                            selectedMarkerData = {
+                                ...clusterMarker,
+                                infoWindowContent: {
+                                    ...clusterMarker.infoWindowContent,
+                                    selectedClusterItemData: {
+                                        ...RepairShopMapDropdownHelper.getRepairShopMapDropdownConfig(
+                                            repairShopData,
+                                            true
+                                        ),
+                                        data: repairShopData,
+                                    },
+                                },
+                            };
+
+                            console.log(
+                                'selectedMarkerData',
+                                selectedMarkerData
+                            );
+                        }
+                    });
+
+                    this.mapData.markers.forEach((markerData) => {
+                        if (markerData.data.id === markerId) {
+                            selectedMarkerData = {
+                                ...markerData,
+                                infoWindowContent:
+                                    RepairShopMapDropdownHelper.getRepairShopMapDropdownConfig(
+                                        repairShopData
+                                    ),
+                                data: repairShopData,
+                            };
+
+                            console.log(
+                                'selectedMarkerData',
+                                selectedMarkerData
+                            );
+                        }
+                    });
+
+                    this.mapsService.selectedMarker(
+                        selectedMarkerData ? repairShopData.id : 0
+                    );
+
+                    this.mapData = { ...this.mapData, selectedMarkerData };
+                },
+                error: () => {},
+            });
+
+        // const selectedMarkerId =
+        //     this.mapsService.selectedMarkerId !== marker.data.id
+        //         ? marker.data.id
+        //         : null;
+
+        // this.mapsService.selectedMarker(selectedMarkerId);
     }
 
     public onMapBoundsChange(event: IMapBoundsZoom): void {
@@ -1867,7 +1945,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
         const ne = event.bounds.getNorthEast(); // LatLng of the north-east corner
         const sw = event.bounds.getSouthWest(); // LatLng of the south-west corder
 
-        const clustersObject = {
+        this.mapClustersObject = {
             northEastLatitude: parseFloat(ne.lat().toFixed(6)),
             northEastLongitude: parseFloat(ne.lng().toFixed(6)),
             southWestLatitude: parseFloat(sw.lat().toFixed(6)),
@@ -1875,13 +1953,24 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
             zoomLevel: event.zoom,
         };
 
+        this.mapListPagination = {
+            ...this.mapListPagination,
+            pageIndex: 1,
+        };
+
+        this.getRepairShopClusters();
+
+        this.getRepairShopMapList();
+    }
+
+    public getRepairShopClusters(): void {
         this.repairService
             .getRepairShopClusters(
-                clustersObject.northEastLatitude,
-                clustersObject.northEastLongitude,
-                clustersObject.southWestLatitude,
-                clustersObject.southWestLongitude,
-                clustersObject.zoomLevel,
+                this.mapClustersObject.northEastLatitude,
+                this.mapClustersObject.northEastLongitude,
+                this.mapClustersObject.southWestLatitude,
+                this.mapClustersObject.southWestLongitude,
+                this.mapClustersObject.zoomLevel,
                 false, // addedNew flag
                 null, // shipperLong
                 null, // shipperLat
@@ -1900,7 +1989,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                 1, // pageIndex
                 25, // pageSize
                 null, // companyId
-                null, // sortBy
+                this.shopFilterQuery.sort ?? 'nameDesc', // sortBy
                 null, // search
                 null, // search1
                 null // search2
@@ -1913,6 +2002,32 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                 const markers: IMapMarkers[] = [];
 
                 clustersResponse.forEach((data, index) => {
+                    const previousClusterData =
+                        this.mapData.clusterMarkers.find(
+                            (item) =>
+                                item.position.lat === data.latitude &&
+                                item.position.lng === data.longitude
+                        );
+
+                    let clusterInfoWindowContent = data.pagination?.data
+                        ? {
+                              clusterData: data.pagination.data,
+                              selectedClusterItemData: null,
+                          }
+                        : null;
+
+                    if (
+                        previousClusterData?.infoWindowContent
+                            ?.selectedClusterItemData
+                    ) {
+                        clusterInfoWindowContent = {
+                            ...clusterInfoWindowContent,
+                            selectedClusterItemData:
+                                previousClusterData?.infoWindowContent
+                                    ?.selectedClusterItemData,
+                        };
+                    }
+
                     const markerData = {
                         position: { lat: data.latitude, lng: data.longitude },
                         icon: {
@@ -1924,9 +2039,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                             ),
                             labelOrigin: new google.maps.Point(80, 18),
                         },
-                        infoWindowContent: data.pagination?.data
-                            ? { clusterData: data.pagination.data }
-                            : null,
+                        infoWindowContent: clusterInfoWindowContent,
                         label: data.name
                             ? {
                                   text: data.name,
@@ -1954,6 +2067,92 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                 };
 
                 this.ref.detectChanges();
+            });
+    }
+
+    public getRepairShopMapList(): void {
+        if (!this.mapClustersObject) return;
+
+        this.repairService
+            .getRepairShopMapList(
+                this.mapClustersObject.northEastLatitude,
+                this.mapClustersObject.northEastLongitude,
+                this.mapClustersObject.southWestLatitude,
+                this.mapClustersObject.southWestLongitude,
+                null, // category ids
+                null, // _long
+                null, // lat
+                null, // distance
+                null, // costFrom
+                null, // costTo
+                this.mapListPagination.pageIndex,
+                this.mapListPagination.pageSize,
+                null, // companyId
+                this.shopFilterQuery.sort ?? 'nameDesc', // sort
+                null, // search
+                null, // search1
+                null // search2
+            )
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((mapListResponse) => {
+                mapListResponse.pagination.data.map((item) => {
+                    const mapItemData = this.mapShopData(item);
+
+                    return mapItemData;
+                });
+                console.log(
+                    'mapListResponse.pagination.data',
+                    mapListResponse.pagination.data
+                );
+
+                const newMapListData = {
+                    ...mapListResponse,
+                    addData:
+                        this.mapListPagination.pageIndex > 1 ? true : false,
+                };
+
+                // newMapListData.changedSort = changedSearchOrSort;
+                // newMapListData.addData =
+                //     this.mapListPagination.pageIndex > 1 ? true : false;
+
+                this.updateMapList(newMapListData);
+            });
+    }
+
+    public onResetSelectedMarkerItem(): void {
+        console.log('onResetSelectedMarkerItem');
+
+        this.mapData = {
+            ...this.mapData,
+            selectedMarkerData: null,
+        };
+
+        this.mapsService.selectedMarker(0);
+    }
+
+    public addMapListScrollEvent(): void {
+        this.mapsService.mapListScrollChange
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((data) => {
+                //this.showMoreMapListData(data);
+                console.log('mapListScrollChange data', data);
+
+                this.mapListPagination = {
+                    ...this.mapListPagination,
+                    pageIndex: this.mapListPagination.pageIndex + 1,
+                };
+                console.log('mapListPagination', this.mapListPagination);
+                this.getRepairShopMapList();
+            });
+    }
+
+    public addSelectedMarkerListener(): void {
+        this.mapsService.selectedMapListCardChange
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((id) => {
+                console.log('selectedMapListCardChange id', id);
+                if (id) this.onGetInfoWindowData(id);
+                else this.onResetSelectedMarkerItem();
             });
     }
 }
