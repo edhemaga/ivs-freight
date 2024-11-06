@@ -535,6 +535,7 @@ export class FuelTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     ? this.mapFuelTransactionsData(data)
                     : this.mapFuelStopsData(data);
             });
+            console.log(this.viewData);
         } else {
             this.viewData = [];
         }
@@ -543,6 +544,7 @@ export class FuelTableComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     mapFuelTransactionsData(data: any) {
+        console.log(data.fuelItems);
         return {
             ...data,
             isSelected: false,
@@ -568,9 +570,9 @@ export class FuelTableComponent implements OnInit, AfterViewInit, OnDestroy {
             tableLocation: data?.fuelStopStore?.address?.address
                 ? data.fuelStopStore.address.address
                 : '',
-            fuelTableItem: data?.fuelItems
+            tableDescription: data?.fuelItems
                 ? data.fuelItems
-                      .map((item) => item.category?.trim())
+                      .map((item) => item?.itemFuel?.name)
                       .join(
                           '<div class="description-dot-container"><span class="description-dot"></span></div>'
                       )
@@ -579,20 +581,14 @@ export class FuelTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 ? data.fuelItems.map((item) => {
                       return {
                           ...item,
-                          descriptionPrice: item?.price
-                              ? '$' +
-                                this.thousandSeparator.transform(item.price)
-                              : '',
-                          descriptionTotalPrice: item?.subtotal
-                              ? '$' +
-                                this.thousandSeparator.transform(item.subtotal)
-                              : '',
-                          pmDescription: null,
+                          descriptionPrice: item?.price ? `$${this.thousandSeparator.transform(item.price)}` : '',
+                          descriptionTotalPrice: item?.subtotal ? `$${this.thousandSeparator.transform(item.subtotal)}` : '',
+                          pmDescription: '',
                       };
                   })
                 : null,
-            tableQTY: 'Treba da se pogleda gde je property',
-            tbalePPG: 'Treba da se pogleda gde je property',
+            tableQTY: 1,
+            tablePPG: 1,
             tabelDescriptionDropTotal: data?.total
                 ? '$' + this.thousandSeparator.transform(data.total)
                 : '',
