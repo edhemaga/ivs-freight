@@ -11,15 +11,17 @@ import { CommonModule } from '@angular/common';
 // Models
 import {
     CreatePayrollDeductionCommand,
+    PayrollCreditType,
     PayrollDeductionRecurringType,
-    PayrollDeductionType,
 } from 'appcoretruckassist';
+import { PayrollActionType } from '@pages/accounting/pages/payroll/state/models';
 
 // Services
 import { PayrollDeductionService } from './services/payroll-deduction.service';
 
 // Enums
 import { PayrollStringEnum } from '@pages/accounting/pages/payroll/state/enums';
+import { TaModalActionEnums } from '@shared/components/ta-modal/enums';
 
 // Helpers
 import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calculations.helper';
@@ -45,6 +47,7 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 })
 export class PayrollDeductionModalComponent implements OnInit {
     public payrollCreditForm: FormGroup;
+    public taModalActionEnums = TaModalActionEnums;
     @Input() editData: PayrollModal;
 
     constructor(
@@ -54,14 +57,20 @@ export class PayrollDeductionModalComponent implements OnInit {
     ) {}
 
     ngOnInit(): void {
-        const driverId = this.editData.data.driverId;
-        const truckId = this.editData.data.truckId;
+        this.createForm();
+    }
+
+    private createForm() {
+        const data = this.editData ? this.editData.data : {};
+        const creditType =
+            this.editData?.creditType || PayrollCreditType.Driver;
+
         this.payrollCreditForm = this.fb.group({
-            [PayrollStringEnum.DRIVER_ID]: [driverId, Validators.required],
-            [PayrollStringEnum.TRUCK_ID]: [null],
-            [PayrollStringEnum.SELECTED_DRIVER_ID]: [driverId],
-            [PayrollStringEnum.SELECTED_TRUCK_ID]: [truckId],
-            [PayrollStringEnum.SELECTED_TYPE_ID]: [PayrollDeductionType.Driver],
+            [PayrollStringEnum.DRIVER_ID]: [data?.driverId ?? null],
+            [PayrollStringEnum.TRUCK_ID]: [data?.truckId ?? null],
+            [PayrollStringEnum.SELECTED_DRIVER_ID]: [data?.driverId ?? null],
+            [PayrollStringEnum.SELECTED_TRUCK_ID]: [data?.truckId ?? null],
+            [PayrollStringEnum.SELECTED_TYPE_ID]: [creditType],
             [PayrollStringEnum.DATE]: [new Date(), Validators.required],
             [PayrollStringEnum.DESCRIPTION]: [null, Validators.required],
             [PayrollStringEnum.AMOUNT]: [null, Validators.required],
@@ -114,11 +123,26 @@ export class PayrollDeductionModalComponent implements OnInit {
         this.ngbActiveModal.close();
     }
 
-    public createNewDeduction(): void {
-        this.payrollDeductionService
-            .addPayrollDeduction(this.generateModel())
-            .subscribe((response) => {
-                this.onCloseModal();
-            });
+    public get isDropdownEnabled(): boolean {
+        return true;
+    }
+
+    public saveDeduction(action: PayrollActionType): void {
+        const addNew =
+            action === TaModalActionEnums.SAVE ||
+            action === TaModalActionEnums.SAVE_AND_ADD_NEW;
+        const data = this.generateModel();
+
+        if (addNew) {
+            this.payrollDeductionService
+                .addPayrollDeduction(data)
+                .subscribe(() => {
+                    if (action === TaModalActionEnums.SAVE_AND_ADD_NEW) {
+                        this.createForm();
+                    } else {
+                        this.onCloseModal();
+                    }
+                });
+        }
     }
 }

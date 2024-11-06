@@ -25,5 +25,4 @@ export interface PayrollModal {
     creditType: PayrollCreditType;
     // Selected payroll user from table
     selectedValue: DriverMinimalResponse | TruckMinimalResponse;
-    isShortModal?: boolean;
 }
