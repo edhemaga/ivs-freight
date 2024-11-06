@@ -43,7 +43,7 @@
             src="assets/svg/common/ic_clock.svg"
         ></svg-icon>
         <div
-            *ngIf="data.period == 'Ready'"
+            *ngIf="data.period !== 'Ready'"
             class="custom-status-text"
             [ngClass]="{ 'past-payment': data.period == 'Past' }"
         >
