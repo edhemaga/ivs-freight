@@ -9,6 +9,7 @@ import {
 } from '../models/payroll.model';
 import {
     PayrollOtherPaymentType,
+    PayrollOwnerClosedResponse,
     PayrollOwnerResponse,
     PayrollPaymentType,
 } from 'appcoretruckassist';
@@ -51,7 +52,7 @@ export const getPayrollOwnerDriverClosedReportPayroll = createAction(
 );
 export const getPayrollOwnerDriverClosedReportPayrollSuccess = createAction(
     PayrollOwnerDriverEnum.GET_PAYROLL_OWNER_CLOSED_PAYROLL_SUCCESS,
-    props<{ payroll: PayrollDriverMileageResponse }>()
+    props<{ payroll: PayrollOwnerClosedResponse }>()
 );
 export const getPayrollOwnerDriverClosedReportPayrollError = createAction(
     PayrollOwnerDriverEnum.GET_PAYROLL_OWNER_CLOSED_PAYROLL_ERROR,
@@ -59,7 +60,7 @@ export const getPayrollOwnerDriverClosedReportPayrollError = createAction(
 );
 
 export const closePayrollOwnerReportDriver = createAction(
-    PayrollOwnerDriverEnum.CLOSE_PAYROLL_OWNER_DRIVER_PAYMENT,
+    PayrollOwnerDriverEnum.CLOSE_PAYROLL_OWNER_DRIVER_REPORT,
     props<{
         amount: number;
         reportId: number;
@@ -72,12 +73,12 @@ export const closePayrollOwnerReportDriver = createAction(
 );
 
 export const closePayrollOwnerReportDriverSuccess = createAction(
-    PayrollOwnerDriverEnum.CLOSE_PAYROLL_OWNER_DRIVER_PAYMENT_SUCCESS
+    PayrollOwnerDriverEnum.CLOSE_PAYROLL_OWNER_DRIVER_REPORT_SUCCESS
     //props<{ payroll: PayrollDriverMileageResponse }>()
 );
 
 export const closePayrollOwnerReportDriverError = createAction(
-    PayrollOwnerDriverEnum.CLOSE_PAYROLL_OWNER_DRIVER_PAYMENT_ERROR,
+    PayrollOwnerDriverEnum.CLOSE_PAYROLL_OWNER_DRIVER_REPORT_ERROR,
     props<any>()
 );
 

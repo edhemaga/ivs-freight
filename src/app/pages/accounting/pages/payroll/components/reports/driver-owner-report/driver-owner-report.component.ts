@@ -110,7 +110,10 @@ export class DriverOwnerReportComponent
             this.payrollDriverOwnerFacadeService.selectPayrollReportOwnerIncludedLoads$;
 
         this.payrollDriverOwnerFacadeService.selectPayrollOwnerOpenedReport$.subscribe(
-            (owner) => (this.payrollOpenedReport = owner)
+            (owner) => {
+                console.log("---------OWNERRRRR", owner);
+                this.payrollOpenedReport = owner;
+            }
         );
     }
 

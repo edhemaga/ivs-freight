@@ -60,11 +60,11 @@ export const getPayrollCommissionReportDriverClosedPayrollError = createAction(
 );
 
 export const closePayrollCommissionReportDriver = createAction(
-    PayrollCommissionDriverEnum.CLOSE_PAYROLL_COMMISSION_DRIVER_PAYMENT,
+    PayrollCommissionDriverEnum.CLOSE_PAYROLL_COMMISSION_DRIVER_REPORT,
     props<{
         amount: number;
         reportId: number;
-        selectedLoadIds?: number[];
+        selectedLoadIds?: number[]; 
         selectedCreditIds?: number[];
         selectedDeductionIds?: number[];
         paymentType?: PayrollPaymentType;
@@ -73,12 +73,12 @@ export const closePayrollCommissionReportDriver = createAction(
 );
 
 export const closePayrollCommissionReportDriverSuccess = createAction(
-    PayrollCommissionDriverEnum.CLOSE_PAYROLL_COMMISSION_DRIVER_PAYMENT_SUCCESS
+    PayrollCommissionDriverEnum.CLOSE_PAYROLL_COMMISSION_DRIVER_REPORT_SUCCESS
     //props<{ payroll: PayrollDriverMileageResponse }>()
 );
 
 export const closePayrollCommissionReportDriverError = createAction(
-    PayrollCommissionDriverEnum.CLOSE_PAYROLL_COMMISSION_DRIVER_PAYMENT_ERROR,
+    PayrollCommissionDriverEnum.CLOSE_PAYROLL_COMMISSION_DRIVER_REPORT_ERROR,
     props<any>()
 );
 

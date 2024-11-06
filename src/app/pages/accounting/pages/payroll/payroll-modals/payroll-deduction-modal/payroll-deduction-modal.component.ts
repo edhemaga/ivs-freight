@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import {
     FormBuilder,
     FormGroup,
@@ -26,6 +26,8 @@ import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calcula
 
 // Components
 import { PayrollBaseModalComponent } from '@pages/accounting/pages/payroll/payroll-modals/payroll-base-modal/payroll-base-modal.component';
+import { PayrollModal } from '../../state/models';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
     selector: 'app-payroll-deduction-modal',
@@ -43,18 +45,22 @@ import { PayrollBaseModalComponent } from '@pages/accounting/pages/payroll/payro
 })
 export class PayrollDeductionModalComponent implements OnInit {
     public payrollCreditForm: FormGroup;
+    @Input() editData: PayrollModal;
 
     constructor(
         private fb: FormBuilder,
-        private payrollDeductionService: PayrollDeductionService
+        private payrollDeductionService: PayrollDeductionService,
+        private ngbActiveModal: NgbActiveModal
     ) {}
 
     ngOnInit(): void {
+        const driverId = this.editData.data.driverId;
+        const truckId = this.editData.data.truckId;
         this.payrollCreditForm = this.fb.group({
-            [PayrollStringEnum.DRIVER_ID]: [null, Validators.required],
+            [PayrollStringEnum.DRIVER_ID]: [driverId, Validators.required],
             [PayrollStringEnum.TRUCK_ID]: [null],
-            [PayrollStringEnum.SELECTED_DRIVER_ID]: [null],
-            [PayrollStringEnum.SELECTED_TRUCK_ID]: [null],
+            [PayrollStringEnum.SELECTED_DRIVER_ID]: [driverId],
+            [PayrollStringEnum.SELECTED_TRUCK_ID]: [truckId],
             [PayrollStringEnum.SELECTED_TYPE_ID]: [PayrollDeductionType.Driver],
             [PayrollStringEnum.DATE]: [new Date(), Validators.required],
             [PayrollStringEnum.DESCRIPTION]: [null, Validators.required],
@@ -104,11 +110,15 @@ export class PayrollDeductionModalComponent implements OnInit {
         };
     }
 
+    public onCloseModal(): void {
+        this.ngbActiveModal.close();
+    }
+
     public createNewDeduction(): void {
         this.payrollDeductionService
             .addPayrollDeduction(this.generateModel())
             .subscribe((response) => {
-                console.log(response);
+                this.onCloseModal();
             });
     }
 }

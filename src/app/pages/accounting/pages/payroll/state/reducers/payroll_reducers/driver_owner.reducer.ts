@@ -1,4 +1,4 @@
-import { PayrollOwnerResponse } from 'appcoretruckassist';
+import { PayrollOwnerClosedResponse, PayrollOwnerResponse } from 'appcoretruckassist';
 import { IDriverOwnerList } from '../../models/driver_owner.model';
 import {
     IGet_Payroll_Commission_Driver_Report,
@@ -137,4 +137,13 @@ export const onDriverOwnerPayrollClosedPaymentsError = (
     ...state,
     closeReportPaymentLoading: false,
     closeReportPaymentError: true,
+});
+
+export const onGetPayrollOwnerDriverClosedPayrollSuccess = (
+    state: PayrollState,
+    data: { payroll: PayrollOwnerClosedResponse }
+) => ({
+    ...state,
+    ownerPayrollResponse: data.payroll,
+    reportLoading: false,
 });

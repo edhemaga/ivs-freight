@@ -60,7 +60,7 @@ export const getPayrollFlatRateReportDriverClosedPayrollError = createAction(
 );
 
 export const closePayrollFlatRateReportDriver = createAction(
-    PayrollFlatRateDriverEnum.CLOSE_PAYROLL_FLAT_RATE_DRIVER_PAYMENT,
+    PayrollFlatRateDriverEnum.CLOSE_PAYROLL_FLAT_RATE_DRIVER_REPORT,
     props<{
         amount: number;
         reportId: number;
@@ -74,12 +74,12 @@ export const closePayrollFlatRateReportDriver = createAction(
 );
 
 export const closePayrollFlatRateReportDriverSuccess = createAction(
-    PayrollFlatRateDriverEnum.CLOSE_PAYROLL_FLAT_RATE_DRIVER_PAYMENT_SUCCESS
+    PayrollFlatRateDriverEnum.CLOSE_PAYROLL_FLAT_RATE_DRIVER_REPORT_SUCCESS
     //props<{ payroll: PayrollDriverMileageResponse }>()
 );
 
 export const closePayrollFlatRateReportDriverError = createAction(
-    PayrollFlatRateDriverEnum.CLOSE_PAYROLL_FLAT_RATE_DRIVER_PAYMENT_ERROR,
+    PayrollFlatRateDriverEnum.CLOSE_PAYROLL_FLAT_RATE_DRIVER_REPORT_ERROR,
     props<any>()
 );
 

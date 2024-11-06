@@ -5,6 +5,10 @@
         margin-left: 4px;
         font-size: 14px;
         font-weight: 700;
+        white-space: nowrap;
+        max-width: 100px;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
 }
 

@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import {
     ClosePayrollDriverCommissionCommand,
     ClosePayrollDriverFlatRateCommand,
+    ClosePayrollOwnerCommand,
     PayrollCountsResponse,
     PayrollDriverCommissionByIdResponse,
     PayrollDriverCommissionClosedByIdResponse,
@@ -10,6 +11,7 @@ import {
     PayrollDriverFlatRateClosedByIdResponse,
     PayrollDriverMileageListResponse,
     PayrollOtherPaymentType,
+    PayrollOwnerClosedResponse,
     PayrollOwnerResponse,
     PayrollPaymentType,
 } from 'appcoretruckassist';
@@ -263,8 +265,8 @@ export class PayrollService {
     }
 
     public getPayrollOwnerDriverClosedReportById(payrollId: number) {
-        return this.http.get<PayrollDriverCommissionClosedByIdResponse>(
-            `${environment.API_ENDPOINT}/api/payroll/owner/report/${payrollId}`
+        return this.http.get<PayrollOwnerClosedResponse>(
+            `${environment.API_ENDPOINT}/api/payroll/owner/closed/${payrollId}`
         );
     }
 
@@ -337,8 +339,12 @@ export class PayrollService {
         paymentType?: PayrollPaymentType,
         otherPaymentType?: PayrollOtherPaymentType
     ): Observable<PayrollDriverMileageResponse> {
-        const body: ClosePayrollDriverCommissionCommand = {
+        const body: ClosePayrollOwnerCommand = {
             id: reportId,
+            selectedDeducionIds: selectedDeducionIds || [],
+            selectedLoadIds: selectedLoadIds || [],
+            selectedCreditIds: selectedCreditIds || [],
+            selectedFuelIds: [],
             pay: {
                 type: paymentType,
                 otherPaymentType,
@@ -346,18 +352,6 @@ export class PayrollService {
                 amount: amount,
             },
         };
-
-        if (selectedDeducionIds?.length) {
-            body.selectedDeducionIds = selectedDeducionIds;
-        }
-
-        if (selectedLoadIds?.length) {
-            body.selectedLoadIds = selectedLoadIds;
-        }
-
-        if (selectedCreditIds?.length) {
-            body.selectedCreditIds = selectedCreditIds;
-        }
 
         return this.http.put<PayrollDriverMileageResponse>(
             `${environment.API_ENDPOINT}/api/payroll/owner/close`,
