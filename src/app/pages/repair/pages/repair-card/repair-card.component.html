@@ -182,6 +182,48 @@
                                     </ng-container>
 
                                     <ng-container
+                                        *ngIf="cardRow.title === 'Contact'"
+                                    >
+                                        <ng-container
+                                            *ngIf="
+                                                !card[cardRow.key]?.length;
+                                                else contacts
+                                            "
+                                            >/</ng-container
+                                        >
+                                        <ng-template #contacts>
+                                            <div class="contacts-holder">
+                                                <app-ta-input-dropdown-contacts
+                                                    [contactsData]="
+                                                        card[cardRow.key]
+                                                    "
+                                                    (onAddButton)="
+                                                        onAddContact(row)
+                                                    "
+                                                    (onEditButton)="
+                                                        onEditContact(row)
+                                                    "
+                                                    (onDeleteButton)="
+                                                        onDeleteContact(row)
+                                                    "
+                                                ></app-ta-input-dropdown-contacts>
+                                            </div>
+                                        </ng-template>
+                                    </ng-container>
+
+                                    <ng-container
+                                        *ngIf="cardRow.title === 'Open Hours'"
+                                    >
+                                        <app-ta-open-hours-dropdown
+                                            [componentData]="{
+                                                openHours: card?.openHours,
+                                                openHoursToday:
+                                                    card?.openHoursToday
+                                            }"
+                                        ></app-ta-open-hours-dropdown>
+                                    </ng-container>
+
+                                    <ng-container
                                         *ngIf="cardRow.title === 'Services'"
                                     >
                                         <ng-container
@@ -210,7 +252,9 @@
                                             cardRow.title !==
                                                 'Item Detail • Cost' &&
                                             cardRow.title !==
-                                                'Unit Detail • Type'
+                                                'Unit Detail • Type' &&
+                                            cardRow.title !== 'Contact' &&
+                                            cardRow.title !== 'Open Hours'
                                         "
                                     >
                                         {{ card | cardValue : cardRow }}
@@ -260,7 +304,11 @@
                                 [note]="card.note"
                                 [mainData]="card"
                                 [entityId]="card.id"
-                                [entityType]="'Repair'"
+                                [entityType]="
+                                    selectedTab === 'repair_shop'
+                                        ? 'RepairShop'
+                                        : 'Repair'
+                                "
                                 [openedAll]="false"
                                 [parking]="false"
                             >
