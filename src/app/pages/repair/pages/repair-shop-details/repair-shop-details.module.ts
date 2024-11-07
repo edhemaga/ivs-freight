@@ -24,6 +24,7 @@ import { TaDetailsHeaderComponent } from '@shared/components/ta-details-header/t
 import { TaTabSwitchComponent } from '@shared/components/ta-tab-switch/ta-tab-switch.component';
 import { TaDetailsDropdownComponent } from '@shared/components/ta-details-dropdown/ta-details-dropdown.component';
 import { TaProgressExpirationComponent } from '@shared/components/ta-progress-expiration/ta-progress-expiration.component';
+import { CaChartComponent } from 'ca-components';
 
 // Pipes
 import { FormatDatePipe } from '@shared/pipes/format-date.pipe';
@@ -59,6 +60,7 @@ import { FormatCurrencyPipe } from '@shared/pipes/format-currency.pipe';
         TaDetailsHeaderComponent,
         TaTabSwitchComponent,
         TaDetailsDropdownComponent,
+        CaChartComponent,
 
         // Pipes
         FormatDatePipe,

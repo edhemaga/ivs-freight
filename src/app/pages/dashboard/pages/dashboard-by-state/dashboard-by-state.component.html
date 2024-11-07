@@ -123,13 +123,13 @@
 
     <!-- Placeholder -->
 
-    <ng-container *ngIf="!byStateList.length">
+    <!-- <ng-container *ngIf="!byStateList.length">
         <app-dashboard-data-placeholder></app-dashboard-data-placeholder>
-    </ng-container>
+    </ng-container> -->
 
     <!-- Body-->
 
-    <ng-container *ngIf="byStateList.length">
+    <!-- <ng-container *ngIf="byStateList.length"> -->
         <div
             class="d-flex flex-column justify-content-center dashboard-by-state-body"
         >
@@ -455,7 +455,7 @@
                     <div
                         class="d-flex align-items-center dashboard-by-state-body-down-header-left"
                     >
-                        <p class="m-0 ta-font-bold">{{ barChartDateTitle }}</p>
+                        <!-- <p class="m-0 ta-font-bold">{{ barChartDateTitle }}</p> -->
                     </div>
 
                     <ng-container *ngIf="!selectedByStateList.length">
@@ -503,20 +503,17 @@
                 <!-- Bar Chart -->
 
                 <div class="bar-chart-container">
-                    <ng-container *ngIf="barChartConfig">
-                        <app-dashboard-data-placeholder
+                    <!-- <ng-container *ngIf="barChartConfig"> -->
+                        <!-- <app-dashboard-data-placeholder
                             [fullHeight]="true"
-                        ></app-dashboard-data-placeholder>
-                        <!-- <app-ta-chart
-                            #barChart
-                            [chartConfig]="barChartConfig"
-                            [axesProperties]="barChartAxes"
-                            [legendAttributes]="{}"
+                        ></app-dashboard-data-placeholder> -->
+                        <app-ca-chart
+                            [chartConfig]="pickUpByStateChartConfig"
                         >
-                        </app-ta-chart> -->
-                    </ng-container>
+                        </app-ca-chart>
+                    <!-- </ng-container> -->
                 </div>
             </div>
         </div>
-    </ng-container>
+    <!-- </ng-container> -->
 </div>

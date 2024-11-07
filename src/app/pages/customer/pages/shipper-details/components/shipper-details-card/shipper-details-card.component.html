@@ -130,7 +130,7 @@
                 [cardName]="'Average Waiting Time'"
                 [tooltipName]="'View in Modal'"
                 [hasHeaderSvg]="'assets/svg/common/arrow_top_right.svg'"
-                [isCardOpen]="stackedBarChartConfig?.hasValue"
+                [isCardOpen]="true"
                 [animationMarginParams]="{
                     marginTop: '0px',
                     marginBottom: '10px'
@@ -139,17 +139,19 @@
             >
                 <div
                     class="charts-template perfomance"
-                    [class.p-0]="stackedBarChart.hoveringStatus"
                 >
-                    <div [class.d-none]="stackedBarChart.hoveringStatus">
+                    <!-- <div [class.d-none]="stackedBarChart.hoveringStatus"> -->
                         <app-ta-tab-switch
                             [tabs]="shipperTabs"
                             (switchClicked)="changeShipperTabs($event)"
                             [type]="'type2-modal-popup'"
                         >
                         </app-ta-tab-switch>
-                    </div>
-                    <!-- Chart implementation -->
+                    <!-- </div> -->
+                    <app-ca-chart
+                        [chartConfig]="payrollChartConfig"
+                    >
+                    </app-ca-chart>
                 </div>
             </app-ta-custom-card>
             <!--------Note--------->

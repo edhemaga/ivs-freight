@@ -1,5 +1,9 @@
 import { Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
 import { UntypedFormControl } from '@angular/forms';
+// Components
+import { IChartConfiguaration } from 'ca-components/lib/components/ca-chart/models';
+// Enums
+import { ChartImagesStringEnum, ChartTypesStringEnum } from 'ca-components/lib/components/ca-chart/enums';
 
 @Component({
     selector: 'app-fuel-details-item',
@@ -17,6 +21,7 @@ export class FuelDetailsItemComponent implements OnInit {
     public selectedTab: number;
     public fuelDropdown: any;
     public storeDropdown: any;
+    public fuelChartConfig: IChartConfiguaration;
     public fuelPriceColors: any[] = [
         '#4DB6A2',
         '#81C784',
@@ -60,6 +65,8 @@ export class FuelDetailsItemComponent implements OnInit {
                 name: 'ALL',
             },
         ];
+
+        this.setChartConfiguration();
     }
     /**Function return id */
     public identity(index: number, item: any): number {
@@ -723,5 +730,19 @@ export class FuelDetailsItemComponent implements OnInit {
                 blue_back: false,
             },
         ];
+    }
+
+    setChartConfiguration() {
+        this.fuelChartConfig = {
+            chartType: ChartTypesStringEnum.LINE,
+            chartData: {
+              labels: [],
+              datasets: [],
+            },
+            height: 130,
+            width: 100,
+            noDataImage: ChartImagesStringEnum.CHART_NO_DATA_YELLOW,
+            chartOptions: {},
+        };
     }
 }

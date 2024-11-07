@@ -30,9 +30,11 @@ import { TrailersMinimalListQuery } from '@pages/trailer/state/trailer-minimal-l
 // models
 import { TrailerDropdown } from '@pages/trailer/pages/trailer-details/models/trailer-dropdown.model';
 import { TrailerMinimalResponse } from 'appcoretruckassist';
+import { IChartConfiguaration } from 'ca-components/lib/components/ca-chart/models';
 
 //enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
+import { ChartImagesStringEnum, ChartTypesStringEnum } from 'ca-components/lib/components/ca-chart/enums';
 
 @Component({
     selector: 'app-trailer-details-card',
@@ -67,7 +69,6 @@ export class TrailerDetailsCardComponent
     implements OnInit, OnChanges, OnDestroy {
     @Input() trailer: any;
     @Input() templateCard: boolean = false;
-    @ViewChild('payrollChart', { static: false }) public payrollChart: any;
 
     private destroy$ = new Subject<void>();
     public note: UntypedFormControl = new UntypedFormControl();
@@ -82,6 +83,7 @@ export class TrailerDetailsCardComponent
         this.trailerMinimalQuery.getAll();
     public trailerIndex: number;
     public ownerCardOpened: boolean = true;
+    public payrollChartConfig: IChartConfiguaration;
 
     constructor(
         private detailsPageDriverSer: DetailsPageService,
@@ -109,6 +111,8 @@ export class TrailerDetailsCardComponent
 
             this.trailerIndex = currentIndex;
         }, 300);
+
+        this.setChartsConfiguration();
     }
 
     /**Function for toggle page in cards */
@@ -260,6 +264,20 @@ export class TrailerDetailsCardComponent
         }
 
         return lastSixChars;
+    }
+
+    public setChartsConfiguration() {
+        this.payrollChartConfig = {
+            chartType: ChartTypesStringEnum.LINE,
+            chartData: {
+              labels: [],
+              datasets: [],
+            },
+            height: 130,
+            width: 100,
+            noDataImage: ChartImagesStringEnum.CHART_NO_DATA_YELLOW,
+            chartOptions: {},
+        };
     }
 
     ngOnDestroy(): void {

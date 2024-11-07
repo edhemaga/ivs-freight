@@ -16,6 +16,7 @@ import { DashboardService } from '@pages/dashboard/services/dashboard.service';
 // enums
 import { DashboardStringEnum } from '@pages/dashboard/enums/dashboard-string.enum';
 import { DashboardChartStringEnum } from '@pages/dashboard/enums/dashboard-chart-string.enum';
+import { ChartImagesStringEnum, ChartTypesStringEnum } from 'ca-components/lib/components/ca-chart/enums';
 
 // helpers
 import { DashboardHelper } from '@pages/dashboard/utils/helpers/dashboard.helper';
@@ -34,6 +35,7 @@ import { DashboardTab } from '@pages/dashboard/models/dashboard-tab.model';
 import { DropdownListItem } from '@pages/dashboard/models/dropdown-list-item.model';
 import { ByStateColorsPallete } from '@pages/dashboard/models/colors-pallete.model';
 import { CustomPeriodRange } from '@shared/models/custom-period-range.model';
+import { IChartConfiguaration } from 'ca-components/lib/components/ca-chart/models';
 
 import {
     ByStateReportType,
@@ -78,7 +80,7 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
 
     // tabs
     public byStateTabs: DashboardTab[] = [];
-    private currentActiveTab: DashboardTab;
+    public currentActiveTab: DashboardTab;
 
     // dropdowns
     public byStateDropdownList: DropdownItem[] = [];
@@ -99,6 +101,9 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
     // colors
     public mainColorsPallete: ByStateColorsPallete[] = [];
 
+    //chart
+    public pickUpByStateChartConfig: IChartConfiguaration;
+
     constructor(
         private formBuilder: UntypedFormBuilder,
         private changeDetectorRef: ChangeDetectorRef,
@@ -114,6 +119,8 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
         this.getOverallCompanyDuration();
 
         this.getByStateListData();
+
+        this.setChartConfiguration();
     }
 
     private createForm(): void {
@@ -1037,6 +1044,21 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
         });
 
         this.byStateMapList = filteredByStateList;
+    }
+
+
+    public setChartConfiguration() {
+        this.pickUpByStateChartConfig = {
+            chartType: ChartTypesStringEnum.LINE,
+            chartData: {
+              labels: [],
+              datasets: [],
+            },
+            height: 150,
+            width: 100,
+            noDataImage: ChartImagesStringEnum.CHART_NO_DATA_YELLOW,
+            chartOptions: {},
+        };
     }
 
     ngOnDestroy(): void {

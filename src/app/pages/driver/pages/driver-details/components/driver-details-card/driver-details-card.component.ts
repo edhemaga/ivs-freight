@@ -37,6 +37,7 @@ import { DriverOffDutyLocationCardComponent } from '@pages/driver/pages/driver-d
 import { DriverEmergencyContactCardComponent } from '@pages/driver/pages/driver-details/components/driver-details-card/components/driver-emergency-contact-card/driver-emergency-contact-card.component';
 import { DriverNotificationCardComponent } from '@pages/driver/pages/driver-details/components/driver-details-card/components/driver-notification-card/driver-notification-card.component';
 import { DriverModalComponent } from '@pages/driver/pages/driver-modals/driver-modal/driver-modal.component';
+import { CaChartComponent } from 'ca-components';
 
 // constants
 import { DriverDetailsCardSvgRoutes } from '@pages/driver/pages/driver-details/components/driver-details-card/utils/svg-routes/driver-details-card-svg-routes';
@@ -47,6 +48,7 @@ import { DriversMinimalListQuery } from '@pages/driver/state/driver-details-mini
 // enums
 import { ArrowActionsStringEnum } from '@shared/enums/arrow-actions-string.enum';
 import { DriverDetailsCardStringEnum } from '@pages/driver/pages/driver-details/components/driver-details-card/enums/driver-details-card-string.enum';
+import { ChartImagesStringEnum, ChartTypesStringEnum } from 'ca-components/lib/components/ca-chart/enums';
 
 // helpers
 import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calculations.helper';
@@ -58,6 +60,7 @@ import {
     DriverResponse,
 } from 'appcoretruckassist';
 import { TabOptions } from '@shared/components/ta-tab-switch/models/tab-options.model';
+import { IChartConfiguaration } from 'ca-components/lib/components/ca-chart/models';
 
 @Component({
     selector: 'app-driver-details-card',
@@ -84,6 +87,7 @@ import { TabOptions } from '@shared/components/ta-tab-switch/models/tab-options.
         DriverOffDutyLocationCardComponent,
         DriverEmergencyContactCardComponent,
         DriverNotificationCardComponent,
+        CaChartComponent
     ],
 })
 export class DriverDetailsCardComponent
@@ -104,6 +108,8 @@ export class DriverDetailsCardComponent
     // note card
     public noteForm: UntypedFormGroup;
 
+    public payrollChartConfig: IChartConfiguaration;
+
     constructor(
         private formBuilder: UntypedFormBuilder,
 
@@ -117,15 +123,20 @@ export class DriverDetailsCardComponent
     ) {}
 
     ngOnInit(): void {
+
+        
         this.createForm();
-
+        
         this.getConstantData();
-
+        
         this.getStoreData(true);
-
+        
         this.getCurrentIndex();
-
+        
         this.getDriversDropdown();
+        
+        this.setChartConfiguration();
+
     }
 
     ngOnChanges(changes: SimpleChanges): void {
@@ -304,6 +315,20 @@ export class DriverDetailsCardComponent
             default:
                 break;
         }
+    }
+
+    public setChartConfiguration() {
+        this.payrollChartConfig = {
+            chartType: ChartTypesStringEnum.LINE,
+            chartData: {
+              labels: [],
+              datasets: [],
+            },
+            height: 130,
+            width: 100,
+            noDataImage: ChartImagesStringEnum.CHART_NO_DATA_YELLOW,
+            chartOptions: {},
+        };
     }
 
     ngOnDestroy(): void {

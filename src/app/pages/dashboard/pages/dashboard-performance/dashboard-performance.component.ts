@@ -39,6 +39,8 @@ import {
     SubintervalType,
     TimeInterval,
 } from 'appcoretruckassist';
+import { IChartConfiguaration } from 'ca-components/lib/components/ca-chart/models';
+import { ChartImagesStringEnum, ChartTypesStringEnum } from 'ca-components/lib/components/ca-chart/enums';
 
 @Component({
     selector: 'app-dashboard-performance',
@@ -76,7 +78,8 @@ export class DashboardPerformanceComponent implements OnInit, OnDestroy {
     public performanceDataColors: PerformanceColorsPallete[] = [];
 
     // charts
-
+    public performanceChartConfig: IChartConfiguaration;
+    
     private axisNumber: number = -1;
     public multipleVerticalLeftAxes: number[];
 
@@ -95,6 +98,8 @@ export class DashboardPerformanceComponent implements OnInit, OnDestroy {
         this.getOverallCompanyDuration();
 
         this.getPerformanceListData();
+
+        this.setChartConfiguration()
     }
 
     private createForm(): void {
@@ -461,6 +466,20 @@ export class DashboardPerformanceComponent implements OnInit, OnDestroy {
         selectedPerformanceDataColor.isSelected = true;
 
         this.selectedPerformanceDataCount++;
+    }
+
+    setChartConfiguration() {
+        this.performanceChartConfig = {
+            chartType: ChartTypesStringEnum.LINE,
+            chartData: {
+              labels: [],
+              datasets: [],
+            },
+            height: 400,
+            width: 100,
+            noDataImage: ChartImagesStringEnum.CHART_NO_DATA_PAY,
+            chartOptions: {},
+        };
     }
 
     ngOnDestroy(): void {

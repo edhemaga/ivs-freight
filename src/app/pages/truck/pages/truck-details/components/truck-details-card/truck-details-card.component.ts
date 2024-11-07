@@ -39,6 +39,8 @@ import { TruckDetailsConstants } from '@pages/truck/pages/truck-details/utils/co
 
 // models
 import { TruckResponse, TruckPerformanceResponse } from 'appcoretruckassist';
+import { IChartConfiguaration } from 'ca-components/lib/components/ca-chart/models';
+import { ChartImagesStringEnum, ChartTypesStringEnum } from 'ca-components/lib/components/ca-chart/enums';
 
 @Component({
     selector: 'app-truck-details-card',
@@ -90,145 +92,10 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
     //private monthList: string[] = ChartConstants.MONTH_LIST_SHORT;
     public ownerCardOpened: boolean = true;
     public featureNumber: number = 0;
-    payrollChartConfig: any = {
-        dataProperties: [
-            {
-                defaultConfig: {
-                    type: 'line',
-                    data: [],
-                    label: 'Salary',
-                    yAxisID: 'y-axis-1',
-                    borderColor: '#6D82C7',
-                    pointBackgroundColor: '#FFFFFF',
-                    pointHoverBackgroundColor: '#6D82C7',
-                    pointHoverBorderColor: '#FFFFFF',
-                    pointHoverRadius: 3,
-                    pointBorderWidth: 2,
-                },
-            },
-            {
-                defaultConfig: {
-                    type: 'bar',
-                    data: [],
-                    label: 'Miles',
-                    yAxisID: 'y-axis-0',
-                    borderColor: '#FFCC80',
-                    backgroundColor: '#FFCC80',
-                    hoverBackgroundColor: '#FFA726',
-                    barThickness: 18,
-                },
-            },
-        ],
-        showLegend: false,
-        chartValues: [0, 0],
-        defaultType: 'bar',
-        chartWidth: '417',
-        chartHeight: '130',
-        hasValue: false,
-        dataLabels: [],
-        onHoverAnnotation: true,
-        offset: true,
-        allowAnimation: true,
-        animationOnlyOnLoad: true,
-        hoverTimeDisplay: true,
-        noChartImage: 'assets/svg/common/yellow_no_data.svg',
-        showHoverTooltip: true,
-        showZeroLine: true,
-    };
-
-    revenueChartConfig: any = {
-        dataProperties: [
-            {
-                defaultConfig: {
-                    type: 'line',
-                    data: [],
-                    label: 'Salary',
-                    yAxisID: 'y-axis-1',
-                    borderColor: '#6D82C7',
-                    pointBackgroundColor: '#FFFFFF',
-                    pointHoverBackgroundColor: '#6D82C7',
-                    pointHoverBorderColor: '#FFFFFF',
-                    pointHoverRadius: 3,
-                    pointBorderWidth: 2,
-                },
-            },
-            {
-                defaultConfig: {
-                    type: 'bar',
-                    data: [],
-                    label: 'Miles',
-                    yAxisID: 'y-axis-0',
-                    borderColor: '#B2DFD1',
-                    backgroundColor: '#B2DFD1',
-                    hoverBackgroundColor: '#4DB6A2',
-                    barThickness: 18,
-                },
-            },
-        ],
-        showLegend: false,
-        chartValues: [],
-        defaultType: 'bar',
-        chartWidth: '417',
-        chartHeight: '130',
-        hasValue: false,
-        dataLabels: [],
-        onHoverAnnotation: true,
-        hoverTimeDisplay: true,
-        offset: true,
-        allowAnimation: true,
-        animationOnlyOnLoad: true,
-        noChartImage: 'assets/svg/common/green_no_data.svg',
-        hasSameDataIndex: true,
-        showHoverTooltip: true,
-        showZeroLine: true,
-    };
-
-    stackedBarChartConfig: any = {
-        dataProperties: [
-            {
-                defaultConfig: {
-                    type: 'bar',
-                    data: [],
-                    label: 'Miles',
-                    yAxisID: 'y-axis-0',
-                    borderColor: '#FFCC80',
-                    backgroundColor: '#FFCC80',
-                    hoverBackgroundColor: '#FFA726',
-                    hoverBorderColor: '#FFA726',
-                    barThickness: 18,
-                },
-            },
-            {
-                defaultConfig: {
-                    type: 'bar',
-                    data: [],
-                    label: 'Miles',
-                    yAxisID: 'y-axis-0',
-                    borderColor: '#97A8DC',
-                    backgroundColor: '#97A8DC',
-                    hoverBackgroundColor: '#536BC2',
-                    hoverBorderColor: '#536BC2',
-                    barThickness: 18,
-                },
-            },
-        ],
-        showLegend: false,
-        chartValues: [0, 0, 0],
-        defaultType: 'bar',
-        chartWidth: '417',
-        chartHeight: '130',
-        hasValue: false,
-        dataLabels: [],
-        onHoverAnnotation: true,
-        hoverTimeDisplay: true,
-        stacked: true,
-        offset: true,
-        allowAnimation: true,
-        animationOnlyOnLoad: true,
-        noChartImage: 'assets/svg/common/stacked_no_data.svg',
-        showHoverTooltip: true,
-        showZeroLine: true,
-    };
+    
+    public fuelConsumptionChartConfig: IChartConfiguaration;
+    public revenueChartConfig: IChartConfiguaration;
+    public expensesChartConfig: IChartConfiguaration;
 
     public performance: TruckPerformanceResponse;
     public isWideScreen: boolean = false;
@@ -285,6 +152,8 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
 
         //     this.truckIndex = currentIndex;
         // }, 300);
+
+        this.setChartsConfiguaration();
     }
 
     public sortKeys = (a, b) => {
@@ -554,5 +423,43 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
             lastSixChars = [mod.slice(0, firsNum), mod.slice(-6)];
         }
         return lastSixChars;
+    }
+
+    public setChartsConfiguaration() {
+        this.fuelConsumptionChartConfig = {
+            chartType: ChartTypesStringEnum.LINE,
+            chartData: {
+              labels: [],
+              datasets: [],
+            },
+            height: 130,
+            width: 100,
+            noDataImage: ChartImagesStringEnum.CHART_NO_DATA_YELLOW,
+            chartOptions: {},
+        };
+
+        this.revenueChartConfig = {
+            chartType: ChartTypesStringEnum.LINE,
+            chartData: {
+              labels: [],
+              datasets: [],
+            },
+            height: 130,
+            width: 100,
+            noDataImage: ChartImagesStringEnum.CHART_NO_DATA_GREEN,
+            chartOptions: {},
+        };
+        
+        this.expensesChartConfig = {
+            chartType: ChartTypesStringEnum.LINE,
+            chartData: {
+              labels: [],
+              datasets: [],
+            },
+            height: 130,
+            width: 100,
+            noDataImage: ChartImagesStringEnum.CHART_NO_DATA_STACKED,
+            chartOptions: {},
+        };
     }
 }

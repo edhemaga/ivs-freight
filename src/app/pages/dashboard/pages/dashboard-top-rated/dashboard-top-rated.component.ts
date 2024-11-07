@@ -26,6 +26,7 @@ import { DashboardHelper } from '@pages/dashboard/utils/helpers/dashboard.helper
 
 // enums
 import { DashboardStringEnum } from '@pages/dashboard/enums/dashboard-string.enum';
+import { ChartImagesStringEnum, ChartTypesStringEnum } from 'ca-components/lib/components/ca-chart/enums';
 
 // models
 import { DropdownItem } from '@shared/models/dropdown-item.model';
@@ -45,6 +46,7 @@ import {
 } from 'appcoretruckassist';
 import { TopRatedApiArguments } from '@pages/dashboard/pages/dashboard-top-rated/models/top-rated-api-arguments.model';
 import { TopRatedWithoutTabApiArguments } from '@pages/dashboard/pages/dashboard-top-rated/models/top-rated-without-tab-api-arguments.model';
+import { IChartConfiguaration } from 'ca-components/lib/components/ca-chart/models';
 @Component({
     selector: 'app-dashboard-top-rated',
     templateUrl: './dashboard-top-rated.component.html',
@@ -100,6 +102,8 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
     public secondaryColorsPallete: TopRatedSecondaryColorsPallete[] = [];
 
     // charts
+    public doughnutChartConfig: IChartConfiguaration;
+    public barChartConfig: IChartConfiguaration;
 
     constructor(
         private formBuilder: UntypedFormBuilder,
@@ -116,6 +120,8 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
         this.getOverallCompanyDuration();
 
         this.getTopRatedListData();
+
+        this.setChartConfiguration();
     }
 
     private createForm(): void {
@@ -1025,6 +1031,32 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
         this.selectedSubPeriod = selectedSubPeriod;
 
         this.selectedDropdownWidthSubPeriod = selectedSubPeriod;
+    }
+
+    public setChartConfiguration() {
+        this.doughnutChartConfig = {
+            chartType: ChartTypesStringEnum.LINE,
+            chartData: {
+              labels: [],
+              datasets: [],
+            },
+            height: 130,
+            width: 100,
+            noDataImage: ChartImagesStringEnum.CHART_NO_DATA_YELLOW,
+            chartOptions: {},
+        };
+
+        this.barChartConfig = {
+            chartType: ChartTypesStringEnum.LINE,
+            chartData: {
+              labels: [],
+              datasets: [],
+            },
+            height: 190,
+            width: 100,
+            noDataImage: ChartImagesStringEnum.CHART_NO_DATA_MIXED,
+            chartOptions: {},
+        };
     }
 
     ngOnDestroy(): void {

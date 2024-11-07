@@ -265,7 +265,7 @@
             <app-ta-custom-card
                 [bodyTemplate]="'card'"
                 [cardName]="'Repair Expenses'"
-                [isCardOpen]="barChartConfig?.hasValue"
+                [isCardOpen]="true"
                 [tooltipName]="'View in Modal'"
                 [hasHeaderSvg]="'assets/svg/common/arrow_top_right.svg'"
                 [animationMarginParams]="{
@@ -275,17 +275,19 @@
             >
                 <div
                     class="charts-template perfomance"
-                    [class.p-0]="repairExpensesChart.hoveringStatus"
                 >
-                    <div [class.d-none]="repairExpensesChart.hoveringStatus">
+                    <!-- <div [class.d-none]="repairExpensesChart.hoveringStatus"> -->
                         <app-ta-tab-switch
                             [type]="'type2-modal-popup'"
                             (switchClicked)="changeRepairTabs($event)"
                             [tabs]="tabs"
                         >
                         </app-ta-tab-switch>
-                    </div>
-                   <!-- Chart implementation -->
+                    <!-- </div> -->
+                    <app-ca-chart
+                    [chartConfig]="repairChartConfig"
+                    >
+                    </app-ca-chart>
                 </div>
             </app-ta-custom-card>
 

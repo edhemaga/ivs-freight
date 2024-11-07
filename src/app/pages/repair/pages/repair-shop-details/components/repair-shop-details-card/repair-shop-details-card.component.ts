@@ -22,6 +22,10 @@ import { TruckassistTableService } from '@shared/services/truckassist-table.serv
 
 // Models
 import { RepairShopResponse } from 'appcoretruckassist';
+import { IChartConfiguaration } from 'ca-components/lib/components/ca-chart/models';
+
+// Enums
+import { ChartImagesStringEnum, ChartTypesStringEnum } from 'ca-components/lib/components/ca-chart/enums';
 
 @Component({
     selector: 'app-repair-shop-details-card',
@@ -57,102 +61,105 @@ export class RepairShopCardViewComponent
         'NOV',
         'DEC',
     ];
-    barChartConfig: any = {
-        dataProperties: [
-            {
-                defaultConfig: {
-                    type: 'line',
-                    data: [],
-                    label: 'Salary',
-                    yAxisID: 'y-axis-1',
-                    borderColor: '#6D82C7',
-                    pointBackgroundColor: '#FFFFFF',
-                    pointHoverBackgroundColor: '#6D82C7',
-                    pointHoverBorderColor: '#FFFFFF',
-                    pointHoverRadius: 3,
-                    pointBorderWidth: 2,
-                },
-            },
-            {
-                defaultConfig: {
-                    type: 'bar',
-                    data: [],
-                    label: 'Miles',
-                    yAxisID: 'y-axis-0',
-                    borderColor: '#FFCC80',
-                    backgroundColor: '#FFCC80',
-                    hoverBackgroundColor: '#FFA726',
-                    barThickness: 18,
-                },
-            },
-        ],
-        showLegend: false,
-        chartValues: [0, 0],
-        onHoverAnnotation: true,
-        hoverTimeDisplay: true,
-        defaultType: 'bar',
-        chartWidth: '417',
-        chartHeight: '130',
-        hasValue: false,
-        offset: true,
-        allowAnimation: true,
-        animationOnlyOnLoad: true,
-        dataLabels: [
-            '',
-            'NOV',
-            '',
-            '2021',
-            '',
-            'MAR',
-            '',
-            'MAY',
-            '',
-            'JUL',
-            '',
-            'SEP',
-        ],
-        noChartImage: 'assets/svg/common/yellow_no_data.svg',
-        showHoverTooltip: true,
-        showZeroLine: true,
-    };
 
-    public barChartLegend: any[] = [
-        {
-            title: 'Repair',
-            value: 0,
-            image: 'assets/svg/common/round_yellow.svg',
-            elementId: 1,
-        },
-        {
-            title: 'Cost',
-            value: 0,
-            image: 'assets/svg/common/round_blue.svg',
-            prefix: '$',
-            elementId: 0,
-        },
-    ];
+    public repairChartConfig: IChartConfiguaration;
 
-    public barAxes: object = {
-        verticalLeftAxes: {
-            visible: true,
-            minValue: 0,
-            maxValue: 4000,
-            stepSize: 1000,
-            showGridLines: false,
-        },
-        verticalRightAxes: {
-            visible: true,
-            minValue: 0,
-            maxValue: 2800,
-            stepSize: 700,
-            showGridLines: false,
-        },
-        horizontalAxes: {
-            visible: true,
-            position: 'bottom',
-            showGridLines: false,
-        },
-    };
+    // barChartConfig: any = {
+    //     dataProperties: [
+    //         {
+    //             defaultConfig: {
+    //                 type: 'line',
+    //                 data: [],
+    //                 label: 'Salary',
+    //                 yAxisID: 'y-axis-1',
+    //                 borderColor: '#6D82C7',
+    //                 pointBackgroundColor: '#FFFFFF',
+    //                 pointHoverBackgroundColor: '#6D82C7',
+    //                 pointHoverBorderColor: '#FFFFFF',
+    //                 pointHoverRadius: 3,
+    //                 pointBorderWidth: 2,
+    //             },
+    //         },
+    //         {
+    //             defaultConfig: {
+    //                 type: 'bar',
+    //                 data: [],
+    //                 label: 'Miles',
+    //                 yAxisID: 'y-axis-0',
+    //                 borderColor: '#FFCC80',
+    //                 backgroundColor: '#FFCC80',
+    //                 hoverBackgroundColor: '#FFA726',
+    //                 barThickness: 18,
+    //             },
+    //         },
+    //     ],
+    //     showLegend: false,
+    //     chartValues: [0, 0],
+    //     onHoverAnnotation: true,
+    //     hoverTimeDisplay: true,
+    //     defaultType: 'bar',
+    //     chartWidth: '417',
+    //     chartHeight: '130',
+    //     hasValue: false,
+    //     offset: true,
+    //     allowAnimation: true,
+    //     animationOnlyOnLoad: true,
+    //     dataLabels: [
+    //         '',
+    //         'NOV',
+    //         '',
+    //         '2021',
+    //         '',
+    //         'MAR',
+    //         '',
+    //         'MAY',
+    //         '',
+    //         'JUL',
+    //         '',
+    //         'SEP',
+    //     ],
+    //     noChartImage: 'assets/svg/common/yellow_no_data.svg',
+    //     showHoverTooltip: true,
+    //     showZeroLine: true,
+    // };
+
+    // public barChartLegend: any[] = [
+    //     {
+    //         title: 'Repair',
+    //         value: 0,
+    //         image: 'assets/svg/common/round_yellow.svg',
+    //         elementId: 1,
+    //     },
+    //     {
+    //         title: 'Cost',
+    //         value: 0,
+    //         image: 'assets/svg/common/round_blue.svg',
+    //         prefix: '$',
+    //         elementId: 0,
+    //     },
+    // ];
+
+    // public barAxes: object = {
+    //     verticalLeftAxes: {
+    //         visible: true,
+    //         minValue: 0,
+    //         maxValue: 4000,
+    //         stepSize: 1000,
+    //         showGridLines: false,
+    //     },
+    //     verticalRightAxes: {
+    //         visible: true,
+    //         minValue: 0,
+    //         maxValue: 2800,
+    //         stepSize: 700,
+    //         showGridLines: false,
+    //     },
+    //     horizontalAxes: {
+    //         visible: true,
+    //         position: 'bottom',
+    //         showGridLines: false,
+    //     },
+    // };
 
     public repairCall: any = {
         id: -1,
@@ -225,6 +232,8 @@ export class RepairShopCardViewComponent
 
         let currentIndex = this.shopsDropdowns.findIndex((item) => item.active);
         this.shopIndex = currentIndex;
+
+        this.setChartConfiguration();
     }
 
     public getShopsDropdown(newData?) {
@@ -370,20 +379,20 @@ export class RepairShopCardViewComponent
             .getRepairShopChart(id, chartType)
             .pipe(takeUntil(this.destroy$))
             .subscribe((item) => {
-                this.barChartConfig.dataLabels = [];
-                this.barChartConfig.chartValues = [item.repair, item.cost];
-                this.barChartLegend[0].value = item.repair;
-                this.barChartLegend[1].value = item.cost;
+                // this.barChartConfig.dataLabels = [];
+                // this.barChartConfig.chartValues = [item.repair, item.cost];
+                // this.barChartLegend[0].value = item.repair;
+                // this.barChartLegend[1].value = item.cost;
 
                 let hasValue = false;
 
-                this.barChartLegend.map((leg) => {
-                    if (leg.value > 0) {
-                        hasValue = true;
-                    }
-                });
+                // this.barChartLegend.map((leg) => {
+                //     if (leg.value > 0) {
+                //         hasValue = true;
+                //     }
+                // });
 
-                this.barChartConfig.hasValue = hasValue;
+                // this.barChartConfig.hasValue = hasValue;
 
                 this.cdRef.detectChanges();
 
@@ -392,11 +401,11 @@ export class RepairShopCardViewComponent
                     labels = [],
                     maxValue = 0,
                     maxValue2 = 0;
-                if (item?.repairShopExpensesChartResponse?.length > 17) {
-                    this.barChartConfig.dataProperties[1].defaultConfig.barThickness = 10;
-                } else {
-                    this.barChartConfig.dataProperties[1].defaultConfig.barThickness = 18;
-                }
+                // if (item?.repairShopExpensesChartResponse?.length > 17) {
+                //     this.barChartConfig.dataProperties[1].defaultConfig.barThickness = 10;
+                // } else {
+                //     this.barChartConfig.dataProperties[1].defaultConfig.barThickness = 18;
+                // }
                 //this.repairExpensesChart.toolTipData = [];
                 item.repairShopExpensesChartResponse.map((data) => {
                     //this.repairExpensesChart.toolTipData.push(data);
@@ -416,13 +425,13 @@ export class RepairShopCardViewComponent
                     }
                 });
 
-                this.barAxes['verticalLeftAxes']['maxValue'] = maxValue;
-                this.barAxes['verticalRightAxes']['maxValue'] = maxValue2;
-                this.barChartConfig.dataLabels = labels;
-                this.barChartConfig.dataProperties[0].defaultConfig.data =
-                    costPerGallon;
-                this.barChartConfig.dataProperties[1].defaultConfig.data =
-                    milesPerGallon;
+                // this.barAxes['verticalLeftAxes']['maxValue'] = maxValue;
+                // this.barAxes['verticalRightAxes']['maxValue'] = maxValue2;
+                // this.barChartConfig.dataLabels = labels;
+                // this.barChartConfig.dataProperties[0].defaultConfig.data =
+                //     costPerGallon;
+                // this.barChartConfig.dataProperties[1].defaultConfig.data =
+                //     milesPerGallon;
                 // this.repairExpensesChart.chartDataCheck(
                 //     this.barChartConfig.chartValues
                 // );
@@ -440,6 +449,20 @@ export class RepairShopCardViewComponent
 
     public chartHovered(event) {
         //this.repairExpensesChart.hoveringStatus = event;
+    }
+
+    public setChartConfiguration() {
+        this.repairChartConfig = {
+            chartType: ChartTypesStringEnum.LINE,
+            chartData: {
+              labels: [],
+              datasets: [],
+            },
+            height: 130,
+            width: 100,
+            noDataImage: ChartImagesStringEnum.CHART_NO_DATA_YELLOW,
+            chartOptions: {},
+        };
     }
 
     ngOnDestroy(): void {
