@@ -165,7 +165,7 @@ export class RepairShopDetailsCard implements OnInit, OnChanges, OnDestroy {
 
     private createForm(): void {
         this.noteForm = this.formBuilder.group({
-            note: [null],
+            note: [this.repairShop?.note],
         });
     }
 
