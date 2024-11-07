@@ -39,7 +39,11 @@ import moment from 'moment';
 import { ChatSvgRoutes } from '@pages/chat/utils/routes';
 
 // Enums
-import { ChatAttachmentCustomClassEnum, ChatStringTypeEnum, ChatTimeUnitEnum } from '@pages/chat/enums';
+import {
+    ChatAttachmentCustomClassEnum,
+    ChatStringTypeEnum,
+    ChatTimeUnitEnum,
+} from '@pages/chat/enums';
 
 // Configs
 import { ChatInput } from '@pages/chat/utils/configs';
@@ -52,7 +56,8 @@ import { ChatInput } from '@pages/chat/utils/configs';
 })
 export class ChatContentFooterComponent
     extends UnsubscribeHelper
-    implements OnInit, OnDestroy {
+    implements OnInit, OnDestroy
+{
     @Input() public conversation!: ChatSelectedConversation;
     public conversationRemoveInDate!: string;
     public currentUserTyping!: Observable<string>;
@@ -139,8 +144,7 @@ export class ChatContentFooterComponent
         this.editMessage$
             .pipe(
                 concatMap((editMessage: ChatMessage) => {
-                    if (editMessage)
-                        this.editMessage(editMessage.id);
+                    if (editMessage) this.editMessage(editMessage.id);
 
                     return this.replyMessage$;
                 }),
@@ -234,11 +238,14 @@ export class ChatContentFooterComponent
                 if (message) {
                     ChatHubService.notifyTyping(this.conversation.id);
                     this.checkIfContainsLink(message);
-                    const messageSplitted: string[] = message.split(' ');
+                    const messageSplitted: string[] = message.split(
+                        ChatStringTypeEnum.WHITE_SPACE
+                    );
                     this.mentionSearchTerm =
                         messageSplitted[messageSplitted?.length - 1];
-                    this.isMentionActive =
-                        this.mentionSearchTerm?.includes('@');
+                    this.isMentionActive = this.mentionSearchTerm?.includes(
+                        ChatStringTypeEnum.AT_SIGN
+                    );
                     if (this.isMentionActive)
                         this.mentionParticipants =
                             this.conversation?.participants?.filter(
@@ -266,7 +273,9 @@ export class ChatContentFooterComponent
             return;
         }
 
-        const wordsList: string[] = message.trim().split(' ');
+        const wordsList: string[] = message
+            .trim()
+            .split(ChatStringTypeEnum.WHITE_SPACE);
 
         if (
             message.length < this.currentMessage?.length &&
@@ -282,7 +291,8 @@ export class ChatContentFooterComponent
                 //Shortest possible URL
                 message.length < 3 ||
                 // Check if last character is whitespace
-                message[message.length - 1] === ' ' ||
+                message[message.length - 1] ===
+                    ChatStringTypeEnum.WHITE_SPACE ||
                 // Check if two consecutive characters are the same
                 message[message.length - 2] === message[message.length - 1]
             )

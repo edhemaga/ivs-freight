@@ -12,8 +12,6 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
 import { BrokerDetailsModule } from '@pages/customer/pages/broker-details/broker-details.module';
 
 // Components
-import { BrokerCardComponent } from '@pages/customer/pages/broker-card/broker-card.component';
-
 import { CustomerTableComponent } from '@pages/customer/pages/customer-table/customer-table.component';
 
 import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
@@ -48,11 +46,7 @@ import { StoreModule } from '@ngrx/store';
 import { customerCardModalReducer } from '@pages/customer/pages/customer-table/components/customer-card-modal/state/';
 
 @NgModule({
-    declarations: [
-        CustomerTableComponent,
-        BrokerCardComponent,
-        CustomerCardComponent,
-    ],
+    declarations: [CustomerTableComponent, CustomerCardComponent],
     imports: [
         // Modules
         CommonModule,

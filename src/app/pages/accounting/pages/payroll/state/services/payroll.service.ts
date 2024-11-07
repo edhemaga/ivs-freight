@@ -218,17 +218,14 @@ export class PayrollFacadeService {
     ) {
         if (payrollType === 'miles') {
             body.payrollDriverMileageId = body.modalId;
-        }else if(payrollType == 'commission'){
+        } else if (payrollType == 'commission') {
             body.payrollDriverCommissionId = body.modalId;
-        }else if(payrollType == 'flat rate'){
+        } else if (payrollType == 'flat rate') {
             //body.payro
         }
 
-
         this.store.dispatch(
-            PayrollDriverMileageSolo.driverMileagePayrollClosedPayments(
-                body
-            )
+            PayrollDriverMileageSolo.driverMileagePayrollClosedPayments(body)
         );
     }
 
@@ -293,7 +290,7 @@ export class PayrollFacadeService {
                             paymentType,
                             otherPaymentType,
                         })
-                    );
+                    ); 
                 } else if (payrollType === 'flat rate') {
                     this.store.dispatch(
                         PayrollFlatRateActions.closePayrollFlatRateReportDriver(

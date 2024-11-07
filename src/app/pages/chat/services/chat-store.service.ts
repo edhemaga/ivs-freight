@@ -34,7 +34,11 @@ import {
     selectAttachmentUploadStatus,
     getAllDepartments,
     setDepartment,
-    setConversationNameAndType,
+    setViewType,
+    selectViewType,
+    selectUnreadCount,
+    setFavoriteCount,
+    selectFavoriteCount,
 } from '@pages/chat/store';
 
 // Models
@@ -45,14 +49,18 @@ import {
     ChatMessageResponse,
     ChatSelectedConversation,
 } from '@pages/chat/models';
-import { EnumValue } from 'appcoretruckassist';
 import { UploadFile } from '@shared/components/ta-upload-files/models/upload-file.model';
+
+// Enums
+import { ChatViewTypeEnum } from '@pages/chat/enums';
 
 @Injectable({
     providedIn: 'root',
 })
 export class ChatStoreService {
     private conversation$: Observable<ChatSelectedConversation>;
+    private unreadCount$: Observable<number>;
+    private favoriteCount$: Observable<number>;
     private departments$: Observable<ChatCompanyChannelExtended[]>;
     private messages$!: Observable<ChatMessageResponse>;
     private isProfileDetailsDisplayed$: Observable<boolean>;
@@ -63,6 +71,7 @@ export class ChatStoreService {
     private activeReplyOrEdit$: Observable<number>;
     private attachments$: Observable<UploadFile[]>;
     private isAttachmentUploadActive$: Observable<boolean>;
+    private viewType$: Observable<string>;
 
     constructor(private store: Store) {}
 
@@ -70,6 +79,14 @@ export class ChatStoreService {
     public setUnreadCount(count: number): void {
         this.store.dispatch(
             setUnreadCount({
+                count,
+            })
+        );
+    }
+
+    public setFavoriteCount(count: number): void {
+        this.store.dispatch(
+            setFavoriteCount({
                 count,
             })
         );
@@ -93,6 +110,10 @@ export class ChatStoreService {
 
     public setMessageResponse(data: ChatMessageResponse): void {
         this.store.dispatch(setMessageResponse(data));
+    }
+
+    public setViewType(viewType: ChatViewTypeEnum): void {
+        this.store.dispatch(setViewType({ viewType }));
     }
 
     public displayProfileDetails(): void {
@@ -223,5 +244,22 @@ export class ChatStoreService {
         if (!this.attachments$)
             this.attachments$ = this.store.select(selectAttachments);
         return this.attachments$;
+    }
+
+    public selectViewType(): Observable<string> {
+        if (!this.viewType$) this.viewType$ = this.store.select(selectViewType);
+        return this.viewType$;
+    }
+
+    public selectUnreadCount(): Observable<number> {
+        if (!this.unreadCount$)
+            this.unreadCount$ = this.store.select(selectUnreadCount);
+        return this.unreadCount$;
+    }
+
+    public selectFavoriteCount(): Observable<number> {
+        if (!this.favoriteCount$)
+            this.favoriteCount$ = this.store.select(selectFavoriteCount);
+        return this.favoriteCount$;
     }
 }

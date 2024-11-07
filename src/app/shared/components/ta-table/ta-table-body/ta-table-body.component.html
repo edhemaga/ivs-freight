@@ -5524,66 +5524,18 @@
                                                     column?.minWidth ?? 'unset'
                                             }"
                                         >
-                                            <div
-                                                class="w-100"
-                                                #openHoursPop="ngbPopover"
-                                                [ngbPopover]="openHoursPopover"
-                                                container="body"
-                                                [placement]="'bottom-left'"
-                                                popoverClass="table-open-hours-popover"
-                                                triggers="manual"
-                                                [autoClose]="'outside'"
-                                                (hidden)="
-                                                    openHoursDropdownActiveId ===
-                                                    row.id
-                                                        ? (openHoursDropdownActiveId =
-                                                              -1)
-                                                        : {}
-                                                "
-                                                (click)="
-                                                    onShowOpenHoursDropdown(
-                                                        openHoursPop,
-                                                        row,
-                                                        column
-                                                    )
-                                                "
-                                            >
-                                                <div
-                                                    class="d-flex align-items-center open-hours-container"
-                                                    [ngClass]="{
-                                                        active:
-                                                            openHoursDropdownActiveId ===
-                                                            row.id
-                                                    }"
-                                                    ngbTooltip
-                                                    mainTooltip="Open Hours"
-                                                    tooltipBackground="#424242"
-                                                    tooltipColor="#ffff"
-                                                    position="bottom"
-                                                >
-                                                    <ng-container>
-                                                        <!-- *ngIf="!!row[column.field]?.openHoursToday?.id" -->
-                                                        <svg-icon
-                                                            class="open-hours-icon"
-                                                            [src]="
-                                                                tableBodySvgRoutes.circleRoute
-                                                            "
-                                                            [svgStyle]="{
-                                                                'width.px': 10,
-                                                                'height.px': 10
-                                                            }"
-                                                        ></svg-icon>
-                                                        <!-- [ngClass]="{closing: row[column.field]?.openHoursToday?.id === 2}" -->
-                                                    </ng-container>
-
-                                                    <p
-                                                        class="m-0 text-color-black text-size-14"
-                                                    >
-                                                        Open Now
-                                                    </p>
-                                                    <!-- [ngClass]="{'ta-font-semi-bold': !!row[column.field]?.openHoursToday?.id}" -->
-                                                </div>
-                                            </div>
+                                            <app-ta-open-hours-dropdown
+                                                [componentData]="{
+                                                    rowId: row?.id,
+                                                    width: column?.width,
+                                                    openHours:
+                                                        row[column.field]
+                                                            ?.openHours,
+                                                    openHoursToday:
+                                                        row[column.field]
+                                                            ?.openHoursToday
+                                                }"
+                                            ></app-ta-open-hours-dropdown>
                                         </div>
                                     </ng-container>
                                 </td>
@@ -5826,7 +5778,12 @@
                                             <app-ta-note
                                                 [note]="row.note"
                                                 [mainData]="row"
-                                                [entityId]="row.id"
+                                                [entityId]="
+                                                    activeTableData.gridNameTitle ===
+                                                    'PM'
+                                                        ? row.pmId
+                                                        : row.id
+                                                "
                                                 [entityType]="
                                                     activeTableData.gridNameTitle ===
                                                         'load' &&
@@ -5837,6 +5794,16 @@
                                                           selectedTab ===
                                                               'inactive'
                                                         ? 'Shipper'
+                                                        : activeTableData?.gridNameTitle ===
+                                                              'PM' &&
+                                                          selectedTab ===
+                                                              'active'
+                                                        ? 'PmTruckUnit'
+                                                        : activeTableData?.gridNameTitle ===
+                                                              'PM' &&
+                                                          selectedTab ===
+                                                              'inactive'
+                                                        ? 'PmTrailerUnit'
                                                         : activeTableData?.gridNameTitle !==
                                                           'Repair'
                                                         ? activeTableData?.gridNameTitle
@@ -6810,25 +6777,5 @@
                 </div>
             </ng-container>
         </div>
-    </div>
-</ng-template>
-
-<!-- OPEN HOURS POPOVER -->
-
-<ng-template #openHoursPopover let-data="data">
-    <div class="d-flex flex-column open-hours-dropdown">
-        <ng-container
-            *ngFor="let workingHourItem of data; trackBy: trackByIdentity"
-        >
-            <div class="d-flex flex-column open-hours-dropdown-item">
-                <p class="m-0 ta-font-bold text-color-white-4 text-size-11">
-                    {{ workingHourItem?.workingDays }}
-                </p>
-
-                <span class="text-color-white text-size-14">
-                    {{ workingHourItem?.workingHours }}
-                </span>
-            </div>
-        </ng-container>
     </div>
 </ng-template>

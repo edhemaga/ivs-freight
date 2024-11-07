@@ -1,4 +1,5 @@
 import { createAction, props } from '@ngrx/store';
+import { ChatViewTypeEnum } from '@pages/chat/enums';
 
 // Models
 import {
@@ -9,7 +10,7 @@ import {
     ChatSelectedConversation,
 } from '@pages/chat/models';
 import { UploadFile } from '@shared/components/ta-upload-files/models/upload-file.model';
-import { ConversationInfoResponse, EnumValue } from 'appcoretruckassist';
+import { EnumValue } from 'appcoretruckassist';
 
 export const setMessageResponse = createAction(
     '[Chat] Set Message Response',
@@ -101,4 +102,14 @@ export const deleteAttachment = createAction(
 
 export const deleteAllAttachments = createAction(
     '[Chat] Delete All Attachments'
+);
+
+export const setViewType = createAction(
+    '[Chat] Set View Type',
+    props<{ viewType: ChatViewTypeEnum }>()
+);
+
+export const setFavoriteCount = createAction(
+    '[Chat] Set Favorite Count',
+    props<{ count: number }>()
 );

@@ -7,9 +7,11 @@ import {
     ElementRef,
     ViewChild,
     Input,
+    Output,
+    EventEmitter,
 } from '@angular/core';
 import { UntypedFormGroup } from '@angular/forms';
-import { Observable, takeUntil, debounceTime, map, tap } from 'rxjs';
+import { Observable, takeUntil, debounceTime, map } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 
 // Assets routes
@@ -17,7 +19,6 @@ import { ChatSvgRoutes, ChatPngRoutes } from '@pages/chat/utils/routes';
 
 // Services
 import {
-    UserChatService,
     ChatHubService,
     UserProfileService,
     ChatStoreService,
@@ -36,8 +37,11 @@ import {
 
 // Enums
 import {
-    ChatAttachmentCustomClassEnum,
+    ChatJoinedOrLeftMessageEnum,
+    ChatMessageArrivalTypeEnum,
     ChatMessageTypeEnum,
+    ChatStringTypeEnum,
+    ChatTimeUnitEnum,
     ConversationTypeEnum,
 } from '@pages/chat/enums';
 
@@ -47,6 +51,10 @@ import {
     GetCurrentUserHelper,
     UnsubscribeHelper,
 } from '@pages/chat/utils/helpers';
+import moment from 'moment';
+
+// Constants
+import { ChatDateOptionConstant } from '@pages/chat/utils/constants';
 
 @Component({
     changeDetection: ChangeDetectionStrategy.OnPush,
@@ -65,6 +73,8 @@ export class ChatMessagesComponent
     @Input() public conversation!: ConversationResponse;
     @Input() public wrapperHeightPx!: number;
 
+    @Output() public scrollTop: EventEmitter<void> = new EventEmitter();
+
     //User data
     public getCurrentUserHelper = GetCurrentUserHelper;
 
@@ -76,14 +86,13 @@ export class ChatMessagesComponent
     public messages$!: Observable<ChatMessageResponse>;
     public messages: ChatMessage[] = [];
     public messageIdActionsDisplayed!: number;
-
+    public messageDateHovered!: ChatMessage;
+    public messageOptionsSelected!: ChatMessage;
     public conversationTypeEnum = ConversationTypeEnum;
+    public chatDateOptionConstant: string[] = ChatDateOptionConstant.options;
 
     // Form
     public messageForm!: UntypedFormGroup;
-
-    // Custom classes
-    public ChatAttachmentCustomClassEnum = ChatAttachmentCustomClassEnum;
 
     constructor(
         // Ref
@@ -120,7 +129,45 @@ export class ChatMessagesComponent
     }
 
     public initStoreValues(): void {
-        this.messages$ = this.chatStoreService.selectMessages();
+        this.messages$ = this.chatStoreService.selectMessages().pipe(
+            map((arg) => {
+                let count: number = 0;
+
+                return {
+                    ...arg,
+                    data: [
+                        ...arg?.data?.map((message, indx) => {
+                            if (
+                                message?.messageType?.name ===
+                                    ChatMessageTypeEnum.JOINED_OR_LEFT &&
+                                arg.data?.length !== indx
+                            ) {
+                                if (
+                                    message.messageType.id ===
+                                    arg.data[indx + 1]?.messageType?.id
+                                )
+                                    count++;
+                                else {
+                                    const modifiedMessage: ChatMessage = {
+                                        ...message,
+                                        content: `${
+                                            message?.sender?.fullName
+                                        } and ${count} others ${
+                                            this.isJoined(message.content)
+                                                ? ChatJoinedOrLeftMessageEnum.JOINED
+                                                : ChatJoinedOrLeftMessageEnum.LEFT
+                                        } channel.`,
+                                    };
+                                    count = 0;
+
+                                    return modifiedMessage;
+                                }
+                            } else return { ...message };
+                        }),
+                    ],
+                };
+            })
+        );
     }
 
     private connectToHub(): void {
@@ -131,7 +178,9 @@ export class ChatMessagesComponent
                     const transformedMessage: ChatMessage =
                         chatMessageSenderFullname(this.messages, message);
                     return {
+                        id: 0,
                         ...transformedMessage,
+                        isReceivedFromHub: true,
                         messageType: message.messageType ?? {
                             name: ChatMessageTypeEnum.TEXT,
                             id: 1,
@@ -167,7 +216,9 @@ export class ChatMessagesComponent
             })
             .add(() => {
                 setTimeout(() => {
-                    this.chatStoreService.setUserTyping('');
+                    this.chatStoreService.setUserTyping(
+                        ChatStringTypeEnum.EMPTY
+                    );
                 }, 1000);
             });
     }
@@ -176,8 +227,57 @@ export class ChatMessagesComponent
         this.messageIdActionsDisplayed = data.message?.id;
     }
 
+    public hoverOverMessageDate(message: ChatMessage): void {
+        if (message?.isReceivedFromHub) return;
+        this.messageDateHovered = message;
+    }
+
+    public toggleDateSelection(message: ChatMessage): void {
+        if (this.messageOptionsSelected) {
+            this.messageOptionsSelected = null;
+            return;
+        }
+        this.messageOptionsSelected = message;
+    }
+
+    public selectDateFilter(option: string): void {
+        let dateFilter: string;
+
+        switch (option) {
+            case ChatMessageArrivalTypeEnum.TODAY:
+                dateFilter = this.calculateDateOnDiff(0);
+                break;
+            case ChatMessageArrivalTypeEnum.YESTERDAY:
+                dateFilter = this.calculateDateOnDiff(1);
+                break;
+            case ChatMessageArrivalTypeEnum.LAST_WEEK:
+                dateFilter = this.calculateDateOnDiff(7);
+                break;
+            case ChatMessageArrivalTypeEnum.LAST_MONTH:
+                dateFilter = this.calculateDateOnDiff(30);
+                break;
+            case ChatMessageArrivalTypeEnum.BEGINNING:
+                dateFilter = moment(this.conversation?.createdAt).format(
+                    ChatTimeUnitEnum.DAY_MONTH_YEAR
+                );
+                this.scrollTop.emit();
+                break;
+            default:
+                break;
+        }
+    }
+
+    // TODO maybe move to helpers if there is another use
+    private calculateDateOnDiff(daysDiff: number): string {
+        return moment()
+            .subtract(daysDiff, ChatTimeUnitEnum.DAYS)
+            .format(ChatTimeUnitEnum.DAY_MONTH_YEAR);
+    }
+    private isJoined(message: string): boolean {
+        return message?.includes(ChatJoinedOrLeftMessageEnum.JOINED);
+    }
+
     ngOnDestroy(): void {
-        this.chatHubService.disconnect();
         this.completeSubject();
     }
 }

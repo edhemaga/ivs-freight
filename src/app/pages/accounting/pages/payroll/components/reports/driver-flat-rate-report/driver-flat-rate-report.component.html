@@ -101,6 +101,7 @@
             </div>
             <div class="small-table-holder-main">
                 <app-ca-period-content
+                    (openModalEmiter)="openAddNewModal($event)"
                     (reorderedDataEmiter)="onReorderItem($event)"
                     (proccessPayroll)="onProccessPayroll($event)"
                     [isOpen]="selectedTab === 'open'"
@@ -216,7 +217,7 @@
                 </div>
             </div>
         </td>
-        <td [attr.colspan]="selectedTab === 'open' ? 3 : 3">
+        <td [attr.colspan]="selectedTab === 'open' ? 3 : 4">
             <div class="td-container">
                 <div class="td-content-container">
                     <div class="custom-load-index text b-600">Total</div>

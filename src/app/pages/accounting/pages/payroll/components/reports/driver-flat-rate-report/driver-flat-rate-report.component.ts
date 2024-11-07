@@ -9,7 +9,7 @@ import {
     ViewChild,
 } from '@angular/core';
 import { ColumnConfig } from 'ca-components';
-import { Observable, Subject } from 'rxjs';
+import { Observable, Subject, takeUntil } from 'rxjs';
 import { PayrollFacadeService } from '../../../state/services/payroll.service';
 import { ModalService } from '@shared/services/modal.service';
 import { PayrollDriverFlatRateFacadeService } from '../../../state/services/payroll_flat_rate.service';
@@ -18,31 +18,48 @@ import {
     MilesStopShortReponseWithRowType,
 } from '../../../state/models/payroll.model';
 import {
+    CreatePayrollCreditCommand,
     LoadWithMilesStopResponse,
+    PayrollCreditType,
     PayrollDriverFlatRateByIdResponse,
 } from 'appcoretruckassist';
 import { FlatRateLoadShortReponseWithRowType } from '../../../state/models/driver_flat_rate.model';
 import { CdkDragDrop } from '@angular/cdk/drag-drop';
 import { PayrollReportTableResponse } from 'ca-components/lib/components/ca-period-content/models/payroll-report-tables.type';
 import { PayrollProccessPaymentModalComponent } from '../../../payroll-modals/payroll-proccess-payment-modal/payroll-proccess-payment-modal.component';
+import { PayrollCreditBonusComponent } from '../../../payroll-modals/payroll-credit-bonus/payroll-credit-bonus.component';
+import { PayrollDeductionModalComponent } from '../../../payroll-modals/payroll-deduction-modal/payroll-deduction-modal.component';
 
 @Component({
     selector: 'app-driver-flat-rate-report',
     templateUrl: './driver-flat-rate-report.component.html',
     styleUrls: ['./driver-flat-rate-report.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush
+    changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DriverFlatRateReportComponent
     implements OnInit, OnDestroy, AfterViewInit
 {
     columns: ColumnConfig[];
-    @Input() reportId: string;
+    _reportId: string;
+    @Input() set reportId(report_id: string) {
+        this._reportId = report_id;
+        this.payrollDriverFlatRateFacadeService.getPayrollDriverFlatRateReport({
+            reportId: this.reportId,
+        });
+    }
+
+    get reportId() {
+        return this._reportId;
+    }
+
     @Input() selectedTab: 'open' | 'closed';
     showMap: boolean = false;
 
     public loading$: Observable<boolean>;
 
     private destroy$ = new Subject<void>();
+
+    openedPayroll: PayrollDriverFlatRateByIdResponse;
 
     payrollReport$: Observable<PayrollDriverFlatRateByIdResponse>;
     payrollReportList: MilesStopShortReponseWithRowType[] = [];
@@ -146,13 +163,13 @@ export class DriverFlatRateReportComponent
     }
 
     subscribeToStoreData() {
-        this.payrollDriverFlatRateFacadeService.getPayrollDriverFlatRateReport({
-            reportId: this.reportId,
-        });
-
         this.loading$ = this.payrollFacadeService.payrollReportLoading$;
         this.payrollReport$ =
             this.payrollDriverFlatRateFacadeService.selectPayrollOpenedReport$;
+
+        this.payrollDriverFlatRateFacadeService.selectPayrollOpenedReport$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((report) => (this.openedPayroll = report));
 
         this.includedLoads$ =
             this.payrollDriverFlatRateFacadeService.selectPayrollReportIncludedLoads$;
@@ -215,6 +232,61 @@ export class DriverFlatRateReportComponent
                 } as IPayrollProccessPaymentModal,
             }
         );
+    }
+
+    public openAddNewModal(type: string) {
+        switch (type) {
+            case 'Credit':
+                this.modalService
+                    .openModal(
+                        PayrollCreditBonusComponent,
+                        {
+                            size: 'small',
+                        },
+                        {
+                            type: 'new',
+                            isShortModal: true,
+                            data: {
+                                driverId: this.openedPayroll.driver.id,
+                                payrollType: 'owner',
+                            } as CreatePayrollCreditCommand,
+                            creditType: PayrollCreditType.Driver,
+                        }
+                    )
+                    .then(() => {
+                        this.payrollDriverFlatRateFacadeService.getPayrollDriverFlatRateReport(
+                            {
+                                reportId: this.reportId,
+                            }
+                        );
+                    });
+                return;
+            case 'Deduction':
+                this.modalService
+                    .openModal(
+                        PayrollDeductionModalComponent,
+                        {
+                            size: 'small',
+                        },
+                        {
+                            type: 'new',
+                            isShortModal: true,
+                            data: {
+                                driverId: this.openedPayroll.driver.id,
+                                payrollType: 'owner',
+                            } as CreatePayrollCreditCommand,
+                            creditType: PayrollCreditType.Driver,
+                        }
+                    )
+                    .then(() => {
+                        this.payrollDriverFlatRateFacadeService.getPayrollDriverFlatRateReport(
+                            {
+                                reportId: this.reportId,
+                            }
+                        );
+                    });
+                break;
+        }
     }
 
     ngOnDestroy(): void {

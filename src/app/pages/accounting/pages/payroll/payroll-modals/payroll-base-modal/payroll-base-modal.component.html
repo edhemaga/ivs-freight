@@ -1,5 +1,6 @@
 <app-ca-modal
     [modalTitle]="modalTitle"
+    [leftHeaderTemplate]="leftModalContent"
     [footerTemplate]="footerTemplate"
     [rightHeaderTemplate]="rightModalContent"
 >
@@ -9,8 +10,8 @@
         <form [formGroup]="baseForm" class="payroll-credit--body">
             <ng-container *ngIf="isBonusModal"> </ng-container>
 
-            <ng-container *ngIf="isDriverAndTruckTabs">
-                <div class="payroll-mb-32">
+            <ng-container *ngIf="isDropdownEnabled">
+                <div class="payroll-mb-32" *ngIf="!isShortModal">
                     <app-ta-tab-switch
                         [tabs]="tabs"
                         (switchClicked)="onDriverTruckTabChange($event)"
@@ -18,7 +19,6 @@
                     >
                     </app-ta-tab-switch>
                 </div>
-
                 <div class="row">
                     <ng-container *ngIf="isDropdownEnabled">
                         <div class="col-12 payroll-mb-32">
@@ -86,9 +86,9 @@
                         [customClass]="'regular'"
                     ></app-ta-checkbox>
                     <!-- Weekly is disabled if driver is paid:
-Bi-Weekly
-Semi Monthly
-Monthly -->
+                        Bi-Weekly
+                        Semi Monthly
+                        Monthly -->
                     <app-ta-tab-switch
                         [tabs]="periodTabs"
                         [type]="'type2-modal-popup'"
@@ -154,4 +154,12 @@ Monthly -->
         [src]="svgRoutes.closeIcon"
         (click)="onCloseModal()"
     ></svg-icon>
+</ng-template>
+
+<ng-template #leftModalContent>
+    <ng-container *ngIf="creditTitle">
+        <div class="payroll-number text-color-white text-size-14 ta-font-bold">
+            {{ creditTitle }}
+        </div>
+    </ng-container>
 </ng-template>

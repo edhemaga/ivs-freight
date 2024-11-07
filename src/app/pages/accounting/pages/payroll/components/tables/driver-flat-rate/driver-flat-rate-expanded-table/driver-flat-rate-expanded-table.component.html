@@ -25,13 +25,6 @@
             *ngIf="data.name === 'ShortPaid' || data.name === 'NotPaid'"
             src="assets/svg/common/ic_feedback_mark_incorrect.svg"
         ></svg-icon>
-        <!-- <div
-            *ngIf="data.numberOfDays !== 0"
-            class="custom-status-text"
-            [ngClass]="{ 'past-payment': data.numberOfDays < 0 }"
-        >
-            {{ Math.abs(data.numberOfDays) }} DAYS
-        </div> -->
         <div
             *ngIf="data.name === 'Paid'"
             class="custom-status-text ready-payment"

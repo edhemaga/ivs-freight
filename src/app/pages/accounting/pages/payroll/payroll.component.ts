@@ -57,6 +57,7 @@ export class PayrollComponent implements OnInit, AfterViewInit, OnDestroy {
 
     payrollType: string;
     payrollReportType: string;
+    selectedTabForReport = 'open';
     selectedOpenFromList: any;
 
     selectedTab = 'open';
@@ -170,6 +171,7 @@ export class PayrollComponent implements OnInit, AfterViewInit, OnDestroy {
                                 if (
                                     this.payrollReportType != this.payrollType
                                 ) {
+                                    this.selectedTabForReport = this.selectedTab;
                                     this.payrollReportType = this.payrollType;
                                 }
                                 this.payrollFacadeService.setPayrollReportTableExpanded(
@@ -233,6 +235,7 @@ export class PayrollComponent implements OnInit, AfterViewInit, OnDestroy {
                                 if (
                                     this.payrollReportType != this.payrollType
                                 ) {
+                                    this.selectedTabForReport = this.selectedTab;
                                     this.payrollReportType = this.payrollType;
                                 }
                                 this.payrollFacadeService.setPayrollReportTableExpanded(
@@ -296,6 +299,7 @@ export class PayrollComponent implements OnInit, AfterViewInit, OnDestroy {
                                 if (
                                     this.payrollReportType != this.payrollType
                                 ) {
+                                    this.selectedTabForReport = this.selectedTab;
                                     this.payrollReportType = this.payrollType;
                                 }
                                 this.payrollFacadeService.setPayrollReportTableExpanded(
@@ -363,6 +367,7 @@ export class PayrollComponent implements OnInit, AfterViewInit, OnDestroy {
                                 if (
                                     this.payrollReportType != this.payrollType
                                 ) {
+                                    this.selectedTabForReport = this.selectedTab;
                                     this.payrollReportType = this.payrollType;
                                 }
                                 this.payrollFacadeService.setPayrollReportTableExpanded(
@@ -418,6 +423,7 @@ export class PayrollComponent implements OnInit, AfterViewInit, OnDestroy {
 
         if (payrollType) {
             if (this.payrollReportType != payrollType) {
+                this.selectedTabForReport = this.selectedTab;
                 this.payrollReportType = payrollType;
             }
         }

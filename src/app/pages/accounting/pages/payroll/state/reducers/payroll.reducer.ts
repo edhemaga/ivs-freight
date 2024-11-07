@@ -284,6 +284,12 @@ export const payrollReducer = createReducer(
         PayrollOwnerDriverReducers.onGetPayrollOwnerDriverCollapsedListError
     ),
 
+    // CLOSED OWNER REPORT
+    on(
+        PayrollOwnerDriverActions.getPayrollOwnerDriverClosedReportPayrollSuccess,
+        PayrollOwnerDriverReducers.onGetPayrollOwnerDriverClosedPayrollSuccess
+    ),
+
     // OWNER CLOSE PAYROLL REPORT
     on(
         PayrollOwnerDriverActions.closePayrollOwnerReportDriver,

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import {
     FormBuilder,
     FormGroup,
@@ -11,21 +11,26 @@ import { CommonModule } from '@angular/common';
 // Models
 import {
     CreatePayrollDeductionCommand,
+    PayrollCreditType,
     PayrollDeductionRecurringType,
-    PayrollDeductionType,
 } from 'appcoretruckassist';
+import { PayrollActionType } from '@pages/accounting/pages/payroll/state/models';
 
 // Services
 import { PayrollDeductionService } from './services/payroll-deduction.service';
 
 // Enums
 import { PayrollStringEnum } from '@pages/accounting/pages/payroll/state/enums';
+import { TaModalActionEnums } from '@shared/components/ta-modal/enums';
 
 // Helpers
 import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calculations.helper';
 
 // Components
 import { PayrollBaseModalComponent } from '@pages/accounting/pages/payroll/payroll-modals/payroll-base-modal/payroll-base-modal.component';
+import { PayrollModal } from '../../state/models';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
     selector: 'app-payroll-deduction-modal',
@@ -43,19 +48,31 @@ import { PayrollBaseModalComponent } from '@pages/accounting/pages/payroll/payro
 })
 export class PayrollDeductionModalComponent implements OnInit {
     public payrollCreditForm: FormGroup;
+    public taModalActionEnums = TaModalActionEnums;
+    private destroy$ = new Subject<void>();
+    @Input() editData: PayrollModal;
 
     constructor(
         private fb: FormBuilder,
-        private payrollDeductionService: PayrollDeductionService
+        private payrollDeductionService: PayrollDeductionService,
+        private ngbActiveModal: NgbActiveModal
     ) {}
 
     ngOnInit(): void {
+        this.createForm();
+    }
+
+    private createForm() {
+        const data = this.editData ? this.editData.data : {};
+        const creditType =
+            this.editData?.creditType || PayrollCreditType.Driver;
+
         this.payrollCreditForm = this.fb.group({
-            [PayrollStringEnum.DRIVER_ID]: [null, Validators.required],
-            [PayrollStringEnum.TRUCK_ID]: [null],
-            [PayrollStringEnum.SELECTED_DRIVER_ID]: [null],
-            [PayrollStringEnum.SELECTED_TRUCK_ID]: [null],
-            [PayrollStringEnum.SELECTED_TYPE_ID]: [PayrollDeductionType.Driver],
+            [PayrollStringEnum.DRIVER_ID]: [data?.driverId ?? null],
+            [PayrollStringEnum.TRUCK_ID]: [data?.truckId ?? null],
+            [PayrollStringEnum.SELECTED_DRIVER_ID]: [data?.driverId ?? null],
+            [PayrollStringEnum.SELECTED_TRUCK_ID]: [data?.truckId ?? null],
+            [PayrollStringEnum.SELECTED_TYPE_ID]: [creditType],
             [PayrollStringEnum.DATE]: [new Date(), Validators.required],
             [PayrollStringEnum.DESCRIPTION]: [null, Validators.required],
             [PayrollStringEnum.AMOUNT]: [null, Validators.required],
@@ -104,11 +121,47 @@ export class PayrollDeductionModalComponent implements OnInit {
         };
     }
 
-    public createNewDeduction(): void {
-        this.payrollDeductionService
-            .addPayrollDeduction(this.generateModel())
-            .subscribe((response) => {
-                console.log(response);
-            });
+    public onCloseModal(): void {
+        this.ngbActiveModal.close();
+    }
+
+    public get isDropdownEnabled(): boolean {
+        return true;
+    }
+    
+    public get isEditMode(): boolean {
+        return !!this.editData?.editCredit;
+    }
+
+    public saveDeduction(action: PayrollActionType): void {
+        const addNew =
+            action === TaModalActionEnums.SAVE ||
+            action === TaModalActionEnums.SAVE_AND_ADD_NEW;
+        const data = this.generateModel();
+
+        if (addNew) {
+            this.payrollDeductionService
+                .addPayrollDeduction(data)
+                .pipe(takeUntil(this.destroy$))
+                .subscribe(() => {
+                    if (action === TaModalActionEnums.SAVE_AND_ADD_NEW) {
+                        this.createForm();
+                    } else {
+                        this.onCloseModal();
+                    }
+                });
+        } else if (action === TaModalActionEnums.UPDATE) {
+            this.payrollDeductionService
+                .updatePayrollDeduction(data)
+                .pipe(takeUntil(this.destroy$))
+                .subscribe(() => {
+                    this.onCloseModal();
+                });
+        }
+    }
+
+    ngOnDestroy(): void {
+        this.destroy$.next();
+        this.destroy$.complete();
     }
 }

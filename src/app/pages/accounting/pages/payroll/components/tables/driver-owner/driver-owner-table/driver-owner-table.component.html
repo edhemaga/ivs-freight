@@ -22,28 +22,28 @@
     <div class="custom-status-holder d-flex align-itemst-center">
         <svg-icon
             class="payment_done"
-            *ngIf="data.numberOfDays === 0"
+            *ngIf="data.period === 'Ready'"
             src="assets/svg/common/dropdown-done-icon.svg"
         ></svg-icon>
         <svg-icon
             class="caution"
-            *ngIf="data.numberOfDays < 0"
+            *ngIf="data.period === 'Past'"
             src="assets/svg/common/ic_feedback_mark_incorrect.svg"
         ></svg-icon>
         <svg-icon
             class="state"
-            *ngIf="data.numberOfDays > 0"
+            *ngIf="data.period === 'Pending'"
             src="assets/svg/common/ic_clock.svg"
         ></svg-icon>
         <div
-            *ngIf="data.numberOfDays !== 0"
+            *ngIf="data.period !== 'Ready'"
             class="custom-status-text"
-            [ngClass]="{ 'past-payment': data.numberOfDays < 0 }"
+            [ngClass]="{ 'past-payment': data.period === 'Past' }"
         >
             {{ Math.abs(data.numberOfDays) }} DAYS
         </div>
         <div
-            *ngIf="data.numberOfDays === 0"
+            *ngIf="data.period === 'Ready'"
             class="custom-status-text ready-payment"
         >
             Ready

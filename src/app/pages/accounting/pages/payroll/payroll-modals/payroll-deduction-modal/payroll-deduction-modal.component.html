@@ -4,13 +4,22 @@
     [modalType]="'MODAL_DEDUCTION'"
     [footerTemplate]="footerTemplate"
     [isDriverAndTruckTabs]="true"
+    [editData]="editData"
 ></app-payroll-base-modal>
 
 <ng-template #footerTemplate>
-    <div class="modal-footer" [class.justify-content-between]="isEditMode">
+    <div class="modal-footer modal-footer-payroll" [class.justify-content-between]="isEditMode">
+        <div class="divider divider--dark divider--small"></div>
+        <button
+            class="ta-font-bold modal-save-btn modal-save-btn-add-new mr-12"
+            [class.valid]="payrollCreditForm.valid"
+            (click)="saveDeduction(taModalActionEnums.SAVE_AND_ADD_NEW)"
+        >
+            Save and Add New
+        </button>
         <button
             class="modal-save-btn ta-font-bold"
-            (click)="createNewDeduction()"
+            (click)="saveDeduction(taModalActionEnums.SAVE)"
             [class.valid]="payrollCreditForm.valid"
         >
             Save

@@ -9,7 +9,7 @@ import {
 import { CommonModule } from '@angular/common';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { AngularSvgIconModule } from 'angular-svg-icon';
-import { Subject } from 'rxjs';
+import { Subject, takeUntil } from 'rxjs';
 
 // Services
 import { PayrollCreditService } from '@pages/accounting/pages/payroll/payroll-modals/payroll-credit-bonus/services/payroll-credit.service';
@@ -22,6 +22,7 @@ import {
 } from '@pages/accounting/pages/payroll/state/models';
 import {
     CreatePayrollCreditCommand,
+    PayrollCreditType,
     PayrollDeductionType,
     PayrollService,
 } from 'appcoretruckassist';
@@ -73,20 +74,28 @@ export class PayrollCreditBonusComponent implements OnInit {
     ) {}
 
     ngOnInit() {
+        console.log('this.editData', this.editData);
         this.createForm();
     }
 
     private createForm(): void {
+        const creditType =
+            this.editData?.creditType || PayrollCreditType.Driver;
+
+        const { driverId, truckId } = this.editData.data;
+
         this.payrollCreditForm = this.formBuilder.group({
-            [PayrollStringEnum.DRIVER_ID]: [null, Validators.required],
+            [PayrollStringEnum.DRIVER_ID]: [null],
             [PayrollStringEnum.TRUCK_ID]: [null],
             [PayrollStringEnum.DATE]: [new Date(), Validators.required],
             [PayrollStringEnum.DESCRIPTION]: [null, Validators.required],
             [PayrollStringEnum.AMOUNT]: [null, Validators.required],
-            [PayrollStringEnum.SELECTED_DRIVER_ID]: [null],
-            [PayrollStringEnum.SELECTED_TRUCK_ID]: [null],
-            [PayrollStringEnum.SELECTED_TYPE_ID]: [PayrollDeductionType.Driver],
+            [PayrollStringEnum.SELECTED_DRIVER_ID]: [driverId],
+            [PayrollStringEnum.SELECTED_TRUCK_ID]: [truckId],
+            [PayrollStringEnum.SELECTED_TYPE_ID]: [creditType],
         });
+
+        console.log("DDSSS", this.payrollCreditForm.getRawValue());
     }
 
     public get isEditMode(): boolean {
@@ -115,6 +124,7 @@ export class PayrollCreditBonusComponent implements OnInit {
         if (addNew) {
             // Don't clear if we have preselected driver or truck
             const data = this.generateCreditModel();
+
             this.payrolCreditService.addPayrollCredit(data).subscribe(() => {
                 if (action === TaModalActionEnums.SAVE_AND_ADD_NEW) {
                     if (this.isDropdownEnabled) {
@@ -142,18 +152,21 @@ export class PayrollCreditBonusComponent implements OnInit {
             const data = this.generateCreditModel();
             this.payrolCreditService
                 .updatePayrollCredit(data)
+                .pipe(takeUntil(this.destroy$))
                 .subscribe((response) => {
                     this.onCloseModal();
                 });
         } else if (action === TaModalActionEnums.MOVE_TO_THIS_PERIOD) {
             this.payrollService
                 .apiPayrollBonusMoveIdPut(this.editData.editCredit.id)
+                .pipe(takeUntil(this.destroy$))
                 .subscribe((response) => {
                     this.onCloseModal();
                 });
         } else if (action === TaModalActionEnums.DELETE) {
             this.payrolCreditService
                 .deletePayrollCreditById(this.editData.editCredit.id)
+                .pipe(takeUntil(this.destroy$))
                 .subscribe((res) => {
                     this.onCloseModal();
                 });
