@@ -130,7 +130,7 @@ export class PayrollDeductionModalComponent implements OnInit {
     }
     
     public get isEditMode(): boolean {
-        return !!this.editData?.editCredit;
+        return !!this.editData?.edit;
     }
 
     public saveDeduction(action: PayrollActionType): void {

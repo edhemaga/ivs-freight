@@ -1,5 +1,5 @@
 <app-payroll-base-modal
-    [modalTitle]="'Add Credit'"
+    [modalTitle]="!isEditMode ? 'Add Credit' : 'Edit Credit'"
     [baseForm]="payrollCreditForm"
     [footerTemplate]="footerContent"
     [isDriverAndTruckTabs]="true"
@@ -22,7 +22,6 @@
                 <button
                     class="modal-convert-to-template-btn ta-font-bold"
                     (click)="saveCredit(taModalActionEnums.MOVE_TO_THIS_PERIOD)"
-                    [class.valid]="payrollCreditForm.valid"
                 >
                     Move to This Period
                 </button>
