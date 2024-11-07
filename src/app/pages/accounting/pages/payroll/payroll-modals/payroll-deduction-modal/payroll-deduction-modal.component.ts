@@ -121,6 +121,7 @@ export class PayrollDeductionModalComponent implements OnInit {
                 limitedAmountControl?.updateValueAndValidity();
             });
     }
+    
     private generateModel(): CreatePayrollDeductionCommand {
         return {
             type: this.payrollCreditForm.get(PayrollStringEnum.SELECTED_TYPE_ID)
