@@ -567,7 +567,7 @@ export class PmTableComponent implements OnInit, AfterViewInit, OnDestroy {
             textYear: truckUnit.truck?.year,
             textRepairShop: truckUnit.lastShop?.name,
             textRepairShopAddress: truckUnit.lastShop?.address?.address,
-            note: null,
+            note: truckUnit.note,
             tableDropdownContent: {
                 hasContent: true,
                 content: this.getPMDropdownContent(),
@@ -644,7 +644,7 @@ export class PmTableComponent implements OnInit, AfterViewInit, OnDestroy {
             textMake: trailerUnit.trailer?.trailerMake?.name,
             textModel: trailerUnit.trailer?.model,
             textYear: trailerUnit.trailer?.year,
-            note: '',
+            note: trailerUnit.note,
             tableDropdownContent: {
                 hasContent: true,
                 content: this.getPMDropdownContent(),

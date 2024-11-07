@@ -170,7 +170,12 @@
                             <app-ta-note
                                 [note]="card.note"
                                 [mainData]="card"
-                                [entityId]="card.id"
+                                [entityId]="card.pmId"
+                                [entityType]="
+                                    selectedTab === 'active'
+                                        ? 'PmTruckUnit'
+                                        : 'PmTrailerUnit'
+                                "
                                 [openedAll]="false"
                                 [parking]="false"
                             >

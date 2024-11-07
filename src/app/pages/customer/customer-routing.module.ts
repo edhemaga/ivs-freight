@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 // components
-import { BrokerCardComponent } from '@pages/customer/pages/broker-card/broker-card.component';
 import { CustomerTableComponent } from '@pages/customer/pages/customer-table/customer-table.component';
 
 // resolvers
@@ -42,11 +41,6 @@ const routes: Routes = [
             brokerMinimal: BrokerMinimalListResolver,
         },
         data: { title: 'Broker detail' },
-    },
-    {
-        path: 'card',
-        component: BrokerCardComponent,
-        data: { title: 'Shipper cards' },
     },
 ];
 
