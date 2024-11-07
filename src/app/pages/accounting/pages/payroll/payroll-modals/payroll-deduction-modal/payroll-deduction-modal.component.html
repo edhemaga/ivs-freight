@@ -1,5 +1,5 @@
 <app-payroll-base-modal
-    [modalTitle]="'Create Deduction'"
+    [modalTitle]="!isEditMode ? 'Create Deduction' : 'Edit Deduction'"
     [baseForm]="payrollCreditForm"
     [modalType]="'MODAL_DEDUCTION'"
     [footerTemplate]="footerTemplate"
@@ -10,19 +10,46 @@
 <ng-template #footerTemplate>
     <div class="modal-footer modal-footer-payroll" [class.justify-content-between]="isEditMode">
         <div class="divider divider--dark divider--small"></div>
-        <button
-            class="ta-font-bold modal-save-btn modal-save-btn-add-new mr-12"
-            [class.valid]="payrollCreditForm.valid"
-            (click)="saveDeduction(taModalActionEnums.SAVE_AND_ADD_NEW)"
-        >
-            Save and Add New
-        </button>
-        <button
-            class="modal-save-btn ta-font-bold"
-            (click)="saveDeduction(taModalActionEnums.SAVE)"
-            [class.valid]="payrollCreditForm.valid"
-        >
-            Save
-        </button>
+        <ng-container *ngIf="isEditMode; else showCreateButtons">
+            <div>
+                <button
+                    class="modal-delete-btn ta-font-bold mr-12"
+                    (click)="saveDeduction(taModalActionEnums.DELETE)"
+                    [class.valid]="payrollCreditForm.valid"
+                >
+                    Delete
+                </button>
+                <button
+                    class="modal-convert-to-template-btn ta-font-bold"
+                    (click)="saveDeduction(taModalActionEnums.MOVE_TO_THIS_PERIOD)"
+                >
+                    Move to This Period
+                </button>
+            </div>
+            <button
+                class="modal-save-btn ta-font-bold"
+                (click)="saveDeduction(taModalActionEnums.UPDATE)"
+                [class.valid]="payrollCreditForm.valid"
+            >
+                Save Changes
+            </button>
+        </ng-container>
+
+        <ng-template #showCreateButtons>
+            <button
+                class="ta-font-bold modal-save-btn modal-save-btn-add-new mr-12"
+                [class.valid]="payrollCreditForm.valid"
+                (click)="saveDeduction(taModalActionEnums.SAVE_AND_ADD_NEW)"
+            >
+                Save and Add New
+            </button>
+            <button
+                class="modal-save-btn ta-font-bold"
+                (click)="saveDeduction(taModalActionEnums.SAVE)"
+                [class.valid]="payrollCreditForm.valid"
+            >
+                Save
+            </button>
+        </ng-template>
     </div>
 </ng-template>

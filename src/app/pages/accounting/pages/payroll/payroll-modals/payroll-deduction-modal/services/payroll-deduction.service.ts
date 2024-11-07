@@ -40,4 +40,8 @@ export class PayrollDeductionService {
     public deletePayrollDeductionById(id: number): Observable<any> {
         return this.payrollService.apiPayrollDeductionIdDelete(id);
     }
+
+    public moveDeduction(id: number): Observable<any> {
+        return this.payrollService.apiPayrollDeductionMoveIdPut(id);
+    }
 }

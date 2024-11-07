@@ -36,6 +36,7 @@ import {
     EnumValue,
     PayrollCreditModalResponse,
     PayrollCreditType,
+    PayrollDeductionRecurringType,
     TruckMinimalResponse,
 } from 'appcoretruckassist';
 import { ITaInput } from '@shared/components/ta-input/config/ta-input.config';
@@ -116,8 +117,17 @@ export class PayrollBaseModalComponent implements OnInit {
             this.selectedTab = this.tabs[0];
         }
 
-        if (this.isDeductionModal)
+        if (this.isDeductionModal) {
             this.periodTabs = [...this.payrollCreditConst.periodTabs];
+
+            if(this.editData.data.recurringType) {
+                if(this.editData.data.recurringType.name === PayrollDeductionRecurringType.Monthly) {
+                    this.periodTabs[0].checked = true;
+                } else {
+                    this.periodTabs[1].checked = true;
+                }
+            }
+        }
 
         if (this.isBonusModal) this.getEmployeesDropdown();
     }
@@ -224,7 +234,7 @@ export class PayrollBaseModalComponent implements OnInit {
         this.baseForm
             .get(PayrollStringEnum.SELECTED_DRIVER_ID)
             .patchValue(driver?.id ?? null);
-        this.creditTitle = driver?.name;
+        this.creditTitle = driver?.name; 
     }
 
     private mapTrucks(trucks: TruckMinimalResponse[]): void {

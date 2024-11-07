@@ -66,6 +66,7 @@ export class PayrollDeductionModalComponent implements OnInit {
         const data = this.editData ? this.editData.data : {};
         const creditType =
             this.editData?.creditType || PayrollCreditType.Driver;
+        const recurringType = this.editData?.data?.recurringType?.name;
 
         this.payrollCreditForm = this.fb.group({
             [PayrollStringEnum.DRIVER_ID]: [data?.driverId ?? null],
@@ -73,19 +74,53 @@ export class PayrollDeductionModalComponent implements OnInit {
             [PayrollStringEnum.SELECTED_DRIVER_ID]: [data?.driverId ?? null],
             [PayrollStringEnum.SELECTED_TRUCK_ID]: [data?.truckId ?? null],
             [PayrollStringEnum.SELECTED_TYPE_ID]: [creditType],
-            [PayrollStringEnum.DATE]: [new Date(), Validators.required],
-            [PayrollStringEnum.DESCRIPTION]: [null, Validators.required],
-            [PayrollStringEnum.AMOUNT]: [null, Validators.required],
-            [PayrollStringEnum.RECURRING]: [false],
-            [PayrollStringEnum.RECURRING_TYPE]: [
-                PayrollDeductionRecurringType.Weekly,
+            [PayrollStringEnum.DATE]: [
+                data.date ?? new Date(),
+                Validators.required,
             ],
-            [PayrollStringEnum.LIMITED]: [false],
-            [PayrollStringEnum.LIMITED_NUMBER]: [null],
-            [PayrollStringEnum.LIMITED_AMOUNT]: [null],
+            [PayrollStringEnum.DESCRIPTION]: [
+                data.description ?? null,
+                Validators.required,
+            ],
+            [PayrollStringEnum.AMOUNT]: [
+                data.amount ?? null,
+                Validators.required,
+            ],
+            [PayrollStringEnum.RECURRING]: [!!recurringType],
+            [PayrollStringEnum.RECURRING_TYPE]: [recurringType],
+            [PayrollStringEnum.LIMITED]: [
+                (!!data.limitedNumber || !!data.limitedAmount) ?? null,
+            ],
+            [PayrollStringEnum.LIMITED_NUMBER]: [data.limitedNumber ?? null],
+            [PayrollStringEnum.LIMITED_AMOUNT]: [data.limitedAmount ?? null],
         });
+
+        this.setRequiredFields();
     }
 
+    private setRequiredFields(): void {
+        this.payrollCreditForm
+            .get(PayrollStringEnum.RECURRING)
+            ?.valueChanges.subscribe((isRecurring) => {
+                const limitedNumberControl = this.payrollCreditForm.get(
+                    PayrollStringEnum.LIMITED_NUMBER
+                );
+                const limitedAmountControl = this.payrollCreditForm.get(
+                    PayrollStringEnum.LIMITED_AMOUNT
+                );
+
+                if (isRecurring) {
+                    limitedNumberControl?.setValidators([Validators.required]);
+                    limitedAmountControl?.setValidators([Validators.required]);
+                } else {
+                    limitedNumberControl?.clearValidators();
+                    limitedAmountControl?.clearValidators();
+                }
+
+                limitedNumberControl?.updateValueAndValidity();
+                limitedAmountControl?.updateValueAndValidity();
+            });
+    }
     private generateModel(): CreatePayrollDeductionCommand {
         return {
             type: this.payrollCreditForm.get(PayrollStringEnum.SELECTED_TYPE_ID)
@@ -128,7 +163,7 @@ export class PayrollDeductionModalComponent implements OnInit {
     public get isDropdownEnabled(): boolean {
         return true;
     }
-    
+
     public get isEditMode(): boolean {
         return !!this.editData?.edit;
     }
@@ -152,7 +187,21 @@ export class PayrollDeductionModalComponent implements OnInit {
                 });
         } else if (action === TaModalActionEnums.UPDATE) {
             this.payrollDeductionService
-                .updatePayrollDeduction(data)
+                .updatePayrollDeduction({ ...data, id: this.editData.data.id })
+                .pipe(takeUntil(this.destroy$))
+                .subscribe(() => {
+                    this.onCloseModal();
+                });
+        } else if (action === TaModalActionEnums.MOVE_TO_THIS_PERIOD) {
+            this.payrollDeductionService
+                .moveDeduction(this.editData.data.id)
+                .pipe(takeUntil(this.destroy$))
+                .subscribe(() => {
+                    this.onCloseModal();
+                });
+        } else if (action === TaModalActionEnums.DELETE) {
+            this.payrollDeductionService
+                .deletePayrollDeductionById(this.editData.data.id)
                 .pipe(takeUntil(this.destroy$))
                 .subscribe(() => {
                     this.onCloseModal();
