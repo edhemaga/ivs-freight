@@ -299,7 +299,6 @@ export class PayrollReportComponent implements OnInit, OnDestroy {
     }
 
     public openAddNewModal(type: string) {
-        console.log('ddsdd', type);
         switch (type) {
             case 'Credit':
                 this.modalService

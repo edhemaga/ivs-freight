@@ -36,6 +36,7 @@ import { CommissionLoadShortReponseWithRowType } from '../../../state/models/dri
 import { PayrollProccessPaymentModalComponent } from '../../../payroll-modals/payroll-proccess-payment-modal/payroll-proccess-payment-modal.component';
 import { PayrollReportTableResponse } from 'ca-components/lib/components/ca-period-content/models/payroll-report-tables.type';
 import { PayrollCreditBonusComponent } from '../../../payroll-modals/payroll-credit-bonus/payroll-credit-bonus.component';
+import { PayrollDeductionModalComponent } from '../../../payroll-modals/payroll-deduction-modal/payroll-deduction-modal.component';
 
 @Component({
     selector: 'app-driver-commission-report',
@@ -304,6 +305,31 @@ export class DriverCommissionReportComponent
                         );
                     });
                 return;
+            case 'Deduction':
+                this.modalService
+                    .openModal(
+                        PayrollDeductionModalComponent,
+                        {
+                            size: 'small',
+                        },
+                        {
+                            type: 'new',
+                            isShortModal: true,
+                            data: {
+                                driverId: this.openedPayroll.driver.id,
+                                payrollType: 'owner',
+                            } as CreatePayrollCreditCommand,
+                            creditType: PayrollCreditType.Driver,
+                        }
+                    )
+                    .then(() => {
+                        this.payrollCommissionFacadeService.getPayrollDriverCommissionReport(
+                            {
+                                reportId: this.reportId,
+                            }
+                        );
+                    });
+                break;
         }
     }
 

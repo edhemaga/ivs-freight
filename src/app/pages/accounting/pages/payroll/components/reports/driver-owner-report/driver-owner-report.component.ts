@@ -30,6 +30,7 @@ import { PayrollProccessPaymentModalComponent } from '../../../payroll-modals/pa
 import { IPayrollProccessPaymentModal } from '../../../state/models/payroll.model';
 import { PayrollReportTableResponse } from 'ca-components/lib/components/ca-period-content/models/payroll-report-tables.type';
 import { PayrollCreditBonusComponent } from '../../../payroll-modals/payroll-credit-bonus/payroll-credit-bonus.component';
+import { PayrollDeductionModalComponent } from '../../../payroll-modals/payroll-deduction-modal/payroll-deduction-modal.component';
 
 @Component({
     selector: 'app-driver-owner-report',
@@ -294,6 +295,31 @@ export class DriverOwnerReportComponent
                         );
                     });
                 return;
+                case 'Deduction':
+                this.modalService
+                    .openModal(
+                        PayrollDeductionModalComponent,
+                        {
+                            size: 'small',
+                        },
+                        {
+                            type: 'new',
+                            isShortModal: true,
+                            data: {
+                                driverId: this.openedPayroll.truck.id,
+                                payrollType: 'owner',
+                            } as CreatePayrollCreditCommand,
+                            creditType: PayrollCreditType.Driver,
+                        }
+                    )
+                    .then(() => {
+                        this.payrollDriverOwnerFacadeService.getPayrollDriverOwnerReport(
+                            {
+                                reportId: this.reportId,
+                            }
+                        );
+                    });
+                break;
         }
     }
 

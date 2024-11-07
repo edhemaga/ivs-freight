@@ -74,13 +74,15 @@ export class PayrollCreditBonusComponent implements OnInit {
     ) {}
 
     ngOnInit() {
+        console.log('this.editData', this.editData);
         this.createForm();
     }
 
     private createForm(): void {
-        const data = this.editData ? this.editData.data : {};
         const creditType =
             this.editData?.creditType || PayrollCreditType.Driver;
+
+        const { driverId, truckId } = this.editData.data;
 
         this.payrollCreditForm = this.formBuilder.group({
             [PayrollStringEnum.DRIVER_ID]: [null],
@@ -88,10 +90,12 @@ export class PayrollCreditBonusComponent implements OnInit {
             [PayrollStringEnum.DATE]: [new Date(), Validators.required],
             [PayrollStringEnum.DESCRIPTION]: [null, Validators.required],
             [PayrollStringEnum.AMOUNT]: [null, Validators.required],
-            [PayrollStringEnum.SELECTED_DRIVER_ID]: [data?.driverId ?? null],
-            [PayrollStringEnum.SELECTED_TRUCK_ID]: [data?.truckId ?? null],
+            [PayrollStringEnum.SELECTED_DRIVER_ID]: [driverId],
+            [PayrollStringEnum.SELECTED_TRUCK_ID]: [truckId],
             [PayrollStringEnum.SELECTED_TYPE_ID]: [creditType],
         });
+
+        console.log("DDSSS", this.payrollCreditForm.getRawValue());
     }
 
     public get isEditMode(): boolean {

@@ -28,6 +28,7 @@ import { CdkDragDrop } from '@angular/cdk/drag-drop';
 import { PayrollReportTableResponse } from 'ca-components/lib/components/ca-period-content/models/payroll-report-tables.type';
 import { PayrollProccessPaymentModalComponent } from '../../../payroll-modals/payroll-proccess-payment-modal/payroll-proccess-payment-modal.component';
 import { PayrollCreditBonusComponent } from '../../../payroll-modals/payroll-credit-bonus/payroll-credit-bonus.component';
+import { PayrollDeductionModalComponent } from '../../../payroll-modals/payroll-deduction-modal/payroll-deduction-modal.component';
 
 @Component({
     selector: 'app-driver-flat-rate-report',
@@ -260,6 +261,31 @@ export class DriverFlatRateReportComponent
                         );
                     });
                 return;
+            case 'Deduction':
+                this.modalService
+                    .openModal(
+                        PayrollDeductionModalComponent,
+                        {
+                            size: 'small',
+                        },
+                        {
+                            type: 'new',
+                            isShortModal: true,
+                            data: {
+                                driverId: this.openedPayroll.driver.id,
+                                payrollType: 'owner',
+                            } as CreatePayrollCreditCommand,
+                            creditType: PayrollCreditType.Driver,
+                        }
+                    )
+                    .then(() => {
+                        this.payrollDriverFlatRateFacadeService.getPayrollDriverFlatRateReport(
+                            {
+                                reportId: this.reportId,
+                            }
+                        );
+                    });
+                break;
         }
     }
 
