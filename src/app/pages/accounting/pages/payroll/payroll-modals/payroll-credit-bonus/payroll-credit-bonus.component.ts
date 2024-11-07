@@ -23,7 +23,6 @@ import {
 import {
     CreatePayrollCreditCommand,
     PayrollCreditType,
-    PayrollDeductionType,
     PayrollService,
 } from 'appcoretruckassist';
 
@@ -79,27 +78,25 @@ export class PayrollCreditBonusComponent implements OnInit {
     }
 
     private createForm(): void {
+        const data = this.editData ? this.editData.data : {};
+
         const creditType =
             this.editData?.creditType || PayrollCreditType.Driver;
 
-        const { driverId, truckId } = this.editData.data;
-
         this.payrollCreditForm = this.formBuilder.group({
-            [PayrollStringEnum.DRIVER_ID]: [null],
-            [PayrollStringEnum.TRUCK_ID]: [null],
-            [PayrollStringEnum.DATE]: [new Date(), Validators.required],
-            [PayrollStringEnum.DESCRIPTION]: [null, Validators.required],
-            [PayrollStringEnum.AMOUNT]: [null, Validators.required],
-            [PayrollStringEnum.SELECTED_DRIVER_ID]: [driverId],
-            [PayrollStringEnum.SELECTED_TRUCK_ID]: [truckId],
+            [PayrollStringEnum.DRIVER_ID]: [data?.driverId ?? null],
+            [PayrollStringEnum.TRUCK_ID]: [data?.truckId ?? null],
+            [PayrollStringEnum.DATE]: [data.date ?? new Date(), Validators.required],
+            [PayrollStringEnum.DESCRIPTION]: [data.description ?? null, Validators.required],
+            [PayrollStringEnum.AMOUNT]: [data.subtotal ?? null, Validators.required],
+            [PayrollStringEnum.SELECTED_DRIVER_ID]: [data?.driverId ?? null],
+            [PayrollStringEnum.SELECTED_TRUCK_ID]: [data?.truckId ?? null],
             [PayrollStringEnum.SELECTED_TYPE_ID]: [creditType],
         });
-
-        console.log("DDSSS", this.payrollCreditForm.getRawValue());
     }
 
     public get isEditMode(): boolean {
-        return !!this.editData?.editCredit;
+        return !!this.editData?.edit;
     }
 
     public get isDropdownEnabled(): boolean {
@@ -151,21 +148,22 @@ export class PayrollCreditBonusComponent implements OnInit {
         } else if (action === TaModalActionEnums.UPDATE) {
             const data = this.generateCreditModel();
             this.payrolCreditService
-                .updatePayrollCredit(data)
+                .updatePayrollCredit({...data, id: this.editData.data.id})
                 .pipe(takeUntil(this.destroy$))
                 .subscribe((response) => {
                     this.onCloseModal();
                 });
-        } else if (action === TaModalActionEnums.MOVE_TO_THIS_PERIOD) {
-            this.payrollService
-                .apiPayrollBonusMoveIdPut(this.editData.editCredit.id)
+        } 
+        else if (action === TaModalActionEnums.MOVE_TO_THIS_PERIOD) {
+            this.payrolCreditService
+                .movePayrollCredit(this.editData.data.id)
                 .pipe(takeUntil(this.destroy$))
                 .subscribe((response) => {
                     this.onCloseModal();
                 });
         } else if (action === TaModalActionEnums.DELETE) {
             this.payrolCreditService
-                .deletePayrollCreditById(this.editData.editCredit.id)
+                .deletePayrollCreditById(this.editData.data.id)
                 .pipe(takeUntil(this.destroy$))
                 .subscribe((res) => {
                     this.onCloseModal();

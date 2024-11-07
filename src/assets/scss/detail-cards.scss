@@ -923,10 +923,10 @@
     background-color: #f3f3f3;
     
     &--dark {
-        background-color: $bw-9;
+        background-color: $bw-9 !important;
     }
 
     &--small {
-        height: 1px;
+        height: 1px !important;
     }
 }

@@ -1529,7 +1529,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
             tableShopServices: serviceTypes,
             tableOpenHours: {
                 openHours,
-                openHoursToday,
+                openHoursToday: openHoursToday as any,
             },
             tableRepairCountBill: bill,
             tableRepairCountOrder: order,

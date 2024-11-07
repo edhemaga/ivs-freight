@@ -118,23 +118,25 @@ export class PayrollCreditConst {
             id: 'No. of Payments',
             name: 'numberOfPayments',
             type: 'text',
-            placeholderText: 'months',
             label: 'No. of Payments',
-            isRequired: true,
-            hideClear: true,
+            minLength: 1,
+            maxLength: 10,
+            placeholderText: 'payments',
+            thousandSeparator: true,
             isDisabled,
             commands: {
                 active: true,
-                type: 'months',
+                type: 'increment-decrement',
+                blueCommands: true,
                 firstCommand: {
-                    name: 'minus',
+                    name: 'decrement',
                     svg: svgRoutes.iconDecrementSvgRoute,
                 },
                 secondCommand: {
-                    name: 'plus',
+                    name: 'increment',
                     svg: svgRoutes.iconIncrementSvgRoute,
                 },
-            },
+            }
         };
     }
 }
