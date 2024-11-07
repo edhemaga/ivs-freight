@@ -1,4 +1,4 @@
-import { CustomerCardTypes } from "@pages/customer/pages/customer-table/components/customer-card-modal/models/customer-card-types.model";
+import { CustomerCardTypes } from '@pages/customer/pages/customer-table/components/customer-card-modal/models';
 
 export interface CustomerCardData {
     active: CustomerCardTypes;

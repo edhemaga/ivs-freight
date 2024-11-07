@@ -21,29 +21,12 @@ export class RepairShopResolver {
     ) {}
 
     resolve(): Observable<RepairShopNewListResponse> {
-        return this.repairService
-            .getRepairShopList(
-                undefined,
-                undefined,
-                undefined,
-                undefined,
-                undefined,
-                undefined,
-                undefined,
-                undefined,
-                undefined,
-                undefined,
-                undefined,
-                undefined,
-                1,
-                25
-            )
-            .pipe(
-                tap((repairTrailerPagination) => {
-                    this.repairShopStore.set(
-                        repairTrailerPagination.pagination.data
-                    );
-                })
-            );
+        return this.repairService.getRepairShopList().pipe(
+            tap((repairTrailerPagination) => {
+                this.repairShopStore.set(
+                    repairTrailerPagination.pagination.data
+                );
+            })
+        );
     }
 }

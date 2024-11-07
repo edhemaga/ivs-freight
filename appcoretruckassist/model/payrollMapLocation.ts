@@ -18,5 +18,6 @@ export interface PayrollMapLocation {
     longitude?: number | null;
     type?: EnumValue;
     orderInLoad?: number | null;
+    isCancelStop?: boolean;
 }
 

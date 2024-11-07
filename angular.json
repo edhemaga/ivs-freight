@@ -55,10 +55,7 @@
                         ],
                         "allowedCommonJsDependencies": [
                             "ngx-google-places-autocomplete",
-                            "angular2-chartjs",
-                            "croppie",
-                            "chartjs-plugin-annotation",
-                            "chart.js"
+                            "croppie"
                         ]
                     },
                     "configurations": {

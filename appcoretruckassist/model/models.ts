@@ -245,6 +245,7 @@ export * from './contactPhoneType';
 export * from './conversationInfoResponse';
 export * from './conversationResponse';
 export * from './conversationType';
+export * from './conversationsMetadataResponse';
 export * from './counterResponse';
 export * from './countryType';
 export * from './createAccidentItemCommand';

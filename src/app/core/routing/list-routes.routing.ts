@@ -7,12 +7,13 @@ import { CompanySettingsGuard } from '@core/guards/company-settings.guard';
 // resolvers
 import { TrailerActiveResolver } from '@pages/trailer/resolvers/trailer-active.resolver';
 import { TruckActiveResolver } from '@pages/truck/resolvers/truck-active.resolver';
-import { BrokerResolver } from '@pages/customer/resolvers/broker.resolver';
-import { ShipperResolver } from '@pages/customer/resolvers/shipper.resolver';
+import { BrokerResolver, ShipperResolver } from '@pages/customer/resolvers';
 import { DriverResolver } from '@pages/driver/resolvers/driver.resolver';
 import { LoadActiveResolver } from '@pages/load/resolvers/load-active.resolver';
-import { RepairTruckResolver } from '@pages/repair/resolvers/repair-truck.resolver';
-import { RepairShopResolver } from '@pages/repair/resolvers/repair-shop.resolver';
+import {
+    RepairTruckResolver,
+    RepairShopResolver,
+} from '@pages/repair/resolvers';
 import { PmTrailerResolver } from '@pages/pm-truck-trailer/resolvers/pm-trailer.resolver';
 import { PmTruckResolver } from '@pages/pm-truck-trailer/resolvers/pm-truck.resolver';
 import { FuelResolver } from '@pages/fuel/resolvers/fuel.resolver';
@@ -28,8 +29,8 @@ export class ListRoutes {
             loadChildren: () =>
                 import('@pages/load/load.module').then((m) => m.LoadModule),
             canActivate: [AuthGuard, CompanySettingsGuard],
-            resolve: { 
-                loadActive: LoadActiveResolver
+            resolve: {
+                loadActive: LoadActiveResolver,
             },
         },
         {

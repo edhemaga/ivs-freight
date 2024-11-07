@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 
-import { Observable, tap } from 'rxjs';
+import { Observable, switchMap, tap } from 'rxjs';
 
 // models
 import {
@@ -17,6 +17,7 @@ import {
     RepairShopMinimalListResponse,
     RepairShopResponse,
     RepairShopService,
+    SortOrder,
 } from 'appcoretruckassist';
 
 // store
@@ -380,25 +381,29 @@ export class RepairService {
 
     // Get Repair List
     public getRepairShopList(
-        active?: number,
-        pinned?: boolean,
-        companyOwned?: boolean,
-        isCompanyRelated?: boolean,
-        categoryIds?: Array<number>,
-        _long?: number,
-        lat?: number,
-        distance?: number,
-        costFrom?: number,
-        costTo?: number,
-        visitedByMe?: boolean,
-        driverId?: number,
-        pageIndex?: number,
-        pageSize?: number,
-        companyId?: number,
-        sort?: string,
-        search?: string,
-        search1?: string,
-        search2?: string
+        active: number = null,
+        pinned: boolean = null,
+        companyOwned: boolean = null,
+        isCompanyRelated: boolean = null,
+        categoryIds: number[] = null,
+        _long: number = null,
+        lat: number = null,
+        distance: number = null,
+        areaLocations: string = '',
+        areaDistance: number = 250,
+        costFrom: number = null,
+        costTo: number = null,
+        visitedByMe: boolean = null,
+        driverId: number = null,
+        pageIndex: number = 1,
+        pageSize: number = 25,
+        companyId: number = null,
+        sort: string = null,
+        sortOrder: SortOrder = null,
+        sortBy: object = null,
+        search: string = null,
+        search1: string = null,
+        search2: string = null
     ): Observable<RepairShopNewListResponse> {
         return this.shopServices.apiRepairshopListGet(
             active,
@@ -409,8 +414,8 @@ export class RepairService {
             _long,
             lat,
             distance,
-            '',
-            250,
+            areaLocations,
+            areaDistance,
             costFrom,
             costTo,
             visitedByMe,
@@ -419,8 +424,8 @@ export class RepairService {
             pageSize,
             companyId,
             sort,
-            null,
-            null,
+            sortOrder,
+            sortBy,
             search,
             search1,
             search2
@@ -757,42 +762,24 @@ export class RepairService {
         return this.shopServices.apiRepairshopPinnedIdPut(shopId);
     }
 
-    public changeShopStatus(shopId: any) {
-        this.shopServices.apiRepairshopStatusIdPut(shopId).subscribe({
-            next: () => {
-                this.getRepairShopById(shopId).subscribe({
-                    next: (shop: RepairShopResponse | any) => {
-                        this.repairShopStore.remove(({ id }) => id === shopId);
-                        this.repairShopStore.add(shop);
-                        this.repairDetailsStore.update((store) => {
-                            let ind;
-                            let shopStored = JSON.parse(JSON.stringify(store));
-                            shopStored.repairShop.map(
-                                (data: any, index: any) => {
-                                    if (data.id == shop.id) {
-                                        ind = index;
-                                    }
-                                }
-                            );
+    public changeShopStatus(id: number): Observable<RepairShopResponse> {
+        return this.shopServices.apiRepairshopStatusIdPut(id).pipe(
+            switchMap(() => this.getRepairShopById(id)),
+            tap((shop: RepairShopResponse | any) => {
+                const repairShopId = id;
 
-                            shopStored.repairShop[ind] = shop;
+                this.repairShopStore.remove(({ id }) => id === repairShopId);
+                this.repairShopStore.add(shop);
+                this.repairDetailsStore.update(shop.id, shop);
 
-                            return {
-                                ...store,
-                                repairShop: [...shopStored.repairShop],
-                            };
-                        });
-
-                        this.tableService.sendActionAnimation({
-                            animation: 'update',
-                            tab: 'repair-shop',
-                            data: shop,
-                            id: shop.id,
-                        });
-                    },
+                this.tableService.sendActionAnimation({
+                    animation: 'update',
+                    tab: 'repair-shop',
+                    data: shop,
+                    id: shop.id,
                 });
-            },
-        });
+            })
+        );
     }
 
     public changePinnedStatus(shopId: any) {

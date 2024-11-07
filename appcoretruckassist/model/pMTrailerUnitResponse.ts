@@ -22,5 +22,6 @@ export interface PMTrailerUnitResponse {
     invoice?: string | null;
     lastShop?: RepairShopPMResponse;
     lastService?: string | null;
+    note?: string | null;
 }
 

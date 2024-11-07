@@ -8,8 +8,7 @@ import { ChatStringTypeEnum } from '@pages/chat/enums';
 })
 export class ChatRemoveFullnamePipe implements PipeTransform {
     transform(content: string, fullName: string): string {
-        if (!content || !fullName)
-            return content;
+        if (!content || !fullName) return content;
 
         const regex = new RegExp(`\\b${fullName}\\b`, 'gi');
         return content.replace(regex, ChatStringTypeEnum.EMPTY).trim();

@@ -94,15 +94,38 @@
             class="content d-flex flex-column h-100 justify-content-end align-content-around"
         >
             <!-- Messages  -->
-            <div class="messages-wrapper" #messagesComponent>
+            <div
+                class="messages-wrapper"
+                #messagesComponent
+                (scroll)="messagesScroll()"
+            >
                 <app-chat-messages
                     [conversation]="conversation$"
                     [conversationParticipants]="
                         (conversation$ | async)?.participants
                     "
                     [wrapperHeightPx]="wrapperHeightPx"
+                    (scrollTop)="scrollTop()"
                 ></app-chat-messages>
             </div>
+            <ng-container *ngIf="isScrollToBottomDisplayed">
+                <div
+                    class="scroll-bottom-arrow-wrapper d-flex align-content-center justify-content-center w-100"
+                    (click)="scrollToBottom()"
+                >
+                    <span
+                        class="scroll-bottom-arrow d-flex align-content-center justify-content-center"
+                        [ngClass]="hasNewMessages && 'scroll-bottom-arrow-blue'"
+                    >
+                        <svg-icon
+                            class="d-flex justify-content-center align-items-center"
+                            [svgStyle]="{ 'width.px': 18, 'height.px': 17 }"
+                            [src]="chatSvgRoutes.headerArrowDownIcon"
+                        >
+                        </svg-icon>
+                    </span>
+                </div>
+            </ng-container>
 
             <!-- Footer -->
             <app-chat-content-footer
