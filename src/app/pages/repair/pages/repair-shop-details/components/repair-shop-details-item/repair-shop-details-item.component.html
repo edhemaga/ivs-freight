@@ -2,11 +2,10 @@
     <div [ngSwitch]="repairShopItem.template">
         <!---------------------------- GENERAL TEMPLATE ----------------------------->
         <div *ngSwitchCase="'general'" class="repair-general-holder">
-            <app-repair-shop-details-card
-                [repairShopCardViewData]="repairShopItem?.data"
-            >
+            <app-repair-shop-details-card [repairShop]="repairShopItem?.data">
             </app-repair-shop-details-card>
         </div>
+
         <div *ngSwitchCase="'repair'">
             <div class="repair-container" *ngIf="repairListData?.length">
                 <div class="repair-header repair-details-header-columns">
@@ -130,7 +129,10 @@
                                         [id]="repairs.id"
                                         [data]="repairs"
                                         (dropDownActions)="
-                                            optionsEvent($event, 'repair-detail')
+                                            optionsEvent(
+                                                $event,
+                                                'repair-detail'
+                                            )
                                         "
                                         (click)="stopClick($event, repairs)"
                                     >

@@ -1,0 +1,43 @@
+<app-ta-custom-card
+    [cardName]="_cardData?.shopServiceType?.name + ' Service'"
+    [hasCounter]="_cardData?.activeServicesCount || -1"
+    [isCardOpen]="_cardData?.activeServicesCount"
+    [bodyTemplate]="'card'"
+    [disabledCard]="!_cardData?.activeServicesCount"
+    [animationMarginParams]="{
+        marginTop: '0px',
+        marginBottom: '8px'
+    }"
+>
+    <div class="shop-details-services">
+        <ng-container
+            *ngFor="
+                let service of _cardData?.serviceTypes;
+                trackBy: trackByIdentity
+            "
+        >
+            <div
+                class="d-flex align-items-center shop-details-services-item"
+                [ngClass]="{ active: service.active }"
+            >
+                <svg-icon
+                    class="shop-details-services-item-icon"
+                    [svgStyle]="{
+                        'width.px': 18,
+                        'height.px': 18
+                    }"
+                    [src]="
+                        repairShopDetailsSvgRoutes.repairServicesRoute +
+                        service?.logoName
+                    "
+                ></svg-icon>
+
+                <p
+                    class="m-0 ta-font-bold text-size-11 text-color-light-grey-6"
+                >
+                    {{ service?.serviceType?.name }}
+                </p>
+            </div>
+        </ng-container>
+    </div>
+</app-ta-custom-card>

@@ -1,3 +1,4 @@
+import { CommonModule } from '@angular/common';
 import {
     Component,
     Input,
@@ -6,210 +7,145 @@ import {
     SimpleChanges,
     ChangeDetectorRef,
     OnDestroy,
-    ViewChild,
 } from '@angular/core';
-import { UntypedFormControl } from '@angular/forms';
+import {
+    UntypedFormBuilder,
+    UntypedFormControl,
+    UntypedFormGroup,
+} from '@angular/forms';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+
 import { map, Subject, takeUntil } from 'rxjs';
 
-// Store
+// store
 import { RepairDetailsQuery } from '@pages/repair/state/repair-details-state/repair-details.query';
 
-// Services
-import { RepairService } from '@shared/services/repair.service';
+// services
 import { DetailsPageService } from '@shared/services/details-page.service';
 import { TruckassistTableService } from '@shared/services/truckassist-table.service';
 
-// Models
+// components
+import { RepairShopDetailsOpenHoursCardComponent } from '@pages/repair/pages/repair-shop-details/components/repair-shop-details-card/components/repair-shop-details-open-hours-card/repair-shop-details-open-hours-card.component';
+import { RepairShopDetailsServicesCardComponent } from '@pages/repair/pages/repair-shop-details/components/repair-shop-details-card/components/repair-shop-details-services-card/repair-shop-details-services-card.component';
+import { RepairShopDetailsBankCardComponent } from '@pages/repair/pages/repair-shop-details/components/repair-shop-details-card/components/repair-shop-details-bank-card/repair-shop-details-bank-card.component';
+import { RepairShopDetailsRepairExpenseCardComponent } from '@pages/repair/pages/repair-shop-details/components/repair-shop-details-card/components/repair-shop-details-repair-expense-card/repair-shop-details-repair-expense-card.component';
+import { RepairShopDetailsMapCoverCardComponent } from '@pages/repair/pages/repair-shop-details/components/repair-shop-details-card/components/repair-shop-details-map-cover-card/repair-shop-details-map-cover-card.component';
+
+import { TaDetailsHeaderCardComponent } from '@shared/components/ta-details-header-card/ta-details-header-card.component';
+import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-custom-card.component';
+import { TaProfileImagesComponent } from '@shared/components/ta-profile-images/ta-profile-images.component';
+import { TaTableHeadComponent } from '@shared/components/ta-table/ta-table-head/ta-table-head.component';
+import { TaInputNoteComponent } from '@shared/components/ta-input-note/ta-input-note.component';
+import { TaTableBodyComponent } from '@shared/components/ta-table/ta-table-body/ta-table-body.component';
+import { TaCopyComponent } from '@shared/components/ta-copy/ta-copy.component';
+import { TaUploadFilesComponent } from '@shared/components/ta-upload-files/ta-upload-files.component';
+import { TaCommonCardComponent } from '@shared/components/ta-common-card/ta-common-card.component';
+import { TaProgressExpirationComponent } from '@shared/components/ta-progress-expiration/ta-progress-expiration.component';
+import { TaCounterComponent } from '@shared/components/ta-counter/ta-counter.component';
+import { TaDetailsHeaderComponent } from '@shared/components/ta-details-header/ta-details-header.component';
+import { TaTabSwitchComponent } from '@shared/components/ta-tab-switch/ta-tab-switch.component';
+import { TaDetailsDropdownComponent } from '@shared/components/ta-details-dropdown/ta-details-dropdown.component';
+
+// pipes
+import { FormatCurrencyPipe, FormatDatePipe } from '@shared/pipes';
+
+// models
 import { RepairShopResponse } from 'appcoretruckassist';
 
 @Component({
     selector: 'app-repair-shop-details-card',
     templateUrl: './repair-shop-details-card.component.html',
     styleUrls: ['./repair-shop-details-card.component.scss'],
+    standalone: true,
+    imports: [
+        // modules
+        CommonModule,
+
+        // components
+        RepairShopDetailsOpenHoursCardComponent,
+        RepairShopDetailsServicesCardComponent,
+        RepairShopDetailsBankCardComponent,
+        RepairShopDetailsRepairExpenseCardComponent,
+        RepairShopDetailsMapCoverCardComponent,
+
+        ///// TODO
+        TaDetailsHeaderCardComponent,
+        TaCustomCardComponent,
+        TaInputNoteComponent,
+        TaTableBodyComponent,
+        TaTableHeadComponent,
+        TaProfileImagesComponent,
+        TaCopyComponent,
+        TaUploadFilesComponent,
+        TaCommonCardComponent,
+        TaProgressExpirationComponent,
+        TaCounterComponent,
+        TaDetailsHeaderComponent,
+        TaTabSwitchComponent,
+        TaDetailsDropdownComponent,
+
+        // Pipes
+        FormatDatePipe,
+        FormatCurrencyPipe,
+    ],
 })
-export class RepairShopCardViewComponent
-    implements OnInit, OnChanges, OnDestroy
-{
+export class RepairShopDetailsCard implements OnInit, OnChanges, OnDestroy {
+    @Input() repairShop: RepairShopResponse;
+
     private destroy$ = new Subject<void>();
-    public repairExpensesChart: any;
-    @Input() repairShopCardViewData: RepairShopResponse;
-    @Input() templateCard: boolean;
+
     public noteControl: UntypedFormControl = new UntypedFormControl();
-    public count: number;
-    public tabs: any;
+
     public shopsDropdowns: any[] = [];
-    public shopsList: any;
-    public repairShopObject: any;
     public shopIndex: any;
-    public currentShopId: number;
-    public monthList: any[] = [
-        'JAN',
-        'FEB',
-        'MAR',
-        'APR',
-        'MAY',
-        'JUN',
-        'JUL',
-        'AUG',
-        'SEP',
-        'OCT',
-        'NOV',
-        'DEC',
-    ];
-    barChartConfig: any = {
-        dataProperties: [
-            {
-                defaultConfig: {
-                    type: 'line',
-                    data: [],
-                    label: 'Salary',
-                    yAxisID: 'y-axis-1',
-                    borderColor: '#6D82C7',
-                    pointBackgroundColor: '#FFFFFF',
-                    pointHoverBackgroundColor: '#6D82C7',
-                    pointHoverBorderColor: '#FFFFFF',
-                    pointHoverRadius: 3,
-                    pointBorderWidth: 2,
-                },
-            },
-            {
-                defaultConfig: {
-                    type: 'bar',
-                    data: [],
-                    label: 'Miles',
-                    yAxisID: 'y-axis-0',
-                    borderColor: '#FFCC80',
-                    backgroundColor: '#FFCC80',
-                    hoverBackgroundColor: '#FFA726',
-                    barThickness: 18,
-                },
-            },
-        ],
-        showLegend: false,
-        chartValues: [0, 0],
-        onHoverAnnotation: true,
-        hoverTimeDisplay: true,
-        defaultType: 'bar',
-        chartWidth: '417',
-        chartHeight: '130',
-        hasValue: false,
-        offset: true,
-        allowAnimation: true,
-        animationOnlyOnLoad: true,
-        dataLabels: [
-            '',
-            'NOV',
-            '',
-            '2021',
-            '',
-            'MAR',
-            '',
-            'MAY',
-            '',
-            'JUL',
-            '',
-            'SEP',
-        ],
-        noChartImage: 'assets/svg/common/yellow_no_data.svg',
-        showHoverTooltip: true,
-        showZeroLine: true,
-    };
 
-    public barChartLegend: any[] = [
-        {
-            title: 'Repair',
-            value: 0,
-            image: 'assets/svg/common/round_yellow.svg',
-            elementId: 1,
-        },
-        {
-            title: 'Cost',
-            value: 0,
-            image: 'assets/svg/common/round_blue.svg',
-            prefix: '$',
-            elementId: 0,
-        },
-    ];
-
-    public barAxes: object = {
-        verticalLeftAxes: {
-            visible: true,
-            minValue: 0,
-            maxValue: 4000,
-            stepSize: 1000,
-            showGridLines: false,
-        },
-        verticalRightAxes: {
-            visible: true,
-            minValue: 0,
-            maxValue: 2800,
-            stepSize: 700,
-            showGridLines: false,
-        },
-        horizontalAxes: {
-            visible: true,
-            position: 'bottom',
-            showGridLines: false,
-        },
-    };
-
-    public repairCall: any = {
-        id: -1,
-        chartType: 1,
-    };
+    // note card
+    public noteForm: UntypedFormGroup;
 
     constructor(
-        // Router
+        private formBuilder: UntypedFormBuilder,
+
+        // router
         private act_route: ActivatedRoute,
         private router: Router,
 
-        // Services
+        // services
         private detailsPageDriverSer: DetailsPageService,
         private tableService: TruckassistTableService,
-        private repairService: RepairService,
 
-        // Ref
+        // ref
         private cdRef: ChangeDetectorRef,
 
-        // Store
+        // store
         private repairDetailsQuery: RepairDetailsQuery
     ) {}
 
     ngOnChanges(changes: SimpleChanges): void {
         if (
-            changes.repairShopCardViewData?.currentValue !=
-            changes.repairShopCardViewData?.previousValue
+            changes.repairShop?.currentValue !=
+            changes.repairShop?.previousValue
         ) {
-            this.noteControl.patchValue(
-                changes.repairShopCardViewData.currentValue.note
-            );
-            this.repairShopCardViewData =
-                changes.repairShopCardViewData?.currentValue;
+            this.noteControl.patchValue(changes.repairShop.currentValue.note);
+            this.repairShop = changes.repairShop?.currentValue;
         }
-        this.currentShopId = changes.repairShopCardViewData.currentValue.id;
-        this.getRepairShopChartData(
-            changes.repairShopCardViewData.currentValue.id,
-            this.repairCall.chartType,
-            false
-        );
-        this.getActiveServices(changes.repairShopCardViewData.currentValue);
-        this.getShopsDropdown(changes.repairShopCardViewData.currentValue);
+
+        this.getShopsDropdown(changes.repairShop.currentValue);
 
         this.cdRef.detectChanges();
     }
 
     ngOnInit(): void {
+        console.log('repairShop', this.repairShop);
+        this.createForm();
+
         this.tableService.currentActionAnimation
             .pipe(takeUntil(this.destroy$))
             .subscribe((res: any) => {
-                if (res.animation && res.tab === 'repair-shop') {
-                    this.repairShopCardViewData = res.data;
+                if (res?.animation && res.tab === 'repair-shop') {
+                    this.repairShop = res.data;
                     this.cdRef.detectChanges();
                 }
             });
-
-        this.tabsSwitcher();
 
         // Only One Time Call From Store Data
         this.getShopsDropdown();
@@ -225,6 +161,12 @@ export class RepairShopCardViewComponent
 
         let currentIndex = this.shopsDropdowns.findIndex((item) => item.active);
         this.shopIndex = currentIndex;
+    }
+
+    private createForm(): void {
+        this.noteForm = this.formBuilder.group({
+            note: [null],
+        });
     }
 
     public getShopsDropdown(newData?) {
@@ -302,149 +244,10 @@ export class RepairShopCardViewComponent
         }
     }
 
-    public getActiveServices(data: RepairShopResponse) {
-        let res = data.serviceTypes.filter((item) => item.active);
-        this.count = res.length;
-        return this.count;
-    }
-
-    public tabsSwitcher() {
-        this.tabs = [
-            {
-                id: 223,
-                name: '1M',
-                checked: true,
-            },
-            {
-                name: '3M',
-                checked: false,
-            },
-            {
-                id: 412,
-                name: '6M',
-                checked: false,
-            },
-            {
-                id: 515,
-                name: '1Y',
-                checked: false,
-            },
-            {
-                id: 1210,
-                name: 'YTD',
-                checked: false,
-            },
-            {
-                id: 1011,
-                name: 'ALL',
-                checked: false,
-            },
-        ];
-    }
-
-    /**Function return id */
-    public identity(index: number, item: any): number {
-        return item.id;
-    }
-
-    public changeRepairTabs(ev: any) {
-        //const chartType = this.repairExpensesChart?.detailsTimePeriod(ev.name);
-        //this.getRepairShopChartData(this.currentShopId, chartType);
-    }
-
-    public getRepairShopChartData(
-        id: number,
-        chartType: number,
-        hideAnimation?: boolean
-    ) {
-        if (
-            id != this.repairCall.id ||
-            chartType != this.repairCall.chartType
-        ) {
-            this.repairCall.id = id;
-            this.repairCall.chartType = chartType;
-        } else {
-            return false;
-        }
-        this.repairService
-            .getRepairShopChart(id, chartType)
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((item) => {
-                this.barChartConfig.dataLabels = [];
-                this.barChartConfig.chartValues = [item.repair, item.cost];
-                this.barChartLegend[0].value = item.repair;
-                this.barChartLegend[1].value = item.cost;
-
-                let hasValue = false;
-
-                this.barChartLegend.map((leg) => {
-                    if (leg.value > 0) {
-                        hasValue = true;
-                    }
-                });
-
-                this.barChartConfig.hasValue = hasValue;
-
-                this.cdRef.detectChanges();
-
-                let milesPerGallon = [],
-                    costPerGallon = [],
-                    labels = [],
-                    maxValue = 0,
-                    maxValue2 = 0;
-                if (item?.repairShopExpensesChartResponse?.length > 17) {
-                    this.barChartConfig.dataProperties[1].defaultConfig.barThickness = 10;
-                } else {
-                    this.barChartConfig.dataProperties[1].defaultConfig.barThickness = 18;
-                }
-                //this.repairExpensesChart.toolTipData = [];
-                item.repairShopExpensesChartResponse.map((data) => {
-                    //this.repairExpensesChart.toolTipData.push(data);
-                    milesPerGallon.push(data.repair);
-                    costPerGallon.push(data.repairCost);
-                    if (data.repair > maxValue) {
-                        maxValue = data.repair + (data.repair * 7) / 100;
-                    }
-                    if (data.repairCost > maxValue2) {
-                        maxValue2 =
-                            data.repairCost + (data.repairCost * 7) / 100;
-                    }
-                    if (data.day) {
-                        labels.push([data.day, this.monthList[data.month - 1]]);
-                    } else {
-                        labels.push([this.monthList[data.month - 1]]);
-                    }
-                });
-
-                this.barAxes['verticalLeftAxes']['maxValue'] = maxValue;
-                this.barAxes['verticalRightAxes']['maxValue'] = maxValue2;
-                this.barChartConfig.dataLabels = labels;
-                this.barChartConfig.dataProperties[0].defaultConfig.data =
-                    costPerGallon;
-                this.barChartConfig.dataProperties[1].defaultConfig.data =
-                    milesPerGallon;
-                // this.repairExpensesChart.chartDataCheck(
-                //     this.barChartConfig.chartValues
-                // );
-                // this.repairExpensesChart.updateChartData(hideAnimation);
-                // this.repairExpensesChart.saveValues = JSON.parse(
-                //     JSON.stringify(this.barChartLegend)
-                // );
-                // this.repairExpensesChart.legendAttributes = JSON.parse(
-                //     JSON.stringify(this.barChartLegend)
-                // );
-            });
-
-        this.cdRef.detectChanges();
-    }
-
-    public chartHovered(event) {
-        //this.repairExpensesChart.hoveringStatus = event;
-    }
-
     ngOnDestroy(): void {
         this.destroy$.next();
         this.destroy$.complete();
+
         this.tableService.sendActionAnimation({});
     }
 }

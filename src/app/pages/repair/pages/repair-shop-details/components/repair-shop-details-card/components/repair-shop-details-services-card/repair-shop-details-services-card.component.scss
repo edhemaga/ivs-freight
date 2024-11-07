@@ -1,0 +1,34 @@
+@import 'src/theme/variables';
+
+.shop-details-services {
+    display: grid;
+    grid-template-columns: repeat(4, 83px);
+    grid-column-gap: 28px;
+    grid-row-gap: 12px;
+
+    &-item {
+        &.active {
+            .shop-details-services-item-icon {
+                svg {
+                    path {
+                        fill: $bw5 !important;
+                    }
+                }
+            }
+
+            p {
+                color: $ta-black !important;
+            }
+        }
+
+        &-icon {
+            margin-right: 4px;
+
+            svg {
+                path {
+                    fill: $ta-light-grey-6;
+                }
+            }
+        }
+    }
+}

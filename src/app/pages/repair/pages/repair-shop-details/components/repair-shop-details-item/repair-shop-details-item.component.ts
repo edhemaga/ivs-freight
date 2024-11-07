@@ -32,6 +32,23 @@ import { RepairOrderModalComponent } from '@pages/repair/pages/repair-modals/rep
 // Animations
 import { cardComponentAnimation } from '@shared/animations/card-component.animation';
 import { TableStringEnum } from '@shared/enums/table-string.enum';
+import { CommonModule } from '@angular/common';
+import { TaDetailsHeaderCardComponent } from '@shared/components/ta-details-header-card/ta-details-header-card.component';
+import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-custom-card.component';
+import { TaDetailsDropdownComponent } from '@shared/components/ta-details-dropdown/ta-details-dropdown.component';
+import { TaUploadFilesComponent } from '@shared/components/ta-upload-files/ta-upload-files.component';
+import { TaProfileImagesComponent } from '@shared/components/ta-profile-images/ta-profile-images.component';
+import { TaInputNoteComponent } from '@shared/components/ta-input-note/ta-input-note.component';
+import { TaTableBodyComponent } from '@shared/components/ta-table/ta-table-body/ta-table-body.component';
+import { TaTableHeadComponent } from '@shared/components/ta-table/ta-table-head/ta-table-head.component';
+import { TaCopyComponent } from '@shared/components/ta-copy/ta-copy.component';
+import { TaCommonCardComponent } from '@shared/components/ta-common-card/ta-common-card.component';
+import { TaProgressExpirationComponent } from '@shared/components/ta-progress-expiration/ta-progress-expiration.component';
+import { TaCounterComponent } from '@shared/components/ta-counter/ta-counter.component';
+import { TaDetailsHeaderComponent } from '@shared/components/ta-details-header/ta-details-header.component';
+import { TaTabSwitchComponent } from '@shared/components/ta-tab-switch/ta-tab-switch.component';
+import { FormatCurrencyPipe, FormatDatePipe } from '@shared/pipes';
+import { RepairShopDetailsCard } from '@pages/repair/pages/repair-shop-details/components/repair-shop-details-card/repair-shop-details-card.component';
 
 @Component({
     selector: 'app-repair-shop-details-item',
@@ -40,6 +57,32 @@ import { TableStringEnum } from '@shared/enums/table-string.enum';
     styleUrls: ['./repair-shop-details-item.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
     animations: [cardComponentAnimation('showHideCardBody', '0px', '0px')],
+    standalone: true,
+    imports: [
+        // Modules
+        CommonModule,
+
+        ///// TODO
+        TaDetailsHeaderCardComponent,
+        TaCustomCardComponent,
+        TaInputNoteComponent,
+        TaTableBodyComponent,
+        TaTableHeadComponent,
+        TaProfileImagesComponent,
+        TaCopyComponent,
+        TaUploadFilesComponent,
+        TaCommonCardComponent,
+        TaProgressExpirationComponent,
+        TaCounterComponent,
+        TaDetailsHeaderComponent,
+        TaTabSwitchComponent,
+        TaDetailsDropdownComponent,
+        RepairShopDetailsCard,
+
+        // Pipes
+        FormatDatePipe,
+        FormatCurrencyPipe,
+    ],
 })
 export class RepairShopDetailsItemComponent implements OnInit, OnChanges {
     @Input() repairShopItem: RepairShopResponse | any = null;
@@ -127,7 +170,7 @@ export class RepairShopDetailsItemComponent implements OnInit, OnChanges {
         this.tableService.currentActionAnimation
             .pipe(takeUntil(this.destroy$))
             .subscribe((res: any) => {
-                if (res.animation && res.tab === 'repair') {
+                if (res?.animation && res.tab === 'repair') {
                     let index = -1;
                     this.repairListData.map((item, inx) => {
                         if (item.id == res.id) {

@@ -1,19 +1,19 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { RepairShopCardViewComponent } from '@pages/repair/pages/repair-shop-details/components/repair-shop-details-card/repair-shop-details-card.component';
+import { RepairShopDetailsCard } from '@pages/repair/pages/repair-shop-details/components/repair-shop-details-card/repair-shop-details-card.component';
 
-describe('RepairShopCardViewComponent', () => {
-    let component: RepairShopCardViewComponent;
-    let fixture: ComponentFixture<RepairShopCardViewComponent>;
+describe('RepairShopDetailsCard', () => {
+    let component: RepairShopDetailsCard;
+    let fixture: ComponentFixture<RepairShopDetailsCard>;
 
     beforeEach(async () => {
         await TestBed.configureTestingModule({
-            declarations: [RepairShopCardViewComponent],
+            declarations: [RepairShopDetailsCard],
         }).compileComponents();
     });
 
     beforeEach(() => {
-        fixture = TestBed.createComponent(RepairShopCardViewComponent);
+        fixture = TestBed.createComponent(RepairShopDetailsCard);
         component = fixture.componentInstance;
         fixture.detectChanges();
     });

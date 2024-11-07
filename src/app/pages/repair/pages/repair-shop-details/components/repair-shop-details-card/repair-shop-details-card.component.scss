@@ -1,6 +1,19 @@
-@import '../../repair-shop-details.component.scss';
+/* @import '../../repair-shop-details.component.scss'; */
 
-.icon-repair-shop-circle {
+@import 'src/theme/variables';
+
+.repair-shop-details-card {
+    .additional-cards-container {
+        .repair-shop-details-cards {
+            border-radius: 3px;
+            overflow: hidden;
+            padding: 1px 8px 0px 8px;
+            background: $white;
+        }
+    }
+}
+
+/* .icon-repair-shop-circle {
     display: flex;
     svg {
         display: flex;
@@ -83,3 +96,4 @@ app-repair-shop-card-view {
         }
     }
 }
+ */
