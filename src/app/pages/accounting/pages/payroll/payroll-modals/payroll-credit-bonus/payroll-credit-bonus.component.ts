@@ -63,6 +63,7 @@ export class PayrollCreditBonusComponent implements OnInit {
 
     // Form
     public payrollCreditForm: UntypedFormGroup;
+    public formLoaded: boolean;
 
     constructor(
         private payrolCreditService: PayrollCreditService,
@@ -93,6 +94,7 @@ export class PayrollCreditBonusComponent implements OnInit {
             [PayrollStringEnum.SELECTED_TRUCK_ID]: [data?.truckId ?? null],
             [PayrollStringEnum.SELECTED_TYPE_ID]: [creditType],
         });
+        this.formLoaded = true;
     }
 
     public get isEditMode(): boolean {

@@ -1,3 +1,4 @@
+<ng-container *ngIf="formLoaded">
 <app-payroll-base-modal
     [modalTitle]="!isEditMode ? 'Add Credit' : 'Edit Credit'"
     [baseForm]="payrollCreditForm"
@@ -53,3 +54,4 @@
         </ng-template>
     </div>
 </ng-template>
+</ng-container>

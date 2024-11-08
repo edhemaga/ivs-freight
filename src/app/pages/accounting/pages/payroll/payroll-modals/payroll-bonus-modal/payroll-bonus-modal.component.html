@@ -1,5 +1,55 @@
 <app-payroll-base-modal
-    [modalTitle]="'Add Bonus'"
+    [modalTitle]="!isEditMode ? 'Add Bonus' : 'Edit Bonus'"
     [baseForm]="payrollCreditForm"
     [modalType]="'MODAL_BONUS'"
+    [editData]="editData"
+    [footerTemplate]="footerContent"
+    [isDriverAndTruckTabs]="true"
 ></app-payroll-base-modal>
+
+<ng-template #footerContent>
+    <div class="modal-footer modal-footer-payroll" [class.justify-content-between]="isEditMode">
+        <div class="divider divider--dark divider--small"></div>
+        <ng-container *ngIf="isEditMode; else showCreateButtons">
+            <div>
+                <button
+                    class="modal-delete-btn ta-font-bold mr-12"
+                    (click)="saveBonus(taModalActionEnums.DELETE)"
+                    [class.valid]="payrollCreditForm?.valid"
+                >
+                    Delete
+                </button>
+                <button
+                    class="modal-convert-to-template-btn ta-font-bold"
+                    (click)="saveBonus(taModalActionEnums.MOVE_TO_THIS_PERIOD)"
+                >
+                    Move to This Period
+                </button>
+            </div>
+            <button
+                class="modal-save-btn ta-font-bold"
+                (click)="saveBonus(taModalActionEnums.UPDATE)"
+                [class.valid]="payrollCreditForm?.valid"
+            >
+                Save Changes
+            </button>
+        </ng-container>
+
+        <ng-template #showCreateButtons>
+            <button
+                class="ta-font-bold modal-save-btn modal-save-btn-add-new mr-12"
+                [class.valid]="payrollCreditForm?.valid"
+                (click)="saveBonus(taModalActionEnums.SAVE_AND_ADD_NEW)"
+            >
+                Save and Add New
+            </button>
+            <button
+                class="modal-save-btn ta-font-bold"
+                (click)="saveBonus(taModalActionEnums.SAVE)"
+                [class.valid]="payrollCreditForm?.valid"
+            >
+                Save
+            </button>
+        </ng-template>
+    </div>
+</ng-template>
