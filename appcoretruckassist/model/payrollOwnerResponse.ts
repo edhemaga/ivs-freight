@@ -31,7 +31,7 @@ export interface PayrollOwnerResponse {
     periodEnd?: string;
     payrollDeadLine?: PayrollDeadlineShortResponse;
     status?: EnumValue;
-    total?: number | null;
+    earnings?: number | null;
     commission?: number | null;
     salary?: number | null;
     includedDeductions?: Array<PayrollDeductionMinimalResponse> | null;
