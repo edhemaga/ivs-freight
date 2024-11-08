@@ -65,7 +65,7 @@ import { RepairShopDetailsCard } from '@pages/repair/pages/repair-shop-details/c
         ///// TODO
         TaDetailsHeaderCardComponent,
         TaCustomCardComponent,
-        TaInputNoteComponent,
+        /*  TaInputNoteComponent, */
         TaTableBodyComponent,
         TaTableHeadComponent,
         TaProfileImagesComponent,

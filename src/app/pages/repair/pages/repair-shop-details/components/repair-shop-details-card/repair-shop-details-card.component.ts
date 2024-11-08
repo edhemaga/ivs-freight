@@ -10,8 +10,8 @@ import {
 } from '@angular/core';
 import {
     UntypedFormBuilder,
-    UntypedFormControl,
     UntypedFormGroup,
+    ReactiveFormsModule,
 } from '@angular/forms';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 
@@ -30,24 +30,11 @@ import { RepairShopDetailsServicesCardComponent } from '@pages/repair/pages/repa
 import { RepairShopDetailsBankCardComponent } from '@pages/repair/pages/repair-shop-details/components/repair-shop-details-card/components/repair-shop-details-bank-card/repair-shop-details-bank-card.component';
 import { RepairShopDetailsRepairExpenseCardComponent } from '@pages/repair/pages/repair-shop-details/components/repair-shop-details-card/components/repair-shop-details-repair-expense-card/repair-shop-details-repair-expense-card.component';
 import { RepairShopDetailsMapCoverCardComponent } from '@pages/repair/pages/repair-shop-details/components/repair-shop-details-card/components/repair-shop-details-map-cover-card/repair-shop-details-map-cover-card.component';
+import { RepairShopDetailsTitleCardComponent } from '@pages/repair/pages/repair-shop-details/components/repair-shop-details-card/components/repair-shop-details-title-card/repair-shop-details-title-card.component';
 
-import { TaDetailsHeaderCardComponent } from '@shared/components/ta-details-header-card/ta-details-header-card.component';
 import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-custom-card.component';
-import { TaProfileImagesComponent } from '@shared/components/ta-profile-images/ta-profile-images.component';
-import { TaTableHeadComponent } from '@shared/components/ta-table/ta-table-head/ta-table-head.component';
 import { TaInputNoteComponent } from '@shared/components/ta-input-note/ta-input-note.component';
-import { TaTableBodyComponent } from '@shared/components/ta-table/ta-table-body/ta-table-body.component';
-import { TaCopyComponent } from '@shared/components/ta-copy/ta-copy.component';
 import { TaUploadFilesComponent } from '@shared/components/ta-upload-files/ta-upload-files.component';
-import { TaCommonCardComponent } from '@shared/components/ta-common-card/ta-common-card.component';
-import { TaProgressExpirationComponent } from '@shared/components/ta-progress-expiration/ta-progress-expiration.component';
-import { TaCounterComponent } from '@shared/components/ta-counter/ta-counter.component';
-import { TaDetailsHeaderComponent } from '@shared/components/ta-details-header/ta-details-header.component';
-import { TaTabSwitchComponent } from '@shared/components/ta-tab-switch/ta-tab-switch.component';
-import { TaDetailsDropdownComponent } from '@shared/components/ta-details-dropdown/ta-details-dropdown.component';
-
-// pipes
-import { FormatCurrencyPipe, FormatDatePipe } from '@shared/pipes';
 
 // models
 import { RepairShopResponse } from 'appcoretruckassist';
@@ -60,6 +47,7 @@ import { RepairShopResponse } from 'appcoretruckassist';
     imports: [
         // modules
         CommonModule,
+        ReactiveFormsModule,
 
         // components
         RepairShopDetailsOpenHoursCardComponent,
@@ -67,26 +55,11 @@ import { RepairShopResponse } from 'appcoretruckassist';
         RepairShopDetailsBankCardComponent,
         RepairShopDetailsRepairExpenseCardComponent,
         RepairShopDetailsMapCoverCardComponent,
+        RepairShopDetailsTitleCardComponent,
 
-        ///// TODO
-        TaDetailsHeaderCardComponent,
         TaCustomCardComponent,
         TaInputNoteComponent,
-        TaTableBodyComponent,
-        TaTableHeadComponent,
-        TaProfileImagesComponent,
-        TaCopyComponent,
         TaUploadFilesComponent,
-        TaCommonCardComponent,
-        TaProgressExpirationComponent,
-        TaCounterComponent,
-        TaDetailsHeaderComponent,
-        TaTabSwitchComponent,
-        TaDetailsDropdownComponent,
-
-        // Pipes
-        FormatDatePipe,
-        FormatCurrencyPipe,
     ],
 })
 export class RepairShopDetailsCard implements OnInit, OnChanges, OnDestroy {
@@ -94,10 +67,9 @@ export class RepairShopDetailsCard implements OnInit, OnChanges, OnDestroy {
 
     private destroy$ = new Subject<void>();
 
-    public noteControl: UntypedFormControl = new UntypedFormControl();
+    public repairShopCurrentIndex: number;
 
-    public shopsDropdowns: any[] = [];
-    public shopIndex: any;
+    public repairShopsDropdownList: any[] = [];
 
     // note card
     public noteForm: UntypedFormGroup;
@@ -121,17 +93,9 @@ export class RepairShopDetailsCard implements OnInit, OnChanges, OnDestroy {
     ) {}
 
     ngOnChanges(changes: SimpleChanges): void {
-        if (
-            changes.repairShop?.currentValue !=
-            changes.repairShop?.previousValue
-        ) {
-            this.noteControl.patchValue(changes.repairShop.currentValue.note);
-            this.repairShop = changes.repairShop?.currentValue;
+        if (!changes?.repairShop?.firstChange && changes?.driver.currentValue) {
+            this.getShopsDropdown(changes.repairShop.currentValue);
         }
-
-        this.getShopsDropdown(changes.repairShop.currentValue);
-
-        this.cdRef.detectChanges();
     }
 
     ngOnInit(): void {
@@ -159,8 +123,10 @@ export class RepairShopDetailsCard implements OnInit, OnChanges, OnDestroy {
                 }
             });
 
-        let currentIndex = this.shopsDropdowns.findIndex((item) => item.active);
-        this.shopIndex = currentIndex;
+        let currentIndex = this.repairShopsDropdownList.findIndex(
+            (item) => item.active
+        );
+        this.repairShopCurrentIndex = currentIndex;
     }
 
     private createForm(): void {
@@ -192,36 +158,42 @@ export class RepairShopDetailsCard implements OnInit, OnChanges, OnDestroy {
                 if (newData) {
                     data[0]['name'] = newData.name;
                 }
-                this.shopsDropdowns = data;
+                this.repairShopsDropdownList = data;
             });
     }
 
     public onSelectedShop(event: any) {
         if (event && event.id !== +this.act_route.snapshot.params['id']) {
-            this.shopsDropdowns = this.shopsDropdowns.map((item) => {
-                return {
-                    id: item.id,
-                    name: item.name,
-                    status: item.status,
-                    svg: item.pinned ? 'ic_star.svg' : null,
-                    folder: 'common',
-                    active: item.id === event.id,
-                };
-            });
+            this.repairShopsDropdownList = this.repairShopsDropdownList.map(
+                (item) => {
+                    return {
+                        id: item.id,
+                        name: item.name,
+                        status: item.status,
+                        svg: item.pinned ? 'ic_star.svg' : null,
+                        folder: 'common',
+                        active: item.id === event.id,
+                    };
+                }
+            );
 
             this.detailsPageDriverSer.getDataDetailId(event.id);
         }
     }
 
     public onChangeShop(action: string) {
-        let currentIndex = this.shopsDropdowns.findIndex((item) => item.active);
+        let currentIndex = this.repairShopsDropdownList.findIndex(
+            (item) => item.active
+        );
 
         switch (action) {
             case 'previous': {
                 currentIndex = --currentIndex;
                 if (currentIndex != -1) {
-                    this.onSelectedShop(this.shopsDropdowns[currentIndex]);
-                    this.shopIndex = currentIndex;
+                    this.onSelectedShop(
+                        this.repairShopsDropdownList[currentIndex]
+                    );
+                    this.repairShopCurrentIndex = currentIndex;
                 }
                 break;
             }
@@ -229,12 +201,12 @@ export class RepairShopDetailsCard implements OnInit, OnChanges, OnDestroy {
                 currentIndex = ++currentIndex;
                 if (
                     currentIndex !== -1 &&
-                    this.shopsDropdowns.length > currentIndex
+                    this.repairShopsDropdownList.length > currentIndex
                 ) {
                     this.onSelectedShop({
-                        id: this.shopsDropdowns[currentIndex].id,
+                        id: this.repairShopsDropdownList[currentIndex].id,
                     });
-                    this.shopIndex = currentIndex;
+                    this.repairShopCurrentIndex = currentIndex;
                 }
                 break;
             }
