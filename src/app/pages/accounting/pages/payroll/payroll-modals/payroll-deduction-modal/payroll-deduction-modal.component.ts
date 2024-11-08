@@ -116,7 +116,7 @@ export class PayrollDeductionModalComponent implements OnInit {
                 data.amount ?? null,
                 Validators.required,
             ],
-            [PayrollStringEnum.RECURRING]: [!!recurringType],
+            [PayrollStringEnum.RECURRING]: [!!this.editData?.data?.recurringType?.name ],
             [PayrollStringEnum.RECURRING_TYPE]: [recurringType],
             [PayrollStringEnum.LIMITED]: [
                 (!!data.limitedNumber || !!data.limitedAmount) ?? null,
