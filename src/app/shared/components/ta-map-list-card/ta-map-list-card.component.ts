@@ -32,6 +32,9 @@ import { TaDetailsDropdownComponent } from '@shared/components/ta-details-dropdo
 import { TaProfileImagesComponent } from '@shared/components/ta-profile-images/ta-profile-images.component';
 import { AddressEntity } from 'appcoretruckassist';
 
+// tooltip
+import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
+
 @Component({
     selector: 'app-ta-map-list-card',
     templateUrl: './ta-map-list-card.component.html',
@@ -44,6 +47,7 @@ import { AddressEntity } from 'appcoretruckassist';
         FormsModule,
         ReactiveFormsModule,
         AngularSvgIconModule,
+        NgbTooltipModule,
 
         // Components
         TaDetailsDropdownComponent,

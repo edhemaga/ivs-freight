@@ -74,6 +74,8 @@
                 [type]="'repairShop'"
                 [columns]="columns"
                 [mapListContent]="mapListData"
+                (searchEvent)="onMapListSearch($event)"
+                (sortEvent)="onMapListSort($event)"
                 (headActions)="onTableHeadActions($event)"
             >
                 <app-ta-map-list-card

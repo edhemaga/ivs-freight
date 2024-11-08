@@ -28,18 +28,30 @@
                     ></span
                 >
             </div>
-            <div class="d-flex">
-                <svg-icon
-                    class="favorite-svg"
-                    [ngClass]="{ active: item?.isFavorite }"
-                    src="assets/svg/detail-cards/favorite.svg"
-                    [svgStyle]="{ 'width.px': 18, 'height.px': 18 }"
+            <div class="d-flex align-items-center gap-1">
+                <ng-container
                     *ngIf="
                         sortCategory.name == 'Favorites' ||
                         sortCategory.name == 'Fuel Price' ||
                         item?.isFavorite
                     "
-                ></svg-icon>
+                >
+                    <div
+                        class="d-flex"
+                        ngbTooltip
+                        mainTooltip="Favorite"
+                        tooltipBackground="#424242"
+                        position="bottom"
+                    >
+                        <svg-icon
+                            class="d-flex favorite-svg"
+                            [ngClass]="{ active: item?.isFavorite }"
+                            src="assets/svg/chat/favorite-icon.svg"
+                            [svgStyle]="{ 'width.px': 14, 'height.px': 14 }"
+                        ></svg-icon>
+                    </div>
+                </ng-container>
+
                 <div
                     class="show-more"
                     [ngClass]="

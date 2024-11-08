@@ -22,9 +22,13 @@ import { CommonModule } from '@angular/common';
 import { Subject, takeUntil } from 'rxjs';
 
 // modules
-// import { AgmCoreModule } from '@agm/core';
-// import { AgmSnazzyInfoWindowModule } from '@agm/snazzy-info-window';
 import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
+import {
+    ReactiveFormsModule,
+    UntypedFormBuilder,
+    UntypedFormGroup,
+} from '@angular/forms';
+import { FormsModule } from '@angular/forms';
 
 // icon
 import { AngularSvgIconModule } from 'angular-svg-icon';
@@ -34,13 +38,7 @@ import { MapsService } from '@shared/services/maps.service';
 import { TruckassistTableService } from '@shared/services/truckassist-table.service';
 
 // component
-import { TaInputComponent } from '@shared/components/ta-input/ta-input.component';
-import {
-    ReactiveFormsModule,
-    UntypedFormBuilder,
-    UntypedFormGroup,
-} from '@angular/forms';
-import { FormsModule } from '@angular/forms';
+import { TaSearchV2Component } from '@shared/components/ta-search-v2/ta-search-v2.component';
 
 @Component({
     selector: 'app-ta-map-list',
@@ -53,13 +51,11 @@ import { FormsModule } from '@angular/forms';
         CommonModule,
         FormsModule,
         ReactiveFormsModule,
-        // AgmCoreModule,
         AngularSvgIconModule,
         NgbPopoverModule,
-        // AgmSnazzyInfoWindowModule,
 
         // Components
-        TaInputComponent,
+        TaSearchV2Component,
     ],
 })
 export class TaMapListComponent
@@ -73,7 +69,8 @@ export class TaMapListComponent
     @Input() mapListContent: any[] = [];
     @Output() changeSortCategory: EventEmitter<any> = new EventEmitter<any>();
     @Output() changeSortDirection: EventEmitter<any> = new EventEmitter<any>();
-    @Output() searchData: EventEmitter<any> = new EventEmitter<any>();
+    @Output() searchEvent: EventEmitter<string> = new EventEmitter<string>();
+    @Output() sortEvent: EventEmitter<string> = new EventEmitter<string>();
     @Output() headActions: EventEmitter<any> = new EventEmitter();
     @ContentChildren('listCard') listCards!: QueryList<any>;
     public mapListExpanded: boolean = true;
@@ -92,6 +89,7 @@ export class TaMapListComponent
     searchTimeout: any;
     searchResultsCount: number = 0;
     public previousScrollTime = null;
+    public searchValue: string | null = null;
 
     constructor(
         private formBuilder: UntypedFormBuilder,
@@ -129,20 +127,6 @@ export class TaMapListComponent
                     this.onSearch();
                 }, 300);
             });
-
-        // this.mapsService.selectedMarkerChange
-        //     .pipe(takeUntil(this.destroy$))
-        //     .subscribe((id) => {
-        //         this.listCards.map((card) => {
-        //             if (card.isSelected && card.item.id != id) {
-        //                 card.addRemoveSelection(false);
-        //             }
-
-        //             if (card.item.id == id) {
-        //                 card.addRemoveSelection(true);
-        //             }
-        //         });
-        //     });
 
         this.mapsService.searchLoadingChanged
             .pipe(takeUntil(this.destroy$))
@@ -308,6 +292,8 @@ export class TaMapListComponent
               (this.sortDirection[0]?.toUpperCase() +
                   this.sortDirection?.substr(1).toLowerCase())
             : '';
+
+        this.sortEvent.emit(directionSort);
 
         this.mapsService.sortChange.next(directionSort);
     }
@@ -544,6 +530,12 @@ export class TaMapListComponent
             this.mapsService.mapListScroll(this.mapListContent);
             this.previousScrollTime = new Date().getTime();
         }
+    }
+
+    public handleSearchValue(searchValue: string): void {
+        this.searchValue = searchValue;
+
+        this.searchEvent.emit(searchValue);
     }
 
     ngOnDestroy(): void {

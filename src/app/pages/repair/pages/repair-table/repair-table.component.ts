@@ -193,6 +193,8 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
         southWestLongitude: number;
         zoomLevel: number;
     } = null;
+    public mapListSearchValue: string | null = null;
+    public mapListSortDirection: string | null = null;
 
     constructor(
         // router
@@ -728,8 +730,6 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                 : ((this.sendDataToCardsFront =
                       this.displayRowsFrontRepairShop),
                   (this.sendDataToCardsBack = this.displayRowsBackRepairShop));
-
-            this.mapListData = JSON.parse(JSON.stringify(this.viewData));
 
             // get Tab Table Data For Selected Tab
             this.getSelectedTabTableData();
@@ -1998,8 +1998,8 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                 this.mapListPagination.pageIndex,
                 this.mapListPagination.pageSize,
                 null, // companyId
-                this.shopFilterQuery.sort ?? 'nameDesc', // sort
-                null, // search
+                this.mapListSortDirection, // sort
+                this.mapListSearchValue, // search
                 null, // search1
                 null // search2
             )
@@ -2092,6 +2092,23 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
 
             this.getRepairShopClusters(true);
         }
+    }
+
+    public onMapListSearch(search: string): void {
+        this.mapListSearchValue = search;
+
+        this.mapListPagination = {
+            ...this.mapListPagination,
+            pageIndex: 1,
+        };
+
+        this.getRepairShopMapList();
+    }
+
+    public onMapListSort(sortDirection: string): void {
+        this.mapListSortDirection = sortDirection;
+
+        this.getRepairShopMapList();
     }
 
     ngOnDestroy(): void {
