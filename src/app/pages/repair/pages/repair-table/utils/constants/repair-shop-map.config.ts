@@ -17,7 +17,7 @@ export class RepairShopMapConfig {
                 field: 'name',
                 customClassText: 'text-ellipsis',
             },
-            { template: 'rating-review', field: 'tableShopRaiting' },
+            { template: 'rating-review', field: 'tableRaiting' },
             { template: 'divider', field: '' },
             { template: 'repair-shop-services', field: 'tableShopServices' },
             { template: 'divider', field: '' },
@@ -46,7 +46,7 @@ export class RepairShopMapConfig {
             { template: 'divider', field: '' },
             {
                 template: 'subtitle',
-                field: 'openHours',
+                field: 'tableOpenHours',
                 title: 'Working Hours',
             },
             { template: 'divider', field: '' },
@@ -56,7 +56,7 @@ export class RepairShopMapConfig {
                 sideBySideInfo: {
                     leftSide: {
                         template: 'title-count',
-                        field: 'order',
+                        field: 'tableRepairCountOrder',
                         title: 'Repair',
                     },
                     rightSide: {

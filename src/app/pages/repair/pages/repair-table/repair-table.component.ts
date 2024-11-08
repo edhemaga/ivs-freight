@@ -184,6 +184,8 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
     public mapData: ICaMapProps = RepairShopMapConfig.repairShopMapConfig;
     public mapListPagination: { pageIndex: number; pageSize: number } =
         RepairShopMapConfig.repairShopMapListPagination;
+    public mapClustersPagination: { pageIndex: number; pageSize: number } =
+        RepairShopMapConfig.repairShopMapListPagination;
     public mapClustersObject: {
         northEastLatitude: number;
         northEastLongitude: number;
@@ -250,8 +252,6 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
         this.addMapListScrollEvent();
 
         this.addSelectedMarkerListener();
-
-        if (this.selectedTab === TableStringEnum.REPAIR_SHOP) this.getMapData();
     }
 
     ngAfterViewInit(): void {
@@ -840,8 +840,6 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
 
         this.setRepairData(td);
         this.updateCardView();
-
-        if (this.selectedTab === TableStringEnum.REPAIR_SHOP) this.getMapData();
     }
 
     private filterClosedRepairShopData(
@@ -1710,57 +1708,6 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
             });
     }
 
-
-
-    // MAP Find parameter type
-    public selectItem(data: any, index: number): void {
-        //this.mapsComponent.onMarkerClick(this.mapData.markers[index]);
-
-        const mapOpenHours = RepairShopOpenHoursHelper.getRepairShopOpenHours(
-            this.mapData.markers[index].data
-        );
-
-        this.mapListData.map((item) => {
-            if (item.id == data[0]) {
-                // let itemIndex = this.mapsComponent.viewData.findIndex(
-                //     (item2) => item2.id === item.id
-                // );
-                // if (
-                //     itemIndex > -1 &&
-                //     this.mapsComponent.viewData[itemIndex].showMarker
-                // ) {
-                //     item.isSelected =
-                //         this.mapsComponent.viewData[itemIndex].isSelected;
-                // } else {
-                //     this.mapsComponent.clusterMarkers.map((cluster) => {
-                //         const clusterData = cluster.pagination.data;
-                //         let clusterItemIndex = clusterData.findIndex(
-                //             (item2) => item2.id === data[0]
-                //         );
-                //         if (clusterItemIndex > -1) {
-                //             if (!data[1]) {
-                //                 if (
-                //                     !cluster.isSelected ||
-                //                     (cluster.isSelected &&
-                //                         cluster.detailedInfo?.id == data[0])
-                //                 ) {
-                //                     this.mapsComponent.clickedCluster(cluster);
-                //                 }
-                //                 if (cluster.isSelected) {
-                //                     this.mapsComponent.showClusterItemInfo([
-                //                         cluster,
-                //                         clusterData[clusterItemIndex],
-                //                     ]);
-                //                 }
-                //             }
-                //             item.isSelected = cluster.isSelected;
-                //         }
-                //     });
-                // }
-            }
-        });
-    }
-
     public updateMapList(mapListResponse): void {
         const newMapList = mapListResponse.pagination.data;
 
@@ -1808,50 +1755,12 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
         }
     }
 
-    public getMapData(): void {
-        // const mapMarkers: IMapMarkers[] = this.viewData.map((data, index) => {
-        //     return {
-        //         position: { lat: data.latitude, lng: data.longitude },
-        //         icon: {
-        //             url: RepairShopMapMarkersHelper.getMapMarker(
-        //                 data.isFavorite,
-        //                 data.status === 0
-        //             ),
-        //             labelOrigin: new google.maps.Point(80, 18),
-        //         },
-        //         infoWindowContent:
-        //             RepairShopMapDropdownHelper.getRepairShopMapDropdownConfig(
-        //                 data
-        //             ),
-        //         label: {
-        //             text: data.name,
-        //             fontSize: '11px',
-        //             color: '#424242',
-        //             fontWeight: '500',
-        //         },
-        //         labelOrigin: { x: 90, y: 15 },
-        //         options: {
-        //             zIndex: index + 1,
-        //             animation: google.maps.Animation.DROP,
-        //         },
-        //         data,
-        //     };
-        // });
-        // this.mapData = {
-        //     ...this.mapData,
-        //     markers: mapMarkers,
-        // };
-    }
-
     public onGetInfoWindowData(markerId: number): void {
-        console.log('onGetInfoWindowData markerId', markerId);
-
         this.repairService
             .getRepairShopById(markerId)
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: (res: any) => {
-                    console.log('getRepairShopById res', res);
                     const repairShopData = this.mapShopData(res);
 
                     let selectedMarkerData: IMapSelectedMarkerData | null =
@@ -1877,11 +1786,6 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                                     },
                                 },
                             };
-
-                            console.log(
-                                'selectedMarkerData',
-                                selectedMarkerData
-                            );
                         }
                     });
 
@@ -1895,11 +1799,6 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                                     ),
                                 data: repairShopData,
                             };
-
-                            console.log(
-                                'selectedMarkerData',
-                                selectedMarkerData
-                            );
                         }
                     });
 
@@ -1911,18 +1810,9 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                 },
                 error: () => {},
             });
-
-        // const selectedMarkerId =
-        //     this.mapsService.selectedMarkerId !== marker.data.id
-        //         ? marker.data.id
-        //         : null;
-
-        // this.mapsService.selectedMarker(selectedMarkerId);
     }
 
     public onMapBoundsChange(event: IMapBoundsZoom): void {
-        console.log('onMapBoundsChange event', event);
-
         const ne = event.bounds.getNorthEast(); // LatLng of the north-east corner
         const sw = event.bounds.getSouthWest(); // LatLng of the south-west corder
 
@@ -1939,12 +1829,17 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
             pageIndex: 1,
         };
 
+        this.mapClustersPagination = {
+            ...this.mapClustersPagination,
+            pageIndex: 1,
+        };
+
         this.getRepairShopClusters();
 
         this.getRepairShopMapList();
     }
 
-    public getRepairShopClusters(): void {
+    public getRepairShopClusters(isClusterPagination?: boolean): void {
         this.repairService
             .getRepairShopClusters(
                 this.mapClustersObject.northEastLatitude,
@@ -1967,8 +1862,8 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                 null, // lastTo?: number,
                 null, // ppgFrom?: number,
                 null, // ppgTo?: number,
-                1, // pageIndex
-                25, // pageSize
+                this.mapClustersPagination.pageIndex, // pageIndex
+                this.mapClustersPagination.pageSize, // pageSize
                 null, // companyId
                 this.shopFilterQuery.sort ?? 'nameDesc', // sortBy
                 null, // search
@@ -1977,75 +1872,109 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
             )
             .pipe(takeUntil(this.destroy$))
             .subscribe((clustersResponse) => {
-                console.log('clustersResponse', clustersResponse);
+                if (isClusterPagination) {
+                    let selectedMarkerData: IMapMarkers | null = {
+                        ...this.mapData.selectedMarkerData,
+                    };
 
-                const clusterMarkers: IMapMarkers[] = [];
-                const markers: IMapMarkers[] = [];
+                    const findClusterData = clustersResponse.find(
+                        (data) =>
+                            this.mapData.selectedMarkerData?.position?.lat ===
+                                data.latitude &&
+                            this.mapData.selectedMarkerData?.position.lng ===
+                                data.longitude
+                    );
 
-                clustersResponse.forEach((data, index) => {
-                    const previousClusterData =
-                        this.mapData.clusterMarkers.find(
-                            (item) =>
-                                item.position.lat === data.latitude &&
-                                item.position.lng === data.longitude
-                        );
-
-                    let clusterInfoWindowContent = data.pagination?.data
-                        ? {
-                              clusterData: data.pagination.data,
-                              selectedClusterItemData: null,
-                          }
-                        : null;
-
-                    if (
-                        previousClusterData?.infoWindowContent
-                            ?.selectedClusterItemData
-                    ) {
-                        clusterInfoWindowContent = {
-                            ...clusterInfoWindowContent,
-                            selectedClusterItemData:
-                                previousClusterData?.infoWindowContent
-                                    ?.selectedClusterItemData,
+                    if (findClusterData) {
+                        selectedMarkerData = {
+                            ...selectedMarkerData,
+                            infoWindowContent: {
+                                ...selectedMarkerData.infoWindowContent,
+                                clusterData: [
+                                    ...selectedMarkerData.infoWindowContent
+                                        .clusterData,
+                                    ...findClusterData.pagination.data,
+                                ],
+                            },
                         };
                     }
 
-                    const markerData = {
-                        position: { lat: data.latitude, lng: data.longitude },
-                        icon: {
-                            url: RepairShopMapMarkersHelper.getMapMarker(
-                                data.favourite,
-                                data.isClosed,
-                                data?.count,
-                                data?.count > 1
-                            ),
-                            labelOrigin: new google.maps.Point(80, 18),
-                        },
-                        infoWindowContent: clusterInfoWindowContent,
-                        label: data.name
-                            ? {
-                                  text: data.name,
-                                  fontSize: '11px',
-                                  color: '#424242',
-                                  fontWeight: '500',
-                              }
-                            : null,
-                        labelOrigin: { x: 90, y: 15 },
-                        options: {
-                            zIndex: index + 1,
-                            animation: google.maps.Animation.DROP,
-                        },
-                        data,
+                    this.mapData = {
+                        ...this.mapData,
+                        selectedMarkerData,
                     };
+                } else {
+                    const clusterMarkers: IMapMarkers[] = [];
+                    const markers: IMapMarkers[] = [];
 
-                    if (data.count > 1) clusterMarkers.push(markerData);
-                    else markers.push(markerData);
-                });
+                    clustersResponse.forEach((data, index) => {
+                        const previousClusterData =
+                            this.mapData.clusterMarkers.find(
+                                (item) =>
+                                    item.position.lat === data.latitude &&
+                                    item.position.lng === data.longitude
+                            );
 
-                this.mapData = {
-                    ...this.mapData,
-                    clusterMarkers,
-                    markers,
-                };
+                        let clusterInfoWindowContent = data.pagination?.data
+                            ? {
+                                  clusterData: [...data.pagination.data],
+                                  selectedClusterItemData: null,
+                              }
+                            : null;
+
+                        if (
+                            previousClusterData?.infoWindowContent
+                                ?.selectedClusterItemData
+                        ) {
+                            clusterInfoWindowContent = {
+                                ...clusterInfoWindowContent,
+                                selectedClusterItemData:
+                                    previousClusterData?.infoWindowContent
+                                        ?.selectedClusterItemData,
+                            };
+                        }
+
+                        const markerData = {
+                            position: {
+                                lat: data.latitude,
+                                lng: data.longitude,
+                            },
+                            icon: {
+                                url: RepairShopMapMarkersHelper.getMapMarker(
+                                    data.favourite,
+                                    data.isClosed,
+                                    data?.count,
+                                    data?.count > 1
+                                ),
+                                labelOrigin: new google.maps.Point(80, 18),
+                            },
+                            infoWindowContent: clusterInfoWindowContent,
+                            label: data.name
+                                ? {
+                                      text: data.name,
+                                      fontSize: '11px',
+                                      color: '#424242',
+                                      fontWeight: '500',
+                                  }
+                                : null,
+                            labelOrigin: { x: 90, y: 15 },
+                            options: {
+                                zIndex: index + 1,
+                                animation: google.maps.Animation.DROP,
+                            },
+                            data,
+                        };
+
+                        if (data.count > 1) clusterMarkers.push(markerData);
+                        else markers.push(markerData);
+                    });
+
+                    this.mapData = {
+                        ...this.mapData,
+                        clusterMarkers,
+                        markers,
+                    };
+                }
 
                 this.ref.detectChanges();
             });
@@ -2076,36 +2005,42 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
             )
             .pipe(takeUntil(this.destroy$))
             .subscribe((mapListResponse: any) => {
-                mapListResponse.pagination.data.map((item) => {
-                    const mapItemData = this.mapShopData(item);
+                const mappedListData = mapListResponse.pagination.data.map(
+                    (item) => {
+                        const mapItemData = this.mapShopData(item);
 
-                    return mapItemData;
-                });
-                console.log(
-                    'mapListResponse.pagination.data',
-                    mapListResponse.pagination.data
+                        return mapItemData;
+                    }
                 );
 
                 const newMapListData = {
                     ...mapListResponse,
+                    pagination: {
+                        ...mapListResponse.pagination,
+                        data: mappedListData,
+                    },
                     addData:
                         this.mapListPagination.pageIndex > 1 ? true : false,
                 };
-
-                // newMapListData.changedSort = changedSearchOrSort;
-                // newMapListData.addData =
-                //     this.mapListPagination.pageIndex > 1 ? true : false;
 
                 this.updateMapList(newMapListData);
             });
     }
 
-    public onResetSelectedMarkerItem(): void {
-        console.log('onResetSelectedMarkerItem');
+    public onResetSelectedMarkerItem(isBackButton?: boolean): void {
+        const selectedMarkerData = isBackButton
+            ? {
+                  ...this.mapData.selectedMarkerData,
+                  infoWindowContent: {
+                      ...this.mapData.selectedMarkerData.infoWindowContent,
+                      selectedClusterItemData: null,
+                  },
+              }
+            : null;
 
         this.mapData = {
             ...this.mapData,
-            selectedMarkerData: null,
+            selectedMarkerData,
         };
 
         this.mapsService.selectedMarker(0);
@@ -2114,15 +2049,12 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
     public addMapListScrollEvent(): void {
         this.mapsService.mapListScrollChange
             .pipe(takeUntil(this.destroy$))
-            .subscribe((data) => {
-                //this.showMoreMapListData(data);
-                console.log('mapListScrollChange data', data);
-
+            .subscribe(() => {
                 this.mapListPagination = {
                     ...this.mapListPagination,
                     pageIndex: this.mapListPagination.pageIndex + 1,
                 };
-                console.log('mapListPagination', this.mapListPagination);
+
                 this.getRepairShopMapList();
             });
     }
@@ -2131,10 +2063,35 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
         this.mapsService.selectedMapListCardChange
             .pipe(takeUntil(this.destroy$))
             .subscribe((id) => {
-                console.log('selectedMapListCardChange id', id);
                 if (id) this.onGetInfoWindowData(id);
                 else this.onResetSelectedMarkerItem();
             });
+    }
+
+    public onClusterMarkerClick(selectedMarker: IMapMarkers): void {
+        const selectedMarkerData: IMapSelectedMarkerData | null =
+            this.mapData.clusterMarkers.find(
+                (clusterMarker) =>
+                    clusterMarker.position.lat ===
+                        selectedMarker.position.lat &&
+                    clusterMarker.position.lng === selectedMarker.position.lng
+            ) ?? null;
+
+        this.mapData = { ...this.mapData, selectedMarkerData };
+    }
+
+    public onClusterListScroll(clusterMarker: IMapMarkers): void {
+        if (
+            clusterMarker?.data?.count / this.mapClustersPagination.pageIndex >
+            25
+        ) {
+            this.mapClustersPagination = {
+                ...this.mapClustersPagination,
+                pageIndex: this.mapClustersPagination.pageIndex + 1,
+            };
+
+            this.getRepairShopClusters(true);
+        }
     }
 
     ngOnDestroy(): void {

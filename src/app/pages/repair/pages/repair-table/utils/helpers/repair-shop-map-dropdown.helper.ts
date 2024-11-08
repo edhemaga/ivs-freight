@@ -22,7 +22,7 @@ export class RepairShopMapDropdownHelper {
                               'ca-font-semi-bold red-text uppercase mb-1',
                       }
                     : null,
-                { template: 'rating-review', field: 'tableShopRaiting' },
+                { template: 'rating-review', field: 'tableRaiting' },
                 { template: 'divider', field: '' },
                 {
                     template: 'repair-shop-services',
@@ -55,8 +55,8 @@ export class RepairShopMapDropdownHelper {
             expandedContent: [
                 { template: 'divider', field: '' },
                 {
-                    template: 'subtitle',
-                    field: 'openHours',
+                    template: 'open-hours',
+                    field: 'tableOpenHours',
                     title: 'Working Hours',
                 },
                 { template: 'divider', field: '' },
@@ -66,7 +66,7 @@ export class RepairShopMapDropdownHelper {
                     sideBySideInfo: {
                         leftSide: {
                             template: 'title-count',
-                            field: 'order',
+                            field: 'tableRepairCountOrder',
                             title: 'Repair',
                         },
                         rightSide: {
@@ -91,17 +91,17 @@ export class RepairShopMapDropdownHelper {
                             template: 'icon-text',
                             field: !data?.status
                                 ? 'tableDeactivated'
-                                : data?.tableLUsed
-                                ? 'tableLUsed'
+                                : data?.tableLastUsed
+                                ? 'tableLastUsed'
                                 : 'tableEdited',
                             url: !data?.status
                                 ? 'assets/ca-components/svg/map/ic_date_deactivated.svg'
-                                : data?.tableLUsed
+                                : data?.tableLastUsed
                                 ? 'assets/svg/common/ic_date_checked.svg'
                                 : 'assets/ca-components/svg/map/accident_calender.svg',
                             iconTooltipText: !data?.status
                                 ? 'Permanently Closed'
-                                : data?.tableLUsed
+                                : data?.tableLastUsed
                                 ? 'Last Used'
                                 : 'Last Edited',
                         },

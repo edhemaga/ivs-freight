@@ -90,7 +90,6 @@
                     [sortCategory]="activeSortType"
                     [locationFilterOn]="locationFilterOn"
                     (bodyActions)="onTableBodyActions($event)"
-                    (clickedMarker)="selectItem($event, i)"
                     [ngStyle]="{
                         display:
                             locationFilterOn && latlong?.isShown == false
@@ -103,20 +102,12 @@
             <app-ca-map
                 #mapsComponent
                 [data]="mapData"
+                (clusterMarkerClick)="onClusterMarkerClick($event)"
+                (clusterListScrollEvent)="onClusterListScroll($event)"
                 (getInfoWindowData)="onGetInfoWindowData($event)"
                 (boundsChanged)="onMapBoundsChange($event)"
-                (resetSelectedMarkerItem)="onResetSelectedMarkerItem()"
+                (resetSelectedMarkerItem)="onResetSelectedMarkerItem($event)"
             ></app-ca-map>
-
-            <!-- 
-            <app-ta-maps
-                #mapsComponent
-                [_viewData]="viewData"
-                [mapType]="'repairShop'"
-                (callDropDownAction)="onTableBodyActions($event)"
-                (updateMapList)="updateMapList($event)"
-                (selectMarker)="selectItem($event)"
-            ></app-ta-maps> -->
         </div>
     </ng-container>
 </div>

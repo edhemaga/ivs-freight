@@ -30,6 +30,7 @@ import { FormatDatePipe } from '@shared/pipes/format-date.pipe';
 // components
 import { TaDetailsDropdownComponent } from '@shared/components/ta-details-dropdown/ta-details-dropdown.component';
 import { TaProfileImagesComponent } from '@shared/components/ta-profile-images/ta-profile-images.component';
+import { AddressEntity } from 'appcoretruckassist';
 
 @Component({
     selector: 'app-ta-map-list-card',
@@ -57,14 +58,17 @@ export class TaMapListCardComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
 
     @Input() isSelected: boolean = false;
-    @Input() status: any = 1;
+    @Input() status: number = 1;
     @Input() title: string = '';
-    @Input() address: any = {};
-    @Input() rating: any = {};
+    @Input() address: AddressEntity | null = null;
+    @Input() rating: {
+        hasLiked: boolean;
+        hasDislike: boolean;
+        likeCount: number;
+        dislikeCount: number;
+    } | null = null;
     @Input() item: any = {};
-    @Input() index: any = {};
     @Input() type: string = '';
-    @Output() clickedMarker: EventEmitter<any> = new EventEmitter<any>();
     @Output() bodyActions: EventEmitter<any> = new EventEmitter();
     @ViewChild('detailsDropdown') detailsDropdown: any;
     public locationFilterOn: boolean = false;
@@ -114,18 +118,6 @@ export class TaMapListCardComponent implements OnInit, OnDestroy {
                 this.ref.detectChanges();
             });
 
-        // this.mapsService.selectedMapListCardChange
-        //     .pipe(takeUntil(this.destroy$))
-        //     .subscribe((id) => {
-        //         if (id != this.item.id && this.detailsDropdown?.tooltip) {
-        //             this.detailsDropdown.dropDownActive = -1;
-        //             this.detailsDropdown.tooltip.close();
-        //         }
-
-        //         this.isSelected = id == this.item.id;
-        //         this.item = { ...this.item, isSelected: id == this.item.id };
-        //     });
-
         this.getDropdownActions();
     }
 
@@ -137,8 +129,6 @@ export class TaMapListCardComponent implements OnInit, OnDestroy {
 
         const selectId = this.isSelected ? 0 : this.item.id;
         this.mapsService.selectedMapListCard(selectId);
-
-        //this.clickedMarker.emit(this.item);
     }
 
     showMoreOptions() {
