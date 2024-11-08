@@ -107,10 +107,11 @@ export class RepairCardsModalConfig {
         {
             title: 'Address',
             key: 'address',
+            secondKey: 'address',
         },
         {
-            title: 'Length',
-            key: 'length',
+            title: 'Services',
+            key: 'serviceTypes',
         },
         null,
         null,
@@ -127,7 +128,7 @@ export class RepairCardsModalConfig {
         },
         {
             title: 'Contact',
-            key: 'contact',
+            key: 'contacts',
         },
         {
             title: 'Rating & Review',
