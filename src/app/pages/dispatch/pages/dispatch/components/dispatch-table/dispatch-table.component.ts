@@ -478,17 +478,9 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
     ): void {
         this.isDisplayingAddressInput = false;
 
-        const { address, latitude, longitude } = truckLastLocation;
-
-        const addressLatLong = {
-            address,
-            latitude,
-            longitude,
-        };
-
         this.updateOrAddDispatchBoardAndSend(
             DispatchTableStringEnum.LOCATION,
-            addressLatLong,
+            truckLastLocation,
             this.showAddAddressFieldIndex
         );
     }
