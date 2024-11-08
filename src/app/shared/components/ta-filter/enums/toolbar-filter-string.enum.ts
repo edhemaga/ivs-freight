@@ -44,8 +44,11 @@ export enum ToolbarFilterStringEnum {
     TRUCK_LIST_UPDATE = 'truck-list-update',
     NAME = 'name',
     COUNT = 'count',
+    ICON = 'icon',
     TRAILER_LIST_UPDATE = 'trailer-list-update',
     TRUCK_TYPE_UPDATE = 'truck-type-update',
     TRAILER_TYPE_UPDATE = 'trailer-type-update',
     STATE_DATA_UPDATE = 'state-data-update',
+    REPAIR_CATEGORY_UPDATE = 'repair-category-update',
+    PM_TRUCK_DATA_UPDATE = 'pm-truck-data-update',
 }
