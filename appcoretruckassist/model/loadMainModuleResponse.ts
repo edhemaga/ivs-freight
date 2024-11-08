@@ -9,14 +9,12 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { FuelCardResponsePagination } from './fuelCardResponsePagination';
+import { LoadMobileResponse } from './loadMobileResponse';
 
 
-export interface FuelCardListResponse { 
-    pagination?: FuelCardResponsePagination;
-    fuelTransactionCount?: number;
-    integrationFuelTransactionCount?: number;
-    fuelStopCount?: number;
-    fuelCardCount?: number;
+export interface LoadMainModuleResponse { 
+    activeLoad?: LoadMobileResponse;
+    pendingLoadsCount?: number;
+    closedLoadsCount?: number;
 }
 

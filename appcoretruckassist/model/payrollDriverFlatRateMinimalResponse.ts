@@ -30,6 +30,6 @@ export interface PayrollDriverFlatRateMinimalResponse {
     salary?: number | null;
     credit?: number | null;
     deduction?: number | null;
-    total?: number | null;
+    earnings?: number | null;
 }
 
