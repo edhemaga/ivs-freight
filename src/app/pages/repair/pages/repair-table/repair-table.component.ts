@@ -69,7 +69,6 @@ import {
     RepairTableBackFilterDataHelper,
     RepairTableDateFormaterHelper,
     RepairTableHelper,
-    RepairShopOpenHoursHelper,
 } from '@pages/repair/pages/repair-table/utils/helpers';
 
 // components

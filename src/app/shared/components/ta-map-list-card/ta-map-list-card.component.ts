@@ -30,10 +30,15 @@ import { FormatDatePipe } from '@shared/pipes/format-date.pipe';
 // components
 import { TaDetailsDropdownComponent } from '@shared/components/ta-details-dropdown/ta-details-dropdown.component';
 import { TaProfileImagesComponent } from '@shared/components/ta-profile-images/ta-profile-images.component';
+
+// Models
 import { AddressEntity } from 'appcoretruckassist';
 
 // tooltip
 import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
+
+// Svg Routes
+import { MapListCardSvgRoutes } from '@shared/components/ta-map-list-card/utils/svg-routes';
 
 @Component({
     selector: 'app-ta-map-list-card',
@@ -79,6 +84,9 @@ export class TaMapListCardComponent implements OnInit, OnDestroy {
     sortCategory: any = {};
     clickedOnDots: boolean = false;
     dropdownActions: any = {};
+
+    // Svg routes
+    public mapListCardSvgRoutes: MapListCardSvgRoutes = MapListCardSvgRoutes;
 
     constructor(
         private mapsService: MapsService,

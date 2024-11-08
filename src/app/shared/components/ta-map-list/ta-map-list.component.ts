@@ -8,7 +8,6 @@ import {
     OnChanges,
     SimpleChanges,
     OnDestroy,
-    ElementRef,
     ContentChildren,
     QueryList,
     SecurityContext,
@@ -23,22 +22,18 @@ import { Subject, takeUntil } from 'rxjs';
 
 // modules
 import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
-import {
-    ReactiveFormsModule,
-    UntypedFormBuilder,
-    UntypedFormGroup,
-} from '@angular/forms';
-import { FormsModule } from '@angular/forms';
 
 // icon
 import { AngularSvgIconModule } from 'angular-svg-icon';
 
 // icon
 import { MapsService } from '@shared/services/maps.service';
-import { TruckassistTableService } from '@shared/services/truckassist-table.service';
 
 // component
 import { TaSearchV2Component } from '@shared/components/ta-search-v2/ta-search-v2.component';
+
+// Svg Routes
+import { MapListSvgRoutes } from '@shared/components/ta-map-list/utils/svg-routes';
 
 @Component({
     selector: 'app-ta-map-list',
@@ -49,8 +44,6 @@ import { TaSearchV2Component } from '@shared/components/ta-search-v2/ta-search-v
     imports: [
         // Modules
         CommonModule,
-        FormsModule,
-        ReactiveFormsModule,
         AngularSvgIconModule,
         NgbPopoverModule,
 
@@ -74,30 +67,28 @@ export class TaMapListComponent
     @Output() headActions: EventEmitter<any> = new EventEmitter();
     @ContentChildren('listCard') listCards!: QueryList<any>;
     public mapListExpanded: boolean = true;
-    public searchForm!: UntypedFormGroup;
     public sortDirection: string = 'desc';
     visibleColumns: any[] = [];
     pinedColumns: any[] = [];
     notPinedColumns: any[] = [];
     actionColumns: any[] = [];
-    private tooltip: any;
+    public tooltip: any;
     showExpandButton: boolean = false;
     activeSortType: any = {};
     searchIsActive: boolean = false;
-    searchText: string = '';
     searchLoading: boolean = false;
     searchTimeout: any;
     searchResultsCount: number = 0;
     public previousScrollTime = null;
     public searchValue: string | null = null;
 
+    // Svg routes
+    public mapListSvgRoutes: MapListSvgRoutes = MapListSvgRoutes;
+
     constructor(
-        private formBuilder: UntypedFormBuilder,
         private ref: ChangeDetectorRef,
         private mapsService: MapsService,
-        private tableService: TruckassistTableService,
-        private sanitizer: DomSanitizer,
-        private elementRef: ElementRef
+        private sanitizer: DomSanitizer
     ) {}
 
     ngOnChanges(changes: SimpleChanges): void {
@@ -113,31 +104,10 @@ export class TaMapListComponent
     }
 
     ngOnInit(): void {
-        this.searchForm = this.formBuilder.group({
-            search: '',
-        });
-
-        this.searchForm.valueChanges
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((changes) => {
-                this.searchText = changes.search;
-
-                clearTimeout(this.searchTimeout);
-                this.searchTimeout = setTimeout(() => {
-                    this.onSearch();
-                }, 300);
-            });
-
         this.mapsService.searchLoadingChanged
             .pipe(takeUntil(this.destroy$))
             .subscribe((loading) => {
                 this.searchLoading = loading;
-            });
-
-        this.mapsService.searchResultsCountChange
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((count) => {
-                this.searchResultsCount = count;
             });
 
         this.setVisibleColumns();
@@ -149,7 +119,7 @@ export class TaMapListComponent
         }, 100);
     }
 
-    ngAfterContentInit() {
+    ngAfterContentInit(): void {
         this.listCards.changes.pipe(takeUntil(this.destroy$)).subscribe(() => {
             this.highlightSearchedText();
 
@@ -185,24 +155,24 @@ export class TaMapListComponent
         });
     }
 
-    resizeMapList() {
+    public resizeMapList(): void {
         this.mapListExpanded = !this.mapListExpanded;
 
         this.calculateMapListSize();
     }
 
-    openPopover(t2) {
+    public openPopover(t2): void {
         t2.open();
         this.tooltip = t2;
     }
 
-    changeSortingDirection() {
+    public changeSortingDirection(): void {
         this.sortDirection = this.sortDirection == 'asc' ? 'desc' : 'asc';
 
         this.sortData();
     }
 
-    changeSortType(item) {
+    public changeSortType(item): void {
         this.sortTypes.map((data: any) => {
             if (data.isActive) {
                 data.isActive = false;
@@ -218,7 +188,7 @@ export class TaMapListComponent
         this.sortData();
     }
 
-    setVisibleColumns() {
+    public setVisibleColumns(): void {
         this.visibleColumns = [];
         this.pinedColumns = [];
         this.notPinedColumns = [];
@@ -258,7 +228,7 @@ export class TaMapListComponent
         this.ref.detectChanges();
     }
 
-    checkResizeButton() {
+    public checkResizeButton(): void {
         const mapListContainer = document.querySelectorAll<HTMLElement>(
             '.map-list-container'
         )[0];
@@ -279,7 +249,7 @@ export class TaMapListComponent
         this.ref.detectChanges();
     }
 
-    sortData() {
+    public sortData(): void {
         let sortType = this.sortTypes.find((b) => b.isActive === true);
         if (!sortType) {
             this.sortTypes[0].isActive = true;
@@ -298,7 +268,7 @@ export class TaMapListComponent
         this.mapsService.sortChange.next(directionSort);
     }
 
-    setSortTypes() {
+    public setSortTypes(): void {
         if (this.type == 'shipper') {
             this.sortTypes = [
                 {
@@ -424,27 +394,7 @@ export class TaMapListComponent
         this.sortData();
     }
 
-    onSearch() {
-        if (this.searchText?.length >= 3) {
-            this.searchIsActive = true;
-
-            this.highlightSearchedText();
-
-            this.mapsService.searchLoadingChanged.next(true);
-
-            this.mapsService.searchTextChanged(this.searchText);
-        } else if (this.searchIsActive && this.searchText?.length < 3) {
-            this.searchIsActive = false;
-
-            this.highlightSearchedText();
-
-            this.mapsService.searchLoadingChanged.next(true);
-
-            this.mapsService.searchTextChanged('');
-        }
-    }
-
-    highlightSearchedText() {
+    public highlightSearchedText(): void {
         document
             .querySelectorAll<HTMLElement>(
                 '.map-list-card-container .title-text, .map-list-card-container .address-text'
@@ -453,7 +403,7 @@ export class TaMapListComponent
                 const text = title.textContent;
                 const addressElement = title.classList.contains('address-text');
 
-                const regex = new RegExp(this.searchText, 'gi');
+                const regex = new RegExp(this.searchValue, 'gi');
                 const newText = text.replace(regex, (match: string) => {
                     if (match.length >= 3) {
                         const addressClass = addressElement
@@ -474,23 +424,15 @@ export class TaMapListComponent
             });
     }
 
-    clearSearchInput() {
-        this.searchForm.get('search').patchValue('');
-        this.searchText = '';
-        this.mapsService.searchTextChanged('');
-    }
-
-    deleteAnimation(id) {
+    public deleteAnimation(id: number): void {
         const mapListCard: HTMLElement = document.querySelector(
             '[data-id="map-list-card-' + id + '"]'
         );
 
-        if (mapListCard) {
-            mapListCard.classList.add('delete-animation');
-        }
+        if (mapListCard) mapListCard.classList.add('delete-animation');
     }
 
-    calculateMapListSize() {
+    public calculateMapListSize(): void {
         const mapListElement =
             document.querySelectorAll<HTMLElement>('.map-list-body')[0];
 
@@ -504,26 +446,27 @@ export class TaMapListComponent
         const expandedHeight = mapListElement.scrollHeight;
         mapListElement.style.height = mapListHeight + 'px';
 
-        if (this.mapListExpanded) {
+        if (this.mapListExpanded)
             setTimeout(() => {
                 mapListElement.style.height = expandedHeight + 'px';
             }, 10);
-        } else {
+        else
             setTimeout(() => {
                 mapListElement.style.height = containerHeight / 2 - 110 + 'px';
             }, 10);
-        }
     }
 
-    mapListScroll(event) {
-        const element = event.target;
+    public mapListScroll(event: Event): void {
+        const element = event.target as HTMLElement;
 
         const isDoubleScroll =
             new Date().getTime() - this.previousScrollTime < 200;
 
         if (
             Math.abs(
-                element.scrollHeight - element.scrollTop - element.clientHeight
+                element?.scrollHeight -
+                    element?.scrollTop -
+                    element?.clientHeight
             ) <= 3.0 &&
             !isDoubleScroll
         ) {

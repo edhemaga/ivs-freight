@@ -1,10 +1,6 @@
 <div class="map-list-container">
     <div class="map-list">
-        <div
-            class="map-list-header d-flex flex-column gap-1"
-            [formGroup]="searchForm"
-            *ngIf="searchForm"
-        >
+        <div class="map-list-header d-flex flex-column gap-1">
             <div class="map-list-search">
                 <app-ta-search-v2
                     placeHolderText="Title"
@@ -69,7 +65,7 @@
                             *ngIf="tooltip?.isOpen(); else sortArrowsTemplate"
                         >
                             <svg-icon
-                                src="assets/svg/truckassist-table/arrow-columns-drop.svg"
+                                [src]="mapListSvgRoutes.sortDropArrowRoute"
                                 class="sort-dropdown-arrow d-flex"
                                 [svgStyle]="{ 'width.px': 7, 'height.px': 14 }"
                             ></svg-icon>
@@ -77,7 +73,7 @@
 
                         <ng-template #sortArrowsTemplate>
                             <svg-icon
-                                src="assets/svg/common/ic_arrow_sort.svg"
+                                [src]="mapListSvgRoutes.sortDirectionRoute"
                                 class="sort-arrows-svg"
                                 [ngClass]="{ rotate: sortDirection == 'asc' }"
                                 [svgStyle]="{ 'width.px': 18, 'height.px': 18 }"
@@ -91,18 +87,17 @@
         <div class="map-list-body" (scroll)="mapListScroll($event)">
             <ng-content></ng-content>
         </div>
-        <div
-            class="map-list-resize-button"
-            (click)="resizeMapList()"
-            *ngIf="showExpandButton"
-        >
-            <svg-icon
-                src="assets/svg/common/fill_arrow_down.svg"
-                class="map-list-resize-svg"
-                [ngClass]="{ rotate: mapListExpanded }"
-                [svgStyle]="{ 'width.px': 12, 'height.px': 12 }"
-            ></svg-icon>
-        </div>
+
+        <ng-container *ngIf="showExpandButton">
+            <div class="map-list-resize-button" (click)="resizeMapList()">
+                <svg-icon
+                    [src]="mapListSvgRoutes.expandArrowRoute"
+                    class="map-list-resize-svg"
+                    [ngClass]="{ rotate: mapListExpanded }"
+                    [svgStyle]="{ 'width.px': 12, 'height.px': 12 }"
+                ></svg-icon>
+            </div>
+        </ng-container>
     </div>
 </div>
 
@@ -119,10 +114,13 @@
         >
             <div class="sort-items">
                 {{ item.name }}
-                <svg-icon
-                    *ngIf="item.id == activeSortType.id"
-                    src="assets/svg/truckassist-table/check-new.svg"
-                ></svg-icon>
+
+                <ng-container *ngIf="item.id === activeSortType.id">
+                    <svg-icon
+                        [src]="mapListSvgRoutes.checkRoute"
+                        [svgStyle]="{ 'width.px': 14, 'height.px': 14 }"
+                    ></svg-icon>
+                </ng-container>
             </div>
         </div>
     </div>
