@@ -140,8 +140,8 @@ export class TaToolbarFiltersComponent implements OnInit, OnChanges, OnDestroy {
         if (this.options.toolbarActions.showPMFilter)
             this.filterService.getPmData(
                 this.options.toolbarActions.showTrailerPmFilter
-                    ? 'trailer'
-                    : 'truck'
+                    ? ToolbarFilterStringEnum.TRAILER
+                    : ToolbarFilterStringEnum.TRUCK
             );
 
         if (
