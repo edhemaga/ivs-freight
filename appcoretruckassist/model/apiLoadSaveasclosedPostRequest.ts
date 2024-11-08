@@ -42,6 +42,7 @@ export interface ApiLoadSaveasclosedPostRequest {
     BaseRate?: number;
     AdjustedRate?: number;
     DriverRate?: number;
+    CoDriverRate?: number;
     AdvancePay?: number;
     EmptyMiles?: number;
     TotalMiles?: number;

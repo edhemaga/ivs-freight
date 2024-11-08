@@ -30,7 +30,7 @@ export interface PayrollDriverMileageClosedByIdResponse {
     payrollNumber?: string | null;
     status?: EnumValue;
     mileagePay?: number | null;
-    totalEarnings?: number | null;
+    earnings?: number | null;
     salary?: number | null;
     extraStopPay?: number | null;
     extraStopCount?: number | null;
