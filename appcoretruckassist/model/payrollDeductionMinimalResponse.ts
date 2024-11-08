@@ -13,10 +13,14 @@
 
 export interface PayrollDeductionMinimalResponse { 
     id?: number;
+    parentPayrollDeductionId?: number | null;
     description?: string | null;
     subtotal?: number;
     date?: string;
     recurring?: boolean;
     currentRecurrance?: number | null;
+    allRecurrance?: number | null;
+    isPaid?: boolean | null;
+    isMoved?: boolean | null;
 }
 

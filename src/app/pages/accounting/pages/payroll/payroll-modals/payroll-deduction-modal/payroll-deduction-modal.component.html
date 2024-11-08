@@ -1,4 +1,5 @@
-<app-payroll-base-modal
+<ng-container *ngIf="formLoaded">
+    <app-payroll-base-modal
     [modalTitle]="!isEditMode ? 'Create Deduction' : 'Edit Deduction'"
     [baseForm]="payrollCreditForm"
     [modalType]="'MODAL_DEDUCTION'"
@@ -8,20 +9,29 @@
 ></app-payroll-base-modal>
 
 <ng-template #footerTemplate>
-    <div class="modal-footer modal-footer-payroll" [class.justify-content-between]="isEditMode">
+    <div
+        class="modal-footer modal-footer-payroll"
+        [class.justify-content-between]="isEditMode"
+    >
+        <ng-container
+            [ngTemplateOutlet]="paymentHistoryTemplate"
+        ></ng-container>
+
         <div class="divider divider--dark divider--small"></div>
         <ng-container *ngIf="isEditMode; else showCreateButtons">
             <div>
                 <button
                     class="modal-delete-btn ta-font-bold mr-12"
                     (click)="saveDeduction(taModalActionEnums.DELETE)"
-                    [class.valid]="payrollCreditForm.valid"
+                    [class.valid]="payrollCreditForm?.valid"
                 >
                     Delete
                 </button>
                 <button
                     class="modal-convert-to-template-btn ta-font-bold"
-                    (click)="saveDeduction(taModalActionEnums.MOVE_TO_THIS_PERIOD)"
+                    (click)="
+                        saveDeduction(taModalActionEnums.MOVE_TO_THIS_PERIOD)
+                    "
                 >
                     Move to This Period
                 </button>
@@ -29,7 +39,7 @@
             <button
                 class="modal-save-btn ta-font-bold"
                 (click)="saveDeduction(taModalActionEnums.UPDATE)"
-                [class.valid]="payrollCreditForm.valid"
+                [class.valid]="payrollCreditForm?.valid"
             >
                 Save Changes
             </button>
@@ -38,7 +48,7 @@
         <ng-template #showCreateButtons>
             <button
                 class="ta-font-bold modal-save-btn modal-save-btn-add-new mr-12"
-                [class.valid]="payrollCreditForm.valid"
+                [class.valid]="payrollCreditForm?.valid"
                 (click)="saveDeduction(taModalActionEnums.SAVE_AND_ADD_NEW)"
             >
                 Save and Add New
@@ -46,10 +56,94 @@
             <button
                 class="modal-save-btn ta-font-bold"
                 (click)="saveDeduction(taModalActionEnums.SAVE)"
-                [class.valid]="payrollCreditForm.valid"
+                [class.valid]="payrollCreditForm?.valid"
             >
                 Save
             </button>
         </ng-template>
     </div>
 </ng-template>
+
+<ng-template #paymentHistoryTemplate>
+    <ng-container *ngIf="isEditMode && deduction?.childPayrollDeductions">
+        <div class="divider divider--dark divider--small mb-0"></div>
+        <app-ta-custom-card
+            [cardName]="'Payment History'"
+            [hasCounter]="deduction?.childPayrollDeductions?.length"
+            [isCardOpen]="true"
+            [hasBodyData]="true"
+            [hasDivider]="false"
+            [hasDownload]="'assets/svg/common/ic_download.svg'"
+            [hasArrow]="false"
+        >
+            <div class="payment-history-row d-grid">
+                <div
+                    class="text-color-muted text-size-11 ta-font-bold text-center"
+                >
+                    #
+                </div>
+                <div class="text-color-muted text-size-11 ta-font-bold">
+                    DATE
+                </div>
+                <div
+                    class="text-color-muted text-size-11 ta-font-bold text-right"
+                >
+                    PAYMENT
+                </div>
+                <div
+                    class="text-color-muted text-size-11 ta-font-bold text-right"
+                >
+                    SUBTOTAL
+                </div>
+            </div>
+
+            <div
+                class="payment-history-row d-grid"
+                *ngFor="let payments of deduction.childPayrollDeductions"
+            >
+                <div
+                    class="text-color-muted text-size-14 ta-font-medium text-center"
+                >
+                    {{ payments.currentRecurrance }}
+                </div>
+                <div class="text-color-black-2 ta-font-regular text-size-14">
+                    {{ payments.date | date : 'MM/dd/yy' }}
+                </div>
+                <div
+                    class="text-color-black-2 ta-font-regular text-size-14 text-right"
+                >
+                    +$ {{ payments.limitedAmount }}
+                </div>
+                <div
+                    class="text-color-black-2 text-size-14 ta-font-semi-bold text-right"
+                >
+                    $
+                    {{ payments.limitedAmount }}
+                </div>
+            </div>
+
+            <!--TODO: Check after backend is updated
+             <div class="payment-history-row d-grid mb-12">
+                <div
+                    class="text-color-blue-13 text-size-14 ta-font-medium text-center"
+                >
+                    1
+                </div>
+                <div class="text-color-muted ta-font-regular text-size-14">
+                    04/04/24 - Next Payment
+                </div>
+                <div
+                    class="text-color-muted ta-font-regular text-size-14 text-right"
+                >
+                    +$100.00
+                </div>
+                <div
+                    class="text-color-light-grey-2 text-size-14 ta-font-semi-bold text-right"
+                >
+                    $100.00
+                </div>
+            </div> -->
+        </app-ta-custom-card>
+    </ng-container>
+</ng-template>
+</ng-container>
