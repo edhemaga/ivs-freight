@@ -3,4 +3,5 @@ export interface PayrollDriver {
     logoName?: string | null;
     name?: string | null;
     avatarFile?: string | null;
+    suffix: string;
 }

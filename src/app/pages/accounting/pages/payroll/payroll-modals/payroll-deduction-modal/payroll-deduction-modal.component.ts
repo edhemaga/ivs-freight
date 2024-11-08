@@ -7,14 +7,20 @@ import {
     Validators,
 } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { Subject, takeUntil } from 'rxjs';
 
 // Models
 import {
     CreatePayrollDeductionCommand,
     PayrollCreditType,
     PayrollDeductionRecurringType,
+    PayrollDeductionResponse,
 } from 'appcoretruckassist';
-import { PayrollActionType } from '@pages/accounting/pages/payroll/state/models';
+import {
+    PayrollActionType,
+    PayrollModal,
+} from '@pages/accounting/pages/payroll/state/models';
 
 // Services
 import { PayrollDeductionService } from './services/payroll-deduction.service';
@@ -28,9 +34,7 @@ import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calcula
 
 // Components
 import { PayrollBaseModalComponent } from '@pages/accounting/pages/payroll/payroll-modals/payroll-base-modal/payroll-base-modal.component';
-import { PayrollModal } from '../../state/models';
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { Subject, takeUntil } from 'rxjs';
+import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-custom-card.component';
 
 @Component({
     selector: 'app-payroll-deduction-modal',
@@ -44,6 +48,7 @@ import { Subject, takeUntil } from 'rxjs';
         ReactiveFormsModule,
 
         PayrollBaseModalComponent,
+        TaCustomCardComponent,
     ],
 })
 export class PayrollDeductionModalComponent implements OnInit {
@@ -51,6 +56,8 @@ export class PayrollDeductionModalComponent implements OnInit {
     public taModalActionEnums = TaModalActionEnums;
     private destroy$ = new Subject<void>();
     @Input() editData: PayrollModal;
+    public deduction: PayrollDeductionResponse;
+    public formLoaded: boolean = false;
 
     constructor(
         private fb: FormBuilder,
@@ -59,13 +66,37 @@ export class PayrollDeductionModalComponent implements OnInit {
     ) {}
 
     ngOnInit(): void {
-        this.createForm();
+        this.generateDeduction();
+    }
+
+    private generateDeduction(): void {
+        if (this.editData?.data?.id) {
+            this.payrollDeductionService
+                .getPayrollDeductionById(this.editData.data.id)
+                .subscribe((deduction) => {
+                    this.deduction = deduction;
+                    this.editData = {
+                        ...this.editData,
+                        data: {
+                            ...deduction,
+                            driverId: deduction.driver?.id,
+                            truckId: deduction.truck?.id,
+                        },
+                    };
+                    this.createForm();
+                });
+        } else {
+            this.createForm();
+        }
     }
 
     private createForm() {
         const data = this.editData ? this.editData.data : {};
         const creditType =
             this.editData?.creditType || PayrollCreditType.Driver;
+        const recurringType =
+            this.editData?.data?.recurringType?.name ||
+            PayrollDeductionRecurringType.Weekly;
 
         this.payrollCreditForm = this.fb.group({
             [PayrollStringEnum.DRIVER_ID]: [data?.driverId ?? null],
@@ -73,17 +104,53 @@ export class PayrollDeductionModalComponent implements OnInit {
             [PayrollStringEnum.SELECTED_DRIVER_ID]: [data?.driverId ?? null],
             [PayrollStringEnum.SELECTED_TRUCK_ID]: [data?.truckId ?? null],
             [PayrollStringEnum.SELECTED_TYPE_ID]: [creditType],
-            [PayrollStringEnum.DATE]: [new Date(), Validators.required],
-            [PayrollStringEnum.DESCRIPTION]: [null, Validators.required],
-            [PayrollStringEnum.AMOUNT]: [null, Validators.required],
-            [PayrollStringEnum.RECURRING]: [false],
-            [PayrollStringEnum.RECURRING_TYPE]: [
-                PayrollDeductionRecurringType.Weekly,
+            [PayrollStringEnum.DATE]: [
+                data.date ?? new Date(),
+                Validators.required,
             ],
-            [PayrollStringEnum.LIMITED]: [false],
-            [PayrollStringEnum.LIMITED_NUMBER]: [null],
-            [PayrollStringEnum.LIMITED_AMOUNT]: [null],
+            [PayrollStringEnum.DESCRIPTION]: [
+                data.description ?? null,
+                Validators.required,
+            ],
+            [PayrollStringEnum.AMOUNT]: [
+                data.amount ?? null,
+                Validators.required,
+            ],
+            [PayrollStringEnum.RECURRING]: [!!this.editData?.data?.recurringType?.name ],
+            [PayrollStringEnum.RECURRING_TYPE]: [recurringType],
+            [PayrollStringEnum.LIMITED]: [
+                (!!data.limitedNumber || !!data.limitedAmount) ?? null,
+            ],
+            [PayrollStringEnum.LIMITED_NUMBER]: [data.limitedNumber ?? null],
+            [PayrollStringEnum.LIMITED_AMOUNT]: [data.limitedAmount ?? null],
         });
+
+        this.setRequiredFields();
+        this.formLoaded = true;
+    }
+
+    private setRequiredFields(): void {
+        this.payrollCreditForm
+            .get(PayrollStringEnum.RECURRING)
+            ?.valueChanges.subscribe((isRecurring) => {
+                const limitedNumberControl = this.payrollCreditForm.get(
+                    PayrollStringEnum.LIMITED_NUMBER
+                );
+                const limitedAmountControl = this.payrollCreditForm.get(
+                    PayrollStringEnum.LIMITED_AMOUNT
+                );
+
+                if (isRecurring) {
+                    limitedNumberControl?.setValidators([Validators.required]);
+                    limitedAmountControl?.setValidators([Validators.required]);
+                } else {
+                    limitedNumberControl?.clearValidators();
+                    limitedAmountControl?.clearValidators();
+                }
+
+                limitedNumberControl?.updateValueAndValidity();
+                limitedAmountControl?.updateValueAndValidity();
+            });
     }
 
     private generateModel(): CreatePayrollDeductionCommand {
@@ -128,9 +195,9 @@ export class PayrollDeductionModalComponent implements OnInit {
     public get isDropdownEnabled(): boolean {
         return true;
     }
-    
+
     public get isEditMode(): boolean {
-        return !!this.editData?.editCredit;
+        return !!this.editData?.edit;
     }
 
     public saveDeduction(action: PayrollActionType): void {
@@ -152,7 +219,21 @@ export class PayrollDeductionModalComponent implements OnInit {
                 });
         } else if (action === TaModalActionEnums.UPDATE) {
             this.payrollDeductionService
-                .updatePayrollDeduction(data)
+                .updatePayrollDeduction({ ...data, id: this.editData.data.id })
+                .pipe(takeUntil(this.destroy$))
+                .subscribe(() => {
+                    this.onCloseModal();
+                });
+        } else if (action === TaModalActionEnums.MOVE_TO_THIS_PERIOD) {
+            this.payrollDeductionService
+                .moveDeduction(this.editData.data.id)
+                .pipe(takeUntil(this.destroy$))
+                .subscribe(() => {
+                    this.onCloseModal();
+                });
+        } else if (action === TaModalActionEnums.DELETE) {
+            this.payrollDeductionService
+                .deletePayrollDeductionById(this.editData.data.id)
                 .pipe(takeUntil(this.destroy$))
                 .subscribe(() => {
                     this.onCloseModal();
