@@ -7,8 +7,11 @@ import {
     Validators,
 } from '@angular/forms';
 import { AngularSvgIconModule } from 'angular-svg-icon';
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbActiveModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { Subject, takeUntil } from 'rxjs';
+
+// Pipes
+import { FormatDatePipe } from '@shared/pipes';
 
 // Components
 import {
@@ -19,6 +22,7 @@ import {
 import { TaTabSwitchComponent } from '@shared/components/ta-tab-switch/ta-tab-switch.component';
 import { TaCheckboxComponent } from '@shared/components/ta-checkbox/ta-checkbox.component';
 import { TaInputComponent } from '@shared/components/ta-input/ta-input.component';
+import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
 
 // Const
 import { PayrollCreditConst } from '@pages/accounting/pages/payroll/state/utils/consts';
@@ -61,6 +65,7 @@ import { PayrollFacadeService } from '@pages/accounting/pages/payroll/state/serv
         FormsModule,
         ReactiveFormsModule,
         AngularSvgIconModule,
+        NgbModule,
 
         CaModalComponent,
         CaInputComponent,
@@ -68,6 +73,10 @@ import { PayrollFacadeService } from '@pages/accounting/pages/payroll/state/serv
         TaTabSwitchComponent,
         CaInputDropdownComponent,
         TaCheckboxComponent,
+        TaAppTooltipV2Component,
+
+        // Pipes
+        FormatDatePipe
     ],
     templateUrl: './payroll-base-modal.component.html',
     styleUrls: ['./payroll-base-modal.component.scss'],
@@ -322,6 +331,10 @@ export class PayrollBaseModalComponent implements OnInit {
 
     public get isBonusModal(): boolean {
         return this.modalType === PayrollStringEnum.MODAL_BONUS;
+    }
+
+    public get isEditMode(): boolean {
+        return this.editData?.edit;
     }
 
     public onCloseModal(): void {

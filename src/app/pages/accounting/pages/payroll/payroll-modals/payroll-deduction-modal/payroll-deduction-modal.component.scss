@@ -33,6 +33,16 @@
     margin-right: 12px !important;
 }
 
+.mb-12 {
+    margin-bottom: 12px !important;
+}
+
 .modal-save-btn {
     padding: 0 12px !important;
+}
+
+.payment-history-row {
+    column-gap:  4px;
+    margin-bottom: 8px;
+    grid-template-columns: 26px 196px 110px 110px;
 }

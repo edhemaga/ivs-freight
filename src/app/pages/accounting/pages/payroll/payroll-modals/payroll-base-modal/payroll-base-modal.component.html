@@ -7,6 +7,7 @@
     <div origin>
         <div class="divider divider--dark divider--small"></div>
 
+       <ng-container *ngIf="baseForm">
         <form [formGroup]="baseForm" class="payroll-credit--body">
             <ng-container *ngIf="isBonusModal"> </ng-container>
 
@@ -127,30 +128,30 @@
                 </div>
             </ng-container>
         </form>
+       </ng-container>
     </div>
 </app-ca-modal>
 
 <ng-template #rightModalContent>
-    <!-- TODO: Test date -->
     <ng-container *ngIf="isEditMode">
         <div
             ngbTooltip
             mainTooltip="Added    {{
-                editData?.editCredit?.createdAt | formatDateP
+                editData?.data?.createdAt | formatDateP
             }} <br> Edited    {{
-                editData?.editCredit?.updatedAt | formatDateP
+                editData?.data?.updatedAt | formatDateP
             }}"
             tooltipBackground="#424242"
             position="bottom"
             class="modal-date-logo"
         >
-            <svg-icon [src]="svgRoutes.dateIcon"></svg-icon>
+            <svg-icon [src]="svgRoutes.dateIcon" class="modal-buttons"></svg-icon>
         </div>
         <div class="modal-date-border"></div>
     </ng-container>
 
     <svg-icon
-        class="modal-close"
+        class="modal-close svg-size-14 svg-fill-muted modal-buttons"
         [src]="svgRoutes.closeIcon"
         (click)="onCloseModal()"
     ></svg-icon>
