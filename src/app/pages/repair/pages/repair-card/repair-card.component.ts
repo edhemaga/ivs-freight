@@ -5,13 +5,11 @@ import {
     EventEmitter,
     Input,
     NgZone,
-    OnChanges,
     OnDestroy,
     OnInit,
     Output,
     QueryList,
     Renderer2,
-    SimpleChanges,
     ViewChild,
     ViewChildren,
 } from '@angular/core';
@@ -24,7 +22,6 @@ import { CardDetails } from '@shared/models/card-models/card-table-data.model';
 import { SendDataCard } from '@shared/models/card-models/send-data-card.model';
 import { CardRows } from '@shared/models/card-models/card-rows.model';
 import { CardDataResult } from '@shared/models/card-models/card-data-result.model';
-import { RepairData } from '@pages/repair/models/repair-data.model';
 
 // Services
 import { TruckassistTableService } from '@shared/services/truckassist-table.service';
@@ -33,18 +30,7 @@ import { TruckassistTableService } from '@shared/services/truckassist-table.serv
 import { TableStringEnum } from '@shared/enums/table-string.enum';
 
 // Helpers
-import { CardArrayHelper } from '@shared/utils/helpers/card-array-helper';
 import { CardHelper } from '@shared/utils/helpers/card-helper';
-
-//Components
-import { RepairOrderModalComponent } from '@pages/repair/pages/repair-modals/repair-order-modal/repair-order-modal.component';
-import { RepairShopModalComponent } from '@pages/repair/pages/repair-modals/repair-shop-modal/repair-shop-modal.component';
-import { ConfirmationModalComponent } from '@shared/components/ta-shared-modals/confirmation-modal/confirmation-modal.component';
-
-//Services
-import { ModalService } from '@shared/services/modal.service';
-import { ConfirmationService } from '@shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
-import { RepairService } from '@shared/services/repair.service';
 
 @Component({
     selector: 'app-repair-card',
@@ -52,9 +38,7 @@ import { RepairService } from '@shared/services/repair.service';
     styleUrls: ['./repair-card.component.scss'],
     providers: [CardHelper],
 })
-export class RepairCardComponent
-    implements OnInit, OnChanges, AfterViewInit, OnDestroy
-{
+export class RepairCardComponent implements OnInit, AfterViewInit, OnDestroy {
     @ViewChild('parentElement', { read: ElementRef })
     private cardBodyElement!: ElementRef;
 
@@ -100,9 +84,6 @@ export class RepairCardComponent
 
         //Services
         private tableService: TruckassistTableService,
-        private modalService: ModalService,
-        private confiramtionService: ConfirmationService,
-        private repairService: RepairService,
 
         //Helpers
         private cardHelper: CardHelper
@@ -112,39 +93,10 @@ export class RepairCardComponent
         this.flipAllCards();
     }
 
-    ngOnChanges(cardChanges: SimpleChanges): void {
-        setTimeout(() => {
-            this.itemsContainers.forEach((containerRef: ElementRef) => {
-                this.cardHelper.calculateItemsToFit(
-                    containerRef.nativeElement,
-                    this.renderer
-                );
-            });
-        }, 500);
-
-        if (
-            cardChanges?.displayRowsBack?.currentValue ||
-            cardChanges?.displayRowsFront?.currentValue
-        ) {
-            this.objectsWithDropDown();
-        }
-    }
-
     ngAfterViewInit(): void {
         this.windowResizeUpdateDescriptionDropdown();
 
         this.windownResizeUpdateCountNumberInCards();
-    }
-
-    public objectsWithDropDown(): void {
-        this.itemsForRepair = [];
-
-        this._viewData.forEach((row) => {
-            this.itemsForRepair = [
-                ...this.itemsForRepair,
-                CardArrayHelper.objectsWithDropDown(row, 'items'),
-            ];
-        });
     }
 
     public flipAllCards(): void {
@@ -246,84 +198,8 @@ export class RepairCardComponent
         return item;
     }
 
-    public onCardActions(event: RepairData): void {
-        switch (event.type) {
-            case TableStringEnum.VIEW_DETAILS:
-                if (this.selectedTab === TableStringEnum.REPAIR_SHOP)
-                    this.router.navigate([
-                        `/list/repair/${event.id}/shop-details`,
-                    ]);
-                break;
-            case TableStringEnum.DELETE_REPAIR:
-            case TableStringEnum.DELETE:
-                switch (this.selectedTab) {
-                    case TableStringEnum.REPAIR_SHOP:
-                        this.modalService.openModal(
-                            ConfirmationModalComponent,
-                            { size: TableStringEnum.SMALL },
-                            {
-                                ...event,
-                                template: TableStringEnum.REPAIR_SHOP,
-                                type: TableStringEnum.DELETE,
-                            }
-                        );
-
-                        break;
-
-                    default:
-                        this.modalService.openModal(
-                            ConfirmationModalComponent,
-                            { size: TableStringEnum.SMALL },
-                            {
-                                ...event,
-                                template: TableStringEnum.REPAIR_2,
-                                type: TableStringEnum.DELETE,
-                                subType:
-                                    this.selectedTab === TableStringEnum.ACTIVE
-                                        ? TableStringEnum.TRUCK
-                                        : TableStringEnum.TRAILER_2,
-                            }
-                        );
-                        break;
-                }
-                break;
-            case TableStringEnum.EDIT:
-                switch (this.selectedTab) {
-                    case TableStringEnum.ACTIVE:
-                        this.modalService.openModal(
-                            RepairOrderModalComponent,
-                            { size: TableStringEnum.LARGE },
-                            {
-                                ...event,
-                                type: TableStringEnum.EDIT_TRUCK,
-                            }
-                        );
-                        break;
-                    case TableStringEnum.INACTIVE:
-                        this.modalService.openModal(
-                            RepairOrderModalComponent,
-                            { size: TableStringEnum.LARGE },
-                            {
-                                ...event,
-                                type: TableStringEnum.EDIT_TRAILER,
-                            }
-                        );
-                        break;
-                    default:
-                        this.modalService.openModal(
-                            RepairShopModalComponent,
-                            { size: TableStringEnum.SMALL },
-                            {
-                                ...event,
-                                openedTab: this.selectedTab,
-                            }
-                        );
-                        break;
-                }
-                break;
-            default:
-                break;
-        }
+    public onCardActions(event: SendDataCard): void {
+        this.bodyActions.emit(event);
     }
 
     ngOnDestroy() {

@@ -619,6 +619,7 @@ model/loadListDto.ts
 model/loadListDtoPagination.ts
 model/loadListLoadStopResponse.ts
 model/loadListResponse.ts
+model/loadMainModuleResponse.ts
 model/loadMinimalListResponse.ts
 model/loadMinimalResponse.ts
 model/loadMinimalResponsePagination.ts
