@@ -39,7 +39,6 @@ import { DispatchTableDragNDropHelper } from '@pages/dispatch/pages/dispatch/com
 
 // services
 import { DispatcherService } from '@pages/dispatch/services/dispatcher.service';
-import { TruckassistTableService } from '@shared/services/truckassist-table.service';
 
 // constants
 import { DispatchTableConstants } from '@pages/dispatch/pages/dispatch/components/dispatch-table/utils/constants';
@@ -70,6 +69,7 @@ import {
     TruckDispatchModalResponse,
     TrailerDispatchModalResponse,
     AddressEntity,
+    DispatchHistoryTruckLastLocationResponse,
 } from 'appcoretruckassist';
 import { DispatchBoardParkingEmiter } from '@pages/dispatch/models/dispatch-parking-emmiter.model';
 import {
@@ -222,8 +222,7 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
 
         // Services
         private dispatcherService: DispatcherService,
-        private parkingService: ParkingService,
-        private tableService: TruckassistTableService
+        private parkingService: ParkingService
     ) {}
 
     set checkEmptySet(value: string) {
@@ -404,9 +403,7 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
                     }
 
                     if (truckLastLocation?.address?.address)
-                        this.handleUpdateLastLocationEmit(
-                            truckLastLocation.address
-                        );
+                        this.handleUpdateLastLocationEmit(truckLastLocation);
 
                     this.cdRef.detectChanges();
                 });
@@ -476,12 +473,22 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
         )?.length;
     }
 
-    public handleUpdateLastLocationEmit(address: AddressEntity): void {
+    public handleUpdateLastLocationEmit(
+        truckLastLocation: DispatchHistoryTruckLastLocationResponse
+    ): void {
         this.isDisplayingAddressInput = false;
+
+        const { address, latitude, longitude } = truckLastLocation;
+
+        const addressLatLong = {
+            address,
+            latitude,
+            longitude,
+        };
 
         this.updateOrAddDispatchBoardAndSend(
             DispatchTableStringEnum.LOCATION,
-            address,
+            addressLatLong,
             this.showAddAddressFieldIndex
         );
     }
@@ -510,7 +517,9 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
             ...(id &&
                 key === DispatchTableStringEnum.TRUCK_ID &&
                 !value && { location: null }),
-            ...(!id && { dispatchBoardId: this.dispatchData.id }),
+            ...(!id && {
+                dispatchBoardId: this.dispatchData.id,
+            }),
             ...(!id &&
                 key === DispatchTableStringEnum.LOCATION && {
                     truckId: this.addNewTruckData.id,
@@ -536,9 +545,13 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
             driver,
             coDriver,
             location,
+            latitude,
+            longitude,
             note,
             parkingSlot,
         } = previousData;
+
+        const locationValue = value as DispatchHistoryTruckLastLocationResponse;
 
         const updatedPreviousData:
             | CreateDispatchCommand
@@ -552,7 +565,13 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
             trailerId: trailer?.id ?? null,
             driverId: driver?.id ?? null,
             coDriverId: coDriver?.id ?? null,
-            location: location?.address ? location : null,
+            location:
+                (location?.address ? location : null) ||
+                (locationValue?.address?.address
+                    ? locationValue.address
+                    : null),
+            longitude: longitude || locationValue?.longitude || null,
+            latitude: latitude || locationValue?.latitude || null,
             note,
             loadIds: [],
             hoursOfService: null,
@@ -561,7 +580,7 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
 
         const newData: CreateDispatchCommand | UpdateDispatchCommand = {
             ...updatedPreviousData,
-            [key]: value,
+            ...(key !== DispatchTableStringEnum.LOCATION && { [key]: value }),
             ...this.setCreateUpdateOptionalProperties(
                 updatedPreviousData.id,
                 key,
