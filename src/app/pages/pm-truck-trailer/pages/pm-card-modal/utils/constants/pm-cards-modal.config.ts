@@ -7,7 +7,7 @@ export class PMCardsModalConfig {
 
     static card_title: string = 'textUnit';
 
-    static displayRowsFrontTruck: CardRows[] = [
+    static displayRowsFrontActive: CardRows[] = [
         {
             title: 'Engine Oil & Filter',
             field: 'oilFilter',
@@ -36,7 +36,7 @@ export class PMCardsModalConfig {
         null,
     ];
 
-    static displayRowsBackTruck: CardRows[] = [
+    static displayRowsBackActive: CardRows[] = [
         {
             title: 'Make',
             key: 'textMake',
@@ -57,7 +57,7 @@ export class PMCardsModalConfig {
         null,
     ];
 
-    static displayRowsFrontTrailer: CardRows[] = [
+    static displayRowsFrontInactive: CardRows[] = [
         {
             title: 'General',
             field: 'general',
@@ -86,7 +86,7 @@ export class PMCardsModalConfig {
         null,
     ];
 
-    static displayRowsBackTrailer: CardRows[] = [
+    static displayRowsBackInactive: CardRows[] = [
         {
             title: 'Make',
             key: 'textMake',
