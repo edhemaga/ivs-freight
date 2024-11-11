@@ -6,6 +6,8 @@ import {
 import { PayrollCreditBonusComponent } from '../../payroll-modals/payroll-credit-bonus/payroll-credit-bonus.component';
 import { PayrollBonusModalComponent } from '../../payroll-modals/payroll-bonus-modal/payroll-bonus-modal.component';
 import { PayrollDeductionModalComponent } from '../../payroll-modals/payroll-deduction-modal/payroll-deduction-modal.component';
+import { PayrollReportTableResponse } from 'ca-components/lib/components/ca-period-content/models/payroll-report-tables.type';
+import { IGetPayrollByIdAndOptions } from '../../state/models/payroll.model';
 
 export abstract class PayrollReportBaseComponent<
     T extends { driver?: { id?: number }; truck?: { id?: number } }
@@ -13,9 +15,23 @@ export abstract class PayrollReportBaseComponent<
     openedPayroll: T;
     abstract creditType: PayrollCreditType;
 
+    protected _reportId: string;
+
     constructor(protected modalService: ModalService) {}
 
-    protected abstract getReportDataResults(): void;
+    protected abstract getReportDataResults(
+        getData?: IGetPayrollByIdAndOptions
+    ): void;
+
+    public get reportId(): string {
+        console.log('Getter in abstract class called: ', this._reportId);
+        return this._reportId;
+    }
+
+    public set reportId(value: string) {
+        console.log('Setter in abstract class called with: ', value);
+        this._reportId = value;
+    }
 
     public openAddNewModal(type: string) {
         switch (type) {
@@ -164,5 +180,38 @@ export abstract class PayrollReportBaseComponent<
                     break;
             }
         }
+    }
+
+    onReorderItem({
+        _included,
+        _title,
+    }: {
+        _included: PayrollReportTableResponse[];
+        _title: string;
+    }) {
+        let dataSend = {
+            reportId: `${this.reportId}`,
+            selectedCreditIds: null,
+            selectedDeductionIds: null,
+            selectedBonusIds: null,
+        };
+        if (_title === 'Credit') {
+            dataSend = {
+                ...dataSend,
+                selectedCreditIds: _included.map((load) => load.id),
+            };
+        } else if (_title === 'Deduction') {
+            dataSend = {
+                ...dataSend,
+                selectedDeductionIds: _included.map((load) => load.id),
+            };
+        } else if (_title === 'Bonus') {
+            dataSend = {
+                ...dataSend,
+                selectedBonusIds: _included.map((load) => load.id),
+            };
+        }
+
+        this.getReportDataResults(dataSend);
     }
 }

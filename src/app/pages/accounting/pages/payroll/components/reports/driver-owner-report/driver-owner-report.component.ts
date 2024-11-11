@@ -27,8 +27,10 @@ import {
 
 import { OwnerLoadShortReponseWithRowType } from '../../../state/models/driver_owner.model';
 import { PayrollProccessPaymentModalComponent } from '../../../payroll-modals/payroll-proccess-payment-modal/payroll-proccess-payment-modal.component';
-import { IPayrollProccessPaymentModal } from '../../../state/models/payroll.model';
-import { PayrollReportTableResponse } from 'ca-components/lib/components/ca-period-content/models/payroll-report-tables.type';
+import {
+    IGetPayrollByIdAndOptions,
+    IPayrollProccessPaymentModal,
+} from '../../../state/models/payroll.model';
 import { PayrollReportBaseComponent } from '../payroll-report.base';
 
 @Component({
@@ -41,16 +43,13 @@ export class DriverOwnerReportComponent
     extends PayrollReportBaseComponent<PayrollOwnerResponse>
     implements OnInit, OnDestroy, AfterViewInit
 {
-    _reportId: string;
     @Input() set reportId(report_id: string) {
         this._reportId = report_id;
-        this.payrollDriverOwnerFacadeService.getPayrollDriverOwnerReport({
-            reportId: this.reportId,
-        });
+        this.getReportDataResults();
     }
 
-    get reportId() {
-        return this._reportId;
+    get reportId(): string {
+        return super.reportId; // Call the base class getter
     }
 
     columns: ColumnConfig[];
@@ -196,38 +195,6 @@ export class DriverOwnerReportComponent
         return true;
     };
 
-    onReorderItem({
-        _included,
-        _title,
-    }: {
-        _included: PayrollReportTableResponse[];
-        _title: string;
-    }) {
-        // let dataSend = {
-        //     reportId: `${this.reportId}`,
-        //     selectedCreditIds: null,
-        //     selectedDeducionIds: null,
-        //     selectedBonusIds: null,
-        // };
-        // if (_title === 'Credit') {
-        //     dataSend = {
-        //         ...dataSend,
-        //         selectedCreditIds: _included.map((load) => load.id),
-        //     };
-        // } else if (_title === 'Deduction') {
-        //     dataSend = {
-        //         ...dataSend,
-        //         selectedDeducionIds: _included.map((load) => load.id),
-        //     };
-        // } else if (_title === 'Bonus') {
-        //     dataSend = {
-        //         ...dataSend,
-        //         selectedBonusIds: _included.map((load) => load.id),
-        //     };
-        // }
-        // this.payrollFacadeService.getPayrollDriverMileageReport(dataSend);
-    }
-
     onProccessPayroll(payrollData: PayrollDriverMileageByIdResponse) {
         this.modalService.openModal(
             PayrollProccessPaymentModalComponent,
@@ -259,20 +226,20 @@ export class DriverOwnerReportComponent
                 .map((load) => load.id);
 
             if (loadList) {
-                this.payrollDriverOwnerFacadeService.getPayrollDriverOwnerReport(
-                    {
-                        reportId: `${this.reportId}`,
-                        selectedLoadIds: loadList,
-                    }
-                );
+                this.getReportDataResults({
+                    reportId: `${this.reportId}`,
+                    selectedLoadIds: loadList,
+                });
             }
         }
     }
 
-    public getReportDataResults() {
-        this.payrollDriverOwnerFacadeService.getPayrollDriverOwnerReport({
-            reportId: this.reportId,
-        });
+    public getReportDataResults(getData?: IGetPayrollByIdAndOptions) {
+        this.payrollDriverOwnerFacadeService.getPayrollDriverOwnerReport(
+            getData ?? {
+                reportId: `${this.reportId}`,
+            }
+        );
     }
 
     ngOnDestroy(): void {

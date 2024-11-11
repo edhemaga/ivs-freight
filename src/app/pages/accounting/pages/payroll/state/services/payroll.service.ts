@@ -35,6 +35,7 @@ import {
 } from 'appcoretruckassist';
 import {
     IAddPayrollClosedPayment,
+    IGetPayrollByIdAndOptions,
     IPayrollCountsSelector,
     MilesStopShortReponseWithRowType,
     PayrollDriverMileageExpandedListResponse,
@@ -171,13 +172,7 @@ export class PayrollFacadeService {
         selectedCreditIds,
         selectedBonusIds,
         selectedDeducionIds,
-    }: {
-        reportId: string;
-        lastLoadDate?: string;
-        selectedCreditIds?: number[];
-        selectedBonusIds?: number[];
-        selectedDeducionIds?: number[];
-    }) {
+    }: IGetPayrollByIdAndOptions) {
         this.store
             .pipe(select(selectPayrollState), take(1))
             .subscribe((payrollState) => {
@@ -290,7 +285,7 @@ export class PayrollFacadeService {
                             paymentType,
                             otherPaymentType,
                         })
-                    ); 
+                    );
                 } else if (payrollType === 'flat rate') {
                     this.store.dispatch(
                         PayrollFlatRateActions.closePayrollFlatRateReportDriver(

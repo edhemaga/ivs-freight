@@ -28,7 +28,7 @@ export interface PayrollState {
     expandedReportTable?: boolean;
     closeReportPaymentLoading?: boolean;
     closeReportPaymentError?: boolean;
-    
+
     driverMileageCollapsedList?: PayrollDriverMileageCollapsedListResponse[];
     driverCommissionCollapsedList?: PayrollDriverMileageCollapsedListResponse[];
     driverFlatRateCollapsedList?: PayrollDriverMileageCollapsedListResponse[];
@@ -148,3 +148,12 @@ export interface IGet_Payroll_Commission_Driver_Report {
 }
 
 export type PayrollTypes = 'miles' | 'commission' | 'flat rate' | 'owner';
+
+export interface IGetPayrollByIdAndOptions {
+    reportId: string;
+    lastLoadDate?: string;
+    selectedLoadIds?: number[];
+    selectedCreditIds?: number[];
+    selectedBonusIds?: number[];
+    selectedDeducionIds?: number[];
+}
