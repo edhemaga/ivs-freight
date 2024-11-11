@@ -167,16 +167,27 @@ export class PayrollComponent implements OnInit, AfterViewInit, OnDestroy {
 
                         this.componentRef.instance.expandTableEvent.subscribe(
                             (event: any) => {
-                                this.reportTableData = event;
-                                if (
-                                    this.payrollReportType != this.payrollType
-                                ) {
-                                    this.selectedTabForReport = this.selectedTab;
-                                    this.payrollReportType = this.payrollType;
+                                if (this.reportTableData.id != event?.id) {
+                                    this.reportTableData = event;
+                                    if (
+                                        this.payrollReportType !=
+                                        this.payrollType
+                                    ) {
+                                        this.payrollReportType =
+                                            this.payrollType;
+                                    }
+
+                                    if (
+                                        this.selectedTabForReport !=
+                                        this.selectedTab
+                                    ) {
+                                        this.selectedTabForReport =
+                                            this.selectedTab;
+                                    }
+                                    this.payrollFacadeService.setPayrollReportTableExpanded(
+                                        true
+                                    );
                                 }
-                                this.payrollFacadeService.setPayrollReportTableExpanded(
-                                    true
-                                );
                             }
                         );
                     }
@@ -231,16 +242,27 @@ export class PayrollComponent implements OnInit, AfterViewInit, OnDestroy {
 
                         this.componentRef.instance.expandTableEvent.subscribe(
                             (event: any) => {
-                                this.reportTableData = event;
-                                if (
-                                    this.payrollReportType != this.payrollType
-                                ) {
-                                    this.selectedTabForReport = this.selectedTab;
-                                    this.payrollReportType = this.payrollType;
+                                if (this.reportTableData.id != event?.id) {
+                                    this.reportTableData = event;
+                                    if (
+                                        this.payrollReportType !=
+                                        this.payrollType
+                                    ) {
+                                        this.payrollReportType =
+                                            this.payrollType;
+                                    }
+
+                                    if (
+                                        this.selectedTabForReport !=
+                                        this.selectedTab
+                                    ) {
+                                        this.selectedTabForReport =
+                                            this.selectedTab;
+                                    }
+                                    this.payrollFacadeService.setPayrollReportTableExpanded(
+                                        true
+                                    );
                                 }
-                                this.payrollFacadeService.setPayrollReportTableExpanded(
-                                    true
-                                );
                             }
                         );
                     }
@@ -295,20 +317,27 @@ export class PayrollComponent implements OnInit, AfterViewInit, OnDestroy {
 
                         this.componentRef.instance.expandTableEvent.subscribe(
                             (event: any) => {
-                                this.reportTableData = event;
-                                if (
-                                    this.payrollReportType != this.payrollType
-                                ) {
-                                    this.selectedTabForReport = this.selectedTab;
-                                    this.payrollReportType = this.payrollType;
+                                if (this.reportTableData.id != event?.id) {
+                                    this.reportTableData = event;
+                                    if (
+                                        this.payrollReportType !=
+                                        this.payrollType
+                                    ) {
+                                        this.payrollReportType =
+                                            this.payrollType;
+                                    }
+
+                                    if (
+                                        this.selectedTabForReport !=
+                                        this.selectedTab
+                                    ) {
+                                        this.selectedTabForReport =
+                                            this.selectedTab;
+                                    }
+                                    this.payrollFacadeService.setPayrollReportTableExpanded(
+                                        true
+                                    );
                                 }
-                                this.payrollFacadeService.setPayrollReportTableExpanded(
-                                    true
-                                );
-                                console.log(
-                                    'EVENT FROM EXAPNDED TABLE BLAH',
-                                    event
-                                );
                             }
                         );
                     }
@@ -363,16 +392,28 @@ export class PayrollComponent implements OnInit, AfterViewInit, OnDestroy {
 
                         this.componentRef.instance.expandTableEvent.subscribe(
                             (event: any) => {
-                                this.reportTableData = event;
-                                if (
-                                    this.payrollReportType != this.payrollType
-                                ) {
-                                    this.selectedTabForReport = this.selectedTab;
-                                    this.payrollReportType = this.payrollType;
+                                if (this.reportTableData.id != event?.id) {
+                                    this.reportTableData = event;
+
+                                    if (
+                                        this.payrollReportType !=
+                                        this.payrollType
+                                    ) {
+                                        this.payrollReportType =
+                                            this.payrollType;
+                                    }
+
+                                    if (
+                                        this.selectedTabForReport !=
+                                        this.selectedTab
+                                    ) {
+                                        this.selectedTabForReport =
+                                            this.selectedTab;
+                                    }
+                                    this.payrollFacadeService.setPayrollReportTableExpanded(
+                                        true
+                                    );
                                 }
-                                this.payrollFacadeService.setPayrollReportTableExpanded(
-                                    true
-                                );
                             }
                         );
                     }
@@ -415,16 +456,16 @@ export class PayrollComponent implements OnInit, AfterViewInit, OnDestroy {
         }
     }
 
-    expandTable<T>(payrollType?: string, data?: T) {
-        if (data) {
+    expandTable<T extends { id: string }>(payrollType?: string, data?: T) {
+        if (data && this.reportTableData.id != data?.id) {
             this.reportTableData = data;
             this.payrollFacadeService.setPayrollReportTableExpanded(true);
-        }
 
-        if (payrollType) {
-            if (this.payrollReportType != payrollType) {
-                this.selectedTabForReport = this.selectedTab;
-                this.payrollReportType = payrollType;
+            if (payrollType) {
+                if (this.payrollReportType != payrollType) {
+                    this.selectedTabForReport = this.selectedTab;
+                    this.payrollReportType = payrollType;
+                }
             }
         }
     }

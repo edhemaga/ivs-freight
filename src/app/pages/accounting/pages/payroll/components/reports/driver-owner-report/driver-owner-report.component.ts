@@ -10,7 +10,7 @@ import {
 } from '@angular/core';
 import { Observable, Subject, takeUntil } from 'rxjs';
 import { ColumnConfig } from 'ca-components';
-import { CdkDragDrop } from '@angular/cdk/drag-drop';
+import { CdkDrag, CdkDragDrop } from '@angular/cdk/drag-drop';
 
 //Services
 import { ModalService } from '@shared/services/modal.service';
@@ -196,8 +196,8 @@ export class DriverOwnerReportComponent
         ];
     }
 
-    customSortPredicate = (index: number, _: CdkDragDrop<any>): boolean => {
-        return true;
+    customSortPredicate = (index: number, data: CdkDrag<any>): boolean => {
+        return data.dropContainer.data[index -1];
     };
 
     onProccessPayroll(payrollData: PayrollDriverMileageByIdResponse) {

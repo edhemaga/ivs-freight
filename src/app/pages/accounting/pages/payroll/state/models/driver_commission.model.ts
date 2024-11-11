@@ -23,6 +23,7 @@ export interface IDriverCommissionResponse {
     credit: number;
     deduction: number;
     total: number;
+    selected?: boolean
 }
 
 export interface PayrollDeadLine {

@@ -65,6 +65,10 @@
                 color: #fff !important;
                 position: relative;
                 padding-right: 8px;
+                width: 100px;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
 
                 &.with-border {
                     &::after {

@@ -9,7 +9,7 @@ import {
     ViewChild,
 } from '@angular/core';
 import { Observable, Subject, takeUntil } from 'rxjs';
-import { CdkDragDrop } from '@angular/cdk/drag-drop';
+import { CdkDrag, CdkDragDrop } from '@angular/cdk/drag-drop';
 
 // Components
 import { ColumnConfig } from 'ca-components';
@@ -220,8 +220,8 @@ export class DriverCommissionReportComponent
         );
     }
 
-    customSortPredicate = (index: number, _: CdkDragDrop<any>): boolean => {
-        return true;
+    customSortPredicate = (index: number, data: CdkDrag<any>): boolean => {
+        return data.dropContainer.data[index -1];
     };
 
     onReorderDone(drag: CdkDragDrop<any[] | null, any, any>) {

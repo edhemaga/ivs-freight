@@ -24,7 +24,7 @@ import {
     PayrollDriverFlatRateByIdResponse,
 } from 'appcoretruckassist';
 import { FlatRateLoadShortReponseWithRowType } from '../../../state/models/driver_flat_rate.model';
-import { CdkDragDrop } from '@angular/cdk/drag-drop';
+import { CdkDrag, CdkDragDrop } from '@angular/cdk/drag-drop';
 import { PayrollReportTableResponse } from 'ca-components/lib/components/ca-period-content/models/payroll-report-tables.type';
 import { PayrollProccessPaymentModalComponent } from '../../../payroll-modals/payroll-proccess-payment-modal/payroll-proccess-payment-modal.component';
 import { PayrollReportBaseComponent } from '../payroll-report.base';
@@ -179,8 +179,8 @@ export class DriverFlatRateReportComponent
             this.payrollDriverFlatRateFacadeService.selectPayrollReportDriverFlatRateLoads$;
     }
 
-    customSortPredicate = (index: number, _: CdkDragDrop<any>): boolean => {
-        return true;
+    customSortPredicate = (index: number, data: CdkDrag<any>): boolean => {
+        return data.dropContainer.data[index -1];
     };
 
     onProccessPayroll(payrollData: PayrollDriverFlatRateByIdResponse) {
