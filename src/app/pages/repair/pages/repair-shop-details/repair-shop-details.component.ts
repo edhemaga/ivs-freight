@@ -1,4 +1,5 @@
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import { CommonModule } from '@angular/common';
 import {
     ChangeDetectorRef,
     Component,
@@ -8,7 +9,7 @@ import {
 } from '@angular/core';
 import { Subject, take, takeUntil, distinctUntilChanged } from 'rxjs';
 
-// Services
+// services
 import { DropDownService } from '@shared/services/drop-down.service';
 import { RepairService } from '@shared/services/repair.service';
 import { ConfirmationService } from '@shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
@@ -16,11 +17,15 @@ import { DetailsPageService } from '@shared/services/details-page.service';
 import { TruckassistTableService } from '@shared/services/truckassist-table.service';
 import { DetailsDataService } from '@shared/services/details-data.service';
 
-// Store
+// store
 import { RepairDetailsQuery } from '@pages/repair/state/repair-details-state/repair-details.query';
 import { RepairDetailsStore } from '@pages/repair/state/repair-details-state/repair-details.store';
 
-// Models
+// components
+import { TaDetailsHeaderComponent } from '@shared/components/ta-details-header/ta-details-header.component';
+import { RepairShopDetailsItemComponent } from '@pages/repair/pages/repair-shop-details/components/repair-shop-details-item/repair-shop-details-item.component';
+
+// models
 import { RepairShopResponse } from 'appcoretruckassist';
 
 @Component({
@@ -29,6 +34,14 @@ import { RepairShopResponse } from 'appcoretruckassist';
     styleUrls: ['./repair-shop-details.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
     providers: [DetailsPageService],
+    standalone: true,
+    imports: [
+        // Modules
+        CommonModule,
+
+        TaDetailsHeaderComponent,
+        RepairShopDetailsItemComponent,
+    ],
 })
 export class RepairShopDetailsComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
@@ -86,12 +99,12 @@ export class RepairShopDetailsComponent implements OnInit, OnDestroy {
         this.tableService.currentActionAnimation
             .pipe(takeUntil(this.destroy$))
             .subscribe((res: any) => {
-                if (res.animation === 'update' && res.tab === 'repair-shop') {
-                    this.getRepairShopDataFromStore(res.id);
+                if (res?.animation === 'update' && res?.tab === 'repair-shop') {
+                    this.getRepairShopDataFromStore(res?.id);
                     this.cdRef.detectChanges();
                 }
-                if (res.animation === 'delete' && res.tab === 'repair-shop') {
-                    this.getRepairShopDataFromStore(res.id);
+                if (res?.animation === 'delete' && res?.tab === 'repair-shop') {
+                    this.getRepairShopDataFromStore(res?.id);
                     this.cdRef.detectChanges();
                 }
             });

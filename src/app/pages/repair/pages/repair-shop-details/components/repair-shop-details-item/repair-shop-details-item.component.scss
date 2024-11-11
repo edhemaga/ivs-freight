@@ -66,44 +66,6 @@ app-repair-shop-details-item {
             }
         }
     }
-    .working-hours-container {
-        .open-now-wrapper {
-            .open-now-icon-text {
-                display: flex;
-                align-items: center;
-            }
-
-            .open-time {
-                font-size: 18px;
-                color: #2f2f2f;
-                height: 18px;
-                position: relative;
-                bottom: 2px;
-            }
-        }
-        .open-header {
-            font-size: 12px;
-            color: #2f2f2f;
-            padding-right: 4px;
-        }
-        .open-hours-wrapper {
-            display: grid;
-            grid-template-columns: 190px 180px;
-            margin-top: 12px;
-        }
-        .open-working-days-value {
-            font-size: 14px;
-            font-weight: 400;
-            color: #2f2f2f;
-        }
-        .sunday {
-            margin-top: 12px;
-        }
-
-        &.more-padding-working-hours-cont {
-            padding: 0px 4px;
-        }
-    }
 
     .note-cards {
         padding: 0px 6px 0px 4px;
@@ -242,33 +204,6 @@ app-repair-shop-details-item {
         }
     }
 
-    .service-container {
-        padding: 0 4px;
-        display: grid;
-        justify-content: space-between;
-        grid-template-columns: 80px 80px 80px 80px;
-        //grid-template-columns: 1fr 1fr 1fr 1fr;
-        column-gap: 0px;
-        row-gap: 13px;
-
-        .service-item {
-            display: flex;
-            flex-direction: row;
-            align-items: center;
-            svg {
-                width: 16px;
-                height: 16px;
-                path {
-                    fill: #919191;
-                }
-            }
-            .service-type {
-                font-size: 12px;
-                color: #2f2f2f;
-                padding-left: 6.9px;
-            }
-        }
-    }
     .item-desc {
         white-space: nowrap;
         display: inline;

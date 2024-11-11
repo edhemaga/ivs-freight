@@ -137,7 +137,7 @@
                         line-height: 14px;
 
                         &.active {
-                            color: #6f9ee0;
+                            color: $ta-blue-7;
                         }
                     }
 
@@ -277,7 +277,7 @@
 
                         svg {
                             path {
-                                fill: $ta-blue-19;
+                                fill: $ta-blue-13;
                             }
                         }
                     }
@@ -305,7 +305,7 @@
                 }
 
                 &.active-repair-truck-trailer {
-                    color: #6f9ee0;
+                    color: $ta-blue-7;
                     position: relative;
 
                     &:hover {
@@ -536,7 +536,7 @@
                             &.add-new {
                                 font-size: 11px;
                                 font-weight: 700;
-                                color: #6f9ee0;
+                                color: $ta-blue-7;
                                 transition: all 0.3s ease-in-out;
                                 position: relative;
                             }
@@ -623,6 +623,7 @@
                     grid-template-columns: auto 14px 1fr;
                     align-items: center;
                     justify-content: space-between;
+                    margin-right: 1px;
 
                     &.load-details-template {
                         grid-template-columns: 30px 130px 1fr;
@@ -631,21 +632,50 @@
 
                     &.add-new {
                         grid-template-columns: 1fr 1fr;
-                        margin-right: 6px;
                     }
 
                     &.dropdown-option {
                         position: relative;
                     }
 
+                    &.repair-closed-template {
+                        .details-template-text {
+                            position: absolute;
+                            left: 24px;
+                        }
+
+                        .driver-details-template-container {
+                            position: unset;
+                            right: unset;
+
+                            .left-box {
+                                p {
+                                    position: absolute;
+                                    right: 6px;
+                                }
+
+                                .repair-shop-details-icon {
+                                    position: absolute;
+                                    left: -2px;
+                                    bottom: 4px;
+                                }
+                            }
+                        }
+                    }
+
                     .details-template-text {
                         &.active {
-                            color: #6f9ee0;
+                            color: $ta-blue-7;
+                            transition: color 0.3s ease-in-out;
 
                             &:hover {
                                 color: $ta-blue-17;
-                                transition: all 0.3s ease-in-out;
                             }
+                        }
+
+                        &.closed {
+                            color: $bw5;
+                            text-decoration: line-through;
                         }
                     }
 
@@ -683,6 +713,34 @@
                         font-size: 11px;
                         color: $bw5;
                         line-height: 12px;
+                    }
+
+                    .repair-shop-details-icon {
+                        margin-left: 6px;
+                        position: relative;
+                        bottom: 1px;
+
+                        &.pinned {
+                            svg {
+                                path {
+                                    fill: $ta-blue-13;
+                                }
+                            }
+                        }
+
+                        &.closed {
+                            svg {
+                                path {
+                                    fill: $ta-red-10;
+                                }
+                            }
+                        }
+
+                        svg {
+                            path {
+                                fill: $bw5;
+                            }
+                        }
                     }
                 }
 
@@ -1015,9 +1073,10 @@
                         top: 44%;
                         right: 0;
                         transform: translateY(-50%);
+
                         svg {
                             path {
-                                fill: #6f9ee0 !important;
+                                fill: $ta-blue-7 !important;
                             }
                         }
                     }
@@ -1043,7 +1102,7 @@
                     overflow: hidden;
 
                     &.active {
-                        color: #6f9ee0;
+                        color: $ta-blue-7;
                     }
 
                     &.driver-owner {
@@ -1132,7 +1191,7 @@
                     padding: 1px 6px;
 
                     &.active {
-                        color: #6f9ee0;
+                        color: $ta-blue-7;
                         background-color: rgb(111, 158, 224, 0.2);
                     }
 
@@ -1179,7 +1238,7 @@
                         font-weight: 400;
 
                         &.active {
-                            color: #6f9ee0;
+                            color: $ta-blue-7;
                             font-weight: bold;
                         }
                     }
@@ -1200,7 +1259,7 @@
                     justify-self: flex-end;
 
                     &.active {
-                        color: #6f9ee0;
+                        color: $ta-blue-7;
                         background-color: rgb(111, 158, 224, 0.2);
                     }
                 }
@@ -1354,7 +1413,7 @@
                             font-size: 11px;
                             line-height: 14px;
                             font-weight: 700;
-                            color: #6f9ee0;
+                            color: $ta-blue-7;
                             padding: 4px;
                             margin: 0;
                             cursor: pointer;
@@ -1571,7 +1630,7 @@
                 }
 
                 &.add-option {
-                    color: #6f9ee0;
+                    color: $ta-blue-7;
                     font-weight: 600;
 
                     &::after {
