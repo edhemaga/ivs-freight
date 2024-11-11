@@ -216,7 +216,7 @@
                                 >
                                 </app-ta-copy>
                             </ng-container>
-                            <div>
+                            <div class="d-flex">
                                 <svg-icon
                                     class="svg-fill-blue-13 svg-size-14 d-flex"
                                     [src]="svgRoutes.ADDRESS"
@@ -281,10 +281,7 @@
                 (editData?.data && updatedRepairItems?.length > 10) ||
                 fuelItems?.length > 10
             "
-            [isCardOpen]="
-                (editData?.data && updatedRepairItems?.length) ||
-                fuelItems?.length
-            "
+            [isCardOpen]="true "
             [disabledCard]="
                 (editData?.data && !updatedRepairItems?.length) ||
                 !fuelItems?.length

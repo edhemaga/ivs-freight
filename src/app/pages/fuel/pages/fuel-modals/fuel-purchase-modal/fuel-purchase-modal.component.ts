@@ -144,15 +144,14 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
         private formService: FormService,
         private fuelService: FuelService,
         private sumArrays: SumArraysPipe,
-        private truckService: TruckService
+        private truckService: TruckService,
     ) {}
 
     ngOnInit() {
         this.createForm();
         this.getModalDropdowns();
         this.getFuelTransactionFranchises();
-        this.getTruckList();
-
+        this.getTruckList(); 
         this.getDriverTrailerBySelectedTruck();
     }
 
@@ -253,7 +252,7 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
             total: MethodsCalculationsHelper.convertThousanSepInNumber(
                 this.total as any
             ),
-            fuelItems: this.fuelItems, //TODO: leave any for now
+            fuelItems: this.fuelItems, 
             files: this.mapDocuments(),
             filesForDeleteIds: [],
         };
@@ -393,7 +392,7 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
                                 ? res.fuelStopStore.store
                                 : res.fuelStopStore.businessName
                             : null,
-                        fuelItems: [],
+                        fuelItems: res.fuelItems,
                         total: res.total,
                     });
 
@@ -488,6 +487,7 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
                         this.getFuelById(this.editData.id);
                     } else {
                         this.startFormChanges();
+                        this.addRepairItem();
                     }
                 },
                 error: () => {},
