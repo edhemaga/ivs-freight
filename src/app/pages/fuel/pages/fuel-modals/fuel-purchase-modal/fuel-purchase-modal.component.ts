@@ -29,6 +29,7 @@ import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-cust
 import { TaInputDropdownComponent } from '@shared/components/ta-input-dropdown/ta-input-dropdown.component';
 import { TaUploadFilesComponent } from '@shared/components/ta-upload-files/ta-upload-files.component';
 import { TaModalTableComponent } from '@shared/components/ta-modal-table/ta-modal-table.component';
+import { TaCopyComponent } from '@shared/components/ta-copy/ta-copy.component';
 
 //Modules
 import { CommonModule } from '@angular/common';
@@ -91,6 +92,7 @@ import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calcula
         TaInputDropdownComponent,
         TaUploadFilesComponent,
         TaModalTableComponent,
+        TaCopyComponent,
 
         // Pipe
         SumArraysPipe,
@@ -217,7 +219,6 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
                 break;
             case FuelDropdownOptionsStringEnum.FUEL:
                 this.selectedFuelStop = event;
-                break;
                 break;
             default:
                 break;

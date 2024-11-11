@@ -3,4 +3,5 @@ export class FuelTableSvgRoutes {
     static DROPDOWN_CONTENT_DELETE: string = 'assets/svg/truckassist-table/dropdown/content/delete.svg';
     static STAR: string = 'assets/svg/common/ic_star.svg';
     static ADDRESS: string = 'assets/svg/common/ic_address.svg';
+    static PHONE: string = 'assets/svg/common/ic_phone.svg';
 }

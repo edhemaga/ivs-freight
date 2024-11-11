@@ -6,7 +6,12 @@
     "
     [editData]="editData"
     [editName]="fuelTransactionName"
-    [isModalValid]="fuelForm.valid && isFormDirty"
+    [isModalValid]="
+        fuelForm.valid &&
+        isFormDirty &&
+        fuelItems.length &&
+        isEachRepairRowValid
+    "
     [disableDelete]="true"
     (action)="onModalAction($event)"
 >
@@ -188,7 +193,9 @@
                     <div class="selected-item-label">
                         Fuel Stop <span>*</span>
                     </div>
-                    <p class="m-0 ta-font-bold text-size-14 text-color-black mb-1 d-flex align-items-center">
+                    <p
+                        class="m-0 ta-font-bold text-size-14 text-color-black mb-1 d-flex align-items-center"
+                    >
                         <span>{{ selectedFuelStop?.businessName }}</span>
 
                         <ng-container *ngIf="selectedFuelStop.favorite">
@@ -203,15 +210,32 @@
                             *ngIf="selectedFuelStop?.address"
                             class="d-flex align-items-center selected-item-info"
                         >
-                            <svg-icon
-                                class="svg-fill-blue-13 svg-size-14 d-flex"
-                                [src]="svgRoutes.ADDRESS"
-                            ></svg-icon>
-                            <p
-                                class="ml-1 text-size-11 ta-font-medium text-color-black-2"
-                            >
-                                {{ selectedFuelStop?.fullAddress }}
-                            </p>
+                            <ng-container *ngIf="selectedFuelStop.phone">
+                                <svg-icon
+                                    class="mr-3 svg-fill-muted svg-size-18"
+                                    [src]="svgRoutes.phone"
+                                ></svg-icon>
+                                <app-ta-copy
+                                    [arrayText]="true"
+                                    [textColor]="'#2f2f2f'"
+                                    [copyValue]="[
+                                        selectedFuelStop.phone
+                                    ]"
+                                    type="Contacts"
+                                >
+                                </app-ta-copy>
+                            </ng-container>
+                            <div>
+                                <svg-icon
+                                    class="svg-fill-blue-13 svg-size-14 d-flex"
+                                    [src]="svgRoutes.ADDRESS"
+                                ></svg-icon>
+                                <p
+                                    class="ml-1 text-size-11 ta-font-medium text-color-black-2"
+                                >
+                                    {{ selectedFuelStop?.fullAddress }}
+                                </p>
+                            </div>
                         </div>
                     </div>
                     <div
@@ -289,11 +313,13 @@
                 (modalTableValueEmitter)="handleModalTableValueEmit($event)"
                 (modalTableValidStatusEmitter)="
                     handleModalTableValidStatusEmit($event)
-                " 
+                "
             >
             </app-ta-modal-table>
 
-            <div class="item-total d-flex justify-content-between mt-1">
+            <div
+                class="item-total d-flex justify-content-between mt-1 mb-1 px-2"
+            >
                 <span class="ta-font-semi-bold text-color-muted text-size-14"
                     >Total Cost
                 </span>
