@@ -13,6 +13,8 @@
         isEachRepairRowValid
     "
     [disableDelete]="true"
+    [editName]="fuelForm.get('invoice')?.value"
+    [specificCaseModalName]="true"
     (action)="onModalAction($event)"
 >
     <form

@@ -75,9 +75,11 @@
                     ></svg-icon>
                 </ng-container>
 
+                <ng-container *ngIf="isFuelTable && !first && !last">
+                        <span class="m-0 ta-font-bold">*</span></ng-container>
                 <ng-container
                     *ngIf="
-                        i
+                        !isFuelTable && i
                             | setHeaderRequiredStar
                                 : isPhoneTable
                                 : isEmailTable
@@ -92,9 +94,7 @@
                                 : isPreviousAddressesTable
                     "
                 >
-                    <ng-container *ngIf="isFuelTable && !first && !last"
-                        ><span class="m-0 ta-font-bold">*</span></ng-container
-                    >
+                    <span class="m-0 ta-font-bold">*</span>
                 </ng-container>
             </div>
         </ng-container>
