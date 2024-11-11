@@ -62,7 +62,9 @@ import {
 } from '@angular/forms';
 
 // svg routes
-import { InputDropdownSvgRoutes } from '@shared/components/ta-input-dropdown/utils/svg-routes';
+import { InputDropdownSvgRoutes } from '@shared/components/ta-input-dropdown/utils/svg-routes/input-dropdown-svg-routes';
+
+// svg routes
 
 @Component({
     selector: 'app-ta-input-dropdown',
@@ -144,7 +146,6 @@ export class TaInputDropdownComponent
     @Input() set sort(value: string) {
         this._sort = value;
     }
-
     // currently active item
     public _activeItem: any;
     @Input() set activeItem(value: any) {
@@ -301,7 +302,7 @@ export class TaInputDropdownComponent
     private destroy$ = new Subject<void>();
 
     // svg routes
-    public inputDropdownSvgRoutes: InputDropdownSvgRoutes;
+    public inputDropdownSvgRoutes = InputDropdownSvgRoutes;
 
     constructor(
         @Self() public superControl: NgControl,

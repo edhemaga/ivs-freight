@@ -104,7 +104,6 @@ export class RepairShopDetailsCard implements OnInit, OnChanges, OnDestroy {
     }
 
     ngOnInit(): void {
-        console.log('repairShop', this.repairShop);
         this.createForm();
 
         /* this.tableService.currentActionAnimation
@@ -180,8 +179,10 @@ export class RepairShopDetailsCard implements OnInit, OnChanges, OnDestroy {
                         id: item.id,
                         name: item.name,
                         status: item.status,
-                        svg: item.pinned ? 'ic_star.svg' : null,
-                        folder: 'common',
+                        svg: item.pinned
+                            ? RepairShopDetailsStringEnum.STAR_ROUTE
+                            : null,
+                        folder: RepairShopDetailsStringEnum.COMMON,
                         active: item.id === event.id,
                     };
                 }
