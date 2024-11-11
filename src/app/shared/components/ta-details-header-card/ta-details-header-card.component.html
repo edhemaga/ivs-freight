@@ -7,7 +7,10 @@
             <div
                 *ngIf="!selectedDropdown"
                 class="current-active-item"
-                [ngClass]="{ 'single-data': options.length == 1 }"
+                [ngClass]="{
+                    'single-data': options.length === 1,
+                    closed: searchName.includes('Closed')
+                }"
                 (click)="onPickItem()"
                 [ngbTooltip]="showDropdownTooltip"
                 [mainTooltip]="options.length > 1 ? searchInputName : ''"
@@ -30,7 +33,9 @@
                         ></svg-icon>
                     </div>
                 </ng-container>
-                <p class="current-active-name">{{ currentName }}</p>
+                <p class="ta-font-bold text-color-black current-active-name">
+                    {{ currentName }}
+                </p>
                 <ng-container *ngIf="owner">
                     <div
                         ngbTooltip
@@ -46,23 +51,30 @@
                         ></svg-icon>
                     </div>
                 </ng-container>
-                <span
-                    ngbTooltip
-                    [mainTooltip]="searchName"
-                    position="bottom"
-                    [tooltipBackground]="searchName ? '#424242' : ''"
-                    class="owner-tooltip"
-                >
-                    <svg-icon
-                        *ngIf="haveDropSVG"
-                        class="current-active-owner"
-                        src="{{
-                            customPinnedSvg
-                                ? customPinnedSvg
-                                : (options | detailActiveItem).svg
-                        }}"
-                    ></svg-icon>
-                </span>
+
+                <ng-container *ngIf="haveDropSVG">
+                    <span
+                        ngbTooltip
+                        [mainTooltip]="searchName"
+                        position="bottom"
+                        [tooltipBackground]="searchName ? '#424242' : ''"
+                        [tooltipMarginTop]="'8px'"
+                        class="owner-tooltip"
+                    >
+                        <svg-icon
+                            class="current-active-owner"
+                            [ngClass]="{
+                                'company-owned': searchName === 'Company Owned',
+                                closed: searchName.includes('Closed')
+                            }"
+                            src="{{
+                                customPinnedSvg
+                                    ? customPinnedSvg
+                                    : (options | detailActiveItem).svg
+                            }}"
+                        ></svg-icon>
+                    </span>
+                </ng-container>
             </div>
             <!-- Input dropdown -->
 
@@ -98,6 +110,7 @@
                 [tooltipBackground]="
                     !tooltipPrevious ? 'rgba(0,0,0,0)' : '#424242'
                 "
+                [tooltipMarginTop]="'8px'"
                 class="d-flex justify-content-center align-items-center previousArrow"
                 (click)="onAction('previous')"
             >
@@ -111,6 +124,7 @@
                 ngbTooltip
                 [mainTooltip]="tooltipNext"
                 [tooltipBackground]="!tooltipNext ? 'rgba(0,0,0,0)' : '#424242'"
+                [tooltipMarginTop]="'8px'"
                 position="bottom"
                 class="d-flex justify-content-center align-items-center nextArrow"
                 (click)="onAction('next')"
@@ -146,7 +160,7 @@
                 tooltipBackground="#6C6C6C"
             >
                 >
-                <p class="current-active-name">
+                <p class="ta-font-bold text-color-black current-active-name">
                     {{ (optionsSecondInput | detailActiveItem).name }}
                 </p>
                 <span
@@ -217,6 +231,7 @@
                 <div
                     class="details-header-wrapper-data-item bottom"
                     tooltipBackground="#424242"
+                    [tooltipMarginTop]="'6px'"
                     ngbTooltip
                     mainTooltip="Date Added"
                     position="bottom"
@@ -234,6 +249,7 @@
                 tooltipBackground="#424242"
                 ngbTooltip
                 mainTooltip="Terminated"
+                [tooltipMarginTop]="'6px'"
                 position="bottom"
             >
                 <div class="details-header-wrapper-data-item bottom">
@@ -249,6 +265,7 @@
                     style="margin-left: 130px"
                     tooltipBackground="#424242"
                     ngbTooltip
+                    [tooltipMarginTop]="'6px'"
                     mainTooltip="Deactivated"
                     position="bottom"
                 >
@@ -268,7 +285,10 @@
                         class="details-header-wrapper-data-item bottom"
                         tooltipBackground="#424242"
                         ngbTooltip
-                        [mainTooltip]="dateChecked ? 'Last Used' : 'Closed'"
+                        [tooltipMarginTop]="'6px'"
+                        [mainTooltip]="
+                            dateChecked ? 'Last Used' : 'Date Closed'
+                        "
                         position="bottom"
                     >
                         <svg-icon
@@ -286,6 +306,7 @@
                 tooltipBackground="#6C6C6C"
                 ngbTooltip
                 mainTooltip="Last Used"
+                [tooltipMarginTop]="'6px'"
                 position="bottom"
             >
                 <div

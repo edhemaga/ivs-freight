@@ -516,7 +516,9 @@
                         'add-new': option.name === 'ADD NEW',
                         'all-assigned':
                             option?.name?.toLowerCase() === 'all assigned',
-                        'load-details-template': option?.status?.statusString
+                        'load-details-template': option?.status?.statusString,
+                        'repair-closed-template':
+                            option?.isRepairShopDetails && !option?.status
                     }"
                     class="dropdown-option details-template"
                 >
@@ -534,14 +536,18 @@
                         [ngClass]="{
                             active:
                                 sort === 'active-drivers' &&
-                                option?.status === 1
+                                option?.status === 1,
+                            closed:
+                                option?.isRepairShopDetails && !option?.status
                         }"
                         class="details-template-text"
                     ></div>
 
                     <!-- Svg -->
 
-                    <ng-container *ngIf="option?.svg">
+                    <ng-container
+                        *ngIf="option?.svg && !option?.isRepairShopDetails"
+                    >
                         <svg-icon
                             [src]="option?.svg | taSvg : option?.folder"
                             class="details-template-logo"
@@ -565,7 +571,7 @@
                         </p>
                     </ng-container>
 
-                    <!-- Driver & Load Details Template -->
+                    <!-- Driver, Load, Repair Shop Details Details Template -->
 
                     <ng-container
                         *ngIf="
@@ -576,7 +582,19 @@
                         <div
                             class="d-flex align-items-center driver-details-template-container"
                         >
-                            <div class="d-flex align-items-center left-box">
+                            <div
+                                class="d-flex align-items-center left-box"
+                                [ngStyle]="{
+                                    'margin-right':
+                                        option?.isRepairShopDetails &&
+                                        option?.status &&
+                                        !option?.pinned
+                                            ? i === hoveringIndex
+                                                ? '-2px'
+                                                : '-6px'
+                                            : ''
+                                }"
+                            >
                                 <p class="m-0">
                                     <ng-container
                                         *ngIf="
@@ -587,7 +605,14 @@
                                         <ng-container
                                             *ngIf="option?.address?.address"
                                         >
-                                            {{ option?.totalMiles }} mi
+                                            {{
+                                                !option?.isRepairShopDetails
+                                                    ? option?.totalMiles + ' mi'
+                                                    : option?.repairs +
+                                                      ' | ' +
+                                                      '$' +
+                                                      option?.expense
+                                            }}
                                         </ng-container>
                                     </ng-container>
 
@@ -602,61 +627,90 @@
                                         </ng-container>
                                     </ng-template>
                                 </p>
+
+                                <svg-icon
+                                    *ngIf="option?.isRepairShopDetails"
+                                    class="repair-shop-details-icon"
+                                    [ngClass]="{
+                                        pinned:
+                                            option?.pinned &&
+                                            i !== hoveringIndex,
+                                        closed:
+                                            option?.isRepairShopDetails &&
+                                            !option?.status &&
+                                            i !== hoveringIndex
+                                    }"
+                                    [src]="
+                                        i === hoveringIndex
+                                            ? 'assets/svg/common/ic_key-repair.svg'
+                                            : (option?.svg
+                                              | taSvg : option?.folder)
+                                    "
+                                    [svgStyle]="{
+                                        'width.px': '14',
+                                        'height.px': '14'
+                                    }"
+                                ></svg-icon>
                             </div>
 
-                            <div class="d-flex align-items-center right-box">
-                                <p class="m-0">
-                                    <ng-container
-                                        *ngIf="
-                                            i === hoveringIndex;
-                                            else notHoveringRight
-                                        "
-                                    >
+                            <ng-container *ngIf="!option?.isRepairShopDetails">
+                                <div
+                                    class="d-flex align-items-center right-box"
+                                >
+                                    <p class="m-0">
                                         <ng-container
                                             *ngIf="
-                                                option?.address?.address;
-                                                else brokerName
+                                                i === hoveringIndex;
+                                                else notHoveringRight
                                             "
                                         >
-                                            ${{ option?.totalEarnings }}K
+                                            <ng-container
+                                                *ngIf="
+                                                    option?.address?.address;
+                                                    else brokerName
+                                                "
+                                            >
+                                                ${{ option?.totalEarnings }}K
+                                            </ng-container>
+
+                                            <ng-template #brokerName>
+                                                {{ option?.brokerName }}
+                                            </ng-template>
                                         </ng-container>
 
-                                        <ng-template #brokerName>
-                                            {{ option?.brokerName }}
-                                        </ng-template>
-                                    </ng-container>
+                                        <ng-template #notHoveringRight>
+                                            <ng-container
+                                                *ngIf="
+                                                    option?.address?.address;
+                                                    else statusString
+                                                "
+                                            >
+                                                {{ option?.hiredAt }}
+                                            </ng-container>
 
-                                    <ng-template #notHoveringRight>
-                                        <ng-container
-                                            *ngIf="
-                                                option?.address?.address;
-                                                else statusString
-                                            "
-                                        >
-                                            {{ option?.hiredAt }}
-                                        </ng-container>
-
-                                        <ng-template #statusString>
-                                            <app-load-status-string
-                                                [isDropdownColor]="true"
-                                                [status]="{
-                                                    name: option?.status
-                                                        ?.statusString,
-                                                    valueForRequest:
-                                                        option?.status
-                                                            ?.statusValue?.name
-                                                }"
-                                                [statusOrder]="{
-                                                    type: option?.stopType,
-                                                    stopOrder:
-                                                        option?.status
-                                                            ?.statusCheckInNumber
-                                                }"
-                                            ></app-load-status-string>
+                                            <ng-template #statusString>
+                                                <app-load-status-string
+                                                    [isDropdownColor]="true"
+                                                    [status]="{
+                                                        name: option?.status
+                                                            ?.statusString,
+                                                        valueForRequest:
+                                                            option?.status
+                                                                ?.statusValue
+                                                                ?.name
+                                                    }"
+                                                    [statusOrder]="{
+                                                        type: option?.stopType,
+                                                        stopOrder:
+                                                            option?.status
+                                                                ?.statusCheckInNumber
+                                                    }"
+                                                ></app-load-status-string>
+                                            </ng-template>
                                         </ng-template>
-                                    </ng-template>
-                                </p>
-                            </div>
+                                    </p>
+                                </div>
+                            </ng-container>
                         </div>
                     </ng-container>
 

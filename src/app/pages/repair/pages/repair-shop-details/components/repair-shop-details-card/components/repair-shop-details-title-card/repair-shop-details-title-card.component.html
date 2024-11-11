@@ -14,17 +14,34 @@
     "
     [cardDetailsDate]="_cardData?.createdAt | formatDateP"
     [dateChecked]="
-        _cardData?.lastVisited
-            ? (_cardData?.lastVisited | formatDateP : 'difference-days')
+        _cardData?.lastVisited ? (_cardData?.lastVisited | formatDateP) : false
+    "
+    [dateClosed]="
+        _cardData?.dateDeactivated
+            ? (_cardData?.dateDeactivated | formatDateP)
             : false
     "
     [searchInputName]="'Search Repair Shop'"
-    [searchName]="'Listed to Favourites'"
+    [searchName]="
+        _cardData?.pinned
+            ? 'Favorite'
+            : _cardData?.companyOwned
+            ? 'Company Owned'
+            : 'Permanently Closed'
+    "
     [options]="repairShopsDropdownList"
     [currentName]="_cardData?.name"
-    [haveDropSVG]="_cardData?.pinned"
+    [haveDropSVG]="
+        _cardData?.pinned || _cardData?.companyOwned || !_cardData?.status
+    "
     [repairHeader]="true"
-    [customPinnedSvg]="_cardData?.pinned ? 'assets/svg/common/ic_star.svg' : ''"
+    [customPinnedSvg]="
+        _cardData?.pinned
+            ? repairShopDetailsSvgRoutes.favoriteRoute
+            : _cardData?.companyOwned
+            ? repairShopDetailsSvgRoutes.companyOwnedRoute
+            : repairShopDetailsSvgRoutes.closedRoute
+    "
     (selectValue)="handleCardChanges($event, 'select-repair-shop')"
     (changeEvent)="handleCardChanges($event, 'change-repair-shop')"
 >

@@ -13,7 +13,7 @@ import {
     UntypedFormGroup,
     ReactiveFormsModule,
 } from '@angular/forms';
-import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 
 import { map, Subject, takeUntil } from 'rxjs';
 
@@ -35,6 +35,9 @@ import { RepairShopDetailsTitleCardComponent } from '@pages/repair/pages/repair-
 import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-custom-card.component';
 import { TaInputNoteComponent } from '@shared/components/ta-input-note/ta-input-note.component';
 import { TaUploadFilesComponent } from '@shared/components/ta-upload-files/ta-upload-files.component';
+
+// enums
+import { RepairShopDetailsStringEnum } from '@pages/repair/pages/repair-shop-details/enums';
 
 // models
 import { RepairShopResponse } from 'appcoretruckassist';
@@ -69,7 +72,7 @@ export class RepairShopDetailsCard implements OnInit, OnChanges, OnDestroy {
 
     public repairShopCurrentIndex: number;
 
-    public repairShopsDropdownList: any[] = [];
+    public repairShopsDropdownList: RepairShopResponse[] = [];
 
     // note card
     public noteForm: UntypedFormGroup;
@@ -79,7 +82,6 @@ export class RepairShopDetailsCard implements OnInit, OnChanges, OnDestroy {
 
         // router
         private act_route: ActivatedRoute,
-        private router: Router,
 
         // services
         private detailsPageDriverSer: DetailsPageService,
@@ -93,8 +95,11 @@ export class RepairShopDetailsCard implements OnInit, OnChanges, OnDestroy {
     ) {}
 
     ngOnChanges(changes: SimpleChanges): void {
-        if (!changes?.repairShop?.firstChange && changes?.driver.currentValue) {
-            this.getShopsDropdown(changes.repairShop.currentValue);
+        if (
+            !changes?.repairShop?.firstChange &&
+            changes?.repairShop.currentValue
+        ) {
+            this.getRepairShopsDropdownList();
         }
     }
 
@@ -102,31 +107,18 @@ export class RepairShopDetailsCard implements OnInit, OnChanges, OnDestroy {
         console.log('repairShop', this.repairShop);
         this.createForm();
 
-        this.tableService.currentActionAnimation
+        /* this.tableService.currentActionAnimation
             .pipe(takeUntil(this.destroy$))
             .subscribe((res: any) => {
                 if (res?.animation && res.tab === 'repair-shop') {
                     this.repairShop = res.data;
                     this.cdRef.detectChanges();
                 }
-            });
+            }); */
 
-        // Only One Time Call From Store Data
-        this.getShopsDropdown();
+        this.getCurrentIndex();
 
-        // Call Change Dropdown When Router Change
-        this.router.events
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((event: any) => {
-                if (event instanceof NavigationEnd) {
-                    this.getShopsDropdown();
-                }
-            });
-
-        let currentIndex = this.repairShopsDropdownList.findIndex(
-            (item) => item.active
-        );
-        this.repairShopCurrentIndex = currentIndex;
+        this.getRepairShopsDropdownList();
     }
 
     private createForm(): void {
@@ -135,30 +127,48 @@ export class RepairShopDetailsCard implements OnInit, OnChanges, OnDestroy {
         });
     }
 
-    public getShopsDropdown(newData?) {
+    private getCurrentIndex(): void {
+        setTimeout(() => {
+            const currentIndex = this.repairShopsDropdownList.findIndex(
+                (repairShop) => repairShop.id === this.repairShop.id
+            );
+
+            this.repairShopCurrentIndex = currentIndex;
+        }, 300);
+    }
+
+    public getRepairShopsDropdownList(): void {
         this.repairDetailsQuery.repairShopMinimal$
             .pipe(
                 takeUntil(this.destroy$),
-                map((data: any) => {
-                    return data?.pagination?.data.map((item) => {
-                        return {
-                            id: item.id,
-                            name: item.name,
-                            status: item.status,
-                            svg: item.pinned ? 'ic_star.svg' : '',
-                            folder: 'common',
-                            active:
-                                item.id ===
-                                +this.act_route.snapshot.params['id'],
-                        };
-                    });
+                map((data) => {
+                    return data?.pagination?.data?.map(
+                        (repairShop: RepairShopResponse) => {
+                            const { id, name, address, pinned, status } =
+                                repairShop;
+
+                            return {
+                                id,
+                                name,
+                                address,
+                                pinned,
+                                repairs: '10', // dummy w8 for back
+                                expense: '45334.34', // dummy w8 for back
+                                status,
+                                isRepairShopDetails: true,
+                                svg: pinned
+                                    ? RepairShopDetailsStringEnum.STAR_ROUTE
+                                    : !status
+                                    ? RepairShopDetailsStringEnum.CLOSED_ROUTE
+                                    : RepairShopDetailsStringEnum.EMPTY_STRING,
+                                folder: RepairShopDetailsStringEnum.COMMON,
+                            };
+                        }
+                    );
                 })
             )
-            .subscribe((data) => {
-                if (newData) {
-                    data[0]['name'] = newData.name;
-                }
-                this.repairShopsDropdownList = data;
+            .subscribe((repairShops) => {
+                this.repairShopsDropdownList = repairShops;
             });
     }
 
@@ -182,10 +192,10 @@ export class RepairShopDetailsCard implements OnInit, OnChanges, OnDestroy {
     }
 
     public onChangeShop(action: string) {
-        let currentIndex = this.repairShopsDropdownList.findIndex(
+        let currentIndex; /*  = this.repairShopsDropdownList.findIndex(
             (item) => item.active
         );
-
+ */
         switch (action) {
             case 'previous': {
                 currentIndex = --currentIndex;

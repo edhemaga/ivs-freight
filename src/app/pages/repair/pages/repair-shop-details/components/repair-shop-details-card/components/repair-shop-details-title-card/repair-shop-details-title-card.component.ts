@@ -18,6 +18,7 @@ import { FormatDatePipe } from '@shared/pipes';
 
 // models
 import {
+    RepairShopListDto,
     RepairShopMinimalResponse,
     RepairShopResponse,
 } from 'appcoretruckassist';
@@ -43,7 +44,7 @@ import {
     ],
 })
 export class RepairShopDetailsTitleCardComponent {
-    @Input() set cardData(data: RepairShopResponse) {
+    @Input() set cardData(data: RepairShopListDto) {
         this._cardData = data;
     }
 
@@ -57,7 +58,7 @@ export class RepairShopDetailsTitleCardComponent {
 
     public repairShopDetailsSvgRoutes = RepairShopDetailsSvgRoutes;
 
-    public _cardData: RepairShopResponse;
+    public _cardData: RepairShopListDto;
 
     public handleCardChanges(
         event: RepairShopMinimalResponse,
