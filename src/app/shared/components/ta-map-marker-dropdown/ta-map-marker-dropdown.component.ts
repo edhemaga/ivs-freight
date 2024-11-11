@@ -122,7 +122,7 @@ export class TaMapMarkerDropdownComponent implements OnInit {
         this.mapsService.selectedMarkerChange
             .pipe(takeUntil(this.destroy$))
             .subscribe((id) => {
-                if (id != this.item.id && this.detailsDropdown?.tooltip) {
+                if (id !== this.item.id && this.detailsDropdown?.tooltip) {
                     this.detailsDropdown.dropDownActive = -1;
                     this.detailsDropdown.tooltip.close();
                 }

@@ -1,45 +1,42 @@
 <div class="map-list-container">
     <div class="map-list">
-        <div class="map-list-header" [formGroup]="searchForm" *ngIf="searchForm">
+        <div class="map-list-header d-flex flex-column gap-1">
             <div class="map-list-search">
-                <app-ta-input
-                    formControlName="search"
-                    [inputConfig]="{
-                        name: 'search',
-                        type: 'text',
-                        label: 'Search',
-                        placeholderIcon: 'ic_search',
-                        placeholderInsteadOfLabel: true,
-                        blackInput: searchText?.length < 3 ? true : false,
-                        loadingSpinner: {
-                            size: 'small',
-                            color: 'white',
-                            isLoading:
-                                searchLoading
-                        }
-                    }"
-                    (clear)="clearSearchInput()"
-                ></app-ta-input>
+                <app-ta-search-v2
+                    placeHolderText="Title"
+                    [isDetailsSearchLayout]="true"
+                    (searchValueEmitter)="handleSearchValue($event)"
+                ></app-ta-search-v2>
             </div>
 
-            <div class="map-list-sort-container">
-                <div
-                    class="map-list-sort-text"
-                    *ngIf="searchForm?.get('search').value?.length < 3"
-                >
+            <div
+                class="map-list-sort-container d-flex align-items-center justify-content-between"
+            >
+                <div class="map-list-sort-text uppercase ta-font-bold">
                     Sort by
                 </div>
-                <div
-                    class="map-list-sort-text search-results-text"
-                    *ngIf="searchForm?.get('search').value?.length >= 3"
-                >
-                    <div class="marker-bold-text">
-                        {{ searchResultsCount }}
-                    </div>
-                    {{ searchResultsCount == 1 ? 'result' : 'results' }} 
-                </div>
 
-                <div class="map-list-sort">
+                <!-- <ng-container
+                    *ngIf="searchValue?.length <= 2; else searchResultsTemplate"
+                >
+                    <div class="map-list-sort-text uppercase ta-font-bold">
+                        Sort by
+                    </div>
+                </ng-container> -->
+
+                <!-- <ng-template #searchResultsTemplate>
+                    <div class="map-list-sort-text search-results-text">
+                        <div class="marker-bold-text">
+                            {{ mapListContent?.length }}
+                        </div>
+                        {{ mapListContent?.length == 1 ? 'result' : 'results' }}
+                    </div>
+                </ng-template> -->
+
+                <div
+                    class="map-list-sort d-flex align-items-center gap-1"
+                    [class.active]="tooltip?.isOpen()"
+                >
                     <div
                         class="map-list-sort-category-container"
                         #t2="ngbPopover"
@@ -51,22 +48,37 @@
                         [popoverClass]="'map-list-sort-popover'"
                         (click)="openPopover(t2)"
                     >
-                        <div
-                            class="map-list-sort-category marker-info-text"
-                            *ngIf="activeSortType?.name"
-                        >
-                            {{ activeSortType.name }}
-                        </div>
+                        <ng-container *ngIf="activeSortType?.name">
+                            <div
+                                class="map-list-sort-category marker-info-text"
+                            >
+                                {{ activeSortType.name }}
+                            </div>
+                        </ng-container>
                     </div>
+
                     <div
-                        class="map-list-sort-arrows"
+                        class="map-list-sort-arrows d-flex align-items-center justify-content-center"
                         (click)="changeSortingDirection()"
                     >
-                        <svg-icon
-                            src="assets/svg/common/ic_sort_arrows.svg"
-                            class="sort-arrows-svg"
-                            [ngClass]="{ 'blue-svg': sortDirection == 'asc' }"
-                        ></svg-icon>
+                        <ng-container
+                            *ngIf="tooltip?.isOpen(); else sortArrowsTemplate"
+                        >
+                            <svg-icon
+                                [src]="mapListSvgRoutes.sortDropArrowRoute"
+                                class="sort-dropdown-arrow d-flex"
+                                [svgStyle]="{ 'width.px': 7, 'height.px': 14 }"
+                            ></svg-icon>
+                        </ng-container>
+
+                        <ng-template #sortArrowsTemplate>
+                            <svg-icon
+                                [src]="mapListSvgRoutes.sortDirectionRoute"
+                                class="sort-arrows-svg"
+                                [ngClass]="{ rotate: sortDirection == 'asc' }"
+                                [svgStyle]="{ 'width.px': 18, 'height.px': 18 }"
+                            ></svg-icon>
+                        </ng-template>
                     </div>
                 </div>
             </div>
@@ -75,18 +87,17 @@
         <div class="map-list-body" (scroll)="mapListScroll($event)">
             <ng-content></ng-content>
         </div>
-        <div
-            class="map-list-resize-button"
-            (click)="resizeMapList()"
-            *ngIf="showExpandButton"
-        >
-            <svg-icon
-                src="assets/svg/common/fill_arrow_down.svg"
-                class="map-list-resize-svg"
-                [ngClass]="{ rotate: mapListExpanded }"
-                [svgStyle]="{ 'width.px': 12, 'height.px': 12 }"
-            ></svg-icon>
-        </div>
+
+        <ng-container *ngIf="showExpandButton">
+            <div class="map-list-resize-button" (click)="resizeMapList()">
+                <svg-icon
+                    [src]="mapListSvgRoutes.expandArrowRoute"
+                    class="map-list-resize-svg"
+                    [ngClass]="{ rotate: mapListExpanded }"
+                    [svgStyle]="{ 'width.px': 12, 'height.px': 12 }"
+                ></svg-icon>
+            </div>
+        </ng-container>
     </div>
 </div>
 
@@ -103,10 +114,13 @@
         >
             <div class="sort-items">
                 {{ item.name }}
-                <svg-icon
-                    *ngIf="item.id == activeSortType.id"
-                    src="assets/svg/truckassist-table/check-new.svg"
-                ></svg-icon>
+
+                <ng-container *ngIf="item.id === activeSortType.id">
+                    <svg-icon
+                        [src]="mapListSvgRoutes.checkRoute"
+                        [svgStyle]="{ 'width.px': 14, 'height.px': 14 }"
+                    ></svg-icon>
+                </ng-container>
             </div>
         </div>
     </div>

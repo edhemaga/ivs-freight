@@ -11,7 +11,7 @@
     transition: 0.2s ease-in-out;
 
     &:hover {
-        background: #f7f7f7;
+        background: $bw2;
     }
 
     &.map-list-card-selected {
@@ -223,14 +223,19 @@
 
 .favorite-svg {
     position: relative;
-    display: flex;
-    height: 18px;
-    margin-right: 12px;
 
     &.active {
         svg {
             path {
-                fill: #6d82c7;
+                fill: $ta-blue-13;
+            }
+        }
+
+        &:hover {
+            svg {
+                path {
+                    fill: $ta-blue-14;
+                }
             }
         }
     }
