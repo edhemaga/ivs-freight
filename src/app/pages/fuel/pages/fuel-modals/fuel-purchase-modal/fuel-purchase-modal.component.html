@@ -53,90 +53,88 @@
                 ></app-ta-input>
             </div>
         </div>
-        <div class="row">
-            <div class="col-4">
-                <app-ta-input
-                    formControlName="invoice"
-                    [inputConfig]="{
-                        name: 'Invoice',
-                        type: 'text',
-                        label: 'Invoice',
-                        textTransform: 'uppercase',
-                        isRequired: true,
-                        minLength: 1,
-                        maxLength: 22
-                    }"
-                ></app-ta-input>
-            </div>
-            <div class="col-4">
-                <app-ta-input
-                    formControlName="transactionDate"
-                    [inputConfig]="{
-                        name: 'datepicker',
-                        type: 'text',
-                        label: 'Date',
-                        placeholderIcon: 'date',
-                        isRequired: true,
-                        isDropdown: true,
-                        isDisabled:
-                            editData?.type === 'edit' &&
-                            fuelTransactionType?.name !== 'Manual',
-                        customClass: 'datetimeclass'
-                    }"
-                ></app-ta-input>
-            </div>
-            <div class="col-4">
-                <!-- Time Picker -->
-                <app-ta-input
-                    formControlName="transactionTime"
-                    [inputConfig]="{
-                        name: 'timepicker',
-                        type: 'text',
-                        label: 'Time',
-                        placeholderIcon: 'time',
-                        isDropdown: true,
-                        isRequired: true,
-                        isDisabled:
-                            editData?.type === 'edit' &&
-                            fuelTransactionType?.name !== 'Manual',
-                        customClass: 'datetimeclass'
-                    }"
-                ></app-ta-input>
-            </div>
+        <div class="d-grid row-columns row-columns-3">
+            <app-ta-input
+                formControlName="invoice"
+                [inputConfig]="{
+                    name: 'Invoice',
+                    type: 'text',
+                    label: 'Invoice',
+                    textTransform: 'uppercase',
+                    isRequired: true,
+                    minLength: 1,
+                    maxLength: 22
+                }"
+            ></app-ta-input>
+            <app-ta-input
+                formControlName="transactionDate"
+                [inputConfig]="{
+                    name: 'datepicker',
+                    type: 'text',
+                    label: 'Date',
+                    placeholderIcon: 'date',
+                    isRequired: true,
+                    isDropdown: true,
+                    isDisabled:
+                        editData?.type === 'edit' &&
+                        fuelTransactionType?.name !== 'Manual',
+                    customClass: 'datetimeclass'
+                }"
+            ></app-ta-input>
+            <!-- Time Picker -->
+            <app-ta-input
+                formControlName="transactionTime"
+                [inputConfig]="{
+                    name: 'timepicker',
+                    type: 'text',
+                    label: 'Time',
+                    placeholderIcon: 'time',
+                    isDropdown: true,
+                    isRequired: true,
+                    isDisabled:
+                        editData?.type === 'edit' &&
+                        fuelTransactionType?.name !== 'Manual',
+                    customClass: 'datetimeclass'
+                }"
+            ></app-ta-input>
         </div>
-        <div class="row">
-            <div
-                [ngClass]="fuelForm.get('trailerId').value ? 'col-4' : 'col-6'"
-            >
-                <app-ta-input-dropdown
-                    formControlName="truckId"
-                    [template]="'svgtext-template'"
-                    [inputConfig]="{
-                        name: 'Input Dropdown',
-                        type: 'text',
-                        label: 'Truck',
-                        isDropdown: true,
-                        isRequired: true,
-                        dropdownImageInput: {
-                            withText: true,
-                            svg: true,
-                            image: false,
-                            url: selectedTruckType?.logoName,
-                            template: 'truck',
-                            class: selectedTruckType?.name
-                                ?.trim()
-                                .replace(' ', '')
-                                .toLowerCase()
-                        },
-                        dropdownWidthClass: 'w-col-216 truck-trailer-dropdown',
-                        customClass: 'truck-trailer-dropdown'
-                    }"
-                    [options]="truckType"
-                    [activeItem]="selectedTruckType"
-                    (selectedItem)="onSelectDropDown($event, 'truck')"
-                ></app-ta-input-dropdown>
-            </div>
-            <div *ngIf="fuelForm.get('trailerId').value" class="col-4">
+        <div
+            [ngClass]="
+                fuelForm.get('trailerId').value
+                    ? 'row-columns-3'
+                    : 'row-columns-2'
+            "
+            class="d-grid row-columns"
+        >
+            <app-ta-input-dropdown
+                formControlName="truckId"
+                [template]="'svgtext-template'"
+                [inputConfig]="{
+                    name: 'Input Dropdown',
+                    type: 'text',
+                    label: 'Truck',
+                    isDropdown: true,
+                    isRequired: true,
+                    dropdownImageInput: {
+                        withText: true,
+                        svg: true,
+                        image: false,
+                        url: selectedTruckType?.logoName,
+                        template: 'truck',
+                        class: selectedTruckType?.name
+                            ?.trim()
+                            .replace(' ', '')
+                            .toLowerCase()
+                    },
+                    dropdownWidthClass: 'w-col-216 truck-trailer-dropdown',
+                    customClass: 'truck-trailer-dropdown'
+                }"
+                [options]="truckType"
+                [activeItem]="selectedTruckType"
+                (selectedItem)="onSelectDropDown($event, 'truck')"
+            ></app-ta-input-dropdown>
+
+            <div *ngIf="fuelForm.get('trailerId').value">
                 <app-ta-input-dropdown
                     formControlName="trailerId"
                     [template]="'svgtext-template'"
@@ -160,26 +158,19 @@
                     }"
                 ></app-ta-input-dropdown>
             </div>
-            <div
-                [ngClass]="
-                    fuelForm.get('trailerId').value
-                        ? 'col-4 no-p-left'
-                        : 'col-6'
-                "
-            >
-                <app-ta-input
-                    formControlName="driverFullName"
-                    [inputConfig]="{
-                        name: 'Full name',
-                        type: 'text',
-                        label: 'Driver',
-                        isDisabled: true,
-                        textTransform: 'capitalize',
-                        minLength: 2,
-                        maxLength: 32
-                    }"
-                ></app-ta-input>
-            </div>
+
+            <app-ta-input
+                formControlName="driverFullName"
+                [inputConfig]="{
+                    name: 'Full name',
+                    type: 'text',
+                    label: 'Driver',
+                    isDisabled: true,
+                    textTransform: 'capitalize',
+                    minLength: 2,
+                    maxLength: 32
+                }"
+            ></app-ta-input>
         </div>
         <div class="row last-row">
             <div class="col-12">
@@ -220,9 +211,7 @@
                                 <app-ta-copy
                                     [arrayText]="true"
                                     [textColor]="'#2f2f2f'"
-                                    [copyValue]="[
-                                        selectedFuelStop.phone
-                                    ]"
+                                    [copyValue]="[selectedFuelStop.phone]"
                                     type="Contacts"
                                 >
                                 </app-ta-copy>

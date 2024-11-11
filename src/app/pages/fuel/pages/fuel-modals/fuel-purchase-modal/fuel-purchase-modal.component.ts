@@ -522,7 +522,6 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
             .subscribe((res: FuelDispatchHistoryResponse | null) => {
                 if (res) {
                     this.selectedDispatchHistory = res;
-                    console.log(res);
                     this.fuelForm
                         .get(FuelValuesStringEnum.DRIVER_FULL_NAME)
                         .patchValue(res.firstName.concat(' ', res.lastName));
