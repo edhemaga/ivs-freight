@@ -23,24 +23,24 @@
     "
     [searchInputName]="'Search Repair Shop'"
     [searchName]="
-        _cardData?.pinned
-            ? 'Favorite'
+        !_cardData?.status
+            ? 'Permanently Closed'
             : _cardData?.companyOwned
             ? 'Company Owned'
-            : 'Permanently Closed'
+            : 'Favorite'
     "
     [options]="repairShopsDropdownList"
     [currentName]="_cardData?.name"
     [haveDropSVG]="
-        _cardData?.pinned || _cardData?.companyOwned || !_cardData?.status
+        !_cardData?.status || _cardData?.pinned || _cardData?.companyOwned
     "
     [repairHeader]="true"
     [customPinnedSvg]="
-        _cardData?.pinned
-            ? repairShopDetailsSvgRoutes.favoriteRoute
+        !_cardData?.status
+            ? repairShopDetailsSvgRoutes.closedRoute
             : _cardData?.companyOwned
             ? repairShopDetailsSvgRoutes.companyOwnedRoute
-            : repairShopDetailsSvgRoutes.closedRoute
+            : repairShopDetailsSvgRoutes.favoriteRoute
     "
     (selectValue)="handleCardChanges($event, 'select-repair-shop')"
     (changeEvent)="handleCardChanges($event, 'change-repair-shop')"

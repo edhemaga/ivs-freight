@@ -18,6 +18,7 @@
 
             p {
                 color: $ta-black !important;
+                text-decoration: none !important;
             }
         }
 
@@ -29,6 +30,10 @@
                     fill: $ta-light-grey-6;
                 }
             }
+        }
+
+        p {
+            text-decoration: line-through;
         }
     }
 }

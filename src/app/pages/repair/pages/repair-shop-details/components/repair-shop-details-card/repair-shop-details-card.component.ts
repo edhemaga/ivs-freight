@@ -155,10 +155,10 @@ export class RepairShopDetailsCard implements OnInit, OnChanges, OnDestroy {
                                 expense: '45334.34', // dummy w8 for back
                                 status,
                                 isRepairShopDetails: true,
-                                svg: pinned
-                                    ? RepairShopDetailsStringEnum.STAR_ROUTE
-                                    : !status
+                                svg: !status
                                     ? RepairShopDetailsStringEnum.CLOSED_ROUTE
+                                    : pinned
+                                    ? RepairShopDetailsStringEnum.STAR_ROUTE
                                     : RepairShopDetailsStringEnum.EMPTY_STRING,
                                 folder: RepairShopDetailsStringEnum.COMMON,
                             };
