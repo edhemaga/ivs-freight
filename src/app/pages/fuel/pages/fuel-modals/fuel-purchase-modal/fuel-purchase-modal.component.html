@@ -30,7 +30,7 @@
             class="row"
         >
             <div class="col-6">
-                <app-ta-input
+                <app-ca-input
                     formControlName="efsAccount"
                     [inputConfig]="{
                         name: 'EFS Account',
@@ -38,10 +38,10 @@
                         label: 'EFS Account',
                         isDisabled: true
                     }"
-                ></app-ta-input>
+                ></app-ca-input>
             </div>
             <div class="col-6">
-                <app-ta-input
+                <app-ca-input
                     formControlName="fuelCard"
                     [inputConfig]="{
                         name: 'Fuel Card',
@@ -50,11 +50,11 @@
                         isDisabled: true,
                         placeholderIcon: 'fuel-card'
                     }"
-                ></app-ta-input>
+                ></app-ca-input>
             </div>
         </div>
         <div class="d-grid row-columns row-columns-3">
-            <app-ta-input
+            <app-ca-input
                 formControlName="invoice"
                 [inputConfig]="{
                     name: 'Invoice',
@@ -65,8 +65,8 @@
                     minLength: 1,
                     maxLength: 22
                 }"
-            ></app-ta-input>
-            <app-ta-input
+            ></app-ca-input>
+            <app-ca-input
                 formControlName="transactionDate"
                 [inputConfig]="{
                     name: 'datepicker',
@@ -80,9 +80,9 @@
                         fuelTransactionType?.name !== 'Manual',
                     customClass: 'datetimeclass'
                 }"
-            ></app-ta-input>
+            ></app-ca-input>
             <!-- Time Picker -->
-            <app-ta-input
+            <app-ca-input
                 formControlName="transactionTime"
                 [inputConfig]="{
                     name: 'timepicker',
@@ -96,7 +96,7 @@
                         fuelTransactionType?.name !== 'Manual',
                     customClass: 'datetimeclass'
                 }"
-            ></app-ta-input>
+            ></app-ca-input>
         </div>
         <div
             [ngClass]="
@@ -106,7 +106,7 @@
             "
             class="d-grid row-columns"
         >
-            <app-ta-input-dropdown
+            <app-ca-input-dropdown
                 formControlName="truckId"
                 [template]="'svgtext-template'"
                 [inputConfig]="{
@@ -126,16 +126,16 @@
                             .replace(' ', '')
                             .toLowerCase()
                     },
-                    dropdownWidthClass: 'w-col-216 truck-trailer-dropdown',
+                    dropdownWidthClass: !fuelForm.get('trailerId').value? 'w-col-216 truck-trailer-dropdown' : 'w-col-143 truck-trailer-dropdown',
                     customClass: 'truck-trailer-dropdown'
                 }"
                 [options]="truckType"
                 [activeItem]="selectedTruckType"
                 (selectedItem)="onSelectDropDown($event, 'truck')"
-            ></app-ta-input-dropdown>
+            ></app-ca-input-dropdown>
 
             <div *ngIf="fuelForm.get('trailerId').value">
-                <app-ta-input-dropdown
+                <app-ca-input-dropdown
                     formControlName="trailerId"
                     [template]="'svgtext-template'"
                     [activeItem]="selectedTrailerType"
@@ -156,10 +156,10 @@
                         customClass: 'truck-trailer-dropdown',
                         isDisabled: true
                     }"
-                ></app-ta-input-dropdown>
+                ></app-ca-input-dropdown>
             </div>
 
-            <app-ta-input
+            <app-ca-input
                 formControlName="driverFullName"
                 [inputConfig]="{
                     name: 'Full name',
@@ -170,7 +170,7 @@
                     minLength: 2,
                     maxLength: 32
                 }"
-            ></app-ta-input>
+            ></app-ca-input>
         </div>
         <div class="row last-row">
             <div class="col-12">
@@ -251,7 +251,7 @@
                         </div>
                     </div>
                 </div>
-                <app-ta-input-dropdown
+                <app-ca-input-dropdown
                     *ngIf="!selectedFuelStop"
                     formControlName="fuelStopStoreId"
                     [template]="'fuel-franchise'"
@@ -268,7 +268,7 @@
                     (pagination)="paginationFuelStopPage($event)"
                     (activeGroup)="getFuelStoresByFranchiseId($event)"
                     (selectedItem)="onSelectDropDown($event, 'fuel')"
-                ></app-ta-input-dropdown>
+                ></app-ca-input-dropdown>
             </div>
         </div>
 
