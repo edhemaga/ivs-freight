@@ -19,7 +19,6 @@ import { PayrollDriverOwnerFacadeService } from '../../../state/services/payroll
 
 // Models
 import {
-    CreatePayrollCreditCommand,
     LoadWithMilesStopResponse,
     PayrollCreditType,
     PayrollDriverMileageByIdResponse,
@@ -30,9 +29,7 @@ import { OwnerLoadShortReponseWithRowType } from '../../../state/models/driver_o
 import { PayrollProccessPaymentModalComponent } from '../../../payroll-modals/payroll-proccess-payment-modal/payroll-proccess-payment-modal.component';
 import { IPayrollProccessPaymentModal } from '../../../state/models/payroll.model';
 import { PayrollReportTableResponse } from 'ca-components/lib/components/ca-period-content/models/payroll-report-tables.type';
-import { PayrollCreditBonusComponent } from '../../../payroll-modals/payroll-credit-bonus/payroll-credit-bonus.component';
-import { PayrollDeductionModalComponent } from '../../../payroll-modals/payroll-deduction-modal/payroll-deduction-modal.component';
-import { PayrollBonusModalComponent } from '../../../payroll-modals/payroll-bonus-modal/payroll-bonus-modal.component';
+import { PayrollReportBaseComponent } from '../payroll-report.base';
 
 @Component({
     selector: 'app-driver-owner-report',
@@ -41,7 +38,9 @@ import { PayrollBonusModalComponent } from '../../../payroll-modals/payroll-bonu
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DriverOwnerReportComponent
-    implements OnInit, OnDestroy, AfterViewInit {
+    extends PayrollReportBaseComponent<PayrollOwnerResponse>
+    implements OnInit, OnDestroy, AfterViewInit
+{
     _reportId: string;
     @Input() set reportId(report_id: string) {
         this._reportId = report_id;
@@ -55,6 +54,7 @@ export class DriverOwnerReportComponent
     }
 
     columns: ColumnConfig[];
+    creditType = PayrollCreditType.Truck;
     @Input() selectedTab: 'open' | 'closed';
     showMap: boolean = false;
 
@@ -93,8 +93,10 @@ export class DriverOwnerReportComponent
         // Services
         private payrollDriverOwnerFacadeService: PayrollDriverOwnerFacadeService,
         private payrollFacadeService: PayrollFacadeService,
-        private modalService: ModalService
-    ) { }
+        modalService: ModalService
+    ) {
+        super(modalService);
+    }
 
     ngOnInit(): void {
         this.subscribeToStoreData();
@@ -267,136 +269,10 @@ export class DriverOwnerReportComponent
         }
     }
 
-    public openAddNewModal(type: string) {
-        console.log('this.openedPayroll.driver.id', this.payrollOpenedReport.truck.id);
-        console.log(this.payrollOpenedReport, type);
-
-        switch (type) {
-            case 'Credit':
-                this.modalService
-                    .openModal(
-                        PayrollCreditBonusComponent,
-                        {
-                            size: 'small',
-                        },
-                        {
-                            data: {
-                                truckId: this.payrollOpenedReport.truck.id,
-                            } as CreatePayrollCreditCommand,
-                            creditType: PayrollCreditType.Truck,
-                        }
-                    )
-                    .then(() => {
-                        this.payrollDriverOwnerFacadeService.getPayrollDriverOwnerReport(
-                            {
-                                reportId: this.reportId,
-                            }
-                        );
-                    });
-                return;
-            case 'Deduction':
-                this.modalService
-                    .openModal(
-                        PayrollDeductionModalComponent,
-                        {
-                            size: 'small',
-                        },
-                        {
-                            data: {
-                                truckId: this.payrollOpenedReport.truck.id,
-                            } as CreatePayrollCreditCommand,
-                            creditType: PayrollCreditType.Truck,
-                        }
-                    )
-                    .then(() => {
-                        this.payrollDriverOwnerFacadeService.getPayrollDriverOwnerReport(
-                            {
-                                reportId: this.reportId,
-                            }
-                        );
-                    });
-                break;
-        }
-    }
-
-    public onOpenActionEditItems(item: any): void {
-        console.log('this.openedPayroll.driver.id', this.payrollOpenedReport.truck.id);
-        if (item.$event.type === 'Edit') {
-            switch (item.title) {
-                case 'Credit':
-                    this.modalService
-                        .openModal(
-                            PayrollCreditBonusComponent,
-                            {
-                                size: 'small',
-                            },
-                            {
-                                edit: true,
-                                data: {
-                                    ...item.data,
-                                    truckId: this.payrollOpenedReport.truck.id,
-                                } as CreatePayrollCreditCommand,
-                                creditType: PayrollCreditType.Truck,
-                            }
-                        )
-                        .then(() => {
-                            this.payrollDriverOwnerFacadeService.getPayrollDriverOwnerReport(
-                                {
-                                    reportId: this.reportId,
-                                }
-                            );
-                        });
-                    break;
-                case 'Bonus':
-                    this.modalService
-                        .openModal(
-                            PayrollBonusModalComponent,
-                            {
-                                size: 'small',
-                            },
-                            {
-                                edit: true,
-                                data: {
-                                    ...item.data,
-                                    truckId: this.payrollOpenedReport.truck.id,
-                                } as CreatePayrollCreditCommand,
-                                creditType: PayrollCreditType.Truck,
-                            }
-                        )
-                        .then(() => {
-                            this.payrollDriverOwnerFacadeService.getPayrollDriverOwnerReport(
-                                {
-                                    reportId: this.reportId,
-                                }
-                            );
-                        });
-                    break;
-                case 'Deduction':
-                    this.modalService
-                        .openModal(
-                            PayrollDeductionModalComponent,
-                            {
-                                size: 'small',
-                            },
-                            {
-                                edit: true,
-                                data: {
-                                    id: item.data.parentPayrollDeductionId
-                                } as CreatePayrollCreditCommand,
-                                creditType: PayrollCreditType.Truck,
-                            }
-                        )
-                        .then(() => {
-                            this.payrollDriverOwnerFacadeService.getPayrollDriverOwnerReport(
-                                {
-                                    reportId: this.reportId,
-                                }
-                            );
-                        });
-                    break;
-            }
-        }
-
+    public getReportDataResults() {
+        this.payrollDriverOwnerFacadeService.getPayrollDriverOwnerReport({
+            reportId: this.reportId,
+        });
     }
 
     ngOnDestroy(): void {
