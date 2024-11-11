@@ -104,6 +104,7 @@
                     (openModalEmiter)="openAddNewModal($event)"
                     (reorderedDataEmiter)="onReorderItem($event)"
                     (proccessPayroll)="onProccessPayroll($event)"
+                    (openActionEditItems)="onOpenActionEditItems($event)"
                     [isOpen]="selectedTab === 'open'"
                     [type]="'OWNER'"
                     [componentData]="payrollReport$ | async"

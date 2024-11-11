@@ -10,6 +10,7 @@ import {
 } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { ColumnConfig } from 'ca-components';
+import { CdkDragDrop } from '@angular/cdk/drag-drop';
 
 //Services
 import { ModalService } from '@shared/services/modal.service';
@@ -18,19 +19,17 @@ import { PayrollDriverOwnerFacadeService } from '../../../state/services/payroll
 
 // Models
 import {
-    CreatePayrollCreditCommand,
     LoadWithMilesStopResponse,
     PayrollCreditType,
     PayrollDriverMileageByIdResponse,
     PayrollOwnerResponse,
 } from 'appcoretruckassist';
-import { CdkDragDrop } from '@angular/cdk/drag-drop';
+
 import { OwnerLoadShortReponseWithRowType } from '../../../state/models/driver_owner.model';
 import { PayrollProccessPaymentModalComponent } from '../../../payroll-modals/payroll-proccess-payment-modal/payroll-proccess-payment-modal.component';
 import { IPayrollProccessPaymentModal } from '../../../state/models/payroll.model';
 import { PayrollReportTableResponse } from 'ca-components/lib/components/ca-period-content/models/payroll-report-tables.type';
-import { PayrollCreditBonusComponent } from '../../../payroll-modals/payroll-credit-bonus/payroll-credit-bonus.component';
-import { PayrollDeductionModalComponent } from '../../../payroll-modals/payroll-deduction-modal/payroll-deduction-modal.component';
+import { PayrollReportBaseComponent } from '../payroll-report.base';
 
 @Component({
     selector: 'app-driver-owner-report',
@@ -39,6 +38,7 @@ import { PayrollDeductionModalComponent } from '../../../payroll-modals/payroll-
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DriverOwnerReportComponent
+    extends PayrollReportBaseComponent<PayrollOwnerResponse>
     implements OnInit, OnDestroy, AfterViewInit
 {
     _reportId: string;
@@ -54,6 +54,7 @@ export class DriverOwnerReportComponent
     }
 
     columns: ColumnConfig[];
+    creditType = PayrollCreditType.Truck;
     @Input() selectedTab: 'open' | 'closed';
     showMap: boolean = false;
 
@@ -92,8 +93,10 @@ export class DriverOwnerReportComponent
         // Services
         private payrollDriverOwnerFacadeService: PayrollDriverOwnerFacadeService,
         private payrollFacadeService: PayrollFacadeService,
-        private modalService: ModalService
-    ) {}
+        modalService: ModalService
+    ) {
+        super(modalService);
+    }
 
     ngOnInit(): void {
         this.subscribeToStoreData();
@@ -112,7 +115,7 @@ export class DriverOwnerReportComponent
 
         this.payrollDriverOwnerFacadeService.selectPayrollOwnerOpenedReport$.subscribe(
             (owner) => {
-                console.log("---------OWNERRRRR", owner);
+                console.log('---------OWNERRRRR', owner);
                 this.payrollOpenedReport = owner;
             }
         );
@@ -266,61 +269,10 @@ export class DriverOwnerReportComponent
         }
     }
 
-    public openAddNewModal(type: string) {
-        console.log(this.payrollOpenedReport, type);
-
-        switch (type) {
-            case 'Credit':
-                this.modalService
-                    .openModal(
-                        PayrollCreditBonusComponent,
-                        {
-                            size: 'small',
-                        },
-                        {
-                            type: 'new',
-                            isShortModal: true,
-                            data: {
-                                truckId: this.payrollOpenedReport.truck.id,
-                                payrollType: 'owner',
-                            } as CreatePayrollCreditCommand,
-                            creditType: PayrollCreditType.Truck,
-                        }
-                    )
-                    .then(() => {
-                        this.payrollDriverOwnerFacadeService.getPayrollDriverOwnerReport(
-                            {
-                                reportId: this.reportId,
-                            }
-                        );
-                    });
-                return;
-                case 'Deduction':
-                this.modalService
-                    .openModal(
-                        PayrollDeductionModalComponent,
-                        {
-                            size: 'small',
-                        },
-                        {
-                            type: 'new',
-                            isShortModal: true,
-                            data: {
-                                driverId: this.openedPayroll.truck.id,
-                                payrollType: 'owner',
-                            } as CreatePayrollCreditCommand,
-                            creditType: PayrollCreditType.Driver,
-                        }
-                    )
-                    .then(() => {
-                        this.payrollDriverOwnerFacadeService.getPayrollDriverOwnerReport(
-                            {
-                                reportId: this.reportId,
-                            }
-                        );
-                    });
-                break;
-        }
+    public getReportDataResults() {
+        this.payrollDriverOwnerFacadeService.getPayrollDriverOwnerReport({
+            reportId: this.reportId,
+        });
     }
 
     ngOnDestroy(): void {

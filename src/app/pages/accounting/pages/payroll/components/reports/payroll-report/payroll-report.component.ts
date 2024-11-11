@@ -22,7 +22,6 @@ import {
     MilesStopShortReponseWithRowType,
 } from '../../../state/models/payroll.model';
 import {
-    CreatePayrollCreditCommand,
     MilesStopShortResponse,
     PayrollCreditType,
     PayrollDriverMileageByIdResponse,
@@ -32,9 +31,7 @@ import { PayrollReportTableResponse } from 'ca-components/lib/components/ca-peri
 
 // components
 import { PayrollProccessPaymentModalComponent } from '../../../payroll-modals/payroll-proccess-payment-modal/payroll-proccess-payment-modal.component';
-import { PayrollCreditBonusComponent } from '../../../payroll-modals/payroll-credit-bonus/payroll-credit-bonus.component';
-import { PayrollBonusModalComponent } from '../../../payroll-modals/payroll-bonus-modal/payroll-bonus-modal.component';
-import { PayrollDeductionModalComponent } from '../../../payroll-modals/payroll-deduction-modal/payroll-deduction-modal.component';
+import { PayrollReportBaseComponent } from '../payroll-report.base';
 
 @Component({
     selector: 'app-payroll-report',
@@ -43,8 +40,12 @@ import { PayrollDeductionModalComponent } from '../../../payroll-modals/payroll-
     encapsulation: ViewEncapsulation.None,
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class PayrollReportComponent implements OnInit, OnDestroy {
+export class PayrollReportComponent
+    extends PayrollReportBaseComponent<PayrollDriverMileageByIdResponse>
+    implements OnInit, OnDestroy
+{
     columns: ColumnConfig[];
+    creditType = PayrollCreditType.Driver;
 
     _reportId: number;
     @Input() set reportId(report_id: number) {
@@ -60,7 +61,6 @@ export class PayrollReportComponent implements OnInit, OnDestroy {
 
     @Input() selectedTab: 'open' | 'closed';
 
-    openedPayroll: PayrollDriverMileageByIdResponse;
     payrollReport$: Observable<PayrollDriverMileageByIdResponse>;
     payrollMileageDriverLoads$: Observable<MilesStopShortReponseWithRowType[]>;
     includedLoads$: Observable<MilesStopShortResponse[]>;
@@ -93,8 +93,10 @@ export class PayrollReportComponent implements OnInit, OnDestroy {
     constructor(
         // Services
         private payrollFacadeService: PayrollFacadeService,
-        private modalService: ModalService
-    ) {}
+        modalService: ModalService
+    ) {
+        super(modalService);
+    }
 
     ngAfterViewInit() {
         this.columns = [
@@ -298,84 +300,10 @@ export class PayrollReportComponent implements OnInit, OnDestroy {
         );
     }
 
-    public openAddNewModal(type: string) {
-        switch (type) {
-            case 'Credit':
-                this.modalService
-                    .openModal(
-                        PayrollCreditBonusComponent,
-                        {
-                            size: 'small',
-                        },
-                        {
-                            type: 'new',
-                            isShortModal: true,
-                            data: {
-                                driverId: this.openedPayroll.driver.id,
-                                payrollType: 'owner',
-                            } as CreatePayrollCreditCommand,
-                            creditType: PayrollCreditType.Driver,
-                        }
-                    )
-                    .then(() => {
-                        this.payrollFacadeService.getPayrollDriverMileageReport(
-                            {
-                                reportId: `${this.reportId}`,
-                            }
-                        );
-                    });
-                break;
-            case 'Credit':
-                this.modalService
-                    .openModal(
-                        PayrollBonusModalComponent,
-                        {
-                            size: 'small',
-                        },
-                        {
-                            type: 'new',
-                            isShortModal: true,
-                            data: {
-                                driverId: this.openedPayroll.driver.id,
-                                payrollType: 'owner',
-                            } as CreatePayrollCreditCommand,
-                            creditType: PayrollCreditType.Driver,
-                        }
-                    )
-                    .then(() => {
-                        this.payrollFacadeService.getPayrollDriverMileageReport(
-                            {
-                                reportId: `${this.reportId}`,
-                            }
-                        );
-                    });
-                break;
-            case 'Deduction':
-                this.modalService
-                    .openModal(
-                        PayrollDeductionModalComponent,
-                        {
-                            size: 'small',
-                        },
-                        {
-                            type: 'new',
-                            isShortModal: true,
-                            data: {
-                                driverId: this.openedPayroll.driver.id,
-                                payrollType: 'owner',
-                            } as CreatePayrollCreditCommand,
-                            creditType: PayrollCreditType.Driver,
-                        }
-                    )
-                    .then(() => {
-                        this.payrollFacadeService.getPayrollDriverMileageReport(
-                            {
-                                reportId: `${this.reportId}`,
-                            }
-                        );
-                    });
-                break;
-        }
+    public getReportDataResults() {
+        this.payrollFacadeService.getPayrollDriverMileageReport({
+            reportId: `${this.reportId}`,
+        });
     }
 
     ngOnDestroy(): void {

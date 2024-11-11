@@ -74,6 +74,8 @@
                 [type]="'repairShop'"
                 [columns]="columns"
                 [mapListContent]="mapListData"
+                (searchEvent)="onMapListSearch($event)"
+                (sortEvent)="onMapListSort($event)"
                 (headActions)="onTableHeadActions($event)"
             >
                 <app-ta-map-list-card
@@ -85,12 +87,11 @@
                     [item]="latlong"
                     [index]="i"
                     [address]="latlong.address"
-                    [rating]="latlong?.shopRaiting"
+                    [rating]="latlong?.tableShopRaiting"
                     [type]="'repairShop'"
                     [sortCategory]="activeSortType"
                     [locationFilterOn]="locationFilterOn"
                     (bodyActions)="onTableBodyActions($event)"
-                    (clickedMarker)="selectItem($event)"
                     [ngStyle]="{
                         display:
                             locationFilterOn && latlong?.isShown == false
@@ -99,15 +100,16 @@
                     }"
                 ></app-ta-map-list-card>
             </app-ta-map-list>
-            <!-- 
-            <app-ta-maps
+
+            <app-ca-map
                 #mapsComponent
-                [_viewData]="viewData"
-                [mapType]="'repairShop'"
-                (callDropDownAction)="onTableBodyActions($event)"
-                (updateMapList)="updateMapList($event)"
-                (selectMarker)="selectItem($event)"
-            ></app-ta-maps> -->
+                [data]="mapData"
+                (clusterMarkerClick)="onClusterMarkerClick($event)"
+                (clusterListScrollEvent)="onClusterListScroll($event)"
+                (getInfoWindowData)="onGetInfoWindowData($event)"
+                (boundsChanged)="onMapBoundsChange($event)"
+                (resetSelectedMarkerItem)="onResetSelectedMarkerItem($event)"
+            ></app-ca-map>
         </div>
     </ng-container>
 </div>
