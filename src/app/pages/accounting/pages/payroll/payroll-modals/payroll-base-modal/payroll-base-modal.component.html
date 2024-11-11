@@ -9,7 +9,7 @@
 
         <ng-container *ngIf="baseForm">
             <form [formGroup]="baseForm" class="payroll-credit--body">
-                <ng-container *ngIf="isBonusModal">
+                <ng-container *ngIf="isDropdownEnabled && isBonusModal">
                     <div class="payroll-mb-32">
                     <app-ca-input-dropdown
                         formControlName="driverId"
