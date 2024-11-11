@@ -83,7 +83,7 @@ export class PayrollReportComponent
     title: string = '';
     private destroy$ = new Subject<void>();
 
-    data: ICaMapProps = {
+    data: any = {
         markers: [],
         routingMarkers: [],
     };

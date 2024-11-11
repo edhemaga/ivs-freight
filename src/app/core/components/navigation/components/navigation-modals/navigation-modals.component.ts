@@ -11,7 +11,7 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 // models
-import {  NavigationModal } from '@core/components/navigation/models';
+import { NavigationModal } from '@core/components/navigation/models';
 // constants
 import { NavigationDataConstants } from '@core/components/navigation/utils/constants/navigation-data.constants';
 
@@ -200,7 +200,8 @@ export class NavigationModalsComponent {
                 });
                 break;
             }
-            case 'transaction': {
+            case 'transaction':
+            case 'fuel': {
                 this.modalService.openModal(FuelPurchaseModalComponent, {
                     size: 'small',
                 });
