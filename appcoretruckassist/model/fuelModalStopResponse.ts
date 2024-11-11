@@ -19,5 +19,6 @@ export interface FuelModalStopResponse {
     favourite?: boolean;
     isClosed?: boolean;
     address?: AddressEntity;
+    phone?: string | null;
 }
 

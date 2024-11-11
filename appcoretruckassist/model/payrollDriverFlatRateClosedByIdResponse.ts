@@ -27,7 +27,7 @@ export interface PayrollDriverFlatRateClosedByIdResponse {
     periodStart?: string;
     periodEnd?: string;
     status?: EnumValue;
-    total?: number | null;
+    earnings?: number | null;
     salary?: number | null;
     rate?: string | null;
     flatPay?: number | null;

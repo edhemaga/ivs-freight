@@ -27,7 +27,7 @@ export interface PayrollDriverCommissionByIdResponse {
     periodEnd?: string;
     payrollDeadLine?: PayrollDeadlineShortResponse;
     status?: EnumValue;
-    total?: number | null;
+    earnings?: number | null;
     commission?: number;
     salary?: number | null;
     includedDeductions?: Array<PayrollDeductionMinimalResponse> | null;

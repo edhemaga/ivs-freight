@@ -86,6 +86,8 @@ export class TaToolbarFiltersComponent implements OnInit, OnChanges, OnDestroy {
     public trailerTypeArray: ArrayStatus[];
     public usaStates: ArrayStatus[];
     public canadaStates: ArrayStatus[];
+    public categoryRepairArray: ArrayStatus[];
+    public pmFilterArray: ArrayStatus[];
 
     constructor(
         private tableSevice: TruckassistTableService,
@@ -131,6 +133,16 @@ export class TaToolbarFiltersComponent implements OnInit, OnChanges, OnDestroy {
 
         if (this.options.toolbarActions.showStateFilter)
             this.filterService.getStateData();
+
+        if (this.options.toolbarActions.showCategoryRepairFilter)
+            this.filterService.getRepairCategory();
+
+        if (this.options.toolbarActions.showPMFilter)
+            this.filterService.getPmData(
+                this.options.toolbarActions.showTrailerPmFilter
+                    ? ToolbarFilterStringEnum.TRAILER
+                    : ToolbarFilterStringEnum.TRUCK
+            );
 
         if (
             this.options.toolbarActions.showTruckPmFilter ||
@@ -271,6 +283,45 @@ export class TaToolbarFiltersComponent implements OnInit, OnChanges, OnDestroy {
                         ToolbarFilterStringEnum.STATE_DATA_UPDATE
                     )
                         this.handleStateDataUpdate(res);
+
+                    if (
+                        res?.animation ===
+                        ToolbarFilterStringEnum.REPAIR_CATEGORY_UPDATE
+                    ) {
+                        const newData = res.data.map(
+                            (
+                                type: any // leave any for now
+                            ) => {
+                                type[ToolbarFilterStringEnum.ICON] =
+                                    FilterIconRoutes.categorySVG + type.logo;
+                                return type;
+                            }
+                        );
+                        this.categoryRepairArray = newData;
+                    }
+
+                    if (
+                        res?.animation ===
+                        ToolbarFilterStringEnum.PM_TRUCK_DATA_UPDATE
+                    ) {
+                        if (res.data.pmTrucks?.length) {
+                            const newData = res.data.pmTrucks.map(
+                                (type: any) => {
+                                    type[ToolbarFilterStringEnum.ICON] =
+                                        FilterIconRoutes.repairPmSVG +
+                                        type.logoName;
+                                    type[ToolbarFilterStringEnum.NAME] =
+                                        type.title;
+
+                                    return type;
+                                }
+                            );
+
+                            this.pmFilterArray = newData;
+                        } else {
+                            this.pmFilterArray = [];
+                        }
+                    }
                 }
             );
     }

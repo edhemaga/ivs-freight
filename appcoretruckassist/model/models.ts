@@ -546,6 +546,7 @@ export * from './loadListDto';
 export * from './loadListDtoPagination';
 export * from './loadListLoadStopResponse';
 export * from './loadListResponse';
+export * from './loadMainModuleResponse';
 export * from './loadMinimalListResponse';
 export * from './loadMinimalResponse';
 export * from './loadMinimalResponsePagination';

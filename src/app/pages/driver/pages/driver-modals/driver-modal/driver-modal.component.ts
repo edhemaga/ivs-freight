@@ -2321,7 +2321,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
             flatRateSolo: conditionalFlatRateSolo,
             flatRateTeam: conditionalFlatRateTeam,
 
-            isOpenPayrollShared: conditionalPayrollShared,
+            isOpenPayrollShared: conditionalPayrollShared ?? false,
             isPayrollCalculated: conditionalPayrollCalculated,
 
             fleetType: this.fleetType,
