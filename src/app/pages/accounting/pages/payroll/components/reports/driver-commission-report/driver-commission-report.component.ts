@@ -37,6 +37,7 @@ import { PayrollProccessPaymentModalComponent } from '../../../payroll-modals/pa
 import { PayrollReportTableResponse } from 'ca-components/lib/components/ca-period-content/models/payroll-report-tables.type';
 import { PayrollCreditBonusComponent } from '../../../payroll-modals/payroll-credit-bonus/payroll-credit-bonus.component';
 import { PayrollDeductionModalComponent } from '../../../payroll-modals/payroll-deduction-modal/payroll-deduction-modal.component';
+import { PayrollBonusModalComponent } from '../../../payroll-modals/payroll-bonus-modal/payroll-bonus-modal.component';
 
 @Component({
     selector: 'app-driver-commission-report',
@@ -279,6 +280,7 @@ export class DriverCommissionReportComponent
     }
 
     public openAddNewModal(type: string) {
+        console.log('this.openedPayroll.driver.id', this.openedPayroll.driver.id);
         switch (type) {
             case 'Credit':
                 this.modalService
@@ -292,7 +294,28 @@ export class DriverCommissionReportComponent
                             isShortModal: true,
                             data: {
                                 driverId: this.openedPayroll.driver.id,
-                                payrollType: 'owner',
+                            } as CreatePayrollCreditCommand,
+                            creditType: PayrollCreditType.Driver,
+                        }
+                    )
+                    .then(() => {
+                        this.payrollCommissionFacadeService.getPayrollDriverCommissionReport(
+                            {
+                                reportId: this.reportId,
+                            }
+                        );
+                    });
+                return;
+            case 'Bonus':
+                this.modalService
+                    .openModal(
+                        PayrollBonusModalComponent,
+                        {
+                            size: 'small',
+                        },
+                        {
+                            data: {
+                                driverId: this.openedPayroll.driver.id,
                             } as CreatePayrollCreditCommand,
                             creditType: PayrollCreditType.Driver,
                         }
@@ -330,6 +353,87 @@ export class DriverCommissionReportComponent
                         );
                     });
                 break;
+        }
+    }
+
+    public onOpenActionEditItems(item: any): void {
+        console.log('ITEMSSS', item.$event.type);
+
+        console.log('this.openedPayroll.driver.id', this.openedPayroll.driver.id);
+        if (item.$event.type === 'Edit') {
+            switch (item.title) {
+                case 'Credit':
+                    this.modalService
+                        .openModal(
+                            PayrollCreditBonusComponent,
+                            {
+                                size: 'small',
+                            },
+                            {
+                                edit: true,
+                                data: {
+                                    ...item.data,
+                                    driverId: this.openedPayroll.driver.id,
+                                } as CreatePayrollCreditCommand,
+                                creditType: PayrollCreditType.Driver,
+                            }
+                        )
+                        .then(() => {
+                            this.payrollCommissionFacadeService.getPayrollDriverCommissionReport(
+                                {
+                                    reportId: this.reportId,
+                                }
+                            );
+                        });
+                    break;
+                case 'Bonus':
+                    this.modalService
+                        .openModal(
+                            PayrollBonusModalComponent,
+                            {
+                                size: 'small',
+                            },
+                            {
+                                edit: true,
+                                data: {
+                                    ...item.data,
+                                    driverId: this.openedPayroll.driver.id,
+                                } as CreatePayrollCreditCommand,
+                                creditType: PayrollCreditType.Driver,
+                            }
+                        )
+                        .then(() => {
+                            this.payrollCommissionFacadeService.getPayrollDriverCommissionReport(
+                                {
+                                    reportId: this.reportId,
+                                }
+                            );
+                        });
+                    break;
+                case 'Deduction':
+                    this.modalService
+                        .openModal(
+                            PayrollDeductionModalComponent,
+                            {
+                                size: 'small',
+                            },
+                            {
+                                edit: true,
+                                data: {
+                                    id: item.data.id,
+                                } as CreatePayrollCreditCommand,
+                                creditType: PayrollCreditType.Driver,
+                            }
+                        )
+                        .then(() => {
+                            this.payrollCommissionFacadeService.getPayrollDriverCommissionReport(
+                                {
+                                    reportId: this.reportId,
+                                }
+                            );
+                        });
+                    break;
+            }
         }
     }
 

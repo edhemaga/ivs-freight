@@ -299,6 +299,7 @@ export class PayrollReportComponent implements OnInit, OnDestroy {
     }
 
     public openAddNewModal(type: string) {
+        console.log('this.openedPayroll.driver.id', this.openedPayroll.driver.id);
         switch (type) {
             case 'Credit':
                 this.modalService
@@ -308,11 +309,8 @@ export class PayrollReportComponent implements OnInit, OnDestroy {
                             size: 'small',
                         },
                         {
-                            type: 'new',
-                            isShortModal: true,
                             data: {
-                                driverId: this.openedPayroll.driver.id,
-                                payrollType: 'owner',
+                                driverId: this.openedPayroll.driver.id
                             } as CreatePayrollCreditCommand,
                             creditType: PayrollCreditType.Driver,
                         }
@@ -325,6 +323,28 @@ export class PayrollReportComponent implements OnInit, OnDestroy {
                         );
                     });
                 break;
+            case 'Bonus':
+                this.modalService
+                    .openModal(
+                        PayrollBonusModalComponent,
+                        {
+                            size: 'small',
+                        },
+                        {
+                            data: {
+                                driverId: this.openedPayroll.driver.id,
+                            } as CreatePayrollCreditCommand,
+                            creditType: PayrollCreditType.Driver,
+                        }
+                    )
+                    .then(() => {
+                        this.payrollFacadeService.getPayrollDriverMileageReport(
+                            {
+                                reportId: `${this.reportId}`,
+                            }
+                        );
+                    });
+                return;
             case 'Credit':
                 this.modalService
                     .openModal(
@@ -333,11 +353,8 @@ export class PayrollReportComponent implements OnInit, OnDestroy {
                             size: 'small',
                         },
                         {
-                            type: 'new',
-                            isShortModal: true,
                             data: {
-                                driverId: this.openedPayroll.driver.id,
-                                payrollType: 'owner',
+                                driverId: this.openedPayroll.driver.id
                             } as CreatePayrollCreditCommand,
                             creditType: PayrollCreditType.Driver,
                         }
@@ -358,13 +375,10 @@ export class PayrollReportComponent implements OnInit, OnDestroy {
                             size: 'small',
                         },
                         {
-                            type: 'new',
-                            isShortModal: true,
                             data: {
-                                driverId: this.openedPayroll.driver.id,
-                                payrollType: 'owner',
+                                driverId: this.openedPayroll.driver.id
                             } as CreatePayrollCreditCommand,
-                            creditType: PayrollCreditType.Driver,
+                            creditType: PayrollCreditType.Driver, 
                         }
                     )
                     .then(() => {
@@ -376,6 +390,85 @@ export class PayrollReportComponent implements OnInit, OnDestroy {
                     });
                 break;
         }
+    }
+
+    public onOpenActionEditItems(item: any): void {
+        if (item.$event.type === 'Edit') {
+            switch (item.title) {
+                case 'Credit':
+                    this.modalService
+                        .openModal(
+                            PayrollCreditBonusComponent,
+                            {
+                                size: 'small',
+                            },
+                            {
+                                edit: true,
+                                data: {
+                                    ...item.data,
+                                    driverId: this.openedPayroll.driver.id,
+                                } as CreatePayrollCreditCommand,
+                                creditType: PayrollCreditType.Driver,
+                            }
+                        )
+                        .then(() => {
+                            this.payrollFacadeService.getPayrollDriverMileageReport(
+                                {
+                                    reportId: `${this.reportId}`,
+                                }
+                            );
+                        });
+                    break;
+                case 'Bonus':
+                    this.modalService
+                        .openModal(
+                            PayrollBonusModalComponent,
+                            {
+                                size: 'small',
+                            },
+                            {
+                                edit: true,
+                                data: {
+                                    ...item.data,
+                                    driverId: this.openedPayroll.driver.id,
+                                } as CreatePayrollCreditCommand,
+                                creditType: PayrollCreditType.Driver,
+                            }
+                        )
+                        .then(() => {
+                            this.payrollFacadeService.getPayrollDriverMileageReport(
+                                {
+                                    reportId: `${this.reportId}`,
+                                }
+                            );
+                        });
+                    break;
+                case 'Deduction':
+                    this.modalService
+                        .openModal(
+                            PayrollDeductionModalComponent,
+                            {
+                                size: 'small',
+                            },
+                            {
+                                edit: true,
+                                data: {
+                                    id: item.data.id,
+                                } as CreatePayrollCreditCommand,
+                                creditType: PayrollCreditType.Driver,
+                            }
+                        )
+                        .then(() => {
+                            this.payrollFacadeService.getPayrollDriverMileageReport(
+                                {
+                                    reportId: `${this.reportId}`,
+                                }
+                            );
+                        });
+                    break;
+            }
+        }
+        
     }
 
     ngOnDestroy(): void {
