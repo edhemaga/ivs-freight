@@ -420,7 +420,7 @@ export class DriverCommissionReportComponent
                             {
                                 edit: true,
                                 data: {
-                                    id: item.data.id,
+                                    id: item.data.parentPayrollDeductionId
                                 } as CreatePayrollCreditCommand,
                                 creditType: PayrollCreditType.Driver,
                             }

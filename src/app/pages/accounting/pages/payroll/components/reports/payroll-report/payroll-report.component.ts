@@ -299,7 +299,10 @@ export class PayrollReportComponent implements OnInit, OnDestroy {
     }
 
     public openAddNewModal(type: string) {
-        console.log('this.openedPayroll.driver.id', this.openedPayroll.driver.id);
+        console.log(
+            'this.openedPayroll.driver.id',
+            this.openedPayroll.driver.id
+        );
         switch (type) {
             case 'Credit':
                 this.modalService
@@ -310,7 +313,7 @@ export class PayrollReportComponent implements OnInit, OnDestroy {
                         },
                         {
                             data: {
-                                driverId: this.openedPayroll.driver.id
+                                driverId: this.openedPayroll.driver.id,
                             } as CreatePayrollCreditCommand,
                             creditType: PayrollCreditType.Driver,
                         }
@@ -354,7 +357,7 @@ export class PayrollReportComponent implements OnInit, OnDestroy {
                         },
                         {
                             data: {
-                                driverId: this.openedPayroll.driver.id
+                                driverId: this.openedPayroll.driver.id,
                             } as CreatePayrollCreditCommand,
                             creditType: PayrollCreditType.Driver,
                         }
@@ -376,9 +379,9 @@ export class PayrollReportComponent implements OnInit, OnDestroy {
                         },
                         {
                             data: {
-                                driverId: this.openedPayroll.driver.id
+                                driverId: this.openedPayroll.driver.id,
                             } as CreatePayrollCreditCommand,
-                            creditType: PayrollCreditType.Driver, 
+                            creditType: PayrollCreditType.Driver,
                         }
                     )
                     .then(() => {
@@ -453,7 +456,7 @@ export class PayrollReportComponent implements OnInit, OnDestroy {
                             {
                                 edit: true,
                                 data: {
-                                    id: item.data.id,
+                                    id: item.data.parentPayrollDeductionId,
                                 } as CreatePayrollCreditCommand,
                                 creditType: PayrollCreditType.Driver,
                             }
@@ -468,7 +471,6 @@ export class PayrollReportComponent implements OnInit, OnDestroy {
                     break;
             }
         }
-        
     }
 
     ngOnDestroy(): void {

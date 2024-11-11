@@ -315,6 +315,7 @@ export class DriverFlatRateReportComponent
     }
 
     public onOpenActionEditItems(item: any): void {
+        console.log(item);
         if (item.$event.type === 'Edit') {
             switch (item.title) {
                 case 'Credit':
@@ -375,7 +376,7 @@ export class DriverFlatRateReportComponent
                             {
                                 edit: true,
                                 data: {
-                                    id: item.data.id,
+                                    id: item.data.parentPayrollDeductionId,
                                 } as CreatePayrollCreditCommand,
                                 creditType: PayrollCreditType.Driver,
                             }
