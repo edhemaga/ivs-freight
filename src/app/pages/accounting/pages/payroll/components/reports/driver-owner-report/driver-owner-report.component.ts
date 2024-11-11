@@ -8,7 +8,7 @@ import {
     OnInit,
     ViewChild,
 } from '@angular/core';
-import { Observable, Subject } from 'rxjs';
+import { Observable, Subject, takeUntil } from 'rxjs';
 import { ColumnConfig } from 'ca-components';
 import { CdkDragDrop } from '@angular/cdk/drag-drop';
 
@@ -106,15 +106,20 @@ export class DriverOwnerReportComponent
         this.payrollReport$ =
             this.payrollDriverOwnerFacadeService.selectPayrollOwnerOpenedReport$;
 
+        this.payrollDriverOwnerFacadeService.selectPayrollOwnerOpenedReport$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((report) => (this.openedPayroll = report));
+
         this.payrollOwnerDriverLoads$ =
             this.payrollDriverOwnerFacadeService.selectPayrollReportDriverCommissionLoads$;
 
         this.includedLoads$ =
             this.payrollDriverOwnerFacadeService.selectPayrollReportOwnerIncludedLoads$;
 
-        this.payrollDriverOwnerFacadeService.selectPayrollOwnerOpenedReport$.subscribe(
+        this.payrollDriverOwnerFacadeService.selectPayrollOwnerOpenedReport$
+        .pipe(takeUntil(this.destroy$))
+        .subscribe(
             (owner) => {
-                console.log('---------OWNERRRRR', owner);
                 this.payrollOpenedReport = owner;
             }
         );

@@ -8,6 +8,9 @@ import { PayrollBonusModalComponent } from '../../payroll-modals/payroll-bonus-m
 import { PayrollDeductionModalComponent } from '../../payroll-modals/payroll-deduction-modal/payroll-deduction-modal.component';
 import { PayrollReportTableResponse } from 'ca-components/lib/components/ca-period-content/models/payroll-report-tables.type';
 import { IGetPayrollByIdAndOptions } from '../../state/models/payroll.model';
+import { FuelPurchaseModalComponent } from '@pages/fuel/pages/fuel-modals/fuel-purchase-modal/fuel-purchase-modal.component';
+import { FuelData } from '@pages/fuel/pages/fuel-modals/fuel-purchase-modal/models/fuel-data.model';
+import { FuelDataOptionsStringEnum } from '@pages/fuel/enums/fuel-data-options-string.enum';
 
 export abstract class PayrollReportBaseComponent<
     T extends { driver?: { id?: number }; truck?: { id?: number } }
@@ -34,6 +37,7 @@ export abstract class PayrollReportBaseComponent<
     }
 
     public openAddNewModal(type: string) {
+        console.log("WHAT IS TYPE", type);
         switch (type) {
             case 'Credit':
                 this.modalService
@@ -104,6 +108,26 @@ export abstract class PayrollReportBaseComponent<
                                 driverId: this.openedPayroll.driver?.id,
                                 truckId: this.openedPayroll.truck?.id,
                             } as CreatePayrollCreditCommand,
+                            creditType: this.creditType,
+                        }
+                    )
+                    .then(() => {
+                        this.getReportDataResults();
+                    });
+                break;
+            case 'Fuel':
+                this.modalService
+                    .openModal(
+                        FuelPurchaseModalComponent,
+                        {
+                            size: 'small',
+                        },
+                        {
+                            data: {
+                                type: FuelDataOptionsStringEnum.ADD,
+                                
+                              //  truckId: this.openedPayroll.truck?.id,
+                            } as FuelData,
                             creditType: this.creditType,
                         }
                     )

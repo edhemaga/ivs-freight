@@ -195,9 +195,9 @@ export class DriverCommissionReportComponent
         this.includedLoads$ =
             this.payrollCommissionFacadeService.selectPayrollReportIncludedLoads$;
 
-        this.payrollCommissionFacadeService.selectPayrollReportDriverCommissionLoads$.subscribe(
-            (res) => console.log(res, '-fsfasdfsaf')
-        );
+        this.payrollCommissionFacadeService.selectPayrollReportDriverCommissionLoads$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((res) => console.log(res, '-fsfasdfsaf'));
     }
 
     onProccessPayroll(payrollData: PayrollDriverMileageByIdResponse) {
