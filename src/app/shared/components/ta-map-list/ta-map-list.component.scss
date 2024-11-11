@@ -17,7 +17,6 @@
         .marker-divider {
             height: 1px;
             width: 100%;
-            margin-top: 12px;   
 
             background: #DADADA;
 
@@ -148,34 +147,6 @@
     }
 }
 
-.gm-style div[aria-hidden='true'] {
-    width: 90px;
-
-    color: $ta-blue-2 !important;
-    //color: #F44336 !important;
-    margin-left: 120px;
-    text-shadow: 1px 1px 0px $white, 1px -1px 0px $white, -1px -1px 0px $white,
-        -1px 1px 0px $white;
-    text-transform: uppercase;
-    font-size: 11px !important;
-    line-height: 12px;
-    font-weight: 600;
-    text-align: left;
-
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    overflow: hidden;
-
-    @supports (-webkit-line-clamp: 2) {
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: initial;
-        display: -webkit-box;
-        -webkit-line-clamp: 2;
-        -webkit-box-orient: vertical;
-    }
-}
-
 .map-list-container {
     position: absolute;
     left: 0;
@@ -223,17 +194,14 @@
                 justify-content: space-between;
                 user-select: none;
 
-                margin-top: 8px;
-
                 .map-list-sort-text {
-                    font-size: 14px;
-                    font-weight: 700;
-                    line-height: 18px;
+                    font-size: 11px;
+                    line-height: 14px;
                     color: $bw5;
-                    padding-left: 4px;
+                    padding-left: 6px;
 
                     &.search-results-text {
-                        color: #536bc2;
+                        color: $ta-blue;
                         font-weight: 400;
                     }
 
@@ -246,13 +214,25 @@
                     display: flex;
                     justify-content: center;
                     align-items: center;
-                    height: 18px;
+                    height: 26px;
+                    border-radius: 2px;
+
+                    &:hover {
+                        background: $bw2;
+                    }
+
+                    &.active {
+                        background: $ta-black !important;
+
+                        .map-list-sort-category {
+                            color: $white;
+                        }
+                    }
                 }
 
                 .map-list-sort-category-container {
                     display: flex;
                     justify-content: flex-end;
-                    width: 160px;
                     overflow: visible;
 
                     .map-list-sort-category {
@@ -260,16 +240,12 @@
                         padding: 4px 6px;
 
                         text-align: right;
-
-                        &:hover {
-                            background: $ta-light-grey-4;
-                            cursor: pointer;
-                            border-radius: 2px;
-                        }
                     }
                 }
 
                 .map-list-sort-arrows {
+                    width: 26px;
+                    height: 26px;
                     cursor: pointer;
                 }
             }
@@ -501,39 +477,25 @@
 }
 
 .sort-arrows-svg {
+    transition: transform 0.2s ease-in-out;
+
     svg {
-        path:nth-child(2) {
-            fill: $bc1;
-
-            &:hover {
-                fill: $ta-blue-2;
-            }
-        }
-        path:last-child {
-            fill: $ta-light-grey-2;
-
-            &:hover {
-                fill: $bw6-2;
-            }
+        path {
+            fill: $ta-blue-13;
         }
     }
 
-    &.blue-svg {
-        svg {
-            path:nth-child(2) {
-                fill: $ta-light-grey-2;
+    &.rotate {
+        transform: rotate(180deg);
+    }
+}
 
-                &:hover {
-                    fill: $bw6-2;
-                }
-            }
-            path:last-child {
-                fill: $bc1;
+.sort-dropdown-arrow {
+    transform: rotate(180deg);
 
-                &:hover {
-                    fill: $ta-blue-2;
-                }
-            }
+    svg {
+        path {
+            fill: $white-4;
         }
     }
 }

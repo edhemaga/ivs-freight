@@ -31,6 +31,15 @@ import { FormatDatePipe } from '@shared/pipes/format-date.pipe';
 import { TaDetailsDropdownComponent } from '@shared/components/ta-details-dropdown/ta-details-dropdown.component';
 import { TaProfileImagesComponent } from '@shared/components/ta-profile-images/ta-profile-images.component';
 
+// Models
+import { AddressEntity } from 'appcoretruckassist';
+
+// tooltip
+import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
+
+// Svg Routes
+import { MapListCardSvgRoutes } from '@shared/components/ta-map-list-card/utils/svg-routes';
+
 @Component({
     selector: 'app-ta-map-list-card',
     templateUrl: './ta-map-list-card.component.html',
@@ -43,6 +52,7 @@ import { TaProfileImagesComponent } from '@shared/components/ta-profile-images/t
         FormsModule,
         ReactiveFormsModule,
         AngularSvgIconModule,
+        NgbTooltipModule,
 
         // Components
         TaDetailsDropdownComponent,
@@ -57,20 +67,26 @@ export class TaMapListCardComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
 
     @Input() isSelected: boolean = false;
-    @Input() status: any = 1;
+    @Input() status: number = 1;
     @Input() title: string = '';
-    @Input() address: any = {};
-    @Input() rating: any = {};
+    @Input() address: AddressEntity | null = null;
+    @Input() rating: {
+        hasLiked: boolean;
+        hasDislike: boolean;
+        likeCount: number;
+        dislikeCount: number;
+    } | null = null;
     @Input() item: any = {};
-    @Input() index: any = {};
     @Input() type: string = '';
-    @Output() clickedMarker: EventEmitter<any> = new EventEmitter<any>();
     @Output() bodyActions: EventEmitter<any> = new EventEmitter();
     @ViewChild('detailsDropdown') detailsDropdown: any;
     public locationFilterOn: boolean = false;
     sortCategory: any = {};
     clickedOnDots: boolean = false;
     dropdownActions: any = {};
+
+    // Svg routes
+    public mapListCardSvgRoutes: MapListCardSvgRoutes = MapListCardSvgRoutes;
 
     constructor(
         private mapsService: MapsService,
@@ -99,28 +115,19 @@ export class TaMapListCardComponent implements OnInit, OnDestroy {
                 }
             });
 
-        if (this.mapsService.selectedMarkerId) {
-            this.isSelected = this.mapsService.selectedMarkerId == this.item.id;
-            this.item.isSelected =
-                this.mapsService.selectedMarkerId == this.item.id;
-        }
+        this.isSelected = this.mapsService.selectedMarkerId == this.item.id;
 
         this.mapsService.selectedMarkerChange
             .pipe(takeUntil(this.destroy$))
             .subscribe((id) => {
-                if (id != this.item.id && this.detailsDropdown?.tooltip) {
+                if (id !== this.item.id && this.detailsDropdown?.tooltip) {
                     this.detailsDropdown.dropDownActive = -1;
                     this.detailsDropdown.tooltip.close();
                 }
-            });
 
-        this.mapsService.selectedMapListCardChange
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((id) => {
-                if (id != this.item.id && this.detailsDropdown?.tooltip) {
-                    this.detailsDropdown.dropDownActive = -1;
-                    this.detailsDropdown.tooltip.close();
-                }
+                this.addRemoveSelection(id == this.item.id);
+
+                this.ref.detectChanges();
             });
 
         this.getDropdownActions();

@@ -56,6 +56,7 @@ export interface LoadResponse {
     revisedRate?: number | null;
     tonuRate?: number | null;
     driverRate?: number | null;
+    coDriverRate?: number | null;
     additionalBillingRatesTotal?: number | null;
     billingCount?: number | null;
     additionalBillingRates?: Array<LoadBillingAdditionalResponse> | null;
