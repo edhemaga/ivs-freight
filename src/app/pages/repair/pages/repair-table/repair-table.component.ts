@@ -298,6 +298,8 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
 
                                         this.handleCloseAnimationAction(true);
 
+                                        this.updateMapItem();
+
                                         this.tableService.sendRowsSelected([]);
                                         this.tableService.sendResetSelectedColumns(
                                             true
@@ -348,6 +350,8 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                                         );
 
                                         this.updateDataCount();
+
+                                        this.updateMapItem();
 
                                         if (res.array?.length) {
                                             this.tableService.sendRowsSelected(
@@ -1366,6 +1370,10 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                     this.handleCloseAnimationAction(false);
 
                     this.mapsService.addRating(res);
+
+                    this.updateMapItem(
+                        this.viewData.find((item) => item.id === event.data.id)
+                    );
                 });
         }
 
@@ -1404,6 +1412,10 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                     this.viewData = [...sortedByFavorite];
 
                     this.handleCloseAnimationAction(false);
+
+                    this.updateMapItem(
+                        this.viewData.find((item) => item.id === event.data.id)
+                    );
                 });
         }
     }
@@ -1430,6 +1442,10 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
             .pipe(takeUntil(this.destroy$))
             .subscribe(() => {
                 this.sendRepairData();
+
+                this.updateMapItem(
+                    this.viewData.find((item) => item.id === repairShop.id)
+                );
             });
     }
 
@@ -1710,53 +1726,6 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
             });
     }
 
-    public updateMapList(mapListResponse): void {
-        const newMapList = mapListResponse.pagination.data;
-
-        let listChanged = false;
-        let addData = mapListResponse.addData ? true : false;
-
-        if (!addData) {
-            for (let i = 0; i < this.mapListData.length; i++) {
-                const item = this.mapListData[i];
-
-                const itemIndex = newMapList.findIndex(
-                    (item2) => item2.id === item.id
-                );
-
-                if (itemIndex == -1) {
-                    this.mapListData.splice(i, 1);
-                    listChanged = true;
-                    i--;
-                }
-            }
-        }
-
-        for (let b = 0; b < newMapList.length; b++) {
-            let item = newMapList[b];
-
-            let itemIndex = this.mapListData.findIndex(
-                (item2) => item2.id === item.id
-            );
-
-            if (itemIndex == -1) {
-                if (addData) {
-                    this.mapListData.push(item);
-                } else {
-                    this.mapListData.splice(b, 0, item);
-                    listChanged = true;
-                    b--;
-                }
-            }
-        }
-
-        if (listChanged || mapListResponse.changedSort) {
-            if (mapListResponse.changedSort)
-                this.mapListData = mapListResponse.pagination.data;
-            this.ref.detectChanges();
-        }
-    }
-
     public onGetInfoWindowData(markerId: number): void {
         this.repairService
             .getRepairShopById(markerId)
@@ -1809,6 +1778,8 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                     );
 
                     this.mapData = { ...this.mapData, selectedMarkerData };
+
+                    this.updateMapItem(repairShopData);
                 },
                 error: () => {},
             });
@@ -2028,7 +1999,9 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                         this.mapListPagination.pageIndex > 1 ? true : false,
                 };
 
-                this.updateMapList(newMapListData);
+                this.mapListData = newMapListData.pagination.data;
+
+                this.ref.detectChanges();
             });
     }
 
@@ -2115,6 +2088,30 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
 
         this.getRepairShopMapList();
     }
+
+    public updateMapItem(item?): void {
+        if (this.activeViewMode === TableStringEnum.MAP) {
+            this.isAddedNewRepairShop = true;
+
+            this.mapListPagination = {
+                ...this.mapListPagination,
+                pageIndex: 1,
+            };
+
+            this.mapClustersPagination = {
+                ...this.mapClustersPagination,
+                pageIndex: 1,
+            };
+
+            this.getRepairShopClusters();
+
+            this.getRepairShopMapList();
+
+            if (item) this.mapsService.markerUpdate(item);
+        }
+    }
+
+    public trackByIdentity = (index: number, item: any): number => item?.id;
 
     ngOnDestroy(): void {
         this.destroy$.next();

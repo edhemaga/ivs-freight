@@ -315,10 +315,7 @@ export class MapsService implements OnDestroy {
                         data.status == 0 || data.isClosed
                             ? 'Open Business'
                             : 'Close Business',
-                    name:
-                        data.status == 0 || data.isClosed
-                            ? 'open-business'
-                            : 'close-business',
+                    name: 'close-business',
                     svg: 'assets/svg/common/close-business-icon.svg',
                     redIcon: data.status != 0 && !data.isClosed,
                     greenIcon: data.status == 0 || data.isClosed,

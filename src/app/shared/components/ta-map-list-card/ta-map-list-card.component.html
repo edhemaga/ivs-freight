@@ -9,10 +9,7 @@
             class="title-container d-flex align-items-center justify-content-between"
         >
             <div
-                class="marker-info-text marker-bold-text uppercase text-ellipsis"
-                [ngClass]="{
-                    'permanently-closed-text': status == 0 || item.isClosed
-                }"
+                class="marker-info-text marker-bold-text uppercase text-ellipsis d-flex align-items-center"
             >
                 <span *ngIf="status == 0 || item.isClosed">
                     <svg-icon
@@ -53,7 +50,7 @@
                 </ng-container>
 
                 <div
-                    class="show-more"
+                    class="show-more d-flex align-items-center justify-content-center"
                     [ngClass]="
                         item?.isSelected
                             ? 'table-dropdown-container active-drop'
@@ -475,18 +472,23 @@
                 </div>
             </div>
         </div>
-        <div class="map-list-card-address mg-top-2" *ngIf="address">
-            <span
-                class="marker-bold-text"
-                *ngIf="sortCategory.name != 'Location' && locationFilterOn"
-                >{{ item.distanceBetween }} mi -
-            </span>
-            <span class="address-text">
-                {{ address.city ? address.city : address.county }},
-                {{ address.stateShortName }}
-                {{ address.zipCode }},
-                {{ address.country }}
-            </span>
-        </div>
+        <ng-container *ngIf="address">
+            <div class="map-list-card-address mg-top-4">
+                <ng-container
+                    *ngIf="sortCategory.name != 'Location' && locationFilterOn"
+                >
+                    <span class="marker-bold-text"
+                        >{{ item.distanceBetween }} mi -
+                    </span>
+                </ng-container>
+
+                <span class="address-text">
+                    {{ address.city ? address.city : address.county }},
+                    {{ address.stateShortName }}
+                    {{ address.zipCode }},
+                    {{ address.country }}
+                </span>
+            </div>
+        </ng-container>
     </div>
 </div>

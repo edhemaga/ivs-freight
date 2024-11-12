@@ -3,8 +3,7 @@
 .map-list-card-container {
     position: relative;
     width: 100%;
-    padding: 6px;
-    border-bottom: 1px solid $ta-light-grey-4;
+    padding: 4px 4px 6px 6px;
     cursor: pointer;
 
     overflow: hidden;
@@ -20,94 +19,39 @@
         &:hover {
             background: $ta-light-grey;
         }
-
-        .marker-info-text {
-            color: $ta-light-grey-3;
-
-            .title-text {
-                &::-moz-selection {
-                    color: $ta-light-grey-3;
-                    background: #3c3c3c33;
-                }
-                &::selection {
-                    color: $ta-light-grey-3;
-                    background: #3c3c3c33;
-                }
-            }
-        }
-
-        .marker-like-text {
-            color: $ta-light-grey-3;
-        }
-
-        .map-list-card-address {
-            color: $bw6-2;
-
-            .address-text,
-            .marker-bold-text {
-                &::-moz-selection {
-                    color: $bw6-2;
-                    background: #6c6c6c33;
-                }
-                &::selection {
-                    color: $bw6-2;
-                    background: #6c6c6c33;
-                }
-            }
-        }
-
-        .marker-rating-svg {
-            svg {
-                path {
-                    fill: $bw4;
-                }
-            }
-
-            &:hover {
-                svg {
-                    path {
-                        fill: #4db6a2;
-                    }
-                }
-            }
-        }
     }
 
     .map-list-card-address {
         font-size: 11px;
         line-height: 14px;
-        color: $ta-light-grey-2;
+        color: $bw5;
 
         .address-text,
         .marker-bold-text {
             &::-moz-selection {
-                color: $ta-light-grey-2;
-                background: #aaaaaa33;
+                color: $bw5;
+                background: #91919133;
             }
             &::selection {
-                color: $ta-light-grey-2;
-                background: #aaaaaa33;
+                color: $bw5;
+                background: #91919133;
             }
         }
-    }
-
-    .title-container {
-        margin-top: 2px;
     }
 
     .marker-info-text {
         font-size: 14px;
         line-height: 18px;
-        color: $bw6-2;
+        color: $ta-black;
 
         .title-text {
             &::-moz-selection {
-                color: $bw6-2;
-                background: #6c6c6c33;
+                color: $ta-black;
+                background: #42424233;
             }
             &::selection {
-                color: $bw6-2;
-                background: #6c6c6c33;
+                color: $ta-black;
+                background: #42424233;
             }
         }
     }
@@ -331,4 +275,9 @@
     text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden;
+}
+
+.table-dropdown-container {
+    width: 22px;
+    height: 22px;
 }
