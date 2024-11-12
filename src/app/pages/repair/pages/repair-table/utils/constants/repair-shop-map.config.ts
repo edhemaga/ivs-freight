@@ -1,4 +1,5 @@
 // Models
+import { SortColumn } from '@shared/components/ta-sort-dropdown/models';
 import { ICaMapProps } from 'ca-components';
 import { MapDropdownContent } from 'ca-components/lib/components/ca-map-dropdown/models';
 
@@ -90,4 +91,44 @@ export class RepairShopMapConfig {
         pageIndex: number;
         pageSize: number;
     } = { pageIndex: 1, pageSize: 25 };
+
+    static repairShopMapListSortColumns: SortColumn[] = [
+        {
+            name: 'Business Name',
+            sortName: 'name',
+        },
+        {
+            name: 'Location',
+            sortName: 'address',
+            isDisabled: true,
+        },
+        {
+            name: 'Available',
+            sortName: 'openNow',
+        },
+        {
+            name: 'Rating',
+            sortName: 'rating',
+        },
+        {
+            name: 'Date Added',
+            sortName: 'dateAdded',
+        },
+        {
+            name: 'Last Used',
+            sortName: 'lastUsedDate',
+        },
+        {
+            name: 'Bill Count',
+            sortName: 'bill',
+        },
+        {
+            name: 'Order Count',
+            sortName: 'order',
+        },
+        {
+            name: 'Total Expense',
+            sortName: 'expense',
+        },
+    ];
 }

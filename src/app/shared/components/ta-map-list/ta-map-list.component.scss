@@ -18,7 +18,7 @@
             height: 1px;
             width: 100%;
 
-            background: #DADADA;
+            background: #dadada;
 
             border-radius: 1px;
         }
@@ -156,7 +156,7 @@
     height: 100vh;
     pointer-events: none;
 
-    padding: 62px 0px 25px 74px;
+    padding: 59px 0px 16px 70px;
 
     z-index: 2;
 
@@ -180,7 +180,7 @@
 
         .map-list-header {
             width: 100%;
-            padding: 8px 6px 0px 6px;
+            padding: 6px 6px 0px 6px;
 
             .map-list-search {
                 .input-custom-group .input-icon {
@@ -216,9 +216,11 @@
                     align-items: center;
                     height: 26px;
                     border-radius: 2px;
+                    transition: background 0.2s ease-in-out;
 
-                    &:hover {
+                    &:has(.map-list-sort-category:hover) {
                         background: $bw2;
+                        cursor: pointer;
                     }
 
                     &.active {
@@ -246,7 +248,19 @@
                 .map-list-sort-arrows {
                     width: 26px;
                     height: 26px;
-                    cursor: pointer;
+                    transition: background 0.2s ease-in-out;
+                    border-radius: 2px;
+
+                    &:hover {
+                        background: $ta-blue-16;
+                        cursor: pointer;
+
+                        svg {
+                            path {
+                                fill: $ta-blue-15;
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -255,7 +269,7 @@
             height: 100%;
             max-height: 100%;
             width: 100%;
-            padding: 1px 0px 8px 4px;
+            padding: 6px 4px 8px 4px;
 
             overflow-y: scroll;
             transition: 0.2s;
@@ -278,8 +292,7 @@
             .map-list-card-container {
                 position: relative;
                 width: 100%;
-                padding: 6px;
-                border-bottom: 1px solid $ta-light-grey-4;
+                padding: 4px 4px 6px 6px;
                 cursor: pointer;
 
                 .map-list-card-info {
@@ -289,7 +302,7 @@
                 }
 
                 &:hover {
-                    background: #f7f7f7;
+                    background: $bw2;
                 }
 
                 &.map-list-card-selected {
@@ -298,62 +311,22 @@
                     &:hover {
                         background: $ta-light-grey;
                     }
-
-                    .marker-info-text {
-                        color: $ta-light-grey-3;
-                    }
-
-                    .marker-like-text {
-                        color: $ta-light-grey-3;
-                    }
-
-                    .map-list-card-address {
-                        color: $bw6-2;
-
-                        .address-text,
-                        .marker-bold-text {
-                            &::-moz-selection {
-                                color: $bw6-2;
-                                background: #6c6c6c33;
-                            }
-                            &::selection {
-                                color: $bw6-2;
-                                background: #6c6c6c33;
-                            }
-                        }
-                    }
-
-                    .marker-rating-svg {
-                        svg {
-                            path {
-                                fill: $bw4;
-                            }
-                        }
-
-                        &:hover {
-                            svg {
-                                path {
-                                    fill: #4db6a2;
-                                }
-                            }
-                        }
-                    }
                 }
 
                 .map-list-card-address {
                     font-size: 11px;
                     line-height: 14px;
-                    color: $ta-light-grey-2;
+                    color: $bw5;
 
                     .address-text,
                     .marker-bold-text {
                         &::-moz-selection {
-                            color: $ta-light-grey-2;
-                            background: #aaaaaa33;
+                            color: $bw5;
+                            background: #91919133;
                         }
                         &::selection {
-                            color: $ta-light-grey-2;
-                            background: #aaaaaa33;
+                            color: $bw5;
+                            background: #91919133;
                         }
                     }
                 }
@@ -427,21 +400,6 @@
     }
 }
 
-.marker-info-text {
-    font-size: 14px;
-    line-height: 18px;
-    color: $bw6-2;
-
-    &::-moz-selection {
-        color: $bw6-2;
-        background: #6c6c6c33;
-    }
-    &::selection {
-        color: $bw6-2;
-        background: #6c6c6c33;
-    }
-}
-
 .marker-bold-text {
     font-weight: 700;
 }
@@ -454,10 +412,6 @@
 
 .uppercase {
     text-transform: uppercase;
-}
-
-.title-container {
-    margin-top: 2px;
 }
 
 // .show-more {
@@ -495,6 +449,7 @@
 
     svg {
         path {
+            transition: fill 0.2s ease-in-out;
             fill: $white-4;
         }
     }

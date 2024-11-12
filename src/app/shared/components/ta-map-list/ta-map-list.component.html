@@ -33,53 +33,14 @@
                     </div>
                 </ng-template> -->
 
-                <div
-                    class="map-list-sort d-flex align-items-center gap-1"
-                    [class.active]="tooltip?.isOpen()"
-                >
-                    <div
-                        class="map-list-sort-category-container"
-                        #t2="ngbPopover"
-                        [ngbPopover]="sortPopover"
-                        [placement]="['right-top']"
-                        [triggers]="'manual'"
-                        autoClose="outside"
-                        [container]="'body'"
-                        [popoverClass]="'map-list-sort-popover'"
-                        (click)="openPopover(t2)"
-                    >
-                        <ng-container *ngIf="activeSortType?.name">
-                            <div
-                                class="map-list-sort-category marker-info-text"
-                            >
-                                {{ activeSortType.name }}
-                            </div>
-                        </ng-container>
-                    </div>
-
-                    <div
-                        class="map-list-sort-arrows d-flex align-items-center justify-content-center"
-                        (click)="changeSortingDirection()"
-                    >
-                        <ng-container
-                            *ngIf="tooltip?.isOpen(); else sortArrowsTemplate"
-                        >
-                            <svg-icon
-                                [src]="mapListSvgRoutes.sortDropArrowRoute"
-                                class="sort-dropdown-arrow d-flex"
-                                [svgStyle]="{ 'width.px': 7, 'height.px': 14 }"
-                            ></svg-icon>
-                        </ng-container>
-
-                        <ng-template #sortArrowsTemplate>
-                            <svg-icon
-                                [src]="mapListSvgRoutes.sortDirectionRoute"
-                                class="sort-arrows-svg"
-                                [ngClass]="{ rotate: sortDirection == 'asc' }"
-                                [svgStyle]="{ 'width.px': 18, 'height.px': 18 }"
-                            ></svg-icon>
-                        </ng-template>
-                    </div>
+                <div>
+                    <app-ta-sort-dropdown
+                        [sortColumns]="sortColumns"
+                        [activeSortColumn]="activeSortType"
+                        [dropdownPosition]="'right-top'"
+                        [dropdownWidth]="167"
+                        (onSortChange)="onSortChange($event)"
+                    ></app-ta-sort-dropdown>
                 </div>
             </div>
             <div class="marker-divider"></div>
@@ -100,28 +61,3 @@
         </ng-container>
     </div>
 </div>
-
-<ng-template #sortPopover>
-    <div class="sort-filter-holder">
-        <div
-            class="sort-items-holder"
-            *ngFor="let item of sortTypes; let i = index"
-            (click)="changeSortType(item)"
-            [ngClass]="{
-                'sort-item-active': item.id == activeSortType.id,
-                'hide-sort-item': item.isHidden
-            }"
-        >
-            <div class="sort-items">
-                {{ item.name }}
-
-                <ng-container *ngIf="item.id === activeSortType.id">
-                    <svg-icon
-                        [src]="mapListSvgRoutes.checkRoute"
-                        [svgStyle]="{ 'width.px': 14, 'height.px': 14 }"
-                    ></svg-icon>
-                </ng-container>
-            </div>
-        </div>
-    </div>
-</ng-template>
