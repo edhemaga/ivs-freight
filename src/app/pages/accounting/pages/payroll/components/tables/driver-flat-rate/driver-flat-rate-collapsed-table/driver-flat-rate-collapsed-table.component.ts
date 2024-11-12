@@ -9,12 +9,15 @@ import {
     Output,
     ViewChild,
 } from '@angular/core';
+import { Observable } from 'rxjs';
+
 import { Subject } from '@microsoft/signalr';
 import { PayrollDriverMileageCollapsedListResponse } from '@pages/accounting/pages/payroll/state/models/payroll.model';
 import { PayrollFacadeService } from '@pages/accounting/pages/payroll/state/services/payroll.service';
 import { PayrollDriverFlatRateFacadeService } from '@pages/accounting/pages/payroll/state/services/payroll_flat_rate.service';
+
+// Components
 import { ColumnConfig } from 'ca-components';
-import { Observable } from 'rxjs';
 
 @Component({
     selector: 'app-driver-flat-rate-collapsed-table',
@@ -95,6 +98,7 @@ export class DriverFlatRateCollapsedTableComponent
                 header: 'Load',
                 field: 'loadsCount',
                 cellType: 'text', // Pass the template reference
+                cellCustomClasses: 'text-center',
                 hiddeOnTableReduce: true,
             },
             {

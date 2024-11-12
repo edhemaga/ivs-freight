@@ -9,11 +9,17 @@ import {
     Output,
     ViewChild,
 } from '@angular/core';
+import { Observable } from 'rxjs';
+
+// Models
 import { PayrollDriverMileageExpandedListResponse } from '@pages/accounting/pages/payroll/state/models/payroll.model';
+
+// Services
 import { PayrollFacadeService } from '@pages/accounting/pages/payroll/state/services/payroll.service';
 import { PayrollDriverFlatRateFacadeService } from '@pages/accounting/pages/payroll/state/services/payroll_flat_rate.service';
+
+// Components
 import { ColumnConfig } from 'ca-components';
-import { Observable } from 'rxjs';
 
 @Component({
     selector: 'app-driver-flat-rate-expanded-table',
@@ -23,10 +29,14 @@ import { Observable } from 'rxjs';
 export class DriverFlatRateExpandedTableComponent
     implements OnInit, AfterViewInit, OnDestroy
 {
+    // Inputs
     @Input() driverId: number;
-    @Output() expandTableEvent: EventEmitter<any> = new EventEmitter<any>();
     @Input() title: string;
     @Input() expandTable: boolean;
+
+    // Outputs
+    @Output() expandTableEvent: EventEmitter<PayrollDriverMileageExpandedListResponse> =
+        new EventEmitter<PayrollDriverMileageExpandedListResponse>();
 
     public loading$: Observable<boolean>;
     tableData$: Observable<PayrollDriverMileageExpandedListResponse[]>;
@@ -76,6 +86,7 @@ export class DriverFlatRateExpandedTableComponent
                 header: 'Load',
                 field: 'loadCount',
                 cellType: 'text', // Pass the template reference
+                cellCustomClasses: 'text-center',
                 hiddeOnTableReduce: true,
             },
             {
@@ -128,6 +139,7 @@ export class DriverFlatRateExpandedTableComponent
                 cellType: 'text',
                 cellCustomClasses: 'text-right',
                 textCustomClasses: 'b-600',
+                hiddeOnTableReduce: true,
             },
             {
                 header: 'Debt',
@@ -137,6 +149,7 @@ export class DriverFlatRateExpandedTableComponent
                 cellType: 'text',
                 cellCustomClasses: 'text-right',
                 textCustomClasses: 'b-600',
+                hiddeOnTableReduce: true,
             },
         ];
     }
@@ -153,13 +166,9 @@ export class DriverFlatRateExpandedTableComponent
         this.loading$ = this.payrollFacadeService.payrollLoading$;
         this.tableData$ =
             this.payrollDriverFlatRateFacadeService.selectPayrollDriverFlatRateExpanded$;
-
-        this.payrollDriverFlatRateFacadeService.selectPayrollDriverFlatRateExpanded$.subscribe(
-            (res) => console.log('dddd', res)
-        );
     }
 
-    selectPayrollReport(report: any) {
+    selectPayrollReport(report: PayrollDriverMileageExpandedListResponse) {
         this.expandTableEvent.emit(report);
     }
 

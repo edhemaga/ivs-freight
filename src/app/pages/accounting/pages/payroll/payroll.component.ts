@@ -150,8 +150,13 @@ export class PayrollComponent implements OnInit, AfterViewInit, OnDestroy {
                     // Set inputs and subscribe to outputs if componentRef is created
                     if (this.componentRef) {
                         this.componentRef.instance.expandTableEvent.subscribe(
-                            (event: any) =>
-                                this.expandTable(this.payrollType, event)
+                            (event: any) => {
+                                this.expandTable(
+                                    this.payrollType,
+                                    event,
+                                    this.componentRef.instance.expandTable
+                                );
+                            }
                         );
                     }
                 } else if (this.selectedOpenFromList) {
@@ -167,7 +172,10 @@ export class PayrollComponent implements OnInit, AfterViewInit, OnDestroy {
 
                         this.componentRef.instance.expandTableEvent.subscribe(
                             (event: any) => {
-                                if (this.reportTableData.id != event?.id) {
+                                if (
+                                    this.reportTableData.id != event?.id ||
+                                    !this.componentRef.instance.expandTable
+                                ) {
                                     this.reportTableData = event;
                                     if (
                                         this.payrollReportType !=
@@ -226,7 +234,11 @@ export class PayrollComponent implements OnInit, AfterViewInit, OnDestroy {
                     if (this.componentRef) {
                         this.componentRef.instance.expandTableEvent.subscribe(
                             (event: any) =>
-                                this.expandTable(this.payrollType, event)
+                                this.expandTable(
+                                    this.payrollType,
+                                    event,
+                                    this.componentRef.instance.expandTable
+                                )
                         );
                     }
                 } else if (this.selectedOpenFromList) {
@@ -242,7 +254,10 @@ export class PayrollComponent implements OnInit, AfterViewInit, OnDestroy {
 
                         this.componentRef.instance.expandTableEvent.subscribe(
                             (event: any) => {
-                                if (this.reportTableData.id != event?.id) {
+                                if (
+                                    this.reportTableData.id != event?.id ||
+                                    !this.componentRef.instance.expandTable
+                                ) {
                                     this.reportTableData = event;
                                     if (
                                         this.payrollReportType !=
@@ -301,7 +316,11 @@ export class PayrollComponent implements OnInit, AfterViewInit, OnDestroy {
                     if (this.componentRef) {
                         this.componentRef.instance.expandTableEvent.subscribe(
                             (event: any) =>
-                                this.expandTable(this.payrollType, event)
+                                this.expandTable(
+                                    this.payrollType,
+                                    event,
+                                    this.componentRef.instance.expandTable
+                                )
                         );
                     }
                 } else if (this.selectedOpenFromList) {
@@ -317,7 +336,10 @@ export class PayrollComponent implements OnInit, AfterViewInit, OnDestroy {
 
                         this.componentRef.instance.expandTableEvent.subscribe(
                             (event: any) => {
-                                if (this.reportTableData.id != event?.id) {
+                                if (
+                                    this.reportTableData.id != event?.id ||
+                                    !this.componentRef.instance.expandTable
+                                ) {
                                     this.reportTableData = event;
                                     if (
                                         this.payrollReportType !=
@@ -376,7 +398,11 @@ export class PayrollComponent implements OnInit, AfterViewInit, OnDestroy {
                     if (this.componentRef) {
                         this.componentRef.instance.expandTableEvent.subscribe(
                             (event: any) =>
-                                this.expandTable(this.payrollType, event)
+                                this.expandTable(
+                                    this.payrollType,
+                                    event,
+                                    this.componentRef.instance.expandTable
+                                )
                         );
                     }
                 } else if (this.selectedOpenFromList) {
@@ -392,7 +418,10 @@ export class PayrollComponent implements OnInit, AfterViewInit, OnDestroy {
 
                         this.componentRef.instance.expandTableEvent.subscribe(
                             (event: any) => {
-                                if (this.reportTableData.id != event?.id) {
+                                if (
+                                    this.reportTableData.id != event?.id ||
+                                    !this.componentRef.instance.expandTable
+                                ) {
                                     this.reportTableData = event;
 
                                     if (
@@ -456,8 +485,12 @@ export class PayrollComponent implements OnInit, AfterViewInit, OnDestroy {
         }
     }
 
-    expandTable<T extends { id: string }>(payrollType?: string, data?: T) {
-        if (data && this.reportTableData.id != data?.id) {
+    expandTable<T extends { id: string }>(
+        payrollType?: string,
+        data?: T,
+        expandedTable?: boolean
+    ) {
+        if (data && (this.reportTableData?.id != data?.id || !expandedTable)) {
             this.reportTableData = data;
             this.payrollFacadeService.setPayrollReportTableExpanded(true);
 
