@@ -255,6 +255,11 @@ export function getTruckPMColumnDefinition(): PmTableColumns[] {
             field: 'oilFilter',
             name: 'Engine Oil & Filter',
             sortName: 'oilFilter',
+            headIconStyle: {
+                width: 14,
+                height: 14,
+                imgPath: 'assets/svg/common/repair-pm/oil_filters.svg',
+            },
             hidden: false,
             isPined: false,
             width: 150,

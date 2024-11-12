@@ -2,7 +2,7 @@
     class="progress-bar-parent d-flex align-items-center"
     [class.disable-hover]="text === '/'"
     [class.progress-bar-parent-expired]="daysExpired"
-    [ngClass]="{ active: !progressDropdownActive }"
+    [class.active]="progressDropdownActive !== -1"
     #ngbProgress="ngbPopover"
     [autoClose]="true"
     [ngbPopover]="milesProgressPopover"
