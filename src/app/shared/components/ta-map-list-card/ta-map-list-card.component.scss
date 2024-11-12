@@ -167,6 +167,7 @@
 
 .favorite-svg {
     position: relative;
+    cursor: default;
 
     &.active {
         svg {
@@ -280,4 +281,6 @@
 .table-dropdown-container {
     width: 22px;
     height: 22px;
+    overflow: hidden;
+    border-radius: 2px;
 }

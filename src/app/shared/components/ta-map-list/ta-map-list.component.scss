@@ -180,7 +180,7 @@
 
         .map-list-header {
             width: 100%;
-            padding: 8px 6px 0px 6px;
+            padding: 6px 6px 0px 6px;
 
             .map-list-search {
                 .input-custom-group .input-icon {
@@ -302,7 +302,7 @@
                 }
 
                 &:hover {
-                    background: #f7f7f7;
+                    background: $bw2;
                 }
 
                 &.map-list-card-selected {

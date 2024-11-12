@@ -11,32 +11,34 @@
             <div
                 class="marker-info-text marker-bold-text uppercase text-ellipsis d-flex align-items-center"
             >
-                <span *ngIf="status == 0 || item.isClosed">
-                    <svg-icon
-                        class="permanently-closed-svg"
-                        [src]="mapListCardSvgRoutes.permanentlyClosedRoute"
-                        [svgStyle]="{ 'width.px': 18, 'height.px': 18 }"
-                    ></svg-icon>
-                </span>
+                <ng-container *ngIf="status == 0 || item.isClosed">
+                    <span>
+                        <svg-icon
+                            class="permanently-closed-svg"
+                            [src]="mapListCardSvgRoutes.permanentlyClosedRoute"
+                            [svgStyle]="{ 'width.px': 18, 'height.px': 18 }"
+                        ></svg-icon>
+                    </span>
+                </ng-container>
                 <span class="title-text"
                     >{{ title }}
-                    <ng-container *ngIf="type == 'fuelStop'"
-                        >- {{ item.store }}</ng-container
-                    ></span
-                >
+                    <ng-container *ngIf="type == 'fuelStop'">
+                        - {{ item.store }}
+                    </ng-container>
+                </span>
             </div>
             <div class="d-flex align-items-center gap-1">
                 <ng-container
                     *ngIf="
-                        sortCategory.name == 'Favorites' ||
-                        sortCategory.name == 'Fuel Price' ||
+                        selectedSortColumn.name == 'Favorites' ||
+                        selectedSortColumn.name == 'Fuel Price' ||
                         item?.isFavorite
                     "
                 >
                     <div
                         class="d-flex"
                         ngbTooltip
-                        mainTooltip="Favorite"
+                        [mainTooltip]="'Favorite'"
                         tooltipBackground="#424242"
                         position="bottom"
                     >
@@ -72,78 +74,89 @@
                 </div>
             </div>
         </div>
+
         <div class="marker-rating-container mg-top-2">
-            <div
+            <ng-container
                 *ngIf="
-                    (sortCategory.name == 'Business Name' ||
-                        sortCategory.name == 'Rating' ||
-                        sortCategory.name == 'Favorites') &&
+                    (selectedSortColumn.name == 'Business Name' ||
+                        selectedSortColumn.name == 'Rating' ||
+                        selectedSortColumn.name == 'Favorites') &&
                     type != 'fuelStop'
                 "
             >
-                <span class="marker-rating">
-                    <svg-icon
-                        class="marker-rating-svg"
-                        [src]="mapListCardSvgRoutes.likeRoute"
-                        [svgStyle]="{ 'width.px': 14, 'height.px': 14 }"
-                        [ngClass]="{
-                            'has-liked-icon': rating?.hasLiked
-                        }"
-                        (click)="onLike($event)"
-                    ></svg-icon>
-                    <span class="marker-like-text marker-bold-text">{{
-                        rating?.likeCount
-                    }}</span>
-                </span>
-                <span class="marker-rating">
-                    <svg-icon
-                        class="marker-rating-svg"
-                        [src]="mapListCardSvgRoutes.dislikeRoute"
-                        [svgStyle]="{ 'width.px': 14, 'height.px': 14 }"
-                        [ngClass]="{
-                            'has-disliked-icon': rating?.hasDislike
-                        }"
-                        (click)="onDislike($event)"
-                    ></svg-icon>
-                    <span class="marker-like-text marker-bold-text">{{
-                        rating?.dislikeCount
-                    }}</span>
-                </span>
-            </div>
-            <div
+                <div>
+                    <span class="marker-rating">
+                        <svg-icon
+                            class="marker-rating-svg"
+                            [src]="mapListCardSvgRoutes.likeRoute"
+                            [svgStyle]="{ 'width.px': 14, 'height.px': 14 }"
+                            [ngClass]="{
+                                'has-liked-icon': rating?.hasLiked
+                            }"
+                            (click)="onLike($event)"
+                        ></svg-icon>
+                        <span class="marker-like-text marker-bold-text">{{
+                            rating?.likeCount
+                        }}</span>
+                    </span>
+                    <span class="marker-rating">
+                        <svg-icon
+                            class="marker-rating-svg"
+                            [src]="mapListCardSvgRoutes.dislikeRoute"
+                            [svgStyle]="{ 'width.px': 14, 'height.px': 14 }"
+                            [ngClass]="{
+                                'has-disliked-icon': rating?.hasDislike
+                            }"
+                            (click)="onDislike($event)"
+                        ></svg-icon>
+                        <span class="marker-like-text marker-bold-text">{{
+                            rating?.dislikeCount
+                        }}</span>
+                    </span>
+                </div>
+            </ng-container>
+
+            <ng-container
                 *ngIf="
                     type == 'fuelStop' &&
-                    (sortCategory.name == 'Business Name' ||
-                        sortCategory.name == 'Favorites' ||
-                        sortCategory.name == 'Fuel Price')
+                    (selectedSortColumn.name == 'Business Name' ||
+                        selectedSortColumn.name == 'Favorites' ||
+                        selectedSortColumn.name == 'Fuel Price')
                 "
             >
-                <span>
-                    <svg-icon
-                        class="marker-fuel-svg"
-                        [src]="mapListCardSvgRoutes.fuelCircleRoute"
-                        [svgStyle]="{ 'width.px': 10, 'height.px': 10 }"
-                    ></svg-icon>
-                </span>
-                <span class="marker-like-text marker-medium-text"
-                    ><span class="marker-bold-text"
-                        >${{
-                            item.pricePerGallon ? item.pricePerGallon : '3.31'
-                        }}</span
+                <div>
+                    <span>
+                        <svg-icon
+                            class="marker-fuel-svg"
+                            [src]="mapListCardSvgRoutes.fuelCircleRoute"
+                            [svgStyle]="{ 'width.px': 10, 'height.px': 10 }"
+                        ></svg-icon>
+                    </span>
+                    <span class="marker-like-text marker-medium-text"
+                        ><span class="marker-bold-text"
+                            >${{
+                                item.pricePerGallon
+                                    ? item.pricePerGallon
+                                    : '3.31'
+                            }}</span
+                        >
+                        - 4 days ago</span
                     >
-                    - 4 days ago</span
-                >
-            </div>
-            <div *ngIf="sortCategory.name == 'Date Added'">
-                <div class="marker-like-text marker-medium-text">
-                    Added
-                    <span class="marker-bold-text">{{
-                        item.createdAt | formatDateP
-                    }}</span>
                 </div>
-            </div>
+            </ng-container>
 
-            <ng-container *ngIf="sortCategory.name === 'Last Used'">
+            <ng-container *ngIf="selectedSortColumn.name == 'Date Added'">
+                <div>
+                    <div class="marker-like-text marker-medium-text">
+                        Added
+                        <span class="marker-bold-text">{{
+                            item.createdAt | formatDateP
+                        }}</span>
+                    </div>
+                </div>
+            </ng-container>
+
+            <ng-container *ngIf="selectedSortColumn.name === 'Last Used'">
                 <div>
                     <div class="marker-like-text marker-medium-text">
                         Last Used
@@ -158,61 +171,83 @@
                 </div>
             </ng-container>
 
-            <div *ngIf="sortCategory.name == 'Pickups'">
-                <div class="marker-like-text marker-medium-text">
-                    <span class="marker-bold-text">{{
-                        item.pickups != null ? item.pickups : '73'
-                    }}</span>
-                    Pickups
+            <ng-container *ngIf="selectedSortColumn.name == 'Pickups'">
+                <div>
+                    <div class="marker-like-text marker-medium-text">
+                        <span class="marker-bold-text">{{
+                            item.pickups != null ? item.pickups : '73'
+                        }}</span>
+                        Pickups
+                    </div>
                 </div>
-            </div>
-            <div *ngIf="sortCategory.name == 'Deliveries'">
-                <div class="marker-like-text marker-medium-text">
-                    <span class="marker-bold-text">{{
-                        item.deliveries != null ? item.deliveries : '246'
-                    }}</span>
-                    Deliveries
-                </div>
-            </div>
-            <div *ngIf="sortCategory.name == 'Avg. Pickup Time'">
-                <div class="marker-like-text marker-medium-text">
-                    Avg. Pickup<span class="marker-bold-text">
-                        {{
-                            item.avgPickupTime != null
-                                ? item.avgPickupTime
-                                : '0m'
-                        }}</span
-                    >
-                </div>
-            </div>
-            <div *ngIf="sortCategory.name == 'Avg. Delivery Time'">
-                <div class="marker-like-text marker-medium-text">
-                    Avg. Delivery<span class="marker-bold-text">
-                        {{
-                            item.avgDeliveryTime != null
-                                ? item.avgDeliveryTime
-                                : '0m'
-                        }}</span
-                    >
-                </div>
-            </div>
-            <div
-                *ngIf="sortCategory.name == 'Location' && item.distanceBetween"
-            >
-                <div class="marker-like-text">
-                    <span class="marker-bold-text"
-                        >{{ item.distanceBetween }} mi</span
-                    >
-                    away
-                </div>
-            </div>
-            <div *ngIf="sortCategory.name == 'Available'">
-                <div class="marker-like-text">
-                    Open Until <span class="marker-bold-text">8:00 PM</span>
-                </div>
-            </div>
+            </ng-container>
 
-            <ng-container *ngIf="sortCategory.name === 'Bill Count'">
+            <ng-container *ngIf="selectedSortColumn.name == 'Deliveries'">
+                <div>
+                    <div class="marker-like-text marker-medium-text">
+                        <span class="marker-bold-text">{{
+                            item.deliveries != null ? item.deliveries : '246'
+                        }}</span>
+                        Deliveries
+                    </div>
+                </div>
+            </ng-container>
+
+            <ng-container *ngIf="selectedSortColumn.name == 'Avg. Pickup Time'">
+                <div>
+                    <div class="marker-like-text marker-medium-text">
+                        Avg. Pickup<span class="marker-bold-text">
+                            {{
+                                item.avgPickupTime != null
+                                    ? item.avgPickupTime
+                                    : '0m'
+                            }}</span
+                        >
+                    </div>
+                </div>
+            </ng-container>
+
+            <ng-container
+                *ngIf="selectedSortColumn.name == 'Avg. Delivery Time'"
+            >
+                <div>
+                    <div class="marker-like-text marker-medium-text">
+                        Avg. Delivery<span class="marker-bold-text">
+                            {{
+                                item.avgDeliveryTime != null
+                                    ? item.avgDeliveryTime
+                                    : '0m'
+                            }}</span
+                        >
+                    </div>
+                </div>
+            </ng-container>
+
+            <ng-container
+                *ngIf="
+                    selectedSortColumn.name == 'Location' &&
+                    item.distanceBetween
+                "
+            >
+                <div>
+                    <div class="marker-like-text">
+                        <span class="marker-bold-text"
+                            >{{ item.distanceBetween }} mi</span
+                        >
+                        away
+                    </div>
+                </div>
+            </ng-container>
+
+            <ng-container *ngIf="selectedSortColumn.name == 'Available'">
+                <div>
+                    <div class="marker-like-text">
+                        Open Until <span class="marker-bold-text">8:00 PM</span>
+                    </div>
+                </div>
+            </ng-container>
+
+            <ng-container *ngIf="selectedSortColumn.name === 'Bill Count'">
                 <div>
                     <div class="marker-like-text">
                         <span class="marker-bold-text">{{
@@ -223,7 +258,7 @@
                 </div>
             </ng-container>
 
-            <ng-container *ngIf="sortCategory.name === 'Order Count'">
+            <ng-container *ngIf="selectedSortColumn.name === 'Order Count'">
                 <div>
                     <div class="marker-like-text">
                         <span class="marker-bold-text">{{
@@ -234,7 +269,7 @@
                 </div>
             </ng-container>
 
-            <ng-container *ngIf="sortCategory.name === 'Total Expense'">
+            <ng-container *ngIf="selectedSortColumn.name === 'Total Expense'">
                 <div>
                     <div class="marker-like-text">
                         Total Expense
@@ -245,237 +280,296 @@
                 </div>
             </ng-container>
 
-            <div *ngIf="sortCategory.name == 'Transaction'">
-                <div class="marker-like-text">
-                    <span class="marker-bold-text">{{
-                        item.fuelTransactions
-                            ? item.fuelTransactions.length
-                            : '2,473'
-                    }}</span>
-                    Transaction
+            <ng-container *ngIf="selectedSortColumn.name == 'Transaction'">
+                <div>
+                    <div class="marker-like-text">
+                        <span class="marker-bold-text">{{
+                            item.fuelTransactions
+                                ? item.fuelTransactions.length
+                                : '2,473'
+                        }}</span>
+                        Transaction
+                    </div>
                 </div>
-            </div>
-            <div *ngIf="sortCategory.name == 'Total Cost'">
-                <div class="marker-like-text">
-                    Total Cost
-                    <span class="marker-bold-text"
-                        >${{
-                            item.totalCost != null && item.totalCost > 0
-                                ? (item.totalCost | thousandSeparator)
-                                : item.cost != null && item.cost > 0
-                                ? (item.cost | thousandSeparator)
-                                : '0'
-                        }}</span
-                    >
+            </ng-container>
+
+            <ng-container *ngIf="selectedSortColumn.name == 'Total Cost'">
+                <div>
+                    <div class="marker-like-text">
+                        Total Cost
+                        <span class="marker-bold-text"
+                            >${{
+                                item.totalCost != null && item.totalCost > 0
+                                    ? (item.totalCost | thousandSeparator)
+                                    : item.cost != null && item.cost > 0
+                                    ? (item.cost | thousandSeparator)
+                                    : '0'
+                            }}</span
+                        >
+                    </div>
                 </div>
-            </div>
-            <div *ngIf="sortCategory.name == 'Date & Time'">
-                <div class="marker-like-text">
-                    Issued
-                    <span class="marker-bold-text">10/09/21 3:47 PM</span>
+            </ng-container>
+
+            <ng-container *ngIf="selectedSortColumn.name == 'Date & Time'">
+                <div>
+                    <div class="marker-like-text">
+                        Issued
+                        <span class="marker-bold-text">10/09/21 3:47 PM</span>
+                    </div>
                 </div>
-            </div>
-            <div *ngIf="sortCategory.name == 'Inspection Level'">
-                <div class="marker-like-text">
-                    Insp. lvl
-                    <span class="marker-bold-text">III - Driver Only</span>
+            </ng-container>
+
+            <ng-container *ngIf="selectedSortColumn.name == 'Inspection Level'">
+                <div>
+                    <div class="marker-like-text">
+                        Insp. lvl
+                        <span class="marker-bold-text">III - Driver Only</span>
+                    </div>
                 </div>
-            </div>
-            <div
-                class="driver-name-container"
-                *ngIf="sortCategory.name == 'Drivers Name'"
+            </ng-container>
+
+            <ng-container *ngIf="selectedSortColumn.name == 'Drivers Name'">
+                <div class="driver-name-container">
+                    <app-ta-profile-images
+                        [indx]="0"
+                        [size]="'small'"
+                        [name]="item.driverFullName"
+                        [type]="'driver'"
+                    ></app-ta-profile-images>
+                    <div class="marker-like-text marker-bold-text mg-left-4">
+                        {{ item?.driverFullName }}
+                    </div>
+                </div>
+            </ng-container>
+
+            <ng-container
+                *ngIf="selectedSortColumn.name == 'Inspection Weights'"
             >
-                <app-ta-profile-images
-                    [indx]="0"
-                    [size]="'small'"
-                    [name]="item.driverFullName"
-                    [type]="'driver'"
-                ></app-ta-profile-images>
-                <div class="marker-like-text marker-bold-text mg-left-4">
-                    {{ item?.driverFullName }}
+                <div>
+                    <div class="marker-like-text">
+                        <span>Severity </span>
+                        <span class="marker-bold-text">2</span>
+                        <span class="vertical-divider"></span>
+                        <span>Time </span>
+                        <span class="marker-bold-text">3</span>
+                        <span class="vertical-divider"></span>
+                        <span>Total </span>
+                        <span class="marker-bold-text">6</span>
+                    </div>
                 </div>
-            </div>
-            <div *ngIf="sortCategory.name == 'Inspection Weights'">
-                <div class="marker-like-text">
-                    <span>Severity </span>
-                    <span class="marker-bold-text">2</span>
-                    <span class="vertical-divider"></span>
-                    <span>Time </span> <span class="marker-bold-text">3</span>
-                    <span class="vertical-divider"></span>
-                    <span>Total </span> <span class="marker-bold-text">6</span>
+            </ng-container>
+
+            <ng-container *ngIf="selectedSortColumn.name == 'Truck Unit'">
+                <div>
+                    <div class="marker-like-text">
+                        Truck Unit
+                        <span class="marker-bold-text">{{
+                            item?.truckNumber
+                        }}</span>
+                        <span>
+                            <svg-icon
+                                class="truck-svg"
+                                [src]="mapListCardSvgRoutes.truckRoute"
+                                [svgStyle]="{ 'width.px': 33, 'height.px': 12 }"
+                            ></svg-icon>
+                        </span>
+                    </div>
                 </div>
-            </div>
-            <div *ngIf="sortCategory.name == 'Truck Unit'">
-                <div class="marker-like-text">
-                    Truck Unit
-                    <span class="marker-bold-text">{{
-                        item?.truckNumber
-                    }}</span>
-                    <span>
-                        <svg-icon
-                            class="truck-svg"
-                            [src]="mapListCardSvgRoutes.truckRoute"
-                            [svgStyle]="{ 'width.px': 33, 'height.px': 12 }"
-                        ></svg-icon>
-                    </span>
+            </ng-container>
+
+            <ng-container *ngIf="selectedSortColumn.name == 'Trailer Unit'">
+                <div>
+                    <div class="marker-like-text">
+                        Trailer Unit
+                        <span class="marker-bold-text">{{
+                            item?.trailerNumber
+                        }}</span>
+                        <span>
+                            <svg-icon
+                                class="truck-svg"
+                                [src]="mapListCardSvgRoutes.trailerRoute"
+                                [svgStyle]="{ 'width.px': 33, 'height.px': 12 }"
+                            ></svg-icon>
+                        </span>
+                    </div>
                 </div>
-            </div>
-            <div *ngIf="sortCategory.name == 'Trailer Unit'">
-                <div class="marker-like-text">
-                    Trailer Unit
-                    <span class="marker-bold-text">{{
-                        item?.trailerNumber
-                    }}</span>
-                    <span>
-                        <svg-icon
-                            class="truck-svg"
-                            [src]="mapListCardSvgRoutes.trailerRoute"
-                            [svgStyle]="{ 'width.px': 33, 'height.px': 12 }"
-                        ></svg-icon>
-                    </span>
-                </div>
-            </div>
-            <div
-                class="w-100"
+            </ng-container>
+
+            <ng-container
                 *ngIf="
-                    sortCategory.name == 'Report Number' ||
-                    sortCategory.name == 'Inspection Results'
+                    selectedSortColumn.name == 'Report Number' ||
+                    selectedSortColumn.name == 'Inspection Results'
                 "
             >
-                <div
-                    class="accident-report-container"
-                    *ngIf="type == 'accident'"
-                >
-                    <div
-                        class="accident-svg-container vehicles-number"
-                        [ngClass]="{ inactive: item?.vehicles == 0 }"
-                    >
-                        <svg-icon
-                            class="accident-report-svg"
-                            [src]="mapListCardSvgRoutes.vehicleRoute"
-                            [svgStyle]="{ 'width.px': 14, 'height.px': 14 }"
-                        ></svg-icon>
-                        <div class="marker-like-text">
-                            <span class="marker-bold-text">{{
-                                item?.vehicles
-                            }}</span>
-                            Veh.
+                <div class="w-100">
+                    <ng-container *ngIf="type == 'accident'">
+                        <div class="accident-report-container">
+                            <div
+                                class="accident-svg-container vehicles-number"
+                                [ngClass]="{ inactive: item?.vehicles == 0 }"
+                            >
+                                <svg-icon
+                                    class="accident-report-svg"
+                                    [src]="mapListCardSvgRoutes.vehicleRoute"
+                                    [svgStyle]="{
+                                        'width.px': 14,
+                                        'height.px': 14
+                                    }"
+                                ></svg-icon>
+                                <div class="marker-like-text">
+                                    <span class="marker-bold-text">{{
+                                        item?.vehicles
+                                    }}</span>
+                                    Veh.
+                                </div>
+                            </div>
+                            <div
+                                class="accident-svg-container injury-number"
+                                [ngClass]="{ inactive: item?.injuries == 0 }"
+                            >
+                                <svg-icon
+                                    class="accident-report-svg"
+                                    [src]="mapListCardSvgRoutes.injuryRoute"
+                                    [svgStyle]="{
+                                        'width.px': 14,
+                                        'height.px': 14
+                                    }"
+                                ></svg-icon>
+                                <div class="marker-like-text">
+                                    <span class="marker-bold-text">{{
+                                        item?.injuries
+                                    }}</span>
+                                    Inj.
+                                </div>
+                            </div>
+                            <div
+                                class="accident-svg-container fatality-number"
+                                [ngClass]="{ inactive: item?.fatality == 0 }"
+                            >
+                                <svg-icon
+                                    class="accident-report-svg"
+                                    [src]="mapListCardSvgRoutes.fatalityRoute"
+                                    [svgStyle]="{
+                                        'width.px': 14,
+                                        'height.px': 14
+                                    }"
+                                ></svg-icon>
+                                <div class="marker-like-text">
+                                    <span class="marker-bold-text">{{
+                                        item?.fatality
+                                    }}</span>
+                                    Fat.
+                                </div>
+                            </div>
+                            <div
+                                class="accident-svg-container towing"
+                                [ngClass]="{ inactive: item?.towing == 'No' }"
+                            >
+                                <svg-icon
+                                    class="accident-report-svg"
+                                    [src]="mapListCardSvgRoutes.towingRoute"
+                                    [svgStyle]="{
+                                        'width.px': 14,
+                                        'height.px': 14
+                                    }"
+                                ></svg-icon>
+                                <div class="marker-like-text">Tow.</div>
+                            </div>
+                            <div
+                                class="accident-svg-container hazard"
+                                [ngClass]="{ inactive: item?.hm == 'No' }"
+                            >
+                                <svg-icon
+                                    class="accident-report-svg"
+                                    [src]="mapListCardSvgRoutes.hazmatRoute"
+                                    [svgStyle]="{
+                                        'width.px': 14,
+                                        'height.px': 14
+                                    }"
+                                ></svg-icon>
+                                <div class="marker-like-text">HM</div>
+                            </div>
                         </div>
-                    </div>
-                    <div
-                        class="accident-svg-container injury-number"
-                        [ngClass]="{ inactive: item?.injuries == 0 }"
-                    >
-                        <svg-icon
-                            class="accident-report-svg"
-                            [src]="mapListCardSvgRoutes.injuryRoute"
-                            [svgStyle]="{ 'width.px': 14, 'height.px': 14 }"
-                        ></svg-icon>
-                        <div class="marker-like-text">
-                            <span class="marker-bold-text">{{
-                                item?.injuries
-                            }}</span>
-                            Inj.
+                    </ng-container>
+
+                    <ng-container *ngIf="type == 'inspection'">
+                        <div
+                            class="accident-report-container inspection-container"
+                        >
+                            <div
+                                class="accident-svg-container violation-number"
+                                [ngClass]="{ inactive: item?.vehicles == 0 }"
+                            >
+                                <svg-icon
+                                    class="accident-report-svg"
+                                    [src]="mapListCardSvgRoutes.violationRoute"
+                                    [svgStyle]="{
+                                        'width.px': 14,
+                                        'height.px': 14
+                                    }"
+                                ></svg-icon>
+                                <div class="marker-like-text">
+                                    <span class="marker-bold-text">{{
+                                        item?.vehicles
+                                    }}</span>
+                                    Viol.
+                                </div>
+                            </div>
+                            <div
+                                class="accident-svg-container injury-number"
+                                [ngClass]="{ inactive: item?.injuries == 0 }"
+                            >
+                                <svg-icon
+                                    class="accident-report-svg"
+                                    [src]="
+                                        mapListCardSvgRoutes.inspectionOssRoute
+                                    "
+                                    [svgStyle]="{
+                                        'width.px': 14,
+                                        'height.px': 14
+                                    }"
+                                ></svg-icon>
+                                <div class="marker-like-text">
+                                    <span class="marker-bold-text">{{
+                                        item?.injuries
+                                    }}</span>
+                                    OOS
+                                </div>
+                            </div>
+                            <div
+                                class="accident-svg-container fatality-number"
+                                [ngClass]="{ inactive: item?.fatality == 0 }"
+                            >
+                                <svg-icon
+                                    class="accident-report-svg"
+                                    [src]="
+                                        mapListCardSvgRoutes.inspectionCitationRoute
+                                    "
+                                    [svgStyle]="{
+                                        'width.px': 14,
+                                        'height.px': 14
+                                    }"
+                                ></svg-icon>
+                                <div class="marker-like-text">
+                                    <span class="marker-bold-text">{{
+                                        item?.fatality
+                                    }}</span>
+                                    Citat.
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                    <div
-                        class="accident-svg-container fatality-number"
-                        [ngClass]="{ inactive: item?.fatality == 0 }"
-                    >
-                        <svg-icon
-                            class="accident-report-svg"
-                            [src]="mapListCardSvgRoutes.fatalityRoute"
-                            [svgStyle]="{ 'width.px': 14, 'height.px': 14 }"
-                        ></svg-icon>
-                        <div class="marker-like-text">
-                            <span class="marker-bold-text">{{
-                                item?.fatality
-                            }}</span>
-                            Fat.
-                        </div>
-                    </div>
-                    <div
-                        class="accident-svg-container towing"
-                        [ngClass]="{ inactive: item?.towing == 'No' }"
-                    >
-                        <svg-icon
-                            class="accident-report-svg"
-                            [src]="mapListCardSvgRoutes.towingRoute"
-                            [svgStyle]="{ 'width.px': 14, 'height.px': 14 }"
-                        ></svg-icon>
-                        <div class="marker-like-text">Tow.</div>
-                    </div>
-                    <div
-                        class="accident-svg-container hazard"
-                        [ngClass]="{ inactive: item?.hm == 'No' }"
-                    >
-                        <svg-icon
-                            class="accident-report-svg"
-                            [src]="mapListCardSvgRoutes.hazmatRoute"
-                            [svgStyle]="{ 'width.px': 14, 'height.px': 14 }"
-                        ></svg-icon>
-                        <div class="marker-like-text">HM</div>
-                    </div>
+                    </ng-container>
                 </div>
-                <div
-                    class="accident-report-container inspection-container"
-                    *ngIf="type == 'inspection'"
-                >
-                    <div
-                        class="accident-svg-container violation-number"
-                        [ngClass]="{ inactive: item?.vehicles == 0 }"
-                    >
-                        <svg-icon
-                            class="accident-report-svg"
-                            [src]="mapListCardSvgRoutes.violationRoute"
-                            [svgStyle]="{ 'width.px': 14, 'height.px': 14 }"
-                        ></svg-icon>
-                        <div class="marker-like-text">
-                            <span class="marker-bold-text">{{
-                                item?.vehicles
-                            }}</span>
-                            Viol.
-                        </div>
-                    </div>
-                    <div
-                        class="accident-svg-container injury-number"
-                        [ngClass]="{ inactive: item?.injuries == 0 }"
-                    >
-                        <svg-icon
-                            class="accident-report-svg"
-                            [src]="mapListCardSvgRoutes.inspectionOssRoute"
-                            [svgStyle]="{ 'width.px': 14, 'height.px': 14 }"
-                        ></svg-icon>
-                        <div class="marker-like-text">
-                            <span class="marker-bold-text">{{
-                                item?.injuries
-                            }}</span>
-                            OOS
-                        </div>
-                    </div>
-                    <div
-                        class="accident-svg-container fatality-number"
-                        [ngClass]="{ inactive: item?.fatality == 0 }"
-                    >
-                        <svg-icon
-                            class="accident-report-svg"
-                            [src]="mapListCardSvgRoutes.inspectionCitationRoute"
-                            [svgStyle]="{ 'width.px': 14, 'height.px': 14 }"
-                        ></svg-icon>
-                        <div class="marker-like-text">
-                            <span class="marker-bold-text">{{
-                                item?.fatality
-                            }}</span>
-                            Citat.
-                        </div>
-                    </div>
-                </div>
-            </div>
+            </ng-container>
         </div>
+
         <ng-container *ngIf="address">
             <div class="map-list-card-address mg-top-4">
                 <ng-container
-                    *ngIf="sortCategory.name != 'Location' && locationFilterOn"
+                    *ngIf="
+                        selectedSortColumn.name != 'Location' &&
+                        locationFilterOn
+                    "
                 >
                     <span class="marker-bold-text"
                         >{{ item.distanceBetween }} mi -

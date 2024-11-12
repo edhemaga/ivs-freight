@@ -20,8 +20,6 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
 // services
 import { MapsService } from '@shared/services/maps.service';
 import { DetailsDataService } from '@shared/services/details-data.service';
-import { ModalService } from '@shared/services/modal.service';
-import { DropDownService } from '@shared/services/drop-down.service';
 
 // pipes
 import { ThousandSeparatorPipe } from '@shared/pipes/thousand-separator.pipe';
@@ -30,9 +28,11 @@ import { FormatDatePipe } from '@shared/pipes/format-date.pipe';
 // components
 import { TaDetailsDropdownComponent } from '@shared/components/ta-details-dropdown/ta-details-dropdown.component';
 import { TaProfileImagesComponent } from '@shared/components/ta-profile-images/ta-profile-images.component';
+import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
 
 // Models
 import { AddressEntity } from 'appcoretruckassist';
+import { SortColumn } from '@shared/components/ta-sort-dropdown/models';
 
 // tooltip
 import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
@@ -57,6 +57,7 @@ import { MapListCardSvgRoutes } from '@shared/components/ta-map-list-card/utils/
         // Components
         TaDetailsDropdownComponent,
         TaProfileImagesComponent,
+        TaAppTooltipV2Component,
 
         // Pipes
         FormatDatePipe,
@@ -79,10 +80,11 @@ export class TaMapListCardComponent implements OnInit, OnDestroy {
     @Input() item: any = {};
     @Input() type: string = '';
     @Output() bodyActions: EventEmitter<any> = new EventEmitter();
-    @ViewChild('detailsDropdown') detailsDropdown: any;
+    @ViewChild('detailsDropdown') detailsDropdown: TaDetailsDropdownComponent;
+
     public locationFilterOn: boolean = false;
-    sortCategory: any = {};
-    clickedOnDots: boolean = false;
+    public selectedSortColumn: SortColumn | null = null;
+    public hasClickedOnDots: boolean = false;
     dropdownActions: any = {};
 
     // Svg routes
@@ -92,18 +94,95 @@ export class TaMapListCardComponent implements OnInit, OnDestroy {
         private mapsService: MapsService,
         private ref: ChangeDetectorRef,
         public elementRef: ElementRef,
-        private detailsDataService: DetailsDataService,
-        private modalService: ModalService,
-        private dropdownService: DropDownService
+        private detailsDataService: DetailsDataService
     ) {}
 
     ngOnInit(): void {
-        this.sortCategory = this.mapsService.sortCategory;
+        this.addMapServiceListeners();
+
+        this.getDropdownActions();
+    }
+
+    public selectCard(): void {
+        if (this.hasClickedOnDots) {
+            this.hasClickedOnDots = false;
+            return;
+        }
+
+        const selectId = this.isSelected ? 0 : this.item.id;
+        this.mapsService.selectedMapListCard(selectId);
+    }
+
+    public showMoreOptions(): void {
+        this.hasClickedOnDots = true;
+    }
+
+    public callBodyAction(action): void {
+        this.bodyActions.emit(action);
+    }
+
+    // RAITING
+    public onLike(event: Event): void {
+        event.preventDefault();
+        event.stopPropagation();
+
+        this.detailsDataService.setNewData(this.item);
+        this.detailsDataService.changeRateStatus(
+            'like',
+            !this.rating?.hasLiked
+        );
+
+        this.bodyActions.emit({
+            data: this.item,
+            type: 'raiting',
+            subType: 'like',
+        });
+    }
+
+    public onDislike(event: Event): void {
+        event.preventDefault();
+        event.stopPropagation();
+
+        this.detailsDataService.setNewData(this.item);
+        this.detailsDataService.changeRateStatus(
+            'dislike',
+            !this.rating?.hasDislike
+        );
+
+        this.bodyActions.emit({
+            data: this.item,
+            type: 'raiting',
+            subType: 'dislike',
+        });
+    }
+
+    public addRemoveSelection(isAdd: boolean): void {
+        this.isSelected = isAdd;
+        this.item.isSelected = isAdd;
+
+        if (isAdd)
+            this.elementRef.nativeElement.scrollIntoView({
+                behavior: 'smooth',
+                block: 'center',
+            });
+
+        this.ref.detectChanges();
+    }
+
+    public getDropdownActions(): void {
+        this.dropdownActions = this.mapsService.getDropdownActions(
+            this.item,
+            this.type
+        );
+    }
+
+    public addMapServiceListeners(): void {
+        this.selectedSortColumn = this.mapsService.sortCategory;
 
         this.mapsService.sortCategoryChange
             .pipe(takeUntil(this.destroy$))
             .subscribe((category) => {
-                this.sortCategory = category;
+                this.selectedSortColumn = category;
             });
 
         this.mapsService.markerUpdateChange
@@ -129,96 +208,6 @@ export class TaMapListCardComponent implements OnInit, OnDestroy {
 
                 this.ref.detectChanges();
             });
-
-        this.getDropdownActions();
-    }
-
-    selectCard() {
-        if (this.clickedOnDots) {
-            this.clickedOnDots = false;
-            return false;
-        }
-
-        const selectId = this.isSelected ? 0 : this.item.id;
-        this.mapsService.selectedMapListCard(selectId);
-    }
-
-    showMoreOptions() {
-        this.clickedOnDots = true;
-    }
-
-    callBodyAction(action) {
-        this.bodyActions.emit(action);
-    }
-
-    // RAITING
-    onLike(event) {
-        event.preventDefault();
-        event.stopPropagation();
-
-        this.detailsDataService.setNewData(this.item);
-        this.detailsDataService.changeRateStatus(
-            'like',
-            !this.rating?.hasLiked
-        );
-
-        this.bodyActions.emit({
-            data: this.item,
-            type: 'raiting',
-            subType: 'like',
-        });
-    }
-
-    onDislike(event) {
-        event.preventDefault();
-        event.stopPropagation();
-
-        this.detailsDataService.setNewData(this.item);
-        this.detailsDataService.changeRateStatus(
-            'dislike',
-            !this.rating?.hasDislike
-        );
-
-        this.bodyActions.emit({
-            data: this.item,
-            type: 'raiting',
-            subType: 'dislike',
-        });
-    }
-
-    setSortCategory(category) {
-        this.sortCategory = category;
-    }
-
-    addRemoveSelection(add) {
-        this.isSelected = add;
-        this.item.isSelected = add;
-
-        if (add) {
-            this.elementRef.nativeElement.scrollIntoView({
-                behavior: 'smooth',
-                block: 'center',
-            });
-        }
-
-        this.ref.detectChanges();
-    }
-
-    onFavorite(event) {
-        event.preventDefault();
-        event.stopPropagation();
-
-        this.bodyActions.emit({
-            data: this.item,
-            type: 'favorite',
-        });
-    }
-
-    getDropdownActions() {
-        this.dropdownActions = this.mapsService.getDropdownActions(
-            this.item,
-            this.type
-        );
     }
 
     ngOnDestroy(): void {
