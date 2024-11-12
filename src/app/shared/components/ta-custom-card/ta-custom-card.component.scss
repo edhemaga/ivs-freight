@@ -88,6 +88,8 @@
             }
 
             .subtext-container {
+                margin-left: 4px;
+
                 &.red {
                     p {
                         color: $ta-red-10;

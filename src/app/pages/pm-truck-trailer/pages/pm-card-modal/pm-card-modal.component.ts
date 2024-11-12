@@ -11,11 +11,13 @@ import {
     ReactiveFormsModule,
     UntypedFormBuilder,
     FormGroup,
+    FormArray,
 } from '@angular/forms';
-import { Subject, takeUntil } from 'rxjs';
+import { Observable, Subject, Subscription, first, takeUntil } from 'rxjs';
 
 // Enums
 import { CardsModalStringEnum } from '@shared/components/ta-shared-modals/cards-modal/enums/cards-modal-string.enum';
+import { TableStringEnum } from '@shared/enums/table-string.enum';
 
 // Services
 import { ModalService } from '@shared/services/modal.service';
@@ -34,13 +36,19 @@ import { CompareObjectsModal } from '@shared/components/ta-shared-modals/cards-m
 import { CardRows } from '@shared/models/card-models/card-rows.model';
 import { CardsModalData } from '@shared/components/ta-shared-modals/cards-modal/models/cards-modal-data.model';
 
-// Store
-import { PMCardDataState } from '@pages/pm-truck-trailer/pages/pm-card-modal/state/pm-card-modal.store';
-import { PMCardModalQuery } from '@pages/pm-truck-trailer/pages/pm-card-modal/state/pm-card-modal.query';
-
 // Constants
-import { PMCardsModalData } from '@pages/pm-truck-trailer/pages/pm-card-modal/utils/constants/pm-cards-modal.constants';
-import { CardsModalConstants } from '@shared/utils/constants/cards-modal-config.constants';
+import {
+    PMCardsModalConfig,
+    PMCardsModalData,
+} from '@pages/pm-truck-trailer/pages/pm-card-modal/utils/constants';
+
+//Store
+import { Store } from '@ngrx/store';
+import { selectActiveModalTabs } from '@pages/pm-truck-trailer/pages/pm-card-modal/state/pm-card-modal.selectors';
+
+//Pipes
+import { NgForLengthFilterPipe } from '@shared/pipes/ng-for-length-filter.pipe';
+import { NumberOrdinalPipe } from '@shared/pipes/number-ordinal.pipe';
 
 @Component({
     selector: 'app-pm-card-modal',
@@ -50,15 +58,19 @@ import { CardsModalConstants } from '@shared/utils/constants/cards-modal-config.
     encapsulation: ViewEncapsulation.None,
     providers: [ModalService, FormService],
     imports: [
-        // Modules
+        // modules
         CommonModule,
         ReactiveFormsModule,
         FormsModule,
 
-        // Components
+        // components
         TaModalComponent,
         ModalInputFormComponent,
         TaCheckboxComponent,
+
+        // pipes
+        NgForLengthFilterPipe,
+        NumberOrdinalPipe,
     ],
 })
 export class PMCardModalComponent implements OnInit, OnDestroy {
@@ -70,9 +82,6 @@ export class PMCardModalComponent implements OnInit, OnDestroy {
     public setDefaultDataFront: CardRows[];
     public setDefaultDataBack: CardRows[];
 
-    public defaultCardsValues: CardsModalData =
-        CardsModalConstants.defaultCardsValues;
-
     public cardsAllData: CardRows[] = PMCardsModalData.allDataPMTruck;
 
     public hasFormChanged: boolean = false;
@@ -80,22 +89,25 @@ export class PMCardModalComponent implements OnInit, OnDestroy {
     public resetForm: boolean = false;
 
     public tabSelected: string;
-    public selectedTabName: string;
 
     public titlesInForm: string[] = [];
+    public displayData$: Observable<CardsModalData>;
+    private subscription: Subscription = new Subscription();
+    public rowValues: number[] = [3, 4, 5, 6];
     private destroy$ = new Subject<void>();
 
     constructor(
         private formBuilder: UntypedFormBuilder,
-        private pmCardModalQuery: PMCardModalQuery,
         private cdr: ChangeDetectorRef,
-        private modalService: PMCardsModalService
+        private modalService: PMCardsModalService,
+        //Store
+        private store: Store
     ) {}
 
     ngOnInit(): void {
-        this.getDataFromStore();
+        this.createFormData();
 
-        this.createForm();
+        this.getDataFromStore();
 
         this.getFormValueOnInit();
 
@@ -104,25 +116,126 @@ export class PMCardModalComponent implements OnInit, OnDestroy {
         this.compareDataInStoreAndDefaultData();
     }
 
-    public createForm(): void {
+    public createFormData(): void {
         this.cardsForm = this.formBuilder.group({
-            numberOfRows: this.defaultCardsValues.numberOfRows,
+            numberOfRows: 4,
 
-            checked: this.defaultCardsValues.checked,
+            checked: false,
 
-            frontSelectedTitle_0: this.dataFront[0],
-            frontSelectedTitle_1: this.dataFront[1],
-            frontSelectedTitle_2: this.dataFront[2],
-            frontSelectedTitle_3: this.dataFront[3],
-            frontSelectedTitle_4: null,
-            frontSelectedTitle_5: null,
+            front_side: this.formBuilder.array([
+                this.formBuilder.group({
+                    inputItem: {
+                        title: null,
+                        id: null,
+                        key: null,
+                    },
+                }),
+                this.formBuilder.group({
+                    inputItem: {
+                        title: null,
+                        id: null,
+                        key: null,
+                    },
+                }),
+                this.formBuilder.group({
+                    inputItem: {
+                        title: null,
+                        id: null,
+                        key: null,
+                    },
+                }),
+                this.formBuilder.group({
+                    inputItem: {
+                        title: null,
+                        id: null,
+                        key: null,
+                    },
+                }),
+                this.formBuilder.group({
+                    inputItem: {
+                        title: null,
+                        id: null,
+                        key: null,
+                    },
+                }),
+                this.formBuilder.group({
+                    inputItem: {
+                        title: null,
+                        id: null,
+                        key: null,
+                    },
+                }),
+            ]),
 
-            backSelectedTitle_0: this.dataBack[0],
-            backSelectedTitle_1: this.dataBack[1],
-            backSelectedTitle_2: this.dataBack[2],
-            backSelectedTitle_3: this.dataBack[3],
-            backSelectedTitle_4: null,
-            backSelectedTitle_5: null,
+            back_side: this.formBuilder.array([
+                this.formBuilder.group({
+                    inputItem: {
+                        title: null,
+                        id: null,
+                        key: null,
+                    },
+                }),
+                this.formBuilder.group({
+                    inputItem: {
+                        title: null,
+                        id: null,
+                        key: null,
+                    },
+                }),
+                this.formBuilder.group({
+                    inputItem: {
+                        title: null,
+                        id: null,
+                        key: null,
+                    },
+                }),
+                this.formBuilder.group({
+                    inputItem: {
+                        title: null,
+                        id: null,
+                        key: null,
+                    },
+                }),
+                this.formBuilder.group({
+                    inputItem: {
+                        title: null,
+                        id: null,
+                        key: null,
+                    },
+                }),
+                this.formBuilder.group({
+                    inputItem: {
+                        title: null,
+                        id: null,
+                        key: null,
+                    },
+                }),
+            ]),
+        });
+    }
+
+    public createForm(dataState: CardsModalData): void {
+        this.cardsForm.patchValue({
+            numberOfRows: dataState.numberOfRows,
+            checked: dataState.checked,
+        });
+
+        dataState.front_side.map((item, index) => {
+            this.front_side_form.at(index).patchValue({
+                inputItem:
+                    !item || item.title == CardsModalStringEnum.EMPTY
+                        ? { title: null, key: null }
+                        : item,
+            });
+        });
+
+        dataState.back_side.map((item, index) => {
+            this.back_side_form.at(index).patchValue({
+                inputItem:
+                    !item || item.title == CardsModalStringEnum.EMPTY
+                        ? { title: null, key: null }
+                        : item,
+            });
         });
         this.cdr.detectChanges();
     }
@@ -130,61 +243,12 @@ export class PMCardModalComponent implements OnInit, OnDestroy {
     public getDataFromStore(): void {
         this.modalService.tabObservable$
             .pipe(takeUntil(this.destroy$))
-            .subscribe((res) => {
-                this.tabSelected = res;
-                switch (res) {
-                    case CardsModalStringEnum.ACTIVE:
-                        this.truckTabModalConfig();
-                        this.cardsAllData = PMCardsModalData.allDataPMTruck;
-                        this.selectedTabName = CardsModalStringEnum.TRUCK;
-                        break;
-
-                    case CardsModalStringEnum.INACTIVE:
-                        this.trailerTabModal();
-                        this.cardsAllData = PMCardsModalData.allDataPMTrailer;
-                        this.selectedTabName = CardsModalStringEnum.TRAILER;
-                        break;
-
-                    default:
-                        break;
+            .subscribe(
+                (res: TableStringEnum.ACTIVE | TableStringEnum.INACTIVE) => {
+                    this.tabSelected = res;
+                    this.setDefaultValues(res);
                 }
-            });
-    }
-
-    private truckTabModalConfig(): void {
-        this.pmCardModalQuery.truck$
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((data: PMCardDataState) => {
-                this.setDataForModal(data);
-                this.setDefaultDataFront = PMCardsModalData.FrontDataPM;
-
-                this.setDefaultDataBack = PMCardsModalData.BackDataPM;
-            });
-    }
-
-    private trailerTabModal(): void {
-        this.pmCardModalQuery.trailer$
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((data: PMCardDataState) => {
-                this.setDataForModal(data);
-                this.setDefaultDataFront = PMCardsModalData.FrontDataPM;
-
-                this.setDefaultDataBack = PMCardsModalData.BackDataPM;
-            });
-    }
-
-    private setDataForModal(data: PMCardDataState): void {
-        this.dataFront = data.front_side;
-
-        this.dataBack = data.back_side;
-
-        this.defaultCardsValues.checked = data.checked;
-
-        this.defaultCardsValues.numberOfRows = data.numberOfRows;
-
-        this.defaultCardsValues.front_side = data.front_side;
-
-        this.defaultCardsValues.back_side = data.back_side;
+            );
     }
 
     public onActionModal(event): void {
@@ -193,130 +257,42 @@ export class PMCardModalComponent implements OnInit, OnDestroy {
                 this.updateStore();
                 break;
             case CardsModalStringEnum.RESET_TO_DEFAULT:
-                this.setTodefaultCards();
+                this.resetToDefault();
                 break;
             default:
                 break;
         }
     }
 
+    public get front_side_form(): FormArray {
+        return this.cardsForm.get(CardsModalStringEnum.FRONT_SIDE) as FormArray;
+    }
+
+    public get back_side_form(): FormArray {
+        return this.cardsForm.get(CardsModalStringEnum.BACK_SIDE) as FormArray;
+    }
+
     private updateStore(): void {
-        this.cardsForm.patchValue({
-            checked: this.cardsForm.get(CardsModalStringEnum.CHECKED).value,
-
-            numberOfRows: this.cardsForm.get(CardsModalStringEnum.NUMBER_OF_ROWS)
-                .value,
-
-            frontSelectedTitle_0: this.cardsForm.get(
-                CardsModalStringEnum.FRONT_SELECTED_0
-            ).value
-                ? this.cardsForm.get(CardsModalStringEnum.FRONT_SELECTED_0).value
-                : this.dataFront[0],
-
-            frontSelectedTitle_1: this.cardsForm.get(
-                CardsModalStringEnum.FRONT_SELECTED_1
-            ).value
-                ? this.cardsForm.get(CardsModalStringEnum.FRONT_SELECTED_1).value
-                : this.dataFront[1],
-
-            frontSelectedTitle_2: this.cardsForm.get(
-                CardsModalStringEnum.FRONT_SELECTED_2
-            ).value
-                ? this.cardsForm.get(CardsModalStringEnum.FRONT_SELECTED_2).value
-                : this.dataFront[2],
-
-            frontSelectedTitle_3:
-                this.cardsForm.get(CardsModalStringEnum.FRONT_SELECTED_3).value &&
-                this.defaultCardsValues.numberOfRows > 3
-                    ? this.cardsForm.get(CardsModalStringEnum.FRONT_SELECTED_3).value
-                    : this.defaultCardsValues.numberOfRows < 4
-                    ? null
-                    : this.dataFront[3],
-
-            frontSelectedTitle_4:
-                this.cardsForm.get(CardsModalStringEnum.FRONT_SELECTED_4).value &&
-                this.defaultCardsValues.numberOfRows > 4
-                    ? this.cardsForm.get(CardsModalStringEnum.FRONT_SELECTED_4).value
-                    : this.defaultCardsValues.numberOfRows < 5
-                    ? null
-                    : this.dataFront[4],
-
-            frontSelectedTitle_5:
-                this.cardsForm.get(CardsModalStringEnum.FRONT_SELECTED_5).value &&
-                this.defaultCardsValues.numberOfRows > 5
-                    ? this.cardsForm.get(CardsModalStringEnum.FRONT_SELECTED_5).value
-                    : this.defaultCardsValues.numberOfRows < 6
-                    ? null
-                    : this.dataFront[5],
-
-            backSelectedTitle_0: this.cardsForm.get(
-                CardsModalStringEnum.BACK_SELECTED_0
-            ).value
-                ? this.cardsForm.get(CardsModalStringEnum.BACK_SELECTED_0).value
-                : this.dataBack[0],
-
-            backSelectedTitle_1: this.cardsForm.get(
-                CardsModalStringEnum.BACK_SELECTED_1
-            ).value
-                ? this.cardsForm.get(CardsModalStringEnum.BACK_SELECTED_1).value
-                : this.dataBack[1],
-
-            backSelectedTitle_2: this.cardsForm.get(
-                CardsModalStringEnum.BACK_SELECTED_2
-            ).value
-                ? this.cardsForm.get(CardsModalStringEnum.BACK_SELECTED_2).value
-                : this.dataBack[2],
-
-            backSelectedTitle_3:
-                this.cardsForm.get(CardsModalStringEnum.BACK_SELECTED_3).value &&
-                this.defaultCardsValues.numberOfRows > 3
-                    ? this.cardsForm.get(CardsModalStringEnum.BACK_SELECTED_3).value
-                    : this.defaultCardsValues.numberOfRows < 4
-                    ? null
-                    : this.dataBack[3],
-
-            backSelectedTitle_4:
-                this.cardsForm.get(CardsModalStringEnum.BACK_SELECTED_4).value &&
-                this.defaultCardsValues.numberOfRows > 4
-                    ? this.cardsForm.get(CardsModalStringEnum.BACK_SELECTED_4).value
-                    : this.defaultCardsValues.numberOfRows < 5
-                    ? null
-                    : this.dataBack[4],
-
-            backSelectedTitle_5:
-                this.cardsForm.get(CardsModalStringEnum.BACK_SELECTED_5).value &&
-                this.defaultCardsValues.numberOfRows > 5
-                    ? this.cardsForm.get(CardsModalStringEnum.BACK_SELECTED_5).value
-                    : this.defaultCardsValues.numberOfRows < 6
-                    ? null
-                    : this.dataBack[5],
-        });
-
         this.modalService.updateStore(this.cardsForm.value, this.tabSelected);
     }
 
-    private setTodefaultCards(): void {
-        this.cardsForm.patchValue({
-            numberOfRows: 4,
+    private resetToDefault(): void {
+        const cardsData = {
+            numberOfRows: PMCardsModalConfig.rows,
             checked: true,
-            frontSelectedTitle_0: this.setDefaultDataFront[0],
-            frontSelectedTitle_1: this.setDefaultDataFront[1],
-            frontSelectedTitle_2: this.setDefaultDataFront[2],
-            frontSelectedTitle_3: this.setDefaultDataFront[3],
-            frontSelectedTitle_4: null,
-            frontSelectedTitle_5: null,
+            front_side:
+                this.tabSelected === TableStringEnum.ACTIVE
+                    ? PMCardsModalConfig.displayRowsFrontActive
+                    : PMCardsModalConfig.displayRowsFrontInactive,
+            back_side:
+                this.tabSelected === TableStringEnum.ACTIVE
+                    ? PMCardsModalConfig.displayRowsBackActive
+                    : PMCardsModalConfig.displayRowsBackInactive,
+        };
 
-            backSelectedTitle_0: this.setDefaultDataBack[0],
-            backSelectedTitle_1: this.setDefaultDataBack[1],
-            backSelectedTitle_2: this.setDefaultDataBack[2],
-            backSelectedTitle_3: this.setDefaultDataBack[3],
-            backSelectedTitle_4: null,
-            backSelectedTitle_5: null,
-        });
+        this.createForm(cardsData);
 
         this.resetForm = false;
-
-        this.cdr.detectChanges();
     }
 
     public getFormValueOnInit(): void {
@@ -333,47 +309,76 @@ export class PMCardModalComponent implements OnInit, OnDestroy {
 
                 this.filterTitlesFromForm(valuesInform);
 
-                this.defaultCardsValues.numberOfRows = parseInt(
-                    value.numberOfRows
-                );
-
                 this.resetForm = true;
                 this.hasFormChanged = true;
             });
     }
 
-    private filterTitlesFromForm(valuesInform: CardRows[]): void {
-        this.titlesInForm = valuesInform
-            .map((item) => {
-                if (item && typeof item.title === CardsModalStringEnum.STRING) {
-                    return item.title;
-                }
-                return;
-            })
-            .filter((title) => title);
+    private filterTitlesFromForm(valuesInform: any): void {
+        //leave this as any for now
+        this.titlesInForm = valuesInform.flatMap(
+            (
+                item: any //leave this as any for now
+            ) =>
+                Array.isArray(item)
+                    ? item
+                          .filter(
+                              (titles) =>
+                                  titles &&
+                                  typeof titles.inputItem.title ===
+                                      CardsModalStringEnum.STRING
+                          )
+                          .map((titles) => titles.inputItem.title)
+                    : []
+        );
     }
 
     private compareDataInStoreAndDefaultData(): void {
         const isFrontSidesEqual = CompareObjectsModal.areArraysOfObjectsEqual(
-            this.defaultCardsValues.front_side,
+            this.tabSelected === TableStringEnum.ACTIVE
+                ? PMCardsModalConfig.displayRowsFrontActive
+                : PMCardsModalConfig.displayRowsFrontInactive,
             this.setDefaultDataFront
         );
 
         const areBackSidesEqual = CompareObjectsModal.areArraysOfObjectsEqual(
-            this.defaultCardsValues.back_side,
+            this.tabSelected === TableStringEnum.ACTIVE
+                ? PMCardsModalConfig.displayRowsBackActive
+                : PMCardsModalConfig.displayRowsBackInactive,
             this.setDefaultDataBack
         );
 
         if (
             isFrontSidesEqual &&
             areBackSidesEqual &&
-            this.defaultCardsValues.checked &&
-            this.defaultCardsValues.numberOfRows === 4
-        ) {
+            this.cardsForm.get(CardsModalStringEnum.CHECKED).value &&
+            this.cardsForm.get(CardsModalStringEnum.NUMBER_OF_ROWS).value === 4
+        )
             this.resetForm = false;
-        } else {
-            this.resetForm = true;
-        }
+        else this.resetForm = true;
+    }
+
+    private setDefaultValues(
+        type: TableStringEnum.ACTIVE | TableStringEnum.INACTIVE
+    ): void {
+        this.displayData$ = this.store.select(selectActiveModalTabs(type));
+        this.subscription.add(
+            this.displayData$
+                .pipe(takeUntil(this.destroy$), first())
+                .subscribe((data) => {
+                    this.createForm(data);
+                    this.setDefaultDataFront = data.front_side;
+                    this.setDefaultDataBack = data.back_side;
+                })
+        );
+        this.cardsAllData =
+            type === TableStringEnum.ACTIVE
+                ? PMCardsModalData.allDataPMTruck
+                : PMCardsModalData.allDataPMTrailer;
+    }
+
+    public identity(item: CardRows): number {
+        return item.id;
     }
 
     ngOnDestroy(): void {
