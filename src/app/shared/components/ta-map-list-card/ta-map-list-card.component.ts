@@ -188,11 +188,7 @@ export class TaMapListCardComponent implements OnInit, OnDestroy {
                     action.openedTab = 'Review';
                 }
 
-                this.dropdownService.dropActionsHeaderRepair(
-                    action,
-                    this.item,
-                    action.id
-                );
+                this.dropdownService.dropActionsHeaderRepair(action, this.item);
             } else if (this.type == 'shipper') {
                 let eventType = '';
                 if (

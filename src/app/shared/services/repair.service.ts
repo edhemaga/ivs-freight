@@ -9,7 +9,6 @@ import {
     RepairShopModalResponse,
     RepairListResponse,
     ClusterResponse,
-    RepairShopMinimalResponse,
     RepairShopNewListResponse,
     RepairDriverResponse,
     RepairAutocompleteDescriptionResponse,
@@ -24,8 +23,8 @@ import {
 import { RepairTruckStore } from '@pages/repair/state/repair-truck-state/repair-truck.store';
 import { RepairTrailerStore } from '@pages/repair/state/repair-trailer-state/repair-trailer.store';
 import { RepairShopStore } from '@pages/repair/state/repair-shop-state/repair-shop.store';
-import { RepairDetailsQuery } from '@pages/repair/state/repair-details-state/repair-details.query';
 import { RepairDetailsStore } from '@pages/repair/state/repair-details-state/repair-details.store';
+import { RepairMinimalListQuery } from '@pages/repair/state/driver-details-minimal-list-state/repair-minimal-list.query';
 
 // services
 import { RepairService as RepairMainService } from 'appcoretruckassist/api/repair.service';
@@ -52,7 +51,7 @@ export class RepairService {
         private repairTrailerStore: RepairTrailerStore,
         private repairShopStore: RepairShopStore,
         private repairDetailsStore: RepairDetailsStore,
-        private repairDetailsQuery: RepairDetailsQuery
+        private repairMinimalListQuery: RepairMinimalListQuery
     ) {}
 
     // <----------------------- Repair Truck And Trailer -------------------->
@@ -449,9 +448,7 @@ export class RepairService {
         repairId: number,
         getIndex?: boolean
     ): Observable<RepairShopResponse> {
-        this.repairDetailsQuery.repairShopMinimal$.subscribe(
-            (item) => (this.repairShopList = item?.pagination?.data)
-        );
+        this.repairShopList = this.repairMinimalListQuery.getAll();
 
         if (getIndex && this.repairShopList) {
             this.currentIndex = this.repairShopList.findIndex(
@@ -469,6 +466,7 @@ export class RepairService {
 
             this.repairShopId = this.repairShopList[this.currentIndex].id;
         }
+
         return this.shopServices.apiRepairshopIdGet(repairId);
     }
 
@@ -664,15 +662,6 @@ export class RepairService {
             search1,
             search2
         );
-    }
-
-    set updateRepairShopMinimal(data: RepairShopMinimalResponse) {
-        this.repairDetailsStore.update((store) => {
-            return {
-                ...store,
-                repairShopMinimal: data,
-            };
-        });
     }
 
     public deleteReview(reviewId, shopId) {

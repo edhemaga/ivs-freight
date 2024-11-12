@@ -1247,7 +1247,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
         // View Details
         else if (event.type === TableStringEnum.VIEW_DETAILS) {
             if (this.selectedTab === TableStringEnum.REPAIR_SHOP)
-                this.router.navigate([`/list/repair/${event.id}/shop-details`]);
+                this.router.navigate([`/list/repair/${event.id}/details`]);
         }
 
         // Delete

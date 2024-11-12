@@ -48,7 +48,7 @@ import { DriversDetailsListQuery } from '@pages/driver/state/driver-details-list
 import { DriversItemStore } from '@pages/driver/state/driver-details-state/driver-details-item.store';
 
 // models
-import { DetailsDropdownOptions } from '@pages/driver/pages/driver-details/models/details-dropdown-options.model';
+import { DetailsDropdownOptions } from '@shared/models/details-dropdown-options.model';
 import { DetailsConfig } from '@shared/models/details-config.model';
 import { DriverResponse } from 'appcoretruckassist';
 
