@@ -42,3 +42,7 @@
         <h4>Minimum screen width requirement: 1280px.</h4>
     </div>
 </app-ta-custom-scrollbar>
+
+<ng-container *ngIf="!(currentPage | blockedContent)">
+    <app-right-side-panel></app-right-side-panel>
+</ng-container>
