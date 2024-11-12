@@ -9,8 +9,6 @@ import { PayrollDeductionModalComponent } from '../../payroll-modals/payroll-ded
 import { PayrollReportTableResponse } from 'ca-components/lib/components/ca-period-content/models/payroll-report-tables.type';
 import { IGetPayrollByIdAndOptions } from '../../state/models/payroll.model';
 import { FuelPurchaseModalComponent } from '@pages/fuel/pages/fuel-modals/fuel-purchase-modal/fuel-purchase-modal.component';
-import { FuelData } from '@pages/fuel/pages/fuel-modals/fuel-purchase-modal/models/fuel-data.model';
-import { FuelDataOptionsStringEnum } from '@pages/fuel/enums/fuel-data-options-string.enum';
 
 export abstract class PayrollReportBaseComponent<
     T extends { driver?: { id?: number }; truck?: { id?: number } }
@@ -27,17 +25,15 @@ export abstract class PayrollReportBaseComponent<
     ): void;
 
     public get reportId(): string {
-        console.log('Getter in abstract class called: ', this._reportId);
         return this._reportId;
     }
 
     public set reportId(value: string) {
-        console.log('Setter in abstract class called with: ', value);
         this._reportId = value;
     }
 
     public openAddNewModal(type: string) {
-        console.log("WHAT IS TYPE", type);
+        console.log('WHAT IS TYPE', type);
         switch (type) {
             case 'Credit':
                 this.modalService
@@ -123,11 +119,7 @@ export abstract class PayrollReportBaseComponent<
                             size: 'small',
                         },
                         {
-                            data: {
-                                type: FuelDataOptionsStringEnum.ADD,
-                                
-                              //  truckId: this.openedPayroll.truck?.id,
-                            } as FuelData,
+                            truckId: this.openedPayroll.truck?.id,
                             creditType: this.creditType,
                         }
                     )
