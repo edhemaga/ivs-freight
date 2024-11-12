@@ -24,12 +24,12 @@ import { TruckService } from '@shared/services/truck.service';
 //Components
 import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
 import { TaModalComponent } from '@shared/components/ta-modal/ta-modal.component';
-import { TaInputComponent } from '@shared/components/ta-input/ta-input.component';
 import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-custom-card.component';
-import { TaInputDropdownComponent } from '@shared/components/ta-input-dropdown/ta-input-dropdown.component';
 import { TaUploadFilesComponent } from '@shared/components/ta-upload-files/ta-upload-files.component';
 import { TaModalTableComponent } from '@shared/components/ta-modal-table/ta-modal-table.component';
 import { TaCopyComponent } from '@shared/components/ta-copy/ta-copy.component';
+import { CaInputComponent, CaInputDropdownComponent } from 'ca-components';
+import { TaInputDropdownComponent } from '@shared/components/ta-input-dropdown/ta-input-dropdown.component';
 
 //Modules
 import { CommonModule } from '@angular/common';
@@ -87,12 +87,13 @@ import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calcula
         // Component
         TaAppTooltipV2Component,
         TaModalComponent,
-        TaInputComponent,
+        CaInputComponent,
         TaCustomCardComponent,
-        TaInputDropdownComponent,
+        CaInputDropdownComponent,
         TaUploadFilesComponent,
         TaModalTableComponent,
         TaCopyComponent,
+        TaInputDropdownComponent,
 
         // Pipe
         SumArraysPipe,
@@ -144,23 +145,24 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
         private formService: FormService,
         private fuelService: FuelService,
         private sumArrays: SumArraysPipe,
-        private truckService: TruckService,
+        private truckService: TruckService
     ) {}
 
     ngOnInit() {
         this.createForm();
         this.getModalDropdowns();
         this.getFuelTransactionFranchises();
-        this.getTruckList(); 
+        this.getTruckList();
         this.getDriverTrailerBySelectedTruck();
     }
 
     private createForm(): void {
+        const truckId = this.editData?.truckId ?? null;
         this.fuelForm = this.formBuilder.group({
             efsAccount: [null],
             fuelCard: [null],
             invoice: [null, Validators.required],
-            truckId: [null, Validators.required],
+            truckId: [truckId, Validators.required],
             trailerId: [null],
             driverFullName: [null, fullNameValidation],
             transactionDate: [null, Validators.required],
@@ -181,7 +183,7 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
                     this.inputService.markInvalid(this.fuelForm);
                     return;
                 }
-                if (this.editData) {
+                if (this.editData && !this.editData?.isShortModal) {
                     this.fuelTransactionType?.name !==
                     FuelValuesStringEnum.MANUAL
                         ? this.updateFuelEFS(this.editData.id)
@@ -252,7 +254,7 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
             total: MethodsCalculationsHelper.convertThousanSepInNumber(
                 this.total as any
             ),
-            fuelItems: this.fuelItems, 
+            fuelItems: this.fuelItems,
             files: this.mapDocuments(),
             filesForDeleteIds: [],
         };
@@ -626,6 +628,13 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
                     this.truckType = this.truckType.filter(
                         (v, i, a) => a.findIndex((v2) => v2.id === v.id) === i
                     );
+
+                    if (this.editData?.truckId) {
+                        const truck = this.truckType.find(
+                            (t) => t.id === this.editData.truckId
+                        );
+                        this.onSelectDropDown(truck, 'truck');
+                    }
                 },
                 error: () => {},
             });

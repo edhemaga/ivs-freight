@@ -5,4 +5,6 @@ export interface FuelData {
     id: number;
     type: FuelDataOptionsStringEnum;
     data: FuelTransactionListResponse;
+    truckId: number;
+    isShortModal: boolean;
 }
