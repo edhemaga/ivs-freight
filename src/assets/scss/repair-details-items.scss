@@ -488,19 +488,7 @@ $transition: all 0.3s ease-in-out;
         }
     }
 }
-.perfomance {
-    display: flex !important;
-    flex-direction: column;
 
-    .common-template-item-name {
-        font-size: $font-size14 !important;
-        font-weight: $font-semibold !important;
-    }
-    .common-template-item-value {
-        font-size: $font-size18 !important;
-        font-weight: $font-semibold !important;
-    }
-}
 .likes-count-container {
     max-width: 280px;
     min-height: 48px;

@@ -39,6 +39,7 @@ export interface PmTableColumns {
     isAction?: boolean;
     imageHover?: TableBodyColumnsImageHover | null;
     link?: LinkObject;
+    groupName?: string;
 }
 
 interface SvgDimensionsData {

@@ -61,6 +61,11 @@ import {
     ReactiveFormsModule,
 } from '@angular/forms';
 
+// svg routes
+import { InputDropdownSvgRoutes } from '@shared/components/ta-input-dropdown/utils/svg-routes/input-dropdown-svg-routes';
+
+// svg routes
+
 @Component({
     selector: 'app-ta-input-dropdown',
     templateUrl: './ta-input-dropdown.component.html',
@@ -141,7 +146,6 @@ export class TaInputDropdownComponent
     @Input() set sort(value: string) {
         this._sort = value;
     }
-
     // currently active item
     public _activeItem: any;
     @Input() set activeItem(value: any) {
@@ -296,6 +300,9 @@ export class TaInputDropdownComponent
 
     // Destroy
     private destroy$ = new Subject<void>();
+
+    // svg routes
+    public inputDropdownSvgRoutes = InputDropdownSvgRoutes;
 
     constructor(
         @Self() public superControl: NgControl,
@@ -1236,7 +1243,6 @@ export class TaInputDropdownComponent
                 searchText?.length &&
                 this.getSuperControl.value?.toLowerCase()
             ) {
-               
                 if (this._template === 'groups') {
                     this._options = this.originalOptions
                         .map((element) => {

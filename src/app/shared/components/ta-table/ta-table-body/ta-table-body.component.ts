@@ -90,7 +90,6 @@ import {
     SignInResponse,
     LoadListLoadStopResponse,
     LoadPossibleStatusesResponse,
-    RepairShopOpenHoursCommand,
 } from 'appcoretruckassist';
 import { TableBodyColorLabel } from '@shared/models/table-models/table-body-color-label.model';
 import { TableBodyOptionActions } from '@shared/components/ta-table/ta-table-body/models/table-body-option-actions.model';
@@ -102,9 +101,6 @@ import { RepairDescriptionPopoverConstants } from '@shared/components/ta-table/t
 
 // directive
 import { PreventMultipleclicksDirective } from '@shared/directives/prevent-multipleclicks.directive';
-
-// helpers
-import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calculations.helper';
 
 // svg routes
 import { TableBodySvgRoutes } from '@shared/components/ta-table/ta-table-body/utils/svg-routes';

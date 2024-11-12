@@ -15,6 +15,7 @@ export enum TableHeadTitleStringEnum {
     REPAIR_SHOP = 'REPAIR SHOP',
     TYPE = 'TYPE ',
     NAME = 'NAME ',
+    NAME_5 = 'NAME',
     NUMBER = 'NUMBER ',
     NUMBER_2 = 'NUMBER',
     ISSUED = 'ISSUED',
