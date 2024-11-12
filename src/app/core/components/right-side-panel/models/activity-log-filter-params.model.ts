@@ -1,5 +1,5 @@
 // enums
-import { ActivityLogSortType, RightSidePanelCurrentTab } from '../enums';
+import { ActivityLogSortType, RightSidePanelCurrentTab } from '@core/components/right-side-panel/enums';
 
 export interface ActivityLogFilterParams {
     companyUserIds: number[];

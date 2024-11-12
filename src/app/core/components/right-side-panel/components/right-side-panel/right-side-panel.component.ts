@@ -1,7 +1,7 @@
 import { CommonModule, formatDate } from '@angular/common';
 import { Component, OnDestroy } from '@angular/core';
 import { CaRightSidePanelComponent } from 'ca-components';
-import { ActivityLogService } from '../../services/activity-log.service';
+import { ActivityLogService } from '@core/components/right-side-panel/services/activity-log.service';
 import { forkJoin, Subject, takeUntil } from 'rxjs';
 
 // models
@@ -11,11 +11,11 @@ import {
     ActivityLogModuleFilterResponse,
     CompanyUserActivityLogListResponse,
     CompanyUserActivityLogResponse,
-} from '../../../../../../../appcoretruckassist';
-import { ActivityLogFilterParams } from '../../models';
+} from 'appcoretruckassist';
+import { ActivityLogFilterParams } from '@core/components/right-side-panel/models';
 
 // enums
-import { RightSidePanelCurrentTab, SelectedModule } from '../../enums';
+import { RightSidePanelCurrentTab, SelectedModule } from '@core/components/right-side-panel/enums';
 
 // helpers
 import { GetCurrentUserHelper } from '@pages/chat/utils/helpers';

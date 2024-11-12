@@ -7,7 +7,7 @@ import {
     ActivityLogModuleFilterResponse,
     CompanyUserActivityLogListResponse,
     SortOrder,
-} from '../../../../../../appcoretruckassist';
+} from 'appcoretruckassist';
 import { Observable } from 'rxjs';
 
 @Injectable({
