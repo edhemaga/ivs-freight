@@ -29,6 +29,7 @@ import { TaUploadFilesComponent } from '@shared/components/ta-upload-files/ta-up
 import { TaModalTableComponent } from '@shared/components/ta-modal-table/ta-modal-table.component';
 import { TaCopyComponent } from '@shared/components/ta-copy/ta-copy.component';
 import { CaInputComponent, CaInputDropdownComponent } from 'ca-components';
+import { TaInputDropdownComponent } from '@shared/components/ta-input-dropdown/ta-input-dropdown.component';
 
 //Modules
 import { CommonModule } from '@angular/common';
@@ -92,6 +93,7 @@ import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calcula
         TaUploadFilesComponent,
         TaModalTableComponent,
         TaCopyComponent,
+        TaInputDropdownComponent,
 
         // Pipe
         SumArraysPipe,
@@ -143,23 +145,24 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
         private formService: FormService,
         private fuelService: FuelService,
         private sumArrays: SumArraysPipe,
-        private truckService: TruckService,
+        private truckService: TruckService
     ) {}
 
     ngOnInit() {
         this.createForm();
         this.getModalDropdowns();
         this.getFuelTransactionFranchises();
-        this.getTruckList(); 
+        this.getTruckList();
         this.getDriverTrailerBySelectedTruck();
     }
 
     private createForm(): void {
+        const truckId = this.editData?.truckId ?? null;
         this.fuelForm = this.formBuilder.group({
             efsAccount: [null],
             fuelCard: [null],
             invoice: [null, Validators.required],
-            truckId: [null, Validators.required],
+            truckId: [truckId, Validators.required],
             trailerId: [null],
             driverFullName: [null, fullNameValidation],
             transactionDate: [null, Validators.required],
@@ -180,7 +183,7 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
                     this.inputService.markInvalid(this.fuelForm);
                     return;
                 }
-                if (this.editData) {
+                if (this.editData && !this.editData?.isShortModal) {
                     this.fuelTransactionType?.name !==
                     FuelValuesStringEnum.MANUAL
                         ? this.updateFuelEFS(this.editData.id)
@@ -251,7 +254,7 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
             total: MethodsCalculationsHelper.convertThousanSepInNumber(
                 this.total as any
             ),
-            fuelItems: this.fuelItems, 
+            fuelItems: this.fuelItems,
             files: this.mapDocuments(),
             filesForDeleteIds: [],
         };
@@ -625,6 +628,13 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
                     this.truckType = this.truckType.filter(
                         (v, i, a) => a.findIndex((v2) => v2.id === v.id) === i
                     );
+
+                    if (this.editData?.truckId) {
+                        const truck = this.truckType.find(
+                            (t) => t.id === this.editData.truckId
+                        );
+                        this.onSelectDropDown(truck, 'truck');
+                    }
                 },
                 error: () => {},
             });

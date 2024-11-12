@@ -251,7 +251,7 @@
                         </div>
                     </div>
                 </div>
-                <app-ca-input-dropdown
+                <app-ta-input-dropdown
                     *ngIf="!selectedFuelStop"
                     formControlName="fuelStopStoreId"
                     [template]="'fuel-franchise'"
@@ -268,7 +268,7 @@
                     (pagination)="paginationFuelStopPage($event)"
                     (activeGroup)="getFuelStoresByFranchiseId($event)"
                     (selectedItem)="onSelectDropDown($event, 'fuel')"
-                ></app-ca-input-dropdown>
+                ></app-ta-input-dropdown>
             </div>
         </div>
 
