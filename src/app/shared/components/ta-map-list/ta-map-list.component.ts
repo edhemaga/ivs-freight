@@ -26,14 +26,18 @@ import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
 // icon
 import { AngularSvgIconModule } from 'angular-svg-icon';
 
-// icon
+// Services
 import { MapsService } from '@shared/services/maps.service';
 
 // component
 import { TaSearchV2Component } from '@shared/components/ta-search-v2/ta-search-v2.component';
+import { TaSortDropdownComponent } from '@shared/components/ta-sort-dropdown/ta-sort-dropdown.component';
 
 // Svg Routes
 import { MapListSvgRoutes } from '@shared/components/ta-map-list/utils/svg-routes';
+
+// Models
+import { SortColumn } from '@shared/components/ta-sort-dropdown/models';
 
 @Component({
     selector: 'app-ta-map-list',
@@ -49,6 +53,7 @@ import { MapListSvgRoutes } from '@shared/components/ta-map-list/utils/svg-route
 
         // Components
         TaSearchV2Component,
+        TaSortDropdownComponent,
     ],
 })
 export class TaMapListComponent
@@ -60,6 +65,7 @@ export class TaMapListComponent
     @Input() type: string = '';
     @Input() columns: any;
     @Input() mapListContent: any[] = [];
+    @Input() sortColumns: SortColumn[] = [];
     @Output() changeSortCategory: EventEmitter<any> = new EventEmitter<any>();
     @Output() changeSortDirection: EventEmitter<any> = new EventEmitter<any>();
     @Output() searchEvent: EventEmitter<string> = new EventEmitter<string>();
@@ -112,8 +118,6 @@ export class TaMapListComponent
 
         this.setVisibleColumns();
 
-        this.setSortTypes();
-
         setTimeout(() => {
             this.checkResizeButton();
         }, 100);
@@ -164,28 +168,6 @@ export class TaMapListComponent
     public openPopover(t2): void {
         t2.open();
         this.tooltip = t2;
-    }
-
-    public changeSortingDirection(): void {
-        this.sortDirection = this.sortDirection == 'asc' ? 'desc' : 'asc';
-
-        this.sortData();
-    }
-
-    public changeSortType(item): void {
-        this.sortTypes.map((data: any) => {
-            if (data.isActive) {
-                data.isActive = false;
-            }
-        });
-
-        item.isActive = true;
-        this.activeSortType = item;
-        this.tooltip.close();
-
-        this.mapsService.sortCategoryChange.next(this.activeSortType);
-
-        this.sortData();
     }
 
     public setVisibleColumns(): void {
@@ -247,151 +229,6 @@ export class TaMapListComponent
         }
 
         this.ref.detectChanges();
-    }
-
-    public sortData(): void {
-        let sortType = this.sortTypes.find((b) => b.isActive === true);
-        if (!sortType) {
-            this.sortTypes[0].isActive = true;
-            this.activeSortType = this.sortTypes[0];
-            sortType = this.sortTypes[0];
-        }
-
-        const directionSort = this.sortDirection
-            ? sortType.sortName +
-              (this.sortDirection[0]?.toUpperCase() +
-                  this.sortDirection?.substr(1).toLowerCase())
-            : '';
-
-        this.sortEvent.emit(directionSort);
-
-        this.mapsService.sortChange.next(directionSort);
-    }
-
-    public setSortTypes(): void {
-        if (this.type == 'shipper') {
-            this.sortTypes = [
-                {
-                    name: 'Business Name',
-                    id: 1,
-                    sortName: 'name',
-                    isActive: true,
-                },
-                {
-                    name: 'Location',
-                    id: 2,
-                    sortName: 'location',
-                    isHidden: true,
-                },
-                { name: 'Rating', id: 3, sortName: 'rating' },
-                { name: 'Date Added', id: 4, sortName: 'createdAt' },
-                { name: 'Last Used Date', id: 5, sortName: 'updatedAt  ' },
-                { name: 'Pickups', id: 6, sortName: 'pickups' },
-                { name: 'Deliveries', id: 7, sortName: 'deliveries' },
-                { name: 'Avg. Pickup Time', id: 8, sortName: 'avgPickupTime' },
-                {
-                    name: 'Avg. Delivery Time',
-                    id: 9,
-                    sortName: 'avgDeliveriesTime',
-                },
-            ];
-        } else if (this.type == 'repairShop') {
-            this.sortTypes = [
-                {
-                    name: 'Business Name',
-                    id: 1,
-                    sortName: 'name',
-                    isActive: true,
-                },
-                {
-                    name: 'Location',
-                    id: 2,
-                    sortName: 'location',
-                    isHidden: true,
-                },
-                // { name: 'Favorites', id: 8, sortName: 'favorites' },
-                { name: 'Available', id: 9, sortName: 'available' },
-                { name: 'Rating', id: 3, sortName: 'rating' },
-                { name: 'Date Added', id: 4, sortName: 'createdAt' },
-                { name: 'Last Used Date', id: 5, sortName: 'updatedAt  ' },
-                { name: 'Orders', id: 6, sortName: 'orders' },
-                { name: 'Total Cost', id: 7, sortName: 'cost' },
-            ];
-        } else if (this.type == 'fuelStop') {
-            this.sortTypes = [
-                {
-                    name: 'Business Name',
-                    id: 1,
-                    sortName: 'name',
-                    isActive: true,
-                },
-                {
-                    name: 'Location',
-                    id: 2,
-                    sortName: 'location',
-                    isHidden: true,
-                },
-                // { name: 'Favorites', id: 8, sortName: 'favorites' },
-                { name: 'Fuel Price', id: 9, sortName: 'fuelPrice' },
-                { name: 'Last Used Date', id: 5, sortName: 'updatedAt  ' },
-                { name: 'Transaction', id: 6, sortName: 'transaction' },
-                { name: 'Total Cost', id: 7, sortName: 'cost' },
-            ];
-        } else if (this.type == 'accident') {
-            this.sortTypes = [
-                {
-                    name: 'Report Number',
-                    id: 1,
-                    sortName: 'report',
-                    isActive: true,
-                },
-                {
-                    name: 'Location',
-                    id: 2,
-                    sortName: 'location',
-                    isHidden: true,
-                },
-                { name: 'Inspection Results', id: 8, sortName: 'results' },
-                { name: 'Inspection Weights', id: 9, sortName: 'weights' },
-                { name: 'Date & Time', id: 3, sortName: 'date' },
-                { name: 'Drivers Name', id: 4, sortName: 'driverName' },
-                { name: 'Truck Unit', id: 5, sortName: 'truck' },
-                { name: 'Trailer Unit', id: 6, sortName: 'trailer' },
-            ];
-        } else if (this.type == 'roadsideInspection') {
-            this.sortTypes = [
-                {
-                    name: 'Report Number',
-                    id: 1,
-                    sortName: 'report',
-                    isActive: true,
-                },
-                {
-                    name: 'Location',
-                    id: 2,
-                    sortName: 'location',
-                    isHidden: true,
-                },
-                { name: 'Inspection Results', id: 8, sortName: 'results' },
-                { name: 'Inspection Weights', id: 9, sortName: 'weights' },
-                { name: 'Date & Time', id: 3, sortName: 'date' },
-                { name: 'Drivers Name', id: 4, sortName: 'driverName' },
-                { name: 'Truck Unit', id: 5, sortName: 'truck' },
-                { name: 'Trailer Unit', id: 6, sortName: 'trailer' },
-                {
-                    name: 'Inspection Level',
-                    id: 7,
-                    sortName: 'inspectionLevel',
-                    isHidden: false,
-                },
-            ];
-        }
-
-        this.activeSortType = this.sortTypes[0];
-
-        this.mapsService.sortCategoryChange.next(this.activeSortType);
-
-        this.sortData();
     }
 
     public highlightSearchedText(): void {
@@ -479,6 +316,14 @@ export class TaMapListComponent
         this.searchValue = searchValue;
 
         this.searchEvent.emit(searchValue);
+    }
+
+    public onSortChange(event: { column: SortColumn; sortName: string }): void {
+        this.activeSortType = event.column;
+
+        this.mapsService.sortCategoryChange.next(event.column);
+
+        this.sortEvent.emit(event.sortName);
     }
 
     ngOnDestroy(): void {
