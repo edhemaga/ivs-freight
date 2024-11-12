@@ -448,8 +448,22 @@
         background: $white;
     }
 
+    .pm-border {
+        width: 1px;
+        height: 18px;
+        
+        background-color: $ta-light-grey-6;
+    }
+
     .general-pm-open-container {
-        margin-left: 4px;
+        width: 26px;
+        height: 26px;
+
+        svg-icon {
+            svg {
+                display: flex;
+            }
+        }
     }
 
     .location-filter-container,

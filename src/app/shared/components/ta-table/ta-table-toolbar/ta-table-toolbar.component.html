@@ -557,6 +557,20 @@
                 </div>
             </ng-container>
 
+            <!-- OPEN GENERAL PM BUTTON -->
+            <ng-container *ngIf="options.toolbarActions.showGeneralPmBtn">
+                <div class="pm-border"></div>
+                <div
+                    class="general-pm-open-container"
+                    (click)="onToolBarAction('open-general-pm')"
+                >
+                    <svg-icon
+                        [svgStyle]="{ 'width.px': 18, 'height.px': 18 }"
+                        [src]="'assets/svg/common/repair-pm/ic_custom_pm.svg'"
+                    ></svg-icon>
+                </div>
+            </ng-container>
+
             <ng-container *ngIf="!options.toolbarActions.hideOpenModalButton">
                 <div
                     class="modal2 d-flex justify-content-center align-items-center"
@@ -577,19 +591,6 @@
             </ng-container>
         </div>
     </div>
-
-    <!-- OPEN GENERAL PM BUTTON -->
-    <ng-container *ngIf="options.toolbarActions.showGeneralPmBtn">
-        <div
-            class="general-pm-open-container"
-            (click)="onToolBarAction('open-general-pm')"
-        >
-            <svg-icon
-                [svgStyle]="{ 'width.px': 18, 'height.px': 18 }"
-                [src]="'assets/svg/common/repair-pm/ic_custom_pm.svg'"
-            ></svg-icon>
-        </div>
-    </ng-container>
 
     <!-- OPEN MODAL BUTTON -->
 </div>
