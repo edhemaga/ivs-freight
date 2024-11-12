@@ -93,7 +93,7 @@
                 <div
                     class="text-color-muted text-size-11 ta-font-bold text-right"
                 >
-                    SUBTOTAL
+                    {{isLimited ? 'REMAINING' : 'SUBTOTAL'}}
                 </div>
             </div>
 
@@ -112,13 +112,13 @@
                 <div
                     class="text-color-black-2 ta-font-regular text-size-14 text-right"
                 >
-                    +$ {{ payments.limitedAmount }}
+                    +$ {{ payments.payment }}
                 </div>
                 <div
                     class="text-color-black-2 text-size-14 ta-font-semi-bold text-right"
                 >
                     $
-                    {{ payments.limitedAmount }}
+                    {{ payments.totalPayment }}
                 </div>
             </div>
 

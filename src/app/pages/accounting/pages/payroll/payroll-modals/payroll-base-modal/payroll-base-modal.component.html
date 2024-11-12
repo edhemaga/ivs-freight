@@ -124,7 +124,7 @@
                             [inputConfig]="
                                 payrollCreditConst.limitedNumberField(
                                     svgRoutes,
-                                    isNotRecuringPayment
+                                    isNotRecuringPayment || !isLimitedPayment
                                 )
                             "
                         ></app-ca-input>
@@ -132,7 +132,7 @@
                             formControlName="limitedAmount"
                             [inputConfig]="
                                 payrollCreditConst.limitedAmountField(
-                                    isNotRecuringPayment
+                                    isNotRecuringPayment || !isLimitedPayment
                                 )
                             "
                         ></app-ca-input>
