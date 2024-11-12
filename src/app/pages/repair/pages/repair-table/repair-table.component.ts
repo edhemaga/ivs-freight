@@ -55,7 +55,6 @@ import { TableActionsStringEnum } from '@shared/enums/table-actions-string.enum'
 
 // constants
 import { TableDropdownComponentConstants } from '@shared/utils/constants/table-dropdown-component.constants';
-import { MapConstants } from '@shared/utils/constants/map.constants';
 import { RepairShopMapConfig } from '@pages/repair/pages/repair-table/utils/constants/repair-shop-map.config';
 import { RepairCardConfigConstants } from '@pages/repair/pages/repair-card/utils/constants';
 import { RepairConfiguration } from '@pages/repair/pages/repair-table/utils/constants';
@@ -104,6 +103,7 @@ import { TableToolbarActions } from '@shared/models/table-models/table-toolbar-a
 import { CardRows } from '@shared/models/card-models/card-rows.model';
 import { CardTableData } from '@shared/models/table-models/card-table-data.model';
 import { TableColumnConfig } from '@shared/models/table-models/table-column-config.model';
+import { SortColumn } from '@shared/components/ta-sort-dropdown/models';
 
 @Component({
     selector: 'app-repair-table',
@@ -194,6 +194,9 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
     } = null;
     public mapListSearchValue: string | null = null;
     public mapListSortDirection: string | null = null;
+    public repairShopMapListSortColumns: SortColumn[] =
+        RepairShopMapConfig.repairShopMapListSortColumns;
+    public isAddedNewRepairShop: boolean = false;
 
     constructor(
         // router
@@ -1846,7 +1849,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                 this.mapClustersObject.southWestLatitude,
                 this.mapClustersObject.southWestLongitude,
                 this.mapClustersObject.zoomLevel,
-                false, // addedNew flag
+                this.isAddedNewRepairShop, // addedNew flag
                 null, // shipperLong
                 null, // shipperLat
                 null, // shipperDistance
@@ -1974,6 +1977,9 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                         markers,
                     };
                 }
+
+                if (this.isAddedNewRepairShop)
+                    this.isAddedNewRepairShop = false;
 
                 this.ref.detectChanges();
             });

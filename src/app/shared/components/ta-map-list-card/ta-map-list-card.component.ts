@@ -148,78 +148,7 @@ export class TaMapListCardComponent implements OnInit, OnDestroy {
     }
 
     callBodyAction(action) {
-        // if (action.type == 'delete' || action.type == 'delete-repair') {
-        //     var name =
-        //         this.type == 'repairShop'
-        //             ? action.data.name
-        //             : this.type == 'shipper'
-        //             ? action.data.businessName
-        //             : '';
-
-        //     var shipperData = {
-        //         id: action.id,
-        //         type: 'delete-item',
-        //         data: {
-        //             ...action.data,
-        //             name: name,
-        //         },
-        //     };
-
-        //     this.modalService.openModal(
-        //         ConfirmationModalComponent,
-        //         { size: 'small' },
-        //         {
-        //             ...shipperData,
-        //             template:
-        //                 this.type == 'repairShop' ? 'repair shop' : 'shipper',
-        //             type: 'delete',
-        //         }
-        //     );
-        // } else {
-        //     this.bodyActions.emit(action);
-        // }
-
-        if (action.type == 'view-details') {
-            this.mapsService.goToDetails(this.item, this.type);
-        } else {
-            if (this.type == 'repairShop') {
-                if (action.type == 'write-review') {
-                    action.type = 'edit';
-                    action.openedTab = 'Review';
-                }
-
-                this.dropdownService.dropActionsHeaderRepair(
-                    action,
-                    this.item,
-                    action.id
-                );
-            } else if (this.type == 'shipper') {
-                let eventType = '';
-                if (
-                    action.type == 'Contact' ||
-                    action.type == 'edit' ||
-                    action.type == 'Review'
-                ) {
-                    eventType = 'edit';
-                } else {
-                    eventType = action.type;
-                }
-
-                let eventObject = {
-                    data: undefined,
-                    id: action.id,
-                    type: eventType,
-                    openedTab: action.type,
-                };
-                setTimeout(() => {
-                    this.dropdownService.dropActionsHeaderShipperBroker(
-                        eventObject,
-                        this.item,
-                        'shipper'
-                    );
-                }, 100);
-            }
-        }
+        this.bodyActions.emit(action);
     }
 
     // RAITING

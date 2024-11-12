@@ -270,15 +270,13 @@ export class MapsService implements OnDestroy {
                     disabled: data.status == 0 || data.isClosed,
                 },
                 {
-                    title: data.favourite
-                        ? 'Remove from Favourite'
-                        : 'Move to Favourite',
-                    name: data.favourite
-                        ? 'remove-from-favourite'
-                        : 'move-to-favourite',
+                    title: data.isFavorite
+                        ? 'Unmark Favorite'
+                        : 'Mark as Favorite',
+                    name: 'favorite',
                     svg: 'assets/svg/common/ic_star.svg',
                     activate: true,
-                    blueIcon: data.favourite,
+                    blueIcon: data.isFavorite,
                     show: true,
                     iconName: 'ic_star',
                     disabled:
@@ -295,27 +293,27 @@ export class MapsService implements OnDestroy {
                 {
                     title: 'border',
                 },
-                {
-                    title: 'Share',
-                    name: 'share',
-                    svg: 'assets/svg/common/share-icon.svg',
-                    show: true,
-                    iconName: 'share',
-                },
-                {
-                    title: 'Print',
-                    name: 'print',
-                    svg: 'assets/svg/common/ic_fax.svg',
-                    show: true,
-                    iconName: 'print',
-                },
-                {
-                    title: 'border',
-                },
+                // {
+                //     title: 'Share',
+                //     name: 'share',
+                //     svg: 'assets/svg/common/share-icon.svg',
+                //     show: true,
+                //     iconName: 'share',
+                // },
+                // {
+                //     title: 'Print',
+                //     name: 'print',
+                //     svg: 'assets/svg/common/ic_fax.svg',
+                //     show: true,
+                //     iconName: 'print',
+                // },
+                // {
+                //     title: 'border',
+                // },
                 {
                     title:
                         data.status == 0 || data.isClosed
-                            ? 'Reopen Business'
+                            ? 'Open Business'
                             : 'Close Business',
                     name:
                         data.status == 0 || data.isClosed
@@ -332,7 +330,7 @@ export class MapsService implements OnDestroy {
                 },
                 {
                     title: 'Delete',
-                    name: 'delete-item',
+                    name: 'delete',
                     type: 'truck',
                     text: 'Are you sure you want to delete truck(s)?',
                     svg: 'assets/svg/common/ic_trash_updated.svg',

@@ -145,20 +145,22 @@
                     }}</span>
                 </div>
             </div>
-            <div *ngIf="sortCategory.name == 'Last Used Date'">
-                <div class="marker-like-text marker-medium-text">
-                    Last Used
-                    <span class="marker-bold-text">{{
-                        item?.lastUsed != null
-                            ? (item?.lastUsed | formatDateP)
-                            : item?.lastVisited != null
-                            ? (item.lastVisited | formatDateP)
-                            : item?.updatedAt != null
-                            ? (item.updatedAt | formatDateP)
-                            : '&nbsp;'
-                    }}</span>
+
+            <ng-container *ngIf="sortCategory.name === 'Last Used'">
+                <div>
+                    <div class="marker-like-text marker-medium-text">
+                        Last Used
+                        <span class="marker-bold-text">{{
+                            item?.tableLastUsed ?? item?.lastVisited != null
+                                ? (item.lastVisited | formatDateP)
+                                : item?.updatedAt != null
+                                ? (item.updatedAt | formatDateP)
+                                : '&nbsp;'
+                        }}</span>
+                    </div>
                 </div>
-            </div>
+            </ng-container>
+
             <div *ngIf="sortCategory.name == 'Pickups'">
                 <div class="marker-like-text marker-medium-text">
                     <span class="marker-bold-text">{{
@@ -212,12 +214,40 @@
                     Open Until <span class="marker-bold-text">8:00 PM</span>
                 </div>
             </div>
-            <div *ngIf="sortCategory.name == 'Orders'">
-                <div class="marker-like-text">
-                    <span class="marker-bold-text">{{ item.order }}</span>
-                    Orders
+
+            <ng-container *ngIf="sortCategory.name === 'Bill Count'">
+                <div>
+                    <div class="marker-like-text">
+                        <span class="marker-bold-text">{{
+                            item.tableRepairCountBill ?? 0
+                        }}</span>
+                        Bill
+                    </div>
                 </div>
-            </div>
+            </ng-container>
+
+            <ng-container *ngIf="sortCategory.name === 'Order Count'">
+                <div>
+                    <div class="marker-like-text">
+                        <span class="marker-bold-text">{{
+                            item.tableRepairCountOrder ?? 0
+                        }}</span>
+                        Order
+                    </div>
+                </div>
+            </ng-container>
+
+            <ng-container *ngIf="sortCategory.name === 'Total Expense'">
+                <div>
+                    <div class="marker-like-text">
+                        Total Expense
+                        <span class="marker-bold-text">{{
+                            item.tableExpense
+                        }}</span>
+                    </div>
+                </div>
+            </ng-container>
+
             <div *ngIf="sortCategory.name == 'Transaction'">
                 <div class="marker-like-text">
                     <span class="marker-bold-text">{{

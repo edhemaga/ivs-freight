@@ -216,9 +216,11 @@
                     align-items: center;
                     height: 26px;
                     border-radius: 2px;
+                    transition: background 0.2s ease-in-out;
 
-                    &:hover {
+                    &:has(.map-list-sort-category:hover) {
                         background: $bw2;
+                        cursor: pointer;
                     }
 
                     &.active {
@@ -246,7 +248,19 @@
                 .map-list-sort-arrows {
                     width: 26px;
                     height: 26px;
-                    cursor: pointer;
+                    transition: background 0.2s ease-in-out;
+                    border-radius: 2px;
+
+                    &:hover {
+                        background: $ta-blue-16;
+                        cursor: pointer;
+
+                        svg {
+                            path {
+                                fill: $ta-blue-15;
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -495,6 +509,7 @@
 
     svg {
         path {
+            transition: fill 0.2s ease-in-out;
             fill: $white-4;
         }
     }
