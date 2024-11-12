@@ -99,50 +99,37 @@
 
             <div
                 class="payment-history-row d-grid"
-                *ngFor="let payments of deduction.childPayrollDeductions"
+                *ngFor="let payments of deduction.childPayrollDeductions; let i = index"
             >
                 <div
                     class="text-color-muted text-size-14 ta-font-medium text-center"
+                    [ngClass]="{'text-color-blue-13': payments.isNext}"
                 >
                     {{ payments.currentRecurrance }}
                 </div>
-                <div class="text-color-black-2 ta-font-regular text-size-14">
-                    {{ payments.date | date : 'MM/dd/yy' }}
+                <div class=" ta-font-regular text-size-14"
+                [ngClass]="payments.isNext? 'text-color-muted' : 'text-color-black-2'">
+                    {{ payments.date | date : 'MM/dd/yy' }} <ng-container *ngIf="payments.isNext">
+                        <span  
+                        [ngClass]="payments.isLast? 'text-color-blue-13' : 'text-color-muted'">
+                            {{payments.isLast ? '- Last Payment' : '- Next Payment'}}
+                        </span>
+                    </ng-container>
                 </div>
                 <div
-                    class="text-color-black-2 ta-font-regular text-size-14 text-right"
+                    class=" ta-font-regular text-size-14 text-right"
+                    [ngClass]="payments.isNext? 'text-color-muted' : 'text-color-black-2'"
                 >
-                    +$ {{ payments.payment }}
+                    +$ {{ payments.payment }} 
                 </div>
                 <div
                     class="text-color-black-2 text-size-14 ta-font-semi-bold text-right"
+                    [ngClass]="payments.isNext? 'text-color-light-grey-2' : 'text-color-black-2'"
                 >
                     $
-                    {{ payments.totalPayment }}
+                    {{ payments.payment }}
                 </div>
             </div>
-
-            <!--TODO: Check after backend is updated
-             <div class="payment-history-row d-grid mb-12">
-                <div
-                    class="text-color-blue-13 text-size-14 ta-font-medium text-center"
-                >
-                    1
-                </div>
-                <div class="text-color-muted ta-font-regular text-size-14">
-                    04/04/24 - Next Payment
-                </div>
-                <div
-                    class="text-color-muted ta-font-regular text-size-14 text-right"
-                >
-                    +$100.00
-                </div>
-                <div
-                    class="text-color-light-grey-2 text-size-14 ta-font-semi-bold text-right"
-                >
-                    $100.00
-                </div>
-            </div> -->
         </app-ta-custom-card>
     </ng-container>
 </ng-template>
