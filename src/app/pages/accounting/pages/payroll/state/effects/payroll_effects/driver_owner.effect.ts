@@ -96,6 +96,7 @@ export function closePayrollOwnerReportEffect(
                             action.selectedLoadIds,
                             action.selectedDeductionIds,
                             action.selectedCreditIds,
+                            action.selectedCreditIds,
                             action.paymentType,
                             action.otherPaymentType
                         )

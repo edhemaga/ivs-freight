@@ -336,15 +336,16 @@ export class PayrollService {
         selectedLoadIds?: number[],
         selectedDeducionIds?: number[],
         selectedCreditIds?: number[],
+        selectedFuelIds?: number[],
         paymentType?: PayrollPaymentType,
         otherPaymentType?: PayrollOtherPaymentType
     ): Observable<PayrollDriverMileageResponse> {
         const body: ClosePayrollOwnerCommand = {
             id: reportId,
-            selectedDeducionIds: selectedDeducionIds || [],
-            selectedLoadIds: selectedLoadIds || [],
-            selectedCreditIds: selectedCreditIds || [],
-            selectedFuelIds: [],
+            selectedDeducionIds: selectedDeducionIds,
+            selectedLoadIds: selectedLoadIds,
+            selectedCreditIds: selectedCreditIds,
+            selectedFuelIds: selectedFuelIds,
             pay: {
                 type: paymentType,
                 otherPaymentType,
