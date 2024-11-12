@@ -20,6 +20,7 @@ import { AppComponent } from '@app/app.component';
 import { NavigationComponent } from '@core/components/navigation/pages/navigation/navigation.component';
 import { TaCustomToastMessagesComponent } from '@shared/components/ta-custom-toast-messages/ta-custom-toast-messages.component';
 import { TaCustomScrollbarComponent } from '@shared/components/ta-custom-scrollbar/ta-custom-scrollbar.component';
+import { RightSidePanelComponent } from '@core/components/right-side-panel/components/right-side-panel/right-side-panel.component';
 
 // Pipes
 import { ChangeLogoPipe } from '@core/components/navigation/pipes/change-logo.pipe';
@@ -71,6 +72,7 @@ function playerFactory() {
         BlockedContentPipe,
         NavigationComponent,
         TaCustomScrollbarComponent,
+        RightSidePanelComponent,
         ReactiveFormsModule.withConfig({
             warnOnNgModelWithFormControl: 'never',
         }),
