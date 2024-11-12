@@ -58,6 +58,7 @@ export class PayrollDeductionModalComponent implements OnInit {
     @Input() editData: PayrollModal;
     public deduction: PayrollDeductionResponse;
     public formLoaded: boolean = false;
+    public isLimited: boolean = false;
 
     constructor(
         private fb: FormBuilder,
@@ -74,8 +75,15 @@ export class PayrollDeductionModalComponent implements OnInit {
             this.payrollDeductionService
                 .getPayrollDeductionById(this.editData.data.id)
                 .subscribe((deduction) => {
-                    // TODO: This will be limited once added on backend
-                    if(this.deduction?.limitedAmount) deduction.childPayrollDeductions = deduction.childPayrollDeductions.slice().reverse();
+                    this.isLimited = deduction?.childPayrollDeductions[0]?.limited;
+
+                    // Backend is not returining calculations so we need to do it
+                    deduction.childPayrollDeductions.forEach((payroll, index) => {
+                        (payroll as any).totalPayment = MethodsCalculationsHelper.convertNumberInThousandSep(payroll.payment * (index + 1));
+                        payroll.payment = MethodsCalculationsHelper.convertNumberInThousandSep(payroll.payment) as any;
+                    });
+
+                    if(this.isLimited) deduction.childPayrollDeductions = deduction.childPayrollDeductions.slice().reverse();
                     this.deduction = deduction;
                     this.editData = {
                         ...this.editData,
