@@ -7,28 +7,28 @@ export class PMCardsModalData {
             field: 'oilFilter',
             key: 'oilFilter.expirationMiles',
             secondKey: 'oilFilter.percentage',
-            selected: true,
+            type: 'progress',
         },
         {
             title: 'Air Filter',
             field: 'airFilter',
             key: 'airFilter.expirationMiles',
             secondKey: 'airFilter.percentage',
-            selected: true,
+            type: 'progress',
         },
         {
             title: 'Transmission Fluid',
             field: 'transFluid',
             key: 'transFluid.expirationMiles',
             secondKey: 'transFluid.percentage',
-            selected: true,
+            type: 'progress',
         },
         {
             title: 'Belts',
             field: 'belts',
             key: 'belts.expirationMiles',
             secondKey: 'belts.percentage',
-            selected: true,
+            type: 'progress',
         },
     ];
 
@@ -49,9 +49,9 @@ export class PMCardsModalData {
             selected: true,
         },
         {
-            title: 'Repair Shop - Name',
-            key: 'textRepairShop',
-            selected: true,
+            title: 'Shop Detail • Address',
+            secondTitle: 'Address',
+            key: 'textRepairShopAddress',
         },
     ];
 
@@ -82,14 +82,20 @@ export class PMCardsModalData {
             key: 'lastService',
         },
         {
-            id: 6,
-            title: 'Repair Shop - Name',
-            key: 'textRepairShop',
-        },
-        {
-            id: 7,
-            title: 'Repair Shop - Address',
-            key: 'textRepairShopAddress',
+            isDropdown: true,
+            title: 'Shop Detail',
+            values: [
+                {
+                    title: 'Shop Detail • Name',
+                    secondTitle: 'Name',
+                    key: 'textRepairShop',
+                },
+                {
+                    title: 'Shop Detail • Address',
+                    secondTitle: 'Address',
+                    key: 'textRepairShopAddress',
+                },
+            ],
         },
         {
             id: 8,
@@ -97,6 +103,7 @@ export class PMCardsModalData {
             field: 'oilFilter',
             key: 'oilFilter.expirationMiles',
             secondKey: 'oilFilter.percentage',
+            type: 'progress',
         },
         {
             id: 9,
@@ -104,6 +111,7 @@ export class PMCardsModalData {
             field: 'airFilter',
             key: 'airFilter.expirationMiles',
             secondKey: 'airFilter.percentage',
+            type: 'progress',
         },
         {
             id: 10,
@@ -111,6 +119,7 @@ export class PMCardsModalData {
             field: 'belts',
             key: 'belts.expirationMiles',
             secondKey: 'belts.percentage',
+            type: 'progress',
         },
         {
             id: 11,
@@ -118,6 +127,7 @@ export class PMCardsModalData {
             field: 'transFluid',
             key: 'transFluid.expirationMiles',
             secondKey: 'transFluid.percentage',
+            type: 'progress',
         },
         {
             id: 12,
@@ -125,6 +135,7 @@ export class PMCardsModalData {
             field: 'engTuneUp',
             key: 'engTuneUp.expirationMiles',
             secondKey: 'engTuneUp.percentage',
+            type: 'progress',
         },
         {
             id: 13,
@@ -132,6 +143,7 @@ export class PMCardsModalData {
             field: 'alignment',
             key: 'alignment.expirationMiles',
             secondKey: 'alignment.percentage',
+            type: 'progress',
         },
         {
             id: 14,
@@ -139,6 +151,7 @@ export class PMCardsModalData {
             field: 'battery',
             key: 'battery.expirationMiles',
             secondKey: 'battery.percentage',
+            type: 'progress',
         },
         {
             id: 15,
@@ -146,6 +159,7 @@ export class PMCardsModalData {
             field: 'brakeChamber',
             key: 'brakeChamber.expirationMiles',
             secondKey: 'brakeChamber.percentage',
+            type: 'progress',
         },
         {
             id: 16,
@@ -153,6 +167,7 @@ export class PMCardsModalData {
             field: 'oilPump',
             key: 'oilPump.expirationMiles',
             secondKey: 'oilPump.percentage',
+            type: 'progress',
         },
         {
             id: 17,
@@ -160,6 +175,7 @@ export class PMCardsModalData {
             field: 'waterPump',
             key: 'waterPump.expirationMiles',
             secondKey: 'waterPump.percentage',
+            type: 'progress',
         },
         {
             id: 18,
@@ -167,6 +183,7 @@ export class PMCardsModalData {
             field: 'fuelPump',
             key: 'fuelPump.expirationMiles',
             secondKey: 'fuelPump.percentage',
+            type: 'progress',
         },
         {
             id: 19,
@@ -174,6 +191,7 @@ export class PMCardsModalData {
             field: 'airCompressor',
             key: 'airCompressor.expirationMiles',
             secondKey: 'airCompressor.percentage',
+            type: 'progress',
         },
         {
             id: 20,
@@ -181,6 +199,7 @@ export class PMCardsModalData {
             field: 'acCompressor',
             key: 'acCompressor.expirationMiles',
             secondKey: 'acCompressor.percentage',
+            type: 'progress',
         },
         {
             id: 21,
@@ -188,6 +207,7 @@ export class PMCardsModalData {
             field: 'turbo',
             key: 'turbo.expirationMiles',
             secondKey: 'turbo.percentage',
+            type: 'progress',
         },
         {
             id: 22,
@@ -195,6 +215,7 @@ export class PMCardsModalData {
             field: 'radiator',
             key: 'radiator.expirationMiles',
             secondKey: 'radiator.percentage',
+            type: 'progress',
         },
     ];
 
@@ -225,14 +246,20 @@ export class PMCardsModalData {
             key: 'lastService',
         },
         {
-            id: 6,
-            title: 'Repair Shop - Name',
-            key: 'textRepairShop',
-        },
-        {
-            id: 7,
-            title: 'Repair Shop - Address',
-            key: 'textRepairShopAddress',
+            isDropdown: true,
+            title: 'Shop Detail',
+            values: [
+                {
+                    title: 'Shop Detail • Name',
+                    secondTitle: 'Name',
+                    key: 'textRepairShop',
+                },
+                {
+                    title: 'Shop Detail • Address',
+                    secondTitle: 'Address',
+                    key: 'textRepairShopAddress',
+                },
+            ],
         },
         {
             id: 8,
@@ -240,6 +267,7 @@ export class PMCardsModalData {
             field: 'general',
             key: 'general.expirationDaysText',
             secondKey: 'general.percentage',
+            type: 'progress',
         },
         {
             id: 9,
@@ -247,6 +275,7 @@ export class PMCardsModalData {
             field: 'reeferUnit',
             key: 'reeferUnit.expirationDaysText',
             secondKey: 'reeferUnit.percentage',
+            type: 'progress',
         },
         {
             id: 10,
@@ -254,6 +283,7 @@ export class PMCardsModalData {
             field: 'alignment',
             key: 'alignment.expirationDaysText',
             secondKey: 'alignment.percentage',
+            type: 'progress',
         },
         {
             id: 11,
@@ -261,6 +291,7 @@ export class PMCardsModalData {
             field: 'ptoPump',
             key: 'ptoPump.expirationDaysText',
             secondKey: 'ptoPump.percentage',
+            type: 'progress',
         },
     ];
 }

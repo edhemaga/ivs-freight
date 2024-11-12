@@ -60,7 +60,11 @@ import { PmListTrailerQuery } from '@pages/pm-truck-trailer/state/pm-list-traile
 import { ThousandSeparatorPipe } from '@shared/pipes/thousand-separator.pipe';
 import { ThousandToShortFormatPipe } from '@shared/pipes/thousand-to-short-format.pipe';
 import { select, Store } from '@ngrx/store';
-import { selectActiveTabCards, selectInactiveTabCards } from '../pm-card-modal/state';
+import {
+    selectActiveTabCards,
+    selectInactiveTabCards,
+} from '../pm-card-modal/state';
+import { RepairOrderModalComponent } from '@pages/repair/pages/repair-modals/repair-order-modal/repair-order-modal.component';
 
 @Component({
     selector: 'app-pm-table',
@@ -183,7 +187,6 @@ export class PmTableComponent implements OnInit, AfterViewInit, OnDestroy {
         this.tableOptions = {
             toolbarActions: {
                 showGeneralPmBtn: true,
-                hideOpenModalButton: true,
                 hideDeleteButton: true,
                 hideActivationButton: true,
                 viewModeOptions: [
@@ -307,7 +310,6 @@ export class PmTableComponent implements OnInit, AfterViewInit, OnDestroy {
         if (event.action === TableStringEnum.TAB_SELECTED) {
             this.selectedTab = event.tabData.field;
             this.sendPMData();
-        } else if (event.action === TableStringEnum.OPEN_MODAL) {
         } else if (event.action === TableStringEnum.OPEN_GENERAL_PM) {
             if (this.selectedTab === TableStringEnum.ACTIVE) {
                 this.modalService.openModal(
@@ -332,6 +334,19 @@ export class PmTableComponent implements OnInit, AfterViewInit, OnDestroy {
             }
         } else if (event.action === TableStringEnum.VIEW_MODE) {
             this.activeViewMode = event.mode;
+        } else if (event.action === TableStringEnum.OPEN_MODAL) {
+            this.modalService.openModal(
+                RepairOrderModalComponent,
+                {
+                    size: TableStringEnum.LARGE,
+                },
+                {
+                    type:
+                        this.selectedTab === TableStringEnum.ACTIVE
+                            ? TableStringEnum.NEW_TRUCK
+                            : TableStringEnum.NEW_TRAILER,
+                }
+            );
         }
     }
 
@@ -855,9 +870,11 @@ export class PmTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 if (!isShowMore) {
                     this.viewData = res.pagination.data;
 
-                    this.viewData = this.viewData.map((data: PMTruckUnitResponse) => {
-                        return this.mapPmTruckData(data);
-                    });
+                    this.viewData = this.viewData.map(
+                        (data: PMTruckUnitResponse) => {
+                            return this.mapPmTruckData(data);
+                        }
+                    );
                 } else {
                     const newData = [...this.viewData];
 
@@ -892,15 +909,19 @@ export class PmTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 if (!isShowMore) {
                     this.viewData = res.pagination.data;
 
-                    this.viewData = this.viewData.map((data: PMTrailerUnitResponse) => {
-                        return this.mapPmTrailerData(data);
-                    });
+                    this.viewData = this.viewData.map(
+                        (data: PMTrailerUnitResponse) => {
+                            return this.mapPmTrailerData(data);
+                        }
+                    );
                 } else {
                     const newData = [...this.viewData];
 
-                    res.pagination.data.forEach((data: PMTrailerUnitResponse) => {
-                        newData.push(this.mapPmTrailerData(data));
-                    });
+                    res.pagination.data.forEach(
+                        (data: PMTrailerUnitResponse) => {
+                            newData.push(this.mapPmTrailerData(data));
+                        }
+                    );
 
                     this.viewData = [...newData];
                 }
