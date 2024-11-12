@@ -76,7 +76,7 @@ import { PayrollFacadeService } from '@pages/accounting/pages/payroll/state/serv
         TaAppTooltipV2Component,
 
         // Pipes
-        FormatDatePipe
+        FormatDatePipe,
     ],
     templateUrl: './payroll-base-modal.component.html',
     styleUrls: ['./payroll-base-modal.component.scss'],
@@ -166,30 +166,14 @@ export class PayrollBaseModalComponent implements OnInit {
             .get(PayrollStringEnum.RECURRING)
             .valueChanges.pipe(takeUntil(this.destroy$))
             .subscribe((value) => {
-                const payAmount = this.baseForm.get(
-                    PayrollStringEnum.LIMITED_AMOUNT
-                );
-                const numberOfPayments = this.baseForm.get(
-                    PayrollStringEnum.LIMITED_NUMBER
-                );
-
                 if (value) {
                     const tabToCheck = this.periodTabs[0];
                     tabToCheck.checked = true;
-                    payAmount.setValidators(Validators.required);
-                    numberOfPayments.setValidators(Validators.required);
                 } else {
                     this.periodTabs = this.payrollCreditConst.periodTabs.map(
                         (tab) => ({ ...tab, checked: false })
                     );
-                    numberOfPayments.patchValue(null);
-                    payAmount.patchValue(null);
-                    payAmount.clearValidators();
-                    numberOfPayments.clearValidators();
                 }
-
-                payAmount.updateValueAndValidity();
-                numberOfPayments.updateValueAndValidity();
             });
     }
 
@@ -286,12 +270,16 @@ export class PayrollBaseModalComponent implements OnInit {
             this.baseForm
                 .get(PayrollStringEnum.DRIVER_ID)
                 .setValidators(Validators.required);
-            this.baseForm.get(PayrollStringEnum.SELECTED_TRUCK_ID).setValue(null);
+            this.baseForm
+                .get(PayrollStringEnum.SELECTED_TRUCK_ID)
+                .setValue(null);
         } else if (tab.id === 2) {
             this.baseForm
                 .get(PayrollStringEnum.TRUCK_ID)
                 .setValidators(Validators.required);
-            this.baseForm.get(PayrollStringEnum.SELECTED_DRIVER_ID).setValue(null);
+            this.baseForm
+                .get(PayrollStringEnum.SELECTED_DRIVER_ID)
+                .setValue(null);
         }
 
         // Re-validate the form to apply changes
@@ -315,6 +303,13 @@ export class PayrollBaseModalComponent implements OnInit {
         return (
             this.isDeductionModal &&
             !this.baseForm.get(PayrollStringEnum.RECURRING)?.value
+        );
+    }
+
+    public get isLimitedPayment(): boolean {
+        return (
+            this.isDeductionModal &&
+            this.baseForm.get(PayrollStringEnum.LIMITED)?.value
         );
     }
 

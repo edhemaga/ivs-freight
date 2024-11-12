@@ -74,6 +74,8 @@ export class PayrollDeductionModalComponent implements OnInit {
             this.payrollDeductionService
                 .getPayrollDeductionById(this.editData.data.id)
                 .subscribe((deduction) => {
+                    // TODO: This will be limited once added on backend
+                    if(this.deduction?.limitedAmount) deduction.childPayrollDeductions = deduction.childPayrollDeductions.slice().reverse();
                     this.deduction = deduction;
                     this.editData = {
                         ...this.editData,
@@ -133,8 +135,8 @@ export class PayrollDeductionModalComponent implements OnInit {
 
     private setRequiredFields(): void {
         this.payrollCreditForm
-            .get(PayrollStringEnum.RECURRING)
-            ?.valueChanges.subscribe((isRecurring) => {
+            .get(PayrollStringEnum.LIMITED)
+            ?.valueChanges.subscribe((isLimited) => {
                 const limitedNumberControl = this.payrollCreditForm.get(
                     PayrollStringEnum.LIMITED_NUMBER
                 );
@@ -142,7 +144,7 @@ export class PayrollDeductionModalComponent implements OnInit {
                     PayrollStringEnum.LIMITED_AMOUNT
                 );
 
-                if (isRecurring) {
+                if (isLimited) {
                     limitedNumberControl?.setValidators([Validators.required]);
                     limitedAmountControl?.setValidators([Validators.required]);
                 } else {
