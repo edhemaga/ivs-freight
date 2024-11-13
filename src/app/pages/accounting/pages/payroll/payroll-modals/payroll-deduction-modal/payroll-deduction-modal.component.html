@@ -120,14 +120,13 @@
                     class=" ta-font-regular text-size-14 text-right"
                     [ngClass]="payments.isNext? 'text-color-muted' : 'text-color-black-2'"
                 >
-                    +$ {{ payments.payment }} 
+                    {{getPaymentString()}}
                 </div>
                 <div
                     class="text-color-black-2 text-size-14 ta-font-semi-bold text-right"
                     [ngClass]="payments.isNext? 'text-color-light-grey-2' : 'text-color-black-2'"
                 >
-                    $
-                    {{ payments.payment }}
+                    {{calculateRemainingPayment(i)}}
                 </div>
             </div>
         </app-ta-custom-card>

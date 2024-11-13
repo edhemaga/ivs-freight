@@ -75,7 +75,8 @@ export class PayrollDeductionModalComponent implements OnInit {
             this.payrollDeductionService
                 .getPayrollDeductionById(this.editData.data.id)
                 .subscribe((deduction) => {
-                    this.isLimited = deduction?.childPayrollDeductions[0]?.limited;
+                    this.isLimited =
+                        deduction?.childPayrollDeductions[0]?.limited;
 
                     this.deduction = deduction;
                     this.editData = {
@@ -246,6 +247,20 @@ export class PayrollDeductionModalComponent implements OnInit {
                     this.onCloseModal();
                 });
         }
+    }
+
+    public calculateRemainingPayment(index: number): string {
+        const value =
+            this.deduction.amount - index * this.deduction.limitedAmount;
+        return `$${MethodsCalculationsHelper.convertNumberInThousandSep(
+            value
+        )}`;
+    }
+
+    public getPaymentString(): string {
+        return `$${MethodsCalculationsHelper.convertNumberInThousandSep(
+            this.deduction.limitedAmount
+        )}`;
     }
 
     ngOnDestroy(): void {
