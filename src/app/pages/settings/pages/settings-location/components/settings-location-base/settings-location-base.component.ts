@@ -94,9 +94,9 @@ export abstract class SettingsLocationBaseComponent implements OnDestroy {
         item: any
     ): void {
         setTimeout(() => {
-            if(eventData.type === TableStringEnum.VIEW_DETAILS) {
-                if(action === TableStringEnum.REPAIR_SHOP_3) {
-                this.router.navigate([`/list/repair/${item.id}/shop-details`]);
+            if (eventData.type === TableStringEnum.VIEW_DETAILS) {
+                if (action === TableStringEnum.REPAIR_SHOP_3) {
+                    this.router.navigate([`/list/repair/${item.id}/details`]);
                 }
             } else {
                 const name = DropActionNameHelper.dropActionNameDriver(

@@ -1711,7 +1711,6 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
                         clearInterval(interval);
                     }, 900);
                 },
-                error: () => {},
             });
     }
 

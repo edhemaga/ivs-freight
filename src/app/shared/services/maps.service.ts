@@ -352,7 +352,7 @@ export class MapsService implements OnDestroy {
             linkEnd = '/shipper-details';
         } else if (type == 'repairShop') {
             linkStart = '/list/repair/';
-            linkEnd = '/shop-details';
+            linkEnd = '/details';
         } else if (type == 'fuelStop') {
             doesNotHaveRout = true;
         } else if (type == 'accident') {

@@ -282,10 +282,6 @@ export class PmService {
         return this.repairService.apiRepairPmTrailerIdDelete(id);
     }
 
-    public getRepairList() {
-        return this.repairService.apiRepairListGet();
-    }
-
     public getRepairPmTrailerFilter() {
         return this.repairService.apiRepairPmTrailerFilterListGet();
     }

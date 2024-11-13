@@ -1,6 +1,12 @@
-import { RepairShopServiceTypeCommand, RepairShopContactCommand, AddressEntity, PayPeriod, DayOfWeek, RepairShopOpenHoursCommand, FileResponse } from "appcoretruckassist";
+import {
+    RepairShopServiceTypeCommand,
+    RepairShopContactCommand,
+    AddressEntity,
+    RepairShopOpenHoursCommand,
+} from 'appcoretruckassist';
 
 export interface CreateShopModel {
+    id?: number;
     name: string;
     phone: string;
     phoneExt: string;
