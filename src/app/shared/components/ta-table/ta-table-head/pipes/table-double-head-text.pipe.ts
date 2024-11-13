@@ -22,6 +22,15 @@ export class TableDoubleHeadTextPipe implements PipeTransform {
 
         return emptyStringCondition
             ? TableHeadTitleStringEnum.EMPTY_STRING_CODE
+            : tableHeadTitle === TableHeadTitleStringEnum.DESCRIPTION &&
+              gridNameTitle === TableHeadTitleStringEnum.FUEL
+            ? TableHeadTitleStringEnum.ITEM
+            : tableHeadTitle === TableHeadTitleStringEnum.NUMBER_2 &&
+              gridNameTitle === TableHeadTitleStringEnum.FUEL
+            ? TableHeadTitleStringEnum.CARD
+            : tableHeadTitle === TableHeadTitleStringEnum.FUEL_STOP_NAME &&
+              gridNameTitle === TableHeadTitleStringEnum.FUEL
+            ? TableHeadTitleStringEnum.FUEL_STOP
             : tableHeadTitle === TableHeadTitleStringEnum.PRIMARY
             ? TableHeadTitleStringEnum.PHONE
             : tableHeadTitle === TableHeadTitleStringEnum.PRIMARY_2

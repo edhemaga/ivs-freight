@@ -92,4 +92,7 @@ export enum TableHeadTitleStringEnum {
     TWIC_EXP = 'TWIC EXP',
     MEDICAL_EXP = 'MEDICAL EXP',
     HIRED = 'HIRED',
+    CARD = 'CARD',
+    FUEL_STOP_NAME = 'NAME',
+    FUEL_STOP = 'FUEL STOP'
 }

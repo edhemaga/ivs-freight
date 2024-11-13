@@ -380,7 +380,7 @@ export enum TableStringEnum {
     DELETE_OWNER = 'delete-owner',
 
     //Fuel
-    FUEL = 'Fuel',
+    FUEL = 'FUEL',
     FUEL_1 = 'fuel',
     FUEL_TRANSACTION = 'FUEL_TRANSACTION',
     FUEL_TRANSACTION_TEXT = 'fuel transaction',

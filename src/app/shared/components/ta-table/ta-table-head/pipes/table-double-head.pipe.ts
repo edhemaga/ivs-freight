@@ -108,6 +108,14 @@ export class TableDoubleHeadPipe implements PipeTransform {
                     tableHeadTitle === TableHeadTitleStringEnum.PAY_TYPE ||
                     tableHeadTitle === TableHeadTitleStringEnum.NAME);
 
+            const fuelTableColumnsCondition = 
+                gridNameTitle === TableHeadTitleStringEnum.FUEL &&
+                    (
+                        tableHeadTitle === TableHeadTitleStringEnum.DESCRIPTION ||
+                        tableHeadTitle === TableHeadTitleStringEnum.NUMBER_2 ||
+                        tableHeadTitle === TableHeadTitleStringEnum.FUEL_STOP_NAME
+                    );
+
             if (
                 contactsTableColumnsCondition ||
                 pmTableColumnsCondition ||
@@ -118,7 +126,8 @@ export class TableDoubleHeadPipe implements PipeTransform {
                 brokerTableColumnsCondition ||
                 shipperTableColumnsCondition ||
                 loadTableColumnsCondition ||
-                userTableColumnsCondition
+                userTableColumnsCondition ||
+                fuelTableColumnsCondition
             ) {
                 return true;
             }
@@ -219,6 +228,14 @@ export class TableDoubleHeadPipe implements PipeTransform {
                     tableHeadTitle !== TableHeadTitleStringEnum.PAY_TYPE &&
                     tableHeadTitle !== TableHeadTitleStringEnum.NAME);
 
+            const fuelTableColumnsCondition = 
+                gridNameTitle !== TableHeadTitleStringEnum.FUEL ||
+                (
+                    tableHeadTitle !== TableHeadTitleStringEnum.DESCRIPTION &&
+                    tableHeadTitle !== TableHeadTitleStringEnum.NUMBER_2 &&
+                    tableHeadTitle !== TableHeadTitleStringEnum.FUEL_STOP_NAME
+                );
+
             return (
                 contactsTableColumnsCondition &&
                 pmTableColumnsCondition &&
@@ -229,7 +246,8 @@ export class TableDoubleHeadPipe implements PipeTransform {
                 brokerTableColumnsCondition &&
                 shipperTableColumnsCondition &&
                 loadTableColumnsCondition &&
-                userTableColumnsCondition
+                userTableColumnsCondition &&
+                fuelTableColumnsCondition
             );
         }
     }
