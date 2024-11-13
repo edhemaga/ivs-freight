@@ -259,31 +259,14 @@ export class RepairShopDetailsComponent implements OnInit, OnDestroy {
     }
 
     public deleteRepairShop(id: number): void {
-        const last = this.repairShopList.at(-1);
-
-        if (
-            last.id ===
-            this.repairMinimalListStore.getValue().ids[this.currentIndex]
-        ) {
-            this.currentIndex = --this.currentIndex;
-        } else {
-            this.currentIndex = ++this.currentIndex;
-        }
-
         this.repairService
             .deleteRepairShop(id)
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
-                    if (
-                        this.repairMinimalListStore.getValue().ids.length >= 1
-                    ) {
-                        this.router.navigate([
-                            `/list/repair/${
-                                this.repairShopList[this.currentIndex].id
-                            }/shop-details`,
-                        ]);
-                    }
+                    this.router.navigate([
+                        RepairShopDetailsStringEnum.REPAIR_LIST_ROUTE,
+                    ]);
                 },
                 error: () => {
                     this.router.navigate([

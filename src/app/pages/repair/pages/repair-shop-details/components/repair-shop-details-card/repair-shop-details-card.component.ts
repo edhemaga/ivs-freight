@@ -32,6 +32,9 @@ import { TaUploadFilesComponent } from '@shared/components/ta-upload-files/ta-up
 // enums
 import { RepairShopDetailsStringEnum } from '@pages/repair/pages/repair-shop-details/enums';
 
+// helpers
+import { RepairShopDetailsCardHelper } from '@pages/repair/pages/repair-shop-details/components/repair-shop-details-card/utils/helpers';
+
 // models
 import {
     RepairShopMinimalResponse,
@@ -137,6 +140,11 @@ export class RepairShopDetailsCard implements OnInit, OnDestroy {
                     folder: RepairShopDetailsStringEnum.COMMON,
                 };
             });
+
+        this.repairShopDropdownList =
+            RepairShopDetailsCardHelper.sortByPinnedAndFavorite(
+                this.repairShopDropdownList
+            );
     }
 
     public onSelectedShop(event: RepairShopResponse): void {

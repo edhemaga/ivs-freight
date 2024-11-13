@@ -344,9 +344,18 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                                 .pipe(takeUntil(this.destroy$))
                                 .subscribe({
                                     next: () => {
-                                        // Remove deleted shop from view
-                                        this.viewData = this.viewData.filter(
-                                            (data) => data.id !== repairShopId
+                                        this.viewData = this.viewData.map(
+                                            (repairShop) => {
+                                                if (
+                                                    repairShop.id ===
+                                                    repairShopId
+                                                ) {
+                                                    repairShop.actionAnimation =
+                                                        TableStringEnum.DELETE;
+                                                }
+
+                                                return repairShop;
+                                            }
                                         );
 
                                         this.updateDataCount();
@@ -362,6 +371,14 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                                                 true
                                             );
                                         }
+
+                                        setTimeout(() => {
+                                            this.viewData =
+                                                MethodsGlobalHelper.closeAnimationAction(
+                                                    true,
+                                                    this.viewData
+                                                );
+                                        }, 900);
                                     },
                                 });
                         } else {

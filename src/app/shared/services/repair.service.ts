@@ -2,6 +2,22 @@ import { Injectable } from '@angular/core';
 
 import { Observable, switchMap, tap } from 'rxjs';
 
+// store
+import { RepairTruckStore } from '@pages/repair/state/repair-truck-state/repair-truck.store';
+import { RepairTrailerStore } from '@pages/repair/state/repair-trailer-state/repair-trailer.store';
+import { RepairShopStore } from '@pages/repair/state/repair-shop-state/repair-shop.store';
+import { RepairDetailsStore } from '@pages/repair/state/repair-details-state/repair-details.store';
+import { RepairItemStore } from '@pages/repair/state/repair-details-item-state/repair-details-item.store';
+import { RepairMinimalListStore } from '@pages/repair/state/driver-details-minimal-list-state/repair-minimal-list.store';
+
+// enums
+import { TableStringEnum } from '@shared/enums/table-string.enum';
+
+// services
+import { RepairService as RepairMainService } from 'appcoretruckassist/api/repair.service';
+import { FormDataService } from '@shared/services/form-data.service';
+import { TruckassistTableService } from '@shared/services/truckassist-table.service';
+
 // models
 import {
     CreateResponse,
@@ -23,24 +39,8 @@ import {
     RepairShopListResponse,
     CreateWithUploadsResponse,
 } from 'appcoretruckassist';
-
-// store
-import { RepairTruckStore } from '@pages/repair/state/repair-truck-state/repair-truck.store';
-import { RepairTrailerStore } from '@pages/repair/state/repair-trailer-state/repair-trailer.store';
-import { RepairShopStore } from '@pages/repair/state/repair-shop-state/repair-shop.store';
-import { RepairDetailsStore } from '@pages/repair/state/repair-details-state/repair-details.store';
-import { RepairItemStore } from '@pages/repair/state/repair-details-item-state/repair-details-item.store';
-import { RepairMinimalListStore } from '@pages/repair/state/driver-details-minimal-list-state/repair-minimal-list.store';
-
-// enums
-import { TableStringEnum } from '@shared/enums/table-string.enum';
-
-// services
-import { RepairService as RepairMainService } from 'appcoretruckassist/api/repair.service';
-import { FormDataService } from '@shared/services/form-data.service';
-import { TruckassistTableService } from '@shared/services/truckassist-table.service';
-import { CreateShopModel } from '@pages/repair/pages/repair-modals/repair-shop-modal/models';
 import { AddUpdateRepairProperties } from '@pages/repair/pages/repair-modals/repair-order-modal/models';
+import { CreateShopModel } from '@pages/repair/pages/repair-modals/repair-shop-modal/models';
 
 @Injectable({
     providedIn: 'root',
@@ -145,7 +145,9 @@ export class RepairService {
                 this.getRepairById(res.id).subscribe({
                     next: (repair: RepairResponse) => {
                         const repairCount = JSON.parse(
-                            localStorage.getItem('repairTruckTrailerTableCount')
+                            localStorage.getItem(
+                                TableStringEnum.REPAIR_TRUCK_TRAILER_TABLE_COUNT
+                            )
                         );
 
                         if (repair.truckId) {
@@ -159,7 +161,7 @@ export class RepairService {
                         }
 
                         localStorage.setItem(
-                            'repairTruckTrailerTableCount',
+                            TableStringEnum.REPAIR_TRUCK_TRAILER_TABLE_COUNT,
                             JSON.stringify({
                                 repairShops: repairCount.repairShops,
                                 repairTrucks: repairCount.repairTrucks,
@@ -221,7 +223,9 @@ export class RepairService {
         return this.repairService.apiRepairIdDelete(repairId).pipe(
             tap(() => {
                 const repairCount = JSON.parse(
-                    localStorage.getItem('repairTruckTrailerTableCount')
+                    localStorage.getItem(
+                        TableStringEnum.REPAIR_TRUCK_TRAILER_TABLE_COUNT
+                    )
                 );
 
                 if (tabSelected === 'active') {
@@ -235,19 +239,13 @@ export class RepairService {
                 }
 
                 localStorage.setItem(
-                    'repairTruckTrailerTableCount',
+                    TableStringEnum.REPAIR_TRUCK_TRAILER_TABLE_COUNT,
                     JSON.stringify({
                         repairTrucks: repairCount.repairTrucks,
                         repairTrailers: repairCount.repairTrailers,
                         repairShops: repairCount.repairShops,
                     })
                 );
-
-                this.tableService.sendActionAnimation({
-                    animation: 'delete',
-                    tab: tabSelected,
-                    id: repairId,
-                });
             })
         );
     }
@@ -259,7 +257,9 @@ export class RepairService {
         return this.repairService.apiRepairListDelete(repairIds).pipe(
             tap(() => {
                 const repairCount = JSON.parse(
-                    localStorage.getItem('repairTruckTrailerTableCount')
+                    localStorage.getItem(
+                        TableStringEnum.REPAIR_TRUCK_TRAILER_TABLE_COUNT
+                    )
                 );
 
                 repairIds.forEach((repairId) => {
@@ -278,7 +278,7 @@ export class RepairService {
                     }
 
                     localStorage.setItem(
-                        'repairTruckTrailerTableCount',
+                        TableStringEnum.REPAIR_TRUCK_TRAILER_TABLE_COUNT,
                         JSON.stringify({
                             repairTrucks: repairCount.repairTrucks,
                             repairTrailers: repairCount.repairTrailers,
@@ -494,31 +494,35 @@ export class RepairService {
     ): Observable<CreateResponse> {
         this.formDataService.extractFormDataFromFunction(repairShop);
 
-        return this.repairShopService.apiRepairshopPost(repairShop).pipe(
+        return this.repairShopService.apiRepairshopPost().pipe(
             tap((res) => {
                 this.getRepairShopById(res.id).subscribe({
                     next: (shop: RepairShopResponse) => {
                         const repairCount = JSON.parse(
-                            localStorage.getItem('repairTruckTrailerTableCount')
+                            localStorage.getItem(
+                                TableStringEnum.REPAIR_TRUCK_TRAILER_TABLE_COUNT
+                            )
                         );
 
+                        this.repairDetailsStore.add(shop);
+                        this.repairItemStore.add(shop);
                         this.repairShopStore.add(shop);
-                        if (repairCount) {
-                            repairCount.repairShops++;
+                        this.repairMinimalListStore.add(shop);
 
-                            localStorage.setItem(
-                                'repairTruckTrailerTableCount',
-                                JSON.stringify({
-                                    repairTrucks: repairCount.repairTrucks,
-                                    repairTrailers: repairCount.repairTrailers,
-                                    repairShops: repairCount.repairShops,
-                                })
-                            );
-                        }
+                        repairCount.repairShops++;
+
+                        localStorage.setItem(
+                            TableStringEnum.REPAIR_TRUCK_TRAILER_TABLE_COUNT,
+                            JSON.stringify({
+                                repairTrucks: repairCount.repairTrucks,
+                                repairTrailers: repairCount.repairTrailers,
+                                repairShops: repairCount.repairShops,
+                            })
+                        );
 
                         this.tableService.sendActionAnimation({
-                            animation: 'add',
-                            tab: 'repair-shop',
+                            animation: TableStringEnum.ADD,
+                            tab: TableStringEnum.REPAIR_SHOP,
                             data: shop,
                             id: shop.id,
                         });
@@ -537,54 +541,11 @@ export class RepairService {
             tap(() => {
                 this.getRepairShopById(repairShop.id).subscribe({
                     next: (shop: RepairShopResponse) => {
-                        this.repairShopStore.remove(
-                            ({ id }) => id === repairShop.id
-                        );
-                        this.repairShopStore.add(shop);
-
-                        // this.repairDetailsStore.update((store) => {
-                        //     let ind;
-                        //     let minimalListIndex;
-                        //     let shopStored = JSON.parse(
-                        //         JSON.stringify(store)
-                        //     );
-
-                        //     shopStored?.repairShop.map(
-                        //         (data: any, index: any) => {
-                        //             if (data.id == shop.id) {
-                        //                 ind = index;
-                        //             }
-                        //         }
-                        //     );
-
-                        //     shopStored?.repairShopMinimal?.pagination?.data.map(
-                        //         (data: any, index: any) => {
-                        //             if (data.id == shop.id) {
-                        //                 minimalListIndex = index;
-                        //                 store.repairShopMinimal.pagination.data[
-                        //                     index
-                        //                 ]['name'] = shop.name;
-                        //                 store.repairShopMinimal.pagination.data[
-                        //                     index
-                        //                 ]['pinned'] = shop.pinned;
-                        //                 store.repairShopMinimal.pagination.data[
-                        //                     index
-                        //                 ]['status'] = shop.status;
-                        //             }
-                        //         }
-                        //     );
-
-                        //     shopStored.repairShop[ind] = shop;
-
-                        //     return {
-                        //         ...store,
-                        //         repairShop: [...shopStored.repairShop],
-                        //     };
-                        // });
+                        this.handleRepairShopUpdateStores(shop);
 
                         this.tableService.sendActionAnimation({
-                            animation: 'update',
-                            tab: 'repair-shop',
+                            animation: TableStringEnum.UPDATE,
+                            tab: TableStringEnum.REPAIR_SHOP,
                             data: shop,
                             id: shop.id,
                         });
@@ -600,8 +561,7 @@ export class RepairService {
                 this.handleRepairShopDeleteStores(repairShopId);
 
                 this.tableService.sendActionAnimation({
-                    animation: 'delete',
-                    tab: 'repair-shop',
+                    animation: TableStringEnum.DELETE,
                     id: repairShopId,
                 });
             })
@@ -689,7 +649,7 @@ export class RepairService {
     /* Store Actions */
 
     private handleRepairShopUpdateStores(repairShop: RepairShopResponse): void {
-        const { id: repairShopId, pinned, status, ratingReviews } = repairShop;
+        const { id: repairShopId, pinned, status } = repairShop;
 
         this.repairMinimalListStore.update(repairShopId, (entity) => ({
             ...entity,
@@ -699,28 +659,24 @@ export class RepairService {
 
         this.repairDetailsStore.update(repairShopId, (entity) => ({
             ...entity,
-            pinned,
-            status,
-            ratingReviews,
+            ...repairShop,
         }));
 
         this.repairItemStore.update(repairShopId, (entity) => ({
             ...entity,
-            pinned,
-            status,
-            ratingReviews,
+            ...repairShop,
         }));
 
         this.repairShopStore.update(({ id }) => id === repairShopId, {
-            pinned,
-            status,
-            ratingReviews,
+            ...repairShop,
         });
     }
 
     private handleRepairShopDeleteStores(repairShopId: number): void {
         const repairCount = JSON.parse(
-            localStorage.getItem('repairTruckTrailerTableCount')
+            localStorage.getItem(
+                TableStringEnum.REPAIR_TRUCK_TRAILER_TABLE_COUNT
+            )
         );
 
         this.repairDetailsStore.remove(({ id }) => id === repairShopId);
@@ -731,7 +687,7 @@ export class RepairService {
         repairCount.repairShops--;
 
         localStorage.setItem(
-            'repairTruckTrailerTableCount',
+            TableStringEnum.REPAIR_TRUCK_TRAILER_TABLE_COUNT,
             JSON.stringify({
                 repairTrucks: repairCount.repairTrucks,
                 repairTrailers: repairCount.repairTrailers,
