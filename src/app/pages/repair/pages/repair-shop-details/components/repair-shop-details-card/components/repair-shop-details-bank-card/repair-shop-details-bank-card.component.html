@@ -1,0 +1,60 @@
+<app-ta-custom-card
+    [cardName]="'Bank Info'"
+    [hasHeaderSvg]="
+        !isBankCardOpen && _cardData?.bank?.logoName
+            ? repairShopDetailsSvgRoutes.bankRoute + _cardData?.bank?.logoName
+            : ''
+    "
+    [headerSvgEnabled]="!isBankCardOpen"
+    [customClassHeaderSvg]="true"
+    [isCardOpen]="!!_cardData?.bank?.name"
+    [bodyTemplate]="'card'"
+    [disabledCard]="!_cardData?.bank?.name"
+    [animationMarginParams]="{
+        marginTop: '0px',
+        marginBottom: '8px'
+    }"
+    (onOpenCard)="handleBankCardOpen($event)"
+>
+    <div class="shop-details-bank">
+        <ng-container
+            *ngFor="
+                let bankInfoItem of _cardData?.bankInfo;
+                let first = first;
+                let last = last;
+                trackBy: trackByIdentity
+            "
+        >
+            <div class="d-flex flex-column justify-content-center">
+                <p class="m-0 ta-font-bold text-size-11 text-color-black">
+                    {{ bankInfoItem?.title }}
+                </p>
+
+                <ng-container *ngIf="first; else account">
+                    <svg-icon
+                        [src]="
+                            bankInfoItem?.value &&
+                            repairShopDetailsSvgRoutes.bankRoute +
+                                bankInfoItem?.value
+                        "
+                    ></svg-icon>
+                </ng-container>
+
+                <ng-template #account>
+                    <ng-container *ngIf="last; else routing">
+                        <app-ta-password-account-hidden-characters
+                            [passwordOrAccount]="bankInfoItem?.value"
+                            [isRightSideIcon]="true"
+                        ></app-ta-password-account-hidden-characters>
+                    </ng-container>
+                </ng-template>
+
+                <ng-template #routing>
+                    <p class="m-0 text-size-14 text-color-black-2">
+                        {{ bankInfoItem?.value }}
+                    </p>
+                </ng-template>
+            </div>
+        </ng-container>
+    </div>
+</app-ta-custom-card>

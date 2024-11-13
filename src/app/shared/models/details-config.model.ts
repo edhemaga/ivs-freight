@@ -27,6 +27,7 @@ export interface DetailsConfig {
     isSearchBtn?: boolean;
     nameDefault?: string;
     icon?: boolean;
+    hasDateArrow?: boolean;
     hasArrowDown?: boolean;
     hasCost?: boolean;
     brokerLoadDrop?: boolean;
@@ -42,6 +43,7 @@ export interface DetailsConfig {
     moneyFilter?: boolean;
     hasSort?: boolean;
     sortDropdown?: LoadsSortDropdownModel[];
+    icons?: { id: number; icon: string }[];
     data?:
         | DriverResponse
         | CdlResponse

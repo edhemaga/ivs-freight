@@ -66,6 +66,7 @@ p {
         align-items: center;
         height: 32px;
         max-width: none;
+
         p {
             color: #424242;
 
@@ -350,7 +351,7 @@ p {
                     cursor: pointer;
                 }
             }
-    
+
             .sort-arrow {
                 width: 26px;
                 height: 26px;
@@ -452,7 +453,7 @@ svg {
     display: flex;
     justify-content: center;
     align-items: center;
-    
+
     .single-repair-icon {
         padding-left: 7px;
         padding-right: 7px;
@@ -493,15 +494,22 @@ svg {
     }
 }
 .header-arrow {
-    svg {
-        rect {
-            fill: #6c6c6c;
-        }
-
-        &:hover {
+    &:hover {
+        svg {
             rect {
-                fill: #2f2f2f;
+                fill: $ta-black;
             }
+
+            path {
+                fill: $white;
+            }
+        }
+    }
+
+    svg {
+        rect,
+        path {
+            transition: fill 0.2s ease-in;
         }
     }
 }

@@ -86,9 +86,15 @@
                                         {{ cardRow.title }}
                                     </div>
 
-                                    <ng-container *ngIf="cardRow.field">
-                                        <div
-                                            class="bottom-item-body d-flex align-items-center"
+                                    <div
+                                        #parentElement
+                                        class="bottom-item-body d-flex align-items-center"
+                                    >
+                                        <ng-container
+                                            *ngIf="
+                                                cardRow.type === 'progress';
+                                                else regularText
+                                            "
                                         >
                                             <div
                                                 class="progresbar-pm d-flex align-items-center"
@@ -132,19 +138,11 @@
                                                     ></app-ta-progres-bar>
                                                 </span>
                                             </div>
-                                        </div>
-                                    </ng-container>
-                                    <ng-container *ngIf="!cardRow.field">
-                                        <div
-                                            class="bottom-item-body d-flex align-items-center gap"
-                                        >
-                                            {{
-                                                card
-                                                    | valueByStringPath
-                                                        : cardRow.key
-                                            }}
-                                        </div>
-                                    </ng-container>
+                                        </ng-container>
+                                        <ng-template #regularText>
+                                            {{ card | cardValue : cardRow }}
+                                        </ng-template>
+                                    </div>
                                 </div>
                             </div>
                         </ng-container>

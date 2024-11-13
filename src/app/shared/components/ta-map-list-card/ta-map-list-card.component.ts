@@ -20,8 +20,6 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
 // services
 import { MapsService } from '@shared/services/maps.service';
 import { DetailsDataService } from '@shared/services/details-data.service';
-import { ModalService } from '@shared/services/modal.service';
-import { DropDownService } from '@shared/services/drop-down.service';
 
 // pipes
 import { ThousandSeparatorPipe } from '@shared/pipes/thousand-separator.pipe';
@@ -30,6 +28,17 @@ import { FormatDatePipe } from '@shared/pipes/format-date.pipe';
 // components
 import { TaDetailsDropdownComponent } from '@shared/components/ta-details-dropdown/ta-details-dropdown.component';
 import { TaProfileImagesComponent } from '@shared/components/ta-profile-images/ta-profile-images.component';
+import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
+
+// Models
+import { AddressEntity } from 'appcoretruckassist';
+import { SortColumn } from '@shared/components/ta-sort-dropdown/models';
+
+// tooltip
+import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
+
+// Svg Routes
+import { MapListCardSvgRoutes } from '@shared/components/ta-map-list-card/utils/svg-routes';
 
 @Component({
     selector: 'app-ta-map-list-card',
@@ -43,10 +52,12 @@ import { TaProfileImagesComponent } from '@shared/components/ta-profile-images/t
         FormsModule,
         ReactiveFormsModule,
         AngularSvgIconModule,
+        NgbTooltipModule,
 
         // Components
         TaDetailsDropdownComponent,
         TaProfileImagesComponent,
+        TaAppTooltipV2Component,
 
         // Pipes
         FormatDatePipe,
@@ -57,166 +68,61 @@ export class TaMapListCardComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
 
     @Input() isSelected: boolean = false;
-    @Input() status: any = 1;
+    @Input() status: number = 1;
     @Input() title: string = '';
-    @Input() address: any = {};
-    @Input() rating: any = {};
+    @Input() address: AddressEntity | null = null;
+    @Input() rating: {
+        hasLiked: boolean;
+        hasDislike: boolean;
+        likeCount: number;
+        dislikeCount: number;
+    } | null = null;
     @Input() item: any = {};
-    @Input() index: any = {};
     @Input() type: string = '';
-    @Output() clickedMarker: EventEmitter<any> = new EventEmitter<any>();
     @Output() bodyActions: EventEmitter<any> = new EventEmitter();
-    @ViewChild('detailsDropdown') detailsDropdown: any;
+    @ViewChild('detailsDropdown') detailsDropdown: TaDetailsDropdownComponent;
+
     public locationFilterOn: boolean = false;
-    sortCategory: any = {};
-    clickedOnDots: boolean = false;
+    public selectedSortColumn: SortColumn | null = null;
+    public hasClickedOnDots: boolean = false;
     dropdownActions: any = {};
+
+    // Svg routes
+    public mapListCardSvgRoutes: MapListCardSvgRoutes = MapListCardSvgRoutes;
 
     constructor(
         private mapsService: MapsService,
         private ref: ChangeDetectorRef,
         public elementRef: ElementRef,
-        private detailsDataService: DetailsDataService,
-        private modalService: ModalService,
-        private dropdownService: DropDownService
+        private detailsDataService: DetailsDataService
     ) {}
 
     ngOnInit(): void {
-        this.sortCategory = this.mapsService.sortCategory;
-
-        this.mapsService.sortCategoryChange
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((category) => {
-                this.sortCategory = category;
-            });
-
-        this.mapsService.markerUpdateChange
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((item) => {
-                if (item.id == this.item.id) {
-                    this.item = item;
-                    this.getDropdownActions();
-                }
-            });
-
-        if (this.mapsService.selectedMarkerId) {
-            this.isSelected = this.mapsService.selectedMarkerId == this.item.id;
-            this.item.isSelected =
-                this.mapsService.selectedMarkerId == this.item.id;
-        }
-
-        this.mapsService.selectedMarkerChange
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((id) => {
-                if (id != this.item.id && this.detailsDropdown?.tooltip) {
-                    this.detailsDropdown.dropDownActive = -1;
-                    this.detailsDropdown.tooltip.close();
-                }
-            });
-
-        this.mapsService.selectedMapListCardChange
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((id) => {
-                if (id != this.item.id && this.detailsDropdown?.tooltip) {
-                    this.detailsDropdown.dropDownActive = -1;
-                    this.detailsDropdown.tooltip.close();
-                }
-            });
+        this.addMapServiceListeners();
 
         this.getDropdownActions();
     }
 
-    selectCard() {
-        if (this.clickedOnDots) {
-            this.clickedOnDots = false;
-            return false;
+    public selectCard(): void {
+        if (this.hasClickedOnDots) {
+            this.hasClickedOnDots = false;
+            return;
         }
 
         const selectId = this.isSelected ? 0 : this.item.id;
         this.mapsService.selectedMapListCard(selectId);
     }
 
-    showMoreOptions() {
-        this.clickedOnDots = true;
+    public showMoreOptions(): void {
+        this.hasClickedOnDots = true;
     }
 
-    callBodyAction(action) {
-        // if (action.type == 'delete' || action.type == 'delete-repair') {
-        //     var name =
-        //         this.type == 'repairShop'
-        //             ? action.data.name
-        //             : this.type == 'shipper'
-        //             ? action.data.businessName
-        //             : '';
-
-        //     var shipperData = {
-        //         id: action.id,
-        //         type: 'delete-item',
-        //         data: {
-        //             ...action.data,
-        //             name: name,
-        //         },
-        //     };
-
-        //     this.modalService.openModal(
-        //         ConfirmationModalComponent,
-        //         { size: 'small' },
-        //         {
-        //             ...shipperData,
-        //             template:
-        //                 this.type == 'repairShop' ? 'repair shop' : 'shipper',
-        //             type: 'delete',
-        //         }
-        //     );
-        // } else {
-        //     this.bodyActions.emit(action);
-        // }
-
-        if (action.type == 'view-details') {
-            this.mapsService.goToDetails(this.item, this.type);
-        } else {
-            if (this.type == 'repairShop') {
-                if (action.type == 'write-review') {
-                    action.type = 'edit';
-                    action.openedTab = 'Review';
-                }
-
-                this.dropdownService.dropActionsHeaderRepair(
-                    action,
-                    this.item,
-                    action.id
-                );
-            } else if (this.type == 'shipper') {
-                let eventType = '';
-                if (
-                    action.type == 'Contact' ||
-                    action.type == 'edit' ||
-                    action.type == 'Review'
-                ) {
-                    eventType = 'edit';
-                } else {
-                    eventType = action.type;
-                }
-
-                let eventObject = {
-                    data: undefined,
-                    id: action.id,
-                    type: eventType,
-                    openedTab: action.type,
-                };
-                setTimeout(() => {
-                    this.dropdownService.dropActionsHeaderShipperBroker(
-                        eventObject,
-                        this.item,
-                        'shipper'
-                    );
-                }, 100);
-            }
-        }
+    public callBodyAction(action): void {
+        this.bodyActions.emit(action);
     }
 
     // RAITING
-    onLike(event) {
+    public onLike(event: Event): void {
         event.preventDefault();
         event.stopPropagation();
 
@@ -233,7 +139,7 @@ export class TaMapListCardComponent implements OnInit, OnDestroy {
         });
     }
 
-    onDislike(event) {
+    public onDislike(event: Event): void {
         event.preventDefault();
         event.stopPropagation();
 
@@ -250,39 +156,58 @@ export class TaMapListCardComponent implements OnInit, OnDestroy {
         });
     }
 
-    setSortCategory(category) {
-        this.sortCategory = category;
-    }
+    public addRemoveSelection(isAdd: boolean): void {
+        this.isSelected = isAdd;
+        this.item.isSelected = isAdd;
 
-    addRemoveSelection(add) {
-        this.isSelected = add;
-        this.item.isSelected = add;
-
-        if (add) {
+        if (isAdd)
             this.elementRef.nativeElement.scrollIntoView({
                 behavior: 'smooth',
                 block: 'center',
             });
-        }
 
         this.ref.detectChanges();
     }
 
-    onFavorite(event) {
-        event.preventDefault();
-        event.stopPropagation();
-
-        this.bodyActions.emit({
-            data: this.item,
-            type: 'favorite',
-        });
-    }
-
-    getDropdownActions() {
+    public getDropdownActions(): void {
         this.dropdownActions = this.mapsService.getDropdownActions(
             this.item,
             this.type
         );
+    }
+
+    public addMapServiceListeners(): void {
+        this.selectedSortColumn = this.mapsService.sortCategory;
+
+        this.mapsService.sortCategoryChange
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((category) => {
+                this.selectedSortColumn = category;
+            });
+
+        this.mapsService.markerUpdateChange
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((item) => {
+                if (item.id == this.item.id) {
+                    this.item = item;
+                    this.getDropdownActions();
+                }
+            });
+
+        this.isSelected = this.mapsService.selectedMarkerId == this.item.id;
+
+        this.mapsService.selectedMarkerChange
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((id) => {
+                if (id !== this.item.id && this.detailsDropdown?.tooltip) {
+                    this.detailsDropdown.dropDownActive = -1;
+                    this.detailsDropdown.tooltip.close();
+                }
+
+                this.addRemoveSelection(id == this.item.id);
+
+                this.ref.detectChanges();
+            });
     }
 
     ngOnDestroy(): void {

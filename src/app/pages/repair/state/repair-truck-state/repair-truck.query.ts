@@ -1,9 +1,7 @@
 import { Injectable } from '@angular/core';
 
-// Akita
+// store
 import { QueryEntity } from '@datorama/akita';
-
-// Store
 import {
     RepairTruckState,
     RepairTruckStore,

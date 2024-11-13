@@ -599,8 +599,7 @@ export class TaMapsComponent implements OnInit, OnDestroy {
 
                 this.dropdownService.dropActionsHeaderRepair(
                     action,
-                    action.data,
-                    action.id
+                    action.data
                 );
             } else if (this.mapType == 'shipper') {
                 let eventType = '';
