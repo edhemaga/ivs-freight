@@ -543,7 +543,7 @@ export class FuelTableComponent implements OnInit, AfterViewInit, OnDestroy {
         this.fuelTableData = this.viewData;
     }
 
-    mapFuelTransactionsData(data: any) {
+    private mapFuelTransactionsData(data: any) {
         const { driver, truck, fuelCard, fuelStopStore, transactionDate, fuelItems, total, fuelTransactionType, files, invoice } = data || {};
         const { avatarFile, firstName, lastName, id } = driver || {};
         const { truckNumber } = truck || {};
@@ -563,7 +563,10 @@ export class FuelTableComponent implements OnInit, AfterViewInit, OnDestroy {
             loadInvoice: { invoice: invoice },
             textDriverShortName: this.nameInitialsPipe.transform(driverFullName),
             avatarColor: this.avatarColorMappingIndexByDriverId[id] ?? null,
+            avatarSize: FuelTableConstants.AVATAR_SIZE_PX,
+            avatarFontSize: FuelTableConstants.AVATAR_FONT_SIZE_PX,
             avatarImg: url ?? null,
+            avatarIsHoverEffect: FuelTableConstants.AVATAR_IS_HOVER_EFFECT,
             isSelected: false,
             tableTruckNumber: truckNumber ?? TableStringEnum.EMPTY_STRING_PLACEHOLDER,
             tableDriverName: driverFullName ?? TableStringEnum.EMPTY_STRING_PLACEHOLDER,
@@ -600,19 +603,22 @@ export class FuelTableComponent implements OnInit, AfterViewInit, OnDestroy {
         };
     }
 
-    mapFuelStopsData(data: any) {
+    private mapFuelStopsData(data: any) {
+        const { businessName, store, address, pricePerGallon, totalCost, lastUsed, favourite } = data || {};
+        const { address: addressName } = address || {};
+
         return {
             ...data,
             isSelected: false,
-            tableName: data?.businessName ? data.businessName : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-            tableStore: data?.store ? data.store : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-            tableAddress: data?.address?.address ? data.address.address : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-            tablePPG: data?.pricePerGallon ? data.pricePerGallon : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-            tableLast: data?.totalCost ?? TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-            tableUsed: data?.lastUsed ?? TableStringEnum.EMPTY_STRING_PLACEHOLDER,
+            tableName: businessName ?? TableStringEnum.EMPTY_STRING_PLACEHOLDER,
+            tableStore: store ?? TableStringEnum.EMPTY_STRING_PLACEHOLDER,
+            tableAddress: addressName ?? TableStringEnum.EMPTY_STRING_PLACEHOLDER,
+            tablePPG: pricePerGallon ?? TableStringEnum.EMPTY_STRING_PLACEHOLDER,
+            tableLast: totalCost ?? TableStringEnum.EMPTY_STRING_PLACEHOLDER,
+            tableUsed: lastUsed ?? TableStringEnum.EMPTY_STRING_PLACEHOLDER,
             tableTotalCost:
                 'Nema propery ili treba da se mapira iz fuelStopExtensions',
-            isFavorite: data.favourite,
+            isFavorite: favourite,
             tableDropdownContent: {
                 hasContent: true,
                 content: this.getDropdownOwnerContent(),

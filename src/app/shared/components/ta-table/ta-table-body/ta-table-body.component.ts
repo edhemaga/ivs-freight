@@ -38,7 +38,7 @@ import { TruckassistTableService } from '@shared/services/truckassist-table.serv
 import { DetailsDataService } from '@shared/services/details-data.service';
 import { FilesService } from '@shared/services/files.service';
 import { LoadService } from '@shared/services/load.service';
-import { CaSearchMultipleStatesService } from 'ca-components';
+import { CaProfileImageComponent, CaSearchMultipleStatesService } from 'ca-components';
 
 // decorators
 import { Titles } from '@core/decorators/titles.decorator';
@@ -137,6 +137,7 @@ import { TableBodySvgRoutes } from '@shared/components/ta-table/ta-table-body/ut
         LoadStatusStringComponent,
         TaStatusComponentComponent,
         TaOpenHoursDropdownComponent,
+        CaProfileImageComponent,
 
         // pipes
         TableHighlightSearchTextPipe,
