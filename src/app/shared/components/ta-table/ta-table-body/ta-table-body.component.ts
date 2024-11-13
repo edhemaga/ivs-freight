@@ -56,6 +56,7 @@ import { TaInputDropdownContactsComponent } from '@shared/components/ta-input-dr
 import { TaPasswordAccountHiddenCharactersComponent } from '@shared/components/ta-password-account-hidden-characters/ta-password-account-hidden-characters.component';
 import { LoadStatusStringComponent } from '@pages/load/components/load-status-string/load-status-string.component';
 import { TaStatusComponentComponent } from '@shared/components/ta-status-component/ta-status-component.component';
+import { TaOpenHoursDropdownComponent } from '@shared/components/ta-open-hours-dropdown/ta-open-hours-dropdown.component';
 
 // modules
 import { AngularSvgIconModule } from 'angular-svg-icon';
@@ -81,6 +82,7 @@ import { TableLoadStatusPipe } from '@shared/pipes/table-load-status.pipe';
 
 // enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
+import { TableBodyStringEnum } from '@shared/components/ta-table/ta-table-body/enums';
 
 // models
 import {
@@ -94,11 +96,14 @@ import { TableBodyOptionActions } from '@shared/components/ta-table/ta-table-bod
 import { TableBodyColumns } from '@shared/components/ta-table/ta-table-body/models/table-body-columns.model';
 
 // constants
-import { RepairDescriptionPopoverConstants } from '@shared/components/ta-table/ta-table-body/utils/repair-description-popover.constants';
 import { TaStateImageTextComponent } from '@shared/components/ta-state-image-text/ta-state-image-text.component';
+import { RepairDescriptionPopoverConstants } from '@shared/components/ta-table/ta-table-body/utils/constants';
 
-// Directive
+// directive
 import { PreventMultipleclicksDirective } from '@shared/directives/prevent-multipleclicks.directive';
+
+// svg routes
+import { TableBodySvgRoutes } from '@shared/components/ta-table/ta-table-body/utils/svg-routes';
 
 @Titles()
 @Component({
@@ -131,6 +136,8 @@ import { PreventMultipleclicksDirective } from '@shared/directives/prevent-multi
         TaPasswordAccountHiddenCharactersComponent,
         LoadStatusStringComponent,
         TaStatusComponentComponent,
+        TaOpenHoursDropdownComponent,
+
         // pipes
         TableHighlightSearchTextPipe,
         TableTextCountPipe,
@@ -142,7 +149,7 @@ import { PreventMultipleclicksDirective } from '@shared/directives/prevent-multi
         TableLoadStatusPipe,
 
         // Directives
-        PreventMultipleclicksDirective
+        PreventMultipleclicksDirective,
     ],
     providers: [
         {
@@ -194,7 +201,6 @@ export class TaTableBodyComponent
     activeDescriptionDropdown: number = -1;
     descriptionTooltip: any;
     descriptionPopoverOpen: number = -1;
-    invoiceAgingTooltip: any;
     invoiceDropdownActive: number = -1;
     invoiceDropdownType: string = null;
     invoiceDropdownData: any;
@@ -223,10 +229,15 @@ export class TaTableBodyComponent
     public popoverDescriptionItems: { title: string; className: string }[] =
         RepairDescriptionPopoverConstants.descriptionItems;
 
+    public isDropdownPositionBottom: boolean = false;
+
+    public tableBodySvgRoutes = TableBodySvgRoutes;
+
     // Scroll Lines
     public isLeftScrollLineShown = false;
     public isRightScrollLineShown = false;
     public loadId: number;
+
     constructor(
         private router: Router,
         private tableService: TruckassistTableService,
@@ -404,26 +415,6 @@ export class TaTableBodyComponent
 
     // --------------------------------NgAfterViewInit---------------------------------
     ngAfterViewInit(): void {
-        // For Virtual Scroll
-        // setTimeout(() => {
-        //     if (this.viewData.length) {
-        //         const tableContainer =
-        //             document.querySelector('.table-container');
-
-        //         const cdkVirtualScrollSpacer = document.querySelector(
-        //             '.cdk-virtual-scroll-spacer'
-        //         );
-
-        //         const pageHeight =
-        //             tableContainer.clientHeight -
-        //             1018 +
-        //             cdkVirtualScrollSpacer.clientHeight;
-
-        //         this.sharedService.emitUpdateScrollHeight.emit({
-        //             tablePageHeight: pageHeight,
-        //         });
-        //     }
-        // }, 10);
         this.getNotPinedMaxWidth();
     }
     // Render Row One By One
@@ -473,6 +464,9 @@ export class TaTableBodyComponent
     trackTableActionsColumns(item: any) {
         return item.columnId;
     }
+
+    public trackByIdentity = <T>(index: number, _: T): number => index;
+
     public labelDropdown(): void {
         this.selectedContactLabel = [];
 
@@ -620,6 +614,8 @@ export class TaTableBodyComponent
 
         this.tableWidth =
             this.actionsWidth + notPinedWidth + this.pinedWidth + 22;
+
+        this.isDropdownPositionBottom = this.tableWidth > 1650;
     }
 
     // Get Tab Table Data For Selected Tab
@@ -831,6 +827,8 @@ export class TaTableBodyComponent
         innerDropdownContent.forEach((content) => {
             content.removeAllListeners('click');
         });
+
+        this.dropDownActive = -1;
     }
 
     // Toggle Status Dropdown
@@ -919,27 +917,39 @@ export class TaTableBodyComponent
     }
 
     // Show Invoice Aging Dropdown
-    public onShowInvoiceAgingDropdown(
-        tooltip: NgbTooltip,
-        row: any,
-        column: any
+    public onShowInvoiceAgingDropdown<T extends { id: number; field: string }>(
+        popover: NgbPopover,
+        row: T,
+        column: T
     ): void {
-        this.invoiceAgingTooltip = tooltip;
+        popover.toggle();
 
-        if (tooltip.isOpen()) {
-            tooltip.close();
-        } else {
-            tooltip.open();
-        }
+        this.invoiceDropdownActive = popover.isOpen() ? row.id : -1;
+        this.invoiceDropdownType = popover.isOpen() ? column.field : null;
 
-        this.invoiceDropdownActive = tooltip.isOpen() ? row.id : -1;
-        this.invoiceDropdownType = tooltip.isOpen() ? column.field : null;
-        this.invoiceDropdownData = row[column.field];
+        const columnData = row[column.field];
+
+        const {
+            invoiceAgeingGroupOne,
+            invoiceAgeingGroupTwo,
+            invoiceAgeingGroupThree,
+            invoiceAgeingGroupFour,
+        } = columnData;
+
+        this.invoiceDropdownData = {
+            isUnPaidAging:
+                column?.field === TableBodyStringEnum.TABLE_UNPAID_INV_AGING,
+            invAgingGroups: [
+                invoiceAgeingGroupOne,
+                invoiceAgeingGroupTwo,
+                invoiceAgeingGroupThree,
+                invoiceAgeingGroupFour,
+            ],
+        };
     }
 
     // Dropdown Actions
     onDropAction(action: any) {
-
         // To Unselect All Selected Rows
         if (action.name === 'activate-item') {
             this.mySelection = [];
@@ -968,7 +978,6 @@ export class TaTableBodyComponent
         this.tooltip.close();
     }
 
-    
     // On Show Inner Dropdown
     onShowInnerDropdown(action) {
         this.onRemoveClickEventListener();

@@ -42,6 +42,7 @@ export interface LoadTemplateResponse {
     revisedRate?: number | null;
     tonuRate?: number | null;
     driverRate?: number | null;
+    coDriverRate?: number | null;
     additionalBillingRatesTotal?: number | null;
     additionalBillingRates?: Array<LoadBillingAdditionalResponse> | null;
     totalRate?: number;

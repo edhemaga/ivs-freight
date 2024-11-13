@@ -49,8 +49,6 @@ import {
     addressValidation,
     bankValidation,
     customerCreditValidation,
-    customerPayTermValidation,
-    daysValidRegex,
     defaultBaseValidation,
     departmentValidation,
     iftaValidation,
@@ -81,16 +79,15 @@ import { SettingsModalConstants } from '@pages/settings/pages/settings-company/u
 
 // enums
 import { SettingsModalEnum } from '@pages/settings/pages/settings-company/enums/settings-modal.enum';
+import { SettingsFormEnum } from '@pages/settings/pages/settings-modals/enums';
 
 // models
 import {
     AddressEntity,
-    CompanyModalResponse,
     CreateDivisionCompanyCommand,
     CreateResponse,
     UpdateCompanyCommand,
     UpdateDivisionCompanyCommand,
-    CompanyResponse,
     BankResponse,
     EnumValue,
 } from 'appcoretruckassist';
@@ -182,6 +179,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
     public currencies: EnumValue[] = [];
     public departments: EnumValue[] = [];
     public companyData: EnumValue[] = [];
+    public payTermOptions: EnumValue[] = [];
 
     public selectedCompanyData: EnumValue = null;
     public selectedDriverPayPeriod: EnumValue = null;
@@ -203,6 +201,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
     public selectedOtherPayPeriod: EnumValue = null;
     public selectedOtherEndingIn: EnumValue = null;
     public selectedFleetType: string = null;
+    public selectedPayTerm: EnumValue = null;
 
     // logo actions
     public displayDeleteAction: boolean = false;
@@ -210,6 +209,8 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
 
     constructor(
         private formBuilder: UntypedFormBuilder,
+
+        // services
         private inputService: TaInputService,
         private modalService: ModalService,
         private settingsCompanyService: SettingsCompanyService,
@@ -220,11 +221,11 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
     ngOnInit(): void {
         this.createForm();
 
+        this.getModalDropdowns();
+
         this.getConstantData();
 
         this.checkForCompany();
-
-        this.getModalDropdowns();
 
         this.validateCreditCards();
     }
@@ -257,67 +258,84 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
     }
 
     private checkForCompany(): void {
-        if (
-            [
-                SettingsModalEnum.NEW_DIVISION as string,
-                SettingsModalEnum.EDIT_DIVISION,
-            ].includes(this.editData.type)
-        ) {
-            this.createDivisionForm();
+        setTimeout(() => {
+            switch (this.editData.type) {
+                case SettingsModalEnum.NEW_DIVISION:
+                case SettingsModalEnum.EDIT_DIVISION:
+                    this.createDivisionForm();
 
-            if (this.editData.type === SettingsModalEnum.EDIT_DIVISION) {
-                const timeout = setTimeout(() => {
-                    this.disableCardAnimation = true;
+                    const handleCompanyPreselectedValues = () => {
+                        const {
+                            company: {
+                                additionalInfo: {
+                                    payTerm,
+                                    customerCredit,
+                                    mvrMonths,
+                                    truckInspectionMonths,
+                                    trailerInspectionMonths,
+                                },
+                            },
+                        } = this.editData;
 
-                    this.editCompanyDivision();
+                        this.selectedPayTerm = this.payTermOptions?.find(
+                            (payTermOption) => payTermOption?.id === payTerm
+                        );
 
-                    clearTimeout(timeout);
-                });
-            } else if (this.editData.type === SettingsModalEnum.NEW_DIVISION) {
-                this.companyForm.get('starting').setValue('100');
+                        this.companyForm.patchValue({
+                            starting: SettingsFormEnum.STARTING_NO,
+                            payTerm: this.selectedPayTerm?.name ?? null,
+                            customerCredit,
+                            mvrMonths,
+                            truckInspectionMonths,
+                            trailerInspectionMonths,
+                        });
+                    };
+
+                    this.editData.type === SettingsModalEnum.NEW_DIVISION
+                        ? handleCompanyPreselectedValues()
+                        : this.editCompanyDivision();
+
+                    break;
+                case SettingsModalEnum.EDIT_COMPANY:
+                case SettingsModalEnum.PAYROLL_TAB:
+                    this.editCompany(this.editData.company);
+
+                    if (this.editData.type === SettingsModalEnum.PAYROLL_TAB)
+                        this.tabChange({ id: 3 });
+
+                    break;
+                case SettingsModalEnum.EDIT_COMPANY_FIRST_LOGIN:
+                    this.isSetupCompany = true;
+
+                    this.settingsCompanyService
+                        .getCompany()
+                        .pipe(takeUntil(this.destroy$))
+                        .subscribe((data) => {
+                            this.editCompany(data);
+
+                            this.editData.data = data;
+                        });
+
+                    break;
+                default:
+                    break;
             }
-        } else {
-            this.onPrefferedLoadCheck({ name: SettingsModalEnum.FTL });
-            this.onFleetTypeCheck({ id: 1 });
-            this.validateMiles();
-            this.onSamePerMileCheck();
-        }
 
-        if (this.editData.type === SettingsModalEnum.EDIT_COMPANY) {
-            this.editCompany(this.editData.company);
+            if (!this.editData.type.includes(SettingsFormEnum.DIVISION)) {
+                this.validateMiles();
+                this.onSamePerMileCheck();
+            }
 
             this.disableCardAnimation = true;
-        }
 
-        if (this.editData?.type === SettingsModalEnum.PAYROLL_TAB) {
-            this.tabChange({ id: 3 });
-            this.editCompany(this.editData.company);
+            this.formService.checkFormChange(this.companyForm);
 
-            this.disableCardAnimation = true;
-        }
-
-        if (
-            this.editData?.type === SettingsModalEnum.EDIT_COMPANY_FIRST_LOGIN
-        ) {
-            this.isSetupCompany = true;
-            this.disableCardAnimation = true;
-
-            this.settingsCompanyService
-                .getCompany()
+            this.formService.formValueChange$
                 .pipe(takeUntil(this.destroy$))
-                .subscribe((data: CompanyResponse) => {
-                    this.editCompany(data);
-
-                    this.editData.data = data;
+                .subscribe((isFormChange: boolean) => {
+                    this.isFormDirty = isFormChange;
                 });
-        }
-
-        this.formService.checkFormChange(this.companyForm);
-        this.formService.formValueChange$
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((isFormChange: boolean) => {
-                this.isFormDirty = isFormChange;
-            });
+        }, 500);
     }
 
     private createDivisionForm(): void {
@@ -376,10 +394,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
             preferredLoadType: [SettingsModalEnum.FTL],
             fleetType: [SettingsModalEnum.SOLO],
             hazMat: [false],
-            customerPayTerm: [
-                null,
-                [daysValidRegex, ...customerPayTermValidation],
-            ],
+            payTerm: [null],
             customerCredit: [null, customerCreditValidation],
             mvrMonths: [12, [Validators.required, monthsValidRegex]],
             truckInspectionMonths: [
@@ -390,9 +405,15 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
                 12,
                 [Validators.required, monthsValidRegex],
             ],
-            driverMiles: [true],
-            driverComission: [true],
-            driverFlatRate: [false],
+            driverMiles: [
+                !this.editData.type.includes(SettingsFormEnum.DIVISION),
+            ],
+            driverComission: [
+                !this.editData.type.includes(SettingsFormEnum.DIVISION),
+            ],
+            driverFlatRate: [
+                !this.editData.type.includes(SettingsFormEnum.DIVISION),
+            ],
             // payroll tab
             useACHPayout: [true],
             // driver & owner
@@ -680,7 +701,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
             id: [data?.id ? data.id : 0],
             bankId: [
                 data?.bankId ? data.bankId : null,
-                [Validators.required, ...bankValidation], 
+                [Validators.required, ...bankValidation],
             ],
             routing: [
                 data?.routing ? data.routing : null,
@@ -688,7 +709,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
             ],
             account: [
                 data?.account ? data.account : null,
-                [Validators.required, ...accountBankValidation], 
+                [Validators.required, ...accountBankValidation],
             ],
         });
     }
@@ -737,7 +758,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
             id: [data?.id ? data.id : 0],
             nickname: [
                 data?.nickname ? data.nickname : null,
-                [Validators.required, ...nicknameValidation], 
+                [Validators.required, ...nicknameValidation],
             ],
             card: [
                 data?.card ? data.card : null,
@@ -749,7 +770,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
             ],
             cvc: [
                 data?.cvc ? data.cvc : null,
-                [Validators.required, ...cvcValidation], 
+                [Validators.required, ...cvcValidation],
             ],
             expireDate: [
                 data?.expireDate ? data.expireDate : null,
@@ -775,7 +796,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
         if (event.valid) this.selectedAddress = event.address;
     }
 
-    public onSelectDropdown(event: any, action: string) {
+    public onSelectDropdown(event: any, action: string): void {
         switch (action) {
             case 'timezone':
                 this.selectedTimeZone = event;
@@ -897,6 +918,11 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
                 this.selectedCompanyData = event;
 
                 break;
+            case SettingsModalEnum.PAY_TERM:
+                this.selectedPayTerm = event;
+
+                break;
+
             default:
                 break;
         }
@@ -1044,7 +1070,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
         this.companyForm.get('logo').setErrors(null);
     }
 
-    public onImageValidation(event: boolean) {
+    public onImageValidation(event: boolean): void {
         if (!event) {
             this.companyForm.get('logo').setErrors({ invalid: true });
         } else {
@@ -1055,17 +1081,19 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
         }
     }
 
-    public onSaveLogoAction(event: any) {
+    public onSaveLogoAction(event: any): void {
         if (event) {
             this.displayDeleteAction = true;
         }
     }
 
-    public onPrefferedLoadCheck(event: any) {
+    public onPrefferedLoadCheck(event: Tabs): void {
         this.prefferedLoadTabs = this.prefferedLoadTabs.map((item) => {
-            if (item.name === event.name) {
-                this.companyForm.get('preferredLoadType').patchValue(item.name);
-            }
+            if (item.name === event.name)
+                this.companyForm
+                    .get(SettingsFormEnum.PREFERRED_LOAD_TYPE)
+                    .patchValue(item.name);
+
             return {
                 ...item,
                 checked: item.id === event.id,
@@ -1073,12 +1101,15 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
         });
     }
 
-    public onFleetTypeCheck(event: any) {
+    public onFleetTypeCheck(event: Tabs): void {
         this.fleetTypeTabs = this.fleetTypeTabs.map((item) => {
-            if (item.id === event.id)
-                this.companyForm.get('fleetType').patchValue(item.name);
+            if (item.id === event.id) {
+                this.companyForm
+                    .get(SettingsFormEnum.FLEET_TYPE)
+                    .patchValue(item.name);
 
-            if (item.id === event.id) this.selectedFleetType = item.name;
+                this.selectedFleetType = item.name;
+            }
 
             return {
                 ...item,
@@ -1087,7 +1118,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
         });
     }
 
-    private onSamePerMileCheck() {
+    private onSamePerMileCheck(): void {
         this.companyForm
             .get('loadedAndEmptySameRate')
             .valueChanges.pipe(takeUntil(this.destroy$))
@@ -1148,44 +1179,55 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
             .getCompanyModal()
             .pipe(takeUntil(this.destroy$))
             .subscribe({
-                next: (res: CompanyModalResponse) => {
-                    this.banks = res.banks;
-                    this.payPeriods = res.payPeriods;
-                    this.endingIns = res.endingIns;
-                    this.timeZones = res.timeZones;
-                    this.currencies = res.currencies;
-                    this.departments = res.departments;
-                    this.companyData = res.companyTypes;
+                next: (res) => {
+                    const {
+                        banks,
+                        payPeriods,
+                        endingIns,
+                        timeZones,
+                        currencies,
+                        departments,
+                        companyTypes,
+                        payTerms,
+                    } = res;
+
+                    this.banks = banks;
+                    this.payPeriods = payPeriods;
+                    this.endingIns = endingIns;
+                    this.timeZones = timeZones;
+                    this.currencies = currencies;
+                    this.departments = departments;
+                    this.companyData = companyTypes;
+                    this.payTermOptions = payTerms;
 
                     if (
                         this.editData.type ===
                         SettingsModalEnum.EDIT_COMPANY_FIRST_LOGIN
                     ) {
-                        this.selectedDriverPayPeriod = res.payPeriods[0];
-                        this.selectedDriverEndingIn = res.endingIns[0];
-                        this.selectedAccountingPayPeriod = res.payPeriods[0];
-                        this.selectedAccountingEndingIn = res.endingIns[0];
-                        this.selectedCompanyPayPeriod = res.payPeriods[0];
-                        this.selectedCompanyEndingIn = res.endingIns[0];
-                        this.selectedDispatchPayPeriod = res.payPeriods[0];
-                        this.selectedDispatchEndingIn = res.endingIns[0];
-                        this.selectedManagerPayPeriod = res.payPeriods[0];
-                        this.selectedManagerEndingIn = res.endingIns[0];
-                        this.selectedRecPayPeriod = res.payPeriods[0];
-                        this.selectedRecEndingIn = res.endingIns[0];
-                        this.selectedRepairPayPeriod = res.payPeriods[0];
-                        this.selectedRepairEndingIn = res.endingIns[0];
-                        this.selectedSafetyPayPeriod = res.payPeriods[0];
-                        this.selectedSafetyEndingIn = res.endingIns[0];
-                        this.selectedOtherPayPeriod = res.payPeriods[0];
-                        this.selectedOtherEndingIn = res.endingIns[0];
+                        this.selectedDriverPayPeriod = payPeriods[0];
+                        this.selectedDriverEndingIn = endingIns[0];
+                        this.selectedAccountingPayPeriod = payPeriods[0];
+                        this.selectedAccountingEndingIn = endingIns[0];
+                        this.selectedCompanyPayPeriod = payPeriods[0];
+                        this.selectedCompanyEndingIn = endingIns[0];
+                        this.selectedDispatchPayPeriod = payPeriods[0];
+                        this.selectedDispatchEndingIn = endingIns[0];
+                        this.selectedManagerPayPeriod = payPeriods[0];
+                        this.selectedManagerEndingIn = endingIns[0];
+                        this.selectedRecPayPeriod = payPeriods[0];
+                        this.selectedRecEndingIn = endingIns[0];
+                        this.selectedRepairPayPeriod = payPeriods[0];
+                        this.selectedRepairEndingIn = endingIns[0];
+                        this.selectedSafetyPayPeriod = payPeriods[0];
+                        this.selectedSafetyEndingIn = endingIns[0];
+                        this.selectedOtherPayPeriod = payPeriods[0];
+                        this.selectedOtherEndingIn = endingIns[0];
                     }
                 },
-                error: () => {},
             });
     }
 
-    public addCompanyDivision() {
+    public addCompanyDivision(): void {
         const {
             addressUnit,
             departmentContacts,
@@ -1198,7 +1240,6 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
             autoInvoicing,
             preferredLoadType,
             fleetType,
-            customerPayTerm,
             customerCredit,
             mvrMonths,
             truckInspectionMonths,
@@ -1216,7 +1257,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
                 autoInvoicing,
                 preferredLoadType,
                 fleetType,
-                customerPayTerm,
+                payTerm: this.selectedPayTerm?.id ?? null,
                 customerCredit,
                 mvrMonths,
                 truckInspectionMonths,
@@ -1305,7 +1346,11 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
             factorByDefault: additionalInfo?.factorByDefault,
             preferredLoadType: additionalInfo?.preferredLoadType,
             fleetType: additionalInfo?.fleetType,
-            customerPayTerm: additionalInfo?.customerPayTerm,
+            payTerm: additionalInfo?.payTerm
+                ? this.payTermOptions?.find(
+                      (payTerm) => payTerm.id === additionalInfo?.payTerm
+                  )?.name
+                : null,
             customerCredit: additionalInfo?.customerCredit,
             mvrMonths: additionalInfo?.mvrMonths,
             truckInspectionMonths: additionalInfo?.truckInspectionMonths,
@@ -1323,6 +1368,10 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
             this.editData.company.currency.id !== 0
                 ? this.editData.company.currency
                 : null;
+
+        this.selectedPayTerm = this.payTermOptions?.find(
+            (payTerm) => payTerm.id === additionalInfo?.payTerm
+        );
 
         if (this.editData.company.departmentContacts.length) {
             for (const department of this.editData.company.departmentContacts) {
@@ -1356,12 +1405,15 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
                             this.editData.company.bankAccounts[index].account,
                     })
                 );
+
                 this.selectedBankAccountFormArray.push(
                     this.editData.company.bankAccounts[index].bank
                 );
+
                 this.isBankSelectedFormArray.push(
                     this.editData.company.bankAccounts[index].id ? true : false
                 );
+
                 this.onBankSelected(index);
             }
         }
@@ -1383,6 +1435,18 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
                 );
             }
         }
+
+        // tabs
+        const selectedPrefferedLoadTypeTab = this.prefferedLoadTabs.find(
+            (tab) => tab.name === additionalInfo?.preferredLoadType
+        );
+        const selectedFleetTypeTab = this.fleetTypeTabs.find(
+            (tab) => tab.name === additionalInfo?.fleetType
+        );
+
+        this.onPrefferedLoadCheck(selectedPrefferedLoadTypeTab);
+        this.onFleetTypeCheck(selectedFleetTypeTab);
+
         setTimeout(() => {
             this.disableCardAnimation = false;
         }, 1000);
@@ -1401,7 +1465,6 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
             autoInvoicing,
             preferredLoadType,
             fleetType,
-            customerPayTerm,
             customerCredit,
             mvrMonths,
             truckInspectionMonths,
@@ -1420,7 +1483,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
                 autoInvoicing,
                 preferredLoadType,
                 fleetType,
-                customerPayTerm,
+                payTerm: this.selectedPayTerm?.id ?? null,
                 customerCredit,
                 mvrMonths,
                 truckInspectionMonths,
@@ -1497,7 +1560,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
             });
     }
 
-    public updateCompany() {
+    public updateCompany(): void {
         const {
             addressUnit,
             dateOfIncorporation,
@@ -1543,6 +1606,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
         let newData: UpdateCompanyCommand = {
             ...form,
             sufix: suffix,
+            payTerm: this.selectedPayTerm?.id ?? null,
             timeZone: this.selectedTimeZone ? this.selectedTimeZone.id : null,
             currency: this.selectedCurrency ? this.selectedCurrency.id : null,
             address: {
@@ -1558,8 +1622,8 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
                   )
                 : null,
             preferredLoadType:
-                this.companyForm.get('preferredLoadType').value ===
-                SettingsModalEnum.FTL
+                this.companyForm.get(SettingsFormEnum.PREFERRED_LOAD_TYPE)
+                    .value === SettingsModalEnum.FTL
                     ? 1
                     : 2,
         };
@@ -1802,7 +1866,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
             });
     }
 
-    private editCompany(data: any) {
+    private editCompany(data: any): void {
         this.companyForm.patchValue({
             // -------------------- Basic Tab
             name: data.name,
@@ -1828,7 +1892,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
                       data.dateOfIncorporation
                   )
                 : null,
-            logo: data.logo ? data.logo : null,
+            logo: data.logo ?? null,
             //-------------------- Additional Tab
             departmentContacts: [],
             bankAccounts: [],
@@ -1843,7 +1907,11 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
             driverMiles: data.driverMiles,
             driverComission: data.driverComission,
             driverFlatRate: data.driverFlatRate,
-            customerPayTerm: data.additionalInfo.customerPayTerm,
+            payTerm: data.additionalInfo?.payTerm
+                ? this.payTermOptions?.find(
+                      (payTerm) => payTerm.id === data.additionalInfo?.payTerm
+                  )?.name
+                : null,
             customerCredit: data.additionalInfo.customerCredit,
             mvrMonths: data.additionalInfo.mvrMonths,
             truckInspectionMonths: data.additionalInfo.truckInspectionMonths,
@@ -1876,6 +1944,10 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
             this.fleetTypeTabs.find(
                 (item) => item.name === this.selectedFleetType
             )
+        );
+
+        this.selectedPayTerm = this.payTermOptions?.find(
+            (payTerm) => payTerm.id === data.additionalInfo?.payTerm
         );
 
         if (data.departmentContacts.length) {

@@ -4,6 +4,7 @@ export const environment = {
     GOOGLE_AUTOCOMPLETE_KEY: 'f72ad2c9-d4a6-46c5-9093-7085d43cf6b2',
     staging: true,
     production: false,
+    development: false,
     perPage: 1000,
     page: 1,
     dateFormat: {

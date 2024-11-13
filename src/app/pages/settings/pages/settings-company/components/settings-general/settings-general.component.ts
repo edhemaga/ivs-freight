@@ -79,7 +79,7 @@ export class SettingsGeneralComponent implements OnInit, OnDestroy, OnChanges {
         private settingsCompanyService: SettingsCompanyService,
         private modalService: ModalService,
         private confirmationService: ConfirmationService
-    ) { }
+    ) {}
 
     ngOnChanges(changes: SimpleChanges): void {
         if (changes?.companyData?.currentValue?.divisions?.length < 1) {
@@ -142,19 +142,11 @@ export class SettingsGeneralComponent implements OnInit, OnDestroy, OnChanges {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: (res) => {
-                    switch (res.type) {
-                        case 'delete': {
-                            if (
-                                res.template ===
-                                SettingsGeneralStringEnum.COMPANY
-                            )
-                                this.deleteDivisionCompanyById(res.id);
-                            break;
-                        }
-                        default: {
-                            break;
-                        }
-                    }
+                    if (
+                        res?.type === SettingsGeneralStringEnum.DELETE &&
+                        res.template === SettingsGeneralStringEnum.COMPANY
+                    )
+                        this.deleteDivisionCompanyById(res.id);
                 },
             });
     }
@@ -278,5 +270,8 @@ export class SettingsGeneralComponent implements OnInit, OnDestroy, OnChanges {
         this.currentCompanyIndex = activeIndex;
     }
 
-    ngOnDestroy(): void { }
+    ngOnDestroy(): void {
+        this.destroy$.next();
+        this.destroy$.complete();
+    }
 }

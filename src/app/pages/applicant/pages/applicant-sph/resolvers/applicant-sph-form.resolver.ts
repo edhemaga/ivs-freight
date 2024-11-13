@@ -30,7 +30,7 @@ export class ApplicantSphFormResolver  {
             });
 
         const applicantDropdownList$ =
-            this.applicantActionsService.getDropdownLists();
+            this.applicantActionsService.getDropdownLists(+route.params.id);
 
         return forkJoin({
             applicantSphForm: applicantSphForm$,

@@ -11,16 +11,16 @@
  */
 
 
-export type OpenHoursDayOfWeek = 'Sunday' | 'Monday' | 'Tuesday' | 'Wednesday' | 'Thursday' | 'Friday' | 'Saturday' | 'Holiday';
+export type OpenHoursDayOfWeek = 'Monday' | 'Tuesday' | 'Wednesday' | 'Thursday' | 'Friday' | 'Saturday' | 'Sunday' | 'Holiday';
 
 export const OpenHoursDayOfWeek = {
-    Sunday: 'Sunday' as OpenHoursDayOfWeek,
     Monday: 'Monday' as OpenHoursDayOfWeek,
     Tuesday: 'Tuesday' as OpenHoursDayOfWeek,
     Wednesday: 'Wednesday' as OpenHoursDayOfWeek,
     Thursday: 'Thursday' as OpenHoursDayOfWeek,
     Friday: 'Friday' as OpenHoursDayOfWeek,
     Saturday: 'Saturday' as OpenHoursDayOfWeek,
+    Sunday: 'Sunday' as OpenHoursDayOfWeek,
     Holiday: 'Holiday' as OpenHoursDayOfWeek
 };
 

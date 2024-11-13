@@ -35,7 +35,7 @@ import {
     LikeDislikeModel,
     TaLikeDislikeService,
 } from '@shared/components/ta-like-dislike/services/ta-like-dislike.service';
-import { BrokerService } from '@pages/customer/services/broker.service';
+import { BrokerService } from '@pages/customer/services';
 import { TaInputService } from '@shared/services/ta-input.service';
 import { ModalService } from '@shared/services/modal.service';
 import { ConfirmationService } from '@shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
@@ -1457,11 +1457,24 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: (res: BrokerModalResponse) => {
-                    this.departmentOptions = res.departments;
-                    this.payTermOptions = res.payTerms;
+                    const { departments, payTerms, selectedPayTerm } = res;
+
+                    this.departmentOptions = departments;
+                    this.payTermOptions = payTerms;
+
+                    this.selectedPayTerm = this.payTermOptions?.find(
+                        (payTerm) => payTerm.id === selectedPayTerm
+                    );
+
+                    this.brokerForm
+                        .get(BrokerModalStringEnum.PAY_TERM)
+                        .patchValue(this.selectedPayTerm?.name ?? null);
 
                     // From Another Modal Data
-                    if (this.editData?.type === 'edit-contact') {
+                    if (
+                        this.editData?.type ===
+                        BrokerModalStringEnum.EDIT_CONTACT
+                    ) {
                         this.isCardAnimationDisabled = true;
 
                         this.editBrokerById(this.editData.id);
@@ -1835,10 +1848,8 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
                               }
                     );
 
-                    this.startFormChanges();
-
-                    if (res.mainPoBox?.city) {
-                        setTimeout(() => {
+                    setTimeout(() => {
+                        if (res.mainPoBox?.city) {
                             this.brokerForm
                                 .get(BrokerModalStringEnum.PHYSICAL_PO_BOX_CITY)
                                 .patchValue(
@@ -1847,10 +1858,10 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
                                         res.mainPoBox.state,
                                     ].join(', ')
                                 );
+                        }
 
-                            this.cdRef.detectChanges();
-                        }, 200);
-                    }
+                        this.startFormChanges();
+                    }, 200);
 
                     this.cdRef.detectChanges();
 

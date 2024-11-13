@@ -36,6 +36,8 @@ import { DriverService } from '@pages/driver/services/driver.service';
 import { EditTagsService } from '@shared/services/edit-tags.service';
 import { BankVerificationService } from '@shared/services/bank-verification.service';
 import { FormService } from '@shared/services/form.service';
+import { ConfirmationActivationService } from '@shared/components/ta-shared-modals/confirmation-activation-modal/services/confirmation-activation.service';
+import { ConfirmationService } from '@shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
 
 // helpers
 import { MethodsGlobalHelper } from '@shared/utils/helpers/methods-global.helper';
@@ -243,6 +245,8 @@ export class DriverModalComponent implements OnInit, OnDestroy {
         private bankVerificationService: BankVerificationService,
         private formService: FormService,
         private tagsService: EditTagsService,
+        private confirmationActivationService: ConfirmationActivationService,
+        private confirmationService: ConfirmationService,
 
         // bootstrap
         private ngbActiveModal: NgbActiveModal,
@@ -270,6 +274,25 @@ export class DriverModalComponent implements OnInit, OnDestroy {
         this.isSoloOrTeamDriverSelected();
 
         this.isTwicTypeSelected();
+        this.confirmationActivationSubscribe();
+        this.confirmationData();
+    }
+
+    private confirmationActivationSubscribe(): void {
+        this.confirmationActivationService.getConfirmationActivationData$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe(() => {
+                this.ngbActiveModal?.close();
+            });
+    }
+
+    private confirmationData(): void {
+        this.confirmationService.confirmationData$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((res) => {
+                if (res.action !== TableStringEnum.CLOSE)
+                    this.ngbActiveModal?.close();
+            });
     }
 
     private createForm(): void {
@@ -488,18 +511,14 @@ export class DriverModalComponent implements OnInit, OnDestroy {
                     ),
                 },
             };
-
-            this.ngbActiveModal.close();
-
+            
             this.modalService.openModal(
                 ConfirmationActivationModalComponent,
                 { size: TableStringEnum.SMALL },
                 {
                     ...mappedEvent,
                     subType: TableStringEnum.DRIVER_1,
-                    type: data.bool
-                        ? TableStringEnum.DEACTIVATE
-                        : TableStringEnum.ACTIVATE,
+                    type: data.action,
                     template: TableStringEnum.DRIVER_1,
                     tableType: TableStringEnum.DRIVER,
                 }
@@ -555,8 +574,6 @@ export class DriverModalComponent implements OnInit, OnDestroy {
         }
         // delete
         else if (data.action === TableStringEnum.DELETE && this.editData?.id) {
-            this.ngbActiveModal.close();
-
             const mappedEvent = {
                 ...this.editData,
                 data: {
@@ -2304,7 +2321,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
             flatRateSolo: conditionalFlatRateSolo,
             flatRateTeam: conditionalFlatRateTeam,
 
-            isOpenPayrollShared: conditionalPayrollShared,
+            isOpenPayrollShared: conditionalPayrollShared ?? false,
             isPayrollCalculated: conditionalPayrollCalculated,
 
             fleetType: this.fleetType,

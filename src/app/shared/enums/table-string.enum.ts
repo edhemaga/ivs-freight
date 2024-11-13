@@ -297,6 +297,7 @@ export enum TableStringEnum {
     FINISH_ORDER = 'finish-order',
     FINISH_ORDER_2 = 'finish order',
     FINISH_ORDER_3 = 'Finish Order',
+    ADD_BILL = 'add-bill',
     DELETE_REPAIR = 'delete-repair',
     DELETE_REPAIR_DETAIL = 'delete-repair-detail',
     EDIT_FO_TRAILER = 'edit-fo-trailer',
@@ -555,14 +556,15 @@ export enum TableStringEnum {
     BROKER_CONTACT = 'broker contact',
     SHIPPER_CONTACT = 'shipper contact',
     VOIDED = 'VOIDED',
-    
+
     // Card States
     CUSTOMER_CARD_STATE = 'customerCardState',
     DRIVER_CARD_STATE = 'driverCardState',
     LOAD_CARD_STATE = 'loadCardState',
 
-    REPAIR_CARD_STATE = "repairCardState",
-    TRAILER_CARD_STATE = "trailerCardState",
-    USER_CARD_STATE = "userCardState",
-    TRUCK_CARD_STATE = "truckCardState",
+    REPAIR_CARD_STATE = 'repairCardState',
+    TRAILER_CARD_STATE = 'trailerCardState',
+    USER_CARD_STATE = 'userCardState',
+    TRUCK_CARD_STATE = 'truckCardState',
+    PM_CARD_STATE = "pmCardState",
 }

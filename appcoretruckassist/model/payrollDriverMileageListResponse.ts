@@ -37,6 +37,6 @@ export interface PayrollDriverMileageListResponse {
     credit?: number | null;
     deduction?: number | null;
     salary?: number | null;
-    total?: number | null;
+    earnings?: number | null;
 }
 

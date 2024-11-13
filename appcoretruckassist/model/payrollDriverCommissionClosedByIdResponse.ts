@@ -30,12 +30,12 @@ export interface PayrollDriverCommissionClosedByIdResponse {
     earnings?: number | null;
     commission?: number;
     salary?: number | null;
-    deductions?: Array<PayrollDeductionMinimalResponse> | null;
+    includedDeductions?: Array<PayrollDeductionMinimalResponse> | null;
     totalDeduction?: number;
-    credits?: Array<PayrollCreditMinimalResponse> | null;
+    includedCredits?: Array<PayrollCreditMinimalResponse> | null;
     totalCredits?: number;
     debt?: number;
-    loads?: Array<PayrollLoadMinimalResponse> | null;
+    includedLoads?: Array<PayrollLoadMinimalResponse> | null;
     mapLocations?: Array<PayrollMapLocation> | null;
     sums?: PayrollCommissionTotalSum;
     totalPayments?: number;

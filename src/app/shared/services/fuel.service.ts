@@ -2,7 +2,7 @@ import { Observable, of, tap } from 'rxjs';
 import { Injectable } from '@angular/core';
 
 // models
-import { FuelStopResponse } from 'appcoretruckassist';
+import { FuelStopResponse, SortOrder } from 'appcoretruckassist';
 import {
     FuelService as FuelBackendService,
     FuelStopListResponse,
@@ -59,9 +59,9 @@ export class FuelService {
         fuelTransactionSpecParamsFuelStopStoreIds?: Array<number>,
         fuelTransactionSpecParamsTruckIds?: Array<number>,
         fuelTransactionSpecParamsCategoryIds?: Array<number>,
-        fuelTransactionSpecParamsDateFrom?: string,
+        fuelTransactionSpecParamsDateFrom?: any,
         fuelTransactionSpecParamsDateTo?: string,
-        fuelTransactionSpecParamsLong?: number,
+        fuelTransactionSpecParamsLong?: any,
         fuelTransactionSpecParamsLat?: number,
         fuelTransactionSpecParamsDistance?: number,
         fuelTransactionSpecParamsLastFrom?: number,
@@ -71,39 +71,46 @@ export class FuelService {
         fuelTransactionSpecParamsPpgFrom?: number,
         fuelTransactionSpecParamsPpgTo?: number,
         fuelTransactionSpecParamsTruckId?: number,
+        fuelTransactionSpecParamsDriverId?: number,
         fuelTransactionSpecParamsPageIndex?: number,
-        fuelTransactionSpecParamsPageSize?: number,
+        fuelTransactionSpecParamsPageSize?: any,
         fuelTransactionSpecParamsCompanyId?: number,
-        fuelTransactionSpecParamsSort?: string,
-        fuelTransactionSpecParamsSearch?: string,
-        fuelTransactionSpecParamsSearch1?: string,
+        fuelTransactionSpecParamsSort?: any,
+        fuelTransactionSpecParamsSortOrder?: any,
+        fuelTransactionSpecParamsSortBy?: any,
+        fuelTransactionSpecParamsSearch?: any,
+        fuelTransactionSpecParamsSearch1?: any,
         fuelTransactionSpecParamsSearch2?: string
     ): Observable<FuelTransactionListResponse> {
         return this.fuelService
             .apiFuelTransactionListGet
-            /* fuelTransactionSpecParamsFuelStopStoreIds,
-            fuelTransactionSpecParamsTruckIds,
-            fuelTransactionSpecParamsCategoryIds,
-            fuelTransactionSpecParamsDateFrom,
-            fuelTransactionSpecParamsDateTo,
-            fuelTransactionSpecParamsLong,
-            fuelTransactionSpecParamsLat,
-            fuelTransactionSpecParamsDistance,
-            fuelTransactionSpecParamsLastFrom,
-            fuelTransactionSpecParamsLastTo,
-            fuelTransactionSpecParamsCostFrom,
-            fuelTransactionSpecParamsCostTo,
-            fuelTransactionSpecParamsPpgFrom,
-            fuelTransactionSpecParamsPpgTo,
-            fuelTransactionSpecParamsTruckId,
-            fuelTransactionSpecParamsPageIndex,
-            fuelTransactionSpecParamsPageSize,
-            fuelTransactionSpecParamsCompanyId,
-            fuelTransactionSpecParamsSort,
-            fuelTransactionSpecParamsSearch,
-            fuelTransactionSpecParamsSearch1,
-            fuelTransactionSpecParamsSearch2 */
-            ();
+            (
+                fuelTransactionSpecParamsFuelStopStoreIds,
+                fuelTransactionSpecParamsTruckIds,
+                fuelTransactionSpecParamsCategoryIds,
+                fuelTransactionSpecParamsDateFrom,
+                fuelTransactionSpecParamsDateTo,
+                fuelTransactionSpecParamsLong,
+                fuelTransactionSpecParamsLat,
+                fuelTransactionSpecParamsDistance,
+                fuelTransactionSpecParamsLastFrom,
+                fuelTransactionSpecParamsLastTo,
+                fuelTransactionSpecParamsCostFrom,
+                fuelTransactionSpecParamsCostTo,
+                fuelTransactionSpecParamsPpgFrom,
+                fuelTransactionSpecParamsPpgTo,
+                fuelTransactionSpecParamsTruckId,
+                fuelTransactionSpecParamsDriverId,
+                fuelTransactionSpecParamsPageIndex,
+                fuelTransactionSpecParamsPageSize,
+                fuelTransactionSpecParamsCompanyId,
+                fuelTransactionSpecParamsSort,
+                fuelTransactionSpecParamsSortOrder,
+                fuelTransactionSpecParamsSortBy,
+                fuelTransactionSpecParamsSearch,
+                fuelTransactionSpecParamsSearch1,
+                fuelTransactionSpecParamsSearch2
+            );
     }
 
     public getFuelTransactionModalDropdowns(): Observable<GetFuelModalResponse> {
@@ -160,6 +167,7 @@ export class FuelService {
     public getFuelStopsList(
         truckIds?: Array<number>,
         categoryIds?: Array<number>,
+        franchiseIds?: Array<number>,
         dateFrom?: any,
         dateTo?: string,
         _long?: any,
@@ -175,13 +183,15 @@ export class FuelService {
         pageSize?: any,
         companyId?: number,
         sort?: any,
+        sortOrder?: SortOrder,
         search?: any,
         search1?: string,
         search2?: string
     ): Observable<FuelStopListResponse> {
-        return of(null); /* this.fuelService.apiFuelFuelstopListGet(
+        return this.fuelService.apiFuelFuelstopListGet(
             truckIds,
             categoryIds,
+            franchiseIds,
             dateFrom,
             dateTo,
             _long,
@@ -193,14 +203,16 @@ export class FuelService {
             costTo,
             ppgFrom,
             ppgTo,
+            closed,
             pageIndex,
             pageSize,
             companyId,
             sort,
+            sortOrder,
             search,
             search1,
             search2
-        );*/
+        );
     }
 
     public getFuelStopById(fuelId: number): Observable<FuelStopResponse> {

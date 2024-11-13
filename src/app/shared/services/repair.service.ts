@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 
-import { Observable, tap } from 'rxjs';
+import { Observable, switchMap, tap } from 'rxjs';
 
 // models
 import {
@@ -9,7 +9,6 @@ import {
     RepairShopModalResponse,
     RepairListResponse,
     ClusterResponse,
-    RepairShopMinimalResponse,
     RepairShopNewListResponse,
     RepairDriverResponse,
     RepairAutocompleteDescriptionResponse,
@@ -17,14 +16,16 @@ import {
     RepairShopMinimalListResponse,
     RepairShopResponse,
     RepairShopService,
+    SortOrder,
+    RepairedVehicleListResponse,
 } from 'appcoretruckassist';
 
 // store
 import { RepairTruckStore } from '@pages/repair/state/repair-truck-state/repair-truck.store';
 import { RepairTrailerStore } from '@pages/repair/state/repair-trailer-state/repair-trailer.store';
 import { RepairShopStore } from '@pages/repair/state/repair-shop-state/repair-shop.store';
-import { RepairDetailsQuery } from '@pages/repair/state/repair-details-state/repair-details.query';
 import { RepairDetailsStore } from '@pages/repair/state/repair-details-state/repair-details.store';
+import { RepairMinimalListQuery } from '@pages/repair/state/driver-details-minimal-list-state/repair-minimal-list.query';
 
 // services
 import { RepairService as RepairMainService } from 'appcoretruckassist/api/repair.service';
@@ -51,7 +52,7 @@ export class RepairService {
         private repairTrailerStore: RepairTrailerStore,
         private repairShopStore: RepairShopStore,
         private repairDetailsStore: RepairDetailsStore,
-        private repairDetailsQuery: RepairDetailsQuery
+        private repairMinimalListQuery: RepairMinimalListQuery
     ) {}
 
     // <----------------------- Repair Truck And Trailer -------------------->
@@ -139,7 +140,6 @@ export class RepairService {
         );
     }
 
-    // Get Repair List
     public getRepairList(
         repairShopId?: number,
         unitType?: number,
@@ -187,6 +187,7 @@ export class RepairService {
             search2
         );
     }
+
     public getRepairById(id: number): Observable<RepairResponse> {
         return this.repairService.apiRepairIdGet(id);
     }
@@ -235,7 +236,6 @@ export class RepairService {
         );
     }
 
-    // Delete Repair List
     public deleteRepairList(
         repairIds: number[],
         tabSelected?: string
@@ -382,35 +382,41 @@ export class RepairService {
 
     // Get Repair List
     public getRepairShopList(
-        active?: number,
-        pinned?: boolean,
-        companyOwned?: boolean,
-        categoryIds?: Array<number>,
-        _long?: number,
-        lat?: number,
-        distance?: number,
-        costFrom?: number,
-        costTo?: number,
-        visitedByMe?: boolean,
-        driverId?: number,
-        pageIndex?: number,
-        pageSize?: number,
-        companyId?: number,
-        sort?: string,
-        search?: string,
-        search1?: string,
-        search2?: string
+        active: number = null,
+        pinned: boolean = null,
+        companyOwned: boolean = null,
+        isCompanyRelated: boolean = null,
+        categoryIds: number[] = null,
+        _long: number = null,
+        lat: number = null,
+        distance: number = null,
+        areaLocations: string = '',
+        areaDistance: number = 250,
+        costFrom: number = null,
+        costTo: number = null,
+        visitedByMe: boolean = null,
+        driverId: number = null,
+        pageIndex: number = 1,
+        pageSize: number = 25,
+        companyId: number = null,
+        sort: string = null,
+        sortOrder: SortOrder = null,
+        sortBy: object = null,
+        search: string = null,
+        search1: string = null,
+        search2: string = null
     ): Observable<RepairShopNewListResponse> {
         return this.shopServices.apiRepairshopListGet(
             active,
             pinned,
             companyOwned,
+            isCompanyRelated,
             categoryIds,
             _long,
             lat,
             distance,
-            '',
-            250,
+            areaLocations,
+            areaDistance,
             costFrom,
             costTo,
             visitedByMe,
@@ -419,24 +425,23 @@ export class RepairService {
             pageSize,
             companyId,
             sort,
-            null,
-            null,
+            sortOrder,
+            sortBy,
             search,
             search1,
             search2
         );
     }
 
-    // Get Repair Minimal List
     public getRepairShopMinimalList(
         pageIndex?: number,
         pageSize?: number,
-        count?: number
+        companyId?: number
     ): Observable<RepairShopMinimalListResponse> {
         return this.shopServices.apiRepairshopListMinimalGet(
             pageIndex,
             pageSize,
-            count
+            companyId
         );
     }
 
@@ -444,26 +449,28 @@ export class RepairService {
         repairId: number,
         getIndex?: boolean
     ): Observable<RepairShopResponse> {
-        this.repairDetailsQuery.repairShopMinimal$.subscribe(
-            (item) => (this.repairShopList = item?.pagination?.data)
-        );
+        this.repairShopList = this.repairMinimalListQuery.getAll();
 
         if (getIndex && this.repairShopList) {
             this.currentIndex = this.repairShopList.findIndex(
                 (shop) => shop.id === repairId
             );
+
             let last = this.repairShopList.at(-1);
-            if (last.id === repairId) {
+
+            if (last?.id === repairId) {
                 this.currentIndex = --this.currentIndex;
             } else {
                 this.currentIndex = ++this.currentIndex;
             }
+
             if (this.currentIndex == -1) {
                 this.currentIndex = 0;
             }
 
-            this.repairShopId = this.repairShopList[this.currentIndex].id;
+            this.repairShopId = this.repairShopList[this.currentIndex]?.id;
         }
+
         return this.shopServices.apiRepairshopIdGet(repairId);
     }
 
@@ -665,15 +672,6 @@ export class RepairService {
         );
     }
 
-    set updateRepairShopMinimal(data: RepairShopMinimalResponse) {
-        this.repairDetailsStore.update((store) => {
-            return {
-                ...store,
-                repairShopMinimal: data,
-            };
-        });
-    }
-
     public deleteReview(reviewId, shopId) {
         let shopStored = JSON.parse(
             JSON.stringify(this.repairDetailsStore?.getValue())
@@ -761,42 +759,24 @@ export class RepairService {
         return this.shopServices.apiRepairshopPinnedIdPut(shopId);
     }
 
-    public changeShopStatus(shopId: any) {
-        this.shopServices.apiRepairshopStatusIdPut(shopId).subscribe({
-            next: () => {
-                this.getRepairShopById(shopId).subscribe({
-                    next: (shop: RepairShopResponse | any) => {
-                        this.repairShopStore.remove(({ id }) => id === shopId);
-                        this.repairShopStore.add(shop);
-                        this.repairDetailsStore.update((store) => {
-                            let ind;
-                            let shopStored = JSON.parse(JSON.stringify(store));
-                            shopStored.repairShop.map(
-                                (data: any, index: any) => {
-                                    if (data.id == shop.id) {
-                                        ind = index;
-                                    }
-                                }
-                            );
+    public changeShopStatus(id: number): Observable<RepairShopResponse> {
+        return this.shopServices.apiRepairshopStatusIdPut(id).pipe(
+            switchMap(() => this.getRepairShopById(id)),
+            tap((shop: RepairShopResponse | any) => {
+                const repairShopId = id;
 
-                            shopStored.repairShop[ind] = shop;
+                this.repairShopStore.remove(({ id }) => id === repairShopId);
+                this.repairShopStore.add(shop);
+                this.repairDetailsStore.update(shop.id, shop);
 
-                            return {
-                                ...store,
-                                repairShop: [...shopStored.repairShop],
-                            };
-                        });
-
-                        this.tableService.sendActionAnimation({
-                            animation: 'update',
-                            tab: 'repair-shop',
-                            data: shop,
-                            id: shop.id,
-                        });
-                    },
+                this.tableService.sendActionAnimation({
+                    animation: 'update',
+                    tab: 'repair-shop',
+                    data: shop,
+                    id: shop.id,
                 });
-            },
-        });
+            })
+        );
     }
 
     public changePinnedStatus(shopId: any) {
@@ -835,5 +815,17 @@ export class RepairService {
                 });
             },
         });
+    }
+
+    public getRepairedVehicle(
+        repairShopId?: number,
+        pageIndex?: number,
+        pageSize?: number
+    ): Observable<RepairedVehicleListResponse> {
+        return this.shopServices.apiRepairshopRepairedvehicleGet(
+            repairShopId,
+            pageIndex,
+            pageSize
+        );
     }
 }

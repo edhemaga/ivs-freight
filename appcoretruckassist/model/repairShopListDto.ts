@@ -12,6 +12,7 @@
 import { RatingReviewResponse } from './ratingReviewResponse';
 import { RepairShopOpenHoursResponse } from './repairShopOpenHoursResponse';
 import { BankResponse } from './bankResponse';
+import { OpenHoursTodayResponse } from './openHoursTodayResponse';
 import { EnumValue } from './enumValue';
 import { RepairShopContactListResponse } from './repairShopContactListResponse';
 import { RepairShopServiceTypeResponse } from './repairShopServiceTypeResponse';
@@ -32,7 +33,7 @@ export interface RepairShopListDto {
     openAlways?: boolean | null;
     startTimeAllDays?: string | null;
     endTimeAllDays?: string | null;
-    openHoursToday?: string | null;
+    openHoursToday?: OpenHoursTodayResponse;
     openHoursStatus?: string | null;
     bill?: number;
     order?: number;
@@ -51,7 +52,8 @@ export interface RepairShopListDto {
     stateShortName?: string | null;
     pinned?: boolean;
     note?: string | null;
-    companyOwned?: boolean;
+    companyOwned?: boolean | null;
+    isCompanyRelated?: boolean | null;
     currentCompanyUserRating?: number | null;
     latitude?: number | null;
     longitude?: number | null;

@@ -73,8 +73,8 @@ import {
 
 // Helpers
 import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calculations.helper';
-import { RepairShopHelper } from './utils/repair-shop.helper';
-import { RepairShopConfig } from '../repair-order-modal/utils/config/repair-shop-form.config';
+import { RepairShopHelper } from '@pages/repair/pages/repair-modals/repair-shop-modal/utils/helpers';
+import { RepairShopConfig } from '@pages/repair/pages/repair-modals/repair-shop-modal/utils/config';
 
 // Animation
 import { tabsModalAnimation } from '@shared/animations/tabs-modal.animation';
@@ -112,13 +112,13 @@ import {
 } from '@pages/repair/pages/repair-modals/repair-shop-modal/enums';
 
 // Constants
-import { RepairShopConstants } from './utils/constants/repair-shop-modal.constants';
+import { RepairShopConstants } from '@pages/repair/pages/repair-modals/repair-shop-modal/utils/constants';
 
 // SVG Routes
-import { RepairShopModalSvgRoutes } from './utils/svg-routes/repair-shop-modal-svg-routes';
+import { RepairShopModalSvgRoutes } from '@pages/repair/pages/repair-modals/repair-shop-modal/utils/svg-routes';
 
 // Types
-import { OpenedTab } from '@pages/repair/pages/repair-modals/repair-shop-modal/types/open-tabs.type';
+import { OpenedTab } from '@pages/repair/pages/repair-modals/repair-shop-modal/types';
 import { ITaInput } from '@shared/components/ta-input/config/ta-input.config';
 import { ContactsModalConstants } from '@pages/contacts/pages/contacts-modal/utils/constants/contacts-modal.constants';
 import { MethodsGlobalHelper } from '@shared/utils/helpers/methods-global.helper';
@@ -418,7 +418,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
             [RepairShopModalStringEnum.RENT]: [null],
             [RepairShopModalStringEnum.OPEN_HOURS]: this.formBuilder.array([]),
             [RepairShopModalStringEnum.COVER]: [null],
-        }); 
+        });
         this.tabTitle = this.editData?.data?.name;
     }
 
@@ -448,7 +448,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
                     this.daysOfMonthDropdown = dropdowns.monthlyDays;
                     this.businessStatus = repairShop?.status;
                     this.repairShop = repairShop;
-                    
+
                     if (repairShop) {
                         this.repairShopForm.patchValue({
                             [RepairShopModalStringEnum.NAME]: repairShop.name,
@@ -504,7 +504,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
         // This fields are custom and cannot be part of the form so we need to remap it
         this.showPhoneExt = !!res.phoneExt;
         this.services = RepairShopHelper.mapServices(res, false);
-        this.selectedAddress = res.address; 
+        this.selectedAddress = res.address;
         this.isBankSelected = !!res.bank;
         this.files = res.files;
         this.coverPhoto = res.cover;
@@ -620,6 +620,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
     // Favorite
     public addShopToFavorite(): void {
         this.favoriteField.patchValue(!this.isFavorite);
+        this.repairShopForm.markAsDirty();
     }
 
     private initWorkingHours(repairShop: RepairShopResponse): void {
@@ -868,7 +869,9 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
     }
 
     public onUploadCoverPhoto(event): void {
-        this.coverPhoto = [event.files.length ? event.files[0].realFile : {url: ''}];
+        this.coverPhoto = [
+            event.files.length ? event.files[0].realFile : { url: '' },
+        ];
         this.repairShopForm
             .get(RepairShopModalStringEnum.COVER)
             .patchValue(event);
@@ -991,12 +994,9 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
             monthlyDay: this.selectedMonthlyDays
                 ? this.selectedMonthlyDays.id
                 : null,
-            companyOwned: this.getFromFieldValue(
-                RepairShopModalStringEnum.COMPANY_OWNED
-            ),
-            isCompanyRelated: this.getFromFieldValue(
-                RepairShopModalStringEnum.COMPANY_OWNED
-            ),
+            // this.getFromFieldValue(RepairShopModalStringEnum.COMPANY_OWNED)
+            companyOwned: true,
+            isCompanyRelated: true,
             rent: this.getFromFieldValue(RepairShopModalStringEnum.RENT),
             cover: this.convertCoverDocumentForRequest(),
         };
@@ -1024,7 +1024,6 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
         return formattedOpenHours;
     }
 
-
     private createDocumentsForRequest(): Array<Blob> {
         let documents: Array<Blob> = [];
 
@@ -1038,7 +1037,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
     private convertCoverDocumentForRequest(): any {
         return this.coverPhoto;
     }
-    
+
     private mapContacts(
         contacts: RepairShopContactExtended[],
         isFormPatch: boolean = false
@@ -1153,8 +1152,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
                 template: TableStringEnum.INFO,
                 subType: TableStringEnum.REPAIR_SHOP,
                 subTypeStatus: TableStringEnum.BUSINESS,
-                tableType:
-                    ConfirmationActivationStringEnum.REPAIR_SHOP_TEXT,
+                tableType: ConfirmationActivationStringEnum.REPAIR_SHOP_TEXT,
                 modalTitle: this.repairShop.name,
                 modalSecondTitle: this.repairShop.address?.address
                     ? this.repairShop.address.address
@@ -1171,9 +1169,9 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
         this.repairShopForm.markAsDirty();
         this.isNewContactAdded = true;
 
-            setTimeout(() => {
-                this.isNewContactAdded = false;
-            }, 400);
+        setTimeout(() => {
+            this.isNewContactAdded = false;
+        }, 400);
     }
 
     public handleModalTableValueEmit(
@@ -1184,7 +1182,6 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
         this.repairShopForm
             .get(RepairShopModalStringEnum.CONTACTS)
             .patchValue(this.repairShopContacts);
-
 
         this.cdr.detectChanges();
     }

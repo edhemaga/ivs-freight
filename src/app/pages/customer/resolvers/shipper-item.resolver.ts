@@ -2,22 +2,24 @@ import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot } from '@angular/router';
 import { Observable, forkJoin, tap } from 'rxjs';
 
-// Services
-import { ShipperService } from '@pages/customer/services/shipper.service';
+// services
+import { ShipperService } from '@pages/customer/services';
 
-// Store
+// store
 import { ShipperDetailsStore } from '@pages/customer/state/shipper-state/shipper-details-state/shipper-details.store';
 import { ShipperDetailsListStore } from '@pages/customer/state/shipper-state/shipper-details-state/shipper-details-list-state/shipper-details-list.store';
 
-// Models
+// models
 import { ShipperResponse } from 'appcoretruckassist';
 
 @Injectable({
     providedIn: 'root',
 })
-export class ShipperItemResolver  {
+export class ShipperItemResolver {
     constructor(
         private shipperService: ShipperService,
+
+        // store
         private shipperDetailsStore: ShipperDetailsStore,
         private sls: ShipperDetailsListStore
     ) {}
@@ -25,7 +27,7 @@ export class ShipperItemResolver  {
         route: ActivatedRouteSnapshot
     ): Observable<ShipperResponse[]> | Observable<any> {
         const shipper_id = route.paramMap.get('id');
-        let ids = parseInt(shipper_id);
+        const ids = parseInt(shipper_id);
 
         const shipperData$ = this.shipperService.getShipperById(ids);
 
@@ -45,33 +47,14 @@ export class ShipperItemResolver  {
             shipperLoads: shipperLoads$,
         }).pipe(
             tap((data) => {
-                let shipperData = data.shipperData;
-                let loadData = data.shipperLoads?.loads?.data;
+                const shipperData = data.shipperData;
+                const loadData = data.shipperLoads?.loads?.data;
+
                 shipperData.loadStops = loadData ? loadData : [];
+
                 this.sls.add(shipperData);
                 this.shipperDetailsStore.set([shipperData]);
             })
         );
-        /*
-        if (this.slq.hasEntity(ids)) {
-            return this.slq.selectEntity(ids).pipe(
-                tap((shipperResponse: ShipperResponse) => {
-                    this.shipperDetailsStore.set([shipperResponse]);
-                }),
-                take(1)
-            );
-        } else {
-            return this.shipperService.getShipperById(ids).pipe(
-                catchError(() => {
-                    this.router.navigate(['/customer']);
-                    return of('No shipper data for...' + ids);
-                }),
-                tap((shipperRespon: ShipperResponse) => {
-                    this.sls.add(shipperRespon);
-                    this.shipperDetailsStore.set([shipperRespon]);
-                })
-            );
-        }
-        */
     }
 }

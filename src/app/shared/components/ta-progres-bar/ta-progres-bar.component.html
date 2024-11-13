@@ -2,6 +2,7 @@
     class="progress-bar-parent d-flex align-items-center"
     [class.disable-hover]="text === '/'"
     [class.progress-bar-parent-expired]="daysExpired"
+    [class.active]="progressDropdownActive !== -1"
     #ngbProgress="ngbPopover"
     [autoClose]="true"
     [ngbPopover]="milesProgressPopover"
@@ -40,6 +41,7 @@
             ></div>
         </div>
     </ng-container>
+
     <!-- In (days) of or ago (days) dispaly text bassed on expired or it will expire -->
 
     <ng-container *ngIf="percents && text !== '/'">
@@ -50,7 +52,7 @@
                 >
                 <ng-container *ngIf="daysExpired">
                     <div class="progress-text-title">
-                        <span>{{ text }} {{daysPluralization}} left</span>
+                        <span>{{ text }} {{ daysPluralization }} left</span>
                         <span>{{ daysToPay }} days</span>
                     </div></ng-container
                 >
@@ -77,7 +79,7 @@
                 >
                 <ng-container *ngIf="daysExpired">
                     <div class="progress-text-title">
-                        <span>{{ text }} {{daysPluralization}} over</span>
+                        <span>{{ text }} {{ daysPluralization }} over</span>
                         <span>{{ daysToPay }} days</span>
                     </div>
                 </ng-container>

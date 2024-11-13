@@ -81,7 +81,7 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
         },
         mapZoom: 1,
         markers: [],
-        clustermarkers: [],
+        clusterMarkers: [],
         routingMarkers: [],
         mapOptions: {
             fullscreenControl: false,

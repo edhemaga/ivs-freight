@@ -2,10 +2,10 @@ import { Injectable } from '@angular/core';
 
 import { Observable, tap } from 'rxjs';
 
-// Services
-import { BrokerService } from '@pages/customer/services/broker.service';
+// services
+import { BrokerService } from '@pages/customer/services';
 
-// Store
+// store
 import { BrokerStore } from '@pages/customer/state/broker-state/broker.store';
 
 // models
@@ -16,12 +16,13 @@ import { GetBrokerListResponse } from 'appcoretruckassist';
 })
 export class BrokerResolver {
     constructor(
-        // Services
+        // services
         private brokerService: BrokerService,
 
-        // Store
+        // store
         private brokerStore: BrokerStore
     ) {}
+
     resolve(): Observable<GetBrokerListResponse> {
         return this.brokerService
             .getBrokerList(

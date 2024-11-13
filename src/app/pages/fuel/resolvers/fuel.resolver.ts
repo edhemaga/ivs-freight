@@ -3,67 +3,46 @@ import { Injectable } from '@angular/core';
 import { Observable, forkJoin } from 'rxjs';
 import { tap } from 'rxjs/operators';
 
-//Services
+// appcoretruckassist
+import { FuelService as FuelController, FuelStopListResponse, FuelTransactionListResponse } from 'appcoretruckassist';
+
+// enums
+import { TableStringEnum } from '@shared/enums/table-string.enum';
+
+// services
 import { FuelService } from '@shared/services/fuel.service';
 
 @Injectable({
     providedIn: 'root',
 })
 export class FuelResolver {
-    constructor(private fuelService: FuelService) {}
+    constructor(
+        private fuelController: FuelController,
+        private fuelService: FuelService
+    ) {}
 
-    resolve(): Observable<any> {
+    resolve(): Observable<[FuelTransactionListResponse, FuelStopListResponse]> {
         return forkJoin([
-            this.fuelService.getFuelTransactionsList(
-                undefined,
-                undefined,
-                undefined,
-                undefined,
-                undefined,
-                undefined,
-                undefined,
-                undefined,
-                undefined,
-                undefined,
-                undefined,
-                undefined,
-                undefined,
-                undefined,
-                1,
-                25
-            ),
-            this.fuelService.getFuelStopsList(
-                undefined,
-                undefined,
-                undefined,
-                undefined,
-                undefined,
-                undefined,
-                undefined,
-                undefined,
-                undefined,
-                undefined,
-                undefined,
-                undefined,
-                undefined,
-                1,
-                25
-            ),
+            this.fuelController.apiFuelTransactionListGet(),
+            this.fuelController.apiFuelFuelstopListGet(),
         ]).pipe(
             tap(([fuelTransactions, fuelStops]) => {
+                const tableView = JSON.parse(
+                    localStorage.getItem(TableStringEnum.FUEL_TABLE_VIEW)
+                );
+
                 localStorage.setItem(
                     'fuelTableCount',
                     JSON.stringify({
-                        fuelTransactions: fuelTransactions.fuelTransactionCount,
-                        fuelStops: fuelStops.fuelStopCount,
-                        fuelCard: fuelStops.fuelCardCount,
+                        fuelTransactions: fuelTransactions?.fuelTransactionCount,
+                        fuelStops: fuelStops?.fuelStopCount,
+                        fuelCard: fuelStops?.fuelCardCount,
                     })
                 );
 
-                this.fuelService.updateStoreFuelTransactionsList =
-                    fuelTransactions.pagination.data;
-                this.fuelService.updateStoreFuelStopList =
-                    fuelStops.pagination.data;
+                if (!tableView || tableView?.tabSelected === TableStringEnum.FUEL_TRANSACTION) 
+                    this.fuelService.updateStoreFuelTransactionsList = fuelTransactions;
+                else this.fuelService.updateStoreFuelStopList = fuelStops;
             })
         );
     }

@@ -22,7 +22,6 @@ import { TaDetailsHeaderComponent } from '@shared/components/ta-details-header/t
 import { TaInputNoteComponent } from '@shared/components/ta-input-note/ta-input-note.component';
 import { TaUploadFilesComponent } from '@shared/components/ta-upload-files/ta-upload-files.component';
 import { TaProgressExpirationComponent } from '@shared/components/ta-progress-expiration/ta-progress-expiration.component';
-import { TaChartComponent } from '@shared/components/ta-chart/ta-chart.component';
 import { TrailerDetailsCardComponent } from '@pages/trailer/pages/trailer-details/components/trailer-details-card/trailer-details-card.component';
 import { TrailerDetailsItemComponent } from '@pages/trailer/pages/trailer-details/components/trailer-details-item/trailer-details-item.component';
 import { TrailerDetailsComponent } from '@pages/trailer/pages/trailer-details/trailer-details.component';
@@ -47,7 +46,6 @@ import { TrailerDetailsComponent } from '@pages/trailer/pages/trailer-details/tr
         FormatDatePipe,
         TaDetailsHeaderComponent,
         TaDetailsHeaderCardComponent,
-        TaChartComponent,
         TaProfileImagesComponent,
         ReactiveFormsModule,
         AngularSvgIconModule,

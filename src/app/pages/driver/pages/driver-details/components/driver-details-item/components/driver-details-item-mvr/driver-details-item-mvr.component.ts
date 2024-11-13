@@ -5,6 +5,7 @@ import {
     OnDestroy,
     OnInit,
     SimpleChanges,
+    ViewChild,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, UntypedFormControl } from '@angular/forms';
@@ -40,7 +41,7 @@ import { DriverDetailsItemStringEnum } from '@pages/driver/pages/driver-details/
 
 // models
 import { DriverResponse, MvrResponse } from 'appcoretruckassist';
-import { DetailsDropdownOptions } from '@pages/driver/pages/driver-details/models/details-dropdown-options.model';
+import { DetailsDropdownOptions } from '@shared/models/details-dropdown-options.model';
 
 @Component({
     selector: 'app-driver-details-item-mvr',
@@ -67,6 +68,8 @@ import { DetailsDropdownOptions } from '@pages/driver/pages/driver-details/model
 export class DriverDetailsItemMvrComponent
     implements OnInit, OnChanges, OnDestroy
 {
+    @ViewChild('driverMvrFiles') driverMvrFiles: TaUploadFilesComponent;
+
     @Input() cardsData: MvrResponse[];
     @Input() driver: DriverResponse;
 

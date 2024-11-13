@@ -318,6 +318,7 @@ model/contactPhoneType.ts
 model/conversationInfoResponse.ts
 model/conversationResponse.ts
 model/conversationType.ts
+model/conversationsMetadataResponse.ts
 model/counterResponse.ts
 model/countryType.ts
 model/createAccidentItemCommand.ts
@@ -618,6 +619,7 @@ model/loadListDto.ts
 model/loadListDtoPagination.ts
 model/loadListLoadStopResponse.ts
 model/loadListResponse.ts
+model/loadMainModuleResponse.ts
 model/loadMinimalListResponse.ts
 model/loadMinimalResponse.ts
 model/loadMinimalResponsePagination.ts
@@ -669,6 +671,7 @@ model/medicalCertificateReviewResponse.ts
 model/medicalResponse.ts
 model/messageResponse.ts
 model/messageTypeResponse.ts
+model/mileStopType.ts
 model/milesByStateResponse.ts
 model/milesByUnitListResponse.ts
 model/milesByUnitPaginatedStopsResponse.ts
@@ -767,6 +770,7 @@ model/payrollCreditResponse.ts
 model/payrollCreditType.ts
 model/payrollDeadlinePeriod.ts
 model/payrollDeadlineShortResponse.ts
+model/payrollDeductionChildResponse.ts
 model/payrollDeductionDescriptionAutocompleteResponse.ts
 model/payrollDeductionMinimalResponse.ts
 model/payrollDeductionModalResponse.ts
@@ -787,6 +791,7 @@ model/payrollLoadMinimalResponse.ts
 model/payrollLoadStopMinimalResponse.ts
 model/payrollMapLocation.ts
 model/payrollMileageTotalSum.ts
+model/payrollOtherPaymentType.ts
 model/payrollOwnerClosedResponse.ts
 model/payrollOwnerResponse.ts
 model/payrollPaymentCommand.ts

@@ -11,25 +11,36 @@
         background-color: rgba(0, 0, 0, 0.3);
     }
 }
+
 .modal-date-logo {
-    height: 26px;
-    width: 26px;
-    cursor: pointer !important;
+    margin-right: 4px;
+    padding-right: 4px;
+    cursor: auto !important;
     position: relative;
-    svg {
-        &:hover {
-            cursor: pointer;
+    bottom: 1px;
+
+    &:hover {
+        svg {
             path {
-                fill: $muted;
+                fill: $bw6-2;
             }
         }
     }
+
+    svg {
+        path {
+            fill: $bw5;
+            transition: fill 0.2s ease;
+        }
+    }
 }
+
 .modal-date-border {
     height: 18px;
     margin-right: 4px;
     border-right: 1px solid $ta-light-grey-6;
 }
+
 .modal-container {
     width: 480px;
     height: auto;

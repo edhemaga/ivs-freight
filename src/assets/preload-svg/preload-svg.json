@@ -678,6 +678,10 @@
         {
             "iconName": "finish-order",
             "iconPath": "assets/svg/common/dropdown-finish-order.svg"
+        },
+        {
+            "iconName": "ic_truck_reefer",
+            "iconPath": "/assets/svg/common/trucks/ic_truck_reefer.svg"
         }
     ],
     "customIcons": []

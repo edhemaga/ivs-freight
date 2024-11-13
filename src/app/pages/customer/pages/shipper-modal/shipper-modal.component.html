@@ -8,13 +8,15 @@
     [saveAndAddNew]="editData?.type !== 'edit'"
     [customClass]="'modal-container-M'"
     [isClickEnabledWhileFormInvalid]="true"
+    [topDivider]="false"
     (action)="onModalAction($event)"
 >
     <div origin>
         <app-ta-tab-switch
             [tabs]="tabs"
-            (switchClicked)="tabChange($event)"
             [type]="'type1-modal-popup'"
+            [isMarginTopDisabled]="true"
+            (switchClicked)="tabChange($event)"
         >
         </app-ta-tab-switch>
 
@@ -175,11 +177,14 @@
                                         placeholderIcon: 'time',
                                         isDropdown: true,
                                         isDisabled:
-                                            shipperForm.get(
+                                            (shipperForm.get(
                                                 'receivingOpenTwentyFourHours'
                                             ).value &&
+                                                shipperForm.get(
+                                                    'receivingAppointment'
+                                                ).value) ||
                                             shipperForm.get(
-                                                'receivingAppointment'
+                                                'receivingOpenTwentyFourHours'
                                             ).value,
                                         customClass: 'datetimeclass'
                                     }"
@@ -196,11 +201,14 @@
                                         placeholderIcon: 'time',
                                         isDropdown: true,
                                         isDisabled:
-                                            shipperForm.get(
+                                            (shipperForm.get(
                                                 'receivingOpenTwentyFourHours'
                                             ).value &&
+                                                shipperForm.get(
+                                                    'receivingAppointment'
+                                                ).value) ||
                                             shipperForm.get(
-                                                'receivingAppointment'
+                                                'receivingOpenTwentyFourHours'
                                             ).value,
                                         customClass: 'datetimeclass'
                                     }"
@@ -257,11 +265,14 @@
                                         placeholderIcon: 'time',
                                         isDropdown: true,
                                         isDisabled:
-                                            shipperForm.get(
+                                            (shipperForm.get(
                                                 'shippingOpenTwentyFourHours'
                                             ).value &&
+                                                shipperForm.get(
+                                                    'shippingAppointment'
+                                                ).value) ||
                                             shipperForm.get(
-                                                'shippingAppointment'
+                                                'shippingOpenTwentyFourHours'
                                             ).value,
                                         customClass: 'datetimeclass'
                                     }"
@@ -278,11 +289,14 @@
                                         placeholderIcon: 'time',
                                         isDropdown: true,
                                         isDisabled:
-                                            shipperForm.get(
+                                            (shipperForm.get(
                                                 'shippingOpenTwentyFourHours'
                                             ).value &&
+                                                shipperForm.get(
+                                                    'shippingAppointment'
+                                                ).value) ||
                                             shipperForm.get(
-                                                'shippingAppointment'
+                                                'shippingOpenTwentyFourHours'
                                             ).value,
                                         customClass: 'datetimeclass'
                                     }"
