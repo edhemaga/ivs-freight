@@ -57,8 +57,8 @@
                             >
                                 <svg-icon
                                     (click)="addShopToFavorite()"
-                                    [class.svg-hover-blue-15]="isFavorite"
-                                    class="repair-shop__favorite c-pointer svg-hover-black svg-fill-blue-13"
+                                    [ngClass]="isFavorite ? 'svg-fill-blue-13 svg-hover-blue-15' : 'svg-fill-muted svg-hover-black'"
+                                    class="repair-shop__favorite c-pointer"
                                     [src]="repairShopModalSvgRoutes.starIcon"
                                 ></svg-icon>
                             </div>

@@ -994,6 +994,9 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
             companyOwned: this.getFromFieldValue(
                 RepairShopModalStringEnum.COMPANY_OWNED
             ),
+            isCompanyRelated: this.getFromFieldValue(
+                RepairShopModalStringEnum.COMPANY_OWNED
+            ),
             rent: this.getFromFieldValue(RepairShopModalStringEnum.RENT),
             cover: this.convertCoverDocumentForRequest(),
         };

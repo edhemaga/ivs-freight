@@ -27,4 +27,5 @@ export interface CreateShopModel {
     filesForDeleteIds: string[];
     cover?: Blob;
     status?: number;
+    isCompanyRelated: boolean;
 }
