@@ -34,10 +34,11 @@ import { BlockedContentPipe } from '@core/pipes/blocked-content.pipe';
 export class AppComponent implements OnInit {
     public showScrollButton = false;
 
-
     public currentPage: string = 'login';
 
     public animationState: number = 0;
+
+    public isSidePanelPinned: boolean = false;
 
     constructor(
         public titleService: Title,
@@ -52,8 +53,7 @@ export class AppComponent implements OnInit {
 
         // Pipes
         private blockedContent: BlockedContentPipe
-
-    ) { }
+    ) {}
 
     ngOnInit(): void {
         this.router.events
@@ -91,5 +91,9 @@ export class AppComponent implements OnInit {
         if (this.blockedContent.transform(this.currentPage)) return;
 
         this.chatHubService.connect();
+    }
+
+    public sidePanelPinEvent(isSidePanelPinned: boolean): void {
+        this.isSidePanelPinned = isSidePanelPinned;
     }
 }
