@@ -106,6 +106,7 @@
 
     &.active {
         background: $ta-black-2;
+        border-radius: 2px;
 
         .progress-text,
         .progress-text.table-progress-text {

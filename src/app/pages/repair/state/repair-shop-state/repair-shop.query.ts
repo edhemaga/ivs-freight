@@ -1,12 +1,10 @@
 import { Injectable } from '@angular/core';
 
-// Akita
+// store
 import { QueryEntity } from '@datorama/akita';
-
-// Store
 import { RepairShopStore } from '@pages/repair/state/repair-shop-state/repair-shop.store';
 
-// Models
+// models
 import { RepairShopResponse } from 'appcoretruckassist';
 
 @Injectable({ providedIn: 'root' })

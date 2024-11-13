@@ -1,5 +1,8 @@
-import { RepairShopDetailsStringEnum } from '@pages/repair/pages/repair-shop-details/enums';
-import { RepairShopResponse } from 'appcoretruckassist';
+import {
+    RepairedVehicleResponse,
+    RepairResponse,
+    RepairShopResponse,
+} from 'appcoretruckassist';
 
 export interface ExtendedRepairShopResponse extends RepairShopResponse {
     activeServicesCount?: number;
@@ -7,4 +10,6 @@ export interface ExtendedRepairShopResponse extends RepairShopResponse {
         title: string;
         value: string;
     }[];
+    repairList?: RepairResponse[];
+    repairedVehicleList?: RepairedVehicleResponse[];
 }

@@ -4,7 +4,7 @@
 
         <app-repair-shop-details-title-card
             [repairShopCurrentIndex]="repairShopCurrentIndex"
-            [repairShopsDropdownList]="repairShopsDropdownList"
+            [repairShopDropdownList]="repairShopDropdownList"
             [cardData]="{
                 createdAt: repairShop?.createdAt,
                 lastVisited: repairShop?.lastVisited,
@@ -17,6 +17,7 @@
                 email: repairShop?.email,
                 address: repairShop?.address?.address
             }"
+            (cardValuesEmitter)="handleRepairShopDetailsTitleCardEmit($event)"
         >
         </app-repair-shop-details-title-card>
 

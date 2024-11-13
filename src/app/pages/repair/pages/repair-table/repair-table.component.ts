@@ -1254,7 +1254,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
         // View Details
         else if (event.type === TableStringEnum.VIEW_DETAILS) {
             if (this.selectedTab === TableStringEnum.REPAIR_SHOP)
-                this.router.navigate([`/list/repair/${event.id}/shop-details`]);
+                this.router.navigate([`/list/repair/${event.id}/details`]);
         }
 
         // Delete
@@ -1581,10 +1581,10 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
             tableAddress: address?.address,
             tableShopServiceType: shopServiceType?.name,
             tableShopServices: serviceTypes,
-            tableOpenHours: {
+            tableOpenHours: null /*  {
                 openHours,
                 openHoursToday,
-            },
+            }, */,
             tableRepairCountBill: bill,
             tableRepairCountOrder: order,
             tableBankDetailsBankName: bankResponse?.name,

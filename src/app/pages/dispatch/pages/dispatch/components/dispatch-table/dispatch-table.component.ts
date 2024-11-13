@@ -68,7 +68,6 @@ import {
     DispatchGroupedLoadsResponse,
     TruckDispatchModalResponse,
     TrailerDispatchModalResponse,
-    AddressEntity,
     DispatchHistoryTruckLastLocationResponse,
 } from 'appcoretruckassist';
 import { DispatchBoardParkingEmiter } from '@pages/dispatch/models/dispatch-parking-emmiter.model';
@@ -561,6 +560,8 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
                 (location?.address ? location : null) ||
                 (locationValue?.address?.address
                     ? locationValue.address
+                    : locationValue
+                    ? locationValue
                     : null),
             longitude: longitude || locationValue?.longitude || null,
             latitude: latitude || locationValue?.latitude || null,
