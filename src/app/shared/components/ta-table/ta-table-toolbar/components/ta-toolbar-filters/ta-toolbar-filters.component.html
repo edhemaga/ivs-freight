@@ -142,7 +142,7 @@
 
     <!-- LOCATION FILTER -->
 
-    <app-ta-filter
+    <app-ca-filter
         *ngIf="options.toolbarActions.showLocationFilter"
         [type]="'locationFilter'"
         [icon]="'address'"
@@ -150,13 +150,14 @@
         [areaFilter]="true"
         [locationDefType]="true"
         (setFilter)="onFilter($event)"
+        (clearAll)="onFilter($event)"
         [class]="
             options?.toolbarActions?.filtersOrder?.location
                 ? 'order-' + options.toolbarActions.filtersOrder.location
                 : ''
         "
     >
-    </app-ta-filter>
+    </app-ca-filter>
 
     <!-- FUEL STOP FILTER -->
     <app-ta-filter
@@ -220,31 +221,6 @@
     >
     </app-ca-filter>
 
-    <!-- TRUCK FILTER -->
-    <app-ca-filter
-        *ngIf="
-            options.toolbarActions.showTruckFilter ||
-            options.toolbarActions.showTruckPmFilter ||
-            options.toolbarActions.showTruckDispatchFilter
-        "
-        [type]="'truckTypeFilter'"
-        [icon]="'truck'"
-        [filterTitle]="'Truck Type Filter'"
-        [defFilterHolder]="true"
-        [noLeftIcon]="true"
-        (setFilter)="onFilter($event)"
-        (clearAll)="onFilter($event)"
-        [isRepairFilter]="!!options.toolbarActions.showTruckPmFilter"
-        [isDispatchFilter]="options.toolbarActions.showTruckDispatchFilter"
-        [class]="
-            options?.toolbarActions?.filtersOrder?.truck
-                ? 'order-' + options.toolbarActions.filtersOrder.truck
-                : ''
-        "
-        [truckTypeArray]="truckTypeArray"
-    >
-    </app-ca-filter>
-
     <!-- VACATION FILTER -->
     <app-ta-filter
         *ngIf="options.toolbarActions.showDispatchVacationFilter"
@@ -259,31 +235,6 @@
         "
     >
     </app-ta-filter>
-
-    <!-- TRAILER FILTER -->
-    <app-ca-filter
-        *ngIf="
-            options.toolbarActions.showTrailerFilter ||
-            options.toolbarActions.showTrailerPmFilter ||
-            options.toolbarActions.showTrailerDispatchFilter
-        "
-        [type]="'trailerTypeFilter'"
-        [icon]="'trailer'"
-        [filterTitle]="'Trailer Type Filter'"
-        [defFilterHolder]="true"
-        [noLeftIcon]="true"
-        (setFilter)="onFilter($event)"
-        (clearAll)="onFilter($event)"
-        [isRepairFilter]="options.toolbarActions.showTrailerPmFilter"
-        [isDispatchFilter]="options.toolbarActions.showTrailerDispatchFilter"
-        [class]="
-            options?.toolbarActions?.filtersOrder?.trailer
-                ? 'order-' + options.toolbarActions.filtersOrder.trailer
-                : ''
-        "
-        [trailerTypeArray]="trailerTypeArray"
-    >
-    </app-ca-filter>
 
     <!-- INJURY FILTER -->
     <app-ta-filter
@@ -456,6 +407,56 @@
         [class]="
             options?.toolbarActions?.filtersOrder?.trailerType
                 ? 'order-' + options.toolbarActions.filtersOrder.trailerType
+                : ''
+        "
+        [trailerTypeArray]="trailerTypeArray"
+    >
+    </app-ca-filter>
+
+    <!-- TRUCK FILTER -->
+    <app-ca-filter
+        *ngIf="
+            options.toolbarActions.showTruckFilter ||
+            options.toolbarActions.showTruckPmFilter ||
+            options.toolbarActions.showTruckDispatchFilter
+        "
+        [type]="'truckTypeFilter'"
+        [icon]="'truck'"
+        [filterTitle]="'Truck Type Filter'"
+        [defFilterHolder]="true"
+        [noLeftIcon]="true"
+        (setFilter)="onFilter($event)"
+        (clearAll)="onFilter($event)"
+        [isRepairFilter]="!!options.toolbarActions.showTruckPmFilter"
+        [isDispatchFilter]="options.toolbarActions.showTruckDispatchFilter"
+        [class]="
+            options?.toolbarActions?.filtersOrder?.truck
+                ? 'order-' + options.toolbarActions.filtersOrder.truck
+                : ''
+        "
+        [truckTypeArray]="truckTypeArray"
+    >
+    </app-ca-filter>
+
+    <!-- TRAILER FILTER -->
+    <app-ca-filter
+        *ngIf="
+            options.toolbarActions.showTrailerFilter ||
+            options.toolbarActions.showTrailerPmFilter ||
+            options.toolbarActions.showTrailerDispatchFilter
+        "
+        [type]="'trailerTypeFilter'"
+        [icon]="'trailer'"
+        [filterTitle]="'Trailer Type Filter'"
+        [defFilterHolder]="true"
+        [noLeftIcon]="true"
+        (setFilter)="onFilter($event)"
+        (clearAll)="onFilter($event)"
+        [isRepairFilter]="options.toolbarActions.showTrailerPmFilter"
+        [isDispatchFilter]="options.toolbarActions.showTrailerDispatchFilter"
+        [class]="
+            options?.toolbarActions?.filtersOrder?.trailer
+                ? 'order-' + options.toolbarActions.filtersOrder.trailer
                 : ''
         "
         [trailerTypeArray]="trailerTypeArray"
