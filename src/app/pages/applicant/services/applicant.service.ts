@@ -468,7 +468,7 @@ export class ApplicantService {
         return this.applicantService.apiApplicantIdGet(id);
     }
 
-    public getDropdownLists(): Observable<ApplicantModalResponse> {
-        return this.applicantService.apiApplicantModalGet();
+    public getDropdownLists(id: number): Observable<ApplicantModalResponse> {
+        return this.applicantService.apiApplicantModalGet(id);
     }
 }

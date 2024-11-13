@@ -16,6 +16,7 @@ import { PayrollPaymentType } from './payrollPaymentType';
 export interface CreatePayrollPaymentCommand { 
     payrollDriverMileageId?: number | null;
     payrollDriverCommissionId?: number | null;
+    payrollDriverFlatRateId?: number | null;
     payrollOwnerId?: number | null;
     type?: PayrollPaymentType;
     date?: string;

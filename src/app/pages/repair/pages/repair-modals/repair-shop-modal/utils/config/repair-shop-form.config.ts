@@ -92,7 +92,7 @@ export class RepairShopConfig {
             minLength: 2,
             maxLength: 64,
             isDropdown: true,
-            dropdownWidthClass: 'w-col-163',
+            dropdownWidthClass: 'w-col-136',
         };
     }
 
@@ -104,7 +104,7 @@ export class RepairShopConfig {
             minLength: 2,
             maxLength: 64,
             isDropdown: true,
-            dropdownWidthClass: 'w-col-163',
+            dropdownWidthClass: 'w-col-148',
         };
     }
 
@@ -116,7 +116,7 @@ export class RepairShopConfig {
             minLength: 2,
             maxLength: 64,
             isDropdown: true,
-            dropdownWidthClass: 'w-col-163',
+            dropdownWidthClass: 'w-col-148',
         };
     }
 

@@ -1,10 +1,13 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-// Resolvers
-import { RepairDetailsResolver } from '@pages/repair/resolvers';
+// resolvers
+import {
+    RepairDetailsResolver,
+    RepairMinimalResolver,
+} from '@pages/repair/resolvers';
 
-// Components
+// components
 import { RepairTableComponent } from '@pages/repair/pages/repair-table/repair-table.component';
 
 const routes: Routes = [
@@ -14,13 +17,16 @@ const routes: Routes = [
         data: { title: 'Repair' },
     },
     {
-        path: ':id/shop-details',
-        loadChildren: () =>
+        path: ':id/details',
+        loadComponent: () =>
             import(
-                '@pages/repair/pages/repair-shop-details/repair-shop-details.module'
-            ).then((m) => m.RepairShopDetailsModule),
-        resolve: { repairShopResolve: RepairDetailsResolver },
-        data: { title: 'Shop Repair Details' },
+                '@pages/repair/pages/repair-shop-details/repair-shop-details.component'
+            ).then((m) => m.RepairShopDetailsComponent),
+        resolve: {
+            repairShop: RepairDetailsResolver,
+            repairShopMinimal: RepairMinimalResolver,
+        },
+        data: { title: 'Repair Shop Details' },
     },
 ];
 

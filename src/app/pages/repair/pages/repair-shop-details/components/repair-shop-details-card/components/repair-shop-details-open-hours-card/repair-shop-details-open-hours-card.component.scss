@@ -1,0 +1,43 @@
+@import 'src/theme/variables.scss';
+
+.shop-details-working-hours {
+    &-header {
+        margin-bottom: 12px;
+
+        &-icon {
+            margin-left: 4px;
+            position: relative;
+            bottom: 1px;
+
+            &.open {
+                svg {
+                    circle {
+                        fill: $ta-green;
+                    }
+                }
+            }
+
+            &.closing {
+                svg {
+                    circle {
+                        fill: $ta-yellow-1;
+                    }
+                }
+            }
+
+            &.closed {
+                svg {
+                    circle {
+                        fill: $ta-red-10;
+                    }
+                }
+            }
+        }
+    }
+
+    &-main {
+        display: grid;
+        grid-template-columns: repeat(2, 202px);
+        grid-gap: 12px;
+    }
+}

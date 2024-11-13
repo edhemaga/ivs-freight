@@ -599,8 +599,7 @@ export class TaMapsComponent implements OnInit, OnDestroy {
 
                 this.dropdownService.dropActionsHeaderRepair(
                     action,
-                    action.data,
-                    action.id
+                    action.data
                 );
             } else if (this.mapType == 'shipper') {
                 let eventType = '';
@@ -1725,37 +1724,13 @@ export class TaMapsComponent implements OnInit, OnDestroy {
                             }
                             break;
                         }
-                        case 'activate': {
-                            if (
-                                res.template === 'repair shop' ||
-                                res.template === 'Repair Shop'
-                            ) {
-                                this.repairShopService.changeShopStatus(
-                                    res?.id
-                                );
-                            }
-                            break;
-                        }
-                        case 'deactivate': {
-                            if (
-                                res.template === 'repair shop' ||
-                                res.template === 'Repair Shop'
-                            ) {
-                                this.repairShopService.changeShopStatus(
-                                    res?.id
-                                );
-                            }
-                            break;
-                        }
+                        /*  */
                         case 'info': {
                             if (res.subType === 'favorite') {
                                 if (
                                     res.subTypeStatus === 'move' ||
                                     res.subTypeStatus === 'remove'
                                 ) {
-                                    this.repairShopService.changePinnedStatus(
-                                        res?.id
-                                    );
                                 }
                             }
                             break;

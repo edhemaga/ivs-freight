@@ -15,6 +15,7 @@ import { FuelCardResponsePagination } from './fuelCardResponsePagination';
 export interface FuelCardListResponse { 
     pagination?: FuelCardResponsePagination;
     fuelTransactionCount?: number;
+    integrationFuelTransactionCount?: number;
     fuelStopCount?: number;
     fuelCardCount?: number;
 }

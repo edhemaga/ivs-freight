@@ -94,6 +94,7 @@ export class TaInputNoteComponent implements ControlValueAccessor {
     @Input() customClass: string = null;
 
     @Output() styledValueEmitter = new EventEmitter<string>();
+    @Output() toggleCard = new EventEmitter<boolean>();
 
     //note properties
     public _isVisibleNote: boolean | string = 'null';
@@ -141,7 +142,8 @@ export class TaInputNoteComponent implements ControlValueAccessor {
     public openNote(): void {
         this.noActive = '';
         this._isVisibleNote = !this._isVisibleNote;
-
+        this.toggleCard.emit(this._isVisibleNote);
+        
         if (this._isVisibleNote) {
             this.checkActiveItems();
         }

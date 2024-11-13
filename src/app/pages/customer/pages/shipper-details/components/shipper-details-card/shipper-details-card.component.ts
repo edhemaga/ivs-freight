@@ -23,7 +23,7 @@ import { ShipperService } from '@pages/customer/services';
 import { ModalService } from '@shared/services/modal.service';
 
 // Constants
-import { ShipperDetailsChartsConfiguration } from '@pages/customer/pages/shipper-details/utils/constants';
+//import { ShipperDetailsChartsConfiguration } from '@pages/customer/pages/shipper-details/utils/constants/';
 
 // Components
 import { ShipperModalComponent } from '@pages/customer/pages/shipper-modal/shipper-modal.component';
@@ -33,6 +33,7 @@ import { IChartConfiguaration } from 'ca-components/lib/components/ca-chart/mode
 
 // Enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
+import { ShipperDetailsChartsConfiguration } from '../shipper-details-item/utils/constants';
 
 
 @Component({

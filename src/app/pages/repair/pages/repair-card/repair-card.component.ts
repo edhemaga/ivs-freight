@@ -202,6 +202,11 @@ export class RepairCardComponent implements OnInit, AfterViewInit, OnDestroy {
         this.bodyActions.emit(event);
     }
 
+    public goToDetailsPage(card: CardDetails): void {
+        if (this.selectedTab === TableStringEnum.REPAIR_SHOP)
+            this.router.navigate([`/list/repair/${card.id}/details`]);
+    }
+
     ngOnDestroy() {
         this.destroy$.next();
         this.destroy$.complete();

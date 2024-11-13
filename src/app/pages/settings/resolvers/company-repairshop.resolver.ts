@@ -3,11 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable, of, catchError, tap } from 'rxjs';
 
 // store
-import { CompanyStore } from '@pages/settings/state/company-state/company-settings.store';
-import {
-    CompanyRepairShopState,
-    CompanyRepairShopStore,
-} from '@pages/settings/state/setting-reapir-shop-state/company-repairshop.store';
+import { CompanyRepairShopStore } from '@pages/settings/state/setting-reapir-shop-state/company-repairshop.store';
 
 // services
 import { CompanyRepairShopService } from '@pages/settings/services/company-repairshop.service';
@@ -19,13 +15,11 @@ import { RepairShopNewListResponse } from 'appcoretruckassist';
     providedIn: 'root',
 })
 export class CompanyRepairShopResolver {
-    pageIndex: number = 1;
-    pageSize: number = 25;
-    companyId: number = this.companyStore.getValue().ids[0];
     constructor(
         private companyRepairService: CompanyRepairShopService,
-        private companyRepairShopStore: CompanyRepairShopStore,
-        private companyStore: CompanyStore
+
+        // store
+        private companyRepairShopStore: CompanyRepairShopStore
     ) {}
     resolve(): Observable<RepairShopNewListResponse> {
         return this.companyRepairService
@@ -50,11 +44,12 @@ export class CompanyRepairShopResolver {
                 }),
                 tap((repairShopPagination: RepairShopNewListResponse) => {
                     localStorage.setItem(
-                        'repairShopTableCount',
+                        'repairTruckTrailerTableCount',
                         JSON.stringify({
-                            repairShops: repairShopPagination.pagination.count,
+                            repairShops: repairShopPagination.repairShopCount,
                         })
                     );
+
                     this.companyRepairShopStore.set(
                         repairShopPagination.pagination.data
                     );

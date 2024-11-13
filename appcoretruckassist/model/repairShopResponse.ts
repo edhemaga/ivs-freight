@@ -53,6 +53,7 @@ export interface RepairShopResponse {
     monthlyDay?: EnumValue;
     createdAt?: string;
     updatedAt?: string;
+    dateDeactivated?: string | null;
     serviceTypes?: Array<RepairShopServiceTypeResponse> | null;
     openHours?: Array<RepairShopOpenHoursResponse> | null;
     contacts?: Array<RepairShopContactResponse> | null;

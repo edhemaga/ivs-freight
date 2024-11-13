@@ -36,7 +36,7 @@ import { LoadDetailsHelper } from '@pages/load/pages/load-details/utils/helpers/
 // models
 import { LoadResponse } from 'appcoretruckassist';
 import { DetailsConfig } from '@shared/models/details-config.model';
-import { DetailsDropdownOptions } from '@pages/driver/pages/driver-details/models/details-dropdown-options.model';
+import { DetailsDropdownOptions } from '@shared/models/details-dropdown-options.model';
 
 @Component({
     selector: 'app-load-details',

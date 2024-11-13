@@ -25,9 +25,9 @@ import { DriversMinimalListQuery } from '@pages/driver/state/driver-details-mini
 import { DriversItemStore } from '@pages/driver/state/driver-details-state/driver-details-item.store';
 
 // compoents
-import { TaAppTooltipComponent } from '@shared/components/ta-app-tooltip/ta-app-tooltip.component';
 import { TaInputDropdownComponent } from '@shared/components/ta-input-dropdown/ta-input-dropdown.component';
 import { TaDetailsDropdownComponent } from '@shared/components/ta-details-dropdown/ta-details-dropdown.component';
+import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
 
 @Component({
     selector: 'app-ta-details-header-card',
@@ -36,16 +36,21 @@ import { TaDetailsDropdownComponent } from '@shared/components/ta-details-dropdo
     encapsulation: ViewEncapsulation.None,
     standalone: true,
     imports: [
+        // modules
         CommonModule,
-        FormsModule,
-        ReactiveFormsModule,
-        TaAppTooltipComponent,
-        AngularSvgIconModule,
-        DetailsActiveItemPipe,
-        TaInputDropdownComponent,
-        TaDetailsDropdownComponent,
         NgbPopoverModule,
         NgbModule,
+        FormsModule,
+        ReactiveFormsModule,
+        AngularSvgIconModule,
+
+        // components
+        TaAppTooltipV2Component,
+        TaInputDropdownComponent,
+        TaDetailsDropdownComponent,
+
+        // pipes
+        DetailsActiveItemPipe,
     ],
 })
 export class TaDetailsHeaderCardComponent {

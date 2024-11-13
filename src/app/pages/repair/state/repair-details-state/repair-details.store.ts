@@ -1,26 +1,16 @@
 import { Injectable } from '@angular/core';
 
-// Akita
+// store
 import { EntityState, EntityStore, StoreConfig } from '@datorama/akita';
+import { ExtendedRepairShopResponse } from '@pages/repair/pages/repair-shop-details/components/repair-shop-details-card/models';
 
-// Models
-import { RepairDetails } from '@pages/repair/models/repair-details.model';
-
-export interface RepairDetailsState extends EntityState<RepairDetails> {}
-
-export const initialState = (): RepairDetailsState => {
-    return {
-        repairShop: [],
-        repairList: [],
-        repairedVehicleList: [],
-        repairShopMinimal: [],
-    };
-};
+export interface RepairDetailsState
+    extends EntityState<ExtendedRepairShopResponse, number> {}
 
 @Injectable({ providedIn: 'root' })
-@StoreConfig({ name: 'repairD' })
+@StoreConfig({ name: 'repairDetails' })
 export class RepairDetailsStore extends EntityStore<RepairDetailsState> {
     constructor() {
-        super(initialState());
+        super();
     }
 }

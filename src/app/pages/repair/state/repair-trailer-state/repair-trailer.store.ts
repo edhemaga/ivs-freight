@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 
-// Akita
+// store
 import { EntityState, EntityStore, StoreConfig } from '@datorama/akita';
 
-// Models
+// models
 import { RepairResponse } from 'appcoretruckassist';
 
 export interface RepairTrailerState

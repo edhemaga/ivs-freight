@@ -1,0 +1,119 @@
+<app-ta-details-header-card
+    [ngClass]="{
+        disabedPreviousArrow: [0, -1].includes(repairShopCurrentIndex),
+        disableNextArrow:
+            repairShopCurrentIndex === repairShopDropdownList?.length - 1
+    }"
+    [tooltipNext]="
+        repairShopCurrentIndex === repairShopDropdownList?.length - 1
+            ? ''
+            : 'Next'
+    "
+    [tooltipPrevious]="
+        [0, -1].includes(repairShopCurrentIndex) ? '' : 'Previous'
+    "
+    [cardDetailsDate]="_cardData?.createdAt | formatDateP"
+    [dateChecked]="
+        _cardData?.lastVisited ? (_cardData?.lastVisited | formatDateP) : false
+    "
+    [dateClosed]="
+        _cardData?.dateDeactivated
+            ? (_cardData?.dateDeactivated | formatDateP)
+            : false
+    "
+    [searchInputName]="'Search Repair Shop'"
+    [searchName]="
+        !_cardData?.status
+            ? 'Permanently Closed'
+            : _cardData?.companyOwned
+            ? 'Company Owned'
+            : 'Favorite'
+    "
+    [options]="repairShopDropdownList"
+    [currentName]="_cardData?.name"
+    [haveDropSVG]="
+        !_cardData?.status || _cardData?.pinned || _cardData?.companyOwned
+    "
+    [repairHeader]="true"
+    [customPinnedSvg]="
+        !_cardData?.status
+            ? repairShopDetailsSvgRoutes.closedRoute
+            : _cardData?.companyOwned
+            ? repairShopDetailsSvgRoutes.companyOwnedRoute
+            : repairShopDetailsSvgRoutes.favoriteRoute
+    "
+    (selectValue)="handleCardChanges($event, 'select-repair-shop')"
+    (changeEvent)="handleCardChanges($event, 'change-repair-shop')"
+>
+    <div class="d-flex flex-column justify-content-center shop-title-card">
+        <!-- Phone -->
+
+        <div class="d-flex align-items-center shop-title-card-item">
+            <div
+                ngbTooltip
+                mainTooltip="Phone"
+                position="bottom"
+                tooltipBackground="#424242"
+            >
+                <svg-icon
+                    class="shop-title-card-item-icon"
+                    [svgStyle]="{ 'width.px': '18', 'height.px': '18' }"
+                    [src]="repairShopDetailsSvgRoutes.phoneRoute"
+                ></svg-icon>
+            </div>
+
+            <app-ta-copy
+                [copyValue]="_cardData?.phone"
+                [textColor]="'#2f2f2f'"
+            ></app-ta-copy>
+        </div>
+
+        <!-- Email -->
+
+        <ng-container *ngIf="_cardData?.email">
+            <div class="d-flex align-items-center shop-title-card-item">
+                <div
+                    ngbTooltip
+                    mainTooltip="Email"
+                    position="bottom"
+                    tooltipBackground="#424242"
+                >
+                    <svg-icon
+                        class="shop-title-card-item-icon"
+                        [svgStyle]="{ 'width.px': '18', 'height.px': '18' }"
+                        [src]="repairShopDetailsSvgRoutes.emailRoute"
+                    ></svg-icon>
+                </div>
+
+                <app-ta-copy
+                    [copyValue]="_cardData?.email"
+                    [textColor]="'#2f2f2f'"
+                ></app-ta-copy>
+            </div>
+        </ng-container>
+
+        <!-- Address -->
+
+        <div
+            class="d-flex align-items-center shop-title-card-item text-truncate"
+        >
+            <div
+                ngbTooltip
+                mainTooltip="Address"
+                position="bottom"
+                tooltipBackground="#424242"
+            >
+                <svg-icon
+                    class="shop-title-card-item-icon"
+                    [svgStyle]="{ 'width.px': '18', 'height.px': '18' }"
+                    [src]="repairShopDetailsSvgRoutes.addressRoute"
+                ></svg-icon>
+            </div>
+
+            <app-ta-copy
+                [copyValue]="_cardData?.address"
+                [textColor]="'#2f2f2f'"
+            ></app-ta-copy>
+        </div>
+    </div>
+</app-ta-details-header-card>

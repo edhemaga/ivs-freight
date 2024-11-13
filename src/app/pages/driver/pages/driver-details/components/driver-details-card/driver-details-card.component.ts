@@ -5,7 +5,6 @@ import {
     OnDestroy,
     OnInit,
     SimpleChanges,
-    ViewChild,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
@@ -17,7 +16,6 @@ import {
 import { Subject, takeUntil } from 'rxjs';
 
 // services
-import { DriverService } from '@pages/driver/services/driver.service';
 import { DetailsPageService } from '@shared/services/details-page.service';
 import { ModalService } from '@shared/services/modal.service';
 
@@ -56,11 +54,7 @@ import { DriverDetailsChartsConfiguration } from '@pages/driver/pages/driver-det
 import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calculations.helper';
 
 // models
-import {
-    DriverMinimalResponse,
-    DriverPayrollResponse,
-    DriverResponse,
-} from 'appcoretruckassist';
+import { DriverMinimalResponse, DriverResponse } from 'appcoretruckassist';
 import { TabOptions } from '@shared/components/ta-tab-switch/models/tab-options.model';
 import { IChartConfiguaration } from 'ca-components/lib/components/ca-chart/models';
 
@@ -116,7 +110,6 @@ export class DriverDetailsCardComponent
 
         // services
         private detailsPageService: DetailsPageService,
-        private driverService: DriverService,
         private modalService: ModalService,
 
         // store
