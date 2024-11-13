@@ -93,7 +93,7 @@ export class PayrollCreditConst {
         placeholderIcon: 'dollar',
     };
 
-    static limitedAmountField(isDisabled): ITaInput {
+    static limitedAmountField(isDisabled: boolean): ITaInput {
         return {
             isDisabled,
             name: 'Pay Amount',
