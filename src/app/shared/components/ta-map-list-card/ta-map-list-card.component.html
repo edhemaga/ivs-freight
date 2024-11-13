@@ -11,7 +11,7 @@
             <div
                 class="marker-info-text marker-bold-text uppercase text-ellipsis d-flex align-items-center"
             >
-                <ng-container *ngIf="status == 0 || item.isClosed">
+                <ng-container *ngIf="!status || item.isClosed">
                     <span>
                         <svg-icon
                             class="permanently-closed-svg"
@@ -22,7 +22,7 @@
                 </ng-container>
                 <span class="title-text"
                     >{{ title }}
-                    <ng-container *ngIf="type == 'fuelStop'">
+                    <ng-container *ngIf="type === 'fuelStop'">
                         - {{ item.store }}
                     </ng-container>
                 </span>
@@ -30,8 +30,8 @@
             <div class="d-flex align-items-center gap-1">
                 <ng-container
                     *ngIf="
-                        selectedSortColumn.name == 'Favorites' ||
-                        selectedSortColumn.name == 'Fuel Price' ||
+                        selectedSortColumn.name === 'Favorites' ||
+                        selectedSortColumn.name === 'Fuel Price' ||
                         item?.isFavorite
                     "
                 >
@@ -78,9 +78,9 @@
         <div class="marker-rating-container mg-top-2">
             <ng-container
                 *ngIf="
-                    (selectedSortColumn.name == 'Business Name' ||
-                        selectedSortColumn.name == 'Rating' ||
-                        selectedSortColumn.name == 'Favorites') &&
+                    (selectedSortColumn.name === 'Business Name' ||
+                        selectedSortColumn.name === 'Rating' ||
+                        selectedSortColumn.name === 'Favorites') &&
                     type != 'fuelStop'
                 "
             >
@@ -118,10 +118,10 @@
 
             <ng-container
                 *ngIf="
-                    type == 'fuelStop' &&
-                    (selectedSortColumn.name == 'Business Name' ||
-                        selectedSortColumn.name == 'Favorites' ||
-                        selectedSortColumn.name == 'Fuel Price')
+                    type === 'fuelStop' &&
+                    (selectedSortColumn.name === 'Business Name' ||
+                        selectedSortColumn.name === 'Favorites' ||
+                        selectedSortColumn.name === 'Fuel Price')
                 "
             >
                 <div>
@@ -145,7 +145,7 @@
                 </div>
             </ng-container>
 
-            <ng-container *ngIf="selectedSortColumn.name == 'Date Added'">
+            <ng-container *ngIf="selectedSortColumn.name === 'Date Added'">
                 <div>
                     <div class="marker-like-text marker-medium-text">
                         Added
@@ -171,7 +171,7 @@
                 </div>
             </ng-container>
 
-            <ng-container *ngIf="selectedSortColumn.name == 'Pickups'">
+            <ng-container *ngIf="selectedSortColumn.name === 'Pickups'">
                 <div>
                     <div class="marker-like-text marker-medium-text">
                         <span class="marker-bold-text">{{
@@ -182,7 +182,7 @@
                 </div>
             </ng-container>
 
-            <ng-container *ngIf="selectedSortColumn.name == 'Deliveries'">
+            <ng-container *ngIf="selectedSortColumn.name === 'Deliveries'">
                 <div>
                     <div class="marker-like-text marker-medium-text">
                         <span class="marker-bold-text">{{
@@ -193,7 +193,7 @@
                 </div>
             </ng-container>
 
-            <ng-container *ngIf="selectedSortColumn.name == 'Avg. Pickup Time'">
+            <ng-container *ngIf="selectedSortColumn.name === 'Avg. Pickup Time'">
                 <div>
                     <div class="marker-like-text marker-medium-text">
                         Avg. Pickup<span class="marker-bold-text">
@@ -208,7 +208,7 @@
             </ng-container>
 
             <ng-container
-                *ngIf="selectedSortColumn.name == 'Avg. Delivery Time'"
+                *ngIf="selectedSortColumn.name === 'Avg. Delivery Time'"
             >
                 <div>
                     <div class="marker-like-text marker-medium-text">
@@ -225,7 +225,7 @@
 
             <ng-container
                 *ngIf="
-                    selectedSortColumn.name == 'Location' &&
+                    selectedSortColumn.name === 'Location' &&
                     item.distanceBetween
                 "
             >
@@ -239,7 +239,7 @@
                 </div>
             </ng-container>
 
-            <ng-container *ngIf="selectedSortColumn.name == 'Available'">
+            <ng-container *ngIf="selectedSortColumn.name === 'Available'">
                 <div>
                     <div class="marker-like-text">
                         Open Until <span class="marker-bold-text">8:00 PM</span>
@@ -280,7 +280,7 @@
                 </div>
             </ng-container>
 
-            <ng-container *ngIf="selectedSortColumn.name == 'Transaction'">
+            <ng-container *ngIf="selectedSortColumn.name === 'Transaction'">
                 <div>
                     <div class="marker-like-text">
                         <span class="marker-bold-text">{{
@@ -293,7 +293,7 @@
                 </div>
             </ng-container>
 
-            <ng-container *ngIf="selectedSortColumn.name == 'Total Cost'">
+            <ng-container *ngIf="selectedSortColumn.name === 'Total Cost'">
                 <div>
                     <div class="marker-like-text">
                         Total Cost
@@ -310,7 +310,7 @@
                 </div>
             </ng-container>
 
-            <ng-container *ngIf="selectedSortColumn.name == 'Date & Time'">
+            <ng-container *ngIf="selectedSortColumn.name === 'Date & Time'">
                 <div>
                     <div class="marker-like-text">
                         Issued
@@ -319,7 +319,7 @@
                 </div>
             </ng-container>
 
-            <ng-container *ngIf="selectedSortColumn.name == 'Inspection Level'">
+            <ng-container *ngIf="selectedSortColumn.name === 'Inspection Level'">
                 <div>
                     <div class="marker-like-text">
                         Insp. lvl
@@ -328,7 +328,7 @@
                 </div>
             </ng-container>
 
-            <ng-container *ngIf="selectedSortColumn.name == 'Drivers Name'">
+            <ng-container *ngIf="selectedSortColumn.name === 'Drivers Name'">
                 <div class="driver-name-container">
                     <app-ta-profile-images
                         [indx]="0"
@@ -343,7 +343,7 @@
             </ng-container>
 
             <ng-container
-                *ngIf="selectedSortColumn.name == 'Inspection Weights'"
+                *ngIf="selectedSortColumn.name === 'Inspection Weights'"
             >
                 <div>
                     <div class="marker-like-text">
@@ -359,7 +359,7 @@
                 </div>
             </ng-container>
 
-            <ng-container *ngIf="selectedSortColumn.name == 'Truck Unit'">
+            <ng-container *ngIf="selectedSortColumn.name === 'Truck Unit'">
                 <div>
                     <div class="marker-like-text">
                         Truck Unit
@@ -377,7 +377,7 @@
                 </div>
             </ng-container>
 
-            <ng-container *ngIf="selectedSortColumn.name == 'Trailer Unit'">
+            <ng-container *ngIf="selectedSortColumn.name === 'Trailer Unit'">
                 <div>
                     <div class="marker-like-text">
                         Trailer Unit
@@ -397,16 +397,16 @@
 
             <ng-container
                 *ngIf="
-                    selectedSortColumn.name == 'Report Number' ||
-                    selectedSortColumn.name == 'Inspection Results'
+                    selectedSortColumn.name === 'Report Number' ||
+                    selectedSortColumn.name === 'Inspection Results'
                 "
             >
                 <div class="w-100">
-                    <ng-container *ngIf="type == 'accident'">
+                    <ng-container *ngIf="type === 'accident'">
                         <div class="accident-report-container">
                             <div
                                 class="accident-svg-container vehicles-number"
-                                [ngClass]="{ inactive: item?.vehicles == 0 }"
+                                [ngClass]="{ inactive: !item?.vehicles }"
                             >
                                 <svg-icon
                                     class="accident-report-svg"
@@ -425,7 +425,7 @@
                             </div>
                             <div
                                 class="accident-svg-container injury-number"
-                                [ngClass]="{ inactive: item?.injuries == 0 }"
+                                [ngClass]="{ inactive: !item?.injuries }"
                             >
                                 <svg-icon
                                     class="accident-report-svg"
@@ -444,7 +444,7 @@
                             </div>
                             <div
                                 class="accident-svg-container fatality-number"
-                                [ngClass]="{ inactive: item?.fatality == 0 }"
+                                [ngClass]="{ inactive: !item?.fatality }"
                             >
                                 <svg-icon
                                     class="accident-report-svg"
@@ -463,7 +463,7 @@
                             </div>
                             <div
                                 class="accident-svg-container towing"
-                                [ngClass]="{ inactive: item?.towing == 'No' }"
+                                [ngClass]="{ inactive: item?.towing === 'No' }"
                             >
                                 <svg-icon
                                     class="accident-report-svg"
@@ -477,7 +477,7 @@
                             </div>
                             <div
                                 class="accident-svg-container hazard"
-                                [ngClass]="{ inactive: item?.hm == 'No' }"
+                                [ngClass]="{ inactive: item?.hm === 'No' }"
                             >
                                 <svg-icon
                                     class="accident-report-svg"
@@ -492,13 +492,13 @@
                         </div>
                     </ng-container>
 
-                    <ng-container *ngIf="type == 'inspection'">
+                    <ng-container *ngIf="type === 'inspection'">
                         <div
                             class="accident-report-container inspection-container"
                         >
                             <div
                                 class="accident-svg-container violation-number"
-                                [ngClass]="{ inactive: item?.vehicles == 0 }"
+                                [ngClass]="{ inactive: !item?.vehicles }"
                             >
                                 <svg-icon
                                     class="accident-report-svg"
@@ -517,7 +517,7 @@
                             </div>
                             <div
                                 class="accident-svg-container injury-number"
-                                [ngClass]="{ inactive: item?.injuries == 0 }"
+                                [ngClass]="{ inactive: !item?.injuries }"
                             >
                                 <svg-icon
                                     class="accident-report-svg"
@@ -538,7 +538,7 @@
                             </div>
                             <div
                                 class="accident-svg-container fatality-number"
-                                [ngClass]="{ inactive: item?.fatality == 0 }"
+                                [ngClass]="{ inactive: !item?.fatality }"
                             >
                                 <svg-icon
                                     class="accident-report-svg"
@@ -571,12 +571,12 @@
                         locationFilterOn
                     "
                 >
-                    <span class="marker-bold-text"
+                    <span class="marker-bold-text text-color-grey"
                         >{{ item.distanceBetween }} mi -
                     </span>
                 </ng-container>
 
-                <span class="address-text">
+                <span class="address-text text-color-grey">
                     {{ address.city ? address.city : address.county }},
                     {{ address.stateShortName }}
                     {{ address.zipCode }},
