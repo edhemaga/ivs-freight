@@ -56,6 +56,9 @@ import { PayrollCreditService } from '@pages/accounting/pages/payroll/payroll-mo
 import { PayrollBonusService } from '@pages/accounting/pages/payroll/payroll-modals/payroll-bonus-modal/services/payroll-bonus.service';
 import { PayrollFacadeService } from '@pages/accounting/pages/payroll/state/services/payroll.service';
 
+// Helpers
+import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calculations.helper';
+
 @Component({
     selector: 'app-payroll-base-modal',
     standalone: true,
@@ -175,6 +178,27 @@ export class PayrollBaseModalComponent implements OnInit {
                     );
                 }
             });
+
+        this.baseForm
+            .get(PayrollStringEnum.AMOUNT)
+            .valueChanges.pipe(takeUntil(this.destroy$))
+            .subscribe(() => this.calculateDeductionPayAmmount());
+
+        this.baseForm
+            .get(PayrollStringEnum.LIMITED_NUMBER)
+            .valueChanges.pipe(takeUntil(this.destroy$))
+            .subscribe(() => this.calculateDeductionPayAmmount());
+    }
+
+    private calculateDeductionPayAmmount(): void {
+        const ammount = MethodsCalculationsHelper.convertThousanSepInNumber(this.baseForm.get(PayrollStringEnum.AMOUNT).value);
+        const numberOfPayments = MethodsCalculationsHelper.convertThousanSepInNumber(this.baseForm.get(
+            PayrollStringEnum.LIMITED_NUMBER
+        ).value);
+
+        this.baseForm
+            .get(PayrollStringEnum.LIMITED_AMOUNT)
+            .patchValue(MethodsCalculationsHelper.convertNumberInThousandSep(ammount / numberOfPayments) ?? 0);
     }
 
     private getEmployeesDropdown(): void {

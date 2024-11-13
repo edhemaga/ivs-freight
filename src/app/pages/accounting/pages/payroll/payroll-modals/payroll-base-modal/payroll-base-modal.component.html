@@ -131,9 +131,7 @@
                         <app-ca-input
                             formControlName="limitedAmount"
                             [inputConfig]="
-                                payrollCreditConst.limitedAmountField(
-                                    isNotRecuringPayment || !isLimitedPayment
-                                )
+                                payrollCreditConst.limitedAmountField(true)
                             "
                         ></app-ca-input>
                     </div>
