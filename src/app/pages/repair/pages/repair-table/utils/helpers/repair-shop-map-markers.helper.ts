@@ -27,7 +27,7 @@ export class RepairShopMapMarkersHelper {
                     <text
                         id="_4"
                         data-name="4"
-                        transform="translate(26.5 27.5)"
+                        transform="translate(26 27)"
                         fill="#fff"
                         font-size="14"
                         font-family="Montserrat, sans-serif"
