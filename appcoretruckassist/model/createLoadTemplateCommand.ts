@@ -32,6 +32,7 @@ export interface CreateLoadTemplateCommand {
     baseRate?: number;
     adjustedRate?: number | null;
     driverRate?: number | null;
+    coDriverRate?: number | null;
     advancePay?: number | null;
     totalMiles?: number | null;
     totalHours?: number | null;

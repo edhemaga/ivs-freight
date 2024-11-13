@@ -44,7 +44,7 @@ import { DropActionsStringEnum } from '@shared/enums/drop-actions-string.enum';
 
 // models
 import { CdlResponse, DriverResponse } from 'appcoretruckassist';
-import { DetailsDropdownOptions } from '@pages/driver/pages/driver-details/models/details-dropdown-options.model';
+import { DetailsDropdownOptions } from '@shared/models/details-dropdown-options.model';
 
 @Component({
     selector: 'app-driver-details-item-cdl',

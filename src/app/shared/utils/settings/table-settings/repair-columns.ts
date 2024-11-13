@@ -599,7 +599,7 @@ export function getRepairShopColumnDefinition() {
             resizable: true,
             link: {
                 routerLinkStart: '/list/repair/',
-                routerLinkEnd: '/shop-details',
+                routerLinkEnd: '/details',
             },
         },
         {

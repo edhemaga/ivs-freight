@@ -32,6 +32,24 @@ import { RepairOrderModalComponent } from '@pages/repair/pages/repair-modals/rep
 // Animations
 import { cardComponentAnimation } from '@shared/animations/card-component.animation';
 import { TableStringEnum } from '@shared/enums/table-string.enum';
+import { CommonModule } from '@angular/common';
+import { TaDetailsHeaderCardComponent } from '@shared/components/ta-details-header-card/ta-details-header-card.component';
+import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-custom-card.component';
+import { TaDetailsDropdownComponent } from '@shared/components/ta-details-dropdown/ta-details-dropdown.component';
+import { TaUploadFilesComponent } from '@shared/components/ta-upload-files/ta-upload-files.component';
+import { TaProfileImagesComponent } from '@shared/components/ta-profile-images/ta-profile-images.component';
+import { TaInputNoteComponent } from '@shared/components/ta-input-note/ta-input-note.component';
+import { TaTableBodyComponent } from '@shared/components/ta-table/ta-table-body/ta-table-body.component';
+import { TaTableHeadComponent } from '@shared/components/ta-table/ta-table-head/ta-table-head.component';
+import { TaCopyComponent } from '@shared/components/ta-copy/ta-copy.component';
+import { TaCommonCardComponent } from '@shared/components/ta-common-card/ta-common-card.component';
+import { TaProgressExpirationComponent } from '@shared/components/ta-progress-expiration/ta-progress-expiration.component';
+import { TaCounterComponent } from '@shared/components/ta-counter/ta-counter.component';
+import { TaDetailsHeaderComponent } from '@shared/components/ta-details-header/ta-details-header.component';
+import { TaTabSwitchComponent } from '@shared/components/ta-tab-switch/ta-tab-switch.component';
+import { FormatCurrencyPipe, FormatDatePipe } from '@shared/pipes';
+import { RepairShopDetailsCard } from '@pages/repair/pages/repair-shop-details/components/repair-shop-details-card/repair-shop-details-card.component';
+import { DetailsConfig } from '@shared/models/details-config.model';
 
 @Component({
     selector: 'app-repair-shop-details-item',
@@ -40,8 +58,39 @@ import { TableStringEnum } from '@shared/enums/table-string.enum';
     styleUrls: ['./repair-shop-details-item.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
     animations: [cardComponentAnimation('showHideCardBody', '0px', '0px')],
+    standalone: true,
+    imports: [
+        // modules
+        CommonModule,
+
+        ///////////////////////////////////////
+        TaDetailsHeaderCardComponent,
+        TaCustomCardComponent,
+        /*  TaInputNoteComponent, */
+        TaTableBodyComponent,
+        TaTableHeadComponent,
+        TaProfileImagesComponent,
+        TaCopyComponent,
+        TaUploadFilesComponent,
+        TaCommonCardComponent,
+        TaProgressExpirationComponent,
+        TaCounterComponent,
+        TaDetailsHeaderComponent,
+        TaTabSwitchComponent,
+        TaDetailsDropdownComponent,
+        RepairShopDetailsCard,
+
+        // Pipes
+        FormatDatePipe,
+        FormatCurrencyPipe,
+    ],
 })
 export class RepairShopDetailsItemComponent implements OnInit, OnChanges {
+    private destroy$ = new Subject<void>();
+
+    @Input() detailsConfig: DetailsConfig;
+
+    /////////////////////////////////////////////
     @Input() repairShopItem: RepairShopResponse | any = null;
     @Input() customClass: string | any = '';
     public repairListData: any;
@@ -52,21 +101,21 @@ export class RepairShopDetailsItemComponent implements OnInit, OnChanges {
     public repairShopLikes: number;
     public repairShopDislike: number;
     public showRepairItems: boolean[] = [];
-    private destroy$ = new Subject<void>();
+
     public repairsTest: any;
 
     constructor(
-        // Services
+        // services
         private dropDownService: DropDownService,
         private modalService: ModalService,
         private confirmationService: ConfirmationService,
         private reviewRatingService: ReviewsRatingService,
         private tableService: TruckassistTableService,
 
-        // Store
+        // store
         private repairDetailsQuery: RepairDetailsQuery,
 
-        // Ref
+        // ref
         private cdr: ChangeDetectorRef
     ) {}
 
@@ -75,13 +124,13 @@ export class RepairShopDetailsItemComponent implements OnInit, OnChanges {
             changes.repairShopItem?.currentValue?.data !=
             changes.repairShopItem?.previousValue?.data
         ) {
-            this.repairShopLikes =
+            /*  this.repairShopLikes =
                 changes.repairShopItem?.currentValue?.data.upCount;
             this.repairShopDislike =
                 changes.repairShopItem?.currentValue?.data.downCount;
             this.getReviews(changes.repairShopItem?.currentValue?.data);
-            this.initTableOptions();
-            this.repairDetailsQuery.repairList$
+            this.initTableOptions(); */
+            /*   this.repairDetailsQuery.repairList$
                 .pipe(takeUntil(this.destroy$))
                 .subscribe(
                     (item) => (
@@ -96,15 +145,15 @@ export class RepairShopDetailsItemComponent implements OnInit, OnChanges {
                         (this.repairedVehicleListData = item.pagination.data),
                         this.cdr.detectChanges()
                     )
-                );
-            this.repairListData?.map((item) => {
+                ); */
+            /*  this.repairListData?.map((item) => {
                 this.showRepairItems[item.id] = false;
-            });
+            }); */
         }
     }
     ngOnInit(): void {
         // Confirmation Subscribe
-        this.confirmationService.confirmationData$
+        /*    this.confirmationService.confirmationData$
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: (res) => {
@@ -127,7 +176,7 @@ export class RepairShopDetailsItemComponent implements OnInit, OnChanges {
         this.tableService.currentActionAnimation
             .pipe(takeUntil(this.destroy$))
             .subscribe((res: any) => {
-                if (res.animation && res.tab === 'repair') {
+                if (res?.animation && res.tab === 'repair') {
                     let index = -1;
                     this.repairListData.map((item, inx) => {
                         if (item.id == res.id) {
@@ -143,8 +192,16 @@ export class RepairShopDetailsItemComponent implements OnInit, OnChanges {
                         this.cdr.detectChanges();
                     }
                 }
-            });
+            }); */
     }
+
+    ///////////////////////////////////////////////////
+
+    public trackByIdentity(_: number, item: DetailsConfig): number {
+        return item.id;
+    }
+
+    ///////////////////////////////////////////////////////
 
     public toggleRepairs(index: number, event?: any) {
         event.stopPropagation();
@@ -294,11 +351,6 @@ export class RepairShopDetailsItemComponent implements OnInit, OnChanges {
                 rating: item.thumb, // item.ratingFromTheReviewer doesn't exist in response
             };
         });
-    }
-
-    /**Function return id */
-    public identity(index: number, item: any): number {
-        return item.id;
     }
 
     public changeReviewsEvent(reviews: { data: any; action: string }) {

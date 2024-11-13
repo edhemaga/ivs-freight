@@ -9,18 +9,19 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { EnumValue } from './enumValue';
+import { TrailerTypeResponse } from './trailerTypeResponse';
 import { DriverMinimalResponse } from './driverMinimalResponse';
+import { TruckTypeResponse } from './truckTypeResponse';
 
 
 export interface DriverDetailsDispatchResponse { 
     coDriver?: DriverMinimalResponse;
     truckId?: number | null;
     truckNumber?: string | null;
-    truckType?: EnumValue;
+    truckType?: TruckTypeResponse;
     trailerId?: number | null;
     trailerNumber?: string | null;
-    trailerType?: EnumValue;
+    trailerType?: TrailerTypeResponse;
     teamName?: string | null;
 }
 

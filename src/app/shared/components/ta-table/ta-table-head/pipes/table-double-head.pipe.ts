@@ -21,7 +21,7 @@ export class TableDoubleHeadPipe implements PipeTransform {
 
             const pmTableColumnsCondition =
                 gridNameTitle === TableHeadTitleStringEnum.PM &&
-                tableHeadTitle === TableHeadTitleStringEnum.REPAIR_SHOP;
+                tableHeadTitle === TableHeadTitleStringEnum.NAME_5;
 
             const driverTableColumnsCondition =
                 gridNameTitle === TableHeadTitleStringEnum.DRIVER &&
@@ -141,7 +141,7 @@ export class TableDoubleHeadPipe implements PipeTransform {
 
             const pmTableColumnsCondition =
                 gridNameTitle !== TableHeadTitleStringEnum.PM ||
-                tableHeadTitle !== TableHeadTitleStringEnum.REPAIR_SHOP;
+                tableHeadTitle !== TableHeadTitleStringEnum.NAME_5;
 
             const driverTableColumnsCondition =
                 gridNameTitle !== TableHeadTitleStringEnum.DRIVER ||

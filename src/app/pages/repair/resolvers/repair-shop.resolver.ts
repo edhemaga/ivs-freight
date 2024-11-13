@@ -2,10 +2,10 @@ import { Injectable } from '@angular/core';
 
 import { Observable, tap } from 'rxjs';
 
-// Store
+// store
 import { RepairShopStore } from '@pages/repair/state/repair-shop-state/repair-shop.store';
 
-// Services
+// services
 import { RepairService } from '@shared/services/repair.service';
 
 // models
@@ -17,6 +17,8 @@ import { RepairShopNewListResponse } from 'appcoretruckassist';
 export class RepairShopResolver {
     constructor(
         private repairService: RepairService,
+
+        // store
         private repairShopStore: RepairShopStore
     ) {}
 

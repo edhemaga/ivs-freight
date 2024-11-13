@@ -37,7 +37,7 @@ import { DriverDetailsItemStringEnum } from '@pages/driver/pages/driver-details/
 
 // models
 import { DriverResponse, TestResponse } from 'appcoretruckassist';
-import { DetailsDropdownOptions } from '@pages/driver/pages/driver-details/models/details-dropdown-options.model';
+import { DetailsDropdownOptions } from '@shared/models/details-dropdown-options.model';
 
 @Component({
     selector: 'app-driver-details-item-test',

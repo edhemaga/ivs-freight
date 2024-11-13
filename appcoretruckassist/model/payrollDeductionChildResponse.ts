@@ -16,8 +16,12 @@ export interface PayrollDeductionChildResponse {
     date?: string;
     currentRecurrance?: number | null;
     allRecurrance?: number | null;
-    limitedAmount?: number | null;
+    payment?: number | null;
     isPaid?: boolean | null;
     isMoved?: boolean | null;
+    limited?: boolean | null;
+    recurring?: boolean | null;
+    isNext?: boolean | null;
+    isLast?: boolean | null;
 }
 

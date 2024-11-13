@@ -541,32 +541,31 @@ export class TableDropdownComponentConstants {
             tableListDropdownContentStyle: {
                 'margin-bottom.px': 4,
             },
-            hasBorder: true,
         },
-        {
-            title: 'Share',
-            name: 'share',
-            svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Share.svg',
-            svgStyle: {
-                width: 18,
-                height: 18,
-            },
-            svgClass: 'regular',
-            tableListDropdownContentStyle: {
-                'margin-bottom.px': 4,
-            },
-        },
+        // {
+        //     title: 'Share',
+        //     name: 'share',
+        //     svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Share.svg',
+        //     svgStyle: {
+        //         width: 18,
+        //         height: 18,
+        //     },
+        //     svgClass: 'regular',
+        //     tableListDropdownContentStyle: {
+        //         'margin-bottom.px': 4,
+        //     },
+        // },
 
-        {
-            title: 'Print',
-            name: 'print',
-            svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Print.svg',
-            svgStyle: {
-                width: 18,
-                height: 18,
-            },
-            svgClass: 'regular',
-        },
+        // {
+        //     title: 'Print',
+        //     name: 'print',
+        //     svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Print.svg',
+        //     svgStyle: {
+        //         width: 18,
+        //         height: 18,
+        //     },
+        //     svgClass: 'regular',
+        // },
     ];
 
     static TEXT_COLORS: string[] = [

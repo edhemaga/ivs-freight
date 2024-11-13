@@ -159,37 +159,31 @@
                     path {
                         height: 17.1px;
                         width: 17.1px;
-                        fill: #aaaaaa;
+                        fill: $bw5;
                     }
                 }
             }
 
             &.redIcon {
-                svg-icon {
-                    svg {
-                        path {
-                            fill: #e57373;
-                        }
+                svg {
+                    path {
+                        fill: $ta-red-10;
                     }
                 }
             }
 
             &.blueIcon {
-                svg-icon {
-                    svg {
-                        path {
-                            fill: #6f9ee0;
-                        }
+                svg {
+                    path {
+                        fill: $ta-blue-13;
                     }
                 }
             }
 
             &.greenIcon {
-                svg-icon {
-                    svg {
-                        path {
-                            fill: #4db6a2;
-                        }
+                svg {
+                    path {
+                        fill: $ta-green;
                     }
                 }
             }
@@ -252,40 +246,32 @@
             }
 
             .actionIcon {
-                svg-icon {
+                svg {
+                    path {
+                        fill: $bw-9;
+                    }
+                }
+
+                &.redIcon {
                     svg {
                         path {
-                            fill: #dadada;
+                            fill: $ta-red-10 !important;
                         }
                     }
                 }
-            }
 
-            .redIcon {
-                svg-icon {
+                &.blueIcon {
                     svg {
                         path {
-                            fill: #ef9a9a;
+                            fill: $ta-blue-13 !important;
                         }
                     }
                 }
-            }
 
-            .blueIcon {
-                svg-icon {
+                &.greenIcon {
                     svg {
                         path {
-                            fill: #98b9ea;
-                        }
-                    }
-                }
-            }
-
-            .greenIcon {
-                svg-icon {
-                    svg {
-                        path {
-                            fill: #80cbba;
+                            fill: $ta-green !important;
                         }
                     }
                 }
@@ -390,14 +376,14 @@
         pointer-events: none !important;
 
         .actionTitle {
-            color: #6c6c6c;
+            color: $bw5;
         }
 
         .actionIcon {
             svg-icon {
                 svg {
                     path {
-                        fill: #aaaaaa40;
+                        fill: $dark-3;
                     }
                 }
             }
@@ -439,7 +425,7 @@
             svg-icon {
                 svg {
                     path {
-                        fill: #6f9ee040 !important;
+                        fill: $ta-blue-21 !important;
                     }
                 }
             }

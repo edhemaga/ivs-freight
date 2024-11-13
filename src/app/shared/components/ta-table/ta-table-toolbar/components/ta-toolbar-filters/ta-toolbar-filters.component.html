@@ -302,7 +302,7 @@
     </app-ta-filter>
 
     <!-- PM FILTER -->
-    <app-ta-filter
+    <app-ca-filter
         *ngIf="options.toolbarActions.showPMFilter"
         [type]="'pmFilter'"
         [icon]="'default_pm'"
@@ -314,16 +314,18 @@
         [noLeftIcon]="false"
         [leftSideIcon]="true"
         (setFilter)="onFilter($event)"
+        (clearAll)="onFilter($event)"
         [class]="
             options?.toolbarActions?.filtersOrder?.pm
                 ? 'order-' + options.toolbarActions.filtersOrder.pm
                 : ''
         "
+        [pmFilterArray]="pmFilterArray"
     >
-    </app-ta-filter>
+    </app-ca-filter>
 
     <!-- CATEGORY REPAIR FILTER -->
-    <app-ta-filter
+    <app-ca-filter
         *ngIf="options.toolbarActions.showCategoryRepairFilter"
         [type]="'categoryRepairFilter'"
         [icon]="'ic_key-repair'"
@@ -332,13 +334,15 @@
         [noLeftIcon]="false"
         [leftSideIcon]="true"
         (setFilter)="onFilter($event)"
+        (clearAll)="onFilter($event)"
         [class]="
             options?.toolbarActions?.filtersOrder?.categoryRepair
                 ? 'order-' + options.toolbarActions.filtersOrder.categoryRepair
                 : ''
         "
+        [pmFilterArray]="categoryRepairArray"
     >
-    </app-ta-filter>
+    </app-ca-filter>
 
     <!-- CATEGORY FUEL FILTER -->
     <app-ta-filter

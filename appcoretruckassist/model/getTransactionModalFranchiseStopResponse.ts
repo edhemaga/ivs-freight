@@ -21,5 +21,6 @@ export interface GetTransactionModalFranchiseStopResponse {
     isFranchise?: boolean;
     favourite?: boolean;
     address?: AddressEntity;
+    phone?: string | null;
 }
 
