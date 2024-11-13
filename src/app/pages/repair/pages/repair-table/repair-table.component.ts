@@ -1581,10 +1581,10 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
             tableAddress: address?.address,
             tableShopServiceType: shopServiceType?.name,
             tableShopServices: serviceTypes,
-            tableOpenHours: {
+            tableOpenHours: null /*  {
                 openHours,
                 openHoursToday,
-            },
+            }, */,
             tableRepairCountBill: bill,
             tableRepairCountOrder: order,
             tableBankDetailsBankName: bankResponse?.name,
