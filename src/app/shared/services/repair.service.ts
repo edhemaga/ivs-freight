@@ -17,6 +17,7 @@ import {
     RepairShopResponse,
     RepairShopService,
     SortOrder,
+    RepairedVehicleListResponse,
 } from 'appcoretruckassist';
 
 // store
@@ -139,7 +140,6 @@ export class RepairService {
         );
     }
 
-    // Get Repair List
     public getRepairList(
         repairShopId?: number,
         unitType?: number,
@@ -187,6 +187,7 @@ export class RepairService {
             search2
         );
     }
+
     public getRepairById(id: number): Observable<RepairResponse> {
         return this.repairService.apiRepairIdGet(id);
     }
@@ -235,7 +236,6 @@ export class RepairService {
         );
     }
 
-    // Delete Repair List
     public deleteRepairList(
         repairIds: number[],
         tabSelected?: string
@@ -431,16 +431,15 @@ export class RepairService {
         );
     }
 
-    // Get Repair Minimal List
     public getRepairShopMinimalList(
         pageIndex?: number,
         pageSize?: number,
-        count?: number
+        companyId?: number
     ): Observable<RepairShopMinimalListResponse> {
         return this.shopServices.apiRepairshopListMinimalGet(
             pageIndex,
             pageSize,
-            count
+            companyId
         );
     }
 
@@ -454,17 +453,20 @@ export class RepairService {
             this.currentIndex = this.repairShopList.findIndex(
                 (shop) => shop.id === repairId
             );
+
             let last = this.repairShopList.at(-1);
-            if (last.id === repairId) {
+
+            if (last?.id === repairId) {
                 this.currentIndex = --this.currentIndex;
             } else {
                 this.currentIndex = ++this.currentIndex;
             }
+
             if (this.currentIndex == -1) {
                 this.currentIndex = 0;
             }
 
-            this.repairShopId = this.repairShopList[this.currentIndex].id;
+            this.repairShopId = this.repairShopList[this.currentIndex]?.id;
         }
 
         return this.shopServices.apiRepairshopIdGet(repairId);
@@ -807,5 +809,17 @@ export class RepairService {
                 });
             },
         });
+    }
+
+    public getRepairedVehicle(
+        repairShopId?: number,
+        pageIndex?: number,
+        pageSize?: number
+    ): Observable<RepairedVehicleListResponse> {
+        return this.shopServices.apiRepairshopRepairedvehicleGet(
+            repairShopId,
+            pageIndex,
+            pageSize
+        );
     }
 }

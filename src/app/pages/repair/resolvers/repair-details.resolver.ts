@@ -11,7 +11,6 @@ import {
 import { RepairItemStore } from '@pages/repair/state/repair-details-item-state/repair-details-item.store';
 
 // services
-import { RepairDetailsService } from '@pages/repair/services';
 import { RepairService } from '@shared/services/repair.service';
 
 @Injectable({
@@ -19,7 +18,6 @@ import { RepairService } from '@shared/services/repair.service';
 })
 export class RepairDetailsResolver {
     constructor(
-        private repairDetailsService: RepairDetailsService,
         private repairservice: RepairService,
 
         // store
@@ -35,11 +33,13 @@ export class RepairDetailsResolver {
             true
         );
 
-        const repairList$ =
-            this.repairDetailsService.getRepairList(repairShopId);
+        const repairList$ = this.repairservice.getRepairList(repairShopId);
 
-        const repairedVehicleList$ =
-            this.repairDetailsService.getRepairedVehicle(repairShopId, 1, 25);
+        const repairedVehicleList$ = this.repairservice.getRepairedVehicle(
+            repairShopId,
+            1,
+            25
+        );
 
         return forkJoin({
             repairShopData: repairShopData$,
