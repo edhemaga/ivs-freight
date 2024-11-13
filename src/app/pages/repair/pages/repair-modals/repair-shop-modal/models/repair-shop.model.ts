@@ -23,8 +23,7 @@ export interface CreateShopModel {
     monthlyDay: number;
     longitude: number;
     latitude: number;
-    holiday: boolean;
-    openAlways: boolean;
+    // openAlways: boolean;
     openHours: Array<RepairShopOpenHoursCommand>;
     serviceTypes: Array<RepairShopServiceTypeCommand>;
     contacts: Array<RepairShopContactCommand>;
@@ -32,4 +31,7 @@ export interface CreateShopModel {
     shopServiceType: number;
     address: AddressEntity;
     filesForDeleteIds: string[];
+    cover?: Blob;
+    status?: number;
+    isCompanyRelated: boolean;
 }

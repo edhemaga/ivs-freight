@@ -79,7 +79,7 @@ export class TaMapListComponent
     notPinedColumns: any[] = [];
     actionColumns: any[] = [];
     public tooltip: any;
-    showExpandButton: boolean = false;
+    public showExpandButton: boolean = false;
     activeSortType: any = {};
     searchIsActive: boolean = false;
     searchLoading: boolean = false;

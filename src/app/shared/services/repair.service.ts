@@ -503,16 +503,18 @@ export class RepairService {
                         );
 
                         this.repairShopStore.add(shop);
-                        repairCount.repairShops++;
+                        if (repairCount) {
+                            repairCount.repairShops++;
 
-                        localStorage.setItem(
-                            'repairTruckTrailerTableCount',
-                            JSON.stringify({
-                                repairTrucks: repairCount.repairTrucks,
-                                repairTrailers: repairCount.repairTrailers,
-                                repairShops: repairCount.repairShops,
-                            })
-                        );
+                            localStorage.setItem(
+                                'repairTruckTrailerTableCount',
+                                JSON.stringify({
+                                    repairTrucks: repairCount.repairTrucks,
+                                    repairTrailers: repairCount.repairTrailers,
+                                    repairShops: repairCount.repairShops,
+                                })
+                            );
+                        }
 
                         this.tableService.sendActionAnimation({
                             animation: 'add',

@@ -304,6 +304,7 @@ export enum TableStringEnum {
     EDIT_FO_TRUCK = 'edit-fo-truck',
     REPAIR_SHOP = 'repair_shop',
     REPAIR_SHOP_2 = 'Repair-shop',
+    REPAIR_SHOP_3 = 'repair-shop',
     NEW_TRAILER = 'new-trailer',
     NEW_TRUCK = 'new-truck',
     REPAIR_TRUCK_TRAILER_TABLE_COUNT = 'repairTruckTrailerTableCount',

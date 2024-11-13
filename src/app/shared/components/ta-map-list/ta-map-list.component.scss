@@ -18,7 +18,7 @@
             height: 1px;
             width: 100%;
 
-            background: #dadada;
+            background: $bw-9;
 
             border-radius: 1px;
         }
@@ -317,18 +317,6 @@
                     font-size: 11px;
                     line-height: 14px;
                     color: $bw5;
-
-                    .address-text,
-                    .marker-bold-text {
-                        &::-moz-selection {
-                            color: $bw5;
-                            background: #91919133;
-                        }
-                        &::selection {
-                            color: $bw5;
-                            background: #91919133;
-                        }
-                    }
                 }
             }
         }

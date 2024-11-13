@@ -1,7 +1,7 @@
 @import 'src/theme/variables';
 @mixin svg-fill($color) {
     svg path {
-        fill: $color;
+        fill: $color !important;
     }
 }
 
@@ -12,7 +12,7 @@
 
     &:hover {
         svg path {
-            fill: $color;
+            fill: $color !important;
         }
     }
 }
@@ -32,6 +32,9 @@
         }
         &-muted {
             @include svg-fill($muted);
+        }
+        &-bw-9 {
+            @include svg-fill($bw-9);
         }
         &-light-grey-2 {
             @include svg-fill($ta-light-grey-2);

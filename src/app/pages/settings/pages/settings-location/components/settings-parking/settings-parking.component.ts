@@ -1,5 +1,5 @@
 import { Component, ChangeDetectorRef, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 import { takeUntil } from 'rxjs';
 
@@ -44,7 +44,8 @@ export class SettingsParkingComponent
         protected settingsLocationService: SettingsLocationService,
         public dropDownService: DropDownService,
         public FormatCurrencyPipe: FormatCurrencyPipe,
-        private companyParkingService: CompanyParkingService
+        private companyParkingService: CompanyParkingService,
+        public router: Router,
     ) {
         super(
             tableService,
@@ -53,7 +54,8 @@ export class SettingsParkingComponent
             activatedRoute,
             settingsLocationService,
             dropDownService,
-            FormatCurrencyPipe
+            FormatCurrencyPipe,
+            router
         );
     }
     ngOnInit(): void {
