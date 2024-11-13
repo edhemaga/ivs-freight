@@ -1,35 +1,31 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-
+import { UntypedFormGroup, UntypedFormBuilder, FormArray } from '@angular/forms';
 import { takeUntil } from 'rxjs';
 
+// Services
 import { TruckassistTableService } from '@shared/services/truckassist-table.service';
 import { ConfirmationService } from '@shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
 import { SettingsLocationService } from '@pages/settings/pages/settings-location/services/settings-location.service';
 import { RepairService } from '@shared/services/repair.service';
 import { CompanyRepairShopService } from '@pages/settings/services/company-repairshop.service';
+import { DropDownService } from '@shared/services/drop-down.service';
+import { ConfirmationActivationService } from '@shared/components/ta-shared-modals/confirmation-activation-modal/services/confirmation-activation.service';
 
-// pipes
+// Pipes
 import { FormatCurrencyPipe } from '@shared/pipes/format-currency.pipe';
 
-// core
-import { SettingsLocationBaseComponent } from '../settings-location-base/settings-location-base.component';
-import { DropDownService } from '@shared/services/drop-down.service';
+// Models 
 import { Confirmation } from '@shared/components/ta-shared-modals/confirmation-modal/models/confirmation.model';
-import { DropActionsStringEnum } from '@shared/enums/drop-actions-string.enum';
 import { RepairShopListDto, RepairShopResponse } from 'appcoretruckassist';
+import { CompanyOfficeResponseWithGroupedContacts, SettingsDepartmentCardModel } from '@pages/settings/pages/settings-location/models';
 
-import {
-    CompanyOfficeResponseWithGroupedContacts,
-    SettingsDepartmentCardModel,
-} from '@pages/settings/pages/settings-location/models';
+// Enums
+import { DropActionsStringEnum } from '@shared/enums/drop-actions-string.enum';
 import { RepairShopModalStringEnum } from '@pages/repair/pages/repair-modals/repair-shop-modal/enums';
-import {
-    UntypedFormGroup,
-    UntypedFormBuilder,
-    FormArray,
-} from '@angular/forms';
-import { ConfirmationActivationService } from '@shared/components/ta-shared-modals/confirmation-activation-modal/services/confirmation-activation.service';
+
+// Component
+import { SettingsLocationBaseComponent } from '../settings-location-base/settings-location-base.component';
 
 @Component({
     selector: 'app-settings-repair-shop',
@@ -53,18 +49,25 @@ export class SettingsRepairShopComponent
     public isVisibleNoteCard: boolean[] = [];
     public repairShopForm: UntypedFormGroup;
     constructor(
-        private repairShopSrv: CompanyRepairShopService,
-        private repairService: RepairService,
+        // Router 
+        protected activatedRoute: ActivatedRoute,
+        public router: Router,
+        
+        // Services
         protected tableService: TruckassistTableService,
         protected confirmationService: ConfirmationService,
-        protected cdRef: ChangeDetectorRef,
-        protected activatedRoute: ActivatedRoute,
+        protected cdRef: ChangeDetectorRef, 
+        private repairShopSrv: CompanyRepairShopService,
+        private repairService: RepairService,
         protected settingsLocationService: SettingsLocationService,
         public dropDownService: DropDownService,
-        public FormatCurrencyPipe: FormatCurrencyPipe,
-        private formBuilder: UntypedFormBuilder,
         private confirmationActivationService: ConfirmationActivationService,
-        public router: Router,
+    
+        // Pipes
+        public FormatCurrencyPipe: FormatCurrencyPipe,
+    
+        // Form builder
+        private formBuilder: UntypedFormBuilder,
     ) {
         super(
             tableService,

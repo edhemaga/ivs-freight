@@ -44,9 +44,7 @@ export class TaPasswordAccountHiddenCharactersComponent implements OnInit {
     }
 
     public handleHover(isHovering: boolean): void {
-        if(this.showEyeIcon) {
-            return;
-        };
+        if(this.showEyeIcon)   return;
         this.isHovered = isHovering;
     }
 
