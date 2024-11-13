@@ -340,7 +340,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                             const repairShopId = res.array?.[0]?.id ?? res.id;
 
                             this.repairService
-                                .deleteRepairShopById(repairShopId)
+                                .deleteRepairShop(repairShopId)
                                 .pipe(takeUntil(this.destroy$))
                                 .subscribe({
                                     next: () => {
@@ -368,7 +368,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                             const repairId = res.array?.[0]?.id ?? res.id;
 
                             this.repairService
-                                .deleteRepairById(repairId, this.selectedTab)
+                                .deleteRepair(repairId, this.selectedTab)
                                 .pipe(takeUntil(this.destroy$))
                                 .subscribe({
                                     next: () => {
@@ -395,7 +395,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                 if (res) {
                     this.filter = null;
 
-                    this.changeRepairShopStatus(res.data);
+                    this.updateRepairShopStatus(res.data.id);
                 }
             });
     }
@@ -1379,44 +1379,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
 
         // Favorite
         else if (event.type === TableStringEnum.FAVORITE) {
-            this.repairService
-                .addShopFavorite(event.data.id)
-                .pipe(takeUntil(this.destroy$))
-                .subscribe(() => {
-                    const newViewData = this.viewData.map((repairShop) => {
-                        const { id, isFavorite, status, companyOwned } =
-                            repairShop;
-
-                        return id === event.data.id
-                            ? {
-                                  ...repairShop,
-                                  isFavorite: !isFavorite,
-                                  actionAnimation: TableStringEnum.UPDATE,
-                                  tableDropdownContent: {
-                                      ...repairShop.tableDropdownContent,
-                                      content:
-                                          this.getRepairShopTableDropdownContent(
-                                              status,
-                                              !isFavorite,
-                                              companyOwned
-                                          ),
-                                  },
-                              }
-                            : repairShop;
-                    });
-
-                    const sortedByFavorite = newViewData.sort(
-                        (a, b) => b.isFavorite - a.isFavorite
-                    );
-
-                    this.viewData = [...sortedByFavorite];
-
-                    this.handleCloseAnimationAction(false);
-
-                    this.updateMapItem(
-                        this.viewData.find((item) => item.id === event.data.id)
-                    );
-                });
+            this.updateRepairShopFavorite(event.data.id);
         }
     }
 
@@ -1436,15 +1399,55 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
         this.tableData = [...updatedTableData];
     }
 
-    public changeRepairShopStatus(repairShop: RepairShopListDto): void {
+    public updateRepairShopStatus(repairShopId: number): void {
         this.repairService
-            .changeShopStatus(repairShop.id)
+            .updateRepairShopStatus(repairShopId)
             .pipe(takeUntil(this.destroy$))
             .subscribe(() => {
                 this.sendRepairData();
 
                 this.updateMapItem(
-                    this.viewData.find((item) => item.id === repairShop.id)
+                    this.viewData.find((item) => item.id === repairShopId)
+                );
+            });
+    }
+
+    private updateRepairShopFavorite(repairShopId: number): void {
+        this.repairService
+            .updateRepairShopFavorite(repairShopId)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe(() => {
+                const newViewData = this.viewData.map((repairShop) => {
+                    const { id, isFavorite, status, companyOwned } = repairShop;
+
+                    return id === repairShopId
+                        ? {
+                              ...repairShop,
+                              isFavorite: !isFavorite,
+                              actionAnimation: TableStringEnum.UPDATE,
+                              tableDropdownContent: {
+                                  ...repairShop.tableDropdownContent,
+                                  content:
+                                      this.getRepairShopTableDropdownContent(
+                                          status,
+                                          !isFavorite,
+                                          companyOwned
+                                      ),
+                              },
+                          }
+                        : repairShop;
+                });
+
+                const sortedByFavorite = newViewData.sort(
+                    (a, b) => b.isFavorite - a.isFavorite
+                );
+
+                this.viewData = [...sortedByFavorite];
+
+                this.handleCloseAnimationAction(false);
+
+                this.updateMapItem(
+                    this.viewData.find((item) => item.id === repairShopId)
                 );
             });
     }

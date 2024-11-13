@@ -15,7 +15,6 @@ import { FormatCurrencyPipe } from '@shared/pipes/format-currency.pipe';
 // core
 import { RepairShopResponse } from 'appcoretruckassist';
 
-
 @Component({
     selector: 'app-settings-repair-shop',
     templateUrl: './settings-repair-shop.component.html',
@@ -48,7 +47,7 @@ export class SettingsRepairShopComponent implements OnInit, OnDestroy {
                     switch (res.type) {
                         case 'delete': {
                             if (res.template === 'Company Repair Shop') {
-                                this.deleteRepairShopById(res.id);
+                                this.deleteRepairShop(res.id);
                             }
                             break;
                         }
@@ -62,22 +61,30 @@ export class SettingsRepairShopComponent implements OnInit, OnDestroy {
             this.activatedRoute.snapshot.data.companyrepairshop.pagination;
         this.initOptions();
     }
+
     public getRepairShopById(id: number) {
-        this.settingsLocationService.onModalAction({modalName: 'repairshop'}, id, true );
-    }
-    public repairDropActions(any: any, actions: string) {
-        this.getRepairShopById(any.id);
+        this.settingsLocationService.onModalAction(
+            { modalName: 'repairshop' },
+            id,
+            true
+        );
     }
 
-    public deleteRepairShopById(id: number) {
+    public repairDropActions(repairShop: RepairShopResponse) {
+        this.getRepairShopById(repairShop.id);
+    }
+
+    public deleteRepairShop(id: number): void {
         this.repairService
-            .deleteRepairShopById(id)
+            .deleteRepairShop(id)
             .pipe(takeUntil(this.destroy$))
             .subscribe();
     }
+
     public onAction(modal: { modalName: string; type: string }) {
         this.settingsLocationService.onModalAction(modal, '', true);
     }
+
     public getRepairShopList() {
         this.repairShopSrv
             .getRepairShopList()
@@ -86,9 +93,11 @@ export class SettingsRepairShopComponent implements OnInit, OnDestroy {
                 this.repairShopData = item.pagination;
             });
     }
+
     public identity(index: number, item: any): number {
         return item.id;
     }
+
     /**Function for dots in cards */
     public initOptions(): void {
         this.repairsActions = {

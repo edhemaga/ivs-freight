@@ -1,12 +1,5 @@
 import { CommonModule } from '@angular/common';
-import {
-    Component,
-    Input,
-    OnInit,
-    OnChanges,
-    SimpleChanges,
-    OnDestroy,
-} from '@angular/core';
+import { Component, Input, OnInit, OnDestroy } from '@angular/core';
 import {
     UntypedFormBuilder,
     UntypedFormGroup,
@@ -68,10 +61,16 @@ import {
         TaUploadFilesComponent,
     ],
 })
-export class RepairShopDetailsCard implements OnInit, OnChanges, OnDestroy {
-    @Input() repairShop: RepairShopResponse;
+export class RepairShopDetailsCard implements OnInit, OnDestroy {
+    @Input() set repairShop(data: RepairShopResponse) {
+        this._repairShop = data;
+
+        this.getRepairShopsDropdownList();
+    }
 
     private destroy$ = new Subject<void>();
+
+    public _repairShop: RepairShopResponse;
 
     public repairShopCurrentIndex: number;
 
@@ -93,15 +92,6 @@ export class RepairShopDetailsCard implements OnInit, OnChanges, OnDestroy {
         private repairMinimalListQuery: RepairMinimalListQuery
     ) {}
 
-    ngOnChanges(changes: SimpleChanges): void {
-        if (
-            !changes?.repairShop?.firstChange &&
-            changes?.repairShop.currentValue
-        ) {
-            this.getRepairShopsDropdownList();
-        }
-    }
-
     ngOnInit(): void {
         this.createForm();
 
@@ -112,13 +102,13 @@ export class RepairShopDetailsCard implements OnInit, OnChanges, OnDestroy {
 
     private createForm(): void {
         this.noteForm = this.formBuilder.group({
-            note: [this.repairShop?.note],
+            note: [this._repairShop?.note],
         });
     }
 
     private getCurrentIndex(): void {
         const currentIndex = this.repairShopDropdownList?.findIndex(
-            (repairShop) => repairShop.id === this.repairShop.id
+            (repairShop) => repairShop.id === this._repairShop.id
         );
 
         this.repairShopCurrentIndex = currentIndex;
@@ -150,13 +140,13 @@ export class RepairShopDetailsCard implements OnInit, OnChanges, OnDestroy {
     }
 
     public onSelectedShop(event: RepairShopResponse): void {
-        if (event?.id !== this.repairShop.id)
+        if (event?.id !== this._repairShop.id)
             this.detailsPageService.getDataDetailId(event.id);
     }
 
     public onChangeShop(action: string): void {
         let currentIndex = this.repairShopDropdownList?.findIndex(
-            (repairShop) => repairShop.id === this.repairShop.id
+            (repairShop) => repairShop.id === this._repairShop.id
         );
 
         switch (action) {

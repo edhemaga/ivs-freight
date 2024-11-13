@@ -872,7 +872,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
         }
 
         if (data.action === ActionTypesEnum.DELETE) {
-            this.deleteRepairShopById(this.editData.id);
+            this.deleteRepairShop(this.editData.id);
         }
         if (data.action === ActionTypesEnum.CLOSE_BUSINESS) {
             this.showCloseBusinessModal();
@@ -1026,9 +1026,9 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
             });
     }
 
-    private deleteRepairShopById(id: number): void {
+    private deleteRepairShop(id: number): void {
         this.shopService
-            .deleteRepairShopById(id)
+            .deleteRepairShop(id)
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () =>

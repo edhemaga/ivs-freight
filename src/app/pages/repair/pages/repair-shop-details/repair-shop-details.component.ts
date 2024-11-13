@@ -128,7 +128,7 @@ export class RepairShopDetailsComponent implements OnInit, OnDestroy {
                             RepairShopDetailsStringEnum.REPAIR_SHOP &&
                         res?.type === RepairShopDetailsStringEnum.DELETE
                     )
-                        this.deleteRepairShopById(res.data.id);
+                        this.deleteRepairShop(res.data.id);
                 },
             });
     }
@@ -192,6 +192,8 @@ export class RepairShopDetailsComponent implements OnInit, OnDestroy {
 
         this.repairShopDetailsConfig =
             RepairShopDetailsHelper.getRepairShopDetailsConfig(repairShop);
+
+        this.cdRef.detectChanges();
     }
 
     public getDetailsOptions(repairShop: RepairShopResponse): void {
@@ -224,8 +226,8 @@ export class RepairShopDetailsComponent implements OnInit, OnDestroy {
                                 repairShop.id === res.id
                         );
 
-                        this.getDetailsOptions(this.repairShopObject);
                         this.getDetailsConfig(res);
+                        this.getDetailsOptions(this.repairShopObject);
 
                         if (
                             this.router.url.includes(
@@ -256,7 +258,7 @@ export class RepairShopDetailsComponent implements OnInit, OnDestroy {
         );
     }
 
-    public deleteRepairShopById(id: number): void {
+    public deleteRepairShop(id: number): void {
         const last = this.repairShopList.at(-1);
 
         if (
@@ -269,7 +271,7 @@ export class RepairShopDetailsComponent implements OnInit, OnDestroy {
         }
 
         this.repairService
-            .deleteRepairShopByIdDetails(id)
+            .deleteRepairShop(id)
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
@@ -293,13 +295,9 @@ export class RepairShopDetailsComponent implements OnInit, OnDestroy {
 
     private handleOpenCloseRepairShop(id: number): void {
         this.repairService
-            .changeShopStatus(id)
+            .updateRepairShopStatus(id)
             .pipe(takeUntil(this.destroy$))
             .subscribe();
-    }
-
-    public changePinnedStatus(shopId) {
-        this.repairService.changePinnedStatus(shopId);
     }
 
     ngOnDestroy(): void {
