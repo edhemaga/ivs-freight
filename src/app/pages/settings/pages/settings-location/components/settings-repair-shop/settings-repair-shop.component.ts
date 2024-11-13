@@ -1,20 +1,31 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { UntypedFormGroup, UntypedFormBuilder, FormArray } from '@angular/forms';
+import { takeUntil } from 'rxjs';
 
-import { Subject, takeUntil } from 'rxjs';
-
+// Services
 import { TruckassistTableService } from '@shared/services/truckassist-table.service';
 import { ConfirmationService } from '@shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
 import { SettingsLocationService } from '@pages/settings/pages/settings-location/services/settings-location.service';
 import { RepairService } from '@shared/services/repair.service';
 import { CompanyRepairShopService } from '@pages/settings/services/company-repairshop.service';
+import { DropDownService } from '@shared/services/drop-down.service';
+import { ConfirmationActivationService } from '@shared/components/ta-shared-modals/confirmation-activation-modal/services/confirmation-activation.service';
 
-// pipes
+// Pipes
 import { FormatCurrencyPipe } from '@shared/pipes/format-currency.pipe';
 
-// core
-import { RepairShopResponse } from 'appcoretruckassist';
+// Models 
+import { Confirmation } from '@shared/components/ta-shared-modals/confirmation-modal/models/confirmation.model';
+import { RepairShopListDto, RepairShopResponse } from 'appcoretruckassist';
+import { CompanyOfficeResponseWithGroupedContacts, SettingsDepartmentCardModel } from '@pages/settings/pages/settings-location/models';
 
+// Enums
+import { DropActionsStringEnum } from '@shared/enums/drop-actions-string.enum';
+import { RepairShopModalStringEnum } from '@pages/repair/pages/repair-modals/repair-shop-modal/enums';
+
+// Component
+import { SettingsLocationBaseComponent } from '../settings-location-base/settings-location-base.component';
 
 @Component({
     selector: 'app-settings-repair-shop',
@@ -22,171 +33,175 @@ import { RepairShopResponse } from 'appcoretruckassist';
     styleUrls: ['./settings-repair-shop.component.scss'],
     providers: [FormatCurrencyPipe],
 })
-export class SettingsRepairShopComponent implements OnInit, OnDestroy {
+export class SettingsRepairShopComponent
+    extends SettingsLocationBaseComponent
+    implements OnInit
+{
+    public RepairShopModalStringEnum = RepairShopModalStringEnum;
+
     public repairShopData: any;
-    private destroy$ = new Subject<void>();
     public count: number = 0;
     public repairsActions: any;
     public repairShopDataId: any;
+    public isServiceCardOpened: boolean[] = [];
+    public isWorkingCardOpened: boolean[] = [];
+    public isBankingInfoOpened: boolean[] = [];
+    public isVisibleNoteCard: boolean[] = [];
+    public repairShopForm: UntypedFormGroup;
     constructor(
-        private settingsLocationService: SettingsLocationService,
+        // Router 
+        protected activatedRoute: ActivatedRoute,
+        public router: Router,
+        
+        // Services
+        protected tableService: TruckassistTableService,
+        protected confirmationService: ConfirmationService,
+        protected cdRef: ChangeDetectorRef, 
         private repairShopSrv: CompanyRepairShopService,
-        private tableService: TruckassistTableService,
-        private confirmationService: ConfirmationService,
-        private FormatCurrencyPipe: FormatCurrencyPipe,
         private repairService: RepairService,
-        private activatedRoute: ActivatedRoute
-    ) {}
+        protected settingsLocationService: SettingsLocationService,
+        public dropDownService: DropDownService,
+        private confirmationActivationService: ConfirmationActivationService,
+    
+        // Pipes
+        public FormatCurrencyPipe: FormatCurrencyPipe,
+    
+        // Form builder
+        private formBuilder: UntypedFormBuilder,
+    ) {
+        super(
+            tableService,
+            confirmationService,
+            cdRef,
+            activatedRoute,
+            settingsLocationService,
+            dropDownService,
+            FormatCurrencyPipe,
+            router
+        );
+    }
 
-    ngOnInit() {
-        this.getRepairShopList();
-        // Confirmation Subscribe
-        this.confirmationService.confirmationData$
+    ngOnInit(): void {
+        // Required for subscriptions to work
+        super.ngOnInit();
+
+        this.getInitalList();
+        
+        this.onShopClose();
+
+        this.createForm();
+    }
+
+    private onShopClose() {
+        this.confirmationActivationService.getConfirmationActivationData$
             .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: (res) => {
-                    switch (res.type) {
-                        case 'delete': {
-                            if (res.template === 'Company Repair Shop') {
-                                this.deleteRepairShopById(res.id);
-                            }
-                            break;
-                        }
-                        default: {
-                            break;
-                        }
-                    }
-                },
+            .subscribe((res) => {
+                if (res) {
+                    this.repairService.changeShopStatus(res.data.id);
+                }
             });
-        this.repairShopData =
-            this.activatedRoute.snapshot.data.companyrepairshop.pagination;
-        this.initOptions();
-    }
-    public getRepairShopById(id: number) {
-        this.settingsLocationService.onModalAction({modalName: 'repairshop'}, id, true );
-    }
-    public repairDropActions(any: any, actions: string) {
-        this.getRepairShopById(any.id);
     }
 
-    public deleteRepairShopById(id: number) {
-        this.repairService
-            .deleteRepairShopById(id)
-            .pipe(takeUntil(this.destroy$))
-            .subscribe();
+    private createForm() {
+        this.repairShopForm = this.formBuilder.group({
+            [RepairShopModalStringEnum.NOTE]: this.formBuilder.array([]),
+        });
     }
-    public onAction(modal: { modalName: string; type: string }) {
-        this.settingsLocationService.onModalAction(modal, '', true);
+
+    private addNote(value: string): void {
+        const notesArray = this.repairShopForm.get(
+            RepairShopModalStringEnum.NOTE
+        ) as FormArray;
+        notesArray.push(this.formBuilder.control(value));
     }
-    public getRepairShopList() {
+
+    public get notes(): FormArray {
+        return this.repairShopForm.get(
+            RepairShopModalStringEnum.NOTE
+        ) as FormArray;
+    }
+
+    public getList(): void {
         this.repairShopSrv
             .getRepairShopList()
             .pipe(takeUntil(this.destroy$))
             .subscribe((item) => {
                 this.repairShopData = item.pagination;
+                this.repairShopData.data = this.processOfficeData(
+                    this.repairShopData.data
+                );
+                this.notes.clear();
+
+                this.repairShopData.data.forEach((shop: RepairShopListDto) => {
+                    this.addNote(shop.note);
+                    this.isServiceCardOpened.push(true);
+                    this.isWorkingCardOpened.push(true);
+                    this.isBankingInfoOpened.push(true);
+                    this.isVisibleNoteCard.push(!!shop.note);
+                });
             });
     }
-    public identity(index: number, item: any): number {
-        return item.id;
+
+    public getInitalList(): void {
+        this.getList();
     }
-    /**Function for dots in cards */
-    public initOptions(): void {
-        this.repairsActions = {
-            disabledMutedStyle: null,
-            toolbarActions: {
-                hideViewMode: false,
-            },
-            config: {
-                showSort: true,
-                sortBy: '',
-                sortDirection: '',
-                disabledColumns: [0],
-                minWidth: 60,
-            },
-            actions: [
-                {
-                    title: 'Edit',
-                    name: 'edit',
-                    svg: 'assets/svg/truckassist-table/dropdown/content/edit.svg',
-                    show: true,
-                    iconName: 'edit',
-                },
-                {
-                    title: 'border',
-                },
-                {
-                    title: 'View Details',
-                    name: 'view-details',
-                    svg: 'assets/svg/common/ic_hazardous-info.svg',
-                    show: true,
-                    iconName: 'view-details',
-                },
-                {
-                    title: 'Add Bill',
-                    name: 'add-bill',
-                    svg: 'assets/svg/common/ic_plus.svg',
-                    show: true,
-                    blueIcon: true,
-                    iconName: 'assets/svg/common/ic_plus.svg',
-                },
-                {
-                    title: 'border',
-                },
-                {
-                    title: 'Share',
-                    name: 'share',
-                    svg: 'assets/svg/common/share-icon.svg',
-                    show: true,
-                    iconName: 'share',
-                },
-                {
-                    title: 'Print',
-                    name: 'print',
-                    svg: 'assets/svg/common/ic_fax.svg',
-                    show: true,
-                    iconName: 'print',
-                },
-                {
-                    title: 'border',
-                },
-                {
-                    title: 'Close Business',
-                    name: 'close-business',
-                    svg: 'assets/svg/common/close-business-icon.svg',
-                    redIcon: true,
-                    show: true,
-                    iconName: 'close-business',
-                },
-                {
-                    title: 'Delete',
-                    name: 'delete-item',
-                    type: 'driver',
-                    text: 'Are you sure you want to delete driver(s)?',
-                    svg: 'assets/svg/common/ic_trash_updated.svg',
-                    danger: true,
-                    show: true,
-                    redIcon: true,
-                    iconName: 'delete',
-                },
-            ],
-            export: true,
-        };
-    }
-    public generateTextForProgressBar(data: any): string {
-        return (
-            data.payPeriod.name +
-            ' Rent ' +
-            `-  ${this.FormatCurrencyPipe.transform(data.rent)}`
-        );
+
+    private processOfficeData(data: RepairShopListDto[]): RepairShopListDto[] {
+        return data.map((office) => {
+            const groupedContacts = office.contacts.reduce((acc, contact) => {
+                const departmentName = contact.departmentName;
+
+                if (departmentName) {
+                    if (!acc[departmentName]) {
+                        acc[departmentName] = {
+                            isCardOpen: true,
+                            cardName: departmentName,
+                            values: [],
+                        };
+                    }
+                    acc[departmentName].values.push(contact);
+                }
+
+                return acc;
+            }, {} as Record<string, SettingsDepartmentCardModel>);
+
+            return {
+                ...office,
+                groupedContacts,
+            };
+        });
     }
 
     public getActiveServices(data: RepairShopResponse) {
         return data.serviceTypes.filter((item) => item.active);
     }
 
-    ngOnDestroy(): void {
-        this.destroy$.next();
-        this.destroy$.complete();
-        this.tableService.sendActionAnimation({});
+    public handleConfirmation(res: Confirmation): void {
+        if (
+            res.type === DropActionsStringEnum.DELETE &&
+            res.template === DropActionsStringEnum.COMPANY_REPAIR_SHOP
+        ) {
+            this.repairService
+                .deleteRepairShopById(res.id)
+                .pipe(takeUntil(this.destroy$))
+                .subscribe();
+        }
+    }
+
+    public onCardToggle(i: number): void {
+        const office = this.repairShopData.data[
+            i
+        ] as CompanyOfficeResponseWithGroupedContacts;
+
+        if (office.groupedContacts) {
+            Object.keys(office.groupedContacts).forEach((key) => {
+                office.groupedContacts[key].isCardOpen = false;
+            });
+        }
+
+        this.isServiceCardOpened[i] = false;
+        this.isWorkingCardOpened[i] = false;
+        this.isBankingInfoOpened[i] = false;
+        this.isVisibleNoteCard[i] = false;
     }
 }

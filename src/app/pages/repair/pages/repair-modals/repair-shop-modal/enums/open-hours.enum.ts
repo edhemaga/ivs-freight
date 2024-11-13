@@ -6,4 +6,5 @@ export enum OpenHourDays {
     Thursday = 'Thursday',
     Friday = 'Friday',
     Saturday = 'Saturday',
+    Holiday = 'Holiday'
 }
