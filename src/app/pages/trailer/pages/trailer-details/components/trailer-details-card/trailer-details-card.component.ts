@@ -32,9 +32,11 @@ import { TrailerDropdown } from '@pages/trailer/pages/trailer-details/models/tra
 import { TrailerMinimalResponse } from 'appcoretruckassist';
 import { IChartConfiguaration } from 'ca-components/lib/components/ca-chart/models';
 
-//enums
+// enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
-import { ChartImagesStringEnum, ChartTypesStringEnum } from 'ca-components/lib/components/ca-chart/enums';
+
+//constants
+import { TrailerDetailsChartsConfiguration } from '@pages/trailer/pages/trailer-details/utils/constants';
 
 @Component({
     selector: 'app-trailer-details-card',
@@ -66,7 +68,8 @@ import { ChartImagesStringEnum, ChartTypesStringEnum } from 'ca-components/lib/c
     ],
 })
 export class TrailerDetailsCardComponent
-    implements OnInit, OnChanges, OnDestroy {
+    implements OnInit, OnChanges, OnDestroy
+{
     @Input() trailer: any;
     @Input() templateCard: boolean = false;
 
@@ -88,7 +91,7 @@ export class TrailerDetailsCardComponent
     constructor(
         private detailsPageDriverSer: DetailsPageService,
         private trailerMinimalQuery: TrailersMinimalListQuery
-    ) { }
+    ) {}
 
     ngOnChanges(changes: SimpleChanges): void {
         if (!changes?.trailer?.firstChange) {
@@ -267,17 +270,8 @@ export class TrailerDetailsCardComponent
     }
 
     public setChartsConfiguration() {
-        this.payrollChartConfig = {
-            chartType: ChartTypesStringEnum.LINE,
-            chartData: {
-              labels: [],
-              datasets: [],
-            },
-            height: 130,
-            width: 100,
-            noDataImage: ChartImagesStringEnum.CHART_NO_DATA_YELLOW,
-            chartOptions: {},
-        };
+        this.payrollChartConfig =
+            TrailerDetailsChartsConfiguration.PAYROLL_CHART_CONFIG;
     }
 
     ngOnDestroy(): void {

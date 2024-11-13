@@ -31,7 +31,10 @@ import { TabOptions } from '@shared/components/ta-tab-switch/models/tab-options.
 import { IChartConfiguaration } from 'ca-components/lib/components/ca-chart/models';
 
 // Constants
-import { BrokerConstants } from '@pages/customer/pages/broker-details/utils/constants/';
+import {
+    BrokerChartsConfiguration,
+    BrokerConstants,
+} from '@pages/customer/pages/broker-details/utils/constants/';
 import { BrokerInvoiceAgingConstants } from '@pages/customer/pages/broker-details/utils/constants/';
 
 // Components
@@ -44,7 +47,6 @@ import { FormatDatePipe } from '@shared/pipes/format-date.pipe';
 import { ArrowActionsStringEnum } from '@shared/enums/arrow-actions-string.enum';
 import { ChartTabStringEnum } from '@shared/enums/chart-tab-string.enum';
 import { TableStringEnum } from '@shared/enums/table-string.enum';
-import { ChartTypesStringEnum, ChartImagesStringEnum } from 'ca-components/lib/components/ca-chart/enums';
 
 // Svg routes
 import { BrokerDetailsSvgRoutes } from '@pages/customer/pages/broker-details/utils/svg-routes/';
@@ -303,41 +305,14 @@ export class BrokerDetailsCardComponent
     }
 
     public setChartsConfiguration() {
-        this.invoiceChartConfig = {
-            chartType: ChartTypesStringEnum.LINE,
-            chartData: {
-              labels: [],
-              datasets: [],
-            },
-            height: 130,
-            width: 100,
-            noDataImage: ChartImagesStringEnum.CHART_NO_DATA_YELLOW,
-            chartOptions: {},
-        };
+        this.invoiceChartConfig =
+            BrokerChartsConfiguration.INVOICE_CHART_CONFIG;
 
-        this.mileageChartConfig = {
-            chartType: ChartTypesStringEnum.LINE,
-            chartData: {
-              labels: [],
-              datasets: [],
-            },
-            height: 130,
-            width: 100,
-            noDataImage: ChartImagesStringEnum.CHART_NO_DATA_MIXED,
-            chartOptions: {},
-        };
+        this.mileageChartConfig =
+            BrokerChartsConfiguration.MILEAGE_CHART_CONFIG;
 
-        this.paymentChartConfig = {
-            chartType: ChartTypesStringEnum.LINE,
-            chartData: {
-              labels: [],
-              datasets: [],
-            },
-            height: 130,
-            width: 100,
-            noDataImage: ChartImagesStringEnum.CHART_NO_DATA_PAY,
-            chartOptions: {},
-        };
+        this.paymentChartConfig =
+            BrokerChartsConfiguration.PAYMENT_CHART_CONFIG;
     }
 
     ngOnDestroy(): void {

@@ -36,11 +36,11 @@ import { TruckDetailsEnum } from '@pages/truck/pages/truck-details/enums/truck-d
 
 // constants
 import { TruckDetailsConstants } from '@pages/truck/pages/truck-details/utils/constants/truck-details.constants';
+import { TruckDetailsChartsConfiguration } from '@pages/truck/pages/truck-details/utils/constants';
 
 // models
 import { TruckResponse, TruckPerformanceResponse } from 'appcoretruckassist';
 import { IChartConfiguaration } from 'ca-components/lib/components/ca-chart/models';
-import { ChartImagesStringEnum, ChartTypesStringEnum } from 'ca-components/lib/components/ca-chart/enums';
 
 @Component({
     selector: 'app-truck-details-card',
@@ -92,7 +92,7 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
     //private monthList: string[] = ChartConstants.MONTH_LIST_SHORT;
     public ownerCardOpened: boolean = true;
     public featureNumber: number = 0;
-    
+
     public fuelConsumptionChartConfig: IChartConfiguaration;
     public revenueChartConfig: IChartConfiguaration;
     public expensesChartConfig: IChartConfiguaration;
@@ -105,8 +105,8 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
     constructor(
         private detailsPageDriverSer: DetailsPageService,
         private truckMinimalListQuery: TrucksMinimalListQuery,
-        private truckService: TruckService,
-    ) { }
+        private truckService: TruckService
+    ) {}
 
     ngOnChanges(changes: SimpleChanges): void {
         if (!changes?.truck.firstChange && changes?.truck) {
@@ -426,40 +426,13 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     public setChartsConfiguaration() {
-        this.fuelConsumptionChartConfig = {
-            chartType: ChartTypesStringEnum.LINE,
-            chartData: {
-              labels: [],
-              datasets: [],
-            },
-            height: 130,
-            width: 100,
-            noDataImage: ChartImagesStringEnum.CHART_NO_DATA_YELLOW,
-            chartOptions: {},
-        };
+        this.fuelConsumptionChartConfig =
+            TruckDetailsChartsConfiguration.FUEL_CHART_CONFIG;
 
-        this.revenueChartConfig = {
-            chartType: ChartTypesStringEnum.LINE,
-            chartData: {
-              labels: [],
-              datasets: [],
-            },
-            height: 130,
-            width: 100,
-            noDataImage: ChartImagesStringEnum.CHART_NO_DATA_GREEN,
-            chartOptions: {},
-        };
-        
-        this.expensesChartConfig = {
-            chartType: ChartTypesStringEnum.LINE,
-            chartData: {
-              labels: [],
-              datasets: [],
-            },
-            height: 130,
-            width: 100,
-            noDataImage: ChartImagesStringEnum.CHART_NO_DATA_STACKED,
-            chartOptions: {},
-        };
+        this.revenueChartConfig =
+            TruckDetailsChartsConfiguration.REVENUE_CHART_CONFIG;
+
+        this.expensesChartConfig =
+            TruckDetailsChartsConfiguration.EXPENSES_CHART_CONFIG;
     }
 }

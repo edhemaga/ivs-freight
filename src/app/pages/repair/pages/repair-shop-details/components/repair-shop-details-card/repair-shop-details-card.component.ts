@@ -24,8 +24,8 @@ import { TruckassistTableService } from '@shared/services/truckassist-table.serv
 import { RepairShopResponse } from 'appcoretruckassist';
 import { IChartConfiguaration } from 'ca-components/lib/components/ca-chart/models';
 
-// Enums
-import { ChartImagesStringEnum, ChartTypesStringEnum } from 'ca-components/lib/components/ca-chart/enums';
+// Constants
+import { RepairShopChartsConfiguration } from '@pages/repair/pages/repair-shop-details/utils/constants';
 
 @Component({
     selector: 'app-repair-shop-details-card',
@@ -452,17 +452,8 @@ export class RepairShopCardViewComponent
     }
 
     public setChartConfiguration() {
-        this.repairChartConfig = {
-            chartType: ChartTypesStringEnum.LINE,
-            chartData: {
-              labels: [],
-              datasets: [],
-            },
-            height: 130,
-            width: 100,
-            noDataImage: ChartImagesStringEnum.CHART_NO_DATA_YELLOW,
-            chartOptions: {},
-        };
+        this.repairChartConfig =
+            RepairShopChartsConfiguration.REPAIR_CHART_CONFIG;
     }
 
     ngOnDestroy(): void {

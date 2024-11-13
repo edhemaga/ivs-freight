@@ -15,8 +15,6 @@ import { DashboardService } from '@pages/dashboard/services/dashboard.service';
 
 // enums
 import { DashboardStringEnum } from '@pages/dashboard/enums/dashboard-string.enum';
-import { DashboardChartStringEnum } from '@pages/dashboard/enums/dashboard-chart-string.enum';
-import { ChartImagesStringEnum, ChartTypesStringEnum } from 'ca-components/lib/components/ca-chart/enums';
 
 // helpers
 import { DashboardHelper } from '@pages/dashboard/utils/helpers/dashboard.helper';
@@ -27,6 +25,7 @@ import { DashboardByStateConstants } from '@pages/dashboard/pages/dashboard-by-s
 import { DashboardSubperiodConstants } from '@pages/dashboard/utils/constants/dashboard-subperiod.constants';
 import { DashboardTopRatedConstants } from '@pages/dashboard/pages/dashboard-top-rated/utils/constants/dashboard-top-rated.constants';
 import { DashboardColors } from '@pages/dashboard/utils/constants/dashboard-colors.constants';
+import { DashboardByStateChartsConfiguration } from '@pages/dashboard/pages/dashboard-by-state/utils/constants';
 
 // models
 import { ByStateListItem } from '@pages/dashboard/pages/dashboard-by-state/models/by-state-list-item.model';
@@ -54,7 +53,6 @@ import { MapListItem } from '@pages/dashboard/pages/dashboard-by-state/models/ma
     styleUrls: ['./dashboard-by-state.component.scss'],
 })
 export class DashboardByStateComponent implements OnInit, OnDestroy {
-
     private destroy$ = new Subject<void>();
 
     public byStateForm: UntypedFormGroup;
@@ -885,7 +883,6 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
 
                 // intervals
 
-
                 // colors range & map
                 DashboardHelper.setByStateListColorRange(this.byStateList);
 
@@ -1046,19 +1043,9 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
         this.byStateMapList = filteredByStateList;
     }
 
-
     public setChartConfiguration() {
-        this.pickUpByStateChartConfig = {
-            chartType: ChartTypesStringEnum.LINE,
-            chartData: {
-              labels: [],
-              datasets: [],
-            },
-            height: 150,
-            width: 100,
-            noDataImage: ChartImagesStringEnum.CHART_NO_DATA_YELLOW,
-            chartOptions: {},
-        };
+        this.pickUpByStateChartConfig =
+            DashboardByStateChartsConfiguration.PICK_BY_STATE_CHART_CONFIG;
     }
 
     ngOnDestroy(): void {

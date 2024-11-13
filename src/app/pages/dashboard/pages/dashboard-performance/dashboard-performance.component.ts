@@ -18,13 +18,13 @@ import { DashboardPerformanceConstants } from '@pages/dashboard/pages/dashboard-
 import { DashboardSubperiodConstants } from '@pages/dashboard/utils/constants/dashboard-subperiod.constants';
 import { DashboardColors } from '@pages/dashboard/utils/constants/dashboard-colors.constants';
 import { DashboardTopRatedConstants } from '@pages/dashboard/pages/dashboard-top-rated/utils/constants/dashboard-top-rated.constants';
+import { DashboardPerformanceChartsConfiguration } from '@pages/dashboard/pages/dashboard-performance/utils/constants';
 
 // helpers
 import { DashboardHelper } from '@pages/dashboard/utils/helpers/dashboard.helper';
 
 // enums
 import { DashboardStringEnum } from '@pages/dashboard/enums/dashboard-string.enum';
-import { DashboardChartStringEnum } from '@pages/dashboard/enums/dashboard-chart-string.enum';
 
 // models
 import { DashboardTab } from '@pages/dashboard/models/dashboard-tab.model';
@@ -40,7 +40,6 @@ import {
     TimeInterval,
 } from 'appcoretruckassist';
 import { IChartConfiguaration } from 'ca-components/lib/components/ca-chart/models';
-import { ChartImagesStringEnum, ChartTypesStringEnum } from 'ca-components/lib/components/ca-chart/enums';
 
 @Component({
     selector: 'app-dashboard-performance',
@@ -48,7 +47,6 @@ import { ChartImagesStringEnum, ChartTypesStringEnum } from 'ca-components/lib/c
     styleUrls: ['./dashboard-performance.component.scss'],
 })
 export class DashboardPerformanceComponent implements OnInit, OnDestroy {
-
     private destroy$: Subject<void> = new Subject<void>();
 
     public isLoading: boolean = false;
@@ -79,7 +77,7 @@ export class DashboardPerformanceComponent implements OnInit, OnDestroy {
 
     // charts
     public performanceChartConfig: IChartConfiguaration;
-    
+
     private axisNumber: number = -1;
     public multipleVerticalLeftAxes: number[];
 
@@ -99,7 +97,7 @@ export class DashboardPerformanceComponent implements OnInit, OnDestroy {
 
         this.getPerformanceListData();
 
-        this.setChartConfiguration()
+        this.setChartConfiguration();
     }
 
     private createForm(): void {
@@ -263,7 +261,6 @@ export class DashboardPerformanceComponent implements OnInit, OnDestroy {
                 firstAvailableColor.hoverCode;
 
             this.selectedPerformanceDataCount++;
-
         } else {
             // data boxes
             performanceDataItem.selectedColor = null;
@@ -292,19 +289,19 @@ export class DashboardPerformanceComponent implements OnInit, OnDestroy {
         if (!removeHover) {
             selectedPerformanceDataItem.isHovered = true;
 
-        //     if (selectedPerformanceDataItem.selectedColor) {
-        //         // this.lineChart?.changeChartFillProperty(
-        //         //     selectedPerformanceDataItem.title,
-        //         //     selectedPerformanceDataItem.selectedColor.slice(1)
-        //         // );
-        //     }
-        // } else {
-        //     selectedPerformanceDataItem.isHovered = false;
+            //     if (selectedPerformanceDataItem.selectedColor) {
+            //         // this.lineChart?.changeChartFillProperty(
+            //         //     selectedPerformanceDataItem.title,
+            //         //     selectedPerformanceDataItem.selectedColor.slice(1)
+            //         // );
+            //     }
+            // } else {
+            //     selectedPerformanceDataItem.isHovered = false;
 
-        //     // this.lineChart?.changeChartFillProperty(
-        //     //     this.performanceData[index].title,
-        //     //     DashboardChartStringEnum.EMPTY_STRING
-        //     // );
+            //     // this.lineChart?.changeChartFillProperty(
+            //     //     this.performanceData[index].title,
+            //     //     DashboardChartStringEnum.EMPTY_STRING
+            //     // );
         }
     }
 
@@ -469,17 +466,8 @@ export class DashboardPerformanceComponent implements OnInit, OnDestroy {
     }
 
     setChartConfiguration() {
-        this.performanceChartConfig = {
-            chartType: ChartTypesStringEnum.LINE,
-            chartData: {
-              labels: [],
-              datasets: [],
-            },
-            height: 400,
-            width: 100,
-            noDataImage: ChartImagesStringEnum.CHART_NO_DATA_PAY,
-            chartOptions: {},
-        };
+        this.performanceChartConfig =
+            DashboardPerformanceChartsConfiguration.PERFORMANCE_CHART_CONFIG;
     }
 
     ngOnDestroy(): void {

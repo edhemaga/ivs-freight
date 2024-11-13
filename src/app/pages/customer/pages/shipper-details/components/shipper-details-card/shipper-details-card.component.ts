@@ -22,13 +22,18 @@ import { DetailsPageService } from '@shared/services/details-page.service';
 import { ShipperService } from '@pages/customer/services';
 import { ModalService } from '@shared/services/modal.service';
 
+// Constants
+import { ShipperDetailsChartsConfiguration } from '@pages/customer/pages/shipper-details/utils/constants';
+
 // Components
 import { ShipperModalComponent } from '@pages/customer/pages/shipper-modal/shipper-modal.component';
 
+// Models
+import { IChartConfiguaration } from 'ca-components/lib/components/ca-chart/models';
+
 // Enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
-import { IChartConfiguaration } from 'ca-components/lib/components/ca-chart/models';
-import { ChartImagesStringEnum, ChartTypesStringEnum } from 'ca-components/lib/components/ca-chart/enums';
+
 
 @Component({
     selector: 'app-shipper-details-card',
@@ -46,7 +51,7 @@ export class ShipperDetailsCardComponent
     public shipperList: any[] = this.shipperMinimalListQuery.getAll();
     public note: UntypedFormControl = new UntypedFormControl();
     public shipperTabs: any[] = [];
-    public payrollChartConfig:  IChartConfiguaration;
+    public payrollChartConfig: IChartConfiguaration;
 
     public monthList: any[] = [
         'JAN',
@@ -346,17 +351,8 @@ export class ShipperDetailsCardComponent
     }
 
     public setChartConfiguration() {
-        this.payrollChartConfig = {
-            chartType: ChartTypesStringEnum.LINE,
-            chartData: {
-              labels: [],
-              datasets: [],
-            },
-            height: 130,
-            width: 100,
-            noDataImage: ChartImagesStringEnum.CHART_NO_DATA_YELLOW,
-            chartOptions: {},
-        };
+        this.payrollChartConfig =
+            ShipperDetailsChartsConfiguration.PAYROLL_CHART_CONFIG;
     }
 
     ngOnDestroy(): void {

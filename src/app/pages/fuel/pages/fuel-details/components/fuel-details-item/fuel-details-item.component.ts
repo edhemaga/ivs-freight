@@ -1,9 +1,11 @@
 import { Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
 import { UntypedFormControl } from '@angular/forms';
+
 // Components
 import { IChartConfiguaration } from 'ca-components/lib/components/ca-chart/models';
-// Enums
-import { ChartImagesStringEnum, ChartTypesStringEnum } from 'ca-components/lib/components/ca-chart/enums';
+
+// Const
+import { FuelDetailsChartsConfiguration } from '@pages/fuel/utils/constants';
 
 @Component({
     selector: 'app-fuel-details-item',
@@ -733,16 +735,6 @@ export class FuelDetailsItemComponent implements OnInit {
     }
 
     setChartConfiguration() {
-        this.fuelChartConfig = {
-            chartType: ChartTypesStringEnum.LINE,
-            chartData: {
-              labels: [],
-              datasets: [],
-            },
-            height: 130,
-            width: 100,
-            noDataImage: ChartImagesStringEnum.CHART_NO_DATA_YELLOW,
-            chartOptions: {},
-        };
+        this.fuelChartConfig = FuelDetailsChartsConfiguration.FUEL_CHART_CONFIG;
     }
 }

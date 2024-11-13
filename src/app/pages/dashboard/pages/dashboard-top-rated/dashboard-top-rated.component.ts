@@ -19,6 +19,7 @@ import { DashboardTopRatedConstants } from '@pages/dashboard/pages/dashboard-top
 import { DashboardColors } from '@pages/dashboard/utils/constants/dashboard-colors.constants';
 import { DashboardSubperiodConstants } from '@pages/dashboard/utils/constants/dashboard-subperiod.constants';
 import { DashboardByStateConstants } from '@pages/dashboard/pages/dashboard-by-state/utils/constants/dashboard-by-state.constants';
+import { DashboardTopRatedChartsConfiguration } from '@pages/dashboard/pages/dashboard-top-rated/utils/constants';
 
 // helpers
 import { DashboardArrayHelper } from '@pages/dashboard/utils/helpers/dashboard-array-helper';
@@ -26,7 +27,6 @@ import { DashboardHelper } from '@pages/dashboard/utils/helpers/dashboard.helper
 
 // enums
 import { DashboardStringEnum } from '@pages/dashboard/enums/dashboard-string.enum';
-import { ChartImagesStringEnum, ChartTypesStringEnum } from 'ca-components/lib/components/ca-chart/enums';
 
 // models
 import { DropdownItem } from '@shared/models/dropdown-item.model';
@@ -47,6 +47,7 @@ import {
 import { TopRatedApiArguments } from '@pages/dashboard/pages/dashboard-top-rated/models/top-rated-api-arguments.model';
 import { TopRatedWithoutTabApiArguments } from '@pages/dashboard/pages/dashboard-top-rated/models/top-rated-without-tab-api-arguments.model';
 import { IChartConfiguaration } from 'ca-components/lib/components/ca-chart/models';
+
 @Component({
     selector: 'app-dashboard-top-rated',
     templateUrl: './dashboard-top-rated.component.html',
@@ -1034,29 +1035,9 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
     }
 
     public setChartConfiguration() {
-        this.doughnutChartConfig = {
-            chartType: ChartTypesStringEnum.LINE,
-            chartData: {
-              labels: [],
-              datasets: [],
-            },
-            height: 130,
-            width: 100,
-            noDataImage: ChartImagesStringEnum.CHART_NO_DATA_YELLOW,
-            chartOptions: {},
-        };
+        this.doughnutChartConfig = DashboardTopRatedChartsConfiguration.DOUGHNUT_CHART_CONFIG;
 
-        this.barChartConfig = {
-            chartType: ChartTypesStringEnum.LINE,
-            chartData: {
-              labels: [],
-              datasets: [],
-            },
-            height: 190,
-            width: 100,
-            noDataImage: ChartImagesStringEnum.CHART_NO_DATA_MIXED,
-            chartOptions: {},
-        };
+        this.barChartConfig = DashboardTopRatedChartsConfiguration.BAR_CHART_CONFIG;
     }
 
     ngOnDestroy(): void {

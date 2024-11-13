@@ -48,7 +48,9 @@ import { DriversMinimalListQuery } from '@pages/driver/state/driver-details-mini
 // enums
 import { ArrowActionsStringEnum } from '@shared/enums/arrow-actions-string.enum';
 import { DriverDetailsCardStringEnum } from '@pages/driver/pages/driver-details/components/driver-details-card/enums/driver-details-card-string.enum';
-import { ChartImagesStringEnum, ChartTypesStringEnum } from 'ca-components/lib/components/ca-chart/enums';
+
+// const
+import { DriverDetailsChartsConfiguration } from '@pages/driver/pages/driver-details/utils/constants';
 
 // helpers
 import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calculations.helper';
@@ -87,13 +89,12 @@ import { IChartConfiguaration } from 'ca-components/lib/components/ca-chart/mode
         DriverOffDutyLocationCardComponent,
         DriverEmergencyContactCardComponent,
         DriverNotificationCardComponent,
-        CaChartComponent
+        CaChartComponent,
     ],
 })
 export class DriverDetailsCardComponent
     implements OnInit, OnChanges, OnDestroy
 {
-
     @Input() driver: DriverResponse;
 
     private destroy$ = new Subject<void>();
@@ -123,20 +124,17 @@ export class DriverDetailsCardComponent
     ) {}
 
     ngOnInit(): void {
-
-        
         this.createForm();
-        
-        this.getConstantData();
-        
-        this.getStoreData(true);
-        
-        this.getCurrentIndex();
-        
-        this.getDriversDropdown();
-        
-        this.setChartConfiguration();
 
+        this.getConstantData();
+
+        this.getStoreData(true);
+
+        this.getCurrentIndex();
+
+        this.getDriversDropdown();
+
+        this.setChartConfiguration();
     }
 
     ngOnChanges(changes: SimpleChanges): void {
@@ -155,13 +153,11 @@ export class DriverDetailsCardComponent
         // this.barChartTabs = JSON.parse(
         //     JSON.stringify(DriverDetailsCardConstants.BAR_CHART_TABS)
         // );
-
         // this.barChartConfig = DriverDetailsCardConstants.BAR_CHART_CONFIG;
         // this.barChartLegend = DriverDetailsCardConstants.BAR_CHART_LEGEND;
         // this.barAxes = DriverDetailsCardConstants.BAR_CHART_AXES;
         // this.barChartPayrollCall =
         //     DriverDetailsCardConstants.BAR_CHART_PAYROLL_API_CALL;
-
         // this.barChartMonthList = ChartConstants.MONTH_LIST_SHORT;
     }
 
@@ -220,7 +216,6 @@ export class DriverDetailsCardComponent
 
     public onPayrollTabChange(tab: TabOptions): void {
         // const chartType = this.payrollChart?.detailsTimePeriod(tab.name);
-
         // this.getDriverPayrollChartData(this.driver.id, chartType);
     }
 
@@ -318,17 +313,8 @@ export class DriverDetailsCardComponent
     }
 
     public setChartConfiguration() {
-        this.payrollChartConfig = {
-            chartType: ChartTypesStringEnum.LINE,
-            chartData: {
-              labels: [],
-              datasets: [],
-            },
-            height: 130,
-            width: 100,
-            noDataImage: ChartImagesStringEnum.CHART_NO_DATA_YELLOW,
-            chartOptions: {},
-        };
+        this.payrollChartConfig =
+            DriverDetailsChartsConfiguration.PAYROLL_CHART_CONFIG;
     }
 
     ngOnDestroy(): void {
