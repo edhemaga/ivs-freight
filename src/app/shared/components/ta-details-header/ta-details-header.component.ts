@@ -20,7 +20,7 @@ import {
 } from '@ng-bootstrap/ng-bootstrap';
 
 // components
-import { TaAppTooltipComponent } from '@shared/components/ta-app-tooltip/ta-app-tooltip.component';
+import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
 import { TaDetailsDropdownComponent } from '@shared/components/ta-details-dropdown/ta-details-dropdown.component';
 import { TaCounterComponent } from '@shared/components/ta-counter/ta-counter.component';
 import { TaFilterComponent } from '@shared/components/ta-filter/ta-filter.component';
@@ -34,6 +34,9 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
 
 // pipes
 import { FormatCurrencyPipe } from '@shared/pipes/format-currency.pipe';
+
+// svg routes
+import { DetailsHeaderSvgRoutes } from '@shared/components/ta-details-header/utils/svg-routes/details-header-svg-routes';
 
 // models
 import { MultipleSelectDetailsDropdownItem } from '@pages/load/pages/load-details/components/load-details-item/models/multiple-select-details-dropdown-item.model';
@@ -54,7 +57,7 @@ import { LoadsSortDropdownModel } from '@pages/customer/models/loads-sort-dropdo
         NgbPopoverModule,
 
         //Components
-        TaAppTooltipComponent,
+        TaAppTooltipV2Component,
         TaDetailsDropdownComponent,
         TaCounterComponent,
         TaSearchV2Component,
@@ -156,6 +159,8 @@ export class TaDetailsHeaderComponent implements OnInit, OnChanges {
     public selectedSort: LoadsSortDropdownModel = null;
     public sortPopover: NgbPopover;
     public isSortDropdownOpen: boolean = false;
+
+    public detailsHeaderSvgRoutes = DetailsHeaderSvgRoutes;
 
     private rotate: { [key: string]: string } = {
         asc: 'desc',

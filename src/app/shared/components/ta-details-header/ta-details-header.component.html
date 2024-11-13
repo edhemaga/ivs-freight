@@ -20,12 +20,13 @@
                 ngbTooltip
                 [mainTooltip]="tooltipHeaderName"
                 position="bottom"
-                tooltipBackground="#6C6C6C"
+                tooltipBackground="#424242"
+                [tooltipMarginTop]="'6px'"
             >
                 <svg-icon
                     routerLink="{{ route }}"
                     class="header-arrow"
-                    src="assets/svg/common/ic_arrow-left.svg"
+                    [src]="detailsHeaderSvgRoutes.arrowLeftRoute"
                 >
                 </svg-icon>
             </span>

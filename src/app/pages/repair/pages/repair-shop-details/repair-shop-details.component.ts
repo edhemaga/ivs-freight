@@ -1,4 +1,4 @@
-import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import {
     ChangeDetectorRef,
@@ -7,7 +7,8 @@ import {
     OnDestroy,
     ChangeDetectionStrategy,
 } from '@angular/core';
-import { Subject, take, takeUntil, distinctUntilChanged } from 'rxjs';
+
+import { Subject, take, takeUntil } from 'rxjs';
 
 // services
 import { DropDownService } from '@shared/services/drop-down.service';
@@ -16,24 +17,38 @@ import { ConfirmationService } from '@shared/components/ta-shared-modals/confirm
 import { DetailsPageService } from '@shared/services/details-page.service';
 import { TruckassistTableService } from '@shared/services/truckassist-table.service';
 import { DetailsDataService } from '@shared/services/details-data.service';
+import { ConfirmationActivationService } from '@shared/components/ta-shared-modals/confirmation-activation-modal/services/confirmation-activation.service';
 
 // store
 import { RepairDetailsQuery } from '@pages/repair/state/repair-details-state/repair-details.query';
-import { RepairDetailsStore } from '@pages/repair/state/repair-details-state/repair-details.store';
+import {
+    RepairMinimalListState,
+    RepairMinimalListStore,
+} from '@pages/repair/state/driver-details-minimal-list-state/repair-minimal-list.store';
+import { RepairItemStore } from '@pages/repair/state/repair-details-item-state/repair-details-item.store';
+import { RepairMinimalListQuery } from '@pages/repair/state/driver-details-minimal-list-state/repair-minimal-list.query';
 
 // components
 import { TaDetailsHeaderComponent } from '@shared/components/ta-details-header/ta-details-header.component';
 import { RepairShopDetailsItemComponent } from '@pages/repair/pages/repair-shop-details/components/repair-shop-details-item/repair-shop-details-item.component';
 
+// enums
+import { RepairShopDetailsStringEnum } from '@pages/repair/pages/repair-shop-details/enums';
+
+// helpers
+import { RepairShopDetailsHelper } from '@pages/repair/pages/repair-shop-details/utils/helpers/repair-shop-details.helper';
+
 // models
 import { RepairShopResponse } from 'appcoretruckassist';
+import { DetailsDropdownOptions } from '@shared/models/details-dropdown-options.model';
+import { DetailsConfig } from '@shared/models/details-config.model';
+import { ExtendedRepairShopResponse } from '@pages/repair/pages/repair-shop-details/components/repair-shop-details-card/models';
 
 @Component({
     selector: 'app-repair-shop-details',
     templateUrl: './repair-shop-details.component.html',
     styleUrls: ['./repair-shop-details.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
-    providers: [DetailsPageService],
     standalone: true,
     imports: [
         // Modules
@@ -45,416 +60,252 @@ import { RepairShopResponse } from 'appcoretruckassist';
 })
 export class RepairShopDetailsComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
-    public shopRepairConfig: any[] = [];
-    public repairDrop: any;
-    public repairShopId: number;
-    public repairList: any;
-    public repairObject: any;
-    public togglerWorkTime: boolean;
-    public businessOpen: boolean;
-    public repairsDataLength: number = 0;
-    public repairedDataLength: number = 0;
-    public currentIndex: number = 0;
-    constructor(
-        // Router
-        private router: Router,
-        private act_route: ActivatedRoute,
 
-        // Services
-        private detailsPageDriverService: DetailsPageService,
-        private shopService: RepairService,
+    public detailsDropdownOptions: DetailsDropdownOptions;
+    public repairShopDetailsConfig: DetailsConfig[] = [];
+
+    public currentIndex: number = 0;
+
+    public repairShopList: RepairMinimalListState;
+    public repairShopObject: RepairShopResponse;
+
+    public repairShopId: number;
+    public newRepairShopId: number;
+
+    constructor(
+        // router
+        private router: Router,
+        private activatedRoute: ActivatedRoute,
+
+        // services
+        private detailsPageService: DetailsPageService,
+        private repairService: RepairService,
         private tableService: TruckassistTableService,
         private confirmationService: ConfirmationService,
-        private DetailsDataService: DetailsDataService,
         private dropDownService: DropDownService,
+        private detailsDataService: DetailsDataService,
+        private confirmationActivationService: ConfirmationActivationService,
 
-        // Ref
+        // ref
         private cdRef: ChangeDetectorRef,
 
-        // Store
-        private repairDetailsQuery: RepairDetailsQuery,
-        private repairDetailsStore: RepairDetailsStore
+        // store
+        private repairMinimalListStore: RepairMinimalListStore,
+        private repairItemStore: RepairItemStore,
+        private repairMinimalListQuery: RepairMinimalListQuery,
+        private repairDetailsQuery: RepairDetailsQuery
     ) {}
 
     ngOnInit(): void {
-        this.getRepairListAndRepairedCount();
-        // Call Change Count When Router Change
-        this.router.events
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((event: any) => {
-                if (event instanceof NavigationEnd) {
-                    this.getRepairListAndRepairedCount();
-                }
-            });
-        this.getRepairShopDataFromStore();
-        this.repairDetailsQuery.repairShopMinimal$
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((item) => {
-                this.repairList = item.pagination.data;
+        this.getRepairShopData();
 
-                this.cdRef.detectChanges();
-            });
+        this.getStoreData();
 
-        this.initTableOptions();
-        this.tableService.currentActionAnimation
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((res: any) => {
-                if (res?.animation === 'update' && res?.tab === 'repair-shop') {
-                    this.getRepairShopDataFromStore(res?.id);
-                    this.cdRef.detectChanges();
-                }
-                if (res?.animation === 'delete' && res?.tab === 'repair-shop') {
-                    this.getRepairShopDataFromStore(res?.id);
-                    this.cdRef.detectChanges();
-                }
-            });
+        this.getRepairShopMinimalList();
 
-        // Confirmation Subscribe
+        this.confirmationSubscribe();
+
+        this.confirmationActivationSubscribe();
+
+        this.handleRepairShopIdRouteChange();
+    }
+
+    public trackByIdentity(_: number, item: RepairShopResponse): number {
+        return item.id;
+    }
+
+    public isEmpty<T>(obj: Record<string, T>): boolean {
+        return !Object.keys(obj).length;
+    }
+
+    private confirmationSubscribe(): void {
         this.confirmationService.confirmationData$
             .pipe(takeUntil(this.destroy$))
             .subscribe({
-                next: (res: any) => {
-                    if (res.type === 'delete') {
-                        if (res.template === 'repair shop') {
-                            this.deleteRepairShopById(res?.id);
-                        }
-                    } else if (res.type === 'activate') {
-                        if (
-                            res.template === 'repair shop' ||
-                            res.template === 'Repair Shop'
-                        ) {
-                            this.openRepairShop(res?.id);
-                        }
-                    } else if (res.type === 'deactivate') {
-                        if (
-                            res.template === 'repair shop' ||
-                            res.template === 'Repair Shop'
-                        ) {
-                            this.closeRepairShop(res?.id);
-                        }
-                    } else if (res.type === 'info') {
-                        if (res.subType === 'favorite') {
-                            if (
-                                res.subTypeStatus === 'move' ||
-                                res.subTypeStatus === 'remove'
-                            ) {
-                                this.changePinnedStatus(res?.id);
-                            }
-                        }
-                    }
+                next: (res) => {
+                    if (
+                        res?.template ===
+                            RepairShopDetailsStringEnum.REPAIR_SHOP &&
+                        res?.type === RepairShopDetailsStringEnum.DELETE
+                    )
+                        this.deleteRepairShopById(res.data.id);
                 },
             });
+    }
 
-        // This service will call on event from shop-repair-card-view component
-        this.detailsPageDriverService.pageDetailChangeId$
+    private confirmationActivationSubscribe(): void {
+        this.confirmationActivationService.getConfirmationActivationData$
             .pipe(takeUntil(this.destroy$))
-            .subscribe((id: number) => {
-                if (this.router.url.includes('shop-details') && id) {
-                    this.router.navigate([`/list/repair/${id}/shop-details`]);
-                    this.getRepairShopDataFromStore(id);
-                    this.cdRef.detectChanges();
-                }
+            .subscribe((res) => {
+                if (
+                    res?.subTypeStatus ===
+                        RepairShopDetailsStringEnum.BUSINESS &&
+                    [
+                        RepairShopDetailsStringEnum.OPEN,
+                        RepairShopDetailsStringEnum.CLOSE,
+                    ].includes(res?.type as RepairShopDetailsStringEnum)
+                )
+                    this.handleOpenCloseRepairShop(res?.id);
             });
     }
 
-    public getRepairListAndRepairedCount() {
-        this.repairDetailsQuery.repairList$
-            .pipe(take(1), takeUntil(this.destroy$))
-            .subscribe((item) => {
-                this.repairsDataLength = item.pagination.count;
-            });
-        this.repairDetailsQuery.repairedVehicleList$
-            .pipe(take(1), takeUntil(this.destroy$))
-            .subscribe((item) => {
-                this.repairedDataLength = item.pagination.count;
-            });
-        this.getRepairShopDataFromStore();
-    }
-    private getRepairShopDataFromStore(id?: number) {
-        this.currentIndex = this.repairDetailsStore
-            .getValue()
-            .repairShopMinimal.pagination.data.findIndex(
-                (shop) =>
-                    shop.id ===
-                    (id ? id : +this.act_route.snapshot.params['id'])
-            );
+    private getStoreData(): void {
+        const storeData$ = this.repairItemStore._select((state) => state);
 
-        this.repairDetailsQuery.repairShop$
-            .pipe(take(1), takeUntil(this.destroy$), distinctUntilChanged())
-            .subscribe((items: RepairShopResponse[]) => {
-                const findedRepairShop = items.find(
-                    (item) =>
-                        item.id ===
-                        (id ? id : +this.act_route.snapshot.params['id'])
-                );
+        storeData$.pipe(takeUntil(this.destroy$)).subscribe((state) => {
+            const newRepairShopData = {
+                ...state.entities[this.newRepairShopId],
+            };
 
-                if (findedRepairShop) {
-                    this.shopConf(findedRepairShop);
-                }
-            });
-        this.cdRef.detectChanges();
+            if (!this.isEmpty(newRepairShopData)) {
+                this.detailsDataService.setNewData(newRepairShopData);
+
+                this.getDetailsConfig(newRepairShopData);
+                this.getDetailsOptions(newRepairShopData);
+            }
+        });
     }
 
-    public initTableOptions() {
-        this.repairDrop = {
-            disabledMutedStyle: null,
-            toolbarActions: {
-                hideViewMode: false,
-            },
-            config: {
-                showSort: true,
-                sortBy: '',
-                sortDirection: '',
-                disabledColumns: [0],
-                minWidth: 60,
-            },
-            actions: [
-                {
-                    title: 'Edit',
-                    name: 'edit',
-                    svg: 'assets/svg/truckassist-table/dropdown/content/edit.svg',
-                    show: true,
-                    iconName: 'edit',
-                },
-                {
-                    title: 'border',
-                },
-                {
-                    title: 'Add Bill',
-                    name: 'Repair',
-                    svg: 'assets/svg/common/ic_plus.svg',
-                    show: true,
-                    blueIcon: true,
-                    iconName: 'ic_plus',
-                },
-                {
-                    title: 'Mark as favorite',
-                    name: 'move-to-favourite',
-                    svg: 'assets/svg/common/ic_star.svg',
-                    activate: true,
-                    show: true,
-                    iconName: 'ic_star',
-                },
-                {
-                    title: 'Write Review',
-                    name: 'write-review',
-                    svg: 'assets/svg/common/review-pen.svg',
-                    show: true,
-                    iconName: 'write-review',
-                },
-                {
-                    title: 'border',
-                },
-                {
-                    title: 'Share',
-                    name: 'share',
-                    svg: 'assets/svg/common/share-icon.svg',
-                    show: true,
-                    iconName: 'share',
-                },
-                {
-                    title: 'Print',
-                    name: 'print',
-                    svg: 'assets/svg/common/ic_fax.svg',
-                    show: true,
-                    iconName: 'print',
-                },
-                {
-                    title: 'border',
-                },
-                {
-                    title: 'Close Business',
-                    name: 'close-business',
-                    svg: 'assets/svg/common/close-business-icon.svg',
-                    redIcon: true,
-                    show: true,
-                    iconName: 'close-business',
-                },
-                {
-                    title: 'Delete',
-                    name: 'delete-item',
-                    type: 'truck',
-                    text: 'Are you sure you want to delete truck(s)?',
-                    svg: 'assets/svg/common/ic_trash_updated.svg',
-                    danger: true,
-                    show: true,
-                    redIcon: true,
-                    iconName: 'delete',
-                },
-            ],
-            export: true,
+    private getRepairShopMinimalList(): void {
+        this.repairShopList = this.repairMinimalListQuery.getAll();
+    }
+
+    private getRepairShopData(): void {
+        const dataId = this.activatedRoute.snapshot.params.id;
+
+        const repairShopData = {
+            ...this.repairItemStore?.getValue()?.entities[dataId],
         };
-    }
-    public dropActionRepair(event: any) {
-        if (event.type == 'write-review') {
-            event.type = 'edit';
-            event.openedTab = 'Review';
-        }
 
+        this.newRepairShopId = dataId;
+
+        this.getDetailsConfig(repairShopData);
+    }
+
+    public getDetailsConfig(repairShop: ExtendedRepairShopResponse): void {
+        this.repairShopId = repairShop?.id;
+        this.repairShopObject = repairShop;
+
+        this.detailsDataService.setNewData(repairShop);
+
+        this.getDetailsOptions(repairShop);
+
+        this.repairShopDetailsConfig =
+            RepairShopDetailsHelper.getRepairShopDetailsConfig(repairShop);
+    }
+
+    public getDetailsOptions(repairShop: RepairShopResponse): void {
+        const { pinned, status, companyOwned } = repairShop;
+
+        this.detailsDropdownOptions =
+            RepairShopDetailsHelper.getDetailsDropdownOptions(
+                pinned,
+                status,
+                companyOwned
+            );
+    }
+
+    private handleRepairShopIdRouteChange(): void {
+        this.detailsPageService.pageDetailChangeId$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((id) => {
+                let query;
+
+                this.newRepairShopId = id;
+
+                if (this.repairDetailsQuery.hasEntity(id)) {
+                    query = this.repairDetailsQuery
+                        .selectEntity(id)
+                        .pipe(take(1));
+
+                    query.subscribe((res: ExtendedRepairShopResponse) => {
+                        this.currentIndex = this.repairShopList.findIndex(
+                            (repairShop: RepairShopResponse) =>
+                                repairShop.id === res.id
+                        );
+
+                        this.getDetailsOptions(this.repairShopObject);
+                        this.getDetailsConfig(res);
+
+                        if (
+                            this.router.url.includes(
+                                RepairShopDetailsStringEnum.DETAILS
+                            )
+                        ) {
+                            this.router.navigate([
+                                `/list/repair/${res.id}/details`,
+                            ]);
+                        }
+                    });
+                } else {
+                    this.router.navigate([`/list/repair/${id}/details`]);
+                }
+
+                this.cdRef.detectChanges();
+            });
+    }
+
+    public onRepairShopActions<T>(event: {
+        id: number;
+        data: T;
+        type: string;
+    }): void {
         this.dropDownService.dropActionsHeaderRepair(
             event,
-            this.repairObject,
-            event.id
+            this.repairShopObject
         );
     }
 
-    public onModalAction(event: any) {
-        let eventType = '';
-        if (event == 'Contact' || event == 'Review') {
-            eventType = 'edit';
-        } else {
-            eventType = event;
-        }
-        let eventObject = {
-            id: this.repairObject.id,
-            type: eventType,
-            openedTab: event,
-        };
+    public deleteRepairShopById(id: number): void {
+        const last = this.repairShopList.at(-1);
 
-        this.dropDownService.dropActionsHeaderRepair(eventObject);
-    }
-
-    public deleteRepairShopById(id: number) {
-        let last = this.repairList.at(-1);
         if (
             last.id ===
-            this.repairDetailsStore.getValue().repairShopMinimal.pagination
-                .data[this.currentIndex].id
+            this.repairMinimalListStore.getValue().ids[this.currentIndex]
         ) {
             this.currentIndex = --this.currentIndex;
         } else {
             this.currentIndex = ++this.currentIndex;
         }
-        let repairId =
-            this.repairDetailsStore.getValue().repairShopMinimal.pagination
-                .data[this.currentIndex].id;
 
-        this.shopService
+        this.repairService
             .deleteRepairShopByIdDetails(id)
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
                     if (
-                        this.repairDetailsStore.getValue().repairShopMinimal
-                            .pagination.count >= 1
+                        this.repairMinimalListStore.getValue().ids.length >= 1
                     ) {
                         this.router.navigate([
-                            `/list/repair/${repairId}/shop-details`,
+                            `/list/repair/${
+                                this.repairShopList[this.currentIndex].id
+                            }/shop-details`,
                         ]);
                     }
                 },
                 error: () => {
-                    this.router.navigate(['/list/repair']);
+                    this.router.navigate([
+                        RepairShopDetailsStringEnum.REPAIR_LIST_ROUTE,
+                    ]);
                 },
             });
     }
 
-    /**Function for header names and array of icons */
-    public shopConf(data?: RepairShopResponse) {
-        this.repairObject = data;
-        this.DetailsDataService.setNewData(data);
-
-        /* if (data?.openHoursToday === 'Closed') {
-            this.togglerWorkTime = false;
-        } else {
-            this.togglerWorkTime = true;
-        } */
-
-        this.businessOpen = data?.status ? true : false;
-
-        this.shopRepairConfig = [
-            {
-                id: 0,
-                nameDefault: 'Repair Shop Detail',
-                template: 'general',
-                data: data,
-            },
-            {
-                id: 1,
-                nameDefault: 'Repair',
-                template: 'repair',
-                icon: true,
-                /* repairOpen: data?.openHoursToday === 'Closed' ? false : true, */
-                length: this.repairsDataLength,
-                customText: 'Date',
-                hasDateArrow: true,
-                total: data?.cost ? data.cost : 0,
-                icons: [
-                    {
-                        id: Math.random() * 1000,
-                        icon: 'assets/svg/common/ic_clock.svg',
-                    },
-                    {
-                        id: Math.random() * 1000,
-                        icon: 'assets/svg/common/ic_rubber.svg',
-                    },
-                    {
-                        id: Math.random() * 1000,
-                        icon: 'assets/svg/common/ic_documents.svg',
-                    },
-                    {
-                        id: Math.random() * 1000,
-                        icon: 'assets/svg/common/ic_sraf.svg',
-                    },
-                    {
-                        id: Math.random() * 1000,
-                        icon: 'assets/svg/common/ic_funnel.svg',
-                    },
-                    {
-                        id: Math.random() * 1000,
-                        icon: 'assets/svg/common/ic_dollar.svg',
-                    },
-                ],
-                data: data,
-            },
-            {
-                id: 2,
-                nameDefault: 'Repaired Vehicle',
-                template: 'repaired-vehicle',
-                length: this.repairedDataLength,
-                hide: true,
-                customText: 'Repairs',
-                hasDateArrow: true,
-                data: data,
-                /*   repairOpen: data?.openHoursToday === 'Closed' ? false : true, */
-            },
-            {
-                id: 3,
-                nameDefault: 'Review & Rating',
-                template: 'review',
-                length: data?.ratingReviews?.length
-                    ? data.ratingReviews.length
-                    : 0,
-                hasDateArrow: false,
-                hide: false,
-                data: data,
-                /*      repairOpen: data?.openHoursToday === 'Closed' ? false : true, */
-            },
-        ];
-
-        this.repairShopId = data?.id ? data.id : null;
-    }
-
-    /**Function return id */
-    public identity(index: number, item: any): number {
-        return item.id;
-    }
-
-    public closeRepairShop(shopId) {
-        this.shopService.changeShopStatus(shopId);
-    }
-
-    public openRepairShop(shopId) {
-        this.shopService.changeShopStatus(shopId);
+    private handleOpenCloseRepairShop(id: number): void {
+        this.repairService
+            .changeShopStatus(id)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe();
     }
 
     public changePinnedStatus(shopId) {
-        this.shopService.changePinnedStatus(shopId);
+        this.repairService.changePinnedStatus(shopId);
     }
 
     ngOnDestroy(): void {
         this.destroy$.next();
         this.destroy$.complete();
+
         this.tableService.sendActionAnimation({});
     }
 }

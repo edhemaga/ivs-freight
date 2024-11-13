@@ -15,6 +15,7 @@ export enum DropActionsStringEnum {
     FAVORITE = 'favorite',
     MOVE = 'move',
     REMOVE = 'remove',
+    WRITE_REVIEW = 'write-review',
 
     // Templates
     INFO = 'info',

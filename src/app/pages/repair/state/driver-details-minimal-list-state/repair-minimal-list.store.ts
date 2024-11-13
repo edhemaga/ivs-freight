@@ -1,17 +1,14 @@
 import { Injectable } from '@angular/core';
-
-// store
 import { EntityState, EntityStore, StoreConfig } from '@datorama/akita';
 
-// Models
 import { RepairShopResponse } from 'appcoretruckassist';
 
-export interface RepairShopState
+export interface RepairMinimalListState
     extends EntityState<RepairShopResponse, number> {}
 
 @Injectable({ providedIn: 'root' })
-@StoreConfig({ name: 'repairShop' })
-export class RepairShopStore extends EntityStore<RepairShopResponse> {
+@StoreConfig({ name: 'repairMinimalList' })
+export class RepairMinimalListStore extends EntityStore<RepairMinimalListState> {
     constructor() {
         super();
     }
