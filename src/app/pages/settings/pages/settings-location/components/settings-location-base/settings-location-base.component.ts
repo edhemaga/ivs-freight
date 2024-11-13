@@ -1,5 +1,5 @@
 import { Component, OnDestroy, ChangeDetectorRef } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 import { Subject, takeUntil } from 'rxjs';
 
@@ -32,6 +32,9 @@ import {
     TerminalResponse,
 } from 'appcoretruckassist';
 
+// Enums
+import { TableStringEnum } from '@shared/enums/table-string.enum';
+
 @Component({
     selector: 'app-settings-location-base',
     templateUrl: './settings-location-base.component.html',
@@ -52,7 +55,8 @@ export abstract class SettingsLocationBaseComponent implements OnDestroy {
         protected activatedRoute: ActivatedRoute,
         protected settingsLocationService: SettingsLocationService,
         public dropDownService: DropDownService,
-        public FormatCurrencyPipe: FormatCurrencyPipe
+        public FormatCurrencyPipe: FormatCurrencyPipe,
+        public router: Router
     ) {}
 
     ngOnInit(): void {
@@ -90,15 +94,21 @@ export abstract class SettingsLocationBaseComponent implements OnDestroy {
         item: any
     ): void {
         setTimeout(() => {
-            const name = DropActionNameHelper.dropActionNameDriver(
-                eventData,
-                action
-            );
-            this.dropDownService.dropActionCompanyLocation(
-                eventData,
-                name,
-                item
-            );
+            if(eventData.type === TableStringEnum.VIEW_DETAILS) {
+                if(action === TableStringEnum.REPAIR_SHOP_3) {
+                this.router.navigate([`/list/repair/${item.id}/shop-details`]);
+                }
+            } else {
+                const name = DropActionNameHelper.dropActionNameDriver(
+                    eventData,
+                    action
+                );
+                this.dropDownService.dropActionCompanyLocation(
+                    eventData,
+                    name,
+                    item
+                );
+            }
         }, 100);
     }
 

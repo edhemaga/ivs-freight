@@ -29,7 +29,8 @@ import { SettingsOfficeComponent } from '@pages/settings/pages/settings-location
 import { SettingsTerminalComponent } from '@pages/settings/pages/settings-location/components/settings-terminal/settings-terminal.component';
 import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-custom-card.component';
 import { TaProgressExpirationComponent } from '@shared/components/ta-progress-expiration/ta-progress-expiration.component';
-
+import { TaPasswordAccountHiddenCharactersComponent } from '@shared/components/ta-password-account-hidden-characters/ta-password-account-hidden-characters.component';
+import { TaInputNoteComponent } from '@shared/components/ta-input-note/ta-input-note.component';
 @NgModule({
     imports: [
         CommonModule,
@@ -46,6 +47,9 @@ import { TaProgressExpirationComponent } from '@shared/components/ta-progress-ex
         TaCopyComponent,
         TaCustomCardComponent,
         TaProgressExpirationComponent,
+        TaPasswordAccountHiddenCharactersComponent,
+        TaInputNoteComponent,
+        
         FormatDatePipe,
     ],
     declarations: [

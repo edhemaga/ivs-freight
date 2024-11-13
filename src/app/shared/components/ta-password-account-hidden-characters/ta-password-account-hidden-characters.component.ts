@@ -22,6 +22,7 @@ export class TaPasswordAccountHiddenCharactersComponent implements OnInit {
     @Input() passwordOrAccount: string;
     @Input() numberOfCharactersToHide: number = 4;
     @Input() isRightSideIcon: boolean = false;
+    @Input() showEyeIcon: boolean = false;
 
     public isShowing: boolean = false;
     public isHovered: boolean = false;
@@ -43,6 +44,7 @@ export class TaPasswordAccountHiddenCharactersComponent implements OnInit {
     }
 
     public handleHover(isHovering: boolean): void {
+        if(this.showEyeIcon)   return;
         this.isHovered = isHovering;
     }
 
@@ -59,5 +61,7 @@ export class TaPasswordAccountHiddenCharactersComponent implements OnInit {
 
         this.hiddenPart = hiddenPart;
         this.visiblePart = visiblePart;
+
+        if(this.showEyeIcon) this.isHovered = true;
     }
 }

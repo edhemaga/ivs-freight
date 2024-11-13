@@ -1,10 +1,9 @@
 import { Component, ChangeDetectorRef, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { takeUntil } from 'rxjs';
 
 // Models
 import {
-    CompanyOfficeDepartmentContactResponse,
     CompanyOfficeResponse,
     CompanyOfficeResponsePagination,
 } from 'appcoretruckassist';
@@ -49,7 +48,8 @@ export class SettingsOfficeComponent
         protected settingsLocationService: SettingsLocationService,
         public dropDownService: DropDownService,
         public FormatCurrencyPipe: FormatCurrencyPipe,
-        private companyOfficeService: CompanyOfficeService
+        private companyOfficeService: CompanyOfficeService,
+        public router: Router,
     ) {
         super(
             tableService,
@@ -58,7 +58,8 @@ export class SettingsOfficeComponent
             activatedRoute,
             settingsLocationService,
             dropDownService,
-            FormatCurrencyPipe
+            FormatCurrencyPipe,
+            router
         );
     }
 
