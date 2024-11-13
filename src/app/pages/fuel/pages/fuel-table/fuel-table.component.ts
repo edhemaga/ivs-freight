@@ -446,7 +446,6 @@ export class FuelTableComponent implements OnInit, AfterViewInit, OnDestroy {
     sendFuelData() {
         const { data } = this.fuelData;
         
-        this.setActiveTab();
         this.initTableOptions();
         this.checkActiveViewMode();
 
@@ -638,6 +637,7 @@ export class FuelTableComponent implements OnInit, AfterViewInit, OnDestroy {
             }
         } else if (event.action === TableStringEnum.TAB_SELECTED) {
             this.selectedTab = event.tabData.field;
+
             this.fuelData = {
                 data: [],
                 pageIndex: 0
@@ -860,7 +860,7 @@ export class FuelTableComponent implements OnInit, AfterViewInit, OnDestroy {
         const tableView = JSON.parse(
             localStorage.getItem(TableStringEnum.FUEL_TABLE_VIEW)
         );
-
+        
         if (tableView) {
             this.selectedTab = tableView.tabSelected;
             this.activeViewMode = tableView.viewMode;
