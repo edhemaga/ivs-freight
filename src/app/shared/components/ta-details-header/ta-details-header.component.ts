@@ -24,8 +24,6 @@ import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta
 import { TaDetailsDropdownComponent } from '@shared/components/ta-details-dropdown/ta-details-dropdown.component';
 import { TaCounterComponent } from '@shared/components/ta-counter/ta-counter.component';
 import { TaFilterComponent } from '@shared/components/ta-filter/ta-filter.component';
-import { TaSearchV2Component } from '@shared/components/ta-search-v2/ta-search-v2.component';
-import { TaSearchComponent } from '@shared/components/ta-search/ta-search.component';
 import { TaSpecialFilterComponent } from '@shared/components/ta-special-filter/ta-special-filter.component';
 import { CaSearchMultipleStatesComponent } from 'ca-components';
 
@@ -60,9 +58,7 @@ import { LoadsSortDropdownModel } from '@pages/customer/models/loads-sort-dropdo
         TaAppTooltipV2Component,
         TaDetailsDropdownComponent,
         TaCounterComponent,
-        TaSearchV2Component,
         TaFilterComponent,
-        TaSearchComponent,
         TaSpecialFilterComponent,
         CaSearchMultipleStatesComponent,
 

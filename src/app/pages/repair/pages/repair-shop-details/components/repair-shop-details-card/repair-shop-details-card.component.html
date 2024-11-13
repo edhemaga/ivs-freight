@@ -1,4 +1,4 @@
-<ng-container *ngIf="repairShop">
+<ng-container *ngIf="_repairShop">
     <div class="cards-item-wrapper-1 repair-shop-details-card">
         <!-- Title Card -->
 
@@ -6,16 +6,16 @@
             [repairShopCurrentIndex]="repairShopCurrentIndex"
             [repairShopDropdownList]="repairShopDropdownList"
             [cardData]="{
-                createdAt: repairShop?.createdAt,
-                lastVisited: repairShop?.lastVisited,
-                dateDeactivated: repairShop?.dateDeactivated,
-                name: repairShop?.name,
-                pinned: repairShop?.pinned,
-                companyOwned: repairShop?.companyOwned,
-                status: repairShop?.status,
-                phone: repairShop?.phone,
-                email: repairShop?.email,
-                address: repairShop?.address?.address
+                createdAt: _repairShop?.createdAt,
+                lastVisited: _repairShop?.lastVisited,
+                dateDeactivated: _repairShop?.dateDeactivated,
+                name: _repairShop?.name,
+                pinned: _repairShop?.pinned,
+                companyOwned: _repairShop?.companyOwned,
+                status: _repairShop?.status,
+                phone: _repairShop?.phone,
+                email: _repairShop?.email,
+                address: _repairShop?.address?.address
             }"
             (cardValuesEmitter)="handleRepairShopDetailsTitleCardEmit($event)"
         >
@@ -33,8 +33,8 @@
 
                 <app-repair-shop-details-services-card
                     [cardData]="{
-                        shopServiceType: repairShop?.shopServiceType,
-                        serviceTypes: repairShop?.serviceTypes
+                        shopServiceType: _repairShop?.shopServiceType,
+                        serviceTypes: _repairShop?.serviceTypes
                     }"
                 ></app-repair-shop-details-services-card>
 
@@ -42,32 +42,32 @@
 
                 <app-repair-shop-details-bank-card
                     [cardData]="{
-                        bank: repairShop?.bank,
-                        routing: repairShop?.routing,
-                        account: repairShop?.account
+                        bank: _repairShop?.bank,
+                        routing: _repairShop?.routing,
+                        account: _repairShop?.account
                     }"
                 ></app-repair-shop-details-bank-card>
 
                 <!-- Repair Expense Card -->
 
                 <app-repair-shop-details-repair-expense-card
-                    [cardData]="{ id: repairShop?.id }"
+                    [cardData]="{ id: _repairShop?.id }"
                 >
                 </app-repair-shop-details-repair-expense-card>
 
                 <!-- Map & Cover Photo Card -->
 
                 <app-repair-shop-details-map-cover-card
-                    [cardData]="{ cover: repairShop?.cover }"
+                    [cardData]="{ cover: _repairShop?.cover }"
                 ></app-repair-shop-details-map-cover-card>
 
                 <!-- Documents Card -->
 
                 <app-ta-custom-card
                     [cardName]="'Document'"
-                    [hasCounter]="repairShop?.files?.length || -1"
-                    [isCardOpen]="!!repairShop?.files?.length"
-                    [disabledCard]="!repairShop?.files?.length"
+                    [hasCounter]="_repairShop?.files?.length || -1"
+                    [isCardOpen]="!!_repairShop?.files?.length"
+                    [disabledCard]="!_repairShop?.files?.length"
                     [bodyTemplate]="'card'"
                     [animationMarginParams]="{
                         marginTop: '0px',
@@ -75,7 +75,7 @@
                     }"
                 >
                     <app-ta-upload-files
-                        [files]="repairShop?.files"
+                        [files]="_repairShop?.files"
                         [customClassName]="'driver-card-pdf'"
                         [hasCarouselBottomTabs]="true"
                         [type]="'details'"
@@ -90,17 +90,17 @@
                     <app-ta-input-note
                         formControlName="note"
                         [isVisibleNote]="
-                            repairShop?.note && repairShop?.note !== 'null'
-                                ? repairShop?.note
+                            _repairShop?.note && _repairShop?.note !== 'null'
+                                ? _repairShop?.note
                                 : false
                         "
                         [note]="
-                            repairShop?.note && repairShop?.note !== 'null'
-                                ? repairShop?.note
+                            _repairShop?.note && _repairShop?.note !== 'null'
+                                ? _repairShop?.note
                                 : ''
                         "
                         [noteType]="'details-card'"
-                        [entityId]="repairShop?.id"
+                        [entityId]="_repairShop?.id"
                         [entityType]="'RepairShop'"
                     ></app-ta-input-note>
                 </div>

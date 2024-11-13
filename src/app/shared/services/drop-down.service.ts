@@ -923,7 +923,9 @@ export class DropDownService {
 
                 break;
             case DropActionsStringEnum.MOVE_TO_FAVOURITE:
-                this.repairService.addShopFavorite(event.id).subscribe();
+                this.repairService
+                    .updateRepairShopFavorite(event.id)
+                    .subscribe();
 
                 break;
             case DropActionsStringEnum.CLOSE_BUSINESS:
