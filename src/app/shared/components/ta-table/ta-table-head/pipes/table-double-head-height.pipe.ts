@@ -15,7 +15,8 @@ export class TableDoubleHeadHeightPipe implements PipeTransform {
             gridNameTitle === TableHeadTitleStringEnum.CUSTOMER ||
             gridNameTitle === TableHeadTitleStringEnum.TRAILER ||
             gridNameTitle === TableHeadTitleStringEnum.LOAD ||
-            gridNameTitle === TableHeadTitleStringEnum.USER
+            gridNameTitle === TableHeadTitleStringEnum.USER ||
+            gridNameTitle === TableHeadTitleStringEnum.FUEL
         );
     }
 }
