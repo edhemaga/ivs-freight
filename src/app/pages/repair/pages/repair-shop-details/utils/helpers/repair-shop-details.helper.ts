@@ -105,7 +105,7 @@ export class RepairShopDetailsHelper {
     static getRepairShopDetailsConfig(
         repairShopData: ExtendedRepairShopResponse
     ): DetailsConfig[] {
-        const { repairList, cost, repairedVehicleList, ratingReviews } =
+        const { repairList, cost, repairedVehicleList, ratingReviews, status } =
             repairShopData;
 
         return [
@@ -113,67 +113,43 @@ export class RepairShopDetailsHelper {
                 id: 0,
                 name: 'Repair Shop Detail',
                 template: 'general',
+                isClosedBusiness: !status,
                 data: repairShopData,
             },
             {
                 id: 1,
                 name: 'Repair',
                 template: 'repair',
-                req: false,
+                isClosedBusiness: !status,
                 icon: true,
-                length: repairList?.length,
-                customText: 'Date',
-                hasDateArrow: true,
-                total: cost ?? 0,
-                icons: [
-                    {
-                        id: Math.random() * 1000,
-                        icon: 'assets/svg/common/ic_clock.svg',
-                    },
-                    {
-                        id: Math.random() * 1000,
-                        icon: 'assets/svg/common/ic_rubber.svg',
-                    },
-                    {
-                        id: Math.random() * 1000,
-                        icon: 'assets/svg/common/ic_documents.svg',
-                    },
-                    {
-                        id: Math.random() * 1000,
-                        icon: 'assets/svg/common/ic_sraf.svg',
-                    },
-                    {
-                        id: Math.random() * 1000,
-                        icon: 'assets/svg/common/ic_funnel.svg',
-                    },
-                    {
-                        id: Math.random() * 1000,
-                        icon: 'assets/svg/common/ic_dollar.svg',
-                    },
-                ],
+                hasSearch: true,
+                hasSort: true,
+                hide: false,
+                total: cost,
+                length: repairList?.length || '0',
                 data: repairShopData,
             },
             {
                 id: 2,
                 name: 'Vehicle',
                 template: 'repaired-vehicle',
-                req: false,
                 icon: false,
-                length: repairedVehicleList?.length,
-                customText: 'Repairs',
-                hasDateArrow: true,
+                hasSearch: true,
+                hasSort: true,
                 hide: true,
+                length: repairedVehicleList?.length || '0',
                 data: repairShopData,
             },
             {
                 id: 3,
                 name: 'Review',
                 template: 'review',
-                req: false,
+                isClosedBusiness: !status,
                 icon: false,
-                length: ratingReviews?.length,
-                hasDateArrow: true,
+                hasSearch: true,
+                hasSort: false,
                 hide: false,
+                length: ratingReviews?.length || '0',
                 data: repairShopData,
             },
         ];

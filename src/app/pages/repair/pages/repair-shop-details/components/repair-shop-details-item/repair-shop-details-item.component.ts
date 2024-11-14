@@ -91,7 +91,6 @@ export class RepairShopDetailsItemComponent implements OnInit, OnChanges {
     @Input() detailsConfig: DetailsConfig;
 
     /////////////////////////////////////////////
-    @Input() repairShopItem: RepairShopResponse | any = null;
     @Input() customClass: string | any = '';
     public repairListData: any;
     public repairedVehicleListData: any;
@@ -101,8 +100,6 @@ export class RepairShopDetailsItemComponent implements OnInit, OnChanges {
     public repairShopLikes: number;
     public repairShopDislike: number;
     public showRepairItems: boolean[] = [];
-
-    public repairsTest: any;
 
     constructor(
         // services
