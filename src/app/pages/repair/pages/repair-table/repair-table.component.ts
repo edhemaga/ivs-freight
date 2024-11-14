@@ -247,15 +247,19 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
 
         this.setTableFilter();
 
-        this.confirmationSubscribe();
-
         this.switchSelected();
-
-        this.deleteSelectedRows();
 
         this.addMapListScrollEvent();
 
         this.addSelectedMarkerListener();
+
+        this.rowsSelected();
+
+        this.openCloseBussinessSelectedRows();
+
+        this.confirmationSubscribe();
+
+        this.confirmationActivationSubscribe();
     }
 
     ngAfterViewInit(): void {
@@ -264,6 +268,8 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
         }, 10);
     }
 
+    /* Global */
+
     private confirmationSubscribe(): void {
         this.confirmationService.confirmationData$
             .pipe(takeUntil(this.destroy$))
@@ -271,41 +277,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                 if (res) {
                     if (res.type === TableStringEnum.MULTIPLE_DELETE) {
                         if (this.selectedTab === TableStringEnum.REPAIR_SHOP) {
-                            this.repairService
-                                .deleteRepairShopList(res.array)
-                                .pipe(takeUntil(this.destroy$))
-                                .subscribe({
-                                    next: () => {
-                                        this.viewData = this.viewData.map(
-                                            (repair) => {
-                                                res.array.map((id) => {
-                                                    if (repair.id === id)
-                                                        repair.actionAnimation =
-                                                            TableActionsStringEnum.DELETE_MULTIPLE;
-                                                });
-
-                                                return repair;
-                                            }
-                                        );
-
-                                        // Remove deleted shop from view
-                                        this.viewData = this.viewData.filter(
-                                            (data) =>
-                                                !res.array.includes(data.id)
-                                        );
-
-                                        this.updateDataCount();
-
-                                        this.handleCloseAnimationAction(true);
-
-                                        this.updateMapItem();
-
-                                        this.tableService.sendRowsSelected([]);
-                                        this.tableService.sendResetSelectedColumns(
-                                            true
-                                        );
-                                    },
-                                });
+                            this.deleteRepairShopList(res?.array);
                         } else {
                             this.repairService
                                 .deleteRepairList(res.array, this.selectedTab)
@@ -337,50 +309,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                         }
                     } else if (res.type === TableStringEnum.DELETE) {
                         if (this.selectedTab === TableStringEnum.REPAIR_SHOP) {
-                            const repairShopId = res.array?.[0]?.id ?? res.id;
-
-                            this.repairService
-                                .deleteRepairShop(repairShopId)
-                                .pipe(takeUntil(this.destroy$))
-                                .subscribe({
-                                    next: () => {
-                                        this.viewData = this.viewData.map(
-                                            (repairShop) => {
-                                                if (
-                                                    repairShop.id ===
-                                                    repairShopId
-                                                ) {
-                                                    repairShop.actionAnimation =
-                                                        TableStringEnum.DELETE;
-                                                }
-
-                                                return repairShop;
-                                            }
-                                        );
-
-                                        this.updateDataCount();
-
-                                        this.updateMapItem();
-
-                                        if (res.array?.length) {
-                                            this.tableService.sendRowsSelected(
-                                                []
-                                            );
-
-                                            this.tableService.sendResetSelectedColumns(
-                                                true
-                                            );
-                                        }
-
-                                        setTimeout(() => {
-                                            this.viewData =
-                                                MethodsGlobalHelper.closeAnimationAction(
-                                                    true,
-                                                    this.viewData
-                                                );
-                                        }, 900);
-                                    },
-                                });
+                            this.deleteRepairShop(res?.id);
                         } else {
                             const repairId = res.array?.[0]?.id ?? res.id;
 
@@ -405,19 +334,194 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                     }
                 }
             });
+    }
 
+    private confirmationActivationSubscribe(): void {
         this.confirmationActivationService.getConfirmationActivationData$
             .pipe(takeUntil(this.destroy$))
             .subscribe((res) => {
                 if (res) {
+                    const repairShopIds = res?.array?.map(({ id }) => id) ?? [
+                        res.data.id,
+                    ];
+
                     this.filter = null;
 
-                    this.updateRepairShopStatus(res.data.id);
+                    repairShopIds.forEach((id) =>
+                        this.updateRepairShopStatus(id)
+                    );
                 }
             });
     }
 
-    // table settings & data
+    private rowsSelected(): void {
+        this.tableService.currentRowsSelected
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((res) => {
+                if (res && this.selectedTab === TableStringEnum.REPAIR_SHOP) {
+                    let selectedClosedCount = 0;
+                    let selectedOpenCount = 0;
+
+                    res.forEach(({ tableData: { status } }) =>
+                        status ? selectedOpenCount++ : selectedClosedCount++
+                    );
+
+                    this.tableOptions.toolbarActions.showMoveToOpenList =
+                        selectedClosedCount && !selectedOpenCount;
+
+                    this.tableOptions.toolbarActions.showMoveToClosedList =
+                        selectedOpenCount && !selectedClosedCount;
+                }
+            });
+    }
+
+    private openCloseBussinessSelectedRows(): void {
+        this.tableService.currentBussinessSelectedRows
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((res) => {
+                if (res?.length) {
+                    const mappedRes = res.map(({ tableData: repairShop }) => {
+                        const { id } = repairShop;
+
+                        return {
+                            id,
+                            data: {
+                                ...repairShop,
+                            },
+                            modalTitle: repairShop.name,
+                            modalSecondTitle: repairShop?.address?.address,
+                        };
+                    });
+
+                    this.modalService.openModal(
+                        ConfirmationActivationModalComponent,
+                        { size: TableStringEnum.SMALL },
+                        {
+                            data: null,
+                            array: mappedRes,
+                            template: TableStringEnum.INFO,
+                            subType: TableStringEnum.REPAIR_SHOP,
+                            subTypeStatus: TableStringEnum.BUSINESS,
+                            tableType:
+                                ConfirmationActivationStringEnum.REPAIR_SHOP_TEXT,
+                            type: mappedRes[0].data.status
+                                ? TableStringEnum.CLOSE
+                                : TableStringEnum.OPEN,
+                        }
+                    );
+                }
+            });
+    }
+
+    private handleAfterActions(): void {
+        this.updateDataCount();
+        this.updateMapItem();
+
+        this.tableService.sendRowsSelected([]);
+        this.tableService.sendResetSelectedColumns(true);
+
+        this.tableService.sendResetSpecialFilters(true);
+
+        this.handleCloseAnimationAction(true);
+    }
+
+    /* Repair */
+
+    /* Repair Shop */
+
+    public updateRepairShopStatus(repairShopId: number): void {
+        this.repairService
+            .updateRepairShopStatus(repairShopId)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe(() => {
+                this.sendRepairData();
+
+                this.handleAfterActions();
+            });
+    }
+
+    private updateRepairShopFavorite(repairShopId: number): void {
+        this.repairService
+            .updateRepairShopFavorite(repairShopId)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe(() => {
+                const newViewData = this.viewData.map((repairShop) => {
+                    const { id, isFavorite, status, companyOwned } = repairShop;
+
+                    return id === repairShopId
+                        ? {
+                              ...repairShop,
+                              isFavorite: !isFavorite,
+                              actionAnimation: TableStringEnum.UPDATE,
+                              tableDropdownContent: {
+                                  ...repairShop.tableDropdownContent,
+                                  content:
+                                      this.getRepairShopTableDropdownContent(
+                                          status,
+                                          !isFavorite,
+                                          companyOwned
+                                      ),
+                              },
+                          }
+                        : repairShop;
+                });
+
+                const sortedByFavorite = newViewData.sort(
+                    (a, b) => b.isFavorite - a.isFavorite
+                );
+
+                this.viewData = [...sortedByFavorite];
+
+                this.handleCloseAnimationAction(false);
+
+                this.updateMapItem(
+                    this.viewData.find((item) => item.id === repairShopId)
+                );
+            });
+    }
+
+    private deleteRepairShop(repairShopId: number): void {
+        this.repairService
+            .deleteRepairShop(repairShopId)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe({
+                next: () => {
+                    this.viewData = this.viewData.map((repairShop) =>
+                        repairShop.id === repairShopId
+                            ? {
+                                  ...repairShop,
+                                  actionAnimation: TableStringEnum.DELETE,
+                              }
+                            : repairShop
+                    );
+
+                    this.handleAfterActions();
+                },
+            });
+    }
+
+    private deleteRepairShopList(repairShopIds: number[]): void {
+        this.repairService
+            .deleteRepairShopList(repairShopIds)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe({
+                next: () => {
+                    this.viewData = this.viewData.map((repairShop) =>
+                        repairShopIds.includes(repairShop.id)
+                            ? {
+                                  ...repairShop,
+                                  actionAnimation: TableStringEnum.DELETE,
+                              }
+                            : repairShop
+                    );
+
+                    this.handleAfterActions();
+                },
+            });
+    }
+
+    ///////////////////////////////////////////////////////////////////////////////////////
+
     private addUpdateRepair(): void {
         this.tableService.currentActionAnimation
             .pipe(takeUntil(this.destroy$))
@@ -623,6 +727,9 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                     this.selectedTab === TableStringEnum.INACTIVE,
                 showMoneyCount:
                     this.selectedTab !== TableStringEnum.REPAIR_SHOP,
+                showMoveToOpenList:
+                    this.selectedTab === TableStringEnum.REPAIR_SHOP,
+                showMoveToClosedList: true,
                 viewModeOptions: this.getViewModeOptions(),
             },
         };
@@ -884,7 +991,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                 isDelete,
                 this.viewData
             );
-        }, 1000);
+        }, 900);
     }
 
     // table filters
@@ -1414,59 +1521,6 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
         updatedTableData[2].length = repairTruckTrailerCount.repairShops;
 
         this.tableData = [...updatedTableData];
-    }
-
-    public updateRepairShopStatus(repairShopId: number): void {
-        this.repairService
-            .updateRepairShopStatus(repairShopId)
-            .pipe(takeUntil(this.destroy$))
-            .subscribe(() => {
-                this.sendRepairData();
-
-                this.updateMapItem(
-                    this.viewData.find((item) => item.id === repairShopId)
-                );
-            });
-    }
-
-    private updateRepairShopFavorite(repairShopId: number): void {
-        this.repairService
-            .updateRepairShopFavorite(repairShopId)
-            .pipe(takeUntil(this.destroy$))
-            .subscribe(() => {
-                const newViewData = this.viewData.map((repairShop) => {
-                    const { id, isFavorite, status, companyOwned } = repairShop;
-
-                    return id === repairShopId
-                        ? {
-                              ...repairShop,
-                              isFavorite: !isFavorite,
-                              actionAnimation: TableStringEnum.UPDATE,
-                              tableDropdownContent: {
-                                  ...repairShop.tableDropdownContent,
-                                  content:
-                                      this.getRepairShopTableDropdownContent(
-                                          status,
-                                          !isFavorite,
-                                          companyOwned
-                                      ),
-                              },
-                          }
-                        : repairShop;
-                });
-
-                const sortedByFavorite = newViewData.sort(
-                    (a, b) => b.isFavorite - a.isFavorite
-                );
-
-                this.viewData = [...sortedByFavorite];
-
-                this.handleCloseAnimationAction(false);
-
-                this.updateMapItem(
-                    this.viewData.find((item) => item.id === repairShopId)
-                );
-            });
     }
 
     private mapTruckAndTrailerData(data: RepairResponse): MappedTruckTrailer {

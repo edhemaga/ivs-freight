@@ -732,7 +732,9 @@ export class TaTableBodyComponent
     }
 
     // FAVORITE
-    onFavorite(row: any) {
+    onFavorite(row: any, isDisabled: boolean) {
+        if (isDisabled) return;
+
         this.bodyActions.emit({
             data: row,
             type: 'favorite',

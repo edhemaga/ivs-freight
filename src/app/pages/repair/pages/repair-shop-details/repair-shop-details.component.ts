@@ -21,10 +21,7 @@ import { ConfirmationActivationService } from '@shared/components/ta-shared-moda
 
 // store
 import { RepairDetailsQuery } from '@pages/repair/state/repair-details-state/repair-details.query';
-import {
-    RepairMinimalListState,
-    RepairMinimalListStore,
-} from '@pages/repair/state/driver-details-minimal-list-state/repair-minimal-list.store';
+import { RepairMinimalListState } from '@pages/repair/state/driver-details-minimal-list-state/repair-minimal-list.store';
 import { RepairItemStore } from '@pages/repair/state/repair-details-item-state/repair-details-item.store';
 import { RepairMinimalListQuery } from '@pages/repair/state/driver-details-minimal-list-state/repair-minimal-list.query';
 
@@ -90,7 +87,6 @@ export class RepairShopDetailsComponent implements OnInit, OnDestroy {
         private cdRef: ChangeDetectorRef,
 
         // store
-        private repairMinimalListStore: RepairMinimalListStore,
         private repairItemStore: RepairItemStore,
         private repairMinimalListQuery: RepairMinimalListQuery,
         private repairDetailsQuery: RepairDetailsQuery

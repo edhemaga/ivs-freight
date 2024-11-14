@@ -54,6 +54,10 @@ export class RepairDetailsResolver {
                     repairList: data?.repairList?.pagination?.data,
                     repairedVehicleList:
                         data?.repairedVehicleList?.pagination?.data,
+                    companyOwned:
+                        data?.repairShopData?.name === '44'
+                            ? false
+                            : data?.repairShopData?.companyOwned,
                 };
 
                 this.repairDetailsStore.add(repairShopData);
