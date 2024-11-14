@@ -1,5 +1,5 @@
 import { CommonModule, formatDate } from '@angular/common';
-import { Component, OnDestroy } from '@angular/core';
+import { Component, EventEmitter, OnDestroy, Output } from '@angular/core';
 import { forkJoin, Subject, takeUntil } from 'rxjs';
 
 // models
@@ -41,6 +41,9 @@ export class RightSidePanelComponent implements OnDestroy {
     public modulesFilterData: ActivityLogModuleFilterResponse[] = [];
     public actionsFilterData: ActivityLogActionFilterResponse[] = [];
     private destroy$ = new Subject<void>();
+
+    @Output() isSidePanelPinned: EventEmitter<boolean> =
+    new EventEmitter();
 
     constructor(private activityLogService: ActivityLogService) {}
 
@@ -140,6 +143,10 @@ export class RightSidePanelComponent implements OnDestroy {
                     ? this.getCurrentUserHelper.currentUserId
                     : null
             );
+    }
+
+    public sidePanelPinEvent(isSidePanelPinned: boolean): void {
+        this.isSidePanelPinned.emit(isSidePanelPinned);
     }
 
     ngOnDestroy(): void {
