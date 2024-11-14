@@ -444,8 +444,8 @@ ngb-modal-window[aria-hidden='true'] {
 
                 &-payroll {
                     padding-top: 0;
-                    .divider {
-                        margin-bottom: 12px;
+                    .divider { 
+                        margin-bottom: 12px !important;
                     }
                 }
 

@@ -24,10 +24,12 @@ import {
 
 // Services
 import { PayrollDeductionService } from './services/payroll-deduction.service';
+import { PayrollService } from '../../services/payroll.service';
 
 // Enums
 import { PayrollStringEnum } from '@pages/accounting/pages/payroll/state/enums';
 import { TaModalActionEnums } from '@shared/components/ta-modal/enums';
+import { TableStringEnum } from '@shared/enums/table-string.enum';
 
 // Helpers
 import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calculations.helper';
@@ -63,7 +65,8 @@ export class PayrollDeductionModalComponent implements OnInit {
     constructor(
         private fb: FormBuilder,
         private payrollDeductionService: PayrollDeductionService,
-        private ngbActiveModal: NgbActiveModal
+        private ngbActiveModal: NgbActiveModal,
+        private payrollService: PayrollService
     ) {}
 
     ngOnInit(): void {
@@ -240,12 +243,14 @@ export class PayrollDeductionModalComponent implements OnInit {
                     this.onCloseModal();
                 });
         } else if (action === TaModalActionEnums.DELETE) {
-            this.payrollDeductionService
-                .deletePayrollDeductionById(this.editData.data.id)
-                .pipe(takeUntil(this.destroy$))
-                .subscribe(() => {
-                    this.onCloseModal();
-                });
+            this.payrollService.raiseDeleteModal(TableStringEnum.DEDUCTION, this.editData.data.id, 
+                {
+                    title: this.deduction.description,
+                    subtitle: this.deduction.amount,
+                    date: this.deduction.date,
+                    label: `${this.deduction.driver.firstName} ${this.deduction.driver.lastName}`,
+                
+            });
         }
     }
 

@@ -17,4 +17,5 @@ export enum ConfirmationModalStringEnum {
     VOID_CDL = 'Void CDL',
     ACTIVATE_CDL = 'Activate CDL',
     SELECTED_DRIVER = 'selected driver',
+    DELETE_DEDUCTION = 'Delete Deduction',
 }
