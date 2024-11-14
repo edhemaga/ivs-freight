@@ -1,5 +1,10 @@
 import { createAction, props } from '@ngrx/store';
-import { PayrollEnum } from '../enums/payroll.enums';
+
+// Enums
+import { PayrollTablesStatus } from '@pages/accounting/pages/payroll/state/enums';
+import { PayrollEnum } from '@pages/accounting/pages/payroll/state/enums/payroll.enums';
+
+// Models
 import { PayrollCountsResponse } from 'appcoretruckassist';
 
 export const getPayrollCounts = createAction(
@@ -24,5 +29,5 @@ export const setTableReportExpanded = createAction(
 
 export const setPayrollopenedTab = createAction(
     PayrollEnum.SET_PAYROLL_TAB,
-    props<{ tabStatus: 'open' | 'closed' }>()
+    props<{ tabStatus: PayrollTablesStatus }>()
 );

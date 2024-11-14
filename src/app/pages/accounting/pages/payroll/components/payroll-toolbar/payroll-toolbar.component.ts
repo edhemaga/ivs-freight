@@ -7,7 +7,12 @@ import {
     Output,
 } from '@angular/core';
 import { Subject, takeUntil } from 'rxjs';
-import { PayrollFacadeService } from '../../state/services/payroll.service';
+
+// Services
+import { PayrollFacadeService } from '@pages/accounting/pages/payroll/state/services/payroll.service';
+
+// Enums
+import { PayrollTablesStatus } from '@pages/accounting/pages/payroll/state/enums';
 
 @Component({
     selector: 'app-payroll-toolbar',
@@ -15,13 +20,21 @@ import { PayrollFacadeService } from '../../state/services/payroll.service';
     styleUrls: ['./payroll-toolbar.component.scss'],
 })
 export class PayrollToolbarComponent implements OnInit, OnDestroy {
+    // Inputs
     @Input() selectedTab: string;
     @Input() tableExpanded: boolean;
     public optionsPopupOpen: boolean = false;
-    @Output() toolBarAction: EventEmitter<'open' | 'closed'> =
+
+    @Output() toolBarAction: EventEmitter<PayrollTablesStatus> =
         new EventEmitter();
 
-    tableData: any[] = [];
+    public tableData: {
+        title: string;
+        field: string;
+        length: number;
+        inactive: boolean;
+    }[] = [];
+
     private destroy$ = new Subject<void>();
 
     constructor(
@@ -35,19 +48,13 @@ export class PayrollToolbarComponent implements OnInit, OnDestroy {
                 title: 'Open',
                 field: 'open',
                 length: 0,
-                extended: true,
-                gridNameTitle: 'Payroll',
-                stateName: 'open',
-                isActive: true,
+                inactive: false,
             },
             {
                 title: 'Closed',
                 field: 'closed',
                 length: 0,
-                extended: false,
-                gridNameTitle: 'Payroll',
-                stateName: 'closed',
-                isActive: false,
+                inactive: false,
             },
         ];
 
@@ -64,7 +71,7 @@ export class PayrollToolbarComponent implements OnInit, OnDestroy {
     // Show Toolbar Options Popup
     public onShowOptions(optionsPopup): void {}
 
-    public onSelectTab(option: 'open' | 'closed') {
+    public onSelectTab(option: PayrollTablesStatus): void {
         this.toolBarAction.emit(option);
     }
 

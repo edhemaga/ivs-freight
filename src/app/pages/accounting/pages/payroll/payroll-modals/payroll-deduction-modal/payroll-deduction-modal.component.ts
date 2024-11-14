@@ -165,12 +165,13 @@ export class PayrollDeductionModalComponent implements OnInit {
     }
 
     private generateModel(): CreatePayrollDeductionCommand {
+        const isRecurring = this.payrollCreditForm.get(PayrollStringEnum.RECURRING).value;
         return {
             type: this.payrollCreditForm.get(PayrollStringEnum.SELECTED_TYPE_ID)
                 .value,
-            recurringType: this.payrollCreditForm.get(
+            recurringType: isRecurring ? this.payrollCreditForm.get(
                 PayrollStringEnum.RECURRING_TYPE
-            ).value,
+            ).value : null,
             driverId: this.payrollCreditForm.get(
                 PayrollStringEnum.SELECTED_DRIVER_ID
             ).value,
@@ -186,16 +187,15 @@ export class PayrollDeductionModalComponent implements OnInit {
             amount: MethodsCalculationsHelper.convertThousanSepInNumber(
                 this.payrollCreditForm.get(PayrollStringEnum.AMOUNT).value
             ),
-            recurring: this.payrollCreditForm.get(PayrollStringEnum.RECURRING)
-                .value,
+            recurring: isRecurring, 
             limited: this.payrollCreditForm.get(PayrollStringEnum.LIMITED)
                 .value,
-            limitedAmount: this.payrollCreditForm.get(
+            limitedAmount: isRecurring ? this.payrollCreditForm.get(
                 PayrollStringEnum.LIMITED_AMOUNT
-            ).value,
-            limitedNumber: this.payrollCreditForm.get(
+            ).value : null,
+            limitedNumber: isRecurring ?  this.payrollCreditForm.get(
                 PayrollStringEnum.LIMITED_NUMBER
-            ).value,
+            ).value : null,
         };
     }
 

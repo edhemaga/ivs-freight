@@ -9,11 +9,15 @@ import {
     Output,
     ViewChild,
 } from '@angular/core';
+import { Observable, Subject } from 'rxjs';
+
+// Models
 import { PayrollDriverMileageCollapsedListResponse } from '@pages/accounting/pages/payroll/state/models/payroll.model';
+import { ColumnConfig } from 'ca-components';
+
+// Services
 import { PayrollFacadeService } from '@pages/accounting/pages/payroll/state/services/payroll.service';
 import { PayrollDriverOwnerFacadeService } from '@pages/accounting/pages/payroll/state/services/payroll_owner.service';
-import { ColumnConfig } from 'ca-components';
-import { Observable, Subject } from 'rxjs';
 
 @Component({
     selector: 'app-driver-owner-collapsed-table',
@@ -24,15 +28,17 @@ export class DriverOwnerCollapsedTableComponent
     implements OnInit, AfterViewInit, OnDestroy
 {
     // Expose Javascript Math to template
-    Math = Math;
+    public Math = Math;
 
-    @Output() expandTableEvent: EventEmitter<any> = new EventEmitter<any>();
+    @Output()
+    expandTableEvent: EventEmitter<PayrollDriverMileageCollapsedListResponse> =
+        new EventEmitter<PayrollDriverMileageCollapsedListResponse>();
     @Input() title: string;
     @Input() expandTable: boolean;
 
     public loading$: Observable<boolean>;
-    tableData$: Observable<PayrollDriverMileageCollapsedListResponse[]>;
-    columns: ColumnConfig[];
+    public tableData$: Observable<PayrollDriverMileageCollapsedListResponse[]>;
+    public columns: ColumnConfig[];
 
     private destroy$ = new Subject<void>();
 
@@ -51,14 +57,14 @@ export class DriverOwnerCollapsedTableComponent
         this.subscribeToStoreData();
     }
 
-    subscribeToStoreData() {
+    private subscribeToStoreData(): void {
         this.payrollDriverOwnerFacadeService.getPayrollDriverOwnerCollapsedList();
         this.loading$ = this.payrollFacadeService.payrollLoading$;
         this.tableData$ =
             this.payrollDriverOwnerFacadeService.selectPayrollDriverOwnerCollapsed$;
     }
 
-    ngAfterViewInit() {
+    ngAfterViewInit(): void {
         this.columns = [
             {
                 row: true,
@@ -164,7 +170,9 @@ export class DriverOwnerCollapsedTableComponent
         ];
     }
 
-    selectPayrollReport(report: any) {
+    public selectPayrollReport(
+        report: PayrollDriverMileageCollapsedListResponse
+    ): void {
         this.expandTableEvent.emit(report);
     }
 

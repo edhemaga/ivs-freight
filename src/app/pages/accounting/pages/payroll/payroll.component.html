@@ -36,25 +36,25 @@
             <ng-container *ngSwitchCase="'Driver Miles'">
                 <app-payroll-report
                     [selectedTab]="selectedTabForReport"
-                    [reportId]="reportTableData?.id"
+                    [reportId]="reportTableDataId"
                 ></app-payroll-report>
             </ng-container>
             <ng-container *ngSwitchCase="'Driver Commission'">
                 <app-driver-commission-report
                     [selectedTab]="selectedTabForReport"
-                    [reportId]="reportTableData?.id"
+                    [reportId]="reportTableDataId"
                 ></app-driver-commission-report>
             </ng-container>
             <ng-container *ngSwitchCase="'Owner '">
                 <app-driver-owner-report
                     [selectedTab]="selectedTabForReport"
-                    [reportId]="reportTableData?.id"
+                    [reportId]="reportTableDataId"
                 ></app-driver-owner-report>
             </ng-container>
             <ng-container *ngSwitchCase="'Driver Flat Rate'">
                 <app-driver-flat-rate-report
                     [selectedTab]="selectedTabForReport"
-                    [reportId]="reportTableData?.id"
+                    [reportId]="reportTableDataId"
                 ></app-driver-flat-rate-report>
             </ng-container>
         </ng-container>

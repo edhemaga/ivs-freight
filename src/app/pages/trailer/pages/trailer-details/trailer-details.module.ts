@@ -25,6 +25,7 @@ import { TaProgressExpirationComponent } from '@shared/components/ta-progress-ex
 import { TrailerDetailsCardComponent } from '@pages/trailer/pages/trailer-details/components/trailer-details-card/trailer-details-card.component';
 import { TrailerDetailsItemComponent } from '@pages/trailer/pages/trailer-details/components/trailer-details-item/trailer-details-item.component';
 import { TrailerDetailsComponent } from '@pages/trailer/pages/trailer-details/trailer-details.component';
+import { CaChartComponent } from 'ca-components';
 
 @NgModule({
     declarations: [
@@ -49,6 +50,7 @@ import { TrailerDetailsComponent } from '@pages/trailer/pages/trailer-details/tr
         TaProfileImagesComponent,
         ReactiveFormsModule,
         AngularSvgIconModule,
+        CaChartComponent,
 
         // PIPES
         ThousandSeparatorPipe,

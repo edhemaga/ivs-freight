@@ -1,5 +1,7 @@
+// Models
 import { PayrollCountsResponse } from 'appcoretruckassist';
-import { PayrollState } from '../../models/payroll.model';
+import { PayrollState } from '@pages/accounting/pages/payroll/state/models/payroll.model';
+import { PayrollTablesStatus } from '@pages/accounting/pages/payroll/state/enums';
 
 export const onGetPayrollCounts = (state: PayrollState) => ({
     ...state,
@@ -17,7 +19,7 @@ export const onGetPayrollCountsSuccess = (
 
 export const onSetPayrollopenedTab = (
     state: PayrollState,
-    data: { tabStatus: 'open' | 'closed' }
+    data: { tabStatus: PayrollTablesStatus }
 ) => ({
     ...state,
     payrollOpenedTab: data.tabStatus,

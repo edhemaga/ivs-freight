@@ -30,17 +30,17 @@ export class DriverCommissionSoloTableComponent
     implements OnInit, AfterViewInit, OnDestroy
 {
     // Expose Javascript Math to template
-    Math = Math;
+    public Math = Math;
 
-    @Output() expandTableEvent: EventEmitter<any> = new EventEmitter<any>();
+    @Output() expandTableEvent: EventEmitter<IDriverCommissionList> = new EventEmitter<IDriverCommissionList>();
 
     @Input() title: string;
     @Input() expandTable: boolean;
 
     private destroy$ = new Subject<void>();
 
-    columns: ColumnConfig[];
-    tableData$: Observable<IDriverCommissionList>;
+    public columns: ColumnConfig[];
+    public tableData$: Observable<IDriverCommissionList>;
     public loading$: Observable<boolean>;
 
     // Templates
@@ -55,7 +55,7 @@ export class DriverCommissionSoloTableComponent
         private payrollCommissionFacadeService: PayrollDriverCommissionFacadeService
     ) {}
 
-    ngAfterViewInit() {
+    ngAfterViewInit(): void {
         this.columns = [
             {
                 header: 'Name',
@@ -120,11 +120,10 @@ export class DriverCommissionSoloTableComponent
     }
 
     ngOnInit(): void {
-        // this.registerAllTemplates();
         this.subscribeToStoreData();
     }
 
-    subscribeToStoreData() {
+    public subscribeToStoreData(): void {
         this.payrollCommissionFacadeService.getPayrollDriverCommissionList();
         this.tableData$ =
             this.payrollCommissionFacadeService.selectCommissionDriverList$;
@@ -132,7 +131,7 @@ export class DriverCommissionSoloTableComponent
         this.loading$ = this.payrollFacadeService.payrollLoading$;
     }
 
-    selectPayrollReport(report: any) {
+    public selectPayrollReport(report: IDriverCommissionList): void {
         this.expandTableEvent.emit(report);
     }
 

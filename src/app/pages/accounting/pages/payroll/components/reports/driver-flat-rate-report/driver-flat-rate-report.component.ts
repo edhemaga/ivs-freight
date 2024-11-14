@@ -8,26 +8,39 @@ import {
     OnInit,
     ViewChild,
 } from '@angular/core';
-import { ColumnConfig } from 'ca-components';
 import { Observable, Subject, takeUntil } from 'rxjs';
-import { PayrollFacadeService } from '../../../state/services/payroll.service';
+import { CdkDrag, CdkDragDrop } from '@angular/cdk/drag-drop';
+
+// Components
+import { ColumnConfig } from 'ca-components';
+
+// Services
+import { PayrollFacadeService } from '@pages/accounting/pages/payroll/state/services/payroll.service';
 import { ModalService } from '@shared/services/modal.service';
-import { PayrollDriverFlatRateFacadeService } from '../../../state/services/payroll_flat_rate.service';
+import { PayrollDriverFlatRateFacadeService } from '@pages/accounting/pages/payroll/state/services/payroll_flat_rate.service';
+
+// Models
 import {
     IGetPayrollByIdAndOptions,
     IPayrollProccessPaymentModal,
     MilesStopShortReponseWithRowType,
-} from '../../../state/models/payroll.model';
+    PayrollTypes,
+} from '@pages/accounting/pages/payroll/state/models/payroll.model';
 import {
     LoadWithMilesStopResponse,
     PayrollCreditType,
     PayrollDriverFlatRateByIdResponse,
 } from 'appcoretruckassist';
-import { FlatRateLoadShortReponseWithRowType } from '../../../state/models/driver_flat_rate.model';
-import { CdkDrag, CdkDragDrop } from '@angular/cdk/drag-drop';
-import { PayrollReportTableResponse } from 'ca-components/lib/components/ca-period-content/models/payroll-report-tables.type';
-import { PayrollProccessPaymentModalComponent } from '../../../payroll-modals/payroll-proccess-payment-modal/payroll-proccess-payment-modal.component';
-import { PayrollReportBaseComponent } from '../payroll-report.base';
+import { FlatRateLoadShortReponseWithRowType } from '@pages/accounting/pages/payroll/state/models/driver_flat_rate.model';
+
+// Components
+import { PayrollProccessPaymentModalComponent } from '@pages/accounting/pages/payroll/payroll-modals/payroll-proccess-payment-modal/payroll-proccess-payment-modal.component';
+
+// Enums
+import { PayrollTablesStatus } from '@pages/accounting/pages/payroll/state/enums';
+
+// Classes
+import { PayrollReportBaseComponent } from '@pages/accounting/pages/payroll/components/reports/payroll-report.base';
 
 @Component({
     selector: 'app-driver-flat-rate-report',
@@ -39,8 +52,8 @@ export class DriverFlatRateReportComponent
     extends PayrollReportBaseComponent<PayrollDriverFlatRateByIdResponse>
     implements OnInit, OnDestroy, AfterViewInit
 {
-    columns: ColumnConfig[];
-    creditType = PayrollCreditType.Driver;
+    public columns: ColumnConfig[];
+    public creditType = PayrollCreditType.Driver;
 
     @Input() set reportId(report_id: string) {
         this._reportId = report_id;
@@ -51,22 +64,22 @@ export class DriverFlatRateReportComponent
         return super.reportId; // Call the base class getter
     }
 
-    @Input() selectedTab: 'open' | 'closed';
-    showMap: boolean = false;
+    @Input() selectedTab: PayrollTablesStatus;
+    public showMap: boolean = false;
 
     public loading$: Observable<boolean>;
 
     private destroy$ = new Subject<void>();
 
-    openedPayroll: PayrollDriverFlatRateByIdResponse;
+    public openedPayroll: PayrollDriverFlatRateByIdResponse;
 
-    payrollReport$: Observable<PayrollDriverFlatRateByIdResponse>;
-    payrollReportList: MilesStopShortReponseWithRowType[] = [];
-    payrollFlatRateDriverLoads$: Observable<
+    public payrollReport$: Observable<PayrollDriverFlatRateByIdResponse>;
+    public payrollReportList: MilesStopShortReponseWithRowType[] = [];
+    public payrollFlatRateDriverLoads$: Observable<
         FlatRateLoadShortReponseWithRowType[]
     >;
 
-    includedLoads$: Observable<LoadWithMilesStopResponse[]>;
+    public includedLoads$: Observable<LoadWithMilesStopResponse[]>;
 
     // Templates
     @ViewChild('customCountTemplate', { static: false })
@@ -100,7 +113,7 @@ export class DriverFlatRateReportComponent
         this.subscribeToStoreData();
     }
 
-    ngAfterViewInit() {
+    ngAfterViewInit(): void {
         this.columns = [
             {
                 header: '#',
@@ -163,7 +176,7 @@ export class DriverFlatRateReportComponent
         ];
     }
 
-    subscribeToStoreData() {
+    private subscribeToStoreData(): void {
         this.loading$ = this.payrollFacadeService.payrollReportLoading$;
         this.payrollReport$ =
             this.payrollDriverFlatRateFacadeService.selectPayrollOpenedReport$;
@@ -179,11 +192,16 @@ export class DriverFlatRateReportComponent
             this.payrollDriverFlatRateFacadeService.selectPayrollReportDriverFlatRateLoads$;
     }
 
-    customSortPredicate = (index: number, data: CdkDrag<any>): boolean => {
-        return data.dropContainer.data[index -1];
+    public customSortPredicate = (
+        index: number,
+        data: CdkDrag<any>
+    ): boolean => {
+        return data.dropContainer.data[index - 1];
     };
 
-    onProccessPayroll(payrollData: PayrollDriverFlatRateByIdResponse) {
+    public onProccessPayroll(
+        payrollData: PayrollDriverFlatRateByIdResponse
+    ): void {
         this.modalService.openModal(
             PayrollProccessPaymentModalComponent,
             {
@@ -197,13 +215,13 @@ export class DriverFlatRateReportComponent
                         (payrollData as any).debt ?? payrollData.earnings,
                     payrollNumber: payrollData.payrollNumber,
                     selectedTab: this.selectedTab,
-                    payrollType: 'flat rate',
+                    payrollType: PayrollTypes.FLAT_RATE,
                 } as IPayrollProccessPaymentModal,
             }
         );
     }
 
-    onReorderDone(drag: CdkDragDrop<any[] | null, any, any>) {
+    public onReorderDone(drag: CdkDragDrop<any[] | null, any, any>): void {
         const loadId = drag.container.data[drag.currentIndex - 1]?.id;
         if (loadId) {
             const loadList = [
@@ -222,7 +240,7 @@ export class DriverFlatRateReportComponent
         }
     }
 
-    public getReportDataResults(getData?: IGetPayrollByIdAndOptions) {
+    public getReportDataResults(getData?: IGetPayrollByIdAndOptions): void {
         this.payrollDriverFlatRateFacadeService.getPayrollDriverFlatRateReport(
             getData ?? {
                 reportId: `${this.reportId}`,

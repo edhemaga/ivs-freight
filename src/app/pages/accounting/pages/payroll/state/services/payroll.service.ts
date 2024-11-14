@@ -2,11 +2,12 @@ import { Injectable } from '@angular/core';
 import { Observable, Subject, take } from 'rxjs';
 import { Store, select } from '@ngrx/store';
 
-import * as PayrollActions from '../actions/payroll.actions';
-import * as PayrollDriverMileageSolo from '../actions/payroll_solo_mileage_driver.actions';
-import * as PayrollCommissionActions from '../actions/payroll_commission_driver.actions';
-import * as PayrollOwnerActions from '../actions/payroll_owner_driver.action';
-import * as PayrollFlatRateActions from '../actions/payroll_flat_rate_driver.actions';
+// Actions
+import * as PayrollActions from '@pages/accounting/pages/payroll/state/actions/payroll.actions';
+import * as PayrollDriverMileageSolo from '@pages/accounting/pages/payroll/state/actions/payroll_solo_mileage_driver.actions';
+import * as PayrollCommissionActions from '@pages/accounting/pages/payroll/state/actions/payroll_commission_driver.actions';
+import * as PayrollOwnerActions from '@pages/accounting/pages/payroll/state/actions/payroll_owner_driver.action';
+import * as PayrollFlatRateActions from '@pages/accounting/pages/payroll/state/actions/payroll_flat_rate_driver.actions';
 
 // SELECTORS
 import {
@@ -24,7 +25,7 @@ import {
     selectPayrollState,
     selectSoloDriverMileage,
     seletPayrollTabsCount,
-} from '../selectors/payroll.selector';
+} from '@pages/accounting/pages/payroll/state/selectors/payroll.selector';
 
 // MODELS
 import {
@@ -40,8 +41,11 @@ import {
     MilesStopShortReponseWithRowType,
     PayrollDriverMileageExpandedListResponse,
     PayrollTypes,
-} from '../models/payroll.model';
+} from '@pages/accounting/pages/payroll/state/models/payroll.model';
 import { PayrollDriverMileageResponse } from 'appcoretruckassist/model/payrollDriverMileageResponse';
+
+// Enums
+import { PayrollTablesStatus } from '@pages/accounting/pages/payroll/state/enums';
 
 @Injectable({
     providedIn: 'root',
@@ -96,7 +100,7 @@ export class PayrollFacadeService {
         closed: number;
     }> = this.store.pipe(select(seletPayrollTabsCount));
 
-    public selectPayrollOpenedTab$: Observable<'open' | 'closed'> =
+    public selectPayrollOpenedTab$: Observable<PayrollTablesStatus> =
         this.store.pipe(select(selectPayrollOpenedTab));
 
     // Select Driver Mileage Solo
@@ -112,7 +116,7 @@ export class PayrollFacadeService {
         PayrollDriverMileageExpandedListResponse[]
     > = this.store.pipe(select(selectDriverMileageExpandedTable));
 
-    public getPayrollCounts() {
+    public getPayrollCounts(): void {
         this.store
             .pipe(select(selectPayrollState), take(1))
             .subscribe((payrollState) => {
@@ -124,23 +128,23 @@ export class PayrollFacadeService {
             });
     }
 
-    public setPayrollOpenedTab(tabStatus: 'open' | 'closed') {
+    public setPayrollOpenedTab(tabStatus: PayrollTablesStatus): void {
         this.store.dispatch(PayrollActions.setPayrollopenedTab({ tabStatus }));
     }
 
-    public getPayrollDriverMileageSoloList() {
+    public getPayrollDriverMileageSoloList(): void {
         this.store.dispatch(
             PayrollDriverMileageSolo.getPayrollSoloMileageDriver()
         );
     }
 
-    public getPayrollDriverMileageCollapsedList() {
+    public getPayrollDriverMileageCollapsedList(): void {
         this.store.dispatch(
             PayrollDriverMileageSolo.getPayrollMileageDriverCollapsedList()
         );
     }
 
-    public getPayrollDriverMileageExpandedList(driverId: number) {
+    public getPayrollDriverMileageExpandedList(driverId: number): void {
         this.store.dispatch(
             PayrollDriverMileageSolo.getPayrollMileageDriverExpandedList({
                 driverId,
@@ -148,7 +152,7 @@ export class PayrollFacadeService {
         );
     }
 
-    public setPayrollReportTableExpanded(expanded: boolean) {
+    public setPayrollReportTableExpanded(expanded: boolean): void {
         this.store.dispatch(
             PayrollActions.setTableReportExpanded({ expanded })
         );
@@ -158,7 +162,7 @@ export class PayrollFacadeService {
         reportId,
     }: {
         reportId: string;
-    }) {
+    }): void {
         this.store.dispatch(
             PayrollDriverMileageSolo.getPayrollMileageDriverClosedPayroll({
                 payrollId: +reportId,
@@ -210,7 +214,7 @@ export class PayrollFacadeService {
     public addPayrollClosedPayment(
         body: IAddPayrollClosedPayment,
         payrollType?: PayrollTypes
-    ) {
+    ): void {
         if (payrollType === 'miles') {
             body.payrollDriverMileageId = body.modalId;
         } else if (payrollType == 'commission') {
@@ -236,7 +240,7 @@ export class PayrollFacadeService {
         paymentType: PayrollPaymentType;
         otherPaymentType?: PayrollOtherPaymentType;
         payrollType?: PayrollTypes;
-    }) {
+    }): void {
         this.store
             .pipe(select(selectPayrollState), take(1))
             .subscribe((payrollState) => {

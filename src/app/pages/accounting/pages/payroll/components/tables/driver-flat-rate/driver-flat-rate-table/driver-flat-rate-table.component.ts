@@ -30,17 +30,18 @@ export class DriverFlatRateTableComponent
     implements OnInit, AfterViewInit, OnDestroy
 {
     // Expose Javascript Math to template
-    Math = Math;
+    public Math = Math;
 
-    @Output() expandTableEvent: EventEmitter<any> = new EventEmitter<any>();
+    @Output() expandTableEvent: EventEmitter<IDriverFlatRateList> =
+        new EventEmitter<IDriverFlatRateList>();
 
     @Input() title: string;
     @Input() expandTable: boolean;
 
     private destroy$ = new Subject<void>();
 
-    columns: ColumnConfig[];
-    tableData$: Observable<IDriverFlatRateList>;
+    public columns: ColumnConfig[];
+    public tableData$: Observable<IDriverFlatRateList>;
     public loading$: Observable<boolean>;
 
     // Templates
@@ -57,7 +58,7 @@ export class DriverFlatRateTableComponent
         private payrollFlatRateFacadeService: PayrollDriverFlatRateFacadeService
     ) {}
 
-    ngAfterViewInit() {
+    ngAfterViewInit(): void {
         this.columns = [
             {
                 header: 'Name',
@@ -142,7 +143,7 @@ export class DriverFlatRateTableComponent
         this.subscribeToStoreData();
     }
 
-    subscribeToStoreData() {
+    private subscribeToStoreData(): void {
         this.payrollFlatRateFacadeService.getPayrollDriverFlatRateList();
         this.tableData$ =
             this.payrollFlatRateFacadeService.selectFlatListDriverList$;
@@ -150,7 +151,7 @@ export class DriverFlatRateTableComponent
         this.loading$ = this.payrollFacadeService.payrollLoading$;
     }
 
-    selectPayrollReport(report: any) {
+    public selectPayrollReport(report: IDriverFlatRateList): void {
         this.expandTableEvent.emit(report);
     }
 

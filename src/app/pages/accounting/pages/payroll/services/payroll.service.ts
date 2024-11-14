@@ -1,5 +1,8 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+
+// Models
 import {
     ClosePayrollDriverCommissionCommand,
     ClosePayrollDriverFlatRateCommand,
@@ -17,17 +20,18 @@ import {
     PayrollPaymentType,
 } from 'appcoretruckassist';
 import { PayrollDriverMileageResponse } from 'appcoretruckassist/model/payrollDriverMileageResponse';
-import { Observable, of } from 'rxjs';
-import { environment } from 'src/environments/environment';
 import {
     IAddPayrollClosedPayment,
     PayrollDriverMileageCollapsedListResponse,
     PayrollDriverMileageExpandedListResponse,
-} from '../state/models/payroll.model';
-import { IDriverOwnerList } from '../state/models/driver_owner.model';
-import { IDriverCommissionList } from '../state/models/driver_commission.model';
-import { IDriverFlatRateList } from '../state/models/driver_flat_rate.model';
-import { IGet_Payroll_Commission_Driver_Report } from '../state/models/payroll.model';
+} from '@pages/accounting/pages/payroll/state/models/payroll.model';
+import { IDriverOwnerList } from '@pages/accounting/pages/payroll/state/models/driver_owner.model';
+import { IDriverCommissionList } from '@pages/accounting/pages/payroll/state/models/driver_commission.model';
+import { IDriverFlatRateList } from '@pages/accounting/pages/payroll/state/models/driver_flat_rate.model';
+import { IGet_Payroll_Commission_Driver_Report } from '@pages/accounting/pages/payroll/state/models/payroll.model';
+
+// Environment
+import { environment } from 'src/environments/environment';
 
 // Services
 import { ModalService } from '@shared/services/modal.service';

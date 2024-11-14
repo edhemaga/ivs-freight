@@ -1,12 +1,16 @@
 import { createAction, props } from '@ngrx/store';
-import { PayrollCommissionDriverEnum } from '../enums/driver_commission/payroll_driver_commission.enums';
-import { IDriverCommissionList } from '../models/driver_commission.model';
+
+// Enums
+import { PayrollCommissionDriverEnum } from '@pages/accounting/pages/payroll/state/enums/driver_commission/payroll_driver_commission.enums';
+
+// Models
+import { IDriverCommissionList } from '@pages/accounting/pages/payroll/state/models/driver_commission.model';
 import {
     IAddPayrollClosedPayment,
     IGet_Payroll_Commission_Driver_Report,
     PayrollDriverMileageCollapsedListResponse,
     PayrollDriverMileageExpandedListResponse,
-} from '../models/payroll.model';
+} from '@pages/accounting/pages/payroll/state/models/payroll.model';
 import {
     PayrollDriverCommissionByIdResponse,
     PayrollDriverCommissionClosedByIdResponse,
@@ -64,7 +68,7 @@ export const closePayrollCommissionReportDriver = createAction(
     props<{
         amount: number;
         reportId: number;
-        selectedLoadIds?: number[]; 
+        selectedLoadIds?: number[];
         selectedCreditIds?: number[];
         selectedDeductionIds?: number[];
         paymentType?: PayrollPaymentType;
@@ -74,7 +78,6 @@ export const closePayrollCommissionReportDriver = createAction(
 
 export const closePayrollCommissionReportDriverSuccess = createAction(
     PayrollCommissionDriverEnum.CLOSE_PAYROLL_COMMISSION_DRIVER_REPORT_SUCCESS
-    //props<{ payroll: PayrollDriverMileageResponse }>()
 );
 
 export const closePayrollCommissionReportDriverError = createAction(

@@ -270,6 +270,32 @@
                             </span>
                         </ng-container>
 
+                        <ng-container *ngIf="truckTypeFilter">
+                            <span class="ic-hed">
+                                <app-ca-filter
+                                    [type]="'truckTypeFilter'"
+                                    [truckTypeArray]="[]"
+                                    [filterTitle]="'Truck Type Filter'"
+                                    [icon]="'truck'"
+                                    (setFilter)="setFilterValue($event)"
+                                    (clearAll)="setFilterValue($event)"
+                                ></app-ca-filter>
+                            </span>
+                        </ng-container>
+
+                        <ng-container *ngIf="trailerTypeFilter">
+                            <span class="ic-hed">
+                                <app-ca-filter
+                                    [type]="'trailerTypeFilter'"
+                                    [truckTypeArray]="[]"
+                                    [filterTitle]="'Trailer Type Filter'"
+                                    [icon]="'trailer'"
+                                    (setFilter)="setFilterValue($event)"
+                                    (clearAll)="setFilterValue($event)"
+                                ></app-ca-filter>
+                            </span>
+                        </ng-container>
+
                         <ng-container *ngIf="pickupFilter">
                             <span class="ic-hed">
                                 <app-ta-special-filter
@@ -312,50 +338,54 @@
                         <ng-container *ngIf="dispatcherFilter">
                             <span class="ic-hed">
                                 <!-- DISPECHER FILTER -->
-                                <app-ta-filter
+                                <app-ca-filter
                                     [type]="'userFilter'"
                                     [searchState]="true"
                                     [filterTitle]="'Dispatcher Filter'"
                                     [defFilterHolder]="true"
                                     (setFilter)="setFilterValue($event)"
+                                    (clearAll)="setFilterValue($event)"
                                 >
-                                </app-ta-filter>
+                                </app-ca-filter>
                             </span>
                         </ng-container>
 
                         <ng-container *ngIf="statusFilter">
                             <span class="ic-hed">
                                 <!-- STATUS FILTER -->
-                                <app-ta-filter
+                                <app-ca-filter
                                     [type]="'statusFilter'"
                                     [icon]="'broker-half-circle'"
                                     [filterTitle]="'Status Filter'"
                                     [defFilterHolder]="true"
                                     [noLeftIcon]="false"
                                     (setFilter)="setFilterValue($event)"
+                                    (clearAll)="setFilterValue($event)"
                                 >
-                                </app-ta-filter>
+                                </app-ca-filter>
                             </span>
                         </ng-container>
 
                         <ng-container *ngIf="locationFilter">
                             <span class="ic-hed">
                                 <!-- LOCATION FILTER -->
-                                <app-ta-filter
+                                <app-ca-filter
                                     [type]="'locationFilter'"
                                     [icon]="'address'"
                                     [filterTitle]="'Area Filter'"
                                     [areaFilter]="areaFilter"
                                     [locationDefType]="true"
                                     (setFilter)="setFilterValue($event)"
+                                    (clearAll)="setFilterValue($event)"
                                 >
-                                </app-ta-filter
+                                </app-ca-filter
                             ></span>
                         </ng-container>
 
                         <ng-container *ngIf="pmFilter">
                             <span class="ic-hed">
-                                <app-ta-filter
+                                <!-- PM FILTER -->
+                                <app-ca-filter
                                     [type]="'pmFilter'"
                                     [icon]="'default_pm'"
                                     [filterTitle]="'PM Filter'"
@@ -364,14 +394,16 @@
                                     [noLeftIcon]="false"
                                     [leftSideIcon]="true"
                                     (setFilter)="setFilterValue($event)"
+                                    (clearAll)="setFilterValue($event)"
                                 >
-                                </app-ta-filter>
+                                </app-ca-filter>
                             </span>
                         </ng-container>
 
                         <ng-container *ngIf="categoryFilter">
                             <span class="ic-hed">
-                                <app-ta-filter
+                                <!-- CATEGORY REPAIR FILTER -->
+                                <app-ca-filter
                                     [type]="'categoryRepairFilter'"
                                     [icon]="'ic_key-repair'"
                                     [filterTitle]="'Category Repair Filter'"
@@ -379,13 +411,15 @@
                                     [noLeftIcon]="false"
                                     [leftSideIcon]="true"
                                     (setFilter)="setFilterValue($event)"
+                                    (clearAll)="setFilterValue($event)"
                                 >
-                                </app-ta-filter>
+                                </app-ca-filter>
                             </span>
                         </ng-container>
 
                         <ng-container *ngIf="moneyFilter">
                             <span class="ic-hed">
+                                <!-- MONEY FILTER -->
                                 <app-ca-filter
                                     [type]="'moneyFilter'"
                                     [icon]="'dollar'"
@@ -397,6 +431,22 @@
                                     (clearAll)="setFilterValue($event)"
                                 >
                                 </app-ca-filter>
+                            </span>
+                        </ng-container>
+                        <ng-container *ngIf="repairOrderFilter">
+                            <span class="ic-hed">
+                                <app-ta-special-filter
+                                    [type]="'repair-filter'"
+                                    [icon]="'ic_repair_track'"
+                                    [filterTitle]="'Repair Filter'"
+                                    [dataArray]="repairFilterData"
+                                    (setFilter)="
+                                        onSpecialFilter($event, 'repairArray')
+                                    "
+                                    [selectedFilter]="
+                                        this.repairFilterData?.filteredArray
+                                    "
+                                ></app-ta-special-filter>
                             </span>
                         </ng-container>
                     </div>

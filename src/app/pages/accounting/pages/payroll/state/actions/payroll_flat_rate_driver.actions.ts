@@ -1,14 +1,17 @@
 import { createAction, props } from '@ngrx/store';
-import { PayrollFlatRateDriverEnum } from '../enums/driver_flat_rate/payroll_driver_flat_rate.enums';
-import { IDriverFlatRateList } from '../models/driver_flat_rate.model';
+
+// Enums
+import { PayrollFlatRateDriverEnum } from '@pages/accounting/pages/payroll/state/enums/driver_flat_rate/payroll_driver_flat_rate.enums';
+
+// Models
+import { IDriverFlatRateList } from '@pages/accounting/pages/payroll/state/models/driver_flat_rate.model';
 import {
     IAddPayrollClosedPayment,
     IGet_Payroll_Commission_Driver_Report,
     PayrollDriverMileageCollapsedListResponse,
     PayrollDriverMileageExpandedListResponse,
-} from '../models/payroll.model';
+} from '@pages/accounting/pages/payroll/state/models/payroll.model';
 import {
-    PayrollDriverCommissionByIdResponse,
     PayrollDriverFlatRateByIdResponse,
     PayrollDriverFlatRateClosedByIdResponse,
     PayrollOtherPaymentType,

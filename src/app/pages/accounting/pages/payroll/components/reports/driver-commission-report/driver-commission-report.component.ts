@@ -16,8 +16,8 @@ import { ColumnConfig } from 'ca-components';
 
 // Services
 import { ModalService } from '@shared/services/modal.service';
-import { PayrollDriverCommissionFacadeService } from '../../../state/services/payroll_driver_commision.service';
-import { PayrollFacadeService } from '../../../state/services/payroll.service';
+import { PayrollDriverCommissionFacadeService } from '@pages/accounting/pages/payroll/state/services/payroll_driver_commision.service';
+import { PayrollFacadeService } from '@pages/accounting/pages/payroll/state/services/payroll.service';
 
 // Models
 import {
@@ -26,15 +26,21 @@ import {
     PayrollDriverCommissionByIdResponse,
     PayrollDriverMileageByIdResponse,
 } from 'appcoretruckassist';
-
 import {
     MilesStopShortReponseWithRowType,
     IPayrollProccessPaymentModal,
     IGetPayrollByIdAndOptions,
-} from '../../../state/models/payroll.model';
-import { CommissionLoadShortReponseWithRowType } from '../../../state/models/driver_commission.model';
-import { PayrollProccessPaymentModalComponent } from '../../../payroll-modals/payroll-proccess-payment-modal/payroll-proccess-payment-modal.component';
-import { PayrollReportBaseComponent } from '../payroll-report.base';
+    PayrollTypes,
+} from '@pages/accounting/pages/payroll/state/models/payroll.model';
+
+import { CommissionLoadShortReponseWithRowType } from '@pages/accounting/pages/payroll/state/models/driver_commission.model';
+import { PayrollProccessPaymentModalComponent } from '@pages/accounting/pages/payroll/payroll-modals/payroll-proccess-payment-modal/payroll-proccess-payment-modal.component';
+
+// Classes
+import { PayrollReportBaseComponent } from '@pages/accounting/pages/payroll/components/reports/payroll-report.base';
+
+// Enums
+import { PayrollTablesStatus } from '@pages/accounting/pages/payroll/state/enums';
 
 @Component({
     selector: 'app-driver-commission-report',
@@ -46,8 +52,8 @@ export class DriverCommissionReportComponent
     extends PayrollReportBaseComponent<PayrollDriverCommissionByIdResponse>
     implements OnInit, OnDestroy, AfterViewInit
 {
-    columns: ColumnConfig[];
-    creditType = PayrollCreditType.Driver;
+    public columns: ColumnConfig[];
+    public creditType = PayrollCreditType.Driver;
 
     @Input() set reportId(report_id: string) {
         this._reportId = report_id;
@@ -58,20 +64,21 @@ export class DriverCommissionReportComponent
         return super.reportId; // Call the base class getter
     }
 
-    @Input() selectedTab: 'open' | 'closed';
-    showMap: boolean = false;
+    @Input() selectedTab: PayrollTablesStatus;
+    public showMap: boolean = false;
 
     public loading$: Observable<boolean>;
 
     private destroy$ = new Subject<void>();
 
-    payrollReport$: Observable<PayrollDriverCommissionByIdResponse>;
-    payrollReportList: MilesStopShortReponseWithRowType[] = [];
-    payrollCommissionDriverLoads$: Observable<
+    public openedPayroll: PayrollDriverCommissionByIdResponse;
+    public payrollReport$: Observable<PayrollDriverCommissionByIdResponse>;
+    public payrollReportList: MilesStopShortReponseWithRowType[] = [];
+    public payrollCommissionDriverLoads$: Observable<
         CommissionLoadShortReponseWithRowType[]
     >;
 
-    includedLoads$: Observable<LoadWithMilesStopResponse[]>;
+    public includedLoads$: Observable<LoadWithMilesStopResponse[]>;
 
     // Templates
     @ViewChild('customCountTemplate', { static: false })
@@ -105,7 +112,7 @@ export class DriverCommissionReportComponent
         this.subscribeToStoreData();
     }
 
-    ngAfterViewInit() {
+    ngAfterViewInit(): void {
         this.columns = [
             {
                 header: '#',
@@ -176,9 +183,7 @@ export class DriverCommissionReportComponent
         ];
     }
 
-    openedPayroll: PayrollDriverCommissionByIdResponse;
-
-    subscribeToStoreData() {
+    private subscribeToStoreData(): void {
         this.loading$ = this.payrollFacadeService.payrollReportLoading$;
         this.payrollReport$ =
             this.payrollCommissionFacadeService.selectPayrollOpenedReport$;
@@ -200,7 +205,9 @@ export class DriverCommissionReportComponent
             .subscribe((res) => console.log(res, '-fsfasdfsaf'));
     }
 
-    onProccessPayroll(payrollData: PayrollDriverMileageByIdResponse) {
+    public onProccessPayroll(
+        payrollData: PayrollDriverMileageByIdResponse
+    ): void {
         this.modalService.openModal(
             PayrollProccessPaymentModalComponent,
             {
@@ -214,17 +221,20 @@ export class DriverCommissionReportComponent
                         (payrollData as any).debt ?? payrollData.earnings,
                     payrollNumber: payrollData.payrollNumber,
                     selectedTab: this.selectedTab,
-                    payrollType: 'commission',
+                    payrollType: PayrollTypes.COMMISSION,
                 } as IPayrollProccessPaymentModal,
             }
         );
     }
 
-    customSortPredicate = (index: number, data: CdkDrag<any>): boolean => {
-        return data.dropContainer.data[index -1];
+    public customSortPredicate = (
+        index: number,
+        data: CdkDrag<any>
+    ): boolean => {
+        return data.dropContainer.data[index - 1];
     };
 
-    onReorderDone(drag: CdkDragDrop<any[] | null, any, any>) {
+    public onReorderDone(drag: CdkDragDrop<any[] | null, any, any>): void {
         const loadId = drag.container.data[drag.currentIndex - 1]?.id;
         if (loadId) {
             const loadList = [

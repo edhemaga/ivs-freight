@@ -9,10 +9,12 @@ import {
     Output,
     ViewChild,
 } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 
-import { Subject } from '@microsoft/signalr';
+// Models
 import { PayrollDriverMileageCollapsedListResponse } from '@pages/accounting/pages/payroll/state/models/payroll.model';
+
+// Services
 import { PayrollFacadeService } from '@pages/accounting/pages/payroll/state/services/payroll.service';
 import { PayrollDriverFlatRateFacadeService } from '@pages/accounting/pages/payroll/state/services/payroll_flat_rate.service';
 
@@ -28,15 +30,17 @@ export class DriverFlatRateCollapsedTableComponent
     implements OnInit, AfterViewInit, OnDestroy
 {
     // Expose Javascript Math to template
-    Math = Math;
+    public Math = Math;
 
-    @Output() expandTableEvent: EventEmitter<any> = new EventEmitter<any>();
+    @Output()
+    expandTableEvent: EventEmitter<PayrollDriverMileageCollapsedListResponse> =
+        new EventEmitter<PayrollDriverMileageCollapsedListResponse>();
     @Input() title: string;
     @Input() expandTable: boolean;
 
     public loading$: Observable<boolean>;
-    tableData$: Observable<PayrollDriverMileageCollapsedListResponse[]>;
-    columns: ColumnConfig[];
+    public tableData$: Observable<PayrollDriverMileageCollapsedListResponse[]>;
+    public columns: ColumnConfig[];
 
     private destroy$ = new Subject<void>();
 
@@ -57,14 +61,14 @@ export class DriverFlatRateCollapsedTableComponent
         this.subscribeToStoreData();
     }
 
-    subscribeToStoreData() {
+    private subscribeToStoreData(): void {
         this.payrollDriverFlatRateFacadeService.getPayrollDriverFlatRateCollapsedList();
         this.loading$ = this.payrollFacadeService.payrollLoading$;
         this.tableData$ =
             this.payrollDriverFlatRateFacadeService.selectPayrollDriverFlatRateCollapsed$;
     }
 
-    ngAfterViewInit() {
+    ngAfterViewInit(): void {
         this.columns = [
             {
                 row: true,
@@ -151,7 +155,7 @@ export class DriverFlatRateCollapsedTableComponent
                 cellType: 'text',
                 cellCustomClasses: 'text-right',
                 textCustomClasses: 'b-600',
-                hiddeOnTableReduce: true
+                hiddeOnTableReduce: true,
             },
             {
                 header: 'Debt',
@@ -161,12 +165,14 @@ export class DriverFlatRateCollapsedTableComponent
                 cellType: 'text',
                 cellCustomClasses: 'text-right',
                 textCustomClasses: 'b-600',
-                hiddeOnTableReduce: true
+                hiddeOnTableReduce: true,
             },
         ];
     }
 
-    selectPayrollReport(report: any) {
+    public selectPayrollReport(
+        report: PayrollDriverMileageCollapsedListResponse
+    ): void {
         this.expandTableEvent.emit(report);
     }
 

@@ -1,16 +1,20 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
+
+// Models
 import {
     MilesStopShortReponseWithRowType,
     PayrollState,
-} from '../models/payroll.model';
-import { PayrollDriverMilesTableSettingsConstants } from '@pages/accounting/utils/constants/payroll-driver-miles-table-settings.constants';
-import { PayrollDriverCommisionTableSettingsConstants } from '@pages/accounting/utils/constants/payroll-driver-commision-table-settings.constants';
-import { PayrollOwnerTableSettingsConstants } from '@pages/accounting/utils/constants/payroll-owner-table-settings.constants';
+} from '@pages/accounting/pages/payroll/state/models/payroll.model';
 import {
     MilesStopShortResponse,
     PayrollCountItemResponse,
     PayrollCountsResponse,
 } from 'appcoretruckassist';
+
+// Constants
+import { PayrollDriverMilesTableSettingsConstants } from '@pages/accounting/utils/constants/payroll-driver-miles-table-settings.constants';
+import { PayrollDriverCommisionTableSettingsConstants } from '@pages/accounting/utils/constants/payroll-driver-commision-table-settings.constants';
+import { PayrollOwnerTableSettingsConstants } from '@pages/accounting/utils/constants/payroll-owner-table-settings.constants';
 
 const payrollNamesData = {
     soloMiles: { text: 'Driver', type: 'Miles' },
@@ -85,9 +89,9 @@ export const selectPayrollDriverMileageStops = createSelector(
         const includedLoads = state.payrollOpenedReport?.includedLoads.reduce(
             (load, old) => {
                 const firstStop = old.isStartPoint;
-                const nextMilesStop = old.milesStops ? JSON.parse(
-                    JSON.stringify(old.milesStops)
-                ) : [];
+                const nextMilesStop = old.milesStops
+                    ? JSON.parse(JSON.stringify(old.milesStops))
+                    : [];
                 if (firstStop && nextMilesStop.length) {
                     nextMilesStop[0].loadId = -1;
                 }

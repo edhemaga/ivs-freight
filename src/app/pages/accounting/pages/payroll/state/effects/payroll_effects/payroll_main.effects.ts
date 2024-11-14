@@ -3,10 +3,10 @@ import { Action } from '@ngrx/store';
 import { catchError, map, Observable, of, switchMap } from 'rxjs';
 
 // Actions
-import * as PayrollActions from '../../actions/payroll.actions';
+import * as PayrollActions from '@pages/accounting/pages/payroll/state/actions/payroll.actions';
 
 // Services
-import { PayrollService } from '../../../services/payroll.service';
+import { PayrollService } from '@pages/accounting/pages/payroll/services/payroll.service';
 
 export function getPayrollCountsEffect(
     actions$: Actions,

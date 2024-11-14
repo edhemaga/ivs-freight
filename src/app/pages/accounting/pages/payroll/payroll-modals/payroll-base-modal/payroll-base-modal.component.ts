@@ -269,7 +269,7 @@ export class PayrollBaseModalComponent implements OnInit {
         this.baseForm
             .get(PayrollStringEnum.SELECTED_DRIVER_ID)
             .patchValue(driver?.id ?? null);
-        this.creditTitle = driver?.name + driver.suffix;
+        this.creditTitle = driver?.name + driver?.suffix;
     }
 
     private mapTrucks(trucks: TruckMinimalResponse[]): void {

@@ -9,12 +9,15 @@ import {
     Output,
     ViewChild,
 } from '@angular/core';
-import { Subject } from '@microsoft/signalr';
+import { Observable, Subject } from 'rxjs';
+
+// Models
+import { ColumnConfig } from 'ca-components';
 import { PayrollDriverMileageCollapsedListResponse } from '@pages/accounting/pages/payroll/state/models/payroll.model';
+
+// Services
 import { PayrollFacadeService } from '@pages/accounting/pages/payroll/state/services/payroll.service';
 import { PayrollDriverCommissionFacadeService } from '@pages/accounting/pages/payroll/state/services/payroll_driver_commision.service';
-import { ColumnConfig } from 'ca-components';
-import { Observable } from 'rxjs';
 
 @Component({
     selector: 'app-driver-commission-collapsed-table',
@@ -25,15 +28,15 @@ export class DriverCommissionCollapsedTableComponent
     implements OnInit, AfterViewInit, OnDestroy
 {
     // Expose Javascript Math to template
-    Math = Math;
+    public Math = Math;
 
-    @Output() expandTableEvent: EventEmitter<any> = new EventEmitter<any>();
+    @Output() expandTableEvent: EventEmitter<PayrollDriverMileageCollapsedListResponse> = new EventEmitter<PayrollDriverMileageCollapsedListResponse>();
     @Input() title: string;
     @Input() expandTable: boolean;
 
     public loading$: Observable<boolean>;
-    tableData$: Observable<PayrollDriverMileageCollapsedListResponse[]>;
-    columns: ColumnConfig[];
+    public tableData$: Observable<PayrollDriverMileageCollapsedListResponse[]>;
+    public columns: ColumnConfig[];
 
     // TEMPLATES
     @ViewChild('customDriverTemplate', { static: false })
@@ -54,18 +57,14 @@ export class DriverCommissionCollapsedTableComponent
         this.subscribeToStoreData();
     }
 
-    subscribeToStoreData() {
+    private subscribeToStoreData(): void {
         this.payrollDriverCommissionFacadeService.getPayrollDriverCommissionCollapsedList();
         this.loading$ = this.payrollFacadeService.payrollLoading$;
         this.tableData$ =
             this.payrollDriverCommissionFacadeService.selectPayrollDriverCommissionCollapsed$;
-
-        this.payrollDriverCommissionFacadeService.selectPayrollDriverCommissionCollapsed$.subscribe(
-            (res) => console.log('fsafasdfsad', res)
-        );
     }
 
-    ngAfterViewInit() {
+    ngAfterViewInit(): void {
         this.columns = [
             {
                 row: true,
@@ -157,7 +156,7 @@ export class DriverCommissionCollapsedTableComponent
         ];
     }
 
-    selectPayrollReport(report: any) {
+    public selectPayrollReport(report: PayrollDriverMileageCollapsedListResponse): void {
         this.expandTableEvent.emit(report);
     }
 

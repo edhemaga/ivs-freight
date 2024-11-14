@@ -3,10 +3,10 @@ import { catchError, map, Observable, of, switchMap, tap } from 'rxjs';
 import { Action } from '@ngrx/store';
 
 // ACTIONS
-import * as PayrollCommissionDriverActions from '../../actions/payroll_commission_driver.actions';
+import * as PayrollCommissionDriverActions from '@pages/accounting/pages/payroll/state/actions/payroll_commission_driver.actions';
 
 // SERVICES
-import { PayrollService } from '../../../services/payroll.service';
+import { PayrollService } from '@pages/accounting/pages/payroll/services/payroll.service';
 
 export function getPayrollCommissionDriverListEffect(
     actions$: Actions,
@@ -257,14 +257,9 @@ export function addPayrollCommissionClosedPayrollPaymentEffect(
                     return payrollService
                         .addPayrollClosedReportPayment(action)
                         .pipe(
-                            map((data) => {
+                            map((_) => {
                                 return PayrollCommissionDriverActions.driverCommissionPayrollClosedPaymentsSuccess();
                             }),
-                            // tap((data) => {
-                            //     // this.store.dispatch(
-                            //     //   PaymentActions.restartRefreshDataSuccess({ flag: false })
-                            //     // );
-                            // }),
                             catchError((error) =>
                                 of(
                                     PayrollCommissionDriverActions.driverCommissionPayrollClosedPaymentsError(
