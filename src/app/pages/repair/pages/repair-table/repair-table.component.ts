@@ -609,6 +609,10 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
             toolbarActions: {
                 showRepairShop:
                     this.selectedTab === TableStringEnum.REPAIR_SHOP,
+                showStateFilter:
+                    this.selectedTab === TableStringEnum.REPAIR_SHOP,
+                showLocationFilter:
+                    this.selectedTab === TableStringEnum.REPAIR_SHOP,
                 showTimeFilter:
                     this.selectedTab !== TableStringEnum.REPAIR_SHOP,
                 showRepairOrderFilter:

@@ -30,9 +30,13 @@ import { TrailersMinimalListQuery } from '@pages/trailer/state/trailer-minimal-l
 // models
 import { TrailerDropdown } from '@pages/trailer/pages/trailer-details/models/trailer-dropdown.model';
 import { TrailerMinimalResponse } from 'appcoretruckassist';
+import { IChartConfiguaration } from 'ca-components/lib/components/ca-chart/models';
 
-//enums
+// enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
+
+//constants
+import { TrailerDetailsChartsConfiguration } from '@pages/trailer/pages/trailer-details/utils/constants';
 
 @Component({
     selector: 'app-trailer-details-card',
@@ -64,10 +68,10 @@ import { TableStringEnum } from '@shared/enums/table-string.enum';
     ],
 })
 export class TrailerDetailsCardComponent
-    implements OnInit, OnChanges, OnDestroy {
+    implements OnInit, OnChanges, OnDestroy
+{
     @Input() trailer: any;
     @Input() templateCard: boolean = false;
-    @ViewChild('payrollChart', { static: false }) public payrollChart: any;
 
     private destroy$ = new Subject<void>();
     public note: UntypedFormControl = new UntypedFormControl();
@@ -82,11 +86,13 @@ export class TrailerDetailsCardComponent
         this.trailerMinimalQuery.getAll();
     public trailerIndex: number;
     public ownerCardOpened: boolean = true;
+    public payrollChartConfig: IChartConfiguaration =
+        TrailerDetailsChartsConfiguration.PAYROLL_CHART_CONFIG;
 
     constructor(
         private detailsPageDriverSer: DetailsPageService,
         private trailerMinimalQuery: TrailersMinimalListQuery
-    ) { }
+    ) {}
 
     ngOnChanges(changes: SimpleChanges): void {
         if (!changes?.trailer?.firstChange) {
