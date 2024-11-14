@@ -54,19 +54,31 @@ export class RepairShopHelper {
             };
         });
     }
-
+    
     static createOpenHour(
         day: OpenHours,
-        formBuilder: UntypedFormBuilder
+        formBuilder: UntypedFormBuilder,
+        isWorkingDay: boolean
     ): UntypedFormGroup {
+        let shifts = (day as any).shifts?.map((shift) =>
+            formBuilder.group({
+                startTime: [shift.startTime],
+                endTime: [shift.endTime],
+            })
+        ) || [
+            formBuilder.group({
+                startTime: [day.startTime],
+                endTime: [day.endTime],
+            })
+        ];
+    
         return formBuilder.group({
-            isWorkingDay: [day.isWorkingDay],
-            dayLabel: [day.dayLabel],
-            startTime: [day.startTime],
-            endTime: [day.endTime],
-            isDoubleShift: [day.isDoubleShift],
-            secondStartTime: [day.secondStartTime],
-            secondEndTime: [day.secondEndTime],
+            id: [day.index],
+            isWorkingDay: [isWorkingDay],
+            dayOfWeek: [day.dayOfWeek],
+            shifts: formBuilder.array(shifts),
         });
     }
+    
+    
 }

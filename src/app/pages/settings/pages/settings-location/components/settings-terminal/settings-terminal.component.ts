@@ -1,5 +1,5 @@
 import { Component, ChangeDetectorRef, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { takeUntil } from 'rxjs';
 
 // Models
@@ -45,7 +45,8 @@ export class SettingsTerminalComponent
         protected settingsLocationService: SettingsLocationService,
         public dropDownService: DropDownService,
         public FormatCurrencyPipe: FormatCurrencyPipe,
-        private terminalService: CompanyTerminalService
+        private terminalService: CompanyTerminalService,
+        public router: Router,
     ) {
         super(
             tableService,
@@ -54,7 +55,8 @@ export class SettingsTerminalComponent
             activatedRoute,
             settingsLocationService,
             dropDownService,
-            FormatCurrencyPipe
+            FormatCurrencyPipe,
+            router
         );
     }
 
