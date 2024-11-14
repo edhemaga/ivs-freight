@@ -24,7 +24,6 @@ import { RepairShopDetailsRepairExpenseCardComponent } from '@pages/repair/pages
 import { RepairShopDetailsMapCoverCardComponent } from '@pages/repair/pages/repair-shop-details/components/repair-shop-details-card/components/repair-shop-details-map-cover-card/repair-shop-details-map-cover-card.component';
 import { RepairShopDetailsTitleCardComponent } from '@pages/repair/pages/repair-shop-details/components/repair-shop-details-card/components/repair-shop-details-title-card/repair-shop-details-title-card.component';
 import { RepairShopModalComponent } from '@pages/repair/pages/repair-modals/repair-shop-modal/repair-shop-modal.component';
-import { IChartConfiguaration } from 'ca-components/lib/components/ca-chart/models';
 
 import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-custom-card.component';
 import { TaInputNoteComponent } from '@shared/components/ta-input-note/ta-input-note.component';
@@ -41,9 +40,6 @@ import {
     RepairShopMinimalResponse,
     RepairShopResponse,
 } from 'appcoretruckassist';
-
-// Constants
-import { RepairShopChartsConfiguration } from '@pages/repair/pages/repair-shop-details/utils/constants';
 
 @Component({
     selector: 'app-repair-shop-details-card',
@@ -78,7 +74,6 @@ export class RepairShopDetailsCard implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
 
     public _repairShop: RepairShopResponse;
-    public repairChartConfig: IChartConfiguaration;
 
     public repairShopCurrentIndex: number;
 
@@ -112,8 +107,6 @@ export class RepairShopDetailsCard implements OnInit, OnDestroy {
         this.noteForm = this.formBuilder.group({
             note: [this._repairShop?.note],
         });
-
-        this.setChartConfiguration();
     }
 
     private getCurrentIndex(): void {
@@ -221,11 +214,6 @@ export class RepairShopDetailsCard implements OnInit, OnDestroy {
             default:
                 break;
         }
-    }
-
-    public setChartConfiguration() {
-        this.repairChartConfig =
-            RepairShopChartsConfiguration.REPAIR_CHART_CONFIG;
     }
 
     ngOnDestroy(): void {

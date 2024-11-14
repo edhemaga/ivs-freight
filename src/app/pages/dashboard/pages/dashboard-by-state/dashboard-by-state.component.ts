@@ -100,7 +100,8 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
     public mainColorsPallete: ByStateColorsPallete[] = [];
 
     //chart
-    public pickUpByStateChartConfig: IChartConfiguaration;
+    public pickUpByStateChartConfig: IChartConfiguaration =
+        DashboardByStateChartsConfiguration.PICK_BY_STATE_CHART_CONFIG;
 
     constructor(
         private formBuilder: UntypedFormBuilder,
@@ -117,8 +118,6 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
         this.getOverallCompanyDuration();
 
         this.getByStateListData();
-
-        this.setChartConfiguration();
     }
 
     private createForm(): void {
@@ -1041,11 +1040,6 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
         });
 
         this.byStateMapList = filteredByStateList;
-    }
-
-    public setChartConfiguration() {
-        this.pickUpByStateChartConfig =
-            DashboardByStateChartsConfiguration.PICK_BY_STATE_CHART_CONFIG;
     }
 
     ngOnDestroy(): void {

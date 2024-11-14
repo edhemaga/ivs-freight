@@ -103,8 +103,10 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
     public secondaryColorsPallete: TopRatedSecondaryColorsPallete[] = [];
 
     // charts
-    public doughnutChartConfig: IChartConfiguaration;
-    public barChartConfig: IChartConfiguaration;
+    public doughnutChartConfig: IChartConfiguaration =
+        DashboardTopRatedChartsConfiguration.DOUGHNUT_CHART_CONFIG;
+    public barChartConfig: IChartConfiguaration =
+        DashboardTopRatedChartsConfiguration.BAR_CHART_CONFIG;
 
     constructor(
         private formBuilder: UntypedFormBuilder,
@@ -121,8 +123,6 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
         this.getOverallCompanyDuration();
 
         this.getTopRatedListData();
-
-        this.setChartConfiguration();
     }
 
     private createForm(): void {
@@ -1032,12 +1032,6 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
         this.selectedSubPeriod = selectedSubPeriod;
 
         this.selectedDropdownWidthSubPeriod = selectedSubPeriod;
-    }
-
-    public setChartConfiguration() {
-        this.doughnutChartConfig = DashboardTopRatedChartsConfiguration.DOUGHNUT_CHART_CONFIG;
-
-        this.barChartConfig = DashboardTopRatedChartsConfiguration.BAR_CHART_CONFIG;
     }
 
     ngOnDestroy(): void {

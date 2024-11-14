@@ -86,7 +86,8 @@ export class TrailerDetailsCardComponent
         this.trailerMinimalQuery.getAll();
     public trailerIndex: number;
     public ownerCardOpened: boolean = true;
-    public payrollChartConfig: IChartConfiguaration;
+    public payrollChartConfig: IChartConfiguaration =
+        TrailerDetailsChartsConfiguration.PAYROLL_CHART_CONFIG;
 
     constructor(
         private detailsPageDriverSer: DetailsPageService,
@@ -114,8 +115,6 @@ export class TrailerDetailsCardComponent
 
             this.trailerIndex = currentIndex;
         }, 300);
-
-        this.setChartsConfiguration();
     }
 
     /**Function for toggle page in cards */
@@ -267,11 +266,6 @@ export class TrailerDetailsCardComponent
         }
 
         return lastSixChars;
-    }
-
-    public setChartsConfiguration() {
-        this.payrollChartConfig =
-            TrailerDetailsChartsConfiguration.PAYROLL_CHART_CONFIG;
     }
 
     ngOnDestroy(): void {

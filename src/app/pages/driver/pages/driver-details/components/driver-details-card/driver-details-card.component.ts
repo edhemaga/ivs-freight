@@ -103,7 +103,8 @@ export class DriverDetailsCardComponent
     // note card
     public noteForm: UntypedFormGroup;
 
-    public payrollChartConfig: IChartConfiguaration;
+    public payrollChartConfig: IChartConfiguaration =
+        DriverDetailsChartsConfiguration.PAYROLL_CHART_CONFIG;
 
     constructor(
         private formBuilder: UntypedFormBuilder,
@@ -126,8 +127,6 @@ export class DriverDetailsCardComponent
         this.getCurrentIndex();
 
         this.getDriversDropdown();
-
-        this.setChartConfiguration();
     }
 
     ngOnChanges(changes: SimpleChanges): void {
@@ -303,11 +302,6 @@ export class DriverDetailsCardComponent
             default:
                 break;
         }
-    }
-
-    public setChartConfiguration() {
-        this.payrollChartConfig =
-            DriverDetailsChartsConfiguration.PAYROLL_CHART_CONFIG;
     }
 
     ngOnDestroy(): void {

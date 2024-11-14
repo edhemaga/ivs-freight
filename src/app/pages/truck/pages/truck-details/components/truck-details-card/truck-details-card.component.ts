@@ -93,9 +93,12 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
     public ownerCardOpened: boolean = true;
     public featureNumber: number = 0;
 
-    public fuelConsumptionChartConfig: IChartConfiguaration;
-    public revenueChartConfig: IChartConfiguaration;
-    public expensesChartConfig: IChartConfiguaration;
+    public fuelConsumptionChartConfig: IChartConfiguaration =
+        TruckDetailsChartsConfiguration.FUEL_CHART_CONFIG;
+    public revenueChartConfig: IChartConfiguaration =
+        TruckDetailsChartsConfiguration.REVENUE_CHART_CONFIG;
+    public expensesChartConfig: IChartConfiguaration =
+        TruckDetailsChartsConfiguration.EXPENSES_CHART_CONFIG;
 
     public performance: TruckPerformanceResponse;
     public isWideScreen: boolean = false;
@@ -152,8 +155,6 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
 
         //     this.truckIndex = currentIndex;
         // }, 300);
-
-        this.setChartsConfiguaration();
     }
 
     public sortKeys = (a, b) => {
@@ -423,16 +424,5 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
             lastSixChars = [mod.slice(0, firsNum), mod.slice(-6)];
         }
         return lastSixChars;
-    }
-
-    public setChartsConfiguaration() {
-        this.fuelConsumptionChartConfig =
-            TruckDetailsChartsConfiguration.FUEL_CHART_CONFIG;
-
-        this.revenueChartConfig =
-            TruckDetailsChartsConfiguration.REVENUE_CHART_CONFIG;
-
-        this.expensesChartConfig =
-            TruckDetailsChartsConfiguration.EXPENSES_CHART_CONFIG;
     }
 }

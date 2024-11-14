@@ -52,7 +52,7 @@ export class ShipperDetailsCardComponent
     public shipperList: any[] = this.shipperMinimalListQuery.getAll();
     public note: UntypedFormControl = new UntypedFormControl();
     public shipperTabs: any[] = [];
-    public payrollChartConfig: IChartConfiguaration;
+    public payrollChartConfig: IChartConfiguaration = ShipperDetailsChartsConfiguration.PAYROLL_CHART_CONFIG;
 
     public monthList: any[] = [
         'JAN',
@@ -105,8 +105,6 @@ export class ShipperDetailsCardComponent
             (shipper) => shipper.id === this.shipper.id
         );
         this.shipperIndex = currentIndex;
-
-        this.setChartConfiguration();
     }
     public getShipperDropdown() {
         this.shipperDropdowns = this.shipperMinimalListQuery
@@ -349,11 +347,6 @@ export class ShipperDetailsCardComponent
         }
 
         return totalMinutes;
-    }
-
-    public setChartConfiguration() {
-        this.payrollChartConfig =
-            ShipperDetailsChartsConfiguration.PAYROLL_CHART_CONFIG;
     }
 
     ngOnDestroy(): void {

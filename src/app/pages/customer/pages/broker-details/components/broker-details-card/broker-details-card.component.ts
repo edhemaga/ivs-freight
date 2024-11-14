@@ -93,9 +93,12 @@ export class BrokerDetailsCardComponent
 
     //Chart
 
-    public invoiceChartConfig: IChartConfiguaration;
-    public mileageChartConfig: IChartConfiguaration;
-    public paymentChartConfig: IChartConfiguaration;
+    public invoiceChartConfig: IChartConfiguaration =
+        BrokerChartsConfiguration.INVOICE_CHART_CONFIG;
+    public mileageChartConfig: IChartConfiguaration =
+        BrokerChartsConfiguration.MILEAGE_CHART_CONFIG;
+    public paymentChartConfig: IChartConfiguaration =
+        BrokerChartsConfiguration.PAYMENT_CHART_CONFIG;
 
     constructor(
         // Store
@@ -128,8 +131,6 @@ export class BrokerDetailsCardComponent
         this.brokerIndex = currentIndex;
 
         this.actionAnimationSubscribe();
-
-        this.setChartsConfiguration();
     }
 
     public tabsButton(): void {
@@ -302,17 +303,6 @@ export class BrokerDetailsCardComponent
                     this.getBrokerDropdown();
                 }
             });
-    }
-
-    public setChartsConfiguration() {
-        this.invoiceChartConfig =
-            BrokerChartsConfiguration.INVOICE_CHART_CONFIG;
-
-        this.mileageChartConfig =
-            BrokerChartsConfiguration.MILEAGE_CHART_CONFIG;
-
-        this.paymentChartConfig =
-            BrokerChartsConfiguration.PAYMENT_CHART_CONFIG;
     }
 
     ngOnDestroy(): void {

@@ -23,7 +23,8 @@ export class FuelDetailsItemComponent implements OnInit {
     public selectedTab: number;
     public fuelDropdown: any;
     public storeDropdown: any;
-    public fuelChartConfig: IChartConfiguaration;
+    public fuelChartConfig: IChartConfiguaration =
+        FuelDetailsChartsConfiguration.FUEL_CHART_CONFIG;
     public fuelPriceColors: any[] = [
         '#4DB6A2',
         '#81C784',
@@ -67,8 +68,6 @@ export class FuelDetailsItemComponent implements OnInit {
                 name: 'ALL',
             },
         ];
-
-        this.setChartConfiguration();
     }
     /**Function return id */
     public identity(index: number, item: any): number {
@@ -732,9 +731,5 @@ export class FuelDetailsItemComponent implements OnInit {
                 blue_back: false,
             },
         ];
-    }
-
-    setChartConfiguration() {
-        this.fuelChartConfig = FuelDetailsChartsConfiguration.FUEL_CHART_CONFIG;
     }
 }

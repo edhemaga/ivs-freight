@@ -76,7 +76,8 @@ export class DashboardPerformanceComponent implements OnInit, OnDestroy {
     public performanceDataColors: PerformanceColorsPallete[] = [];
 
     // charts
-    public performanceChartConfig: IChartConfiguaration;
+    public performanceChartConfig: IChartConfiguaration =
+        DashboardPerformanceChartsConfiguration.PERFORMANCE_CHART_CONFIG;
 
     private axisNumber: number = -1;
     public multipleVerticalLeftAxes: number[];
@@ -96,8 +97,6 @@ export class DashboardPerformanceComponent implements OnInit, OnDestroy {
         this.getOverallCompanyDuration();
 
         this.getPerformanceListData();
-
-        this.setChartConfiguration();
     }
 
     private createForm(): void {
@@ -463,11 +462,6 @@ export class DashboardPerformanceComponent implements OnInit, OnDestroy {
         selectedPerformanceDataColor.isSelected = true;
 
         this.selectedPerformanceDataCount++;
-    }
-
-    setChartConfiguration() {
-        this.performanceChartConfig =
-            DashboardPerformanceChartsConfiguration.PERFORMANCE_CHART_CONFIG;
     }
 
     ngOnDestroy(): void {
