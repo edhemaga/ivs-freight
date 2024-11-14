@@ -24,10 +24,11 @@ import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta
 import { TaDetailsDropdownComponent } from '@shared/components/ta-details-dropdown/ta-details-dropdown.component';
 import { TaCounterComponent } from '@shared/components/ta-counter/ta-counter.component';
 import { TaFilterComponent } from '@shared/components/ta-filter/ta-filter.component';
-import { TaSearchV2Component } from '@shared/components/ta-search-v2/ta-search-v2.component';
-import { TaSearchComponent } from '@shared/components/ta-search/ta-search.component';
 import { TaSpecialFilterComponent } from '@shared/components/ta-special-filter/ta-special-filter.component';
-import { CaSearchMultipleStatesComponent } from 'ca-components';
+import {
+    CaSearchMultipleStatesComponent,
+    CaFilterComponent,
+} from 'ca-components';
 
 // icon
 import { AngularSvgIconModule } from 'angular-svg-icon';
@@ -60,11 +61,10 @@ import { LoadsSortDropdownModel } from '@pages/customer/models/loads-sort-dropdo
         TaAppTooltipV2Component,
         TaDetailsDropdownComponent,
         TaCounterComponent,
-        TaSearchV2Component,
         TaFilterComponent,
-        TaSearchComponent,
         TaSpecialFilterComponent,
         CaSearchMultipleStatesComponent,
+        CaFilterComponent,
 
         //Pipes
         FormatCurrencyPipe,
@@ -100,6 +100,8 @@ export class TaDetailsHeaderComponent implements OnInit, OnChanges {
     @Input() mainData: any;
     @Input() timeFilter: boolean = false;
     @Input() unitFilter: boolean = false;
+    @Input() truckTypeFilter: boolean = false;
+    @Input() trailerTypeFilter: boolean = false;
     @Input() repairOrderFilter: boolean = false;
     @Input() pmFilter: boolean = false;
     @Input() categoryFilter: boolean = false;
@@ -121,6 +123,10 @@ export class TaDetailsHeaderComponent implements OnInit, OnChanges {
         filteredArray: any[];
     };
     @Input() deliveryFilterData: {
+        selectedFilter: boolean;
+        filteredArray: any[];
+    };
+    @Input() repairFilterData: {
         selectedFilter: boolean;
         filteredArray: any[];
     };

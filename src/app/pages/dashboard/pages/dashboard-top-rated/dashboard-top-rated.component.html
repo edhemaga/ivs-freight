@@ -133,13 +133,13 @@
 
     <!-- Placeholder -->
 
-    <ng-container *ngIf="!topRatedList.length">
+    <!-- <ng-container *ngIf="!topRatedList.length">
         <app-dashboard-data-placeholder></app-dashboard-data-placeholder>
-    </ng-container>
+    </ng-container> -->
 
     <!-- Body-->
 
-    <ng-container *ngIf="topRatedList.length">
+    <!-- <ng-container *ngIf="topRatedList.length"> -->
         <div
             class="d-flex flex-column justify-content-center dashboard-top-rated-body"
         >
@@ -406,6 +406,10 @@
                     class="dashboard-top-rated-body-up-doughnut-chart-container"
                 >
                     <!-- Chart implementation -->
+                    <app-ca-chart
+                        [chartConfig]="doughnutChartConfig"
+                    >
+                    </app-ca-chart>
 
                     <ng-container *ngIf="isDisplayingCustomPeriodRange">
                         <div class="custom-period-range-container">
@@ -484,8 +488,11 @@
 
                 <!-- Bar Chart -->
 
-                <!-- Chart implementation -->
+                <app-ca-chart
+                    [chartConfig]="barChartConfig"
+                >
+                </app-ca-chart>
             </div>
         </div>
-    </ng-container>
+    <!-- </ng-container> -->
 </div>

@@ -18,7 +18,7 @@ import { RepairService } from '@shared/services/repair.service';
 })
 export class RepairDetailsResolver {
     constructor(
-        private repairservice: RepairService,
+        private repairService: RepairService,
 
         // store
         private repairDetailsStore: RepairDetailsStore,
@@ -26,20 +26,22 @@ export class RepairDetailsResolver {
     ) {}
 
     resolve(route: ActivatedRouteSnapshot): Observable<RepairDetailsState> {
+        const pageIndex = 1;
+        const pageSize = 25;
+
         const repairShopId = +route.paramMap.get('id');
 
-        const repairShopData$ = this.repairservice.getRepairShopById(
-            repairShopId,
-            true
-        );
+        const repairShopData$ =
+            this.repairService.getRepairShopById(repairShopId);
 
-        const repairList$ = this.repairservice.getRepairList(repairShopId);
+        const repairList$ = this.repairService.getRepairList(repairShopId);
 
-        const repairedVehicleList$ = this.repairservice.getRepairedVehicle(
-            repairShopId,
-            1,
-            25
-        );
+        const repairedVehicleList$ =
+            this.repairService.getRepairShopRepairedVehicle(
+                repairShopId,
+                pageIndex,
+                pageSize
+            );
 
         return forkJoin({
             repairShopData: repairShopData$,
@@ -52,6 +54,10 @@ export class RepairDetailsResolver {
                     repairList: data?.repairList?.pagination?.data,
                     repairedVehicleList:
                         data?.repairedVehicleList?.pagination?.data,
+                    companyOwned:
+                        data?.repairShopData?.name === '44'
+                            ? false
+                            : data?.repairShopData?.companyOwned,
                 };
 
                 this.repairDetailsStore.add(repairShopData);

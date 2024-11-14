@@ -304,6 +304,7 @@ export enum TableStringEnum {
     EDIT_FO_TRUCK = 'edit-fo-truck',
     REPAIR_SHOP = 'repair_shop',
     REPAIR_SHOP_2 = 'Repair-shop',
+    REPAIR_SHOP_3 = 'repair-shop',
     NEW_TRAILER = 'new-trailer',
     NEW_TRUCK = 'new-truck',
     REPAIR_TRUCK_TRAILER_TABLE_COUNT = 'repairTruckTrailerTableCount',
@@ -380,7 +381,7 @@ export enum TableStringEnum {
     DELETE_OWNER = 'delete-owner',
 
     //Fuel
-    FUEL = 'Fuel',
+    FUEL = 'FUEL',
     FUEL_1 = 'fuel',
     FUEL_TRANSACTION = 'FUEL_TRANSACTION',
     FUEL_TRANSACTION_TEXT = 'fuel transaction',
@@ -565,5 +566,5 @@ export enum TableStringEnum {
     TRAILER_CARD_STATE = 'trailerCardState',
     USER_CARD_STATE = 'userCardState',
     TRUCK_CARD_STATE = 'truckCardState',
-    PM_CARD_STATE = "pmCardState",
+    PM_CARD_STATE = 'pmCardState',
 }

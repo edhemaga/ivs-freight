@@ -19,6 +19,7 @@ import { DashboardTopRatedConstants } from '@pages/dashboard/pages/dashboard-top
 import { DashboardColors } from '@pages/dashboard/utils/constants/dashboard-colors.constants';
 import { DashboardSubperiodConstants } from '@pages/dashboard/utils/constants/dashboard-subperiod.constants';
 import { DashboardByStateConstants } from '@pages/dashboard/pages/dashboard-by-state/utils/constants/dashboard-by-state.constants';
+import { DashboardTopRatedChartsConfiguration } from '@pages/dashboard/pages/dashboard-top-rated/utils/constants';
 
 // helpers
 import { DashboardArrayHelper } from '@pages/dashboard/utils/helpers/dashboard-array-helper';
@@ -45,6 +46,8 @@ import {
 } from 'appcoretruckassist';
 import { TopRatedApiArguments } from '@pages/dashboard/pages/dashboard-top-rated/models/top-rated-api-arguments.model';
 import { TopRatedWithoutTabApiArguments } from '@pages/dashboard/pages/dashboard-top-rated/models/top-rated-without-tab-api-arguments.model';
+import { IChartConfiguaration } from 'ca-components/lib/components/ca-chart/models';
+
 @Component({
     selector: 'app-dashboard-top-rated',
     templateUrl: './dashboard-top-rated.component.html',
@@ -100,6 +103,10 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
     public secondaryColorsPallete: TopRatedSecondaryColorsPallete[] = [];
 
     // charts
+    public doughnutChartConfig: IChartConfiguaration =
+        DashboardTopRatedChartsConfiguration.DOUGHNUT_CHART_CONFIG;
+    public barChartConfig: IChartConfiguaration =
+        DashboardTopRatedChartsConfiguration.BAR_CHART_CONFIG;
 
     constructor(
         private formBuilder: UntypedFormBuilder,

@@ -1,0 +1,1 @@
+export * from './shipper-details-charts-configuration.constants';

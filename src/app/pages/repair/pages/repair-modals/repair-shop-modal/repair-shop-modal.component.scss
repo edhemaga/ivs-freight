@@ -52,8 +52,17 @@
     }
 
     &-inputs {
-        grid-template-columns: 93px 162px 162px 33px;
+        grid-template-columns: 93px 324px 33px;
         grid-template-rows: auto;
+    }
+
+    &-shift-grid {
+        display: grid;
+        grid-template-columns: 164px 164px;
+        grid-template-rows: auto;
+        grid-template-rows: auto;
+        column-gap: 2px;
+        row-gap: 2px;
     }
 
     &-day-label {

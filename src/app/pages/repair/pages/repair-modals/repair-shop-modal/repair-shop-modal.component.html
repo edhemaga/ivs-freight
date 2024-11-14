@@ -8,6 +8,8 @@
     [editData]="editData"
     [isEditDate]="!!editData"
     [showCloseBusinessButton]="isEditMode"
+    [businessStatus]="businessStatus"
+    [isDisableButtonHidden]="true"
 >
     <ng-container origin *ngIf="repairShopForm">
         <app-ta-tab-switch
@@ -37,13 +39,7 @@
                     class="m-tab"
                 >
                     <div class="row">
-                        <div
-                            [ngClass]="
-                                !isCompanyOwnedOptionAvailable
-                                    ? 'col-11'
-                                    : 'col-12'
-                            "
-                        >
+                        <div [ngClass]="'col-11'">
                             <app-ta-input
                                 [inputConfig]="nameInputConfig"
                                 [formControlName]="
@@ -52,25 +48,21 @@
                             ></app-ta-input>
                         </div>
 
-                        <ng-container *ngIf="!isCompanyOwnedOptionAvailable">
-                            <div class="col-1">
-                                <div
-                                    [mainTooltip]="favoriteLabel"
-                                    ngbTooltip
-                                    position="bottom"
-                                    tooltipBackground="#424242"
-                                >
-                                    <svg-icon
-                                        (click)="addShopToFavorite()"
-                                        [class.svg-hover-blue-15]="isFavorite"
-                                        class="repair-shop__favorite c-pointer svg-hover-black svg-fill-blue-13"
-                                        [src]="
-                                            repairShopModalSvgRoutes.starIcon
-                                        "
-                                    ></svg-icon>
-                                </div>
+                        <div class="col-1">
+                            <div
+                                [mainTooltip]="favoriteLabel"
+                                ngbTooltip
+                                position="bottom"
+                                tooltipBackground="#424242"
+                            >
+                                <svg-icon
+                                    (click)="addShopToFavorite()"
+                                    [ngClass]="isFavorite ? 'svg-fill-blue-13 svg-hover-blue-15' : 'svg-fill-muted svg-hover-black'"
+                                    class="repair-shop__favorite c-pointer"
+                                    [src]="repairShopModalSvgRoutes.starIcon"
+                                ></svg-icon>
                             </div>
-                        </ng-container>
+                        </div>
                     </div>
 
                     <div
@@ -118,7 +110,7 @@
                         </div>
                     </div>
 
-                    <div class="row last-row repair-shop-address">
+                    <div class="row last-row repair-shop-address d-grid">
                         <div>
                             <app-ta-input-address-dropdown
                                 (selectedAddress)="onAddressChange($event)"
@@ -140,93 +132,89 @@
                         </div>
                     </div>
 
-                    <ng-container *ngIf="isCompanyOwnedOptionAvailable">
-                        <app-ta-checkbox-card
-                            formControlName="companyOwned"
-                            [label]="'Company Owned'"
-                            [name]="'company-owned'"
-                            [hasArrow]="false"
-                            [withoutToggle]="true"
-                            [animationMarginParams]="{
-                                marginTop: '0px',
-                                marginBottom: '0px'
-                            }"
-                            [isCardOpen]="
-                                !repairShopForm.get(
-                                    RepairShopModalStringEnum.COMPANY_OWNED
-                                ).value
-                            "
-                        >
-                            <ng-container body>
-                                <div class="row">
-                                    <div class="col-4">
+                    <app-ta-checkbox-card
+                        formControlName="companyOwned"
+                        [label]="'Company Owned'"
+                        [name]="'company-owned'"
+                        [hasArrow]="false"
+                        [withoutToggle]="true"
+                        [animationMarginParams]="{
+                            marginTop: '0px',
+                            marginBottom: '0px'
+                        }"
+                        [isCardOpen]="
+                            !repairShopForm.get(
+                                RepairShopModalStringEnum.COMPANY_OWNED
+                            ).value
+                        "
+                    >
+                        <ng-container body>
+                            <div class="row">
+                                <div class="col-4">
+                                    <app-ta-input-dropdown
+                                        [canAddNew]="true"
+                                        [inputConfig]="payPeriodConfig"
+                                        [options]="payPeriodsDropdown"
+                                        [template]="'svg-template'"
+                                        [formControlName]="
+                                            RepairShopModalStringEnum.PAY_PERIOD
+                                        "
+                                        [canAddNew]="false"
+                                        [activeItem]="selectedPayPeriod"
+                                        (selectedItem)="
+                                            onPayPeriodSelect($event)
+                                        "
+                                    ></app-ta-input-dropdown>
+                                </div>
+                                <div class="col-4">
+                                    <ng-container
+                                        *ngIf="
+                                            isMonthlyPeriodSeleced;
+                                            else dayPeriod
+                                        "
+                                    >
                                         <app-ta-input-dropdown
-                                            [canAddNew]="true"
-                                            [inputConfig]="payPeriodConfig"
-                                            [options]="payPeriodsDropdown"
+                                            [canAddNew]="false"
+                                            [inputConfig]="payMonthlyConfig"
+                                            [options]="daysOfMonthDropdown"
                                             [template]="'svg-template'"
                                             [formControlName]="
-                                                RepairShopModalStringEnum.PAY_PERIOD
+                                                RepairShopModalStringEnum.MONTHLY_DAYS
                                             "
                                             [canAddNew]="false"
-                                            [activeItem]="selectedPayPeriod"
+                                            [activeItem]="selectedMonthlyDays"
                                             (selectedItem)="
-                                                onPayPeriodSelect($event)
+                                                onMonthlyDaySelected($event)
                                             "
                                         ></app-ta-input-dropdown>
-                                    </div>
-                                    <div class="col-4">
-                                        <ng-container
-                                            *ngIf="
-                                                isMonthlyPeriodSeleced;
-                                                else dayPeriod
-                                            "
-                                        >
-                                            <app-ta-input-dropdown
-                                                [canAddNew]="true"
-                                                [inputConfig]="payMonthlyConfig"
-                                                [options]="daysOfMonthDropdown"
-                                                [template]="'svg-template'"
-                                                [formControlName]="
-                                                    RepairShopModalStringEnum.MONTHLY_DAYS
-                                                "
-                                                [canAddNew]="false"
-                                                [activeItem]="
-                                                    selectedMonthlyDays
-                                                "
-                                                (selectedItem)="
-                                                    onMonthlyDaySelected($event)
-                                                "
-                                            ></app-ta-input-dropdown>
-                                        </ng-container>
-                                        <ng-template #dayPeriod>
-                                            <app-ta-input-dropdown
-                                                [canAddNew]="true"
-                                                [inputConfig]="payDayConfig"
-                                                [options]="daysOfWeekDropdown"
-                                                [template]="'svg-template'"
-                                                [formControlName]="
-                                                    RepairShopModalStringEnum.WEEKLY_DAY
-                                                "
-                                                [activeItem]="selectedWeeklyDay"
-                                                (selectedItem)="
-                                                    onWeeklyDaySelected($event)
-                                                "
-                                            ></app-ta-input-dropdown>
-                                        </ng-template>
-                                    </div>
-                                    <div class="col-4">
-                                        <app-ta-input
+                                    </ng-container>
+                                    <ng-template #dayPeriod>
+                                        <app-ta-input-dropdown
+                                            [canAddNew]="false"
+                                            [inputConfig]="payDayConfig"
+                                            [options]="daysOfWeekDropdown"
+                                            [template]="'svg-template'"
                                             [formControlName]="
-                                                RepairShopModalStringEnum.RENT
+                                                RepairShopModalStringEnum.WEEKLY_DAY
                                             "
-                                            [inputConfig]="rentInputConfig"
-                                        ></app-ta-input>
-                                    </div>
+                                            [activeItem]="selectedWeeklyDay"
+                                            (selectedItem)="
+                                                onWeeklyDaySelected($event)
+                                            "
+                                        ></app-ta-input-dropdown>
+                                    </ng-template>
                                 </div>
-                            </ng-container>
-                        </app-ta-checkbox-card>
-                    </ng-container>
+                                <div class="col-4">
+                                    <app-ta-input
+                                        [formControlName]="
+                                            RepairShopModalStringEnum.RENT
+                                        "
+                                        [inputConfig]="rentInputConfig"
+                                    ></app-ta-input>
+                                </div>
+                            </div>
+                        </ng-container>
+                    </app-ta-checkbox-card>
 
                     <!-- Repair Shop Services -->
                     <app-ta-custom-card
@@ -300,55 +288,59 @@
                                     let ind = index
                                 "
                             >
-                                <div
-                                    (click)="toggleWorkingDay(ind)"
-                                    [ngClass]="{
-                                        active: openHour.get(
-                                            RepairShopModalStringEnum.IS_WORKING_DAY
-                                        ).value
-                                    }"
-                                    class="repair-shop-service d-flex align-items-center justify-content-center pl-0"
+                                <ng-container
+                                    *ngIf="openHour.get('id').value !== 7"
                                 >
-                                    <p class="ta-font-bold text-uppercase">
-                                        {{
-                                            openHour
-                                                .get(
-                                                    RepairShopModalStringEnum.DAY_LABEL
-                                                )
-                                                .value.slice(0, 3)
-                                        }}
-                                    </p>
-                                </div>
+                                    <div
+                                        (click)="toggleWorkingDay(ind)"
+                                        [ngClass]="{
+                                            active: openHour.get(
+                                                RepairShopModalStringEnum.IS_WORKING_DAY
+                                            ).value
+                                        }"
+                                        class="repair-shop-service d-flex align-items-center justify-content-center pl-0"
+                                    >
+                                        <p class="ta-font-bold text-uppercase">
+                                            {{
+                                                openHour
+                                                    .get(
+                                                        RepairShopModalStringEnum.DAY_OF_WEEK
+                                                    )
+                                                    .value.slice(0, 3)
+                                            }}
+                                        </p>
+                                    </div>
+                                </ng-container>
                             </ng-container>
-                            <div class="timeline__card">
-                                <div
-                                    class="timeline__card-range text-uppercase ta-font-bold"
-                                >
-                                    Day
-                                </div>
-                                <div
-                                    class="timeline__card-range text-uppercase ta-font-bold"
-                                >
-                                    From <span class="text-color-red"> *</span>
-                                </div>
-                                <div
-                                    class="timeline__card-range text-uppercase ta-font-bold"
-                                >
-                                    To <span class="text-color-red"> *</span>
-                                </div>
-                                <div
-                                    mainTooltip="Apply Monday to All"
-                                    tooltipMarginTop="5px"
-                                    ngbTooltip
-                                    position="bottom"
-                                    tooltipBackground="#424242"
-                                    (click)="applyMondayToAllDays()"
-                                >
-                                    <svg-icon
-                                        class="repair-shop-copy-icon svg-hover-black c-pointer svg-size-14"
-                                        [src]="repairShopModalSvgRoutes.copy"
-                                    ></svg-icon>
-                                </div>
+                        </div>
+                        <div class="timeline__card">
+                            <div
+                                class="timeline__card-range text-uppercase ta-font-bold"
+                            >
+                                Day
+                            </div>
+                            <div
+                                class="timeline__card-range text-uppercase ta-font-bold"
+                            >
+                                From <span class="text-color-red"> *</span>
+                            </div>
+                            <div
+                                class="timeline__card-range text-uppercase ta-font-bold"
+                            >
+                                To <span class="text-color-red"> *</span>
+                            </div>
+                            <div
+                                mainTooltip="Apply Monday to All"
+                                tooltipMarginTop="5px"
+                                ngbTooltip
+                                position="bottom"
+                                tooltipBackground="#424242"
+                                (click)="applyMondayToAllDays()"
+                            >
+                                <svg-icon
+                                    class="repair-shop-copy-icon svg-hover-black c-pointer svg-size-14"
+                                    [src]="repairShopModalSvgRoutes.copy"
+                                ></svg-icon>
                             </div>
                         </div>
 
@@ -366,120 +358,123 @@
                             >
                                 <ng-container
                                     *ngIf="
-                                        !!openHour.get(
-                                            RepairShopModalStringEnum.IS_WORKING_DAY
-                                        ).value
+                                        !!openHour.get('isWorkingDay').value ||
+                                        openHour.get('id').value === 7
                                     "
                                 >
                                     <div
                                         class="timeline__card timeline__card-inputs align-items-start"
                                     >
-                                        <div
-                                            class="ta-font-medium text-color-black text-size-14 timeline__card-day-label d-flex align-items-center"
+                                        <ng-container
+                                            *ngIf="
+                                                openHour.get('id').value !== 7;
+                                                else isHolidayRow
+                                            "
                                         >
-                                            {{
-                                                openHour.get(
-                                                    RepairShopModalStringEnum.DAY_LABEL
-                                                ).value
-                                            }}
-                                        </div>
-
-                                        <div class="d-flex flex-column">
-                                            <app-ta-input
-                                                [inputConfig]="
-                                                    openHoursFormField
-                                                "
-                                                [formControlName]="
-                                                    RepairShopModalStringEnum.START_TIME
-                                                "
-                                            ></app-ta-input>
-                                            <ng-container
-                                                *ngIf="
-                                                    !!openHour.get(
-                                                        RepairShopModalStringEnum.DOUBLE_SHIFT
-                                                    ).value
-                                                "
+                                            <div
+                                                class="ta-font-medium text-color-black text-size-14 timeline__card-day-label d-flex align-items-center"
                                             >
-                                                <app-ta-input
-                                                    [inputConfig]="
-                                                        openHoursFormField
-                                                    "
-                                                    [formControlName]="
-                                                        RepairShopModalStringEnum.SECOND_START_TIME
-                                                    "
-                                                    class="timeline__card-double-shift"
-                                                ></app-ta-input>
-                                            </ng-container>
-                                        </div>
-
-                                        <div class="d-flex flex-column">
-                                            <app-ta-input
-                                                [inputConfig]="
-                                                    openHoursFormField
-                                                "
-                                                [formControlName]="
-                                                    RepairShopModalStringEnum.END_TIME
-                                                "
-                                            ></app-ta-input>
-
-                                            <ng-container
-                                                *ngIf="
-                                                    !!openHour.get(
-                                                        RepairShopModalStringEnum.DOUBLE_SHIFT
+                                                {{
+                                                    openHour.get(
+                                                        RepairShopModalStringEnum.DAY_OF_WEEK
                                                     ).value
-                                                "
-                                            >
-                                                <app-ta-input
-                                                    [inputConfig]="
-                                                        openHoursFormField
-                                                    "
-                                                    [formControlName]="
-                                                        RepairShopModalStringEnum.SECOND_END_TIME
-                                                    "
-                                                    class="timeline__card-double-shift"
-                                                ></app-ta-input>
-                                            </ng-container>
-                                        </div>
+                                                }}
+                                            </div>
+                                        </ng-container>
 
-                                        <div
-                                            class="d-flex align-items-end flex-column timeline__card-icon-plus c-pointer"
+                                        <ng-template #isHolidayRow>
+                                            <app-ta-checkbox
+                                                [formControlName]="
+                                                    RepairShopModalStringEnum.IS_WORKING_DAY
+                                                "
+                                                [label]="'Holiday'"
+                                            ></app-ta-checkbox>
+                                        </ng-template>
+
+                                        <!-- Iterate over shifts array -->
+                                        <ng-container
+                                            *ngIf="
+                                                openHour.get('isWorkingDay')
+                                                    .value
+                                            "
                                         >
-                                            <ng-container
-                                                *ngIf="
-                                                    !!openHour.get(
-                                                        RepairShopModalStringEnum.DOUBLE_SHIFT
-                                                    ) as doubleShift
-                                                "
-                                            >
+                                            <div formArrayName="shifts">
                                                 <div
-                                                    mainTooltip="Split Shift"
-                                                    tooltipMarginTop="5px"
-                                                    ngbTooltip
-                                                    position="bottom"
-                                                    tooltipBackground="#424242"
+                                                    *ngFor="
+                                                        let shift of openHour.get(
+                                                            'shifts'
+                                                        ).controls;
+                                                        let shiftInd = index
+                                                    "
+                                                    [formGroupName]="shiftInd"
+                                                    class="timeline__card-shift-grid"
                                                 >
-                                                    <svg-icon
-                                                        [src]="
-                                                            repairShopModalSvgRoutes.plusIcon
-                                                        "
-                                                        [ngClass]="
-                                                            doubleShift.value
-                                                                ? 'svg-fill-light-grey-6'
-                                                                : 'svg-fill-muted svg-hover-black'
-                                                        "
-                                                        (click)="
-                                                            doubleShift.value
-                                                                ? ''
-                                                                : toggleDoubleWorkingTime(
-                                                                      ind
-                                                                  )
-                                                        "
-                                                        class="svg-size-14"
-                                                    ></svg-icon>
+                                                    <div
+                                                        class="d-flex flex-column"
+                                                    >
+                                                        <app-ta-input
+                                                            [inputConfig]="
+                                                                openHoursFormField
+                                                            "
+                                                            formControlName="startTime"
+                                                        ></app-ta-input>
+                                                    </div>
+                                                    <div
+                                                        class="d-flex flex-column"
+                                                    >
+                                                        <app-ta-input
+                                                            [inputConfig]="
+                                                                openHoursFormField
+                                                            "
+                                                            formControlName="endTime"
+                                                        ></app-ta-input>
+                                                    </div>
                                                 </div>
+                                            </div>
+
+                                            <div
+                                                class="d-flex align-items-end flex-column timeline__card-icon-plus c-pointer"
+                                            >
+                                                <ng-container
+                                                    *ngIf="
+                                                        openHour.get('shifts')
+                                                            .value.length === 1
+                                                    "
+                                                >
+                                                    <div
+                                                        mainTooltip="Split Shift"
+                                                        tooltipMarginTop="5px"
+                                                        ngbTooltip
+                                                        position="bottom"
+                                                        tooltipBackground="#424242"
+                                                    >
+                                                        <svg-icon
+                                                            [src]="
+                                                                repairShopModalSvgRoutes.plusIcon
+                                                            "
+                                                            [ngClass]="
+                                                                openHour.get(
+                                                                    'shifts'
+                                                                ).value.length >
+                                                                1
+                                                                    ? 'svg-fill-light-grey-6'
+                                                                    : 'svg-fill-muted svg-hover-black'
+                                                            "
+                                                            (click)="
+                                                                toggleDoubleWorkingTime(
+                                                                    ind
+                                                                )
+                                                            "
+                                                            class="svg-size-14"
+                                                        ></svg-icon>
+                                                    </div>
+                                                </ng-container>
 
                                                 <ng-container
-                                                    *ngIf="doubleShift.value"
+                                                    *ngIf="
+                                                        openHour.get('shifts')
+                                                            .value.length > 1
+                                                    "
                                                 >
                                                     <div
                                                         mainTooltip="Remove Shift"
@@ -502,171 +497,10 @@
                                                         ></svg-icon>
                                                     </div>
                                                 </ng-container>
-                                            </ng-container>
-                                        </div>
+                                            </div>
+                                        </ng-container>
                                     </div>
                                 </ng-container>
-                            </div>
-                        </div>
-
-                        <div
-                            [formArrayName]="RepairShopModalStringEnum.HOLIDAY"
-                        >
-                            <div
-                                *ngFor="
-                                    let holiday of holidayHours.controls;
-                                    let ind = index
-                                "
-                                [formGroupName]="ind"
-                            >
-                                <div
-                                    class="timeline__card timeline__card-inputs align-items-start"
-                                >
-                                    <div
-                                        class="ta-font-medium text-color-black text-size-14 timeline__card-day-label d-flex align-items-center"
-                                    >
-                                        <app-ta-checkbox
-                                            [formControlName]="
-                                                RepairShopModalStringEnum.IS_WORKING_DAY
-                                            "
-                                            [label]="'Holiday'"
-                                        ></app-ta-checkbox>
-                                    </div>
-
-                                    <ng-container
-                                        *ngIf="
-                                            !!holiday.get(
-                                                RepairShopModalStringEnum.IS_WORKING_DAY
-                                            ).value
-                                        "
-                                    >
-                                        <div class="d-flex flex-column">
-                                            <app-ta-input
-                                                [inputConfig]="
-                                                    openHoursFormField
-                                                "
-                                                [formControlName]="
-                                                    RepairShopModalStringEnum.START_TIME
-                                                "
-                                            ></app-ta-input>
-                                            <ng-container
-                                                *ngIf="
-                                                    !!holiday.get(
-                                                        RepairShopModalStringEnum.DOUBLE_SHIFT
-                                                    ).value
-                                                "
-                                            >
-                                                <app-ta-input
-                                                    [inputConfig]="
-                                                        openHoursFormField
-                                                    "
-                                                    [formControlName]="
-                                                        RepairShopModalStringEnum.SECOND_START_TIME
-                                                    "
-                                                    class="timeline__card-double-shift"
-                                                ></app-ta-input>
-                                            </ng-container>
-                                        </div>
-
-                                        <div class="d-flex flex-column">
-                                            <app-ta-input
-                                                [inputConfig]="{
-                                                    name: 'timepicker',
-                                                    type: 'text',
-                                                    placeholderIcon: 'time',
-                                                    customClass:
-                                                        'datetimeclass',
-                                                    hideClear: true
-                                                }"
-                                                [formControlName]="
-                                                    RepairShopModalStringEnum.END_TIME
-                                                "
-                                            ></app-ta-input>
-
-                                            <ng-container
-                                                *ngIf="
-                                                    !!holiday.get(
-                                                        RepairShopModalStringEnum.DOUBLE_SHIFT
-                                                    ).value
-                                                "
-                                            >
-                                                <app-ta-input
-                                                    [inputConfig]="
-                                                        openHoursFormField
-                                                    "
-                                                    [formControlName]="
-                                                        RepairShopModalStringEnum.SECOND_END_TIME
-                                                    "
-                                                    class="timeline__card-double-shift"
-                                                ></app-ta-input>
-                                            </ng-container>
-                                        </div>
-
-                                        <div
-                                            class="d-flex align-items-end flex-column timeline__card-icon-plus c-pointer"
-                                        >
-                                            <ng-container
-                                                *ngIf="
-                                                    !!holiday.get(
-                                                        RepairShopModalStringEnum.DOUBLE_SHIFT
-                                                    ) as doubleShift
-                                                "
-                                            >
-                                                <div
-                                                    mainTooltip="Split Shift"
-                                                    tooltipMarginTop="5px"
-                                                    ngbTooltip
-                                                    position="bottom"
-                                                    tooltipBackground="#424242"
-                                                >
-                                                    <svg-icon
-                                                        [src]="
-                                                            repairShopModalSvgRoutes.plusIcon
-                                                        "
-                                                        [ngClass]="
-                                                            doubleShift.value
-                                                                ? 'svg-fill-light-grey-6'
-                                                                : 'svg-fill-muted svg-hover-black'
-                                                        "
-                                                        (click)="
-                                                            doubleShift.value
-                                                                ? ''
-                                                                : toggleDoubleWorkingTimeForHoliday(
-                                                                      ind
-                                                                  )
-                                                        "
-                                                        class="svg-size-14"
-                                                    ></svg-icon>
-                                                </div>
-
-                                                <ng-container
-                                                    *ngIf="doubleShift.value"
-                                                >
-                                                    <div
-                                                        mainTooltip="Remove Shift"
-                                                        tooltipMarginTop="5px"
-                                                        ngbTooltip
-                                                        position="bottom"
-                                                        tooltipBackground="#424242"
-                                                        class="svg-fill-muted svg-hover-black"
-                                                    >
-                                                        <svg-icon
-                                                            [src]="
-                                                                repairShopModalSvgRoutes.minusIcon
-                                                            "
-                                                            (click)="
-                                                                toggleDoubleWorkingTimeForHoliday(
-                                                                    ind
-                                                                )
-                                                            "
-                                                            class="svg-size-14"
-                                                        ></svg-icon>
-                                                    </div>
-                                                </ng-container>
-                                            </ng-container>
-                                        </div>
-                                    </ng-container>
-                                </div>
                             </div>
                         </div>
                     </app-ta-custom-card>
@@ -728,12 +562,20 @@
                                 marginBottom: '0'
                             }"
                         >
-                            <app-ta-upload-files
-                                (onFileEvent)="onFilesEvent($event)"
-                                [customClassName]="'modals'"
-                                [files]="files"
-                                [showDropzone]="true"
-                            ></app-ta-upload-files>
+                        <!-- TODO: -->
+                            <app-ca-upload-files
+                            [files]="[]"
+                            [isVisibleCropAndDrop]="true"
+                            [slider]="{dontUseSlider: false, hasCarouselBottomTabs: true}"
+                            [carouselConfig]="{files: [], customClass: 'medium', customDetailsPageClass: 'modals', hasCarouselBottomTabs: true}"
+                            [hasCrop]="false"
+                            [dropzoneConf]="[{template: 'documentsTemplate', config: {dropzone: {dropZoneType: 'files', multiple: true, globalDropZone: false, dropZonePages: 'tools_todo'}, dropzoneOption: {customClassName: 'documents-dropzone', size: 'medium', modalSize: 'lg', showDropzone: true, filesLength: 2, isRequired: true, dropzoneClose: false}}}]"
+                            [review]="{isReview: false, reviewMode: 'FEEDBACK_MODE', feedbackText: 'Sample feedback text', categoryTag: 'General'}"
+                            [configFile]="{id: 111, customClassName: 'modals', file: {url: '', incorrect: false, lastHovered: false, fileSize: 1200, fileName: ''}, hasTagsDropdown: true, hasNumberOfPages: true, activePage: 1, type: 'modal', hasLandscapeOption: false, tagsOptions: [{tagName: 'HOS Agreement', checked: false}, {tagName: 'Unsafe Driving AGT', checked: false}]}"
+                            [size]="'medium'"
+                            [slideWidth]="180"
+                            (fileAdded)="fileAdded($event)"
+                            ></app-ca-upload-files>
                         </app-ta-custom-card>
                     </div>
                     <!-- Note -->
@@ -784,6 +626,95 @@
                         >
                         </app-ta-modal-table>
                     </app-ta-custom-card>
+
+                    <app-ta-custom-card
+                    [animationMarginParams]="{
+                        marginTop: '0',
+                        marginBottom: '0'
+                    }"
+                    [cardName]="'Cover Photo'"
+                    [isCardOpen]="true"
+                    [hasArrow]="false"
+                >
+                    <app-ca-upload-files
+                        [isVisibleCropAndDrop]="true"
+                        [hasBlobUrl]="true"
+                        [files]="[
+                            { url: coverPhoto?.url }
+                        ]"
+                        [slider]="{
+                            dontUseSlider: false,
+                            hasCarouselBottomTabs: false
+                        }"
+                        [carouselConfig]="{
+                            files: [],
+                            customClass: 'medium',
+                            customDetailsPageClass: 'modals',
+                            hasCarouselBottomTabs: true
+                        }"
+                        [hasCrop]="true"
+                        [isRoundCrop]="false"
+                        [dropzoneConf]="[
+                            {
+                                template: 'imageCropTemplate',
+                                config: {
+                                    dropzone: {
+                                        dropZoneType: 'image',
+                                        multiple: true,
+                                        globalDropZone: false,
+                                        dropZonePages: 'cdl'
+                                    },
+                                    dropzoneOption: {
+                                        customClassName:
+                                            'documents-dropzone',
+                                        size: 'medium',
+                                        modalSize: 'lg',
+                                        showDropzone: true,
+                                        dropzoneClose: false
+                                    }
+                                }
+                            }
+                        ]"
+                        [review]="{
+                            isReview: true,
+                            reviewMode: 'REVIEW_MODE',
+                            feedbackText: 'Sample feedback text',
+                            categoryTag: 'General'
+                        }"
+                        [configFile]="{
+                            id: 111,
+                            customClassName: 'modals',
+                            file: {
+                                url: '',
+                                incorrect: false,
+                                lastHovered: false,
+                                fileSize: 1200,
+                                fileName: ''
+                            },
+                            hasTagsDropdown: false,
+                            hasNumberOfPages: true,
+                            activePage: 1,
+                            tags: ['Example'],
+                            type: 'modal',
+                            hasLandscapeOption: false,
+                            tagsOptions: [
+                                {
+                                    tagName: 'HOS Agreement',
+                                    checked: false
+                                },
+                                {
+                                    tagName: 'Unsafe Driving AGT',
+                                    checked: false
+                                }
+                            ]
+                        }"
+                        [size]="'medium'"
+                        [slideWidth]="180"
+                        (onFileEvent)="onUploadCoverPhoto($event)"
+                    >
+                    </app-ca-upload-files>
+                </app-ta-custom-card>
+
 
                     <ng-container *ngIf="!repairShopContacts?.length">
                         <div class="no-review-repair-shop">

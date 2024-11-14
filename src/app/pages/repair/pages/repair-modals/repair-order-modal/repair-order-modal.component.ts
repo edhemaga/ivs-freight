@@ -387,7 +387,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
                 break;
             case RepairOrderModalStringEnum.DELETE:
                 if (this.editData.data)
-                    this.deleteRepairById(this.editData.data.id);
+                    this.deleteRepair(this.editData.data.id);
 
                 break;
             case RepairOrderModalStringEnum.FINISH_ORDER:
@@ -927,7 +927,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
 
         if (truckId || trailerId)
             this.repairService
-                .getDriver(truckId, trailerId, formatedDate)
+                .getRepairDriversList(truckId, trailerId, formatedDate)
                 .pipe(takeUntil(this.destroy$))
                 .subscribe((driversList) => {
                     if (driversList.length) {
@@ -1506,7 +1506,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
             });
     }
 
-    private deleteRepairById(id: number): void {
+    private deleteRepair(id: number): void {
         this.ngbActiveModal.close();
 
         const data = {

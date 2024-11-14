@@ -445,6 +445,11 @@
                 [performanceChartsPlaceholder]="true"
             ></app-dashboard-loading-placeholder>
         </ng-container>
-		<!-- Chart implementation -->
+        <ng-container *ngIf="!isLoading">
+            <app-ca-chart
+                [chartConfig]="performanceChartConfig"
+            >
+            </app-ca-chart>
+        </ng-container>
     </div>
 </div>

@@ -52,7 +52,9 @@
                             row.actionAnimation === 'multiple-activate',
                         'delete-animation': row.actionAnimation === 'delete',
                         'multiple-delete-animation':
-                            row.actionAnimation === 'delete-multiple'
+                            row.actionAnimation === 'delete-multiple',
+                        'fuel-integrated-transaction':
+                            row.isIntegratedFuelTransaction
                     }"
                 >
                     <!-- Table Row -->
@@ -751,45 +753,11 @@
                                                 'avatar-is-owner': row.isOwner
                                             }"
                                         >
-                                            <div
-                                                class="avatar-img"
-                                                [ngClass]="{
-                                                    'round-avatar':
-                                                        column.isRound,
-                                                    'regular-avatar':
-                                                        !column.isRound
-                                                }"
-                                                *ngIf="row.avatarImg"
-                                            >
-                                                <img
-                                                    alt="avatar"
-                                                    [src]="row.avatarImg"
-                                                />
-                                            </div>
-
-                                            <div
-                                                class="avatar-no-img"
-                                                *ngIf="!row.avatarImg"
-                                                [ngClass]="{
-                                                    'round-avatar':
-                                                        column.isRound,
-                                                    'regular-avatar':
-                                                        !column.isRound
-                                                }"
-                                                [ngStyle]="{
-                                                    'background-color': row
-                                                        .avatarColor?.background
-                                                        ? row.avatarColor
-                                                              .background
-                                                        : 'unset',
-                                                    color: row.avatarColor
-                                                        ?.color
-                                                        ? row.avatarColor.color
-                                                        : 'unset'
-                                                }"
-                                            >
-                                                {{ row.textShortName }}
-                                            </div>
+                                            
+                                            <ng-container
+                                                [ngTemplateOutlet]="avatarColumn"
+                                                [ngTemplateOutletContext]="{ row: row, column: column }"
+                                            ></ng-container>
 
                                             <img
                                                 class="avatar-owner"
@@ -3371,41 +3339,10 @@
                                                 'avatar-is-owner': row.isOwner
                                             }"
                                         >
-                                            <ng-container
-                                                *ngIf="
-                                                    row.avatarImg;
-                                                    else showAvatarImage
-                                                "
-                                            >
-                                                <div class="avatar-img">
-                                                    <img
-                                                        alt="avatar"
-                                                        [src]="row.avatarImg"
-                                                    />
-                                                </div>
-                                            </ng-container>
-                                            <ng-template #showAvatarImage>
-                                                <div
-                                                    class="avatar-no-img"
-                                                    [ngStyle]="{
-                                                        'background-color': row
-                                                            .avatarColor
-                                                            ?.background
-                                                            ? row.avatarColor
-                                                                  .background
-                                                            : 'unset',
-                                                        color: row.avatarColor
-                                                            ?.color
-                                                            ? row.avatarColor
-                                                                  .color
-                                                            : 'unset'
-                                                    }"
-                                                >
-                                                    {{
-                                                        row.textDriverShortName
-                                                    }}
-                                                </div>
-                                            </ng-template>
+                                        <ng-container
+                                            [ngTemplateOutlet]="avatarColumn"
+                                            [ngTemplateOutletContext]="{ row: row, column: column }"
+                                        ></ng-container>
 
                                             <img
                                                 class="avatar-owner"
@@ -3461,12 +3398,10 @@
                                                 class="avatar-assign-text"
                                                 [ngStyle]="{
                                                     'background-color':
-                                                        row.avatarColor
-                                                            ?.background ??
+                                                        row?.avatarColor?.background ??
                                                         'unset',
                                                     color:
-                                                        row.avatarColor
-                                                            ?.color ?? 'unset'
+                                                        row?.avatarColor?.color ?? 'unset'
                                                 }"
                                             >
                                                 {{ row.tableDriver }}
@@ -5742,13 +5677,20 @@
                                                 tooltipBackground="#424242"
                                                 tooltipColor="#FFFFFF"
                                                 position="bottom"
-                                                (click)="onFavorite(row)"
+                                                (click)="
+                                                    onFavorite(
+                                                        row,
+                                                        row['companyOwned']
+                                                    )
+                                                "
                                             >
                                                 <svg-icon
                                                     class="favorite-icon"
                                                     [ngClass]="{
                                                         'is-favorite':
-                                                            row[column.field]
+                                                            row[column.field],
+                                                        disabled:
+                                                            row['companyOwned']
                                                     }"
                                                     [src]="
                                                         tableBodySvgRoutes.favoriteRoute
@@ -6778,4 +6720,16 @@
             </ng-container>
         </div>
     </div>
+</ng-template>
+
+<ng-template #avatarColumn let-row="row" let-column="column">
+    <app-ca-profile-image
+        [avatarImg]="row?.avatarImg"
+        [avatarColor]="row?.avatarColor ?? {}"
+        [textShortName]="row?.textDriverShortName"
+        [size]="row?.avatarSize"
+        [fontSize]="row?.avatarFontSize"
+        [isHoverEffect]="row?.avatarIsHoverEffect"
+        [isRound]="column.isRound"
+    ></app-ca-profile-image>
 </ng-template>
