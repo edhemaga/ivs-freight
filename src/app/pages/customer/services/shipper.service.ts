@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 
-import { Observable, switchMap, tap } from 'rxjs';
+import { Observable, of, switchMap, tap } from 'rxjs';
 
 // models
 import {
@@ -375,7 +375,7 @@ export class ShipperService {
         search1?: string,
         search2?: string
     ): Observable<Array<ClusterResponse>> {
-        return this.shipperService.apiShipperClustersGet(
+        return of(null); /*  this.shipperService.apiShipperClustersGet(
             northEastLatitude,
             northEastLongitude,
             southWestLatitude,
@@ -405,7 +405,7 @@ export class ShipperService {
             search,
             search1,
             search2
-        );
+        ); */
     }
 
     public getShipperMapList(
