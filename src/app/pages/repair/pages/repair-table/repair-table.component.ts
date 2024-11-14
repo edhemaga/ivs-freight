@@ -1919,12 +1919,12 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                                     data?.count,
                                     data?.count > 1
                                 ),
-                                labelOrigin: new google.maps.Point(80, 18),
+                                labelOrigin: new google.maps.Point(80, 15),
                             },
                             infoWindowContent: clusterInfoWindowContent,
                             label: data.name
                                 ? {
-                                      text: data.name,
+                                      text: data.name.toUpperCase(),
                                       fontSize: '11px',
                                       color: '#424242',
                                       fontWeight: '500',

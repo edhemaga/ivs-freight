@@ -29,7 +29,10 @@
                 class="shop-details-map-location-cover-main-map"
                 [hidden]="selectedTabId === 2"
             >
-                <app-ca-map [data]="mapData"></app-ca-map>
+                <app-ca-map
+                    [data]="mapData"
+                    (openInMapEvent)="onOpenInMap()"
+                ></app-ca-map>
             </div>
 
             <!-- Cover Photo -->

@@ -100,7 +100,9 @@ body {
         .table-inner-modal
     ):not(.scrollable):not(.columns-scroll.items-scroll):not(
         .scrollable-element
-    ):not(.dropdown-options.scroll):not(.navigation-middle) {
+    ):not(.dropdown-options.scroll):not(.navigation-middle):not(
+        .map-list-body
+    ):not(.cluster-marker-container) {
     scrollbar-width: none !important; /* Firefox */
 
     &::-webkit-scrollbar {

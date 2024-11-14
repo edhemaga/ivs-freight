@@ -76,28 +76,36 @@ export class RepairShopDetailsMapCoverCardComponent {
                     data.pinned,
                     !data.status
                 ),
-                labelOrigin: new google.maps.Point(80, 18),
+                labelOrigin: new google.maps.Point(95, 25),
+                scaledSize: new google.maps.Size(45, 50),
             },
             infoWindowContent: null,
-            label: data.name
+            label: data.address?.address
                 ? {
-                      text: data.name,
+                      text: data.address.address,
                       fontSize: '11px',
                       color: '#424242',
-                      fontWeight: '500',
+                      fontWeight: '700',
+                      isShowOnHover: true,
                   }
                 : null,
             labelOrigin: { x: 90, y: 15 },
             options: {
                 zIndex: 1,
                 animation: google.maps.Animation.DROP,
+                cursor: 'default',
             },
+            isLargeMarker: true,
             data,
         };
 
         this.mapData = {
             ...this.mapData,
+            isZoomShown: true,
+            isOpenInMapShown: true,
             markers: [markerData],
         };
     }
+
+    public onOpenInMap(): void {}
 }
