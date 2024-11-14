@@ -3334,6 +3334,11 @@ table.truckassist-table-body-style {
     }
 }
 
+// Fuel Integrated Transactions
+.fuel-integrated-transaction {
+    border: 1px solid $ta-green;
+}
+
 // 1
 @keyframes multiple-deleting-row-add-color {
     0% {

@@ -3,6 +3,8 @@
         *ngFor="let item of repairShopDetailsConfig; trackBy: trackByIdentity"
     >
         <app-ta-details-header
+            [hasIcon]="item.icon"
+            [hasSearch]="item.hasSearch"
             [options]="detailsDropdownOptions"
             [optionsId]="repairShopId"
             [route]="'/list/repair'"
@@ -11,6 +13,12 @@
             [counterData]="item?.length"
             [statusInactive]="item?.hide"
             (dropActions)="onRepairShopActions($event)"
+            [timeFilter]="true"
+            [truckTypeFilter]="true"
+            [trailerTypeFilter]="true"
+            [pmFilter]="true"
+            [moneyFilter]="true"
+            [repairOrderFilter]="true"
         >
         </app-ta-details-header>
 

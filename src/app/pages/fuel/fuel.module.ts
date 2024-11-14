@@ -15,6 +15,7 @@ import { TaTableHeadComponent } from '@shared/components/ta-table/ta-table-head/
 import { TaMapListComponent } from '@shared/components/ta-map-list/ta-map-list.component';
 import { TaMapListCardComponent } from '@shared/components/ta-map-list-card/ta-map-list-card.component';
 import { FuelTableComponent } from '@pages/fuel/pages/fuel-table/fuel-table.component';
+import { CaChartComponent } from 'ca-components';
 
 @NgModule({
     declarations: [FuelTableComponent],
@@ -34,6 +35,7 @@ import { FuelTableComponent } from '@pages/fuel/pages/fuel-table/fuel-table.comp
         // TaMapsComponent,
         TaMapListComponent,
         TaMapListCardComponent,
+        CaChartComponent
     ],
 })
 export class FuelModule {}

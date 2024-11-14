@@ -24,6 +24,7 @@ import { TaProgressInvoicesComponent } from '@shared/components/ta-progress-invo
 import { TaUserReviewComponent } from '@shared/components/ta-user-review/ta-user-review.component';
 import { TaCounterComponent } from '@shared/components/ta-counter/ta-counter.component';
 import { TaContactsCardComponent } from '@shared/components/ta-contacts-card/ta-contacts-card.component';
+import { CaChartComponent } from 'ca-components';
 
 // Pipes
 import { FormatCurrencyPipe } from '@shared/pipes/format-currency.pipe';
@@ -62,6 +63,7 @@ import { LoadStatusColorPipe } from '@shared/pipes/load-status-color.pipe';
         TaUserReviewComponent,
         TaCounterComponent,
         TaContactsCardComponent,
+        CaChartComponent,
 
         // Pipes
         FormatCurrencyPipe,

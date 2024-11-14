@@ -28,9 +28,13 @@ import {
 } from 'appcoretruckassist';
 import { BrokerDropdown } from '@pages/customer/pages/broker-details/models/';
 import { TabOptions } from '@shared/components/ta-tab-switch/models/tab-options.model';
+import { IChartConfiguaration } from 'ca-components/lib/components/ca-chart/models';
 
 // Constants
-import { BrokerConstants } from '@pages/customer/pages/broker-details/utils/constants/';
+import {
+    BrokerChartsConfiguration,
+    BrokerConstants,
+} from '@pages/customer/pages/broker-details/utils/constants/';
 import { BrokerInvoiceAgingConstants } from '@pages/customer/pages/broker-details/utils/constants/';
 
 // Components
@@ -86,6 +90,15 @@ export class BrokerDetailsCardComponent
 
     // Svg routes
     public brokerDetailsSvgRoutes = BrokerDetailsSvgRoutes;
+
+    //Chart
+
+    public invoiceChartConfig: IChartConfiguaration =
+        BrokerChartsConfiguration.INVOICE_CHART_CONFIG;
+    public mileageChartConfig: IChartConfiguaration =
+        BrokerChartsConfiguration.MILEAGE_CHART_CONFIG;
+    public paymentChartConfig: IChartConfiguaration =
+        BrokerChartsConfiguration.PAYMENT_CHART_CONFIG;
 
     constructor(
         // Store
