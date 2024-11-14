@@ -76,7 +76,7 @@
 
                 <!-- Payroll Chart Card-->
 
-                <!-- <app-ta-custom-card
+                <app-ta-custom-card
                     [cardName]="'Payroll'"
                     [isCardOpen]="true"
                     [bodyTemplate]="'card'"
@@ -87,22 +87,24 @@
                 >
                     <div
                         class="charts-template perfomance"
-                        [class.p-0]="payrollChart.hoveringStatus"
                     >
-                        <ng-container *ngIf="!payrollChart.hoveringStatus">
-                            <div>
-                                <app-ta-tab-switch
-                                    [tabs]="barChartTabs"
-                                    (switchClicked)="onPayrollTabChange($event)"
-                                    [type]="'type2-modal-popup'"
-                                >
-                                </app-ta-tab-switch>
-                            </div>
-                        </ng-container>
 
-                        Chart implementation
+                        <!-- <ng-container *ngIf="!payrollChart.hoveringStatus"> -->
+                        <div>
+                            <app-ta-tab-switch
+                                [tabs]="barChartTabs"
+                                (switchClicked)="onPayrollTabChange($event)"
+                                [type]="'type2-modal-popup'"
+                            >
+                            </app-ta-tab-switch>
+                        </div>
+                        <!-- </ng-container> -->
+                        <app-ca-chart 
+                            [chartConfig]="payrollChartConfig"
+                        >
+                        </app-ca-chart>
                     </div>
-                </app-ta-custom-card> -->
+                </app-ta-custom-card>
 
                 <!-- Bank Info Card -->
 

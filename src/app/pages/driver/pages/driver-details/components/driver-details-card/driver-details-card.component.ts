@@ -35,6 +35,7 @@ import { DriverOffDutyLocationCardComponent } from '@pages/driver/pages/driver-d
 import { DriverEmergencyContactCardComponent } from '@pages/driver/pages/driver-details/components/driver-details-card/components/driver-emergency-contact-card/driver-emergency-contact-card.component';
 import { DriverNotificationCardComponent } from '@pages/driver/pages/driver-details/components/driver-details-card/components/driver-notification-card/driver-notification-card.component';
 import { DriverModalComponent } from '@pages/driver/pages/driver-modals/driver-modal/driver-modal.component';
+import { CaChartComponent } from 'ca-components';
 
 // constants
 import { DriverDetailsCardSvgRoutes } from '@pages/driver/pages/driver-details/components/driver-details-card/utils/svg-routes/driver-details-card-svg-routes';
@@ -46,12 +47,16 @@ import { DriversMinimalListQuery } from '@pages/driver/state/driver-details-mini
 import { ArrowActionsStringEnum } from '@shared/enums/arrow-actions-string.enum';
 import { DriverDetailsCardStringEnum } from '@pages/driver/pages/driver-details/components/driver-details-card/enums/driver-details-card-string.enum';
 
+// const
+import { DriverDetailsChartsConfiguration } from '@pages/driver/pages/driver-details/utils/constants';
+
 // helpers
 import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calculations.helper';
 
 // models
 import { DriverMinimalResponse, DriverResponse } from 'appcoretruckassist';
 import { TabOptions } from '@shared/components/ta-tab-switch/models/tab-options.model';
+import { IChartConfiguaration } from 'ca-components/lib/components/ca-chart/models';
 
 @Component({
     selector: 'app-driver-details-card',
@@ -78,6 +83,7 @@ import { TabOptions } from '@shared/components/ta-tab-switch/models/tab-options.
         DriverOffDutyLocationCardComponent,
         DriverEmergencyContactCardComponent,
         DriverNotificationCardComponent,
+        CaChartComponent,
     ],
 })
 export class DriverDetailsCardComponent
@@ -96,6 +102,9 @@ export class DriverDetailsCardComponent
 
     // note card
     public noteForm: UntypedFormGroup;
+
+    public payrollChartConfig: IChartConfiguaration =
+        DriverDetailsChartsConfiguration.PAYROLL_CHART_CONFIG;
 
     constructor(
         private formBuilder: UntypedFormBuilder,
