@@ -1,28 +1,20 @@
 import { CommonModule } from '@angular/common';
-import {
-    Component,
-    Input,
-    OnInit,
-    OnChanges,
-    SimpleChanges,
-    ChangeDetectorRef,
-    OnDestroy,
-} from '@angular/core';
+import { Component, Input, OnInit, OnDestroy } from '@angular/core';
 import {
     UntypedFormBuilder,
     UntypedFormGroup,
     ReactiveFormsModule,
 } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
 
-import { map, Subject, takeUntil } from 'rxjs';
+import { Subject } from 'rxjs';
 
 // store
-import { RepairDetailsQuery } from '@pages/repair/state/repair-details-state/repair-details.query';
+import { RepairMinimalListQuery } from '@pages/repair/state/driver-details-minimal-list-state/repair-minimal-list.query';
 
 // services
 import { DetailsPageService } from '@shared/services/details-page.service';
 import { TruckassistTableService } from '@shared/services/truckassist-table.service';
+import { ModalService } from '@shared/services/modal.service';
 
 // components
 import { RepairShopDetailsOpenHoursCardComponent } from '@pages/repair/pages/repair-shop-details/components/repair-shop-details-card/components/repair-shop-details-open-hours-card/repair-shop-details-open-hours-card.component';
@@ -31,6 +23,7 @@ import { RepairShopDetailsBankCardComponent } from '@pages/repair/pages/repair-s
 import { RepairShopDetailsRepairExpenseCardComponent } from '@pages/repair/pages/repair-shop-details/components/repair-shop-details-card/components/repair-shop-details-repair-expense-card/repair-shop-details-repair-expense-card.component';
 import { RepairShopDetailsMapCoverCardComponent } from '@pages/repair/pages/repair-shop-details/components/repair-shop-details-card/components/repair-shop-details-map-cover-card/repair-shop-details-map-cover-card.component';
 import { RepairShopDetailsTitleCardComponent } from '@pages/repair/pages/repair-shop-details/components/repair-shop-details-card/components/repair-shop-details-title-card/repair-shop-details-title-card.component';
+import { RepairShopModalComponent } from '@pages/repair/pages/repair-modals/repair-shop-modal/repair-shop-modal.component';
 
 import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-custom-card.component';
 import { TaInputNoteComponent } from '@shared/components/ta-input-note/ta-input-note.component';
@@ -39,8 +32,14 @@ import { TaUploadFilesComponent } from '@shared/components/ta-upload-files/ta-up
 // enums
 import { RepairShopDetailsStringEnum } from '@pages/repair/pages/repair-shop-details/enums';
 
+// helpers
+import { RepairShopDetailsCardHelper } from '@pages/repair/pages/repair-shop-details/components/repair-shop-details-card/utils/helpers';
+
 // models
-import { RepairShopResponse } from 'appcoretruckassist';
+import {
+    RepairShopMinimalResponse,
+    RepairShopResponse,
+} from 'appcoretruckassist';
 
 @Component({
     selector: 'app-repair-shop-details-card',
@@ -65,14 +64,21 @@ import { RepairShopResponse } from 'appcoretruckassist';
         TaUploadFilesComponent,
     ],
 })
-export class RepairShopDetailsCard implements OnInit, OnChanges, OnDestroy {
-    @Input() repairShop: RepairShopResponse;
+export class RepairShopDetailsCard implements OnInit, OnDestroy {
+    @Input() set repairShop(data: RepairShopResponse) {
+        this._repairShop = data;
+
+        this.getRepairShopsDropdownList();
+    }
 
     private destroy$ = new Subject<void>();
 
+    public _repairShop: RepairShopResponse;
+
     public repairShopCurrentIndex: number;
 
-    public repairShopsDropdownList: RepairShopResponse[] = [];
+    // repair shop dropdown
+    public repairShopDropdownList: RepairShopResponse[] = [];
 
     // note card
     public noteForm: UntypedFormGroup;
@@ -80,150 +86,133 @@ export class RepairShopDetailsCard implements OnInit, OnChanges, OnDestroy {
     constructor(
         private formBuilder: UntypedFormBuilder,
 
-        // router
-        private act_route: ActivatedRoute,
-
         // services
-        private detailsPageDriverSer: DetailsPageService,
         private tableService: TruckassistTableService,
-
-        // ref
-        private cdRef: ChangeDetectorRef,
+        private detailsPageService: DetailsPageService,
+        private modalService: ModalService,
 
         // store
-        private repairDetailsQuery: RepairDetailsQuery
+        private repairMinimalListQuery: RepairMinimalListQuery
     ) {}
-
-    ngOnChanges(changes: SimpleChanges): void {
-        if (
-            !changes?.repairShop?.firstChange &&
-            changes?.repairShop.currentValue
-        ) {
-            this.getRepairShopsDropdownList();
-        }
-    }
 
     ngOnInit(): void {
         this.createForm();
 
-        /* this.tableService.currentActionAnimation
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((res: any) => {
-                if (res?.animation && res.tab === 'repair-shop') {
-                    this.repairShop = res.data;
-                    this.cdRef.detectChanges();
-                }
-            }); */
+        this.getRepairShopsDropdownList();
 
         this.getCurrentIndex();
-
-        this.getRepairShopsDropdownList();
     }
 
     private createForm(): void {
         this.noteForm = this.formBuilder.group({
-            note: [this.repairShop?.note],
+            note: [this._repairShop?.note],
         });
     }
 
     private getCurrentIndex(): void {
-        setTimeout(() => {
-            const currentIndex = this.repairShopsDropdownList.findIndex(
-                (repairShop) => repairShop.id === this.repairShop.id
-            );
+        const currentIndex = this.repairShopDropdownList?.findIndex(
+            (repairShop) => repairShop.id === this._repairShop.id
+        );
 
-            this.repairShopCurrentIndex = currentIndex;
-        }, 300);
+        this.repairShopCurrentIndex = currentIndex;
     }
 
     public getRepairShopsDropdownList(): void {
-        this.repairDetailsQuery.repairShopMinimal$
-            .pipe(
-                takeUntil(this.destroy$),
-                map((data) => {
-                    return data?.pagination?.data?.map(
-                        (repairShop: RepairShopResponse) => {
-                            const { id, name, address, pinned, status } =
-                                repairShop;
+        this.repairShopDropdownList = this.repairMinimalListQuery
+            .getAll()
+            .map((repairShop) => {
+                const { id, name, address, pinned, status } = repairShop;
 
-                            return {
-                                id,
-                                name,
-                                address,
-                                pinned,
-                                repairs: '10', // dummy w8 for back
-                                expense: '45334.34', // dummy w8 for back
-                                status,
-                                isRepairShopDetails: true,
-                                svg: !status
-                                    ? RepairShopDetailsStringEnum.CLOSED_ROUTE
-                                    : pinned
-                                    ? RepairShopDetailsStringEnum.STAR_ROUTE
-                                    : RepairShopDetailsStringEnum.EMPTY_STRING,
-                                folder: RepairShopDetailsStringEnum.COMMON,
-                            };
-                        }
-                    );
-                })
-            )
-            .subscribe((repairShops) => {
-                this.repairShopsDropdownList = repairShops;
+                return {
+                    id,
+                    name,
+                    address,
+                    pinned,
+                    repairs: '10', // dummy w8 for back
+                    expense: '45334.34', // dummy w8 for back
+                    status,
+                    isRepairShopDetails: true,
+                    svg: !status
+                        ? RepairShopDetailsStringEnum.CLOSED_ROUTE
+                        : pinned
+                        ? RepairShopDetailsStringEnum.STAR_ROUTE
+                        : RepairShopDetailsStringEnum.EMPTY_STRING,
+                    folder: RepairShopDetailsStringEnum.COMMON,
+                };
             });
+
+        this.repairShopDropdownList =
+            RepairShopDetailsCardHelper.sortByPinnedAndFavorite(
+                this.repairShopDropdownList
+            );
     }
 
-    public onSelectedShop(event: any) {
-        if (event && event.id !== +this.act_route.snapshot.params['id']) {
-            this.repairShopsDropdownList = this.repairShopsDropdownList.map(
-                (item) => {
-                    return {
-                        id: item.id,
-                        name: item.name,
-                        status: item.status,
-                        svg: item.pinned
-                            ? RepairShopDetailsStringEnum.STAR_ROUTE
-                            : null,
-                        folder: RepairShopDetailsStringEnum.COMMON,
-                        active: item.id === event.id,
-                    };
-                }
-            );
+    public onSelectedShop(event: RepairShopResponse): void {
+        if (event?.id !== this._repairShop.id)
+            this.detailsPageService.getDataDetailId(event.id);
+    }
 
-            this.detailsPageDriverSer.getDataDetailId(event.id);
+    public onChangeShop(action: string): void {
+        let currentIndex = this.repairShopDropdownList?.findIndex(
+            (repairShop) => repairShop.id === this._repairShop.id
+        );
+
+        switch (action) {
+            case RepairShopDetailsStringEnum.PREVIOUS:
+                currentIndex = --currentIndex;
+
+                if (currentIndex !== -1) {
+                    this.detailsPageService.getDataDetailId(
+                        this.repairShopDropdownList[currentIndex].id
+                    );
+
+                    this.repairShopCurrentIndex = currentIndex;
+                }
+
+                break;
+            case RepairShopDetailsStringEnum.NEXT:
+                currentIndex = ++currentIndex;
+
+                if (
+                    currentIndex !== -1 &&
+                    this.repairShopDropdownList.length > currentIndex
+                ) {
+                    this.detailsPageService.getDataDetailId(
+                        this.repairShopDropdownList[currentIndex].id
+                    );
+
+                    this.repairShopCurrentIndex = currentIndex;
+
+                    break;
+                }
+            default:
+                break;
         }
     }
 
-    public onChangeShop(action: string) {
-        let currentIndex; /*  = this.repairShopsDropdownList.findIndex(
-            (item) => item.active
-        );
- */
-        switch (action) {
-            case 'previous': {
-                currentIndex = --currentIndex;
-                if (currentIndex != -1) {
-                    this.onSelectedShop(
-                        this.repairShopsDropdownList[currentIndex]
-                    );
-                    this.repairShopCurrentIndex = currentIndex;
-                }
-                break;
-            }
-            case 'next': {
-                currentIndex = ++currentIndex;
-                if (
-                    currentIndex !== -1 &&
-                    this.repairShopsDropdownList.length > currentIndex
-                ) {
-                    this.onSelectedShop({
-                        id: this.repairShopsDropdownList[currentIndex].id,
+    public handleRepairShopDetailsTitleCardEmit(event: {
+        event: RepairShopMinimalResponse;
+        type: string;
+    }): void {
+        switch (event.type) {
+            case RepairShopDetailsStringEnum.SELECT_REPAIR_SHOP:
+                if (event.event.name === RepairShopDetailsStringEnum.ADD_NEW) {
+                    this.modalService.openModal(RepairShopModalComponent, {
+                        size: RepairShopDetailsStringEnum.MEDIUM,
                     });
-                    this.repairShopCurrentIndex = currentIndex;
+
+                    return;
                 }
+
+                this.onSelectedShop(event.event);
+
                 break;
-            }
-            default: {
+            case RepairShopDetailsStringEnum.CHANGE_REPAIR_SHOP:
+                this.onChangeShop(event.event as string);
+
                 break;
-            }
+            default:
+                break;
         }
     }
 

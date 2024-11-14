@@ -448,7 +448,7 @@
                                     class="modal-deactivate-btn"
                                     type="button"
                                 >
-                                    Close Business
+                                    {{businessStatus === 1 ? 'Close Business' : 'Open Business'}}
                                 </button>
                             </ng-container>
 
@@ -920,6 +920,7 @@
                                     'comment',
                                     'Company Terminal',
                                     'Company Parking',
+                                    'Company Repair Shop',
                                     'Company Office',
                                     'delete-review',
                                     'User',

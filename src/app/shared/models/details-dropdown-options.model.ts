@@ -26,6 +26,7 @@ interface Action {
     deactivate?: boolean;
     redIcon?: boolean;
     blueIcon?: boolean;
+    greenIcon?: boolean;
     type?: string;
     text?: string;
     danger?: boolean;

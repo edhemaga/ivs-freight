@@ -2,10 +2,10 @@
     [ngClass]="{
         disabedPreviousArrow: [0, -1].includes(repairShopCurrentIndex),
         disableNextArrow:
-            repairShopCurrentIndex === repairShopsDropdownList?.length - 1
+            repairShopCurrentIndex === repairShopDropdownList?.length - 1
     }"
     [tooltipNext]="
-        repairShopCurrentIndex === repairShopsDropdownList?.length - 1
+        repairShopCurrentIndex === repairShopDropdownList?.length - 1
             ? ''
             : 'Next'
     "
@@ -29,7 +29,7 @@
             ? 'Company Owned'
             : 'Favorite'
     "
-    [options]="repairShopsDropdownList"
+    [options]="repairShopDropdownList"
     [currentName]="_cardData?.name"
     [haveDropSVG]="
         !_cardData?.status || _cardData?.pinned || _cardData?.companyOwned
@@ -94,7 +94,9 @@
 
         <!-- Address -->
 
-        <div class="d-flex align-items-center shop-title-card-item">
+        <div
+            class="d-flex align-items-center shop-title-card-item text-truncate"
+        >
             <div
                 ngbTooltip
                 mainTooltip="Address"

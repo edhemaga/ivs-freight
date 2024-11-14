@@ -5,6 +5,7 @@ import moment from 'moment';
 // services
 import { SettingsLocationService } from '@pages/settings/pages/settings-location/services/settings-location.service';
 import { ModalService } from '@shared/services/modal.service';
+import { RepairService } from '@shared/services/repair.service';
 
 // components
 import { DriverCdlModalComponent } from '@pages/driver/pages/driver-modals/driver-cdl-modal/driver-cdl-modal.component';
@@ -27,12 +28,13 @@ import { SettingsTerminalModalComponent } from '@pages/settings/pages/settings-m
 import { ConfirmationMoveModalComponent } from '@shared/components/ta-shared-modals/confirmation-move-modal/confirmation-move-modal.component';
 import { ConfirmationActivationModalComponent } from '@shared/components/ta-shared-modals/confirmation-activation-modal/confirmation-activation-modal.component';
 
-// Enums
+// enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
 import { ConfirmationModalStringEnum } from '@shared/components/ta-shared-modals/confirmation-modal/enums/confirmation-modal-string.enum';
 import { ConfirmationMoveStringEnum } from '@shared/components/ta-shared-modals/confirmation-move-modal/enums/confirmation-move-string.enum';
 import { ConfirmationActivationStringEnum } from '@shared/components/ta-shared-modals/confirmation-activation-modal/enums/confirmation-activation-string.enum';
 import { DropActionsStringEnum } from '@shared/enums/drop-actions-string.enum';
+import { RepairShopResponse } from 'appcoretruckassist';
 
 @Injectable({
     providedIn: 'root',
@@ -42,7 +44,8 @@ export class DropDownService {
 
     constructor(
         private modalService: ModalService,
-        private settingsLocationService: SettingsLocationService
+        private settingsLocationService: SettingsLocationService,
+        private repairService: RepairService
     ) {}
 
     public getParkingById(id: number) {
@@ -881,121 +884,94 @@ export class DropDownService {
             }
         }
     }
-    public dropActionsHeaderRepair(event: any, dataObject?: any, _?: number) {
-        const mappedEvent = {
-            ...dataObject,
-            data: {
-                ...dataObject,
-            },
-        };
-
+    public dropActionsHeaderRepair(
+        event: { id: number; type: string },
+        dataObject?: RepairShopResponse
+    ) {
         switch (event.type) {
             case DropActionsStringEnum.EDIT:
+            case DropActionsStringEnum.WRITE_REVIEW:
                 this.modalService.openModal(
                     RepairShopModalComponent,
-                    { size: DropActionsStringEnum.SMALL },
+                    { size: TableStringEnum.SMALL },
                     {
                         ...event,
-                        disableButton: true,
-                        id: event.id,
+                        openedTab:
+                            event?.type === DropActionsStringEnum.WRITE_REVIEW
+                                ? TableStringEnum.REVIEW
+                                : TableStringEnum.DETAILS,
                     }
                 );
-                break;
 
-            case DropActionsStringEnum.ADD_FAVOURITES:
-            case DropActionsStringEnum.REMOVE_FAVOURITES:
-                this.modalService.openModal(
-                    ConfirmationModalComponent,
-                    { size: DropActionsStringEnum.SMALL },
-                    {
-                        ...mappedEvent,
-                        template: DropActionsStringEnum.REPAIR_SHOP,
-                        type: DropActionsStringEnum.ACTIVATE,
-                        image: false,
-                    }
-                );
                 break;
-
-            case DropActionsStringEnum.MOVE_TO_FAVOURITE:
-                this.modalService.openModal(
-                    ConfirmationModalComponent,
-                    { size: DropActionsStringEnum.SMALL },
-                    {
-                        ...mappedEvent,
-                        template: DropActionsStringEnum.REPAIR_SHOP,
-                        type: DropActionsStringEnum.INFO,
-                        subType: DropActionsStringEnum.FAVORITE,
-                        subTypeStatus: DropActionsStringEnum.MOVE,
-                        image: false,
-                    }
-                );
-                break;
-
-            case DropActionsStringEnum.REMOVE_FROM_FAVOURITE:
-                this.modalService.openModal(
-                    ConfirmationModalComponent,
-                    { size: DropActionsStringEnum.SMALL },
-                    {
-                        ...mappedEvent,
-                        template: DropActionsStringEnum.REPAIR_SHOP,
-                        type: DropActionsStringEnum.INFO,
-                        subType: DropActionsStringEnum.FAVORITE,
-                        subTypeStatus: DropActionsStringEnum.REMOVE,
-                        image: false,
-                    }
-                );
-                break;
-
-            case DropActionsStringEnum.DELETE_ITEM:
-                this.modalService.openModal(
-                    ConfirmationModalComponent,
-                    { size: DropActionsStringEnum.SMALL },
-                    {
-                        ...mappedEvent,
-                        template: DropActionsStringEnum.REPAIR_SHOP,
-                        type: DropActionsStringEnum.DELETE,
-                        image: false,
-                    }
-                );
-                break;
-
-            case DropActionsStringEnum.CLOSE_BUSINESS:
-                this.modalService.openModal(
-                    ConfirmationModalComponent,
-                    { size: DropActionsStringEnum.SMALL },
-                    {
-                        ...mappedEvent,
-                        template: DropActionsStringEnum.REPAIR_SHOP_2,
-                        type: DropActionsStringEnum.DEACTIVATE,
-                        image: false,
-                    }
-                );
-                break;
-
-            case DropActionsStringEnum.OPEN_BUSINESS:
-                this.modalService.openModal(
-                    ConfirmationModalComponent,
-                    { size: DropActionsStringEnum.SMALL },
-                    {
-                        ...mappedEvent,
-                        template: DropActionsStringEnum.REPAIR_SHOP_2,
-                        type: DropActionsStringEnum.ACTIVATE,
-                        image: false,
-                    }
-                );
-                break;
-
             case DropActionsStringEnum.REPAIR_2:
+                const editData = {
+                    data: {
+                        ...dataObject,
+                        id: event.id,
+                    },
+                    type: TableStringEnum.ADD_BILL,
+                };
+
                 this.modalService.openModal(
                     RepairOrderModalComponent,
                     { size: DropActionsStringEnum.LARGE },
                     {
-                        template: DropActionsStringEnum.REPAIR_SHOP_2,
-                        type: DropActionsStringEnum.SPECIFIC_REPAIR_SHOP,
-                        shopId: event.id ? event.id : null,
+                        ...editData,
                     }
                 );
 
+                break;
+            case DropActionsStringEnum.MOVE_TO_FAVOURITE:
+                this.repairService
+                    .updateRepairShopFavorite(event.id)
+                    .subscribe();
+
+                break;
+            case DropActionsStringEnum.CLOSE_BUSINESS:
+                const mappedEvent = {
+                    ...event,
+                    type: dataObject?.status
+                        ? TableStringEnum.CLOSE
+                        : TableStringEnum.OPEN,
+                };
+
+                this.modalService.openModal(
+                    ConfirmationActivationModalComponent,
+                    { size: TableStringEnum.SMALL },
+                    {
+                        ...mappedEvent,
+                        template: TableStringEnum.INFO,
+                        subType: TableStringEnum.REPAIR_SHOP,
+                        subTypeStatus: TableStringEnum.BUSINESS,
+                        tableType:
+                            ConfirmationActivationStringEnum.REPAIR_SHOP_TEXT,
+                        modalTitle: dataObject?.name,
+                        modalSecondTitle: dataObject?.address?.address,
+                    }
+                );
+
+                break;
+            case DropActionsStringEnum.DELETE_ITEM:
+                const deleteEvent = {
+                    ...event,
+                    data: {
+                        ...dataObject,
+                    },
+                };
+
+                this.modalService.openModal(
+                    ConfirmationModalComponent,
+                    { size: TableStringEnum.DELETE },
+                    {
+                        ...deleteEvent,
+                        template: TableStringEnum.REPAIR_SHOP,
+                        type: TableStringEnum.DELETE,
+                    }
+                );
+
+                break;
+            default:
                 break;
         }
     }

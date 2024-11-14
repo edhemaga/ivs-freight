@@ -2,18 +2,18 @@ import { Injectable } from '@angular/core';
 
 import { Observable, forkJoin, tap } from 'rxjs';
 
-// Services
+// services
 import { FormDataService } from '@shared/services/form-data.service';
 import { TruckassistTableService } from '@shared/services/truckassist-table.service';
 
-// Store
+// store
 import { BrokerStore } from '@pages/customer/state/broker-state/broker.store';
 import { BrokerMinimalListStore } from '@pages/customer/state/broker-details-state/broker-minimal-list-state/broker-minimal-list.store';
 import { BrokerDetailsListStore } from '@pages/customer/state/broker-details-state/broker-details-list-state/broker-details-list.store';
 import { BrokerDetailsStore } from '@pages/customer/state/broker-details-state/broker-details.store';
 import { BrokerMinimalListQuery } from '@pages/customer/state/broker-details-state/broker-minimal-list-state/broker-minimal-list.query';
 
-// Models
+// models
 import {
     BrokerService as BrokerMainService,
     RatingReviewService,
@@ -29,9 +29,11 @@ import {
     BrokerInvoiceAgeingResponse,
     BrokerLoadsResponse,
     BrokerByIdResponse,
+    ReviewResponse,
+    RatingReviewResponse,
 } from 'appcoretruckassist';
 
-// Enums
+// Eenums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
 
 @Injectable({
@@ -552,50 +554,47 @@ export class BrokerService {
         });
     }
 
-    public addNewReview(data, currentId) {
-        this.getBrokerById(currentId).subscribe((res) => {
-            const brokerData = { ...res };
+    public addNewReview(review: ReviewResponse, brokerId: number): void {
+        this.getBrokerById(brokerId).subscribe((broker) => {
+            const reviewedBroker = {
+                ...broker,
+                ratingReviews: [...(broker.ratingReviews || []), review],
+            };
 
-            brokerData?.ratingReviews.push(data);
-
-            this.brokerItemStore.update(brokerData.id, {
-                ratingReviews: brokerData.ratingReviews,
+            this.brokerItemStore.update(brokerId, {
+                ratingReviews: reviewedBroker.ratingReviews,
             });
 
-            this.brokerStore.update(brokerData.id, {
-                ratingReviews: brokerData.ratingReviews,
+            this.brokerStore.update(brokerId, {
+                ratingReviews: reviewedBroker.ratingReviews,
             });
 
             this.tableService.sendActionAnimation({
                 animation: TableStringEnum.UPDATE,
                 tab: TableStringEnum.BROKER,
-                data: brokerData,
-                id: brokerData.id,
+                data: reviewedBroker,
+                id: brokerId,
             });
         });
     }
 
-    public deleteReview(reviewId, brokerId) {
-        let brokerData = JSON.parse(
-            JSON.stringify(this.brokerItemStore?.getValue()?.entities[brokerId])
+    public deleteReview(reviewId: number, brokerId: number): void {
+        const brokerData = {
+            ...this.brokerItemStore?.getValue()?.entities[brokerId],
+        };
+
+        const filteredRatingReviews = brokerData.ratingReviews?.filter(
+            (review: RatingReviewResponse) =>
+                !(review.reviewId === reviewId || review.ratingId === reviewId)
         );
 
-        brokerData?.ratingReviews.map((item, index) => {
-            if (item.reviewId) {
-                if (item.reviewId == reviewId) {
-                    brokerData?.ratingReviews.splice(index, 1);
-                }
-            } else {
-                if (item.ratingId == reviewId) {
-                    brokerData?.ratingReviews.splice(index, 1);
-                }
-            }
-        });
+        brokerData.ratingReviews = filteredRatingReviews;
 
-        this.brokerItemStore.update(brokerData.id, {
+        this.brokerItemStore.update(brokerId, {
             ratingReviews: brokerData.ratingReviews,
         });
-        this.brokerStore.update(brokerData.id, {
+
+        this.brokerStore.update(brokerId, {
             ratingReviews: brokerData.ratingReviews,
         });
 
@@ -603,7 +602,7 @@ export class BrokerService {
             animation: TableStringEnum.UPDATE,
             tab: TableStringEnum.BROKER,
             data: brokerData,
-            id: brokerData.id,
+            id: brokerId,
         });
     }
 

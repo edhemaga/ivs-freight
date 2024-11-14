@@ -49,7 +49,7 @@ export class RepairShopDetailsTitleCardComponent {
     }
 
     @Input() repairShopCurrentIndex: number;
-    @Input() repairShopsDropdownList: RepairShopResponse[];
+    @Input() repairShopDropdownList: RepairShopResponse[];
 
     @Output() cardValuesEmitter = new EventEmitter<{
         event: RepairShopMinimalResponse;

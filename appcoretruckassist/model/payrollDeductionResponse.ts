@@ -30,6 +30,8 @@ export interface PayrollDeductionResponse {
     currentRecurrance?: number | null;
     limitedNumber?: number | null;
     limitedAmount?: number | null;
+    limited?: boolean | null;
+    recurring?: boolean | null;
     childPayrollDeductions?: Array<PayrollDeductionChildResponse> | null;
     createdAt?: string;
     updatedAt?: string;

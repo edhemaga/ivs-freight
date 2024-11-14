@@ -2,7 +2,10 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 // resolvers
-import { RepairDetailsResolver } from '@pages/repair/resolvers';
+import {
+    RepairDetailsResolver,
+    RepairMinimalResolver,
+} from '@pages/repair/resolvers';
 
 // components
 import { RepairTableComponent } from '@pages/repair/pages/repair-table/repair-table.component';
@@ -19,7 +22,10 @@ const routes: Routes = [
             import(
                 '@pages/repair/pages/repair-shop-details/repair-shop-details.component'
             ).then((m) => m.RepairShopDetailsComponent),
-        resolve: { repairShopResolve: RepairDetailsResolver },
+        resolve: {
+            repairShop: RepairDetailsResolver,
+            repairShopMinimal: RepairMinimalResolver,
+        },
         data: { title: 'Repair Shop Details' },
     },
 ];

@@ -21,5 +21,7 @@ export interface PayrollDeductionChildResponse {
     isMoved?: boolean | null;
     limited?: boolean | null;
     recurring?: boolean | null;
+    isNext?: boolean | null;
+    isLast?: boolean | null;
 }
 

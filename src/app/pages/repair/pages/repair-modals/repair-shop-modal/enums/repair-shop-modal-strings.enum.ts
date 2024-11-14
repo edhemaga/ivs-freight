@@ -6,6 +6,7 @@ export enum RepairShopModalStringEnum {
     SECOND_END_TIME = 'secondEndTime',
     DOUBLE_SHIFT = 'isDoubleShift',
     IS_WORKING_DAY = 'isWorkingDay',
+    SHIFTS = 'shifts',
     OPEN_ALWAYS = 'openAlways',
     PINNED = 'pinned',
     ADDRESS = 'address',
@@ -32,6 +33,9 @@ export enum RepairShopModalStringEnum {
     MONTHLY_DAYS = 'monthlyDays',
     RENT = 'rent',
     HOLIDAY = 'holiday',
+    HOLIDAY_LABEL = 'Holiday',
     DAY_LABEL = 'dayLabel',
+    DAY_OF_WEEK = 'dayOfWeek',
+    COVER = 'cover',
     EMPTY_STRING = '',
 }

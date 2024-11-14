@@ -1,7 +1,7 @@
 import { LoadDetailsConstants } from '@pages/load/pages/load-details/utils/constants/load-details.constants';
 
 // models
-import { DetailsDropdownOptions } from '@pages/driver/pages/driver-details/models/details-dropdown-options.model';
+import { DetailsDropdownOptions } from '@shared/models/details-dropdown-options.model';
 import { DetailsConfig } from '@shared/models/details-config.model';
 import { LoadResponse } from 'appcoretruckassist';
 import { MultipleSelectDetailsDropdownItem } from '@pages/load/pages/load-details/components/load-details-item/models/multiple-select-details-dropdown-item.model';
@@ -60,7 +60,9 @@ export class LoadDetailsHelper {
                     text: 'Are you sure you want to delete driver(s)?',
                     svg: 'assets/svg/common/ic_trash_updated.svg',
                     iconName: 'delete',
-                    disabled: LoadDetailsHelper.enableDeleteButton(load.statusType.name),
+                    disabled: LoadDetailsHelper.enableDeleteButton(
+                        load.statusType.name
+                    ),
                     danger: true,
                     show: true,
                     redIcon: true,
@@ -157,7 +159,10 @@ export class LoadDetailsHelper {
         });
     }
 
-    static enableDeleteButton(loadTypeName: string) : boolean {
-        return !(loadTypeName.toLowerCase() ===TableStringEnum.TEMPLATE || loadTypeName.toLowerCase() === TableStringEnum.PENDING);
+    static enableDeleteButton(loadTypeName: string): boolean {
+        return !(
+            loadTypeName.toLowerCase() === TableStringEnum.TEMPLATE ||
+            loadTypeName.toLowerCase() === TableStringEnum.PENDING
+        );
     }
 }
