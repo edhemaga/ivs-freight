@@ -998,7 +998,6 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
         }, 900);
     }
 
-    // table filters
     public setTableFilter(): void {
         this.tableService.currentSetTableFilter
             .pipe(takeUntil(this.destroy$))
@@ -1188,7 +1187,6 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
             });
     }
 
-    // cards
     public updateCardView(): void {
         switch (this.selectedTab) {
             case TableStringEnum.ACTIVE:
@@ -1222,7 +1220,6 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
         this.repairCardsModalService.updateTab(this.selectedTab);
     }
 
-    // actions
     public onToolBarAction(event: TableToolbarActions): void {
         if (event.action === TableStringEnum.TAB_SELECTED) {
             this.selectedTab = event.tabData.field;
@@ -1625,7 +1622,6 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
         };
     }
 
-    // Map Shop Data
     private mapShopData(repairShop: RepairShopListDto): MappedRepairShop {
         const {
             address,
@@ -1958,7 +1954,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                     const clusterMarkers: IMapMarkers[] = [];
                     const markers: IMapMarkers[] = [];
 
-                    clustersResponse.forEach((data, index) => {
+                    clustersResponse?.forEach((data, index) => {
                         const previousClusterData =
                             this.mapData.clusterMarkers.find(
                                 (item) =>
@@ -2059,7 +2055,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
             )
             .pipe(takeUntil(this.destroy$))
             .subscribe((mapListResponse: any) => {
-                const mappedListData = mapListResponse.pagination.data.map(
+                const mappedListData = mapListResponse?.pagination?.data?.map(
                     (item) => {
                         const mapItemData = this.mapShopData(item);
 
@@ -2070,7 +2066,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                 const newMapListData = {
                     ...mapListResponse,
                     pagination: {
-                        ...mapListResponse.pagination,
+                        ...mapListResponse?.pagination,
                         data: mappedListData,
                     },
                     addData:

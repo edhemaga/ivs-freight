@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 
-import { Observable, switchMap, tap } from 'rxjs';
+import { Observable, of, switchMap, tap } from 'rxjs';
 
 // store
 import { RepairTruckStore } from '@pages/repair/state/repair-truck-state/repair-truck.store';
@@ -398,7 +398,7 @@ export class RepairService {
         search1?: string,
         search2?: string
     ): Observable<Array<ClusterResponse>> {
-        return this.repairShopService.apiRepairshopClustersGet(
+        return of(null); /* this.repairShopService.apiRepairshopClustersGet(
             northEastLatitude,
             northEastLongitude,
             southWestLatitude,
@@ -428,7 +428,7 @@ export class RepairService {
             search,
             search1,
             search2
-        );
+        ); */
     }
 
     public getRepairShopMapList(
@@ -450,7 +450,7 @@ export class RepairService {
         search1?: string,
         search2?: string
     ): Observable<RepairShopListResponse> {
-        return this.repairShopService.apiRepairshopListmapGet(
+        return of(null); /* this.repairShopService.apiRepairshopListmapGet(
             northEastLatitude,
             northEastLongitude,
             southWestLatitude,
@@ -470,7 +470,7 @@ export class RepairService {
             search,
             search1,
             search2
-        );
+        ); */
     }
 
     public getRepairShopChart(

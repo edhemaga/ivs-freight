@@ -101,7 +101,7 @@ export class TaMapListComponent
         if (changes.mapListContent) {
             this.checkResizeButton();
 
-            this.mapListContent.map((data) => {
+            this.mapListContent?.map((data) => {
                 if (data.actionAnimation == 'delete') {
                     this.deleteAnimation(data.id);
                 }
