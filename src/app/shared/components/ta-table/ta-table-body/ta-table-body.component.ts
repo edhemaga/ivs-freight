@@ -38,7 +38,6 @@ import { TruckassistTableService } from '@shared/services/truckassist-table.serv
 import { DetailsDataService } from '@shared/services/details-data.service';
 import { FilesService } from '@shared/services/files.service';
 import { LoadService } from '@shared/services/load.service';
-import { CaProfileImageComponent, CaSearchMultipleStatesService } from 'ca-components';
 
 // decorators
 import { Titles } from '@core/decorators/titles.decorator';
@@ -57,6 +56,7 @@ import { TaPasswordAccountHiddenCharactersComponent } from '@shared/components/t
 import { LoadStatusStringComponent } from '@pages/load/components/load-status-string/load-status-string.component';
 import { TaStatusComponentComponent } from '@shared/components/ta-status-component/ta-status-component.component';
 import { TaOpenHoursDropdownComponent } from '@shared/components/ta-open-hours-dropdown/ta-open-hours-dropdown.component';
+import { CaProfileImageComponent, CaSearchMultipleStatesService } from 'ca-components';
 
 // modules
 import { AngularSvgIconModule } from 'angular-svg-icon';

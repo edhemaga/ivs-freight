@@ -39,19 +39,19 @@ import { MethodsGlobalHelper } from '@shared/utils/helpers/methods-global.helper
 import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calculations.helper';
 
 //Models
-import { FuelItemResponse, FuelStopListResponse, FuelStopResponse, FuelTransactionResponse, SortOrder } from 'appcoretruckassist';
+import { FuelStopListResponse, FuelStopResponse, FuelTransactionResponse } from 'appcoretruckassist';
 import { FuelTransactionListResponse } from 'appcoretruckassist';
 import { TableColumnConfig } from '@shared/models/table-models/table-column-config.model';
 import { DropdownItem } from '@shared/models/card-models/card-table-data.model';
 import { IFuelTableData } from '@pages/fuel/pages/fuel-table/models/fuel-table-data.model';
 import { AvatarColors } from '@pages/driver/pages/driver-table/models/avatar-colors.model';
+import { SortTypes } from '@shared/models/sort-types.model';
 
 //States
 import { FuelQuery } from '@pages/fuel/state/fuel-state/fuel-state.query';
 
 //Enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
-import { SortTypes } from '@shared/models/sort-types.model';
 import { eFuelTransactionType } from '@pages/fuel/pages/fuel-table/enums';
 
 //Services
