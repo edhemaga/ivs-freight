@@ -7,14 +7,14 @@ import {
     IAddPayrollClosedPayment,
     PayrollDriverMileageCollapsedListResponse,
     PayrollDriverMileageExpandedListResponse,
-} from '../models/payroll.model';
+} from '@pages/accounting/pages/payroll/state/models/payroll.model';
 
 // ENUMS
-import { PayrollMileageDriverCollapsedListEnum } from '../enums/driver_mileage/payroll_mileage_driver_collapsed.enums';
-import { PayrollMileageDriverExpandedListEnum } from '../enums/driver_mileage/payroll_mileage_driver_expanded.enums';
-import { PayrollMileageDriverClosedPayrollEnum } from '../enums/driver_mileage/payroll_mileage_driver_closed.enums';
-import { PayrollSoloMileageDriverEnum } from '../enums/driver_mileage/payroll_solo_mileage_driver.enums';
-import { IGet_Payroll_Solo_Mileage_Driver_Report } from '../models/payroll.model';
+import { PayrollMileageDriverCollapsedListEnum } from '@pages/accounting/pages/payroll/state/enums/driver_mileage/payroll_mileage_driver_collapsed.enums';
+import { PayrollMileageDriverExpandedListEnum } from '@pages/accounting/pages/payroll/state/enums/driver_mileage/payroll_mileage_driver_expanded.enums';
+import { PayrollMileageDriverClosedPayrollEnum } from '@pages/accounting/pages/payroll/state/enums/driver_mileage/payroll_mileage_driver_closed.enums';
+import { PayrollSoloMileageDriverEnum } from '@pages/accounting/pages/payroll/state/enums/driver_mileage/payroll_solo_mileage_driver.enums';
+import { IGet_Payroll_Solo_Mileage_Driver_Report } from '@pages/accounting/pages/payroll/state/models/payroll.model';
 
 export const getPayrollSoloMileageDriver = createAction(
     PayrollSoloMileageDriverEnum.GET_PAYROLL_SOLO_MILEAGE_DRIVER

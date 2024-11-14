@@ -1,13 +1,15 @@
 import { Injectable } from '@angular/core';
 import { Actions } from '@ngrx/effects';
-import { PayrollService } from '../../services/payroll.service';
+
+// Services
+import { PayrollService } from '@pages/accounting/pages/payroll/services/payroll.service';
 
 // Effects
-import * as PayrollMileageDriverEffects from './payroll_effects/driver_mileage.effects';
-import * as PayrollMainEffects from './payroll_effects/payroll_main.effects';
-import * as PayrollCommissionDriverEffect from './payroll_effects/driver_commission.effects';
-import * as PayrollOwnerDriverEffect from './payroll_effects/driver_owner.effect';
-import * as PayrollFlatRateEffect from './payroll_effects/driver_flat_rate.effects';
+import * as PayrollMileageDriverEffects from '@pages/accounting/pages/payroll/state/effects/payroll_effects/driver_mileage.effects';
+import * as PayrollMainEffects from '@pages/accounting/pages/payroll/state/effects/payroll_effects/payroll_main.effects';
+import * as PayrollCommissionDriverEffect from '@pages/accounting/pages/payroll/state/effects/payroll_effects/driver_commission.effects';
+import * as PayrollOwnerDriverEffect from '@pages/accounting/pages/payroll/state/effects/payroll_effects/driver_owner.effect';
+import * as PayrollFlatRateEffect from '@pages/accounting/pages/payroll/state/effects/payroll_effects/driver_flat_rate.effects';
 
 @Injectable()
 export class PayrollEffect {

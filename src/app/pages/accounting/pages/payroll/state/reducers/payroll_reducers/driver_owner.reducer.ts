@@ -1,11 +1,12 @@
+// Models
 import { PayrollOwnerClosedResponse, PayrollOwnerResponse } from 'appcoretruckassist';
-import { IDriverOwnerList } from '../../models/driver_owner.model';
+import { IDriverOwnerList } from '@pages/accounting/pages/payroll/state/models/driver_owner.model';
 import {
     IGet_Payroll_Commission_Driver_Report,
     PayrollDriverMileageCollapsedListResponse,
     PayrollDriverMileageExpandedListResponse,
     PayrollState,
-} from '../../models/payroll.model';
+} from '@pages/accounting/pages/payroll/state/models/payroll.model';
 
 export const onGetPayrollOwnerDriverList = (state: PayrollState) => ({
     ...state,

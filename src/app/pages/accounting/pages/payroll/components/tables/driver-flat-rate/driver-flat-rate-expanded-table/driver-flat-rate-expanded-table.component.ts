@@ -35,12 +35,13 @@ export class DriverFlatRateExpandedTableComponent
     @Input() expandTable: boolean;
 
     // Outputs
-    @Output() expandTableEvent: EventEmitter<PayrollDriverMileageExpandedListResponse> =
+    @Output()
+    expandTableEvent: EventEmitter<PayrollDriverMileageExpandedListResponse> =
         new EventEmitter<PayrollDriverMileageExpandedListResponse>();
 
     public loading$: Observable<boolean>;
-    tableData$: Observable<PayrollDriverMileageExpandedListResponse[]>;
-    columns: ColumnConfig[];
+    public tableData$: Observable<PayrollDriverMileageExpandedListResponse[]>;
+    public columns: ColumnConfig[];
 
     // TEMPLATES
     @ViewChild('customStatus', { static: false })
@@ -53,7 +54,7 @@ export class DriverFlatRateExpandedTableComponent
         private payrollFacadeService: PayrollFacadeService
     ) {}
 
-    ngAfterViewInit() {
+    ngAfterViewInit(): void {
         this.columns = [
             {
                 header: 'Payroll',
@@ -158,7 +159,7 @@ export class DriverFlatRateExpandedTableComponent
         this.subscribeToStoreData();
     }
 
-    subscribeToStoreData() {
+    subscribeToStoreData(): void {
         this.payrollDriverFlatRateFacadeService.getPayrollFlatRateMileageExpandedList(
             this.driverId
         );
@@ -168,7 +169,9 @@ export class DriverFlatRateExpandedTableComponent
             this.payrollDriverFlatRateFacadeService.selectPayrollDriverFlatRateExpanded$;
     }
 
-    selectPayrollReport(report: PayrollDriverMileageExpandedListResponse) {
+    selectPayrollReport(
+        report: PayrollDriverMileageExpandedListResponse
+    ): void {
         this.expandTableEvent.emit(report);
     }
 

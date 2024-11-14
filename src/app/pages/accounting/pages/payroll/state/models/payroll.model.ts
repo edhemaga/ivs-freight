@@ -9,6 +9,7 @@ import {
 import { IDriverCommissionList } from './driver_commission.model';
 import { IDriverOwnerList } from './driver_owner.model';
 import { IDriverFlatRateList } from './driver_flat_rate.model';
+import { PayrollTablesStatus } from '../enums';
 
 export interface PayrollState {
     payrollCounts: PayrollCountsResponse;
@@ -39,7 +40,7 @@ export interface PayrollState {
     driverFlatRateExpandedList?: PayrollDriverMileageExpandedListResponse[];
     driverOwnerExpandedList?: PayrollDriverMileageExpandedListResponse[];
     driverFlatRateList?: IDriverFlatRateList;
-    payrollOpenedTab: 'open' | 'closed';
+    payrollOpenedTab: PayrollTablesStatus;
 }
 
 export interface IPayrollCountsSelector {
@@ -116,7 +117,7 @@ export interface IPayrollProccessPaymentModal {
     id: number;
     totalEarnings: number;
     payrollNumber: string;
-    selectedTab: 'open' | 'closed';
+    selectedTab: PayrollTablesStatus;
     payrollType?: PayrollTypes;
 }
 export interface IAddPayrollClosedPayment {
@@ -147,8 +148,12 @@ export interface IGet_Payroll_Commission_Driver_Report {
     selectedBonusIds?: number[];
 }
 
-export type PayrollTypes = 'miles' | 'commission' | 'flat rate' | 'owner';
-
+export enum PayrollTypes {
+    MILES = 'miles',
+    COMMISSION = 'commission',
+    FLAT_RATE = 'flat rate',
+    OWNER = 'owner'
+}
 export interface IGetPayrollByIdAndOptions {
     reportId: string;
     lastLoadDate?: string;

@@ -1,12 +1,12 @@
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { catchError, map, Observable, of, switchMap, tap } from 'rxjs';
+import { catchError, map, Observable, of, switchMap } from 'rxjs';
 import { Action } from '@ngrx/store';
 
 // ACTIONS
-import * as PayrollFlatRateDriverActions from '../../actions/payroll_flat_rate_driver.actions';
+import * as PayrollFlatRateDriverActions from '@pages/accounting/pages/payroll/state/actions/payroll_flat_rate_driver.actions';
 
 // SERVICES
-import { PayrollService } from '../../../services/payroll.service';
+import { PayrollService } from '@pages/accounting/pages/payroll/services/payroll.service';
 
 export function getPayrollFlatRateDriverListEffect(
     actions$: Actions,
@@ -106,17 +106,7 @@ export function closePayrollFlatRateReportEffect(
                         )
                         .pipe(
                             map((data) => {
-                                return PayrollFlatRateDriverActions
-                                    .closePayrollFlatRateReportDriverSuccess
-                                    // {
-                                    //     payroll: data,
-                                    // }
-                                    ();
-                            }),
-                            tap((data) => {
-                                // this.store.dispatch(
-                                //   PaymentActions.restartRefreshDataSuccess({ flag: false })
-                                // );
+                                return PayrollFlatRateDriverActions.closePayrollFlatRateReportDriverSuccess();
                             }),
                             catchError((error) =>
                                 of(
@@ -260,11 +250,6 @@ export function addPayrollFlatRateClosedPayrollPaymentEffect(
                             map((data) => {
                                 return PayrollFlatRateDriverActions.driverFlatRatePayrollClosedPaymentsSuccess();
                             }),
-                            // tap((data) => {
-                            //     // this.store.dispatch(
-                            //     //   PaymentActions.restartRefreshDataSuccess({ flag: false })
-                            //     // );
-                            // }),
                             catchError((error) =>
                                 of(
                                     PayrollFlatRateDriverActions.driverFlatRatePayrollClosedPaymentsError(

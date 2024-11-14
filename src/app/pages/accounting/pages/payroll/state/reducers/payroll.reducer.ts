@@ -1,21 +1,24 @@
 import { createReducer, on } from '@ngrx/store';
 
 // Actions
-import * as PayrollActions from '../actions/payroll.actions';
-import * as PayrollSoloMileageDriver from '../actions/payroll_solo_mileage_driver.actions';
-import * as PayrollCommissionDriverActions from '../actions/payroll_commission_driver.actions';
-import * as PayrollOwnerDriverActions from '../actions/payroll_owner_driver.action';
-import * as PayrollFlatRateActions from '../actions/payroll_flat_rate_driver.actions';
+import * as PayrollActions from '@pages/accounting/pages/payroll/state/actions/payroll.actions';
+import * as PayrollSoloMileageDriver from '@pages/accounting/pages/payroll/state/actions/payroll_solo_mileage_driver.actions';
+import * as PayrollCommissionDriverActions from '@pages/accounting/pages/payroll/state/actions/payroll_commission_driver.actions';
+import * as PayrollOwnerDriverActions from '@pages/accounting/pages/payroll/state/actions/payroll_owner_driver.action';
+import * as PayrollFlatRateActions from '@pages/accounting/pages/payroll/state/actions/payroll_flat_rate_driver.actions';
 
 // Models
-import { PayrollState } from '../models/payroll.model';
+import { PayrollState } from '@pages/accounting/pages/payroll/state/models/payroll.model';
 
 // Reducers
-import * as PayrollMileageDriverReducers from './payroll_reducers/driver_mileage.reducer';
-import * as PayrollMainReducers from './payroll_reducers/payroll_main.reducer';
-import * as PayrollCommissionDriverReducers from './payroll_reducers/driver_commission.reducer';
-import * as PayrollOwnerDriverReducers from './payroll_reducers/driver_owner.reducer';
-import * as PayrollFlatRateDriverReducers from './payroll_reducers/driver_flat_rate.reducer';
+import * as PayrollMileageDriverReducers from '@pages/accounting/pages/payroll/state/reducers/payroll_reducers/driver_mileage.reducer';
+import * as PayrollMainReducers from '@pages/accounting/pages/payroll/state/reducers/payroll_reducers/payroll_main.reducer';
+import * as PayrollCommissionDriverReducers from '@pages/accounting/pages/payroll/state/reducers/payroll_reducers/driver_commission.reducer';
+import * as PayrollOwnerDriverReducers from '@pages/accounting/pages/payroll/state/reducers/payroll_reducers/driver_owner.reducer';
+import * as PayrollFlatRateDriverReducers from '@pages/accounting/pages/payroll/state/reducers/payroll_reducers/driver_flat_rate.reducer';
+
+// Enums
+import { PayrollTablesStatus } from '@pages/accounting/pages/payroll/state/enums';
 
 export const payrollState: PayrollState = {
     payrollCounts: {},
@@ -31,7 +34,7 @@ export const payrollState: PayrollState = {
     reportLoading: false,
     expandedReportTable: false,
     closeReportPaymentLoading: false,
-    payrollOpenedTab: 'open',
+    payrollOpenedTab: PayrollTablesStatus.OPEN,
 };
 
 export const payrollReducer = createReducer(

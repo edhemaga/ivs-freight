@@ -18,27 +18,28 @@ import { Observable, takeUntil, Subject } from 'rxjs';
 import { NameInitialsPipe } from '@shared/pipes/name-initials.pipe';
 
 // Store
-import { DriverState } from '@pages/driver/state/driver-state/driver.store';
-import { DriversInactiveState } from '@pages/driver/state/driver-inactive-state/driver-inactive.store';
-import { PayrollFacadeService } from './state/services/payroll.service';
-
+import { PayrollFacadeService } from '@pages/accounting/pages/payroll/state/services/payroll.service';
 // Models
-import { IPayrollCountsSelector } from './state/models/payroll.model';
-import { DriverMileageCollapsedTableComponent } from './components/tables/driver-mileage/driver-mileage-collapsed-table/driver-mileage-collapsed-table.component';
+import {
+    PayrollTables,
+    PayrollTablesStatus,
+} from '@pages/accounting/pages/payroll/state/enums';
+import { IPayrollCountsSelector } from '@pages/accounting/pages/payroll/state/models/payroll.model';
+import { DriverMileageCollapsedTableComponent } from '@pages/accounting/pages/payroll/components/tables/driver-mileage/driver-mileage-collapsed-table/driver-mileage-collapsed-table.component';
 
 // Components
 import { PayrollListSummaryOverview } from 'ca-components';
-import { DriverMileageSoloTableComponent } from './components/tables/driver-mileage/driver-mileage-solo-table/driver-mileage-solo-table.component';
-import { DriverMileageExpandedTableComponent } from './components/tables/driver-mileage/driver-mileage-expanded-table/driver-mileage-expanded-table.component';
-import { DriverCommissionSoloTableComponent } from './components/tables/driver-commission/driver-commission-solo-table/driver-commission-solo-table.component';
-import { DriverOwnerTableComponent } from './components/tables/driver-owner/driver-owner-table/driver-owner-table.component';
-import { DriverFlatRateTableComponent } from './components/tables/driver-flat-rate/driver-flat-rate-table/driver-flat-rate-table.component';
-import { DriverCommissionCollapsedTableComponent } from './components/tables/driver-commission/driver-commission-collapsed-table/driver-commission-collapsed-table.component';
-import { DriverFlatRateCollapsedTableComponent } from './components/tables/driver-flat-rate/driver-flat-rate-collapsed-table/driver-flat-rate-collapsed-table.component';
-import { DriverOwnerCollapsedTableComponent } from './components/tables/driver-owner/driver-owner-collapsed-table/driver-owner-collapsed-table.component';
-import { DriverCommissionExpandedTableComponent } from './components/tables/driver-commission/driver-commission-expanded-table/driver-commission-expanded-table.component';
-import { DriverFlatRateExpandedTableComponent } from './components/tables/driver-flat-rate/driver-flat-rate-expanded-table/driver-flat-rate-expanded-table.component';
-import { DriverOwnerExpandedTableComponent } from './components/tables/driver-owner/driver-owner-expanded-table/driver-owner-expanded-table.component';
+import { DriverMileageSoloTableComponent } from '@pages/accounting/pages/payroll/components/tables/driver-mileage/driver-mileage-solo-table/driver-mileage-solo-table.component';
+import { DriverMileageExpandedTableComponent } from '@pages/accounting/pages/payroll/components/tables/driver-mileage/driver-mileage-expanded-table/driver-mileage-expanded-table.component';
+import { DriverCommissionSoloTableComponent } from '@pages/accounting/pages/payroll/components/tables/driver-commission/driver-commission-solo-table/driver-commission-solo-table.component';
+import { DriverOwnerTableComponent } from '@pages/accounting/pages/payroll/components/tables/driver-owner/driver-owner-table/driver-owner-table.component';
+import { DriverFlatRateTableComponent } from '@pages/accounting/pages/payroll/components/tables/driver-flat-rate/driver-flat-rate-table/driver-flat-rate-table.component';
+import { DriverCommissionCollapsedTableComponent } from '@pages/accounting/pages/payroll/components/tables/driver-commission/driver-commission-collapsed-table/driver-commission-collapsed-table.component';
+import { DriverFlatRateCollapsedTableComponent } from '@pages/accounting/pages/payroll/components/tables/driver-flat-rate/driver-flat-rate-collapsed-table/driver-flat-rate-collapsed-table.component';
+import { DriverOwnerCollapsedTableComponent } from '@pages/accounting/pages/payroll/components/tables/driver-owner/driver-owner-collapsed-table/driver-owner-collapsed-table.component';
+import { DriverCommissionExpandedTableComponent } from '@pages/accounting/pages/payroll/components/tables/driver-commission/driver-commission-expanded-table/driver-commission-expanded-table.component';
+import { DriverFlatRateExpandedTableComponent } from '@pages/accounting/pages/payroll/components/tables/driver-flat-rate/driver-flat-rate-expanded-table/driver-flat-rate-expanded-table.component';
+import { DriverOwnerExpandedTableComponent } from '@pages/accounting/pages/payroll/components/tables/driver-owner/driver-owner-expanded-table/driver-owner-expanded-table.component';
 @Component({
     selector: 'app-payroll',
     templateUrl: './payroll.component.html',
@@ -48,36 +49,37 @@ import { DriverOwnerExpandedTableComponent } from './components/tables/driver-ow
     providers: [NameInitialsPipe],
 })
 export class PayrollComponent implements OnInit, AfterViewInit, OnDestroy {
+    // Templates
     @ViewChildren('container', { read: ViewContainerRef })
     containers!: QueryList<ViewContainerRef>;
 
-    componentRef: ComponentRef<any> | null = null;
+    private componentRef: ComponentRef<any> | null = null;
 
-    environmentInjector = inject(EnvironmentInjector); // Inject the EnvironmentInjector
+    private environmentInjector = inject(EnvironmentInjector); // Inject the EnvironmentInjector
 
-    payrollType: string;
-    payrollReportType: string;
-    selectedTabForReport = 'open';
-    selectedOpenFromList: any;
+    public payrollType: string;
+    public payrollReportType: string;
 
-    selectedTab = 'open';
-    tableContainerWidth: number = 0;
-    viewData: any[] = [];
-    resizeObserver: ResizeObserver;
+    public selectedOpenFromList: {
+        fullName: string;
+        payrollCount: number;
+        id: number;
+        title: PayrollTables;
+        hideAvatar?: boolean;
+    };
 
-    driversActive: DriverState[] = [];
-    driversInactive: DriversInactiveState[] = [];
-    mapingIndex: number = 0;
+    public selectedTabForReport = PayrollTablesStatus.OPEN;
+    public selectedTab = PayrollTablesStatus.OPEN;
 
-    payrollCountsResponse$: Observable<IPayrollCountsSelector>;
-    payrollTabCountResponse$: Observable<{
-        open: number;
-        closed: number;
-    }>;
+    // THIS IS TEST FOR TABLE RESIZER
+    private tableContainerWidth: number = 0;
+    private resizeObserver: ResizeObserver;
 
-    reportTableData: any = {};
-    reportTableExpanded$: Observable<boolean>;
-    openedIndex: number = -1;
+    public payrollCountsResponse$: Observable<IPayrollCountsSelector>;
+
+    public reportTableDataId: string = '';
+    public reportTableExpanded$: Observable<boolean>;
+    public openedIndex: number = -1;
 
     private destroy$ = new Subject<void>();
 
@@ -86,7 +88,7 @@ export class PayrollComponent implements OnInit, AfterViewInit, OnDestroy {
         private payrollFacadeService: PayrollFacadeService
     ) {}
 
-    public subscribeToStoreData() {
+    public subscribeToStoreData(): void {
         this.reportTableExpanded$ =
             this.payrollFacadeService.reportTableExpanded$;
         this.payrollFacadeService.getPayrollCounts();
@@ -119,17 +121,19 @@ export class PayrollComponent implements OnInit, AfterViewInit, OnDestroy {
         payrollSummary: PayrollListSummaryOverview;
         status: boolean;
         index: number;
-    }) {
+    }): void {
         this.openedIndex = this.openedIndex === data.index ? -1 : data.index;
         if (data.status) {
-            this.payrollType = `${data.payrollSummary.text} ${data.payrollSummary.type}`;
+            this.payrollType = `${data.payrollSummary.text}${
+                data.payrollSummary.type ? ` ${data.payrollSummary.type}` : ``
+            }`;
 
             this.selectedOpenFromList = undefined;
             this.handleTableShow(data.index);
         }
     }
 
-    handleTableShow(index?: number) {
+    private handleTableShow(index?: number): void {
         const containersArray = this.containers.toArray();
         const mainIndx =
             typeof index !== 'undefined' ? index : this.openedIndex;
@@ -138,8 +142,8 @@ export class PayrollComponent implements OnInit, AfterViewInit, OnDestroy {
         cointainer.clear();
 
         switch (this.payrollType) {
-            case 'Driver Miles':
-                if (this.selectedTab === 'open') {
+            case PayrollTables.DRIVER_MILES:
+                if (this.selectedTab === PayrollTablesStatus.OPEN) {
                     this.componentRef = cointainer.createComponent(
                         DriverMileageSoloTableComponent,
                         {
@@ -150,7 +154,7 @@ export class PayrollComponent implements OnInit, AfterViewInit, OnDestroy {
                     // Set inputs and subscribe to outputs if componentRef is created
                     if (this.componentRef) {
                         this.componentRef.instance.expandTableEvent.subscribe(
-                            (event: any) => {
+                            (event: { id: string }) => {
                                 this.expandTable(
                                     this.payrollType,
                                     event,
@@ -171,12 +175,12 @@ export class PayrollComponent implements OnInit, AfterViewInit, OnDestroy {
                             this.selectedOpenFromList.id; // Example input property
 
                         this.componentRef.instance.expandTableEvent.subscribe(
-                            (event: any) => {
+                            (event: { id: string }) => {
                                 if (
-                                    this.reportTableData.id != event?.id ||
+                                    this.reportTableDataId != event?.id ||
                                     !this.componentRef.instance.expandTable
                                 ) {
-                                    this.reportTableData = event;
+                                    this.reportTableDataId = event.id;
                                     if (
                                         this.payrollReportType !=
                                         this.payrollType
@@ -208,12 +212,15 @@ export class PayrollComponent implements OnInit, AfterViewInit, OnDestroy {
                     );
 
                     this.componentRef.instance.expandTableEvent.subscribe(
-                        (event: any) => {
+                        (event: {
+                            driver: { fullName: string; id: number };
+                            payrollCount: number;
+                        }) => {
                             this.selectedOpenFromList = {
                                 fullName: event.driver.fullName,
                                 payrollCount: event.payrollCount,
                                 id: event.driver.id,
-                                title: 'Driver (Mile)',
+                                title: PayrollTables.DRIVER_MILES_TITLE,
                             };
 
                             this.handleTableShow();
@@ -221,8 +228,8 @@ export class PayrollComponent implements OnInit, AfterViewInit, OnDestroy {
                     );
                 }
                 break;
-            case 'Driver Flat Rate':
-                if (this.selectedTab === 'open') {
+            case PayrollTables.DRIVER_FLAT_RATE:
+                if (this.selectedTab === PayrollTablesStatus.OPEN) {
                     this.componentRef = cointainer.createComponent(
                         DriverFlatRateTableComponent,
                         {
@@ -233,7 +240,7 @@ export class PayrollComponent implements OnInit, AfterViewInit, OnDestroy {
                     // Set inputs and subscribe to outputs if componentRef is created
                     if (this.componentRef) {
                         this.componentRef.instance.expandTableEvent.subscribe(
-                            (event: any) =>
+                            (event: { id: string }) =>
                                 this.expandTable(
                                     this.payrollType,
                                     event,
@@ -253,12 +260,12 @@ export class PayrollComponent implements OnInit, AfterViewInit, OnDestroy {
                             this.selectedOpenFromList.id; // Example input property
 
                         this.componentRef.instance.expandTableEvent.subscribe(
-                            (event: any) => {
+                            (event: { id: string }) => {
                                 if (
-                                    this.reportTableData.id != event?.id ||
+                                    this.reportTableDataId != event?.id ||
                                     !this.componentRef.instance.expandTable
                                 ) {
-                                    this.reportTableData = event;
+                                    this.reportTableDataId = event.id;
                                     if (
                                         this.payrollReportType !=
                                         this.payrollType
@@ -290,12 +297,15 @@ export class PayrollComponent implements OnInit, AfterViewInit, OnDestroy {
                     );
 
                     this.componentRef.instance.expandTableEvent.subscribe(
-                        (event: any) => {
+                        (event: {
+                            driver: { fullName: string; id: number };
+                            payrollCount: number;
+                        }) => {
                             this.selectedOpenFromList = {
                                 fullName: event.driver.fullName,
                                 payrollCount: event.payrollCount,
                                 id: event.driver.id,
-                                title: 'Driver (Flat Rate)',
+                                title: PayrollTables.DRIVER_FLAT_RATE_TITLE,
                             };
 
                             this.handleTableShow();
@@ -303,8 +313,8 @@ export class PayrollComponent implements OnInit, AfterViewInit, OnDestroy {
                     );
                 }
                 break;
-            case 'Driver Commission':
-                if (this.selectedTab === 'open') {
+            case PayrollTables.DRIVER_COMMISSION:
+                if (this.selectedTab === PayrollTablesStatus.OPEN) {
                     this.componentRef = cointainer.createComponent(
                         DriverCommissionSoloTableComponent,
                         {
@@ -315,7 +325,7 @@ export class PayrollComponent implements OnInit, AfterViewInit, OnDestroy {
                     // Set inputs and subscribe to outputs if componentRef is created
                     if (this.componentRef) {
                         this.componentRef.instance.expandTableEvent.subscribe(
-                            (event: any) =>
+                            (event: { id: string }) =>
                                 this.expandTable(
                                     this.payrollType,
                                     event,
@@ -335,12 +345,12 @@ export class PayrollComponent implements OnInit, AfterViewInit, OnDestroy {
                             this.selectedOpenFromList.id; // Example input property
 
                         this.componentRef.instance.expandTableEvent.subscribe(
-                            (event: any) => {
+                            (event: { id: string }) => {
                                 if (
-                                    this.reportTableData.id != event?.id ||
+                                    this.reportTableDataId != event?.id ||
                                     !this.componentRef.instance.expandTable
                                 ) {
-                                    this.reportTableData = event;
+                                    this.reportTableDataId = event.id;
                                     if (
                                         this.payrollReportType !=
                                         this.payrollType
@@ -372,12 +382,15 @@ export class PayrollComponent implements OnInit, AfterViewInit, OnDestroy {
                     );
 
                     this.componentRef.instance.expandTableEvent.subscribe(
-                        (event: any) => {
+                        (event: {
+                            driver: { fullName: string; id: number };
+                            payrollCount: number;
+                        }) => {
                             this.selectedOpenFromList = {
                                 fullName: event.driver.fullName,
                                 payrollCount: event.payrollCount,
                                 id: event.driver.id,
-                                title: 'Driver (Commission)',
+                                title: PayrollTables.DRIVER_COMMISSION_TITLE,
                             };
 
                             this.handleTableShow();
@@ -385,8 +398,8 @@ export class PayrollComponent implements OnInit, AfterViewInit, OnDestroy {
                     );
                 }
                 break;
-            case 'Owner ':
-                if (this.selectedTab === 'open') {
+            case PayrollTables.DRIVER_OWNER:
+                if (this.selectedTab === PayrollTablesStatus.OPEN) {
                     this.componentRef = cointainer.createComponent(
                         DriverOwnerTableComponent,
                         {
@@ -397,7 +410,7 @@ export class PayrollComponent implements OnInit, AfterViewInit, OnDestroy {
                     // Set inputs and subscribe to outputs if componentRef is created
                     if (this.componentRef) {
                         this.componentRef.instance.expandTableEvent.subscribe(
-                            (event: any) =>
+                            (event: { id: string }) =>
                                 this.expandTable(
                                     this.payrollType,
                                     event,
@@ -417,12 +430,12 @@ export class PayrollComponent implements OnInit, AfterViewInit, OnDestroy {
                             this.selectedOpenFromList.id; // Example input property
 
                         this.componentRef.instance.expandTableEvent.subscribe(
-                            (event: any) => {
+                            (event: { id: string }) => {
                                 if (
-                                    this.reportTableData.id != event?.id ||
+                                    this.reportTableDataId != event?.id ||
                                     !this.componentRef.instance.expandTable
                                 ) {
-                                    this.reportTableData = event;
+                                    this.reportTableDataId = event.id;
 
                                     if (
                                         this.payrollReportType !=
@@ -455,12 +468,16 @@ export class PayrollComponent implements OnInit, AfterViewInit, OnDestroy {
                     );
 
                     this.componentRef.instance.expandTableEvent.subscribe(
-                        (event: any) => {
+                        (event: {
+                            truck: { truckNumber: string; id: number };
+                            owner: string;
+                            payrollCount: number;
+                        }) => {
                             this.selectedOpenFromList = {
                                 fullName: `${event.truck.truckNumber} - ${event.owner}`,
                                 payrollCount: event.payrollCount,
                                 id: event.truck.id,
-                                title: 'Owner',
+                                title: PayrollTables.DRIVER_OWNER_TITLE,
                                 hideAvatar: true,
                             };
 
@@ -485,13 +502,13 @@ export class PayrollComponent implements OnInit, AfterViewInit, OnDestroy {
         }
     }
 
-    expandTable<T extends { id: string }>(
+    private expandTable<T extends { id: string }>(
         payrollType?: string,
         data?: T,
         expandedTable?: boolean
-    ) {
-        if (data && (this.reportTableData?.id != data?.id || !expandedTable)) {
-            this.reportTableData = data;
+    ): void {
+        if (data && (this.reportTableDataId != data?.id || !expandedTable)) {
+            this.reportTableDataId = data.id;
             this.payrollFacadeService.setPayrollReportTableExpanded(true);
 
             if (payrollType) {
@@ -503,7 +520,7 @@ export class PayrollComponent implements OnInit, AfterViewInit, OnDestroy {
         }
     }
 
-    observTableContainer() {
+    private observTableContainer() {
         this.resizeObserver = new ResizeObserver((entries) => {
             entries.forEach((entry) => {
                 this.tableContainerWidth = entry.contentRect.width;
@@ -513,110 +530,19 @@ export class PayrollComponent implements OnInit, AfterViewInit, OnDestroy {
         this.resizeObserver.observe(document.querySelector('.table-container'));
     }
 
-    public summaryControll() {}
-
-    onToolBarAction(tabStatus: 'open' | 'closed') {
+    public onToolBarAction(tabStatus: PayrollTablesStatus): void {
         this.payrollFacadeService.setPayrollOpenedTab(tabStatus);
         this.openedIndex = -1;
         this.expandTable();
         this.payrollFacadeService.getPayrollCounts();
     }
 
-    getTableActions() {
-        return this.selectedTab === 'applicants'
-            ? [
-                  {
-                      title: 'Hire Applicant',
-                      name: 'hire-applicant',
-                      class: '',
-                      contentType: '',
-                  },
-                  {
-                      title: 'Resend Invitation',
-                      name: 'resend-invitation',
-                      class: '',
-                      contentType: '',
-                  },
-                  {
-                      title: 'Add to Favourites',
-                      name: 'add-to-favourites',
-                      class: '',
-                      contentType: '',
-                  },
-                  {
-                      title: 'Add to Favourites',
-                      name: 'add-to-favourites',
-                      class: '',
-                      contentType: '',
-                  },
-                  {
-                      title: 'Delete',
-                      name: 'delete-applicant',
-                      type: 'driver',
-                      text: 'Are you sure you want to delete applicant(s)?',
-                      class: 'delete-text',
-                      contentType: 'delete',
-                  },
-              ]
-            : [
-                  {
-                      title: 'Edit Driver',
-                      name: 'edit',
-                      class: 'regular-text',
-                      contentType: 'edit',
-                  },
-                  {
-                      title: 'Add CDL',
-                      name: 'new-licence',
-                      class: 'regular-text',
-                      contentType: 'add',
-                  },
-                  {
-                      title: 'Add Medical',
-                      name: 'new-medical',
-                      class: 'regular-text',
-                      contentType: 'add',
-                  },
-                  {
-                      title: 'Add MVR',
-                      name: 'new-mvr',
-                      class: 'regular-text',
-                      contentType: 'add',
-                  },
-                  {
-                      title: 'Add Test',
-                      name: 'new-drug',
-                      class: 'regular-text',
-                      contentType: 'add',
-                  },
-                  {
-                      title:
-                          this.selectedTab === 'inactive'
-                              ? 'Activate'
-                              : 'Deactivate',
-                      name: 'activate-item',
-                      class: 'regular-text',
-                      contentType: 'activate',
-                  },
-                  {
-                      title: 'Delete',
-                      name: 'delete-item',
-                      type: 'driver',
-                      text: 'Are you sure you want to delete driver(s)?',
-                      class: 'delete-text',
-                      contentType: 'delete',
-                  },
-              ];
-    }
-
-    openPayrollReport() {}
-
     ngOnDestroy(): void {
         this.destroy$.next();
         this.destroy$.complete();
     }
 
-    closeOpenPreview(e: any) {
+    public closeOpenPreview(e: Event): void {
         e.preventDefault();
         e.stopPropagation();
 

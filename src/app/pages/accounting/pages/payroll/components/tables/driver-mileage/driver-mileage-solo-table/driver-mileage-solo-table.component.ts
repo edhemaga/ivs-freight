@@ -9,7 +9,7 @@ import {
     Output,
     ViewChild,
 } from '@angular/core';
-import { Observable, Subject, takeUntil } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { AfterViewInit } from '@angular/core';
 
 // Models
@@ -32,7 +32,7 @@ export class DriverMileageSoloTableComponent
     implements OnInit, AfterViewInit, OnDestroy
 {
     // Expose Javascript Math to template
-    Math = Math;
+    public Math = Math;
 
     @Output() expandTableEvent: EventEmitter<PayrollDriverMileageListResponse> =
         new EventEmitter<PayrollDriverMileageListResponse>();
@@ -40,8 +40,8 @@ export class DriverMileageSoloTableComponent
     @Input() title: string;
     @Input() expandTable: boolean;
 
-    columns: ColumnConfig[];
-    tableData$: Observable<PayrollDriverMileageListResponse[]>;
+    public columns: ColumnConfig[];
+    public tableData$: Observable<PayrollDriverMileageListResponse[]>;
     private destroy$ = new Subject<void>();
 
     @ViewChild('customCell', { static: false })
@@ -64,7 +64,7 @@ export class DriverMileageSoloTableComponent
         private templateManager: TemplateManagerService
     ) {}
 
-    ngAfterViewInit() {
+    ngAfterViewInit(): void {
         this.columns = [
             {
                 header: 'Name',
@@ -146,29 +146,21 @@ export class DriverMileageSoloTableComponent
         this.subscribeToStoreData();
     }
 
-    public registerAllTemplates() {
+    public registerAllTemplates(): void {
         this.testTemplate = this.templateManager.getTemplate('templateOne');
     }
 
-    public handleClick() {
-        console.log('fdsadfsadfds');
-    }
+    public handleClick(): void {}
 
-    subscribeToStoreData() {
+    public subscribeToStoreData(): void {
         this.payrollFacadeService.getPayrollDriverMileageSoloList();
         this.tableData$ =
             this.payrollFacadeService.selectPayrollDriverSoloMileage$;
 
         this.loading$ = this.payrollFacadeService.payrollLoading$;
-        this.payrollFacadeService.selectPayrollDriverSoloMileage$
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((res) => {
-                console.log('AAAAAAAA=----------', res);
-            });
     }
 
-    selectPayrollReport(report: PayrollDriverMileageListResponse) {
-        console.log('reportt', report);
+    public selectPayrollReport(report: PayrollDriverMileageListResponse): void {
         this.expandTableEvent.emit(report);
     }
 

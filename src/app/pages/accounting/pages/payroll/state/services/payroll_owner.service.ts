@@ -3,7 +3,7 @@ import { select, Store } from '@ngrx/store';
 import { Observable, take } from 'rxjs';
 
 // Actions
-import * as PayrollOwnerActions from '../actions/payroll_owner_driver.action';
+import * as PayrollOwnerActions from '@pages/accounting/pages/payroll/state/actions/payroll_owner_driver.action';
 
 // Selectors
 import {
@@ -13,19 +13,19 @@ import {
     selectPayrollDriverOwnerLoads,
     selectPayrollOwnerOpenedReport,
     selectPayrollReportsIncludedOwnerStops,
-} from '../selectors/payroll_owner.selector';
+} from '@pages/accounting/pages/payroll/state/selectors/payroll_owner.selector';
 
 // Models
 import {
     IDriverOwnerList,
     OwnerLoadShortReponseWithRowType,
-} from '../models/driver_owner.model';
-import { selectPayrollState } from '../selectors/payroll.selector';
+} from '@pages/accounting/pages/payroll/state/models/driver_owner.model';
+import { selectPayrollState } from '@pages/accounting/pages/payroll/state/selectors/payroll.selector';
 import {
     LoadWithMilesStopResponse,
     PayrollDriverMileageListResponse,
 } from 'appcoretruckassist';
-import { PayrollDriverMileageExpandedListResponse } from '../models/payroll.model';
+import { PayrollDriverMileageExpandedListResponse } from '@pages/accounting/pages/payroll/state/models/payroll.model';
 
 @Injectable({
     providedIn: 'root',
@@ -52,7 +52,7 @@ export class PayrollDriverOwnerFacadeService {
         PayrollDriverMileageListResponse[]
     > = this.store.pipe(select(selectDriverOwnerCollapsedTable));
 
-    public getPayrollOwnerMileageExpandedList(trailerId: number) {
+    public getPayrollOwnerMileageExpandedList(trailerId: number): void {
         this.store.dispatch(
             PayrollOwnerActions.getPayrollOwnerDriverExpandedList({
                 trailerId,
@@ -60,7 +60,7 @@ export class PayrollDriverOwnerFacadeService {
         );
     }
 
-    public getPayrollDriverOwnerCollapsedList() {
+    public getPayrollDriverOwnerCollapsedList(): void {
         this.store.dispatch(
             PayrollOwnerActions.getPayrollOwnerDriverCollapsedList()
         );
@@ -86,15 +86,17 @@ export class PayrollDriverOwnerFacadeService {
         selectedCreditIds?: number[];
         selectedDeductionIds?: number[];
         selectedFuelIds?: number[];
-    }) {
+    }): void {
         this.store
             .pipe(select(selectPayrollState), take(1))
             .subscribe((payrollState) => {
                 if (payrollState.payrollOpenedTab === 'closed') {
                     this.store.dispatch(
-                        PayrollOwnerActions.getPayrollOwnerDriverClosedReportPayroll({
-                            payrollId: +reportId,
-                        })
+                        PayrollOwnerActions.getPayrollOwnerDriverClosedReportPayroll(
+                            {
+                                payrollId: +reportId,
+                            }
+                        )
                     );
                 } else {
                     this.store.dispatch(

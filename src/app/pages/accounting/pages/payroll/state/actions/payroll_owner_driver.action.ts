@@ -1,19 +1,18 @@
 import { createAction, props } from '@ngrx/store';
-import { PayrollOwnerDriverEnum } from '../enums/driver_owner/driver_owner.enums';
-import { IDriverOwnerList } from '../models/driver_owner.model';
+import { PayrollOwnerDriverEnum } from '@pages/accounting/pages/payroll/state/enums/driver_owner/driver_owner.enums';
+import { IDriverOwnerList } from '@pages/accounting/pages/payroll/state/models/driver_owner.model';
 import {
     IAddPayrollClosedPayment,
     IGet_Payroll_Commission_Driver_Report,
     PayrollDriverMileageCollapsedListResponse,
     PayrollDriverMileageExpandedListResponse,
-} from '../models/payroll.model';
+} from '@pages/accounting/pages/payroll/state/models/payroll.model';
 import {
     PayrollOtherPaymentType,
     PayrollOwnerClosedResponse,
     PayrollOwnerResponse,
     PayrollPaymentType,
 } from 'appcoretruckassist';
-import { PayrollDriverMileageResponse } from 'appcoretruckassist/model/payrollDriverMileageResponse';
 
 export const getPayrollOwnerDriverList = createAction(
     PayrollOwnerDriverEnum.GET_PAYROLL_OWNER_DRIVER

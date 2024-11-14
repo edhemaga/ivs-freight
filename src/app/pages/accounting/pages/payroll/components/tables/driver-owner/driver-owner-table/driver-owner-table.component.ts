@@ -19,7 +19,10 @@ import { PayrollDriverOwnerFacadeService } from '@pages/accounting/pages/payroll
 import { ColumnConfig } from 'ca-components';
 
 // Models
-import { IDriverOwnerList } from '@pages/accounting/pages/payroll/state/models/driver_owner.model';
+import {
+    IDriverOwnerList,
+    IDriverOwnerResponse,
+} from '@pages/accounting/pages/payroll/state/models/driver_owner.model';
 
 @Component({
     selector: 'app-driver-owner-table',
@@ -30,17 +33,18 @@ export class DriverOwnerTableComponent
     implements OnInit, AfterViewInit, OnDestroy
 {
     // Expose Javascript Math to template
-    Math = Math;
+    public Math = Math;
 
-    @Output() expandTableEvent: EventEmitter<any> = new EventEmitter<any>();
+    @Output() expandTableEvent: EventEmitter<IDriverOwnerResponse> =
+        new EventEmitter<IDriverOwnerResponse>();
 
     @Input() title: string;
     @Input() expandTable: boolean;
 
     private destroy$ = new Subject<void>();
 
-    columns: ColumnConfig[];
-    tableData$: Observable<IDriverOwnerList>;
+    public columns: ColumnConfig[];
+    public tableData$: Observable<IDriverOwnerList>;
     public loading$: Observable<boolean>;
 
     // Templates
@@ -55,7 +59,7 @@ export class DriverOwnerTableComponent
         private payrollDriverOwnerFacadeService: PayrollDriverOwnerFacadeService
     ) {}
 
-    ngAfterViewInit() {
+    ngAfterViewInit(): void {
         this.columns = [
             {
                 header: 'Unit',
@@ -144,14 +148,14 @@ export class DriverOwnerTableComponent
         this.subscribeToStoreData();
     }
 
-    subscribeToStoreData() {
+    public subscribeToStoreData(): void {
         this.payrollDriverOwnerFacadeService.getPayrollDriverOwnerList();
         this.loading$ = this.payrollFacadeService.payrollLoading$;
         this.tableData$ =
             this.payrollDriverOwnerFacadeService.selectOwnerDriverList$;
     }
 
-    selectPayrollReport(report: any) {
+    public selectPayrollReport(report: IDriverOwnerResponse): void {
         this.expandTableEvent.emit(report);
     }
 

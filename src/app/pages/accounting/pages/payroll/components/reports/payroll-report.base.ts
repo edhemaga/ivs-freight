@@ -1,19 +1,23 @@
+// Services
 import { ModalService } from '@shared/services/modal.service';
+
+// Models
 import {
     CreatePayrollCreditCommand,
     PayrollCreditType,
 } from 'appcoretruckassist';
-import { PayrollCreditBonusComponent } from '../../payroll-modals/payroll-credit-bonus/payroll-credit-bonus.component';
-import { PayrollBonusModalComponent } from '../../payroll-modals/payroll-bonus-modal/payroll-bonus-modal.component';
-import { PayrollDeductionModalComponent } from '../../payroll-modals/payroll-deduction-modal/payroll-deduction-modal.component';
 import { PayrollReportTableResponse } from 'ca-components/lib/components/ca-period-content/models/payroll-report-tables.type';
-import { IGetPayrollByIdAndOptions } from '../../state/models/payroll.model';
-import { FuelPurchaseModalComponent } from '@pages/fuel/pages/fuel-modals/fuel-purchase-modal/fuel-purchase-modal.component';
+import { IGetPayrollByIdAndOptions } from '@pages/accounting/pages/payroll/state/models/payroll.model';
 
+// Components
+import { PayrollCreditBonusComponent } from '@pages/accounting/pages/payroll/payroll-modals/payroll-credit-bonus/payroll-credit-bonus.component';
+import { PayrollBonusModalComponent } from '@pages/accounting/pages/payroll/payroll-modals/payroll-bonus-modal/payroll-bonus-modal.component';
+import { PayrollDeductionModalComponent } from '@pages/accounting/pages/payroll/payroll-modals/payroll-deduction-modal/payroll-deduction-modal.component';
+import { FuelPurchaseModalComponent } from '@pages/fuel/pages/fuel-modals/fuel-purchase-modal/fuel-purchase-modal.component';
 export abstract class PayrollReportBaseComponent<
     T extends { driver?: { id?: number }; truck?: { id?: number } }
 > {
-    openedPayroll: T;
+    public openedPayroll: T;
     abstract creditType: PayrollCreditType;
 
     protected _reportId: string;
@@ -32,8 +36,7 @@ export abstract class PayrollReportBaseComponent<
         this._reportId = value;
     }
 
-    public openAddNewModal(type: string) {
-        console.log('WHAT IS TYPE', type);
+    public openAddNewModal(type: string): void {
         switch (type) {
             case 'Credit':
                 this.modalService
@@ -198,13 +201,13 @@ export abstract class PayrollReportBaseComponent<
         }
     }
 
-    onReorderItem({
+    public onReorderItem({
         _included,
         _title,
     }: {
         _included: PayrollReportTableResponse[];
         _title: string;
-    }) {
+    }): void {
         let dataSend = {
             reportId: `${this.reportId}`,
             selectedCreditIds: null,

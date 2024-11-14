@@ -9,11 +9,15 @@ import {
     Output,
     ViewChild,
 } from '@angular/core';
+import { Observable, Subject } from 'rxjs';
+
+// Models
+import { ColumnConfig } from 'ca-components';
 import { PayrollDriverMileageExpandedListResponse } from '@pages/accounting/pages/payroll/state/models/payroll.model';
+
+// Services
 import { PayrollFacadeService } from '@pages/accounting/pages/payroll/state/services/payroll.service';
 import { PayrollDriverCommissionFacadeService } from '@pages/accounting/pages/payroll/state/services/payroll_driver_commision.service';
-import { ColumnConfig } from 'ca-components';
-import { Observable } from 'rxjs';
 
 @Component({
     selector: 'app-driver-commission-expanded-table',
@@ -24,13 +28,13 @@ export class DriverCommissionExpandedTableComponent
     implements OnInit, AfterViewInit, OnDestroy
 {
     @Input() driverId: number;
-    @Output() expandTableEvent: EventEmitter<any> = new EventEmitter<any>();
+    @Output() expandTableEvent: EventEmitter<PayrollDriverMileageExpandedListResponse> = new EventEmitter<PayrollDriverMileageExpandedListResponse>();
     @Input() title: string;
     @Input() expandTable: boolean;
 
     public loading$: Observable<boolean>;
-    tableData$: Observable<PayrollDriverMileageExpandedListResponse[]>;
-    columns: ColumnConfig[];
+    public tableData$: Observable<PayrollDriverMileageExpandedListResponse[]>;
+    public columns: ColumnConfig[];
 
     // TEMPLATES
 
@@ -38,6 +42,8 @@ export class DriverCommissionExpandedTableComponent
     public readonly customStatusTemplate!: ElementRef;
     @ViewChild('customMileageHeader', { static: false })
     public readonly customMileageHeaderTemplate!: ElementRef;
+
+    private destroy$ = new Subject<void>();
 
     constructor(
         private payrollDriverCommissionFacadeService: PayrollDriverCommissionFacadeService,
@@ -140,7 +146,7 @@ export class DriverCommissionExpandedTableComponent
         this.subscribeToStoreData();
     }
 
-    subscribeToStoreData() {
+    public subscribeToStoreData(): void {
         this.payrollDriverCommissionFacadeService.getPayrollCommissionMileageExpandedList(
             this.driverId
         );
@@ -148,14 +154,14 @@ export class DriverCommissionExpandedTableComponent
         this.loading$ = this.payrollFacadeService.payrollLoading$;
         this.tableData$ =
             this.payrollDriverCommissionFacadeService.selectPayrollDriverCommissionExpanded$;
-
-        this.payrollDriverCommissionFacadeService.selectPayrollDriverCommissionExpanded$.subscribe(
-            (res) => console.log('dddd', res)
-        );
     }
 
-    selectPayrollReport(report: any) {
+    public selectPayrollReport(report: PayrollDriverMileageExpandedListResponse): void {
         this.expandTableEvent.emit(report);
     }
-    ngOnDestroy(): void {}
+
+    ngOnDestroy(): void {
+        this.destroy$.next();
+        this.destroy$.complete();
+    }
 }

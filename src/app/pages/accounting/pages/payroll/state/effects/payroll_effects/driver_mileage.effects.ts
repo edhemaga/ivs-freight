@@ -3,10 +3,10 @@ import { Action } from '@ngrx/store';
 import { map, switchMap, Observable, catchError, of, tap } from 'rxjs';
 
 // Services
-import { PayrollService } from '../../../services/payroll.service';
+import { PayrollService } from '@pages/accounting/pages/payroll/services/payroll.service';
 
 // Actions
-import * as PayrollSoloMileageDriver from '../../actions/payroll_solo_mileage_driver.actions';
+import * as PayrollSoloMileageDriver from '@pages/accounting/pages/payroll/state/actions/payroll_solo_mileage_driver.actions';
 
 export function getPayrollMileageClosedPayrollByIdEffect(
     actions$: Actions,
@@ -135,11 +135,6 @@ export function getPayrollSoloMileageEffect(
                                 }
                             );
                         }),
-                        // tap((data) => {
-                        //     // this.store.dispatch(
-                        //     //   PaymentActions.restartRefreshDataSuccess({ flag: false })
-                        //     // );
-                        // }),
                         catchError((error) =>
                             of(
                                 PayrollSoloMileageDriver.getPayrollSoloMileageDriverError(
@@ -184,11 +179,6 @@ export function closePayrollSoloMileageReportEffect(
                                         payroll: data,
                                     }
                                 );
-                            }),
-                            tap((data) => {
-                                // this.store.dispatch(
-                                //   PaymentActions.restartRefreshDataSuccess({ flag: false })
-                                // );
                             }),
                             catchError((error) =>
                                 of(
@@ -261,14 +251,9 @@ export function addPayrollMileageClosedPayrollPaymentEffect(
                     return payrollService
                         .addPayrollClosedReportPayment(action)
                         .pipe(
-                            map((data) => {
+                            map((_) => {
                                 return PayrollSoloMileageDriver.driverMileagePayrollClosedPaymentsSuccess();
                             }),
-                            // tap((data) => {
-                            //     // this.store.dispatch(
-                            //     //   PaymentActions.restartRefreshDataSuccess({ flag: false })
-                            //     // );
-                            // }),
                             catchError((error) =>
                                 of(
                                     PayrollSoloMileageDriver.driverMileagePayrollClosedPaymentsError(

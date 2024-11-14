@@ -9,11 +9,15 @@ import {
     Output,
     ViewChild,
 } from '@angular/core';
+import { Observable } from 'rxjs';
+
+// Models
 import { PayrollDriverMileageExpandedListResponse } from '@pages/accounting/pages/payroll/state/models/payroll.model';
+import { ColumnConfig } from 'ca-components';
+
+// Services
 import { PayrollFacadeService } from '@pages/accounting/pages/payroll/state/services/payroll.service';
 import { PayrollDriverOwnerFacadeService } from '@pages/accounting/pages/payroll/state/services/payroll_owner.service';
-import { ColumnConfig } from 'ca-components';
-import { Observable } from 'rxjs';
 
 @Component({
     selector: 'app-driver-owner-expanded-table',
@@ -24,13 +28,15 @@ export class DriverOwnerExpandedTableComponent
     implements OnInit, AfterViewInit, OnDestroy
 {
     @Input() driverId: number;
-    @Output() expandTableEvent: EventEmitter<any> = new EventEmitter<any>();
+    @Output()
+    expandTableEvent: EventEmitter<PayrollDriverMileageExpandedListResponse> =
+        new EventEmitter<PayrollDriverMileageExpandedListResponse>();
     @Input() title: string;
     @Input() expandTable: boolean;
 
     public loading$: Observable<boolean>;
-    tableData$: Observable<PayrollDriverMileageExpandedListResponse[]>;
-    columns: ColumnConfig[];
+    public tableData$: Observable<PayrollDriverMileageExpandedListResponse[]>;
+    public columns: ColumnConfig[];
 
     // TEMPLATES
     @ViewChild('customStatus', { static: false })
@@ -47,7 +53,7 @@ export class DriverOwnerExpandedTableComponent
         private payrollFacadeService: PayrollFacadeService
     ) {}
 
-    ngAfterViewInit() {
+    ngAfterViewInit(): void {
         this.columns = [
             {
                 header: 'Payroll',
@@ -123,7 +129,7 @@ export class DriverOwnerExpandedTableComponent
                 cellType: 'text',
                 cellCustomClasses: 'text-right',
                 textCustomClasses: 'b-600',
-                hiddeOnTableReduce: true
+                hiddeOnTableReduce: true,
             },
             {
                 header: 'Debt',
@@ -133,12 +139,12 @@ export class DriverOwnerExpandedTableComponent
                 cellType: 'text',
                 cellCustomClasses: 'text-right',
                 textCustomClasses: 'b-600',
-                hiddeOnTableReduce: true
+                hiddeOnTableReduce: true,
             },
         ];
     }
 
-    subscribeToStoreData() {
+    private subscribeToStoreData(): void {
         this.payrollDriverOwnerFacadeService.getPayrollOwnerMileageExpandedList(
             this.driverId
         );
@@ -146,13 +152,11 @@ export class DriverOwnerExpandedTableComponent
         this.loading$ = this.payrollFacadeService.payrollLoading$;
         this.tableData$ =
             this.payrollDriverOwnerFacadeService.selectPayrollDriverOwnerExpanded$;
-
-        this.payrollDriverOwnerFacadeService.selectPayrollDriverOwnerExpanded$.subscribe(
-            (res) => console.log('dddd', res)
-        );
     }
 
-    selectPayrollReport(report: any) {
+    public selectPayrollReport(
+        report: PayrollDriverMileageExpandedListResponse
+    ) {
         this.expandTableEvent.emit(report);
     }
 

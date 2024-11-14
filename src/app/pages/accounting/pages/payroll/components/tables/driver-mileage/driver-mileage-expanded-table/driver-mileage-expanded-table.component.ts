@@ -9,8 +9,12 @@ import {
     Output,
     ViewChild,
 } from '@angular/core';
-import { PayrollFacadeService } from '@pages/accounting/pages/payroll/state/services/payroll.service';
 import { Observable } from 'rxjs';
+
+// Services
+import { PayrollFacadeService } from '@pages/accounting/pages/payroll/state/services/payroll.service';
+
+// Models
 import { PayrollDriverMileageExpandedListResponse } from '@pages/accounting/pages/payroll/state/models/payroll.model';
 import { ColumnConfig } from 'ca-components';
 
@@ -23,7 +27,9 @@ export class DriverMileageExpandedTableComponent
     implements OnInit, AfterViewInit, OnDestroy
 {
     @Input() driverId: number;
-    @Output() expandTableEvent: EventEmitter<any> = new EventEmitter<any>();
+    @Output()
+    expandTableEvent: EventEmitter<PayrollDriverMileageExpandedListResponse> =
+        new EventEmitter<PayrollDriverMileageExpandedListResponse>();
     @Input() title: string;
     @Input() expandTable: boolean;
 
@@ -33,12 +39,12 @@ export class DriverMileageExpandedTableComponent
     public readonly customMileageHeaderTemplate!: ElementRef;
 
     public loading$: Observable<boolean>;
-    tableData$: Observable<PayrollDriverMileageExpandedListResponse[]>;
-    columns: ColumnConfig[];
+    public tableData$: Observable<PayrollDriverMileageExpandedListResponse[]>;
+    public columns: ColumnConfig[];
 
     constructor(private payrollFacadeService: PayrollFacadeService) {}
 
-    ngAfterViewInit() {
+    ngAfterViewInit(): void {
         this.columns = [
             {
                 header: 'Payroll',
@@ -145,7 +151,7 @@ export class DriverMileageExpandedTableComponent
         this.subscribeToStoreData();
     }
 
-    subscribeToStoreData() {
+    private subscribeToStoreData(): void {
         this.payrollFacadeService.getPayrollDriverMileageExpandedList(
             this.driverId
         );
@@ -157,7 +163,9 @@ export class DriverMileageExpandedTableComponent
 
     ngOnDestroy(): void {}
 
-    selectPayrollReport(report: any) {
+    public selectPayrollReport(
+        report: PayrollDriverMileageExpandedListResponse
+    ): void {
         this.expandTableEvent.emit(report);
     }
 }

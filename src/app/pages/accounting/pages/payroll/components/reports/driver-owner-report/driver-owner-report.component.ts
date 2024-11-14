@@ -9,13 +9,12 @@ import {
     ViewChild,
 } from '@angular/core';
 import { Observable, Subject, takeUntil } from 'rxjs';
-import { ColumnConfig } from 'ca-components';
 import { CdkDrag, CdkDragDrop } from '@angular/cdk/drag-drop';
 
 //Services
 import { ModalService } from '@shared/services/modal.service';
-import { PayrollFacadeService } from '../../../state/services/payroll.service';
-import { PayrollDriverOwnerFacadeService } from '../../../state/services/payroll_owner.service';
+import { PayrollFacadeService } from '@pages/accounting/pages/payroll/state/services/payroll.service';
+import { PayrollDriverOwnerFacadeService } from '@pages/accounting/pages/payroll/state/services/payroll_owner.service';
 
 // Models
 import {
@@ -24,15 +23,22 @@ import {
     PayrollDriverMileageByIdResponse,
     PayrollOwnerResponse,
 } from 'appcoretruckassist';
-
-import { OwnerLoadShortReponseWithRowType } from '../../../state/models/driver_owner.model';
-import { PayrollProccessPaymentModalComponent } from '../../../payroll-modals/payroll-proccess-payment-modal/payroll-proccess-payment-modal.component';
+import { ColumnConfig } from 'ca-components';
 import {
     IGetPayrollByIdAndOptions,
     IPayrollProccessPaymentModal,
-} from '../../../state/models/payroll.model';
-import { PayrollReportBaseComponent } from '../payroll-report.base';
+} from '@pages/accounting/pages/payroll/state/models/payroll.model';
 
+import { OwnerLoadShortReponseWithRowType } from '@pages/accounting/pages/payroll/state/models/driver_owner.model';
+
+// Components
+import { PayrollProccessPaymentModalComponent } from '@pages/accounting/pages/payroll/payroll-modals/payroll-proccess-payment-modal/payroll-proccess-payment-modal.component';
+
+// Enums
+import { PayrollTablesStatus } from '@pages/accounting/pages/payroll/state/enums';
+
+// Classes
+import { PayrollReportBaseComponent } from '@pages/accounting/pages/payroll/components/reports/payroll-report.base';
 @Component({
     selector: 'app-driver-owner-report',
     templateUrl: './driver-owner-report.component.html',
@@ -52,22 +58,24 @@ export class DriverOwnerReportComponent
         return super.reportId; // Call the base class getter
     }
 
-    columns: ColumnConfig[];
-    creditType = PayrollCreditType.Truck;
-    @Input() selectedTab: 'open' | 'closed';
-    showMap: boolean = false;
+    public columns: ColumnConfig[];
+    public creditType = PayrollCreditType.Truck;
+    @Input() selectedTab: PayrollTablesStatus;
+    public showMap: boolean = false;
 
     public loading$: Observable<boolean>;
-    includedLoads$: Observable<LoadWithMilesStopResponse[]>;
+    public includedLoads$: Observable<LoadWithMilesStopResponse[]>;
 
     private destroy$ = new Subject<void>();
 
-    payrollOpenedReport: PayrollOwnerResponse;
+    public payrollOpenedReport: PayrollOwnerResponse;
 
-    payrollReport$: Observable<PayrollOwnerResponse>;
+    public payrollReport$: Observable<PayrollOwnerResponse>;
 
-    payrollOwnerDriverLoads$: Observable<OwnerLoadShortReponseWithRowType[]>;
-    openedPayroll: PayrollOwnerResponse;
+    public payrollOwnerDriverLoads$: Observable<
+        OwnerLoadShortReponseWithRowType[]
+    >;
+    public openedPayroll: PayrollOwnerResponse;
 
     // Templates
     @ViewChild('customCountTemplate', { static: false })
@@ -101,7 +109,7 @@ export class DriverOwnerReportComponent
         this.subscribeToStoreData();
     }
 
-    subscribeToStoreData() {
+    subscribeToStoreData(): void {
         this.loading$ = this.payrollFacadeService.payrollReportLoading$;
         this.payrollReport$ =
             this.payrollDriverOwnerFacadeService.selectPayrollOwnerOpenedReport$;
@@ -117,15 +125,13 @@ export class DriverOwnerReportComponent
             this.payrollDriverOwnerFacadeService.selectPayrollReportOwnerIncludedLoads$;
 
         this.payrollDriverOwnerFacadeService.selectPayrollOwnerOpenedReport$
-        .pipe(takeUntil(this.destroy$))
-        .subscribe(
-            (owner) => {
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((owner) => {
                 this.payrollOpenedReport = owner;
-            }
-        );
+            });
     }
 
-    ngAfterViewInit() {
+    ngAfterViewInit(): void {
         this.columns = [
             {
                 header: '#',
@@ -196,11 +202,16 @@ export class DriverOwnerReportComponent
         ];
     }
 
-    customSortPredicate = (index: number, data: CdkDrag<any>): boolean => {
-        return data.dropContainer.data[index -1];
+    public customSortPredicate = (
+        index: number,
+        data: CdkDrag<any>
+    ): boolean => {
+        return data.dropContainer.data[index - 1];
     };
 
-    onProccessPayroll(payrollData: PayrollDriverMileageByIdResponse) {
+    public onProccessPayroll(
+        payrollData: PayrollDriverMileageByIdResponse
+    ): void {
         this.modalService.openModal(
             PayrollProccessPaymentModalComponent,
             {
@@ -220,7 +231,7 @@ export class DriverOwnerReportComponent
         );
     }
 
-    onReorderDone(drag: CdkDragDrop<any[] | null, any, any>) {
+    public onReorderDone(drag: CdkDragDrop<any[] | null, any, any>): void {
         const loadId = drag.container.data[drag.currentIndex - 1]?.id;
         if (loadId) {
             const loadList = [
@@ -239,7 +250,7 @@ export class DriverOwnerReportComponent
         }
     }
 
-    public getReportDataResults(getData?: IGetPayrollByIdAndOptions) {
+    public getReportDataResults(getData?: IGetPayrollByIdAndOptions): void {
         this.payrollDriverOwnerFacadeService.getPayrollDriverOwnerReport(
             getData ?? {
                 reportId: `${this.reportId}`,

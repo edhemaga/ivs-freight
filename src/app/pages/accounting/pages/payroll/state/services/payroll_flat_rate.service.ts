@@ -3,7 +3,7 @@ import { select, Store } from '@ngrx/store';
 import { Observable, take } from 'rxjs';
 
 // Actions
-import * as PayrollFlatRateActions from '../actions/payroll_flat_rate_driver.actions';
+import * as PayrollFlatRateActions from '@pages/accounting/pages/payroll/state/actions/payroll_flat_rate_driver.actions';
 
 // Selectors
 import {
@@ -12,23 +12,23 @@ import {
     selectFlatRateListDriver,
     selectPayrollDriverFlatRateLoads,
     selectPayrollReportsIncludedFlatRateStops,
-} from '../selectors/payroll_driver_flat_rate.selector';
+} from '@pages/accounting/pages/payroll/state/selectors/payroll_driver_flat_rate.selector';
 
 // Models
 import {
     FlatRateLoadShortReponseWithRowType,
     IDriverFlatRateList,
-} from '../models/driver_flat_rate.model';
+} from '@pages/accounting/pages/payroll/state/models/driver_flat_rate.model';
 import {
     selectPayrollOpenedReport,
     selectPayrollState,
-} from '../selectors/payroll.selector';
+} from '@pages/accounting/pages/payroll/state/selectors/payroll.selector';
 import {
     LoadWithMilesStopResponse,
     PayrollDriverCommissionByIdResponse,
     PayrollDriverMileageListResponse,
 } from 'appcoretruckassist';
-import { PayrollDriverMileageExpandedListResponse } from '../models/payroll.model';
+import { PayrollDriverMileageExpandedListResponse } from '@pages/accounting/pages/payroll/state/models/payroll.model';
 
 @Injectable({
     providedIn: 'root',
@@ -58,11 +58,11 @@ export class PayrollDriverFlatRateFacadeService {
         PayrollDriverMileageListResponse[]
     > = this.store.pipe(select(selectDriverFlatRateCollapsedTable));
 
-    public getPayrollDriverFlatRateList() {
+    public getPayrollDriverFlatRateList(): void {
         this.store.dispatch(PayrollFlatRateActions.getPayrollFlatRateDriver());
     }
 
-    public getPayrollFlatRateMileageExpandedList(driverId: number) {
+    public getPayrollFlatRateMileageExpandedList(driverId: number): void {
         this.store.dispatch(
             PayrollFlatRateActions.getPayrollFlatRateDriverExpandedList({
                 driverId,
@@ -70,7 +70,7 @@ export class PayrollDriverFlatRateFacadeService {
         );
     }
 
-    public getPayrollDriverFlatRateCollapsedList() {
+    public getPayrollDriverFlatRateCollapsedList(): void {
         this.store.dispatch(
             PayrollFlatRateActions.getPayrollFlatRateDriverCollapsedList()
         );
@@ -86,7 +86,7 @@ export class PayrollDriverFlatRateFacadeService {
         selectedLoadIds?: number[];
         selectedCreditIds?: number[];
         selectedDeductionIds?: number[];
-    }) {
+    }): void {
         this.store
             .pipe(select(selectPayrollState), take(1))
             .subscribe((payrollState) => {

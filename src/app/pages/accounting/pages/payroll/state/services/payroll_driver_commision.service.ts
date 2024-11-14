@@ -3,7 +3,7 @@ import { select, Store } from '@ngrx/store';
 import { Observable, take } from 'rxjs';
 
 // Actions
-import * as PayrollCommissionActions from '../actions/payroll_commission_driver.actions';
+import * as PayrollCommissionActions from '@pages/accounting/pages/payroll/state/actions/payroll_commission_driver.actions';
 
 // Selectors
 import {
@@ -12,23 +12,23 @@ import {
     selectDriverCommissionExpandedTable,
     selectPayrollDriverCommissionLoads,
     selectPayrollReportsIncludedCommissionStops,
-} from '../selectors/payroll_driver_commision.selector';
+} from '@pages/accounting/pages/payroll/state/selectors/payroll_driver_commision.selector';
 
 // Models
 import {
     CommissionLoadShortReponseWithRowType,
     IDriverCommissionList,
-} from '../models/driver_commission.model';
+} from '@pages/accounting/pages/payroll/state/models/driver_commission.model';
 import {
     selectPayrollOpenedReport,
     selectPayrollState,
-} from '../selectors/payroll.selector';
+} from '@pages/accounting/pages/payroll/state/selectors/payroll.selector';
 import {
     LoadWithMilesStopResponse,
     PayrollDriverCommissionByIdResponse,
     PayrollDriverMileageListResponse,
 } from 'appcoretruckassist';
-import { PayrollDriverMileageExpandedListResponse } from '../models/payroll.model';
+import { PayrollDriverMileageExpandedListResponse } from '@pages/accounting/pages/payroll/state/models/payroll.model';
 
 @Injectable({
     providedIn: 'root',
@@ -58,13 +58,13 @@ export class PayrollDriverCommissionFacadeService {
         PayrollDriverMileageListResponse[]
     > = this.store.pipe(select(selectDriverCommissionCollapsedTable));
 
-    public getPayrollDriverCommissionList() {
+    public getPayrollDriverCommissionList(): void {
         this.store.dispatch(
             PayrollCommissionActions.getPayrollCommissionDriver()
         );
     }
 
-    public getPayrollCommissionMileageExpandedList(driverId: number) {
+    public getPayrollCommissionMileageExpandedList(driverId: number): void {
         this.store.dispatch(
             PayrollCommissionActions.getPayrollCommissionDriverExpandedList({
                 driverId,
@@ -72,7 +72,7 @@ export class PayrollDriverCommissionFacadeService {
         );
     }
 
-    public getPayrollDriverCommissionCollapsedList() {
+    public getPayrollDriverCommissionCollapsedList(): void {
         this.store.dispatch(
             PayrollCommissionActions.getPayrollCommissionDriverCollapsedList()
         );
@@ -88,7 +88,7 @@ export class PayrollDriverCommissionFacadeService {
         selectedLoadIds?: number[];
         selectedCreditIds?: number[];
         selectedDeductionIds?: number[];
-    }) {
+    }): void {
         this.store
             .pipe(select(selectPayrollState), take(1))
             .subscribe((payrollState) => {

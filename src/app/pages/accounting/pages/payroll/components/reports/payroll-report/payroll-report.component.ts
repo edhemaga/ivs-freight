@@ -14,23 +14,30 @@ import { Observable, takeUntil, Subject } from 'rxjs';
 
 // services
 import { ModalService } from '@shared/services/modal.service';
-import { PayrollFacadeService } from '../../../state/services/payroll.service';
+import { PayrollFacadeService } from '@pages/accounting/pages/payroll/state/services/payroll.service';
 
 // models
 import {
     IGetPayrollByIdAndOptions,
     IPayrollProccessPaymentModal,
     MilesStopShortReponseWithRowType,
-} from '../../../state/models/payroll.model';
+    PayrollTypes,
+} from '@pages/accounting/pages/payroll/state/models/payroll.model';
 import {
     MilesStopShortResponse,
     PayrollCreditType,
     PayrollDriverMileageByIdResponse,
 } from 'appcoretruckassist';
-import { ICaMapProps, ColumnConfig } from 'ca-components';
+import { ColumnConfig } from 'ca-components';
+
 // components
-import { PayrollProccessPaymentModalComponent } from '../../../payroll-modals/payroll-proccess-payment-modal/payroll-proccess-payment-modal.component';
-import { PayrollReportBaseComponent } from '../payroll-report.base';
+import { PayrollProccessPaymentModalComponent } from '@pages/accounting/pages/payroll/payroll-modals/payroll-proccess-payment-modal/payroll-proccess-payment-modal.component';
+
+// Enums
+import { PayrollTablesStatus } from '@pages/accounting/pages/payroll/state/enums';
+
+// Classes
+import { PayrollReportBaseComponent } from '@pages/accounting/pages/payroll/components/reports/payroll-report.base';
 
 @Component({
     selector: 'app-payroll-report',
@@ -55,15 +62,17 @@ export class PayrollReportComponent
         return super.reportId; // Call the base class getter
     }
 
-    @Input() selectedTab: 'open' | 'closed';
+    @Input() selectedTab: PayrollTablesStatus;
 
-    payrollReport$: Observable<PayrollDriverMileageByIdResponse>;
-    payrollMileageDriverLoads$: Observable<MilesStopShortReponseWithRowType[]>;
-    includedLoads$: Observable<MilesStopShortResponse[]>;
+    public payrollReport$: Observable<PayrollDriverMileageByIdResponse>;
+    public payrollMileageDriverLoads$: Observable<
+        MilesStopShortReponseWithRowType[]
+    >;
+    public includedLoads$: Observable<MilesStopShortResponse[]>;
     public loading$: Observable<boolean>;
-    payrollReportList: MilesStopShortReponseWithRowType[] = [];
-    allowedLoadIds: number[];
-    showMap: boolean = false;
+    public payrollReportList: MilesStopShortReponseWithRowType[] = [];
+    public allowedLoadIds: number[];
+    public showMap: boolean = false;
 
     @ViewChild('customCountTemplate', { static: false })
     public readonly customCountTemplate!: ElementRef;
@@ -73,13 +82,18 @@ export class PayrollReportComponent
     @ViewChild('customFeeTemplate', { static: false })
     public readonly customFeeTemplate!: ElementRef;
 
-    reportMainData: any = { loads: [], truck: {}, owner: {}, driver: {} };
-    tableSettings: any[] = [];
-    tableSettingsResizable: any[] = [];
-    title: string = '';
+    public reportMainData: any = {
+        loads: [],
+        truck: {},
+        owner: {},
+        driver: {},
+    };
+    public tableSettings: any[] = [];
+    public tableSettingsResizable: any[] = [];
+    public title: string = '';
     private destroy$ = new Subject<void>();
 
-    data: any = {
+    public data: any = {
         markers: [],
         routingMarkers: [],
     };
@@ -94,7 +108,7 @@ export class PayrollReportComponent
         super(modalService);
     }
 
-    ngAfterViewInit() {
+    ngAfterViewInit(): void {
         this.columns = [
             {
                 header: '#',
@@ -167,11 +181,14 @@ export class PayrollReportComponent
         this.subscribeToStoreData();
     }
 
-    customSortPredicate = (index: number, _: CdkDragDrop<any>): boolean => {
+    public customSortPredicate = (
+        index: number,
+        _: CdkDragDrop<any>
+    ): boolean => {
         return this.allowedLoadIds.includes(index);
     };
 
-    subscribeToStoreData() {
+    public subscribeToStoreData(): void {
         this.loading$ = this.payrollFacadeService.payrollReportLoading$;
         this.payrollReport$ =
             this.payrollFacadeService.selectPayrollOpenedReport$;
@@ -227,7 +244,7 @@ export class PayrollReportComponent
             });
     }
 
-    onReorderDone(drag: CdkDragDrop<any[] | null, any, any>) {
+    public onReorderDone(drag: CdkDragDrop<any[] | null, any, any>): void {
         const loadId = drag.container.data[drag.currentIndex - 1]?.loadId;
         if (loadId) {
             const load = [
@@ -243,7 +260,9 @@ export class PayrollReportComponent
         }
     }
 
-    onProccessPayroll(payrollData: PayrollDriverMileageByIdResponse) {
+    public onProccessPayroll(
+        payrollData: PayrollDriverMileageByIdResponse
+    ): void {
         this.modalService.openModal(
             PayrollProccessPaymentModalComponent,
             {
@@ -257,13 +276,13 @@ export class PayrollReportComponent
                         (payrollData as any).debt ?? payrollData.earnings,
                     payrollNumber: payrollData.payrollNumber,
                     selectedTab: this.selectedTab,
-                    payrollType: 'miles',
+                    payrollType: PayrollTypes.MILES,
                 } as IPayrollProccessPaymentModal,
             }
         );
     }
 
-    public getReportDataResults(getData?: IGetPayrollByIdAndOptions) {
+    public getReportDataResults(getData?: IGetPayrollByIdAndOptions): void {
         this.payrollFacadeService.getPayrollDriverMileageReport(
             getData ?? {
                 reportId: `${this.reportId}`,
