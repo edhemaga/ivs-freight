@@ -84,37 +84,35 @@ export class FuelService {
         fuelTransactionSpecParamsSearch1?: any,
         fuelTransactionSpecParamsSearch2?: string
     ): Observable<FuelTransactionListResponse> {
-        return this.fuelService
-            .apiFuelTransactionListGet
-            (
-                fuelTransactionSpecParamsFuelStopStoreIds,
-                fuelTransactionSpecParamsTruckIds,
-                fuelTransactionSpecParamsCategoryIds,
-                fuelTransactionSpecParamsCardIds,
-                fuelTransactionSpecParamsDateFrom,
-                fuelTransactionSpecParamsDateTo,
-                fuelTransactionSpecParamsLong,
-                fuelTransactionSpecParamsLat,
-                fuelTransactionSpecParamsDistance,
-                fuelTransactionSpecParamsLastFrom,
-                fuelTransactionSpecParamsLastTo,
-                fuelTransactionSpecParamsCostFrom,
-                fuelTransactionSpecParamsCostTo,
-                fuelTransactionSpecParamsPpgFrom,
-                fuelTransactionSpecParamsPpgTo,
-                fuelTransactionSpecParamsTruckId,
-                fuelTransactionSpecParamsDriverId,
-                fuelTransactionSpecParams,
-                fuelTransactionSpecParamsPageIndex,
-                fuelTransactionSpecParamsPageSize,
-                fuelTransactionSpecParamsCompanyId,
-                fuelTransactionSpecParamsSort,
-                fuelTransactionSpecParamsSortOrder,
-                fuelTransactionSpecParamsSortBy,
-                fuelTransactionSpecParamsSearch,
-                fuelTransactionSpecParamsSearch1,
-                fuelTransactionSpecParamsSearch2
-            );
+        return this.fuelService.apiFuelTransactionListGet(
+            fuelTransactionSpecParamsFuelStopStoreIds,
+            fuelTransactionSpecParamsTruckIds,
+            fuelTransactionSpecParamsCategoryIds,
+            fuelTransactionSpecParamsCardIds,
+            fuelTransactionSpecParamsDateFrom,
+            fuelTransactionSpecParamsDateTo,
+            fuelTransactionSpecParamsLong,
+            fuelTransactionSpecParamsLat,
+            fuelTransactionSpecParamsDistance,
+            fuelTransactionSpecParamsLastFrom,
+            fuelTransactionSpecParamsLastTo,
+            fuelTransactionSpecParamsCostFrom,
+            fuelTransactionSpecParamsCostTo,
+            fuelTransactionSpecParamsPpgFrom,
+            fuelTransactionSpecParamsPpgTo,
+            fuelTransactionSpecParamsTruckId,
+            fuelTransactionSpecParamsDriverId,
+            fuelTransactionSpecParams,
+            fuelTransactionSpecParamsPageIndex,
+            fuelTransactionSpecParamsPageSize,
+            fuelTransactionSpecParamsCompanyId,
+            fuelTransactionSpecParamsSort,
+            fuelTransactionSpecParamsSortOrder,
+            fuelTransactionSpecParamsSortBy,
+            fuelTransactionSpecParamsSearch,
+            fuelTransactionSpecParamsSearch1,
+            fuelTransactionSpecParamsSearch2
+        );
     }
 
     public getFuelTransactionModalDropdowns(): Observable<GetFuelModalResponse> {
@@ -335,7 +333,7 @@ export class FuelService {
         search1?: string,
         search2?: string
     ): Observable<Array<ClusterResponse>> {
-        return this.fuelService.apiFuelClustersGet(
+        return of(null); /* this.fuelService.apiFuelClustersGet(
             northEastLatitude,
             northEastLongitude,
             southWestLatitude,
@@ -365,7 +363,7 @@ export class FuelService {
             search,
             search1,
             search2
-        );
+        ); */
     }
 
     public getFuelStopMapList(
