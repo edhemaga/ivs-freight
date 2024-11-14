@@ -1458,7 +1458,7 @@
             </div>
         </ng-container>
 
-        <ng-container *ngIf="['deduction'].includes(editData?.template)">
+        <ng-container *ngIf="['deduction', 'credit', 'bonus', 'fuel'].includes(editData?.template)">
             <div
                 class="d-flex flex-column justify-content-center confirmation-array-body"
             >

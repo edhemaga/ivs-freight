@@ -14,6 +14,7 @@ import { Subject, takeUntil } from 'rxjs';
 // Services
 import { PayrollCreditService } from '@pages/accounting/pages/payroll/payroll-modals/payroll-credit-bonus/services/payroll-credit.service';
 import { PayrollFacadeService } from '@pages/accounting/pages/payroll/state/services/payroll.service';
+import { PayrollService as PayrollInternalService } from '../../services/payroll.service';
 
 // Models
 import {
@@ -22,6 +23,7 @@ import {
 } from '@pages/accounting/pages/payroll/state/models';
 import {
     CreatePayrollCreditCommand,
+    PayrollCreditResponse,
     PayrollCreditType,
     PayrollService,
 } from 'appcoretruckassist';
@@ -35,6 +37,8 @@ import { TaModalActionEnums } from '@shared/components/ta-modal/enums';
 
 // Components
 import { PayrollBaseModalComponent } from '@pages/accounting/pages/payroll/payroll-modals/payroll-base-modal/payroll-base-modal.component';
+import { TableStringEnum } from '@shared/enums/table-string.enum';
+import { ConfirmationModalStringEnum } from '@shared/components/ta-shared-modals/confirmation-modal/enums/confirmation-modal-string.enum';
 
 @Component({
     selector: 'app-payroll-credit-bonus',
@@ -64,37 +68,57 @@ export class PayrollCreditBonusComponent implements OnInit {
     // Form
     public payrollCreditForm: UntypedFormGroup;
     public formLoaded: boolean;
+    private credit: PayrollCreditResponse;
 
     constructor(
         private payrolCreditService: PayrollCreditService,
         private payrollService: PayrollService,
+        private payrollInternalService: PayrollInternalService,
         private ngbActiveModal: NgbActiveModal,
         private formBuilder: UntypedFormBuilder,
         private payrollFacadeService: PayrollFacadeService
     ) {}
 
     ngOnInit() {
-        console.log('this.editData', this.editData);
         this.createForm();
     }
 
     private createForm(): void {
         const data = this.editData ? this.editData.data : {};
-
+        this.getCredit();
+        
         const creditType =
             this.editData?.creditType || PayrollCreditType.Driver;
 
         this.payrollCreditForm = this.formBuilder.group({
             [PayrollStringEnum.DRIVER_ID]: [data?.driverId ?? null],
             [PayrollStringEnum.TRUCK_ID]: [data?.truckId ?? null],
-            [PayrollStringEnum.DATE]: [data.date ?? new Date(), Validators.required],
-            [PayrollStringEnum.DESCRIPTION]: [data.description ?? null, Validators.required],
-            [PayrollStringEnum.AMOUNT]: [data.subtotal ?? null, Validators.required],
+            [PayrollStringEnum.DATE]: [
+                data.date ?? new Date(),
+                Validators.required,
+            ],
+            [PayrollStringEnum.DESCRIPTION]: [
+                data.description ?? null,
+                Validators.required,
+            ],
+            [PayrollStringEnum.AMOUNT]: [
+                data.subtotal ?? null,
+                Validators.required,
+            ],
             [PayrollStringEnum.SELECTED_DRIVER_ID]: [data?.driverId ?? null],
             [PayrollStringEnum.SELECTED_TRUCK_ID]: [data?.truckId ?? null],
             [PayrollStringEnum.SELECTED_TYPE_ID]: [creditType],
         });
         this.formLoaded = true;
+    }
+
+    public getCredit(): void {
+        if (this.editData?.data?.id) {
+            this.payrollService
+                .apiPayrollCreditIdGet(this.editData?.data?.id)
+                .pipe(takeUntil(this.destroy$))
+                .subscribe((credit) => (this.credit = credit));
+        }
     }
 
     public get isEditMode(): boolean {
@@ -150,13 +174,12 @@ export class PayrollCreditBonusComponent implements OnInit {
         } else if (action === TaModalActionEnums.UPDATE) {
             const data = this.generateCreditModel();
             this.payrolCreditService
-                .updatePayrollCredit({...data, id: this.editData.data.id})
+                .updatePayrollCredit({ ...data, id: this.editData.data.id })
                 .pipe(takeUntil(this.destroy$))
                 .subscribe((response) => {
                     this.onCloseModal();
                 });
-        } 
-        else if (action === TaModalActionEnums.MOVE_TO_THIS_PERIOD) {
+        } else if (action === TaModalActionEnums.MOVE_TO_THIS_PERIOD) {
             this.payrolCreditService
                 .movePayrollCredit(this.editData.data.id)
                 .pipe(takeUntil(this.destroy$))
@@ -164,12 +187,17 @@ export class PayrollCreditBonusComponent implements OnInit {
                     this.onCloseModal();
                 });
         } else if (action === TaModalActionEnums.DELETE) {
-            this.payrolCreditService
-                .deletePayrollCreditById(this.editData.data.id)
-                .pipe(takeUntil(this.destroy$))
-                .subscribe((res) => {
-                    this.onCloseModal();
-                });
+            this.payrollInternalService.raiseDeleteModal(
+                TableStringEnum.CREDIT,
+                ConfirmationModalStringEnum.DELETE_CREDIT,
+                this.editData.data.id,
+                {
+                    title: this.credit.description,
+                    subtitle: this.credit.amount,
+                    date: this.credit.date,
+                    label: `${this.credit.driver.firstName} ${this.credit.driver.lastName}`,
+                }
+            );
         }
     }
 

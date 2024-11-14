@@ -361,6 +361,10 @@ export class PayrollBaseModalComponent implements OnInit {
         return this.modalType === PayrollStringEnum.MODAL_DEDUCTION;
     }
 
+    public get isCreditModal(): boolean {
+        return this.modalType === PayrollStringEnum.MODAL_CREDIT;
+    }
+
     public get isBonusModal(): boolean {
         return this.modalType === PayrollStringEnum.MODAL_BONUS;
     }
@@ -377,6 +381,20 @@ export class PayrollBaseModalComponent implements OnInit {
                 .subscribe(() => {
                     this.onCloseModal();
                 });
+        } else if (this.isCreditModal) {
+            this.payrolCreditService
+                .deletePayrollCreditById(this.editData.data.id)
+                .pipe(takeUntil(this.destroy$))
+                .subscribe((res) => {
+                    this.onCloseModal();
+                });
+        } else if (this.isBonusModal) {
+            this.payrollBonusService
+                .deletePayrollBonusById(this.editData.data.id)
+                .pipe(takeUntil(this.destroy$))
+                .subscribe((res) => {
+                    this.onCloseModal();
+                });
         }
     }
 
@@ -384,10 +402,8 @@ export class PayrollBaseModalComponent implements OnInit {
         this.confirmationService.confirmationData$
             .pipe(takeUntil(this.destroy$))
             .subscribe((res) => {
-                switch (res.type) {
-                    case TableStringEnum.DELETE:
-                        this.deletePayroll();
-                        break;
+                if (res.type === TableStringEnum.DELETE) {
+                    this.deletePayroll();
                 }
             });
     }

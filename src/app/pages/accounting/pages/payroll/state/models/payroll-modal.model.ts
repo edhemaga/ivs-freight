@@ -1,6 +1,4 @@
-import {
-    PayrollCreditType,
-} from 'appcoretruckassist';
+import { PayrollCreditType } from 'appcoretruckassist';
 import { PayrollStringEnum } from '../enums';
 
 export type PayrollModalAction =
@@ -9,7 +7,8 @@ export type PayrollModalAction =
 
 export type PayrollModalType =
     | PayrollStringEnum.MODAL_DEDUCTION
-    | PayrollStringEnum.MODAL_BONUS;
+    | PayrollStringEnum.MODAL_BONUS
+    | PayrollStringEnum.MODAL_CREDIT;
 
 export interface PayrollModal {
     edit: boolean;

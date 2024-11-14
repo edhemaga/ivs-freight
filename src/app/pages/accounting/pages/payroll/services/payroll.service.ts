@@ -494,15 +494,16 @@ export class PayrollService {
         );
     }
 
-    public raiseDeleteModal(modalType: TableStringEnum.DEDUCTION, id: number, data: PayrollDeleteModal) {
-        if(modalType === TableStringEnum.DEDUCTION) {
-            this.showDeductionModal(
-                TableStringEnum.DEDUCTION,
-                ConfirmationModalStringEnum.DELETE_DEDUCTION,
-                id,
-                data 
-            )
-        }
+    public raiseDeleteModal(
+        modalType: TableStringEnum.DEDUCTION | TableStringEnum.CREDIT | TableStringEnum.BONUS,
+        action:
+            | ConfirmationModalStringEnum.DELETE_DEDUCTION
+            | ConfirmationModalStringEnum.DELETE_CREDIT 
+            | ConfirmationModalStringEnum.DELETE_BONUS, 
+        id: number,
+        data: PayrollDeleteModal
+    ) {
+        this.showDeductionModal(modalType, action, id, data);
     }
 
     public showDeductionModal(
@@ -510,7 +511,7 @@ export class PayrollService {
         modalHeaderTitle: string,
         id: number,
         extras: PayrollDeleteModal
-    ) : void {
+    ): void {
         this.modalService.openModal(
             ConfirmationModalComponent,
             { size: TableStringEnum.DELETE },

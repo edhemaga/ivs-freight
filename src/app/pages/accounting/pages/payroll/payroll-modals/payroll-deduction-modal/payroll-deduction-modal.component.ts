@@ -37,6 +37,7 @@ import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calcula
 // Components
 import { PayrollBaseModalComponent } from '@pages/accounting/pages/payroll/payroll-modals/payroll-base-modal/payroll-base-modal.component';
 import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-custom-card.component';
+import { ConfirmationModalStringEnum } from '@shared/components/ta-shared-modals/confirmation-modal/enums/confirmation-modal-string.enum';
 
 @Component({
     selector: 'app-payroll-deduction-modal',
@@ -243,7 +244,7 @@ export class PayrollDeductionModalComponent implements OnInit {
                     this.onCloseModal();
                 });
         } else if (action === TaModalActionEnums.DELETE) {
-            this.payrollService.raiseDeleteModal(TableStringEnum.DEDUCTION, this.editData.data.id, 
+            this.payrollService.raiseDeleteModal(TableStringEnum.DEDUCTION, ConfirmationModalStringEnum.DELETE_DEDUCTION, this.editData.data.id, 
                 {
                     title: this.deduction.description,
                     subtitle: this.deduction.amount,
