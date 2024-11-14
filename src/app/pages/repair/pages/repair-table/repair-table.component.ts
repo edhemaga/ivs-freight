@@ -1909,6 +1909,8 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                 null, // lastTo?: number,
                 null, // ppgFrom?: number,
                 null, // ppgTo?: number,
+                null, // selectedId
+                null, // active
                 this.mapClustersPagination.pageIndex, // pageIndex
                 this.mapClustersPagination.pageSize, // pageSize
                 null, // companyId
@@ -2045,6 +2047,9 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                 null, // distance
                 null, // costFrom
                 null, // costTo
+                null, // active
+                null, // states
+                null, // selectedId
                 this.mapListPagination.pageIndex,
                 this.mapListPagination.pageSize,
                 null, // companyId
