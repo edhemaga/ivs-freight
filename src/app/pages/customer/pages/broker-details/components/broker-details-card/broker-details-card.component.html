@@ -120,7 +120,22 @@
                 }"
                 [customClass]="'detailsPadding'"
             >
-            <!-- Chart implementation -->
+                <div
+                    class="charts-template perfomance"
+                >
+                    <div>
+                        <app-ta-tab-switch
+                            [type]="'type2-modal-popup'"
+                            (switchClicked)="changeInvoiceTab($event)"
+                            [tabs]="tabsBroker"
+                        >
+                        </app-ta-tab-switch>
+                    </div>
+                    <app-ca-chart
+                    [chartConfig]="invoiceChartConfig"
+                    >
+                    </app-ca-chart>
+                </div>
             </app-ta-custom-card>
             <app-ta-custom-card
                 [bodyTemplate]="'card'"
@@ -135,9 +150,26 @@
                 }"
                 [customClass]="'detailsPadding'"
             >
-                <!-- Chart implementation -->
+                <div
+                    class="charts-template perfomance"
+                >
+                    <!-- <ng-container *ngIf="!mileageChart?.hoveringStatus"> -->
+                        <div>
+                            <app-ta-tab-switch
+                                [type]="'type2-modal-popup'"
+                                [tabs]="tabsBroker"
+                                (switchClicked)="changeMileageTab($event)"
+                            >
+                            </app-ta-tab-switch>
+                        </div>
+                    <!-- </ng-container> -->
+                    <app-ca-chart
+                        [chartConfig]="mileageChartConfig"
+                    >
+                    </app-ca-chart>
+                </div>
+                
             </app-ta-custom-card>
-
             <app-ta-custom-card
                 [bodyTemplate]="'card'"
                 [hasDivider]="true"
@@ -399,7 +431,24 @@
                 }"
                 [customClass]="'detailsPadding'"
             >
-            <!-- Chart implementation -->
+             <div
+                    class="charts-template perfomance"
+                >
+                    <!-- <ng-container *ngIf="!mileageChart?.hoveringStatus"> -->
+                        <div>
+                            <app-ta-tab-switch
+                                [type]="'type2-modal-popup'"
+                                [tabs]="tabsBroker"
+                                (switchClicked)="changeMileageTab($event)"
+                            >
+                            </app-ta-tab-switch>
+                        </div>
+                    <!-- </ng-container> -->
+                    <app-ca-chart
+                    [chartConfig]="paymentChartConfig"
+                >
+                </app-ca-chart>
+                </div>
             </app-ta-custom-card>
 
             <div class="divider"></div>

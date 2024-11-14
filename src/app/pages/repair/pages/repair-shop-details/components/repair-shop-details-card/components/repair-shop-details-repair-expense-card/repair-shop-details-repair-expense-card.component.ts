@@ -6,6 +6,7 @@ import { Subject, takeUntil } from 'rxjs';
 // components
 import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-custom-card.component';
 import { TaTabSwitchComponent } from '@shared/components/ta-tab-switch/ta-tab-switch.component';
+import { CaChartComponent } from 'ca-components';
 
 // svg routes
 import { RepairShopDetailsSvgRoutes } from '@pages/repair/pages/repair-shop-details/utils/svg-routes';
@@ -14,11 +15,12 @@ import { RepairShopDetailsSvgRoutes } from '@pages/repair/pages/repair-shop-deta
 import { RepairService } from '@shared/services/repair.service';
 
 // constants
-import { RepairExpenseCartConstants } from '@pages/repair/pages/repair-shop-details/components/repair-shop-details-card/utils/constants';
+import { RepairExpenseCartConstants, RepairShopChartsConfiguration } from '@pages/repair/pages/repair-shop-details/components/repair-shop-details-card/utils/constants';
 
 // models
 import { RepairShopResponse } from 'appcoretruckassist';
 import { Tabs } from '@shared/models/tabs.model';
+import { IChartConfiguaration } from 'ca-components/lib/components/ca-chart/models';
 
 @Component({
     selector: 'app-repair-shop-details-repair-expense-card',
@@ -32,6 +34,7 @@ import { Tabs } from '@shared/models/tabs.model';
         // components
         TaCustomCardComponent,
         TaTabSwitchComponent,
+        CaChartComponent
     ],
 })
 export class RepairShopDetailsRepairExpenseCardComponent implements OnDestroy {
@@ -46,9 +49,9 @@ export class RepairShopDetailsRepairExpenseCardComponent implements OnDestroy {
     public _cardData: RepairShopResponse;
 
     /* TODO - set chart types */
-    public barChartConfig: any;
-    public barChartAxes: any;
-    public barChartLegend: any[] = [];
+    // public barChartConfig: any;
+    // public barChartAxes: any;
+    // public barChartLegend: any[] = [];
 
     public repairExpensesChart: any;
 
@@ -59,6 +62,8 @@ export class RepairShopDetailsRepairExpenseCardComponent implements OnDestroy {
 
     public chartTabs: Tabs[];
 
+    public repairShopChartConfig: IChartConfiguaration = RepairShopChartsConfiguration.REPAIR_CHART_CONFIG;
+
     constructor(
         private repairService: RepairService,
 
@@ -67,9 +72,9 @@ export class RepairShopDetailsRepairExpenseCardComponent implements OnDestroy {
     ) {}
 
     private getConstantData(): void {
-        this.barChartConfig = RepairExpenseCartConstants.BAR_CHART_CONFIG;
-        this.barChartAxes = RepairExpenseCartConstants.BAR_CHART_AXES;
-        this.barChartLegend = RepairExpenseCartConstants.BAR_CHART_LEGEND;
+        // this.barChartConfig = RepairExpenseCartConstants.BAR_CHART_CONFIG;
+        // this.barChartAxes = RepairExpenseCartConstants.BAR_CHART_AXES;
+        // this.barChartLegend = RepairExpenseCartConstants.BAR_CHART_LEGEND;
 
         this.repairCall = RepairExpenseCartConstants.REPAIR_CALL;
 
@@ -109,19 +114,19 @@ export class RepairShopDetailsRepairExpenseCardComponent implements OnDestroy {
             .getRepairShopChart(id, chartType)
             .pipe(takeUntil(this.destroy$))
             .subscribe((item) => {
-                this.barChartConfig.dataLabels = [];
-                this.barChartConfig.chartValues = [item.repair, item.cost];
+                // this.barChartConfig.dataLabels = [];
+                // this.barChartConfig.chartValues = [item.repair, item.cost];
 
-                this.barChartLegend[0].value = item.repair;
-                this.barChartLegend[1].value = item.cost;
+                // this.barChartLegend[0].value = item.repair;
+                // this.barChartLegend[1].value = item.cost;
 
-                let hasValue = false;
+                // let hasValue = false;
 
-                this.barChartLegend.forEach((leg) => {
-                    if (leg.value > 0) hasValue = true;
-                });
+                // this.barChartLegend.forEach((leg) => {
+                //     if (leg.value > 0) hasValue = true;
+                // });
 
-                this.barChartConfig.hasValue = hasValue;
+                // this.barChartConfig.hasValue = hasValue;
 
                 let milesPerGallon = [],
                     costPerGallon = [],
@@ -129,11 +134,11 @@ export class RepairShopDetailsRepairExpenseCardComponent implements OnDestroy {
                     maxValue = 0,
                     maxValue2 = 0;
 
-                if (item?.repairShopExpensesChartResponse?.length > 17) {
-                    this.barChartConfig.dataProperties[1].defaultConfig.barThickness = 10;
-                } else {
-                    this.barChartConfig.dataProperties[1].defaultConfig.barThickness = 18;
-                }
+                // if (item?.repairShopExpensesChartResponse?.length > 17) {
+                //     this.barChartConfig.dataProperties[1].defaultConfig.barThickness = 10;
+                // } else {
+                //     this.barChartConfig.dataProperties[1].defaultConfig.barThickness = 18;
+                // }
 
                 //this.repairExpensesChart.toolTipData = [];
                 item.repairShopExpensesChartResponse.forEach((data) => {
@@ -155,14 +160,14 @@ export class RepairShopDetailsRepairExpenseCardComponent implements OnDestroy {
                     }
                 });
 
-                this.barChartAxes['verticalLeftAxes']['maxValue'] = maxValue;
-                this.barChartAxes['verticalRightAxes']['maxValue'] = maxValue2;
+                // this.barChartAxes['verticalLeftAxes']['maxValue'] = maxValue;
+                // this.barChartAxes['verticalRightAxes']['maxValue'] = maxValue2;
 
-                this.barChartConfig.dataLabels = labels;
-                this.barChartConfig.dataProperties[0].defaultConfig.data =
-                    costPerGallon;
-                this.barChartConfig.dataProperties[1].defaultConfig.data =
-                    milesPerGallon;
+                // this.barChartConfig.dataLabels = labels;
+                // this.barChartConfig.dataProperties[0].defaultConfig.data =
+                //     costPerGallon;
+                // this.barChartConfig.dataProperties[1].defaultConfig.data =
+                //     milesPerGallon;
 
                 // this.repairExpensesChart.chartDataCheck(
                 //     this.barChartConfig.chartValues

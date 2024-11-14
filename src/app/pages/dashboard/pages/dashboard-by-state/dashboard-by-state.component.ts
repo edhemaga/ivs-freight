@@ -15,7 +15,6 @@ import { DashboardService } from '@pages/dashboard/services/dashboard.service';
 
 // enums
 import { DashboardStringEnum } from '@pages/dashboard/enums/dashboard-string.enum';
-import { DashboardChartStringEnum } from '@pages/dashboard/enums/dashboard-chart-string.enum';
 
 // helpers
 import { DashboardHelper } from '@pages/dashboard/utils/helpers/dashboard.helper';
@@ -26,6 +25,7 @@ import { DashboardByStateConstants } from '@pages/dashboard/pages/dashboard-by-s
 import { DashboardSubperiodConstants } from '@pages/dashboard/utils/constants/dashboard-subperiod.constants';
 import { DashboardTopRatedConstants } from '@pages/dashboard/pages/dashboard-top-rated/utils/constants/dashboard-top-rated.constants';
 import { DashboardColors } from '@pages/dashboard/utils/constants/dashboard-colors.constants';
+import { DashboardByStateChartsConfiguration } from '@pages/dashboard/pages/dashboard-by-state/utils/constants';
 
 // models
 import { ByStateListItem } from '@pages/dashboard/pages/dashboard-by-state/models/by-state-list-item.model';
@@ -34,6 +34,7 @@ import { DashboardTab } from '@pages/dashboard/models/dashboard-tab.model';
 import { DropdownListItem } from '@pages/dashboard/models/dropdown-list-item.model';
 import { ByStateColorsPallete } from '@pages/dashboard/models/colors-pallete.model';
 import { CustomPeriodRange } from '@shared/models/custom-period-range.model';
+import { IChartConfiguaration } from 'ca-components/lib/components/ca-chart/models';
 
 import {
     ByStateReportType,
@@ -52,7 +53,6 @@ import { MapListItem } from '@pages/dashboard/pages/dashboard-by-state/models/ma
     styleUrls: ['./dashboard-by-state.component.scss'],
 })
 export class DashboardByStateComponent implements OnInit, OnDestroy {
-
     private destroy$ = new Subject<void>();
 
     public byStateForm: UntypedFormGroup;
@@ -78,7 +78,7 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
 
     // tabs
     public byStateTabs: DashboardTab[] = [];
-    private currentActiveTab: DashboardTab;
+    public currentActiveTab: DashboardTab;
 
     // dropdowns
     public byStateDropdownList: DropdownItem[] = [];
@@ -98,6 +98,10 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
 
     // colors
     public mainColorsPallete: ByStateColorsPallete[] = [];
+
+    //chart
+    public pickUpByStateChartConfig: IChartConfiguaration =
+        DashboardByStateChartsConfiguration.PICK_BY_STATE_CHART_CONFIG;
 
     constructor(
         private formBuilder: UntypedFormBuilder,
@@ -877,7 +881,6 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
                 this.byStateListLength = accidentData.pagination.count;
 
                 // intervals
-
 
                 // colors range & map
                 DashboardHelper.setByStateListColorRange(this.byStateList);

@@ -22,11 +22,19 @@ import { DetailsPageService } from '@shared/services/details-page.service';
 import { ShipperService } from '@pages/customer/services';
 import { ModalService } from '@shared/services/modal.service';
 
+// Constants
+//import { ShipperDetailsChartsConfiguration } from '@pages/customer/pages/shipper-details/utils/constants/';
+
 // Components
 import { ShipperModalComponent } from '@pages/customer/pages/shipper-modal/shipper-modal.component';
 
+// Models
+import { IChartConfiguaration } from 'ca-components/lib/components/ca-chart/models';
+
 // Enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
+import { ShipperDetailsChartsConfiguration } from '../shipper-details-item/utils/constants';
+
 
 @Component({
     selector: 'app-shipper-details-card',
@@ -38,108 +46,13 @@ export class ShipperDetailsCardComponent
     implements OnInit, OnChanges, OnDestroy
 {
     private destroy$ = new Subject<void>();
-    @ViewChild('stackedBarChart', { static: false })
-    public stackedBarChart: any;
     @Input() shipper: any;
     @Input() templateCard: boolean;
     public shipperDropdowns: any[] = [];
     public shipperList: any[] = this.shipperMinimalListQuery.getAll();
     public note: UntypedFormControl = new UntypedFormControl();
     public shipperTabs: any[] = [];
-
-    stackedBarChartConfig: any = {
-        dataProperties: [
-            {
-                defaultConfig: {
-                    type: 'bar',
-                    data: [],
-                    label: 'Miles',
-                    yAxisID: 'y-axis-0',
-                    borderColor: '#80CBBA',
-                    backgroundColor: '#80CBBA',
-                    hoverBackgroundColor: '#26A690',
-                    hoverBorderColor: '#26A690',
-                    barThickness: 18,
-                },
-            },
-            {
-                defaultConfig: {
-                    type: 'bar',
-                    data: [],
-                    label: 'Miles',
-                    yAxisID: 'y-axis-0',
-                    borderColor: '#EF9A9A',
-                    backgroundColor: '#EF9A9A',
-                    hoverBackgroundColor: '#E57373',
-                    hoverBorderColor: '#E57373',
-                    barThickness: 18,
-                },
-            },
-        ],
-        showLegend: false,
-        chartValues: [0, 0],
-        defaultType: 'bar',
-        chartWidth: '417',
-        chartHeight: '130',
-        hasValue: false,
-        dataLabels: [
-            '',
-            'NOV',
-            '',
-            '2021',
-            '',
-            'MAR',
-            '',
-            'MAY',
-            '',
-            'JUL',
-            '',
-            'SEP',
-        ],
-        onHoverAnnotation: true,
-        hoverTimeDisplay: true,
-        stacked: true,
-        offset: true,
-        allowAnimation: true,
-        animationOnlyOnLoad: true,
-        noChartImage: 'assets/svg/common/stacked_no_data.svg',
-        showHoverTooltip: true,
-        showZeroLine: true,
-    };
-
-    public stackedBarChartLegend: any[] = [
-        {
-            title: 'Avg. Pickup Time',
-            value: 68.56,
-            image: 'assets/svg/common/round_green.svg',
-            customClass: 'light_green',
-            sufix: 'm',
-            elementId: 0,
-        },
-        {
-            title: 'Avg. Delivery Time',
-            value: 37.56,
-            image: 'assets/svg/common/round_blue.svg',
-            customClass: 'light_red',
-            sufix: 'm',
-            elementId: 1,
-        },
-    ];
-
-    public stackedBarAxes: object = {
-        verticalLeftAxes: {
-            visible: true,
-            minValue: -30,
-            maxValue: 30,
-            stepSize: 15,
-            showGridLines: false,
-        },
-        horizontalAxes: {
-            visible: true,
-            position: 'bottom',
-            showGridLines: false,
-        },
-    };
+    public payrollChartConfig: IChartConfiguaration = ShipperDetailsChartsConfiguration.PAYROLL_CHART_CONFIG;
 
     public monthList: any[] = [
         'JAN',
@@ -308,8 +221,8 @@ export class ShipperDetailsCardComponent
     }
 
     public changeShipperTabs(ev: any) {
-        const chartType = this.stackedBarChart?.detailsTimePeriod(ev.name);
-        this.getShipperChartData(this.shipper.id, chartType);
+        //const chartType = this.stackedBarChart?.detailsTimePeriod(ev.name);
+        //this.getShipperChartData(this.shipper.id, chartType);
     }
 
     public getShipperChartData(
@@ -336,32 +249,32 @@ export class ShipperDetailsCardComponent
                     avgDeliveryTime = this.convertTimeSpanToMinutes(
                         item.avgDeliveryTime
                     );
-                this.stackedBarChartConfig.dataLabels = [];
-                this.stackedBarChartConfig.chartValues = [
-                    avgPickupTime,
-                    avgDeliveryTime,
-                ];
-                this.stackedBarChartLegend[0].value = avgPickupTime;
-                this.stackedBarChartLegend[1].value = avgDeliveryTime;
-                let hasValue = false;
-                this.stackedBarChartLegend.map((leg) => {
-                    if (leg.value > 0) {
-                        hasValue = true;
-                    }
-                });
-                this.stackedBarChartConfig.hasValue = hasValue;
+                // this.stackedBarChartConfig.dataLabels = [];
+                // this.stackedBarChartConfig.chartValues = [
+                //     avgPickupTime,
+                //     avgDeliveryTime,
+                // ];
+                // this.stackedBarChartLegend[0].value = avgPickupTime;
+                // this.stackedBarChartLegend[1].value = avgDeliveryTime;
+                // let hasValue = false;
+                // this.stackedBarChartLegend.map((leg) => {
+                //     if (leg.value > 0) {
+                //         hasValue = true;
+                //     }
+                // });
+                // this.stackedBarChartConfig.hasValue = hasValue;
                 let milesPerGallon = [],
                     costPerGallon = [],
                     labels = [],
                     maxValue = 0;
-                if (item?.shipperAverageWaitingTimeChartResponse?.length > 17) {
-                    this.stackedBarChartConfig.dataProperties[0].defaultConfig.barThickness = 10;
-                    this.stackedBarChartConfig.dataProperties[1].defaultConfig.barThickness = 10;
-                } else {
-                    this.stackedBarChartConfig.dataProperties[0].defaultConfig.barThickness = 18;
-                    this.stackedBarChartConfig.dataProperties[1].defaultConfig.barThickness = 18;
-                }
-                this.stackedBarChart.toolTipData = [];
+                // if (item?.shipperAverageWaitingTimeChartResponse?.length > 17) {
+                //     this.stackedBarChartConfig.dataProperties[0].defaultConfig.barThickness = 10;
+                //     this.stackedBarChartConfig.dataProperties[1].defaultConfig.barThickness = 10;
+                // } else {
+                //     this.stackedBarChartConfig.dataProperties[0].defaultConfig.barThickness = 18;
+                //     this.stackedBarChartConfig.dataProperties[1].defaultConfig.barThickness = 18;
+                // }
+                //this.stackedBarChart.toolTipData = [];
                 item.shipperAverageWaitingTimeChartResponse.map((data) => {
                     let pickup = this.convertTimeSpanToMinutes(
                         data.avgPickupTime
@@ -370,7 +283,7 @@ export class ShipperDetailsCardComponent
                         data.avgDeliveryTime
                     );
 
-                    this.stackedBarChart.toolTipData.push(data);
+                    //this.stackedBarChart.toolTipData.push(data);
 
                     if (delivery + pickup > maxValue) {
                         maxValue =
@@ -387,26 +300,26 @@ export class ShipperDetailsCardComponent
                     costPerGallon.push(delivery);
                 });
 
-                this.stackedBarAxes['verticalLeftAxes']['maxValue'] =
-                    maxValue / 2;
-                this.stackedBarAxes['verticalLeftAxes']['minValue'] = -(
-                    maxValue / 2
-                );
-                this.stackedBarChartConfig.dataLabels = labels;
-                this.stackedBarChartConfig.dataProperties[0].defaultConfig.data =
-                    milesPerGallon;
-                this.stackedBarChartConfig.dataProperties[1].defaultConfig.data =
-                    costPerGallon;
-                this.stackedBarChart.chartDataCheck(
-                    this.stackedBarChartConfig.chartValues
-                );
-                this.stackedBarChart.updateChartData(hideAnimation);
-                this.stackedBarChart.saveValues = JSON.parse(
-                    JSON.stringify(this.stackedBarChartLegend)
-                );
-                this.stackedBarChart.legendAttributes = JSON.parse(
-                    JSON.stringify(this.stackedBarChartLegend)
-                );
+                // this.stackedBarAxes['verticalLeftAxes']['maxValue'] =
+                //     maxValue / 2;
+                // this.stackedBarAxes['verticalLeftAxes']['minValue'] = -(
+                //     maxValue / 2
+                // );
+                // this.stackedBarChartConfig.dataLabels = labels;
+                // this.stackedBarChartConfig.dataProperties[0].defaultConfig.data =
+                //     milesPerGallon;
+                // this.stackedBarChartConfig.dataProperties[1].defaultConfig.data =
+                //     costPerGallon;
+                // this.stackedBarChart.chartDataCheck(
+                //     this.stackedBarChartConfig.chartValues
+                // );
+                // this.stackedBarChart.updateChartData(hideAnimation);
+                // this.stackedBarChart.saveValues = JSON.parse(
+                //     JSON.stringify(this.stackedBarChartLegend)
+                // );
+                // this.stackedBarChart.legendAttributes = JSON.parse(
+                //     JSON.stringify(this.stackedBarChartLegend)
+                // );
             });
 
         //this.ref.detectChanges();

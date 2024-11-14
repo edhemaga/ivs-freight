@@ -36,9 +36,11 @@ import { TruckDetailsEnum } from '@pages/truck/pages/truck-details/enums/truck-d
 
 // constants
 import { TruckDetailsConstants } from '@pages/truck/pages/truck-details/utils/constants/truck-details.constants';
+import { TruckDetailsChartsConfiguration } from '@pages/truck/pages/truck-details/utils/constants';
 
 // models
 import { TruckResponse, TruckPerformanceResponse } from 'appcoretruckassist';
+import { IChartConfiguaration } from 'ca-components/lib/components/ca-chart/models';
 
 @Component({
     selector: 'app-truck-details-card',
@@ -90,145 +92,13 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
     //private monthList: string[] = ChartConstants.MONTH_LIST_SHORT;
     public ownerCardOpened: boolean = true;
     public featureNumber: number = 0;
-    payrollChartConfig: any = {
-        dataProperties: [
-            {
-                defaultConfig: {
-                    type: 'line',
-                    data: [],
-                    label: 'Salary',
-                    yAxisID: 'y-axis-1',
-                    borderColor: '#6D82C7',
-                    pointBackgroundColor: '#FFFFFF',
-                    pointHoverBackgroundColor: '#6D82C7',
-                    pointHoverBorderColor: '#FFFFFF',
-                    pointHoverRadius: 3,
-                    pointBorderWidth: 2,
-                },
-            },
-            {
-                defaultConfig: {
-                    type: 'bar',
-                    data: [],
-                    label: 'Miles',
-                    yAxisID: 'y-axis-0',
-                    borderColor: '#FFCC80',
-                    backgroundColor: '#FFCC80',
-                    hoverBackgroundColor: '#FFA726',
-                    barThickness: 18,
-                },
-            },
-        ],
-        showLegend: false,
-        chartValues: [0, 0],
-        defaultType: 'bar',
-        chartWidth: '417',
-        chartHeight: '130',
-        hasValue: false,
-        dataLabels: [],
-        onHoverAnnotation: true,
-        offset: true,
-        allowAnimation: true,
-        animationOnlyOnLoad: true,
-        hoverTimeDisplay: true,
-        noChartImage: 'assets/svg/common/yellow_no_data.svg',
-        showHoverTooltip: true,
-        showZeroLine: true,
-    };
 
-    revenueChartConfig: any = {
-        dataProperties: [
-            {
-                defaultConfig: {
-                    type: 'line',
-                    data: [],
-                    label: 'Salary',
-                    yAxisID: 'y-axis-1',
-                    borderColor: '#6D82C7',
-                    pointBackgroundColor: '#FFFFFF',
-                    pointHoverBackgroundColor: '#6D82C7',
-                    pointHoverBorderColor: '#FFFFFF',
-                    pointHoverRadius: 3,
-                    pointBorderWidth: 2,
-                },
-            },
-            {
-                defaultConfig: {
-                    type: 'bar',
-                    data: [],
-                    label: 'Miles',
-                    yAxisID: 'y-axis-0',
-                    borderColor: '#B2DFD1',
-                    backgroundColor: '#B2DFD1',
-                    hoverBackgroundColor: '#4DB6A2',
-                    barThickness: 18,
-                },
-            },
-        ],
-        showLegend: false,
-        chartValues: [],
-        defaultType: 'bar',
-        chartWidth: '417',
-        chartHeight: '130',
-        hasValue: false,
-        dataLabels: [],
-        onHoverAnnotation: true,
-        hoverTimeDisplay: true,
-        offset: true,
-        allowAnimation: true,
-        animationOnlyOnLoad: true,
-        noChartImage: 'assets/svg/common/green_no_data.svg',
-        hasSameDataIndex: true,
-        showHoverTooltip: true,
-        showZeroLine: true,
-    };
-
-    stackedBarChartConfig: any = {
-        dataProperties: [
-            {
-                defaultConfig: {
-                    type: 'bar',
-                    data: [],
-                    label: 'Miles',
-                    yAxisID: 'y-axis-0',
-                    borderColor: '#FFCC80',
-                    backgroundColor: '#FFCC80',
-                    hoverBackgroundColor: '#FFA726',
-                    hoverBorderColor: '#FFA726',
-                    barThickness: 18,
-                },
-            },
-            {
-                defaultConfig: {
-                    type: 'bar',
-                    data: [],
-                    label: 'Miles',
-                    yAxisID: 'y-axis-0',
-                    borderColor: '#97A8DC',
-                    backgroundColor: '#97A8DC',
-                    hoverBackgroundColor: '#536BC2',
-                    hoverBorderColor: '#536BC2',
-                    barThickness: 18,
-                },
-            },
-        ],
-        showLegend: false,
-        chartValues: [0, 0, 0],
-        defaultType: 'bar',
-        chartWidth: '417',
-        chartHeight: '130',
-        hasValue: false,
-        dataLabels: [],
-        onHoverAnnotation: true,
-        hoverTimeDisplay: true,
-        stacked: true,
-        offset: true,
-        allowAnimation: true,
-        animationOnlyOnLoad: true,
-        noChartImage: 'assets/svg/common/stacked_no_data.svg',
-        showHoverTooltip: true,
-        showZeroLine: true,
-    };
+    public fuelConsumptionChartConfig: IChartConfiguaration =
+        TruckDetailsChartsConfiguration.FUEL_CHART_CONFIG;
+    public revenueChartConfig: IChartConfiguaration =
+        TruckDetailsChartsConfiguration.REVENUE_CHART_CONFIG;
+    public expensesChartConfig: IChartConfiguaration =
+        TruckDetailsChartsConfiguration.EXPENSES_CHART_CONFIG;
 
     public performance: TruckPerformanceResponse;
     public isWideScreen: boolean = false;
@@ -238,8 +108,8 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
     constructor(
         private detailsPageDriverSer: DetailsPageService,
         private truckMinimalListQuery: TrucksMinimalListQuery,
-        private truckService: TruckService,
-    ) { }
+        private truckService: TruckService
+    ) {}
 
     ngOnChanges(changes: SimpleChanges): void {
         if (!changes?.truck.firstChange && changes?.truck) {
