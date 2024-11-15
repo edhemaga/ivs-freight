@@ -35,12 +35,22 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
 // pipes
 import { FormatCurrencyPipe } from '@shared/pipes/format-currency.pipe';
 
+// enums
+import { ToolbarFilterStringEnum } from '../ta-filter/enums/toolbar-filter-string.enum';
+
 // svg routes
 import { DetailsHeaderSvgRoutes } from '@shared/components/ta-details-header/utils/svg-routes/details-header-svg-routes';
 
 // models
 import { MultipleSelectDetailsDropdownItem } from '@pages/load/pages/load-details/components/load-details-item/models/multiple-select-details-dropdown-item.model';
 import { LoadsSortDropdownModel } from '@pages/customer/models/loads-sort-dropdown.model';
+import { FilterIconRoutes } from '../ta-filter/utils/constants/filter-icons-routes.constants';
+
+// services
+import { TruckassistTableService } from '@shared/services/truckassist-table.service';
+import { FilterStateService } from '../ta-filter/services/filter-state.service';
+import { Subject, takeUntil } from 'rxjs';
+import { ArrayStatus } from '../ta-filter/models/array-status.model';
 
 @Component({
     selector: 'app-ta-details-header',
@@ -148,6 +158,8 @@ export class TaDetailsHeaderComponent implements OnInit, OnChanges {
         sortDirection: string;
     }>();
 
+    private destroy$ = new Subject<void>();
+
     public icPlusSvgIcon: string = 'assets/svg/common/ic_plus.svg';
     public icDangerSvgIcon: string = 'assets/svg/common/ic_danger.svg';
     public up: boolean = false;
@@ -162,6 +174,13 @@ export class TaDetailsHeaderComponent implements OnInit, OnChanges {
     public sortPopover: NgbPopover;
     public isSortDropdownOpen: boolean = false;
 
+    public loadStatusOptionsArray: ArrayStatus[];
+    public unselectedDispatcher: ArrayStatus[];
+    public truckTypeArray: ArrayStatus[];
+    public trailerTypeArray: ArrayStatus[];
+    public categoryRepairArray: ArrayStatus[];
+    public pmFilterArray: ArrayStatus[];
+
     public detailsHeaderSvgRoutes = DetailsHeaderSvgRoutes;
 
     private rotate: { [key: string]: string } = {
@@ -169,9 +188,14 @@ export class TaDetailsHeaderComponent implements OnInit, OnChanges {
         desc: 'asc',
     };
 
-    constructor() {}
+    constructor(
+        private tableService: TruckassistTableService,
+        private filterService: FilterStateService
+    ) {}
 
-    ngOnInit(): void {}
+    ngOnInit(): void {
+        this.handleFilterInitialization();
+    }
 
     ngOnChanges(changes: SimpleChanges): void {
         if (
@@ -189,6 +213,191 @@ export class TaDetailsHeaderComponent implements OnInit, OnChanges {
                 (item) => item.active
             );
         }
+        this.handleFilterInitialization();
+    }
+
+    public handleFilterInitialization(): void {
+        let truckResData;
+        let trailerResData;
+
+        if (this.categoryFilter) this.filterService.getRepairCategory();
+
+        if (this.pmFilter)
+            this.filterService.getPmData(ToolbarFilterStringEnum.TRUCK);
+
+        if (this.truckTypeFilter || this.trailerTypeFilter) {
+            truckResData = this.filterService.getTruckType(
+                this.options.toolbarActions.showTruckDispatchFilter
+            );
+            trailerResData = this.filterService.getTrailerType(
+                this.options.toolbarActions.showTrailerDispatchFilter
+            );
+        }
+
+        this.tableService.currentLoadStatusFilterOptions
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((res) => {
+                if (res) this.loadStatusOptionsArray = [...res.options];
+            });
+
+        this.tableService.currentActionAnimation
+            .pipe(takeUntil(this.destroy$))
+            .subscribe(
+                (
+                    res: any // leave any for now
+                ) => {
+                    if (
+                        res?.animation ===
+                        ToolbarFilterStringEnum.DISPATCH_DATA_UPDATE
+                    ) {
+                        const newData = res.data.map(
+                            (
+                                type: any
+                                // leave any for now
+                            ) => {
+                                type[ToolbarFilterStringEnum.NAME] =
+                                    type?.fullName ??
+                                    `${type?.driver?.firstName} ${type?.driver?.lastName}`;
+                                type[ToolbarFilterStringEnum.COUNT] =
+                                    type.loadCount;
+                                return type;
+                            }
+                        );
+
+                        this.unselectedDispatcher = newData;
+                    }
+                    if (res?.animation === ToolbarFilterStringEnum.LIST_UPDATE)
+                        this.loadStatusOptionsArray = res.data.statuses;
+
+                    if (
+                        res?.animation ===
+                        ToolbarFilterStringEnum.TRUCK_LIST_UPDATE
+                    ) {
+                        this.truckTypeArray = truckResData;
+                        if (
+                            this.options.toolbarActions.showTruckPmFilter ||
+                            this.options.toolbarActions.showTrailerPmFilter
+                        ) {
+                            this.truckTypeArray = res.data.map(
+                                (
+                                    type: any
+                                    // leave any for now
+                                ) => {
+                                    type[ToolbarFilterStringEnum.NAME] =
+                                        type.truckNumber;
+                                    return type;
+                                }
+                            );
+                        } else {
+                            this.truckTypeArray = res.data.map((item) => ({
+                                ...item.truckType,
+                                count: item.count,
+                                icon: item.truckType?.logoName
+                                    ? FilterIconRoutes.truckSVG +
+                                      item.truckType.logoName
+                                    : null,
+                            }));
+                        }
+                    }
+                    if (
+                        res?.animation ===
+                        ToolbarFilterStringEnum.TRAILER_LIST_UPDATE
+                    ) {
+                        this.trailerTypeArray = trailerResData;
+                        if (
+                            this.options.toolbarActions.showTruckPmFilter ||
+                            this.options.toolbarActions.showTrailerPmFilter
+                        ) {
+                            this.trailerTypeArray = res.data.map(
+                                (
+                                    type: any
+                                    // leave any for now
+                                ) => {
+                                    type[ToolbarFilterStringEnum.NAME] =
+                                        type.trailerNumber;
+                                    return type;
+                                }
+                            );
+                        } else {
+                            this.trailerTypeArray = res.data.map((item) => ({
+                                ...item.trailerType,
+                                count: item.count,
+                                icon: item.trailerType?.logoName
+                                    ? FilterIconRoutes.trailerSVG +
+                                      item.trailerType.logoName
+                                    : null,
+                            }));
+                        }
+                    }
+                    if (
+                        res?.animation ===
+                        ToolbarFilterStringEnum.TRUCK_TYPE_UPDATE
+                    ) {
+                        this.truckTypeArray = truckResData;
+                        this.truckTypeArray = res.data.map((item) => ({
+                            ...item.truckType,
+                            count: item.count,
+                            icon: item.truckType?.logoName
+                                ? FilterIconRoutes.truckSVG +
+                                  item.truckType.logoName
+                                : null,
+                        }));
+                    }
+                    if (
+                        res?.animation ===
+                        ToolbarFilterStringEnum.TRAILER_TYPE_UPDATE
+                    ) {
+                        this.trailerTypeArray = trailerResData;
+                        this.trailerTypeArray = res.data.map((item) => ({
+                            ...item.trailerType,
+                            count: item.count,
+                            icon: item.trailerType?.logoName
+                                ? FilterIconRoutes.trailerSVG +
+                                  item.trailerType.logoName
+                                : null,
+                        }));
+                    }
+
+                    if (
+                        res?.animation ===
+                        ToolbarFilterStringEnum.REPAIR_CATEGORY_UPDATE
+                    ) {
+                        const newData = res.data.map(
+                            (
+                                type: any // leave any for now
+                            ) => {
+                                type[ToolbarFilterStringEnum.ICON] =
+                                    FilterIconRoutes.categorySVG + type.logo;
+                                return type;
+                            }
+                        );
+                        this.categoryRepairArray = newData;
+                    }
+
+                    if (
+                        res?.animation ===
+                        ToolbarFilterStringEnum.PM_TRUCK_DATA_UPDATE
+                    ) {
+                        if (res.data.pmTrucks?.length) {
+                            const newData = res.data.pmTrucks.map(
+                                (type: any) => {
+                                    type[ToolbarFilterStringEnum.ICON] =
+                                        FilterIconRoutes.repairPmSVG +
+                                        type.logoName;
+                                    type[ToolbarFilterStringEnum.NAME] =
+                                        type.title;
+
+                                    return type;
+                                }
+                            );
+
+                            this.pmFilterArray = newData;
+                        } else {
+                            this.pmFilterArray = [];
+                        }
+                    }
+                }
+            );
     }
 
     public openModal(val: string) {
@@ -434,5 +643,10 @@ export class TaDetailsHeaderComponent implements OnInit, OnChanges {
     public sortDropdownClosed(): void {
         this.sortPopover?.close();
         this.isSortDropdownOpen = false;
+    }
+
+    // --------------------------------NgOnDestroy---------------------------------
+    ngOnDestroy(): void {
+        this.tableService.sendCurrentSetTableFilter(null);
     }
 }

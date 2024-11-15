@@ -215,9 +215,10 @@ export class TaToolbarFiltersComponent implements OnInit, OnChanges, OnDestroy {
                             this.truckTypeArray = res.data.map((item) => ({
                                 ...item.truckType,
                                 count: item.count,
-                                icon:
-                                    FilterIconRoutes.truckSVG +
-                                    item.truckType.logoName,
+                                icon: item.truckType?.logoName
+                                    ? FilterIconRoutes.truckSVG +
+                                      item.truckType.logoName
+                                    : null,
                             }));
                         }
                     }
@@ -244,9 +245,10 @@ export class TaToolbarFiltersComponent implements OnInit, OnChanges, OnDestroy {
                             this.trailerTypeArray = res.data.map((item) => ({
                                 ...item.trailerType,
                                 count: item.count,
-                                icon:
-                                    FilterIconRoutes.trailerSVG +
-                                    item.trailerType.logoName,
+                                icon: item.trailerType?.logoName
+                                    ? FilterIconRoutes.trailerSVG +
+                                      item.trailerType.logoName
+                                    : null,
                             }));
                         }
                     }
@@ -258,9 +260,10 @@ export class TaToolbarFiltersComponent implements OnInit, OnChanges, OnDestroy {
                         this.truckTypeArray = res.data.map((item) => ({
                             ...item.truckType,
                             count: item.count,
-                            icon:
-                                FilterIconRoutes.truckSVG +
-                                item.truckType.logoName,
+                            icon: item.truckType?.logoName
+                                ? FilterIconRoutes.truckSVG +
+                                  item.truckType.logoName
+                                : null,
                         }));
                     }
                     if (
@@ -271,9 +274,10 @@ export class TaToolbarFiltersComponent implements OnInit, OnChanges, OnDestroy {
                         this.trailerTypeArray = res.data.map((item) => ({
                             ...item.trailerType,
                             count: item.count,
-                            icon:
-                                FilterIconRoutes.trailerSVG +
-                                item.trailerType.logoName,
+                            icon: item.trailerType?.logoName
+                                ? FilterIconRoutes.trailerSVG +
+                                  item.trailerType.logoName
+                                : null,
                         }));
                     }
                     if (
