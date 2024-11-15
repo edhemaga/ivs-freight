@@ -160,12 +160,6 @@ export class TaMapListCardComponent implements OnInit, OnDestroy {
         this.isSelected = isAdd;
         this.item.isSelected = isAdd;
 
-        if (isAdd)
-            this.elementRef.nativeElement.scrollIntoView({
-                behavior: 'smooth',
-                block: 'center',
-            });
-
         this.ref.detectChanges();
     }
 
