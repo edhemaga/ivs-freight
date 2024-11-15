@@ -1,3 +1,4 @@
+import { CommonModule } from '@angular/common';
 import {
     ChangeDetectionStrategy,
     ChangeDetectorRef,
@@ -8,79 +9,61 @@ import {
     SimpleChanges,
     ViewEncapsulation,
 } from '@angular/core';
+
 import { Subject, takeUntil } from 'rxjs';
 
-// Models
-import { RepairShopResponse, UpdateReviewCommand } from 'appcoretruckassist';
-
-// Services
+// services
 import { DropDownService } from '@shared/services/drop-down.service';
 import { ConfirmationService } from '@shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
 import { ModalService } from '@shared/services/modal.service';
 import { ReviewsRatingService } from '@shared/services/reviews-rating.service';
 import { TruckassistTableService } from '@shared/services/truckassist-table.service';
 
-// Helpers
+// helpers
 import { DropActionNameHelper } from '@shared/utils/helpers/drop-action-name.helper';
 
-// Store
+// store
 import { RepairDetailsQuery } from '@pages/repair/state/repair-details-state/repair-details.query';
 
-// Components
+// components
 import { RepairOrderModalComponent } from '@pages/repair/pages/repair-modals/repair-order-modal/repair-order-modal.component';
-
-// Animations
-import { cardComponentAnimation } from '@shared/animations/card-component.animation';
-import { TableStringEnum } from '@shared/enums/table-string.enum';
-import { CommonModule } from '@angular/common';
-import { TaDetailsHeaderCardComponent } from '@shared/components/ta-details-header-card/ta-details-header-card.component';
-import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-custom-card.component';
-import { TaDetailsDropdownComponent } from '@shared/components/ta-details-dropdown/ta-details-dropdown.component';
-import { TaUploadFilesComponent } from '@shared/components/ta-upload-files/ta-upload-files.component';
-import { TaProfileImagesComponent } from '@shared/components/ta-profile-images/ta-profile-images.component';
-import { TaInputNoteComponent } from '@shared/components/ta-input-note/ta-input-note.component';
-import { TaTableBodyComponent } from '@shared/components/ta-table/ta-table-body/ta-table-body.component';
-import { TaTableHeadComponent } from '@shared/components/ta-table/ta-table-head/ta-table-head.component';
-import { TaCopyComponent } from '@shared/components/ta-copy/ta-copy.component';
-import { TaCommonCardComponent } from '@shared/components/ta-common-card/ta-common-card.component';
-import { TaProgressExpirationComponent } from '@shared/components/ta-progress-expiration/ta-progress-expiration.component';
-import { TaCounterComponent } from '@shared/components/ta-counter/ta-counter.component';
-import { TaDetailsHeaderComponent } from '@shared/components/ta-details-header/ta-details-header.component';
-import { TaTabSwitchComponent } from '@shared/components/ta-tab-switch/ta-tab-switch.component';
-import { FormatCurrencyPipe, FormatDatePipe } from '@shared/pipes';
 import { RepairShopDetailsCard } from '@pages/repair/pages/repair-shop-details/components/repair-shop-details-card/repair-shop-details-card.component';
+import { RepairShopDetailsItemRepairComponent } from '@pages/repair/pages/repair-shop-details/components/repair-shop-details-item/components/repair-shop-details-item-repair/repair-shop-details-item-repair.component';
+import { TaDetailsDropdownComponent } from '@shared/components/ta-details-dropdown/ta-details-dropdown.component';
+import { TaCounterComponent } from '@shared/components/ta-counter/ta-counter.component';
+
+// animations
+import { cardComponentAnimation } from '@shared/animations/card-component.animation';
+
+// enums
+import { TableStringEnum } from '@shared/enums/table-string.enum';
+
+// pipes
+import { FormatCurrencyPipe, FormatDatePipe } from '@shared/pipes';
+
+// models
+import { RepairShopResponse, UpdateReviewCommand } from 'appcoretruckassist';
 import { DetailsConfig } from '@shared/models/details-config.model';
 
 @Component({
     selector: 'app-repair-shop-details-item',
     templateUrl: './repair-shop-details-item.component.html',
-    encapsulation: ViewEncapsulation.None,
     styleUrls: ['./repair-shop-details-item.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
     animations: [cardComponentAnimation('showHideCardBody', '0px', '0px')],
     standalone: true,
     imports: [
         // modules
         CommonModule,
 
-        ///////////////////////////////////////
-        TaDetailsHeaderCardComponent,
-        TaCustomCardComponent,
-        /*  TaInputNoteComponent, */
-        TaTableBodyComponent,
-        TaTableHeadComponent,
-        TaProfileImagesComponent,
-        TaCopyComponent,
-        TaUploadFilesComponent,
-        TaCommonCardComponent,
-        TaProgressExpirationComponent,
-        TaCounterComponent,
-        TaDetailsHeaderComponent,
-        TaTabSwitchComponent,
-        TaDetailsDropdownComponent,
+        // components
         RepairShopDetailsCard,
+        RepairShopDetailsItemRepairComponent,
 
-        // Pipes
+        ///////////////////////////////////////
+        TaDetailsDropdownComponent,
+        TaCounterComponent,
+
+        // pipes
         FormatDatePipe,
         FormatCurrencyPipe,
     ],
@@ -200,12 +183,6 @@ export class RepairShopDetailsItemComponent implements OnInit, OnChanges {
 
     ///////////////////////////////////////////////////////
 
-    public toggleRepairs(index: number, event?: any) {
-        event.stopPropagation();
-        event.preventDefault();
-        this.showRepairItems[index] = !this.showRepairItems[index];
-    }
-
     public optionsEvent(eventData: any, action: string) {
         if (eventData.type == 'finish order') {
             this.finishOrder(eventData.id, eventData.data, undefined, 'bill');
@@ -257,7 +234,7 @@ export class RepairShopDetailsItemComponent implements OnInit, OnChanges {
             }
         );
     }
-    /**Function for dots in cards */
+
     public initTableOptions(): void {
         this.dummyData = {
             disabledMutedStyle: null,
@@ -334,6 +311,7 @@ export class RepairShopDetailsItemComponent implements OnInit, OnChanges {
             export: true,
         };
     }
+
     public getReviews(reviewsData: RepairShopResponse) {
         this.reviewsRepair = reviewsData?.ratingReviews?.map((item) => {
             return {

@@ -1,0 +1,107 @@
+@import 'src/theme/variables';
+
+.shop-details-item-repair {
+    border-radius: 3px;
+    background: $white;
+    padding: 6px;
+
+    /* Header */
+
+    &-header {
+        display: grid;
+        grid-template-columns: 115px 76px 80px 232px 101px auto;
+        grid-gap: 4px;
+        padding: 6px 6px 12px 6px;
+        margin-bottom: 6px;
+        border-bottom: 1px solid $bw-9;
+
+        &-item {
+            &:nth-child(5) {
+                padding-right: 8px;
+            }
+        }
+    }
+
+    /* Main */
+
+    &-main {
+        &-item {
+            display: grid;
+            grid-template-columns: 115px 76px 80px 232px 101px auto;
+            grid-gap: 4px;
+            padding: 4px 6px;
+            margin-bottom: 2px;
+            transition: background 0.2s ease-in;
+            cursor: pointer;
+
+            &:hover {
+                background: $bw2;
+            }
+
+            .description-container {
+                max-width: 232px;
+            }
+
+            .cost-container {
+                padding-right: 8px;
+            }
+
+            .actions-container {
+                display: grid;
+                grid-template-columns: repeat(3, 26px);
+                grid-gap: 4px;
+
+                &-action {
+                    border-radius: 2px;
+                    transition: background 0.2s ease-in;
+                    cursor: pointer;
+
+                    &:hover {
+                        background: $dark-2;
+
+                        .icon {
+                            svg {
+                                path,
+                                circle {
+                                    fill: $ta-black;
+                                }
+                            }
+                        }
+                    }
+
+                    .icon {
+                        svg {
+                            path,
+                            circle {
+                                transition: fill 0.2s ease-in;
+                                fill: $bw5;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    /* Footer */
+
+    &-footer {
+        padding: 6px 6px 0 6px;
+        margin-top: 4px;
+        border-top: 1px solid $bw-9;
+
+        .show-more-btn {
+            cursor: pointer;
+
+            &:hover {
+                p {
+                    color: $ta-blue-15 !important;
+                }
+            }
+
+            p {
+                transition: color 0.2s ease-in;
+            }
+        }
+    }
+}
