@@ -8,6 +8,7 @@ import {
     ClosePayrollDriverFlatRateCommand,
     ClosePayrollOwnerCommand,
     PayrollCountsResponse,
+    PayrollDeductionResponse,
     PayrollDriverCommissionByIdResponse,
     PayrollDriverCommissionClosedByIdResponse,
     PayrollDriverFlatRateByIdResponse,
@@ -32,9 +33,20 @@ import { IGet_Payroll_Commission_Driver_Report } from '@pages/accounting/pages/p
 // Environment
 import { environment } from 'src/environments/environment';
 
+// Services
+import { ModalService } from '@shared/services/modal.service';
+
+// Components
+import { ConfirmationModalComponent } from '@shared/components/ta-shared-modals/confirmation-modal/confirmation-modal.component';
+
+// Enums
+import { TableStringEnum } from '@shared/enums/table-string.enum';
+import { ConfirmationModalStringEnum } from '@shared/components/ta-shared-modals/confirmation-modal/enums/confirmation-modal-string.enum';
+import { PayrollDeleteModal } from '../state/models';
+
 @Injectable({ providedIn: 'root' })
 export class PayrollService {
-    constructor(public http: HttpClient) {}
+    constructor(public http: HttpClient, private modalService: ModalService) {}
 
     public getPayrollCounts(
         showOpen: boolean
@@ -448,6 +460,39 @@ export class PayrollService {
         return this.http.put<PayrollDriverMileageResponse>(
             `${environment.API_ENDPOINT}/api/payroll/driver/flatrate/close`,
             body
+        );
+    }
+
+    public raiseDeleteModal(
+        modalType: TableStringEnum.DEDUCTION | TableStringEnum.CREDIT | TableStringEnum.BONUS | TableStringEnum.FUEL_1,
+        action:
+            | ConfirmationModalStringEnum.DELETE_DEDUCTION
+            | ConfirmationModalStringEnum.DELETE_CREDIT 
+            | ConfirmationModalStringEnum.DELETE_FUEL 
+            | ConfirmationModalStringEnum.DELETE_BONUS, 
+        id: number,
+        data: PayrollDeleteModal
+    ) {
+        this.showDeductionModal(modalType, action, id, data);
+    }
+
+    public showDeductionModal(
+        template: string,
+        modalHeaderTitle: string,
+        id: number,
+        extras: PayrollDeleteModal
+    ): void {
+        this.modalService.openModal(
+            ConfirmationModalComponent,
+            { size: TableStringEnum.DELETE },
+            {
+                id,
+                template,
+                type: TableStringEnum.DELETE,
+                svg: true,
+                modalHeaderTitle,
+                extras,
+            }
         );
     }
 }

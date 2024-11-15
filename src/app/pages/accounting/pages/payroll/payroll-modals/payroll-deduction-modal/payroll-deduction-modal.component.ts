@@ -24,10 +24,12 @@ import {
 
 // Services
 import { PayrollDeductionService } from './services/payroll-deduction.service';
+import { PayrollService } from '../../services/payroll.service';
 
 // Enums
 import { PayrollStringEnum } from '@pages/accounting/pages/payroll/state/enums';
 import { TaModalActionEnums } from '@shared/components/ta-modal/enums';
+import { TableStringEnum } from '@shared/enums/table-string.enum';
 
 // Helpers
 import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calculations.helper';
@@ -35,6 +37,7 @@ import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calcula
 // Components
 import { PayrollBaseModalComponent } from '@pages/accounting/pages/payroll/payroll-modals/payroll-base-modal/payroll-base-modal.component';
 import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-custom-card.component';
+import { ConfirmationModalStringEnum } from '@shared/components/ta-shared-modals/confirmation-modal/enums/confirmation-modal-string.enum';
 
 @Component({
     selector: 'app-payroll-deduction-modal',
@@ -63,7 +66,8 @@ export class PayrollDeductionModalComponent implements OnInit {
     constructor(
         private fb: FormBuilder,
         private payrollDeductionService: PayrollDeductionService,
-        private ngbActiveModal: NgbActiveModal
+        private ngbActiveModal: NgbActiveModal,
+        private payrollService: PayrollService
     ) {}
 
     ngOnInit(): void {
@@ -240,12 +244,14 @@ export class PayrollDeductionModalComponent implements OnInit {
                     this.onCloseModal();
                 });
         } else if (action === TaModalActionEnums.DELETE) {
-            this.payrollDeductionService
-                .deletePayrollDeductionById(this.editData.data.id)
-                .pipe(takeUntil(this.destroy$))
-                .subscribe(() => {
-                    this.onCloseModal();
-                });
+            this.payrollService.raiseDeleteModal(TableStringEnum.DEDUCTION, ConfirmationModalStringEnum.DELETE_DEDUCTION, this.editData.data.id, 
+                {
+                    title: this.deduction.description,
+                    subtitle: this.deduction.amount,
+                    date: this.deduction.date,
+                    label: `${this.deduction.driver.firstName} ${this.deduction.driver.lastName}`,
+                
+            });
         }
     }
 

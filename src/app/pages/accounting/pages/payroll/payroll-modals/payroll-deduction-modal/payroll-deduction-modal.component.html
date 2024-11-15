@@ -19,30 +19,32 @@
 
         <div class="divider divider--dark divider--small"></div>
         <ng-container *ngIf="isEditMode; else showCreateButtons">
-            <div>
+            <div class="mt-1 d-flex justify-content-between full-w">
+                <div >
+                    <button
+                        class="modal-delete-btn ta-font-bold mr-12"
+                        (click)="saveDeduction(taModalActionEnums.DELETE)"
+                        [class.valid]="payrollCreditForm?.valid"
+                    >
+                        Delete
+                    </button>
+                    <button
+                        class="modal-convert-to-template-btn ta-font-bold"
+                        (click)="
+                            saveDeduction(taModalActionEnums.MOVE_TO_THIS_PERIOD)
+                        "
+                    >
+                        Move to This Period
+                    </button>
+                </div>
                 <button
-                    class="modal-delete-btn ta-font-bold mr-12"
-                    (click)="saveDeduction(taModalActionEnums.DELETE)"
+                    class="modal-save-btn ta-font-bold"
+                    (click)="saveDeduction(taModalActionEnums.UPDATE)"
                     [class.valid]="payrollCreditForm?.valid"
                 >
-                    Delete
-                </button>
-                <button
-                    class="modal-convert-to-template-btn ta-font-bold"
-                    (click)="
-                        saveDeduction(taModalActionEnums.MOVE_TO_THIS_PERIOD)
-                    "
-                >
-                    Move to This Period
+                    Save Changes
                 </button>
             </div>
-            <button
-                class="modal-save-btn ta-font-bold"
-                (click)="saveDeduction(taModalActionEnums.UPDATE)"
-                [class.valid]="payrollCreditForm?.valid"
-            >
-                Save Changes
-            </button>
         </ng-container>
 
         <ng-template #showCreateButtons>

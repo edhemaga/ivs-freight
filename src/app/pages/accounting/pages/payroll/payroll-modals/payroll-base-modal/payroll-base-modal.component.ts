@@ -58,6 +58,9 @@ import { PayrollFacadeService } from '@pages/accounting/pages/payroll/state/serv
 
 // Helpers
 import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calculations.helper';
+import { TableStringEnum } from '@shared/enums/table-string.enum';
+import { ConfirmationService } from '@shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
+import { PayrollDeductionService } from '../payroll-deduction-modal/services/payroll-deduction.service';
 
 @Component({
     selector: 'app-payroll-base-modal',
@@ -111,7 +114,9 @@ export class PayrollBaseModalComponent implements OnInit {
         private payrolCreditService: PayrollCreditService,
         private payrollBonusService: PayrollBonusService,
         private ngbActiveModal: NgbActiveModal,
-        private payrollFacadeService: PayrollFacadeService
+        private payrollFacadeService: PayrollFacadeService,
+        private confirmationService: ConfirmationService,
+        private payrollDeductionService: PayrollDeductionService
     ) {}
 
     ngOnInit() {
@@ -121,6 +126,7 @@ export class PayrollBaseModalComponent implements OnInit {
     private initForm() {
         this.generateTabs();
         this.setupEventListeners();
+        this.setupDeleteListeners();
     }
 
     private generateTabs(): void {
@@ -191,14 +197,21 @@ export class PayrollBaseModalComponent implements OnInit {
     }
 
     private calculateDeductionPayAmmount(): void {
-        const ammount = MethodsCalculationsHelper.convertThousanSepInNumber(this.baseForm.get(PayrollStringEnum.AMOUNT).value);
-        const numberOfPayments = MethodsCalculationsHelper.convertThousanSepInNumber(this.baseForm.get(
-            PayrollStringEnum.LIMITED_NUMBER
-        ).value);
+        const ammount = MethodsCalculationsHelper.convertThousanSepInNumber(
+            this.baseForm.get(PayrollStringEnum.AMOUNT).value
+        );
+        const numberOfPayments =
+            MethodsCalculationsHelper.convertThousanSepInNumber(
+                this.baseForm.get(PayrollStringEnum.LIMITED_NUMBER).value
+            );
 
         this.baseForm
             .get(PayrollStringEnum.LIMITED_AMOUNT)
-            .patchValue(MethodsCalculationsHelper.convertNumberInThousandSep(ammount / numberOfPayments) ?? 0);
+            .patchValue(
+                MethodsCalculationsHelper.convertNumberInThousandSep(
+                    ammount / numberOfPayments
+                ) ?? 0
+            );
     }
 
     private getEmployeesDropdown(): void {
@@ -348,12 +361,51 @@ export class PayrollBaseModalComponent implements OnInit {
         return this.modalType === PayrollStringEnum.MODAL_DEDUCTION;
     }
 
+    public get isCreditModal(): boolean {
+        return this.modalType === PayrollStringEnum.MODAL_CREDIT;
+    }
+
     public get isBonusModal(): boolean {
         return this.modalType === PayrollStringEnum.MODAL_BONUS;
     }
 
     public get isEditMode(): boolean {
         return this.editData?.edit;
+    }
+
+    private deletePayroll() {
+        if (this.isDeductionModal) {
+            this.payrollDeductionService
+                .deletePayrollDeductionById(this.editData.data.id)
+                .pipe(takeUntil(this.destroy$))
+                .subscribe(() => {
+                    this.onCloseModal();
+                });
+        } else if (this.isCreditModal) {
+            this.payrolCreditService
+                .deletePayrollCreditById(this.editData.data.id)
+                .pipe(takeUntil(this.destroy$))
+                .subscribe((res) => {
+                    this.onCloseModal();
+                });
+        } else if (this.isBonusModal) {
+            this.payrollBonusService
+                .deletePayrollBonusById(this.editData.data.id)
+                .pipe(takeUntil(this.destroy$))
+                .subscribe((res) => {
+                    this.onCloseModal();
+                });
+        }
+    }
+
+    private setupDeleteListeners() {
+        this.confirmationService.confirmationData$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((res) => {
+                if (res.type === TableStringEnum.DELETE) {
+                    this.deletePayroll();
+                }
+            });
     }
 
     public onCloseModal(): void {

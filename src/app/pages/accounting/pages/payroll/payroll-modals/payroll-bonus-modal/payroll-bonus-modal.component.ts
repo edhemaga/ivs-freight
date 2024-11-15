@@ -30,6 +30,9 @@ import { TaModalActionEnums } from '@shared/components/ta-modal/enums';
 
 // Helpers
 import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calculations.helper';
+import { ConfirmationModalStringEnum } from '@shared/components/ta-shared-modals/confirmation-modal/enums/confirmation-modal-string.enum';
+import { TableStringEnum } from '@shared/enums/table-string.enum';
+import { PayrollService } from '../../services/payroll.service';
 
 @Component({
     selector: 'app-payroll-bonus-modal',
@@ -57,7 +60,8 @@ export class PayrollBonusModalComponent implements OnInit {
         private fb: FormBuilder,
         private payrollBonusService: PayrollBonusService,
         private payrollFacadeService: PayrollFacadeService,
-        private ngbActiveModal: NgbActiveModal
+        private ngbActiveModal: NgbActiveModal,
+        private payrollService: PayrollService
     ) {}
 
     ngOnInit(): void {
@@ -154,12 +158,17 @@ export class PayrollBonusModalComponent implements OnInit {
                     this.onCloseModal();
                 });
         } else if (action === TaModalActionEnums.DELETE) {
-            this.payrollBonusService
-                .deletePayrollBonusById(this.editData.data.id)
-                .pipe(takeUntil(this.destroy$))
-                .subscribe((res) => {
-                    this.onCloseModal();
-                });
+            this.payrollService.raiseDeleteModal(
+                TableStringEnum.BONUS,
+                ConfirmationModalStringEnum.DELETE_BONUS,
+                this.editData.data.id,
+                {
+                    title: this.editData.data.description,
+                    subtitle: this.editData.data.amount,
+                    date: this.editData.data.date,
+                    label: `${this.editData.data.driver.firstName} ${this.editData.data.driver.lastName}`,
+                }
+            );
         }
     }
     public onCloseModal(): void {
