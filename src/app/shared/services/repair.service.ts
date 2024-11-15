@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 
-import { Observable, of, switchMap, tap } from 'rxjs';
+import { Observable, switchMap, tap } from 'rxjs';
 
 // store
 import { RepairTruckStore } from '@pages/repair/state/repair-truck-state/repair-truck.store';
@@ -379,8 +379,8 @@ export class RepairService {
         shipperLong?: number,
         shipperLat?: number,
         shipperDistance?: number,
-        shipperStates?: string[],
-        categoryIds?: number[],
+        shipperStates?: Array<string>,
+        categoryIds?: Array<number>,
         _long?: number,
         lat?: number,
         distance?: number,
@@ -390,6 +390,8 @@ export class RepairService {
         lastTo?: number,
         ppgFrom?: number,
         ppgTo?: number,
+        selectedId?: number,
+        active?: number,
         pageIndex?: number,
         pageSize?: number,
         companyId?: number,
@@ -398,7 +400,7 @@ export class RepairService {
         search1?: string,
         search2?: string
     ): Observable<Array<ClusterResponse>> {
-        return of(null); /* this.repairShopService.apiRepairshopClustersGet(
+        return this.repairShopService.apiRepairshopClustersGet(
             northEastLatitude,
             northEastLongitude,
             southWestLatitude,
@@ -419,6 +421,8 @@ export class RepairService {
             lastTo,
             ppgFrom,
             ppgTo,
+            selectedId,
+            active,
             pageIndex,
             pageSize,
             companyId,
@@ -428,7 +432,7 @@ export class RepairService {
             search,
             search1,
             search2
-        ); */
+        );
     }
 
     public getRepairShopMapList(
@@ -436,12 +440,15 @@ export class RepairService {
         northEastLongitude?: number,
         southWestLatitude?: number,
         southWestLongitude?: number,
-        categoryIds?: number[],
+        categoryIds?: Array<number>,
         _long?: number,
         lat?: number,
         distance?: number,
         costFrom?: number,
         costTo?: number,
+        active?: number,
+        states?: Array<string>,
+        selectedId?: number,
         pageIndex?: number,
         pageSize?: number,
         companyId?: number,
@@ -450,7 +457,7 @@ export class RepairService {
         search1?: string,
         search2?: string
     ): Observable<RepairShopListResponse> {
-        return of(null); /* this.repairShopService.apiRepairshopListmapGet(
+        return this.repairShopService.apiRepairshopListmapGet(
             northEastLatitude,
             northEastLongitude,
             southWestLatitude,
@@ -461,6 +468,9 @@ export class RepairService {
             distance,
             costFrom,
             costTo,
+            active,
+            states,
+            selectedId,
             pageIndex,
             pageSize,
             companyId,
@@ -470,7 +480,7 @@ export class RepairService {
             search,
             search1,
             search2
-        ); */
+        );
     }
 
     public getRepairShopChart(
