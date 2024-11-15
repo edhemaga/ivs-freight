@@ -583,12 +583,12 @@
             [type]="'fuel-filter'"
             [icon]="'ic_fuel_transaction'"
             [filterTitle]="'Fuel Transaction'"
-            [dataArray]="activeTableData.fuelArray"
+            [dataArray]="activeTableData.data"
+            [dataCount]="activeTableData.integratedDataCount"
             (setFilter)="onSpecialFilter($event, 'fuelArray')"
-            [selectedFilter]="activeTableData.fuelArray.selectedFilter"
+            [selectedFilter]="activeTableData?.fuelArray?.selectedFilter"
         ></app-ta-special-filter>
     </ng-container>
-        
 
     <app-ta-special-filter
         *ngIf="options.toolbarActions.showRepairOrderFilter"
