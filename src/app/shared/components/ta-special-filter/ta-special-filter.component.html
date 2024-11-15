@@ -1,7 +1,7 @@
 <div
     class="user-icon d-flex justify-content-center align-items-center"
     (click)="toggleSpecialFilter()"
-    [ngClass]="type | filterClass : activeFilter : dataArray"
+    [ngClass]="type | filterClass : activeFilter : dataArray : dataCount"
     (mouseenter)="activeFilter ? (hoverFilter = true) : (hoverFilter = false)"
     (mouseleave)="hoverFilter = false"
 >
@@ -38,9 +38,7 @@
             }"
         >
             {{
-                dataArray?.filteredArray?.length > 0
-                    ? dataArray?.filteredArray?.length
-                    : '0'
+                dataArray?.filteredArray?.length ?? dataCount ?? 0
             }}
         </div>
         <ng-container

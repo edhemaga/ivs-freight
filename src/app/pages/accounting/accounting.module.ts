@@ -16,41 +16,44 @@ import {
     CaSearchMultipleStatesComponent,
     CaFilterComponent,
 } from 'ca-components';
+
+// Store
+import { EffectsModule } from '@ngrx/effects';
+import { StoreModule } from '@ngrx/store';
+
 import { PayrollComponent } from '@pages/accounting/pages/payroll/payroll.component';
 import { AccountingPayrollComponent } from '@pages/accounting/pages/accounting-payroll/accounting-payroll.component';
 import { TaTableToolbarComponent } from '@shared/components/ta-table/ta-table-toolbar/ta-table-toolbar.component';
 import { TaInputComponent } from '@shared/components/ta-input/ta-input.component';
 import { TaProfileImagesComponent } from '@shared/components/ta-profile-images/ta-profile-images.component';
 import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-custom-card.component';
-import { DriverMileageCollapsedTableComponent } from './pages/payroll/components/tables/driver-mileage/driver-mileage-collapsed-table/driver-mileage-collapsed-table.component';
+import { DriverMileageCollapsedTableComponent } from '@pages/accounting/pages/payroll/components/tables/driver-mileage/driver-mileage-collapsed-table/driver-mileage-collapsed-table.component';
 
-import { DriverMileageExpandedTableComponent } from './pages/payroll/components/tables/driver-mileage/driver-mileage-expanded-table/driver-mileage-expanded-table.component';
-import { DriverCommissionSoloTableComponent } from './pages/payroll/components/tables/driver-commission/driver-commission-solo-table/driver-commission-solo-table.component';
-import { DriverOwnerTableComponent } from './pages/payroll/components/tables/driver-owner/driver-owner-table/driver-owner-table.component';
-import { DriverFlatRateTableComponent } from './pages/payroll/components/tables/driver-flat-rate/driver-flat-rate-table/driver-flat-rate-table.component';
-import { PayrollReportComponent } from './pages/payroll/components/reports/payroll-report/payroll-report.component';
-import { DriverCommissionReportComponent } from './pages/payroll/components/reports/driver-commission-report/driver-commission-report.component';
-import { PayrollTableCommissionTotalPipe } from './pages/payroll/pipes/payroll-table-commission-total/payroll-table-commission-total.pipe';
-import { DriverOwnerReportComponent } from './pages/payroll/components/reports/driver-owner-report/driver-owner-report.component';
-import { DriverFlatRateReportComponent } from './pages/payroll/components/reports/driver-flat-rate-report/driver-flat-rate-report.component';
+import { DriverCommissionCollapsedTableComponent } from '@pages/accounting/pages/payroll/components/tables/driver-commission/driver-commission-collapsed-table/driver-commission-collapsed-table.component';
+import { DriverFlatRateCollapsedTableComponent } from '@pages/accounting/pages/payroll/components/tables/driver-flat-rate/driver-flat-rate-collapsed-table/driver-flat-rate-collapsed-table.component';
+import { DriverOwnerCollapsedTableComponent } from '@pages/accounting/pages/payroll/components/tables/driver-owner/driver-owner-collapsed-table/driver-owner-collapsed-table.component';
+import { DriverCommissionExpandedTableComponent } from '@pages/accounting/pages/payroll/components/tables/driver-commission/driver-commission-expanded-table/driver-commission-expanded-table.component';
+import { DriverFlatRateExpandedTableComponent } from '@pages/accounting/pages/payroll/components/tables/driver-flat-rate/driver-flat-rate-expanded-table/driver-flat-rate-expanded-table.component';
+import { DriverOwnerExpandedTableComponent } from '@pages/accounting/pages/payroll/components/tables/driver-owner/driver-owner-expanded-table/driver-owner-expanded-table.component';
+import { DriverMileageExpandedTableComponent } from '@pages/accounting/pages/payroll/components/tables/driver-mileage/driver-mileage-expanded-table/driver-mileage-expanded-table.component';
+import { DriverCommissionSoloTableComponent } from '@pages/accounting/pages/payroll/components/tables/driver-commission/driver-commission-solo-table/driver-commission-solo-table.component';
+import { DriverOwnerTableComponent } from '@pages/accounting/pages/payroll/components/tables/driver-owner/driver-owner-table/driver-owner-table.component';
+import { DriverFlatRateTableComponent } from '@pages/accounting/pages/payroll/components/tables/driver-flat-rate/driver-flat-rate-table/driver-flat-rate-table.component';
+import { PayrollReportComponent } from '@pages/accounting/pages/payroll/components/reports/payroll-report/payroll-report.component';
+import { DriverCommissionReportComponent } from '@pages/accounting/pages/payroll/components/reports/driver-commission-report/driver-commission-report.component';
+import { PayrollToolbarComponent } from '@pages/accounting/pages/payroll/components/payroll-toolbar/payroll-toolbar.component';
+import { DriverOwnerReportComponent } from '@pages/accounting/pages/payroll/components/reports/driver-owner-report/driver-owner-report.component';
+import { DriverFlatRateReportComponent } from '@pages/accounting/pages/payroll/components/reports/driver-flat-rate-report/driver-flat-rate-report.component';
+import { TaAppTooltipComponent } from '@shared/components/ta-app-tooltip/ta-app-tooltip.component';
 
 // Pipes
-import { EffectsModule } from '@ngrx/effects';
-import { StoreModule } from '@ngrx/store';
-import { payrollReducer } from './pages/payroll/state/reducers/payroll.reducer';
-import { PayrollEffect } from './pages/payroll/state/effects/payroll.effect';
-import { PayrollTableNamesPipe } from './pages/payroll/pipes/payroll-table-names/payroll-table-names.pipe';
-import { DriverMileageSoloTableComponent } from './pages/payroll/components/tables/driver-mileage/driver-mileage-solo-table/driver-mileage-solo-table.component';
-import { PayrollTableTotalPipe } from './pages/payroll/pipes/payroll-table-total/payroll-table-total.pipe';
-import { DriverCommissionCollapsedTableComponent } from './pages/payroll/components/tables/driver-commission/driver-commission-collapsed-table/driver-commission-collapsed-table.component';
-import { DriverFlatRateCollapsedTableComponent } from './pages/payroll/components/tables/driver-flat-rate/driver-flat-rate-collapsed-table/driver-flat-rate-collapsed-table.component';
-import { DriverOwnerCollapsedTableComponent } from './pages/payroll/components/tables/driver-owner/driver-owner-collapsed-table/driver-owner-collapsed-table.component';
-import { DriverCommissionExpandedTableComponent } from './pages/payroll/components/tables/driver-commission/driver-commission-expanded-table/driver-commission-expanded-table.component';
-import { DriverFlatRateExpandedTableComponent } from './pages/payroll/components/tables/driver-flat-rate/driver-flat-rate-expanded-table/driver-flat-rate-expanded-table.component';
-import { DriverOwnerExpandedTableComponent } from './pages/payroll/components/tables/driver-owner/driver-owner-expanded-table/driver-owner-expanded-table.component';
-import { PayrollToolbarComponent } from './pages/payroll/components/payroll-toolbar/payroll-toolbar.component';
+import { payrollReducer } from '@pages/accounting/pages/payroll/state/reducers/payroll.reducer';
+import { PayrollEffect } from '@pages/accounting/pages/payroll/state/effects/payroll.effect';
+import { DriverMileageSoloTableComponent } from '@pages/accounting/pages/payroll/components/tables/driver-mileage/driver-mileage-solo-table/driver-mileage-solo-table.component';
+import { PayrollTableTotalPipe } from '@pages/accounting/pages/payroll/pipes/payroll-table-total/payroll-table-total.pipe';
 import { ListNameCasePipe } from '@shared/components/ta-table/ta-table-toolbar/pipes/list-name-case.pipe';
-import { TaAppTooltipComponent } from '@shared/components/ta-app-tooltip/ta-app-tooltip.component';
+import { PayrollTableCommissionTotalPipe } from '@pages/accounting/pages/payroll/pipes/payroll-table-commission-total/payroll-table-commission-total.pipe';
+
 @NgModule({
     declarations: [
         // Components
@@ -59,7 +62,6 @@ import { TaAppTooltipComponent } from '@shared/components/ta-app-tooltip/ta-app-
         PayrollReportComponent,
 
         // Pipes
-        PayrollTableNamesPipe,
         DriverMileageSoloTableComponent,
         PayrollTableTotalPipe,
         PayrollTableCommissionTotalPipe,

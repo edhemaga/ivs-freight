@@ -149,20 +149,14 @@ export class PayrollService {
             },
         };
 
-        if (selectedDeducionIds?.length) {
+        if (selectedDeducionIds?.length)
             body.selectedDeducionIds = selectedDeducionIds;
-        }
 
-        if (selectedLoadIds?.length) {
-            body.selectedLoadIds = selectedLoadIds;
-        }
+        if (selectedLoadIds?.length) body.selectedLoadIds = selectedLoadIds;
 
-        if (selectedCreditIds?.length) {
+        if (selectedCreditIds?.length)
             body.selectedCreditIds = selectedCreditIds;
-        }
 
-        console.log(body, 'dsfsdsdsdsd');
-        // return of();
         return this.http.put<PayrollDriverMileageResponse>(
             `${environment.API_ENDPOINT}/api/payroll/driver/commission/close`,
             body
@@ -180,26 +174,23 @@ export class PayrollService {
         if (lastLoadDate) {
             params = params.append('LastLoadDate', lastLoadDate);
         }
-        if (selectedCreditIds) {
+        if (selectedCreditIds)
             selectedCreditIds.map(
                 (creditId) =>
                     (params = params.append('SelectedCreditIds', creditId))
             );
-        }
 
-        if (selectedDeducionIds) {
+        if (selectedDeducionIds)
             selectedDeducionIds.map(
                 (deductionId) =>
                     (params = params.append('SelectedDeducionIds', deductionId))
             );
-        }
 
-        if (selectedBonusIds) {
+        if (selectedBonusIds)
             selectedBonusIds.map(
                 (bonusId) =>
                     (params = params.append('SelectedBonusIds', bonusId))
             );
-        }
 
         return this.http.get<PayrollDriverMileageResponse>(
             `${environment.API_ENDPOINT}/api/payroll/driver/mileage/${reportId}`,
@@ -226,7 +217,6 @@ export class PayrollService {
             pay: {
                 type: paymentType,
                 otherPaymentType,
-                //date: '2024-10-15T16:09:54.299Z',
                 amount: amount,
             },
         };
@@ -244,20 +234,18 @@ export class PayrollService {
     }: IGet_Payroll_Commission_Driver_Report): Observable<PayrollDriverCommissionByIdResponse> {
         let params = new HttpParams();
 
-        if (selectedLoadIds) {
+        if (selectedLoadIds)
             selectedLoadIds.map(
                 (creditId) =>
                     (params = params.append('SelectedLoadIds', creditId))
             );
-        }
-        if (selectedCreditIds) {
+        if (selectedCreditIds)
             selectedCreditIds.map(
                 (creditId) =>
                     (params = params.append('SelectedCreditIds', creditId))
             );
-        }
 
-        if (selectedDeductionIds) {
+        if (selectedDeductionIds)
             selectedDeductionIds.map(
                 (deductionId) =>
                     (params = params.append(
@@ -265,7 +253,6 @@ export class PayrollService {
                         deductionId
                     ))
             );
-        }
 
         return this.http.get<PayrollDriverCommissionByIdResponse>(
             `${environment.API_ENDPOINT}/api/payroll/driver/commission/${reportId}`,
@@ -311,20 +298,19 @@ export class PayrollService {
     }: IGet_Payroll_Commission_Driver_Report): Observable<PayrollDriverCommissionByIdResponse> {
         let params = new HttpParams();
 
-        if (selectedLoadIds) {
+        if (selectedLoadIds)
             selectedLoadIds.map(
                 (creditId) =>
                     (params = params.append('SelectedLoadIds', creditId))
             );
-        }
-        if (selectedCreditIds) {
+
+        if (selectedCreditIds)
             selectedCreditIds.map(
                 (creditId) =>
                     (params = params.append('SelectedCreditIds', creditId))
             );
-        }
 
-        if (selectedDeductionIds) {
+        if (selectedDeductionIds)
             selectedDeductionIds.map(
                 (deductionId) =>
                     (params = params.append(
@@ -332,13 +318,11 @@ export class PayrollService {
                         deductionId
                     ))
             );
-        }
 
-        if (selectedFuelIds) {
+        if (selectedFuelIds)
             selectedFuelIds.map(
                 (fuel) => (params = params.append('SelectedFuelIds', fuel))
             );
-        }
 
         return this.http.get<PayrollOwnerResponse>(
             `${environment.API_ENDPOINT}/api/payroll/owner/open/${reportId}`,
@@ -365,7 +349,6 @@ export class PayrollService {
             pay: {
                 type: paymentType,
                 otherPaymentType,
-                //date: '2024-10-15T16:09:54.299Z',
                 amount: amount,
             },
         };
@@ -414,20 +397,18 @@ export class PayrollService {
     }: IGet_Payroll_Commission_Driver_Report): Observable<PayrollDriverFlatRateByIdResponse> {
         let params = new HttpParams();
 
-        if (selectedLoadIds) {
+        if (selectedLoadIds)
             selectedLoadIds.map(
                 (creditId) =>
                     (params = params.append('SelectedLoadIds', creditId))
             );
-        }
-        if (selectedCreditIds) {
+        if (selectedCreditIds)
             selectedCreditIds.map(
                 (creditId) =>
                     (params = params.append('SelectedCreditIds', creditId))
             );
-        }
 
-        if (selectedDeductionIds) {
+        if (selectedDeductionIds)
             selectedDeductionIds.map(
                 (deductionId) =>
                     (params = params.append(
@@ -435,14 +416,12 @@ export class PayrollService {
                         deductionId
                     ))
             );
-        }
 
-        if (selectedBonusIds) {
+        if (selectedBonusIds)
             selectedBonusIds.map(
                 (bonusIds) =>
                     (params = params.append('SelectedBonusIds', bonusIds))
             );
-        }
 
         return this.http.get<PayrollDriverFlatRateByIdResponse>(
             `${environment.API_ENDPOINT}/api/payroll/driver/flatrate/${reportId}`,
@@ -470,24 +449,14 @@ export class PayrollService {
             },
         };
 
-        if (selectedDeducionIds?.length) {
-            body.selectedDeducionIds = selectedDeducionIds;
-        }
+        if (selectedDeducionIds?.length) body.selectedDeducionIds = selectedDeducionIds;
 
-        if (selectedLoadIds?.length) {
-            body.selectedLoadIds = selectedLoadIds;
-        }
+        if (selectedLoadIds?.length) body.selectedLoadIds = selectedLoadIds;
 
-        if (selectedCreditIds?.length) {
-            body.selectedCreditIds = selectedCreditIds;
-        }
+        if (selectedCreditIds?.length) body.selectedCreditIds = selectedCreditIds;
 
-        if (selectedBonusIds?.length) {
-            body.selectedBonusIds = selectedBonusIds;
-        }
+        if (selectedBonusIds?.length) body.selectedBonusIds = selectedBonusIds;
 
-        console.log(body, 'dsfsdsdsdsd');
-        // return of();
         return this.http.put<PayrollDriverMileageResponse>(
             `${environment.API_ENDPOINT}/api/payroll/driver/flatrate/close`,
             body

@@ -15,7 +15,7 @@ import { AfterViewInit } from '@angular/core';
 // Models
 import { PayrollDriverMileageListResponse } from 'appcoretruckassist';
 
-// Servvices
+// Services
 import { TemplateManagerService } from '@shared/services/template-manager.service';
 import { PayrollFacadeService } from '@pages/accounting/pages/payroll/state/services/payroll.service';
 
@@ -25,7 +25,10 @@ import { ColumnConfig } from 'ca-components';
 @Component({
     selector: 'app-driver-mileage-solo-table',
     templateUrl: './driver-mileage-solo-table.component.html',
-    styleUrls: ['./driver-mileage-solo-table.component.scss'],
+    styleUrls: [
+        '../../../../../payroll/payroll.component.scss',
+        './driver-mileage-solo-table.component.scss',
+    ],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DriverMileageSoloTableComponent

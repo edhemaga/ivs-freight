@@ -1,10 +1,8 @@
-<div *ngIf="loading$ | async">
+<ng-container *ngIf="loading$ | async">
     <svg-icon
-        src="assets/svg/truckassist-table/sceletons/{{
-            expandTable ? 'payroll-table-collapsed.svg' : 'payroll-table.svg'
-        }}"
+        [name]="expandTable ? 'payroll_sceleton_collapsed' : 'payroll_sceleton'"
     ></svg-icon>
-</div>
+</ng-container>
 <app-ca-main-table
     *ngIf="!(loading$ | async)"
     [hideFieldsToHide]="!expandTable"
@@ -17,7 +15,6 @@
         <span class="driver-solo-info-text">{{ data.truckNumber }}</span>
     </div>
 </ng-template>
-
 <ng-template #customStatus let-data>
     <div class="custom-status-holder d-flex align-itemst-center">
         <svg-icon

@@ -1,72 +1,51 @@
 <div class="report-main-holder d-flex">
     <div class="middle-report-info">
         <div class="report-card">
-            <div
-                class="report-card-title d-flex align-items-center justify-content-between"
-            >
+            <div class="report-card-title d-f-aic-jcb">
                 <div
                     *ngIf="payrollReport$ | async as payroll_report"
                     class="d-flex align-items-center"
                 >
                     <div class="payroll_report_title">Report</div>
-                    <!-- <div class="payroll_chip">
-                        {{ (includedLoads$ | async)?.length }} STOP ({{
-                            payroll_report.extraStopCount
-                        }}
-                        EXTRA)
-                    </div> -->
                     <div class="payroll_chip">
                         {{ payroll_report.includedLoads?.length }} LOAD
                     </div>
                 </div>
                 <div
-                    class="report-count-item-load d-flex"
+                    class="report-count-item-load d-f-aic-jcb"
                     *ngIf="payrollReport$ | async as payroll_report"
                 >
-                    <div class="report-count-item-load-right d-flex">
-                        <div class="report-tickets">
+                    <div class="report-count-item-load-right d-f-aic">
+                        <div class="report-tickets d-f-aic-jcc">
                             COMMISSION
                             <span>{{ payroll_report?.commission }}%</span>
                         </div>
-                        <!-- <div class="report-tickets">
-                            LOADED
-                            <span>{{
-                                payroll_report?.loadedMile | currency : 'USD'
-                            }}</span>
-                        </div>
-                        <div class="report-tickets">
-                            EXTRA STOP
-                            <span>{{
-                                payroll_report?.perStop | currency : 'USD'
-                            }}</span>
-                        </div> -->
-                        <div class="edit">
+                        <div class="edit d-f-aic-jcc">
                             <svg-icon
-                                [src]="
-                                    'assets/svg/truckassist-table/dropdown/content/edit-hover.svg'
-                                "
+                                [svgClass]="'d-flex'"
+                                name="edit"
                             ></svg-icon>
                         </div>
                         <div
-                            class="edit"
+                            class="edit d-f-aic-jcc"
                             [class.active]="showMap"
                             (click)="showMap = !showMap"
                         >
                             <svg-icon
-                                [src]="'assets/svg/common/load/ic_load_map.svg'"
+                                [svgClass]="'d-flex'"
+                                name="map"
                             ></svg-icon>
                         </div>
-                        <div class="edit burger_menu">
+                        <div class="edit d-f-aic-jcc burger_menu">
                             <svg-icon
-                                [src]="
-                                    'assets/svg/truckassist-table/burger-icon.svg'
-                                "
+                                [svgClass]="'d-flex'"
+                                name="burger_menu"
                             ></svg-icon>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="small-table-holder-main">
+            <div class="small-table-holder-main d-flex">
                 <app-ca-main-table
                     *ngIf="!(loading$ | async)"
                     [sortPredicate]="customSortPredicate"
@@ -86,9 +65,7 @@
     </div>
     <div class="right-report-info">
         <div class="report-card">
-            <div
-                class="report-card-title d-flex align-items-center justify-content-between"
-            >
+            <div class="report-card-title d-f-aic-jcb">
                 <div class="d-flex align-items-center">
                     <div class="payroll_report_title">
                         Period

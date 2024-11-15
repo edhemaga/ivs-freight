@@ -60,7 +60,7 @@
         "bank-routing-number-validator": "0.0.4",
         "bootstrap": "^5.2.3",
         "chart.js": "^4.4.5",
-        "ca-components": "^1.0.11",
+        "ca-components": "/Users/slavisamarkovic/Documents/CARRIERA/carriera-components-library/dist/ca-components",
         "croppie": "^2.6.5",
         "crypto-js": "^4.1.1",
         "deep-object-diff": "^1.1.9",

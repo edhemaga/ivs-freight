@@ -1,6 +1,8 @@
 // Models
 import { PayrollCountsResponse } from 'appcoretruckassist';
 import { PayrollState } from '@pages/accounting/pages/payroll/state/models/payroll.model';
+
+// Enums
 import { PayrollTablesStatus } from '@pages/accounting/pages/payroll/state/enums';
 
 export const onGetPayrollCounts = (state: PayrollState) => ({

@@ -20,12 +20,15 @@ import { NameInitialsPipe } from '@shared/pipes/name-initials.pipe';
 // Store
 import { PayrollFacadeService } from '@pages/accounting/pages/payroll/state/services/payroll.service';
 // Models
+
+import { IPayrollCountsSelector } from '@pages/accounting/pages/payroll/state/models/payroll.model';
+import { DriverMileageCollapsedTableComponent } from '@pages/accounting/pages/payroll/components/tables/driver-mileage/driver-mileage-collapsed-table/driver-mileage-collapsed-table.component';
+
+// Enums
 import {
     PayrollTables,
     PayrollTablesStatus,
 } from '@pages/accounting/pages/payroll/state/enums';
-import { IPayrollCountsSelector } from '@pages/accounting/pages/payroll/state/models/payroll.model';
-import { DriverMileageCollapsedTableComponent } from '@pages/accounting/pages/payroll/components/tables/driver-mileage/driver-mileage-collapsed-table/driver-mileage-collapsed-table.component';
 
 // Components
 import { PayrollListSummaryOverview } from 'ca-components';
@@ -53,6 +56,8 @@ export class PayrollComponent implements OnInit, AfterViewInit, OnDestroy {
     @ViewChildren('container', { read: ViewContainerRef })
     containers!: QueryList<ViewContainerRef>;
 
+
+    public PayrollTables = PayrollTables;
     private componentRef: ComponentRef<any> | null = null;
 
     private environmentInjector = inject(EnvironmentInjector); // Inject the EnvironmentInjector

@@ -42,18 +42,21 @@ export class RepairTruckResolver {
                 25
             )
             .pipe(
-                tap((repairTruckPagination) => {
+                tap((repairTruckTrailerPagination) => {
                     localStorage.setItem(
                         'repairTruckTrailerTableCount',
                         JSON.stringify({
-                            repairShops: repairTruckPagination.repairShopCount,
-                            repairTrucks: repairTruckPagination.truckCount,
-                            repairTrailers: repairTruckPagination.trailerCount,
+                            repairShops:
+                                repairTruckTrailerPagination.repairShopCount,
+                            repairTrucks:
+                                repairTruckTrailerPagination.truckCount,
+                            repairTrailers:
+                                repairTruckTrailerPagination.trailerCount,
                         })
                     );
 
                     this.repairTruckStore.set(
-                        repairTruckPagination.pagination.data
+                        repairTruckTrailerPagination.pagination.data
                     );
                 })
             );

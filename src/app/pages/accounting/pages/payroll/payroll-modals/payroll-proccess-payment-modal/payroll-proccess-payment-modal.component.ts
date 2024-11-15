@@ -39,14 +39,19 @@ import {
 // Models
 import { EditData } from '@shared/models/edit-data.model';
 import { Tabs } from '@shared/models/tabs.model';
-import { IPayrollProccessPaymentModal } from '../../state/models/payroll.model';
+import { IPayrollProccessPaymentModal } from '@pages/accounting/pages/payroll/state/models/payroll.model';
 import { PayrollPaymentType } from 'appcoretruckassist';
 
 // Services
-import { PayrollFacadeService } from '../../state/services/payroll.service';
+import { PayrollFacadeService } from '@pages/accounting/pages/payroll/state/services/payroll.service';
 import { TaInputService } from '@shared/services/ta-input.service';
-import { GetNumbersPipe } from '../../pipes/get-numbers/get-numbers.pipe';
+
+// Helpers
 import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calculations.helper';
+
+// Pipes
+import { GetNumbersPipe } from '@pages/accounting/pages/payroll/pipes/get-numbers/get-numbers.pipe';
+import { PayrollTablesStatus } from '../../state/enums';
 
 @Component({
     selector: 'app-payroll-proccess-payment-modal',
@@ -70,6 +75,7 @@ import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calcula
         CaModalComponent,
         CaInputDropdownComponent,
         TaSpinnerComponent,
+        // Pipes
         GetNumbersPipe,
     ],
     changeDetection: ChangeDetectionStrategy.OnPush,
@@ -155,7 +161,7 @@ export class PayrollProccessPaymentModalComponent implements OnDestroy {
         }, 200);
     }
 
-    private subscribeToStore() {
+    private subscribeToStore(): void {
         this.payrollFacadeService.selectPayrollReportStates$
             .pipe(skip(1), takeUntil(this.destroy$))
             .subscribe(({ loading, error }) => {
@@ -211,22 +217,22 @@ export class PayrollProccessPaymentModalComponent implements OnDestroy {
         this.chDetRef.detectChanges();
     }
 
-    onCloseModal() {
+    public onCloseModal(): void {
         this.ngbActiveModal.close();
     }
 
-    get paymentFormControlls() {
+    public get paymentFormControlls() {
         return this.paymentForm.controls;
     }
 
-    closePayroll(isUnpaid?: boolean) {
+    public closePayroll(isUnpaid?: boolean): void {
         const formData = this.paymentForm.getRawValue();
         if (isUnpaid) this.loadingCloseUnpaid = true;
         else this.loading = true;
 
         const isOpen = this.modalData.selectedTab;
 
-        if (isOpen === 'open') {
+        if (isOpen === PayrollTablesStatus.OPEN) {
             this.payrollFacadeService.closePayrollReport({
                 amount: isUnpaid
                     ? 0
@@ -248,7 +254,10 @@ export class PayrollProccessPaymentModalComponent implements OnDestroy {
                     amount: MethodsCalculationsHelper.convertThousanSepInNumber(
                         formData.amount
                     ),
-                    paymentType: this.selectedTab === 2 ? 'Manual' : 'Ach',
+                    paymentType:
+                        this.selectedTab === 2
+                            ? PayrollPaymentType.Manual
+                            : PayrollPaymentType.Ach,
                     modalId: this.modalData.id,
                     otherPaymentType:
                         this.selectedTab === 2 ? formData.option : null,

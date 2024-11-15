@@ -24,7 +24,10 @@ import { IDriverFlatRateList } from '@pages/accounting/pages/payroll/state/model
 @Component({
     selector: 'app-driver-flat-rate-table',
     templateUrl: './driver-flat-rate-table.component.html',
-    styleUrls: ['./driver-flat-rate-table.component.scss'],
+    styleUrls: [
+        '../../../../../payroll/payroll.component.scss',
+        './driver-flat-rate-table.component.scss',
+    ],
 })
 export class DriverFlatRateTableComponent
     implements OnInit, AfterViewInit, OnDestroy

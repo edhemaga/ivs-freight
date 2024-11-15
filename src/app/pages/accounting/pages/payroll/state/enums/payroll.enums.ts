@@ -6,3 +6,11 @@ export enum PayrollEnum{
     SET_TABLE_REPORT_EXPANDED = "[Payroll Page] Set Payroll Report Table Expanded",
     SET_PAYROLL_TAB = "[Payroll Page] Set Payroll Tab"
 }
+
+
+export enum PayrollAdditionalTypes{
+    CREDIT = 'Credit',
+    BONUS = 'Bonus',
+    DEDUCTION = 'Deduction',
+    FUEL = 'Fuel'
+}

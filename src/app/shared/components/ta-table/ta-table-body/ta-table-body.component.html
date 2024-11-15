@@ -5677,13 +5677,20 @@
                                                 tooltipBackground="#424242"
                                                 tooltipColor="#FFFFFF"
                                                 position="bottom"
-                                                (click)="onFavorite(row)"
+                                                (click)="
+                                                    onFavorite(
+                                                        row,
+                                                        row['companyOwned']
+                                                    )
+                                                "
                                             >
                                                 <svg-icon
                                                     class="favorite-icon"
                                                     [ngClass]="{
                                                         'is-favorite':
-                                                            row[column.field]
+                                                            row[column.field],
+                                                        disabled:
+                                                            row['companyOwned']
                                                     }"
                                                     [src]="
                                                         tableBodySvgRoutes.favoriteRoute
