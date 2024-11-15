@@ -110,13 +110,13 @@
 
 <ng-template #customPickupHeaderTemplate>
     <div class="custom-load-header d-flex align-items-center pickup">
-        <svg-icon src="assets/svg/common/ic_pickup.svg"></svg-icon>
+        <svg-icon [svgClass]="'d-flex'" name="pickup"></svg-icon>
         <div>Pickup</div>
     </div>
 </ng-template>
 <ng-template #customDeliveryHeaderTemplate>
     <div class="custom-load-header d-flex align-items-center delivery">
-        <svg-icon src="assets/svg/common/ic_delivery.svg"></svg-icon>
+        <svg-icon [svgClass]="'d-flex'" name="delivery"></svg-icon>
         <div>Delivery</div>
     </div>
 </ng-template>
@@ -126,9 +126,7 @@
         <ng-container *ngIf="data.length">
             <svg-icon
                 *ngIf="data.length"
-                src="assets/svg/svg_numbers/olddash/svg_num_box_{{
-                    data.length
-                }}.svg"
+                name="load_order_num_{{ data.length }}"
             ></svg-icon>
         </ng-container>
 
@@ -146,7 +144,7 @@
         <div class="td-container">
             <div class="td-content-container with-padding">
                 <svg-icon
-                    [src]="'assets/ca-components/svg/common/ic_two_arrows.svg'"
+                    [name]="'ic_two_arrows'"
                     [svgStyle]="{ color: '#919191', display: 'flex' }"
                 ></svg-icon>
             </div>
@@ -175,9 +173,7 @@
                 <div class="td-container">
                     <div class="td-content-container">
                         <svg-icon
-                            [src]="
-                                'assets/ca-components/svg/common/ic_two_arrows.svg'
-                            "
+                            [name]="'ic_two_arrows'"
                             [svgStyle]="{ color: '#919191', display: 'flex' }"
                         ></svg-icon>
                     </div>

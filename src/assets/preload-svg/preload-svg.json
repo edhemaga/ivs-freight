@@ -360,7 +360,7 @@
             "iconName": "ic_trailer_carhauler-stinger.svg",
             "iconPath": "/assets/svg/common/trailers/ic_trailer_carhauler-stinger.svg"
         },
-        
+
         {
             "iconName": "ic_truck_box-truck.svg",
             "iconPath": "/assets/svg/common/trucks/ic_truck_box-truck.svg"
@@ -401,7 +401,7 @@
             "iconName": "ic_truck_garbage.svg",
             "iconPath": "/assets/svg/common/trucks/ic_truck_garbage.svg"
         },
-        
+
         {
             "iconName": "ic_truck_car-hauler.svg",
             "iconPath": "/assets/svg/common/trucks/ic_truck_car-hauler.svg"
@@ -743,6 +743,18 @@
         {
             "iconName": "delivery",
             "iconPath": "/assets/svg/common/ic_delivery.svg"
+        },
+        {
+            "iconName": "incorrect",
+            "iconPath": "/assets/svg/common/ic_feedback_mark_incorrect.svg"
+        },
+        {
+            "iconName": "ic_clock",
+            "iconPath": "/assets/svg/common/ic_clock.svg"
+        },
+        {
+            "iconName": "ic_two_arrows",
+            "iconPath": "/assets/ca-components/svg/common/ic_two_arrows.svg"
         }
     ],
     "customIcons": []

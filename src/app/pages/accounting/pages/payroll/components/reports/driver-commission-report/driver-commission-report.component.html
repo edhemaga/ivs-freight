@@ -111,9 +111,7 @@
     <div class="load-description d-flex align-items-center">
         <svg-icon
             *ngIf="data.orderNumber"
-            src="assets/svg/svg_numbers/olddash/svg_num_box_{{
-                data.orderNumber
-            }}.svg"
+            name="load_order_num_{{ data.orderNumber }}"
         ></svg-icon>
         <div class="load-description-name">
             <div class="load-description-address">{{ data.address }}</div>
@@ -126,13 +124,13 @@
 
 <ng-template #customPickupHeaderTemplate>
     <div class="custom-load-header d-flex align-items-center pickup">
-        <svg-icon src="assets/svg/common/ic_pickup.svg"></svg-icon>
+        <svg-icon [svgClass]="'d-flex'" name="pickup"></svg-icon>
         <div>Pickup</div>
     </div>
 </ng-template>
 <ng-template #customDeliveryHeaderTemplate>
     <div class="custom-load-header d-flex align-items-center delivery">
-        <svg-icon src="assets/svg/common/ic_delivery.svg"></svg-icon>
+        <svg-icon [svgClass]="'d-flex'" name="delivery"></svg-icon>
         <div>Delivery</div>
     </div>
 </ng-template>
@@ -141,9 +139,7 @@
     <div class="load-description d-flex align-items-center normal">
         <svg-icon
             *ngIf="data.length"
-            src="assets/svg/svg_numbers/olddash/svg_num_box_{{
-                data.length
-            }}.svg"
+            name="load_order_num_{{ data.length }}"
         ></svg-icon>
         <div class="load-description-name">
             <div class="load-description-address">{{ data[0].address }}</div>
@@ -159,7 +155,7 @@
         <div class="td-container">
             <div class="td-content-container with-padding">
                 <svg-icon
-                    [src]="'assets/ca-components/svg/common/ic_two_arrows.svg'"
+                    [name]="'ic_two_arrows'"
                     [svgStyle]="{ color: '#919191', display: 'flex' }"
                 ></svg-icon>
             </div>
@@ -187,9 +183,7 @@
             <div class="td-container">
                 <div class="td-content-container">
                     <svg-icon
-                        [src]="
-                            'assets/ca-components/svg/common/ic_two_arrows.svg'
-                        "
+                        [name]="'ic_two_arrows'"
                         [svgStyle]="{ color: '#919191', display: 'flex' }"
                     ></svg-icon>
                 </div>

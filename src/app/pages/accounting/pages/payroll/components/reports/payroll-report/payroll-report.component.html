@@ -132,9 +132,7 @@
     >
         <svg-icon
             *ngIf="data.orderNumber"
-            src="assets/svg/svg_numbers/olddash/svg_num_box_{{
-                data.orderNumber
-            }}.svg"
+            name="load_order_num_{{ data.orderNumber }}"
         ></svg-icon>
         <div class="load-description-name">
             <div class="load-description-address">{{ data.address }}</div>
@@ -150,7 +148,7 @@
         <div class="td-container">
             <div class="td-content-container with-padding">
                 <svg-icon
-                    [src]="'assets/ca-components/svg/common/ic_two_arrows.svg'"
+                    [name]="'ic_two_arrows'"
                     [svgStyle]="{ color: '#919191', display: 'flex' }"
                 ></svg-icon>
             </div>
@@ -178,9 +176,7 @@
             <div class="td-container">
                 <div class="td-content-container">
                     <svg-icon
-                        [src]="
-                            'assets/ca-components/svg/common/ic_two_arrows.svg'
-                        "
+                        [name]="'ic_two_arrows'"
                         [svgStyle]="{ color: '#919191', display: 'flex' }"
                     ></svg-icon>
                 </div>

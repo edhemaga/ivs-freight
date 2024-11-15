@@ -17,25 +17,31 @@
             [avatarColor]="{ background: '#DFC2F9', color: '#9E47EC66' }"
             [textShortName]="'FJ'"
             [size]="20"
-            [isRound]="false" 
+            [isRound]="false"
             [isHoverEffect]="false"
         ></app-ca-profile-image>
         <span class="driver-solo-info-text">{{ data.driver.fullName }}</span>
-        <div class="payroll_count d-flex justify-content-center align-items-center">{{data.payrollCount}}</div>
+        <div
+            class="payroll_count d-flex justify-content-center align-items-center"
+        >
+            {{ data.payrollCount }}
+        </div>
     </div>
 </ng-template>
 
 <ng-template #customStatus let-data>
     <div class="custom-status-holder d-flex align-itemst-center">
         <svg-icon
-            class="payment_done"
+            class="payment_done d-flex"
             *ngIf="data == '0'"
-            src="assets/svg/common/dropdown-done-icon.svg"
+            [svgClass]="'d-flex'"
+            name="mark-as-done"
         ></svg-icon>
         <svg-icon
-            class="caution"
+            class="caution d-flex"
+            [svgClass]="'d-flex'"
+            name="incorrect"
             *ngIf="data > 0"
-            src="assets/svg/common/ic_feedback_mark_incorrect.svg"
         ></svg-icon>
         <div
             *ngIf="data !== 0"
@@ -45,7 +51,7 @@
             {{ Math.abs(data) }} UNPAID
         </div>
         <div *ngIf="data === 0" class="custom-status-text ready-payment">
-           ALL PAID
+            ALL PAID
         </div>
     </div>
 </ng-template>

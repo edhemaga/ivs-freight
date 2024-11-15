@@ -18,19 +18,22 @@
 <ng-template #customStatus let-data>
     <div class="custom-status-holder d-flex align-itemst-center">
         <svg-icon
-            class="payment_done"
+            class="payment_done d-flex"
             *ngIf="data.period === 'Ready'"
-            src="assets/svg/common/dropdown-done-icon.svg"
+            [svgClass]="'d-flex'"
+            name="mark-as-done"
         ></svg-icon>
         <svg-icon
-            class="caution"
+            class="caution d-flex"
             *ngIf="data.period === 'Past'"
-            src="assets/svg/common/ic_feedback_mark_incorrect.svg"
+            [svgClass]="'d-flex'"
+            name="incorrect"
         ></svg-icon>
         <svg-icon
-            class="state"
+            class="state d-flex"
             *ngIf="data.period === 'Pending'"
-            src="assets/svg/common/ic_clock.svg"
+            [svgClass]="'d-flex'"
+            name="ic_clock"
         ></svg-icon>
         <div
             *ngIf="data.period !== 'Ready'"

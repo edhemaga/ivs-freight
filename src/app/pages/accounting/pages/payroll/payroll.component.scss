@@ -428,12 +428,10 @@
     font-weight: 600;
 }
 
-
 // PAYROLL TABLES STYLE
 .custom-status-holder {
     align-items: center;
     svg-icon {
-        display: flex;
         align-items: center;
         width: 14px;
         height: 14px;
@@ -468,4 +466,29 @@
             color: #259f94;
         }
     }
+}
+
+.custom-mileage {
+    span {
+        text-transform: lowercase;
+        color: #919191;
+    }
+}
+
+.driver-solo-info {
+    align-items: center;
+
+    .driver-solo-info-text {
+        margin-left: 4px;
+        font-size: 14px;
+        font-weight: 700;
+        white-space: nowrap;
+        max-width: 100px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+}
+
+.custom-text-date {
+    font-size: 14px;
 }
