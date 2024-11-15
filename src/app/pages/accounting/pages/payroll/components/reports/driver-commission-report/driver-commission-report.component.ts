@@ -13,11 +13,12 @@ import { CdkDrag, CdkDragDrop } from '@angular/cdk/drag-drop';
 
 // Components
 import { ColumnConfig } from 'ca-components';
+import { PayrollProccessPaymentModalComponent } from '@pages/accounting/pages/payroll/payroll-modals/payroll-proccess-payment-modal/payroll-proccess-payment-modal.component';
 
 // Services
 import { ModalService } from '@shared/services/modal.service';
-import { PayrollDriverCommissionFacadeService } from '@pages/accounting/pages/payroll/state/services/payroll_driver_commision.service';
-import { PayrollFacadeService } from '@pages/accounting/pages/payroll/state/services/payroll.service';
+import { PayrollDriverCommissionFacadeService } from '@pages/accounting/pages/payroll/state/services';
+import { PayrollFacadeService } from '@pages/accounting/pages/payroll/state/services';
 import { PayrollService } from '@pages/accounting/pages/payroll/services/payroll.service';
 
 // Models
@@ -32,16 +33,17 @@ import {
     IPayrollProccessPaymentModal,
     IGetPayrollByIdAndOptions,
     PayrollTypes,
-} from '@pages/accounting/pages/payroll/state/models/payroll.model';
+} from '@pages/accounting/pages/payroll/state/models';
 
-import { CommissionLoadShortReponseWithRowType } from '@pages/accounting/pages/payroll/state/models/driver_commission.model';
-import { PayrollProccessPaymentModalComponent } from '@pages/accounting/pages/payroll/payroll-modals/payroll-proccess-payment-modal/payroll-proccess-payment-modal.component';
+import { CommissionLoadShortReponseWithRowType } from '@pages/accounting/pages/payroll/state/models';
 
 // Classes
 import { PayrollReportBaseComponent } from '@pages/accounting/pages/payroll/components/reports/payroll-report.base';
 
 // Enums
 import { PayrollTablesStatus } from '@pages/accounting/pages/payroll/state/enums';
+import { DriverMVrModalStringEnum } from '@pages/driver/pages/driver-modals/driver-mvr-modal/enums/driver-mvrl-modal-string.enum';
+import { TableStringEnum } from '@shared/enums/table-string.enum';
 
 @Component({
     selector: 'app-driver-commission-report',
@@ -204,10 +206,6 @@ export class DriverCommissionReportComponent
 
         this.includedLoads$ =
             this.payrollCommissionFacadeService.selectPayrollReportIncludedLoads$;
-
-        this.payrollCommissionFacadeService.selectPayrollReportDriverCommissionLoads$
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((res) => console.log(res, '-fsfasdfsaf'));
     }
 
     public onProccessPayroll(
@@ -216,10 +214,10 @@ export class DriverCommissionReportComponent
         this.modalService.openModal(
             PayrollProccessPaymentModalComponent,
             {
-                size: 'small',
+                size: DriverMVrModalStringEnum.SMALL,
             },
             {
-                type: 'new',
+                type: TableStringEnum.NEW,
                 data: {
                     id: payrollData.id,
                     totalEarnings:

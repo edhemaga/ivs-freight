@@ -12,8 +12,8 @@ import {
 import { Observable, Subject } from 'rxjs';
 
 // Services
-import { PayrollFacadeService } from '@pages/accounting/pages/payroll/state/services/payroll.service';
-import { PayrollDriverOwnerFacadeService } from '@pages/accounting/pages/payroll/state/services/payroll_owner.service';
+import { PayrollFacadeService } from '@pages/accounting/pages/payroll/state/services';
+import { PayrollDriverOwnerFacadeService } from '@pages/accounting/pages/payroll/state/services';
 
 // Configs
 import { ColumnConfig } from 'ca-components';
@@ -22,7 +22,7 @@ import { ColumnConfig } from 'ca-components';
 import {
     IDriverOwnerList,
     IDriverOwnerResponse,
-} from '@pages/accounting/pages/payroll/state/models/driver_owner.model';
+} from '@pages/accounting/pages/payroll/state/models';
 
 @Component({
     selector: 'app-driver-owner-table',

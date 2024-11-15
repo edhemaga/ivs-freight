@@ -3,7 +3,7 @@ import { select, Store } from '@ngrx/store';
 import { Observable, take } from 'rxjs';
 
 // Actions
-import * as PayrollFlatRateActions from '@pages/accounting/pages/payroll/state/actions/payroll_flat_rate_driver.actions';
+import * as PayrollFlatRateActions from '@pages/accounting/pages/payroll/state/actions';
 
 // Selectors
 import {
@@ -12,23 +12,23 @@ import {
     selectFlatRateListDriver,
     selectPayrollDriverFlatRateLoads,
     selectPayrollReportsIncludedFlatRateStops,
-} from '@pages/accounting/pages/payroll/state/selectors/payroll_driver_flat_rate.selector';
+} from '@pages/accounting/pages/payroll/state/selectors';
 
 // Models
 import {
     FlatRateLoadShortReponseWithRowType,
     IDriverFlatRateList,
-} from '@pages/accounting/pages/payroll/state/models/driver_flat_rate.model';
+} from '@pages/accounting/pages/payroll/state/models';
 import {
     selectPayrollOpenedReport,
     selectPayrollState,
-} from '@pages/accounting/pages/payroll/state/selectors/payroll.selector';
+} from '@pages/accounting/pages/payroll/state/selectors';
 import {
     LoadWithMilesStopResponse,
     PayrollDriverCommissionByIdResponse,
     PayrollDriverMileageListResponse,
 } from 'appcoretruckassist';
-import { PayrollDriverMileageExpandedListResponse } from '@pages/accounting/pages/payroll/state/models/payroll.model';
+import { PayrollDriverMileageExpandedListResponse } from '@pages/accounting/pages/payroll/state/models';
 
 @Injectable({
     providedIn: 'root',

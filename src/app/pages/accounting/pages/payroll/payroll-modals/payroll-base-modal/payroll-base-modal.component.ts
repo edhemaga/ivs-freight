@@ -54,7 +54,7 @@ import {
 // Services
 import { PayrollCreditService } from '@pages/accounting/pages/payroll/payroll-modals/payroll-credit-bonus/services/payroll-credit.service';
 import { PayrollBonusService } from '@pages/accounting/pages/payroll/payroll-modals/payroll-bonus-modal/services/payroll-bonus.service';
-import { PayrollFacadeService } from '@pages/accounting/pages/payroll/state/services/payroll.service';
+import { PayrollFacadeService } from '@pages/accounting/pages/payroll/state/services';
 
 // Helpers
 import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calculations.helper';

@@ -755,7 +755,18 @@
         {
             "iconName": "ic_two_arrows",
             "iconPath": "/assets/ca-components/svg/common/ic_two_arrows.svg"
+        },
+        {
+            "iconName": "ic_arrow_down_updated",
+            "iconPath": "/assets/svg/common/ic_arrow_down_updated.svg"
+        },
+        {
+            "iconName": "ic_route_info",
+            "iconPath": "assets/svg/common/routing/ic_route_info.svg"
         }
+        
+
+        
     ],
     "customIcons": []
 }

@@ -15,11 +15,11 @@ import { Observable, Subject } from 'rxjs';
 import { ColumnConfig } from 'ca-components';
 
 // Services
-import { PayrollDriverCommissionFacadeService } from '@pages/accounting/pages/payroll/state/services/payroll_driver_commision.service';
-import { PayrollFacadeService } from '@pages/accounting/pages/payroll/state/services/payroll.service';
+import { PayrollDriverCommissionFacadeService } from '@pages/accounting/pages/payroll/state/services';
+import { PayrollFacadeService } from '@pages/accounting/pages/payroll/state/services';
 
 // Models
-import { IDriverCommissionList } from '@pages/accounting/pages/payroll/state/models/driver_commission.model';
+import { IDriverCommissionList } from '@pages/accounting/pages/payroll/state/models';
 
 @Component({
     selector: 'app-driver-commission-solo-table',

@@ -11,7 +11,8 @@
             <ng-container
                 *ngFor="
                     let payroll of (payrollCountsResponse$ | async).payrollData;
-                    let indx = index
+                    let indx = index;
+                    trackBy: trackByIndex
                 "
             >
                 <div class="card-holder">
@@ -31,34 +32,36 @@
             </ng-container>
         </div>
     </div>
-    <div class="report-hold" *ngIf="reportTableExpanded$ | async">
-        <ng-container [ngSwitch]="payrollReportType">
-            <ng-container *ngSwitchCase="PayrollTables.DRIVER_MILES">
-                <app-payroll-report
-                    [selectedTab]="selectedTabForReport"
-                    [reportId]="reportTableDataId"
-                ></app-payroll-report>
+    <ng-container *ngIf="reportTableExpanded$ | async">
+        <div class="report-hold">
+            <ng-container [ngSwitch]="payrollReportType">
+                <ng-container *ngSwitchCase="PayrollTables.DRIVER_MILES">
+                    <app-payroll-report
+                        [selectedTab]="selectedTabForReport"
+                        [reportId]="reportTableDataId"
+                    ></app-payroll-report>
+                </ng-container>
+                <ng-container *ngSwitchCase="PayrollTables.DRIVER_COMMISSION">
+                    <app-driver-commission-report
+                        [selectedTab]="selectedTabForReport"
+                        [reportId]="reportTableDataId"
+                    ></app-driver-commission-report>
+                </ng-container>
+                <ng-container *ngSwitchCase="PayrollTables.DRIVER_OWNER">
+                    <app-driver-owner-report
+                        [selectedTab]="selectedTabForReport"
+                        [reportId]="reportTableDataId"
+                    ></app-driver-owner-report>
+                </ng-container>
+                <ng-container *ngSwitchCase="PayrollTables.DRIVER_FLAT_RATE">
+                    <app-driver-flat-rate-report
+                        [selectedTab]="selectedTabForReport"
+                        [reportId]="reportTableDataId"
+                    ></app-driver-flat-rate-report>
+                </ng-container>
             </ng-container>
-            <ng-container *ngSwitchCase="PayrollTables.DRIVER_COMMISSION">
-                <app-driver-commission-report
-                    [selectedTab]="selectedTabForReport"
-                    [reportId]="reportTableDataId"
-                ></app-driver-commission-report>
-            </ng-container>
-            <ng-container *ngSwitchCase="PayrollTables.DRIVER_OWNER">
-                <app-driver-owner-report
-                    [selectedTab]="selectedTabForReport"
-                    [reportId]="reportTableDataId"
-                ></app-driver-owner-report>
-            </ng-container>
-            <ng-container *ngSwitchCase="PayrollTables.DRIVER_FLAT_RATE">
-                <app-driver-flat-rate-report
-                    [selectedTab]="selectedTabForReport"
-                    [reportId]="reportTableDataId"
-                ></app-driver-flat-rate-report>
-            </ng-container>
-        </ng-container>
-    </div>
+        </div>
+    </ng-container>
 </div>
 
 <ng-template #customIndex let-index="index">
@@ -87,14 +90,19 @@
         </div>
 
         <div class="driver-info d-flex">
-            <app-ca-profile-image
-                *ngIf="!selectedOpenFromList?.hideAvatar"
-                [avatarColor]="{ background: '#DFC2F9', color: '#9E47EC66' }"
-                [textShortName]="'FJ'"
-                [size]="20"
-                [isRound]="false"
-                [isHoverEffect]="false"
-            ></app-ca-profile-image>
+            <ng-container *ngIf="!selectedOpenFromList?.hideAvatar">
+                <app-ca-profile-image
+                    [avatarColor]="{
+                        background: '#DFC2F9',
+                        color: '#9E47EC66'
+                    }"
+                    [textShortName]="'FJ'"
+                    [size]="20"
+                    [isRound]="false"
+                    [isHoverEffect]="false"
+                ></app-ca-profile-image>
+            </ng-container>
+
             <div class="table-text">
                 {{ selectedOpenFromList?.fullName }}
             </div>

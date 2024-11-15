@@ -76,13 +76,11 @@ export class RefreshTokenInterceptor implements HttpInterceptor {
                     refreshToken: user.refreshToken,
                 })
                 .pipe(
-                    switchMap((res: any) => {
+                    switchMap((res) => {
                         user.token = res.token;
                         user.refreshToken = res.refreshToken;
 
                         localStorage.setItem('user', JSON.stringify(user));
-
-                        console.log('token and reresh token', user);
 
                         configFactory(this.userLoggedService);
 
@@ -95,9 +93,6 @@ export class RefreshTokenInterceptor implements HttpInterceptor {
                         );
                     }),
                     catchError((err: HttpErrorResponse) => {
-                        // if (err.status === 404 || err.status === 500 || err.status === 401) {
-
-                        // }
 
                         this.ngbModal.dismissAll();
 

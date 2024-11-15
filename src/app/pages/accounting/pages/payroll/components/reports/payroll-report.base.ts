@@ -8,7 +8,7 @@ import {
     PayrollCreditType,
 } from 'appcoretruckassist';
 import { PayrollReportTableResponse } from 'ca-components/lib/components/ca-period-content/models/payroll-report-tables.type';
-import { IGetPayrollByIdAndOptions } from '@pages/accounting/pages/payroll/state/models/payroll.model';
+import { IGetPayrollByIdAndOptions } from '@pages/accounting/pages/payroll/state/models';
 
 // Components
 import { PayrollCreditBonusComponent } from '@pages/accounting/pages/payroll/payroll-modals/payroll-credit-bonus/payroll-credit-bonus.component';
@@ -20,6 +20,7 @@ import { FuelPurchaseModalComponent } from '@pages/fuel/pages/fuel-modals/fuel-p
 import { PayrollAdditionalTypes } from '../../state/enums';
 import { TableStringEnum } from '@shared/enums/table-string.enum';
 import { ConfirmationModalStringEnum } from '@shared/components/ta-shared-modals/confirmation-modal/enums/confirmation-modal-string.enum';
+import { DriverMVrModalStringEnum } from '@pages/driver/pages/driver-modals/driver-mvr-modal/enums/driver-mvrl-modal-string.enum';
 
 export abstract class PayrollReportBaseComponent<
     T extends {
@@ -56,7 +57,7 @@ export abstract class PayrollReportBaseComponent<
                     .openModal(
                         PayrollCreditBonusComponent,
                         {
-                            size: 'small',
+                            size: DriverMVrModalStringEnum.SMALL,
                         },
                         {
                             data: {
@@ -75,7 +76,7 @@ export abstract class PayrollReportBaseComponent<
                     .openModal(
                         PayrollBonusModalComponent,
                         {
-                            size: 'small',
+                            size: DriverMVrModalStringEnum.SMALL,
                         },
                         {
                             data: {
@@ -94,7 +95,7 @@ export abstract class PayrollReportBaseComponent<
                     .openModal(
                         PayrollDeductionModalComponent,
                         {
-                            size: 'small',
+                            size: DriverMVrModalStringEnum.SMALL,
                         },
                         {
                             data: {
@@ -113,7 +114,7 @@ export abstract class PayrollReportBaseComponent<
                     .openModal(
                         FuelPurchaseModalComponent,
                         {
-                            size: 'small',
+                            size: DriverMVrModalStringEnum.SMALL,
                         },
                         {
                             truckId: this.openedPayroll.truck?.id,
@@ -128,14 +129,14 @@ export abstract class PayrollReportBaseComponent<
     }
 
     public onOpenActionEditItems(item: any): void {
-        if (item.$event.type === 'Edit') {
+        if (item.$event.type === TableStringEnum.EDIT_2) {
             switch (item.title) {
                 case PayrollAdditionalTypes.CREDIT:
                     this.modalService
                         .openModal(
                             PayrollCreditBonusComponent,
                             {
-                                size: 'small',
+                                size: DriverMVrModalStringEnum.SMALL,
                             },
                             {
                                 edit: true,
@@ -156,7 +157,7 @@ export abstract class PayrollReportBaseComponent<
                         .openModal(
                             PayrollBonusModalComponent,
                             {
-                                size: 'small',
+                                size: DriverMVrModalStringEnum.SMALL,
                             },
                             {
                                 edit: true,
@@ -177,7 +178,7 @@ export abstract class PayrollReportBaseComponent<
                         .openModal(
                             PayrollDeductionModalComponent,
                             {
-                                size: 'small',
+                                size: DriverMVrModalStringEnum.SMALL,
                             },
                             {
                                 edit: true,
@@ -192,7 +193,7 @@ export abstract class PayrollReportBaseComponent<
                         });
                     break;
             }
-        } else if (item.$event.type === 'Delete') {
+        } else if (item.$event.type === TableStringEnum.DELETE_2) {
             switch (item.title) {
                 case PayrollAdditionalTypes.CREDIT:
                     this.payrollService

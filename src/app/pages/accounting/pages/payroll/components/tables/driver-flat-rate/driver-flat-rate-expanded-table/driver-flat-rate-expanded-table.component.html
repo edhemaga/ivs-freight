@@ -3,46 +3,45 @@
         [name]="expandTable ? 'payroll_sceleton_collapsed' : 'payroll_sceleton'"
     ></svg-icon>
 </ng-container>
-<app-ca-main-table
-    *ngIf="!(loading$ | async)"
-    [hideFieldsToHide]="!expandTable"
-    (onPressEvent)="selectPayrollReport($event)"
-    [columns]="columns"
-    [data$]="tableData$"
-></app-ca-main-table>
+<ng-container *ngIf="!(loading$ | async)">
+    <app-ca-main-table
+        [hideFieldsToHide]="!expandTable"
+        (onPressEvent)="selectPayrollReport($event)"
+        [columns]="columns"
+        [data$]="tableData$"
+    ></app-ca-main-table>
+</ng-container>
 
 <ng-template #customStatus let-data>
     <div class="custom-status-holder d-flex align-itemst-center">
-        <svg-icon
-            class="payment_done d-flex"
-            *ngIf="data.name === 'Paid'"
-            [svgClass]="'d-flex'"
-            name="mark-as-done"
-        ></svg-icon>
-        <svg-icon
-            class="caution d-flex"
+        <ng-container *ngIf="data.name === 'Paid'">
+            <svg-icon
+                class="payment_done d-flex"
+                [svgClass]="'d-flex'"
+                name="mark-as-done"
+            ></svg-icon>
+        </ng-container>
+
+        <ng-container
             *ngIf="data.name === 'ShortPaid' || data.name === 'NotPaid'"
-            [svgClass]="'d-flex'"
-            name="incorrect"
-        ></svg-icon>
-        <div
-            *ngIf="data.name === 'Paid'"
-            class="custom-status-text ready-payment"
         >
-            PAID
-        </div>
-        <div
-            *ngIf="data.name === 'ShortPaid'"
-            class="custom-status-text past-payment"
-        >
-            SHORT-P
-        </div>
-        <div
-            *ngIf="data.name === 'NotPaid'"
-            class="custom-status-text past-payment"
-        >
-            UNPAID
-        </div>
+            <svg-icon
+                class="caution d-flex"
+                [svgClass]="'d-flex'"
+                name="incorrect"
+            ></svg-icon>
+        </ng-container>
+
+        <ng-container *ngIf="data.name === 'Paid'">
+            <div class="custom-status-text ready-payment">PAID</div>
+        </ng-container>
+
+        <ng-container *ngIf="data.name === 'ShortPaid'">
+            <div class="custom-status-text past-payment">SHORT-P</div>
+        </ng-container>
+        <ng-container *ngIf="data.name === 'NotPaid'">
+            <div class="custom-status-text past-payment">UNPAID</div>
+        </ng-container>
     </div>
 </ng-template>
 

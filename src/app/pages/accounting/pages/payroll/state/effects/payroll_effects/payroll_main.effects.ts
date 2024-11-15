@@ -3,7 +3,7 @@ import { Action } from '@ngrx/store';
 import { catchError, map, Observable, of, switchMap } from 'rxjs';
 
 // Actions
-import * as PayrollActions from '@pages/accounting/pages/payroll/state/actions/payroll.actions';
+import * as PayrollActions from '@pages/accounting/pages/payroll/state/actions';
 
 // Services
 import { PayrollService } from '@pages/accounting/pages/payroll/services/payroll.service';

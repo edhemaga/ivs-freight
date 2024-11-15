@@ -13,8 +13,8 @@ import { CdkDrag, CdkDragDrop } from '@angular/cdk/drag-drop';
 
 //Services
 import { ModalService } from '@shared/services/modal.service';
-import { PayrollFacadeService } from '@pages/accounting/pages/payroll/state/services/payroll.service';
-import { PayrollDriverOwnerFacadeService } from '@pages/accounting/pages/payroll/state/services/payroll_owner.service';
+import { PayrollFacadeService } from '@pages/accounting/pages/payroll/state/services';
+import { PayrollDriverOwnerFacadeService } from '@pages/accounting/pages/payroll/state/services';
 import { PayrollService } from '@pages/accounting/pages/payroll/services/payroll.service';
 
 // Models
@@ -28,18 +28,21 @@ import { ColumnConfig } from 'ca-components';
 import {
     IGetPayrollByIdAndOptions,
     IPayrollProccessPaymentModal,
-} from '@pages/accounting/pages/payroll/state/models/payroll.model';
+} from '@pages/accounting/pages/payroll/state/models';
 
-import { OwnerLoadShortReponseWithRowType } from '@pages/accounting/pages/payroll/state/models/driver_owner.model';
+import { OwnerLoadShortReponseWithRowType } from '@pages/accounting/pages/payroll/state/models';
 
 // Components
 import { PayrollProccessPaymentModalComponent } from '@pages/accounting/pages/payroll/payroll-modals/payroll-proccess-payment-modal/payroll-proccess-payment-modal.component';
 
 // Enums
 import { PayrollTablesStatus } from '@pages/accounting/pages/payroll/state/enums';
+import { TableStringEnum } from '@shared/enums/table-string.enum';
+import { DriverMVrModalStringEnum } from '@pages/driver/pages/driver-modals/driver-mvr-modal/enums/driver-mvrl-modal-string.enum';
 
 // Classes
 import { PayrollReportBaseComponent } from '@pages/accounting/pages/payroll/components/reports/payroll-report.base';
+
 @Component({
     selector: 'app-driver-owner-report',
     templateUrl: './driver-owner-report.component.html',
@@ -220,10 +223,10 @@ export class DriverOwnerReportComponent
         this.modalService.openModal(
             PayrollProccessPaymentModalComponent,
             {
-                size: 'small',
+                size: DriverMVrModalStringEnum.SMALL,
             },
             {
-                type: 'new',
+                type: TableStringEnum.NEW,
                 data: {
                     id: payrollData.id,
                     totalEarnings:

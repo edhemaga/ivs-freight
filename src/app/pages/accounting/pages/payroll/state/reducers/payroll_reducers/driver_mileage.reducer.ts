@@ -5,7 +5,7 @@ import {
     PayrollDriverMileageCollapsedListResponse,
     PayrollDriverMileageExpandedListResponse,
     PayrollState,
-} from '@pages/accounting/pages/payroll/state/models/payroll.model';
+} from '@pages/accounting/pages/payroll/state/models';
 import { PayrollDriverMileageResponse } from 'appcoretruckassist/model/payrollDriverMileageResponse';
 
 export const onGetPayrollSoloMileageDriver = (state: PayrollState) => ({

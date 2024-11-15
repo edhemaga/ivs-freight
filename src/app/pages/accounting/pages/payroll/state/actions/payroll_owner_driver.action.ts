@@ -1,12 +1,12 @@
 import { createAction, props } from '@ngrx/store';
 import { PayrollOwnerDriverEnum } from '@pages/accounting/pages/payroll/state/enums/driver_owner/driver_owner.enums';
-import { IDriverOwnerList } from '@pages/accounting/pages/payroll/state/models/driver_owner.model';
+import { IDriverOwnerList } from '@pages/accounting/pages/payroll/state/models';
 import {
     IAddPayrollClosedPayment,
     IGet_Payroll_Commission_Driver_Report,
     PayrollDriverMileageCollapsedListResponse,
     PayrollDriverMileageExpandedListResponse,
-} from '@pages/accounting/pages/payroll/state/models/payroll.model';
+} from '@pages/accounting/pages/payroll/state/models';
 import {
     PayrollOtherPaymentType,
     PayrollOwnerClosedResponse,

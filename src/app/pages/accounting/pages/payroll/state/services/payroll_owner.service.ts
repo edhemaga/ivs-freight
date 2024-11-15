@@ -3,7 +3,7 @@ import { select, Store } from '@ngrx/store';
 import { Observable, take } from 'rxjs';
 
 // Actions
-import * as PayrollOwnerActions from '@pages/accounting/pages/payroll/state/actions/payroll_owner_driver.action';
+import * as PayrollOwnerActions from '@pages/accounting/pages/payroll/state/actions';
 
 // Selectors
 import {
@@ -13,19 +13,19 @@ import {
     selectPayrollDriverOwnerLoads,
     selectPayrollOwnerOpenedReport,
     selectPayrollReportsIncludedOwnerStops,
-} from '@pages/accounting/pages/payroll/state/selectors/payroll_owner.selector';
+} from '@pages/accounting/pages/payroll/state/selectors';
 
 // Models
 import {
     IDriverOwnerList,
     OwnerLoadShortReponseWithRowType,
-} from '@pages/accounting/pages/payroll/state/models/driver_owner.model';
-import { selectPayrollState } from '@pages/accounting/pages/payroll/state/selectors/payroll.selector';
+} from '@pages/accounting/pages/payroll/state/models';
+import { selectPayrollState } from '@pages/accounting/pages/payroll/state/selectors';
 import {
     LoadWithMilesStopResponse,
     PayrollDriverMileageListResponse,
 } from 'appcoretruckassist';
-import { PayrollDriverMileageExpandedListResponse } from '@pages/accounting/pages/payroll/state/models/payroll.model';
+import { PayrollDriverMileageExpandedListResponse } from '@pages/accounting/pages/payroll/state/models';
 
 @Injectable({
     providedIn: 'root',

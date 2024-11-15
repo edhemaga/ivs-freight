@@ -4,7 +4,7 @@ import { createFeatureSelector, createSelector } from '@ngrx/store';
 import {
     MilesStopShortReponseWithRowType,
     PayrollState,
-} from '@pages/accounting/pages/payroll/state/models/payroll.model';
+} from '@pages/accounting/pages/payroll/state/models';
 import {
     MilesStopShortResponse,
     PayrollCountItemResponse,

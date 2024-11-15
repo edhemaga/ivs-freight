@@ -1,14 +1,14 @@
 import { createReducer, on } from '@ngrx/store';
 
 // Actions
-import * as PayrollActions from '@pages/accounting/pages/payroll/state/actions/payroll.actions';
-import * as PayrollSoloMileageDriver from '@pages/accounting/pages/payroll/state/actions/payroll_solo_mileage_driver.actions';
-import * as PayrollCommissionDriverActions from '@pages/accounting/pages/payroll/state/actions/payroll_commission_driver.actions';
-import * as PayrollOwnerDriverActions from '@pages/accounting/pages/payroll/state/actions/payroll_owner_driver.action';
-import * as PayrollFlatRateActions from '@pages/accounting/pages/payroll/state/actions/payroll_flat_rate_driver.actions';
+import * as PayrollActions from '@pages/accounting/pages/payroll/state/actions';
+import * as PayrollSoloMileageDriver from '@pages/accounting/pages/payroll/state/actions';
+import * as PayrollCommissionDriverActions from '@pages/accounting/pages/payroll/state/actions';
+import * as PayrollOwnerDriverActions from '@pages/accounting/pages/payroll/state/actions';
+import * as PayrollFlatRateActions from '@pages/accounting/pages/payroll/state/actions';
 
 // Models
-import { PayrollState } from '@pages/accounting/pages/payroll/state/models/payroll.model';
+import { PayrollState } from '@pages/accounting/pages/payroll/state/models';
 
 // Reducers
 import * as PayrollMileageDriverReducers from '@pages/accounting/pages/payroll/state/reducers/payroll_reducers/driver_mileage.reducer';

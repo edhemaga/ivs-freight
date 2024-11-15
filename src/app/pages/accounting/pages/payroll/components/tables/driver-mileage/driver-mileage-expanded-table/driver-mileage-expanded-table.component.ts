@@ -12,10 +12,10 @@ import {
 import { Observable } from 'rxjs';
 
 // Services
-import { PayrollFacadeService } from '@pages/accounting/pages/payroll/state/services/payroll.service';
+import { PayrollFacadeService } from '@pages/accounting/pages/payroll/state/services';
 
 // Models
-import { PayrollDriverMileageExpandedListResponse } from '@pages/accounting/pages/payroll/state/models/payroll.model';
+import { PayrollDriverMileageExpandedListResponse } from '@pages/accounting/pages/payroll/state/models';
 import { ColumnConfig } from 'ca-components';
 
 @Component({

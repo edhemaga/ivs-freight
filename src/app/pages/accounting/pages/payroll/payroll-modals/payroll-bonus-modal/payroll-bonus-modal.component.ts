@@ -22,7 +22,7 @@ import { CreatePayrollBonusCommand } from 'appcoretruckassist';
 
 // Services
 import { PayrollBonusService } from './services/payroll-bonus.service';
-import { PayrollFacadeService } from '@pages/accounting/pages/payroll/state/services/payroll.service';
+import { PayrollFacadeService } from '@pages/accounting/pages/payroll/state/services';
 
 // Enums
 import { PayrollStringEnum } from '@pages/accounting/pages/payroll/state/enums';

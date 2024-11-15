@@ -17,7 +17,7 @@ import { PayrollDriverMileageListResponse } from 'appcoretruckassist';
 
 // Services
 import { TemplateManagerService } from '@shared/services/template-manager.service';
-import { PayrollFacadeService } from '@pages/accounting/pages/payroll/state/services/payroll.service';
+import { PayrollFacadeService } from '@pages/accounting/pages/payroll/state/services';
 
 // Components
 import { ColumnConfig } from 'ca-components';

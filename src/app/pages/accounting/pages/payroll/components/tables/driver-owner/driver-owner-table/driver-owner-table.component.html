@@ -3,13 +3,15 @@
         [name]="expandTable ? 'payroll_sceleton_collapsed' : 'payroll_sceleton'"
     ></svg-icon>
 </ng-container>
-<app-ca-main-table
-    *ngIf="!(loading$ | async)"
-    [hideFieldsToHide]="!expandTable"
-    (onPressEvent)="selectPayrollReport($event)"
-    [columns]="columns"
-    [data$]="tableData$"
-></app-ca-main-table>
+<ng-container *ngIf="!(loading$ | async)">
+    <app-ca-main-table
+        [hideFieldsToHide]="!expandTable"
+        (onPressEvent)="selectPayrollReport($event)"
+        [columns]="columns"
+        [data$]="tableData$"
+    ></app-ca-main-table>
+</ng-container>
+
 <ng-template #customCell let-data>
     <div class="driver-solo-info d-flex">
         <span class="driver-solo-info-text">{{ data.truckNumber }}</span>
@@ -17,36 +19,41 @@
 </ng-template>
 <ng-template #customStatus let-data>
     <div class="custom-status-holder d-flex align-itemst-center">
-        <svg-icon
-            class="payment_done d-flex"
-            *ngIf="data.period === 'Ready'"
-            [svgClass]="'d-flex'"
-            name="mark-as-done"
-        ></svg-icon>
-        <svg-icon
-            class="caution d-flex"
-            *ngIf="data.period === 'Past'"
-            [svgClass]="'d-flex'"
-            name="incorrect"
-        ></svg-icon>
-        <svg-icon
-            class="state d-flex"
-            *ngIf="data.period === 'Pending'"
-            [svgClass]="'d-flex'"
-            name="ic_clock"
-        ></svg-icon>
-        <div
-            *ngIf="data.period !== 'Ready'"
-            class="custom-status-text"
-            [ngClass]="{ 'past-payment': data.period === 'Past' }"
-        >
-            {{ Math.abs(data.numberOfDays) }} DAYS
-        </div>
-        <div
-            *ngIf="data.period === 'Ready'"
-            class="custom-status-text ready-payment"
-        >
-            Ready
-        </div>
+        <ng-container *ngIf="data.period === 'Ready'">
+            <svg-icon
+                class="payment_done d-flex"
+                [svgClass]="'d-flex'"
+                name="mark-as-done"
+            ></svg-icon>
+        </ng-container>
+
+        <ng-container *ngIf="data.period === 'Past'">
+            <svg-icon
+                class="caution d-flex"
+                [svgClass]="'d-flex'"
+                name="incorrect"
+            ></svg-icon>
+        </ng-container>
+
+        <ng-container *ngIf="data.period === 'Pending'">
+            <svg-icon
+                class="state d-flex"
+                [svgClass]="'d-flex'"
+                name="ic_clock"
+            ></svg-icon>
+        </ng-container>
+
+        <ng-container *ngIf="data.period !== 'Ready'">
+            <div
+                class="custom-status-text"
+                [ngClass]="{ 'past-payment': data.period === 'Past' }"
+            >
+                {{ Math.abs(data.numberOfDays) }} DAYS
+            </div>
+        </ng-container>
+
+        <ng-container *ngIf="data.period === 'Ready'">
+            <div class="custom-status-text ready-payment">Ready</div>
+        </ng-container>
     </div>
 </ng-template>

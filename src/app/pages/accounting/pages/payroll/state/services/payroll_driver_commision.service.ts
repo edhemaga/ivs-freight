@@ -3,7 +3,7 @@ import { select, Store } from '@ngrx/store';
 import { Observable, take } from 'rxjs';
 
 // Actions
-import * as PayrollCommissionActions from '@pages/accounting/pages/payroll/state/actions/payroll_commission_driver.actions';
+import * as PayrollCommissionActions from '@pages/accounting/pages/payroll/state/actions';
 
 // Selectors
 import {
@@ -12,23 +12,23 @@ import {
     selectDriverCommissionExpandedTable,
     selectPayrollDriverCommissionLoads,
     selectPayrollReportsIncludedCommissionStops,
-} from '@pages/accounting/pages/payroll/state/selectors/payroll_driver_commision.selector';
+} from '@pages/accounting/pages/payroll/state/selectors';
 
 // Models
 import {
     CommissionLoadShortReponseWithRowType,
     IDriverCommissionList,
-} from '@pages/accounting/pages/payroll/state/models/driver_commission.model';
+} from '@pages/accounting/pages/payroll/state/models';
 import {
     selectPayrollOpenedReport,
     selectPayrollState,
-} from '@pages/accounting/pages/payroll/state/selectors/payroll.selector';
+} from '@pages/accounting/pages/payroll/state/selectors';
 import {
     LoadWithMilesStopResponse,
     PayrollDriverCommissionByIdResponse,
     PayrollDriverMileageListResponse,
 } from 'appcoretruckassist';
-import { PayrollDriverMileageExpandedListResponse } from '@pages/accounting/pages/payroll/state/models/payroll.model';
+import { PayrollDriverMileageExpandedListResponse } from '@pages/accounting/pages/payroll/state/models';
 
 @Injectable({
     providedIn: 'root',

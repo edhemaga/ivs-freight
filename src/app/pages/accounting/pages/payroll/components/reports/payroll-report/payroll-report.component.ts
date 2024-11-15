@@ -14,7 +14,7 @@ import { Observable, takeUntil, Subject } from 'rxjs';
 
 // services
 import { ModalService } from '@shared/services/modal.service';
-import { PayrollFacadeService } from '@pages/accounting/pages/payroll/state/services/payroll.service';
+import { PayrollFacadeService } from '@pages/accounting/pages/payroll/state/services';
 import { PayrollService } from '@pages/accounting/pages/payroll/services/payroll.service';
 
 // models
@@ -23,7 +23,7 @@ import {
     IPayrollProccessPaymentModal,
     MilesStopShortReponseWithRowType,
     PayrollTypes,
-} from '@pages/accounting/pages/payroll/state/models/payroll.model';
+} from '@pages/accounting/pages/payroll/state/models';
 import {
     MilesStopShortResponse,
     PayrollCreditType,
@@ -36,11 +36,11 @@ import { PayrollProccessPaymentModalComponent } from '@pages/accounting/pages/pa
 
 // Enums
 import { PayrollTablesStatus } from '@pages/accounting/pages/payroll/state/enums';
+import { DriverMVrModalStringEnum } from '@pages/driver/pages/driver-modals/driver-mvr-modal/enums/driver-mvrl-modal-string.enum';
+import { TableStringEnum } from '@shared/enums/table-string.enum';
 
 // Classes
 import { PayrollReportBaseComponent } from '@pages/accounting/pages/payroll/components/reports/payroll-report.base';
-
-
 @Component({
     selector: 'app-payroll-report',
     templateUrl: './payroll-report.component.html',
@@ -265,10 +265,10 @@ export class PayrollReportComponent
         this.modalService.openModal(
             PayrollProccessPaymentModalComponent,
             {
-                size: 'small',
+                size: DriverMVrModalStringEnum.SMALL,
             },
             {
-                type: 'new',
+                type: TableStringEnum.NEW,
                 data: {
                     id: payrollData.id,
                     totalEarnings:

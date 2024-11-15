@@ -2,6 +2,7 @@ import {
     DriverShortResponse,
     PayrollLoadMinimalResponse,
 } from 'appcoretruckassist';
+import { PayrollDeadLine } from './driver_commission.model';
 
 export type IDriverFlatRateList = IDriverFlatRateResponse[];
 
@@ -11,7 +12,7 @@ export interface IDriverFlatRateResponse {
     payrollNumber: string;
     periodStart: string;
     periodEnd: string;
-    status: Status;
+    status: StatusFlatRate;
     payrollDeadLine: PayrollDeadLine;
     loadCount: number;
     miles: number;
@@ -24,15 +25,11 @@ export interface IDriverFlatRateResponse {
     total: number;
 }
 
-export interface Status {
+export interface StatusFlatRate {
     name: string;
     id: number;
 }
 
-export interface PayrollDeadLine {
-    numberOfDays: number;
-    period: string;
-}
 
 export type FlatRateLoadShortReponseWithRowType =
     | PayrollLoadMinimalResponse

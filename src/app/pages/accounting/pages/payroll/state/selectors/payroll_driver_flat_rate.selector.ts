@@ -1,8 +1,5 @@
-import { createFeatureSelector, createSelector } from '@ngrx/store';
-import { PayrollState } from '@pages/accounting/pages/payroll/state/models/payroll.model';
-
-export const selectPayrollState =
-    createFeatureSelector<PayrollState>('payroll');
+import { createSelector } from '@ngrx/store';
+import { selectPayrollState } from './payroll.selector';
 
 export const selectFlatRateListDriver = createSelector(
     selectPayrollState,

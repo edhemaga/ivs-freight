@@ -1,4 +1,5 @@
 import { PayrollLoadMinimalResponse, TruckShortResponse } from 'appcoretruckassist';
+import { PayrollDeadLine } from './driver_commission.model';
 export type IDriverOwnerList = IDriverOwnerResponse[];
 
 export interface IDriverOwnerResponse {
@@ -25,11 +26,6 @@ export interface TruckType {
     companyId: any;
     name: string;
     logoName: string;
-}
-
-export interface PayrollDeadLine {
-    numberOfDays: number;
-    period: string;
 }
 
 export type OwnerLoadShortReponseWithRowType =

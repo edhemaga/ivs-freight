@@ -6,6 +6,10 @@ import { SharedModule } from '@shared/shared.module';
 import { AccountingRoutingModule } from '@pages/accounting/accounting-routing.module';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 
+// Store
+import { EffectsModule } from '@ngrx/effects';
+import { StoreModule } from '@ngrx/store';
+
 // Components
 import {
     CaMapComponent,
@@ -16,10 +20,6 @@ import {
     CaSearchMultipleStatesComponent,
     CaFilterComponent,
 } from 'ca-components';
-
-// Store
-import { EffectsModule } from '@ngrx/effects';
-import { StoreModule } from '@ngrx/store';
 
 import { PayrollComponent } from '@pages/accounting/pages/payroll/payroll.component';
 import { AccountingPayrollComponent } from '@pages/accounting/pages/accounting-payroll/accounting-payroll.component';

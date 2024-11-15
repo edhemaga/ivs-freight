@@ -2,65 +2,66 @@
     <div class="middle-report-info">
         <div class="report-card">
             <div class="report-card-title d-f-aic-jcb">
-                <div
-                    *ngIf="payrollReport$ | async as payroll_report"
-                    class="d-flex align-items-center"
-                >
-                    <div class="payroll_report_title">Report</div>
-                    <div class="payroll_chip">
-                        {{ payroll_report.includedLoads?.length }} LOAD
-                    </div>
-                </div>
-                <div
-                    class="report-count-item-load d-f-aic-jcb"
-                    *ngIf="payrollReport$ | async as payroll_report"
-                >
-                    <div class="report-count-item-load-right d-f-aic">
-                        <div class="report-tickets d-f-aic-jcc">
-                            RATE
-                            <span>{{ payroll_report?.rate }}%</span>
-                        </div>
-                        <div class="edit d-f-aic-jcc">
-                            <svg-icon
-                                [svgClass]="'d-flex'"
-                                name="edit"
-                            ></svg-icon>
-                        </div>
-                        <div
-                            class="edit d-f-aic-jcc"
-                            [class.active]="showMap"
-                            (click)="showMap = !showMap"
-                        >
-                            <svg-icon
-                                [svgClass]="'d-flex'"
-                                name="map"
-                            ></svg-icon>
-                        </div>
-                        <div class="edit d-f-aic-jcc burger_menu">
-                            <svg-icon
-                                [svgClass]="'d-flex'"
-                                name="burger_menu"
-                            ></svg-icon>
+                <ng-container *ngIf="payrollReport$ | async as payroll_report">
+                    <div class="d-flex align-items-center">
+                        <div class="payroll_report_title">Report</div>
+                        <div class="payroll_chip">
+                            {{ payroll_report.includedLoads?.length }} LOAD
                         </div>
                     </div>
-                </div>
+                </ng-container>
+                <ng-container *ngIf="payrollReport$ | async as payroll_report">
+                    <div class="report-count-item-load d-f-aic-jcb">
+                        <div class="report-count-item-load-right d-f-aic">
+                            <div class="report-tickets d-f-aic-jcc">
+                                RATE
+                                <span>{{ payroll_report?.rate }}%</span>
+                            </div>
+                            <div class="edit d-f-aic-jcc">
+                                <svg-icon
+                                    [svgClass]="'d-flex'"
+                                    name="edit"
+                                ></svg-icon>
+                            </div>
+                            <div
+                                class="edit d-f-aic-jcc"
+                                [class.active]="showMap"
+                                (click)="showMap = !showMap"
+                            >
+                                <svg-icon
+                                    [svgClass]="'d-flex'"
+                                    name="map"
+                                ></svg-icon>
+                            </div>
+                            <div class="edit d-f-aic-jcc burger_menu">
+                                <svg-icon
+                                    [svgClass]="'d-flex'"
+                                    name="burger_menu"
+                                ></svg-icon>
+                            </div>
+                        </div>
+                    </div>
+                </ng-container>
             </div>
             <div class="small-table-holder-main d-flex">
-                <app-ca-main-table
-                    *ngIf="!(loading$ | async)"
-                    [sortPredicate]="customSortPredicate"
-                    [columns]="columns"
-                    [data$]="payrollFlatRateDriverLoads$"
-                    [disableReorderRow]="selectedTab === 'closed'"
-                    [reorderTemplate]="reorderTemplate"
-                    [reorderTemplatePreview]="reorderTemplatePreview"
-                    [transparentTable]="true"
-                    (onReorder)="onReorderDone($event)"
-                ></app-ca-main-table>
+                <ng-container *ngIf="!(loading$ | async)">
+                    <app-ca-main-table
+                        [sortPredicate]="customSortPredicate"
+                        [columns]="columns"
+                        [data$]="payrollFlatRateDriverLoads$"
+                        [disableReorderRow]="selectedTab === 'closed'"
+                        [reorderTemplate]="reorderTemplate"
+                        [reorderTemplatePreview]="reorderTemplatePreview"
+                        [transparentTable]="true"
+                        (onReorder)="onReorderDone($event)"
+                    ></app-ca-main-table>
+                </ng-container>
             </div>
-            <div class="map-holder" *ngIf="showMap">
-                <app-ca-map [data]="data"></app-ca-map>
-            </div>
+            <ng-container *ngIf="showMap">
+                <div class="map-holder">
+                    <app-ca-map [data]="data"></app-ca-map>
+                </div>
+            </ng-container>
         </div>
     </div>
     <div class="right-report-info">
@@ -109,10 +110,10 @@
 
 <ng-template #customLocationTypeLoad let-data let-index="index">
     <div class="load-description d-flex align-items-center">
-        <svg-icon
-            *ngIf="data.orderNumber"
-            name="load_order_num_{{ data.orderNumber }}"
-        ></svg-icon>
+        <ng-container *ngIf="data.orderNumber">
+            <svg-icon name="load_order_num_{{ data.orderNumber }}"></svg-icon>
+        </ng-container>
+
         <div class="load-description-name">
             <div class="load-description-address">{{ data.address }}</div>
             <div class="load-description-stop-type">
@@ -137,11 +138,13 @@
 
 <ng-template #cusstomLoadDescriptionTemplate let-data>
     <div class="load-description d-flex align-items-center normal">
-        <svg-icon
-            *ngIf="data.length"
-            [svgClass]="'d-flex'"
-            name="load_order_num_{{ data.length }}"
-        ></svg-icon>
+        <ng-container *ngIf="data.length">
+            <svg-icon
+                [svgClass]="'d-flex'"
+                name="load_order_num_{{ data.length }}"
+            ></svg-icon>
+        </ng-container>
+
         <div class="load-description-name">
             <div class="load-description-address">{{ data[0].address }}</div>
             <div class="load-description-stop-type">
@@ -180,16 +183,19 @@
 
 <ng-template #reorderTemplate let-row="row" let-index="index">
     <ng-container *ngIf="(payrollReport$ | async).sums as payroll_totals">
-        <td class="text-center" *ngIf="selectedTab === 'open'">
-            <div class="td-container">
-                <div class="td-content-container">
-                    <svg-icon
-                        [name]="'ic_two_arrows'"
-                        [svgStyle]="{ color: '#919191', display: 'flex' }"
-                    ></svg-icon>
+        <ng-container *ngIf="selectedTab === 'open'">
+            <td class="text-center">
+                <div class="td-container">
+                    <div class="td-content-container">
+                        <svg-icon
+                            [name]="'ic_two_arrows'"
+                            [svgStyle]="{ color: '#919191', display: 'flex' }"
+                        ></svg-icon>
+                    </div>
                 </div>
-            </div>
-        </td>
+            </td>
+        </ng-container>
+
         <td [attr.colspan]="selectedTab === 'open' ? 3 : 4">
             <div class="td-container">
                 <div class="td-content-container">

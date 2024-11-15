@@ -17,11 +17,11 @@ import { Observable, takeUntil, Subject } from 'rxjs';
 // Pipes
 import { NameInitialsPipe } from '@shared/pipes/name-initials.pipe';
 
-// Store
-import { PayrollFacadeService } from '@pages/accounting/pages/payroll/state/services/payroll.service';
+// Services
+import { PayrollFacadeService } from '@pages/accounting/pages/payroll/state/services';
 // Models
 
-import { IPayrollCountsSelector } from '@pages/accounting/pages/payroll/state/models/payroll.model';
+import { IPayrollCountsSelector } from '@pages/accounting/pages/payroll/state/models';
 import { DriverMileageCollapsedTableComponent } from '@pages/accounting/pages/payroll/components/tables/driver-mileage/driver-mileage-collapsed-table/driver-mileage-collapsed-table.component';
 
 // Enums
@@ -546,6 +546,10 @@ export class PayrollComponent implements OnInit, AfterViewInit, OnDestroy {
         this.destroy$.next();
         this.destroy$.complete();
     }
+
+    trackByIndex(index: number, item: any): number {
+        return index;
+      }
 
     public closeOpenPreview(e: Event): void {
         e.preventDefault();

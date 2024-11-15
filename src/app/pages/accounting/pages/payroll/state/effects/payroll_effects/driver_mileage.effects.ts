@@ -6,7 +6,7 @@ import { map, switchMap, Observable, catchError, of, tap } from 'rxjs';
 import { PayrollService } from '@pages/accounting/pages/payroll/services/payroll.service';
 
 // Actions
-import * as PayrollSoloMileageDriver from '@pages/accounting/pages/payroll/state/actions/payroll_solo_mileage_driver.actions';
+import * as PayrollSoloMileageDriver from '@pages/accounting/pages/payroll/state/actions';
 
 export function getPayrollMileageClosedPayrollByIdEffect(
     actions$: Actions,

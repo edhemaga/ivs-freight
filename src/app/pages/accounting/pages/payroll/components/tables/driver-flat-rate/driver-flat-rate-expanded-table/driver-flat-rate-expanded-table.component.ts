@@ -12,11 +12,11 @@ import {
 import { Observable } from 'rxjs';
 
 // Models
-import { PayrollDriverMileageExpandedListResponse } from '@pages/accounting/pages/payroll/state/models/payroll.model';
+import { PayrollDriverMileageExpandedListResponse } from '@pages/accounting/pages/payroll/state/models';
 
 // Services
-import { PayrollFacadeService } from '@pages/accounting/pages/payroll/state/services/payroll.service';
-import { PayrollDriverFlatRateFacadeService } from '@pages/accounting/pages/payroll/state/services/payroll_flat_rate.service';
+import { PayrollFacadeService } from '@pages/accounting/pages/payroll/state/services';
+import { PayrollDriverFlatRateFacadeService } from '@pages/accounting/pages/payroll/state/services';
 
 // Components
 import { ColumnConfig } from 'ca-components';

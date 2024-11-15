@@ -1,6 +1,6 @@
 // Models
 import { PayrollCountsResponse } from 'appcoretruckassist';
-import { PayrollState } from '@pages/accounting/pages/payroll/state/models/payroll.model';
+import { PayrollState } from '@pages/accounting/pages/payroll/state/models';
 
 // Enums
 import { PayrollTablesStatus } from '@pages/accounting/pages/payroll/state/enums';

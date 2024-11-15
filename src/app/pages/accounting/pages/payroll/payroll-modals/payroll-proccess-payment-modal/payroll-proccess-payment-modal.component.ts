@@ -39,11 +39,11 @@ import {
 // Models
 import { EditData } from '@shared/models/edit-data.model';
 import { Tabs } from '@shared/models/tabs.model';
-import { IPayrollProccessPaymentModal } from '@pages/accounting/pages/payroll/state/models/payroll.model';
+import { IPayrollProccessPaymentModal } from '@pages/accounting/pages/payroll/state/models';
 import { PayrollPaymentType } from 'appcoretruckassist';
 
 // Services
-import { PayrollFacadeService } from '@pages/accounting/pages/payroll/state/services/payroll.service';
+import { PayrollFacadeService } from '@pages/accounting/pages/payroll/state/services';
 import { TaInputService } from '@shared/services/ta-input.service';
 
 // Helpers
@@ -52,6 +52,9 @@ import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calcula
 // Pipes
 import { GetNumbersPipe } from '@pages/accounting/pages/payroll/pipes/get-numbers/get-numbers.pipe';
 import { PayrollTablesStatus } from '../../state/enums';
+
+// Config
+import { dropDownInputConfig, dropdownOption, inputConfig } from '@pages/accounting/pages/payroll/config/payroll_proccess_payment';
 
 @Component({
     selector: 'app-payroll-proccess-payment-modal',
@@ -95,35 +98,11 @@ export class PayrollProccessPaymentModalComponent implements OnDestroy {
         private payrollFacadeService: PayrollFacadeService
     ) {}
 
-    inputConfig = {
-        name: 'price-separator',
-        type: 'text',
-        label: 'Amount',
-        isRequired: true,
-        priceSeparator: true,
-        priceSeparatorLimitation: 6,
-        placeholderIcon: 'dollar',
-        placeholderIconColor: 'blue',
-        hideErrorMessage: true,
-        hideRequiredCheck: true,
-    };
+    public inputConfig = inputConfig;
 
-    dropDownInputConfig = {
-        name: 'Input Dropdown',
-        type: 'text',
-        label: 'Pay Method',
-        isDropdown: true,
-        dropdownWidthClass: 'w-col-222',
-        isRequired: true,
-    };
+    public dropDownInputConfig = dropDownInputConfig;
 
-    dropdownOption = [
-        {
-            id: 1,
-            companyId: null,
-            name: 'WireTransfer',
-        },
-    ];
+    public dropdownOption = dropdownOption;
 
     public paymentForm: UntypedFormGroup;
     public selectedTab: number = 1;

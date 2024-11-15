@@ -10,15 +10,12 @@
         width: -moz-fit-content;
         width: fit-content;
         height: 34px;
-        color: $ta-black;
         font-size: 26px;
         margin-right: 12px;
     }
     .filters_and_search {
         background-color: #fff;
         height: 34px;
-        display: flex;
-        align-items: center;
         padding: 0 4px;
     }
     .search-filter-holder{
@@ -46,7 +43,6 @@
 
         .tab-container {
             cursor: pointer;
-            display: flex;
             width: fit-content;
             .tab-input {
                 width: fit-content;
@@ -95,7 +91,6 @@
                 }
 
                 svg-icon {
-                    display: flex;
                     align-items: center;
                     margin: 0px 6px 0px 2px;
                 }
@@ -264,10 +259,6 @@
             &:not(.new-load-disabled):hover {
                 background-color: $ta-blue-15;
             }
-
-            svg-icon {
-                display: flex;
-            }
         }
 
         .new-load-disabled {
@@ -281,7 +272,6 @@
             cursor: pointer;
 
             svg-icon {
-                display: flex;
 
                 svg,
                 path {
@@ -330,7 +320,6 @@
             background-color: $ta-blue-18;
 
             svg-icon {
-                display: flex;
 
                 svg,
                 path {

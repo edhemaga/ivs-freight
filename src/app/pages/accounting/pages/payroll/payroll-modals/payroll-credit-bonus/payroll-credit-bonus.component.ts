@@ -13,7 +13,7 @@ import { Subject, takeUntil } from 'rxjs';
 
 // Services
 import { PayrollCreditService } from '@pages/accounting/pages/payroll/payroll-modals/payroll-credit-bonus/services/payroll-credit.service';
-import { PayrollFacadeService } from '@pages/accounting/pages/payroll/state/services/payroll.service';
+import { PayrollFacadeService } from '@pages/accounting/pages/payroll/state/services';
 import { PayrollService as PayrollInternalService } from '../../services/payroll.service';
 
 // Models

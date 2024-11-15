@@ -3,13 +3,13 @@ import {
     PayrollDriverFlatRateByIdResponse,
     PayrollDriverFlatRateClosedByIdResponse,
 } from 'appcoretruckassist';
-import { IDriverFlatRateList } from '@pages/accounting/pages/payroll/state/models/driver_flat_rate.model';
+import { IDriverFlatRateList } from '@pages/accounting/pages/payroll/state/models';
 import {
     IGet_Payroll_Commission_Driver_Report,
     PayrollDriverMileageCollapsedListResponse,
     PayrollDriverMileageExpandedListResponse,
     PayrollState,
-} from '@pages/accounting/pages/payroll/state/models/payroll.model';
+} from '@pages/accounting/pages/payroll/state/models';
 
 export const onGetPayrollFlatRateDriver = (state: PayrollState) => ({
     ...state,

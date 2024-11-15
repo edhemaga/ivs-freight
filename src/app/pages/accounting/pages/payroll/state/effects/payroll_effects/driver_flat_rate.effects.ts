@@ -3,7 +3,7 @@ import { catchError, map, Observable, of, switchMap } from 'rxjs';
 import { Action } from '@ngrx/store';
 
 // ACTIONS
-import * as PayrollFlatRateDriverActions from '@pages/accounting/pages/payroll/state/actions/payroll_flat_rate_driver.actions';
+import * as PayrollFlatRateDriverActions from '@pages/accounting/pages/payroll/state/actions';
 
 // SERVICES
 import { PayrollService } from '@pages/accounting/pages/payroll/services/payroll.service';

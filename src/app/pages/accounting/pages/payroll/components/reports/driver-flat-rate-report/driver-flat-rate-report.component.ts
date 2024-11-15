@@ -15,9 +15,9 @@ import { CdkDrag, CdkDragDrop } from '@angular/cdk/drag-drop';
 import { ColumnConfig } from 'ca-components';
 
 // Services
-import { PayrollFacadeService } from '@pages/accounting/pages/payroll/state/services/payroll.service';
+import { PayrollFacadeService } from '@pages/accounting/pages/payroll/state/services';
 import { ModalService } from '@shared/services/modal.service';
-import { PayrollDriverFlatRateFacadeService } from '@pages/accounting/pages/payroll/state/services/payroll_flat_rate.service';
+import { PayrollDriverFlatRateFacadeService } from '@pages/accounting/pages/payroll/state/services';
 import { PayrollService } from '@pages/accounting/pages/payroll/services/payroll.service';
 
 // Models
@@ -26,19 +26,21 @@ import {
     IPayrollProccessPaymentModal,
     MilesStopShortReponseWithRowType,
     PayrollTypes,
-} from '@pages/accounting/pages/payroll/state/models/payroll.model';
+} from '@pages/accounting/pages/payroll/state/models';
 import {
     LoadWithMilesStopResponse,
     PayrollCreditType,
     PayrollDriverFlatRateByIdResponse,
 } from 'appcoretruckassist';
-import { FlatRateLoadShortReponseWithRowType } from '@pages/accounting/pages/payroll/state/models/driver_flat_rate.model';
+import { FlatRateLoadShortReponseWithRowType } from '@pages/accounting/pages/payroll/state/models';
 
 // Components
 import { PayrollProccessPaymentModalComponent } from '@pages/accounting/pages/payroll/payroll-modals/payroll-proccess-payment-modal/payroll-proccess-payment-modal.component';
 
 // Enums
 import { PayrollTablesStatus } from '@pages/accounting/pages/payroll/state/enums';
+import { DriverMVrModalStringEnum } from '@pages/driver/pages/driver-modals/driver-mvr-modal/enums/driver-mvrl-modal-string.enum';
+import { TableStringEnum } from '@shared/enums/table-string.enum';
 
 // Classes
 import { PayrollReportBaseComponent } from '@pages/accounting/pages/payroll/components/reports/payroll-report.base';
@@ -210,10 +212,10 @@ export class DriverFlatRateReportComponent
         this.modalService.openModal(
             PayrollProccessPaymentModalComponent,
             {
-                size: 'small',
+                size: DriverMVrModalStringEnum.SMALL,
             },
             {
-                type: 'new',
+                type: TableStringEnum.NEW,
                 data: {
                     id: payrollData.id,
                     totalEarnings:

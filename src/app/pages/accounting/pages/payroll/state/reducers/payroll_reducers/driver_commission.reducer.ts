@@ -3,13 +3,13 @@ import {
     PayrollDriverCommissionByIdResponse,
     PayrollDriverCommissionClosedByIdResponse,
 } from 'appcoretruckassist';
-import { IDriverCommissionList } from '@pages/accounting/pages/payroll/state/models/driver_commission.model';
+import { IDriverCommissionList } from '@pages/accounting/pages/payroll/state/models';
 import {
     IGet_Payroll_Commission_Driver_Report,
     PayrollDriverMileageCollapsedListResponse,
     PayrollDriverMileageExpandedListResponse,
     PayrollState,
-} from '@pages/accounting/pages/payroll/state/models/payroll.model';
+} from '@pages/accounting/pages/payroll/state/models';
 
 export const onGetPayrollSoloMileageDriver = (state: PayrollState) => ({
     ...state,

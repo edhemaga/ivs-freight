@@ -1,4 +1,4 @@
-import { ElementRef, Injectable, TemplateRef } from '@angular/core';
+import { ElementRef, Injectable } from '@angular/core';
 
 @Injectable({
     providedIn: 'root', // Makes this service available application-wide

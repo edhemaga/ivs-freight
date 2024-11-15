@@ -3,7 +3,7 @@ import { catchError, map, Observable, of, switchMap, tap } from 'rxjs';
 import { Action } from '@ngrx/store';
 
 // ACTIONS
-import * as PayrollOwnerDriverActions from '@pages/accounting/pages/payroll/state/actions/payroll_owner_driver.action';
+import * as PayrollOwnerDriverActions from '@pages/accounting/pages/payroll/state/actions';
 
 // SERVICES
 import { PayrollService } from '@pages/accounting/pages/payroll/services/payroll.service';

@@ -21,6 +21,7 @@ import { NavigationComponent } from '@core/components/navigation/pages/navigatio
 import { TaCustomToastMessagesComponent } from '@shared/components/ta-custom-toast-messages/ta-custom-toast-messages.component';
 import { TaCustomScrollbarComponent } from '@shared/components/ta-custom-scrollbar/ta-custom-scrollbar.component';
 import { RightSidePanelComponent } from '@core/components/right-side-panel/components/right-side-panel/right-side-panel.component';
+import { ReusableTemplatesComponent } from '@shared/components/reusable-templates/reusable-templates.component';
 
 // Pipes
 import { ChangeLogoPipe } from '@core/components/navigation/pipes/change-logo.pipe';
@@ -42,7 +43,6 @@ import { StaticInjectorService } from '@core/decorators/titles.decorator';
 import player from 'lottie-web';
 import { ReactiveFormsModule } from '@angular/forms';
 import { NgIdleModule } from '@ng-idle/core';
-import { ReusableTemplatesComponent } from '@shared/components/reusable-templates/reusable-templates.component';
 function playerFactory() {
     return player;
 }

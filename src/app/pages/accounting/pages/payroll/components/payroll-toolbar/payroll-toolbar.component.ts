@@ -9,10 +9,16 @@ import {
 import { Subject, takeUntil } from 'rxjs';
 
 // Services
-import { PayrollFacadeService } from '@pages/accounting/pages/payroll/state/services/payroll.service';
+import { PayrollFacadeService } from '@pages/accounting/pages/payroll/state/services';
 
 // Enums
 import { PayrollTablesStatus } from '@pages/accounting/pages/payroll/state/enums';
+
+// Config
+import {
+    PAYROLL_TOOLBAR_STATUS,
+    PAYROLL_TOOLBAR_TAB,
+} from '@pages/accounting/pages/payroll/config/payroll_toolbar';
 
 @Component({
     selector: 'app-payroll-toolbar',
@@ -25,15 +31,18 @@ export class PayrollToolbarComponent implements OnInit, OnDestroy {
     @Input() tableExpanded: boolean;
     public optionsPopupOpen: boolean = false;
 
+    public filterConfig = PAYROLL_TOOLBAR_STATUS;
+
     @Output() toolBarAction: EventEmitter<PayrollTablesStatus> =
         new EventEmitter();
 
     public tableData: {
+        id: number;
         title: string;
         field: string;
         length: number;
         inactive: boolean;
-    }[] = [];
+    }[] = PAYROLL_TOOLBAR_TAB;
 
     private destroy$ = new Subject<void>();
 
@@ -43,21 +52,10 @@ export class PayrollToolbarComponent implements OnInit, OnDestroy {
     ) {}
 
     ngOnInit(): void {
-        this.tableData = [
-            {
-                title: 'Open',
-                field: 'open',
-                length: 0,
-                inactive: false,
-            },
-            {
-                title: 'Closed',
-                field: 'closed',
-                length: 0,
-                inactive: false,
-            },
-        ];
+        this.subscribeToStateData();
+    }
 
+    private subscribeToStateData(): void {
         this.payrollFacadeService.selectPayrollTabCounts$
             .pipe(takeUntil(this.destroy$))
             .subscribe((res) => {
@@ -77,6 +75,16 @@ export class PayrollToolbarComponent implements OnInit, OnDestroy {
 
     public expandTable(): void {
         this.payrollFacadeService.setPayrollReportTableExpanded(false);
+    }
+
+    public identity(item: {
+        id: number;
+        title: string;
+        field: string;
+        length: number;
+        inactive: boolean;
+    }): number {
+        return item.id;
     }
 
     ngOnDestroy(): void {

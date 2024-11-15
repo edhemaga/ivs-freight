@@ -12,12 +12,12 @@ import {
 import { Observable, Subject } from 'rxjs';
 
 // Models
-import { PayrollDriverMileageCollapsedListResponse } from '@pages/accounting/pages/payroll/state/models/payroll.model';
+import { PayrollDriverMileageCollapsedListResponse } from '@pages/accounting/pages/payroll/state/models';
 import { ColumnConfig } from 'ca-components';
 
 // Services
-import { PayrollFacadeService } from '@pages/accounting/pages/payroll/state/services/payroll.service';
-import { PayrollDriverOwnerFacadeService } from '@pages/accounting/pages/payroll/state/services/payroll_owner.service';
+import { PayrollFacadeService } from '@pages/accounting/pages/payroll/state/services';
+import { PayrollDriverOwnerFacadeService } from '@pages/accounting/pages/payroll/state/services';
 
 @Component({
     selector: 'app-driver-owner-collapsed-table',

@@ -15,11 +15,11 @@ import { Observable, Subject } from 'rxjs';
 import { ColumnConfig } from 'ca-components';
 
 // Services
-import { PayrollFacadeService } from '@pages/accounting/pages/payroll/state/services/payroll.service';
-import { PayrollDriverFlatRateFacadeService } from '@pages/accounting/pages/payroll/state/services/payroll_flat_rate.service';
+import { PayrollFacadeService } from '@pages/accounting/pages/payroll/state/services';
+import { PayrollDriverFlatRateFacadeService } from '@pages/accounting/pages/payroll/state/services';
 
 // Models
-import { IDriverFlatRateList } from '@pages/accounting/pages/payroll/state/models/driver_flat_rate.model';
+import { IDriverFlatRateList } from '@pages/accounting/pages/payroll/state/models';
 
 @Component({
     selector: 'app-driver-flat-rate-table',

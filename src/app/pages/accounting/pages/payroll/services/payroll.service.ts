@@ -23,11 +23,11 @@ import {
     IAddPayrollClosedPayment,
     PayrollDriverMileageCollapsedListResponse,
     PayrollDriverMileageExpandedListResponse,
-} from '@pages/accounting/pages/payroll/state/models/payroll.model';
-import { IDriverOwnerList } from '@pages/accounting/pages/payroll/state/models/driver_owner.model';
-import { IDriverCommissionList } from '@pages/accounting/pages/payroll/state/models/driver_commission.model';
-import { IDriverFlatRateList } from '@pages/accounting/pages/payroll/state/models/driver_flat_rate.model';
-import { IGet_Payroll_Commission_Driver_Report } from '@pages/accounting/pages/payroll/state/models/payroll.model';
+} from '@pages/accounting/pages/payroll/state/models';
+import { IDriverOwnerList } from '@pages/accounting/pages/payroll/state/models';
+import { IDriverCommissionList } from '@pages/accounting/pages/payroll/state/models';
+import { IDriverFlatRateList } from '@pages/accounting/pages/payroll/state/models';
+import { IGet_Payroll_Commission_Driver_Report } from '@pages/accounting/pages/payroll/state/models';
 import { PayrollDeleteModal } from '@pages/accounting/pages/payroll/state/models';
 
 // Environment

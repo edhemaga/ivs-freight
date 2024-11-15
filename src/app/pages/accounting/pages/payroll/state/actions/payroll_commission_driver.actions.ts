@@ -4,13 +4,13 @@ import { createAction, props } from '@ngrx/store';
 import { PayrollCommissionDriverEnum } from '@pages/accounting/pages/payroll/state/enums/driver_commission/payroll_driver_commission.enums';
 
 // Models
-import { IDriverCommissionList } from '@pages/accounting/pages/payroll/state/models/driver_commission.model';
+import { IDriverCommissionList } from '@pages/accounting/pages/payroll/state/models';
 import {
     IAddPayrollClosedPayment,
     IGet_Payroll_Commission_Driver_Report,
     PayrollDriverMileageCollapsedListResponse,
     PayrollDriverMileageExpandedListResponse,
-} from '@pages/accounting/pages/payroll/state/models/payroll.model';
+} from '@pages/accounting/pages/payroll/state/models';
 import {
     PayrollDriverCommissionByIdResponse,
     PayrollDriverCommissionClosedByIdResponse,

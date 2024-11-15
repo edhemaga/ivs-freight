@@ -1,13 +1,15 @@
 <div class="toolbar-container d-flex align-items-center">
     <!-- LIST NAME -->
     <div
-        class="list-name d-flex justify-content-center align-items-center ta-font-black"
+        class="list-name text-black d-f-aic-jcc ta-font-black"
     >
         {{ 'Payroll' | listNameCase : false }}
     </div>
 
     <div class="tab-wrapper d-flex align-items-center">
-        <ng-container *ngFor="let data of tableData; let i = index">
+        <ng-container
+            *ngFor="let data of tableData; let i = index; trackBy: identity"
+        >
             <div
                 class="tab-container d-flex"
                 [ngClass]="{
@@ -20,22 +22,24 @@
                 <div class="tab d-flex align-items-center">
                     <ng-container *ngIf="!data.iconLink">
                         <div
-                            class="tab-title d-flex justify-content-center align-items-center ta-font-extra-bold"
+                            class="tab-title d-f-aic-jcc ta-font-extra-bold"
                         >
                             {{ data.title | titlecase }}
                         </div>
                     </ng-container>
-                    <svg-icon
-                        *ngIf="data.iconLink"
-                        [svgStyle]="{
-                            'width.px': 20,
-                            'height.px': 20
-                        }"
-                        [src]="data.iconLink"
-                    ></svg-icon>
+                    <ng-container *ngIf="data.iconLink">
+                        <svg-icon
+                            [svgStyle]="{
+                                'width.px': 20,
+                                'height.px': 20
+                            }"
+                            [svgClass]="'d-flex'"
+                            [src]="data.iconLink"
+                        ></svg-icon>
+                    </ng-container>
                     <ng-container *ngIf="!data.hideDataCount">
                         <div
-                            class="data-count d-flex justify-content-center align-items-center ta-font-extra-bold"
+                            class="data-count d-f-aic-jcc ta-font-extra-bold"
                         >
                             {{ data.length }}
                         </div>
@@ -45,9 +49,9 @@
         </ng-container>
     </div>
 
-    <div class="filters_and_search">
+    <div class="filters_and_search d-f-aic">
         <div
-            class="border-container d-flex justify-content-center align-items-center"
+            class="border-container d-f-aic-jcc"
         >
             <div class="border-stick"></div>
         </div>
@@ -60,7 +64,7 @@
         </div>
 
         <div
-            class="border-container d-flex justify-content-center align-items-center"
+            class="border-container d-flex d-f-aic-jcc"
         >
             <div class="border-stick"></div>
         </div>
@@ -68,29 +72,7 @@
         <div class="search-filter-holder">
             <app-ca-filter
                 [type]="'statusFilter'"
-                [loadStatusOptionsArray]="[
-                    {
-                        id: 1,
-                        name: 'Assigned',
-                        count: 12,
-                        hidden: false,
-                        isSelected: false
-                    },
-                    {
-                        id: 2,
-                        name: 'Booked',
-                        count: 3,
-                        hidden: false,
-                        isSelected: false
-                    },
-                    {
-                        id: 3,
-                        name: 'Unassigned',
-                        count: 1,
-                        hidden: false,
-                        isSelected: false
-                    }
-                ]"
+                [loadStatusOptionsArray]="filterConfig"
                 [filterTitle]="'Status Filter'"
                 [icon]="'broker-half-circle'"
             >
@@ -124,19 +106,18 @@
                         container="body"
                     >
                         <svg-icon
-                            class="d-flex justify-content-center align-items-center"
+                            class="d-f-aic-jcc"
                             [ngClass]="{ 'dropdown-active': optionsPopupOpen }"
+                            [svgClass]="'d-flex'"
                             [svgStyle]="{ 'width.px': 26, 'height.px': 26 }"
-                            [src]="
-                                'assets/svg/common/routing/ic_route_info.svg'
-                            "
+                            [src]="'ic_route_info'"
                         ></svg-icon>
                     </div>
                 </div>
             </div>
 
             <div
-                class="border-container d-flex justify-content-center align-items-center"
+                class="border-container d-f-aic-jcc"
             >
                 <div class="border-stick"></div>
             </div>
@@ -163,12 +144,11 @@
                         container="body"
                     >
                         <svg-icon
-                            class="d-flex justify-content-center align-items-center"
+                            class="d-f-aic-jcc"
+                            [svgClass]="'d-flex'"
                             [ngClass]="{ 'dropdown-active': optionsPopupOpen }"
                             [svgStyle]="{ 'width.px': 18, 'height.px': 17 }"
-                            [src]="
-                                'assets/svg/truckassist-table/burger-icon.svg'
-                            "
+                            [name]="'burger_menu'"
                         ></svg-icon>
                     </div>
                 </div>
@@ -191,12 +171,11 @@
                         container="body"
                     >
                         <svg-icon
-                            class="d-flex justify-content-center align-items-center"
+                            class="d-f-aic-jcc"
+                            [svgClass]="'d-flex'"
                             [ngClass]="{ 'dropdown-active': optionsPopupOpen }"
                             [svgStyle]="{ 'width.px': 18, 'height.px': 18 }"
-                            [src]="
-                                'assets/svg/common/ic_arrow_down_updated.svg'
-                            "
+                            [name]="'ic_arrow_down_updated'"
                         ></svg-icon>
                     </div>
                 </div>

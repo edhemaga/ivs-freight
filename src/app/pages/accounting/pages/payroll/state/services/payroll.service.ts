@@ -3,11 +3,11 @@ import { Observable, Subject, take } from 'rxjs';
 import { Store, select } from '@ngrx/store';
 
 // Actions
-import * as PayrollActions from '@pages/accounting/pages/payroll/state/actions/payroll.actions';
-import * as PayrollDriverMileageSolo from '@pages/accounting/pages/payroll/state/actions/payroll_solo_mileage_driver.actions';
-import * as PayrollCommissionActions from '@pages/accounting/pages/payroll/state/actions/payroll_commission_driver.actions';
-import * as PayrollOwnerActions from '@pages/accounting/pages/payroll/state/actions/payroll_owner_driver.action';
-import * as PayrollFlatRateActions from '@pages/accounting/pages/payroll/state/actions/payroll_flat_rate_driver.actions';
+import * as PayrollActions from '@pages/accounting/pages/payroll/state/actions';
+import * as PayrollDriverMileageSolo from '@pages/accounting/pages/payroll/state/actions';
+import * as PayrollCommissionActions from '@pages/accounting/pages/payroll/state/actions';
+import * as PayrollOwnerActions from '@pages/accounting/pages/payroll/state/actions';
+import * as PayrollFlatRateActions from '@pages/accounting/pages/payroll/state/actions';
 
 // SELECTORS
 import {
@@ -25,7 +25,7 @@ import {
     selectPayrollState,
     selectSoloDriverMileage,
     seletPayrollTabsCount,
-} from '@pages/accounting/pages/payroll/state/selectors/payroll.selector';
+} from '@pages/accounting/pages/payroll/state/selectors';
 
 // MODELS
 import {
@@ -41,7 +41,7 @@ import {
     MilesStopShortReponseWithRowType,
     PayrollDriverMileageExpandedListResponse,
     PayrollTypes,
-} from '@pages/accounting/pages/payroll/state/models/payroll.model';
+} from '@pages/accounting/pages/payroll/state/models';
 import { PayrollDriverMileageResponse } from 'appcoretruckassist/model/payrollDriverMileageResponse';
 
 // Enums
