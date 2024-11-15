@@ -47,7 +47,6 @@ import { TaCustomScrollbarComponent } from '@shared/components/ta-custom-scrollb
 import { TaNoteComponent } from '@shared/components/ta-note/ta-note.component';
 import { TaUploadFilesComponent } from '@shared/components/ta-upload-files/ta-upload-files.component';
 import { TaInputDropdownLabelComponent } from '@shared/components/ta-input-dropdown-label/ta-input-dropdown-label.component';
-import { TaInputDropdownComponent } from '@shared/components/ta-input-dropdown/ta-input-dropdown.component';
 import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
 import { TaInputDropdownTableComponent } from '@shared/components/ta-input-dropdown-table/ta-input-dropdown-table.component';
 import { TaProgresBarComponent } from '@shared/components/ta-progres-bar/ta-progres-bar.component';
@@ -56,7 +55,10 @@ import { TaPasswordAccountHiddenCharactersComponent } from '@shared/components/t
 import { LoadStatusStringComponent } from '@pages/load/components/load-status-string/load-status-string.component';
 import { TaStatusComponentComponent } from '@shared/components/ta-status-component/ta-status-component.component';
 import { TaOpenHoursDropdownComponent } from '@shared/components/ta-open-hours-dropdown/ta-open-hours-dropdown.component';
-import { CaProfileImageComponent, CaSearchMultipleStatesService } from 'ca-components';
+import {
+    CaProfileImageComponent,
+    CaSearchMultipleStatesService,
+} from 'ca-components';
 
 // modules
 import { AngularSvgIconModule } from 'angular-svg-icon';
@@ -72,12 +74,10 @@ import { DomSanitizer } from '@angular/platform-browser';
 
 // pipes
 import { TableHighlightSearchTextPipe } from '@shared/components/ta-table/ta-table-body/pipes/table-highlight-search-text.pipe';
-import { TableTextCountPipe } from '@shared/components/ta-table/ta-table-body/pipes/table-text-count.pipe';
 import { ContactPhoneEmailIconPipe } from '@shared/components/ta-table/ta-table-body/pipes/contact-phone-email-icon.pipe';
 import { TableDescriptionTextPipe } from '@shared/components/ta-table/ta-table-body/pipes/table-description-text.pipe';
 import { FormatCurrencyPipe } from '@shared/pipes/format-currency.pipe';
 import { ThousandToShortFormatPipe } from '@shared/pipes/thousand-to-short-format.pipe';
-import { LoadStatusColorPipe } from '@shared/pipes/load-status-color.pipe';
 import { TableLoadStatusPipe } from '@shared/pipes/table-load-status.pipe';
 
 // enums
@@ -100,7 +100,7 @@ import { TaStateImageTextComponent } from '@shared/components/ta-state-image-tex
 import { RepairDescriptionPopoverConstants } from '@shared/components/ta-table/ta-table-body/utils/constants';
 
 // directive
-import { PreventMultipleclicksDirective } from '@shared/directives/prevent-multipleclicks.directive';
+import { PreventMultipleclicksDirective } from '@shared/directives/';
 
 // svg routes
 import { TableBodySvgRoutes } from '@shared/components/ta-table/ta-table-body/utils/svg-routes';
@@ -125,7 +125,6 @@ import { TableBodySvgRoutes } from '@shared/components/ta-table/ta-table-body/ut
         // components
         TaCustomScrollbarComponent,
         TaInputDropdownLabelComponent,
-        TaInputDropdownComponent,
         TaInputDropdownTableComponent,
         TaNoteComponent,
         TaUploadFilesComponent,
@@ -141,15 +140,13 @@ import { TableBodySvgRoutes } from '@shared/components/ta-table/ta-table-body/ut
 
         // pipes
         TableHighlightSearchTextPipe,
-        TableTextCountPipe,
         TableDescriptionTextPipe,
         ContactPhoneEmailIconPipe,
         FormatCurrencyPipe,
         ThousandToShortFormatPipe,
-        LoadStatusColorPipe,
         TableLoadStatusPipe,
 
-        // Directives
+        // directives
         PreventMultipleclicksDirective,
     ],
     providers: [

@@ -18,7 +18,9 @@
             <!-- Repair  -->
 
             <ng-container *ngSwitchCase="'repair'">
-                <app-repair-shop-details-item-repair>
+                <app-repair-shop-details-item-repair
+                    [repairList]="detailsConfig[1]?.data?.repairList"
+                >
                 </app-repair-shop-details-item-repair>
             </ng-container>
 

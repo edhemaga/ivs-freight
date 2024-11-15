@@ -68,7 +68,7 @@ import {
     HoverDirective,
     ToggleBackgroundDirective,
 } from '@pages/chat/utils/directives';
-import { HoverSvgDirective } from '@shared/directives/hover-svg.directive';
+import { HoverSvgDirective } from '@shared/directives/';
 
 @NgModule({
     declarations: [

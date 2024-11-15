@@ -24,76 +24,83 @@
     <div
         class="d-flex flex-column justify-content-center shop-details-item-repair-main"
     >
-        <div class="align-items-center shop-details-item-repair-main-item">
-            <!-- Invoice -->
+        <ng-container
+            *ngFor="let repair of _repairList; trackBy: trackByIdentity"
+        >
+            <div class="align-items-center shop-details-item-repair-main-item">
+                <!-- Invoice -->
 
-            <div class="d-flex align-items-center">
-                <p class="m-0 ta-font-bold text-size-14 text-color-black">
-                    325-IVS-23
-                </p>
-            </div>
+                <div class="d-flex align-items-center">
+                    <p class="m-0 ta-font-bold text-size-14 text-color-black">
+                        {{ repair?.invoice || repair?.orderNumber }}
+                    </p>
+                </div>
 
-            <!-- Date -->
+                <!-- Date -->
 
-            <div class="d-flex align-items-center">
-                <p class="m-0 text-size-14 text-color-black-2">03/02/23</p>
-            </div>
+                <div class="d-flex align-items-center">
+                    <p class="m-0 text-size-14 text-color-black-2">
+                        {{ repair?.createdAt | formatDateP }}
+                    </p>
+                </div>
 
-            <!-- Unit -->
+                <!-- Unit -->
 
-            <div class="d-flex align-items-center">
-                <p class="m-0 text-size-14 text-color-black-2">12345</p>
-            </div>
+                <div class="d-flex align-items-center">
+                    <p class="m-0 text-size-14 text-color-black-2">
+                        {{
+                            repair?.truck?.truckNumber ||
+                                repair?.trailer?.trailerNumber
+                        }}
+                    </p>
+                </div>
 
-            <!-- Description -->
+                <!-- Description -->
 
-            <div
-                class="d-flex align-items-center text-truncate description-container"
-                [innerHtml]="
-                    dummyDescriptionItems | tableDescriptionTextPipe : 200
-                "
-            >
-                <!--  <p class="m-0 text-size-14 text-color-black-2">
-                    Transmission oil • Transmis... +4
-                </p> -->
-            </div>
+                <div
+                    class="d-flex align-items-center"
+                    [appDescriptionItemsTextCount]="repair?.filteredItemNames"
+                    [itemSpecialStylesIndexArray]="repair?.pmItemsIndexArray"
+                    [containerWidth]="232"
+                ></div>
 
-            <!-- Cost -->
+                <!-- Cost -->
 
-            <div
-                class="d-flex align-items-center justify-content-end cost-container"
-            >
-                <p class="m-0 ta-font-bold text-size-14 text-color-black">
-                    $837.62
-                </p>
-            </div>
-
-            <!-- Actions -->
-
-            <div class="align-items-center actions-container">
-                <ng-container
-                    *ngFor="
-                        let actionItem of repairActionItems;
-                        trackBy: trackByIdentity
-                    "
+                <div
+                    class="d-flex align-items-center justify-content-end cost-container"
                 >
-                    <div
-                        class="d-flex align-items-center justify-content-center actions-container-action"
-                        ngbTooltip
-                        [mainTooltip]="actionItem.title"
-                        tooltipBackground="#424242"
-                        position="bottom"
-                        (click)="handleActionClick(actionItem.title)"
+                    <p class="m-0 ta-font-bold text-size-14 text-color-black">
+                        ${{ repair?.total }}
+                    </p>
+                </div>
+
+                <!-- Actions -->
+
+                <div class="align-items-center actions-container">
+                    <ng-container
+                        *ngFor="
+                            let actionItem of repairActionItems;
+                            trackBy: trackByIdentity
+                        "
                     >
-                        <svg-icon
-                            class="icon"
-                            [src]="actionItem.iconRoute"
-                            [svgStyle]="{ 'width.px': 18, 'height.px': 18 }"
-                        ></svg-icon>
-                    </div>
-                </ng-container>
+                        <div
+                            class="d-flex align-items-center justify-content-center actions-container-action"
+                            ngbTooltip
+                            [mainTooltip]="actionItem.title"
+                            tooltipBackground="#424242"
+                            position="bottom"
+                            (click)="handleActionClick(actionItem.title)"
+                        >
+                            <svg-icon
+                                class="icon"
+                                [src]="actionItem.iconRoute"
+                                [svgStyle]="{ 'width.px': 18, 'height.px': 18 }"
+                            ></svg-icon>
+                        </div>
+                    </ng-container>
+                </div>
             </div>
-        </div>
+        </ng-container>
     </div>
 
     <!-- Footer -->

@@ -11,7 +11,7 @@
         display: grid;
         grid-template-columns: 115px 76px 80px 232px 101px auto;
         grid-gap: 4px;
-        padding: 6px 6px 12px 6px;
+        padding: 6px;
         margin-bottom: 6px;
         border-bottom: 1px solid $bw-9;
 
@@ -36,10 +36,6 @@
 
             &:hover {
                 background: $bw2;
-            }
-
-            .description-container {
-                max-width: 232px;
             }
 
             .cost-container {

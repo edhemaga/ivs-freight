@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 // modules
@@ -18,10 +18,14 @@ import { RepairShopDetailsSvgRoutes } from '@pages/repair/pages/repair-shop-deta
 import { RepairShopDetailsStringEnum } from '@pages/repair/pages/repair-shop-details/enums';
 
 // pipes
-import { TableDescriptionTextPipe } from '@shared/components/ta-table/ta-table-body/pipes/table-description-text.pipe';
+import { FormatDatePipe } from '@shared/pipes';
+
+// directives
+import { DescriptionItemsTextCountDirective } from '@shared/directives';
 
 // models
 import { RepairActionItem } from '@pages/repair/pages/repair-shop-details/components/repair-shop-details-item/models';
+import { RepairResponse } from 'appcoretruckassist';
 
 @Component({
     selector: 'app-repair-shop-details-item-repair',
@@ -38,37 +42,23 @@ import { RepairActionItem } from '@pages/repair/pages/repair-shop-details/compon
         TaAppTooltipV2Component,
 
         // pipes
-        TableDescriptionTextPipe,
+        FormatDatePipe,
+
+        // directives
+        DescriptionItemsTextCountDirective,
     ],
 })
 export class RepairShopDetailsItemRepairComponent implements OnInit {
+    @Input() set repairList(data: RepairResponse[]) {
+        this.createRepairItemData(data);
+    }
+
+    public _repairList: RepairResponse[] = [];
+
     public repairShopDetailsSvgRoutes = RepairShopDetailsSvgRoutes;
 
     public repairHeaderItems: string[] = [];
     public repairActionItems: RepairActionItem[] = [];
-
-    public dummyDescriptionItems = [
-        {
-            price: 1,
-            description: 'Text aaa',
-        },
-        {
-            price: 2,
-            description: 'Text bbb',
-        },
-        {
-            price: 3,
-            description: 'Text ccc',
-        },
-        {
-            price: 4,
-            description: 'Text ddd',
-        },
-        {
-            price: 5,
-            description: 'Text eee',
-        },
-    ];
 
     ngOnInit(): void {
         this.getConstantData();
@@ -82,6 +72,29 @@ export class RepairShopDetailsItemRepairComponent implements OnInit {
 
         this.repairActionItems =
             RepairShopDetailsItemConstants.REPAIR_ACTION_COLUMNS;
+    }
+
+    private createRepairItemData(data: RepairResponse[]): void {
+        this._repairList = data.map((repair) => {
+            const { items } = repair;
+
+            const filteredItemNames = items.map((item) => item.description);
+            const pmItemsIndexArray = [];
+
+            items.forEach(
+                (item, index) =>
+                    (item?.pmTruck || item?.pmTrailer) &&
+                    pmItemsIndexArray.push(index)
+            );
+
+            return {
+                ...repair,
+                filteredItemNames,
+                pmItemsIndexArray,
+            };
+        });
+
+        console.log('this._repairList', this._repairList);
     }
 
     public handleActionClick(type: string /* index: number */): void {

@@ -2,6 +2,34 @@
 
 .text {
     &-color {
+        &-black {
+            color: $ta-black !important;
+
+            &::-moz-selection {
+                background-color: rgb(66, 66, 66, 0.2) !important;
+                color: $ta-black !important;
+            }
+
+            &::selection {
+                background-color: rgb(66, 66, 66, 0.2) !important;
+                color: $ta-black !important;
+            }
+        }
+
+        &-black-2 {
+            color: $ta-black-2 !important;
+
+            &::-moz-selection {
+                background-color: rgb(47, 47, 47, 0.2) !important;
+                color: $ta-black-2 !important;
+            }
+
+            &::selection {
+                background-color: rgb(47, 47, 47, 0.2) !important;
+                color: $ta-black-2 !important;
+            }
+        }
+
         &-muted {
             color: $muted !important;
 
@@ -55,34 +83,6 @@
             &::selection {
                 background-color: rgb(230, 103, 103, 0.2) !important;
                 color: $ta-red-10 !important;
-            }
-        }
-
-        &-black {
-            color: $ta-black !important;
-
-            &::-moz-selection {
-                background-color: rgb(66, 66, 66, 0.2) !important;
-                color: $ta-black !important;
-            }
-
-            &::selection {
-                background-color: rgb(66, 66, 66, 0.2) !important;
-                color: $ta-black !important;
-            }
-        }
-
-        &-black-2 {
-            color: $ta-black-2 !important;
-
-            &::-moz-selection {
-                background-color: rgb(47, 47, 47, 0.2) !important;
-                color: $ta-black-2 !important;
-            }
-
-            &::selection {
-                background-color: rgb(47, 47, 47, 0.2) !important;
-                color: $ta-black-2 !important;
             }
         }
 
