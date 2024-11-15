@@ -206,6 +206,7 @@ export abstract class PayrollReportBaseComponent<
                                 subtitle: item.data.subtotal,
                                 date: item.data.date,
                                 label: `${this.openedPayroll.driver.fullName}`,
+                                id: item.data.id
                             }
                         )
                         .then(() => {
@@ -223,6 +224,7 @@ export abstract class PayrollReportBaseComponent<
                                 subtitle: item.data.subtotal,
                                 date: item.data.date,
                                 label: `${this.openedPayroll.driver.fullName}`,
+                                id: item.data.id
                             }
                         )
                         .then(() => {
@@ -240,6 +242,7 @@ export abstract class PayrollReportBaseComponent<
                                 subtitle: item.data.subtotal,
                                 date: item.data.date,
                                 label: `${this.openedPayroll.driver.fullName}`,
+                                id: item.data.id
                             }
                         )
                         .then(() => {

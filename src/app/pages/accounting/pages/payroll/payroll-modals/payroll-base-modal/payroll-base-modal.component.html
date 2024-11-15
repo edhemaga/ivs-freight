@@ -11,15 +11,15 @@
             <form [formGroup]="baseForm" class="payroll-credit--body">
                 <ng-container *ngIf="isDropdownEnabled && isBonusModal">
                     <div class="payroll-mb-32">
-                    <app-ca-input-dropdown
-                        formControlName="driverId"
-                        [template]="'load-dispatcher'"
-                        [inputConfig]="driverConfig"
-                        [options]="driversDropdownList"
-                        [activeItem]="selectedDriver"
-                        (selectedItem)="selectDriver($event)"
-                    ></app-ca-input-dropdown>
-                    </div>  
+                        <app-ca-input-dropdown
+                            formControlName="driverId"
+                            [template]="'load-dispatcher'"
+                            [inputConfig]="driverConfig"
+                            [options]="driversDropdownList"
+                            [activeItem]="selectedDriver"
+                            (selectedItem)="selectDriver($event)"
+                        ></app-ca-input-dropdown>
+                    </div>
                 </ng-container>
 
                 <ng-container *ngIf="isDropdownEnabled && !isBonusModal">
@@ -159,12 +159,19 @@
         </div>
         <div class="modal-date-border"></div>
     </ng-container>
-
-    <svg-icon
-        class="modal-close svg-size-14 svg-fill-muted modal-buttons"
-        [src]="svgRoutes.closeIcon"
+    <div
+        class="d-flex justify-content-center align-items-center modal-close-container"
+        ngbTooltip
+        mainTooltip="Cancel"
+        tooltipBackground="#424242"
+        position="bottom"
         (click)="onCloseModal()"
-    ></svg-icon>
+    >
+        <svg-icon
+            class="modal-close svg-size-14 svg-fill-muted modal-buttons"
+            [src]="svgRoutes.closeIcon"
+        ></svg-icon>
+    </div>
 </ng-template>
 
 <ng-template #leftModalContent>

@@ -18,6 +18,9 @@ import { TaUploadFileComponent } from '@shared/components/ta-upload-files/compon
 
 // services
 import { ConfirmationService } from '@shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
+import { PayrollDeductionService } from '@pages/accounting/pages/payroll/payroll-modals/payroll-deduction-modal/services/payroll-deduction.service';
+import { PayrollBonusService } from '@pages/accounting/pages/payroll/payroll-modals/payroll-bonus-modal/services/payroll-bonus.service';
+import { PayrollCreditService } from '@pages/accounting/pages/payroll/payroll-modals/payroll-credit-bonus/services/payroll-credit.service';
 
 // bootstrap
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
@@ -38,6 +41,9 @@ import { Confirmation } from '@shared/components/ta-shared-modals/confirmation-m
 
 // pdf-viewer
 import { PdfViewerModule } from 'ng2-pdf-viewer';
+
+// Enums
+import { TableStringEnum } from '@shared/enums/table-string.enum';
 
 @Component({
     selector: 'app-confirmation-modal',
@@ -77,7 +83,10 @@ export class ConfirmationModalComponent implements OnInit {
     constructor(
         private ngbActiveModal: NgbActiveModal,
         private confirmationDataSubject: ConfirmationService,
-        private formBuilder: UntypedFormBuilder
+        private formBuilder: UntypedFormBuilder,
+        private payrollDeductionService: PayrollDeductionService,
+        private payrolCreditService: PayrollCreditService,
+        private payrollBonusService: PayrollBonusService
     ) {}
 
     ngOnInit() {
@@ -86,9 +95,11 @@ export class ConfirmationModalComponent implements OnInit {
         });
     }
 
-    public onModalAction(data: any) {
-        // Multiple Delete
-        if (this.editData.type === 'multiple delete') {
+    public onModalAction(data: Confirmation) {
+        if (this.editData.extras && data.type === TableStringEnum.DELETE) {
+            this.deletePayroll(data.extras.id, data.template);
+            this.confirmationDataSubject.sendConfirmationData(data);
+        } else if (this.editData.type === 'multiple delete') {
             this.confirmationDataSubject.sendConfirmationData({
                 ...data,
                 array: data?.array?.map((item) => item.id),
@@ -113,6 +124,18 @@ export class ConfirmationModalComponent implements OnInit {
 
     public formatDate(mod) {
         return MethodsCalculationsHelper.convertDateFromBackend(mod);
+    }
+
+    private deletePayroll(id: number, template: string) {
+        if (template === TableStringEnum.DEDUCTION) {
+            this.payrollDeductionService
+                .deletePayrollDeductionById(id)
+                .subscribe();
+        } else if (template === TableStringEnum.CREDIT) {
+            this.payrolCreditService.deletePayrollCreditById(id).subscribe();
+        } else if (template === TableStringEnum.BONUS) {
+            this.payrollBonusService.deletePayrollBonusById(id).subscribe();
+        }
     }
 
     public trackByIdentity = (index: number, _: any): number => index;
