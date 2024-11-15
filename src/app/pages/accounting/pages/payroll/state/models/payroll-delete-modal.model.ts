@@ -3,4 +3,5 @@ export interface PayrollDeleteModal {
     subtitle: string | number;
     date: string;
     label: string;
+    id: number;
 }
