@@ -1848,7 +1848,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                     });
 
                     this.mapsService.selectedMarker(
-                        selectedMarkerData ? repairShopData.id : 0
+                        selectedMarkerData ? repairShopData.id : null
                     );
 
                     this.mapData = { ...this.mapData, selectedMarkerData };
@@ -1909,12 +1909,14 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                 null, // lastTo?: number,
                 null, // ppgFrom?: number,
                 null, // ppgTo?: number,
-                null, // selectedId
+                this.mapsService.selectedMarkerId ?? null, // selectedId
                 null, // active
                 this.mapClustersPagination.pageIndex, // pageIndex
                 this.mapClustersPagination.pageSize, // pageSize
                 null, // companyId
-                this.shopFilterQuery.sort ?? 'nameDesc', // sortBy
+                this.mapsService.selectedMarkerId
+                    ? 'selectedDesc'
+                    : this.mapListSortDirection, // sortBy
                 null, // search
                 null, // search1
                 null // search2
@@ -2049,11 +2051,13 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                 null, // costTo
                 null, // active
                 null, // states
-                null, // selectedId
+                this.mapsService.selectedMarkerId ?? null, // selectedId
                 this.mapListPagination.pageIndex,
                 this.mapListPagination.pageSize,
                 null, // companyId
-                this.mapListSortDirection, // sort
+                this.mapsService.selectedMarkerId
+                    ? 'selectedDesc'
+                    : this.mapListSortDirection, // sort
                 this.mapListSearchValue, // search
                 null, // search1
                 null // search2
@@ -2103,7 +2107,11 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
             selectedMarkerData,
         };
 
-        this.mapsService.selectedMarker(0);
+        this.mapsService.selectedMarker(null);
+
+        this.getRepairShopClusters();
+
+        this.getRepairShopMapList();
     }
 
     public addMapListScrollEvent(): void {
