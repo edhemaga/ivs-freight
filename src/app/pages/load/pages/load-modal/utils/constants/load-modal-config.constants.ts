@@ -212,6 +212,7 @@ export class LoadModalConfig {
         placeholderIconColor: 'blue',
         inputCursorOnRightSide: true,
         hideErrorMessage: true,
+        errorInsideInput: true,
         hideRequiredCheck: true,
     };
     static LOAD_BILLING_DROPDOWN: ITaInput = {
