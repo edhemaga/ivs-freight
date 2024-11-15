@@ -1,6 +1,5 @@
-import { Component, ElementRef, TemplateRef, ViewChild } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { TemplateManagerService } from '@shared/services/template-manager.service';
 
 @Component({
     selector: 'app-reusable-templates',

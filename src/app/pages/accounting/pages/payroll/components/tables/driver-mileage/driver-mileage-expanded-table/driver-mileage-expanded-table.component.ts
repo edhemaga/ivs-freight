@@ -21,7 +21,10 @@ import { ColumnConfig } from 'ca-components';
 @Component({
     selector: 'app-driver-mileage-expanded-table',
     templateUrl: './driver-mileage-expanded-table.component.html',
-    styleUrls: ['./driver-mileage-expanded-table.component.scss'],
+    styleUrls: [
+        '../../../../../payroll/payroll.component.scss',
+        './driver-mileage-expanded-table.component.scss',
+    ],
 })
 export class DriverMileageExpandedTableComponent
     implements OnInit, AfterViewInit, OnDestroy

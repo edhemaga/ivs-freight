@@ -22,7 +22,10 @@ import { PayrollDriverOwnerFacadeService } from '@pages/accounting/pages/payroll
 @Component({
     selector: 'app-driver-owner-expanded-table',
     templateUrl: './driver-owner-expanded-table.component.html',
-    styleUrls: ['./driver-owner-expanded-table.component.scss'],
+    styleUrls: [
+        '../../../../../payroll/payroll.component.scss',
+        './driver-owner-expanded-table.component.scss',
+    ],
 })
 export class DriverOwnerExpandedTableComponent
     implements OnInit, AfterViewInit, OnDestroy

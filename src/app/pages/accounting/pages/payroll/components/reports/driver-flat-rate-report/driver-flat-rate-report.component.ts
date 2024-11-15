@@ -45,7 +45,10 @@ import { PayrollReportBaseComponent } from '@pages/accounting/pages/payroll/comp
 @Component({
     selector: 'app-driver-flat-rate-report',
     templateUrl: './driver-flat-rate-report.component.html',
-    styleUrls: ['./driver-flat-rate-report.component.scss'],
+    styleUrls: [
+        '../../../../payroll/payroll.component.scss',
+        './driver-flat-rate-report.component.scss',
+    ],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DriverFlatRateReportComponent

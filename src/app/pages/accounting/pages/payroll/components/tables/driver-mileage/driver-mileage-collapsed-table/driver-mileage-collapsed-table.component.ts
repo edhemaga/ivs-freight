@@ -21,7 +21,10 @@ import { ColumnConfig } from 'ca-components';
 @Component({
     selector: 'app-driver-mileage-collapsed-table',
     templateUrl: './driver-mileage-collapsed-table.component.html',
-    styleUrls: ['./driver-mileage-collapsed-table.component.scss'],
+    styleUrls: [
+        '../../../../../payroll/payroll.component.scss',
+        './driver-mileage-collapsed-table.component.scss',
+    ],
 })
 export class DriverMileageCollapsedTableComponent
     implements OnInit, AfterViewInit, OnDestroy

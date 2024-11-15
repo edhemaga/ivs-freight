@@ -682,6 +682,67 @@
         {
             "iconName": "ic_truck_reefer",
             "iconPath": "/assets/svg/common/trucks/ic_truck_reefer.svg"
+        },
+        {
+            "iconName": "payroll_sceleton_collapsed",
+            "iconPath": "/assets/svg/truckassist-table/sceletons/payroll-table-collapsed.svg"
+        },
+        {
+            "iconName": "payroll_sceleton",
+            "iconPath": "/assets/svg/truckassist-table/sceletons/payroll-table.svg"
+        },
+        {
+            "iconName": "map",
+            "iconPath": "/assets/svg/common/load/ic_load_map.svg"
+        },
+        {
+            "iconName": "burger_menu",
+            "iconPath": "/assets/svg/truckassist-table/burger-icon.svg"
+        },
+        {
+            "iconName": "load_order_num_1",
+            "iconPath": "/assets/svg/svg_numbers/olddash/svg_num_box_1.svg"
+        },
+        {
+            "iconName": "load_order_num_2",
+            "iconPath": "/assets/svg/svg_numbers/olddash/svg_num_box_2.svg"
+        },
+        {
+            "iconName": "load_order_num_3",
+            "iconPath": "/assets/svg/svg_numbers/olddash/svg_num_box_3.svg"
+        },
+        {
+            "iconName": "load_order_num_4",
+            "iconPath": "/assets/svg/svg_numbers/olddash/svg_num_box_4.svg"
+        },
+        {
+            "iconName": "load_order_num_5",
+            "iconPath": "/assets/svg/svg_numbers/olddash/svg_num_box_5.svg"
+        },
+        {
+            "iconName": "load_order_num_6",
+            "iconPath": "/assets/svg/svg_numbers/olddash/svg_num_box_6.svg"
+        },
+        {
+            "iconName": "load_order_num_7",
+            "iconPath": "/assets/svg/svg_numbers/olddash/svg_num_box_7.svg"
+        },
+        {
+            "iconName": "load_order_num_8",
+            "iconPath": "/assets/svg/svg_numbers/olddash/svg_num_box_8.svg"
+        },
+        {
+            "iconName": "load_order_num_9",
+            "iconPath": "/assets/svg/svg_numbers/olddash/svg_num_box_9.svg"
+        },
+
+        {
+            "iconName": "pickup",
+            "iconPath": "/assets/svg/common/ic_pickup.svg"
+        },
+        {
+            "iconName": "delivery",
+            "iconPath": "/assets/svg/common/ic_delivery.svg"
         }
     ],
     "customIcons": []

@@ -14,6 +14,7 @@ import { PayrollCreditBonusComponent } from '@pages/accounting/pages/payroll/pay
 import { PayrollBonusModalComponent } from '@pages/accounting/pages/payroll/payroll-modals/payroll-bonus-modal/payroll-bonus-modal.component';
 import { PayrollDeductionModalComponent } from '@pages/accounting/pages/payroll/payroll-modals/payroll-deduction-modal/payroll-deduction-modal.component';
 import { FuelPurchaseModalComponent } from '@pages/fuel/pages/fuel-modals/fuel-purchase-modal/fuel-purchase-modal.component';
+import { PayrollAdditionalTypes } from '../../state/enums';
 export abstract class PayrollReportBaseComponent<
     T extends { driver?: { id?: number }; truck?: { id?: number } }
 > {
@@ -38,7 +39,7 @@ export abstract class PayrollReportBaseComponent<
 
     public openAddNewModal(type: string): void {
         switch (type) {
-            case 'Credit':
+            case PayrollAdditionalTypes.CREDIT:
                 this.modalService
                     .openModal(
                         PayrollCreditBonusComponent,
@@ -57,7 +58,7 @@ export abstract class PayrollReportBaseComponent<
                         this.getReportDataResults();
                     });
                 break;
-            case 'Bonus':
+            case PayrollAdditionalTypes.BONUS:
                 this.modalService
                     .openModal(
                         PayrollBonusModalComponent,
@@ -76,26 +77,7 @@ export abstract class PayrollReportBaseComponent<
                         this.getReportDataResults();
                     });
                 return;
-            case 'Credit':
-                this.modalService
-                    .openModal(
-                        PayrollBonusModalComponent,
-                        {
-                            size: 'small',
-                        },
-                        {
-                            data: {
-                                driverId: this.openedPayroll.driver?.id,
-                                truckId: this.openedPayroll.truck?.id,
-                            } as CreatePayrollCreditCommand,
-                            creditType: this.creditType,
-                        }
-                    )
-                    .then(() => {
-                        this.getReportDataResults();
-                    });
-                break;
-            case 'Deduction':
+            case PayrollAdditionalTypes.DEDUCTION:
                 this.modalService
                     .openModal(
                         PayrollDeductionModalComponent,
@@ -114,7 +96,7 @@ export abstract class PayrollReportBaseComponent<
                         this.getReportDataResults();
                     });
                 break;
-            case 'Fuel':
+            case PayrollAdditionalTypes.FUEL:
                 this.modalService
                     .openModal(
                         FuelPurchaseModalComponent,
@@ -136,7 +118,7 @@ export abstract class PayrollReportBaseComponent<
     public onOpenActionEditItems(item: any): void {
         if (item.$event.type === 'Edit') {
             switch (item.title) {
-                case 'Credit':
+                case PayrollAdditionalTypes.CREDIT:
                     this.modalService
                         .openModal(
                             PayrollCreditBonusComponent,
@@ -157,7 +139,7 @@ export abstract class PayrollReportBaseComponent<
                             this.getReportDataResults();
                         });
                     break;
-                case 'Bonus':
+                case PayrollAdditionalTypes.BONUS:
                     this.modalService
                         .openModal(
                             PayrollBonusModalComponent,
@@ -178,7 +160,7 @@ export abstract class PayrollReportBaseComponent<
                             this.getReportDataResults();
                         });
                     break;
-                case 'Deduction':
+                case PayrollAdditionalTypes.DEDUCTION:
                     this.modalService
                         .openModal(
                             PayrollDeductionModalComponent,
@@ -214,17 +196,17 @@ export abstract class PayrollReportBaseComponent<
             selectedDeductionIds: null,
             selectedBonusIds: null,
         };
-        if (_title === 'Credit') {
+        if (_title === PayrollAdditionalTypes.CREDIT) {
             dataSend = {
                 ...dataSend,
                 selectedCreditIds: _included.map((load) => load.id),
             };
-        } else if (_title === 'Deduction') {
+        } else if (_title === PayrollAdditionalTypes.DEDUCTION) {
             dataSend = {
                 ...dataSend,
                 selectedDeductionIds: _included.map((load) => load.id),
             };
-        } else if (_title === 'Bonus') {
+        } else if (_title === PayrollAdditionalTypes.BONUS) {
             dataSend = {
                 ...dataSend,
                 selectedBonusIds: _included.map((load) => load.id),

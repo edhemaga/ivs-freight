@@ -27,7 +27,10 @@ import {
 @Component({
     selector: 'app-driver-owner-table',
     templateUrl: './driver-owner-table.component.html',
-    styleUrls: ['./driver-owner-table.component.scss'],
+    styleUrls: [
+        '../../../../../payroll/payroll.component.scss',
+        './driver-owner-table.component.scss',
+    ],
 })
 export class DriverOwnerTableComponent
     implements OnInit, AfterViewInit, OnDestroy

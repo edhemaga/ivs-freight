@@ -22,13 +22,18 @@ import { PayrollDriverCommissionFacadeService } from '@pages/accounting/pages/pa
 @Component({
     selector: 'app-driver-commission-expanded-table',
     templateUrl: './driver-commission-expanded-table.component.html',
-    styleUrls: ['./driver-commission-expanded-table.component.scss'],
+    styleUrls: [
+        '../../../../../payroll/payroll.component.scss',
+        './driver-commission-expanded-table.component.scss',
+    ],
 })
 export class DriverCommissionExpandedTableComponent
     implements OnInit, AfterViewInit, OnDestroy
 {
     @Input() driverId: number;
-    @Output() expandTableEvent: EventEmitter<PayrollDriverMileageExpandedListResponse> = new EventEmitter<PayrollDriverMileageExpandedListResponse>();
+    @Output()
+    expandTableEvent: EventEmitter<PayrollDriverMileageExpandedListResponse> =
+        new EventEmitter<PayrollDriverMileageExpandedListResponse>();
     @Input() title: string;
     @Input() expandTable: boolean;
 
@@ -156,7 +161,9 @@ export class DriverCommissionExpandedTableComponent
             this.payrollDriverCommissionFacadeService.selectPayrollDriverCommissionExpanded$;
     }
 
-    public selectPayrollReport(report: PayrollDriverMileageExpandedListResponse): void {
+    public selectPayrollReport(
+        report: PayrollDriverMileageExpandedListResponse
+    ): void {
         this.expandTableEvent.emit(report);
     }
 

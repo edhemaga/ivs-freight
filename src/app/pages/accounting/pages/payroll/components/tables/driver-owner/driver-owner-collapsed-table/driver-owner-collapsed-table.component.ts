@@ -22,7 +22,10 @@ import { PayrollDriverOwnerFacadeService } from '@pages/accounting/pages/payroll
 @Component({
     selector: 'app-driver-owner-collapsed-table',
     templateUrl: './driver-owner-collapsed-table.component.html',
-    styleUrls: ['./driver-owner-collapsed-table.component.scss'],
+    styleUrls: [
+        '../../../../../payroll/payroll.component.scss',
+        './driver-owner-collapsed-table.component.scss',
+    ],
 })
 export class DriverOwnerCollapsedTableComponent
     implements OnInit, AfterViewInit, OnDestroy

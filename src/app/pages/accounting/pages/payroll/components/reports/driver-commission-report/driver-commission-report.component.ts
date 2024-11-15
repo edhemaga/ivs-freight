@@ -45,7 +45,10 @@ import { PayrollTablesStatus } from '@pages/accounting/pages/payroll/state/enums
 @Component({
     selector: 'app-driver-commission-report',
     templateUrl: './driver-commission-report.component.html',
-    styleUrls: ['./driver-commission-report.component.scss'],
+    styleUrls: [
+        '../../../../payroll/payroll.component.scss',
+        './driver-commission-report.component.scss',
+    ],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DriverCommissionReportComponent

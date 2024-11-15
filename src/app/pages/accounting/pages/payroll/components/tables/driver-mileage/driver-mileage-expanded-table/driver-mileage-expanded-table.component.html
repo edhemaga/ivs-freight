@@ -1,10 +1,8 @@
-<div *ngIf="loading$ | async">
+<ng-container *ngIf="loading$ | async">
     <svg-icon
-        src="assets/svg/truckassist-table/sceletons/{{
-            expandTable ? 'payroll-table-collapsed.svg' : 'payroll-table.svg'
-        }}"
+        [name]="expandTable ? 'payroll_sceleton_collapsed' : 'payroll_sceleton'"
     ></svg-icon>
-</div>
+</ng-container>
 <app-ca-main-table
     *ngIf="!(loading$ | async)"
     [hideFieldsToHide]="!expandTable"

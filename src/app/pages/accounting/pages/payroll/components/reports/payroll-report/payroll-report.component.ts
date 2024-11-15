@@ -42,7 +42,10 @@ import { PayrollReportBaseComponent } from '@pages/accounting/pages/payroll/comp
 @Component({
     selector: 'app-payroll-report',
     templateUrl: './payroll-report.component.html',
-    styleUrls: ['./payroll-report.component.scss'],
+    styleUrls: [
+        '../../../../payroll/payroll.component.scss',
+        './payroll-report.component.scss',
+    ],
     encapsulation: ViewEncapsulation.None,
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -197,7 +200,6 @@ export class PayrollReportComponent
             .pipe(takeUntil(this.destroy$))
             .subscribe((payroll) => {
                 this.openedPayroll = payroll;
-                console.log('PAYROLL MAIN INFO', payroll);
             });
 
         this.payrollMileageDriverLoads$ =
@@ -206,11 +208,6 @@ export class PayrollReportComponent
         this.includedLoads$ =
             this.payrollFacadeService.selectPayrollReportIncludedLoads$;
 
-        this.payrollFacadeService.selectPayrollReportDriverMileageLoads$
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((aa) => {
-                console.log('LOAD INFO', aa);
-            });
         this.payrollFacadeService.selectPayrollReportDriverMileageLoads$
             .pipe(takeUntil(this.destroy$))
             .subscribe((payrollLoadList) => {
@@ -232,9 +229,8 @@ export class PayrollReportComponent
                         const currentLoadId = load.loadId;
                         const nextLoadId = nextLoad?.loadId;
 
-                        if (nextLoadId != currentLoadId && prevLoad) {
+                        if (nextLoadId != currentLoadId && prevLoad)
                             return index + 1;
-                        }
 
                         return null;
                     })

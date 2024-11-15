@@ -42,7 +42,10 @@ import { PayrollReportBaseComponent } from '@pages/accounting/pages/payroll/comp
 @Component({
     selector: 'app-driver-owner-report',
     templateUrl: './driver-owner-report.component.html',
-    styleUrls: ['./driver-owner-report.component.scss'],
+    styleUrls: [
+        '../../../../payroll/payroll.component.scss',
+        './driver-owner-report.component.scss',
+    ],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DriverOwnerReportComponent
@@ -109,7 +112,7 @@ export class DriverOwnerReportComponent
         this.subscribeToStoreData();
     }
 
-    subscribeToStoreData(): void {
+    private subscribeToStoreData(): void {
         this.loading$ = this.payrollFacadeService.payrollReportLoading$;
         this.payrollReport$ =
             this.payrollDriverOwnerFacadeService.selectPayrollOwnerOpenedReport$;

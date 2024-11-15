@@ -16,15 +16,18 @@ import { ColumnConfig } from 'ca-components';
 
 // Services
 import { PayrollDriverCommissionFacadeService } from '@pages/accounting/pages/payroll/state/services/payroll_driver_commision.service';
+import { PayrollFacadeService } from '@pages/accounting/pages/payroll/state/services/payroll.service';
 
 // Models
 import { IDriverCommissionList } from '@pages/accounting/pages/payroll/state/models/driver_commission.model';
-import { PayrollFacadeService } from '@pages/accounting/pages/payroll/state/services/payroll.service';
 
 @Component({
     selector: 'app-driver-commission-solo-table',
     templateUrl: './driver-commission-solo-table.component.html',
-    styleUrls: ['./driver-commission-solo-table.component.scss'],
+    styleUrls: [
+        '../../../../../payroll/payroll.component.scss',
+        './driver-commission-solo-table.component.scss',
+    ],
 })
 export class DriverCommissionSoloTableComponent
     implements OnInit, AfterViewInit, OnDestroy
@@ -32,7 +35,8 @@ export class DriverCommissionSoloTableComponent
     // Expose Javascript Math to template
     public Math = Math;
 
-    @Output() expandTableEvent: EventEmitter<IDriverCommissionList> = new EventEmitter<IDriverCommissionList>();
+    @Output() expandTableEvent: EventEmitter<IDriverCommissionList> =
+        new EventEmitter<IDriverCommissionList>();
 
     @Input() title: string;
     @Input() expandTable: boolean;

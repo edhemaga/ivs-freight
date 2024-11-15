@@ -1,44 +1,44 @@
-.custom-status-holder {
-    align-items: center;
+// .custom-status-holder {
+//     align-items: center;
 
-    svg-icon {
-        display: flex;
-        align-items: center;
-        width: 14px;
-        height: 14px;
+//     svg-icon {
+//         display: flex;
+//         align-items: center;
+//         width: 14px;
+//         height: 14px;
 
-        &.caution {
-            svg {
-                path {
-                    fill: #e66767;
-                }
-            }
-        }
+//         &.caution {
+//             svg {
+//                 path {
+//                     fill: #e66767; 
+//                 }
+//             }
+//         }
 
-        &.payment_done {
-            svg {
-                path {
-                    fill: #259f94;
-                }
-            }
-        }
-    }
+//         &.payment_done {
+//             svg {
+//                 path {
+//                     fill: #259f94;
+//                 }
+//             }
+//         }
+//     }
 
-    .custom-status-text {
-        font-weight: 700;
-        margin-left: 4px;
-        font-size: 11px;
-        color: #6c6c6c;
+//     .custom-status-text {
+//         font-weight: 700;
+//         margin-left: 4px;
+//         font-size: 11px;
+//         color: #6c6c6c;
 
-        &.past-payment {
-            color: #df3c3c;
-        }
+//         &.past-payment {
+//             color: #df3c3c;
+//         }
 
-        &.ready-payment {
-            color: #259f94;
-        }
-    }
-}
+//         &.ready-payment {
+//             color: #259f94;
+//         }
+//     }
+// }
 
 .custom-mileage {
     span {

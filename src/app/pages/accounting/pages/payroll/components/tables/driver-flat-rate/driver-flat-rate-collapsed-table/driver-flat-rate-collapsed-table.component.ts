@@ -24,7 +24,10 @@ import { ColumnConfig } from 'ca-components';
 @Component({
     selector: 'app-driver-flat-rate-collapsed-table',
     templateUrl: './driver-flat-rate-collapsed-table.component.html',
-    styleUrls: ['./driver-flat-rate-collapsed-table.component.scss'],
+    styleUrls: [
+        '../../../../../payroll/payroll.component.scss',
+        './driver-flat-rate-collapsed-table.component.scss',
+    ],
 })
 export class DriverFlatRateCollapsedTableComponent
     implements OnInit, AfterViewInit, OnDestroy

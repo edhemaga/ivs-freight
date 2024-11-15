@@ -24,7 +24,10 @@ import { ColumnConfig } from 'ca-components';
 @Component({
     selector: 'app-driver-flat-rate-expanded-table',
     templateUrl: './driver-flat-rate-expanded-table.component.html',
-    styleUrls: ['./driver-flat-rate-expanded-table.component.scss'],
+    styleUrls: [
+        '../../../../../payroll/payroll.component.scss',
+        './driver-flat-rate-expanded-table.component.scss',
+    ],
 })
 export class DriverFlatRateExpandedTableComponent
     implements OnInit, AfterViewInit, OnDestroy

@@ -18,11 +18,13 @@ import { PayrollDriverMileageCollapsedListResponse } from '@pages/accounting/pag
 // Services
 import { PayrollFacadeService } from '@pages/accounting/pages/payroll/state/services/payroll.service';
 import { PayrollDriverCommissionFacadeService } from '@pages/accounting/pages/payroll/state/services/payroll_driver_commision.service';
-
 @Component({
     selector: 'app-driver-commission-collapsed-table',
     templateUrl: './driver-commission-collapsed-table.component.html',
-    styleUrls: ['./driver-commission-collapsed-table.component.scss'],
+    styleUrls: [
+        '../../../../../payroll/payroll.component.scss',
+        './driver-commission-collapsed-table.component.scss',
+    ],
 })
 export class DriverCommissionCollapsedTableComponent
     implements OnInit, AfterViewInit, OnDestroy
@@ -30,7 +32,9 @@ export class DriverCommissionCollapsedTableComponent
     // Expose Javascript Math to template
     public Math = Math;
 
-    @Output() expandTableEvent: EventEmitter<PayrollDriverMileageCollapsedListResponse> = new EventEmitter<PayrollDriverMileageCollapsedListResponse>();
+    @Output()
+    expandTableEvent: EventEmitter<PayrollDriverMileageCollapsedListResponse> =
+        new EventEmitter<PayrollDriverMileageCollapsedListResponse>();
     @Input() title: string;
     @Input() expandTable: boolean;
 
@@ -156,7 +160,9 @@ export class DriverCommissionCollapsedTableComponent
         ];
     }
 
-    public selectPayrollReport(report: PayrollDriverMileageCollapsedListResponse): void {
+    public selectPayrollReport(
+        report: PayrollDriverMileageCollapsedListResponse
+    ): void {
         this.expandTableEvent.emit(report);
     }
 
