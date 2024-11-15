@@ -39,8 +39,12 @@ import { DropdownListItem } from '@pages/dashboard/models/dropdown-list-item.mod
 export class TaTabSwitchComponent implements AfterViewChecked, OnChanges {
     @ViewChildren('popoverHolder')
     autoCloseComponent: QueryList<TaAutoclosePopoverComponent>;
+    _tabs: Tabs[];
 
-    @Input() tabs: Tabs[];
+    @Input() set tabs(tabList: Tabs[]) {
+        this._tabs = tabList;
+    }
+
     @Input() type: string = '';
     @Input() dashboardHeight?: boolean = false;
     @Input() subPeriodDropdownList?: DropdownListItem[] = [];
@@ -63,6 +67,10 @@ export class TaTabSwitchComponent implements AfterViewChecked, OnChanges {
     public indexSwitch: number = -1;
 
     constructor(public elem: ElementRef, public det: ChangeDetectorRef) {}
+
+    get tabs() {
+        return this._tabs;
+    }
 
     ngOnChanges() {
         this.setSwitchActive(this.tabs);

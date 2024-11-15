@@ -442,6 +442,13 @@ ngb-modal-window[aria-hidden='true'] {
                 cursor: -webkit-grab;
                 cursor: grab;
 
+                &-payroll {
+                    padding-top: 0;
+                    .divider { 
+                        margin-bottom: 12px !important;
+                    }
+                }
+
                 &.mutliple-buttons {
                     display: flex;
                     gap: 12px;
@@ -671,6 +678,15 @@ ngb-modal-window[aria-hidden='true'] {
 
                     &:hover {
                         background: $ta-blue-14;
+                    }
+                }
+
+                .modal-default-button {
+                    background: $bw2;
+                    color: $ta-black;
+
+                    &:hover {
+                        background: $ta-light-grey-5;
                     }
                 }
 

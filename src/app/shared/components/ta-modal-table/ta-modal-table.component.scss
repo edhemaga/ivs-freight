@@ -43,6 +43,10 @@
             }
         }
 
+        &.fuel-table-header {
+            grid-template-columns: 26px 182px 80px 60px 90px 88px;
+        }
+
         &.repair-order-table-header {
             grid-template-columns: 26px 492px 26px 60px;
         }

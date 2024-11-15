@@ -1,49 +1,35 @@
 {
     "compileOnSave": false,
     "compilerOptions": {
-      "baseUrl": "./",
-      "outDir": "./dist/out-tsc",
-      "sourceMap": true,
-      "declaration": false,
-      "module": "es2020",
-      "moduleResolution": "node",
-      "resolveJsonModule": true,
-      "experimentalDecorators": true,
-      "importHelpers": true,
-      "target": "ES2022",
-      "allowSyntheticDefaultImports": true,
-      "esModuleInterop": true,
-      "typeRoots": [
-        "node_modules/@types",
-        "types"
-      ],
-      "lib": [
-        "es2018",
-        "dom"
-      ],
-      "plugins": [
-        {
-          "name": "typescript-tslint-plugin"
-        }
-      ],
-      "paths": {
-        "rxjs": [
-          "node_modules/rxjs"
+        "baseUrl": "./",
+        "outDir": "./dist/out-tsc",
+        "sourceMap": true,
+        "declaration": false,
+        "module": "es2020",
+        "moduleResolution": "node",
+        "resolveJsonModule": true,
+        "experimentalDecorators": true,
+        "importHelpers": true,
+        "target": "ES2022",
+        "allowSyntheticDefaultImports": true,
+        "esModuleInterop": true,
+        "typeRoots": ["node_modules/@types", "types"],
+        "lib": ["es2018", "dom"],
+        "plugins": [
+            {
+                "name": "typescript-tslint-plugin"
+            }
         ],
-        "@core/*": [
-          "src/app/core/*"
-        ],
-        "@pages/*": [
-          "src/app/pages/*"
-        ],
-        "@shared/*": [
-          "src/app/shared/*"
-        ],
-        "@app/*": [
-          "src/app/*"
-        ]
-      },
-      "useDefineForClassFields": false
+        "paths": {
+            "rxjs": ["node_modules/rxjs"],
+            "@core/*": ["src/app/core/*"],
+            "@pages/*": ["src/app/pages/*"],
+            "@shared/*": ["src/app/shared/*"],
+            "@app/*": ["src/app/*"],
+            "@ca-shared/*": ["node_modules/ca-components/lib/*"],
+            "@ca-assets/*": ["node_modules/ca-components/src/assets/*"]
+        },
+        "useDefineForClassFields": false
     },
     "angularCompilerOptions": {
         "enableI18nLegacyMessageIdFormat": false,

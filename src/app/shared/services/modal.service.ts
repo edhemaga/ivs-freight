@@ -63,7 +63,16 @@ export class ModalService {
 
     public setProjectionModal(data: {
         action: string;
-        payload: { key: string; value: any; id?: any, tab?: number, data?: any, type?: number | string, openedTab?: string, template?: string };
+        payload: {
+            key: string;
+            value: any;
+            id?: any;
+            tab?: number;
+            data?: any;
+            type?: number | string;
+            openedTab?: string;
+            template?: string;
+        };
         component: any;
         size: string;
         type?: string;
@@ -94,7 +103,7 @@ export class ModalService {
                         tab: data.payload?.tab,
                         data: data.payload?.data,
                         openedTab: data?.payload.openedTab,
-                        template: data?.payload?.template
+                        template: data?.payload?.template,
                     }
                 );
                 clearTimeout(timeout);
@@ -131,7 +140,7 @@ export class ModalService {
         editData?: any | ConfirmationReset,
         backdropClass?: string,
         keyboardEsc: boolean = true
-    ): NgbModalRef {
+    ): Promise<any> {
         options = {
             ...options,
             backdrop: 'static' as any,
@@ -157,6 +166,14 @@ export class ModalService {
             setTimeout(fx, 100);
         };
 
-        return modal;
+        console.log("WHAT IS MODAL HERE", modal.result);
+
+        // return modal.afterClosed()
+        //   .pipe(
+        //     map((response: ModalOutput<T>) => response || { continue: false }),
+        //     take(1)
+        //   );
+
+        return modal.result;
     }
 }

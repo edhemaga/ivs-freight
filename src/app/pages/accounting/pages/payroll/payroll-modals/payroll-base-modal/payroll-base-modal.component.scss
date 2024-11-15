@@ -1,0 +1,45 @@
+@import 'src/theme/variables.scss';
+
+.d-grid {
+    column-gap: 12px;
+
+    &-pay-period {
+        grid-template-columns: 91px 353px; 
+    }
+
+    &-two-cols {
+        grid-template-columns: 222px 222px;
+    }
+
+    &-limited {
+        grid-template-columns: 91px 191px 150px;
+    }
+}
+
+.modal-date-border {
+    height: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-right: 1px solid $ta-light-grey-6;
+}
+
+.payroll-number {
+    max-width: 230px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.modal-buttons {
+    width: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 30px;
+    cursor: pointer;
+}
+
+.modal-date-logo {
+    margin-right: 0 !important;
+}

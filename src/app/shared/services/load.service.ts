@@ -200,20 +200,20 @@ export class LoadService {
             paidTo,
             dueFrom,
             dueTo,
-            pickup,
-            delivery,
-            longitude,
-            latitude,
-            distance,
-            pageIndex,
-            pageSize,
-            companyId,
+            // pickup,
+            // delivery,
+            // longitude,
+            // latitude,
+            // distance,
+            // pageIndex,
+            // pageSize,
+            // companyId,
             null,
-            order,
-            sortBy,
-            search,
-            search1,
-            search2
+            // order,
+            // sortBy,
+            // search,
+            // search1,
+            // search2
         );
     }
 

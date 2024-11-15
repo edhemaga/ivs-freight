@@ -4,26 +4,45 @@ import {
     OnInit,
     ViewEncapsulation,
     AfterViewInit,
-    ViewChild,
-    ElementRef,
-    ChangeDetectorRef,
+    EnvironmentInjector,
+    ViewContainerRef,
+    inject,
+    ComponentRef,
+    OnDestroy,
+    ViewChildren,
+    QueryList,
 } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { Observable, takeUntil, Subject } from 'rxjs';
 
 // Pipes
 import { NameInitialsPipe } from '@shared/pipes/name-initials.pipe';
 
-// Helpers
-import { getPayrollDriverMilesDefinition } from '@shared/utils/settings/table-settings/payroll-columns';
+// Services
+import { PayrollFacadeService } from '@pages/accounting/pages/payroll/state/services';
+// Models
 
-// Store
-import { DriverQuery } from '@pages/driver/state/driver-state/driver.query';
-import { DriverState } from '@pages/driver/state/driver-state/driver.store';
-import { DriversInactiveQuery } from '@pages/driver/state/driver-inactive-state/driver-inactive.query';
-import { DriversInactiveState } from '@pages/driver/state/driver-inactive-state/driver-inactive.store';
-import { PayrollQuery } from '@pages/accounting/pages/payroll/state/payroll.query';
-import { ColumnConfig } from 'ca-components';
+import { IPayrollCountsSelector } from '@pages/accounting/pages/payroll/state/models';
+import { DriverMileageCollapsedTableComponent } from '@pages/accounting/pages/payroll/components/tables/driver-mileage/driver-mileage-collapsed-table/driver-mileage-collapsed-table.component';
 
+// Enums
+import {
+    PayrollTables,
+    PayrollTablesStatus,
+} from '@pages/accounting/pages/payroll/state/enums';
+
+// Components
+import { PayrollListSummaryOverview } from 'ca-components';
+import { DriverMileageSoloTableComponent } from '@pages/accounting/pages/payroll/components/tables/driver-mileage/driver-mileage-solo-table/driver-mileage-solo-table.component';
+import { DriverMileageExpandedTableComponent } from '@pages/accounting/pages/payroll/components/tables/driver-mileage/driver-mileage-expanded-table/driver-mileage-expanded-table.component';
+import { DriverCommissionSoloTableComponent } from '@pages/accounting/pages/payroll/components/tables/driver-commission/driver-commission-solo-table/driver-commission-solo-table.component';
+import { DriverOwnerTableComponent } from '@pages/accounting/pages/payroll/components/tables/driver-owner/driver-owner-table/driver-owner-table.component';
+import { DriverFlatRateTableComponent } from '@pages/accounting/pages/payroll/components/tables/driver-flat-rate/driver-flat-rate-table/driver-flat-rate-table.component';
+import { DriverCommissionCollapsedTableComponent } from '@pages/accounting/pages/payroll/components/tables/driver-commission/driver-commission-collapsed-table/driver-commission-collapsed-table.component';
+import { DriverFlatRateCollapsedTableComponent } from '@pages/accounting/pages/payroll/components/tables/driver-flat-rate/driver-flat-rate-collapsed-table/driver-flat-rate-collapsed-table.component';
+import { DriverOwnerCollapsedTableComponent } from '@pages/accounting/pages/payroll/components/tables/driver-owner/driver-owner-collapsed-table/driver-owner-collapsed-table.component';
+import { DriverCommissionExpandedTableComponent } from '@pages/accounting/pages/payroll/components/tables/driver-commission/driver-commission-expanded-table/driver-commission-expanded-table.component';
+import { DriverFlatRateExpandedTableComponent } from '@pages/accounting/pages/payroll/components/tables/driver-flat-rate/driver-flat-rate-expanded-table/driver-flat-rate-expanded-table.component';
+import { DriverOwnerExpandedTableComponent } from '@pages/accounting/pages/payroll/components/tables/driver-owner/driver-owner-expanded-table/driver-owner-expanded-table.component';
 @Component({
     selector: 'app-payroll',
     templateUrl: './payroll.component.html',
@@ -32,202 +51,481 @@ import { ColumnConfig } from 'ca-components';
     encapsulation: ViewEncapsulation.None,
     providers: [NameInitialsPipe],
 })
-export class PayrollComponent implements OnInit, AfterViewInit {
-    tableOptions: any = {};
-
-    columns: ColumnConfig[];
-    showTable: boolean = false;
-
-    //tableData: any;
-
-    selectedTab = 'open';
-    activeViewMode: string = 'List';
-    tableData: any[] = [];
-    tableData$: Observable<any> = of(
-        Array.from({ length: 10000 }, () => ({
-            driver: 'Neki',
-            payrollNumber: 'fsadfdsafda',
-            periodStart: '20/20/24',
-            payrollDeadLine: '20/20/24',
-            salary: 120,
-            total: 130,
-        }))
-    );
-    // columns: any[] = [];
-    tableContainerWidth: number = 0;
-    viewData: any[] = [];
-    resizeObserver: ResizeObserver;
-
-    driversActive: DriverState[] = [];
-    driversInactive: DriversInactiveState[] = [];
-    mapingIndex: number = 0;
-    payrollData: Observable<any>;
-
-    tableExpanded: boolean = true;
-    reportTableData: any = {};
-
-    @ViewChild('customCell', { static: false })
-    public readonly customCellTemplate!: ElementRef;
-
-    @ViewChild('customIndex', { static: false })
-    public readonly customIndex!: ElementRef;
+export class PayrollComponent implements OnInit, AfterViewInit, OnDestroy {
+    // Templates
+    @ViewChildren('container', { read: ViewContainerRef })
+    containers!: QueryList<ViewContainerRef>;
 
 
-    
+    public PayrollTables = PayrollTables;
+    private componentRef: ComponentRef<any> | null = null;
+
+    private environmentInjector = inject(EnvironmentInjector); // Inject the EnvironmentInjector
+
+    public payrollType: string;
+    public payrollReportType: string;
+
+    public selectedOpenFromList: {
+        fullName: string;
+        payrollCount: number;
+        id: number;
+        title: PayrollTables;
+        hideAvatar?: boolean;
+    };
+
+    public selectedTabForReport = PayrollTablesStatus.OPEN;
+    public selectedTab = PayrollTablesStatus.OPEN;
+
+    // THIS IS TEST FOR TABLE RESIZER
+    private tableContainerWidth: number = 0;
+    private resizeObserver: ResizeObserver;
+
+    public payrollCountsResponse$: Observable<IPayrollCountsSelector>;
+
+    public reportTableDataId: string = '';
+    public reportTableExpanded$: Observable<boolean>;
+    public openedIndex: number = -1;
+
+    private destroy$ = new Subject<void>();
+
     constructor(
-        // Store
-        private driversActiveQuery: DriverQuery,
-        private driversInactiveQuery: DriversInactiveQuery,
-        private payrollQuery: PayrollQuery,
-
-        // Pipes
-        private nameInitialsPipe: NameInitialsPipe,
-        private chng: ChangeDetectorRef
+        // Services
+        private payrollFacadeService: PayrollFacadeService
     ) {}
 
-    selectPayrollReport(e: any) {}
+    public subscribeToStoreData(): void {
+        this.reportTableExpanded$ =
+            this.payrollFacadeService.reportTableExpanded$;
+        this.payrollFacadeService.getPayrollCounts();
+        this.payrollCountsResponse$ =
+            this.payrollFacadeService.selectPayrollCounts$;
+        this.payrollFacadeService.selectPayrollCounts$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe(() => {
+                this.openedIndex = -1;
+            });
+
+        this.payrollFacadeService.selectPayrollOpenedTab$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((tab) => {
+                this.selectedTab = tab;
+            });
+    }
+
+    ngOnInit(): void {
+        this.subscribeToStoreData();
+    }
+
     ngAfterViewInit(): void {
-        this.columns = [
-            {
-                header: '',
-                cellType: 'template',
-                template: this.customIndex
-            },
-            {
-                header: 'Period ST',
-                field: 'periodStart',
-                cellType: 'text', // Pass the template reference
-            },
-            {
-                header: 'Period ST',
-                field: 'periodStart',
-                cellType: 'text', // Pass the template reference
-            },
-            {
-                header: 'Period ST',
-                field: 'periodStart',
-                cellType: 'text', // Pass the template reference
-            },
-            {
-                header: 'Period ST',
-                field: 'periodStart',
-                cellType: 'text', // Pass the template reference
-            },
-            {
-                header: 'Salary',
-                field: 'salary',
-                pipeType: 'currency',
-                pipeString: 'USD',
-                cellCustomClasses: 'text-center',
-                cellType: 'text', // Pass the template reference
-                hiddeOnTableReduce: false,
-            },
-            {
-                header: 'Total',
-                field: 'total',
-                pipeType: 'currency',
-                pipeString: 'USD',
-                cellType: 'text',
-                cellCustomClasses: 'text-right',
-                textCustomClasses: 'b-600',
-                // Pass the template reference
-            },
-            {
-                header: 'Salary',
-                field: 'salary',
-                pipeType: 'currency',
-                pipeString: 'USD',
-                cellCustomClasses: 'text-center',
-                cellType: 'text', // Pass the template reference
-                hiddeOnTableReduce: false,
-            },
-            {
-                header: 'Total',
-                field: 'total',
-                pipeType: 'currency',
-                pipeString: 'USD',
-                cellType: 'text',
-                cellCustomClasses: 'text-right',
-                textCustomClasses: 'b-600',
-                // Pass the template reference
-            },
-            {
-                header: 'Salary',
-                field: 'salary',
-                pipeType: 'currency',
-                pipeString: 'USD',
-                cellCustomClasses: 'text-center',
-                cellType: 'text', // Pass the template reference
-                hiddeOnTableReduce: false,
-            },
-            {
-                header: 'Total',
-                field: 'total',
-                pipeType: 'currency',
-                pipeString: 'USD',
-                cellType: 'text',
-                cellCustomClasses: 'text-right',
-                textCustomClasses: 'b-600',
-                // Pass the template reference
-            },
-            {
-                header: 'Payroll',
-                field: 'payrollNumber',
-                cellType: 'template',
-                template: this.customCellTemplate, // Pass the template reference
-                hiddeOnTableReduce: false,
-            },
-            {
-                header: 'Period ST',
-                field: 'periodStart',
-                cellType: 'text', // Pass the template reference
-            },
-            {
-                header: 'Status',
-                field: 'payrollDeadLine',
-                cellType: 'template',
-                template: this.customCellTemplate, // Pass the template reference
-            },
-            {
-                header: 'Period ST',
-                field: 'periodStart',
-                cellType: 'text', // Pass the template reference
-            },
-            {
-                header: 'Period ST',
-                field: 'periodStart',
-                cellType: 'text', // Pass the template reference
-            },
-            {
-                header: 'Period ST',
-                field: 'periodStart',
-                cellType: 'text', // Pass the template reference
-            },
-            {
-                header: 'Period ST',
-                field: 'periodStart',
-                cellType: 'text', // Pass the template reference
-            },
-            {
-                header: 'Period ST',
-                field: 'periodStart',
-                cellType: 'text', // Pass the template reference
+        setTimeout(() => {
+            this.observTableContainer();
+        }, 10);
+    }
+
+    public hideShowTables(data: {
+        payrollSummary: PayrollListSummaryOverview;
+        status: boolean;
+        index: number;
+    }): void {
+        this.openedIndex = this.openedIndex === data.index ? -1 : data.index;
+        if (data.status) {
+            this.payrollType = `${data.payrollSummary.text}${
+                data.payrollSummary.type ? ` ${data.payrollSummary.type}` : ``
+            }`;
+
+            this.selectedOpenFromList = undefined;
+            this.handleTableShow(data.index);
+        }
+    }
+
+    private handleTableShow(index?: number): void {
+        const containersArray = this.containers.toArray();
+        const mainIndx =
+            typeof index !== 'undefined' ? index : this.openedIndex;
+
+        const cointainer = containersArray[mainIndx];
+        cointainer.clear();
+
+        switch (this.payrollType) {
+            case PayrollTables.DRIVER_MILES:
+                if (this.selectedTab === PayrollTablesStatus.OPEN) {
+                    this.componentRef = cointainer.createComponent(
+                        DriverMileageSoloTableComponent,
+                        {
+                            environmentInjector: this.environmentInjector,
+                        }
+                    );
+
+                    // Set inputs and subscribe to outputs if componentRef is created
+                    if (this.componentRef) {
+                        this.componentRef.instance.expandTableEvent.subscribe(
+                            (event: { id: string }) => {
+                                this.expandTable(
+                                    this.payrollType,
+                                    event,
+                                    this.componentRef.instance.expandTable
+                                );
+                            }
+                        );
+                    }
+                } else if (this.selectedOpenFromList) {
+                    this.componentRef = cointainer.createComponent(
+                        DriverMileageExpandedTableComponent,
+                        {
+                            environmentInjector: this.environmentInjector,
+                        }
+                    );
+                    if (this.componentRef) {
+                        this.componentRef.instance.driverId =
+                            this.selectedOpenFromList.id; // Example input property
+
+                        this.componentRef.instance.expandTableEvent.subscribe(
+                            (event: { id: string }) => {
+                                if (
+                                    this.reportTableDataId != event?.id ||
+                                    !this.componentRef.instance.expandTable
+                                ) {
+                                    this.reportTableDataId = event.id;
+                                    if (
+                                        this.payrollReportType !=
+                                        this.payrollType
+                                    ) {
+                                        this.payrollReportType =
+                                            this.payrollType;
+                                    }
+
+                                    if (
+                                        this.selectedTabForReport !=
+                                        this.selectedTab
+                                    ) {
+                                        this.selectedTabForReport =
+                                            this.selectedTab;
+                                    }
+                                    this.payrollFacadeService.setPayrollReportTableExpanded(
+                                        true
+                                    );
+                                }
+                            }
+                        );
+                    }
+                } else {
+                    this.componentRef = cointainer.createComponent(
+                        DriverMileageCollapsedTableComponent,
+                        {
+                            environmentInjector: this.environmentInjector,
+                        }
+                    );
+
+                    this.componentRef.instance.expandTableEvent.subscribe(
+                        (event: {
+                            driver: { fullName: string; id: number };
+                            payrollCount: number;
+                        }) => {
+                            this.selectedOpenFromList = {
+                                fullName: event.driver.fullName,
+                                payrollCount: event.payrollCount,
+                                id: event.driver.id,
+                                title: PayrollTables.DRIVER_MILES_TITLE,
+                            };
+
+                            this.handleTableShow();
+                        }
+                    );
+                }
+                break;
+            case PayrollTables.DRIVER_FLAT_RATE:
+                if (this.selectedTab === PayrollTablesStatus.OPEN) {
+                    this.componentRef = cointainer.createComponent(
+                        DriverFlatRateTableComponent,
+                        {
+                            environmentInjector: this.environmentInjector,
+                        }
+                    );
+
+                    // Set inputs and subscribe to outputs if componentRef is created
+                    if (this.componentRef) {
+                        this.componentRef.instance.expandTableEvent.subscribe(
+                            (event: { id: string }) =>
+                                this.expandTable(
+                                    this.payrollType,
+                                    event,
+                                    this.componentRef.instance.expandTable
+                                )
+                        );
+                    }
+                } else if (this.selectedOpenFromList) {
+                    this.componentRef = cointainer.createComponent(
+                        DriverFlatRateExpandedTableComponent,
+                        {
+                            environmentInjector: this.environmentInjector,
+                        }
+                    );
+                    if (this.componentRef) {
+                        this.componentRef.instance.driverId =
+                            this.selectedOpenFromList.id; // Example input property
+
+                        this.componentRef.instance.expandTableEvent.subscribe(
+                            (event: { id: string }) => {
+                                if (
+                                    this.reportTableDataId != event?.id ||
+                                    !this.componentRef.instance.expandTable
+                                ) {
+                                    this.reportTableDataId = event.id;
+                                    if (
+                                        this.payrollReportType !=
+                                        this.payrollType
+                                    ) {
+                                        this.payrollReportType =
+                                            this.payrollType;
+                                    }
+
+                                    if (
+                                        this.selectedTabForReport !=
+                                        this.selectedTab
+                                    ) {
+                                        this.selectedTabForReport =
+                                            this.selectedTab;
+                                    }
+                                    this.payrollFacadeService.setPayrollReportTableExpanded(
+                                        true
+                                    );
+                                }
+                            }
+                        );
+                    }
+                } else {
+                    this.componentRef = cointainer.createComponent(
+                        DriverFlatRateCollapsedTableComponent,
+                        {
+                            environmentInjector: this.environmentInjector,
+                        }
+                    );
+
+                    this.componentRef.instance.expandTableEvent.subscribe(
+                        (event: {
+                            driver: { fullName: string; id: number };
+                            payrollCount: number;
+                        }) => {
+                            this.selectedOpenFromList = {
+                                fullName: event.driver.fullName,
+                                payrollCount: event.payrollCount,
+                                id: event.driver.id,
+                                title: PayrollTables.DRIVER_FLAT_RATE_TITLE,
+                            };
+
+                            this.handleTableShow();
+                        }
+                    );
+                }
+                break;
+            case PayrollTables.DRIVER_COMMISSION:
+                if (this.selectedTab === PayrollTablesStatus.OPEN) {
+                    this.componentRef = cointainer.createComponent(
+                        DriverCommissionSoloTableComponent,
+                        {
+                            environmentInjector: this.environmentInjector,
+                        }
+                    );
+
+                    // Set inputs and subscribe to outputs if componentRef is created
+                    if (this.componentRef) {
+                        this.componentRef.instance.expandTableEvent.subscribe(
+                            (event: { id: string }) =>
+                                this.expandTable(
+                                    this.payrollType,
+                                    event,
+                                    this.componentRef.instance.expandTable
+                                )
+                        );
+                    }
+                } else if (this.selectedOpenFromList) {
+                    this.componentRef = cointainer.createComponent(
+                        DriverCommissionExpandedTableComponent,
+                        {
+                            environmentInjector: this.environmentInjector,
+                        }
+                    );
+                    if (this.componentRef) {
+                        this.componentRef.instance.driverId =
+                            this.selectedOpenFromList.id; // Example input property
+
+                        this.componentRef.instance.expandTableEvent.subscribe(
+                            (event: { id: string }) => {
+                                if (
+                                    this.reportTableDataId != event?.id ||
+                                    !this.componentRef.instance.expandTable
+                                ) {
+                                    this.reportTableDataId = event.id;
+                                    if (
+                                        this.payrollReportType !=
+                                        this.payrollType
+                                    ) {
+                                        this.payrollReportType =
+                                            this.payrollType;
+                                    }
+
+                                    if (
+                                        this.selectedTabForReport !=
+                                        this.selectedTab
+                                    ) {
+                                        this.selectedTabForReport =
+                                            this.selectedTab;
+                                    }
+                                    this.payrollFacadeService.setPayrollReportTableExpanded(
+                                        true
+                                    );
+                                }
+                            }
+                        );
+                    }
+                } else {
+                    this.componentRef = cointainer.createComponent(
+                        DriverCommissionCollapsedTableComponent,
+                        {
+                            environmentInjector: this.environmentInjector,
+                        }
+                    );
+
+                    this.componentRef.instance.expandTableEvent.subscribe(
+                        (event: {
+                            driver: { fullName: string; id: number };
+                            payrollCount: number;
+                        }) => {
+                            this.selectedOpenFromList = {
+                                fullName: event.driver.fullName,
+                                payrollCount: event.payrollCount,
+                                id: event.driver.id,
+                                title: PayrollTables.DRIVER_COMMISSION_TITLE,
+                            };
+
+                            this.handleTableShow();
+                        }
+                    );
+                }
+                break;
+            case PayrollTables.DRIVER_OWNER:
+                if (this.selectedTab === PayrollTablesStatus.OPEN) {
+                    this.componentRef = cointainer.createComponent(
+                        DriverOwnerTableComponent,
+                        {
+                            environmentInjector: this.environmentInjector,
+                        }
+                    );
+
+                    // Set inputs and subscribe to outputs if componentRef is created
+                    if (this.componentRef) {
+                        this.componentRef.instance.expandTableEvent.subscribe(
+                            (event: { id: string }) =>
+                                this.expandTable(
+                                    this.payrollType,
+                                    event,
+                                    this.componentRef.instance.expandTable
+                                )
+                        );
+                    }
+                } else if (this.selectedOpenFromList) {
+                    this.componentRef = cointainer.createComponent(
+                        DriverOwnerExpandedTableComponent,
+                        {
+                            environmentInjector: this.environmentInjector,
+                        }
+                    );
+                    if (this.componentRef) {
+                        this.componentRef.instance.driverId =
+                            this.selectedOpenFromList.id; // Example input property
+
+                        this.componentRef.instance.expandTableEvent.subscribe(
+                            (event: { id: string }) => {
+                                if (
+                                    this.reportTableDataId != event?.id ||
+                                    !this.componentRef.instance.expandTable
+                                ) {
+                                    this.reportTableDataId = event.id;
+
+                                    if (
+                                        this.payrollReportType !=
+                                        this.payrollType
+                                    ) {
+                                        this.payrollReportType =
+                                            this.payrollType;
+                                    }
+
+                                    if (
+                                        this.selectedTabForReport !=
+                                        this.selectedTab
+                                    ) {
+                                        this.selectedTabForReport =
+                                            this.selectedTab;
+                                    }
+                                    this.payrollFacadeService.setPayrollReportTableExpanded(
+                                        true
+                                    );
+                                }
+                            }
+                        );
+                    }
+                } else {
+                    this.componentRef = cointainer.createComponent(
+                        DriverOwnerCollapsedTableComponent,
+                        {
+                            environmentInjector: this.environmentInjector,
+                        }
+                    );
+
+                    this.componentRef.instance.expandTableEvent.subscribe(
+                        (event: {
+                            truck: { truckNumber: string; id: number };
+                            owner: string;
+                            payrollCount: number;
+                        }) => {
+                            this.selectedOpenFromList = {
+                                fullName: `${event.truck.truckNumber} - ${event.owner}`,
+                                payrollCount: event.payrollCount,
+                                id: event.truck.id,
+                                title: PayrollTables.DRIVER_OWNER_TITLE,
+                                hideAvatar: true,
+                            };
+
+                            this.handleTableShow();
+                        }
+                    );
+                }
+                break;
+        }
+
+        // Set inputs and subscribe to outputs if componentRef is created
+        if (this.componentRef) {
+            // Setting Inputs
+            this.componentRef.instance.expandTable = false; // Example input property
+
+            // Bind the expandTable input using an Observable
+            this.reportTableExpanded$
+                .pipe(takeUntil(this.destroy$))
+                .subscribe((value) => {
+                    this.componentRef!.instance.expandTable = value; // The input is updated automatically
+                });
+        }
+    }
+
+    private expandTable<T extends { id: string }>(
+        payrollType?: string,
+        data?: T,
+        expandedTable?: boolean
+    ): void {
+        if (data && (this.reportTableDataId != data?.id || !expandedTable)) {
+            this.reportTableDataId = data.id;
+            this.payrollFacadeService.setPayrollReportTableExpanded(true);
+
+            if (payrollType) {
+                if (this.payrollReportType != payrollType) {
+                    this.selectedTabForReport = this.selectedTab;
+                    this.payrollReportType = payrollType;
+                }
             }
-        ];
-
-        this.showTable = true;
-        this.chng.detectChanges();
-        // setTimeout(() => {
-        //     this.observTableContainer();
-        // }, 10);
+        }
     }
 
-    expandTable(data: any) {
-        this.reportTableData = data;
-        this.tableExpanded = !this.tableExpanded;
-    }
-
-    observTableContainer() {
+    private observTableContainer() {
         this.resizeObserver = new ResizeObserver((entries) => {
             entries.forEach((entry) => {
                 this.tableContainerWidth = entry.contentRect.width;
@@ -237,325 +535,27 @@ export class PayrollComponent implements OnInit, AfterViewInit {
         this.resizeObserver.observe(document.querySelector('.table-container'));
     }
 
-    ngOnInit(): void {
-        // this.initTableOptions();
-        // this.payrollData = this.payrollQuery.payrolldata$;
-        // const driverActiveData =
-        //     this.selectedTab === 'open' ? this.getTabData('active') : [];
-        // this.tableData = [
-        //     {
-        //         title: 'Open',
-        //         field: 'open',
-        //         length: 0,
-        //         data: driverActiveData,
-        //         extended: true,
-        //         gridNameTitle: 'Payroll',
-        //         stateName: 'open',
-        //         tableConfiguration: 'APPLICANT',
-        //         isActive: this.selectedTab === 'open',
-        //         gridColumns: getPayrollDriverMilesDefinition(),
-        //     },
-        //     {
-        //         title: 'Closed',
-        //         field: 'closed',
-        //         length: 0,
-        //         data: [],
-        //         extended: false,
-        //         gridNameTitle: 'Payroll',
-        //         stateName: 'closed',
-        //         tableConfiguration: 'DRIVER',
-        //         isActive: this.selectedTab === 'closed',
-        //         gridColumns: [],
-        //     },
-        // ];
-        // const td = this.tableData.find((t) => t.field === this.selectedTab);
-        // this.setDriverData(td);
+    public onToolBarAction(tabStatus: PayrollTablesStatus): void {
+        this.payrollFacadeService.setPayrollOpenedTab(tabStatus);
+        this.openedIndex = -1;
+        this.expandTable();
+        this.payrollFacadeService.getPayrollCounts();
     }
 
-    setDriverData(td: any) {
-        this.columns = td.gridColumns;
-
-        if (td.data.length) {
-            this.viewData = td.data;
-            this.viewData = this.viewData.map((data: any, index: number) => {
-                return this.selectedTab === 'open'
-                    ? this.mapApplicantsData(data, index)
-                    : this.mapApplicantsData(data, index);
-            });
-        } else {
-            this.viewData = [];
-        }
+    ngOnDestroy(): void {
+        this.destroy$.next();
+        this.destroy$.complete();
     }
 
-    getTabData(dataType: string) {
-        if (dataType === 'active') {
-            this.driversActive = this.driversActiveQuery.getAll();
+    trackByIndex(index: number, item: any): number {
+        return index;
+      }
 
-            return this.driversActive?.length ? this.driversActive : [];
-        } else if (dataType === 'inactive') {
-            this.driversInactive = this.driversInactiveQuery.getAll();
+    public closeOpenPreview(e: Event): void {
+        e.preventDefault();
+        e.stopPropagation();
 
-            return this.driversInactive?.length ? this.driversInactive : [];
-        } else {
-            let mockData = [];
-
-            for (let i = 0; i < 10; i++) {
-                mockData.push({});
-            }
-
-            return mockData;
-        }
-    }
-
-    public summaryControll() {}
-
-    onToolBarAction(event: any) {
-        if (event.action === 'tab-selected') {
-            this.selectedTab = event.tabData.field;
-        }
-    }
-
-    initTableOptions(): void {
-        this.tableOptions = {
-            toolbarActions: {
-                showMoneyFilter: true,
-                hideOpenModalButton: true,
-                hideWidth: true,
-            },
-            actions: this.getTableActions(),
-        };
-    }
-
-    getTableActions() {
-        return this.selectedTab === 'applicants'
-            ? [
-                  {
-                      title: 'Hire Applicant',
-                      name: 'hire-applicant',
-                      class: '',
-                      contentType: '',
-                  },
-                  {
-                      title: 'Resend Invitation',
-                      name: 'resend-invitation',
-                      class: '',
-                      contentType: '',
-                  },
-                  {
-                      title: 'Add to Favourites',
-                      name: 'add-to-favourites',
-                      class: '',
-                      contentType: '',
-                  },
-                  {
-                      title: 'Add to Favourites',
-                      name: 'add-to-favourites',
-                      class: '',
-                      contentType: '',
-                  },
-                  {
-                      title: 'Delete',
-                      name: 'delete-applicant',
-                      type: 'driver',
-                      text: 'Are you sure you want to delete applicant(s)?',
-                      class: 'delete-text',
-                      contentType: 'delete',
-                  },
-              ]
-            : [
-                  {
-                      title: 'Edit Driver',
-                      name: 'edit',
-                      class: 'regular-text',
-                      contentType: 'edit',
-                  },
-                  {
-                      title: 'Add CDL',
-                      name: 'new-licence',
-                      class: 'regular-text',
-                      contentType: 'add',
-                  },
-                  {
-                      title: 'Add Medical',
-                      name: 'new-medical',
-                      class: 'regular-text',
-                      contentType: 'add',
-                  },
-                  {
-                      title: 'Add MVR',
-                      name: 'new-mvr',
-                      class: 'regular-text',
-                      contentType: 'add',
-                  },
-                  {
-                      title: 'Add Test',
-                      name: 'new-drug',
-                      class: 'regular-text',
-                      contentType: 'add',
-                  },
-                  {
-                      title:
-                          this.selectedTab === 'inactive'
-                              ? 'Activate'
-                              : 'Deactivate',
-                      name: 'activate-item',
-                      class: 'regular-text',
-                      contentType: 'activate',
-                  },
-                  {
-                      title: 'Delete',
-                      name: 'delete-item',
-                      type: 'driver',
-                      text: 'Are you sure you want to delete driver(s)?',
-                      class: 'delete-text',
-                      contentType: 'delete',
-                  },
-              ];
-    }
-
-    mapApplicantsData(data: any, index: number) {
-        return {
-            fullName: 'Angelo Trotter',
-            payroll: 'LA59OSK',
-            period: '04/04/44',
-            total: '2,300.2',
-            empty: '500',
-            salary: '2,300.2',
-            loaded: '1,500.2',
-            'MI Pay': '$1,842.06',
-            dob: '04/04/44',
-            textShortName: this.nameInitialsPipe.transform('Angelo Trotter'),
-            avatarColor: this.getAvatarColors(),
-            status: '444 DAYS',
-            email: 'angelo.T@gmail.com',
-            applicantProgress: [
-                {
-                    title: 'App.',
-                    status: 'Done',
-                    width: 34,
-                    class: 'complete-icon',
-                    percentage: 34,
-                },
-                {
-                    title: 'Mvr',
-                    status: 'In Progres',
-                    width: 34,
-                    class: 'complete-icon',
-                    percentage: 34,
-                },
-                {
-                    title: 'Psp',
-                    status: 'Wrong',
-                    width: 29,
-                    class: 'wrong-icon',
-                    percentage: 34,
-                },
-                {
-                    title: 'Sph',
-                    status: 'No Started',
-                    width: 30,
-                    class: 'complete-icon',
-                    percentage: 34,
-                },
-                {
-                    title: 'Hos',
-                    status: 'Done',
-                    width: 32,
-                    class: 'done-icon',
-                    percentage: 34,
-                },
-                {
-                    title: 'Ssn',
-                    status: 'Done',
-                    width: 29,
-                    class: 'wrong-icon',
-                    percentage: 34,
-                },
-            ],
-            // Complete, Done, Wrong, In Progres, Not Started
-            medical: {
-                class:
-                    index === 0
-                        ? 'complete-icon'
-                        : index === 1
-                        ? 'done-icon'
-                        : index === 2
-                        ? 'wrong-icon'
-                        : '',
-                hideProgres: index !== 3,
-                isApplicant: true,
-                expirationDays: '3233',
-                percentage: 34,
-            },
-            cdl: {
-                class:
-                    index === 0
-                        ? 'complete-icon'
-                        : index === 1
-                        ? 'done-icon'
-                        : index === 2
-                        ? 'wrong-icon'
-                        : '',
-                hideProgres: index !== 3,
-                isApplicant: true,
-                expirationDays: '22',
-                percentage: 10,
-            },
-            rev: {
-                title:
-                    index === 0
-                        ? 'Reviewed'
-                        : index === 1
-                        ? 'Finished'
-                        : index === 2
-                        ? 'Incomplete'
-                        : 'Ready',
-                iconLink:
-                    index === 0 || index === 2
-                        ? 'assets/svg/truckassist-table/applicant-wrong-icon.svg'
-                        : 'assets/svg/truckassist-table/applicant-done-icon.svg',
-            },
-            hire: true,
-            favorite: false,
-        };
-    }
-    // Get Avatar Color
-    getAvatarColors() {
-        let textColors: string[] = [
-            '#6D82C7',
-            '#4DB6A2',
-            '#E57373',
-            '#E3B00F',
-            '#BA68C8',
-            '#BEAB80',
-            '#81C784',
-            '#FF8A65',
-            '#64B5F6',
-            '#F26EC2',
-            '#A1887F',
-            '#919191',
-        ];
-
-        let backgroundColors: string[] = [
-            '#DAE0F1',
-            '#D2EDE8',
-            '#F9DCDC',
-            '#F8EBC2',
-            '#EED9F1',
-            '#EFEADF',
-            '#DFF1E0',
-            '#FFE2D8',
-            '#D8ECFD',
-            '#FCDAF0',
-            '#E7E1DF',
-            '#E3E3E3',
-        ];
-
-        this.mapingIndex = this.mapingIndex <= 11 ? this.mapingIndex : 0;
-
-        return {
-            background: backgroundColors[this.mapingIndex],
-            color: textColors[this.mapingIndex],
-        };
+        this.selectedOpenFromList = undefined;
+        this.handleTableShow();
     }
 }

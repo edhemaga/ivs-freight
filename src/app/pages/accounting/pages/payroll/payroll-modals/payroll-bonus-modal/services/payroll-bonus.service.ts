@@ -38,4 +38,8 @@ export class PayrollBonusService {
     public deletePayrollBonusById(id: number): Observable<any> {
         return this.payrollService.apiPayrollBonusIdDelete(id);
     }
+
+    public movePayrollBonus(id: number): Observable<any> {
+        return this.payrollService.apiPayrollBonusMoveIdPut(id);
+    }
 }
