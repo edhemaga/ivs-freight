@@ -60,7 +60,7 @@ import { PayrollFacadeService } from '@pages/accounting/pages/payroll/state/serv
 import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calculations.helper';
 import { TableStringEnum } from '@shared/enums/table-string.enum';
 import { ConfirmationService } from '@shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
-import { PayrollDeductionService } from '../payroll-deduction-modal/services/payroll-deduction.service';
+import { LoadModalStringEnum } from '@pages/load/pages/load-modal/enums';
 
 @Component({
     selector: 'app-payroll-base-modal',
@@ -101,11 +101,16 @@ export class PayrollBaseModalComponent implements OnInit {
     public selectedTab: TabOptions;
 
     // Drivers
+    public driverConfig: ITaInput = this.payrollCreditConst.driverConfig(
+        '',
+        ''
+    );
     public selectedDriver: PayrollDriver;
     public driversDropdownList: PayrollDriver[];
     // Trucks
     public selectedTruck: EnumValue;
     public trucksDropdownList: PayrollTruck[];
+    public truckConfig: ITaInput = this.payrollCreditConst.truckConfig;
     private destroy$ = new Subject<void>();
     public creditTitle: string = '';
     public periodTabs: TabOptions[];
@@ -115,7 +120,7 @@ export class PayrollBaseModalComponent implements OnInit {
         private payrollBonusService: PayrollBonusService,
         private ngbActiveModal: NgbActiveModal,
         private payrollFacadeService: PayrollFacadeService,
-        private confirmationService: ConfirmationService,
+        private confirmationService: ConfirmationService
     ) {}
 
     ngOnInit() {
@@ -209,7 +214,7 @@ export class PayrollBaseModalComponent implements OnInit {
             .patchValue(
                 MethodsCalculationsHelper.convertNumberInThousandSep(
                     ammount / numberOfPayments
-                ) ?? 0
+                ) ?? null
             );
     }
 
@@ -269,10 +274,32 @@ export class PayrollBaseModalComponent implements OnInit {
             .get(PayrollStringEnum.SELECTED_DRIVER_ID)
             .patchValue(driver?.id ?? null);
         this.creditTitle = driver?.name + driver?.suffix;
+        this.driverConfig = {
+            ...this.driverConfig,
+            multipleInputValues: {
+                options: [
+                    {
+                        value: driver.name,
+                        isImg: true,
+                        isSvg: false,
+                        folder: null,
+                        subFolder: null,
+                        isOwner: false,
+                        logoType: null,
+                        logoName: this.selectedDriver?.logoName,
+                    },
+                    {
+                        value: `${driver.suffix}`,
+                        logoName: null,
+                    },
+                ],
+                customClass: 'text-suffix',
+            },
+        };
     }
 
     private mapTrucks(trucks: TruckMinimalResponse[]): void {
-        this.trucksDropdownList = trucks.map(({ id, truckNumber, owner }) => {
+        this.trucksDropdownList = trucks.map(({ id, truckNumber, owner, truckType }) => {
             return {
                 id,
                 name: truckNumber,
@@ -287,6 +314,28 @@ export class PayrollBaseModalComponent implements OnInit {
             .get(PayrollStringEnum.SELECTED_TRUCK_ID)
             .patchValue(truck?.id ?? null);
         this.creditTitle = truck?.name + truck.suffix;
+        
+        this.truckConfig = {
+            ...this.truckConfig,
+            multipleInputValues: {
+                options: [
+                    {
+                        id: truck.id,
+                        value: truck.name,
+                        isImg: false,
+                        isSvg: true,
+                        folder: 'common',
+                        subFolder: 'trucks',
+                        logoName: 'ic_truck_semi-wSleeper.svg'
+                    },
+                    {
+                        value: `${truck.suffix}`,
+                        logoName: null,
+                    },
+                ],
+                customClass: 'text-suffix',
+            },
+        };
     }
 
     private clearDriverTruckValidators(): void {
@@ -346,13 +395,6 @@ export class PayrollBaseModalComponent implements OnInit {
         return (
             this.isDeductionModal &&
             this.baseForm.get(PayrollStringEnum.LIMITED)?.value
-        );
-    }
-
-    public get driverConfig(): ITaInput {
-        return this.payrollCreditConst.driverConfig(
-            this.selectedDriver?.logoName,
-            this.selectedDriver?.name
         );
     }
 

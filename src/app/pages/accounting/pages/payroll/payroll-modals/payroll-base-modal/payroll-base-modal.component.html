@@ -52,9 +52,7 @@
                                 <app-ca-input-dropdown
                                     formControlName="truckId"
                                     [template]="'load-dispatcher'"
-                                    [inputConfig]="
-                                        payrollCreditConst.truckConfig
-                                    "
+                                    [inputConfig]="truckConfig"
                                     [options]="trucksDropdownList"
                                     [activeItem]="selectedTruck"
                                     (selectedItem)="selectTruck($event)"
