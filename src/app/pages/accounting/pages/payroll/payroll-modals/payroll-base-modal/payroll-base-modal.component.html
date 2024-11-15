@@ -1,0 +1,183 @@
+<app-ca-modal
+    [modalTitle]="modalTitle"
+    [leftHeaderTemplate]="leftModalContent"
+    [footerTemplate]="footerTemplate"
+    [rightHeaderTemplate]="rightModalContent"
+>
+    <div origin>
+        <div class="divider divider--dark divider--small"></div>
+
+        <ng-container *ngIf="baseForm">
+            <form [formGroup]="baseForm" class="payroll-credit--body">
+                <ng-container *ngIf="isDropdownEnabled && isBonusModal">
+                    <div class="payroll-mb-32">
+                        <app-ca-input-dropdown
+                            formControlName="driverId"
+                            [template]="'load-dispatcher'"
+                            [inputConfig]="driverConfig"
+                            [options]="driversDropdownList"
+                            [activeItem]="selectedDriver"
+                            (selectedItem)="selectDriver($event)"
+                        ></app-ca-input-dropdown>
+                    </div>
+                </ng-container>
+
+                <ng-container *ngIf="isDropdownEnabled && !isBonusModal">
+                    <div class="payroll-mb-32">
+                        <app-ta-tab-switch
+                            [tabs]="tabs"
+                            (switchClicked)="onDriverTruckTabChange($event)"
+                            [type]="
+                                'type2-modal-popup type2-modal-popup-header'
+                            "
+                        >
+                        </app-ta-tab-switch>
+                    </div>
+                    <div class="row">
+                        <div class="col-12 payroll-mb-32">
+                            <ng-container
+                                *ngIf="selectedTab?.id === 1; else showTruck"
+                            >
+                                <app-ca-input-dropdown
+                                    formControlName="driverId"
+                                    [template]="'load-dispatcher'"
+                                    [inputConfig]="driverConfig"
+                                    [options]="driversDropdownList"
+                                    [activeItem]="selectedDriver"
+                                    (selectedItem)="selectDriver($event)"
+                                ></app-ca-input-dropdown>
+                            </ng-container>
+
+                            <ng-template #showTruck>
+                                <app-ca-input-dropdown
+                                    formControlName="truckId"
+                                    [template]="'load-dispatcher'"
+                                    [inputConfig]="
+                                        payrollCreditConst.truckConfig
+                                    "
+                                    [options]="trucksDropdownList"
+                                    [activeItem]="selectedTruck"
+                                    (selectedItem)="selectTruck($event)"
+                                ></app-ca-input-dropdown>
+                            </ng-template>
+                        </div>
+                    </div>
+                </ng-container>
+
+                <!-- This part is same for CREDIT/BONUS/DEDUCTION -->
+                <div class="row">
+                    <div class="col-12 payroll-mb-32">
+                        <app-ca-input
+                            formControlName="description"
+                            [inputConfig]="payrollCreditConst.descriptionField"
+                        ></app-ca-input>
+                    </div>
+                </div>
+
+                <div
+                    class="d-grid d-grid-two-cols"
+                    [class.payroll-mb-32]="isDeductionModal"
+                >
+                    <app-ca-input
+                        formControlName="date"
+                        [inputConfig]="payrollCreditConst.datepickerField"
+                    ></app-ca-input>
+
+                    <app-ca-input
+                        formControlName="amount"
+                        [inputConfig]="payrollCreditConst.ammountField"
+                    ></app-ca-input>
+                </div>
+
+                <ng-container *ngIf="isDeductionModal">
+                    <div class="d-grid d-grid-pay-period payroll-mb-32">
+                        <app-ta-checkbox
+                            formControlName="recurring"
+                            [name]="'Recurring'"
+                            [label]="'Recurring'"
+                            [customClass]="'regular'"
+                        ></app-ta-checkbox>
+                        <!-- Weekly is disabled if driver is paid:
+                        Bi-Weekly
+                        Semi Monthly
+                        Monthly -->
+                        <app-ta-tab-switch
+                            [tabs]="periodTabs"
+                            [type]="'type2-modal-popup'"
+                            [isDisabled]="isNotRecuringPayment"
+                            (switchClicked)="onPeriodTabChange($event)"
+                        >
+                        </app-ta-tab-switch>
+                    </div>
+
+                    <div class="d-grid d-grid-limited">
+                        <app-ta-checkbox
+                            formControlName="limited"
+                            [name]="'Limited'"
+                            [label]="'Limited'"
+                            [customClass]="'regular'"
+                            [disabled]="isNotRecuringPayment"
+                        ></app-ta-checkbox>
+
+                        <app-ca-input
+                            formControlName="limitedNumber"
+                            [inputConfig]="
+                                payrollCreditConst.limitedNumberField(
+                                    svgRoutes,
+                                    isNotRecuringPayment || !isLimitedPayment
+                                )
+                            "
+                        ></app-ca-input>
+                        <app-ca-input
+                            formControlName="limitedAmount"
+                            [inputConfig]="
+                                payrollCreditConst.limitedAmountField(true)
+                            "
+                        ></app-ca-input>
+                    </div>
+                </ng-container>
+            </form>
+        </ng-container>
+    </div>
+</app-ca-modal>
+
+<ng-template #rightModalContent>
+    <ng-container *ngIf="isEditMode">
+        <div
+            ngbTooltip
+            mainTooltip="Added    {{
+                editData?.data?.createdAt | formatDateP
+            }} <br> Edited    {{ editData?.data?.updatedAt | formatDateP }}"
+            tooltipBackground="#424242"
+            position="bottom"
+            class="modal-date-logo"
+        >
+            <svg-icon
+                [src]="svgRoutes.dateIcon"
+                class="modal-buttons"
+            ></svg-icon>
+        </div>
+        <div class="modal-date-border"></div>
+    </ng-container>
+    <div
+        class="d-flex justify-content-center align-items-center modal-close-container"
+        ngbTooltip
+        mainTooltip="Cancel"
+        tooltipBackground="#424242"
+        position="bottom"
+        (click)="onCloseModal()"
+    >
+        <svg-icon
+            class="modal-close svg-size-14 svg-fill-muted modal-buttons"
+            [src]="svgRoutes.closeIcon"
+        ></svg-icon>
+    </div>
+</ng-template>
+
+<ng-template #leftModalContent>
+    <ng-container *ngIf="creditTitle">
+        <div class="payroll-number text-color-white text-size-14 ta-font-bold">
+            {{ creditTitle }}
+        </div>
+    </ng-container>
+</ng-template>

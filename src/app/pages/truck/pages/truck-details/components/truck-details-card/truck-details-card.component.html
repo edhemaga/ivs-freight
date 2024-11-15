@@ -899,7 +899,7 @@
                 [tooltipName]="'View in Modal'"
                 [bodyTemplate]="'card'"
                 [cardName]="'Performance'"
-                [isCardOpen]="payrollChartConfig?.hasValue"
+                [isCardOpen]="true"
                 [hasHeaderSvg]="'assets/svg/common/arrow_top_right.svg'"
                 [customClass]="'detailsPadding'"
             >
@@ -931,24 +931,26 @@
                 [tooltipName]="'View in Modal'"
                 [bodyTemplate]="'card'"
                 [cardName]="'Fuel Consumption'"
-                [isCardOpen]="payrollChartConfig?.hasValue"
+                [isCardOpen]="true"
                 [hasHeaderSvg]="'assets/svg/common/arrow_top_right.svg'"
                 [customClass]="'detailsPadding'"
             >
-                <!-- <div
+                <div
                     class="charts-template perfomance"
-                    [class.p-0]="payrollChart.hoveringStatus"
                 >
-                    <div [class.d-none]="payrollChart.hoveringStatus">
+                    <!-- <div [class.d-none]="payrollChart.hoveringStatus"> -->
                         <app-ta-tab-switch
                             [type]="'type2-modal-popup'"
                             (switchClicked)="changeTabFuel($event)"
                             [tabs]="buttonsArrayFuel"
                         >
                         </app-ta-tab-switch>
-                    </div>
-                    Chart implementation
-                </div> -->
+                    <!-- </div> -->
+                    <app-ca-chart
+                        [chartConfig]="fuelConsumptionChartConfig"
+                    >
+                    </app-ca-chart>
+                </div>
             </app-ta-custom-card>
 
             <!--------Revenue--------->
@@ -957,44 +959,48 @@
                 [cardName]="'Revenue'"
                 [bodyTemplate]="'card'"
                 [hasHeaderSvg]="'assets/svg/common/arrow_top_right.svg'"
-                [isCardOpen]="revenueChartConfig?.hasValue"
+                [isCardOpen]="true"
                 [customClass]="'detailsPadding'"
             >
-                <!-- <div
+                <div
                     class="charts-template perfomance"
-                    [class.p-0]="revenueChart.hoveringStatus"
                 >
-                    <div [class.d-none]="revenueChart.hoveringStatus">
+                    <!-- <div [class.d-none]="revenueChart.hoveringStatus"> -->
                         <app-ta-tab-switch
                             [type]="'type2-modal-popup'"
                             (switchClicked)="changeTabRevenue($event)"
                             [tabs]="buttonsArrayRevenue"
                         >
                         </app-ta-tab-switch>
-                    </div>
-                    Chart implementation
-                </div> -->
+                    <!-- </div> -->
+                    <app-ca-chart
+                        [chartConfig]="revenueChartConfig"
+                    >
+                    </app-ca-chart>
+                </div>
             </app-ta-custom-card>
             <!--------Perfomance--------->
             <app-ta-custom-card
                 [cardName]="'Expenses'"
                 [bodyTemplate]="'card'"
-                [isCardOpen]="stackedBarChartConfig?.hasValue"
+                [isCardOpen]="true"
             >
-                <!-- <div
+                <div
                     class="charts-template perfomance"
-                    [class.p-0]="stackedBarChart.hoveringStatus"
                 >
-                    <div [class.d-none]="stackedBarChart.hoveringStatus">
+                    <!-- <div [class.d-none]="stackedBarChart.hoveringStatus"> -->
                         <app-ta-tab-switch
                             [type]="'type2-modal-popup'"
                             (switchClicked)="changeTabExpenses($event)"
                             [tabs]="buttonsArrayPerfomance"
                         >
                         </app-ta-tab-switch>
-                    </div>
-                   Chart implementation
-                </div> -->
+                    <!-- </div> -->
+                    <app-ca-chart
+                        [chartConfig]="expensesChartConfig"
+                    >
+                    </app-ca-chart>
+                </div>
             </app-ta-custom-card>
             <!--------Owner History--------->
 

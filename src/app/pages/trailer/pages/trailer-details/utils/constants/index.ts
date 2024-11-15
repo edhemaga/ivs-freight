@@ -1,0 +1,1 @@
+export * from './trailer-details-charts-configuration.constants';

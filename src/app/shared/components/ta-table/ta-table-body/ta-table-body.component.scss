@@ -1104,6 +1104,16 @@ table.truckassist-table-body-style {
                                 }
                             }
 
+                            &.disabled {
+                                pointer-events: none !important;
+
+                                svg {
+                                    path {
+                                        fill: $ta-light-grey-6;
+                                    }
+                                }
+                            }
+
                             svg {
                                 path {
                                     fill: $bw5;
@@ -3322,6 +3332,11 @@ table.truckassist-table-body-style {
     .columns-container {
         animation: multiple-deleting-row-add-color 0.3s ease-in;
     }
+}
+
+// Fuel Integrated Transactions
+.fuel-integrated-transaction {
+    border: 1px solid $ta-green;
 }
 
 // 1

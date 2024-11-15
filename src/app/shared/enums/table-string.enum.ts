@@ -381,7 +381,7 @@ export enum TableStringEnum {
     DELETE_OWNER = 'delete-owner',
 
     //Fuel
-    FUEL = 'Fuel',
+    FUEL = 'FUEL',
     FUEL_1 = 'fuel',
     FUEL_TRANSACTION = 'FUEL_TRANSACTION',
     FUEL_TRANSACTION_TEXT = 'fuel transaction',
@@ -566,5 +566,9 @@ export enum TableStringEnum {
     TRAILER_CARD_STATE = 'trailerCardState',
     USER_CARD_STATE = 'userCardState',
     TRUCK_CARD_STATE = 'truckCardState',
-    PM_CARD_STATE = "pmCardState",
+    PM_CARD_STATE = 'pmCardState',
+    DEDUCTION = 'deduction',
+    CREDIT = 'credit',
+    PAYROLL = 'payroll',
+    BONUS = 'bonus'
 }

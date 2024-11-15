@@ -8,13 +8,14 @@ import {
     RepairResponse,
 } from 'appcoretruckassist';
 
-export interface EditData {
+export interface EditData<T = undefined> {
     data:
         | LoadResponse
         | CompanyContactResponse
         | RepairResponse
         | DriverResponse
-        | LoadDataResponse;
+        | LoadDataResponse
+        | T;
     type?: string;
     company?: CompanyResponse;
     id: number;

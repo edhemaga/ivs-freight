@@ -1,13 +1,15 @@
 import { Injectable } from '@angular/core';
 
-import { Observable, switchMap, tap } from 'rxjs';
+import { Observable, of, switchMap, tap } from 'rxjs';
 
 // models
 import {
     ClusterResponse,
     CreateRatingCommand,
     CreateResponse,
+    RatingReviewResponse,
     RatingReviewService,
+    ReviewResponse,
     ShipperListResponse,
     ShipperMinimalListResponse,
     ShipperModalResponse,
@@ -373,7 +375,7 @@ export class ShipperService {
         search1?: string,
         search2?: string
     ): Observable<Array<ClusterResponse>> {
-        return this.shipperService.apiShipperClustersGet(
+        return of(null); /*  this.shipperService.apiShipperClustersGet(
             northEastLatitude,
             northEastLongitude,
             southWestLatitude,
@@ -403,7 +405,7 @@ export class ShipperService {
             search,
             search1,
             search2
-        );
+        ); */
     }
 
     public getShipperMapList(
@@ -517,48 +519,48 @@ export class ShipperService {
             paidTo,
             dueFrom,
             dueTo,
-            pickup,
-            delivery,
-            longitude,
-            latitude,
-            distance,
-            pageIndex,
-            pageSize,
-            companyId,
-            sort,
-            null,
-            null,
-            search,
-            search1,
-            search2
+            // pickup,
+            // delivery,
+            // longitude,
+            // latitude,
+            // distance,
+            // pageIndex,
+            // pageSize,
+            // companyId,
+            // sort,
+            // null,
+            // null,
+            // search,
+            // search1,
+            // search2
         );
     }
 
-    public deleteReview(reviewId, shipperId) {
-        let shipperData = JSON.parse(
-            JSON.stringify(
-                this.shipperDetailsStore?.getValue()?.entities[shipperId]
-            )
+    public deleteReview(reviewId: number, shipperId: number): void {
+        const shipperData = {
+            ...this.shipperDetailsStore?.getValue()?.entities[shipperId],
+        };
+
+        const filteredRatingReviews = shipperData.ratingReviews?.filter(
+            (review: RatingReviewResponse) =>
+                !(review.reviewId === reviewId || review.ratingId === reviewId)
         );
 
-        shipperData?.reviews.map((item: any, index: any) => {
-            if (item.id == reviewId) {
-                shipperData?.reviews.splice(index, 1);
-            }
+        shipperData.ratingReviews = filteredRatingReviews;
+
+        this.shipperStore.update(shipperId, {
+            ratingReviews: shipperData.ratingReviews,
         });
 
-        this.shipperStore.update(shipperData.id, {
-            reviews: shipperData.reviews,
-        });
-        this.shipperDetailsStore.update(shipperData.id, {
-            reviews: shipperData.reviews,
+        this.shipperDetailsStore.update(shipperId, {
+            ratingReviews: shipperData.ratingReviews,
         });
 
         this.tableService.sendActionAnimation({
-            animation: 'update',
-            tab: 'shipper',
+            animation: TableStringEnum.UPDATE,
+            tab: TableStringEnum.SHIPPER,
             data: shipperData,
-            id: shipperData.id,
+            id: shipperId,
         });
     }
 
@@ -590,26 +592,27 @@ export class ShipperService {
         });
     }
 
-    public addNewReview(data, currentId) {
-        let shipperData = JSON.parse(
-            JSON.stringify(
-                this.shipperDetailsStore?.getValue()?.entities[currentId]
-            )
-        );
-        shipperData?.reviews.push(data);
+    public addNewReview(review: ReviewResponse, shipperId: number): void {
+        this.getShipperById(shipperId).subscribe((shipper) => {
+            const reviewedShipper = {
+                ...shipper,
+                ratingReviews: [...(shipper.ratingReviews || []), review],
+            };
 
-        this.shipperStore.update(shipperData.id, {
-            reviews: shipperData.reviews,
-        });
-        this.shipperDetailsStore.update(shipperData.id, {
-            reviews: shipperData.reviews,
-        });
+            this.shipperStore.update(shipperId, {
+                ratingReviews: reviewedShipper.ratingReviews,
+            });
 
-        this.tableService.sendActionAnimation({
-            animation: 'update',
-            tab: 'shipper',
-            data: shipperData,
-            id: shipperData.id,
+            this.shipperDetailsStore.update(shipperId, {
+                ratingReviews: reviewedShipper.ratingReviews,
+            });
+
+            this.tableService.sendActionAnimation({
+                animation: TableStringEnum.UPDATE,
+                tab: TableStringEnum.BROKER,
+                data: reviewedShipper,
+                id: shipperId,
+            });
         });
     }
 

@@ -1,6 +1,10 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { UntypedFormGroup, UntypedFormBuilder, FormArray } from '@angular/forms';
+import {
+    UntypedFormGroup,
+    UntypedFormBuilder,
+    FormArray,
+} from '@angular/forms';
 import { takeUntil } from 'rxjs';
 
 // Services
@@ -15,10 +19,13 @@ import { ConfirmationActivationService } from '@shared/components/ta-shared-moda
 // Pipes
 import { FormatCurrencyPipe } from '@shared/pipes/format-currency.pipe';
 
-// Models 
+// Models
 import { Confirmation } from '@shared/components/ta-shared-modals/confirmation-modal/models/confirmation.model';
 import { RepairShopListDto, RepairShopResponse } from 'appcoretruckassist';
-import { CompanyOfficeResponseWithGroupedContacts, SettingsDepartmentCardModel } from '@pages/settings/pages/settings-location/models';
+import {
+    CompanyOfficeResponseWithGroupedContacts,
+    SettingsDepartmentCardModel,
+} from '@pages/settings/pages/settings-location/models';
 
 // Enums
 import { DropActionsStringEnum } from '@shared/enums/drop-actions-string.enum';
@@ -49,25 +56,25 @@ export class SettingsRepairShopComponent
     public isVisibleNoteCard: boolean[] = [];
     public repairShopForm: UntypedFormGroup;
     constructor(
-        // Router 
+        // Router
         protected activatedRoute: ActivatedRoute,
         public router: Router,
-        
+
         // Services
         protected tableService: TruckassistTableService,
         protected confirmationService: ConfirmationService,
-        protected cdRef: ChangeDetectorRef, 
+        protected cdRef: ChangeDetectorRef,
         private repairShopSrv: CompanyRepairShopService,
         private repairService: RepairService,
         protected settingsLocationService: SettingsLocationService,
         public dropDownService: DropDownService,
         private confirmationActivationService: ConfirmationActivationService,
-    
+
         // Pipes
         public FormatCurrencyPipe: FormatCurrencyPipe,
-    
+
         // Form builder
-        private formBuilder: UntypedFormBuilder,
+        private formBuilder: UntypedFormBuilder
     ) {
         super(
             tableService,
@@ -86,7 +93,7 @@ export class SettingsRepairShopComponent
         super.ngOnInit();
 
         this.getInitalList();
-        
+
         this.onShopClose();
 
         this.createForm();
@@ -97,7 +104,7 @@ export class SettingsRepairShopComponent
             .pipe(takeUntil(this.destroy$))
             .subscribe((res) => {
                 if (res) {
-                    this.repairService.changeShopStatus(res.data.id);
+                    this.repairService.updateRepairShopStatus(res.data.id);
                 }
             });
     }
@@ -182,7 +189,7 @@ export class SettingsRepairShopComponent
             res.template === DropActionsStringEnum.COMPANY_REPAIR_SHOP
         ) {
             this.repairService
-                .deleteRepairShopById(res.id)
+                .deleteRepairShop(res.id)
                 .pipe(takeUntil(this.destroy$))
                 .subscribe();
         }

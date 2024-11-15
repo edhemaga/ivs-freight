@@ -94,25 +94,6 @@ export class FuelDetailsComponent implements OnInit {
                 customText: 'Date',
                 status: false,
                 data: data,
-                icons: [
-                    {
-                        id: Math.random() * 1000,
-                        icon: 'assets/svg/common/ic_search.svg',
-                    },
-                    {
-                        id: Math.random() * 1000,
-                        icon: 'assets/svg/common/ic_clock.svg',
-                    },
-
-                    {
-                        id: Math.random() * 1000,
-                        icon: 'assets/svg/common/ic_funnel.svg',
-                    },
-                    {
-                        id: Math.random() * 1000,
-                        icon: 'assets/svg/common/ic_dollar.svg',
-                    },
-                ],
             },
             {
                 id: 2,
