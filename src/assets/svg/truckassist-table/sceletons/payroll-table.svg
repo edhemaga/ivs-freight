@@ -1,0 +1,102 @@
+<svg width="100%" height="120" viewBox="0 0 1000 120" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background Rectangles (Rows) -->
+  <rect x="0" y="10" width="1000" height="30" fill="#E0E0E0" rx="5" />
+  <rect x="0" y="45" width="1000" height="30" fill="#E0E0E0" rx="5" />
+  <rect x="0" y="80" width="1000" height="30" fill="#E0E0E0" rx="5" />
+
+  <!-- Row 1 Rectangles (Cells) -->
+  <rect x="10" y="15" width="30" height="20" fill="#C0C0C0" rx="3">
+    <animate attributeName="opacity" values="0.1; 1; 0.1" dur="1.5s" repeatCount="indefinite" />
+  </rect>
+  <rect x="60" y="15" width="120" height="20" fill="#C0C0C0" rx="3">
+    <animate attributeName="opacity" values="0.1; 1; 0.1" dur="1.5s" repeatCount="indefinite" />
+  </rect>
+  <rect x="200" y="15" width="100" height="20" fill="#C0C0C0" rx="3">
+    <animate attributeName="opacity" values="0.1; 1; 0.1" dur="1.5s" repeatCount="indefinite" />
+  </rect>
+  <rect x="320" y="15" width="80" height="20" fill="#C0C0C0" rx="3">
+    <animate attributeName="opacity" values="0.1; 1; 0.1" dur="1.5s" repeatCount="indefinite" />
+  </rect>
+  <rect x="420" y="15" width="100" height="20" fill="#C0C0C0" rx="3">
+    <animate attributeName="opacity" values="0.1; 1; 0.1" dur="1.5s" repeatCount="indefinite" />
+  </rect>
+  <rect x="540" y="15" width="40" height="20" fill="#C0C0C0" rx="3">
+    <animate attributeName="opacity" values="0.1; 1; 0.1" dur="1.5s" repeatCount="indefinite" />
+  </rect>
+  <rect x="600" y="15" width="40" height="20" fill="#C0C0C0" rx="3">
+    <animate attributeName="opacity" values="0.1; 1; 0.1" dur="1.5s" repeatCount="indefinite" />
+  </rect>
+  <rect x="660" y="15" width="60" height="20" fill="#C0C0C0" rx="3">
+    <animate attributeName="opacity" values="0.1; 1; 0.1" dur="1.5s" repeatCount="indefinite" />
+  </rect>
+  <rect x="740" y="15" width="80" height="20" fill="#C0C0C0" rx="3">
+    <animate attributeName="opacity" values="0.1; 1; 0.1" dur="1.5s" repeatCount="indefinite" />
+  </rect>
+  <rect x="840" y="15" width="100" height="20" fill="#C0C0C0" rx="3">
+    <animate attributeName="opacity" values="0.1; 1; 0.1" dur="1.5s" repeatCount="indefinite" />
+  </rect>
+
+  <!-- Row 2 Rectangles (Cells) -->
+  <rect x="10" y="50" width="30" height="20" fill="#C0C0C0" rx="3">
+    <animate attributeName="opacity" values="0.1; 1; 0.1" dur="1.5s" repeatCount="indefinite" begin="0.2s" />
+  </rect>
+  <rect x="60" y="50" width="120" height="20" fill="#C0C0C0" rx="3">
+    <animate attributeName="opacity" values="0.1; 1; 0.1" dur="1.5s" repeatCount="indefinite" begin="0.2s" />
+  </rect>
+  <rect x="200" y="50" width="100" height="20" fill="#C0C0C0" rx="3">
+    <animate attributeName="opacity" values="0.1; 1; 0.1" dur="1.5s" repeatCount="indefinite" begin="0.2s" />
+  </rect>
+  <rect x="320" y="50" width="80" height="20" fill="#C0C0C0" rx="3">
+    <animate attributeName="opacity" values="0.1; 1; 0.1" dur="1.5s" repeatCount="indefinite" begin="0.2s" />
+  </rect>
+  <rect x="420" y="50" width="100" height="20" fill="#C0C0C0" rx="3">
+    <animate attributeName="opacity" values="0.1; 1; 0.1" dur="1.5s" repeatCount="indefinite" begin="0.2s" />
+  </rect>
+  <rect x="540" y="50" width="40" height="20" fill="#C0C0C0" rx="3">
+    <animate attributeName="opacity" values="0.1; 1; 0.1" dur="1.5s" repeatCount="indefinite" begin="0.2s" />
+  </rect>
+  <rect x="600" y="50" width="40" height="20" fill="#C0C0C0" rx="3">
+    <animate attributeName="opacity" values="0.1; 1; 0.1" dur="1.5s" repeatCount="indefinite" begin="0.2s" />
+  </rect>
+  <rect x="660" y="50" width="60" height="20" fill="#C0C0C0" rx="3">
+    <animate attributeName="opacity" values="0.1; 1; 0.1" dur="1.5s" repeatCount="indefinite" begin="0.2s" />
+  </rect>
+  <rect x="740" y="50" width="80" height="20" fill="#C0C0C0" rx="3">
+    <animate attributeName="opacity" values="0.1; 1; 0.1" dur="1.5s" repeatCount="indefinite" begin="0.2s" />
+  </rect>
+  <rect x="840" y="50" width="100" height="20" fill="#C0C0C0" rx="3">
+    <animate attributeName="opacity" values="0.1; 1; 0.1" dur="1.5s" repeatCount="indefinite" begin="0.2s" />
+  </rect>
+
+ <!-- Row 2 Rectangles (Cells) -->
+  <rect x="10" y="85" width="30" height="20" fill="#C0C0C0" rx="3">
+    <animate attributeName="opacity" values="0.1; 1; 0.1" dur="1.5s" repeatCount="indefinite" begin="0.2s" />
+  </rect>
+  <rect x="60" y="85" width="120" height="20" fill="#C0C0C0" rx="3">
+    <animate attributeName="opacity" values="0.1; 1; 0.1" dur="1.5s" repeatCount="indefinite" begin="0.2s" />
+  </rect>
+  <rect x="200" y="85" width="100" height="20" fill="#C0C0C0" rx="3">
+    <animate attributeName="opacity" values="0.1; 1; 0.1" dur="1.5s" repeatCount="indefinite" begin="0.2s" />
+  </rect>
+  <rect x="320" y="85" width="80" height="20" fill="#C0C0C0" rx="3">
+    <animate attributeName="opacity" values="0.1; 1; 0.1" dur="1.5s" repeatCount="indefinite" begin="0.2s" />
+  </rect>
+  <rect x="420" y="85" width="100" height="20" fill="#C0C0C0" rx="3">
+    <animate attributeName="opacity" values="0.1; 1; 0.1" dur="1.5s" repeatCount="indefinite" begin="0.2s" />
+  </rect>
+  <rect x="540" y="85" width="40" height="20" fill="#C0C0C0" rx="3">
+    <animate attributeName="opacity" values="0.1; 1; 0.1" dur="1.5s" repeatCount="indefinite" begin="0.2s" />
+  </rect>
+  <rect x="600" y="85" width="40" height="20" fill="#C0C0C0" rx="3">
+    <animate attributeName="opacity" values="0.1; 1; 0.1" dur="1.5s" repeatCount="indefinite" begin="0.2s" />
+  </rect>
+  <rect x="660" y="85" width="60" height="20" fill="#C0C0C0" rx="3">
+    <animate attributeName="opacity" values="0.1; 1; 0.1" dur="1.5s" repeatCount="indefinite" begin="0.2s" />
+  </rect>
+  <rect x="740" y="85" width="80" height="20" fill="#C0C0C0" rx="3">
+    <animate attributeName="opacity" values="0.1; 1; 0.1" dur="1.5s" repeatCount="indefinite" begin="0.2s" />
+  </rect>
+  <rect x="840" y="85" width="100" height="20" fill="#C0C0C0" rx="3">
+    <animate attributeName="opacity" values="0.1; 1; 0.1" dur="1.5s" repeatCount="indefinite" begin="0.2s" />
+  </rect>
+</svg>

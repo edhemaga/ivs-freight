@@ -1,40 +1,38 @@
-import { Component, Input, OnInit, OnDestroy } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import {
+    FormBuilder,
+    FormGroup,
     FormsModule,
     ReactiveFormsModule,
-    UntypedFormBuilder,
-    UntypedFormGroup,
     Validators,
 } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { Subject, takeUntil } from 'rxjs';
 
-// Validators
-import {
-    creditLimitValidation,
-    descriptionPayrollBonusValidation,
-} from '@shared/components/ta-input/validators/ta-input.regex-validations';
-
-// Services
-import { TaInputService } from '@shared/services/ta-input.service';
-import { ModalService } from '@shared/services/modal.service';
-import { PayrollBonusService } from '@pages/accounting/pages/payroll/payroll-modals/payroll-bonus-modal/services/payroll-bonus.service';
-import { FormService } from '@shared/services/form.service';
+// Components
+import { PayrollBaseModalComponent } from '@pages/accounting/pages/payroll/payroll-modals/payroll-base-modal/payroll-base-modal.component';
 
 // Models
 import {
-    PayrollBonusModalResponse,
-    PayrollBonusResponse,
-} from 'appcoretruckassist';
+    PayrollActionType,
+    PayrollModal,
+} from '@pages/accounting/pages/payroll/state/models';
+import { CreatePayrollBonusCommand } from 'appcoretruckassist';
+
+// Services
+import { PayrollBonusService } from './services/payroll-bonus.service';
+import { PayrollFacadeService } from '@pages/accounting/pages/payroll/state/services';
+
+// Enums
+import { PayrollStringEnum } from '@pages/accounting/pages/payroll/state/enums';
+import { TaModalActionEnums } from '@shared/components/ta-modal/enums';
 
 // Helpers
 import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calculations.helper';
-
-// Components
-import { TaModalComponent } from '@shared/components/ta-modal/ta-modal.component';
-import { TaTabSwitchComponent } from '@shared/components/ta-tab-switch/ta-tab-switch.component';
-import { TaInputComponent } from '@shared/components/ta-input/ta-input.component';
-import { TaInputDropdownComponent } from '@shared/components/ta-input-dropdown/ta-input-dropdown.component';
+import { ConfirmationModalStringEnum } from '@shared/components/ta-shared-modals/confirmation-modal/enums/confirmation-modal-string.enum';
+import { TableStringEnum } from '@shared/enums/table-string.enum';
+import { PayrollService } from '../../services/payroll.service';
 
 @Component({
     selector: 'app-payroll-bonus-modal',
@@ -47,307 +45,135 @@ import { TaInputDropdownComponent } from '@shared/components/ta-input-dropdown/t
         FormsModule,
         ReactiveFormsModule,
 
-        // Component
-        TaModalComponent,
-        TaTabSwitchComponent,
-        TaInputComponent,
-        TaInputDropdownComponent,
+        PayrollBaseModalComponent,
     ],
 })
-export class PayrollBonusModalComponent implements OnInit, OnDestroy {
-    @Input() editData: any;
+export class PayrollBonusModalComponent implements OnInit {
+    public payrollCreditForm: FormGroup;
+    public taModalActionEnums = TaModalActionEnums;
 
-    public payrollBonusForm: UntypedFormGroup;
-
-    public labelsDriver: any[] = [];
-    public selectedDriver: any = null;
+    @Input() editData: PayrollModal;
 
     private destroy$ = new Subject<void>();
 
-    public isFormDirty: boolean = false;
-
-    public addNewAfterSave: boolean = false;
-
     constructor(
-        // Form
-        private formBuilder: UntypedFormBuilder,
-
-        // Services
-        private inputService: TaInputService,
-        private modalService: ModalService,
+        private fb: FormBuilder,
         private payrollBonusService: PayrollBonusService,
-        private formService: FormService
+        private payrollFacadeService: PayrollFacadeService,
+        private ngbActiveModal: NgbActiveModal,
+        private payrollService: PayrollService
     ) {}
 
-    ngOnInit() {
-        this.createForm();
+    ngOnInit(): void {
+        this.generateDeduction();
+    }
 
-        this.getModalDropdowns();
+    private generateDeduction(): void {
+        if (this.editData?.data?.id) {
+            this.payrollBonusService
+                .getPayrollBonusById(this.editData.data.id)
+                .subscribe((deduction) => {
+                    this.editData = {
+                        ...this.editData,
+                        data: {
+                            ...deduction,
+                            driverId: deduction.driver?.id,
+                        },
+                    };
+                    this.createForm();
+                });
+        } else {
+            this.createForm();
+        }
     }
 
     private createForm() {
-        this.payrollBonusForm = this.formBuilder.group({
-            driverId: [null, Validators.required],
-            date: [new Date(), Validators.required],
-            description: [
-                null,
-                [Validators.required, ...descriptionPayrollBonusValidation],
+        const data = this.editData ? this.editData.data : {};
+        this.payrollCreditForm = this.fb.group({
+            [PayrollStringEnum.DRIVER_ID]: [data?.driverId ?? null],
+            [PayrollStringEnum.DATE]: [
+                data.date ?? new Date(),
+                Validators.required,
             ],
-            amount: [null, [Validators.required, ...creditLimitValidation]],
+            [PayrollStringEnum.DESCRIPTION]: [
+                data.description ?? null,
+                Validators.required,
+            ],
+            [PayrollStringEnum.AMOUNT]: [
+                data.amount ?? null,
+                Validators.required,
+            ],
+            [PayrollStringEnum.SELECTED_DRIVER_ID]: [data?.driverId ?? null],
         });
-
-        this.formService.checkFormChange(this.payrollBonusForm);
-        this.formService.formValueChange$
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((isFormChange: boolean) => {
-                this.isFormDirty = isFormChange;
-            });
     }
 
-    public onModalAction(data: { action: string; bool: boolean }) {
-        switch (data.action) {
-            case 'close': {
-                break;
-            }
-            case 'save and add new': {
-                if (this.payrollBonusForm.invalid || !this.isFormDirty) {
-                    this.inputService.markInvalid(this.payrollBonusForm);
-                    return;
-                }
-                this.addBonus();
-                this.modalService.setModalSpinner({
-                    action: 'save and add new',
-                    status: true,
-                    close: false,
-                });
-                this.addNewAfterSave = true;
-                break;
-            }
-            case 'save': {
-                if (this.payrollBonusForm.invalid || !this.isFormDirty) {
-                    this.inputService.markInvalid(this.payrollBonusForm);
-                    return;
-                }
-                if (this.editData?.type === 'edit') {
-                    this.updateBonus(this.editData?.data?.id);
-                    this.modalService.setModalSpinner({
-                        action: null,
-                        status: true,
-                        close: false,
-                    });
+    public get isEditMode(): boolean {
+        return !!this.editData?.edit;
+    }
+
+    private generateCreditModel(): CreatePayrollBonusCommand {
+        return {
+            driverId: this.payrollCreditForm.get(
+                PayrollStringEnum.SELECTED_DRIVER_ID
+            ).value,
+            description: this.payrollCreditForm.get(
+                PayrollStringEnum.DESCRIPTION
+            ).value,
+            date: MethodsCalculationsHelper.convertDateToBackend(
+                this.payrollCreditForm.get(PayrollStringEnum.DATE).value
+            ),
+            amount: MethodsCalculationsHelper.convertThousanSepInNumber(
+                this.payrollCreditForm.get(PayrollStringEnum.AMOUNT).value
+            ),
+        };
+    }
+
+    public saveBonus(action: PayrollActionType): void {
+        const addNew =
+            action === TaModalActionEnums.SAVE ||
+            action === TaModalActionEnums.SAVE_AND_ADD_NEW;
+        const data = this.generateCreditModel();
+
+        if (addNew) {
+            this.payrollBonusService.addPayrollBonus(data).subscribe(() => {
+                if (action === TaModalActionEnums.SAVE_AND_ADD_NEW) {
+                    this.createForm();
+                    this.payrollFacadeService.resetForm();
                 } else {
-                    this.addBonus();
-                    this.modalService.setModalSpinner({
-                        action: null,
-                        status: true,
-                        close: false,
-                    });
+                    this.onCloseModal();
                 }
-                break;
-            }
-            case 'delete': {
-                this.deletePayrollBonusById(this.editData?.data.id);
-                this.modalService.setModalSpinner({
-                    action: 'delete',
-                    status: true,
-                    close: false,
+            });
+        } else if (action === TaModalActionEnums.UPDATE) {
+            this.payrollBonusService
+                .updatePayrollBonus({ ...data, id: this.editData.data.id })
+                .pipe(takeUntil(this.destroy$))
+                .subscribe((response) => {
+                    this.onCloseModal();
                 });
-                break;
-            }
-            default: {
-                break;
-            }
+        } else if (action === TaModalActionEnums.MOVE_TO_THIS_PERIOD) {
+            this.payrollBonusService
+                .movePayrollBonus(this.editData.data.id)
+                .pipe(takeUntil(this.destroy$))
+                .subscribe((response) => {
+                    this.onCloseModal();
+                });
+        } else if (action === TaModalActionEnums.DELETE) {
+            this.payrollService.raiseDeleteModal(
+                TableStringEnum.BONUS,
+                ConfirmationModalStringEnum.DELETE_BONUS,
+                this.editData.data.id,
+                {
+                    title: this.editData.data.description,
+                    subtitle: this.editData.data.amount,
+                    date: this.editData.data.date,
+                    label: `${this.editData.data.driver.firstName} ${this.editData.data.driver.lastName}`,
+                    id: this.editData.data.id
+                }
+            );
         }
     }
-
-    public onSelectDropdown(event: any, action: string) {
-        switch (action) {
-            case 'driver': {
-                this.selectedDriver = event;
-                break;
-            }
-            default: {
-                break;
-            }
-        }
-    }
-
-    public addBonus() {
-        this.payrollBonusService
-            .addPayrollBonus({
-                ...this.payrollBonusForm.value,
-                driverId: this.selectedDriver.id,
-                date: MethodsCalculationsHelper.convertDateToBackend(
-                    this.payrollBonusForm.get('date').value
-                ),
-                amount: MethodsCalculationsHelper.convertThousanSepInNumber(
-                    this.payrollBonusForm.get('amount').value
-                ),
-            })
-            .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: () => {
-                    if (this.addNewAfterSave) {
-                        this.modalService.setModalSpinner({
-                            action: 'save and add new',
-                            status: false,
-                            close: false,
-                        });
-                        this.formService.resetForm(this.payrollBonusForm);
-
-                        this.selectedDriver = null;
-                        this.modalService.setModalSpinner({
-                            action: null,
-                            status: false,
-                            close: false,
-                        });
-                    } else {
-                        this.modalService.setModalSpinner({
-                            action: null,
-                            status: true,
-                            close: true,
-                        });
-                    }
-                },
-                error: () => {
-                    this.modalService.setModalSpinner({
-                        action: null,
-                        status: false,
-                        close: false,
-                    });
-                },
-            });
-    }
-
-    public updateBonus(id: number) {
-        this.payrollBonusService
-            .updatePayrollBonus({
-                id: id,
-                ...this.payrollBonusForm.value,
-                driverId: this.selectedDriver.id,
-                date: MethodsCalculationsHelper.convertDateToBackend(
-                    this.payrollBonusForm.get('date').value
-                ),
-                amount: MethodsCalculationsHelper.convertThousanSepInNumber(
-                    this.payrollBonusForm.get('amount').value
-                ),
-            })
-            .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: () => {
-                    this.modalService.setModalSpinner({
-                        action: null,
-                        status: true,
-                        close: true,
-                    });
-                },
-                error: () => {
-                    this.modalService.setModalSpinner({
-                        action: null,
-                        status: false,
-                        close: false,
-                    });
-                },
-            });
-    }
-
-    public getByIdBonus(id: number) {
-        this.payrollBonusService
-            .getPayrollBonusById(id)
-            .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: (res: PayrollBonusResponse) => {
-                    this.payrollBonusForm.patchValue({
-                        driverId: res.driver.firstName.concat(
-                            ' ',
-                            res.driver.lastName
-                        ),
-                        date: res.date
-                            ? MethodsCalculationsHelper.convertDateFromBackend(
-                                  res.date
-                              )
-                            : null,
-                        description: res.description,
-                        amount: MethodsCalculationsHelper.convertNumberInThousandSep(
-                            res.amount
-                        ),
-                    });
-
-                    this.selectedDriver = {
-                        id: res.driver.id,
-                        name: res.driver.firstName.concat(
-                            ' ',
-                            res.driver.lastName
-                        ),
-                        /*  logoName:
-                            res.driver.avatar === null ||
-                            res.driver.avatar === undefined ||
-                            res.driver.avatar === ''
-                                ? null
-                                : res.driver.avatar, */
-                        isDriver: true,
-                    };
-                },
-                error: () => {},
-            });
-    }
-
-    public getModalDropdowns() {
-        this.payrollBonusService
-            .getPayrollBonusModal()
-            .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: (res: PayrollBonusModalResponse) => {
-                    this.labelsDriver = res.drivers.map((item) => {
-                        return {
-                            id: item.id,
-                            name: item.firstName.concat(' ', item.lastName),
-                            /*  logoName:
-                                item.avatar === null ||
-                                item.avatar === undefined ||
-                                item.avatar === ''
-                                    ? null
-                                    : item.avatar, */
-                            isDriver: true,
-                        };
-                    });
-
-                    // If Add New By Id
-                    if (
-                        this.editData?.data?.driverId &&
-                        this.editData?.type === 'new'
-                    ) {
-                        this.labelsDriver = this.labelsDriver.filter(
-                            (item) => item.id === this.editData?.data?.driverId
-                        );
-                        this.selectedDriver = this.labelsDriver[0];
-                        this.payrollBonusForm.patchValue({
-                            driverId: this.labelsDriver[0].name,
-                        });
-                    }
-
-                    if (this.editData?.type === 'edit') {
-                        this.getByIdBonus(this.editData.data.id);
-                    }
-                },
-                error: () => {},
-            });
-    }
-
-    public deletePayrollBonusById(id: number) {
-        this.payrollBonusService
-            .deletePayrollBonusById(id)
-            .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: () => {
-                    this.modalService.setModalSpinner({
-                        action: 'delete',
-                        status: true,
-                        close: true,
-                    });
-                },
-                error: () => {},
-            });
+    public onCloseModal(): void {
+        this.ngbActiveModal.close();
     }
 
     ngOnDestroy(): void {

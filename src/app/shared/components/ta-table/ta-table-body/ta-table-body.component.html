@@ -6712,7 +6712,7 @@
     <app-ca-profile-image
         [avatarImg]="row?.avatarImg"
         [avatarColor]="row?.avatarColor ?? {}"
-        [textShortName]="row?.textDriverShortName"
+        [textShortName]="row?.textDriverShortName ?? row?.textShortName"
         [size]="row?.avatarSize"
         [fontSize]="row?.avatarFontSize"
         [isHoverEffect]="row?.avatarIsHoverEffect"

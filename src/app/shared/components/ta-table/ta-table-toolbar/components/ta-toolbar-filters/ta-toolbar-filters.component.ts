@@ -35,11 +35,9 @@ import { FilterIconRoutes } from '@shared/components/ta-filter/utils/constants/f
 
 // services
 import { TruckassistTableService } from '@shared/services/truckassist-table.service';
-import { FilterStateService } from '@shared/components/ta-filter/services/filter-state.service';
-
-// models
 import { ArrayStatus } from '@shared/components/ta-filter/models/array-status.model';
 import { StateResponse } from 'appcoretruckassist/model/stateResponse';
+import { FilterStateService } from '@shared/components/ta-filter/services/filter-state.service';
 
 @Component({
     selector: 'app-ta-toolbar-filters',

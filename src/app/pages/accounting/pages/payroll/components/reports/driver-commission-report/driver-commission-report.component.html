@@ -1,0 +1,248 @@
+<div class="report-main-holder d-flex">
+    <div class="middle-report-info">
+        <div class="report-card">
+            <div class="report-card-title d-f-aic-jcb">
+                <ng-container *ngIf="payrollReport$ | async as payroll_report">
+                    <div class="d-flex align-items-center">
+                        <div class="payroll_report_title">Report</div>
+                        <div class="payroll_chip">
+                            {{ payroll_report.includedLoads?.length }} LOAD
+                        </div>
+                    </div>
+                </ng-container>
+
+                <ng-container *ngIf="payrollReport$ | async as payroll_report">
+                    <div class="report-count-item-load d-f-aic-jcb">
+                        <div class="report-count-item-load-right d-f-aic">
+                            <div class="report-tickets d-f-aic-jcc">
+                                COMMISSION
+                                <span>{{ payroll_report?.commission }}%</span>
+                            </div>
+                            <div class="edit d-f-aic-jcc">
+                                <svg-icon
+                                    [svgClass]="'d-flex'"
+                                    name="edit"
+                                ></svg-icon>
+                            </div>
+                            <div
+                                class="edit d-f-aic-jcc"
+                                [class.active]="showMap"
+                                (click)="showMap = !showMap"
+                            >
+                                <svg-icon
+                                    [svgClass]="'d-flex'"
+                                    name="map"
+                                ></svg-icon>
+                            </div>
+                            <div class="edit d-f-aic-jcc burger_menu">
+                                <svg-icon
+                                    [svgClass]="'d-flex'"
+                                    name="burger_menu"
+                                ></svg-icon>
+                            </div>
+                        </div>
+                    </div>
+                </ng-container>
+            </div>
+            <div class="small-table-holder-main d-flex">
+                <ng-container *ngIf="!(loading$ | async)">
+                    <app-ca-main-table
+                        [sortPredicate]="customSortPredicate"
+                        [columns]="columns"
+                        [data$]="payrollCommissionDriverLoads$"
+                        [disableReorderRow]="selectedTab === 'closed'"
+                        [reorderTemplate]="reorderTemplate"
+                        [reorderTemplatePreview]="reorderTemplatePreview"
+                        [transparentTable]="true"
+                        (onReorder)="onReorderDone($event)"
+                    ></app-ca-main-table>
+                </ng-container>
+            </div>
+            <ng-container *ngIf="showMap">
+                <div class="map-holder">
+                    <app-ca-map [data]="data"></app-ca-map>
+                </div>
+            </ng-container>
+        </div>
+    </div>
+    <div class="right-report-info">
+        <div class="report-card">
+            <div class="report-card-title d-f-aic-jcb">
+                <div class="d-flex align-items-center">
+                    <div class="payroll_report_title">
+                        Period
+                        {{
+                            (payrollReport$ | async).periodStart
+                                | date : 'MM/dd/yy'
+                        }}
+                    </div>
+                </div>
+            </div>
+            <div class="small-table-holder-main">
+                <app-ca-period-content
+                    (openModalEmiter)="openAddNewModal($event)"
+                    (reorderedDataEmiter)="onReorderItem($event)"
+                    (proccessPayroll)="onProccessPayroll($event)"
+                    (openActionEditItems)="onOpenActionEditItems($event)"
+                    [isOpen]="selectedTab === 'open'"
+                    [type]="'COMMISSION'"
+                    [componentData]="payrollReport$ | async"
+                ></app-ca-period-content>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- TABLE TEMPLATES -->
+<ng-template #customCountTemplate let-data let-index="index">
+    <div class="custom-load-index">{{ index }}</div>
+</ng-template>
+
+<ng-template #customInvBrk let-data>
+    <div class="load-description d-flex align-items-center">
+        <div class="load-description-name">
+            <div class="load-description-address">{{ data.loadNumber }}</div>
+            <div class="load-description-stop-type">
+                {{ data.brokerName }}
+            </div>
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #customLocationTypeLoad let-data let-index="index">
+    <div class="load-description d-flex align-items-center">
+        <ng-container *ngIf="data.orderNumber">
+            <svg-icon [svgClass]="'d-flex'" name="load_order_num_{{ data.orderNumber }}"></svg-icon>
+        </ng-container>
+        <div class="load-description-name">
+            <div class="load-description-address">{{ data.address }}</div>
+            <div class="load-description-stop-type">
+                {{ data.stopType.name }}
+            </div>
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #customPickupHeaderTemplate>
+    <div class="custom-load-header d-flex align-items-center pickup">
+        <svg-icon [svgClass]="'d-flex'" name="pickup"></svg-icon>
+        <div>Pickup</div>
+    </div>
+</ng-template>
+<ng-template #customDeliveryHeaderTemplate>
+    <div class="custom-load-header d-flex align-items-center delivery">
+        <svg-icon [svgClass]="'d-flex'" name="delivery"></svg-icon>
+        <div>Delivery</div>
+    </div>
+</ng-template>
+
+<ng-template #cusstomLoadDescriptionTemplate let-data>
+    <div class="load-description d-flex align-items-center normal">
+        <ng-container *ngIf="data.length">
+            <svg-icon [svgClass]="'d-flex'" name="load_order_num_{{ data.length }}"></svg-icon>
+        </ng-container>
+        <div class="load-description-name">
+            <div class="load-description-address">{{ data[0].address }}</div>
+            <div class="load-description-stop-type">
+                {{ data[0].date | date : 'MM/dd/yy hh:mm a' }}
+            </div>
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #reorderTemplatePreview let-row="row" let-index="index">
+    <td class="text-center">
+        <div class="td-container">
+            <div class="td-content-container with-padding">
+                <svg-icon
+                    [name]="'ic_two_arrows'"
+                    [svgStyle]="{ color: '#919191', display: 'flex' }"
+                ></svg-icon>
+            </div>
+        </div>
+    </td>
+    <td colspan="4">
+        <div class="td-container">
+            <div class="td-content-container">
+                <div class="custom-load-index text b-600">Total</div>
+            </div>
+        </div>
+    </td>
+    <td class="w-100 text-right">
+        <div class="td-container">
+            <div class="td-content-container">
+                <div class="dragg-move-end-period">DRAG TO MOVE END PERIOD</div>
+            </div>
+        </div>
+    </td>
+</ng-template>
+
+<ng-template #reorderTemplate let-row="row" let-index="index">
+    <ng-container *ngIf="(payrollReport$ | async).sums as payroll_totals">
+        <ng-container *ngIf="selectedTab === 'open'">
+            <td class="text-center">
+                <div class="td-container">
+                    <div class="td-content-container">
+                        <svg-icon
+                            [name]="'ic_two_arrows'"
+                            [svgStyle]="{ color: '#919191', display: 'flex' }"
+                        ></svg-icon>
+                    </div>
+                </div>
+            </td>
+        </ng-container>
+
+        <td [attr.colspan]="selectedTab === 'open' ? 3 : 4">
+            <div class="td-container">
+                <div class="td-content-container">
+                    <div class="custom-load-index text b-600">Total</div>
+                </div>
+            </div>
+        </td>
+        <td class="text-right">
+            <div class="td-container">
+                <div class="td-content-container">
+                    <div class="custom-load-index text">
+                        {{ payroll_totals.totalEmptyMiles }}
+                    </div>
+                </div>
+            </div>
+        </td>
+        <td class="text-right">
+            <div class="td-container">
+                <div class="td-content-container">
+                    <div class="custom-load-index text">
+                        {{ payroll_totals.totalLoadedMiles }}
+                    </div>
+                </div>
+            </div>
+        </td>
+        <td class="text-right">
+            <div class="td-container">
+                <div class="td-content-container">
+                    <div class="custom-load-index text">
+                        {{ payroll_totals.totalMiles }}
+                    </div>
+                </div>
+            </div>
+        </td>
+        <td class="text-right">
+            <div class="td-container">
+                <div class="td-content-container">
+                    <div class="custom-load-index text">
+                        {{ payroll_totals.totalRevenue | currency }}
+                    </div>
+                </div>
+            </div>
+        </td>
+        <td class="text-right">
+            <div class="td-container">
+                <div class="td-content-container">
+                    <div class="custom-load-index text b-600">
+                        {{ payroll_totals.totalSubtotal | currency }}
+                    </div>
+                </div>
+            </div>
+        </td>
+    </ng-container>
+</ng-template>

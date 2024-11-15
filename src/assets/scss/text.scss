@@ -1,0 +1,82 @@
+@import 'src/theme/variables.scss';
+
+.text {
+    // Colors
+    &-color {
+        &-white {
+            color: $white;
+        }
+
+        &-muted {
+            color: $muted;
+        }
+
+        &-green {
+            color: $ta-green;
+        }
+
+        &-blue-13 {
+            color: $ta-blue-13;
+        }
+
+        &-red-10 {
+            color: $ta-red-10;
+        }
+
+        &-black {
+            color: $ta-black;
+        }
+
+        &-black-2 {
+            color: $ta-black-2;
+
+            &::-moz-selection {
+                background-color: rgb(145, 145, 145, 0.2);
+                color: $bw5;
+            }
+
+            &::selection {
+                background-color: rgb(145, 145, 145, 0.2);
+                color: $bw5;
+            }
+        }
+
+        &-light-grey-2 {
+            color: $ta-light-grey-2;
+        }
+
+        &-light-grey-6 {
+            color: $ta-light-grey-6;
+            &::-moz-selection {
+                color: $bw4;
+                background: rgb(183, 183, 183, 0.2) !important;
+            }
+            &::selection {
+                color: $bw4;
+                background: rgb(183, 183, 183, 0.2) !important;
+            }
+        }
+    }
+
+    // Sizes
+    &-size {
+        &-11 {
+            font-size: 11px;
+            line-height: 15px;
+        }
+        &-14 {
+            font-size: 14px;
+            line-height: 18px;
+        }
+
+        &-16 {
+            font-size: 16px;
+            line-height: 19.5px;
+        }
+
+        &-26 {
+            font-size: 26px;
+            line-height: 32px;
+        }
+    }
+}

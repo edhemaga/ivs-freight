@@ -57,6 +57,19 @@
                 color: $ta-green !important;
             }
         }
+        &-blue-13 {
+            color: $ta-blue-13 !important;
+
+            &::-moz-selection {
+                background-color: rgb(102, 146, 24, 0.2) !important;
+                color: $ta-blue-13 !important;
+            }
+
+            &::selection {
+                background-color: rgb(102, 146, 24, 0.2) !important;
+                color: $ta-blue-13 !important;
+            }
+        }
 
         &-blue-18 {
             color: $ta-blue-18 !important;

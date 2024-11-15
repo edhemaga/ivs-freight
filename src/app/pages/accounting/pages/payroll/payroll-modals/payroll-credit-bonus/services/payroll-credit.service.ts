@@ -38,4 +38,8 @@ export class PayrollCreditService {
     public deletePayrollCreditById(id: number): Observable<any> {
         return this.payrollService.apiPayrollCreditIdDelete(id);
     }
+
+    public movePayrollCredit(id: number) : Observable<any> {
+        return this.payrollService.apiPayrollCreditMoveIdPut(id);
+    }
 }
