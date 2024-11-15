@@ -196,6 +196,7 @@ export class PayrollCreditBonusComponent implements OnInit {
                     subtitle: this.credit.amount,
                     date: this.credit.date,
                     label: `${this.credit.driver.firstName} ${this.credit.driver.lastName}`,
+                    id: this.credit.id
                 }
             );
         }
