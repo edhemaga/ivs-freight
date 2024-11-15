@@ -43,9 +43,11 @@
                     ></app-ta-sort-dropdown>
                 </div>
             </div>
-            <div class="marker-divider"></div>
+            <div class="marker-divider-container">
+                <div class="marker-divider"></div>
+            </div>
         </div>
-        <div class="map-list-body" (scroll)="mapListScroll($event)">
+        <div class="map-list-body d-flex flex-column" (scroll)="mapListScroll($event)">
             <ng-content></ng-content>
         </div>
 

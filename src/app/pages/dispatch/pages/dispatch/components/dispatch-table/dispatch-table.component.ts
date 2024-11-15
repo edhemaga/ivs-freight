@@ -157,16 +157,23 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
 
     public dispatchData: DispatchBoardResponse;
 
+    public showAddAddressFieldIndex: number = -1;
+
+    public isHoveringRowIndex: number = -1;
+
+    public _isUnlockable: boolean = false;
+    public _isNoteExpanded: boolean = true;
+
     public isDispatchBoardLocked: boolean = true;
     public isDispatchBoardChangeInProgress: boolean = false;
 
-    public isHoveringRowIndex: number = -1;
+    public isTrailerAddNewHidden = false;
+    public isDriverEndorsementActive: boolean = false;
+    public isDisplayingAddressInput: boolean = true;
 
     public hasAdditionalFieldTruck: boolean = false;
     public hasAdditionalFieldTrailer: boolean = false;
     public hasLargeFieldParking: boolean = false;
-
-    public isTrailerAddNewHidden = false;
 
     public truckList: TruckDispatchModalResponse[];
     public trailerList: TrailerDispatchModalResponse[];
@@ -174,52 +181,38 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
     public parkingList: ParkingDispatchModalResponse[];
 
     public addNewTruckData: TruckMinimalResponse;
+    public openedHosData = [];
 
-    public showAddAddressFieldIndex: number = -1;
-    public isDisplayingAddressInput: boolean = true;
-
-    public _isNoteExpanded: boolean = true;
     public parkingCount: number = 0;
-    public openedDriverDropdown: number = -1;
-
-    public columnSpecifications: { [key: string]: number } = {};
-
-    public columnFields = DispatchTableConstants.COLUMN_FIELDS;
-
-    public currentDispatchGroupedLoadsResponse: DispatchGroupedLoadsResponse;
-
-    public shownFields;
-
-    public isDriverEndorsementActive: boolean = false;
-
     public noteWidth: number = 205;
 
-    /////////////////////////////////////////// UPDATE
+    public openedDriverDropdown: number = -1;
 
-    public draggingType: string;
+    public currentDispatchGroupedLoadsResponse: DispatchGroupedLoadsResponse;
+    public progressBarData: DispatchProgressBarData[] = [];
+
+    public tableBodyRowWidth: number;
+
+    public shownFields: DispatchColumn[] = [];
+    public columnFields = DispatchTableConstants.COLUMN_FIELDS;
+    public columnSpecifications: { [key: string]: number } = {};
 
     public resizedColumnsWidth: DispatchResizedColumnsModel =
         DispatchTableColumnWidthsConstants.DispatchColumnWidths;
 
+    public draggingType: string;
+
     private previousDragIndex: number;
     private previousDragTrailerTypeId: number;
-
-    public tableBodyRowWidth: number;
-
-    public progressBarData: DispatchProgressBarData[] = [];
-
-    public _isUnlockable: boolean = false;
-
-    openedHosData = [];
 
     constructor(
         private cdRef: ChangeDetectorRef,
 
-        // Pipes
+        // pipes
         private dispatchColorFinderPipe: DispatchColorFinderPipe,
         public datePipe: DatePipe,
 
-        // Services
+        // services
         private dispatcherService: DispatcherService,
         private parkingService: ParkingService
     ) {}
@@ -482,6 +475,10 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
             truckLastLocation,
             this.showAddAddressFieldIndex
         );
+    }
+
+    public handleUpdateStatusEmit(isUpdating: boolean) {
+        this.isDispatchBoardChangeInProgress = isUpdating;
     }
 
     public handleLastLocationDropdownClose(): void {

@@ -628,6 +628,9 @@
                                         isHoveringRowIndex === rowIndex
                                     "
                                     [isUnlockable]="_isUnlockable"
+                                    (updateStatusEmitter)="
+                                        handleUpdateStatusEmit($event)
+                                    "
                                 >
                                 </app-dispatch-table-status>
                             </td>
