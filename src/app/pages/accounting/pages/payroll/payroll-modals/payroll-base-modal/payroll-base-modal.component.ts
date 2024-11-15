@@ -209,7 +209,7 @@ export class PayrollBaseModalComponent implements OnInit {
             .patchValue(
                 MethodsCalculationsHelper.convertNumberInThousandSep(
                     ammount / numberOfPayments
-                ) ?? 0
+                ) ?? null
             );
     }
 

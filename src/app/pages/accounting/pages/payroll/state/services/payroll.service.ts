@@ -175,7 +175,7 @@ export class PayrollFacadeService {
         lastLoadDate,
         selectedCreditIds,
         selectedBonusIds,
-        selectedDeducionIds,
+        selectedDeductionIds,
     }: IGetPayrollByIdAndOptions) {
         this.store
             .pipe(select(selectPayrollState), take(1))
@@ -202,7 +202,7 @@ export class PayrollFacadeService {
                                     selectedBonusIds ??
                                     payrollState.selectedBonusIds,
                                 selectedDeductionIds:
-                                    selectedDeducionIds ??
+                                    selectedDeductionIds ??
                                     payrollState.selectedDeductionIds,
                             }
                         )
