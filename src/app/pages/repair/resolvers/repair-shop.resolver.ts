@@ -24,9 +24,23 @@ export class RepairShopResolver {
 
     resolve(): Observable<RepairShopNewListResponse> {
         return this.repairService.getRepairShopList().pipe(
-            tap((repairTrailerPagination) => {
+            tap((repairShopPagination) => {
+                const dummy = repairShopPagination.pagination.data.map(
+                    (dum) => {
+                        if (dum.name === '44') {
+                            return {
+                                ...dum,
+                                companyOwned: false,
+                            };
+                        }
+
+                        return dum;
+                    }
+                );
+
                 this.repairShopStore.set(
-                    repairTrailerPagination.pagination.data
+                    dummy
+                    /*    repairTrailerPagination.pagination.data */
                 );
             })
         );

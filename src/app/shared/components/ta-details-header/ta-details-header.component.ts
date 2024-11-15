@@ -23,7 +23,6 @@ import {
 import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
 import { TaDetailsDropdownComponent } from '@shared/components/ta-details-dropdown/ta-details-dropdown.component';
 import { TaCounterComponent } from '@shared/components/ta-counter/ta-counter.component';
-import { TaFilterComponent } from '@shared/components/ta-filter/ta-filter.component';
 import { TaSpecialFilterComponent } from '@shared/components/ta-special-filter/ta-special-filter.component';
 import {
     CaSearchMultipleStatesComponent,
@@ -49,7 +48,7 @@ import { LoadsSortDropdownModel } from '@pages/customer/models/loads-sort-dropdo
     styleUrls: ['./ta-details-header.component.scss'],
     standalone: true,
     imports: [
-        //Modules
+        // modules
         CommonModule,
         FormsModule,
         NgbModule,
@@ -57,16 +56,15 @@ import { LoadsSortDropdownModel } from '@pages/customer/models/loads-sort-dropdo
         RouterModule,
         NgbPopoverModule,
 
-        //Components
+        // components
         TaAppTooltipV2Component,
         TaDetailsDropdownComponent,
         TaCounterComponent,
-        TaFilterComponent,
         TaSpecialFilterComponent,
         CaSearchMultipleStatesComponent,
         CaFilterComponent,
 
-        //Pipes
+        // pipes
         FormatCurrencyPipe,
     ],
 })
@@ -80,10 +78,8 @@ export class TaDetailsHeaderComponent implements OnInit, OnChanges {
     @Input() counterData: number = 0;
     @Input() hasIcon: boolean = false;
     @Input() hasDateArrow: boolean = false;
-    @Input() hidePlus: boolean = true;
     @Input() customText: string = '';
     @Input() hasRequest: boolean;
-    @Input() arrayIcons: any[] = [];
     @Input() statusInactive: boolean = true;
     @Input() danger: boolean = false;
     @Input() isInactive: boolean = false;
