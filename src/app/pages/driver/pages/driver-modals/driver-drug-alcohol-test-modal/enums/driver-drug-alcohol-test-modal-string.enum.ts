@@ -15,4 +15,7 @@ export enum DriverDrugAlcoholTestModalStringEnum {
     TEST = 'test',
     REASON = 'reason',
     RESULT = 'result',
+    DRUG = 'Drug',
+    PRE_EMPLOYMENT = 'Pre employment',
+    TEST_REASON_ID = "testReasonId",
 }
