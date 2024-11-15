@@ -206,6 +206,7 @@ export abstract class PayrollReportBaseComponent<
                                 subtitle: item.data.subtotal,
                                 date: item.data.date,
                                 label: `${this.openedPayroll.driver.fullName}`,
+                                id: item.data.id,
                             }
                         )
                         .then(() => {
@@ -223,6 +224,7 @@ export abstract class PayrollReportBaseComponent<
                                 subtitle: item.data.subtotal,
                                 date: item.data.date,
                                 label: `${this.openedPayroll.driver.fullName}`,
+                                id: item.data.id,
                             }
                         )
                         .then(() => {
@@ -240,6 +242,7 @@ export abstract class PayrollReportBaseComponent<
                                 subtitle: item.data.subtotal,
                                 date: item.data.date,
                                 label: `${this.openedPayroll.driver.fullName}`,
+                                id: item.data.id,
                             }
                         )
                         .then(() => {
@@ -263,20 +266,27 @@ export abstract class PayrollReportBaseComponent<
             selectedDeductionIds: null,
             selectedBonusIds: null,
         };
+
         if (_title === PayrollAdditionalTypes.CREDIT) {
             dataSend = {
                 ...dataSend,
-                selectedCreditIds: _included.map((load) => load.id),
+                selectedCreditIds: _included.length
+                    ? _included.map((load) => load.id)
+                    : 0,
             };
         } else if (_title === PayrollAdditionalTypes.DEDUCTION) {
             dataSend = {
                 ...dataSend,
-                selectedDeductionIds: _included.map((load) => load.id),
+                selectedDeductionIds: _included.length
+                    ? _included.map((load) => load.id)
+                    : 0,
             };
         } else if (_title === PayrollAdditionalTypes.BONUS) {
             dataSend = {
                 ...dataSend,
-                selectedBonusIds: _included.map((load) => load.id),
+                selectedBonusIds: _included.length
+                    ? _included.map((load) => load.id)
+                    : 0,
             };
         }
 

@@ -116,7 +116,6 @@ export class PayrollBaseModalComponent implements OnInit {
         private ngbActiveModal: NgbActiveModal,
         private payrollFacadeService: PayrollFacadeService,
         private confirmationService: ConfirmationService,
-        private payrollDeductionService: PayrollDeductionService
     ) {}
 
     ngOnInit() {
@@ -210,7 +209,7 @@ export class PayrollBaseModalComponent implements OnInit {
             .patchValue(
                 MethodsCalculationsHelper.convertNumberInThousandSep(
                     ammount / numberOfPayments
-                ) ?? 0
+                ) ?? null
             );
     }
 
@@ -373,41 +372,15 @@ export class PayrollBaseModalComponent implements OnInit {
         return this.editData?.edit;
     }
 
-    private deletePayroll() {
-        if (this.isDeductionModal) {
-            this.payrollDeductionService
-                .deletePayrollDeductionById(this.editData.data.id)
-                .pipe(takeUntil(this.destroy$))
-                .subscribe(() => {
-                    this.onCloseModal();
-                });
-        } else if (this.isCreditModal) {
-            this.payrolCreditService
-                .deletePayrollCreditById(this.editData.data.id)
-                .pipe(takeUntil(this.destroy$))
-                .subscribe((res) => {
-                    this.onCloseModal();
-                });
-        } else if (this.isBonusModal) {
-            this.payrollBonusService
-                .deletePayrollBonusById(this.editData.data.id)
-                .pipe(takeUntil(this.destroy$))
-                .subscribe((res) => {
-                    this.onCloseModal();
-                });
-        }
-    }
-
     private setupDeleteListeners() {
         this.confirmationService.confirmationData$
             .pipe(takeUntil(this.destroy$))
             .subscribe((res) => {
                 if (res.type === TableStringEnum.DELETE) {
-                    this.deletePayroll();
+                    this.onCloseModal();
                 }
             });
     }
-
     public onCloseModal(): void {
         this.ngbActiveModal.close();
     }

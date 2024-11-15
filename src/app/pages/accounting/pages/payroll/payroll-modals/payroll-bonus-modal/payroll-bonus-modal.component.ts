@@ -167,6 +167,7 @@ export class PayrollBonusModalComponent implements OnInit {
                     subtitle: this.editData.data.amount,
                     date: this.editData.data.date,
                     label: `${this.editData.data.driver.firstName} ${this.editData.data.driver.lastName}`,
+                    id: this.editData.data.id
                 }
             );
         }

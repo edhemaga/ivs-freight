@@ -112,7 +112,7 @@
 <ng-template #customLocationTypeLoad let-data let-index="index">
     <div class="load-description d-flex align-items-center">
         <ng-container *ngIf="data.orderNumber">
-            <svg-icon name="load_order_num_{{ data.orderNumber }}"></svg-icon>
+            <svg-icon [svgClass]="'d-flex'" name="load_order_num_{{ data.orderNumber }}"></svg-icon>
         </ng-container>
         <div class="load-description-name">
             <div class="load-description-address">{{ data.address }}</div>
@@ -139,7 +139,7 @@
 <ng-template #cusstomLoadDescriptionTemplate let-data>
     <div class="load-description d-flex align-items-center normal">
         <ng-container *ngIf="data.length">
-            <svg-icon name="load_order_num_{{ data.length }}"></svg-icon>
+            <svg-icon [svgClass]="'d-flex'" name="load_order_num_{{ data.length }}"></svg-icon>
         </ng-container>
         <div class="load-description-name">
             <div class="load-description-address">{{ data[0].address }}</div>

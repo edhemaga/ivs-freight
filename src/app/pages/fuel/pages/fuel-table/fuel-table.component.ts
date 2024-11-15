@@ -772,6 +772,7 @@ export class FuelTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     subtitle: event.data.total,
                     date: event.data.transactionDate,
                     label: event.data.truck?.truckNumber,
+                    id: event.data.id
                 }
             );
         } else if (event.type === TableStringEnum.SHOW_MORE) {

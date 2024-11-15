@@ -250,7 +250,7 @@ export class PayrollDeductionModalComponent implements OnInit {
                     subtitle: this.deduction.amount,
                     date: this.deduction.date,
                     label: `${this.deduction.driver.firstName} ${this.deduction.driver.lastName}`,
-                
+                    id: this.deduction.id
             });
         }
     }
