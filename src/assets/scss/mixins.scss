@@ -1,0 +1,30 @@
+/* styles.scss */
+@mixin flex($align: null, $justify: null) {
+    display: flex;
+    @if $align {
+        align-items: #{$align};
+    }
+    @if $justify {
+        justify-content: #{$justify};
+    }
+}
+
+.d-f {
+    @include flex();
+}
+
+.d-f-aic {
+    @include flex(center);
+}
+
+.d-f-jcc {
+    @include flex(null, center);
+}
+
+.d-f-aic-jcc {
+    @include flex(center, center);
+}
+
+.d-f-aic-jcb {
+    @include flex(center, space-between);
+}

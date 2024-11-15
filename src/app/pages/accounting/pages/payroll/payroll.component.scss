@@ -1,54 +1,13 @@
-.payroll-tables-holder {
-    //margin-right: 6px;
-    margin-top: 12px;
-    .card-holder {
-        .ta-card-header {
-            background-color: #fff;
-            border-radius: 3px;
-            height: 34px !important;
-            transition: none !important;
-            margin: 3px 0;
-            .header-content {
-                left: 0 !important;
-            }
-
-            .header-arrow{
-                width: 22px !important;
-            }
-
-            &.active {
-                background-color: #424242;
-
-                .header-content {
-                    .header-text {
-                        color: #fff !important;
-                    }
-                }
-
-                .ta-counter {
-                    background-color: #6c6c6c !important;
-                    p {
-                        color: #fff !important;
-                    }
-                }
-            }
-        }
-    }
-}
-
 .table-container {
+    max-width: 1900px;
     width: 100%;
     position: absolute;
     top: 0;
-   
-    width: 80%;
-    margin: auto;
-    margin-top: 20px;
 
-    app-ca-main-table{
+    app-ca-main-table {
         width: 100%;
 
-        cdk-virtual-scroll-viewport{
+        cdk-virtual-scroll-viewport {
             height: 500px;
         }
     }
@@ -57,20 +16,479 @@
         height: 28px !important;
     }
 
-    .ta-card-header{
-        &.active ~ .ta-card-body{
+    .ta-card-header {
+        &.active ~ .ta-card-body {
             margin-bottom: 10px;
         }
     }
-    .payroll-main{
+    .payroll-main {
         flex: 1;
+        max-width: 60%;
 
-        &.open{
+        &.open {
             max-width: 500px;
         }
     }
 
-    .report-hold{
+    .report-hold {
         flex: 1;
     }
+
+    .payroll-tables-holder {
+        //margin-right: 6px;
+        margin-top: 12px;
+        .card-holder {
+            .ta-card-header {
+                background-color: #fff;
+                border-radius: 3px;
+                height: 34px !important;
+                transition: none !important;
+                margin: 3px 0;
+                .header-content {
+                    left: 0 !important;
+                }
+
+                .header-arrow {
+                    width: 22px !important;
+                }
+
+                &.active {
+                    background-color: #424242;
+
+                    .header-content {
+                        .header-text {
+                            color: #fff !important;
+                        }
+                    }
+
+                    .ta-counter {
+                        background-color: #6c6c6c !important;
+                        p {
+                            color: #fff !important;
+                        }
+                    }
+                }
+            }
+
+            .driver-opened-payroll-sumary {
+                .close_open_payroll_arrow {
+                    width: 26px;
+                    height: 26px;
+                    border-radius: 2px;
+                    background-color: #6c6c6c;
+                    margin-right: 4px;
+
+                    svg-icon {
+                        svg {
+                            width: 16px;
+                            height: 16px;
+                            path {
+                                fill: #fff;
+                            }
+                        }
+                    }
+                }
+
+                .table-text {
+                    color: #fff !important;
+                    position: relative;
+                    padding-right: 8px;
+                    width: 100px;
+                    white-space: nowrap;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+
+                    &.with-border {
+                        &::after {
+                            position: absolute;
+                            content: '';
+                            width: 1px;
+                            border-radius: 1px;
+                            background-color: #6c6c6c;
+                            height: 100%;
+                            right: 0;
+                        }
+                    }
+                }
+
+                .driver-info {
+                    margin-left: 8px;
+
+                    .table-text {
+                        margin-left: 8px;
+                    }
+
+                    .item-count {
+                        margin-left: 4px;
+                        padding: 2px 5px;
+                        background-color: #dadada;
+                        color: #424242;
+                        border-radius: 100%;
+                        font-size: 11px;
+                        line-height: 14px;
+                        min-width: 20px;
+                    }
+                }
+            }
+        }
+    }
+}
+
+// REPORT AND OTHER TABLES
+.report-main-holder {
+    margin-top: 9px;
+    .middle-report-info {
+        flex: 1;
+        margin: 0 12px;
+    }
+
+    .right-report-info {
+        //  width: 300px;
+    }
+
+    .report-card {
+        background-color: transparent;
+        padding: 8px 0;
+
+        margin-bottom: 6px;
+        border-radius: 3px;
+
+        .report-card-title {
+            background-color: #fff;
+            height: 34px;
+            padding: 4px;
+            border-radius: 3px;
+            .payroll_report_title {
+                margin: 0 4px;
+                font-size: 17px;
+                font-weight: 700;
+                color: #2f2f2f;
+
+                &::selection {
+                    background-color: #2f2f2f33;
+                    color: #2f2f2f;
+                }
+            }
+
+            .payroll_chip {
+                padding: 2px 6px;
+                margin: 0 4px;
+                background-color: #919191;
+                border-radius: 2px;
+
+                font-size: 11px;
+                font-weight: 700;
+                color: #fff;
+
+                &.blue {
+                    background-color: #6692f1;
+                }
+            }
+        }
+
+        .input-field-report {
+            margin-top: 12px;
+            flex-direction: column;
+            .pay-amount {
+                display: block;
+                font-size: 14px;
+                font-weight: 700;
+                color: #424242;
+
+                &::selection {
+                    background-color: #42424233;
+                    color: #424242;
+                }
+            }
+
+            app-ta-input {
+                margin-top: 4px;
+
+                input {
+                    height: 34px !important;
+                }
+            }
+
+            .small-text {
+                margin-top: 6px;
+                font-size: 11px;
+                color: #919191;
+                margin-bottom: 18px;
+
+                &::selection {
+                    background-color: #91919133;
+                    color: #919191;
+                }
+            }
+        }
+
+        .report-count-item-load {
+            .report-count-item-load-right {
+                .report-tickets {
+                    height: 26px;
+                    padding: 0 8px;
+                    background-color: #eeeeee;
+                    font-size: 11px;
+                    color: #424242;
+                    margin: 0 4px;
+                    border-radius: 2px;
+                    user-select: none;
+                    font-weight: 700;
+
+                    span {
+                        font-weight: 700;
+                        margin-left: 6px;
+                    }
+                }
+
+                .edit {
+                    width: 26px;
+                    height: 26px;
+
+                    border-radius: 2px;
+                    cursor: pointer;
+
+                    svg-icon {
+                        svg {
+                            width: 18px;
+                            height: 18px;
+                            path {
+                                fill: #919191;
+                            }
+                        }
+                    }
+
+                    &.active {
+                        background-color: #6c6c6c;
+                        svg-icon {
+                            svg {
+                                path {
+                                    fill: #dadada;
+                                }
+                            }
+                        }
+                    }
+
+                    &.burger_menu {
+                        position: relative;
+                        margin-left: 10px;
+
+                        &::after {
+                            content: '';
+                            position: absolute;
+                            top: 50%;
+                            transform: translateY(-50%);
+                            height: 18px;
+                            width: 1px;
+                            border-radius: 1px;
+                            background-color: #cccccc;
+                            left: -5px;
+                        }
+                    }
+                }
+            }
+        }
+
+        .small-table-holder-main {
+            margin-top: 12px;
+            background-color: #fff;
+            border-radius: 3px;
+            padding: 6px;
+
+            app-ca-main-table {
+                width: 100%;
+            }
+
+            .ca-main-table-holder {
+                .ca-main-table {
+                    background-color: transparent;
+
+                    tbody {
+                        td {
+                            &:first-child {
+                                width: 38px !important;
+                            }
+                        }
+                        tr:hover {
+                            td {
+                                .td-container {
+                                    background-color: #eeeeee !important;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        .map-holder {
+            height: 400px;
+            padding: 6px;
+            background-color: #fff;
+
+            agm-map {
+                height: 100%;
+            }
+        }
+    }
+}
+
+.load-description {
+    svg-icon {
+        margin-right: 4px;
+        height: 18px;
+        svg {
+            width: 18px;
+            height: 18px;
+
+            rect {
+                fill: #259f9433;
+            }
+
+            text {
+                fill: #259f94;
+            }
+        }
+    }
+    .load-description-name {
+        .load-description-address,
+        .load-description-stop-type {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 100%;
+            font-size: 11px;
+            font-weight: 600;
+            line-height: 12px;
+            color: #919191;
+        }
+    }
+
+    &.delivery {
+        svg-icon {
+            rect {
+                fill: #df3c3c33;
+            }
+
+            text {
+                fill: #df3c3c;
+            }
+        }
+    }
+
+    &.normal {
+        svg-icon {
+            rect {
+                fill: #91919133 !important;
+            }
+
+            text {
+                fill: #6c6c6c !important;
+            }
+        }
+    }
+}
+
+.custom-load-header {
+    svg-icon {
+        svg {
+            width: 14px;
+            height: 14px;
+        }
+
+        margin-right: 6px;
+    }
+
+    &.pickup {
+        svg-icon {
+            path {
+                fill: #56b4ac;
+            }
+        }
+    }
+
+    &.delivery {
+        svg-icon {
+            path {
+                fill: #e66767;
+            }
+        }
+    }
+}
+
+.custom-load-index {
+    min-width: 26px;
+}
+.custom-fee-template {
+    display: inline-block;
+    padding: 2px 5px;
+    border-radius: 60px;
+    background-color: #91919133;
+    font-size: 11px;
+    font-weight: 600;
+}
+
+// PAYROLL TABLES STYLE
+.custom-status-holder {
+    align-items: center;
+    svg-icon {
+        align-items: center;
+        width: 14px;
+        height: 14px;
+
+        &.caution {
+            svg {
+                path {
+                    fill: #e66767;
+                }
+            }
+        }
+
+        &.payment_done {
+            svg {
+                path {
+                    fill: #259f94;
+                }
+            }
+        }
+    }
+    .custom-status-text {
+        font-weight: 700;
+        margin-left: 4px;
+        font-size: 11px;
+        color: #6c6c6c;
+
+        &.past-payment {
+            color: #df3c3c;
+        }
+
+        &.ready-payment {
+            color: #259f94;
+        }
+    }
+}
+
+.custom-mileage {
+    span {
+        text-transform: lowercase;
+        color: #919191;
+    }
+}
+
+.driver-solo-info {
+    align-items: center;
+
+    .driver-solo-info-text {
+        margin-left: 4px;
+        font-size: 14px;
+        font-weight: 700;
+        white-space: nowrap;
+        max-width: 100px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+}
+
+.custom-text-date {
+    font-size: 14px;
 }

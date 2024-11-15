@@ -389,7 +389,7 @@ export class TaTableToolbarComponent implements OnInit, OnChanges, OnDestroy {
 
         let activeCard = false;
 
-        this.options.toolbarActions.viewModeOptions.filter((viewMode) => {
+        this.options.toolbarActions?.viewModeOptions?.filter((viewMode) => {
             if (viewMode.name === TableStringEnum.CARD && viewMode.active)
                 activeCard = true;
         });

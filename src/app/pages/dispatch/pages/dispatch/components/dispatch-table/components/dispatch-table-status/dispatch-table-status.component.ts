@@ -1,17 +1,27 @@
 import { DatePipe } from '@angular/common';
-import { Component, Input, OnInit, type OnDestroy } from '@angular/core';
-import { NgbTooltip } from '@ng-bootstrap/ng-bootstrap';
-import { filter, Subject, switchMap, takeUntil } from 'rxjs';
+import {
+    Component,
+    Input,
+    OnInit,
+    Output,
+    OnDestroy,
+    EventEmitter,
+} from '@angular/core';
 
-//services
+import { filter, Subject, switchMap, takeUntil, tap } from 'rxjs';
+
+// modules
+import { NgbPopover } from '@ng-bootstrap/ng-bootstrap';
+
+// services
 import { DispatcherService } from '@pages/dispatch/services';
 import { ModalService } from '@shared/services/modal.service';
 import { ConfirmationActivationService } from '@shared/components/ta-shared-modals/confirmation-activation-modal/services/confirmation-activation.service';
 
-//components
+// components
 import { ConfirmationActivationModalComponent } from '@shared/components/ta-shared-modals/confirmation-activation-modal/confirmation-activation-modal.component';
 
-//helpers
+// helpers
 import { LoadStatusHelper } from '@shared/utils/helpers/load-status.helper';
 
 // enums
@@ -21,7 +31,7 @@ import {
     DispatchStatusEnum,
 } from '@pages/dispatch/pages/dispatch/components/dispatch-table/enums';
 
-//models
+// models
 import {
     DispatchResponse,
     DispatchStatus,
@@ -31,6 +41,7 @@ import {
     AddressResponse,
 } from 'appcoretruckassist';
 import { LastStatusPassed } from '@shared/models/card-models/card-table-data.model';
+import { DispatchBoardParkingEmiter } from '@pages/dispatch/models/dispatch-parking-emmiter.model';
 
 @Component({
     selector: 'app-dispatch-table-status',
@@ -49,8 +60,10 @@ export class DispatchTableStatusComponent implements OnInit, OnDestroy {
     @Input() dispatchBoardId?: number;
 
     @Input() isHoveringRow: boolean;
-    
+
     @Input() isUnlockable: boolean;
+
+    @Output() updateStatusEmitter: EventEmitter<boolean> = new EventEmitter();
 
     private destroy$ = new Subject<void>();
 
@@ -67,7 +80,7 @@ export class DispatchTableStatusComponent implements OnInit, OnDestroy {
         this.confirmationDataSubscribe();
     }
 
-    public getStatusDropdonw(tooltip: NgbTooltip): void {
+    public getStatusDropdown(tooltip: NgbPopover): void {
         if (tooltip.isOpen()) {
             tooltip.close();
         } else {
@@ -120,6 +133,8 @@ export class DispatchTableStatusComponent implements OnInit, OnDestroy {
             } else {
                 this.updateStatus(e.id, e.status);
             }
+
+            this.updateStatusEmitter.emit(true);
         }
     }
 
@@ -150,7 +165,8 @@ export class DispatchTableStatusComponent implements OnInit, OnDestroy {
                         this.dispatchId,
                         this.dispatchBoardId
                     )
-                )
+                ),
+                tap(() => this.updateStatusEmitter.emit(false))
             )
             .subscribe();
     }
@@ -216,7 +232,8 @@ export class DispatchTableStatusComponent implements OnInit, OnDestroy {
                         this.dispatchId,
                         this.dispatchBoardId
                     )
-                )
+                ),
+                tap(() => this.updateStatusEmitter.emit(false))
             )
             .subscribe();
     }
