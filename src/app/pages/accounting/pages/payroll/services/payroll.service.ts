@@ -8,7 +8,6 @@ import {
     ClosePayrollDriverFlatRateCommand,
     ClosePayrollOwnerCommand,
     PayrollCountsResponse,
-    PayrollDeductionResponse,
     PayrollDriverCommissionByIdResponse,
     PayrollDriverCommissionClosedByIdResponse,
     PayrollDriverFlatRateByIdResponse,
@@ -29,6 +28,7 @@ import { IDriverOwnerList } from '@pages/accounting/pages/payroll/state/models/d
 import { IDriverCommissionList } from '@pages/accounting/pages/payroll/state/models/driver_commission.model';
 import { IDriverFlatRateList } from '@pages/accounting/pages/payroll/state/models/driver_flat_rate.model';
 import { IGet_Payroll_Commission_Driver_Report } from '@pages/accounting/pages/payroll/state/models/payroll.model';
+import { PayrollDeleteModal } from '@pages/accounting/pages/payroll/state/models';
 
 // Environment
 import { environment } from 'src/environments/environment';
@@ -42,7 +42,6 @@ import { ConfirmationModalComponent } from '@shared/components/ta-shared-modals/
 // Enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
 import { ConfirmationModalStringEnum } from '@shared/components/ta-shared-modals/confirmation-modal/enums/confirmation-modal-string.enum';
-import { PayrollDeleteModal } from '../state/models';
 
 @Injectable({ providedIn: 'root' })
 export class PayrollService {
@@ -449,11 +448,13 @@ export class PayrollService {
             },
         };
 
-        if (selectedDeducionIds?.length) body.selectedDeducionIds = selectedDeducionIds;
+        if (selectedDeducionIds?.length)
+            body.selectedDeducionIds = selectedDeducionIds;
 
         if (selectedLoadIds?.length) body.selectedLoadIds = selectedLoadIds;
 
-        if (selectedCreditIds?.length) body.selectedCreditIds = selectedCreditIds;
+        if (selectedCreditIds?.length)
+            body.selectedCreditIds = selectedCreditIds;
 
         if (selectedBonusIds?.length) body.selectedBonusIds = selectedBonusIds;
 
@@ -464,16 +465,20 @@ export class PayrollService {
     }
 
     public raiseDeleteModal(
-        modalType: TableStringEnum.DEDUCTION | TableStringEnum.CREDIT | TableStringEnum.BONUS | TableStringEnum.FUEL_1,
+        modalType:
+            | TableStringEnum.DEDUCTION
+            | TableStringEnum.CREDIT
+            | TableStringEnum.BONUS
+            | TableStringEnum.FUEL_1,
         action:
             | ConfirmationModalStringEnum.DELETE_DEDUCTION
-            | ConfirmationModalStringEnum.DELETE_CREDIT 
-            | ConfirmationModalStringEnum.DELETE_FUEL 
-            | ConfirmationModalStringEnum.DELETE_BONUS, 
+            | ConfirmationModalStringEnum.DELETE_CREDIT
+            | ConfirmationModalStringEnum.DELETE_FUEL
+            | ConfirmationModalStringEnum.DELETE_BONUS,
         id: number,
         data: PayrollDeleteModal
     ) {
-        this.showDeductionModal(modalType, action, id, data);
+        return this.showDeductionModal(modalType, action, id, data);
     }
 
     public showDeductionModal(
@@ -481,8 +486,8 @@ export class PayrollService {
         modalHeaderTitle: string,
         id: number,
         extras: PayrollDeleteModal
-    ): void {
-        this.modalService.openModal(
+    ): Promise<any> {
+        return this.modalService.openModal(
             ConfirmationModalComponent,
             { size: TableStringEnum.DELETE },
             {

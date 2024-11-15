@@ -15,6 +15,7 @@ import { CdkDrag, CdkDragDrop } from '@angular/cdk/drag-drop';
 import { ModalService } from '@shared/services/modal.service';
 import { PayrollFacadeService } from '@pages/accounting/pages/payroll/state/services/payroll.service';
 import { PayrollDriverOwnerFacadeService } from '@pages/accounting/pages/payroll/state/services/payroll_owner.service';
+import { PayrollService } from '@pages/accounting/pages/payroll/services/payroll.service';
 
 // Models
 import {
@@ -103,10 +104,11 @@ export class DriverOwnerReportComponent
         // Services
         private payrollDriverOwnerFacadeService: PayrollDriverOwnerFacadeService,
         private payrollFacadeService: PayrollFacadeService,
-        modalService: ModalService
+        modalService: ModalService,
+        payrollService: PayrollService
     ) {
-        super(modalService);
-    }
+        super(modalService, payrollService);
+    } 
 
     ngOnInit(): void {
         this.subscribeToStoreData();

@@ -18,6 +18,7 @@ import { ColumnConfig } from 'ca-components';
 import { ModalService } from '@shared/services/modal.service';
 import { PayrollDriverCommissionFacadeService } from '@pages/accounting/pages/payroll/state/services/payroll_driver_commision.service';
 import { PayrollFacadeService } from '@pages/accounting/pages/payroll/state/services/payroll.service';
+import { PayrollService } from '@pages/accounting/pages/payroll/services/payroll.service';
 
 // Models
 import {
@@ -106,9 +107,10 @@ export class DriverCommissionReportComponent
         // Services
         private payrollCommissionFacadeService: PayrollDriverCommissionFacadeService,
         private payrollFacadeService: PayrollFacadeService,
-        modalService: ModalService
+        modalService: ModalService,
+        payrollService: PayrollService
     ) {
-        super(modalService);
+        super(modalService, payrollService);
     }
 
     ngOnInit(): void {

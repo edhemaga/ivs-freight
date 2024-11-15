@@ -15,6 +15,7 @@ import { Observable, takeUntil, Subject } from 'rxjs';
 // services
 import { ModalService } from '@shared/services/modal.service';
 import { PayrollFacadeService } from '@pages/accounting/pages/payroll/state/services/payroll.service';
+import { PayrollService } from '@pages/accounting/pages/payroll/services/payroll.service';
 
 // models
 import {
@@ -38,6 +39,7 @@ import { PayrollTablesStatus } from '@pages/accounting/pages/payroll/state/enums
 
 // Classes
 import { PayrollReportBaseComponent } from '@pages/accounting/pages/payroll/components/reports/payroll-report.base';
+
 
 @Component({
     selector: 'app-payroll-report',
@@ -106,9 +108,10 @@ export class PayrollReportComponent
     constructor(
         // Services
         private payrollFacadeService: PayrollFacadeService,
-        modalService: ModalService
+        modalService: ModalService,
+        payrollService: PayrollService
     ) {
-        super(modalService);
+        super(modalService, payrollService);
     }
 
     ngAfterViewInit(): void {

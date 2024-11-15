@@ -1,5 +1,6 @@
 // Services
 import { ModalService } from '@shared/services/modal.service';
+import { PayrollService } from '@pages/accounting/pages/payroll/services/payroll.service';
 
 // Models
 import {
@@ -14,16 +15,27 @@ import { PayrollCreditBonusComponent } from '@pages/accounting/pages/payroll/pay
 import { PayrollBonusModalComponent } from '@pages/accounting/pages/payroll/payroll-modals/payroll-bonus-modal/payroll-bonus-modal.component';
 import { PayrollDeductionModalComponent } from '@pages/accounting/pages/payroll/payroll-modals/payroll-deduction-modal/payroll-deduction-modal.component';
 import { FuelPurchaseModalComponent } from '@pages/fuel/pages/fuel-modals/fuel-purchase-modal/fuel-purchase-modal.component';
+
+// Enums
 import { PayrollAdditionalTypes } from '../../state/enums';
+import { TableStringEnum } from '@shared/enums/table-string.enum';
+import { ConfirmationModalStringEnum } from '@shared/components/ta-shared-modals/confirmation-modal/enums/confirmation-modal-string.enum';
+
 export abstract class PayrollReportBaseComponent<
-    T extends { driver?: { id?: number }; truck?: { id?: number } }
+    T extends {
+        driver?: { id?: number; fullName?: string | null };
+        truck?: { id?: number };
+    }
 > {
     public openedPayroll: T;
     abstract creditType: PayrollCreditType;
 
     protected _reportId: string;
 
-    constructor(protected modalService: ModalService) {}
+    constructor(
+        protected modalService: ModalService,
+        private payrollService: PayrollService
+    ) {}
 
     protected abstract getReportDataResults(
         getData?: IGetPayrollByIdAndOptions
@@ -173,6 +185,60 @@ export abstract class PayrollReportBaseComponent<
                                     id: item.data.parentPayrollDeductionId,
                                 } as CreatePayrollCreditCommand,
                                 creditType: PayrollCreditType.Driver,
+                            }
+                        )
+                        .then(() => {
+                            this.getReportDataResults();
+                        });
+                    break;
+            }
+        } else if (item.$event.type === 'Delete') {
+            switch (item.title) {
+                case PayrollAdditionalTypes.CREDIT:
+                    this.payrollService
+                        .raiseDeleteModal(
+                            TableStringEnum.CREDIT,
+                            ConfirmationModalStringEnum.DELETE_CREDIT,
+                            item.data.id,
+                            {
+                                title: item.data.description,
+                                subtitle: item.data.subtotal,
+                                date: item.data.date,
+                                label: `${this.openedPayroll.driver.fullName}`,
+                            }
+                        )
+                        .then(() => {
+                            this.getReportDataResults();
+                        });
+                    break;
+                case PayrollAdditionalTypes.DEDUCTION:
+                    this.payrollService
+                        .raiseDeleteModal(
+                            TableStringEnum.DEDUCTION,
+                            ConfirmationModalStringEnum.DELETE_DEDUCTION,
+                            item.data.id,
+                            {
+                                title: item.data.description,
+                                subtitle: item.data.subtotal,
+                                date: item.data.date,
+                                label: `${this.openedPayroll.driver.fullName}`,
+                            }
+                        )
+                        .then(() => {
+                            this.getReportDataResults();
+                        });
+                    break;
+                case PayrollAdditionalTypes.BONUS:
+                    this.payrollService
+                        .raiseDeleteModal(
+                            TableStringEnum.BONUS,
+                            ConfirmationModalStringEnum.DELETE_BONUS,
+                            item.data.id,
+                            {
+                                title: item.data.description,
+                                subtitle: item.data.subtotal,
+                                date: item.data.date,
+                                label: `${this.openedPayroll.driver.fullName}`,
                             }
                         )
                         .then(() => {
