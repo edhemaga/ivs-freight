@@ -14,13 +14,18 @@
         padding-left: 0px;
         z-index: 1;
 
-        .marker-divider {
-            height: 1px;
+        .marker-divider-container {
             width: 100%;
+            padding: 0px 2px;
 
-            background: $bw-9;
+            .marker-divider {
+                height: 1px;
+                width: 100%;
 
-            border-radius: 1px;
+                background: $bw-9;
+
+                border-radius: 1px;
+            }
         }
 
         agm-map {
@@ -166,7 +171,7 @@
         width: 330px;
         max-height: 100%;
         position: relative;
-        padding: 0px 2px;
+        padding-right: 2px;
 
         background: $white;
         border-radius: 3px;
@@ -180,7 +185,7 @@
 
         .map-list-header {
             width: 100%;
-            padding: 6px 6px 0px 6px;
+            padding: 6px 4px 6px 6px;
 
             .map-list-search {
                 .input-custom-group .input-icon {
@@ -269,23 +274,24 @@
             height: 100%;
             max-height: 100%;
             width: 100%;
-            padding: 6px 4px 8px 4px;
+            padding: 0px 2px 8px 6px;
+            gap: 2px;
 
             overflow-y: scroll;
             transition: 0.2s;
 
             &::-webkit-scrollbar {
-                width: 4px;
+                width: 2px;
             }
 
             &::-webkit-scrollbar-thumb {
-                background-color: #aaaaaa;
-                border: 4px solid #aaaaaa;
+                background-color: $ta-light-grey-6;
+                border: 2px solid $ta-light-grey-6;
                 border-radius: 1px;
             }
 
             &::-webkit-scrollbar-track {
-                width: 4px;
+                width: 2px;
                 background-color: $white;
             }
 
@@ -294,6 +300,7 @@
                 width: 100%;
                 padding: 4px 4px 6px 6px;
                 cursor: pointer;
+                border-radius: 2px;
 
                 .map-list-card-info {
                     .marker-rating {

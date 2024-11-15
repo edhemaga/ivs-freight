@@ -856,7 +856,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
 
         // service types
         const convertedServiceTypes = this.services
-            .filter((service) => service.id > 1)
+            .filter((service) => service.id > 2)
             .map((service) => {
                 return {
                     serviceType: service.serviceType,
@@ -866,21 +866,22 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
             });
 
         // items
+
         const convertedItems = this.repairItems.map(
             ({
                 description,
                 price,
                 quantity,
                 subtotal,
-                pmTruck: { id: pmTruckId } = {},
-                pmTrailer: { id: pmTrailerId } = {},
+                pmTruck,
+                pmTrailer,
             }) => ({
                 description,
                 ...(this.selectedHeaderTab === 1 && { price }),
                 quantity,
                 ...(this.selectedHeaderTab === 1 && { subtotal }),
-                pmTruckId,
-                pmTrailerId,
+                pmTruckId: pmTruck?.id,
+                pmTrailerId: pmTrailer?.id,
             })
         );
 
@@ -1347,6 +1348,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
                 },
             };
         });
+        this.repairItems = [...this.updatedRepairItems];
 
         this.getRepairDropdowns(truckId, trailerId, unitType.name, true);
 
