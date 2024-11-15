@@ -495,10 +495,11 @@ export class PayrollService {
     }
 
     public raiseDeleteModal(
-        modalType: TableStringEnum.DEDUCTION | TableStringEnum.CREDIT | TableStringEnum.BONUS,
+        modalType: TableStringEnum.DEDUCTION | TableStringEnum.CREDIT | TableStringEnum.BONUS | TableStringEnum.FUEL_1,
         action:
             | ConfirmationModalStringEnum.DELETE_DEDUCTION
             | ConfirmationModalStringEnum.DELETE_CREDIT 
+            | ConfirmationModalStringEnum.DELETE_FUEL 
             | ConfirmationModalStringEnum.DELETE_BONUS, 
         id: number,
         data: PayrollDeleteModal
