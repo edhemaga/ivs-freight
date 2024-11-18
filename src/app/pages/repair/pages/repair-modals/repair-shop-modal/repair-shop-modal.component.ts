@@ -988,14 +988,26 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
                 RepairShopModalStringEnum.SHOP_SERVICE_TYPE
             ),
             openHours: this.formatOpenHours(),
-            weeklyDay: this.selectedWeeklyDay
-                ? this.selectedWeeklyDay.id
+            weeklyDay: !this.getFromFieldValue(
+                RepairShopModalStringEnum.COMPANY_OWNED
+            )
+                ? this.selectedWeeklyDay
+                    ? this.selectedWeeklyDay.id
+                    : null
                 : null,
-            payPeriod: this.selectedPayPeriod
-                ? this.selectedPayPeriod.id
+            payPeriod: !this.getFromFieldValue(
+                RepairShopModalStringEnum.COMPANY_OWNED
+            )
+                ? this.selectedPayPeriod
+                    ? this.selectedPayPeriod.id
+                    : null
                 : null,
-            monthlyDay: this.selectedMonthlyDays
-                ? this.selectedMonthlyDays.id
+            monthlyDay: !this.getFromFieldValue(
+                RepairShopModalStringEnum.COMPANY_OWNED
+            )
+                ? this.selectedMonthlyDays
+                    ? this.selectedMonthlyDays.id
+                    : null
                 : null,
             companyOwned: this.isCompanyRelated
                 ? this.getFromFieldValue(
@@ -1003,9 +1015,13 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
                   )
                 : null,
             isCompanyRelated: this.isCompanyRelated,
-            rent: MethodsCalculationsHelper.convertThousanSepInNumber(
-                this.getFromFieldValue(RepairShopModalStringEnum.RENT)
-            ),
+            rent: !this.getFromFieldValue(
+                RepairShopModalStringEnum.COMPANY_OWNED
+            )
+                ? MethodsCalculationsHelper.convertThousanSepInNumber(
+                      this.getFromFieldValue(RepairShopModalStringEnum.RENT)
+                  )
+                : null,
             cover: this.convertCoverDocumentForRequest(),
         };
 
