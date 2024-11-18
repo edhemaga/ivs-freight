@@ -153,10 +153,7 @@ export class RepairShopDetailsComponent implements OnInit, OnDestroy {
                 filter.searchThree
             )
             .pipe(takeUntil(this.destroy$))
-            .subscribe((repair: RepairListResponse) => {
-                this.backFilterQuery =
-                    RepairTableBackFilterDataHelper.backRepairFilterData();
-            });
+            .subscribe((repair: RepairListResponse) => {});
     }
 
     // table filters
@@ -165,61 +162,58 @@ export class RepairShopDetailsComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe((res) => {
                 if (res) {
-                    if (res.queryParams?.length) {
-                        switch (res.filterType) {
-                            case RepairTableStringEnum.CATEGORY_REPAIR_FILTER:
-                                this.backFilterQuery.categoryIds =
-                                    res.queryParams;
+                    switch (res.filterType) {
+                        case RepairTableStringEnum.CATEGORY_REPAIR_FILTER:
+                            this.backFilterQuery.categoryIds = res.queryParams;
 
-                                this.repairBackFilter(this.backFilterQuery);
+                            this.repairBackFilter(this.backFilterQuery);
 
-                                break;
-                            case RepairTableStringEnum.PM_FILTER:
-                                this.backFilterQuery.pmTruckTitles =
-                                    res.queryParams;
+                            break;
+                        case RepairTableStringEnum.PM_FILTER:
+                            this.backFilterQuery.pmTruckTitles =
+                                res.queryParams;
 
-                                this.repairBackFilter(this.backFilterQuery);
+                            this.repairBackFilter(this.backFilterQuery);
 
-                                break;
-                            case RepairTableStringEnum.TRAILER_TYPE_FILTER:
-                                this.backFilterQuery.trailerNumbers =
-                                    res.queryParams;
+                            break;
+                        case RepairTableStringEnum.TRAILER_TYPE_FILTER:
+                            this.backFilterQuery.trailerNumbers =
+                                res.queryParams;
 
-                                this.repairBackFilter(this.backFilterQuery);
+                            this.repairBackFilter(this.backFilterQuery);
 
-                                break;
-                            case RepairTableStringEnum.TRUCK_TYPE_FILTER:
-                                this.backFilterQuery.truckNumbers =
-                                    res.queryParams;
+                            break;
+                        case RepairTableStringEnum.TRUCK_TYPE_FILTER:
+                            this.backFilterQuery.truckNumbers = res.queryParams;
 
-                                this.repairBackFilter(this.backFilterQuery);
+                            this.repairBackFilter(this.backFilterQuery);
 
-                                break;
-                            case RepairTableStringEnum.TIME_FILTER:
-                                const { fromDate, toDate } =
-                                    RepairTableDateFormaterHelper.getDateRange(
-                                        res.queryParams?.timeSelected
-                                    );
+                            break;
+                        case RepairTableStringEnum.TIME_FILTER:
+                            const { fromDate, toDate } =
+                                RepairTableDateFormaterHelper.getDateRange(
+                                    res.queryParams?.timeSelected
+                                );
 
-                                this.backFilterQuery.dateTo = toDate;
-                                this.backFilterQuery.dateFrom = fromDate;
+                            this.backFilterQuery.dateTo = toDate;
+                            this.backFilterQuery.dateFrom = fromDate;
 
-                                this.repairBackFilter(this.backFilterQuery);
+                            this.repairBackFilter(this.backFilterQuery);
 
-                                break;
-                            case RepairTableStringEnum.MONEY_FILTER:
-                                this.backFilterQuery.costFrom =
-                                    res.queryParams?.singleFrom;
+                            break;
+                        case RepairTableStringEnum.MONEY_FILTER:
+                            this.backFilterQuery.costFrom =
+                                res.queryParams?.from;
 
-                                this.backFilterQuery.costTo =
-                                    res.queryParams?.singleTo;
+                            this.backFilterQuery.costTo = res.queryParams?.to;
 
-                                this.repairBackFilter(this.backFilterQuery);
+                            this.repairBackFilter(this.backFilterQuery);
 
-                                break;
-                            default:
-                                break;
-                        }
+                            break;
+                        default:
+                            this.backFilterQuery =
+                                RepairTableBackFilterDataHelper.backRepairFilterData();
+                            break;
                     }
                 }
             });

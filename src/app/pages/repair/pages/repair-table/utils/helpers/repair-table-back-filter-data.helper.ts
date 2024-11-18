@@ -4,7 +4,7 @@ export class RepairTableBackFilterDataHelper {
     static backRepairFilterData(): RepairBackFilter {
         return {
             repairShopId: null,
-            unitType: 1,
+            unitType: null,
             dateFrom: null,
             dateTo: null,
             isPM: null,
