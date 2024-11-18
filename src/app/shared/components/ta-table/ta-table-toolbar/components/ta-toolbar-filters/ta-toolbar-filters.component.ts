@@ -35,11 +35,9 @@ import { FilterIconRoutes } from '@shared/components/ta-filter/utils/constants/f
 
 // services
 import { TruckassistTableService } from '@shared/services/truckassist-table.service';
-import { FilterStateService } from '@shared/components/ta-filter/services/filter-state.service';
-
-// models
 import { ArrayStatus } from '@shared/components/ta-filter/models/array-status.model';
 import { StateResponse } from 'appcoretruckassist/model/stateResponse';
+import { FilterStateService } from '@shared/components/ta-filter/services/filter-state.service';
 
 @Component({
     selector: 'app-ta-toolbar-filters',
@@ -217,9 +215,10 @@ export class TaToolbarFiltersComponent implements OnInit, OnChanges, OnDestroy {
                             this.truckTypeArray = res.data.map((item) => ({
                                 ...item.truckType,
                                 count: item.count,
-                                icon:
-                                    FilterIconRoutes.truckSVG +
-                                    item.truckType.logoName,
+                                icon: item.truckType?.logoName
+                                    ? FilterIconRoutes.truckSVG +
+                                      item.truckType.logoName
+                                    : null,
                             }));
                         }
                     }
@@ -246,9 +245,10 @@ export class TaToolbarFiltersComponent implements OnInit, OnChanges, OnDestroy {
                             this.trailerTypeArray = res.data.map((item) => ({
                                 ...item.trailerType,
                                 count: item.count,
-                                icon:
-                                    FilterIconRoutes.trailerSVG +
-                                    item.trailerType.logoName,
+                                icon: item.trailerType?.logoName
+                                    ? FilterIconRoutes.trailerSVG +
+                                      item.trailerType.logoName
+                                    : null,
                             }));
                         }
                     }
@@ -260,9 +260,10 @@ export class TaToolbarFiltersComponent implements OnInit, OnChanges, OnDestroy {
                         this.truckTypeArray = res.data.map((item) => ({
                             ...item.truckType,
                             count: item.count,
-                            icon:
-                                FilterIconRoutes.truckSVG +
-                                item.truckType.logoName,
+                            icon: item.truckType?.logoName
+                                ? FilterIconRoutes.truckSVG +
+                                  item.truckType.logoName
+                                : null,
                         }));
                     }
                     if (
@@ -273,9 +274,10 @@ export class TaToolbarFiltersComponent implements OnInit, OnChanges, OnDestroy {
                         this.trailerTypeArray = res.data.map((item) => ({
                             ...item.trailerType,
                             count: item.count,
-                            icon:
-                                FilterIconRoutes.trailerSVG +
-                                item.trailerType.logoName,
+                            icon: item.trailerType?.logoName
+                                ? FilterIconRoutes.trailerSVG +
+                                  item.trailerType.logoName
+                                : null,
                         }));
                     }
                     if (
@@ -463,7 +465,11 @@ export class TaToolbarFiltersComponent implements OnInit, OnChanges, OnDestroy {
         this.tableSevice.sendCurrentSetTableFilter(
             this.customerFilter?.filteredArray.length
                 ? this.customerFilter
-                : { ...event, filterName: data }
+                : {
+                      ...event,
+                      filterName: data,
+                      selectedFilter: event.selectedFilter,
+                  }
         );
     }
     // --------------------------------NgOnDestroy---------------------------------

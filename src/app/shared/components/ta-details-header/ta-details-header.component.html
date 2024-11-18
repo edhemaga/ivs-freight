@@ -34,13 +34,21 @@
         </div>
 
         <div class="icon-right">
-            <div *ngIf="isInactive" class="inactive-status">INACTIVE</div>
-            <div
-                *ngIf="showClosedBadge && !businessOpen"
-                class="inactive-status"
-            >
-                CLOSED
-            </div>
+            <ng-container *ngIf="isInactive">
+                <div
+                    class="d-flex align-items-center justify-content-center ta-font-bold text-color-white text-size-11 inactive-status"
+                >
+                    INACTIVE
+                </div>
+            </ng-container>
+
+            <ng-container *ngIf="showClosedBadge && !businessOpen">
+                <div
+                    class="d-flex align-items-center justify-content-center ta-font-bold text-color-white text-size-11 inactive-status closed"
+                >
+                    CLOSED
+                </div>
+            </ng-container>
 
             <ng-container *ngIf="subText">
                 <div
@@ -274,7 +282,7 @@
                             <span class="ic-hed">
                                 <app-ca-filter
                                     [type]="'truckTypeFilter'"
-                                    [truckTypeArray]="[]"
+                                    [truckTypeArray]="truckTypeArray"
                                     [filterTitle]="'Truck Type Filter'"
                                     [icon]="'truck'"
                                     (setFilter)="setFilterValue($event)"
@@ -287,7 +295,7 @@
                             <span class="ic-hed">
                                 <app-ca-filter
                                     [type]="'trailerTypeFilter'"
-                                    [truckTypeArray]="[]"
+                                    [truckTypeArray]="trailerTypeArray"
                                     [filterTitle]="'Trailer Type Filter'"
                                     [icon]="'trailer'"
                                     (setFilter)="setFilterValue($event)"
@@ -339,12 +347,13 @@
                             <span class="ic-hed">
                                 <!-- DISPECHER FILTER -->
                                 <app-ca-filter
-                                    [type]="'userFilter'"
+                                    [type]="'dispatcherFilter'"
                                     [searchState]="true"
                                     [filterTitle]="'Dispatcher Filter'"
                                     [defFilterHolder]="true"
                                     (setFilter)="setFilterValue($event)"
                                     (clearAll)="setFilterValue($event)"
+                                    [unselectedUser]="unselectedDispatcher"
                                 >
                                 </app-ca-filter>
                             </span>
@@ -361,6 +370,9 @@
                                     [noLeftIcon]="false"
                                     (setFilter)="setFilterValue($event)"
                                     (clearAll)="setFilterValue($event)"
+                                    [loadStatusOptionsArray]="
+                                        loadStatusOptionsArray
+                                    "
                                 >
                                 </app-ca-filter>
                             </span>
@@ -395,6 +407,7 @@
                                     [leftSideIcon]="true"
                                     (setFilter)="setFilterValue($event)"
                                     (clearAll)="setFilterValue($event)"
+                                    [pmFilterArray]="pmFilterArray"
                                 >
                                 </app-ca-filter>
                             </span>
@@ -412,6 +425,7 @@
                                     [leftSideIcon]="true"
                                     (setFilter)="setFilterValue($event)"
                                     (clearAll)="setFilterValue($event)"
+                                    [pmFilterArray]="categoryRepairArray"
                                 >
                                 </app-ca-filter>
                             </span>
@@ -459,18 +473,21 @@
                         <div
                             class="sort-text-container"
                             [class.active-dropdown]="isSortDropdownOpen"
+                            [class.disabled]="!selectedSort"
                             #sortPopover="ngbPopover"
                             autoClose="outside"
                             [ngbPopover]="sortDropdownPopover"
                             [popoverClass]="'popover-main'"
                             [placement]="['bottom-left']"
                             [container]="'body'"
-                            (click)="showSortDropdown(sortPopover)"
+                            (click)="
+                                selectedSort && showSortDropdown(sortPopover)
+                            "
                             (hidden)="sortDropdownClosed()"
                             triggers="manual"
                         >
                             <span class="sort-text ta-font-medium">
-                                {{ selectedSort?.name }}
+                                {{ selectedSort?.name ?? 'Date' }}
                             </span>
                         </div>
 
@@ -544,12 +561,13 @@
 
                     <div
                         ngbTooltip
-                        [mainTooltip]="'Add New'"
+                        [mainTooltip]="businessOpen ? 'Add New' : ''"
                         tooltipBackground="#424242"
                         position="bottom"
                     >
                         <svg-icon
                             class="icon-plus-header"
+                            [ngClass]="{ disabled: !businessOpen }"
                             (click)="openModal(headerText)"
                             [src]="icPlusSvgIcon"
                         >

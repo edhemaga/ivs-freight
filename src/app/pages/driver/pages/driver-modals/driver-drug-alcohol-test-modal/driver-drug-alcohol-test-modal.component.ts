@@ -82,6 +82,8 @@ export class DriverDrugAlcoholTestModalComponent implements OnInit, OnDestroy {
     public testTypesDropdownList: EnumValue[] = [];
     public testReasonsDropdownList: EnumValue[] = [];
     public testResultsDropdownList: EnumValue[] = [];
+    public testReasonDropdownStatic: EnumValue[] = [];
+    public testReasonDropdownAlcohol: EnumValue[] = [];
 
     public selectedTestType: EnumValue;
     public selectedTestReason: EnumValue;
@@ -201,6 +203,23 @@ export class DriverDrugAlcoholTestModalComponent implements OnInit, OnDestroy {
             case DriverDrugAlcoholTestModalStringEnum.TEST:
                 this.selectedTestType = event;
 
+                this.testReasonsDropdownList =
+                    event.name === DriverDrugAlcoholTestModalStringEnum.DRUG
+                        ? this.testReasonDropdownStatic
+                        : this.testReasonDropdownAlcohol;
+
+                if (
+                    this.selectedTestReason?.name ===
+                    DriverDrugAlcoholTestModalStringEnum.PRE_EMPLOYMENT
+                ) {
+                    this.selectedTestReason = null;
+                    this.drugForm
+                        .get(
+                            DriverDrugAlcoholTestModalStringEnum.TEST_REASON_ID
+                        )
+                        .setValue(null);
+                }
+
                 break;
             case DriverDrugAlcoholTestModalStringEnum.REASON:
                 this.selectedTestReason = event;
@@ -252,6 +271,14 @@ export class DriverDrugAlcoholTestModalComponent implements OnInit, OnDestroy {
                 this.testTypesDropdownList = types;
                 this.testReasonsDropdownList = reasons;
                 this.testResultsDropdownList = results;
+                this.testReasonDropdownStatic = reasons;
+
+                this.testReasonDropdownAlcohol =
+                    this.testReasonDropdownStatic.filter(
+                        (item) =>
+                            item.name !==
+                            DriverDrugAlcoholTestModalStringEnum.PRE_EMPLOYMENT
+                    );
 
                 if (this.editData) {
                     this.startFormChanges();
@@ -317,6 +344,11 @@ export class DriverDrugAlcoholTestModalComponent implements OnInit, OnDestroy {
                 this.selectedTestType = testType;
                 this.selectedTestReason = testReason;
                 this.selectedTestResult = result;
+
+                this.testReasonsDropdownList =
+                    testType?.name === DriverDrugAlcoholTestModalStringEnum.DRUG
+                        ? this.testReasonDropdownStatic
+                        : this.testReasonDropdownAlcohol;
 
                 this.documents = files;
 

@@ -1174,7 +1174,6 @@ export class TaInputComponent
                 'qty',
                 'purchase price',
                 'fuel tank size',
-                'device no',
                 'weight',
                 'fuel per miles',
                 'fuel price map',

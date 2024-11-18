@@ -3,46 +3,31 @@
         *ngFor="let item of repairShopDetailsConfig; trackBy: trackByIdentity"
     >
         <app-ta-details-header
-            [hasIcon]="item.icon"
-            [hasSearch]="item.hasSearch"
+            [hasIcon]="item?.icon"
+            [hasSearch]="item?.hasSearch"
             [options]="detailsDropdownOptions"
             [optionsId]="repairShopId"
             [route]="'/list/repair'"
             [tooltipHeaderName]="'Back to List'"
             [headerText]="item?.name"
             [counterData]="item?.length"
+            [showClosedBadge]="item?.isClosedBusiness"
+            [businessOpen]="!item?.isClosedBusiness"
+            [hasSort]="item?.hasSort"
             [statusInactive]="item?.hide"
-            (dropActions)="onRepairShopActions($event)"
+            [totalCost]="item?.total"
+            [mainData]="item"
             [timeFilter]="true"
             [truckTypeFilter]="true"
             [trailerTypeFilter]="true"
             [pmFilter]="true"
             [moneyFilter]="true"
             [repairOrderFilter]="true"
+            (dropActions)="onRepairShopActions($event)"
+            (filterActions)="onFilter($event)"
+            (specialFilterActions)="onFilter($event)"
         >
         </app-ta-details-header>
-
-        <!-- Keep, need for later -->
-
-        <!--  
-        [hasIcon]="item.icon"
-        [hidePlus]="item.hide"
-        [customText]="item.customText"
-        [arrayIcons]="item.icons"
-        [hasDateArrow]="item.hasDateArrow ? true : false"
-        [showClosedBadge]="true"
-        [businessOpen]="businessOpen"
-        [totalCost]="item.total"
-        
-        [mainData]="item"
-        [timeFilter]="true"
-        [unitFilter]="true"
-        [repairOrderFilter]="true"
-        [pmFilter]="true"
-        [categoryFilter]="true"
-        [moneyFilter]="true"
-        [repairHeader]="item.nameDefault == 'Repair'"
-         -->
     </ng-container>
 
     <div class="repair-details-cmp">
@@ -53,11 +38,8 @@
 
         <!-- <app-repair-shop-details-item
             class="repair-component"
-            
-            *ngFor="let item of shopRepairConfig; trackBy: identity"
             [class.vehicleHolder]="item.nameDefault === 'Repaired Vehicle'"
             [class.reviewShopHolder]="item.nameDefault === 'Review & Rating'"
-            [repairShopItem]="item"
             [customClass]=" item.nameDefault === 'Repaired Vehicle' ? 'vehicleHolder' : '' || item.nameDefault === 'Review & Rating' ? 'reviewShopHolder' : '' "
         >
         </app-repair-shop-details-item> -->

@@ -35,52 +35,75 @@ export class RefreshTokenInterceptor implements HttpInterceptor {
         httpRequest: HttpRequest<any>,
         next: HttpHandler
     ): Observable<HttpEvent<any>> {
-        return next.handle(httpRequest).pipe(
-            catchError((err: HttpErrorResponse) => {
-                const user: SignInResponse = JSON.parse(
-                    localStorage.getItem('user')
+        const user: SignInResponse = JSON.parse(localStorage.getItem('user'));
+        // If a token exists, clone the request and add the Authorization header
+        if (user?.token) {
+            const clonedRequest = httpRequest.clone({
+                headers: httpRequest.headers.set(
+                    'Authorization',
+                    `Bearer ${user.token}`
+                ),
+            });
+
+            // Pass the cloned request instead of the original request to the next handler
+            return next
+                .handle(clonedRequest)
+                .pipe(
+                    catchError((e) =>
+                        this.catchErrorInterceptor(e, user, httpRequest, next)
+                    )
                 );
+        }
 
-                if (err.status === 401 && user) {
-                    return this.accountService
-                        .apiAccountRefreshPost({
-                            refreshToken: user.refreshToken,
-                        })
-                        .pipe(
-                            switchMap((res: any) => {
-                                user.token = res.token;
-                                user.refreshToken = res.refreshToken;
+        return next
+            .handle(httpRequest)
+            .pipe(
+                catchError((e) =>
+                    this.catchErrorInterceptor(e, user, httpRequest, next)
+                )
+            );
+    }
 
-                                localStorage.setItem(
-                                    'user',
-                                    JSON.stringify(user)
-                                );
+    catchErrorInterceptor(
+        err: HttpErrorResponse,
+        user: SignInResponse,
+        httpRequest: HttpRequest<any>,
+        next: HttpHandler
+    ) {
+        if (err.status === 401 && user && user.refreshToken) {
+            return this.accountService
+                .apiAccountRefreshPost({
+                    refreshToken: user.refreshToken,
+                })
+                .pipe(
+                    switchMap((res) => {
+                        user.token = res.token;
+                        user.refreshToken = res.refreshToken;
 
-                                configFactory(this.userLoggedService);
+                        localStorage.setItem('user', JSON.stringify(user));
 
-                                return next.handle(
-                                    httpRequest.clone({
-                                        setHeaders: {
-                                            Authorization: `bearer ${user.token}`,
-                                        },
-                                    })
-                                );
-                            }),
-                            catchError((err: HttpErrorResponse) => {
-                                if (err.status === 404 || err.status === 500) {
-                                    this.ngbModal.dismissAll();
+                        configFactory(this.userLoggedService);
 
-                                    localStorage.clear();
-
-                                    this.websiteAuthService.accountLogout();
-                                }
-
-                                return throwError(() => err);
+                        return next.handle(
+                            httpRequest.clone({
+                                setHeaders: {
+                                    Authorization: `bearer ${user.token}`,
+                                },
                             })
                         );
-                }
-                return throwError(() => err);
-            })
-        );
+                    }),
+                    catchError((err: HttpErrorResponse) => {
+
+                        this.ngbModal.dismissAll();
+
+                        localStorage.clear();
+
+                        this.websiteAuthService.accountLogout();
+
+                        return throwError(() => err);
+                    })
+                );
+        }
+        return throwError(() => err);
     }
 }

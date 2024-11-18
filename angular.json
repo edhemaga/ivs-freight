@@ -29,11 +29,11 @@
                         "inlineStyleLanguage": "scss",
                         "assets": [
                             "src/assets",
-                                {
-                                    "glob": "**/*",
-                                    "input": "node_modules/ca-components/src/assets/ca-components/",
-                                    "output": "src/assets/ca-components/"
-                                }
+                            {
+                                "glob": "**/*",
+                                "input": "node_modules/ca-components/src/assets/ca-components/",
+                                "output": "src/assets/ca-components/"
+                            }
                         ],
                         "styles": [
                             "src/styles.scss",
@@ -64,13 +64,13 @@
                             "budgets": [
                                 {
                                     "type": "initial",
-                                    "maximumWarning": "20mb",
-                                    "maximumError": "20mb"
+                                    "maximumWarning": "21mb",
+                                    "maximumError": "25mb"
                                 },
                                 {
                                     "type": "anyComponentStyle",
-                                    "maximumWarning": "20mb",
-                                    "maximumError": "20mb"
+                                    "maximumWarning": "21mb",
+                                    "maximumError": "25mb"
                                 }
                             ],
                             "fileReplacements": [
@@ -86,13 +86,13 @@
                             "budgets": [
                                 {
                                     "type": "initial",
-                                    "maximumWarning": "20mb",
-                                    "maximumError": "20mb"
+                                    "maximumWarning": "21mb",
+                                    "maximumError": "25mb"
                                 },
                                 {
                                     "type": "anyComponentStyle",
-                                    "maximumWarning": "20mb",
-                                    "maximumError": "20mb"
+                                    "maximumWarning": "21mb",
+                                    "maximumError": "25mb"
                                 }
                             ],
                             "fileReplacements": [
@@ -141,11 +141,11 @@
                         "inlineStyleLanguage": "scss",
                         "assets": [
                             "src/assets",
-                                {
-                                    "glob": "**/*",
-                                    "input": "node_modules/ca-components/src/assets/ca-components/",
-                                    "output": "assets/ca-components/"
-                                }
+                            {
+                                "glob": "**/*",
+                                "input": "node_modules/ca-components/src/assets/ca-components/",
+                                "output": "assets/ca-components/"
+                            }
                         ],
                         "styles": [
                             "src/styles.scss",

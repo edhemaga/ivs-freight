@@ -1,42 +1,48 @@
 @import 'src/theme/variables.scss';
 
 .repair-bill-table-container {
-  &.repair-order-table-container {
-      .table-item {
-          grid-template-columns: 26px 492px 26px 60px;
-      }
-  }
+    &.repair-order-table-container {
+        .table-item {
+            grid-template-columns: 26px 492px 26px 60px;
+        }
+    }
 
-  .table-item {
-      grid-template-columns: 26px 306px 26px 60px 90px 88px;
-  }
+    .table-item {
+        grid-template-columns: 26px 306px 26px 60px 90px 88px;
+    }
 
-  .pm-dropdown-container {
-      &.hidden-pm-dropdown {
-          cursor: pointer;
-          pointer-events: none;
-          opacity: 0;
-          visibility: 0;
-      }
-  }
+    &.fuel-table {
+        .table-item {
+            grid-template-columns: 26px 182px 80px 60px 90px 88px;
+        }
+    }
 
-  .subtotal {
-      padding-right: 6px;
+    .pm-dropdown-container {
+        &.hidden-pm-dropdown {
+            cursor: pointer;
+            pointer-events: none;
+            opacity: 0;
+            visibility: 0;
+        }
+    }
 
-      p {
-          font-size: 14px;
-          line-height: 11px;
-          color: $ta-black;
+    .subtotal {
+        padding-right: 6px;
 
-          &::-moz-selection {
-              color: $ta-black;
-              background: rgb(66, 66, 66, 0.2);
-          }
+        p {
+            font-size: 14px;
+            line-height: 11px;
+            color: $ta-black;
 
-          &::selection {
-              color: $ta-black;
-              background: rgb(66, 66, 66, 0.2);
-          }
-      }
-  }
+            &::-moz-selection {
+                color: $ta-black;
+                background: rgb(66, 66, 66, 0.2);
+            }
+
+            &::selection {
+                color: $ta-black;
+                background: rgb(66, 66, 66, 0.2);
+            }
+        }
+    }
 }

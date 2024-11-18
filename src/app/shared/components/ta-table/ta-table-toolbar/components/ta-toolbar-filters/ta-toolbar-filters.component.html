@@ -578,15 +578,19 @@
         [selectedFilter]="this.activeTableData.closedArray.selectedFilter"
     ></app-ta-special-filter>
 
-    <app-ta-special-filter
-        *ngIf="options.toolbarActions.showFuelStopFilter"
-        [type]="'fuel-filter'"
-        [icon]="'ic_fuel_transaction'"
-        [filterTitle]="'Fuel Transaction'"
-        [dataArray]="this.activeTableData.fuelArray"
-        (setFilter)="onSpecialFilter($event, 'specialFilterArray1')"
-        [selectedFilter]="this.activeTableData.fuelArray.selectedFilter"
-    ></app-ta-special-filter>
+    <ng-container
+        *ngIf="options.toolbarActions.showIntegratedFuelTransactionsFilter"
+    >
+        <app-ta-special-filter
+            [type]="'fuel-filter'"
+            [icon]="'ic_fuel_transaction'"
+            [filterTitle]="'Fuel Transaction'"
+            [dataArray]="activeTableData.data"
+            [dataCount]="activeTableData.integratedDataCount"
+            (setFilter)="onSpecialFilter($event, 'fuelArray')"
+            [selectedFilter]="activeTableData?.fuelArray?.selectedFilter"
+        ></app-ta-special-filter>
+    </ng-container>
 
     <app-ta-special-filter
         *ngIf="options.toolbarActions.showRepairOrderFilter"
