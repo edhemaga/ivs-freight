@@ -14,7 +14,7 @@ import { DriverPayrollChartResponse } from './driverPayrollChartResponse';
 
 export interface DriverPayrollResponse { 
     miles?: number | null;
-    salary?: number | null;
+    earnings?: number | null;
     getDriverPayrollChartResponse?: Array<DriverPayrollChartResponse> | null;
 }
 
