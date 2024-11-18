@@ -42,8 +42,8 @@ export interface PayrollDriverMileageByIdResponse {
     includedCredits?: Array<PayrollCreditMinimalResponse> | null;
     excludedCredits?: Array<PayrollCreditMinimalResponse> | null;
     totalCredits?: number;
-    includedBonus?: Array<PayrollBonusMinimalResponse> | null;
-    excludedBonus?: Array<PayrollBonusMinimalResponse> | null;
+    includedBonuses?: Array<PayrollBonusMinimalResponse> | null;
+    excludedBonuses?: Array<PayrollBonusMinimalResponse> | null;
     totalBonus?: number;
     includedLoads?: Array<LoadWithMilesStopResponse> | null;
     excludedLoads?: Array<LoadWithMilesStopResponse> | null;

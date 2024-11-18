@@ -493,7 +493,9 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
                         });
 
                         this.mapEditData(repairShop);
-                        this.isCompanyRelated = this.editData?.companyOwned || repairShop.companyOwned;
+                        this.isCompanyRelated =
+                            this.editData?.companyOwned ||
+                            repairShop.isCompanyRelated;
                     }
 
                     this.preSelectService(repairShop?.shopServiceType);

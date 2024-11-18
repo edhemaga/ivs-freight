@@ -40,7 +40,7 @@ export interface PayrollDriverMileageClosedByIdResponse {
     totalDeduction?: number | null;
     includedCredits?: Array<PayrollCreditMinimalResponse> | null;
     totalCredits?: number | null;
-    includedBonus?: Array<PayrollBonusMinimalResponse> | null;
+    includedBonuses?: Array<PayrollBonusMinimalResponse> | null;
     totalBonus?: number | null;
     includedLoads?: Array<LoadWithMilesStopResponse> | null;
     mapLocations?: Array<PayrollMapLocation> | null;
