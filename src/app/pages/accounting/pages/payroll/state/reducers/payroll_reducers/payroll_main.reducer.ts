@@ -41,11 +41,11 @@ export const onSetTableReportExpanded = (
         return {
             ...state,
             lastLoadDate: null,
-            selectedDeductionIds: [],
-            selectedFuelIds: [],
-            selectedCreditIds: [],
-            selectedBonusIds: [],
-            selectedLoadIds: [],
+            selectedDeductionIds: undefined,
+            selectedFuelIds: undefined,
+            selectedCreditIds: undefined,
+            selectedBonusIds: undefined,
+            selectedLoadIds: undefined,
             expandedReportTable: data.expanded,
             payrollOpenedReport: null,
         };
