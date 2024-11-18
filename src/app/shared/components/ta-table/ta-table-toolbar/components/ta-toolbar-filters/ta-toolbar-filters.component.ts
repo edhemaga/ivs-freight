@@ -392,6 +392,7 @@ export class TaToolbarFiltersComponent implements OnInit, OnChanges, OnDestroy {
 
     // On Filter
     onFilter(event: any) {
+        console.log(event, 'event');
         this.tableSevice.sendCurrentSetTableFilter(event);
     }
 
@@ -465,7 +466,11 @@ export class TaToolbarFiltersComponent implements OnInit, OnChanges, OnDestroy {
         this.tableSevice.sendCurrentSetTableFilter(
             this.customerFilter?.filteredArray.length
                 ? this.customerFilter
-                : { ...event, filterName: data, selectedFilter: event.selectedFilter }
+                : {
+                      ...event,
+                      filterName: data,
+                      selectedFilter: event.selectedFilter,
+                  }
         );
     }
     // --------------------------------NgOnDestroy---------------------------------

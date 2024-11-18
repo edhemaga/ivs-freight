@@ -11,6 +11,7 @@ import {
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { Subject, takeUntil } from 'rxjs';
 
 // bootstrap
 import {
@@ -36,21 +37,22 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
 import { FormatCurrencyPipe } from '@shared/pipes/format-currency.pipe';
 
 // enums
-import { ToolbarFilterStringEnum } from '../ta-filter/enums/toolbar-filter-string.enum';
+import { ToolbarFilterStringEnum } from '@shared/components/ta-filter/enums/toolbar-filter-string.enum';
 
 // svg routes
 import { DetailsHeaderSvgRoutes } from '@shared/components/ta-details-header/utils/svg-routes/details-header-svg-routes';
 
+// constants
+import { FilterIconRoutes } from '@shared/components/ta-filter/utils/constants/filter-icons-routes.constants';
+
 // models
 import { MultipleSelectDetailsDropdownItem } from '@pages/load/pages/load-details/components/load-details-item/models/multiple-select-details-dropdown-item.model';
 import { LoadsSortDropdownModel } from '@pages/customer/models/loads-sort-dropdown.model';
-import { FilterIconRoutes } from '../ta-filter/utils/constants/filter-icons-routes.constants';
+import { ArrayStatus } from '@shared/components/ta-filter/models/array-status.model';
 
 // services
 import { TruckassistTableService } from '@shared/services/truckassist-table.service';
-import { FilterStateService } from '../ta-filter/services/filter-state.service';
-import { Subject, takeUntil } from 'rxjs';
-import { ArrayStatus } from '../ta-filter/models/array-status.model';
+import { FilterStateService } from '@shared/components/ta-filter/services/filter-state.service';
 
 @Component({
     selector: 'app-ta-details-header',

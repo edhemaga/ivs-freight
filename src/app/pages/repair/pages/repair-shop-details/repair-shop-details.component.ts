@@ -31,21 +31,21 @@ import { RepairShopDetailsItemComponent } from '@pages/repair/pages/repair-shop-
 
 // enums
 import { RepairShopDetailsStringEnum } from '@pages/repair/pages/repair-shop-details/enums';
+import { RepairTableStringEnum } from '@pages/repair/pages/repair-table/enums';
 
 // helpers
 import { RepairShopDetailsHelper } from '@pages/repair/pages/repair-shop-details/utils/helpers/repair-shop-details.helper';
+import {
+    RepairTableBackFilterDataHelper,
+    RepairTableDateFormaterHelper,
+} from '@pages/repair/pages/repair-table/utils/helpers';
 
 // models
 import { RepairListResponse, RepairShopResponse } from 'appcoretruckassist';
 import { DetailsDropdownOptions } from '@shared/models/details-dropdown-options.model';
 import { DetailsConfig } from '@shared/models/details-config.model';
 import { ExtendedRepairShopResponse } from '@pages/repair/pages/repair-shop-details/components/repair-shop-details-card/models';
-import {
-    RepairTableBackFilterDataHelper,
-    RepairTableDateFormaterHelper,
-} from '../repair-table/utils/helpers';
-import { RepairTableStringEnum } from '../repair-table/enums';
-import { RepairBackFilter } from '../repair-table/models';
+import { RepairBackFilter } from '@pages/repair/pages/repair-table/models';
 
 @Component({
     selector: 'app-repair-shop-details',
