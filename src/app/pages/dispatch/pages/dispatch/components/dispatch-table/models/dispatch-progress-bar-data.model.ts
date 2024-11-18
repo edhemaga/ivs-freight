@@ -13,13 +13,22 @@ export interface DispatchProgressBarData {
     totalMiles?: number;
     gpsLocationIcon?: string;
     gpsProgress?: DispatchProgressStopData[];
+    dispatchStatus?: string;
 }
 
-interface DispatchProgressStopData {
+export interface DispatchProgressStopData {
     type?: string;
     heading?: string;
     position?: number;
     location?: string;
     mileage?: string;
+    data?: string;
     time?: string;
+    latitude?: number;
+    longitude?: number;
+    legMiles?: number;
+    stopNumber?: number;
+    isAtStop?: boolean;
+    currentWaitTime?: number;
+    averageWaitTime?: { [key: string]: number; };
 }

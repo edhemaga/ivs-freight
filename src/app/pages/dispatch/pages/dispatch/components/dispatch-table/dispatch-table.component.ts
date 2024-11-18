@@ -73,6 +73,7 @@ import {
 import { DispatchBoardParkingEmiter } from '@pages/dispatch/models/dispatch-parking-emmiter.model';
 import {
     DispatchColumn,
+    DispatchProgressStopData,
     DispatchTableHeaderItems,
     DispatchTableUnlock,
 } from '@pages/dispatch/pages/dispatch/components/dispatch-table/models';
@@ -1194,8 +1195,8 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
                     this.dispatchData.dispatches[index].loadProgress
                         .activeLoadProgressBar;
 
-                const dispatchStopData = dispatchLoadProgress.loadStops.map(
-                    (stop) => {
+                const dispatchStopData: DispatchProgressStopData[] =
+                    dispatchLoadProgress.loadStops.map((stop) => {
                         return {
                             type: stop.stopType?.name.toLowerCase(),
                             heading: stop.title,
@@ -1218,17 +1219,30 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
                                       dispatchLoadProgress.truckPositionMileage
                                   ).toFixed(1) +
                                   ' mi',
+                            date: this.datePipe.transform(
+                                stop.departedFrom ?? stop.expectedAt,
+                                'MM/dd/yy'
+                            ),
                             time: this.datePipe.transform(
                                 stop.departedFrom ?? stop.expectedAt,
-                                'MM/dd/yy hh:mm a'
+                                'hh:mm a'
                             ),
                             latitude: stop.latitude,
                             longitude: stop.longitude,
-                            legMiles: stop.totalLegMiles,
+                            legMiles: parseFloat(stop.totalLegMiles.toFixed(1)),
                             stopNumber: stop.stopLoadOrder,
+                            isAtStop:
+                                stop.isCheckedIn ||
+                                (!dispatchLoadProgress.truckPositionPercentage &&
+                                    stop.stopType.name ===
+                                        DispatchTableStringEnum.DEADHEAD),
+                            currentWaitTime: stop.waitTimeInMin ?? null,
+                            averageWaitTime: stop.estimatedWaitTime ?? null,
                         };
-                    }
-                );
+                    });
+
+                const dispatchCurrentStopData =
+                    dispatchStopData?.find((item) => item.isAtStop) ?? null;
 
                 const formattedProgressData: DispatchProgressBarData = {
                     currentPosition:
@@ -1240,6 +1254,9 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
                         dispatchLoadProgress.truckPositionPercentage + '%',
                     totalMiles: dispatchLoadProgress.totalMiles,
                     gpsProgress: dispatchStopData,
+                    currentStop: dispatchCurrentStopData ?? null,
+                    gpsLocationIcon:
+                        'assets/ca-components/svg/map/gps-location.svg',
                     gpsInfo: {
                         gpsheading: DispatchTableStringEnum.NO_GPS_DEVICE,
                         gpsheadingColor:
@@ -1247,6 +1264,7 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
                                 .dispatchProgressBarColors.noGpsColor,
                     },
                     gpsIcon: DispatchTableSvgRoutes.progressNoGpsStatusIcon,
+                    dispatchStatus: dispatch.status.statusString,
                 };
 
                 this.progressBarData[index] = formattedProgressData;
