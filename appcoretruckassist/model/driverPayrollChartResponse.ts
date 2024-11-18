@@ -13,7 +13,7 @@
 
 export interface DriverPayrollChartResponse { 
     miles?: number | null;
-    salary?: number | null;
+    earnings?: number | null;
     day?: number | null;
     month?: number | null;
     year?: number | null;
