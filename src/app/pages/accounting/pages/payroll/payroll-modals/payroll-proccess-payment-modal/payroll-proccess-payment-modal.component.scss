@@ -1,0 +1,26 @@
+.modal-footer {
+    .button_holder {
+        border-top: 1px solid #dadada;
+        padding-top: 12px;
+    }
+}
+
+.payroll_procces_input_holder {
+    display: grid;
+    grid-template-columns: 222px 222px;
+    align-items: center;
+    column-gap: 12px;
+    margin-bottom: 10px;
+}
+
+.custom_ahr_tab_template {
+    text-transform: lowercase;
+    color: #424242;
+    .ahc {
+        text-transform: uppercase;
+    }
+    span {
+        color: #3b73ed;
+    }
+}
+

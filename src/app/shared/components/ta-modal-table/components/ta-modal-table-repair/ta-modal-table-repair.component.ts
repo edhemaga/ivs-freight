@@ -12,6 +12,7 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
 //components
 import { TaInputDropdownComponent } from '@shared/components/ta-input-dropdown/ta-input-dropdown.component';
 import { TaInputComponent } from '@shared/components/ta-input/ta-input.component';
+import { CaInputDropdownComponent } from 'ca-components';
 
 //enums
 import { TaModalTableStringEnum } from '@shared/components/ta-modal-table/enums/';
@@ -25,6 +26,7 @@ import { TrackByPropertyPipe } from '@shared/pipes/track-by-property.pipe';
 
 // svg routes
 import { ModalTableSvgRoutes } from '@shared/components/ta-modal-table/utils/svg-routes';
+import { EnumValue } from 'appcoretruckassist';
 
 @Component({
     selector: 'app-ta-modal-table-repair',
@@ -40,6 +42,7 @@ import { ModalTableSvgRoutes } from '@shared/components/ta-modal-table/utils/svg
         // components
         TaInputComponent,
         TaInputDropdownComponent,
+        CaInputDropdownComponent,
 
         //pipes
         TrackByPropertyPipe,
@@ -53,6 +56,9 @@ export class TaModalTableRepairComponent {
     @Input() subTotals: RepairSubtotal[];
     @Input() selectedTruckTrailerRepairPm: [] = [];
     @Input() truckTrailerRepairPmOptions: [] = [];
+    @Input() isFuelTable: boolean;
+    @Input() fuelItemsDropdown: EnumValue[];
+    @Input() activeFuelItem: EnumValue[] = [];
 
     @Output() onSelectDropdown: EventEmitter<{
         dropdownEvent: ModalTableDropdownOption;
@@ -73,7 +79,9 @@ export class TaModalTableRepairComponent {
 
     public svgRoutes = ModalTableSvgRoutes;
 
-    constructor() {}
+    constructor() {
+        console.log(this.fuelItemsDropdown);
+    }
 
     public emitDeleteFormArrayRowClick(index: number): void {
         this.deleteFormArrayRowClick.emit(index);

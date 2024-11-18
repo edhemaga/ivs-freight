@@ -1,3 +1,5 @@
+import { PayrollDeleteModal } from "@pages/accounting/pages/payroll/state/models";
+
 export interface Confirmation {
     template: string; // examples: driver, broker, shipper, cdl.....
     type:
@@ -37,4 +39,5 @@ export interface Confirmation {
     modalHeader?: boolean;
     modalHeaderTitle?: string;
     action?: string;
+    extras?: PayrollDeleteModal;
 }

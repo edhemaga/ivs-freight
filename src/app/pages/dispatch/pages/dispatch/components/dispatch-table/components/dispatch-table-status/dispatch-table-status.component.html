@@ -11,7 +11,7 @@
             [tooltipBackground]="'#424242'"
             tooltipColor="'#ffff'"
             tooltipTextAlign="center"
-            (click)="isUnlockable ? getStatusDropdonw(ngbStatus) : {}"
+            (click)="isUnlockable && getStatusDropdown(ngbStatus)"
             [disableTooltip]="!isUnlockable"
         >
             <div

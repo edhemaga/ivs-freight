@@ -7,6 +7,7 @@
             'phone-table-header': isPhoneTable,
             'email-table-header': isEmailTable,
             'repair-bill-table-header': isRepairBillTable || isRepairOrderTable,
+            'fuel-table-header': isFuelTable,
             'repair-order-table-header': isRepairOrderTable,
             'contact-table-header': isContactTable,
             'department-contact-table-header': isDepartmentContactTable,
@@ -21,6 +22,8 @@
             *ngFor="
                 let headerItem of modalTableHeaders;
                 let i = index;
+                let last = last;
+                let first = first;
                 trackBy: '' | trackByProperty
             "
         >
@@ -37,8 +40,11 @@
                         !isDepartmentContactTable,
                     'stop-items-number': isLoadItemTable && i === 0,
                     'stop-items-desc': isLoadItemTable && i === 1,
-                    'scroll-first-item': i === 0&&  (isContactTable || isDepartmentContactTable),
-                    'scroll-second-item':i === 1&&  (isContactTable || isDepartmentContactTable) ,
+                    'scroll-first-item':
+                        i === 0 && (isContactTable || isDepartmentContactTable),
+                    'scroll-second-item':
+                        i === 1 && (isContactTable || isDepartmentContactTable),
+                    'justify-content-end': isFuelTable && last
                 }"
             >
                 <ng-container
@@ -69,9 +75,11 @@
                     ></svg-icon>
                 </ng-container>
 
+                <ng-container *ngIf="isFuelTable && !first && !last">
+                        <span class="m-0 ta-font-bold">*</span></ng-container>
                 <ng-container
                     *ngIf="
-                        i
+                        !isFuelTable && i
                             | setHeaderRequiredStar
                                 : isPhoneTable
                                 : isEmailTable
@@ -136,6 +144,9 @@
             [selectedTruckTrailerRepairPm]="selectedTruckTrailerRepairPm"
             [truckTrailerRepairPmOptions]="truckTrailerRepairPmOptions"
             [isRepairOrderTable]="isRepairOrderTable"
+            [activeFuelItem]="activeFuelItem"
+            [isFuelTable]="isFuelTable"
+            [fuelItemsDropdown]="fuelItemsDropdown"
             (onSelectDropdown)="onSelectDropdown($event)"
             (deleteFormArrayRowClick)="deleteFormArrayRow($event)"
             (onInputHover)="handleInputHover($event)"

@@ -8,14 +8,13 @@ export class ModalTableConstants {
 
     static EMAIL_TABLE_HEADER_ITEMS: string[] = ['#', 'EMAIL', 'TYPE'];
 
-    static REPAIR_BILL_TABLE_HEADER_ITEMS: string[] = [
-        '#',
-        'DESCRIPTION',
-        'PM',
-        'QTY',
-        'PRICE',
-        'SUBTOTAL',
-    ];
+    static REPAIR_BILL_TABLE_HEADER_ITEMS = (isFuelTable: boolean) => {
+        if (isFuelTable) {
+            return ['#', 'ITEM', 'QTY', 'PRICE', 'SUBTOTAL'];
+        }
+
+        return ['#', 'DESCRIPTION', 'PM', 'QTY', 'PRICE', 'SUBTOTAL'];
+    };
 
     static REPAIR_ORDER_TABLE_HEADER_ITEMS: string[] = [
         '#',

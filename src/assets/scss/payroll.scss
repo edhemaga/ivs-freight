@@ -1,3 +1,5 @@
+@import '/src/theme/variables.scss';
+
 .payroll-main-holder {
     .payroll-top-header {
         display: flex;
@@ -1221,5 +1223,23 @@ gridster {
     app-no-empty-status {
         position: absolute;
         top: 44px;
+    }
+}
+
+.payroll {
+    &-number {
+        background-color: $muted;
+        border-radius: 2px;
+        padding: 4px 8px;
+    }
+
+    &-credit {
+        &--body {
+            margin: 22px 0;
+        }
+    }
+
+    &-mb-32 {
+        margin-bottom: 32px;
     }
 }

@@ -15,7 +15,7 @@ import { CommonModule } from '@angular/common';
 import { Subject, takeUntil } from 'rxjs';
 
 // modules
-//import { CroppieDirective, CroppieModule } from 'angular-croppie-module';
+import { ImageCroppedEvent, ImageCropperModule, LoadedImage } from 'ngx-image-cropper';
 import Croppie from 'croppie';
 
 // services
@@ -50,6 +50,7 @@ import { FormsModule } from '@angular/forms';
         // Module
         CommonModule,
         FormsModule,
+        ImageCropperModule,
        // CroppieModule,
         AngularSvgIconModule,
         NgbModule,
@@ -125,6 +126,28 @@ export class TaLogoChangeComponent
         private imageBase64Service: ImageBase64Service
     ) {}
 
+
+
+    imageChangedEvent: any = '';
+    croppedImage: any = '';
+
+    fileChangeEvent(event: any): void {
+        this.imageChangedEvent = event;
+    }
+    imageCropped(event: ImageCroppedEvent) {
+        this.croppedImage = event.base64;
+    }
+    imageLoaded(image: LoadedImage) {
+        // show cropper
+    }
+
+    cropperReady() {
+        // cropper ready
+    }
+    loadImageFailed() {
+        // show message
+    }
+
     ngOnChanges(changes: SimpleChanges): void {
         if (this.croppieShape !== 'rectangle') {
             const timeout = setTimeout(() => {
@@ -191,17 +214,19 @@ export class TaLogoChangeComponent
     }
 
     public onUploadImage(event: any) {
+        console.log(event);
+        this.imageChangedEvent = event.files[0].url;
         if (this.showUploadZone) {
-            this.showUploadZone = false;
+            this.showUploadZone = false; 
             this.imageUrl = null;
 
             const url = event.files[0].url;
 
-            this.croppieDirective.croppie.bind({
-                url: url as string,
-                points: [188, 101, 260, 191],
-                zoom: this.imageScale,
-            });
+            // this.croppieDirective.croppie.bind({
+            //     url: url as string,
+            //     points: [188, 101, 260, 191],
+            //     zoom: this.imageScale,
+            // });
 
             this.isImageValid = false;
             this.validationEvent.emit(this.isImageValid);

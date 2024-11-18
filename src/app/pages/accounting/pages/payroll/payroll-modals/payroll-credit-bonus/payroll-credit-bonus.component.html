@@ -1,109 +1,58 @@
-<app-ta-modal
-    [modalTitle]="
-        !editData?.type.includes('edit') ? 'Add Credit' : 'Edit Credit'
-    "
+<ng-container *ngIf="formLoaded">
+<app-payroll-base-modal
+    [modalTitle]="!isEditMode ? 'Add Credit' : 'Edit Credit'"
+    [baseForm]="payrollCreditForm"
+    [footerTemplate]="footerContent"
+    [isDriverAndTruckTabs]="true"
+    [modalType]="'MODAL_CREDIT'"
     [editData]="editData"
-    [isModalValid]="payrollCreditForm.valid && isFormDirty"
-    [saveAndAddNew]="!editData?.type.includes('edit')"
-    (action)="onModalAction($event)"
->
-    <div origin>
-        <app-ta-tab-switch
-            [tabs]="tabs"
-            (switchClicked)="tabChange($event)"
-            [type]="'type2-modal-popup type2-modal-popup-header'"
-        >
-        </app-ta-tab-switch>
-        <form
-            [formGroup]="payrollCreditForm"
-            class="form-container form-container-without-mb"
-        >
-            <div class="row">
-                <div class="col-7" *ngIf="selectedTab === 1">
-                    <app-ta-input-dropdown
-                        formControlName="driverId"
-                        [template]="'svgtext-template'"
-                        [inputConfig]="{
-                            name: 'Input Dropdown',
-                            type: 'text',
-                            label: 'Driver',
-                            isDropdown: true,
-                            dropdownImageInput: {
-                                withText: true,
-                                svg: false,
-                                image: true,
-                                url: selectedDriver?.logoName,
-                                nameInitialsInsteadUrl:
-                                    !selectedDriver?.logoName
-                                        ? selectedDriver?.name
-                                        : null,
-                                template: 'user'
-                            },
-                            blackInput: true,
-                            isRequired: true,
-                            textTransform: 'capitalize',
-                            dropdownWidthClass: 'w-col-256'
-                        }"
-                        [options]="labelsDriver"
-                        [activeItem]="selectedDriver"
-                        (selectedItem)="onSelectDropdown($event, 'driver')"
-                    ></app-ta-input-dropdown>
-                </div>
-                <div class="col-7" *ngIf="selectedTab === 2">
-                    <app-ta-input-dropdown
-                        formControlName="truckId"
-                        [template]="'double-text-template'"
-                        [inputConfig]="truckDropdownsConfig"
-                        [options]="labelsTrucks"
-                        [activeItem]="selectedTruck"
-                        (selectedItem)="onSelectDropdown($event, 'truck')"
-                    ></app-ta-input-dropdown>
-                </div>
-                <div class="col-5">
-                    <app-ta-input
-                        formControlName="date"
-                        [inputConfig]="{
-                            name: 'datepicker',
-                            label: 'Date',
-                            type: 'text',
-                            isDropdown: true,
-                            placeholderIcon: 'date',
-                            isRequired: true,
-                            customClass: 'datetimeclass'
-                        }"
-                    ></app-ta-input>
-                </div>
+></app-payroll-base-modal>
+
+<!-- Modal footer template -->
+<ng-template #footerContent>
+    <div class="modal-footer modal-footer-payroll" [class.justify-content-between]="isEditMode">
+        <div class="divider divider--dark divider--small"></div>
+        <ng-container *ngIf="isEditMode; else showCreateButtons">
+            <div>
+                <button
+                    class="modal-delete-btn ta-font-bold mr-12"
+                    (click)="saveCredit(taModalActionEnums.DELETE)"
+                    [class.valid]="payrollCreditForm.valid"
+                >
+                    Delete
+                </button>
+                <button
+                    class="modal-convert-to-template-btn ta-font-bold"
+                    (click)="saveCredit(taModalActionEnums.MOVE_TO_THIS_PERIOD)"
+                >
+                    Move to This Period
+                </button>
             </div>
-            <div class="row last-row">
-                <div class="col-7">
-                    <app-ta-input
-                        formControlName="description"
-                        [inputConfig]="{
-                            name: 'Description',
-                            label: 'Description',
-                            type: 'text',
-                            minLength: 2,
-                            maxLength: 160,
-                            textTransform: 'capitalize',
-                            isRequired: true
-                        }"
-                    ></app-ta-input>
-                </div>
-                <div class="col-5">
-                    <app-ta-input
-                        formControlName="amount"
-                        [inputConfig]="{
-                            name: 'Amount',
-                            label: 'Amount',
-                            type: 'text',
-                            minLength: 4,
-                            maxLength: 11,
-                            isRequired: true,
-                            thousandSeparator: true
-                        }"
-                    ></app-ta-input>
-                </div>
-            </div>
-        </form>
+            <button
+                class="modal-save-btn ta-font-bold"
+                (click)="saveCredit(taModalActionEnums.UPDATE)"
+                [class.valid]="payrollCreditForm.valid"
+            >
+                Save Changes
+            </button>
+        </ng-container>
+
+        <ng-template #showCreateButtons>
+            <button
+                class="ta-font-bold modal-save-btn modal-save-btn-add-new mr-12"
+                [class.valid]="payrollCreditForm.valid"
+                (click)="saveCredit(taModalActionEnums.SAVE_AND_ADD_NEW)"
+            >
+                Save and Add New
+            </button>
+            <button
+                class="modal-save-btn ta-font-bold"
+                (click)="saveCredit(taModalActionEnums.SAVE)"
+                [class.valid]="payrollCreditForm.valid"
+            >
+                Save
+            </button>
+        </ng-template>
     </div>
-</app-ta-modal>
+</ng-template>
+</ng-container>
