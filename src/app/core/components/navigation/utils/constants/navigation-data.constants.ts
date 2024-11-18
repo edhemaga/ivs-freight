@@ -108,13 +108,11 @@ export class NavigationDataConstants {
             arrow: 'assets/svg/common/ic_arrow-down.svg',
             isRouteActive: false,
             isSubrouteActive: false,
-            construction: environment.staging || environment.production,
             route: [
                 {
                     name: 'Payroll',
                     route: '/accounting/payroll',
                     activeRouteFlegId: 4,
-                    construction: environment.staging || environment.production,
                 },
                 {
                     name: 'IFTA',
