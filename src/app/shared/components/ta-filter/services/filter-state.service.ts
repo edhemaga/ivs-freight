@@ -180,7 +180,7 @@ export class FilterStateService implements OnDestroy {
             });
     }
 
-    public getPmData(mod) {
+    public getPmData(mod: string) {
         if (mod == 'truck') {
             const pmTruckData = this.repairService
                 .apiRepairPmTruckFilterListGet()
