@@ -152,8 +152,7 @@ export class RepairShopDetailsComponent implements OnInit, OnDestroy {
                 filter.searchTwo,
                 filter.searchThree
             )
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((repair: RepairListResponse) => {});
+            .pipe(takeUntil(this.destroy$));
     }
 
     // table filters
