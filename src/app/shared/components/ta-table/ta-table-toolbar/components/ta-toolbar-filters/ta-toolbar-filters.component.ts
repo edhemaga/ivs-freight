@@ -392,7 +392,6 @@ export class TaToolbarFiltersComponent implements OnInit, OnChanges, OnDestroy {
 
     // On Filter
     onFilter(event: any) {
-        console.log(event, 'event');
         this.tableSevice.sendCurrentSetTableFilter(event);
     }
 
