@@ -132,6 +132,7 @@
                         </div>
                     </div>
 
+                    <ng-container *ngIf="isCompanyRelated">
                     <app-ta-checkbox-card
                         formControlName="companyOwned"
                         [label]="'Company Owned'"
@@ -215,6 +216,7 @@
                             </div>
                         </ng-container>
                     </app-ta-checkbox-card>
+                </ng-container>
 
                     <!-- Repair Shop Services -->
                     <app-ta-custom-card

@@ -238,7 +238,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
         RepairShopConfig.getOpenHoursFormField();
     public businessStatus: number;
     private repairShop: RepairShopResponse;
-
+    public isCompanyRelated: boolean = false;
     constructor(
         private formBuilder: UntypedFormBuilder,
 
@@ -493,6 +493,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
                         });
 
                         this.mapEditData(repairShop);
+                        this.isCompanyRelated = this.editData?.companyOwned || repairShop.companyOwned;
                     }
 
                     this.preSelectService(repairShop?.shopServiceType);
@@ -994,10 +995,15 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
             monthlyDay: this.selectedMonthlyDays
                 ? this.selectedMonthlyDays.id
                 : null,
-            // this.getFromFieldValue(RepairShopModalStringEnum.COMPANY_OWNED)
-            companyOwned: true,
-            isCompanyRelated: true,
-            rent: this.getFromFieldValue(RepairShopModalStringEnum.RENT),
+            companyOwned: this.isCompanyRelated
+                ? this.getFromFieldValue(
+                      RepairShopModalStringEnum.COMPANY_OWNED
+                  )
+                : null,
+            isCompanyRelated: this.isCompanyRelated,
+            rent: MethodsCalculationsHelper.convertThousanSepInNumber(
+                this.getFromFieldValue(RepairShopModalStringEnum.RENT)
+            ),
             cover: this.convertCoverDocumentForRequest(),
         };
 
