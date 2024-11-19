@@ -121,7 +121,7 @@ import { RepairShopModalSvgRoutes } from '@pages/repair/pages/repair-modals/repa
 import { OpenedTab } from '@pages/repair/pages/repair-modals/repair-shop-modal/types';
 import { ITaInput } from '@shared/components/ta-input/config/ta-input.config';
 import { ContactsModalConstants } from '@pages/contacts/pages/contacts-modal/utils/constants/contacts-modal.constants';
-import { MethodsGlobalHelper } from '@shared/utils/helpers/methods-global.helper';
+import { TaInputService } from '@shared/services/ta-input.service';
 
 @Component({
     selector: 'app-repair-shop-modal',
@@ -251,7 +251,8 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
         private modalService: ModalService,
         private taLikeDislikeService: TaLikeDislikeService,
         private formService: FormService,
-        private reviewRatingService: ReviewsRatingService
+        private reviewRatingService: ReviewsRatingService,
+        private inputService: TaInputService
     ) {}
 
     public get isModalValidToSubmit(): boolean {
@@ -420,6 +421,12 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
             [RepairShopModalStringEnum.COVER]: [null],
         });
         this.tabTitle = this.editData?.data?.name;
+
+        this.inputService.customInputValidator(
+            this.repairShopForm.get(RepairShopModalStringEnum.EMAIL),
+            RepairShopModalStringEnum.EMAIL,
+            this.destroy$
+        );
     }
 
     // Inside your component
