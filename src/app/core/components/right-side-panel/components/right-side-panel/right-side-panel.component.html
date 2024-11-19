@@ -1,5 +1,6 @@
 <ca-right-side-panel
     class="right-side-panel"
+    [companiesData]="companiesData"
     [data]="activityLogData"
     [usersFilter]="usersFilterData"
     [modulesFilter]="modulesFilterData"
@@ -7,4 +8,5 @@
     (selectedNavModule)="selectedNavModuleEvent($event)"
     (activityLogFilterParams)="activityLogFilterParamsEvent($event)"
     (isSidePanelPinned)="sidePanelPinEvent($event)"
+    (isNavOpen)="navOpenEvent($event)"
 ></ca-right-side-panel>
