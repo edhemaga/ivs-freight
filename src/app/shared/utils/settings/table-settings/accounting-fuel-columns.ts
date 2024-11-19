@@ -501,14 +501,14 @@ export function getFuelStopColumnDefinition() {
             resizable: true,
         },
         {
-            ngTemplate: 'text',
-            title: 'Last $',
+            ngTemplate: 'progress-range',
+            title: 'Last',
             field: 'tableLast',
-            name: 'Last $',
+            name: 'Last',
             sortName: 'last',
             hidden: false,
-            width: 84,
-            minWidth: 84,
+            width: 90,
+            minWidth: 90,
             filter: '',
             isNumeric: false,
             index: 7,
@@ -520,7 +520,7 @@ export function getFuelStopColumnDefinition() {
             filterable: true,
             disabled: false,
             export: true,
-            resizable: true,
+            resizable: true
         },
         {
             ngTemplate: 'text',

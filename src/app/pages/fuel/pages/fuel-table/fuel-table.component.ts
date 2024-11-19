@@ -58,6 +58,7 @@ import { FuelQuery } from '@pages/fuel/state/fuel-state/fuel-state.query';
 //Enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
 import { eFuelTransactionType } from '@pages/fuel/pages/fuel-table/enums';
+import { eProgressRangeUnit } from '@shared/components/ta-progress-range/enums';
 
 //Services
 import { FuelService } from '@shared/services/fuel.service';
@@ -672,9 +673,14 @@ export class FuelTableComponent implements OnInit, AfterViewInit, OnDestroy {
             highestPricePerGallon
         } = data || {};
         const { address: addressName } = address || {};
-        const tablePriceRange = lowestPricePerGallon && highestPricePerGallon ? `$${lowestPricePerGallon}-$${highestPricePerGallon}` : TableStringEnum.EMPTY_STRING_PLACEHOLDER;
+        const tablePriceRange = lowestPricePerGallon && highestPricePerGallon ? `$${lowestPricePerGallon} - $${highestPricePerGallon}` : TableStringEnum.EMPTY_STRING_PLACEHOLDER;
         const tableExpense = totalCost ? `$${totalCost}` : TableStringEnum.EMPTY_STRING_PLACEHOLDER;
-        const tableLast = pricePerGallon ? `$${ pricePerGallon }` : TableStringEnum.EMPTY_STRING_PLACEHOLDER;
+        const tableLast = {
+            startRange: lowestPricePerGallon ?? null,
+            endRange: highestPricePerGallon ?? null,
+            value: pricePerGallon ?? null,
+            unit: eProgressRangeUnit.Dollar
+        };
 
         return {
             ...data,
@@ -689,6 +695,9 @@ export class FuelTableComponent implements OnInit, AfterViewInit, OnDestroy {
             tableUsed: used ?? TableStringEnum.EMPTY_STRING_PLACEHOLDER,
             tablePriceRange: tablePriceRange,
             tableExpense: tableExpense,
+            tableProgressRangeStart: lowestPricePerGallon ?? TableStringEnum.EMPTY_STRING_PLACEHOLDER,
+            tableProgressRangeEnd: highestPricePerGallon ?? TableStringEnum.EMPTY_STRING_PLACEHOLDER,
+            tableProgressRangeValue: pricePerGallon ?? TableStringEnum.EMPTY_STRING_PLACEHOLDER,
             isFavorite: favourite,
             tableDropdownContent: {
                 hasContent: true,
