@@ -239,6 +239,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
     public businessStatus: number;
     private repairShop: RepairShopResponse;
     public isCompanyRelated: boolean = false;
+    public isFormDirty: boolean = false;
     constructor(
         private formBuilder: UntypedFormBuilder,
 
@@ -257,8 +258,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
 
     public get isModalValidToSubmit(): boolean {
         return (
-            this.repairShopForm.valid &&
-            this.repairShopForm.dirty &&
+            this.repairShopForm.valid && this.isFormDirty &&
             this.isEachContactRowValid
         );
     }
@@ -419,6 +419,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
             [RepairShopModalStringEnum.RENT]: [null],
             [RepairShopModalStringEnum.OPEN_HOURS]: this.formBuilder.array([]),
             [RepairShopModalStringEnum.COVER]: [null],
+            [RepairShopModalStringEnum.SERVICE_HELPER]: null
         });
         this.tabTitle = this.editData?.data?.name;
 
@@ -427,6 +428,9 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
             RepairShopModalStringEnum.EMAIL,
             this.destroy$
         );
+
+        if(!this.editData?.id) 
+            this.startFormChanges();
     }
 
     // Inside your component
@@ -497,12 +501,15 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
                                 repairShop.monthlyDay,
                             [RepairShopModalStringEnum.RENT]: repairShop.rent,
                             [RepairShopModalStringEnum.COVER]: repairShop.cover,
+                            [RepairShopModalStringEnum.SERVICE_HELPER]:
+                                JSON.stringify(this.services)
                         });
 
                         this.mapEditData(repairShop);
                         this.isCompanyRelated =
                             this.editData?.companyOwned ||
                             repairShop.isCompanyRelated;
+                        this.startFormChanges();
                     }
 
                     this.preSelectService(repairShop?.shopServiceType);
@@ -803,6 +810,20 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
 
     public activeRepairService(service: RepairShopModalService): void {
         service.active = !service.active;
+
+        this.repairShopForm
+            .get(RepairShopModalStringEnum.SERVICE_HELPER)
+            .patchValue(JSON.stringify(this.services));
+    }
+
+    private startFormChanges(): void {
+            this.formService.checkFormChange(this.repairShopForm);
+
+            this.formService.formValueChange$
+                .pipe(takeUntil(this.destroy$))
+                .subscribe((isFormChange: boolean) => {
+                    this.isFormDirty = isFormChange;
+                });
     }
 
     // Bank
