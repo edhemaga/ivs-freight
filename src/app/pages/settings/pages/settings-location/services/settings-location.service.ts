@@ -67,7 +67,11 @@ export class SettingsLocationService implements OnDestroy {
      * @param type - payload
      * @param modalName - modal name
      */
-    public onModalAction(data: { modalName: string; type?: any, id?: any }, id?: any, companyOwned?: boolean) {
+    public onModalAction(
+        data: { modalName: string; type?: any; id?: any },
+        id?: any,
+        companyOwned?: boolean
+    ) {
         switch (data.modalName) {
             case 'parking': {
                 this.modalService.openModal(
@@ -85,7 +89,7 @@ export class SettingsLocationService implements OnDestroy {
                     {
                         size: 'small',
                     },
-                    { ...data.type },
+                    { ...data.type }
                 );
                 break;
             }
@@ -93,7 +97,7 @@ export class SettingsLocationService implements OnDestroy {
                 this.modalService.openModal(
                     RepairShopModalComponent,
                     { size: TableStringEnum.SMALL },
-                    {id, companyOwned},
+                    { id, companyOwned: true }
                 );
                 break;
             }
