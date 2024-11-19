@@ -58,6 +58,7 @@ import { FormService } from '@shared/services/form.service';
 import { RepairService } from '@shared/services/repair.service';
 import { TaLikeDislikeService } from '@shared/components/ta-like-dislike/services/ta-like-dislike.service';
 import { ReviewsRatingService } from '@shared/services/reviews-rating.service';
+import { TaInputService } from '@shared/services/ta-input.service';
 
 // Validators
 import {
@@ -104,8 +105,7 @@ import { ModalTableTypeEnum } from '@shared/enums/modal-table-type.enum';
 import { TableStringEnum } from '@shared/enums/table-string.enum';
 import { ConfirmationActivationStringEnum } from '@shared/components/ta-shared-modals/confirmation-activation-modal/enums/confirmation-activation-string.enum';
 import {
-    ActionTypesEnum,
-    FileActionEvent,
+    ActionTypesEnum, 
     OpenWorkingHours,
     RepairShopModalStringEnum,
     RepairShopModalEnum,
@@ -121,7 +121,6 @@ import { RepairShopModalSvgRoutes } from '@pages/repair/pages/repair-modals/repa
 import { OpenedTab } from '@pages/repair/pages/repair-modals/repair-shop-modal/types';
 import { ITaInput } from '@shared/components/ta-input/config/ta-input.config';
 import { ContactsModalConstants } from '@pages/contacts/pages/contacts-modal/utils/constants/contacts-modal.constants';
-import { TaInputService } from '@shared/services/ta-input.service';
 
 @Component({
     selector: 'app-repair-shop-modal',
