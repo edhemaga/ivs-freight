@@ -160,7 +160,7 @@
     </app-ca-filter>
 
     <!-- FUEL STOP FILTER -->
-    <app-ta-filter
+    <app-ca-filter
         *ngIf="options.toolbarActions.showFuelStopFilter"
         [type]="'fuelStopFilter'"
         [icon]="'fuel'"
@@ -168,13 +168,14 @@
         [noLeftIcon]="true"
         [defFilterHolder]="true"
         (setFilter)="onFilter($event)"
+        (clearAll)="onFilter($event)"
         [class]="
             options?.toolbarActions?.filtersOrder?.fuelStop
                 ? 'order-' + options.toolbarActions.filtersOrder.fuelStop
                 : ''
         "
     >
-    </app-ta-filter>
+    </app-ca-filter>
 
     <!-- STATE FILTER -->
     <app-ca-filter
@@ -296,21 +297,23 @@
     </app-ca-filter>
 
     <!-- CATEGORY FUEL FILTER -->
-    <app-ta-filter
+    <app-ca-filter
         *ngIf="options.toolbarActions.showCategoryFuelFilter"
-        [type]="'categoryFuelFilter'"
-        [icon]="'ic_funnel'"
+        [type]="'pmFilter'"
+        [icon]="'funnel'"
         [filterTitle]="'Category Filter'"
         [defFilterHolder]="true"
         [noLeftIcon]="true"
         (setFilter)="onFilter($event)"
+        (clearAll)="onFilter($event)"
         [class]="
             options?.toolbarActions?.filtersOrder?.categoryFuel
                 ? 'order-' + options.toolbarActions.filtersOrder.categoryFuel
                 : ''
         "
+        [pmFilterArray]="categoryFuelArray"
     >
-    </app-ta-filter>
+    </app-ca-filter>
 
     <!-- DISPECHER FILTER -->
     <app-ca-filter
@@ -355,7 +358,7 @@
     </app-ca-filter>
 
     <!-- PARKING FILTER -->
-    <app-ta-filter
+    <app-ca-filter
         *ngIf="options.toolbarActions.showParkingFilter"
         [type]="'parkingFilter'"
         [icon]="'parking'"
@@ -363,13 +366,15 @@
         [defFilterHolder]="true"
         [noLeftIcon]="true"
         (setFilter)="onFilter($event)"
+        (clearAll)="onFilter($event)"
         [class]="
             options?.toolbarActions?.filtersOrder?.parking
                 ? 'order-' + options.toolbarActions.filtersOrder.parking
                 : ''
         "
+        [pmFilterArray]="loadParkingOptionsArray"
     >
-    </app-ta-filter>
+    </app-ca-filter>
 
     <!-- TRUCK TYPE FILTER -->
     <app-ca-filter

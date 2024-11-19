@@ -86,6 +86,9 @@ export class TaToolbarFiltersComponent implements OnInit, OnChanges, OnDestroy {
     public canadaStates: ArrayStatus[];
     public categoryRepairArray: ArrayStatus[];
     public pmFilterArray: ArrayStatus[];
+    public loadParkingOptionsArray: ArrayStatus[];
+    public categoryFuelArray: ArrayStatus[];
+    public fuelStopArray: ArrayStatus[];
 
     constructor(
         private tableSevice: TruckassistTableService,
@@ -126,6 +129,9 @@ export class TaToolbarFiltersComponent implements OnInit, OnChanges, OnDestroy {
         let truckResData;
         let trailerResData;
 
+        if (this.options.toolbarActions.showParkingFilter)
+            this.filterService.getDispatchFilterData();
+
         if (this.options.toolbarActions.showDispatcherFilter)
             this.filterService.getDispatchData();
 
@@ -134,6 +140,9 @@ export class TaToolbarFiltersComponent implements OnInit, OnChanges, OnDestroy {
 
         if (this.options.toolbarActions.showCategoryRepairFilter)
             this.filterService.getRepairCategory();
+
+        if (this.options.toolbarActions.showCategoryFuelFilter)
+            this.filterService.getFuelCategory();
 
         if (this.options.toolbarActions.showPMFilter)
             this.filterService.getPmData(
@@ -189,9 +198,12 @@ export class TaToolbarFiltersComponent implements OnInit, OnChanges, OnDestroy {
 
                         this.unselectedDispatcher = newData;
                     }
-                    if (res?.animation === ToolbarFilterStringEnum.LIST_UPDATE)
+                    if (
+                        res?.animation === ToolbarFilterStringEnum.LIST_UPDATE
+                    ) {
                         this.loadStatusOptionsArray = res.data.statuses;
-
+                        this.loadParkingOptionsArray = res.data.parkings;
+                    }
                     if (
                         res?.animation ===
                         ToolbarFilterStringEnum.TRUCK_LIST_UPDATE
@@ -285,6 +297,13 @@ export class TaToolbarFiltersComponent implements OnInit, OnChanges, OnDestroy {
                         ToolbarFilterStringEnum.STATE_DATA_UPDATE
                     )
                         this.handleStateDataUpdate(res);
+
+                    if (
+                        res?.animation ===
+                        ToolbarFilterStringEnum.FUEL_CATEGORY_UPDATE
+                    ) {
+                        this.categoryFuelArray = res.data;
+                    }
 
                     if (
                         res?.animation ===
