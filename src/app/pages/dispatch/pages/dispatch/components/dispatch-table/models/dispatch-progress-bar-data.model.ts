@@ -1,7 +1,9 @@
+import { IGpsProgress } from 'ca-components/lib/components/ca-progress-bar/models/gps-progress.model';
+
 export interface DispatchProgressBarData {
     currentPosition?: number;
     mileageInfo?: string;
-    currentStop?: DispatchProgressStopData;
+    currentStop?: IGpsProgress;
     gpsTitle?: string;
     gpsIcon?: string;
     gpsInfo?: {
@@ -12,23 +14,6 @@ export interface DispatchProgressBarData {
     mileagesPercent?: string;
     totalMiles?: number;
     gpsLocationIcon?: string;
-    gpsProgress?: DispatchProgressStopData[];
+    gpsProgress?: IGpsProgress[];
     dispatchStatus?: string;
-}
-
-export interface DispatchProgressStopData {
-    type?: string;
-    heading?: string;
-    position?: number;
-    location?: string;
-    mileage?: string;
-    data?: string;
-    time?: string;
-    latitude?: number;
-    longitude?: number;
-    legMiles?: number;
-    stopNumber?: number;
-    isAtStop?: boolean;
-    currentWaitTime?: number;
-    averageWaitTime?: { [key: string]: number; };
 }
