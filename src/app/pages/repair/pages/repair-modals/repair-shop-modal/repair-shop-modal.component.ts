@@ -420,6 +420,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
             [RepairShopModalStringEnum.COVER]: [null],
         });
         this.tabTitle = this.editData?.data?.name;
+        this.isCompanyRelated =  this.editData?.companyOwned
     }
 
     // Inside your component
