@@ -726,28 +726,60 @@ export class CustomerTableComponent
                     ) {
                         if (res.action === TableStringEnum.SET) {
                             const invoiceFilterFrom = res.queryParams
-                                .firstFormFrom
-                                ? parseInt(res.queryParams.firstFormFrom)
+                                ?.moneyArray[0]?.from
+                                ? parseInt(
+                                      res.queryParams.moneyArray[0].from.replace(
+                                          /,/g,
+                                          ''
+                                      )
+                                  )
                                 : null;
-                            const invoiceFilterTo = res.queryParams.firstFormTo
-                                ? parseInt(res.queryParams.firstFormTo)
+                            const invoiceFilterTo = res.queryParams
+                                ?.moneyArray[0]?.to
+                                ? parseInt(
+                                      res.queryParams.moneyArray[0].to.replace(
+                                          /,/g,
+                                          ''
+                                      )
+                                  )
                                 : null;
 
                             const availableCreditFilterFrom = res.queryParams
-                                .secondFormFrom
-                                ? parseInt(res.queryParams.secondFormFrom)
+                                ?.moneyArray[1]?.from
+                                ? parseInt(
+                                      res.queryParams.moneyArray[1].from.replace(
+                                          /,/g,
+                                          ''
+                                      )
+                                  )
                                 : null;
                             const availableCreditFilterTo = res.queryParams
-                                .secondFormTo
-                                ? parseInt(res.queryParams.secondFormTo)
+                                ?.moneyArray[1]?.to
+                                ? parseInt(
+                                      res.queryParams.moneyArray[1].to.replace(
+                                          /,/g,
+                                          ''
+                                      )
+                                  )
                                 : null;
 
                             const revenueFilterFrom = res.queryParams
-                                .thirdFormFrom
-                                ? parseInt(res.queryParams.thirdFormFrom)
+                                ?.moneyArray[2]?.from
+                                ? parseInt(
+                                      res.queryParams.moneyArray[2].from.replace(
+                                          /,/g,
+                                          ''
+                                      )
+                                  )
                                 : null;
-                            const revenueFilterTo = res.queryParams.thirdFormTo
-                                ? parseInt(res.queryParams.thirdFormTo)
+                            const revenueFilterTo = res.queryParams
+                                ?.moneyArray[2]?.to
+                                ? parseInt(
+                                      res.queryParams.moneyArray[2].to.replace(
+                                          /,/g,
+                                          ''
+                                      )
+                                  )
                                 : null;
 
                             this.viewData = this.customerTableData.filter(

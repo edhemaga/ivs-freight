@@ -1049,6 +1049,31 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                                 this.backFilterQuery.dateFrom = fromDate;
                             }
                             break;
+                        case RepairTableStringEnum.STATE_FILTER:
+                            if (res.action === TableStringEnum.SET) {
+                                this.viewData = this.repairTableData?.filter(
+                                    (address) => {
+                                        const inCanadaArray =
+                                            res.queryParams.canadaArray.some(
+                                                (canadaState) =>
+                                                    canadaState.stateName ===
+                                                    address['address']['state']
+                                            );
+
+                                        const inUsaArray =
+                                            res.queryParams.usaArray.some(
+                                                (usaState) =>
+                                                    usaState.stateName ===
+                                                    address['address']['state']
+                                            );
+
+                                        return inCanadaArray || inUsaArray;
+                                    }
+                                );
+                            }
+
+                            if (res.action === TableStringEnum.CLEAR)
+                                this.viewData = this.repairTableData;
                         case RepairTableStringEnum.MONEY_FILTER:
                             this.backFilterQuery.costFrom =
                                 res.queryParams?.from;
@@ -1061,7 +1086,10 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
 
                     if (this.selectedTab !== TableStringEnum.REPAIR_SHOP)
                         this.repairBackFilter(this.backFilterQuery);
-                    else this.shopBackFilter(this.backFilterQuery);
+                    else if (
+                        res.filterType !== RepairTableStringEnum.STATE_FILTER
+                    )
+                        this.shopBackFilter(this.backFilterQuery);
                 }
             });
     }
