@@ -578,7 +578,9 @@
         [selectedFilter]="this.activeTableData.closedArray.selectedFilter"
     ></app-ta-special-filter>
 
-    <ng-container *ngIf="options.toolbarActions.showIntegratedFuelTransactionsFilter">
+    <ng-container
+        *ngIf="options.toolbarActions.showIntegratedFuelTransactionsFilter"
+    >
         <app-ta-special-filter
             [type]="'fuel-filter'"
             [icon]="'ic_fuel_transaction'"

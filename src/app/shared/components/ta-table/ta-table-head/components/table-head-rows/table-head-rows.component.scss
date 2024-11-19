@@ -117,6 +117,12 @@
         .icons {
             cursor: pointer;
 
+            svg-icon {
+                svg {
+                    display: flex;
+                }
+            }
+
             &.icon-hover {
                 &:hover {
                     svg-icon {

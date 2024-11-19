@@ -149,7 +149,7 @@ export class DriverFlatRateReportComponent
                 header: 'Delivery',
                 headerCellType: 'template',
                 headerTemplate: this.customDeliveryHeaderTemplate,
-                field: 'pickups',
+                field: 'deliveries',
                 cellType: 'template',
                 template: this.cusstomLoadDescriptionTemplate, // Pass the template reference
             },
