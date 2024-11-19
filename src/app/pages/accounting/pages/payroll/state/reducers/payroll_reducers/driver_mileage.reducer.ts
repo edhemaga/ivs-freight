@@ -62,9 +62,9 @@ export const onClosePayrollSoloMileageReportDriverSuccess = (
     expandedReportTable: false,
     closeReportPaymentLoading: false,
     payrollCounts: {},
-    selectedDeductionIds: [],
-    selectedBonusIds: [],
-    selectedCreditIds: [],
+    selectedDeductionIds: undefined,
+    selectedBonusIds: undefined,
+    selectedCreditIds: undefined,
     lastLoadDate: undefined,
 });
 
@@ -112,9 +112,9 @@ export const onDriverMileagePayrollClosedPaymentsSuccess = (
     expandedReportTable: false,
     closeReportPaymentLoading: false,
     payrollCounts: {},
-    selectedDeductionIds: [],
-    selectedBonusIds: [],
-    selectedCreditIds: [],
+    selectedDeductionIds: undefined,
+    selectedBonusIds: undefined,
+    selectedCreditIds: undefined,
     lastLoadDate: undefined,
 });
 

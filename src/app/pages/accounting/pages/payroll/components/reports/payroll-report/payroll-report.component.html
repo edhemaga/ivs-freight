@@ -137,7 +137,10 @@
         [class.delivery]="data.stopType.id == 2"
     >
         <ng-container *ngIf="data.orderNumber">
-            <svg-icon name="load_order_num_{{ data.orderNumber }}"></svg-icon>
+            <svg-icon
+                [svgClass]="'d-flex'"
+                name="load_order_num_{{ data.orderNumber }}"
+            ></svg-icon>
         </ng-container>
 
         <div class="load-description-name">

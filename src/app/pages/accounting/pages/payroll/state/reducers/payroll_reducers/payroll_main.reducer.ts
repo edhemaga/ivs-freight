@@ -26,9 +26,9 @@ export const onSetPayrollopenedTab = (
     ...state,
     payrollOpenedTab: data.tabStatus,
     payrollCounts: {},
-    selectedDeductionIds: [],
-    selectedBonusIds: [],
-    selectedCreditIds: [],
+    selectedDeductionIds: undefined,
+    selectedBonusIds: undefined,
+    selectedCreditIds: undefined,
     lastLoadDate: undefined,
 });
 
@@ -37,15 +37,14 @@ export const onSetTableReportExpanded = (
     data: { expanded: boolean }
 ) => {
     if (!data.expanded) {
-        console.log('CLOSEEEE!!!');
         return {
             ...state,
             lastLoadDate: null,
-            selectedDeductionIds: [],
-            selectedFuelIds: [],
-            selectedCreditIds: [],
-            selectedBonusIds: [],
-            selectedLoadIds: [],
+            selectedDeductionIds: undefined,
+            selectedFuelIds: undefined,
+            selectedCreditIds: undefined,
+            selectedBonusIds: undefined,
+            selectedLoadIds: undefined,
             expandedReportTable: data.expanded,
             payrollOpenedReport: null,
         };

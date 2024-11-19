@@ -214,9 +214,33 @@
                                 status:
                                     column.tableHeadTitle === 'STATUS' &&
                                     tableHeadRowsData?.tableData[0]
-                                        .gridNameTitle !== 'User'
+                                        .gridNameTitle !== 'User',
+                                'd-flex gap-1 align-items-center': column.headIconStyle,
                             }"
                         >
+                            <ng-container *ngIf="column.headIconStyle">
+                                <div
+                                    class="icons"
+                                    (click)="
+                                        handleTableHeadRowsActionClick(
+                                            column,
+                                            'sort'
+                                        )
+                                    "
+                                >
+                                    <svg-icon
+                                        [svgStyle]="{
+                                            'width.px':
+                                                column.headIconStyle.width,
+                                            'height.px':
+                                                column.headIconStyle.height
+                                        }"
+                                        [src]="
+                                            column.headIconStyle.imgPath ?? ''
+                                        "
+                                    ></svg-icon>
+                                </div>
+                            </ng-container>
                             {{ column.tableHeadTitle }}
 
                             <span class="th-title-double-subtitle-additional">
