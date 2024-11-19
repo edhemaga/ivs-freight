@@ -1,4 +1,5 @@
 import {
+    ChangeDetectorRef,
     Component,
     Input,
     OnChanges,
@@ -12,14 +13,14 @@ import {
     UntypedFormBuilder,
     UntypedFormGroup,
 } from '@angular/forms';
+import { Subject, BehaviorSubject, takeUntil } from 'rxjs';
 
-import { Subject, takeUntil } from 'rxjs';
-
-// services
+// Services
 import { DetailsPageService } from '@shared/services/details-page.service';
 import { ModalService } from '@shared/services/modal.service';
+import { DriverService } from '@pages/driver/services/driver.service';
 
-// components
+// Components
 import { TaTabSwitchComponent } from '@shared/components/ta-tab-switch/ta-tab-switch.component';
 import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-custom-card.component';
 import { TaUploadFilesComponent } from '@shared/components/ta-upload-files/ta-upload-files.component';
@@ -37,26 +38,30 @@ import { DriverNotificationCardComponent } from '@pages/driver/pages/driver-deta
 import { DriverModalComponent } from '@pages/driver/pages/driver-modals/driver-modal/driver-modal.component';
 import { CaChartComponent } from 'ca-components';
 
-// constants
+// Constants
 import { DriverDetailsCardSvgRoutes } from '@pages/driver/pages/driver-details/components/driver-details-card/utils/svg-routes/driver-details-card-svg-routes';
+import { DriverDetailsChartsConfiguration } from '../../utils/constants';
 
-// store
+// Store
 import { DriversMinimalListQuery } from '@pages/driver/state/driver-details-minimal-list-state/driver-minimal-list.query';
 
-// enums
+// Enums
 import { ArrowActionsStringEnum } from '@shared/enums/arrow-actions-string.enum';
 import { DriverDetailsCardStringEnum } from '@pages/driver/pages/driver-details/components/driver-details-card/enums/driver-details-card-string.enum';
 
-// const
-import { DriverDetailsChartsConfiguration } from '@pages/driver/pages/driver-details/utils/constants';
-
-// helpers
+// Helpers
 import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calculations.helper';
+import { ChartHelper } from '@shared/utils/helpers';
 
-// models
-import { DriverMinimalResponse, DriverResponse } from 'appcoretruckassist';
+// Models
+import { DriverMinimalResponse, DriverPayrollChartResponse, DriverPayrollResponse, DriverResponse } from 'appcoretruckassist';
 import { TabOptions } from '@shared/components/ta-tab-switch/models/tab-options.model';
 import { IChartConfiguaration } from 'ca-components/lib/components/ca-chart/models';
+
+// Enums
+import { ChartTypesStringEnum } from 'ca-components/lib/components/ca-chart/enums';
+import { ChartLegendProperty, Tabs } from '@shared/models';
+import { ChartTabStringEnum, ChartValueLabelEnum } from '@shared/enums';
 
 @Component({
     selector: 'app-driver-details-card',
@@ -87,20 +92,21 @@ import { IChartConfiguaration } from 'ca-components/lib/components/ca-chart/mode
     ],
 })
 export class DriverDetailsCardComponent
-    implements OnInit, OnChanges, OnDestroy
-{
+    implements OnInit, OnChanges, OnDestroy {
     @Input() driver: DriverResponse;
 
     private destroy$ = new Subject<void>();
 
     public driverCurrentIndex: number;
 
-    // drivers dropdown
+    // Drivers dropdown
     public driversDropdownList: DriverMinimalResponse[];
 
-    // payroll chart card
+    // Payroll chart card
+    public barChartTabs!: Tabs[];
+    public chartLegendData: ChartLegendProperty[];
 
-    // note card
+    // Note card
     public noteForm: UntypedFormGroup;
 
     public payrollChartConfig: IChartConfiguaration =
@@ -109,24 +115,25 @@ export class DriverDetailsCardComponent
     constructor(
         private formBuilder: UntypedFormBuilder,
 
-        // services
+        // Services
         private detailsPageService: DetailsPageService,
         private modalService: ModalService,
+        private driverService: DriverService,
 
-        // store
+        // Store
         private driverMinimalQuery: DriversMinimalListQuery
-    ) {}
+    ) { }
 
     ngOnInit(): void {
         this.createForm();
-
-        this.getConstantData();
 
         this.getStoreData(true);
 
         this.getCurrentIndex();
 
         this.getDriversDropdown();
+
+        this.initDriverPayrollData();
     }
 
     ngOnChanges(changes: SimpleChanges): void {
@@ -135,22 +142,55 @@ export class DriverDetailsCardComponent
         }
     }
 
+    private initDriverPayrollData(): void {
+        this.barChartTabs = Object.keys(ChartTabStringEnum)
+            ?.map((key: string, indx: number) => {
+                const tab: Tabs = {
+                    id: indx + 1,
+                    name: ChartTabStringEnum[key],
+                    checked: indx === 0
+                }
+                return tab;
+            })
+
+        this.getDriverPayroll();
+    }
+
+    private getDriverPayroll(timeFilter?: number): void {
+        this.driverService
+            .getDriverPayroll(this.driver.id, timeFilter || 1)
+            .subscribe((data: DriverPayrollResponse) => {
+                if (timeFilter && this.barChartTabs[timeFilter - 1])
+                    this.barChartTabs[timeFilter - 1].checked = true;
+                this.payrollChartConfig = {
+                    ...this.payrollChartConfig,
+                    chartData: ChartHelper
+                        .generateDataByDateTime<DriverPayrollChartResponse>(
+                            data.getDriverPayrollChartResponse,
+                            [
+                                {
+                                    value: ChartValueLabelEnum.MILES,
+                                    type: ChartTypesStringEnum.LINE,
+                                    color: '#6692F1',
+                                },
+                                {
+                                    value: ChartValueLabelEnum.EARNINGS,
+                                    type: ChartTypesStringEnum.BAR,
+                                    color: '#FBC88B',
+                                }
+                            ]
+                        )
+                };
+
+                this.chartLegendData = ChartHelper
+                    .generateLegendData(this.payrollChartConfig.chartData.datasets);
+            })
+    }
+
     private createForm(): void {
         this.noteForm = this.formBuilder.group({
             note: [this.driver.note],
         });
-    }
-
-    private getConstantData(): void {
-        // this.barChartTabs = JSON.parse(
-        //     JSON.stringify(DriverDetailsCardConstants.BAR_CHART_TABS)
-        // );
-        // this.barChartConfig = DriverDetailsCardConstants.BAR_CHART_CONFIG;
-        // this.barChartLegend = DriverDetailsCardConstants.BAR_CHART_LEGEND;
-        // this.barAxes = DriverDetailsCardConstants.BAR_CHART_AXES;
-        // this.barChartPayrollCall =
-        //     DriverDetailsCardConstants.BAR_CHART_PAYROLL_API_CALL;
-        // this.barChartMonthList = ChartConstants.MONTH_LIST_SHORT;
     }
 
     private getStoreData(isInit: boolean = false): void {
@@ -195,8 +235,8 @@ export class DriverDetailsCardComponent
                     active: id === this.driver.id,
                     hiredAt: hiredAt
                         ? MethodsCalculationsHelper.convertDateFromBackend(
-                              hiredAt
-                          )
+                            hiredAt
+                        )
                         : null,
                 };
             });
@@ -207,8 +247,8 @@ export class DriverDetailsCardComponent
     }
 
     public onPayrollTabChange(tab: TabOptions): void {
-        // const chartType = this.payrollChart?.detailsTimePeriod(tab.name);
-        // this.getDriverPayrollChartData(this.driver.id, chartType);
+        this.payrollChartConfig = null;
+        this.getDriverPayroll(tab.id);
     }
 
     public onSelectedDriver(event: DriverMinimalResponse): void {
@@ -221,7 +261,7 @@ export class DriverDetailsCardComponent
                     const fullname =
                         firstName +
                         DriverDetailsCardStringEnum.EMPTY_STRING +
-                        +lastName;
+                        lastName;
 
                     return {
                         id,

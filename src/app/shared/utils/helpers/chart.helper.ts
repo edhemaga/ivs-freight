@@ -1,13 +1,13 @@
 // Models
-import { ChartTypeProperty } from '@shared/models';
+import { ChartLegendProperty, ChartTypeProperty } from '@shared/models';
 import {
     IBaseDataset,
     IChartData,
 } from 'ca-components/lib/components/ca-chart/models';
 
 export class ChartHelper {
-    static generateDataByDateTime<T1>(
-        rawData: T1[],
+    public static generateDataByDateTime<T>(
+        rawData: T[],
         chartTypeProperties: ChartTypeProperty[]
     ): IChartData<IBaseDataset> {
         if (!rawData?.length) return;
@@ -15,21 +15,28 @@ export class ChartHelper {
         let datasets: IBaseDataset[] = [];
         let labels: string[] = [];
 
-        rawData?.forEach((rawItem: T1, indx: number) => {
+        rawData?.forEach((rawItem: T, indx: number) => {
             let label: string = ``;
             Object.keys(rawItem)?.forEach((key: string) => {
                 if (this.isNotDateTimeKey(key))
                     if (indx) return;
                     else {
+                        const capitalizedKey: string = this.capitalizeFirstLetter(key);
                         const item: ChartTypeProperty
-                            = chartTypeProperties?.find(
-                                (arg) => arg.value === key
-                            )
+                            = {
+                            ...chartTypeProperties?.find(
+                                (arg: ChartTypeProperty) =>
+                                    this.capitalizeFirstLetter(arg.value) ===
+                                    capitalizedKey,
+
+                            ),
+                            value: capitalizedKey
+                        };
                         datasets = [
                             ...datasets,
                             {
                                 type: item?.type,
-                                label: key,
+                                label: item.value,
                                 data: [],
                                 borderColor: item?.color,
                                 backgroundColor: item?.color,
@@ -37,12 +44,13 @@ export class ChartHelper {
                             },
                         ];
                     }
-                else label += `${rawItem[key]}/`;
+                else label += `${rawItem[key]}${key !== 'year' ? '/' : ''}`;
             });
-            labels = [...labels, label.substring(0, label.length - 1)];
+            labels = [...labels, this.capitalizeFirstLetter(label)];
 
             datasets?.forEach((item: IBaseDataset) => {
-                item.data = [...item.data, rawItem[item.label]];
+                item.data = [...item.data, rawItem[this.lowerCaseFirstLetter(item.label)]];
+                item.label = (item.label);
             });
         });
 
@@ -52,6 +60,23 @@ export class ChartHelper {
         };
         return chartData;
     }
+
+    public static generateLegendData(datasets: IBaseDataset[]): ChartLegendProperty[] {
+        let legendData: ChartLegendProperty[] = [];
+        datasets.forEach((item: IBaseDataset) => {
+            const legendItem: ChartLegendProperty = {
+                name: item.label,
+                value: item.data.reduce(
+                    (accumulator, currentValue) =>
+                        accumulator + currentValue,
+                    0),
+                color: item.borderColor
+            }
+            legendData = [...legendData, legendItem];
+        });
+        return legendData;
+    }
+
 
     private static isNotDateTimeKey(key: string): boolean {
         switch (key) {
@@ -64,6 +89,16 @@ export class ChartHelper {
             default:
                 return true;
         }
+    }
+
+    private static capitalizeFirstLetter(val: string): string {
+        return String(val).charAt(0).toUpperCase()
+            + String(val).slice(1);
+    }
+
+    private static lowerCaseFirstLetter(val: string): string {
+        return String(val).charAt(0).toLowerCase()
+            + String(val).slice(1);
     }
 
 }

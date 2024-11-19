@@ -85,10 +85,7 @@
                         marginBottom: '4px'
                     }"
                 >
-                    <div
-                        class="charts-template perfomance"
-                    >
-
+                    <div class="charts-template perfomance">
                         <!-- <ng-container *ngIf="!payrollChart.hoveringStatus"> -->
                         <div>
                             <app-ta-tab-switch
@@ -98,11 +95,21 @@
                             >
                             </app-ta-tab-switch>
                         </div>
-                        <!-- </ng-container> -->
-                        <app-ca-chart 
-                            [chartConfig]="payrollChartConfig"
-                        >
-                        </app-ca-chart>
+                        <ng-container *ngIf="payrollChartConfig">
+                            <ng-container
+                                *ngTemplateOutlet="
+                                    chartLegend;
+                                    context: {
+                                        data: {
+                                            chartLegendData
+                                        },
+                                        title: 'Test'
+                                    }
+                                "
+                            ></ng-container>
+                            <app-ca-chart [chartConfig]="payrollChartConfig">
+                            </app-ca-chart>
+                        </ng-container>
                     </div>
                 </app-ta-custom-card>
 
@@ -187,3 +194,30 @@
         </div>
     </div>
 </ng-container>
+
+<ng-template #chartLegend let-data="data" let-title="title">
+    <div class="colored-background">
+        <ng-container *ngIf="title">
+            <div class="legend-title font-size-14 ta-font-extra-bold">
+                {{ title }}
+            </div>
+        </ng-container>
+        <div class="legend-wrapper d-flex">
+            <!-- item.value, item.name, item.color -->
+            <ng-container *ngFor="let item of data.chartLegendData">
+                <div class="w-100">
+                    <div
+                        class="d-flex align-content-center text-size-11 ta-font-bold"
+                    >
+                        <span>{{ item?.name }}</span>
+                        <span
+                            class="circle-indicator"
+                            [ngStyle]="{ backgroundColor: item?.color }"
+                        ></span>
+                    </div>
+                    <div class="text-size-18">{{ item?.value }}</div>
+                </div>
+            </ng-container>
+        </div>
+    </div>
+</ng-template>

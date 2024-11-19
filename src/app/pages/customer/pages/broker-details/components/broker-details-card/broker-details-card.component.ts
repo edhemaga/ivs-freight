@@ -44,9 +44,11 @@ import { BrokerModalComponent } from '@pages/customer/pages/broker-modal/broker-
 import { FormatDatePipe } from '@shared/pipes/format-date.pipe';
 
 // Enums
-import { ArrowActionsStringEnum } from '@shared/enums/arrow-actions-string.enum';
-import { ChartTabStringEnum } from '@shared/enums/chart-tab-string.enum';
-import { TableStringEnum } from '@shared/enums/table-string.enum';
+import {
+    ChartTabStringEnum,
+    TableStringEnum,
+    ArrowActionsStringEnum
+} from '@shared/enums';
 
 // Svg routes
 import { BrokerDetailsSvgRoutes } from '@pages/customer/pages/broker-details/utils/svg-routes/';
@@ -59,8 +61,7 @@ import { BrokerDetailsSvgRoutes } from '@pages/customer/pages/broker-details/uti
     providers: [FormatDatePipe],
 })
 export class BrokerDetailsCardComponent
-    implements OnInit, OnChanges, OnDestroy
-{
+    implements OnInit, OnChanges, OnDestroy {
     @Input() broker: BrokerResponse;
     @Input() templateCard: boolean;
 
@@ -110,7 +111,7 @@ export class BrokerDetailsCardComponent
         private brokerService: BrokerService,
         private modalService: ModalService,
         private tableService: TruckassistTableService
-    ) {}
+    ) { }
 
     ngOnChanges(changes: SimpleChanges): void {
         if (changes.broker?.currentValue != changes.broker?.previousValue) {

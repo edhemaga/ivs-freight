@@ -1,4 +1,5 @@
 export * from './chart/chart-type-property.model';
+export * from './chart/chart-legend-property.model';
 export * from './card-models/card-data-result.model';
 export * from './card-models/card-data-row.model';
 export * from './card-models/card-details-color.model';
