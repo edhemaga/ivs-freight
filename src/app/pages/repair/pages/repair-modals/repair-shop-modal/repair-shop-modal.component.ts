@@ -238,7 +238,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
         RepairShopConfig.getOpenHoursFormField();
     public businessStatus: number;
     private repairShop: RepairShopResponse;
-
+    public isCompanyRelated: boolean = false;
     constructor(
         private formBuilder: UntypedFormBuilder,
 
@@ -420,6 +420,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
             [RepairShopModalStringEnum.COVER]: [null],
         });
         this.tabTitle = this.editData?.data?.name;
+        this.isCompanyRelated =  this.editData?.companyOwned
     }
 
     // Inside your component
@@ -493,6 +494,9 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
                         });
 
                         this.mapEditData(repairShop);
+                        this.isCompanyRelated =
+                            this.editData?.companyOwned ||
+                            repairShop.isCompanyRelated;
                     }
 
                     this.preSelectService(repairShop?.shopServiceType);
@@ -985,19 +989,40 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
                 RepairShopModalStringEnum.SHOP_SERVICE_TYPE
             ),
             openHours: this.formatOpenHours(),
-            weeklyDay: this.selectedWeeklyDay
-                ? this.selectedWeeklyDay.id
+            weeklyDay: !this.getFromFieldValue(
+                RepairShopModalStringEnum.COMPANY_OWNED
+            )
+                ? this.selectedWeeklyDay
+                    ? this.selectedWeeklyDay.id
+                    : null
                 : null,
-            payPeriod: this.selectedPayPeriod
-                ? this.selectedPayPeriod.id
+            payPeriod: !this.getFromFieldValue(
+                RepairShopModalStringEnum.COMPANY_OWNED
+            )
+                ? this.selectedPayPeriod
+                    ? this.selectedPayPeriod.id
+                    : null
                 : null,
-            monthlyDay: this.selectedMonthlyDays
-                ? this.selectedMonthlyDays.id
+            monthlyDay: !this.getFromFieldValue(
+                RepairShopModalStringEnum.COMPANY_OWNED
+            )
+                ? this.selectedMonthlyDays
+                    ? this.selectedMonthlyDays.id
+                    : null
                 : null,
-            // this.getFromFieldValue(RepairShopModalStringEnum.COMPANY_OWNED)
-            companyOwned: true,
-            isCompanyRelated: true,
-            rent: this.getFromFieldValue(RepairShopModalStringEnum.RENT),
+            companyOwned: this.isCompanyRelated
+                ? this.getFromFieldValue(
+                      RepairShopModalStringEnum.COMPANY_OWNED
+                  )
+                : null,
+            isCompanyRelated: this.isCompanyRelated,
+            rent: !this.getFromFieldValue(
+                RepairShopModalStringEnum.COMPANY_OWNED
+            )
+                ? MethodsCalculationsHelper.convertThousanSepInNumber(
+                      this.getFromFieldValue(RepairShopModalStringEnum.RENT)
+                  )
+                : null,
             cover: this.convertCoverDocumentForRequest(),
         };
 

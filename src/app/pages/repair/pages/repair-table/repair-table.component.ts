@@ -669,11 +669,6 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                             if (
                                 this.selectedTab !== TableStringEnum.REPAIR_SHOP
                             ) {
-                                this.backFilterQuery.unitType =
-                                    this.selectedTab === TableStringEnum.ACTIVE
-                                        ? 1
-                                        : 2;
-
                                 this.repairBackFilter(this.backFilterQuery);
                             } else {
                                 this.shopBackFilter(this.shopFilterQuery);
@@ -888,9 +883,6 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
 
         this.checkActiveViewMode();
 
-        this.backFilterQuery.unitType =
-            this.selectedTab === TableStringEnum.INACTIVE ? 2 : 1;
-
         const repairTruckTrailerCount = JSON.parse(
             localStorage.getItem(
                 TableStringEnum.REPAIR_TRUCK_TRAILER_TABLE_COUNT
@@ -1028,37 +1020,26 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                 }
 
                 if (res) {
-                    if (res.queryParams?.length) {
-                        switch (res.filterType) {
-                            case RepairTableStringEnum.CATEGORY_REPAIR_FILTER:
-                                this.backFilterQuery.categoryIds =
-                                    res.queryParams;
+                    switch (res.filterType) {
+                        case RepairTableStringEnum.CATEGORY_REPAIR_FILTER:
+                            this.backFilterQuery.categoryIds = res.queryParams;
+                            break;
+                        case RepairTableStringEnum.PM_FILTER:
+                            this.backFilterQuery.pmTruckTitles =
+                                res.queryParams;
+                            break;
+                        case RepairTableStringEnum.TRAILER_TYPE_FILTER:
+                            this.backFilterQuery.trailerNumbers =
+                                res.queryParams;
+                            break;
+                        case RepairTableStringEnum.TRUCK_TYPE_FILTER:
+                            this.backFilterQuery.truckNumbers = res.queryParams;
 
-                                this.repairBackFilter(this.backFilterQuery);
-
-                                break;
-                            case RepairTableStringEnum.PM_FILTER:
-                                this.backFilterQuery.pmTruckTitles =
-                                    res.queryParams;
-
-                                this.repairBackFilter(this.backFilterQuery);
-
-                                break;
-                            case RepairTableStringEnum.TRAILER_TYPE_FILTER:
-                                this.backFilterQuery.trailerNumbers =
-                                    res.queryParams;
-
-                                this.repairBackFilter(this.backFilterQuery);
-
-                                break;
-                            case RepairTableStringEnum.TRUCK_TYPE_FILTER:
-                                this.backFilterQuery.truckNumbers =
-                                    res.queryParams;
-
-                                this.repairBackFilter(this.backFilterQuery);
-
-                                break;
-                            case RepairTableStringEnum.TIME_FILTER:
+                            break;
+                        case RepairTableStringEnum.TIME_FILTER:
+                            delete this.backFilterQuery.dateTo;
+                            delete this.backFilterQuery.dateFrom;
+                            if (res.queryParams) {
                                 const { fromDate, toDate } =
                                     RepairTableDateFormaterHelper.getDateRange(
                                         res.queryParams?.timeSelected
@@ -1066,26 +1047,21 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
 
                                 this.backFilterQuery.dateTo = toDate;
                                 this.backFilterQuery.dateFrom = fromDate;
+                            }
+                            break;
+                        case RepairTableStringEnum.MONEY_FILTER:
+                            this.backFilterQuery.costFrom =
+                                res.queryParams?.from;
+                            this.backFilterQuery.costTo = res.queryParams?.to;
+                            break;
+                        default:
+                            this.sendRepairData();
+                            break;
+                    }
 
-                                this.repairBackFilter(this.backFilterQuery);
-
-                                break;
-                            case RepairTableStringEnum.MONEY_FILTER:
-                                this.backFilterQuery.costFrom =
-                                    res.queryParams?.singleFrom;
-
-                                this.backFilterQuery.costTo =
-                                    res.queryParams?.singleTo;
-
-                                this.repairBackFilter(this.backFilterQuery);
-
-                                break;
-                            default:
-                                this.sendRepairData();
-
-                                break;
-                        }
-                    } else this.sendRepairData();
+                    if (this.selectedTab !== TableStringEnum.REPAIR_SHOP)
+                        this.repairBackFilter(this.backFilterQuery);
+                    else this.shopBackFilter(this.backFilterQuery);
                 }
             });
     }
@@ -1097,7 +1073,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
         this.repairService
             .getRepairList(
                 filter.repairShopId,
-                filter.unitType,
+                this.selectedTab === TableStringEnum.ACTIVE ? 1 : 2,
                 filter.dateFrom,
                 filter.dateTo,
                 filter.isPM,
@@ -1224,9 +1200,6 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
         if (event.action === TableStringEnum.TAB_SELECTED) {
             this.selectedTab = event.tabData.field;
 
-            this.backFilterQuery.unitType =
-                this.selectedTab === TableStringEnum.ACTIVE ? 1 : 2;
-
             this.backFilterQuery.pageIndex = 1;
             this.shopFilterQuery.pageIndex = 1;
 
@@ -1321,9 +1294,6 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                 this.shopFilterQuery.pageIndex = 1;
 
                 if (this.selectedTab !== TableStringEnum.REPAIR_SHOP) {
-                    this.backFilterQuery.unitType =
-                        this.selectedTab === TableStringEnum.ACTIVE ? 1 : 2;
-
                     this.repairBackFilter(this.backFilterQuery);
                 } else {
                     this.shopFilterQuery.sort = event.direction;
@@ -1340,9 +1310,6 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
         // Show More
         if (event.type === TableStringEnum.SHOW_MORE) {
             if (this.selectedTab !== TableStringEnum.REPAIR_SHOP) {
-                this.backFilterQuery.unitType =
-                    this.selectedTab === TableStringEnum.ACTIVE ? 1 : 2;
-
                 this.backFilterQuery.pageIndex++;
 
                 this.repairBackFilter(this.backFilterQuery, true);
