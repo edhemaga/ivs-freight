@@ -623,6 +623,8 @@ model/loadMainModuleResponse.ts
 model/loadMinimalListResponse.ts
 model/loadMinimalResponse.ts
 model/loadMinimalResponsePagination.ts
+model/loadMobileListItemResponse.ts
+model/loadMobileListItemResponsePagination.ts
 model/loadMobileListResponse.ts
 model/loadMobileResponse.ts
 model/loadModalResponse.ts
