@@ -21,7 +21,6 @@ import {
 } from 'ca-components';
 import { TaTabSwitchComponent } from '@shared/components/ta-tab-switch/ta-tab-switch.component';
 import { TaCheckboxComponent } from '@shared/components/ta-checkbox/ta-checkbox.component';
-import { TaInputComponent } from '@shared/components/ta-input/ta-input.component';
 import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
 
 // Const
@@ -60,7 +59,6 @@ import { PayrollFacadeService } from '@pages/accounting/pages/payroll/state/serv
 import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calculations.helper';
 import { TableStringEnum } from '@shared/enums/table-string.enum';
 import { ConfirmationService } from '@shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
-import { PayrollDeductionService } from '../payroll-deduction-modal/services/payroll-deduction.service';
 
 @Component({
     selector: 'app-payroll-base-modal',
@@ -75,7 +73,6 @@ import { PayrollDeductionService } from '../payroll-deduction-modal/services/pay
 
         CaModalComponent,
         CaInputComponent,
-        TaInputComponent,
         TaTabSwitchComponent,
         CaInputDropdownComponent,
         TaCheckboxComponent,
