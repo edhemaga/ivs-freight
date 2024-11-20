@@ -36,6 +36,8 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
 // services
 import { ModalService } from '@shared/services/modal.service';
 import { TaUploadFileService } from '@shared/components/ta-upload-files/services/ta-upload-file.service';
+import { FilterStateService } from '@shared/components/ta-filter/services/filter-state.service';
+import { TruckassistTableService } from '@shared/services/truckassist-table.service';
 
 // components
 import { TaUploadDropzoneComponent } from '@shared/components/ta-upload-files/components/ta-upload-dropzone/ta-upload-dropzone.component';
@@ -53,22 +55,20 @@ import { AuthGuard } from '@core/guards/authentication.guard';
 // models
 import { DropZoneConfig } from '@shared/components/ta-upload-files/models/dropzone-config.model';
 import { UploadFile } from '@shared/components/ta-upload-files/models/upload-file.model';
+import { ArrayStatus } from '@shared/components/ta-filter/models/array-status.model';
 
 // enums
 import { LoadModalStringEnum } from '@pages/load/pages/load-modal/enums';
 import { AssignedLoadResponse } from 'appcoretruckassist';
 import { TaModalActionEnums } from './enums';
+import { ToolbarFilterStringEnum } from '@shared/components/ta-filter/enums/toolbar-filter-string.enum';
 
 // directive
 import { PreventMultipleclicksDirective } from '@shared/directives/prevent-multipleclicks.directive';
 
 // svg routes
 import { ModalSvgRoutes } from '@shared/components/ta-modal/utils/svg-routes';
-import { ArrayStatus } from '../ta-filter/models/array-status.model';
-import { ToolbarFilterStringEnum } from '../ta-filter/enums/toolbar-filter-string.enum';
-import { FilterStateService } from '../ta-filter/services/filter-state.service';
-import { TruckassistTableService } from '@shared/services/truckassist-table.service';
-import { FilterIconRoutes } from '../ta-filter/utils/constants/filter-icons-routes.constants';
+import { FilterIconRoutes } from '@shared/components/ta-filter/utils/constants/filter-icons-routes.constants';
 
 @Component({
     selector: 'app-ta-modal',
@@ -260,11 +260,12 @@ export class TaModalComponent implements OnInit, OnDestroy {
 
     constructor(
         private ngbActiveModal: NgbActiveModal,
+        private ref: ChangeDetectorRef,
+        // services
         private modalService: ModalService,
         private uploadFileService: TaUploadFileService,
         private tableService: TruckassistTableService,
-        private filterService: FilterStateService,
-        private ref: ChangeDetectorRef
+        private filterService: FilterStateService
     ) {}
 
     ngOnInit(): void {
