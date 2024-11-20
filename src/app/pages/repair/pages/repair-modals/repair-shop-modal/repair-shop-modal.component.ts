@@ -497,8 +497,6 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
                                 repairShop.monthlyDay,
                             [RepairShopModalStringEnum.RENT]: repairShop.rent,
                             [RepairShopModalStringEnum.COVER]: repairShop.cover,
-                            [RepairShopModalStringEnum.SERVICE_HELPER]:
-                                JSON.stringify(this.services),
                         });
 
                         this.mapEditData(repairShop);
@@ -522,6 +520,8 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
         this.isBankSelected = !!res.bank;
         this.files = res.files;
         this.coverPhoto = res.cover;
+
+        this.repairShopForm.get(RepairShopModalStringEnum.SERVICE_HELPER).patchValue(JSON.stringify(this.services));
 
         this.updatedRepairShopContacts = res.contacts;
 
@@ -808,7 +808,6 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
 
     public activeRepairService(service: RepairShopModalService): void {
         service.active = !service.active;
-
         this.repairShopForm
             .get(RepairShopModalStringEnum.SERVICE_HELPER)
             .patchValue(JSON.stringify(this.services));
