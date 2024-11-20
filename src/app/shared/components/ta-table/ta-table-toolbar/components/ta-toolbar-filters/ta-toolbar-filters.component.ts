@@ -32,6 +32,7 @@ import { FormatCurrencyPipe } from '@shared/pipes/format-currency.pipe';
 
 // constants
 import { FilterIconRoutes } from '@shared/components/ta-filter/utils/constants/filter-icons-routes.constants';
+import { DirectiveConstants } from '@shared/components/ta-filter/utils/constants/directive.constants';
 
 // services
 import { TruckassistTableService } from '@shared/services/truckassist-table.service';
@@ -88,7 +89,7 @@ export class TaToolbarFiltersComponent implements OnInit, OnChanges, OnDestroy {
     public pmFilterArray: ArrayStatus[];
     public loadParkingOptionsArray: ArrayStatus[];
     public categoryFuelArray: ArrayStatus[];
-    public fuelStopArray: ArrayStatus[];
+    public fuelStopArray: ArrayStatus[] = DirectiveConstants.FUEL_STOP_ARRAY;
 
     constructor(
         private tableSevice: TruckassistTableService,

@@ -151,11 +151,6 @@
         [locationDefType]="true"
         (setFilter)="onFilter($event)"
         (clearAll)="onFilter($event)"
-        [class]="
-            options?.toolbarActions?.filtersOrder?.location
-                ? 'order-' + options.toolbarActions.filtersOrder.location
-                : ''
-        "
     >
     </app-ca-filter>
 
@@ -166,14 +161,9 @@
         [icon]="'fuel'"
         [filterTitle]="'Fuel Stop Filter'"
         [noLeftIcon]="true"
-        [defFilterHolder]="true"
         (setFilter)="onFilter($event)"
         (clearAll)="onFilter($event)"
-        [class]="
-            options?.toolbarActions?.filtersOrder?.fuelStop
-                ? 'order-' + options.toolbarActions.filtersOrder.fuelStop
-                : ''
-        "
+        [unselectedUser]="fuelStopArray"
     >
     </app-ca-filter>
 
@@ -183,7 +173,6 @@
         [type]="'stateFilter'"
         [icon]="'state'"
         [filterTitle]="'State / Province Filter'"
-        [defFilterHolder]="true"
         [leftSideIcon]="true"
         (setFilter)="onFilter($event)"
         (clearAll)="onFilter($event)"
@@ -223,19 +212,16 @@
     </app-ca-filter>
 
     <!-- VACATION FILTER -->
-    <app-ta-filter
+    <app-ca-filter
         *ngIf="options.toolbarActions.showDispatchVacationFilter"
         [type]="'vacationFilter'"
-        [icon]="'assets/svg/dispatchboard/vacation.svg'"
+        [isButtonFilter]="true"
+        [icon]="'vacation'"
         [filterTitle]="'Vacation Filter'"
         (setFilter)="onFilter($event)"
-        [class]="
-            options?.toolbarActions?.filtersOrder?.vacation
-                ? 'order-' + options.toolbarActions.filtersOrder.vacation
-                : ''
-        "
+        (clearAll)="onFilter($event)"
     >
-    </app-ta-filter>
+    </app-ca-filter>
 
     <!-- INJURY FILTER -->
     <app-ta-filter
@@ -262,7 +248,6 @@
             options.toolbarActions.showTrailerPmFilter ? 'trailer' : 'truck'
         "
         [filterTitle]="'PM Filter'"
-        [defFilterHolder]="true"
         [noLeftIcon]="false"
         [leftSideIcon]="true"
         (setFilter)="onFilter($event)"
@@ -282,16 +267,10 @@
         [type]="'categoryRepairFilter'"
         [icon]="'ic_key-repair'"
         [filterTitle]="'Service Filter'"
-        [defFilterHolder]="true"
         [noLeftIcon]="false"
         [leftSideIcon]="true"
         (setFilter)="onFilter($event)"
         (clearAll)="onFilter($event)"
-        [class]="
-            options?.toolbarActions?.filtersOrder?.categoryRepair
-                ? 'order-' + options.toolbarActions.filtersOrder.categoryRepair
-                : ''
-        "
         [pmFilterArray]="categoryRepairArray"
     >
     </app-ca-filter>
@@ -302,15 +281,9 @@
         [type]="'pmFilter'"
         [icon]="'funnel'"
         [filterTitle]="'Category Filter'"
-        [defFilterHolder]="true"
         [noLeftIcon]="true"
         (setFilter)="onFilter($event)"
         (clearAll)="onFilter($event)"
-        [class]="
-            options?.toolbarActions?.filtersOrder?.categoryFuel
-                ? 'order-' + options.toolbarActions.filtersOrder.categoryFuel
-                : ''
-        "
         [pmFilterArray]="categoryFuelArray"
     >
     </app-ca-filter>
@@ -322,14 +295,8 @@
         [icon]="'user'"
         [searchState]="true"
         [filterTitle]="'Dispatcher Filter'"
-        [defFilterHolder]="true"
         (setFilter)="onFilter($event)"
         (clearAll)="onFilter($event)"
-        [class]="
-            options?.toolbarActions?.filtersOrder?.dispatcher
-                ? 'order-' + options.toolbarActions.filtersOrder.location
-                : ''
-        "
         [unselectedUser]="unselectedDispatcher"
     >
     </app-ca-filter>
@@ -343,16 +310,10 @@
         [type]="'statusFilter'"
         [icon]="'broker-half-circle'"
         [filterTitle]="'Status Filter'"
-        [defFilterHolder]="true"
         [noLeftIcon]="false"
         (setFilter)="onFilter($event)"
         (clearAll)="onFilter($event)"
         [isDispatchFilter]="options.toolbarActions.showStatusDispatchFilter"
-        [class]="
-            options?.toolbarActions?.filtersOrder?.status
-                ? 'order-' + options.toolbarActions.filtersOrder.status
-                : ''
-        "
         [loadStatusOptionsArray]="loadStatusOptionsArray"
     >
     </app-ca-filter>
@@ -363,15 +324,9 @@
         [type]="'parkingFilter'"
         [icon]="'parking'"
         [filterTitle]="'Parking Filter'"
-        [defFilterHolder]="true"
         [noLeftIcon]="true"
         (setFilter)="onFilter($event)"
         (clearAll)="onFilter($event)"
-        [class]="
-            options?.toolbarActions?.filtersOrder?.parking
-                ? 'order-' + options.toolbarActions.filtersOrder.parking
-                : ''
-        "
         [pmFilterArray]="loadParkingOptionsArray"
     >
     </app-ca-filter>
@@ -382,17 +337,11 @@
         [type]="'truckTypeFilter'"
         [icon]="'truck'"
         [filterTitle]="'Truck Type Filter'"
-        [defFilterHolder]="true"
         [noLeftIcon]="false"
         [leftSideIcon]="true"
         [largeLeftIcon]="true"
         (setFilter)="onFilter($event)"
         (clearAll)="onFilter($event)"
-        [class]="
-            options?.toolbarActions?.filtersOrder?.truckType
-                ? 'order-' + options.toolbarActions.filtersOrder.truckType
-                : ''
-        "
         [truckTypeArray]="truckTypeArray"
     >
     </app-ca-filter>
@@ -403,17 +352,11 @@
         [type]="'trailerTypeFilter'"
         [icon]="'trailer'"
         [filterTitle]="'Trailer Type Filter'"
-        [defFilterHolder]="true"
         [noLeftIcon]="false"
         [leftSideIcon]="true"
         [largeLeftIcon]="true"
         (setFilter)="onFilter($event)"
         (clearAll)="onFilter($event)"
-        [class]="
-            options?.toolbarActions?.filtersOrder?.trailerType
-                ? 'order-' + options.toolbarActions.filtersOrder.trailerType
-                : ''
-        "
         [trailerTypeArray]="trailerTypeArray"
     >
     </app-ca-filter>
@@ -428,17 +371,11 @@
         [type]="'truckTypeFilter'"
         [icon]="'truck'"
         [filterTitle]="'Truck Type Filter'"
-        [defFilterHolder]="true"
         [noLeftIcon]="true"
         (setFilter)="onFilter($event)"
         (clearAll)="onFilter($event)"
         [isRepairFilter]="!!options.toolbarActions.showTruckPmFilter"
         [isDispatchFilter]="options.toolbarActions.showTruckDispatchFilter"
-        [class]="
-            options?.toolbarActions?.filtersOrder?.truck
-                ? 'order-' + options.toolbarActions.filtersOrder.truck
-                : ''
-        "
         [truckTypeArray]="truckTypeArray"
     >
     </app-ca-filter>
@@ -453,17 +390,11 @@
         [type]="'trailerTypeFilter'"
         [icon]="'trailer'"
         [filterTitle]="'Trailer Type Filter'"
-        [defFilterHolder]="true"
         [noLeftIcon]="true"
         (setFilter)="onFilter($event)"
         (clearAll)="onFilter($event)"
         [isRepairFilter]="options.toolbarActions.showTrailerPmFilter"
         [isDispatchFilter]="options.toolbarActions.showTrailerDispatchFilter"
-        [class]="
-            options?.toolbarActions?.filtersOrder?.trailer
-                ? 'order-' + options.toolbarActions.filtersOrder.trailer
-                : ''
-        "
         [trailerTypeArray]="trailerTypeArray"
     >
     </app-ca-filter>
@@ -484,11 +415,6 @@
         [isRepairFilter]="
             options.toolbarActions.showTrailerPmFilter ||
             options.toolbarActions.showTruckPmFilter
-        "
-        [class]="
-            options?.toolbarActions?.filtersOrder?.money
-                ? 'order-' + options.toolbarActions.filtersOrder.money
-                : ''
         "
     >
     </app-ca-filter>
