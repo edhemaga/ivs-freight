@@ -191,9 +191,9 @@ export class PayrollDeductionModalComponent implements OnInit {
             recurring: isRecurring, 
             limited: this.payrollCreditForm.get(PayrollStringEnum.LIMITED)
                 .value,
-            limitedAmount: isRecurring ? this.payrollCreditForm.get(
+            limitedAmount: isRecurring ? MethodsCalculationsHelper.convertThousanSepInNumber(this.payrollCreditForm.get(
                 PayrollStringEnum.LIMITED_AMOUNT
-            ).value : null,
+            ).value) : null,
             limitedNumber: isRecurring ?  this.payrollCreditForm.get(
                 PayrollStringEnum.LIMITED_NUMBER
             ).value : null,
