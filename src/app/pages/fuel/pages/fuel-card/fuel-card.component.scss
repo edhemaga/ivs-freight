@@ -1,0 +1,10 @@
+@import 'src/theme/variables.scss';
+
+.online-icon {
+    width: 10px;
+    height: 10px;
+    margin-right: 4px;
+
+    background-color: $ta-green;
+    border-radius: 100%;
+}
