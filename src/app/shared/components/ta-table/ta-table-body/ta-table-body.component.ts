@@ -56,6 +56,7 @@ import { TaPasswordAccountHiddenCharactersComponent } from '@shared/components/t
 import { LoadStatusStringComponent } from '@pages/load/components/load-status-string/load-status-string.component';
 import { TaStatusComponentComponent } from '@shared/components/ta-status-component/ta-status-component.component';
 import { TaOpenHoursDropdownComponent } from '@shared/components/ta-open-hours-dropdown/ta-open-hours-dropdown.component';
+import { TaProgressRangeComponent } from '@shared/components/ta-progress-range/ta-progress-range.component';
 import { CaProfileImageComponent, CaSearchMultipleStatesService } from 'ca-components';
 
 // modules
@@ -98,6 +99,7 @@ import { TableBodyColumns } from '@shared/components/ta-table/ta-table-body/mode
 // constants
 import { TaStateImageTextComponent } from '@shared/components/ta-state-image-text/ta-state-image-text.component';
 import { RepairDescriptionPopoverConstants } from '@shared/components/ta-table/ta-table-body/utils/constants';
+import { TaTableBodyConstants } from '@shared/components/ta-table/ta-table-body/utils/constants/ta-table-body.constants';
 
 // directive
 import { PreventMultipleclicksDirective } from '@shared/directives/prevent-multipleclicks.directive';
@@ -138,6 +140,7 @@ import { TableBodySvgRoutes } from '@shared/components/ta-table/ta-table-body/ut
         TaStatusComponentComponent,
         TaOpenHoursDropdownComponent,
         CaProfileImageComponent,
+        TaProgressRangeComponent,
 
         // pipes
         TableHighlightSearchTextPipe,
@@ -233,6 +236,7 @@ export class TaTableBodyComponent
     public isDropdownPositionBottom: boolean = false;
 
     public tableBodySvgRoutes = TableBodySvgRoutes;
+    public taTableBodyConstants = TaTableBodyConstants;
 
     // Scroll Lines
     public isLeftScrollLineShown = false;
