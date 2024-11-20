@@ -78,6 +78,7 @@ import {
 } from '@pages/dispatch/pages/dispatch/components/dispatch-table/models';
 import { DispatchProgressBarData } from '@pages/dispatch/pages/dispatch/components/dispatch-table/models';
 import { DispatchResizedColumnsModel } from '@pages/dispatch/pages/dispatch/components/dispatch-table/models';
+import { IGpsProgress } from 'ca-components/lib/components/ca-progress-bar/models';
 
 @Component({
     selector: 'app-dispatch-table',
@@ -1194,41 +1195,66 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
                     this.dispatchData.dispatches[index].loadProgress
                         .activeLoadProgressBar;
 
-                const dispatchStopData = dispatchLoadProgress.loadStops.map(
-                    (stop) => {
-                        return {
-                            type: stop.stopType?.name.toLowerCase(),
-                            heading: stop.title,
-                            position:
-                                stop.progressBarPercentage > 100
-                                    ? 100
-                                    : stop.progressBarPercentage,
-                            location: [
-                                stop.address?.city,
-                                stop.address?.stateShortName,
-                            ].join(', '),
-                            mileage: stop.isVisited
-                                ? (
-                                      dispatchLoadProgress.truckPositionMileage -
-                                      stop.cumulativeTotalLegMiles
-                                  ).toFixed(1) + ' mi ago'
-                                : 'in ' +
-                                  (
-                                      stop.cumulativeTotalLegMiles -
-                                      dispatchLoadProgress.truckPositionMileage
-                                  ).toFixed(1) +
-                                  ' mi',
-                            time: this.datePipe.transform(
-                                stop.departedFrom ?? stop.expectedAt,
-                                'MM/dd/yy hh:mm a'
-                            ),
-                            latitude: stop.latitude,
-                            longitude: stop.longitude,
-                            legMiles: stop.totalLegMiles,
-                            stopNumber: stop.stopLoadOrder,
-                        };
-                    }
-                );
+                let dispatchStopData: IGpsProgress[] =
+                    dispatchLoadProgress.loadStops.map(
+                        (stop, index, currentArray) => {
+                            const checkedInStop = currentArray.find(
+                                (item) => item.isCheckedIn
+                            );
+
+                            const isCurrentStop =
+                                stop.isCheckedIn ||
+                                (!checkedInStop &&
+                                    !dispatchLoadProgress.truckPositionPercentage &&
+                                    stop.stopType.name ===
+                                        DispatchTableStringEnum.DEADHEAD);
+
+                            return {
+                                type: stop.stopType?.name.toLowerCase(),
+                                heading: stop.title,
+                                position:
+                                    stop.progressBarPercentage > 100
+                                        ? 100
+                                        : stop.progressBarPercentage,
+                                location: [
+                                    stop.address?.city,
+                                    stop.address?.stateShortName,
+                                ].join(', '),
+                                mileage: stop.isVisited
+                                    ? (
+                                          dispatchLoadProgress.truckPositionMileage -
+                                          stop.cumulativeTotalLegMiles
+                                      ).toFixed(1) + ' mi ago'
+                                    : 'in ' +
+                                      (
+                                          stop.cumulativeTotalLegMiles -
+                                          dispatchLoadProgress.truckPositionMileage
+                                      ).toFixed(1) +
+                                      ' mi',
+                                date: this.datePipe.transform(
+                                    stop.departedFrom ?? stop.expectedAt,
+                                    'MM/dd/yy'
+                                ),
+                                time: this.datePipe.transform(
+                                    stop.departedFrom ?? stop.expectedAt,
+                                    'hh:mm a'
+                                ),
+                                latitude: stop.latitude,
+                                longitude: stop.longitude,
+                                legMiles: parseFloat(
+                                    stop.totalLegMiles.toFixed(1)
+                                ),
+                                stopNumber: stop.stopLoadOrder,
+                                isAtStop: isCurrentStop,
+                                currentWaitTime: stop.waitTimeInMin ?? null,
+                                averageWaitTime: stop.estimatedWaitTime ?? null,
+                                isVisited: stop.isVisited,
+                            };
+                        }
+                    );
+
+                const dispatchCurrentStopData =
+                    dispatchStopData?.find((item) => item.isAtStop) ?? null;
 
                 const formattedProgressData: DispatchProgressBarData = {
                     currentPosition:
@@ -1240,6 +1266,10 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
                         dispatchLoadProgress.truckPositionPercentage + '%',
                     totalMiles: dispatchLoadProgress.totalMiles,
                     gpsProgress: dispatchStopData,
+                    currentStop: dispatchCurrentStopData ?? null,
+                    gpsLocationIcon: dispatchCurrentStopData
+                        ? DispatchTableSvgRoutes.progressGpsShortStopIcon
+                        : DispatchTableSvgRoutes.progressGpsMovingIcon,
                     gpsInfo: {
                         gpsheading: DispatchTableStringEnum.NO_GPS_DEVICE,
                         gpsheadingColor:
@@ -1247,6 +1277,7 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
                                 .dispatchProgressBarColors.noGpsColor,
                     },
                     gpsIcon: DispatchTableSvgRoutes.progressNoGpsStatusIcon,
+                    dispatchStatus: dispatch.status.statusString,
                 };
 
                 this.progressBarData[index] = formattedProgressData;
