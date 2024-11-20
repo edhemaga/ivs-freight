@@ -298,43 +298,50 @@ export class PayrollBaseModalComponent implements OnInit {
         };
     }
 
-    private mapTrucks(trucks: TruckMinimalResponse[]): void {
-        this.trucksDropdownList = trucks.map(({ id, truckNumber, owner, truckType }) => {
+    private mapTrucks(trucks: any[]): void {
+        this.trucksDropdownList = trucks.map((item) => {
             return {
-                id,
-                name: truckNumber,
-                suffix: owner ? ` • ${owner}` : '',
+                ...item,
+                name: item.truckNumber,
+                logoType: item.truckType?.name,
+                logoName: item.truckType?.logoName,
+                folder: LoadModalStringEnum.COMMON,
+                subFolder: LoadModalStringEnum.TRUCKS,
+                suffix: item.owner ? `${item.owner}` : '',
             };
         });
     }
 
-    public selectTruck(truck: PayrollTruck): void {
+    public selectTruck(truck: any): void {
+        console.log('truck: ', truck);
         this.selectedTruck = truck;
         this.baseForm
             .get(PayrollStringEnum.SELECTED_TRUCK_ID)
             .patchValue(truck?.id ?? null);
-        this.creditTitle = truck?.name + truck.suffix;
+        this.creditTitle = truck ? truck?.name + truck.suffix : null;
         
         this.truckConfig = {
             ...this.truckConfig,
-            multipleInputValues: {
+            multipleInputValues: truck ? {
                 options: [
                     {
                         id: truck.id,
                         value: truck.name,
                         isImg: false,
                         isSvg: true,
-                        folder: 'common',
-                        subFolder: 'trucks',
-                        logoName: 'ic_truck_semi-wSleeper.svg'
+                        folder: LoadModalStringEnum.COMMON,
+                        subFolder: LoadModalStringEnum.TRUCKS,
+                        logoName: truck?.logoName,
+                        logoType: truck?.logoType
                     },
+
                     {
-                        value: `${truck.suffix}`,
+                        value: `${truck.owner}`,
                         logoName: null,
                     },
                 ],
                 customClass: 'text-suffix',
-            },
+            } : null,
         };
     }
 
