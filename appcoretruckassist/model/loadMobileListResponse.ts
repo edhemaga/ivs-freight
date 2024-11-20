@@ -9,14 +9,11 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { LoadMobileResponse } from './loadMobileResponse';
+import { LoadMobileListItemResponsePagination } from './loadMobileListItemResponsePagination';
 
 
 export interface LoadMobileListResponse { 
-    activeLoad?: LoadMobileResponse;
-    pendingLoadsCount?: number;
-    closedLoadsCount?: number;
-    pendingLoads?: Array<LoadMobileResponse> | null;
-    closedLoads?: Array<LoadMobileResponse> | null;
+    pagination?: LoadMobileListItemResponsePagination;
+    totalSum?: number | null;
 }
 

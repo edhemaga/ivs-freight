@@ -83,14 +83,14 @@ export class PayrollCreditConst {
     };
 
     static ammountField: ITaInput = {
-        name: 'Amount',
         label: 'Amount',
+        name: 'Ammout',
         type: 'text',
-        minLength: 4,
-        maxLength: 11,
         isRequired: true,
-        thousandSeparator: true,
+        priceSeparator: true,
+        priceSeparatorLimitation: 6,
         placeholderIcon: 'dollar',
+        placeholderIconColor: 'blue',
     };
 
     static limitedAmountField(isDisabled: boolean): ITaInput {
@@ -136,7 +136,7 @@ export class PayrollCreditConst {
                     name: 'increment',
                     svg: svgRoutes.iconIncrementSvgRoute,
                 },
-            }
+            },
         };
     }
 }
