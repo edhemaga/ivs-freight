@@ -174,7 +174,9 @@ export class RepairService {
 
                         this.tableService.sendActionAnimation({
                             animation: 'add',
-                            tab: repair?.truckId ? 'active' : 'inactive',
+                            tab: repair?.truckId
+                                ? TableStringEnum.ACTIVE
+                                : TableStringEnum.INACTIVE,
                             data: repair,
                             id: repair.id,
                         });
@@ -192,28 +194,8 @@ export class RepairService {
         return this.repairService.apiRepairPut().pipe(
             tap(() => {
                 this.getRepairById(repair.id).subscribe({
-                    next: (repair: RepairResponse) => {
-                        if (repair.truckId) {
-                            this.repairTruckStore.remove(
-                                ({ id }) => id === repair.id
-                            );
-
-                            this.repairTruckStore.add(repair);
-                        } else if (repair.trailerId) {
-                            this.repairTrailerStore.remove(
-                                ({ id }) => id === repair.id
-                            );
-
-                            this.repairTrailerStore.add(repair);
-                        }
-
-                        this.tableService.sendActionAnimation({
-                            animation: 'update',
-                            tab: repair?.truckId ? 'active' : 'inactive',
-                            id: repair.id,
-                            data: repair,
-                        });
-                    },
+                    next: (repair: RepairResponse) =>
+                        this.handleRepairUpdateStores(repair),
                 });
             })
         );
@@ -221,36 +203,20 @@ export class RepairService {
 
     public deleteRepair(
         repairId: number,
-        tabSelected?: string
+        repairShopId: number,
+        tabSelected: string
     ): Observable<object> {
-        return this.repairService.apiRepairIdDelete(repairId).pipe(
-            tap(() => {
-                const repairCount = JSON.parse(
-                    localStorage.getItem(
-                        TableStringEnum.REPAIR_TRUCK_TRAILER_TABLE_COUNT
+        return this.repairService
+            .apiRepairIdDelete(repairId)
+            .pipe(
+                tap(() =>
+                    this.handleRepairDeleteStores(
+                        repairId,
+                        repairShopId,
+                        tabSelected
                     )
-                );
-
-                if (tabSelected === 'active') {
-                    this.repairTruckStore.remove(({ id }) => id === repairId);
-
-                    repairCount.repairTrucks--;
-                } else if (tabSelected === 'inactive') {
-                    this.repairTrailerStore.remove(({ id }) => id === repairId);
-
-                    repairCount.repairTrailers--;
-                }
-
-                localStorage.setItem(
-                    TableStringEnum.REPAIR_TRUCK_TRAILER_TABLE_COUNT,
-                    JSON.stringify({
-                        repairTrucks: repairCount.repairTrucks,
-                        repairTrailers: repairCount.repairTrailers,
-                        repairShops: repairCount.repairShops,
-                    })
-                );
-            })
-        );
+                )
+            );
     }
 
     public deleteRepairList(
@@ -266,13 +232,13 @@ export class RepairService {
                 );
 
                 repairIds.forEach((repairId) => {
-                    if (tabSelected === 'active') {
+                    if (tabSelected === TableStringEnum.ACTIVE) {
                         this.repairTruckStore.remove(
                             ({ id }) => id === repairId
                         );
 
                         repairCount.repairTrucks--;
-                    } else if (tabSelected === 'inactive') {
+                    } else if (tabSelected === TableStringEnum.INACTIVE) {
                         this.repairTrailerStore.remove(
                             ({ id }) => id === repairId
                         );
@@ -558,16 +524,8 @@ export class RepairService {
         return this.repairShopService.apiRepairshopPut().pipe(
             tap(() => {
                 this.getRepairShopById(repairShop.id).subscribe({
-                    next: (shop: RepairShopResponse) => {
-                        this.handleRepairShopUpdateStores(shop);
-
-                        this.tableService.sendActionAnimation({
-                            animation: TableStringEnum.UPDATE,
-                            tab: TableStringEnum.REPAIR_SHOP,
-                            data: shop,
-                            id: shop.id,
-                        });
-                    },
+                    next: (shop: RepairShopResponse) =>
+                        this.handleRepairShopUpdateStores(shop),
                 });
             })
         );
@@ -625,39 +583,108 @@ export class RepairService {
             };
 
             this.handleRepairShopUpdateStores(reviewedRepairShop);
-
-            this.tableService.sendActionAnimation({
-                animation: TableStringEnum.UPDATE,
-                tab: TableStringEnum.REPAIR_SHOP,
-                data: reviewedRepairShop,
-                id: repairShopId,
-            });
         });
     }
 
     public deleteReview(reviewId: number, repairShopId: number): void {
-        const repariShopData = {
+        const repairShopData = {
             ...this.repairDetailsStore?.getValue()?.entities[repairShopId],
         };
 
-        const filteredRatingReviews = repariShopData.ratingReviews?.filter(
+        const filteredRatingReviews = repairShopData.ratingReviews?.filter(
             (review: RatingReviewResponse) =>
                 !(review.reviewId === reviewId || review.ratingId === reviewId)
         );
 
-        repariShopData.ratingReviews = filteredRatingReviews;
+        repairShopData.ratingReviews = filteredRatingReviews;
 
-        this.handleRepairShopUpdateStores(repariShopData);
-
-        this.tableService.sendActionAnimation({
-            animation: TableStringEnum.UPDATE,
-            tab: TableStringEnum.REPAIR_SHOP,
-            data: repariShopData,
-            id: repairShopId,
-        });
+        this.handleRepairShopUpdateStores(repairShopData);
     }
 
     /* Store Actions */
+
+    private handleRepairUpdateStores(repair: RepairResponse): void {
+        if (repair.truckId) {
+            this.repairTruckStore.update(repair.id, (entity) => ({
+                ...entity,
+                ...repair,
+            }));
+        } else if (repair.trailerId) {
+            this.repairTrailerStore.update(repair.id, (entity) => ({
+                ...entity,
+                ...repair,
+            }));
+        }
+
+        const updateStore = (store: RepairStoresType) =>
+            store.update(repair?.repairShop?.id, (entity) => ({
+                ...entity,
+                repairList: entity.repairList.map((repairItem) => {
+                    if (repairItem.id === repair.id) return repair;
+
+                    return repairItem;
+                }),
+            }));
+
+        updateStore(this.repairDetailsStore);
+        updateStore(this.repairItemStore);
+
+        this.tableService.sendActionAnimation({
+            animation: TableStringEnum.UPDATE,
+            tab: repair?.truckId
+                ? TableStringEnum.ACTIVE
+                : TableStringEnum.INACTIVE,
+            id: repair.id,
+            data: repair,
+        });
+    }
+
+    private handleRepairDeleteStores(
+        repairId: number,
+        repairShopId: number,
+        tabSelected: string
+    ): void {
+        const repairCount = JSON.parse(
+            localStorage.getItem(
+                TableStringEnum.REPAIR_TRUCK_TRAILER_TABLE_COUNT
+            )
+        );
+
+        if (tabSelected === TableStringEnum.ACTIVE) {
+            this.repairTruckStore.remove(({ id }) => id === repairId);
+
+            repairCount.repairTrucks--;
+        } else if (tabSelected === TableStringEnum.INACTIVE) {
+            this.repairTrailerStore.remove(({ id }) => id === repairId);
+
+            repairCount.repairTrailers--;
+        }
+
+        const updateStore = (store: RepairStoresType) =>
+            store.update(repairShopId, (entity) => ({
+                ...entity,
+                repairList: entity.repairList.filter(
+                    (repair) => repair.id !== repairId
+                ),
+            }));
+
+        updateStore(this.repairDetailsStore);
+        updateStore(this.repairItemStore);
+
+        localStorage.setItem(
+            TableStringEnum.REPAIR_TRUCK_TRAILER_TABLE_COUNT,
+            JSON.stringify({
+                repairTrucks: repairCount.repairTrucks,
+                repairTrailers: repairCount.repairTrailers,
+                repairShops: repairCount.repairShops,
+            })
+        );
+
+        this.tableService.sendActionAnimation({
+            animation: TableStringEnum.DELETE,
+            id: repairId,
+        });
+    }
 
     private handleRepairShopUpdateStores(repairShop: RepairShopResponse): void {
         const { id: repairShopId, pinned, status } = repairShop;
@@ -677,6 +704,13 @@ export class RepairService {
 
         this.repairShopStore.update(({ id }) => id === repairShopId, {
             ...repairShop,
+        });
+
+        this.tableService.sendActionAnimation({
+            animation: TableStringEnum.UPDATE,
+            tab: TableStringEnum.REPAIR_SHOP,
+            data: repairShop,
+            id: repairShop.id,
         });
     }
 

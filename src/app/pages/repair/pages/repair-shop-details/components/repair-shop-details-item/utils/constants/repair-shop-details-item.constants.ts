@@ -13,6 +13,14 @@ export class RepairShopDetailsItemConstants {
         'COST',
     ];
 
+    static REPAIR_DROPDOWN_HEADER_ITEMS: string[] = [
+        '#',
+        'ITEM',
+        'QTY',
+        'PRICE',
+        'TOTAL',
+    ];
+
     static REPAIR_ACTION_COLUMNS: RepairActionItem[] = [
         {
             title: RepairShopDetailsStringEnum.DOCUMENT,

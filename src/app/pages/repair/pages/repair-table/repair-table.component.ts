@@ -311,25 +311,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                         if (this.selectedTab === TableStringEnum.REPAIR_SHOP) {
                             this.deleteRepairShop(res?.id);
                         } else {
-                            const repairId = res.array?.[0]?.id ?? res.id;
-
-                            this.repairService
-                                .deleteRepair(repairId, this.selectedTab)
-                                .pipe(takeUntil(this.destroy$))
-                                .subscribe({
-                                    next: () => {
-                                        this.updateDataCount();
-
-                                        if (res.array?.length) {
-                                            this.tableService.sendRowsSelected(
-                                                []
-                                            );
-                                            this.tableService.sendResetSelectedColumns(
-                                                true
-                                            );
-                                        }
-                                    },
-                                });
+                            this.deleteRepair(res?.id);
                         }
                     }
                 }
@@ -426,6 +408,26 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     /* Repair */
+
+    private deleteRepair(repairId: number): void {
+        this.repairService
+            .deleteRepair(repairId, null, this.selectedTab)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe({
+                next: () => {
+                    this.viewData = this.viewData.map((repair) =>
+                        repair.id === repairId
+                            ? {
+                                  ...repair,
+                                  actionAnimation: TableStringEnum.DELETE,
+                              }
+                            : repair
+                    );
+
+                    this.handleAfterActions();
+                },
+            });
+    }
 
     /* Repair Shop */
 
