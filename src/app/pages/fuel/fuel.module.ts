@@ -31,6 +31,7 @@ import {
     FormatCurrencyPipe,
     FormatDatePipe,
 } from '@shared/pipes';
+import { TableDescriptionTextPipe } from '@shared/components/ta-table/ta-table-body/pipes/table-description-text.pipe';
 
 @NgModule({
     declarations: [FuelTableComponent, FuelCardComponent],
@@ -59,6 +60,7 @@ import {
         FormatCurrencyPipe,
         FlipCardsPipe,
         CardValuePipe,
+        TableDescriptionTextPipe,
 
         // store
         StoreModule.forFeature('fuelCardData', fuelCardModalReducer),

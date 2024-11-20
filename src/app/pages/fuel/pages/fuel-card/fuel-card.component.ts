@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output, QueryList, Renderer2, ViewChild, ViewChildren } from '@angular/core';
 import { Subject, takeUntil } from 'rxjs';
 
 // models
@@ -21,6 +21,12 @@ import { NgbPopover } from '@ng-bootstrap/ng-bootstrap';
     providers: [CardHelper],
 })
 export class FuelCardComponent implements OnInit, OnDestroy {
+    @ViewChild('parentElement', { read: ElementRef })
+    private cardBodyElement!: ElementRef;
+
+    @ViewChildren('itemsRepair', { read: ElementRef })
+    public itemsContainers!: QueryList<ElementRef>;
+    
     @Output() bodyActions: EventEmitter<SendDataCard> = new EventEmitter();
     
     @Input() set viewData(value: CardDetails[]) {
@@ -52,6 +58,8 @@ export class FuelCardComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
 
     constructor(
+        private renderer: Renderer2,
+        
         // services
         private tableService: TruckassistTableService,
 
@@ -61,6 +69,31 @@ export class FuelCardComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
         this.flipAllCards();
+    }
+
+    public windownResizeUpdateCountNumberInCards(): void {
+        if (this.cardBodyElement) {
+            const parentElement = this.cardBodyElement
+                .nativeElement as HTMLElement;
+
+            const resizeObserver = new ResizeObserver((entries) => {
+                for (const entry of entries) {
+                    const { width } = entry.contentRect;
+                    if (width) {
+                        this.itemsContainers.forEach(
+                            (containerRef: ElementRef) => {
+                                this.cardHelper.calculateItemsToFit(
+                                    containerRef.nativeElement,
+                                    this.renderer
+                                );
+                            }
+                        );
+                    }
+                }
+            });
+
+            resizeObserver.observe(parentElement);
+        }
     }
 
     public flipAllCards(): void {

@@ -126,8 +126,9 @@
                                                 <div
                                                     #itemsRepair
                                                     class="items-container"
-                                                    [innerHTML]="
-                                                        itemsForRepair[i]
+                                                    [innerHtml]="
+                                                        card.descriptionItems
+                                                            | tableDescriptionTextPipe : 291
                                                     "
                                                 ></div>
                                             </span>
@@ -207,3 +208,100 @@
         </div>
     </ng-container>
 </div>
+
+<ng-template #descriptionCardsPopover let-data="data">
+    <div class="card-dropdown-container" [style.width.px]="291">
+        <div class="description-titles d-flex align-items-center">
+            <div
+                class="number-title ta-font-bold d-flex align-items-center justify-content-center"
+            >
+                #
+            </div>
+            <div class="dropdown-titles d-flex justify-content-between">
+                <ng-container *ngIf="data.isRepairOrder">
+                    <p
+                        class="dropdown-left m-0 ta-font-bold d-flex align-items-center"
+                    >
+                        DESCRIPTION
+                    </p>
+                    <p
+                        class="dropdown-right m-0 ta-font-bold d-flex align-items-center"
+                    >
+                        QTY
+                    </p>
+                </ng-container>
+                <ng-container *ngIf="!data.isRepairOrder">
+                    <p
+                        class="dropdown-left m-0 ta-font-bold d-flex align-items-center"
+                    >
+                        DESC • QTY • PRICE
+                    </p>
+                    <div class="dropdown-right">
+                        <p class="price-total-title ta-font-semi-bold m-0">
+                            {{ data.tabelDescriptionDropTotal }}
+                        </p>
+                    </div>
+                </ng-container>
+            </div>
+        </div>
+        <div class="description-items">
+            <div class="description-item d-flex flex-column">
+                <ng-container
+                    *ngFor="
+                        let item of data.descriptionItems;
+                        let i = index;
+                        trackBy: trackCard
+                    "
+                >
+                    <div class="d-flex align-items-center item-description">
+                        <div
+                            class="item-index d-flex justify-content-center align-items-center"
+                        >
+                            {{ i + 1 }}
+                        </div>
+                        <ng-container *ngIf="item.pmDescription">
+                            <div class="pm-item">
+                                <svg-icon
+                                    [src]="
+                                        'assets/svg/common/repair-pm/' +
+                                        item.pmDescription.logoName
+                                    "
+                                    [svgStyle]="{
+                                        'width.px': '20',
+                                        'height.px': '20'
+                                    }"
+                                ></svg-icon>
+                            </div>
+                        </ng-container>
+                        <div
+                            class="items-holder d-flex justify-content-between"
+                        >
+                            <div class="left-description">
+                                <div class="item-title ta-font-medium">
+                                    {{ item.description }}
+                                </div>
+                                <div class="items-number-items-cost d-flex">
+                                    <div
+                                        class="number-of-items ta-font-regular"
+                                    >
+                                        {{ item.quantity }} X
+                                        {{ item.descriptionPrice }}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div
+                                class="item-total-cost d-flex align-items-center"
+                                [ngClass]="{
+                                    'pm-style': item.pmDescription
+                                }"
+                            >
+                                {{ item.descriptionTotalPrice }}
+                            </div>
+                        </div>
+                    </div>
+                </ng-container>
+            </div>
+        </div>
+    </div>
+</ng-template>
