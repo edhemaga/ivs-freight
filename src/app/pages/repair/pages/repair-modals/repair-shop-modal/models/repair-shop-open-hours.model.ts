@@ -3,8 +3,8 @@ export interface OpenHours {
     isWorkingDay: boolean;
     // This is not needed yet on creating shop
     index: number;
-    startTime: Date | null;
-    endTime: Date | null;
+    startTime: Date | string | null;
+    endTime: Date | string| null;
     isDoubleShift: boolean,
     shifts?: {
         startTime: Date | string;

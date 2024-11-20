@@ -12,7 +12,7 @@ import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
 // Components
 import { TelematicMapComponent } from '@pages/telematic/pages/telematic-map/telematic-map.component';
 import { TaGpsProgressbarComponent } from '@shared/components/ta-gps-progressbar/ta-gps-progressbar.component';
-import { TaMapMarkerDropdownComponent } from '@shared/components/ta-map-marker-dropdown/ta-map-marker-dropdown.component';
+//import { TaMapMarkerDropdownComponent } from '@shared/components/ta-map-marker-dropdown/ta-map-marker-dropdown.component';
 import { TaCheckboxComponent } from '@shared/components/ta-checkbox/ta-checkbox.component';
 import { TaInputDropdownComponent } from '@shared/components/ta-input-dropdown/ta-input-dropdown.component';
 import { TaInputComponent } from '@shared/components/ta-input/ta-input.component';
@@ -40,7 +40,7 @@ import { TaMapToolbarComponent } from '@shared/components/ta-map-toolbar/ta-map-
         TaInputComponent,
         TaInputDropdownComponent,
         TaCheckboxComponent,
-        TaMapMarkerDropdownComponent,
+        //TaMapMarkerDropdownComponent,
         TaGpsProgressbarComponent,
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA],

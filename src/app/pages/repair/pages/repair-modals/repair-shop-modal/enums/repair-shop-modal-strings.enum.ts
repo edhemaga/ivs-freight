@@ -38,4 +38,5 @@ export enum RepairShopModalStringEnum {
     DAY_OF_WEEK = 'dayOfWeek',
     COVER = 'cover',
     EMPTY_STRING = '',
+    SERVICE_HELPER = 'servicesHelper'
 }
