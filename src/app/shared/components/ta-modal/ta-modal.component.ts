@@ -64,6 +64,11 @@ import { PreventMultipleclicksDirective } from '@shared/directives/prevent-multi
 
 // svg routes
 import { ModalSvgRoutes } from '@shared/components/ta-modal/utils/svg-routes';
+import { ArrayStatus } from '../ta-filter/models/array-status.model';
+import { ToolbarFilterStringEnum } from '../ta-filter/enums/toolbar-filter-string.enum';
+import { FilterStateService } from '../ta-filter/services/filter-state.service';
+import { TruckassistTableService } from '@shared/services/truckassist-table.service';
+import { FilterIconRoutes } from '../ta-filter/utils/constants/filter-icons-routes.constants';
 
 @Component({
     selector: 'app-ta-modal',
@@ -249,10 +254,16 @@ export class TaModalComponent implements OnInit, OnDestroy {
     public mapVisibility: boolean = false;
     public hazardousVisibility: boolean = false;
 
+    public unselectedDispatcher: ArrayStatus[];
+    public truckTypeArray: ArrayStatus[];
+    public trailerTypeArray: ArrayStatus[];
+
     constructor(
         private ngbActiveModal: NgbActiveModal,
         private modalService: ModalService,
         private uploadFileService: TaUploadFileService,
+        private tableService: TruckassistTableService,
+        private filterService: FilterStateService,
         private ref: ChangeDetectorRef
     ) {}
 
@@ -268,6 +279,94 @@ export class TaModalComponent implements OnInit, OnDestroy {
                     this.dragDrop();
                 }
             });
+
+        this.handleFilterInitialization();
+    }
+
+    public handleFilterInitialization(): void {
+        let truckResData;
+        let trailerResData;
+
+        if (this.hasTruckTypeFilter || this.hasTrailerTypeFilter) {
+            truckResData = this.filterService.getTruckType(
+                this.isAssignLoadModal
+            );
+            trailerResData = this.filterService.getTrailerType(
+                this.isAssignLoadModal
+            );
+        }
+
+        this.tableService.currentActionAnimation
+            .pipe(takeUntil(this.destroy$))
+            .subscribe(
+                (
+                    res: any // leave any for now
+                ) => {
+                    if (
+                        res?.animation ===
+                        ToolbarFilterStringEnum.DISPATCH_DATA_UPDATE
+                    ) {
+                        const newData = res.data.map(
+                            (
+                                type: any
+                                // leave any for now
+                            ) => {
+                                type[ToolbarFilterStringEnum.NAME] =
+                                    type?.fullName ??
+                                    `${type?.driver?.firstName} ${type?.driver?.lastName}`;
+                                type[ToolbarFilterStringEnum.COUNT] =
+                                    type.loadCount;
+                                return type;
+                            }
+                        );
+
+                        this.unselectedDispatcher = newData;
+                    }
+
+                    if (
+                        res?.animation ===
+                        ToolbarFilterStringEnum.TRUCK_LIST_UPDATE
+                    ) {
+                        this.truckTypeArray = truckResData;
+                        this.truckTypeArray = res.data.map((item) => ({
+                            ...item.truckType,
+                            count: item.count,
+                            icon: item.truckType?.logoName
+                                ? FilterIconRoutes.truckSVG +
+                                  item.truckType.logoName
+                                : null,
+                        }));
+                    }
+                    if (
+                        res?.animation ===
+                        ToolbarFilterStringEnum.TRUCK_TYPE_UPDATE
+                    ) {
+                        this.truckTypeArray = truckResData;
+                        this.truckTypeArray = res.data.map((item) => ({
+                            ...item.truckType,
+                            count: item.count,
+                            icon: item.truckType?.logoName
+                                ? FilterIconRoutes.truckSVG +
+                                  item.truckType.logoName
+                                : null,
+                        }));
+                    }
+                    if (
+                        res?.animation ===
+                        ToolbarFilterStringEnum.TRAILER_TYPE_UPDATE
+                    ) {
+                        this.trailerTypeArray = trailerResData;
+                        this.trailerTypeArray = res.data.map((item) => ({
+                            ...item.trailerType,
+                            count: item.count,
+                            icon: item.trailerType?.logoName
+                                ? FilterIconRoutes.trailerSVG +
+                                  item.trailerType.logoName
+                                : null,
+                        }));
+                    }
+                }
+            );
     }
 
     public dragOver() {
