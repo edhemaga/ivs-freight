@@ -527,23 +527,25 @@ export class RepairService {
                             this.repairMinimalListStore,
                         ].forEach(addToStore);
 
-                        repairCount.repairShops++;
+                        if (repairCount) {
+                            repairCount.repairShops++;
 
-                        localStorage.setItem(
-                            TableStringEnum.REPAIR_TRUCK_TRAILER_TABLE_COUNT,
-                            JSON.stringify({
-                                repairTrucks: repairCount.repairTrucks,
-                                repairTrailers: repairCount.repairTrailers,
-                                repairShops: repairCount.repairShops,
-                            })
-                        );
+                            localStorage.setItem(
+                                TableStringEnum.REPAIR_TRUCK_TRAILER_TABLE_COUNT,
+                                JSON.stringify({
+                                    repairTrucks: repairCount.repairTrucks,
+                                    repairTrailers: repairCount.repairTrailers,
+                                    repairShops: repairCount.repairShops,
+                                })
+                            );
 
-                        this.tableService.sendActionAnimation({
-                            animation: TableStringEnum.ADD,
-                            tab: TableStringEnum.REPAIR_SHOP,
-                            data: shop,
-                            id: shop.id,
-                        });
+                            this.tableService.sendActionAnimation({
+                                animation: TableStringEnum.ADD,
+                                tab: TableStringEnum.REPAIR_SHOP,
+                                data: shop,
+                                id: shop.id,
+                            });
+                        }
                     },
                 });
             })

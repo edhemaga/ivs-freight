@@ -1122,16 +1122,12 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
-                    this.setModalSpinner(null, false, !addNewShop);
                     if (addNewShop) {
-                        this.formService.resetForm(this.repairShopForm);
-                        this.tabChange(this.tabs[0]);
-                        this.showPhoneExt = false;
-                        this.selectedAddress = null;
-                        this.isBankSelected = null;
-                        this.files = [];
-                        this.filesForDelete = [];
+                        this.setModalSpinner(null, true, true, true);
+                        
                     }
+                    
+                    this.setModalSpinner(null, false, !addNewShop);
                 },
                 error: () => {
                     this.setModalSpinner(null, false, false);
@@ -1171,13 +1167,17 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
             | ActionTypesEnum.SAVE_AND_ADD_NEW
             | ActionTypesEnum.DELETE,
         status: boolean,
-        close: boolean
+        close: boolean,
+        addNew?: boolean
     ): void {
         this.modalService.setModalSpinner({
             action,
             status,
             close,
         });
+        
+        if (addNew) {
+            this.modalService.openModal(RepairShopModalComponent, { });}
 
         // Wait for modal to close to prevent click while closing it
         setTimeout(() => (this.isRequestInProgress = false), 400);
