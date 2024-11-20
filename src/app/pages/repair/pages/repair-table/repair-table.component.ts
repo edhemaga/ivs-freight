@@ -671,11 +671,6 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                             if (
                                 this.selectedTab !== TableStringEnum.REPAIR_SHOP
                             ) {
-                                this.backFilterQuery.unitType =
-                                    this.selectedTab === TableStringEnum.ACTIVE
-                                        ? 1
-                                        : 2;
-
                                 this.repairBackFilter(this.backFilterQuery);
                             } else {
                                 this.shopBackFilter(this.shopFilterQuery);
@@ -890,9 +885,6 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
 
         this.checkActiveViewMode();
 
-        this.backFilterQuery.unitType =
-            this.selectedTab === TableStringEnum.INACTIVE ? 2 : 1;
-
         const repairTruckTrailerCount = JSON.parse(
             localStorage.getItem(
                 TableStringEnum.REPAIR_TRUCK_TRAILER_TABLE_COUNT
@@ -1012,6 +1004,8 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
 
                         this.sendRepairData();
 
+                        this.updateMapItem();
+
                         this.viewData = this.repairTableData?.filter(
                             (repairData) =>
                                 res.filteredArray.some(
@@ -1026,41 +1020,32 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                         this.viewData = this.repairTableData;
 
                         this.sendRepairData();
+
+                        this.updateMapItem();
                     }
                 }
 
                 if (res) {
-                    if (res.queryParams?.length) {
-                        switch (res.filterType) {
-                            case RepairTableStringEnum.CATEGORY_REPAIR_FILTER:
-                                this.backFilterQuery.categoryIds =
-                                    res.queryParams;
+                    switch (res.filterType) {
+                        case RepairTableStringEnum.CATEGORY_REPAIR_FILTER:
+                            this.backFilterQuery.categoryIds = res.queryParams;
+                            break;
+                        case RepairTableStringEnum.PM_FILTER:
+                            this.backFilterQuery.pmTruckTitles =
+                                res.queryParams;
+                            break;
+                        case RepairTableStringEnum.TRAILER_TYPE_FILTER:
+                            this.backFilterQuery.trailerNumbers =
+                                res.queryParams;
+                            break;
+                        case RepairTableStringEnum.TRUCK_TYPE_FILTER:
+                            this.backFilterQuery.truckNumbers = res.queryParams;
 
-                                this.repairBackFilter(this.backFilterQuery);
-
-                                break;
-                            case RepairTableStringEnum.PM_FILTER:
-                                this.backFilterQuery.pmTruckTitles =
-                                    res.queryParams;
-
-                                this.repairBackFilter(this.backFilterQuery);
-
-                                break;
-                            case RepairTableStringEnum.TRAILER_TYPE_FILTER:
-                                this.backFilterQuery.trailerNumbers =
-                                    res.queryParams;
-
-                                this.repairBackFilter(this.backFilterQuery);
-
-                                break;
-                            case RepairTableStringEnum.TRUCK_TYPE_FILTER:
-                                this.backFilterQuery.truckNumbers =
-                                    res.queryParams;
-
-                                this.repairBackFilter(this.backFilterQuery);
-
-                                break;
-                            case RepairTableStringEnum.TIME_FILTER:
+                            break;
+                        case RepairTableStringEnum.TIME_FILTER:
+                            delete this.backFilterQuery.dateTo;
+                            delete this.backFilterQuery.dateFrom;
+                            if (res.queryParams) {
                                 const { fromDate, toDate } =
                                     RepairTableDateFormaterHelper.getDateRange(
                                         res.queryParams?.timeSelected
@@ -1068,26 +1053,21 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
 
                                 this.backFilterQuery.dateTo = toDate;
                                 this.backFilterQuery.dateFrom = fromDate;
+                            }
+                            break;
+                        case RepairTableStringEnum.MONEY_FILTER:
+                            this.backFilterQuery.costFrom =
+                                res.queryParams?.from;
+                            this.backFilterQuery.costTo = res.queryParams?.to;
+                            break;
+                        default:
+                            this.sendRepairData();
+                            break;
+                    }
 
-                                this.repairBackFilter(this.backFilterQuery);
-
-                                break;
-                            case RepairTableStringEnum.MONEY_FILTER:
-                                this.backFilterQuery.costFrom =
-                                    res.queryParams?.singleFrom;
-
-                                this.backFilterQuery.costTo =
-                                    res.queryParams?.singleTo;
-
-                                this.repairBackFilter(this.backFilterQuery);
-
-                                break;
-                            default:
-                                this.sendRepairData();
-
-                                break;
-                        }
-                    } else this.sendRepairData();
+                    if (this.selectedTab !== TableStringEnum.REPAIR_SHOP)
+                        this.repairBackFilter(this.backFilterQuery);
+                    else this.shopBackFilter(this.backFilterQuery);
                 }
             });
     }
@@ -1099,7 +1079,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
         this.repairService
             .getRepairList(
                 filter.repairShopId,
-                filter.unitType,
+                this.selectedTab === TableStringEnum.ACTIVE ? 1 : 2,
                 filter.dateFrom,
                 filter.dateTo,
                 filter.isPM,
@@ -1226,9 +1206,6 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
         if (event.action === TableStringEnum.TAB_SELECTED) {
             this.selectedTab = event.tabData.field;
 
-            this.backFilterQuery.unitType =
-                this.selectedTab === TableStringEnum.ACTIVE ? 1 : 2;
-
             this.backFilterQuery.pageIndex = 1;
             this.shopFilterQuery.pageIndex = 1;
 
@@ -1323,9 +1300,6 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                 this.shopFilterQuery.pageIndex = 1;
 
                 if (this.selectedTab !== TableStringEnum.REPAIR_SHOP) {
-                    this.backFilterQuery.unitType =
-                        this.selectedTab === TableStringEnum.ACTIVE ? 1 : 2;
-
                     this.repairBackFilter(this.backFilterQuery);
                 } else {
                     this.shopFilterQuery.sort = event.direction;
@@ -1342,9 +1316,6 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
         // Show More
         if (event.type === TableStringEnum.SHOW_MORE) {
             if (this.selectedTab !== TableStringEnum.REPAIR_SHOP) {
-                this.backFilterQuery.unitType =
-                    this.selectedTab === TableStringEnum.ACTIVE ? 1 : 2;
-
                 this.backFilterQuery.pageIndex++;
 
                 this.repairBackFilter(this.backFilterQuery, true);
@@ -1803,6 +1774,24 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     public onGetInfoWindowData(markerId: number): void {
+        this.mapsService.selectedMarker(markerId);
+
+        this.mapListPagination = {
+            ...this.mapListPagination,
+            pageIndex: 1,
+        };
+
+        this.mapClustersPagination = {
+            ...this.mapClustersPagination,
+            pageIndex: 1,
+        };
+
+        this.getRepairShopClusters(false, markerId);
+
+        this.getRepairShopMapList();
+    }
+
+    public getRepairShopById(markerId: number): void {
         this.repairService
             .getRepairShopById(markerId)
             .pipe(takeUntil(this.destroy$))
@@ -1836,26 +1825,25 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                         }
                     });
 
-                    this.mapData.markers.forEach((markerData) => {
-                        if (markerData.data.id === markerId) {
-                            selectedMarkerData = {
-                                ...markerData,
-                                infoWindowContent:
-                                    RepairShopMapDropdownHelper.getRepairShopMapDropdownConfig(
-                                        repairShopData
-                                    ),
-                                data: repairShopData,
-                            };
-                        }
-                    });
+                    const markerData = this.mapData.markers.find(
+                        (marker) => marker.data?.id === markerId
+                    );
+
+                    if (markerData)
+                        selectedMarkerData = {
+                            ...markerData,
+                            infoWindowContent:
+                                RepairShopMapDropdownHelper.getRepairShopMapDropdownConfig(
+                                    repairShopData
+                                ),
+                            data: repairShopData,
+                        };
 
                     this.mapsService.selectedMarker(
                         selectedMarkerData ? repairShopData.id : null
                     );
 
                     this.mapData = { ...this.mapData, selectedMarkerData };
-
-                    this.updateMapItem(repairShopData);
                 },
                 error: () => {},
             });
@@ -1888,7 +1876,10 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
         this.getRepairShopMapList();
     }
 
-    public getRepairShopClusters(isClusterPagination?: boolean): void {
+    public getRepairShopClusters(
+        isClusterPagination?: boolean,
+        selectedMarkerId?: number
+    ): void {
         this.repairService
             .getRepairShopClusters(
                 this.mapClustersObject.northEastLatitude,
@@ -1912,7 +1903,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                 null, // ppgFrom?: number,
                 null, // ppgTo?: number,
                 this.mapsService.selectedMarkerId ?? null, // selectedId
-                null, // active
+                this.filter === TableStringEnum.CLOSED_ARRAY ? 0 : 1, // active
                 this.mapClustersPagination.pageIndex, // pageIndex
                 this.mapClustersPagination.pageSize, // pageSize
                 null, // companyId
@@ -2032,6 +2023,8 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                 if (this.isAddedNewRepairShop)
                     this.isAddedNewRepairShop = false;
 
+                if (selectedMarkerId) this.getRepairShopById(selectedMarkerId);
+
                 this.ref.detectChanges();
             });
     }
@@ -2051,7 +2044,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                 null, // distance
                 null, // costFrom
                 null, // costTo
-                null, // active
+                this.filter === TableStringEnum.CLOSED_ARRAY ? 0 : 1, // active
                 null, // states
                 this.mapsService.selectedMarkerId ?? null, // selectedId
                 this.mapListPagination.pageIndex,
@@ -2139,6 +2132,8 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     public onClusterMarkerClick(selectedMarker: IMapMarkers): void {
+        if (this.mapsService.selectedMarkerId) this.onResetSelectedMarkerItem();
+
         const selectedMarkerData: IMapSelectedMarkerData | null =
             this.mapData.clusterMarkers.find(
                 (clusterMarker) =>

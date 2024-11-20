@@ -282,7 +282,7 @@
                             <span class="ic-hed">
                                 <app-ca-filter
                                     [type]="'truckTypeFilter'"
-                                    [truckTypeArray]="[]"
+                                    [truckTypeArray]="truckTypeArray"
                                     [filterTitle]="'Truck Type Filter'"
                                     [icon]="'truck'"
                                     (setFilter)="setFilterValue($event)"
@@ -295,7 +295,7 @@
                             <span class="ic-hed">
                                 <app-ca-filter
                                     [type]="'trailerTypeFilter'"
-                                    [truckTypeArray]="[]"
+                                    [trailerTypeArray]="trailerTypeArray"
                                     [filterTitle]="'Trailer Type Filter'"
                                     [icon]="'trailer'"
                                     (setFilter)="setFilterValue($event)"
@@ -347,12 +347,13 @@
                             <span class="ic-hed">
                                 <!-- DISPECHER FILTER -->
                                 <app-ca-filter
-                                    [type]="'userFilter'"
+                                    [type]="'dispatcherFilter'"
                                     [searchState]="true"
                                     [filterTitle]="'Dispatcher Filter'"
                                     [defFilterHolder]="true"
                                     (setFilter)="setFilterValue($event)"
                                     (clearAll)="setFilterValue($event)"
+                                    [unselectedUser]="unselectedDispatcher"
                                 >
                                 </app-ca-filter>
                             </span>
@@ -369,6 +370,9 @@
                                     [noLeftIcon]="false"
                                     (setFilter)="setFilterValue($event)"
                                     (clearAll)="setFilterValue($event)"
+                                    [loadStatusOptionsArray]="
+                                        loadStatusOptionsArray
+                                    "
                                 >
                                 </app-ca-filter>
                             </span>
@@ -403,6 +407,7 @@
                                     [leftSideIcon]="true"
                                     (setFilter)="setFilterValue($event)"
                                     (clearAll)="setFilterValue($event)"
+                                    [pmFilterArray]="pmFilterArray"
                                 >
                                 </app-ca-filter>
                             </span>
@@ -420,6 +425,7 @@
                                     [leftSideIcon]="true"
                                     (setFilter)="setFilterValue($event)"
                                     (clearAll)="setFilterValue($event)"
+                                    [pmFilterArray]="categoryRepairArray"
                                 >
                                 </app-ca-filter>
                             </span>

@@ -24,6 +24,8 @@
             [moneyFilter]="true"
             [repairOrderFilter]="true"
             (dropActions)="onRepairShopActions($event)"
+            (filterActions)="onFilter($event)"
+            (specialFilterActions)="onFilter($event)"
         >
         </app-ta-details-header>
     </ng-container>

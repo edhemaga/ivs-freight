@@ -101,8 +101,8 @@ export class RepairShopDetailsMapCoverCardComponent {
 
         this.mapData = {
             ...this.mapData,
-            //isZoomShown: true,
-            //isOpenInMapShown: true,
+            isZoomShown: true,
+            isOpenInMapShown: true,
             markers: [markerData],
         };
     }
