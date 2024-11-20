@@ -183,7 +183,7 @@ export abstract class PayrollReportBaseComponent<
                             {
                                 edit: true,
                                 data: {
-                                    id: item.data.parentPayrollDeductionId,
+                                    id: item.data.parentPayrollDeductionId || item.data.id,
                                 } as CreatePayrollCreditCommand,
                                 creditType: PayrollCreditType.Driver,
                             }
