@@ -642,7 +642,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
     private initWorkingHours(repairShop: RepairShopResponse): void {
         if (this.editData?.id) {
             this.workingDaysLabel.forEach((day) => {
-                const matchingOpenHours = repairShop.openHours.filter(
+                const matchingOpenHours = repairShop.openHoursModal.filter(
                     (openDay) => openDay.dayOfWeek === day.dayOfWeek
                 );
 
