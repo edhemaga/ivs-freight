@@ -337,6 +337,7 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
             fuelItems: this.fuelItems,
             files: this.mapDocuments(),
             filesForDeleteIds: [],
+            payrollOwnerId: this.editData.payrollOwnerId
         };
         this.fuelService
             .addFuelTransaction(newData)

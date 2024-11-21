@@ -19,6 +19,7 @@ export interface ApiFuelTransactionPostRequest {
     DriverId?: number;
     TrailerId?: number;
     FuelStopStoreId?: number;
+    PayrollOwnerId?: number;
     TransactionDate?: string;
     Total?: number;
     FuelItems?: Array<EditFuelItemCommand>;
