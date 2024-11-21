@@ -26,6 +26,7 @@ export abstract class PayrollReportBaseComponent<
     T extends {
         driver?: { id?: number; fullName?: string | null };
         truck?: { id?: number };
+        id?: number
     }
 > {
     public openedPayroll: T;
@@ -50,7 +51,7 @@ export abstract class PayrollReportBaseComponent<
         this._reportId = value;
     }
 
-    public openAddNewModal(type: string): void {
+    public openAddNewModal(type: string): void { 
         switch (type) {
             case PayrollAdditionalTypes.CREDIT:
                 this.modalService
@@ -119,6 +120,7 @@ export abstract class PayrollReportBaseComponent<
                         {
                             truckId: this.openedPayroll.truck?.id,
                             creditType: this.creditType,
+                            payrollOwnerId: this.openedPayroll.id
                         }
                     )
                     .then(() => {
