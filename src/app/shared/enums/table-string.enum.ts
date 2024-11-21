@@ -567,8 +567,10 @@ export enum TableStringEnum {
     USER_CARD_STATE = 'userCardState',
     TRUCK_CARD_STATE = 'truckCardState',
     PM_CARD_STATE = 'pmCardState',
+    FUEL_CARD_STATE = 'fuelCardState',
     DEDUCTION = 'deduction',
     CREDIT = 'credit',
     PAYROLL = 'payroll',
-    BONUS = 'bonus'
+    BONUS = 'bonus',
+    ACTIVITY = 'activity',
 }

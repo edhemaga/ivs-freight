@@ -23,5 +23,8 @@ export interface RepairShopShortResponse {
     latitude?: number | null;
     pinned?: boolean;
     status?: number;
+    cost?: number | null;
+    companyOwned?: boolean | null;
+    repairsCount?: number;
 }
 

@@ -9,7 +9,7 @@ import { DatePipe } from '@angular/common';
 import { AfterViewInit } from '@angular/core';
 
 //Rxjs
-import { combineLatest, of, Subject, switchMap, takeUntil } from 'rxjs';
+import { combineLatest, Observable, of, Subject, switchMap, takeUntil } from 'rxjs';
 
 //Components
 import { FuelPurchaseModalComponent } from '@pages/fuel/pages/fuel-modals/fuel-purchase-modal/fuel-purchase-modal.component';
@@ -51,8 +51,10 @@ import { IFuelTableData } from '@pages/fuel/pages/fuel-table/models/fuel-table-d
 import { AvatarColors } from '@pages/driver/pages/driver-table/models/avatar-colors.model';
 import { SortTypes } from '@shared/models/sort-types.model';
 
-//States
+//Store
 import { FuelQuery } from '@pages/fuel/state/fuel-state/fuel-state.query';
+import { select, Store } from '@ngrx/store';
+import { selectActiveTabCards, selectInactiveTabCards } from '@pages/fuel/pages/fuel-card-modal/state';
 
 //Enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
@@ -61,6 +63,7 @@ import { eProgressRangeUnit } from '@shared/components/ta-progress-range/enums';
 
 //Services
 import { FuelService } from '@shared/services/fuel.service';
+import { FuelCardsModalService } from '@pages/fuel/pages/fuel-card-modal/services/fuel-cards-modal.service';
 
 //Helpers
 import { AvatarColorsHelper } from '@shared/utils/helpers/avatar-colors.helper';
@@ -108,6 +111,8 @@ export class FuelTableComponent implements OnInit, AfterViewInit, OnDestroy {
     private avatarColorMappingIndexByDriverId: { [key: string]: AvatarColors } =
         {} as { [key: string]: AvatarColors };
 
+    public displayRows$: Observable<any>; //leave this as any for now
+
     constructor(
         private modalService: ModalService,
         private tableService: TruckassistTableService,
@@ -118,7 +123,13 @@ export class FuelTableComponent implements OnInit, AfterViewInit, OnDestroy {
         private confiramtionService: ConfirmationService,
         private fuelService: FuelService,
         private nameInitialsPipe: NameInitialsPipe,
-        private payrollService: PayrollService
+        private payrollService: PayrollService,
+
+        // services
+        private fuelCardsModalService: FuelCardsModalService,
+
+        // store
+        private store: Store,
     ) {}
 
     //-------------------------------NG ON INIT-------------------------------
@@ -500,6 +511,7 @@ export class FuelTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
         const td = this.tableData.find((t) => t.field === this.selectedTab);
         this.setFuelData(td);
+        this.updateCardView();
     }
 
     // Check If Selected Tab Has Active View Mode
@@ -988,6 +1000,25 @@ export class FuelTableComponent implements OnInit, AfterViewInit, OnDestroy {
         } else {
             this.selectedTab = TableStringEnum.FUEL_TRANSACTION;
         }
+    }
+
+    public updateCardView(): void {
+        switch (this.selectedTab) {
+            case TableStringEnum.FUEL_TRANSACTION:
+                this.displayRows$ = this.store.pipe(
+                    select(selectActiveTabCards)
+                );
+                break;
+
+            case TableStringEnum.FUEL_STOP:
+                this.displayRows$ = this.store.pipe(
+                    select(selectInactiveTabCards)
+                );
+                break;
+            default:
+                break;
+        }
+        this.fuelCardsModalService.updateTab(this.selectedTab);
     }
 
     ngOnDestroy(): void {
