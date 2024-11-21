@@ -577,7 +577,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                     });
 
                     this.handleCloseAnimationAction(false);
-                    
+
                     if (this.activeViewMode === TableStringEnum.MAP) {
                         this.isAddedNewRepairShop = true;
                         this.getMapData();
@@ -740,6 +740,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                 showMoveToOpenList:
                     this.selectedTab === TableStringEnum.REPAIR_SHOP,
                 showMoveToClosedList: true,
+                hideSearch: this.activeViewMode === TableStringEnum.MAP,
                 viewModeOptions: this.getViewModeOptions(),
             },
         };
@@ -762,9 +763,11 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                 viewModeOptions = this.getViewModeOptions();
             }
 
-            this.tableOptions.toolbarActions.viewModeOptions = [
-                ...viewModeOptions,
-            ];
+            this.tableOptions.toolbarActions = {
+                ...this.tableOptions.toolbarActions,
+                viewModeOptions: [...viewModeOptions],
+                hideSearch: this.activeViewMode === TableStringEnum.MAP,
+            };
         }
     }
 
