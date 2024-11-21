@@ -20,13 +20,14 @@
                 <app-ta-input
                     formControlName="name"
                     [inputConfig]="{
-                        name: 'Company Name',
+                        name: 'name',
                         type: 'text',
                         label: 'Company Name',
                         isRequired: true,
                         textTransform: 'uppercase',
                         autoFocus: editData?.type !== 'edit'
                     }"
+                    (blurInput)="onCompanyNameInputBlur()"
                 ></app-ta-input>
             </div>
         </div>
@@ -35,7 +36,7 @@
                 <app-ta-input
                     formControlName="phone"
                     [inputConfig]="{
-                        name: 'Phone',
+                        name: 'phone',
                         type: 'text',
                         label: 'Phone',
                         placeholderIcon: 'phone',
@@ -48,7 +49,7 @@
                 <app-ta-input
                     formControlName="email"
                     [inputConfig]="{
-                        name: 'Email',
+                        name: 'email',
                         type: 'text',
                         label: 'Email',
                         placeholderIcon: 'email',
@@ -64,7 +65,7 @@
                 <app-ta-input-address-dropdown
                     formControlName="address"
                     [inputConfig]="{
-                        name: 'Address',
+                        name: 'address',
                         type: 'text',
                         label: 'Address, City, State Zip',
                         placeholderIcon: 'address',
@@ -82,7 +83,7 @@
                 <app-ta-input
                     formControlName="addressUnit"
                     [inputConfig]="{
-                        name: 'address-unit',
+                        name: 'addressUnit',
                         type: 'text',
                         label: 'Unit #',
                         textTransform: 'uppercase',
@@ -95,9 +96,15 @@
         <app-ta-custom-card
             [cardName]="'Notice of Assignment'"
             [disableAnimation]="disableCardAnimation"
+            [disabledCard]="
+                (factoringForm.get('name')?.invalid || 
+                factoringForm.get('name').value === 'null') &&
+                factoringForm.get('noticeOfAssigment').invalid
+            "
             [isCardOpen]="
                 factoringForm.get('noticeOfAssigment').value &&
-                factoringForm.get('noticeOfAssigment').value != 'null'
+                factoringForm.get('noticeOfAssigment').value !== 'null' &&
+                !isInitialCompanyNameSet
                     ? true
                     : false
             "
@@ -108,12 +115,6 @@
                     #noticeOfAssignment
                     [settings]="wysiwigSettings"
                     [sidebarWidth]="1000"
-                    [noticeValue]="
-                        factoringForm.get('noticeOfAssigment').value &&
-                        factoringForm.get('noticeOfAssigment').value != 'null'
-                            ? factoringForm.get('noticeOfAssigment').value
-                            : ''
-                    "
                     (noticeFocus)="onNoticeFocus($event)"
                 ></app-ta-notice-of-asignment>
             </div>
@@ -122,13 +123,13 @@
             formControlName="note"
             [isVisibleNote]="
                 factoringForm.get('note').value &&
-                factoringForm.get('note').value != 'null'
+                factoringForm.get('note').value !== 'null'
                     ? factoringForm.get('note').value
                     : false
             "
             [note]="
                 factoringForm.get('note').value &&
-                factoringForm.get('note').value != 'null'
+                factoringForm.get('note').value !== 'null'
                     ? factoringForm.get('note').value
                     : ''
             "

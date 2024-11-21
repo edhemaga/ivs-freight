@@ -16,7 +16,7 @@ export interface DetailsConfig {
     status?: boolean;
     statusType?: string;
     hasDanger?: boolean;
-    length?: number;
+    length?: number | string;
     hide?: boolean;
     hasArrow?: boolean;
     capsulaText?: boolean | string;
@@ -27,6 +27,7 @@ export interface DetailsConfig {
     isSearchBtn?: boolean;
     nameDefault?: string;
     icon?: boolean;
+    hasDateArrow?: boolean;
     hasArrowDown?: boolean;
     hasCost?: boolean;
     brokerLoadDrop?: boolean;
@@ -42,6 +43,7 @@ export interface DetailsConfig {
     moneyFilter?: boolean;
     hasSort?: boolean;
     sortDropdown?: LoadsSortDropdownModel[];
+    isClosedBusiness?: boolean;
     data?:
         | DriverResponse
         | CdlResponse

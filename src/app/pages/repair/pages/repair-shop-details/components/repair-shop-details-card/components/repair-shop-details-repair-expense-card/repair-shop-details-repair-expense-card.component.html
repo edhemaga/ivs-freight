@@ -1,0 +1,29 @@
+<app-ta-custom-card
+    [cardName]="'Repair Expenses'"
+    [isCardOpen]="true"
+    [bodyTemplate]="'card'"
+    [hasHeaderSvg]="repairShopDetailsSvgRoutes.viewInModalRoute"
+    [tooltipName]="'View in Modal'"
+    [animationMarginParams]="{
+        marginTop: '0px',
+        marginBottom: '8px'
+    }"
+>
+    <!-- <div
+        class="charts-template perfomance"
+        [class.p-0]="repairExpensesChart?.hoveringStatus"
+    > -->
+        <div [class.d-none]="repairExpensesChart?.hoveringStatus">
+            <app-ta-tab-switch
+                [type]="'type2-modal-popup'"
+                [tabs]="chartTabs"
+                (switchClicked)="onTabChange($event)"
+            >
+            </app-ta-tab-switch>
+            <app-ca-chart
+            [chartConfig]="repairShopChartConfig"
+            >
+            </app-ca-chart>
+        </div>
+    <!-- </div> -->
+</app-ta-custom-card>

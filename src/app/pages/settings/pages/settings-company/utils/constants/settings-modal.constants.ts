@@ -1,6 +1,5 @@
 // models
 import { Options } from '@angular-slider/ngx-slider';
-import { CroppieOptions } from 'croppie';
 import { Tabs } from '@shared/models/tabs.model';
 import { DropZoneConfig } from '@shared/components/ta-upload-files/models/dropzone-config.model';
 import { AnimationOptions } from '@shared/models/animation-options.model';
@@ -116,18 +115,85 @@ export class SettingsModalConstants {
         globalDropZone: true,
     };
 
-    static CROPPIE_OPTIONS: CroppieOptions = {
-        enableExif: true,
-        viewport: {
-            width: 616,
-            height: 194,
-            type: 'square',
+    static UPLOAD_OPTIONS = {
+        isVisibleCropAndDrop: true,
+        files: [],
+        slider: {
+            dontUseSlider: false,
+            hasCarouselBottomTabs: false,
         },
-        boundary: {
-            width: 616,
-            height: 194,
+        carouselConfig: {
+            files: [],
+            customClass: 'medium',
+            customDetailsPageClass: 'modals',
+            hasCarouselBottomTabs: true,
         },
-        enforceBoundary: false,
+        hasCrop: true,
+        isRoundCrop: false,
+        containWithinAspectRatio: true,
+        aspectRatio: [33, 10],
+        initialCropperPosition: {
+            x1: 0,
+            y1: 0,
+            x2: 608,
+            y2: 198,
+        },
+        dropzoneCustomWidth: '603px',
+        dropzoneConf: [
+            {
+                template: 'imageCropTemplate',
+                config: {
+                    dropzone: {
+                        dropZoneType: 'image',
+                        multiple: true,
+                        globalDropZone: false,
+                        dropZonePages: 'cdl',
+                    },
+                    dropzoneOption: {
+                        customClassName: 'documents-dropzone',
+                        size: 'medium',
+                        modalSize: 'lg',
+                        showDropzone: true,
+                        dropzoneClose: false,
+                    },
+                },
+            },
+        ],
+        review: {
+            isReview: true,
+            reviewMode: 'REVIEW_MODE',
+            feedbackText: 'Sample feedback text',
+            categoryTag: 'General',
+        },
+        configFile: {
+            id: 111,
+            customClassName: 'modals',
+            file: {
+                url: '',
+                incorrect: false,
+                lastHovered: false,
+                fileSize: 1200,
+                fileName: '',
+            },
+            hasTagsDropdown: false,
+            hasNumberOfPages: true,
+            activePage: 1,
+            tags: ['Example'],
+            type: 'modal',
+            hasLandscapeOption: false,
+            tagsOptions: [
+                {
+                    tagName: 'HOS Agreement',
+                    checked: false,
+                },
+                {
+                    tagName: 'Unsafe Driving AGT',
+                    checked: false,
+                },
+            ],
+        },
+        size: 'medium',
+        slideWidth: 180,
     };
 
     static ANIMATION_OPTIONS: AnimationOptions = {

@@ -24,7 +24,6 @@ import { DriverModalSvgRoutes } from '@pages/driver/pages/driver-modals/driver-m
 // modules
 import { NgbActiveModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AngularSvgIconModule } from 'angular-svg-icon';
-import { CroppieOptions } from 'croppie';
 
 // animations
 import { tabsModalAnimation } from '@shared/animations/tabs-modal.animation';
@@ -37,8 +36,11 @@ import { DriverService } from '@pages/driver/services/driver.service';
 import { EditTagsService } from '@shared/services/edit-tags.service';
 import { BankVerificationService } from '@shared/services/bank-verification.service';
 import { FormService } from '@shared/services/form.service';
+import { ConfirmationActivationService } from '@shared/components/ta-shared-modals/confirmation-activation-modal/services/confirmation-activation.service';
+import { ConfirmationService } from '@shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
 
 // helpers
+import { MethodsGlobalHelper } from '@shared/utils/helpers/methods-global.helper';
 import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calculations.helper';
 import { AvatarColorsHelper } from '@shared/utils/helpers/avatar-colors.helper';
 
@@ -75,6 +77,7 @@ import { TaLogoChangeComponent } from '@shared/components/ta-logo-change/ta-logo
 import { TaModalTableComponent } from '@shared/components/ta-modal-table/ta-modal-table.component';
 import { OwnerModalComponent } from '@pages/owner/pages/owner-modal/owner-modal.component';
 import { ConfirmationActivationModalComponent } from '@shared/components/ta-shared-modals/confirmation-activation-modal/confirmation-activation-modal.component';
+import { CaUploadFilesComponent } from 'ca-components';
 
 // enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
@@ -148,6 +151,7 @@ import { NameInitialsPipe } from '@shared/pipes/name-initials.pipe';
         TaInputDropdownComponent,
         TaLogoChangeComponent,
         TaModalTableComponent,
+        CaUploadFilesComponent,
     ],
 })
 export class DriverModalComponent implements OnInit, OnDestroy {
@@ -219,7 +223,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
     public isFileModified: boolean = false;
 
     // logo
-    public croppieOptions: CroppieOptions;
+    public uploadOptionsConstants = DriverModalConstants.UPLOAD_OPTIONS;
 
     // payroll
     public payrollDefaultValues: PayrollDefaultValues;
@@ -241,6 +245,8 @@ export class DriverModalComponent implements OnInit, OnDestroy {
         private bankVerificationService: BankVerificationService,
         private formService: FormService,
         private tagsService: EditTagsService,
+        private confirmationActivationService: ConfirmationActivationService,
+        private confirmationService: ConfirmationService,
 
         // bootstrap
         private ngbActiveModal: NgbActiveModal,
@@ -268,6 +274,25 @@ export class DriverModalComponent implements OnInit, OnDestroy {
         this.isSoloOrTeamDriverSelected();
 
         this.isTwicTypeSelected();
+        this.confirmationActivationSubscribe();
+        this.confirmationData();
+    }
+
+    private confirmationActivationSubscribe(): void {
+        this.confirmationActivationService.getConfirmationActivationData$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe(() => {
+                this.ngbActiveModal?.close();
+            });
+    }
+
+    private confirmationData(): void {
+        this.confirmationService.confirmationData$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((res) => {
+                if (res.action !== TableStringEnum.CLOSE)
+                    this.ngbActiveModal?.close();
+            });
     }
 
     private createForm(): void {
@@ -386,8 +411,6 @@ export class DriverModalComponent implements OnInit, OnDestroy {
         this.driverSliderOptions = JSON.parse(
             JSON.stringify(DriverModalConstants.SLIDER_OPTIONS)
         );
-
-        this.croppieOptions = DriverModalConstants.CROPPIE_OPTIONS;
     }
 
     private isOwnerSelected(): void {
@@ -488,18 +511,14 @@ export class DriverModalComponent implements OnInit, OnDestroy {
                     ),
                 },
             };
-
-            this.ngbActiveModal.close();
-
+            
             this.modalService.openModal(
                 ConfirmationActivationModalComponent,
                 { size: TableStringEnum.SMALL },
                 {
                     ...mappedEvent,
                     subType: TableStringEnum.DRIVER_1,
-                    type: data.bool
-                        ? TableStringEnum.DEACTIVATE
-                        : TableStringEnum.ACTIVATE,
+                    type: data.action,
                     template: TableStringEnum.DRIVER_1,
                     tableType: TableStringEnum.DRIVER,
                 }
@@ -555,8 +574,6 @@ export class DriverModalComponent implements OnInit, OnDestroy {
         }
         // delete
         else if (data.action === TableStringEnum.DELETE && this.editData?.id) {
-            this.ngbActiveModal.close();
-
             const mappedEvent = {
                 ...this.editData,
                 data: {
@@ -931,7 +948,10 @@ export class DriverModalComponent implements OnInit, OnDestroy {
     }
 
     public onUploadImage(event: any): void {
-        this.driverForm.get(DriverModalStringEnum.AVATAR).patchValue(event);
+        const base64Data = MethodsGlobalHelper.getBase64DataFromEvent(event);
+        this.driverForm
+            .get(DriverModalStringEnum.AVATAR)
+            .patchValue(base64Data);
         this.driverForm.get(DriverModalStringEnum.AVATAR).setErrors(null);
     }
 
@@ -2301,7 +2321,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
             flatRateSolo: conditionalFlatRateSolo,
             flatRateTeam: conditionalFlatRateTeam,
 
-            isOpenPayrollShared: conditionalPayrollShared,
+            isOpenPayrollShared: conditionalPayrollShared ?? false,
             isPayrollCalculated: conditionalPayrollCalculated,
 
             fleetType: this.fleetType,

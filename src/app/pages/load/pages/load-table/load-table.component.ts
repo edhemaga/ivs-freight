@@ -28,7 +28,8 @@ import { TableCardDropdownActionsService } from '@shared/components/ta-table-car
 import { LoadCardModalService } from '@pages/load/pages/load-card-modal/services/load-card-modal.service';
 import { ConfirmationActivationService } from '@shared/components/ta-shared-modals/confirmation-activation-modal/services/confirmation-activation.service';
 import { CaSearchMultipleStatesService } from 'ca-components';
-import { BrokerService } from '@pages/customer/services/broker.service';
+import { BrokerService } from '@pages/customer/services';
+import { CommentsService } from '@shared/services/comments.service';
 
 // Models
 import {
@@ -40,7 +41,7 @@ import {
     CardDetails,
     DeleteComment,
     DropdownItem,
-    LastStatusPassed,
+    Stop,
 } from '@shared/models/card-models/card-table-data.model';
 import { GridColumn } from '@shared/models/table-models/grid-column.model';
 import { TableToolbarActions } from '@shared/models/table-models/table-toolbar-actions.model';
@@ -173,6 +174,7 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
         private cdRef: ChangeDetectorRef,
         private caSearchMultipleStatesService: CaSearchMultipleStatesService,
         private brokerService: BrokerService,
+        private commentsService: CommentsService,
 
         //store
         private store: Store,
@@ -234,8 +236,33 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
                 if (!foundObject) return;
 
+                // if user selects Assigend status and
+                // Load does not already have a truck, trailer and driver assigned we should show load modal
+                const isAssignedStatusSelected = [LoadStatusEnum[2]].includes(
+                    status.dataBack
+                );
+                const isTruckTrailerDriverSelected = !!foundObject.driver;
+
+                const isPaidOrShortPaid = [
+                    LoadStatusEnum[13],
+                    LoadStatusEnum[16],
+                ].includes(status.dataBack);
+
+                if (
+                    (isAssignedStatusSelected &&
+                        !isTruckTrailerDriverSelected) ||
+                    isPaidOrShortPaid
+                ) {
+                    this.onTableBodyActions({
+                        type: TableStringEnum.EDIT,
+                        id: foundObject.id,
+                    });
+                    return;
+                }
+
                 if (
                     [
+                        LoadStatusEnum[12],
                         LoadStatusEnum[52],
                         LoadStatusEnum[53],
                         LoadStatusEnum[54],
@@ -292,23 +319,20 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
         this.confiramtionService.confirmationData$
             .pipe(takeUntil(this.destroy$))
             .subscribe((res) => {
-                if (res.template === TableStringEnum.COMMENT) return;
-                if (res.type === TableStringEnum.DELETE) {
-                    if (res.template === TableStringEnum.BROKER) {
+                if (res?.type === TableStringEnum.DELETE) {
+                    if (res.template === TableStringEnum.BROKER)
                         this.deleteBrokerById(res.id);
-                    } else {
-                        if (this.selectedTab === TableStringEnum.TEMPLATE) {
+                    else if (res.template === TableStringEnum.COMMENT)
+                        this.deleteCommentById(res.data);
+                    else {
+                        if (this.selectedTab === TableStringEnum.TEMPLATE)
                             this.deleteLoadTemplateById(res.id);
-                        } else {
-                            this.deleteLoadById(res.id);
-                        }
+                        else this.deleteLoadById(res.id);
                     }
-                } else if (res.type === TableStringEnum.MULTIPLE_DELETE) {
-                    if (this.selectedTab === TableStringEnum.TEMPLATE) {
+                } else if (res?.type === TableStringEnum.MULTIPLE_DELETE) {
+                    if (this.selectedTab === TableStringEnum.TEMPLATE)
                         this.deleteLoadTemplateList(res.array);
-                    } else {
-                        this.deleteLoadList(res.array);
-                    }
+                    else this.deleteLoadList(res.array);
                 }
             });
 
@@ -338,8 +362,20 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 const foundObject = this.viewData.findIndex(
                     (item) => item.id === data.entityTypeId
                 );
+
                 if (foundObject !== -1) {
-                    this.viewData[foundObject].comments.push(data);
+                    const commentsWithAvatarColor = {
+                        ...data,
+                        avatarColor:
+                            AvatarColorsHelper.getAvatarColors(foundObject),
+                        textShortName: this.nameInitialsPipe.transform(
+                            data.companyUser?.fullName
+                        ),
+                    };
+
+                    this.viewData[foundObject].comments.push(
+                        commentsWithAvatarColor
+                    );
 
                     this.viewData[foundObject].commentsCount =
                         this.viewData[foundObject].commentsCount + 1;
@@ -349,16 +385,25 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
         this.dataSubscription = this.loadServices.removeComment$
             .pipe(takeUntil(this.destroy$))
             .subscribe((data: DeleteComment) => {
-                const foundObject = this.viewData.find(
-                    (item) => item.id === data.entityTypeId
-                );
-                const indexToRemove = foundObject.comments.findIndex(
-                    (comment) => comment.id === data.commentId
-                );
-                if (indexToRemove !== -1) {
-                    foundObject.comments.splice(indexToRemove, 1);
-                    foundObject.commentsCount = foundObject.commentsCount - 1;
-                }
+                this.viewData = this.viewData.map((loadData) => {
+                    if (loadData.id === data.entityTypeId) {
+                        const indexToRemove = loadData.comments.findIndex(
+                            (comment) => comment.id === data.commentId
+                        );
+                        if (indexToRemove !== -1) {
+                            const newCommentData = [...loadData.comments];
+                            newCommentData.splice(indexToRemove, 1);
+
+                            loadData = {
+                                ...loadData,
+                                comments: newCommentData,
+                                commentsCount: newCommentData.length,
+                            };
+                        }
+                    }
+
+                    return loadData;
+                });
             });
     }
 
@@ -367,7 +412,7 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe((res) => {
                 switch (res?.filterType) {
-                    case LoadFilterStringEnum.USER_FILTER:
+                    case LoadFilterStringEnum.DISPATCHER_FILTER:
                         this.backLoadFilterQuery.dispatcherIds =
                             res.queryParams ?? null;
 
@@ -401,19 +446,19 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
                         break;
                     case LoadFilterStringEnum.MONEY_FILTER:
                         this.backLoadFilterQuery.rateFrom =
-                            res.queryParams?.firstFormFrom ?? null;
+                            res.queryParams?.moneyArray[0].from ?? null;
                         this.backLoadFilterQuery.rateTo =
-                            res.queryParams?.firstFormTo ?? null;
+                            res.queryParams?.moneyArray[0].to ?? null;
 
                         this.backLoadFilterQuery.paidFrom =
-                            res.queryParams?.secondFormFrom ?? null;
+                            res.queryParams?.moneyArray[1].from ?? null;
                         this.backLoadFilterQuery.paidTo =
-                            res.queryParams?.secondFormTo ?? null;
+                            res.queryParams?.moneyArray[1].to ?? null;
 
                         this.backLoadFilterQuery.dueFrom =
-                            res.queryParams?.thirdFormFrom ?? null;
+                            res.queryParams?.moneyArray[2].from ?? null;
                         this.backLoadFilterQuery.dueTo =
-                            res.queryParams?.thirdFormTo ?? null;
+                            res.queryParams?.moneyArray[2].to ?? null;
 
                         this.loadBackFilter(this.backLoadFilterQuery);
 
@@ -988,14 +1033,13 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
             loadPickup: [
                 {
-                    count: stops[0]?.stopOrder,
+                    count: this.calculatePickupstops(stops),
                     location: stops[0]?.shipper?.address?.city,
                     delivery: false,
                 },
                 {
-                    count: stops[1]?.stopOrder,
-                    location: stops[1]?.shipper?.address?.city,
-
+                    count: stops[stops.length - 1]?.stopLoadOrder,
+                    location: stops[stops.length - 1]?.shipper?.address?.city,
                     delivery: true,
                 },
             ],
@@ -1080,6 +1124,16 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
             },
         };
     }
+    private calculatePickupstops(stops: Stop[]): number {
+        let stopOrder = 0;
+        stops.forEach((stop) => {
+            if (stop.stopType.name === LoadModalStringEnum.PICKUP_2)
+                stopOrder++;
+        });
+
+        return stopOrder;
+    }
+
     private mapLoadData(data: LoadModel) /* : LoadModel */ {
         let commentsWithAvatarColor;
         if (data.comments) {
@@ -1399,6 +1453,7 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 filter.revenueFrom,
                 filter.revenueTo,
                 filter.truckId,
+                filter.driverId,
                 filter.rateFrom,
                 filter.rateTo,
                 filter.paidFrom,
@@ -1857,6 +1912,15 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe(() => {
                 this.loadServices.triggerModalAction();
+            });
+    }
+
+    public deleteCommentById(data): void {
+        this.commentsService
+            .deleteCommentById(data.commentId, data.entityTypeId)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe(() => {
+                this.loadServices.removeComment(data);
             });
     }
 

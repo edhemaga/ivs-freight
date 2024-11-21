@@ -9,12 +9,13 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { DayOfWeek } from './dayOfWeek';
+import { OpenHoursDayOfWeek } from './openHoursDayOfWeek';
 
 
 export interface RepairShopOpenHoursCommand { 
-    dayOfWeek?: DayOfWeek;
+    dayOfWeek?: OpenHoursDayOfWeek;
     startTime?: string | null;
     endTime?: string | null;
+    isWorking?: boolean;
 }
 

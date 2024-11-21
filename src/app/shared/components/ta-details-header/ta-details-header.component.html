@@ -20,12 +20,13 @@
                 ngbTooltip
                 [mainTooltip]="tooltipHeaderName"
                 position="bottom"
-                tooltipBackground="#6C6C6C"
+                tooltipBackground="#424242"
+                [tooltipMarginTop]="'6px'"
             >
                 <svg-icon
                     routerLink="{{ route }}"
                     class="header-arrow"
-                    src="assets/svg/common/ic_arrow-left.svg"
+                    [src]="detailsHeaderSvgRoutes.arrowLeftRoute"
                 >
                 </svg-icon>
             </span>
@@ -33,13 +34,21 @@
         </div>
 
         <div class="icon-right">
-            <div *ngIf="isInactive" class="inactive-status">INACTIVE</div>
-            <div
-                *ngIf="showClosedBadge && !businessOpen"
-                class="inactive-status"
-            >
-                CLOSED
-            </div>
+            <ng-container *ngIf="isInactive">
+                <div
+                    class="d-flex align-items-center justify-content-center ta-font-bold text-color-white text-size-11 inactive-status"
+                >
+                    INACTIVE
+                </div>
+            </ng-container>
+
+            <ng-container *ngIf="showClosedBadge && !businessOpen">
+                <div
+                    class="d-flex align-items-center justify-content-center ta-font-bold text-color-white text-size-11 inactive-status closed"
+                >
+                    CLOSED
+                </div>
+            </ng-container>
 
             <ng-container *ngIf="subText">
                 <div
@@ -257,13 +266,41 @@
 
                         <ng-container *ngIf="timeFilter">
                             <span class="ic-hed">
-                                <app-ta-filter
+                                <app-ca-filter
                                     [type]="'timeFilter'"
                                     [icon]="'ic_time'"
                                     [filterTitle]="'Time Filter'"
+                                    [timeSubType]="'past'"
                                     (setFilter)="setFilterValue($event)"
+                                    (clearAll)="setFilterValue($event)"
                                 >
-                                </app-ta-filter>
+                                </app-ca-filter>
+                            </span>
+                        </ng-container>
+
+                        <ng-container *ngIf="truckTypeFilter">
+                            <span class="ic-hed">
+                                <app-ca-filter
+                                    [type]="'truckTypeFilter'"
+                                    [truckTypeArray]="truckTypeArray"
+                                    [filterTitle]="'Truck Type Filter'"
+                                    [icon]="'truck'"
+                                    (setFilter)="setFilterValue($event)"
+                                    (clearAll)="setFilterValue($event)"
+                                ></app-ca-filter>
+                            </span>
+                        </ng-container>
+
+                        <ng-container *ngIf="trailerTypeFilter">
+                            <span class="ic-hed">
+                                <app-ca-filter
+                                    [type]="'trailerTypeFilter'"
+                                    [truckTypeArray]="trailerTypeArray"
+                                    [filterTitle]="'Trailer Type Filter'"
+                                    [icon]="'trailer'"
+                                    (setFilter)="setFilterValue($event)"
+                                    (clearAll)="setFilterValue($event)"
+                                ></app-ca-filter>
                             </span>
                         </ng-container>
 
@@ -309,50 +346,58 @@
                         <ng-container *ngIf="dispatcherFilter">
                             <span class="ic-hed">
                                 <!-- DISPECHER FILTER -->
-                                <app-ta-filter
-                                    [type]="'userFilter'"
+                                <app-ca-filter
+                                    [type]="'dispatcherFilter'"
                                     [searchState]="true"
                                     [filterTitle]="'Dispatcher Filter'"
                                     [defFilterHolder]="true"
                                     (setFilter)="setFilterValue($event)"
+                                    (clearAll)="setFilterValue($event)"
+                                    [unselectedUser]="unselectedDispatcher"
                                 >
-                                </app-ta-filter
-                            ></span>
+                                </app-ca-filter>
+                            </span>
                         </ng-container>
 
                         <ng-container *ngIf="statusFilter">
                             <span class="ic-hed">
                                 <!-- STATUS FILTER -->
-                                <app-ta-filter
+                                <app-ca-filter
                                     [type]="'statusFilter'"
                                     [icon]="'broker-half-circle'"
                                     [filterTitle]="'Status Filter'"
                                     [defFilterHolder]="true"
                                     [noLeftIcon]="false"
                                     (setFilter)="setFilterValue($event)"
+                                    (clearAll)="setFilterValue($event)"
+                                    [loadStatusOptionsArray]="
+                                        loadStatusOptionsArray
+                                    "
                                 >
-                                </app-ta-filter>
+                                </app-ca-filter>
                             </span>
                         </ng-container>
 
                         <ng-container *ngIf="locationFilter">
                             <span class="ic-hed">
                                 <!-- LOCATION FILTER -->
-                                <app-ta-filter
+                                <app-ca-filter
                                     [type]="'locationFilter'"
                                     [icon]="'address'"
                                     [filterTitle]="'Area Filter'"
                                     [areaFilter]="areaFilter"
                                     [locationDefType]="true"
                                     (setFilter)="setFilterValue($event)"
+                                    (clearAll)="setFilterValue($event)"
                                 >
-                                </app-ta-filter
+                                </app-ca-filter
                             ></span>
                         </ng-container>
 
                         <ng-container *ngIf="pmFilter">
                             <span class="ic-hed">
-                                <app-ta-filter
+                                <!-- PM FILTER -->
+                                <app-ca-filter
                                     [type]="'pmFilter'"
                                     [icon]="'default_pm'"
                                     [filterTitle]="'PM Filter'"
@@ -361,14 +406,17 @@
                                     [noLeftIcon]="false"
                                     [leftSideIcon]="true"
                                     (setFilter)="setFilterValue($event)"
+                                    (clearAll)="setFilterValue($event)"
+                                    [pmFilterArray]="pmFilterArray"
                                 >
-                                </app-ta-filter>
+                                </app-ca-filter>
                             </span>
                         </ng-container>
 
                         <ng-container *ngIf="categoryFilter">
                             <span class="ic-hed">
-                                <app-ta-filter
+                                <!-- CATEGORY REPAIR FILTER -->
+                                <app-ca-filter
                                     [type]="'categoryRepairFilter'"
                                     [icon]="'ic_key-repair'"
                                     [filterTitle]="'Category Repair Filter'"
@@ -376,23 +424,43 @@
                                     [noLeftIcon]="false"
                                     [leftSideIcon]="true"
                                     (setFilter)="setFilterValue($event)"
+                                    (clearAll)="setFilterValue($event)"
+                                    [pmFilterArray]="categoryRepairArray"
                                 >
-                                </app-ta-filter>
+                                </app-ca-filter>
                             </span>
                         </ng-container>
 
                         <ng-container *ngIf="moneyFilter">
                             <span class="ic-hed">
-                                <app-ta-filter
+                                <!-- MONEY FILTER -->
+                                <app-ca-filter
                                     [type]="'moneyFilter'"
                                     [icon]="'dollar'"
                                     [filterTitle]="'Money Filter'"
                                     [subType]="'all'"
-                                    [moneyFilter]="true"
-                                    [loadType]="true"
+                                    [isMoneyFilter]="true"
+                                    [isLoadType]="true"
                                     (setFilter)="setFilterValue($event)"
+                                    (clearAll)="setFilterValue($event)"
                                 >
-                                </app-ta-filter>
+                                </app-ca-filter>
+                            </span>
+                        </ng-container>
+                        <ng-container *ngIf="repairOrderFilter">
+                            <span class="ic-hed">
+                                <app-ta-special-filter
+                                    [type]="'repair-filter'"
+                                    [icon]="'ic_repair_track'"
+                                    [filterTitle]="'Repair Filter'"
+                                    [dataArray]="repairFilterData"
+                                    (setFilter)="
+                                        onSpecialFilter($event, 'repairArray')
+                                    "
+                                    [selectedFilter]="
+                                        this.repairFilterData?.filteredArray
+                                    "
+                                ></app-ta-special-filter>
                             </span>
                         </ng-container>
                     </div>
@@ -405,18 +473,21 @@
                         <div
                             class="sort-text-container"
                             [class.active-dropdown]="isSortDropdownOpen"
+                            [class.disabled]="!selectedSort"
                             #sortPopover="ngbPopover"
                             autoClose="outside"
                             [ngbPopover]="sortDropdownPopover"
                             [popoverClass]="'popover-main'"
                             [placement]="['bottom-left']"
                             [container]="'body'"
-                            (click)="showSortDropdown(sortPopover)"
+                            (click)="
+                                selectedSort && showSortDropdown(sortPopover)
+                            "
                             (hidden)="sortDropdownClosed()"
                             triggers="manual"
                         >
                             <span class="sort-text ta-font-medium">
-                                {{ selectedSort?.name }}
+                                {{ selectedSort?.name ?? 'Date' }}
                             </span>
                         </div>
 
@@ -490,12 +561,13 @@
 
                     <div
                         ngbTooltip
-                        [mainTooltip]="'Add New'"
+                        [mainTooltip]="businessOpen ? 'Add New' : ''"
                         tooltipBackground="#424242"
                         position="bottom"
                     >
                         <svg-icon
                             class="icon-plus-header"
+                            [ngClass]="{ disabled: !businessOpen }"
                             (click)="openModal(headerText)"
                             [src]="icPlusSvgIcon"
                         >

@@ -26,8 +26,8 @@ import { LoadModalStringEnum } from '@pages/load/pages/load-modal/enums';
 
 // Components
 import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-custom-card.component';
-import { TaInputComponent } from '@shared/components/ta-input/ta-input.component';
 import { LoadStatusStringComponent } from '@pages/load/components/load-status-string/load-status-string.component';
+import { CaInputComponent  } from 'ca-components';
 
 @Component({
     selector: 'app-load-modal-wait-time',
@@ -42,8 +42,8 @@ import { LoadStatusStringComponent } from '@pages/load/components/load-status-st
 
         // Components
         TaCustomCardComponent,
-        TaInputComponent,
         LoadStatusStringComponent,
+        CaInputComponent,
 
         // Pipes
         LoadStatusColorPipe,

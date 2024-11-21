@@ -32,3 +32,4 @@ export * from './thousand-to-short-format.pipe';
 export * from './time-format-am-pm.pipe';
 export * from './track-by-property.pipe';
 export * from './value-by-string-path.pipe';
+export * from './activity-time.pipe';

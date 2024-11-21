@@ -52,7 +52,7 @@ export class DropdownLoadStatusColorPipe implements PipeTransform {
         const statusDarkRed2ColorCondition = [
             'Cancelled',
             'Split',
-            'LoadCancelled',
+            'LoadCanceled',
         ].includes(status);
         const statusOrangeColorCondition = status === 'Delivered';
         const statusYellowColorCondition = [

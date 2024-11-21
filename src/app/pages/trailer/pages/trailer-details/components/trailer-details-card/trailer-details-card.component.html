@@ -461,6 +461,32 @@
                 <div class="owner-history-container"></div>
             </app-ta-custom-card>
             <app-ta-custom-card
+                [tooltipName]="'View in Modal'"
+                [bodyTemplate]="'card'"
+                [cardName]="'Fuel Consumption'"
+                [isCardOpen]="true"
+                [hasHeaderSvg]="'assets/svg/common/arrow_top_right.svg'"
+                class="item-cards"
+                [customClass]="'detailsPadding'"
+            >
+                <div
+                    class="charts-template perfomance"
+                >
+                    <!-- <div [class.d-none]="payrollChart.hoveringStatus"> -->
+                        <app-ta-tab-switch
+                            [type]="'type2-modal-popup'"
+                            (switchClicked)="changeTabFuel($event)"
+                            [tabs]="buttonsArrayFuel"
+                        >
+                        </app-ta-tab-switch>
+                    <!-- </div> -->
+                    <app-ca-chart
+                        [chartConfig]="payrollChartConfig"
+                    >
+                    </app-ca-chart>
+                </div>
+            </app-ta-custom-card>
+            <app-ta-custom-card
                 *ngIf="trailer?.files.length"
                 [cardName]="'Document'"
                 [isCardOpen]="false"
@@ -502,36 +528,6 @@
                 ></app-ta-input-note>
             </div>
         </div>
-        <app-ta-custom-card
-            [tooltipName]="'View in Modal'"
-            [bodyTemplate]="'card'"
-            [cardName]="'Fuel Consumption'"
-            [isCardOpen]="payrollChartConfig?.hasValue"
-            [hasHeaderSvg]="'assets/svg/common/arrow_top_right.svg'"
-            class="item-cards"
-            [customClass]="'detailsPadding'"
-        >
-            <div
-                class="charts-template perfomance"
-                [class.p-0]="payrollChart.hoveringStatus"
-            >
-                <div [class.d-none]="payrollChart.hoveringStatus">
-                    <app-ta-tab-switch
-                        [type]="'type2-modal-popup'"
-                        (switchClicked)="changeTabFuel($event)"
-                        [tabs]="buttonsArrayFuel"
-                    >
-                    </app-ta-tab-switch>
-                </div>
-                <app-ta-chart
-                    #payrollChart
-                    [chartConfig]="payrollChartConfig"
-                    [axesProperties]="barAxes"
-                    [legendAttributes]="barChartLegend"
-                >
-                </app-ta-chart>
-            </div>
-        </app-ta-custom-card>
         <div *ngIf="templateCard">
             <div class="custom-card-single">
                 <app-ta-custom-card

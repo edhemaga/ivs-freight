@@ -1,3 +1,5 @@
+import { PayrollDeleteModal } from "@pages/accounting/pages/payroll/state/models";
+
 export interface Confirmation {
     template: string; // examples: driver, broker, shipper, cdl.....
     type:
@@ -27,7 +29,8 @@ export interface Confirmation {
         | 'active'
         | 'pending'
         | 'template'
-        | 'closed'; // if subType set, must set and subTypeStatus (except when subType: cdl void)
+        | 'closed'
+        | 'favorite'; // if subType set, must set and subTypeStatus (except when subType: cdl void)
     subTypeStatus?: 'move' | 'remove'; // example: move -> 'Move to Ban List', remove -> 'Remove from Ban List', void -> void
     cdlStatus?: 'New' | 'Renew' | 'Activate';
     image?: boolean; // has image or not
@@ -35,4 +38,6 @@ export interface Confirmation {
     rating?: boolean; // has rating or not
     modalHeader?: boolean;
     modalHeaderTitle?: string;
+    action?: string;
+    extras?: PayrollDeleteModal;
 }

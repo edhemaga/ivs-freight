@@ -1,13 +1,6 @@
 import { Injectable } from '@angular/core';
 
-import {
-    Observable,
-    Subject,
-    forkJoin,
-    tap,
-    catchError,
-    of,
-} from 'rxjs';
+import { Observable, Subject, forkJoin, tap, catchError, of } from 'rxjs';
 
 // services
 import { FormDataService } from '@shared/services/form-data.service';
@@ -19,9 +12,7 @@ import { TableStringEnum } from '@shared/enums/table-string.enum';
 import { LoadDetailsListStore } from '@pages/load/state/load-details-state/load-details-list-state/load-details-list.store';
 import { LoadItemStore } from '@pages/load/state/load-details-state/load-details.store';
 import { LoadMinimalListStore } from '@pages/load/state/load-details-state/load-minimal-list-state/load-details-minimal.store';
-import {
-    LoadActiveStore,
-} from '@pages/load/state/load-active-state/load-active.store';
+import { LoadActiveStore } from '@pages/load/state/load-active-state/load-active.store';
 import {
     LoadPandingState,
     LoadPendingStore,
@@ -131,18 +122,21 @@ export class LoadService {
         this.statusAction.next(data);
     }
 
-    private getOrderAndSort(sortString: string): { sortBy: LoadSortBy, order: SortOrder } {
+    private getOrderAndSort(sortString: string): {
+        sortBy: LoadSortBy;
+        order: SortOrder;
+    } {
         let order = null;
         let sortBy = null;
-    
+
         if (sortString?.endsWith('Asc')) {
             order = SortOrder.Ascending;
-            sortBy = sortString.replace(/Asc$/, ''); 
+            sortBy = sortString.replace(/Asc$/, '');
         } else {
             order = SortOrder.Descending;
-            sortBy = sortString?.replace(/Desc$/, ''); 
+            sortBy = sortString?.replace(/Desc$/, '');
         }
-    
+
         return { sortBy: sortBy as LoadSortBy, order };
     }
 
@@ -162,6 +156,7 @@ export class LoadService {
         revenueFrom?: number,
         revenueTo?: number,
         truckId?: number,
+        driverId?: number,
         rateFrom?: number,
         rateTo?: number,
         paidFrom?: number,
@@ -181,7 +176,8 @@ export class LoadService {
         search1?: string,
         search2?: string
     ): Observable<LoadListResponse> {
-        const {order, sortBy} = this.getOrderAndSort(sort);
+        const { order, sortBy } = this.getOrderAndSort(sort);
+
         return this.loadService.apiLoadListGet(
             loadType,
             statusType,
@@ -197,26 +193,27 @@ export class LoadService {
             revenueFrom,
             revenueTo,
             truckId,
+            driverId,
             rateFrom,
             rateTo,
             paidFrom,
             paidTo,
             dueFrom,
             dueTo,
-            pickup,
-            delivery,
-            longitude,
-            latitude,
-            distance,
-            pageIndex,
-            pageSize,
-            companyId,
+            // pickup,
+            // delivery,
+            // longitude,
+            // latitude,
+            // distance,
+            // pageIndex,
+            // pageSize,
+            // companyId,
             null,
-            order,
-            sortBy,
-            search,
-            search1,
-            search2
+            // order,
+            // sortBy,
+            // search,
+            // search1,
+            // search2
         );
     }
 
@@ -613,9 +610,7 @@ export class LoadService {
         search2?: string
     ): Observable<AssignLoadModalResponse | AssignedLoadListResponse> {
         if (isDispatchId) {
-            return this.loadService.apiLoadListAssignedIdGet(
-                dispatchId,
-            );
+            return this.loadService.apiLoadListAssignedIdGet(dispatchId);
         }
         return this.loadService.apiLoadModalAssignGet(
             dispatchId,
@@ -654,6 +649,7 @@ export class LoadService {
         revenueFrom?: number,
         revenueTo?: number,
         truckId?: number,
+        driverId?: number,
         rateFrom?: number,
         rateTo?: number,
         paidFrom?: number,
@@ -688,6 +684,7 @@ export class LoadService {
             revenueFrom ?? null,
             revenueTo ?? null,
             truckId ?? null,
+            driverId ?? null,
             rateFrom ?? null,
             rateTo ?? null,
             paidFrom ?? null,
@@ -741,6 +738,7 @@ export class LoadService {
         revenueFrom?: number,
         revenueTo?: number,
         truckId?: number,
+        driverId?: number,
         rateFrom?: number,
         rateTo?: number,
         paidFrom?: number,
@@ -775,6 +773,7 @@ export class LoadService {
             revenueFrom ?? null,
             revenueTo ?? null,
             truckId ?? null,
+            driverId ?? null,
             rateFrom ?? null,
             rateTo ?? null,
             paidFrom ?? null,
@@ -825,6 +824,7 @@ export class LoadService {
         revenueFrom?: number,
         revenueTo?: number,
         truckId?: number,
+        driverId?: number,
         rateFrom?: number,
         rateTo?: number,
         paidFrom?: number,
@@ -859,6 +859,7 @@ export class LoadService {
             revenueFrom ?? null,
             revenueTo ?? null,
             truckId ?? null,
+            driverId ?? null,
             rateFrom ?? null,
             rateTo ?? null,
             paidFrom ?? null,
@@ -906,8 +907,8 @@ export class LoadService {
         sort?: string,
         search?: string,
         search1?: string,
-        search2?: string) {
-        
+        search2?: string
+    ) {
         return this.getLoadTemplateList(
             loadType,
             revenueFrom,
@@ -919,52 +920,56 @@ export class LoadService {
             search,
             search1,
             search2
-            )
-            .pipe(
-                tap((loadPagination) => {
-                    localStorage.setItem(
-                        'loadTableCount',
-                        JSON.stringify({
-                            pendingCount: loadPagination.pendingCount,
-                            activeCount: loadPagination.activeCount,
-                            closedCount: loadPagination.closedCount,
-                            templateCount: loadPagination.pagination.count,
-                        })
-                    );
+        ).pipe(
+            tap((loadPagination) => {
+                localStorage.setItem(
+                    'loadTableCount',
+                    JSON.stringify({
+                        pendingCount: loadPagination.pendingCount,
+                        activeCount: loadPagination.activeCount,
+                        closedCount: loadPagination.closedCount,
+                        templateCount: loadPagination.pagination.count,
+                    })
+                );
 
-                    this.loadTemplateStore.set(loadPagination.pagination.data);
-                })
-            );
+                this.loadTemplateStore.set(loadPagination.pagination.data);
+            })
+        );
     }
 
-    public getAllLoads(query: FilterOptionsLoad, dataType: string): Observable<any> {
-            const {
-                loadType,
-                statusType,
-                status,
-                dispatcherIds,
-                dispatcherId,
-                dispatchId,
-                brokerId,
-                shipperId,
-                dateFrom,
-                dateTo,
-                revenueFrom,
-                revenueTo,
-                truckId,
-                pageIndex,
-                pageSize,
-                companyId,
-                rateFrom,
-                rateTo,
-                pickup,
-                delivery,
-                sort,
-                searchOne,
-                searchTwo,
-                searchThree,
-            } = query;
-            if (dataType === TableStringEnum.PENDING) {
+    public getAllLoads(
+        query: FilterOptionsLoad,
+        dataType: string
+    ): Observable<any> {
+        const {
+            loadType,
+            statusType,
+            status,
+            dispatcherIds,
+            dispatcherId,
+            dispatchId,
+            brokerId,
+            shipperId,
+            dateFrom,
+            dateTo,
+            revenueFrom,
+            revenueTo,
+            truckId,
+            driverId,
+            pageIndex,
+            pageSize,
+            companyId,
+            rateFrom,
+            rateTo,
+            pickup,
+            delivery,
+            sort,
+            searchOne,
+            searchTwo,
+            searchThree,
+        } = query;
+
+        if (dataType === TableStringEnum.PENDING) {
             return this.getPendingData(
                 loadType,
                 statusType,
@@ -974,23 +979,24 @@ export class LoadService {
                 dispatchId,
                 brokerId,
                 shipperId,
-                null,  
+                null,
                 dateFrom,
                 dateTo,
                 revenueFrom,
                 revenueTo,
                 truckId,
+                driverId,
                 rateFrom,
                 rateTo,
-                null,  
-                null,  
-                null,  
-                null,  
+                null,
+                null,
+                null,
+                null,
                 pickup,
                 delivery,
-                null,  
-                null,  
-                null,  
+                null,
+                null,
+                null,
                 pageIndex,
                 pageSize,
                 companyId,
@@ -1001,90 +1007,93 @@ export class LoadService {
             );
         }
 
-            if(dataType === TableStringEnum.ACTIVE) {
-                return this.getActiveData(
-                    loadType,
-                    statusType,
-                    status,
-                    dispatcherIds,
-                    dispatcherId,
-                    dispatchId,
-                    brokerId,
-                    shipperId,
-                    null,
-                    dateFrom,
-                    dateTo,
-                    revenueFrom,
-                    revenueTo,
-                    truckId,
-                    rateFrom,
-                    rateTo,
-                    null,
-                    null,
-                    null,
-                    null,
-                    pickup,
-                    delivery,
-                    null,
-                    null,
-                    null,
-                    pageIndex,
-                    pageSize,
-                    companyId,
-                    sort,
-                    searchOne,
-                    searchTwo,
-                    searchThree
-                );
-            }
-            
-            if(dataType === TableStringEnum.CLOSED){
-return this.getClosedData(
-                    loadType,
-                    statusType,
-                    status,
-                    dispatcherIds,
-                    dispatcherId,
-                    dispatchId,
-                    brokerId,
-                    shipperId,
-                    null,
-                    dateFrom,
-                    dateTo,
-                    revenueFrom,
-                    revenueTo,
-                    truckId,
-                    rateFrom,
-                    rateTo,
-                    null,
-                    null,
-                    null,
-                    null,
-                    pickup,
-                    delivery,
-                    null,
-                    null,
-                    null,
-                    pageIndex,
-                    pageSize,
-                    companyId,
-                    sort,
-                    searchOne,
-                    searchTwo,
-                    searchThree
-                );
-            }
-    
-            return this.getTemplateData(
+        if (dataType === TableStringEnum.ACTIVE) {
+            return this.getActiveData(
                 loadType,
+                statusType,
+                status,
+                dispatcherIds,
+                dispatcherId,
+                dispatchId,
+                brokerId,
+                shipperId,
+                null,
+                dateFrom,
+                dateTo,
                 revenueFrom,
                 revenueTo,
+                truckId,
+                driverId,
+                rateFrom,
+                rateTo,
+                null,
+                null,
+                null,
+                null,
+                pickup,
+                delivery,
+                null,
+                null,
+                null,
                 pageIndex,
                 pageSize,
                 companyId,
                 sort,
                 searchOne,
                 searchTwo,
-                searchThree);
+                searchThree
+            );
+        }
+
+        if (dataType === TableStringEnum.CLOSED) {
+            return this.getClosedData(
+                loadType,
+                statusType,
+                status,
+                dispatcherIds,
+                dispatcherId,
+                dispatchId,
+                brokerId,
+                shipperId,
+                null,
+                dateFrom,
+                dateTo,
+                revenueFrom,
+                revenueTo,
+                truckId,
+                driverId,
+                rateFrom,
+                rateTo,
+                null,
+                null,
+                null,
+                null,
+                pickup,
+                delivery,
+                null,
+                null,
+                null,
+                pageIndex,
+                pageSize,
+                companyId,
+                sort,
+                searchOne,
+                searchTwo,
+                searchThree
+            );
+        }
+
+        return this.getTemplateData(
+            loadType,
+            revenueFrom,
+            revenueTo,
+            pageIndex,
+            pageSize,
+            companyId,
+            sort,
+            searchOne,
+            searchTwo,
+            searchThree
+        );
     }
 }

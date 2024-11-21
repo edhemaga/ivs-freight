@@ -21,7 +21,7 @@ export interface CompanyAdditionalInfo {
     preferredLoadType?: PreferredLoadType;
     fleetType?: FleetType;
     factorByDefault?: boolean | null;
-    customerPayTerm?: string | null;
+    payTerm?: number | null;
     customerCredit?: string | null;
     mvrMonths?: number;
     truckInspectionMonths?: number;

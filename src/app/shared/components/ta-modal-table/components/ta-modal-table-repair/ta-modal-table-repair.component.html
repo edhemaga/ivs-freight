@@ -2,7 +2,8 @@
     <div
         class="d-flex flex-column repair-bill-table-container"
         [ngClass]="{
-            'repair-order-table-container': isRepairOrderTable
+            'repair-order-table-container': isRepairOrderTable,
+            'fuel-table': isFuelTable
         }"
     >
         <ng-container
@@ -25,7 +26,7 @@
 
                     <svg-icon
                         class="delete-icon"
-                        src="assets/svg/truckassist-table/dropdown/content/delete-hover-new.svg"
+                        [src]="svgRoutes.deleteIcon"
                         [svgStyle]="{
                             'width.px': 18,
                             'height.px': 18
@@ -34,9 +35,10 @@
                     ></svg-icon>
                 </div>
 
-                <app-ta-input
-                    formControlName="description"
-                    [inputConfig]="{
+                <ng-container *ngIf="!isFuelTable; else showItemsDropdown">
+                    <app-ta-input
+                        formControlName="description"
+                        [inputConfig]="{
                         name: 'description',
                         type: 'text',
                         label: 'Description',
@@ -46,67 +48,84 @@
                         textTransform: 'lowercase',
                         hideErrorMessage: true,
                         hideRequiredCheck: true,
+                        isRequired: true,
                         isInputBackgroundRemoved:
-                            repairBillItemRow.valid &&
-                            !isInputHoverRows[i][0],
+                            repairBillItemRow.valid && !isInputHoverRows[i][0],
                         isBlueText:
                             repairBillItemRow.valid &&
                             !isInputHoverRows[i][0] &&
                             selectedTruckTrailerRepairPm[i],
                         blackInput:
-                            formArray.at(i).get('description')
-                                .value && !isInputHoverRows[i][0]
+                            formArray.at(i).get('description').value &&
+                            !isInputHoverRows[i][0],
                     }"
-                    (mouseenter)="emitOnInputHover(true, i, 0)"
-                    (mouseleave)="emitOnInputHover(false, i, 0)"
-                ></app-ta-input>
-
-                <div
-                    class="pm-dropdown-container"
-                    [ngClass]="{
-                        'hidden-pm-dropdown':
-                            !truckTrailerRepairPmOptions?.truckPmDropdownList &&
-                            !truckTrailerRepairPmOptions?.trailerPmDropdownList
-                    }"
-                >
-                    <app-ta-input-dropdown
-                        formControlName="pm"
-                        [template]="'svgtext-template'"
-                        [inputConfig]="{
-                            name: 'pm',
-                            type: 'text',
-                            label: '',
-                            placeholderInsteadOfLabel: true,
-                            hideErrorMessage: true,
-                            hideRequiredCheck: true,
-                            hideClear: true,
-                            isDropdown: true,
-                            isIconInput: true,
-                            isValidIcon:
-                                selectedTruckTrailerRepairPm[i],
-                            inputIcon:
-                                selectedTruckTrailerRepairPm[i]
-                                    ?.logoName ||
-                                'ic_custom_pm.svg',
-                            dropdownWidthClass: 'w-col-200'
+                        (mouseenter)="emitOnInputHover(true, i, 0)"
+                        (mouseleave)="emitOnInputHover(false, i, 0)"
+                    ></app-ta-input>
+                    <div
+                        class="pm-dropdown-container"
+                        [ngClass]="{
+                            'hidden-pm-dropdown':
+                                !truckTrailerRepairPmOptions?.truckPmDropdownList &&
+                                !truckTrailerRepairPmOptions?.trailerPmDropdownList
                         }"
-                        [canAddNew]="
-                            truckTrailerRepairPmOptions?.truckPmDropdownList &&
-                            truckTrailerRepairPmOptions?.trailerPmDropdownList
-                        "
-                        [activeItem]="
-                            selectedTruckTrailerRepairPm[i]
-                        "
-                        [options]="
-                            truckTrailerRepairPmOptions?.truckPmDropdownList ||
-                            truckTrailerRepairPmOptions?.trailerPmDropdownList
-                        "
-                        (selectedItem)="emitOnSelectDropdown($event,i)"
-                    ></app-ta-input-dropdown>
-                </div>
+                    >
+                        <app-ta-input-dropdown
+                            formControlName="pm"
+                            [template]="'svgtext-template'"
+                            [inputConfig]="{
+                                name: 'pm',
+                                type: 'text',
+                                label: '',
+                                placeholderInsteadOfLabel: true,
+                                hideErrorMessage: true,
+                                hideRequiredCheck: true,
+                                hideClear: true,
+                                isDropdown: true,
+                                isIconInput: true,
+                                isValidIcon: selectedTruckTrailerRepairPm[i],
+                                inputIcon:
+                                    selectedTruckTrailerRepairPm[i]?.logoName ||
+                                    'ic_custom_pm.svg',
+                                dropdownWidthClass: 'w-col-200'
+                            }"
+                            [canAddNew]="
+                                truckTrailerRepairPmOptions?.truckPmDropdownList &&
+                                truckTrailerRepairPmOptions?.trailerPmDropdownList
+                            "
+                            [activeItem]="selectedTruckTrailerRepairPm[i]"
+                            [options]="
+                                truckTrailerRepairPmOptions?.truckPmDropdownList ||
+                                truckTrailerRepairPmOptions?.trailerPmDropdownList
+                            "
+                            (selectedItem)="emitOnSelectDropdown($event, i)"
+                        ></app-ta-input-dropdown>
+                    </div>
+                </ng-container>
+
+                <ng-template #showItemsDropdown>
+                    <app-ca-input-dropdown
+                        formControlName="itemfuel"
+                        [inputConfig]="{
+                        name: 'Input Dropdown',
+                        type: 'text',
+                        label: 'Item',
+                        isDropdown: true,
+                        placeholderInsteadOfLabel: true,
+                        blackInput: true,
+                        isRequired: true,
+                        textTransform: 'capitalize',
+                        dropdownWidthClass: 'w-col-182',
+                        customClass: 'w-col-182',
+                    }"
+                        [options]="fuelItemsDropdown"
+                        [activeItem]="activeFuelItem[i]"
+                        (selectedItem)="emitOnSelectDropdown($event, i)"
+                    ></app-ca-input-dropdown>
+                </ng-template>
 
                 <app-ta-input
-                    formControlName="quantity"
+                    [formControlName]="!isFuelTable ? 'quantity' : 'qty'"
                     [inputConfig]="{
                         name: 'qty',
                         type: 'text',
@@ -118,15 +137,14 @@
                         hideErrorMessage: true,
                         hideRequiredCheck: true,
                         isInputBackgroundRemoved:
-                            repairBillItemRow.valid &&
-                            !isInputHoverRows[i][1],
+                            repairBillItemRow.valid && !isInputHoverRows[i][1],
                         isBlueText:
                             repairBillItemRow.valid &&
                             !isInputHoverRows[i][1] &&
                             selectedTruckTrailerRepairPm[i],
                         blackInput:
-                            formArray.at(i).get('quantity')
-                                .value && !isInputHoverRows[i][1]
+                            formArray.at(i).get('quantity').value &&
+                            !isInputHoverRows[i][1]
                     }"
                     (mouseenter)="emitOnInputHover(true, i, 1)"
                     (mouseleave)="emitOnInputHover(false, i, 1)"
@@ -156,8 +174,7 @@
                                 !isInputHoverRows[i][2] &&
                                 selectedTruckTrailerRepairPm[i],
                             blackInput:
-                                formArray.at(i).get('price')
-                                    .value &&
+                                formArray.at(i).get('price').value &&
                                 !isInputHoverRows[i][2]
                         }"
                         (mouseenter)="emitOnInputHover(true, i, 2)"
@@ -171,10 +188,7 @@
                         }"
                     >
                         <p class="m-0 ta-font-semi-bold">
-                            {{
-                                subTotals[i]?.subtotal ?? 0
-                                    | currency
-                            }}
+                            {{ subTotals[i]?.subtotal ?? 0 | currency }}
                         </p>
                     </div>
                 </ng-container>

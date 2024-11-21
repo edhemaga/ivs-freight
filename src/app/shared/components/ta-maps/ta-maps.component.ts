@@ -26,7 +26,7 @@ import { TruckassistTableService } from '@shared/services/truckassist-table.serv
 import { DropDownService } from '@shared/services/drop-down.service';
 import { DetailsDataService } from '@shared/services/details-data.service';
 import { FuelService } from '@shared/services/fuel.service';
-import { ShipperService } from '@pages/customer/services/shipper.service';
+import { ShipperService } from '@pages/customer/services';
 import { RepairService } from '@shared/services/repair.service';
 import { RoutingStateService } from '@shared/services/routing-state.service';
 import { ConfirmationService } from '@shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
@@ -599,8 +599,7 @@ export class TaMapsComponent implements OnInit, OnDestroy {
 
                 this.dropdownService.dropActionsHeaderRepair(
                     action,
-                    action.data,
-                    action.id
+                    action.data
                 );
             } else if (this.mapType == 'shipper') {
                 let eventType = '';
@@ -1725,37 +1724,13 @@ export class TaMapsComponent implements OnInit, OnDestroy {
                             }
                             break;
                         }
-                        case 'activate': {
-                            if (
-                                res.template === 'repair shop' ||
-                                res.template === 'Repair Shop'
-                            ) {
-                                this.repairShopService.changeShopStatus(
-                                    res?.id
-                                );
-                            }
-                            break;
-                        }
-                        case 'deactivate': {
-                            if (
-                                res.template === 'repair shop' ||
-                                res.template === 'Repair Shop'
-                            ) {
-                                this.repairShopService.changeShopStatus(
-                                    res?.id
-                                );
-                            }
-                            break;
-                        }
+                        /*  */
                         case 'info': {
                             if (res.subType === 'favorite') {
                                 if (
                                     res.subTypeStatus === 'move' ||
                                     res.subTypeStatus === 'remove'
                                 ) {
-                                    this.repairShopService.changePinnedStatus(
-                                        res?.id
-                                    );
                                 }
                             }
                             break;

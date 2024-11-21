@@ -1,0 +1,67 @@
+image: node:18.20
+
+pipelines:
+  branches:
+    development:
+      - step:
+          name: Installation
+          caches:
+            - node
+          script:
+            - export NODE_OPTIONS=--max-old-space-size=6144
+            - npm install
+          artifacts:
+            - node_modules/** # Save modules for next steps
+      - step:
+          size: 2x
+          name: Build
+          script:
+            - npm run build:production
+          artifacts:
+            - dist/** # Save build for next steps
+      - step:
+          name: Deploy
+          script:
+            - echo "$(ls -la)"
+            - echo "$(ls -la dist)"
+            - apt-get update && apt-get install -y openssh-client
+            - echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
+            - chmod 600 ~/.ssh/id_rsa
+            - ssh -p 29879 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null frontdev@50.171.242.215 rm -rf /home/frontdev/www-tmp
+            - ssh -p 29879 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null frontdev@50.171.242.215 mkdir /home/frontdev/www-tmp
+            - scp -P29879 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -r ./dist/carrierassist-fe/* frontdev@50.171.242.215://home/frontdev/www-tmp
+            - ssh -p 29879 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null frontdev@50.171.242.215 rm -rf /home/frontdev/www-old
+            - ssh -p 29879 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null frontdev@50.171.242.215 mv /home/frontdev/www /home/frontdev/www-old
+            - ssh -p 29879 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null frontdev@50.171.242.215 mv /home/frontdev/www-tmp /home/frontdev/www
+            - ssh -p 29879 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null frontdev@50.171.242.215 chown frontdev:frontdev /home/frontdev/www -R
+    master:
+      - step:
+          name: Installation
+          caches:
+            - node
+          script:
+            - export NODE_OPTIONS=--max-old-space-size=6144
+            - npm install
+          artifacts:
+            - node_modules/** # Save modules for next steps
+      - step:
+          size: 3x
+          name: Build
+          script:
+            - npm run build:stage
+          artifacts:
+            - dist/** # Save build for next steps
+      - step:
+          name: Deploy
+          script:
+            - echo "$(ls -la)"
+            - echo "$(ls -la dist)"
+            - apt-get update && apt-get install -y openssh-client
+            - echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
+            - chmod 600 ~/.ssh/id_rsa
+            - ssh -p 29879 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null frontstage@stage.carriera.io mkdir /home/frontstage/www-tmp
+            - scp -P29879 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -r ./dist/carrierassist-fe/* frontstage@stage.carriera.io://home/frontstage/www-tmp
+            - ssh -p 29879 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null frontstage@stage.carriera.io rm -rf /home/frontstage/www-old
+            - ssh -p 29879 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null frontstage@stage.carriera.io mv /home/frontstage/www /home/frontstage/www-old
+            - ssh -p 29879 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null frontstage@stage.carriera.io mv /home/frontstage/www-tmp /home/frontstage/www
+            - ssh -p 29879 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null frontstage@stage.carriera.io chown frontstage:frontstage /home/frontstage/www -R

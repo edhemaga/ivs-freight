@@ -212,6 +212,7 @@ export class LoadModalConfig {
         placeholderIconColor: 'blue',
         inputCursorOnRightSide: true,
         hideErrorMessage: true,
+        errorInsideInput: true,
         hideRequiredCheck: true,
     };
     static LOAD_BILLING_DROPDOWN: ITaInput = {
@@ -556,7 +557,7 @@ export class LoadModalConfig {
         type: 'text',
         label: 'Adjusted',
         labelInInput: true,
-        isRequired: true,
+        isRequired: false,
         priceSeparator: true,
         priceSeparatorLimitation: 6,
         placeholderIconRightSide: 'dollar',

@@ -1,19 +1,24 @@
 @import 'src/theme/variables';
 
 .messages-container {
-    height: 100%;
     width: 100%;
-    background: $white;
-    border-radius: 3px;
+    overflow-y: scroll;
+
+    background-color: $white;
+    border-radius: 2px;
 
     .messages-wrapper {
         height: 100%;
         width: 100%;
 
+        display: flex;
+        flex-direction: column;
+        flex-grow: 1;
+        overflow: hidden;
+
         .messages-content {
-            height: calc(100% - 110px);
-            overflow-y: scroll;
-            margin: 6px 6px 6px 0;
+            overflow-y: auto;
+            margin: auto 6px 0 6px;
 
             .empty-conversation {
                 margin-top: 54px;
@@ -25,177 +30,130 @@
                 font-size: 20px;
                 line-height: 25px;
             }
-        }
 
-        .typing-placeholder-wrapper {
-            margin: auto 12px;
-            height: 14px;
-
-            .typing-placeholder {
-                line-height: 14px;
+            .message-date {
+                height: 26px;
+                margin: auto 6px;
                 font-size: 11px;
-                color: $bw6-2;
-            }
-        }
 
-        .upload-wrapper {
-            height: calc(100% - 38px);
-        }
+                &-selection {
+                    width: 110px;
+                    padding: 0 4px;
+                    border-radius: 2px;
+                    background-color: $bw2;
+                    color: $ta-black-2;
 
-        .chat-footer {
-            min-height: 46px;
-            border-top: 1px solid $bw-9;
-            margin: 2px 6px;
-
-            .left-side {
-                width: 100%;
-                margin: auto auto auto 6px;
-
-                .input-placeholder-not-touched {
-                    padding-left: 12px;
-                    line-height: 18px;
-                    font-size: 14px;
-                }
-
-                .form-wrapper {
-                    flex: 1;
-                    width: 100%;
-
-                    .attachment-list {
-                        width: 100%;
-                        min-height: 46px;
-                        height: fit-content;
-                        border-radius: 2px;
-                        border-bottom-left-radius: 0;
-                        border-bottom-right-radius: 0;
-                        padding: 4px 2px 2px 4px;
-                        margin-top: 8px;
-                        overflow-x: scroll;
-                        overflow-y: hidden;
-
-                        &-dark {
-                            background-color: $ta-black-3;
-                        }
-
-                        &-light {
-                            background-color: $bw2;
-                        }
-
-                        .attachment-preview-container {
-                            width: 100%;
-
-                            &-long {
-                                width: 132px;
-                            }
-
-                            &-short {
-                                width: 40px;
-                            }
-
-                            margin-right: 8px;
-                            padding: 1px;
-                            border-radius: 2px;
-
-                            &-dark {
-                                background-color: $bw2;
-                                color: $ta-black-2 !important;
-                            }
-
-                            &-dark-focused {
-                                background-color: $ta-black;
-                            }
-
-                            &-light {
-                                background-color: $ta-black-2;
-                                color: $white;
-                            }
-
-                            &-light-focused {
-                                background-color: $bw5;
-                            }
-
-                            &-document {
-                                height: 36px;
-                                width: 132px;
-                                padding-left: 6px;
-
-                                &-info {
-                                    line-height: 14px;
-                                    font-size: 11px;
-                                    width: 84px;
-                                    height: 14px;
-
-                                    .text {
-                                        white-space: nowrap;
-                                        text-overflow: ellipsis;
-                                        overflow: hidden;
-                                    }
-
-                                    .name {
-                                        padding: 4px;
-                                    }
-
-                                    .size {
-                                        color: $bw5;
-                                        padding: 0 4px;
-                                    }
-                                }
-
-                                &-thumbnail {
-                                    height: 40px;
-                                    padding-right: 6px;
-                                }
-                            }
-
-                            svg-icon {
-                                height: fit-content;
-                                position: relative;
-                                top: -2px;
-                                right: 10px;
-                            }
-                            &:hover {
-                                cursor: pointer;
-                            }
-                        }
-
-                        .hovered-overlay-dark {
-                            background-color: lighten($bw5, 20%) !important;
-                        }
-
-                        .hovered-overlay-light {
-                            background-color: $ta-black !important;
-                        }
-                    }
-                }
-            }
-
-            .right-side {
-                .icon-wrapper {
-                    height: 26px;
-                    width: 26px;
-                    margin: 0 6px;
-
-                    .icon {
-                        width: 100%;
-                        border-radius: 2px;
-                    }
-
-                    :hover {
-                        background-color: $bw2;
-                    }
-                    svg-icon:hover {
+                    &:hover {
                         cursor: pointer;
                     }
 
-                    .blue-icon {
-                        svg {
-                            path {
-                                fill: $ta-blue-13;
-                            }
+                    &-focused {
+                        width: 110px;
+                        padding: 0 4px;
+                        border-radius: 2px;
+                        background-color: $ta-black;
+                        color: $white;
+                        &:hover {
+                            cursor: pointer;
                         }
                     }
                 }
             }
+
+            .gradient {
+                height: 1px;
+
+                &-to-left {
+                    background: linear-gradient(to left, $bw-9, $white);
+                    margin: auto 12px auto auto;
+
+                    &-blue {
+                        margin: auto 12px auto auto;
+
+                        background: linear-gradient(
+                            to left,
+                            $ta-blue-17,
+                            $white
+                        );
+                    }
+                }
+
+                &-to-right {
+                    margin: auto auto auto 12px;
+                    background: linear-gradient(to right, $bw-9, $white);
+                    &-blue {
+                        margin: auto auto auto 12px;
+
+                        background: linear-gradient(
+                            to right,
+                            $ta-blue-17,
+                            $white
+                        );
+                    }
+                }
+                &-width {
+                    width: calc(50% - 55px);
+                }
+            }
         }
+    }
+}
+
+.conversation-info {
+    margin: 60px auto 30px auto;
+    color: $bw5;
+
+    .conversation-name {
+        font-size: 20px;
+        margin-top: 12px;
+    }
+    .conversation-details {
+        line-height: 14px;
+        font-size: 11px;
+    }
+}
+.item-text {
+    color: $ta-light-grey-6;
+    font-size: 14px;
+
+    padding: 0 8px 0 4px;
+
+    .text {
+        height: 23px;
+        margin: auto;
+    }
+}
+
+.date-options {
+    color: $white;
+    padding: 4px;
+
+    &:hover {
+        background-color: $ta-black;
+    }
+
+    &-list {
+        width: 110px;
+        background-color: $ta-black-2;
+        border-radius: 3px;
+        padding: 4px;
+
+        &:hover {
+            cursor: pointer;
+        }
+    }
+
+    &-wrapper {
+        width: 0px !important;
+        position: relative;
+        top: 4px;
+        left: calc(50% - 55px);
+        z-index: 10;
+    }
+}
+
+@media only screen and (max-width: 1280px) {
+    .item-text {
+        display: none !important;
     }
 }

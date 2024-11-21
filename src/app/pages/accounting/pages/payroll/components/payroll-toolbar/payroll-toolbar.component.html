@@ -1,0 +1,191 @@
+<div class="toolbar-container d-flex align-items-center">
+    <!-- LIST NAME -->
+    <div
+        class="list-name text-black d-f-aic-jcc ta-font-black"
+    >
+        {{ 'Payroll' | listNameCase : false }}
+    </div>
+
+    <div class="tab-wrapper d-flex align-items-center">
+        <ng-container
+            *ngFor="let data of tableData; let i = index; trackBy: identity"
+        >
+            <div
+                class="tab-container d-flex"
+                [ngClass]="{
+                    'tab-inactive': selectedTab !== data.field,
+                    'tab-active': selectedTab === data.field,
+                    disabled: data.inactive
+                }"
+                (click)="onSelectTab(data.field)"
+            >
+                <div class="tab d-flex align-items-center">
+                    <ng-container *ngIf="!data.iconLink">
+                        <div
+                            class="tab-title d-f-aic-jcc ta-font-extra-bold"
+                        >
+                            {{ data.title | titlecase }}
+                        </div>
+                    </ng-container>
+                    <ng-container *ngIf="data.iconLink">
+                        <svg-icon
+                            [svgStyle]="{
+                                'width.px': 20,
+                                'height.px': 20
+                            }"
+                            [svgClass]="'d-flex'"
+                            [src]="data.iconLink"
+                        ></svg-icon>
+                    </ng-container>
+                    <ng-container *ngIf="!data.hideDataCount">
+                        <div
+                            class="data-count d-f-aic-jcc ta-font-extra-bold"
+                        >
+                            {{ data.length }}
+                        </div>
+                    </ng-container>
+                </div>
+            </div>
+        </ng-container>
+    </div>
+
+    <div class="filters_and_search d-f-aic">
+        <div
+            class="border-container d-f-aic-jcc"
+        >
+            <div class="border-stick"></div>
+        </div>
+        <div class="search-filter-holder">
+            <app-ca-search-multiple-states
+                [searchType]="'tabel'"
+                [toolbarSearch]="true"
+                [selectedTabData]="{ gridNameTitle: 'Payroll' }"
+            ></app-ca-search-multiple-states>
+        </div>
+
+        <div
+            class="border-container d-flex d-f-aic-jcc"
+        >
+            <div class="border-stick"></div>
+        </div>
+
+        <div class="search-filter-holder">
+            <app-ca-filter
+                [type]="'statusFilter'"
+                [loadStatusOptionsArray]="filterConfig"
+                [filterTitle]="'Status Filter'"
+                [icon]="'broker-half-circle'"
+            >
+            </app-ca-filter>
+        </div>
+    </div>
+    <!-- TOOLBAR ACTIONS -->
+    <div class="table-actions d-flex justify-content-end align-items-center">
+        <ng-container *ngIf="!tableExpanded; else openTable">
+            <!-- Options -->
+            <div class="search-filter-holder">
+                <div class="menu_list d-flex" ngbTooltip>
+                    <div
+                        #op="ngbPopover"
+                        (click)="onShowOptions(op)"
+                        [ngbPopover]="optionsPopover"
+                        [placement]="'bottom-right'"
+                        [autoClose]="'outside'"
+                        popoverClass="toolbar-options-popover"
+                        triggers="manual"
+                        (hidden)="optionsPopupOpen = false"
+                        class="action-div active-options d-flex align-items-center"
+                        mainTooltip="Tooltip"
+                        [tooltipBackground]="
+                            optionsPopupOpen ? '#CCCCCC' : '#424242'
+                        "
+                        [tooltipColor]="
+                            optionsPopupOpen ? '#2F2F2F' : '#FFFFFF'
+                        "
+                        position="bottom"
+                        container="body"
+                    >
+                        <svg-icon
+                            class="d-f-aic-jcc"
+                            [ngClass]="{ 'dropdown-active': optionsPopupOpen }"
+                            [svgClass]="'d-flex'"
+                            [svgStyle]="{ 'width.px': 26, 'height.px': 26 }"
+                            [src]="'ic_route_info'"
+                        ></svg-icon>
+                    </div>
+                </div>
+            </div>
+
+            <div
+                class="border-container d-f-aic-jcc"
+            >
+                <div class="border-stick"></div>
+            </div>
+            <div class="search-filter-holder">
+                <div class="menu_list d-flex" ngbTooltip>
+                    <div
+                        #op="ngbPopover"
+                        (click)="onShowOptions(op)"
+                        [ngbPopover]="optionsPopover"
+                        [placement]="'bottom-right'"
+                        [autoClose]="'outside'"
+                        popoverClass="toolbar-options-popover"
+                        triggers="manual"
+                        (hidden)="optionsPopupOpen = false"
+                        class="action-div active-options d-flex align-items-center"
+                        mainTooltip="Tooltip"
+                        [tooltipBackground]="
+                            optionsPopupOpen ? '#CCCCCC' : '#424242'
+                        "
+                        [tooltipColor]="
+                            optionsPopupOpen ? '#2F2F2F' : '#FFFFFF'
+                        "
+                        position="bottom"
+                        container="body"
+                    >
+                        <svg-icon
+                            class="d-f-aic-jcc"
+                            [svgClass]="'d-flex'"
+                            [ngClass]="{ 'dropdown-active': optionsPopupOpen }"
+                            [svgStyle]="{ 'width.px': 18, 'height.px': 17 }"
+                            [name]="'burger_menu'"
+                        ></svg-icon>
+                    </div>
+                </div>
+            </div>
+        </ng-container>
+        <ng-template #openTable>
+            <div class="search-filter-holder">
+                <div class="menu_list d-flex expand_table_icon" ngbTooltip>
+                    <div
+                        (click)="expandTable()"
+                        class="action-div active-options d-flex align-items-center"
+                        mainTooltip="Expand Table"
+                        [tooltipBackground]="
+                            optionsPopupOpen ? '#CCCCCC' : '#424242'
+                        "
+                        [tooltipColor]="
+                            optionsPopupOpen ? '#2F2F2F' : '#FFFFFF'
+                        "
+                        position="bottom"
+                        container="body"
+                    >
+                        <svg-icon
+                            class="d-f-aic-jcc"
+                            [svgClass]="'d-flex'"
+                            [ngClass]="{ 'dropdown-active': optionsPopupOpen }"
+                            [svgStyle]="{ 'width.px': 18, 'height.px': 18 }"
+                            [name]="'ic_arrow_down_updated'"
+                        ></svg-icon>
+                    </div>
+                </div>
+            </div>
+        </ng-template>
+    </div>
+</div>
+
+<ng-template
+    #optionsPopover
+    let-data="data"
+    data-toggle="popover"
+></ng-template>

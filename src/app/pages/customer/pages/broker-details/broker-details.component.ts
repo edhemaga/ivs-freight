@@ -1,9 +1,8 @@
 import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subject, takeUntil, take, forkJoin } from 'rxjs';
-
 // Services
-import { BrokerService } from '@pages/customer/services/broker.service';
+import { BrokerService } from '@pages/customer/services';
 import { DetailsDataService } from '@shared/services/details-data.service';
 import { DropDownService } from '@shared/services/drop-down.service';
 import { TruckassistTableService } from '@shared/services/truckassist-table.service';
@@ -31,16 +30,16 @@ import { LoadsSortDropdownModel } from '@pages/customer/models/loads-sort-dropdo
 
 // Enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
-import { BrokerDetailsStringEnum } from '@pages/customer/pages/broker-details/enums/broker-details-string.enum';
+import { BrokerDetailsStringEnum } from '@pages/customer/pages/broker-details/enums/';
 import { LoadFilterStringEnum } from '@pages/load/pages/load-table/enums/load-filter-string.enum';
 
 // Svg Routes
-import { BrokerDetailsSvgRoutes } from '@pages/customer/pages/broker-details/utils/svg-routes/broker-details-svg-routes';
+import { BrokerDetailsSvgRoutes } from '@pages/customer/pages/broker-details/utils/svg-routes/';
 
 // Helpers
 import { RepairTableDateFormaterHelper } from '@pages/repair/pages/repair-table/utils/helpers/repair-table-date-formater.helper';
 import { MethodsGlobalHelper } from '@shared/utils/helpers/methods-global.helper';
-import { BrokerDetailsHelper } from '@pages/customer/pages/broker-details/utils/helpers/broker-details.helper';
+import { BrokerDetailsHelper } from '@pages/customer/pages/broker-details/utils/helpers/';
 
 // Constants
 import { TableDropdownComponentConstants } from '@shared/utils/constants/table-dropdown-component.constants';
@@ -122,6 +121,10 @@ export class BrokerDetailsComponent implements OnInit, OnDestroy {
         this.getLoadStatusFilter();
 
         this.getLoadDispatcherFilter();
+
+        this.resetTableSelectedRows();
+
+        this.loadServiceListener();
     }
 
     public isEmpty(obj: Record<string, any>): boolean {
@@ -159,6 +162,7 @@ export class BrokerDetailsComponent implements OnInit, OnDestroy {
         this.currentIndex = this.brokerList.findIndex(
             (broker) => broker.id === data.id
         );
+
         this.initTableOptions(data);
 
         this.businessOpen = data?.status ? true : false;
@@ -167,13 +171,16 @@ export class BrokerDetailsComponent implements OnInit, OnDestroy {
 
         this.brokerConfig = BrokerDetailsHelper.getBrokerDetailsConfig(
             this.brokerConfData,
-            4,
+            this.backLoadFilterQuery.statusType ?? 4,
             1
         );
 
         this.brokerId = data?.id ? data.id : null;
-        this.brokerLoads = data?.loadStops?.loads?.data;
         this.backLoadFilterQuery.brokerId = this.brokerId;
+        this.loadBackFilter(
+            this.backLoadFilterQuery,
+            this.backLoadFilterQuery.statusType ?? 4
+        );
     }
 
     public getBrokerById(id: number) {
@@ -306,42 +313,44 @@ export class BrokerDetailsComponent implements OnInit, OnDestroy {
         this.brokerService
             .changeBanStatus(id)
             .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: () => {},
-                error: () => {},
-            });
+            .subscribe();
     }
 
     public moveRemoveBrokerToDnu(id: number) {
         this.brokerService
             .changeDnuStatus(id)
             .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: () => {},
-                error: () => {},
-            });
+            .subscribe();
     }
 
     public onDropActions(event: any) {
         let eventType = '';
+
         if (
-            event.type == TableStringEnum.CONTRACT ||
-            event.type == TableStringEnum.EDIT ||
-            event.type == TableStringEnum.REVIEW
+            event.type === TableStringEnum.CONTRACT ||
+            event.type === TableStringEnum.EDIT ||
+            event.type === TableStringEnum.REVIEW
         ) {
             eventType = TableStringEnum.EDIT;
         } else {
             eventType = event.type;
         }
 
-        let eventObject = {
+        const openedTab =
+            event.type === TableStringEnum.EDIT
+                ? TableStringEnum.BASIC
+                : event.type === TableStringEnum.CONTRACT
+                ? TableStringEnum.ADDITIONAL
+                : TableStringEnum.REVIEW;
+
+        const eventObject = {
             data: undefined,
             id: this.brokerId,
             type: eventType,
-            openedTab: event.type,
+            openedTab,
         };
 
-        let brokerData = this.brokerObject
+        const brokerData = this.brokerObject
             ? this.brokerObject
             : this.brokerConfData;
 
@@ -352,17 +361,20 @@ export class BrokerDetailsComponent implements OnInit, OnDestroy {
         );
     }
 
-    public onModalAction(event: any) {
+    public onModalAction(event: string) {
         if (event == BrokerDetailsStringEnum.LOAD) {
             this.modalService.openModal(LoadModalComponent, {
                 size: TableStringEnum.LOAD,
             });
         } else {
-            let eventObject = {
+            const eventObject = {
                 data: undefined,
                 id: this.brokerId,
                 type: TableStringEnum.EDIT,
-                openedTab: event,
+                openedTab:
+                    event === TableStringEnum.CONTRACT
+                        ? TableStringEnum.ADDITIONAL
+                        : event,
             };
 
             setTimeout(() => {
@@ -395,9 +407,16 @@ export class BrokerDetailsComponent implements OnInit, OnDestroy {
                 next: (res) => {
                     switch (res.type) {
                         case TableStringEnum.DELETE:
-                            if (res.template === TableStringEnum.BROKER) {
+                            if (res.template === TableStringEnum.BROKER)
                                 this.deleteBrokerById(res.id);
-                            }
+                            else if (
+                                res.template === TableStringEnum.BROKER_CONTACT
+                            )
+                                this.deleteBrokerContactById(
+                                    res.data?.brokerId,
+                                    res.id
+                                );
+
                             break;
 
                         case TableStringEnum.INFO:
@@ -432,9 +451,9 @@ export class BrokerDetailsComponent implements OnInit, OnDestroy {
             .subscribe((res) => {
                 if (res) {
                     if (res.subType === TableStringEnum.BAN) {
-                        this.moveRemoveBrokerToBan(res.data.id);
+                        this.moveRemoveBrokerToBan(res.data?.id);
                     } else {
-                        this.moveRemoveBrokerToDnu(res.data.id);
+                        this.moveRemoveBrokerToDnu(res.data?.id);
                     }
                 }
             });
@@ -503,7 +522,7 @@ export class BrokerDetailsComponent implements OnInit, OnDestroy {
 
     public setFilter(data): void {
         switch (data?.filterType) {
-            case LoadFilterStringEnum.USER_FILTER:
+            case LoadFilterStringEnum.DISPATCHER_FILTER:
                 this.backLoadFilterQuery.dispatcherIds =
                     data.queryParams ?? null;
 
@@ -589,6 +608,7 @@ export class BrokerDetailsComponent implements OnInit, OnDestroy {
                 filter.revenueFrom,
                 filter.revenueTo,
                 filter.truckId,
+                filter.driverId,
                 filter.rateFrom,
                 filter.rateTo,
                 filter.paidFrom,
@@ -612,7 +632,10 @@ export class BrokerDetailsComponent implements OnInit, OnDestroy {
             .subscribe((res) => {
                 if (res) {
                     this.brokerLoads = res.loads.data;
-                    this.brokerConfData.loadStops = res;
+                    this.brokerConfData = {
+                        ...this.brokerConfData,
+                        loadStops: res,
+                    };
 
                     if (loadTypeId)
                         this.brokerConfig =
@@ -742,6 +765,29 @@ export class BrokerDetailsComponent implements OnInit, OnDestroy {
         this.backLoadFilterQuery.sort = event.sortDirection;
 
         this.loadBackFilter(this.backLoadFilterQuery);
+    }
+
+    private loadServiceListener(): void {
+        this.loadService.modalAction$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe(() => {
+                this.loadBackFilter(this.backLoadFilterQuery);
+            });
+    }
+
+    private deleteBrokerContactById(brokerId: number, contactId: number): void {
+        this.brokerService
+            .deleteBrokerContactById(brokerId, contactId)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe();
+    }
+
+    private resetTableSelectedRows(): void {
+        this.tableService.sendDnuListSelectedRows([]);
+        this.tableService.sendBanListSelectedRows([]);
+        this.tableService.sendBussinessSelectedRows([]);
+        this.tableService.sendRowsSelected([]);
+        this.tableService.sendResetSelectedColumns(true);
     }
 
     ngOnDestroy(): void {

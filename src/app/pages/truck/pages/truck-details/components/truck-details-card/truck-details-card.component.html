@@ -899,7 +899,7 @@
                 [tooltipName]="'View in Modal'"
                 [bodyTemplate]="'card'"
                 [cardName]="'Performance'"
-                [isCardOpen]="payrollChartConfig?.hasValue"
+                [isCardOpen]="true"
                 [hasHeaderSvg]="'assets/svg/common/arrow_top_right.svg'"
                 [customClass]="'detailsPadding'"
             >
@@ -931,29 +931,25 @@
                 [tooltipName]="'View in Modal'"
                 [bodyTemplate]="'card'"
                 [cardName]="'Fuel Consumption'"
-                [isCardOpen]="payrollChartConfig?.hasValue"
+                [isCardOpen]="true"
                 [hasHeaderSvg]="'assets/svg/common/arrow_top_right.svg'"
                 [customClass]="'detailsPadding'"
             >
                 <div
                     class="charts-template perfomance"
-                    [class.p-0]="payrollChart.hoveringStatus"
                 >
-                    <div [class.d-none]="payrollChart.hoveringStatus">
+                    <!-- <div [class.d-none]="payrollChart.hoveringStatus"> -->
                         <app-ta-tab-switch
                             [type]="'type2-modal-popup'"
                             (switchClicked)="changeTabFuel($event)"
                             [tabs]="buttonsArrayFuel"
                         >
                         </app-ta-tab-switch>
-                    </div>
-                    <app-ta-chart
-                        #payrollChart
-                        [chartConfig]="payrollChartConfig"
-                        [axesProperties]="barAxes"
-                        [legendAttributes]="barChartLegend"
+                    <!-- </div> -->
+                    <app-ca-chart
+                        [chartConfig]="fuelConsumptionChartConfig"
                     >
-                    </app-ta-chart>
+                    </app-ca-chart>
                 </div>
             </app-ta-custom-card>
 
@@ -963,57 +959,47 @@
                 [cardName]="'Revenue'"
                 [bodyTemplate]="'card'"
                 [hasHeaderSvg]="'assets/svg/common/arrow_top_right.svg'"
-                [isCardOpen]="revenueChartConfig?.hasValue"
+                [isCardOpen]="true"
                 [customClass]="'detailsPadding'"
             >
                 <div
                     class="charts-template perfomance"
-                    [class.p-0]="revenueChart.hoveringStatus"
                 >
-                    <div [class.d-none]="revenueChart.hoveringStatus">
+                    <!-- <div [class.d-none]="revenueChart.hoveringStatus"> -->
                         <app-ta-tab-switch
                             [type]="'type2-modal-popup'"
                             (switchClicked)="changeTabRevenue($event)"
                             [tabs]="buttonsArrayRevenue"
                         >
                         </app-ta-tab-switch>
-                    </div>
-                    <app-ta-chart
-                        #revenueChart
+                    <!-- </div> -->
+                    <app-ca-chart
                         [chartConfig]="revenueChartConfig"
-                        [axesProperties]="barAxes2"
-                        [legendAttributes]="barChartLegend2"
                     >
-                    </app-ta-chart>
+                    </app-ca-chart>
                 </div>
             </app-ta-custom-card>
             <!--------Perfomance--------->
             <app-ta-custom-card
                 [cardName]="'Expenses'"
                 [bodyTemplate]="'card'"
-                [isCardOpen]="stackedBarChartConfig?.hasValue"
+                [isCardOpen]="true"
             >
                 <div
                     class="charts-template perfomance"
-                    [class.p-0]="stackedBarChart.hoveringStatus"
                 >
-                    <div [class.d-none]="stackedBarChart.hoveringStatus">
+                    <!-- <div [class.d-none]="stackedBarChart.hoveringStatus"> -->
                         <app-ta-tab-switch
                             [type]="'type2-modal-popup'"
                             (switchClicked)="changeTabExpenses($event)"
                             [tabs]="buttonsArrayPerfomance"
                         >
                         </app-ta-tab-switch>
-                    </div>
-                    <app-ta-chart
-                        #stackedBarChart
-                        class="chart_hold"
-                        [class.extend]="stackedBarChartConfig.extendFull"
-                        [chartConfig]="stackedBarChartConfig"
-                        [axesProperties]="stackedBarAxes"
-                        [legendAttributes]="stackedBarChartLegend"
+                    <!-- </div> -->
+                    <app-ca-chart
+                        [chartConfig]="expensesChartConfig"
                     >
-                    </app-ta-chart>
+                    </app-ca-chart>
                 </div>
             </app-ta-custom-card>
             <!--------Owner History--------->

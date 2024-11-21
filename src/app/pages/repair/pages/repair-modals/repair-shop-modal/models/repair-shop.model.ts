@@ -1,6 +1,12 @@
-import { RepairShopServiceTypeCommand, RepairShopContactCommand, AddressEntity, PayPeriod, DayOfWeek, RepairShopOpenHoursCommand } from "appcoretruckassist";
+import {
+    RepairShopServiceTypeCommand,
+    RepairShopContactCommand,
+    AddressEntity,
+    RepairShopOpenHoursCommand,
+} from 'appcoretruckassist';
 
 export interface CreateShopModel {
+    id?: number;
     name: string;
     phone: string;
     phoneExt: string;
@@ -17,13 +23,15 @@ export interface CreateShopModel {
     monthlyDay: number;
     longitude: number;
     latitude: number;
-    holiday: boolean;
-    openAlways: boolean;
+    // openAlways: boolean;
     openHours: Array<RepairShopOpenHoursCommand>;
     serviceTypes: Array<RepairShopServiceTypeCommand>;
     contacts: Array<RepairShopContactCommand>;
     files: Array<Blob>;
     shopServiceType: number;
     address: AddressEntity;
-    filesForDeleteIds: string[]
+    filesForDeleteIds: string[];
+    cover?: Blob;
+    status?: number;
+    isCompanyRelated: boolean;
 }

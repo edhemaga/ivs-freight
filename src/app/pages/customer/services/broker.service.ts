@@ -1,19 +1,19 @@
-import { Injectable, OnDestroy } from '@angular/core';
+import { Injectable } from '@angular/core';
 
-import { Observable, Subject, forkJoin, takeUntil, tap } from 'rxjs';
+import { Observable, forkJoin, tap } from 'rxjs';
 
-// Services
+// services
 import { FormDataService } from '@shared/services/form-data.service';
 import { TruckassistTableService } from '@shared/services/truckassist-table.service';
 
-// Store
+// store
 import { BrokerStore } from '@pages/customer/state/broker-state/broker.store';
 import { BrokerMinimalListStore } from '@pages/customer/state/broker-details-state/broker-minimal-list-state/broker-minimal-list.store';
 import { BrokerDetailsListStore } from '@pages/customer/state/broker-details-state/broker-details-list-state/broker-details-list.store';
 import { BrokerDetailsStore } from '@pages/customer/state/broker-details-state/broker-details.store';
 import { BrokerMinimalListQuery } from '@pages/customer/state/broker-details-state/broker-minimal-list-state/broker-minimal-list.query';
 
-// Models
+// models
 import {
     BrokerService as BrokerMainService,
     RatingReviewService,
@@ -28,25 +28,30 @@ import {
     BrokerAvailableCreditResponse,
     BrokerInvoiceAgeingResponse,
     BrokerLoadsResponse,
+    BrokerByIdResponse,
+    ReviewResponse,
+    RatingReviewResponse,
 } from 'appcoretruckassist';
 
-// Enums
+// Eenums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
 
 @Injectable({
     providedIn: 'root',
 })
-export class BrokerService implements OnDestroy {
+export class BrokerService {
     public brokerId: number;
     public brokerList: any;
     public currentIndex: number;
-    private destroy$ = new Subject<void>();
 
     constructor(
+        // services
         private brokerService: BrokerMainService,
         private ratingReviewService: RatingReviewService,
         private tableService: TruckassistTableService,
         private formDataService: FormDataService,
+
+        // store
         private brokerStore: BrokerStore,
         private brokerMinimalStore: BrokerMinimalListStore,
         private bls: BrokerDetailsListStore,
@@ -103,36 +108,30 @@ export class BrokerService implements OnDestroy {
                     this.getBrokerById(data.id),
                     this.getBrokerInvoiceAging(data.id, true),
                     this.getBrokerInvoiceAging(data.id, false),
-                ])
-                    .pipe(takeUntil(this.destroy$))
-                    .subscribe({
-                        next: ([
-                            broker,
-                            paidInvoiceAging,
-                            unpaidInvoiceAging,
-                        ]) => {
-                            this.brokerStore.remove(({ id }) => id === data.id);
-                            this.brokerMinimalStore.remove(
-                                ({ id }) => id === data.id
-                            );
+                ]).subscribe({
+                    next: ([broker, paidInvoiceAging, unpaidInvoiceAging]) => {
+                        this.brokerStore.remove(({ id }) => id === data.id);
+                        this.brokerMinimalStore.remove(
+                            ({ id }) => id === data.id
+                        );
 
-                            const brokerData = {
-                                ...broker,
-                                brokerPaidInvoiceAgeing: paidInvoiceAging,
-                                brokerUnpaidInvoiceAgeing: unpaidInvoiceAging,
-                            };
+                        const brokerData = {
+                            ...broker,
+                            brokerPaidInvoiceAgeing: paidInvoiceAging,
+                            brokerUnpaidInvoiceAgeing: unpaidInvoiceAging,
+                        };
 
-                            this.brokerStore.add(brokerData);
-                            this.brokerMinimalStore.add(brokerData);
-                            this.bls.replace(broker.id, brokerData);
-                            this.tableService.sendActionAnimation({
-                                animation: 'update',
-                                tab: 'broker',
-                                data: brokerData,
-                                id: broker.id,
-                            });
-                        },
-                    });
+                        this.brokerStore.add(brokerData);
+                        this.brokerMinimalStore.add(brokerData);
+                        this.bls.replace(broker.id, brokerData);
+                        this.tableService.sendActionAnimation({
+                            animation: 'update',
+                            tab: 'broker',
+                            data: brokerData,
+                            id: broker.id,
+                        });
+                    },
+                });
             })
         );
     }
@@ -202,16 +201,18 @@ export class BrokerService implements OnDestroy {
     public getBrokerById(
         brokerId: number,
         getIndex?: boolean
-    ): Observable<BrokerResponse> {
+    ): Observable<BrokerByIdResponse> {
         this.brokerMinimalQuery
             .selectAll()
-            .pipe(takeUntil(this.destroy$))
             .subscribe((item) => (this.brokerList = item));
+
         if (getIndex) {
             this.currentIndex = this.brokerList.findIndex(
                 (broker) => broker.id === brokerId
             );
+
             let last = this.brokerList.at(-1);
+
             if (last.id === brokerId) {
                 this.currentIndex = --this.currentIndex;
             } else {
@@ -222,6 +223,7 @@ export class BrokerService implements OnDestroy {
             }
             this.brokerId = this.brokerList[this.currentIndex].id;
         }
+
         return this.brokerService.apiBrokerIdGet(brokerId);
     }
 
@@ -283,20 +285,21 @@ export class BrokerService implements OnDestroy {
                         shipper: brokerShipperCount.shipper,
                     })
                 );
-                const subBroker = this.getBrokerById(this.brokerId, true)
-                    .pipe(takeUntil(this.destroy$))
-                    .subscribe({
-                        next: (broker: BrokerResponse | any) => {
-                            this.tableService.sendActionAnimation({
-                                animation: 'delete',
-                                tab: 'broker',
-                                data: broker,
-                                id: broker.id,
-                            });
+                const subBroker = this.getBrokerById(
+                    this.brokerId,
+                    true
+                ).subscribe({
+                    next: (broker: BrokerResponse | any) => {
+                        this.tableService.sendActionAnimation({
+                            animation: 'delete',
+                            tab: 'broker',
+                            data: broker,
+                            id: broker.id,
+                        });
 
-                            subBroker.unsubscribe();
-                        },
-                    });
+                        subBroker.unsubscribe();
+                    },
+                });
             })
         );
     }
@@ -327,6 +330,45 @@ export class BrokerService implements OnDestroy {
         );
     }
 
+    // Delete Broker Contact By Id
+    public deleteBrokerContactById(
+        brokerId: number,
+        contactId: number
+    ): Observable<any> {
+        return this.brokerService.apiBrokerContactIdDelete(contactId).pipe(
+            tap(() => {
+                forkJoin([
+                    this.getBrokerById(brokerId),
+                    this.getBrokerInvoiceAging(brokerId, true),
+                    this.getBrokerInvoiceAging(brokerId, false),
+                ]).subscribe({
+                    next: ([broker, paidInvoiceAging, unpaidInvoiceAging]) => {
+                        this.brokerStore.remove(({ id }) => id === brokerId);
+                        this.brokerMinimalStore.remove(
+                            ({ id }) => id === brokerId
+                        );
+
+                        const brokerData = {
+                            ...broker,
+                            brokerPaidInvoiceAgeing: paidInvoiceAging,
+                            brokerUnpaidInvoiceAgeing: unpaidInvoiceAging,
+                        };
+
+                        this.brokerStore.add(brokerData);
+                        this.brokerMinimalStore.add(brokerData);
+                        this.bls.replace(broker.id, brokerData);
+                        this.tableService.sendActionAnimation({
+                            animation: TableStringEnum.UPDATE,
+                            tab: TableStringEnum.BROKER,
+                            data: brokerData,
+                            id: broker.id,
+                        });
+                    },
+                });
+            })
+        );
+    }
+
     // Available Credit Broker
     public availableCreditBroker(
         data: BrokerAvailableCreditCommand
@@ -342,38 +384,30 @@ export class BrokerService implements OnDestroy {
                     this.getBrokerById(brokerId),
                     this.getBrokerInvoiceAging(brokerId, true),
                     this.getBrokerInvoiceAging(brokerId, false),
-                ])
-                    .pipe(takeUntil(this.destroy$))
-                    .subscribe({
-                        next: ([
-                            broker,
-                            paidInvoiceAging,
-                            unpaidInvoiceAging,
-                        ]) => {
-                            this.brokerStore.remove(
-                                ({ id }) => id === brokerId
-                            );
-                            this.brokerMinimalStore.remove(
-                                ({ id }) => id === brokerId
-                            );
+                ]).subscribe({
+                    next: ([broker, paidInvoiceAging, unpaidInvoiceAging]) => {
+                        this.brokerStore.remove(({ id }) => id === brokerId);
+                        this.brokerMinimalStore.remove(
+                            ({ id }) => id === brokerId
+                        );
 
-                            const brokerData = {
-                                ...broker,
-                                brokerPaidInvoiceAgeing: paidInvoiceAging,
-                                brokerUnpaidInvoiceAgeing: unpaidInvoiceAging,
-                            };
+                        const brokerData = {
+                            ...broker,
+                            brokerPaidInvoiceAgeing: paidInvoiceAging,
+                            brokerUnpaidInvoiceAgeing: unpaidInvoiceAging,
+                        };
 
-                            this.brokerStore.add(brokerData);
-                            this.brokerMinimalStore.add(brokerData);
-                            this.bls.update(broker.id, { ban: broker.ban });
-                            this.tableService.sendActionAnimation({
-                                animation: TableStringEnum.UPDATE,
-                                tab: TableStringEnum.BROKER,
-                                data: brokerData,
-                                id: broker.id,
-                            });
-                        },
-                    });
+                        this.brokerStore.add(brokerData);
+                        this.brokerMinimalStore.add(brokerData);
+                        this.bls.update(broker.id, { ban: broker.ban });
+                        this.tableService.sendActionAnimation({
+                            animation: TableStringEnum.UPDATE,
+                            tab: TableStringEnum.BROKER,
+                            data: brokerData,
+                            id: broker.id,
+                        });
+                    },
+                });
             })
         );
     }
@@ -416,38 +450,30 @@ export class BrokerService implements OnDestroy {
                     this.getBrokerById(brokerId),
                     this.getBrokerInvoiceAging(brokerId, true),
                     this.getBrokerInvoiceAging(brokerId, false),
-                ])
-                    .pipe(takeUntil(this.destroy$))
-                    .subscribe({
-                        next: ([
-                            broker,
-                            paidInvoiceAging,
-                            unpaidInvoiceAging,
-                        ]) => {
-                            this.brokerStore.remove(
-                                ({ id }) => id === brokerId
-                            );
-                            this.brokerMinimalStore.remove(
-                                ({ id }) => id === brokerId
-                            );
+                ]).subscribe({
+                    next: ([broker, paidInvoiceAging, unpaidInvoiceAging]) => {
+                        this.brokerStore.remove(({ id }) => id === brokerId);
+                        this.brokerMinimalStore.remove(
+                            ({ id }) => id === brokerId
+                        );
 
-                            const brokerData = {
-                                ...broker,
-                                brokerPaidInvoiceAgeing: paidInvoiceAging,
-                                brokerUnpaidInvoiceAgeing: unpaidInvoiceAging,
-                            };
+                        const brokerData = {
+                            ...broker,
+                            brokerPaidInvoiceAgeing: paidInvoiceAging,
+                            brokerUnpaidInvoiceAgeing: unpaidInvoiceAging,
+                        };
 
-                            this.brokerStore.add(brokerData);
-                            this.brokerMinimalStore.add(brokerData);
-                            this.bls.update(broker.id, { dnu: broker.dnu });
-                            this.tableService.sendActionAnimation({
-                                animation: TableStringEnum.UPDATE,
-                                tab: TableStringEnum.BROKER,
-                                data: brokerData,
-                                id: broker.id,
-                            });
-                        },
-                    });
+                        this.brokerStore.add(brokerData);
+                        this.brokerMinimalStore.add(brokerData);
+                        this.bls.update(broker.id, { dnu: broker.dnu });
+                        this.tableService.sendActionAnimation({
+                            animation: TableStringEnum.UPDATE,
+                            tab: TableStringEnum.BROKER,
+                            data: brokerData,
+                            id: broker.id,
+                        });
+                    },
+                });
             })
         );
     }
@@ -528,52 +554,47 @@ export class BrokerService implements OnDestroy {
         });
     }
 
-    public addNewReview(data, currentId) {
-        let brokerData = JSON.parse(
-            JSON.stringify(
-                this.brokerItemStore?.getValue()?.entities[currentId]
-            )
-        );
+    public addNewReview(review: ReviewResponse, brokerId: number): void {
+        this.getBrokerById(brokerId).subscribe((broker) => {
+            const reviewedBroker = {
+                ...broker,
+                ratingReviews: [...(broker.ratingReviews || []), review],
+            };
 
-        brokerData?.ratingReviews.push(data);
+            this.brokerItemStore.update(brokerId, {
+                ratingReviews: reviewedBroker.ratingReviews,
+            });
 
-        this.brokerItemStore.update(brokerData.id, {
-            ratingReviews: brokerData.ratingReviews,
-        });
+            this.brokerStore.update(brokerId, {
+                ratingReviews: reviewedBroker.ratingReviews,
+            });
 
-        this.brokerStore.update(brokerData.id, {
-            ratingReviews: brokerData.ratingReviews,
-        });
-
-        this.tableService.sendActionAnimation({
-            animation: TableStringEnum.UPDATE,
-            tab: TableStringEnum.BROKER,
-            data: brokerData,
-            id: brokerData.id,
+            this.tableService.sendActionAnimation({
+                animation: TableStringEnum.UPDATE,
+                tab: TableStringEnum.BROKER,
+                data: reviewedBroker,
+                id: brokerId,
+            });
         });
     }
 
-    public deleteReview(reviewId, brokerId) {
-        let brokerData = JSON.parse(
-            JSON.stringify(this.brokerItemStore?.getValue()?.entities[brokerId])
+    public deleteReview(reviewId: number, brokerId: number): void {
+        const brokerData = {
+            ...this.brokerItemStore?.getValue()?.entities[brokerId],
+        };
+
+        const filteredRatingReviews = brokerData.ratingReviews?.filter(
+            (review: RatingReviewResponse) =>
+                !(review.reviewId === reviewId || review.ratingId === reviewId)
         );
 
-        brokerData?.ratingReviews.map((item, index) => {
-            if (item.reviewId) {
-                if (item.reviewId == reviewId) {
-                    brokerData?.ratingReviews.splice(index, 1);
-                }
-            } else {
-                if (item.ratingId == reviewId) {
-                    brokerData?.ratingReviews.splice(index, 1);
-                }
-            }
-        });
+        brokerData.ratingReviews = filteredRatingReviews;
 
-        this.brokerItemStore.update(brokerData.id, {
+        this.brokerItemStore.update(brokerId, {
             ratingReviews: brokerData.ratingReviews,
         });
-        this.brokerStore.update(brokerData.id, {
+
+        this.brokerStore.update(brokerId, {
             ratingReviews: brokerData.ratingReviews,
         });
 
@@ -581,7 +602,7 @@ export class BrokerService implements OnDestroy {
             animation: TableStringEnum.UPDATE,
             tab: TableStringEnum.BROKER,
             data: brokerData,
-            id: brokerData.id,
+            id: brokerId,
         });
     }
 
@@ -600,6 +621,7 @@ export class BrokerService implements OnDestroy {
         revenueFrom?: number,
         revenueTo?: number,
         truckId?: number,
+        driverId?: number,
         rateFrom?: number,
         rateTo?: number,
         paidFrom?: number,
@@ -634,26 +656,27 @@ export class BrokerService implements OnDestroy {
             revenueFrom,
             revenueTo,
             truckId,
+            driverId,
             rateFrom,
             rateTo,
             paidFrom,
             paidTo,
             dueFrom,
             dueTo,
-            pickup,
-            delivery,
-            longitude,
-            latitude,
-            distance,
-            pageIndex,
-            pageSize,
-            companyId,
-            sort,
-            null,
-            null,
-            search,
-            search1,
-            search2
+            // pickup,
+            // delivery,
+            // longitude,
+            // latitude,
+            // distance,
+            // pageIndex,
+            // pageSize,
+            // companyId,
+            // sort,
+            // null,
+            // null,
+            // search,
+            // search1,
+            // search2
         );
     }
 
@@ -664,40 +687,32 @@ export class BrokerService implements OnDestroy {
                     this.getBrokerById(brokerId),
                     this.getBrokerInvoiceAging(brokerId, true),
                     this.getBrokerInvoiceAging(brokerId, false),
-                ])
-                    .pipe(takeUntil(this.destroy$))
-                    .subscribe({
-                        next: ([
-                            broker,
-                            paidInvoiceAging,
-                            unpaidInvoiceAging,
-                        ]) => {
-                            this.brokerStore.remove(
-                                ({ id }) => id === brokerId
-                            );
-                            this.brokerMinimalStore.remove(
-                                ({ id }) => id === brokerId
-                            );
+                ]).subscribe({
+                    next: ([broker, paidInvoiceAging, unpaidInvoiceAging]) => {
+                        this.brokerStore.remove(({ id }) => id === brokerId);
+                        this.brokerMinimalStore.remove(
+                            ({ id }) => id === brokerId
+                        );
 
-                            const brokerData = {
-                                ...broker,
-                                brokerPaidInvoiceAgeing: paidInvoiceAging,
-                                brokerUnpaidInvoiceAgeing: unpaidInvoiceAging,
-                            };
+                        const brokerData = {
+                            ...broker,
+                            brokerPaidInvoiceAgeing: paidInvoiceAging,
+                            brokerUnpaidInvoiceAgeing: unpaidInvoiceAging,
+                        };
 
-                            this.brokerStore.add(brokerData);
-                            this.brokerMinimalStore.add(brokerData);
-                            this.bls.update(broker.id, {
-                                status: broker.status,
-                            });
-                            this.tableService.sendActionAnimation({
-                                animation: TableStringEnum.UPDATE,
-                                tab: TableStringEnum.BROKER,
-                                data: brokerData,
-                                id: broker.id,
-                            });
-                        },
-                    });
+                        this.brokerStore.add(brokerData);
+                        this.brokerMinimalStore.add(brokerData);
+                        this.bls.update(broker.id, {
+                            status: broker.status,
+                        });
+                        this.tableService.sendActionAnimation({
+                            animation: TableStringEnum.UPDATE,
+                            tab: TableStringEnum.BROKER,
+                            data: brokerData,
+                            id: broker.id,
+                        });
+                    },
+                });
             })
         );
     }
@@ -743,10 +758,5 @@ export class BrokerService implements OnDestroy {
 
     public getInvoiceChartData(id: number, chartType: number) {
         return this.brokerService.apiBrokerPaidinvoiceGet(id, chartType);
-    }
-
-    ngOnDestroy(): void {
-        this.destroy$.next();
-        this.destroy$.complete();
     }
 }

@@ -26,7 +26,7 @@
                     transform: translate(-50%, -50%);
                     font-size: 8px;
                     font-weight: 700;
-                    color: $bw5;
+                    color: $ta-green-2;
                     padding-right: 1px;
                     user-select: none;
                     pointer-events: none;
@@ -43,7 +43,8 @@
                             height: 22px;
 
                             path {
-                                fill: $bw5;
+                                fill: $ta-green-2;
+
                                 &:first-child {
                                     fill: $ta-green-7 !important;
                                 }
@@ -77,7 +78,7 @@
             }
 
             .info-item {
-                padding-right: 0px;
+                padding: 6px 0 6px 2px;
 
                 .driver-items-hold {
                     flex: 1;

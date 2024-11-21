@@ -543,16 +543,30 @@
 
             <ng-container *ngIf="options.toolbarActions.showDispatchAdd">
                 <div
-                    class="new-load d-flex justify-content-center align-items-center"
-                    [ngClass]="{
-                        'new-load-locked': !dispathcboardTableLocked
-                    }"
-                    (click)="onToolBarAction('open-dispatch-load-modal')"
+                    class="modal2 d-flex justify-content-center align-items-center"
+                >
+                    <div
+                        class="modal-open-container d-flex justify-content-center align-items-center"
+                        [ngClass]="{
+                            'new-load-locked': !dispathcboardTableLocked
+                        }"
+                        (click)="onToolBarAction('open-dispatch-load-modal')"
+                    >
+                        <svg-icon [src]="svgRoutes.loadIcon"></svg-icon>
+                    </div>
+                </div>
+            </ng-container>
+
+            <!-- OPEN GENERAL PM BUTTON -->
+            <ng-container *ngIf="options.toolbarActions.showGeneralPmBtn">
+                <div class="pm-border"></div>
+                <div
+                    class="general-pm-open-container"
+                    (click)="onToolBarAction('open-general-pm')"
                 >
                     <svg-icon
-                        [src]="
-                            'assets/svg/dispatchboard/ic_dispatch_toolbar_button.svg'
-                        "
+                        [svgStyle]="{ 'width.px': 18, 'height.px': 18 }"
+                        [src]="'assets/svg/common/repair-pm/ic_custom_pm.svg'"
                     ></svg-icon>
                 </div>
             </ng-container>
@@ -577,19 +591,6 @@
             </ng-container>
         </div>
     </div>
-
-    <!-- OPEN GENERAL PM BUTTON -->
-    <ng-container *ngIf="options.toolbarActions.showGeneralPmBtn">
-        <div
-            class="general-pm-open-container"
-            (click)="onToolBarAction('open-general-pm')"
-        >
-            <svg-icon
-                [svgStyle]="{ 'width.px': 18, 'height.px': 18 }"
-                [src]="'assets/svg/common/repair-pm/ic_custom_pm.svg'"
-            ></svg-icon>
-        </div>
-    </ng-container>
 
     <!-- OPEN MODAL BUTTON -->
 </div>
@@ -927,6 +928,12 @@
                                     >
                                         <div
                                             class="group-column"
+                                            [ngClass]="{
+                                                'remove-padding':
+                                                    tableData[0]
+                                                        ?.tableConfiguration ===
+                                                    'broker'
+                                            }"
                                             (click)="
                                                 onToaggleGroupColumn(
                                                     columnGroup,
@@ -982,7 +989,7 @@
                                                 [ngClass]="{
                                                     'selectable-text':
                                                         !columnGroup.isPined,
-                                                    'ta-font-bold':
+                                                    'ta-font-semi-bold':
                                                         !columnGroup.hidden
                                                 }"
                                             >
@@ -1001,7 +1008,12 @@
 
         <ng-container *ngIf="activeViewMode === 'Card'">
             <!-- Columns -->
-            <div class="options" (click)="openCards()">
+            <div
+                class="options"
+                appPreventMultipleclicks
+                [cooldownDuration]="500"
+                (cooldownComplete)="openCards()"
+            >
                 <div class="text">Columns</div>
                 <div class="icon">
                     <svg-icon

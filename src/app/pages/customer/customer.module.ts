@@ -12,8 +12,6 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
 import { BrokerDetailsModule } from '@pages/customer/pages/broker-details/broker-details.module';
 
 // Components
-import { BrokerCardComponent } from '@pages/customer/pages/broker-card/broker-card.component';
-
 import { CustomerTableComponent } from '@pages/customer/pages/customer-table/customer-table.component';
 
 import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
@@ -36,7 +34,7 @@ import { TaNoteComponent } from '@shared/components/ta-note/ta-note.component';
 
 import { TaContactsCardComponent } from '@shared/components/ta-contacts-card/ta-contacts-card.component';
 import { TaInputDropdownContactsComponent } from '@shared/components/ta-input-dropdown-contacts/ta-input-dropdown-contacts.component';
-
+import { CaChartComponent } from 'ca-components';
 //pipes
 import { FormatEinPipe } from '@shared/pipes/format-ein.pipe';
 import { FormatDatePipe } from '@shared/pipes/format-date.pipe';
@@ -45,14 +43,10 @@ import { CardValuePipe } from '@shared/pipes/card-value.pipe';
 
 //store
 import { StoreModule } from '@ngrx/store';
-import { customerCardModalReducer } from '@pages/customer/pages/customer-table/components/customer-card-modal/state/customer-card-modal.reducer';
+import { customerCardModalReducer } from '@pages/customer/pages/customer-table/components/customer-card-modal/state/';
 
 @NgModule({
-    declarations: [
-        CustomerTableComponent,
-        BrokerCardComponent,
-        CustomerCardComponent,
-    ],
+    declarations: [CustomerTableComponent, CustomerCardComponent],
     imports: [
         // Modules
         CommonModule,
@@ -72,7 +66,7 @@ import { customerCardModalReducer } from '@pages/customer/pages/customer-table/c
         TaTableToolbarComponent,
         TaTableBodyComponent,
         TaTableHeadComponent,
-       // TaMapsComponent,
+        // TaMapsComponent,
         TaMapListComponent,
         TaMapListCardComponent,
         TaInputDropdownTableComponent,
@@ -80,6 +74,7 @@ import { customerCardModalReducer } from '@pages/customer/pages/customer-table/c
         TaNoteComponent,
         TaContactsCardComponent,
         TaInputDropdownContactsComponent,
+        CaChartComponent,
 
         // Pipes
         FormatDatePipe,

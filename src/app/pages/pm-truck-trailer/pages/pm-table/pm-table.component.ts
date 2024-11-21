@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, OnInit, OnDestroy } from '@angular/core';
-import { Subject, takeUntil } from 'rxjs';
+import { Observable, Subject, takeUntil } from 'rxjs';
 import { DatePipe } from '@angular/common';
 
 // Helpers
@@ -55,11 +55,16 @@ import { PmTruckQuery } from '@pages/pm-truck-trailer/state/pm-truck-state/pm-tr
 import { PmTrailerQuery } from '@pages/pm-truck-trailer/state/pm-trailer-state/pm-trailer.query';
 import { PmListTruckQuery } from '@pages/pm-truck-trailer/state/pm-list-truck-state/pm-list-truck.query';
 import { PmListTrailerQuery } from '@pages/pm-truck-trailer/state/pm-list-trailer-state/pm-list-trailer.query';
-import { PMCardModalQuery } from '@pages/pm-truck-trailer/pages/pm-card-modal/state/pm-card-modal.query';
 
 // Pipes
 import { ThousandSeparatorPipe } from '@shared/pipes/thousand-separator.pipe';
 import { ThousandToShortFormatPipe } from '@shared/pipes/thousand-to-short-format.pipe';
+import { select, Store } from '@ngrx/store';
+import {
+    selectActiveTabCards,
+    selectInactiveTabCards,
+} from '../pm-card-modal/state';
+import { RepairOrderModalComponent } from '@pages/repair/pages/repair-modals/repair-order-modal/repair-order-modal.component';
 
 @Component({
     selector: 'app-pm-table',
@@ -105,6 +110,9 @@ export class PmTableComponent implements OnInit, AfterViewInit, OnDestroy {
     public pmTrailerBackFilterQuery: PMTrailerFilter = {
         ...PMTrailerFilterConstants.pmTrailerFilterQuery,
     };
+    public tableDataLength: number;
+
+    public displayRows$: Observable<any>; //leave this as any for now
 
     constructor(
         // Services
@@ -118,7 +126,7 @@ export class PmTableComponent implements OnInit, AfterViewInit, OnDestroy {
         private pmTrailerQuery: PmTrailerQuery,
         private pmListTruckQuery: PmListTruckQuery,
         private pmListTrailerQuery: PmListTrailerQuery,
-        private pmCardModalQuery: PMCardModalQuery,
+        private store: Store,
 
         // Pipes
         private thousandSeparator: ThousandSeparatorPipe,
@@ -179,7 +187,6 @@ export class PmTableComponent implements OnInit, AfterViewInit, OnDestroy {
         this.tableOptions = {
             toolbarActions: {
                 showGeneralPmBtn: true,
-                hideOpenModalButton: true,
                 hideDeleteButton: true,
                 hideActivationButton: true,
                 viewModeOptions: [
@@ -205,6 +212,9 @@ export class PmTableComponent implements OnInit, AfterViewInit, OnDestroy {
         if (tableView) {
             this.selectedTab = tableView.tabSelected;
             this.activeViewMode = tableView.viewMode;
+
+            this.pmTruckBackFilterQuery.pageIndex = 1;
+            this.pmTrailerBackFilterQuery.pageIndex = 1;
         }
 
         this.initTableOptions();
@@ -238,13 +248,6 @@ export class PmTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 data.isSelected = false;
                 return data;
             });
-
-            // Set data for cards based on tab active
-            this.selectedTab === TableStringEnum.ACTIVE
-                ? ((this.sendDataToCardsFront = this.displayRowsFront),
-                  (this.sendDataToCardsBack = this.displayRowsBack))
-                : ((this.sendDataToCardsFront = this.displayRowsFrontInactive),
-                  (this.sendDataToCardsBack = this.displayRowsBackInactive));
         } else {
             this.viewData = [];
         }
@@ -296,6 +299,8 @@ export class PmTableComponent implements OnInit, AfterViewInit, OnDestroy {
             (table) => table.field === this.selectedTab
         );
 
+        this.tableDataLength = activeTableData.length;
+
         this.setPmData(activeTableData);
 
         this.updateCardView();
@@ -305,7 +310,6 @@ export class PmTableComponent implements OnInit, AfterViewInit, OnDestroy {
         if (event.action === TableStringEnum.TAB_SELECTED) {
             this.selectedTab = event.tabData.field;
             this.sendPMData();
-        } else if (event.action === TableStringEnum.OPEN_MODAL) {
         } else if (event.action === TableStringEnum.OPEN_GENERAL_PM) {
             if (this.selectedTab === TableStringEnum.ACTIVE) {
                 this.modalService.openModal(
@@ -330,11 +334,38 @@ export class PmTableComponent implements OnInit, AfterViewInit, OnDestroy {
             }
         } else if (event.action === TableStringEnum.VIEW_MODE) {
             this.activeViewMode = event.mode;
+        } else if (event.action === TableStringEnum.OPEN_MODAL) {
+            this.modalService.openModal(
+                RepairOrderModalComponent,
+                {
+                    size: TableStringEnum.LARGE,
+                },
+                {
+                    type:
+                        this.selectedTab === TableStringEnum.ACTIVE
+                            ? TableStringEnum.NEW_TRUCK
+                            : TableStringEnum.NEW_TRAILER,
+                }
+            );
         }
     }
 
     public onTableBodyActions(event: PmTableAction): void {
         switch (event.type) {
+            case TableStringEnum.SHOW_MORE:
+                if (this.selectedTab === TableStringEnum.ACTIVE) {
+                    this.pmTruckBackFilterQuery.pageIndex++;
+
+                    this.pmTruckBackFilter(this.pmTruckBackFilterQuery, true);
+                } else {
+                    this.pmTrailerBackFilterQuery.pageIndex++;
+
+                    this.pmTrailerBackFilter(
+                        this.pmTrailerBackFilterQuery,
+                        true
+                    );
+                }
+                break;
             case TableStringEnum.CONFIGURE:
                 if (this.selectedTab === TableStringEnum.ACTIVE) {
                     this.modalService.openModal(
@@ -547,7 +578,7 @@ export class PmTableComponent implements OnInit, AfterViewInit, OnDestroy {
             textYear: truckUnit.truck?.year,
             textRepairShop: truckUnit.lastShop?.name,
             textRepairShopAddress: truckUnit.lastShop?.address?.address,
-            note: null,
+            note: truckUnit.note,
             tableDropdownContent: {
                 hasContent: true,
                 content: this.getPMDropdownContent(),
@@ -624,7 +655,7 @@ export class PmTableComponent implements OnInit, AfterViewInit, OnDestroy {
             textMake: trailerUnit.trailer?.trailerMake?.name,
             textModel: trailerUnit.trailer?.model,
             textYear: trailerUnit.trailer?.year,
-            note: '',
+            note: trailerUnit.note,
             tableDropdownContent: {
                 hasContent: true,
                 content: this.getPMDropdownContent(),
@@ -768,8 +799,8 @@ export class PmTableComponent implements OnInit, AfterViewInit, OnDestroy {
                             column.disabled = false;
                         }
                     } else {
-                        column.hidden = true;
-                        column.disabled = true;
+                        //column.hidden = true;
+                        //column.disabled = true;
                     }
                 }
             });
@@ -801,55 +832,26 @@ export class PmTableComponent implements OnInit, AfterViewInit, OnDestroy {
     public updateCardView(): void {
         switch (this.selectedTab) {
             case TableStringEnum.ACTIVE:
-                this.truckTabCardsConfig();
+                this.displayRows$ = this.store.pipe(
+                    select(selectActiveTabCards)
+                );
                 break;
 
             case TableStringEnum.INACTIVE:
-                this.trailerTabCardsConfig();
+                this.displayRows$ = this.store.pipe(
+                    select(selectInactiveTabCards)
+                );
                 break;
-
             default:
                 break;
         }
-
         this.pmCardsModalService.updateTab(this.selectedTab);
     }
 
-    private truckTabCardsConfig(): void {
-        this.pmCardModalQuery.truck$
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((res) => {
-                if (res) {
-                    const filteredCardRowsFront =
-                        res.front_side.filter(Boolean);
-
-                    const filteredCardRowsBack = res.back_side.filter(Boolean);
-
-                    this.sendDataToCardsFront = filteredCardRowsFront;
-
-                    this.sendDataToCardsBack = filteredCardRowsBack;
-                }
-            });
-    }
-
-    private trailerTabCardsConfig(): void {
-        this.pmCardModalQuery.trailer$
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((res) => {
-                if (res) {
-                    const filteredCardRowsFront =
-                        res.front_side.filter(Boolean);
-
-                    const filteredCardRowsBack = res.back_side.filter(Boolean);
-
-                    this.sendDataToCardsFront = filteredCardRowsFront;
-
-                    this.sendDataToCardsBack = filteredCardRowsBack;
-                }
-            });
-    }
-
-    private pmTruckBackFilter(filter: PMTruckFilter): void {
+    private pmTruckBackFilter(
+        filter: PMTruckFilter,
+        isShowMore?: boolean
+    ): void {
         this.pmService
             .getPMTruckUnitList(
                 filter.truckId,
@@ -865,17 +867,30 @@ export class PmTableComponent implements OnInit, AfterViewInit, OnDestroy {
             )
             .pipe(takeUntil(this.destroy$))
             .subscribe((res) => {
-                const newData = [];
+                if (!isShowMore) {
+                    this.viewData = res.pagination.data;
 
-                res.pagination.data.map((data) => {
-                    newData.push(this.mapPmTruckData(data));
-                });
+                    this.viewData = this.viewData.map(
+                        (data: PMTruckUnitResponse) => {
+                            return this.mapPmTruckData(data);
+                        }
+                    );
+                } else {
+                    const newData = [...this.viewData];
 
-                this.viewData = [...newData];
+                    res.pagination.data.forEach((data: PMTruckUnitResponse) => {
+                        newData.push(this.mapPmTruckData(data));
+                    });
+
+                    this.viewData = [...newData];
+                }
             });
     }
 
-    private pmTrailerBackFilter(filter: PMTrailerFilter): void {
+    private pmTrailerBackFilter(
+        filter: PMTrailerFilter,
+        isShowMore?: boolean
+    ): void {
         this.pmService
             .getPMTrailerUnitList(
                 filter.trailerId,
@@ -891,13 +906,25 @@ export class PmTableComponent implements OnInit, AfterViewInit, OnDestroy {
             )
             .pipe(takeUntil(this.destroy$))
             .subscribe((res) => {
-                const newData = [];
+                if (!isShowMore) {
+                    this.viewData = res.pagination.data;
 
-                res.pagination.data.map((data) => {
-                    newData.push(this.mapPmTrailerData(data));
-                });
+                    this.viewData = this.viewData.map(
+                        (data: PMTrailerUnitResponse) => {
+                            return this.mapPmTrailerData(data);
+                        }
+                    );
+                } else {
+                    const newData = [...this.viewData];
 
-                this.viewData = [...newData];
+                    res.pagination.data.forEach(
+                        (data: PMTrailerUnitResponse) => {
+                            newData.push(this.mapPmTrailerData(data));
+                        }
+                    );
+
+                    this.viewData = [...newData];
+                }
             });
     }
 
@@ -944,6 +971,12 @@ export class PmTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     }
                 }
             });
+    }
+
+    public onShowMore(): void {
+        this.onTableBodyActions({
+            type: TableStringEnum.SHOW_MORE,
+        });
     }
 
     ngOnDestroy(): void {

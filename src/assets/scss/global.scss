@@ -1,15 +1,17 @@
+@import 'src/theme/variables';
+
 .chart_custom_tooltip {
     width: 122px;
     padding: 2px 5px;
 
-    background-color: #fff;
+    background-color: $white;
     border-radius: 3px;
 
     box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.15);
 
     font-size: 10px;
     font-weight: bold;
-    color: #919191;
+    color: $bw5;
 
     .tooltip_holder {
         display: flex;
@@ -98,7 +100,9 @@ body {
         .table-inner-modal
     ):not(.scrollable):not(.columns-scroll.items-scroll):not(
         .scrollable-element
-    ):not(.dropdown-options.scroll):not(.navigation-middle) {
+    ):not(.dropdown-options.scroll):not(.navigation-middle):not(
+        .map-list-body
+    ):not(.cluster-marker-container) {
     scrollbar-width: none !important; /* Firefox */
 
     &::-webkit-scrollbar {
@@ -152,14 +156,26 @@ body {
     text-align: right !important;
 }
 
-html body app-ta-modal .ta-custom-card .ta-card-body.scroll-x-axis {
-    overflow-x: scroll !important;
-    scrollbar-width: thin !important;
-    overflow-x: scroll;
-    margin-left: 196px;
-    overflow-x: visible;
-    padding: 0;
-    scrollbar-width: thin !important;
+html {
+    body {
+        app-ta-modal {
+            .ta-custom-card {
+                .ta-card-body.scroll-x-axis {
+                    overflow-x: scroll !important;
+                    scrollbar-width: thin !important;
+                    overflow-x: scroll;
+                    margin-left: 196px;
+                    overflow-x: visible;
+                    padding: 0;
+                    scrollbar-width: thin !important;
+
+                    &.department-contacts-x-axis {
+                        margin-left: 160px !important;
+                    }
+                }
+            }
+        }
+    }
 }
 
 .stop-items-number {
@@ -482,5 +498,15 @@ app-load-modal {
 .pl {
     &-0 {
         padding-left: 0 !important;
+    }
+}
+
+// Use case for deleting modal opening from modal
+html ngb-modal-backdrop {
+    opacity: 0 !important;
+
+    &:first-of-type {
+        opacity: 0.2 !important;
+        background: $bw5 !important;
     }
 }

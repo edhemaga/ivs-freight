@@ -27,12 +27,14 @@ export interface ApiTruckPostRequest {
     Model?: string;
     Year?: number;
     ColorId?: number;
+    ExcludeFromIftaFuelTaxReport?: boolean;
     OwnerId?: number;
     Commission?: number;
     Note?: string;
     PurchaseDate?: string;
     PurchasePrice?: number;
     TruckGrossWeightId?: number;
+    Volume?: number;
     EmptyWeight?: number;
     TruckEngineModelId?: number;
     TireSizeId?: number;

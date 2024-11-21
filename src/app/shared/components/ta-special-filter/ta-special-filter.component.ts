@@ -48,6 +48,7 @@ export class TaSpecialFilterComponent implements OnInit {
     @Input() dataArray: any = [];
     @Input() selectedFilter: boolean;
     @Input() isCountHidden: boolean = false;
+    @Input() dataCount: number;
     @Output() setFilter = new EventEmitter<{
         data?: any;
         selectedFilter?: boolean;
@@ -62,12 +63,10 @@ export class TaSpecialFilterComponent implements OnInit {
 
     public toggleSpecialFilter(): void {
         this.activeFilter = !this.activeFilter;
+        this.setFilter.emit({...this.dataArray, selectedFilter: this.activeFilter});
 
-        if (this.activeFilter) {
-            this.setFilter.emit(this.dataArray);
-        } else {
+        if (!this.activeFilter) {
             this.hoverClose = false;
-            this.setFilter.emit({ ...this.dataArray, selectedFilter: false });
         }
     }
 

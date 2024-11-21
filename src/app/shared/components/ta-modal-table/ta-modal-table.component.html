@@ -7,8 +7,10 @@
             'phone-table-header': isPhoneTable,
             'email-table-header': isEmailTable,
             'repair-bill-table-header': isRepairBillTable || isRepairOrderTable,
+            'fuel-table-header': isFuelTable,
             'repair-order-table-header': isRepairOrderTable,
-            'contact-table-header ': isContactTable,
+            'contact-table-header': isContactTable,
+            'department-contact-table-header': isDepartmentContactTable,
             'pm-table-header': isPMTruckTable || isPMTrailerTable,
             'off-duty-location-table-header': isOffDutyLocationTable,
             'fuel-card-table-header': isFuelCardTable,
@@ -20,6 +22,8 @@
             *ngFor="
                 let headerItem of modalTableHeaders;
                 let i = index;
+                let last = last;
+                let first = first;
                 trackBy: '' | trackByProperty
             "
         >
@@ -30,10 +34,17 @@
                     'repair-bill-header':
                         (isRepairBillTable || isRepairOrderTable) && i !== 0,
                     'justify-content-end subtotal':
-                        i === 5 && !isContactTable && !isLoadItemTable,
-                    'first-item': i === 0 && isContactTable,
+                        i === 5 &&
+                        !isContactTable &&
+                        !isLoadItemTable &&
+                        !isDepartmentContactTable,
                     'stop-items-number': isLoadItemTable && i === 0,
-                    'stop-items-desc': isLoadItemTable && i === 1
+                    'stop-items-desc': isLoadItemTable && i === 1,
+                    'scroll-first-item':
+                        i === 0 && (isContactTable || isDepartmentContactTable),
+                    'scroll-second-item':
+                        i === 1 && (isContactTable || isDepartmentContactTable),
+                    'justify-content-end': isFuelTable && last
                 }"
             >
                 <ng-container
@@ -64,18 +75,23 @@
                     ></svg-icon>
                 </ng-container>
 
+                <ng-container *ngIf="isFuelTable && !first && !last">
+                        <span class="m-0 ta-font-bold">*</span></ng-container>
                 <ng-container
                     *ngIf="
-                        i
+                        !isFuelTable && i
                             | setHeaderRequiredStar
                                 : isPhoneTable
                                 : isEmailTable
-                                : isRepairBillTable || isRepairOrderTable
+                                : isRepairBillTable
+                                : isRepairOrderTable
                                 : isContactTable
+                                : isDepartmentContactTable
                                 : isPMTruckTable
                                 : isPMTrailerTable
                                 : isOffDutyLocationTable
-                                : isFuelCardTable || isPreviousAddressesTable
+                                : isFuelCardTable
+                                : isPreviousAddressesTable
                     "
                 >
                     <span class="m-0 ta-font-bold">*</span>
@@ -128,6 +144,9 @@
             [selectedTruckTrailerRepairPm]="selectedTruckTrailerRepairPm"
             [truckTrailerRepairPmOptions]="truckTrailerRepairPmOptions"
             [isRepairOrderTable]="isRepairOrderTable"
+            [activeFuelItem]="activeFuelItem"
+            [isFuelTable]="isFuelTable"
+            [fuelItemsDropdown]="fuelItemsDropdown"
             (onSelectDropdown)="onSelectDropdown($event)"
             (deleteFormArrayRowClick)="deleteFormArrayRow($event)"
             (onInputHover)="handleInputHover($event)"
@@ -139,12 +158,26 @@
             [modalTableForm]="modalTableForm"
             [arrayName]="taModalTableStringEnum.CONTACT_TABLE_ITEMS"
             [isInputHoverRows]="isInputHoverRows"
-            [repairDepartmentOptions]="repairDepartmentOptions"
+            [departmentOptions]="departmentOptions"
+            [selectedDepartment]="selectedDepartment"
             (onSelectDropdown)="onSelectDropdown($event)"
             (deleteFormArrayRowClick)="deleteFormArrayRow($event)"
             (onInputHover)="handleInputHover($event)"
         >
         </app-ta-modal-table-contact>
+
+        <app-ta-modal-table-department
+            *ngSwitchCase="modalTableTypeEnum.DEPARTMENT_CONTACT"
+            [modalTableForm]="modalTableForm"
+            [arrayName]="taModalTableStringEnum.DEPARTMENT_CONTACT_ITEMS"
+            [isInputHoverRows]="isInputHoverRows"
+            [departmentOptions]="departmentOptions"
+            [selectedDepartment]="selectedDepartment"
+            (onSelectDropdown)="onSelectDropdown($event)"
+            (deleteFormArrayRowClick)="deleteFormArrayRow($event)"
+            (onInputHover)="handleInputHover($event)"
+        >
+        </app-ta-modal-table-department>
 
         <app-ta-modal-table-pm
             *ngSwitchCase="

@@ -13,7 +13,6 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
 import { ShipperDetailsItemComponent } from '@pages/customer/pages/shipper-details/components/shipper-details-item/shipper-details-item.component';
 import { ShipperDetailsCardComponent } from '@pages/customer/pages/shipper-details/components/shipper-details-card/shipper-details-card.component';
 import { ShipperDetailsComponent } from '@pages/customer/pages/shipper-details/shipper-details.component';
-import { TaChartComponent } from '@shared/components/ta-chart/ta-chart.component';
 import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
 import { TaDetailsHeaderCardComponent } from '@shared/components/ta-details-header-card/ta-details-header-card.component';
 import { TaCopyComponent } from '@shared/components/ta-copy/ta-copy.component';
@@ -22,6 +21,7 @@ import { TaInputNoteComponent } from '@shared/components/ta-input-note/ta-input-
 import { TaDetailsHeaderComponent } from '@shared/components/ta-details-header/ta-details-header.component';
 import { TaTabSwitchComponent } from '@shared/components/ta-tab-switch/ta-tab-switch.component';
 import { TaContactsCardComponent } from '@shared/components/ta-contacts-card/ta-contacts-card.component';
+import { CaChartComponent } from 'ca-components';
 
 // Pipes
 import { FormatDatePipe } from '@shared/pipes/format-date.pipe';
@@ -46,7 +46,6 @@ import { FormatPhonePipe } from '@shared/pipes/format-phone.pipe';
         AngularSvgIconModule,
 
         // Components
-        TaChartComponent,
         TaAppTooltipV2Component,
         TaDetailsHeaderCardComponent,
         TaCopyComponent,
@@ -55,6 +54,7 @@ import { FormatPhonePipe } from '@shared/pipes/format-phone.pipe';
         TaDetailsHeaderComponent,
         TaTabSwitchComponent,
         TaContactsCardComponent,
+        CaChartComponent,
 
         // Pipes
         FormatDatePipe,

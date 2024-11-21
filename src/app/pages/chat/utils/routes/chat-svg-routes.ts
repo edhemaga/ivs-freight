@@ -24,6 +24,8 @@ export class ChatSvgRoutes {
     static trashBinIcon: string = 'assets/svg/chat/trash-bin-icon.svg';
     static replyIcon: string = 'assets/svg/chat/reply-icon.svg';
     static editPenIcon: string = 'assets/svg/chat/edit-pen-icon.svg';
+    static downloadIcon: string = 'assets/svg/chat/download-icon.svg';
+    static calendarIcon: string = 'assets/svg/chat/calendar-icon.svg';
 
     // Cancel
     static noBorderXIcon: string =
@@ -47,6 +49,9 @@ export class ChatSvgRoutes {
     static carHaulerIcon: string = 'assets/svg/chat/car-hauler-icon.svg';
     static reeferTruckIcon: string = 'assets/svg/chat/reefer-truck-icon.svg';
     static peopleIcon: string = 'assets/svg/chat/people-icon.svg';
+    static companyUserIcon: string = 'assets/svg/chat/company-user-icon.svg';
+    static directMessageIcon: string =
+        'assets/svg/chat/direct-message-icon.svg';
 
     // Groups
     static notificationIcon: string = 'assets/svg/chat/notification-icon.svg';
@@ -54,6 +59,8 @@ export class ChatSvgRoutes {
     static truckIcon: string = 'assets/svg/chat/truck-icon.svg';
     static safetyIcon: string = 'assets/svg/chat/safety-icon.svg';
     static repairIcon: string = 'assets/svg/chat/repair-icon.svg';
+    static recruitingIcon: string = 'assets/svg/chat/recruiting-icon.svg';
+    static accountingIcon: string = 'assets/svg/chat/accounting-icon.svg';
     static generalIcon: string = 'assets/svg/chat/general-icon.svg';
     static arrowLeftIcon: string = 'assets/svg/chat/arrow-left-icon.svg';
 
@@ -66,4 +73,16 @@ export class ChatSvgRoutes {
         'assets/svg/chat/circle-offline-icon.svg';
     static notSelectedIllustrationIcon: string =
         'assets/svg/chat/not-selected-illustration-icon.svg';
+    static replyXIcon: string = 'assets/svg/chat/reply-x-icon.svg';
+    static circleCheckmarkIcon: string =
+        'assets/svg/chat/checkmark-circle-icon.svg';
+    static radioCheckedButtonIcon: string =
+        'assets/svg/chat/radio-button-checked-icon.svg';
+    static checkMarkIcon: string = 'assets/svg/chat/checkmark-icon.svg';
+
+    // Activity status
+    static activeIcon: string = 'assets/svg/chat/active-icon.svg';
+    static onlineIcon: string = 'assets/svg/chat/online-icon.svg';
+    static busyIcon: string = 'assets/svg/chat/busy-icon.svg';
+    static offlineIcon: string = 'assets/svg/chat/offline-icon.svg';
 }

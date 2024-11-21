@@ -1,5 +1,15 @@
 // models
-import {  NavigationModal, NavigationUserPanel, NavigationFooterData, Navigation, NavigationSettings } from '@core/components/navigation/models';
+import {
+    NavigationModal,
+    NavigationUserPanel,
+    NavigationFooterData,
+    Navigation,
+    NavigationSettings,
+} from '@core/components/navigation/models';
+
+// environments
+import { environment } from 'src/environments/environment';
+
 export class NavigationDataConstants {
     static title = 'Add New';
     static close = 'Close';
@@ -66,7 +76,7 @@ export class NavigationDataConstants {
                     name: 'Fuel',
                     route: '/list/fuel',
                     activeRouteFlegId: 3,
-                    construction: true,
+                    construction: environment.staging || environment.production,
                 },
                 {
                     name: 'Owner',
@@ -77,7 +87,7 @@ export class NavigationDataConstants {
                     name: 'Rentor',
                     route: '/list/rentor',
                     activeRouteFlegId: 3,
-                    construction: true,
+                    construction: environment.staging || environment.production,
                 },
                 {
                     name: 'Account',
@@ -98,31 +108,29 @@ export class NavigationDataConstants {
             arrow: 'assets/svg/common/ic_arrow-down.svg',
             isRouteActive: false,
             isSubrouteActive: false,
-            construction: true,
             route: [
                 {
                     name: 'Payroll',
                     route: '/accounting/payroll',
                     activeRouteFlegId: 4,
-                    construction: true,
                 },
                 {
                     name: 'IFTA',
                     route: '/accounting/ifta',
                     activeRouteFlegId: 4,
-                    construction: true,
+                    construction: environment.staging || environment.production,
                 },
                 {
                     name: 'Ledger',
                     route: '/accounting/ledger',
                     activeRouteFlegId: 4,
-                    construction: true,
+                    construction: environment.staging || environment.production,
                 },
                 {
                     name: 'Tax',
                     route: '/accounting/tax',
                     activeRouteFlegId: 4,
-                    construction: true,
+                    construction: environment.staging || environment.production,
                 },
             ],
         },
@@ -132,44 +140,44 @@ export class NavigationDataConstants {
             image: 'ic_safety.svg',
             arrow: 'assets/svg/common/ic_arrow-down.svg',
             isRouteActive: false,
-            construction: true,
+            construction: environment.staging || environment.production,
             isSubrouteActive: false,
             route: [
                 {
                     name: 'Violation',
                     route: '/safety/violation',
                     activeRouteFlegId: 5,
-                    construction: true,
+                    construction: environment.staging || environment.production,
                 },
                 {
                     name: 'Accident',
                     route: '/safety/accident',
                     activeRouteFlegId: 5,
-                    construction: true,
+                    construction: environment.staging || environment.production,
                 },
                 {
                     name: 'Log',
                     route: '/safety/log',
                     activeRouteFlegId: 5,
-                    construction: true,
+                    construction: environment.staging || environment.production,
                 },
                 {
                     name: 'Scheduled Ins.',
                     route: '/safety/scheduled-insurance',
                     activeRouteFlegId: 5,
-                    construction: true,
+                    construction: environment.staging || environment.production,
                 },
                 {
                     name: 'MVR',
                     route: '/safety/mvr',
                     activeRouteFlegId: 5,
-                    construction: true,
+                    construction: environment.staging || environment.production,
                 },
                 {
                     name: 'Test',
                     route: '/safety/test',
                     activeRouteFlegId: 5,
-                    construction: true,
+                    construction: environment.staging || environment.production,
                 },
             ],
         },
@@ -180,55 +188,55 @@ export class NavigationDataConstants {
             arrow: 'assets/svg/common/ic_arrow-down.svg',
             isRouteActive: false,
             isSubrouteActive: false,
-            construction: true,
+            construction: environment.staging || environment.production,
             route: [
                 {
                     name: 'Miles',
                     route: '/tools/miles',
                     activeRouteFlegId: 6,
-                    construction: true,
+                    construction: environment.staging || environment.production,
                 },
                 {
                     name: 'Calendar',
                     route: '/tools/calendar',
                     activeRouteFlegId: 6,
-                    construction: true,
+                    construction: environment.staging || environment.production,
                 },
                 {
                     name: 'To-Do',
                     route: '/tools/todo',
                     activeRouteFlegId: 6,
-                    construction: true,
+                    construction: environment.staging || environment.production,
                 },
                 {
                     name: '1099',
                     route: '/tools/1099',
                     activeRouteFlegId: 6,
-                    construction: true,
+                    construction: environment.staging || environment.production,
                 },
                 {
                     name: '2290',
                     route: '/tools/2290',
                     activeRouteFlegId: 6,
-                    construction: true,
+                    construction: environment.staging || environment.production,
                 },
                 {
                     name: 'Factoring',
                     route: '/tools/factoring',
                     activeRouteFlegId: 6,
-                    construction: true,
+                    construction: environment.staging || environment.production,
                 },
                 {
                     name: 'Fax',
                     route: '/tools/fax',
                     activeRouteFlegId: 6,
-                    construction: true,
+                    construction: environment.staging || environment.production,
                 },
                 {
                     name: 'SMS',
                     route: '/tools/sms',
                     activeRouteFlegId: 6,
-                    construction: true,
+                    construction: environment.staging || environment.production,
                 },
             ],
         },
@@ -238,7 +246,7 @@ export class NavigationDataConstants {
             image: 'ic_routing.svg',
             route: '/routing',
             isRouteActive: false,
-            construction: true,
+            construction: environment.staging || environment.production,
         },
         {
             id: 8,
@@ -246,7 +254,7 @@ export class NavigationDataConstants {
             image: 'ic_report.svg',
             route: 'report',
             isRouteActive: false,
-            construction: true,
+            construction: environment.staging || environment.production,
         },
         {
             id: 9,
@@ -254,16 +262,16 @@ export class NavigationDataConstants {
             image: 'ic_statistic.svg',
             route: 'statistic' /* /statistic/load -> Bilo je pre. Pravi problem load tabeli, nakon reloada, pokusava da vodi ka ovoj ruti, posto ne postoji prebaci se na dashboard */,
             isRouteActive: false,
-            construction: true,
+            construction: environment.staging || environment.production,
         },
         {
             id: 10,
             name: 'Chat',
             image: 'ic_chat.svg',
             route: 'chat',
-            isRouteActive: false,
+            isRouteActive: true,
             messages: 5,
-            construction: true,
+            construction: false,
         },
         {
             id: 11,
@@ -271,7 +279,7 @@ export class NavigationDataConstants {
             image: 'ic_gps.svg',
             route: '/telematic',
             isRouteActive: false,
-            construction: true,
+            construction: environment.staging || environment.production,
         },
         {
             id: 12,
@@ -279,7 +287,7 @@ export class NavigationDataConstants {
             image: 'ic_places-new.svg',
             route: 'places',
             isRouteActive: false,
-            construction: true,
+            construction: environment.staging || environment.production,
         },
         {
             id: 13,
@@ -288,7 +296,7 @@ export class NavigationDataConstants {
             route: 'file-manager',
             isRouteActive: false,
             files: 83,
-            construction: true,
+            construction: environment.staging || environment.production,
         },
         {
             id: 34,
@@ -327,7 +335,7 @@ export class NavigationDataConstants {
                     name: 'Custom Agreement',
                     image: 'case.svg',
                     route: '/custom-agreement',
-                    construction: true,
+                    construction: environment.staging || environment.production,
                     activeRouteFlegId: 34,
                 },
                 {
@@ -335,21 +343,21 @@ export class NavigationDataConstants {
                     image: 'book.svg',
                     route: '/training-material',
                     activeRouteFlegId: 34,
-                    construction: true,
+                    construction: environment.staging || environment.production,
                 },
                 {
                     name: 'Billing',
                     image: 'ic_billing.svg',
                     route: '/billing',
                     activeRouteFlegId: 34,
-                    construction: true,
+                    construction: environment.staging || environment.production,
                 },
                 {
                     name: 'Integration',
                     image: 'ic_integration.svg',
                     route: '/integration',
                     activeRouteFlegId: 34,
-                    construction: true,
+                    construction: environment.staging || environment.production,
                 },
             ],
         },
@@ -582,7 +590,7 @@ export class NavigationDataConstants {
             isRouteActive: false,
             route: '/notifications',
             notification: 50,
-            construction: true,
+            construction: environment.staging || environment.production,
         },
         {
             id: 33,
@@ -607,27 +615,27 @@ export class NavigationDataConstants {
                     image: 'assets/svg/common/ic_settings.svg',
                     route: '/settings',
                     activeRouteFlegId: 34,
-                    construction: true,
+                    construction: environment.staging || environment.production,
                 },
                 {
                     name: 'Location',
                     image: 'assets/svg/common/ic_location.svg',
                     route: '/location',
                     activeRouteFlegId: 34,
-                    construction: true,
+                    construction: environment.staging || environment.production,
                 },
                 {
                     name: 'Document',
                     image: 'assets/svg/common/ic_document.svg',
                     route: '/document',
                     activeRouteFlegId: 34,
-                    construction: true,
+                    construction: environment.staging || environment.production,
                 },
                 {
                     name: 'Custom Agreement',
                     image: 'assets/svg/applicant/case.svg',
                     route: '/custom-agreement',
-                    construction: true,
+                    construction: environment.staging || environment.production,
                     activeRouteFlegId: 34,
                 },
             ],
@@ -665,7 +673,7 @@ export class NavigationDataConstants {
                     name: 'Custom Agreement',
                     image: 'assets/svg/applicant/case.svg',
                     route: '/custom-agreement',
-                    construction: true,
+                    construction: environment.staging || environment.production,
                     activeRouteFlegId: 34,
                 },
             ],
@@ -679,6 +687,86 @@ export class NavigationDataConstants {
         logo: 'assets/svg/logo.svg',
         logoText: 'assets/svg/logo-text.svg',
         search: 'assets/svg/common/ic_search.svg',
-        plus: 'assets/svg/common/ic_plus.svg'
-    }
+        plus: 'assets/svg/common/ic_plus.svg',
+    };
+
+    static UPLOAD_OPTIONS = {
+        isVisibleCropAndDrop: true,
+        files: [],
+        slider: {
+            dontUseSlider: false,
+            hasCarouselBottomTabs: false,
+        },
+        carouselConfig: {
+            files: [],
+            customClass: 'medium',
+            customDetailsPageClass: 'modals',
+            hasCarouselBottomTabs: true,
+        },
+        hasCrop: true,
+        isRoundCrop: true,
+        containWithinAspectRatio: false,
+        aspectRatio: [1, 1],
+        initialCropperPosition: {
+            x1: 0,
+            y1: 0,
+            x2: 184,
+            y2: 184,
+        },
+        dropzoneConf: [
+            {
+                template: 'imageCropTemplate',
+                config: {
+                    dropzone: {
+                        dropZoneType: 'image',
+                        multiple: true,
+                        globalDropZone: false,
+                        dropZonePages: 'cdl',
+                    },
+                    dropzoneOption: {
+                        customClassName: 'documents-dropzone',
+                        size: 'medium',
+                        modalSize: 'lg',
+                        showDropzone: true,
+                        dropzoneClose: false,
+                    },
+                },
+            },
+        ],
+        review: {
+            isReview: true,
+            reviewMode: 'REVIEW_MODE',
+            feedbackText: 'Sample feedback text',
+            categoryTag: 'General',
+        },
+        configFile: {
+            id: 111,
+            customClassName: 'modals',
+            file: {
+                url: '',
+                incorrect: false,
+                lastHovered: false,
+                fileSize: 1200,
+                fileName: '',
+            },
+            hasTagsDropdown: false,
+            hasNumberOfPages: true,
+            activePage: 1,
+            tags: ['Example'],
+            type: 'modal',
+            hasLandscapeOption: false,
+            tagsOptions: [
+                {
+                    tagName: 'HOS Agreement',
+                    checked: false,
+                },
+                {
+                    tagName: 'Unsafe Driving AGT',
+                    checked: false,
+                },
+            ],
+        },
+        size: 'medium',
+        slideWidth: 180,
+    };
 }

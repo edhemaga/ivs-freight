@@ -9,15 +9,18 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { PayrollOtherPaymentType } from './payrollOtherPaymentType';
 import { PayrollPaymentType } from './payrollPaymentType';
 
 
 export interface CreatePayrollPaymentCommand { 
     payrollDriverMileageId?: number | null;
     payrollDriverCommissionId?: number | null;
+    payrollDriverFlatRateId?: number | null;
     payrollOwnerId?: number | null;
     type?: PayrollPaymentType;
     date?: string;
     amount?: number;
+    otherPaymentType?: PayrollOtherPaymentType;
 }
 

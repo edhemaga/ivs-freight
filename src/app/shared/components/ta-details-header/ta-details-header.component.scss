@@ -29,7 +29,7 @@ p {
 
 .dropOpenedHeader {
     .counter-holder-all {
-        background-color: #919191;
+        background-color: $bw5;
         border-radius: 2px;
         position: relative;
     }
@@ -66,6 +66,7 @@ p {
         align-items: center;
         height: 32px;
         max-width: none;
+
         p {
             color: #424242;
 
@@ -234,11 +235,11 @@ p {
                 color: #2f2f2f;
                 padding-right: 6px;
                 &::-moz-selection {
-                    color: #919191;
+                    color: $bw5;
                     background: rgb(145, 145, 145, 0.2);
                 }
                 &::selection {
-                    color: #919191;
+                    color: $bw5;
                     background: rgb(145, 145, 145, 0.2);
                 }
             }
@@ -349,8 +350,12 @@ p {
                     background: $bw2;
                     cursor: pointer;
                 }
+
+                &.disabled {
+                    pointer-events: none !important;
+                }
             }
-    
+
             .sort-arrow {
                 width: 26px;
                 height: 26px;
@@ -424,6 +429,18 @@ svg {
             }
         }
     }
+
+    &.disabled {
+        pointer-events: none !important;
+
+        background: transparent;
+
+        svg {
+            path {
+                fill: $ta-light-grey-6 !important;
+            }
+        }
+    }
 }
 .disable-selection {
     -webkit-user-select: none;
@@ -452,7 +469,7 @@ svg {
     display: flex;
     justify-content: center;
     align-items: center;
-    
+
     .single-repair-icon {
         padding-left: 7px;
         padding-right: 7px;
@@ -493,15 +510,22 @@ svg {
     }
 }
 .header-arrow {
-    svg {
-        rect {
-            fill: #6c6c6c;
-        }
-
-        &:hover {
+    &:hover {
+        svg {
             rect {
-                fill: #2f2f2f;
+                fill: $ta-black;
             }
+
+            path {
+                fill: $white;
+            }
+        }
+    }
+
+    svg {
+        rect,
+        path {
+            transition: fill 0.2s ease-in;
         }
     }
 }
@@ -580,23 +604,12 @@ svg {
     .inactive-status {
         height: 22px;
         width: 78px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        background-color: #919191;
-        color: #ffffff;
+        background: $bw5;
         border-radius: 2px;
-        font-size: 11px;
-        font-weight: 700;
         margin-right: 8px;
 
-        &::-moz-selection {
-            color: #ffffff;
-            background: rgba(255, 255, 255, 0.2);
-        }
-        &::selection {
-            color: #ffffff;
-            background: rgba(255, 255, 255, 0.2);
+        &.closed {
+            background: $ta-red-10;
         }
     }
 
@@ -625,15 +638,15 @@ svg {
 .violation-counter {
     font-size: 14px;
     font-weight: 800;
-    color: #919191;
+    color: $bw5;
     margin-right: 2px;
     margin-left: 12px;
     &::-moz-selection {
-        color: #919191;
+        color: $bw5;
         background: rgb(145, 145, 145, 0.2);
     }
     &::selection {
-        color: #919191;
+        color: $bw5;
         background: rgb(145, 145, 145, 0.2);
     }
 }
@@ -688,7 +701,7 @@ svg {
             font-size: 14px;
             font-weight: 700;
             line-height: 17px;
-            color: #919191;
+            color: $bw5;
 
             background-color: #f3f3f3;
             border-radius: 2px;
@@ -704,7 +717,7 @@ svg {
             font-size: 14px;
             font-weight: 700;
             line-height: 17px;
-            color: #919191;
+            color: $bw5;
         }
 
         .selected-load-type {
@@ -750,7 +763,7 @@ svg {
         }
 
         .number-text-holder {
-            color: #919191;
+            color: $bw5;
         }
 
         &:hover {
@@ -759,11 +772,11 @@ svg {
 
             .number-value-holder {
                 background-color: #f3f3f3;
-                color: #919191;
+                color: $bw5;
             }
 
             .number-text-holder {
-                color: #919191;
+                color: $bw5;
             }
         }
     }

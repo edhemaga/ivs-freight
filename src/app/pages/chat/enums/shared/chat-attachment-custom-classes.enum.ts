@@ -1,4 +1,5 @@
 export enum ChatAttachmentCustomClassEnum {
-    BLUE_ICON = 'blue-icon',
-    GRAY_ICON = 'gray-icon',
+    BLUE = 'blue',
+    GRAY = 'gray',
+    SELECTED_FILTER = 'selected-filter',
 }

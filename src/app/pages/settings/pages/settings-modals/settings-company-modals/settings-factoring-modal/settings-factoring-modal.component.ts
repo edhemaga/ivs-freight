@@ -39,6 +39,9 @@ import { TaInputNoteComponent } from '@shared/components/ta-input-note/ta-input-
 // models
 import { AddressEntity } from 'appcoretruckassist';
 
+// constants
+import { SettingsFactoringModalConstants } from '@pages/settings/pages/settings-modals/settings-company-modals/settings-factoring-modal/utils/constants/settings-factoring-modal.constants';
+
 @Component({
     selector: 'app-settings-factoring-modal',
     templateUrl: './settings-factoring-modal.component.html',
@@ -78,6 +81,12 @@ export class SettingsFactoringModalComponent implements OnInit, OnDestroy {
 
     public isBluredNotice: boolean = true;
 
+    public isInitialCompanyNameSet: boolean = true;
+
+    public constants = SettingsFactoringModalConstants;
+
+    private nameInputBlurTimeoutCleaner: NodeJS.Timeout = null;
+
     noticeValue: any = '';
     range: any;
     selectedEditor: HTMLAnchorElement;
@@ -116,7 +125,7 @@ export class SettingsFactoringModalComponent implements OnInit, OnDestroy {
             email: [null],
             address: [null, [...addressValidation]],
             addressUnit: [null, [...addressUnitValidation]],
-            noticeOfAssigment: [null],
+            noticeOfAssigment: [null, Validators.required],
             note: [null],
         });
 
@@ -262,6 +271,21 @@ export class SettingsFactoringModalComponent implements OnInit, OnDestroy {
         this.isBluredNotice = val;
     }
 
+    public onCompanyNameInputBlur(): void {
+        if (
+            this.isInitialCompanyNameSet && 
+            this.editData.type === 'new' && 
+            this.factoringForm.get('name').value
+        ) {
+            const noticeOfAssignmentBaseText: string = this.constants.NOTICE_OF_ASSIGNMENT_TEXT_BASE
+                .replace('{{CompanyName}}', this.factoringForm.get('name').value);
+    
+            this.factoringForm.get('noticeOfAssigment').setValue(noticeOfAssignmentBaseText);
+
+            this.nameInputBlurTimeoutCleaner = setTimeout(() => this.isInitialCompanyNameSet = !this.isInitialCompanyNameSet, 100);
+        }
+    }
+
     private startFormChanges() {
         this.formService.checkFormChange(this.factoringForm);
         this.formService.formValueChange$
@@ -274,5 +298,7 @@ export class SettingsFactoringModalComponent implements OnInit, OnDestroy {
     ngOnDestroy(): void {
         this.destroy$.next();
         this.destroy$.complete();
+
+        clearTimeout(this.nameInputBlurTimeoutCleaner);
     }
 }

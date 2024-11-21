@@ -20,6 +20,7 @@ export enum TableStringEnum {
     PENDING_2 = 'Pending',
     MAP = 'Map',
     SHOW_MORE = 'show-more',
+    DISPATCH = 'Dispatch',
 
     // Aactions
     ADD = 'add',
@@ -188,12 +189,16 @@ export enum TableStringEnum {
     ADD_CONTRACT = 'add-contact',
     ADD_CONTRACT_2 = 'Add Contact',
     REVIEW = 'Review',
+    REVIEW_2 = 'review',
+    DELETE_REVIEW = 'delete-review',
     DETAILS = 'Details',
     DETAIL = 'Detail',
+    BASIC = 'Basic',
     CONTRACT = 'Contact',
     CREATE_LOAD = 'create-load',
     CREATE_LOAD_2 = 'Create Load',
     CLOSE_BUSINESS = 'close-business',
+    ADDITIONAL = 'Additional',
     CLOSE = 'close',
     OPEN = 'open',
     BUSINESS = 'business',
@@ -251,10 +256,12 @@ export enum TableStringEnum {
     ADD_REGISTRATION = 'add-registration',
     ADD_REGISTRATION_2 = 'Add Registration',
     REGISTRATION = 'Registration',
+    REGISTRATION_2 = 'registration',
 
     ADD_INSPECTION = 'add-inspection',
     ADD_INSPECTION_2 = 'Add Inspection',
     INSPECTION = 'Inspection',
+    INSPECTION_2 = 'inspection',
 
     TITLE = 'Title',
 
@@ -290,12 +297,14 @@ export enum TableStringEnum {
     FINISH_ORDER = 'finish-order',
     FINISH_ORDER_2 = 'finish order',
     FINISH_ORDER_3 = 'Finish Order',
+    ADD_BILL = 'add-bill',
     DELETE_REPAIR = 'delete-repair',
     DELETE_REPAIR_DETAIL = 'delete-repair-detail',
     EDIT_FO_TRAILER = 'edit-fo-trailer',
     EDIT_FO_TRUCK = 'edit-fo-truck',
     REPAIR_SHOP = 'repair_shop',
     REPAIR_SHOP_2 = 'Repair-shop',
+    REPAIR_SHOP_3 = 'repair-shop',
     NEW_TRAILER = 'new-trailer',
     NEW_TRUCK = 'new-truck',
     REPAIR_TRUCK_TRAILER_TABLE_COUNT = 'repairTruckTrailerTableCount',
@@ -353,6 +362,8 @@ export enum TableStringEnum {
     TRAILER_REPAIR = 'trailer repair',
     REPAIR_ORDER = 'repair order',
     REPAIR_REVIEW = 'repair-review',
+    BROKER_REVIEW = 'broker-review',
+    SHIPPER_REVIEW = 'shipper-review',
 
     // Owner
     TRUCK_TYPE_FILTER = 'truckTypeFilter',
@@ -370,7 +381,7 @@ export enum TableStringEnum {
     DELETE_OWNER = 'delete-owner',
 
     //Fuel
-    FUEL = 'Fuel',
+    FUEL = 'FUEL',
     FUEL_1 = 'fuel',
     FUEL_TRANSACTION = 'FUEL_TRANSACTION',
     FUEL_TRANSACTION_TEXT = 'fuel transaction',
@@ -386,6 +397,7 @@ export enum TableStringEnum {
 
     // Contact
     DELTETE_CONTACT = 'delete-contact',
+    DELTETE_CONTACT_2 = 'Delete Contact',
     CONTACT = 'contact',
     CONTACT_2 = 'Contact',
     ADD_CONTACT = 'add-contact',
@@ -417,6 +429,8 @@ export enum TableStringEnum {
     INCOMPLETE = 'Incomplete',
     MULTIPLE_DELETE = 'multiple delete',
     USER_TABLE_COUNT = 'userTableCount',
+    FORM_TYPE_1 = '1099',
+    W_2 = 'W-2',
 
     // Styles
     STYLES = 'font-weight: 900; text-transform: uppercase;',
@@ -467,6 +481,9 @@ export enum TableStringEnum {
     CLOSED_ARRAY = 'closedArray',
     DRIVER_ARCHIVED_ARRAY = 'driverArhivedArray',
     DEACTIVATED_ARHIVED_ARRAY = 'deactivatedUserArray',
+    DNU_FILTER = 'dnu-filter',
+    BAN_FILTER = 'ban-filter',
+    CLOSED_FILTER = 'closed-filter',
 
     // Cards
     INNER_DROPDOWN_ACTION = '.inner-dropdown-action-title',
@@ -532,4 +549,26 @@ export enum TableStringEnum {
     COLUMN_TOGGLE = 'columnToggle',
     CONVERT_TO_LOAD = 'create-new-load',
     CONVERT_TO_TEMPLATE = 'create-template-from-load',
+    INVITED = 'Invited',
+    EXPIRED = 'Expired',
+    ZERO = '0',
+
+    BROKER_CONTACT = 'broker contact',
+    SHIPPER_CONTACT = 'shipper contact',
+    VOIDED = 'VOIDED',
+
+    // Card States
+    CUSTOMER_CARD_STATE = 'customerCardState',
+    DRIVER_CARD_STATE = 'driverCardState',
+    LOAD_CARD_STATE = 'loadCardState',
+
+    REPAIR_CARD_STATE = 'repairCardState',
+    TRAILER_CARD_STATE = 'trailerCardState',
+    USER_CARD_STATE = 'userCardState',
+    TRUCK_CARD_STATE = 'truckCardState',
+    PM_CARD_STATE = 'pmCardState',
+    DEDUCTION = 'deduction',
+    CREDIT = 'credit',
+    PAYROLL = 'payroll',
+    BONUS = 'bonus'
 }

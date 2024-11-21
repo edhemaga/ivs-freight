@@ -1,86 +1,192 @@
 <div class="message-container">
-    <ng-container *ngIf="message.content">
-        <div
-            class="content-wrapper d-flex justify-content-end"
-            [ngClass]="
-                currentUserId === (message.senderId || message.sender?.id)
-                    ? 'flex-row'
-                    : 'flex-row-reverse'
+    <ng-container [ngSwitch]="true">
+        <ng-container
+            *ngSwitchCase="
+                message?.messageType?.name ===
+                chatMessageTypeEnum.JOINED_OR_LEFT
             "
         >
-            <ng-container *ngIf="isDateDisplayed">
+            <div>
                 <div
-                    class="message-time d-flex justify-content-center align-items-center"
+                    class="joined-left d-flex justify-content-center align-content-center"
                 >
-                    {{ messageDateAndTime }}
+                    <app-ca-profile-image
+                        [avatarImg]="message?.sender?.avatarFile?.url"
+                        [avatarColor]="{
+                            background: '#DFC2F9',
+                            color: '#9E47EC66'
+                        }"
+                        [textShortName]="
+                            message?.sender?.fullName | nameInitials
+                        "
+                        [size]="22"
+                        [fontSize]="9"
+                        [isHoverEffect]="false"
+                        [isRound]="message?.sender?.userType === 'Driver'"
+                    ></app-ca-profile-image>
+                    <div class="joined-left-text ta-font-regular">
+                        <span class="joined-left-text-name ta-font-semi-bold">{{
+                            message?.sender?.fullName
+                        }}</span>
+                        {{
+                            message?.content
+                                | chatRemoveFullname : message?.sender?.fullName
+                        }}
+                    </div>
                 </div>
-            </ng-container>
+            </div>
+        </ng-container>
 
+        <ng-container
+            *ngSwitchCase="
+                message?.messageType?.name === chatMessageTypeEnum.TEXT ||
+                message?.messageType === null
+            "
+        >
             <div
-                class="content ta-font-regular"
+                class="content-wrapper d-flex justify-content-end"
                 [ngClass]="
                     currentUserId === (message.senderId || message.sender?.id)
-                        ? 'current-user'
-                        : 'other'
+                        ? 'flex-row'
+                        : 'flex-row-reverse'
                 "
-                [ngStyle]="
-                    message.linksCount && {
-                        'max-width': '300px'
-                    }
-                "
+                [ngClass]=""
+                (mouseenter)="toggleActions(true)"
+                (mouseleave)="toggleActions(false)"
             >
-                {{ message.content }}
-
-                <ng-container *ngIf="message.filesCount">
-                    <div
-                        class="attachment-list d-flex"
-                        [ngStyle]="
-                            message.fileCount < 3
-                                ? { 'flex-direction': 'row' }
-                                : { 'flex-direction': 'column' }
-                        "
-                    >
+                <ng-container
+                    *ngTemplateOutlet="
+                        deletedMessage;
+                        context: {
+                            message,
+                            user: currentUserId
+                        }
+                    "
+                ></ng-container>
+                <ng-container *ngIf="!message.isDeleted">
+                    <ng-container *ngIf="hasActionsDisplayed && !isArchived">
                         <ng-container
-                            *ngFor="
-                                let attachment of message.files;
-                                let ind = index;
-                                trackBy: '' | trackByProperty
+                            *ngTemplateOutlet="
+                                actions;
+                                context: {
+                                    asset: chatSvgRoutes,
+                                    type: chatMessageActionEnum,
+                                    message,
+                                    user: currentUserId
+                                }
+                            "
+                        ></ng-container>
+                    </ng-container>
+
+                    <ng-container *ngIf="isDateDisplayed">
+                        <div
+                            class="message-time d-flex justify-content-center align-items-center"
+                        >
+                            {{ messageDateAndTime }}
+                        </div>
+                    </ng-container>
+                    <div>
+                        <div
+                            class="content ta-font-regular"
+                            [ngClass]="
+                                currentUserId
+                                    | chatMessageClass
+                                        : message.senderId || message.sender?.id
+                                        : selectedMessageId === message.id
+                            "
+                            [ngStyle]="
+                                message.linksCount && {
+                                    'max-width': '300px'
+                                }
                             "
                         >
-                            <div class="attachment-preview d-flex">
-                                <app-chat-message-attachment-preview
-                                    [index]="ind"
-                                    [attachment]="attachment"
-                                    [isNameReduced]="true"
-                                    [isInMessage]="true"
-                                    [previewWidth]="'100%'"
-                                ></app-chat-message-attachment-preview>
-                            </div>
-                        </ng-container>
-                    </div>
-                </ng-container>
+                            <ng-container
+                                *ngTemplateOutlet="
+                                    parentMessage;
+                                    context: {
+                                        message,
+                                        selected:
+                                            selectedMessageId === message.id
+                                    }
+                                "
+                            ></ng-container>
+                            <ng-container *ngIf="message.content">
+                                <div>{{ message.content }}</div>
+                            </ng-container>
 
-                <ng-container
-                    *ngIf="
-                        message.linksCount &&
-                        message.links[0]?.metadata?.imageUrl
-                    "
-                >
-                    <div class="link-wrapper">
-                        <img
-                            width="300"
-                            height="150"
-                            [src]="message.links[0].metadata?.imageUrl"
-                            [alt]="message.links[0].metadata?.title"
-                        />
-                    </div>
-                    <div class="link-title font-weight-normal">
-                        {{ message.links[0].metadata?.title }}
+                            <ng-container *ngIf="message.filesCount">
+                                <div
+                                    class="attachment-list d-flex"
+                                    [ngStyle]="
+                                        message.fileCount < 3
+                                            ? { 'flex-direction': 'row' }
+                                            : { 'flex-direction': 'column' }
+                                    "
+                                >
+                                    <ng-container
+                                        *ngFor="
+                                            let attachment of message.files;
+                                            let ind = index;
+                                            trackBy: '' | trackByProperty
+                                        "
+                                    >
+                                        <div class="attachment-preview d-flex">
+                                            <app-chat-message-attachment-preview
+                                                [index]="ind"
+                                                [attachment]="attachment"
+                                                [isNameReduced]="true"
+                                                [isInMessage]="true"
+                                                [isFocused]="isFocused"
+                                                [previewWidth]="'100%'"
+                                            ></app-chat-message-attachment-preview>
+                                        </div>
+                                    </ng-container>
+                                </div>
+                            </ng-container>
+                            <ng-container
+                                *ngTemplateOutlet="
+                                    links;
+                                    context: {
+                                        message
+                                    }
+                                "
+                            ></ng-container>
+                        </div>
+                        <ng-container
+                            *ngTemplateOutlet="
+                                media;
+                                context: {
+                                    message
+                                }
+                            "
+                        ></ng-container>
                     </div>
                 </ng-container>
             </div>
+        </ng-container>
+    </ng-container>
+</div>
+
+<!-- Templates -->
+<ng-template #links let-media="message">
+    <ng-container
+        *ngIf="message.linksCount && message.links[0]?.metadata?.imageUrl"
+    >
+        <div class="link-wrapper">
+            <img
+                width="300"
+                height="150"
+                [src]="message.links[0].metadata?.imageUrl"
+                [alt]="message.links[0].metadata?.title"
+            />
+        </div>
+        <div class="link-title font-weight-normal">
+            {{ message.links[0].metadata?.title }}
         </div>
     </ng-container>
+</ng-template>
+
+<ng-template #media let-media="message">
     <ng-container *ngIf="message.mediaCount">
         <div
             class="media-preview-wrapper d-flex"
@@ -101,15 +207,15 @@
                     <img
                         class="media-preview-thumbnail"
                         [ngStyle]="
-                            (message.mediaCount || message.media?.length) > 1 ? {
-                                height: '120px',
-                                width: '120px',  
-                            } : {
-                                'max-width': '300px',
-                                'max-height': '300px',
-                                'aspect-ration':  singleImageAspectRation
-                            }
-                        "
+                        (message.mediaCount || message.media?.length) > 1 ? {
+                            height: '120px',
+                            width: '120px',  
+                        } : {
+                            'max-width': '300px',
+                            'max-height': '300px',
+                            'aspect-ration':  singleImageAspectRation
+                        }
+                    "
                         [src]="attachment.url"
                         [alt]="attachment.fileName"
                     />
@@ -117,4 +223,133 @@
             </ng-container>
         </div>
     </ng-container>
-</div>
+</ng-template>
+
+<ng-template
+    #actions
+    let-asset="asset"
+    let-type="type"
+    let-user="user"
+    let-message="message"
+>
+    <div
+        class="message-actions d-flex justify-content-center align-items-center"
+    >
+        <ng-container
+            *ngTemplateOutlet="
+                iconAction;
+                context: {
+                    item: {
+                        icon: asset.replyIcon,
+                        actionType: type.REPLY,
+                        customClass:
+                            messageReply?.id === message.id && 'focused'
+                    }
+                }
+            "
+        ></ng-container>
+        <ng-container *ngIf="user === (message.senderId || message.sender?.id)">
+            <ng-container
+                *ngTemplateOutlet="
+                    iconAction;
+                    context: {
+                        item: {
+                            icon: asset.trashBinIcon,
+                            actionType: type.DELETE,
+                            customClass: 'red'
+                        }
+                    }
+                "
+            ></ng-container>
+            <ng-container
+                *ngTemplateOutlet="
+                    iconAction;
+                    context: {
+                        item: {
+                            icon: asset.editPenIcon,
+                            actionType: type.EDIT,
+                            customClass:
+                                messageEdit?.id === message.id && 'focused'
+                        }
+                    }
+                "
+            ></ng-container
+        ></ng-container>
+        <app-chat-vertical-divider></app-chat-vertical-divider>
+    </div>
+</ng-template>
+
+<ng-template #deletedMessage let-user="user" let-message="message">
+    <ng-container *ngIf="message.isDeleted">
+        <div
+            class="content d-flex ta-font-regular"
+            [ngClass]="
+                currentUserId
+                    | chatMessageClass
+                        : message.senderId || message.sender?.id
+                        : selectedMessageId === message.id
+            "
+        >
+            <svg-icon
+                class="pointer d-flex justify-content-center align-items-center"
+                [svgStyle]="{
+                    'width.px': 12,
+                    'height.px': 12
+                }"
+                [src]="chatSvgRoutes.trashBinIcon"
+            ></svg-icon>
+            <div class="deleted-text ta-font-semi-bold">
+                {{
+                    user === (message.senderId || message.sender?.id)
+                        ? 'You '
+                        : message.sender?.fullName
+                }}
+                deleted the message
+            </div>
+        </div>
+    </ng-container>
+</ng-template>
+
+<ng-template #iconAction let-item="item">
+    <div
+        class="action-wrapper gray d-flex justify-content-center align-content-center"
+        (click)="messageAction(item.actionType)"
+        [ngClass]="item.customClass"
+    >
+        <div class="action d-flex justify-content-center align-content-center">
+            <svg-icon
+                class="pointer d-flex justify-content-center align-items-center"
+                [svgStyle]="{
+                    'width.px': 12,
+                    'height.px': 12
+                }"
+                [src]="item.icon"
+            ></svg-icon>
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #parentMessage let-message="message" let-selected="selected">
+    <ng-container *ngIf="message.parentMessageId">
+        <div class="d-flex">
+            <div>
+                <svg-icon
+                    class="pointer d-flex justify-content-center align-items-center"
+                    [svgStyle]="{
+                        'width.px': 12,
+                        'height.px': 12
+                    }"
+                    [src]="chatSvgRoutes.replyIcon"
+                ></svg-icon>
+            </div>
+            <div class="parent-message-text" [ngClass]="selected && 'selected'">
+                <div class="ta-font-semi-bold">
+                    {{ message.parentMessageSenderFullname }} replied to
+                </div>
+                <div class="ta-font-regular">
+                    {{ message.parentMessageContent }}
+                </div>
+            </div>
+        </div>
+    </ng-container>
+</ng-template>

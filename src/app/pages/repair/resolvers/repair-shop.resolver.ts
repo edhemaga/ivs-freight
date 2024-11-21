@@ -1,54 +1,46 @@
 import { Injectable } from '@angular/core';
 
+import { Observable, tap } from 'rxjs';
 
-import { Observable, forkJoin, tap } from 'rxjs';
+// store
+import { RepairShopStore } from '@pages/repair/state/repair-shop-state/repair-shop.store';
 
-// Store
-import {
-    RepairShopState,
-    RepairShopStore,
-} from '@pages/repair/state/repair-shop-state/repair-shop.store';
-
-// Services
+// services
 import { RepairService } from '@shared/services/repair.service';
-import { TruckassistTableService } from '@shared/services/truckassist-table.service';
+
+// models
+import { RepairShopNewListResponse } from 'appcoretruckassist';
 
 @Injectable({
     providedIn: 'root',
 })
-export class RepairShopResolver  {
+export class RepairShopResolver {
     constructor(
         private repairService: RepairService,
-        private tableService: TruckassistTableService,
+
+        // store
         private repairShopStore: RepairShopStore
     ) {}
 
-    resolve(): Observable<any> {
-        return forkJoin([
-            this.repairService.getRepairShopList(
-                undefined,
-                undefined,
-                undefined,
-                undefined,
-                undefined,
-                undefined,
-                undefined,
-                undefined,
-                undefined,
-                undefined,
-                undefined,
-                1,
-                25
-            ),
-            this.tableService.getTableConfig(11),
-        ]).pipe(
-            tap(([repairTrailerPagination, tableConfig]) => {
-                if (tableConfig) {
-                    const config = JSON.parse(tableConfig.config);
-                }
+    resolve(): Observable<RepairShopNewListResponse> {
+        return this.repairService.getRepairShopList().pipe(
+            tap((repairShopPagination) => {
+                const dummy = repairShopPagination.pagination.data.map(
+                    (dum) => {
+                        if (dum.name === '44') {
+                            return {
+                                ...dum,
+                                companyOwned: false,
+                            };
+                        }
+
+                        return dum;
+                    }
+                );
 
                 this.repairShopStore.set(
-                    repairTrailerPagination.pagination.data
+                    dummy
+                    /*    repairTrailerPagination.pagination.data */
                 );
             })
         );

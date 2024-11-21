@@ -88,6 +88,8 @@
             }
 
             .subtext-container {
+                margin-left: 4px;
+
                 &.red {
                     p {
                         color: $ta-red-10;
@@ -556,6 +558,12 @@
 
             &.detailsPadding {
                 padding: 0px 4px !important;
+            }
+        }
+
+        &.scroll-x-axis {
+            .active {
+                overflow: visible;
             }
         }
     }

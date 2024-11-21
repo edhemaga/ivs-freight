@@ -22,6 +22,25 @@
             margin-top: -5px;
             right: -4px;
 
+            &.position-right {
+                right: 0;
+                left: -2px;
+
+                .table-list-dropdown-content-container {
+                    .table-list-dropdown-content {
+                        &-icon {
+                            order: 1 !important;
+                            margin: 0 4px 0 0 !important;
+                        }
+
+                        &-text {
+                            order: 2 !important;
+                            margin-right: 0 !important;
+                        }
+                    }
+                }
+            }
+
             .table-list-dropdown-content-container {
                 // Reguler Text And Icon
                 .table-list-dropdown-content {
@@ -75,11 +94,18 @@
                     }
 
                     // Icon Specific Classes
-                    .regular,
+                    .regular {
+                        svg {
+                            path {
+                                fill: $bw5;
+                            }
+                        }
+                    }
+
                     .deactivate {
                         svg {
                             path {
-                                fill: $ta-light-grey-2;
+                                fill: $dark-3;
                             }
                         }
                     }
@@ -87,7 +113,7 @@
                     .delete {
                         svg {
                             path {
-                                fill: $ta-red;
+                                fill: $ta-red-10;
                             }
                         }
                     }
@@ -198,25 +224,23 @@
                     pointer-events: none !important;
 
                     .table-list-dropdown-content-text {
-                        color: $bw6-2 !important;
+                        color: $bw5 !important;
                     }
 
-                    svg {
-                        path {
-                            fill: $bw6-2 !important;
-                        }
+                    svg path {
+                        fill: $dark-3 !important;
+                    }
+
+                    .favourite svg path {
+                        fill: $ta-blue-21 !important;
                     }
 
                     .delete svg path {
                         fill: $ta-red-20 !important;
                     }
 
-                    .hire-applicant {
-                        svg {
-                            path {
-                                fill: $ta-green-5 !important;
-                            }
-                        }
+                    .hire-applicant svg path {
+                        fill: $ta-green-5 !important;
                     }
                 }
             }
@@ -620,7 +644,7 @@
                             .columns-options-label {
                                 width: 14px;
                                 height: 14px;
-                                background-color: $muted; 
+                                background-color: $muted;
                                 margin-bottom: 0;
                                 border-radius: 2px;
                                 cursor: pointer;
@@ -785,6 +809,10 @@
                                 &:hover {
                                     background: $ta-light-grey-10;
                                     transition: 0.25s;
+                                }
+
+                                &.remove-padding {
+                                    padding: 0 !important;
                                 }
                             }
                         }
@@ -1389,39 +1417,92 @@
     }
 }
 
+// Open hours popover
+.table-open-hours-popover {
+    .popover-body {
+        position: absolute;
+        top: -4px;
+        left: -2px;
+        width: 192px;
+
+        .open-hours-dropdown {
+            padding: 8px 10px;
+            border-radius: 3px;
+            background: $ta-black-2;
+
+            &-item {
+                margin-bottom: 10px;
+
+                &:last-of-type {
+                    margin-bottom: 0;
+                }
+            }
+        }
+    }
+}
+
+// Invoice aging popover
 .table-invoice-aging-popover {
     .popover-body {
+        position: absolute;
+        top: -4px;
+        left: 2px;
+        width: 259px;
+
         .invoice-aging-dropdown {
-            padding: 8px 8px 12px 8px;
+            padding: 8px;
             background-color: $ta-black-2;
             border-radius: 3px;
 
             .invoice-aging-dropdown-content {
-                .invoice-aging-dropdown-content-item {
-                    .days-count {
-                        width: 35%;
-                        color: $white;
+                gap: 12px;
 
-                        span {
+                .invoice-aging-dropdown-content-item {
+                    gap: 8px;
+
+                    &.has-value {
+                        .invoice-aging-item-header {
+                            .days-count {
+                                color: $white !important;
+                            }
+
+                            .invoice-count {
+                                color: $ta-light-grey-2 !important;
+                            }
+
+                            .total-amount {
+                                color: $white !important;
+                            }
+                        }
+                    }
+
+                    .invoice-aging-item-header {
+                        display: grid;
+                        grid-template-columns: repeat(3, 1fr);
+                        grid-gap: 12px;
+
+                        .days-count {
+                            color: $bw5;
+
+                            span {
+                                color: $bw5;
+                            }
+                        }
+
+                        .invoice-count {
+                            text-align: center;
+                            color: $bw6-2;
+                        }
+
+                        .total-amount {
+                            text-align: right;
                             color: $bw5;
                         }
                     }
 
-                    .invoice-count {
-                        width: 30%;
-                        color: $bw5;
-                        text-align: center;
-                    }
-
-                    .total-amount {
-                        width: 35%;
-                        color: $white;
-                        text-align: right;
-                    }
-
                     .invoice-aging-item-progress-bar-container {
                         position: relative;
-                        width: 252px;
+                        width: 100%;
                         height: 8px;
                         border-radius: 2px;
                         background: $dark-2;
@@ -1456,6 +1537,7 @@
     }
 }
 
+// Contacts popover
 .table-contacts-popover {
     .popover-body {
         .table-contacts-dropdown {
@@ -1632,6 +1714,12 @@
     right: -4px !important;
 }
 
+.pickup-delivery-popover {
+    .sidemenu.pickup-delivery {
+        right: -182px !important;
+    }
+}
+
 .tags_popover_vertical {
     background-color: transparent !important;
     .popover-body {
@@ -1651,8 +1739,8 @@
     }
 }
 
-.map-list-sort-popover {
-    margin-left: 24px !important;
+.sort-dropdown-popover {
+    margin-left: 26px !important;
 }
 
 .layers-popover {

@@ -35,6 +35,7 @@ export interface FuelStopResponse {
     note?: string | null;
     isClosed?: boolean;
     files?: Array<FileResponse> | null;
+    cover?: FileResponse;
     createdAt?: string;
     updatedAt?: string;
     deactivatedAt?: string | null;

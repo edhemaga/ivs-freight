@@ -1,0 +1,59 @@
+<app-ta-custom-card
+    [cardName]="'Working Hours'"
+    [subText]="!isOpenHoursCardOpen ? 'Closed text' : ''"
+    [isCardOpen]="true"
+    [bodyTemplate]="'card'"
+    [hasDivider]="false"
+    [animationMarginParams]="{
+        marginTop: '0px',
+        marginBottom: '8px'
+    }"
+    (onOpenCard)="handleOpenHoursCardOpen($event)"
+>
+    <div
+        class="d-flex flex-column justify-content-center shop-details-working-hours"
+    >
+        <!-- Header -->
+
+        <div
+            class="d-flex flex-column justify-content-center shop-details-working-hours-header"
+        >
+            <div class="d-flex align-items-center">
+                <p class="m-0 ta-font-bold text-size-11 text-color-black">
+                    Open Now
+                </p>
+
+                <svg-icon
+                    class="shop-details-working-hours-header-icon"
+                    [src]="repairShopDetailsSvgRoutes.circleRoute"
+                    [svgStyle]="{ 'width.px': 10, 'height.px': 10 }"
+                ></svg-icon>
+            </div>
+
+            <p class="m-0 ta-font-medium text-size-18 text-color-black">
+                08:00 AM - 10:00 PM
+            </p>
+        </div>
+
+        <!-- Main -->
+
+        <div class="shop-details-working-hours-main">
+            <ng-container
+                *ngFor="
+                    let workingHoursItem of _cardData;
+                    trackBy: trackByIdentity
+                "
+            >
+                <div class="d-flex flex-column justify-content-center">
+                    <p class="m-0 ta-font-bold text-size-11 text-color-black">
+                        {{ workingHoursItem?.workingDays }}
+                    </p>
+
+                    <p class="m-0 text-size-14 text-color-black-2">
+                        {{ workingHoursItem?.workingHours }}
+                    </p>
+                </div>
+            </ng-container>
+        </div>
+    </div>
+</app-ta-custom-card>

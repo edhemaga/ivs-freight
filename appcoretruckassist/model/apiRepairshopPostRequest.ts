@@ -35,6 +35,7 @@ export interface ApiRepairshopPostRequest {
     Pinned?: boolean;
     Note?: string;
     CompanyOwned?: boolean;
+    IsCompanyRelated?: boolean;
     BankId?: number;
     Account?: string;
     Routing?: string;
@@ -44,10 +45,7 @@ export interface ApiRepairshopPostRequest {
     PayPeriod?: PayPeriod;
     WeeklyDay?: DayOfWeek;
     MonthlyDay?: number;
-    OpenHoursSameAllDays?: boolean;
     OpenAlways?: boolean;
-    StartTimeAllDays?: string;
-    EndTimeAllDays?: string;
     ServiceTypes?: Array<RepairShopServiceTypeCommand>;
     OpenHours?: Array<RepairShopOpenHoursCommand>;
     Contacts?: Array<RepairShopContactCommand>;

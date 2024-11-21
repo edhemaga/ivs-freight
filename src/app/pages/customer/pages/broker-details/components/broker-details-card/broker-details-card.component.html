@@ -111,7 +111,7 @@
             <app-ta-custom-card
                 [bodyTemplate]="'card'"
                 [hasDivider]="broker?.ein || broker?.mcNumber"
-                [hasCounter]="invoiceChartCount"
+                [hasCounter]="false"
                 [cardName]="'Invoice'"
                 [isCardOpen]="true"
                 [animationMarginParams]="{
@@ -122,9 +122,8 @@
             >
                 <div
                     class="charts-template perfomance"
-                    [class.p-0]="invoiceChart?.hoveringStatus"
                 >
-                    <div [class.d-none]="invoiceChart?.hoveringStatus">
+                    <div>
                         <app-ta-tab-switch
                             [type]="'type2-modal-popup'"
                             (switchClicked)="changeInvoiceTab($event)"
@@ -132,13 +131,10 @@
                         >
                         </app-ta-tab-switch>
                     </div>
-                    <app-ta-chart
-                        #invoiceChart
-                        [chartConfig]="invoiceChartConfig"
-                        [axesProperties]="invoiceAxes"
-                        [legendAttributes]="invoiceChartLegend"
+                    <app-ca-chart
+                    [chartConfig]="invoiceChartConfig"
                     >
-                    </app-ta-chart>
+                    </app-ca-chart>
                 </div>
             </app-ta-custom-card>
             <app-ta-custom-card
@@ -156,9 +152,8 @@
             >
                 <div
                     class="charts-template perfomance"
-                    [class.p-0]="mileageChart?.hoveringStatus"
                 >
-                    <ng-container *ngIf="!mileageChart?.hoveringStatus">
+                    <!-- <ng-container *ngIf="!mileageChart?.hoveringStatus"> -->
                         <div>
                             <app-ta-tab-switch
                                 [type]="'type2-modal-popup'"
@@ -167,17 +162,14 @@
                             >
                             </app-ta-tab-switch>
                         </div>
-                    </ng-container>
-                    <app-ta-chart
-                        #mileageChart
+                    <!-- </ng-container> -->
+                    <app-ca-chart
                         [chartConfig]="mileageChartConfig"
-                        [axesProperties]="mileageBarAxes"
-                        [legendAttributes]="mileageBarChartLegend"
                     >
-                    </app-ta-chart>
+                    </app-ca-chart>
                 </div>
+                
             </app-ta-custom-card>
-
             <app-ta-custom-card
                 [bodyTemplate]="'card'"
                 [hasDivider]="true"
@@ -439,27 +431,23 @@
                 }"
                 [customClass]="'detailsPadding'"
             >
-                <div
+             <div
                     class="charts-template perfomance"
-                    [class.p-0]="paymentChart?.hoveringStatus"
                 >
-                    <ng-container *ngIf="!paymentChart?.hoveringStatus">
+                    <!-- <ng-container *ngIf="!mileageChart?.hoveringStatus"> -->
                         <div>
                             <app-ta-tab-switch
-                                [tabs]="tabsBroker"
                                 [type]="'type2-modal-popup'"
-                                (switchClicked)="changePaymentTab($event)"
+                                [tabs]="tabsBroker"
+                                (switchClicked)="changeMileageTab($event)"
                             >
                             </app-ta-tab-switch>
                         </div>
-                    </ng-container>
-                    <app-ta-chart
-                        #paymentChart
-                        [chartConfig]="paymentChartConfig"
-                        [axesProperties]="paymentAxes"
-                        [legendAttributes]="paymentChartLegend"
-                    >
-                    </app-ta-chart>
+                    <!-- </ng-container> -->
+                    <app-ca-chart
+                    [chartConfig]="paymentChartConfig"
+                >
+                </app-ca-chart>
                 </div>
             </app-ta-custom-card>
 

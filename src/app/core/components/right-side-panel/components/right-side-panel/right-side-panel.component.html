@@ -1,0 +1,10 @@
+<ca-right-side-panel
+    class="right-side-panel"
+    [data]="activityLogData"
+    [usersFilter]="usersFilterData"
+    [modulesFilter]="modulesFilterData"
+    [actionsFilter]="actionsFilterData"
+    (selectedNavModule)="selectedNavModuleEvent($event)"
+    (activityLogFilterParams)="activityLogFilterParamsEvent($event)"
+    (isSidePanelPinned)="sidePanelPinEvent($event)"
+></ca-right-side-panel>

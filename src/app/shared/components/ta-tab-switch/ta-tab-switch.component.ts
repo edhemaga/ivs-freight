@@ -39,8 +39,12 @@ import { DropdownListItem } from '@pages/dashboard/models/dropdown-list-item.mod
 export class TaTabSwitchComponent implements AfterViewChecked, OnChanges {
     @ViewChildren('popoverHolder')
     autoCloseComponent: QueryList<TaAutoclosePopoverComponent>;
+    _tabs: Tabs[];
 
-    @Input() tabs: Tabs[];
+    @Input() set tabs(tabList: Tabs[]) {
+        this._tabs = tabList;
+    }
+
     @Input() type: string = '';
     @Input() dashboardHeight?: boolean = false;
     @Input() subPeriodDropdownList?: DropdownListItem[] = [];
@@ -48,6 +52,7 @@ export class TaTabSwitchComponent implements AfterViewChecked, OnChanges {
     @Input() clearCustomPeriodRangeValue?: boolean = false;
     @Input() isDisabled?: boolean = false;
     @Input() isBold: boolean = false;
+    @Input() isMarginTopDisabled: boolean = false;
 
     @Output() switchClicked = new EventEmitter<any>();
     @Output() customPeriodRangeEmitter = new EventEmitter<CustomPeriodRange>();
@@ -62,6 +67,10 @@ export class TaTabSwitchComponent implements AfterViewChecked, OnChanges {
     public indexSwitch: number = -1;
 
     constructor(public elem: ElementRef, public det: ChangeDetectorRef) {}
+
+    get tabs() {
+        return this._tabs;
+    }
 
     ngOnChanges() {
         this.setSwitchActive(this.tabs);
@@ -89,7 +98,6 @@ export class TaTabSwitchComponent implements AfterViewChecked, OnChanges {
     public switchTab(e, indx, item): void {
         e.stopPropagation();
         this.indexSwitch = indx;
-
 
         this.tabs.map((tab) => {
             if (tab.id === item.id) tab.checked = true;

@@ -28,7 +28,7 @@ table.truckassist-table-body-style {
 
                 .not-pined-columns {
                     .space-left {
-                        margin-left: 11px;
+                        margin-left: 10px;
                     }
 
                     td {
@@ -57,9 +57,11 @@ table.truckassist-table-body-style {
                         height: 100%;
                         align-items: center;
                         padding: 4px;
+
                         .input-dropdown-arrow svg {
                             display: none;
                         }
+
                         //nput dropdown label
                         app-ta-input-dropdown-label {
                             .input-custom-group .input-icon::after {
@@ -356,6 +358,7 @@ table.truckassist-table-body-style {
                         }
 
                         // VIOLATION STATE COLUMN
+
                         .violation-state-container {
                             width: fit-content;
                             height: 28px;
@@ -372,64 +375,29 @@ table.truckassist-table-body-style {
                             }
                         }
 
-                        // INV. AGEING COLUMN
-                        .inv-ageing-container {
-                            width: 100%;
+                        /* CREDIT PROGRESS BAR COLUMN */
+
+                        .credit-progress-bar-container {
+                            margin-left: -2px;
+                            cursor: pointer;
+                        }
+
+                        // INV. AGING COLUMN
+
+                        .inv-aging-container {
                             height: 26px;
-                            padding: 4px;
                             border-radius: 2px;
                             transition: background 0.2s;
+                            padding: 0 4px;
+                            margin-left: -2px;
 
-                            .bfb-container,
-                            .dnu-container {
-                                cursor: pointer;
-                                min-width: 18px;
-                                width: fit-content;
-                                height: 18px;
-                                padding: 2px;
-                                color: $white;
-                                display: flex;
-                                align-items: center;
-                                justify-content: center;
-                                font-size: 11px;
-                                font-weight: bold;
-
-                                &::selection {
-                                    color: $white;
-                                    background: $white-5;
+                            .inv-aging-text {
+                                p {
+                                    font-size: 14px;
+                                    line-height: 14px;
+                                    white-space: nowrap;
+                                    color: $ta-black-2;
                                 }
-                            }
-
-                            .bfb-container {
-                                margin-right: 2px;
-                                border-radius: 2px 0 0 2px;
-                                background: $bc1;
-
-                                &:hover {
-                                    background: $ta-blue;
-                                    transition: 0.25s;
-                                }
-                            }
-
-                            .dnu-container {
-                                margin-right: 4px;
-                                border-radius: 0 2px 2px 0;
-                                background: $ta-red;
-
-                                &:hover {
-                                    background: $ta-red-2;
-                                    transition: 0.25s;
-                                }
-                            }
-
-                            .inv-ageing-text {
-                                font-size: 14px;
-                                line-height: 18px;
-                                color: $ta-black-2;
-                                overflow: hidden;
-                                white-space: nowrap;
-                                text-overflow: ellipsis;
-                                transition: color 0.2s;
 
                                 &::selection {
                                     color: $bw6-2;
@@ -437,12 +405,15 @@ table.truckassist-table-body-style {
                                 }
 
                                 &.total-amount-text {
+                                    font-size: 14px;
                                     width: 74px;
+                                    line-height: 18px;
                                 }
                             }
 
                             .inv-aging-group {
                                 width: 30px;
+                                height: 18px;
                                 font-size: 11px;
                                 line-height: 14px;
                                 text-align: center;
@@ -450,7 +421,7 @@ table.truckassist-table-body-style {
                                 user-select: none;
 
                                 &.group-1 {
-                                    color: $ta-blue-13;
+                                    color: $ta-blue-18;
                                 }
 
                                 &.group-2 {
@@ -463,6 +434,7 @@ table.truckassist-table-body-style {
 
                                 &.group-4 {
                                     color: $ta-red-11;
+                                    margin-right: 1px;
                                 }
 
                                 &.group-5 {
@@ -471,6 +443,7 @@ table.truckassist-table-body-style {
                                 }
 
                                 &.main-group {
+                                    width: 34px;
                                     padding: 2px;
                                     background: $dark-2;
                                     color: $ta-black-2;
@@ -480,7 +453,7 @@ table.truckassist-table-body-style {
 
                             .inv-aging-group-border {
                                 width: 1px;
-                                height: 100%;
+                                height: 14px;
                                 background: $dark-3;
                                 border-radius: 1px;
                             }
@@ -498,6 +471,24 @@ table.truckassist-table-body-style {
                             &.invoice-popover-open {
                                 background: $ta-black-2;
 
+                                .inv-aging-group {
+                                    &.group-1 {
+                                        color: $ta-blue-19;
+                                    }
+
+                                    &.group-2 {
+                                        color: $ta-yellow-4;
+                                    }
+
+                                    &.group-3 {
+                                        color: $ta-orange-3;
+                                    }
+
+                                    &.group-4 {
+                                        color: $ta-red-13;
+                                    }
+                                }
+
                                 .total-amount-text,
                                 .main-group {
                                     color: $white;
@@ -506,6 +497,7 @@ table.truckassist-table-body-style {
                         }
 
                         // APPLICANT PROGRESS COLUMN
+
                         .applicant-progress-container {
                             margin-right: 8px;
 
@@ -529,34 +521,47 @@ table.truckassist-table-body-style {
                             }
                         }
 
+                        // CONTACTS COLUMN
+                        .contacts-container {
+                            margin-left: -4px;
+                        }
+
                         // WORK HOUR COLUMN
+
                         .work-hour-container {
-                            width: fit-content;
                             height: 18px;
-                            display: flex;
 
                             .work-hour-icon {
                                 margin-right: 4px;
-                                width: 18px;
-                                height: 18px;
-                                background-repeat: no-repeat;
-                                background-position: center;
-                                background-image: url('/assets/svg/truckassist-table/customer/calendar.svg');
+
+                                &.appointment {
+                                    svg {
+                                        path {
+                                            fill: $ta-yellow-1;
+                                        }
+                                    }
+                                }
+
+                                svg {
+                                    path {
+                                        fill: $bw5;
+                                    }
+                                }
                             }
 
-                            .work-hour-time {
-                                color: $bw6-2;
-                                height: 18px;
+                            p {
+                                color: $ta-black-2;
                                 line-height: 18px;
                                 font-size: 14px;
-                                font-weight: 400;
-                                overflow: hidden;
-                                white-space: nowrap;
-                                text-overflow: ellipsis;
+
+                                &::-moz-selection {
+                                    color: $ta-black-2;
+                                    background: rgb(47, 47, 47, 0.2);
+                                }
 
                                 &::selection {
-                                    color: $bw6-2;
-                                    background: $bw6-3;
+                                    color: $ta-black-2;
+                                    background: rgb(47, 47, 47, 0.2);
                                 }
                             }
                         }
@@ -712,6 +717,7 @@ table.truckassist-table-body-style {
                             margin-right: 6px;
                             display: flex;
                             align-items: center;
+                            margin-left: -2px;
 
                             &:hover {
                                 transform: scale(1.8);
@@ -754,30 +760,27 @@ table.truckassist-table-body-style {
 
                         // USER STATUS COLUMN
                         .user-status-container {
-                            min-width: 68px;
-                            height: 18px;
-                            border-radius: 1px;
-                            background: $bw6-3;
                             color: $bw6-2;
                             font-size: 11px;
-                            font-weight: 700;
-                            display: flex;
-                            justify-content: center;
-                            align-items: center;
-                            padding: 0 4px;
                             overflow: hidden;
                             white-space: nowrap;
                             text-overflow: ellipsis;
+                            text-transform: uppercase;
 
                             &::selection {
                                 color: $bw6-2;
-                                background: $bw6-2;
+                                background: $bw6-3;
                             }
                         }
 
-                        .user-invited {
-                            background: $ta-orange-6 !important;
-                            color: $special-filter-orange !important;
+                        .user-activity-container {
+                            .online-icon {
+                                width: 10px;
+                                height: 10px;
+
+                                border-radius: 100%;
+                                background-color: $ta-green;
+                            }
                         }
 
                         // NAME LINK
@@ -789,6 +792,7 @@ table.truckassist-table-body-style {
                             white-space: nowrap;
                             text-overflow: ellipsis;
                             align-items: center;
+                            margin-left: -2px;
 
                             &::selection {
                                 color: $ta-black;
@@ -1068,28 +1072,53 @@ table.truckassist-table-body-style {
                         }
 
                         // FAVORITE COLUMN
-                        .not-favorite-icon,
-                        .is-favorite-icon {
+
+                        .favorite-icon {
                             cursor: pointer;
-                            width: 18px;
-                            height: 18px;
-                            background-repeat: no-repeat;
-                            background-position: center;
-                        }
-
-                        .not-favorite-icon {
-                            background-image: url('/assets/svg/truckassist-table/favorite.svg');
+                            line-height: 14px;
+                            margin-right: 4px;
+                            position: relative;
+                            bottom: 1px;
 
                             &:hover {
-                                background-image: url('/assets/svg/truckassist-table/favorite-selected-row.svg');
+                                svg {
+                                    path {
+                                        fill: $ta-black;
+                                    }
+                                }
                             }
-                        }
 
-                        .is-favorite-icon {
-                            background-image: url('/assets/svg/truckassist-table/is-favorite.svg');
+                            &.is-favorite {
+                                svg {
+                                    path {
+                                        fill: $ta-blue-13;
+                                    }
+                                }
 
-                            &:hover {
-                                background-image: url('/assets/svg/truckassist-table/is-favorite-icon-hover.svg');
+                                &:hover {
+                                    svg {
+                                        path {
+                                            fill: $ta-blue-15;
+                                        }
+                                    }
+                                }
+                            }
+
+                            &.disabled {
+                                pointer-events: none !important;
+
+                                svg {
+                                    path {
+                                        fill: $ta-light-grey-6;
+                                    }
+                                }
+                            }
+
+                            svg {
+                                path {
+                                    fill: $bw5;
+                                    transition: fill 0.2s ease-in;
+                                }
                             }
                         }
 
@@ -1233,7 +1262,7 @@ table.truckassist-table-body-style {
                             text-overflow: ellipsis;
                             height: 18px;
                             line-height: 18px;
-                            margin-right: 7px;
+                            margin: 0 7px 0 -2px;
 
                             &:hover {
                                 color: $ta-blue;
@@ -1505,82 +1534,22 @@ table.truckassist-table-body-style {
 
                         // SERVICE COLUMN
                         .service-container {
-                            width: 100%;
-                            display: flex;
+                            .service-icon {
+                                margin-right: 2px;
 
-                            .img-style {
-                                width: 18px;
-                                height: 18px;
-                            }
+                                &.active {
+                                    svg {
+                                        path {
+                                            fill: $bw5;
+                                        }
+                                    }
+                                }
 
-                            .img-margin {
-                                margin-right: 6px;
-                            }
-
-                            /* Regular Type Icon */
-                            .truck {
-                                background: url('/assets/svg/truckassist-table/repair/shop-type-inactive/ic_truck_table-inactive.svg');
-                            }
-
-                            .trailer {
-                                background: url('/assets/svg/truckassist-table/repair/shop-type-inactive/ic_trailer_table-inactive.svg');
-                            }
-
-                            .mobile {
-                                background: url('/assets/svg/truckassist-table/repair/shop-type-inactive/ic_mobile_table-inactive.svg');
-                            }
-
-                            .shop {
-                                background: url('/assets/svg/truckassist-table/repair/shop-type-inactive/ic_shop_table-inactive.svg');
-                            }
-
-                            .towing {
-                                background: url('/assets/svg/truckassist-table/repair/shop-type-inactive/ic_towing_table-inactive.svg');
-                            }
-
-                            .parts {
-                                background: url('/assets/svg/truckassist-table/repair/shop-type-inactive/ic_parts_table-inactive.svg');
-                            }
-
-                            .tire {
-                                background: url('/assets/svg/truckassist-table/repair/shop-type-inactive/ic_tire_table-inactive.svg');
-                            }
-
-                            .dealer {
-                                background: url('/assets/svg/truckassist-table/repair/shop-type-inactive/ic_dealer_table-inactive.svg');
-                            }
-
-                            /* Active Type Icon */
-                            .truck-active {
-                                background: url('/assets/svg/truckassist-table/repair/shop-type-active/ic_truck_table.svg');
-                            }
-
-                            .trailer-active {
-                                background: url('/assets/svg/truckassist-table/repair/shop-type-active/ic_trailer_table.svg');
-                            }
-
-                            .mobile-active {
-                                background: url('/assets/svg/truckassist-table/repair/shop-type-active/ic_mobile_table.svg');
-                            }
-
-                            .shop-active {
-                                background: url('/assets/svg/truckassist-table/repair/shop-type-active/ic_shop_table.svg');
-                            }
-
-                            .towing-active {
-                                background: url('/assets/svg/truckassist-table/repair/shop-type-active/ic_towing_table.svg');
-                            }
-
-                            .parts-active {
-                                background: url('/assets/svg/truckassist-table/repair/shop-type-active/ic_parts_table.svg');
-                            }
-
-                            .tire-active {
-                                background: url('/assets/svg/truckassist-table/repair/shop-type-active/ic_tire_table.svg');
-                            }
-
-                            .dealer-active {
-                                background: url('/assets/svg/truckassist-table/repair/shop-type-active/ic_dealer_table.svg');
+                                svg {
+                                    path {
+                                        fill: $dark-3;
+                                    }
+                                }
                             }
                         }
 
@@ -1780,10 +1749,8 @@ table.truckassist-table-body-style {
 
                         // RAITING
                         .raiting-container {
-                            display: flex;
                             width: fit-content;
                             height: 18px;
-                            justify-self: center;
 
                             .raiting-icon {
                                 cursor: pointer;
@@ -1874,25 +1841,27 @@ table.truckassist-table-body-style {
                             cursor: pointer;
                             width: 26px;
                             height: 26px;
+                            margin-right: -4px;
+                            padding: 4px;
                             display: flex;
                             align-items: center;
                             justify-content: center;
 
                             svg-icon {
                                 display: flex;
-
-                                transition: transform 0.1s;
+                                transition: transform 0.2s;
 
                                 svg {
                                     circle {
                                         fill: $muted;
+                                        transition: fill 0.2s;
                                     }
                                 }
                             }
 
                             &:hover {
                                 border-radius: 2px;
-                                background: $ta-black-4;
+                                background: $dark-2;
 
                                 transition: background 0.2s;
 
@@ -1900,8 +1869,21 @@ table.truckassist-table-body-style {
                                     svg {
                                         circle {
                                             fill: $ta-black;
+                                        }
+                                    }
+                                }
+                            }
 
-                                            transition: fill 0.2s;
+                            &.active-drop,
+                            &.active-drop:hover {
+                                background: $ta-black;
+
+                                svg-icon {
+                                    transform: rotateZ(90deg);
+
+                                    svg {
+                                        circle {
+                                            fill: $bw-9;
                                         }
                                     }
                                 }
@@ -2190,6 +2172,45 @@ table.truckassist-table-body-style {
                                 }
                             }
                         }
+
+                        .shipper-load-container {
+                            display: grid;
+                            grid-template-columns: repeat(3, 46px);
+                            grid-gap: 12px;
+                            padding-left: 2px;
+
+                            &-box {
+                                &:nth-child(3) {
+                                    .icon {
+                                        svg {
+                                            path {
+                                                fill: $ta-red-10;
+                                            }
+                                        }
+                                    }
+                                }
+
+                                .icon {
+                                    margin-right: 4px;
+                                }
+
+                                p {
+                                    font-size: 11px;
+                                    line-height: 14px;
+                                    color: $ta-black;
+
+                                    &::-moz-selection {
+                                        color: $ta-black;
+                                        background: rgb(66, 66, 66, 0.2);
+                                    }
+
+                                    &::selection {
+                                        color: $ta-black;
+                                        background: rgb(66, 66, 66, 0.2);
+                                    }
+                                }
+                            }
+                        }
                     }
 
                     // GENERAl
@@ -2205,9 +2226,7 @@ table.truckassist-table-body-style {
             .attachemnt-dropdown,
             .media-dropdown,
             .insurance-dropdown {
-                /*  width: 100%; */
                 width: 0px;
-                /* height: fit-content; */
                 max-height: 0px;
                 overflow: hidden;
                 transition: max-height 0.2s ease-in-out;
@@ -2757,6 +2776,8 @@ table.truckassist-table-body-style {
             // Hover
             &:hover {
                 .columns-container {
+                    background-color: $ta-light-grey !important;
+
                     .finish-order-action {
                         width: 98px;
                         height: 24px;
@@ -2771,12 +2792,13 @@ table.truckassist-table-body-style {
                         text-overflow: ellipsis;
                         cursor: pointer;
                     }
+
                     .td-content {
                         input {
                             background-color: $bw2;
                         }
                     }
-                    background-color: $bw2 !important;
+
                     .lable-container {
                         input {
                             background-color: $bw2;
@@ -3312,6 +3334,11 @@ table.truckassist-table-body-style {
     }
 }
 
+// Fuel Integrated Transactions
+.fuel-integrated-transaction {
+    border: 1px solid $ta-green;
+}
+
 // 1
 @keyframes multiple-deleting-row-add-color {
     0% {
@@ -3369,17 +3396,6 @@ table.truckassist-table-body-style {
 // NG CLASS
 .pined-columns-margin {
     margin-right: 6px;
-}
-
-.active-drop {
-    background: $ta-black-4;
-    border-radius: 2px;
-
-    svg-icon {
-        transform: rotateZ(90deg);
-
-        transition: transform 0.1s;
-    }
 }
 
 .avatar-is-owner {

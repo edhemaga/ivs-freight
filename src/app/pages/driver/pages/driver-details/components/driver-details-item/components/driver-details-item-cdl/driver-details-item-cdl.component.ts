@@ -5,6 +5,7 @@ import {
     OnDestroy,
     OnInit,
     SimpleChanges,
+    ViewChild,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, UntypedFormControl } from '@angular/forms';
@@ -43,7 +44,7 @@ import { DropActionsStringEnum } from '@shared/enums/drop-actions-string.enum';
 
 // models
 import { CdlResponse, DriverResponse } from 'appcoretruckassist';
-import { DetailsDropdownOptions } from '@pages/driver/pages/driver-details/models/details-dropdown-options.model';
+import { DetailsDropdownOptions } from '@shared/models/details-dropdown-options.model';
 
 @Component({
     selector: 'app-driver-details-item-cdl',
@@ -70,6 +71,8 @@ import { DetailsDropdownOptions } from '@pages/driver/pages/driver-details/model
 export class DriverDetailsItemCdlComponent
     implements OnInit, OnChanges, OnDestroy
 {
+    @ViewChild('driverCdlFiles') driverCdlFiles: TaUploadFilesComponent;
+
     @Input() cardsData: CdlResponse[];
     @Input() driver: DriverResponse;
 

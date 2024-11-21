@@ -3,10 +3,12 @@
     [ngClass]="{
         unlocked: !isDispatchBoardLocked && showAddAddressFieldIndex === -1,
         'unlocked-skip-location':
-            !isDispatchBoardLocked && showAddAddressFieldIndex !== -1
+            !isDispatchBoardLocked && showAddAddressFieldIndex !== -1,
+        'unlocked-drag-trailer': isDrag && draggingType === 'trailer',
+        'unlocked-drag-driver': isDrag && draggingType === 'driver'
     }"
     cdkDropList
-    (cdkDropListDropped)="dropList($event)"
+    (cdkDropListDropped)="dragEndRow($event)"
 >
     <div
         class="table-container-dispatch scrollable"
@@ -33,7 +35,7 @@
                         (isAllBoardsList && dispatchData?.teamBoard)
                     "
                 >
-                    <tr>
+                    <tr class="d-flex">
                         <ng-container
                             *ngFor="
                                 let tableHeaderItem of dispatchTableHeaderItems;
@@ -57,18 +59,6 @@
                                             tableHeaderItem?.icon,
                                         'd-flex align-items-center pickup-delivery':
                                             tableHeaderItem?.secondTitle,
-                                        'c-pointer':
-                                            tableHeaderItem?.title === 'NOTE' ||
-                                            tableHeaderItem?.title ===
-                                                'TRUCK' ||
-                                            tableHeaderItem?.title ===
-                                                'TRAILER' ||
-                                            tableHeaderItem?.title ===
-                                                'DRIVER' ||
-                                            tableHeaderItem?.title ===
-                                                'PARKING' ||
-                                            tableHeaderItem?.title ===
-                                                'LAST LOCATION',
                                         'smaller-padding':
                                             !isDispatchBoardLocked &&
                                             (tableHeaderItem?.title ===
@@ -79,14 +69,25 @@
                                                     'NOTE' &&
                                                     !_isNoteExpanded))
                                     }"
+                                    [ngStyle]="
+                                        resizedColumnsWidth
+                                            | dispatchTableColumnWidths
+                                                : tableHeaderItem.headerProperty
+                                                : tableHeaderItem?.title ===
+                                                      'DRIVER' &&
+                                                      isDriverEndorsementActive
+                                    "
                                 >
                                     <div
-                                        class="resize d-flex justify-content-between align-items-center"
+                                        class="resize d-flex justify-content-between align-items-center pe-none"
                                         appResizable
                                         [title]="tableHeaderItem.title"
                                         [columns]="columnsToShow"
                                         [resizeEnabled]="!isDispatchBoardLocked"
                                         [isNoteExpanded]="_isNoteExpanded"
+                                        [isDriverEndorsementActive]="
+                                            isDriverEndorsementActive
+                                        "
                                         [hasAdditionalFieldTruck]="
                                             hasAdditionalFieldTruck
                                         "
@@ -116,7 +117,26 @@
                                                         : false
                                             }"
                                         >
-                                            <div>
+                                            <div
+                                                class="pe-auto"
+                                                [ngStyle]="{
+                                                    cursor:
+                                                        tableHeaderItem?.title ===
+                                                            'NOTE' ||
+                                                        tableHeaderItem?.title ===
+                                                            'TRUCK' ||
+                                                        tableHeaderItem?.title ===
+                                                            'TRAILER' ||
+                                                        tableHeaderItem?.title ===
+                                                            'DRIVER' ||
+                                                        tableHeaderItem?.title ===
+                                                            'PARKING' ||
+                                                        tableHeaderItem?.title ===
+                                                            'LAST LOCATION'
+                                                            ? 'pointer'
+                                                            : 'default'
+                                                }"
+                                            >
                                                 <svg-icon
                                                     class="icon"
                                                     [class.expanded]="
@@ -149,6 +169,7 @@
                                                     {{ tableHeaderItem?.title }}
                                                 </ng-container>
                                             </div>
+
                                             <ng-container
                                                 *ngIf="
                                                     !isDispatchBoardLocked &&
@@ -159,6 +180,7 @@
                                                 "
                                             >
                                                 <div
+                                                    class="pe-auto"
                                                     [ngStyle]="{
                                                         'padding-right': '10px',
                                                         cursor: 'pointer'
@@ -239,7 +261,7 @@
 
             <!-- Table -->
 
-            <tbody>
+            <tbody class="d-flex flex-column">
                 <!-- Locked Table -->
 
                 <ng-container
@@ -256,6 +278,7 @@
                         "
                     >
                         <tr
+                            #tableBodyRow
                             class="reorder-row"
                             [ngClass]="{ drag: !isDispatchBoardLocked }"
                             cdkDrag
@@ -265,22 +288,30 @@
                             [cdkDragDisabled]="
                                 isDispatchBoardLocked || !item.truck
                             "
-                            (cdkDragStarted)="
-                                cdkDragStartedRow($event, rowIndex)
-                            "
+                            (cdkDragStarted)="dragStartRow()"
                             (cdkDragEnded)="dragEnd()"
                             (mouseenter)="isHoveringRowIndex = rowIndex"
                             (mouseleave)="isHoveringRowIndex = -1"
                         >
+                            <div
+                                *cdkDragPlaceholder
+                                class="dragdrop-custom-placeholder"
+                                [ngStyle]="{
+                                    width: tableBodyRowWidth + 'px',
+                                    maxWidth: '100%'
+                                }"
+                            ></div>
+
                             <td
                                 cdkDragHandle
                                 #columnField
                                 class="truck-field"
-                                [ngStyle]="{
-                                    width: resizedColumnsWidth['truckNumber'] ? resizedColumnsWidth['truckNumber'] + 'px' : hasAdditionalFieldTruck ? '162px' : '122px',
-                                    'min-width': resizedColumnsWidth['truckNumber'] ? resizedColumnsWidth['truckNumber'] + 'px' : hasAdditionalFieldTruck ? '162px' : '122px',
-                                    'max-width': resizedColumnsWidth['truckNumber'] ? resizedColumnsWidth['truckNumber'] + 'px' : hasAdditionalFieldTruck ? '162px' : '122px',
-                                }"
+                                [ngStyle]="
+                                    resizedColumnsWidth
+                                        | dispatchTableColumnWidths
+                                            : 'truckNumber'
+                                            : hasAdditionalFieldTruck
+                                "
                             >
                                 <app-dispatch-table-truck-trailer
                                     [type]="'truck'"
@@ -318,11 +349,12 @@
                             <td
                                 #columnField
                                 class="trailer-field"
-                                [ngStyle]="{
-                                    width: resizedColumnsWidth['trailerNumber'] ? resizedColumnsWidth['trailerNumber'] + 'px' : hasAdditionalFieldTrailer ? '162px' : '122px',
-                                    'min-width': resizedColumnsWidth['trailerNumber'] ? resizedColumnsWidth['trailerNumber'] + 'px' : hasAdditionalFieldTrailer ? '162px' : '122px',
-                                    'max-width': resizedColumnsWidth['trailerNumber'] ? resizedColumnsWidth['trailerNumber'] + 'px' : hasAdditionalFieldTrailer ? '162px' : '122px',
-                                }"
+                                [ngStyle]="
+                                    resizedColumnsWidth
+                                        | dispatchTableColumnWidths
+                                            : 'trailerNumber'
+                                            : hasAdditionalFieldTrailer
+                                "
                             >
                                 <div
                                     class="main_inside"
@@ -331,21 +363,21 @@
                                     "
                                     cdkDropList
                                     id="{{
-                                        rowIndex | cdkid : gridIndex : 'trailer'
+                                        rowIndex | cdkId : gridIndex : 'trailer'
                                     }}"
-                                    [cdkDropListData]="dispatchData"
+                                    [cdkDropListData]="item"
                                     [cdkDropListConnectedTo]="
                                         rowIndex
-                                            | cdkconnect
+                                            | cdkConnect
                                                 : dispatchData.dispatches.length
                                                 : gridIndex
                                                 : 'trailer'
                                     "
-                                    [cdkDropListSortPredicate]="
-                                        trailerPositionPrediction
+                                    [cdkDropListEnterPredicate]="
+                                        dragPositionPredictionTrailer
                                     "
                                     (cdkDropListDropped)="
-                                        dropTrailer($event, rowIndex)
+                                        dragEndTrailer(rowIndex)
                                     "
                                 >
                                     <div
@@ -356,13 +388,12 @@
                                         cdkDragBoundary=".dispatch-table table tbody"
                                         [cdkDragDisabled]="
                                             isDispatchBoardLocked ||
-                                            !item.trailer
+                                            !item.trailer ||
+                                            item?.activeLoad?.statusType
+                                                ?.name === 'Active'
                                         "
                                         (cdkDragStarted)="
-                                            cdkDragStartedTrailer(
-                                                $event,
-                                                rowIndex
-                                            )
+                                            dragStartTrailer(rowIndex)
                                         "
                                         (cdkDragEnded)="dragEnd()"
                                     >
@@ -376,6 +407,7 @@
                                             [trailerDropdownWidth]="
                                                 columnSpecifications?.trailerWidth
                                             "
+                                            [truck]="item?.truck"
                                             [trailer]="item?.trailer"
                                             [trailerList]="
                                                 trailerList
@@ -401,6 +433,9 @@
                                             [isTrailerAddNewHidden]="
                                                 item?.truck | hiddenAddTrailer
                                             "
+                                            [previousDragTrailerTypeId]="
+                                                previousDragTrailerTypeId
+                                            "
                                             (addTruckTrailerEmitter)="
                                                 handleAddTruckTrailerClick(
                                                     $event
@@ -420,11 +455,12 @@
                             <td
                                 #columnField
                                 class="driver-field"
-                                [ngStyle]="{
-                                    width: resizedColumnsWidth['firstName'] ? resizedColumnsWidth['firstName'] + 'px' : isDriverEndorsementActive ? '302px' : '242px',
-                                    'min-width': resizedColumnsWidth['firstName'] ? resizedColumnsWidth['firstName'] + 'px' : isDriverEndorsementActive ? '302px' : '242px',
-                                    'max-width': resizedColumnsWidth['firstName'] ? resizedColumnsWidth['firstName'] + 'px' : isDriverEndorsementActive ? '302px' : '242px',
-                                }"
+                                [ngStyle]="
+                                    resizedColumnsWidth
+                                        | dispatchTableColumnWidths
+                                            : 'firstName'
+                                            : isDriverEndorsementActive
+                                "
                             >
                                 <div
                                     class="main_inside"
@@ -433,18 +469,21 @@
                                     "
                                     cdkDropList
                                     id="{{
-                                        rowIndex | cdkid : gridIndex : 'driver'
+                                        rowIndex | cdkId : gridIndex : 'driver'
                                     }}"
-                                    [cdkDropListData]="dispatchData"
+                                    [cdkDropListData]="item"
                                     [cdkDropListConnectedTo]="
                                         rowIndex
-                                            | cdkconnect
+                                            | cdkConnect
                                                 : dispatchData.dispatches.length
                                                 : gridIndex
                                                 : 'driver'
                                     "
+                                    [cdkDropListEnterPredicate]="
+                                        dragPositionPredictionDriver
+                                    "
                                     (cdkDropListDropped)="
-                                        dropDriver($event, rowIndex)
+                                        dragEndDriver(rowIndex)
                                     "
                                 >
                                     <div
@@ -455,13 +494,12 @@
                                         cdkDragBoundary=".dispatch-table table tbody"
                                         [cdkDragDisabled]="
                                             isDispatchBoardLocked ||
-                                            !item.driver
+                                            !item.driver ||
+                                            item?.activeLoad?.statusType
+                                                ?.name === 'Active'
                                         "
                                         (cdkDragStarted)="
-                                            cdkDragStartedDriver(
-                                                $event,
-                                                rowIndex
-                                            )
+                                            dragStartDriver(rowIndex)
                                         "
                                         (cdkDragEnded)="dragEnd()"
                                     >
@@ -532,6 +570,7 @@
                                             isDispatchBoardLocked &&
                                             isHoveringRowIndex === rowIndex
                                         "
+                                        [isUnlockable]="_isUnlockable"
                                     ></app-dispatch-table-pre-trip-inspection>
                                 </td>
                             </ng-container>
@@ -539,11 +578,10 @@
                             <td
                                 #columnField
                                 class="location-field"
-                                [ngStyle]="{
-                                    width: resizedColumnsWidth['city'] ? resizedColumnsWidth['city'] + 'px' : '162px',
-                                    'max-width': resizedColumnsWidth['city'] ? resizedColumnsWidth['city'] + 'px' : '302px',
-                                    'min-width': resizedColumnsWidth['city'] ? resizedColumnsWidth['city'] + 'px' : '162px',
-                                }"
+                                [ngStyle]="
+                                    resizedColumnsWidth
+                                        | dispatchTableColumnWidths : 'city'
+                                "
                             >
                                 <app-dispatch-table-last-location
                                     [address]="item.location"
@@ -574,11 +612,10 @@
 
                             <td
                                 class="status-field"
-                                [ngStyle]="{
-                                    width: resizedColumnsWidth['status'] ? resizedColumnsWidth['status'] + 'px' : '142px',
-                                    'max-width': resizedColumnsWidth['status'] ? resizedColumnsWidth['status'] + 'px' : '202px',
-                                    'min-width': resizedColumnsWidth['status'] ? resizedColumnsWidth['status'] + 'px' : '142px',
-                                }"
+                                [ngStyle]="
+                                    resizedColumnsWidth
+                                        | dispatchTableColumnWidths : 'status'
+                                "
                             >
                                 <app-dispatch-table-status
                                     [time]="item.lastStatusPassed"
@@ -590,17 +627,21 @@
                                         isDispatchBoardLocked &&
                                         isHoveringRowIndex === rowIndex
                                     "
+                                    [isUnlockable]="_isUnlockable"
+                                    (updateStatusEmitter)="
+                                        handleUpdateStatusEmit($event)
+                                    "
                                 >
                                 </app-dispatch-table-status>
                             </td>
 
                             <td
                                 class="pickup-delivery-field"
-                                [ngStyle]="{
-                                    width: resizedColumnsWidth['pickup_delivery'] ? resizedColumnsWidth['pickup_delivery'] + 'px' : '342px',
-                                    'max-width': resizedColumnsWidth['pickup_delivery'] ? resizedColumnsWidth['pickup_delivery'] + 'px' : '342px',
-                                    'min-width': resizedColumnsWidth['pickup_delivery'] ? resizedColumnsWidth['pickup_delivery'] + 'px' : '342px',
-                                }"
+                                [ngStyle]="
+                                    resizedColumnsWidth
+                                        | dispatchTableColumnWidths
+                                            : 'pickup_delivery'
+                                "
                                 (click)="
                                     getLoadInformationForSignleDispatchResponse(
                                         item
@@ -631,15 +672,26 @@
                             <ng-container *ngIf="!columnsToShow[14].hidden">
                                 <td
                                     class="progress-field"
-                                    [ngStyle]="{
-                                        width: resizedColumnsWidth['progress'] ? resizedColumnsWidth['progress'] + 'px' : '228px',
-                                        'max-width': resizedColumnsWidth['progress'] ? resizedColumnsWidth['progress'] + 'px' : '328px',
-                                        'min-width': resizedColumnsWidth['progress'] ? resizedColumnsWidth['progress'] + 'px' : '228px',
-                                    }"
+                                    [ngStyle]="
+                                        resizedColumnsWidth
+                                            | dispatchTableColumnWidths
+                                                : 'progress'
+                                    "
                                 >
-                                    <div class="main_inside filled">
-                                        <div class="padding-inside">
-                                            <div class="info-item d-block p-0 w-100">
+                                    <div
+                                        class="main_inside"
+                                        [class.filled]="progressBarData?.[rowIndex]"
+                                    >
+                                        <div
+                                            class="padding-inside"
+                                            [class.hovering]="
+                                                isDispatchBoardLocked &&
+                                                isHoveringRowIndex === rowIndex && progressBarData?.[rowIndex]
+                                            "
+                                        >
+                                            <div
+                                                class="info-item d-block p-0 w-100"
+                                            >
                                                 <ng-container
                                                     *ngIf="progressBarData?.[rowIndex]"
                                                 >
@@ -704,12 +756,13 @@
 
                             <ng-container *ngIf="!columnsToShow[15].hidden">
                                 <td
+                                    #columnField
                                     class="parking-field"
-                                    [ngStyle]="{
-                                        width: resizedColumnsWidth['slotNumber'] ? resizedColumnsWidth['slotNumber'] + 'px' : '102px',
-                                        'max-width': resizedColumnsWidth['slotNumber'] ? resizedColumnsWidth['slotNumber'] + 'px' :'102px',
-                                        'min-width': resizedColumnsWidth['slotNumber'] ? resizedColumnsWidth['slotNumber'] + 'px' : '102px',
-                                    }"
+                                    [ngStyle]="
+                                        resizedColumnsWidth
+                                            | dispatchTableColumnWidths
+                                                : 'slotNumber'
+                                    "
                                 >
                                     <app-dispatch-table-parking
                                         [parkingList]="parkingList"
@@ -722,6 +775,10 @@
                                             isHoveringRowIndex === rowIndex &&
                                             parkingList.length
                                         "
+                                        [isUnlockable]="_isUnlockable"
+                                        [parkingDropdownWidth]="
+                                            columnSpecifications?.parkingWidth
+                                        "
                                         (updateParking)="
                                             updateParking($event, item.id)
                                         "
@@ -731,7 +788,12 @@
 
                             <ng-container *ngIf="!columnsToShow[16].hidden">
                                 <td class="box-item">
-                                    <div class="main_inside filled">
+                                    <div
+                                        class="main_inside"
+                                        [class.filled]="
+                                            item.dispatcher?.fullName
+                                        "
+                                    >
                                         <div
                                             class="padding-inside"
                                             [ngClass]="{
@@ -774,11 +836,12 @@
                                 <td
                                     class="note-field"
                                     [class.expanded]="_isNoteExpanded"
-                                    [ngStyle]="{
-                                        width: !_isNoteExpanded ? '36px' : resizedColumnsWidth['note'] ? resizedColumnsWidth['note'] + 'px' : '238px',
-                                        'max-width': !_isNoteExpanded ? '36px' : resizedColumnsWidth['note'] ? resizedColumnsWidth['note'] + 'px' : '328px',
-                                        'min-width': !_isNoteExpanded ? '36px' : resizedColumnsWidth['note'] ? resizedColumnsWidth['note'] + 'px' : '238px',
-                                    }"
+                                    [ngStyle]="
+                                        resizedColumnsWidth
+                                            | dispatchTableColumnWidths
+                                                : 'note'
+                                                : _isNoteExpanded
+                                    "
                                 >
                                     <app-dispatch-table-note
                                         [truck]="item.truck"
@@ -791,6 +854,7 @@
                                         "
                                         [rowIndex]="rowIndex"
                                         [dispatchId]="item.id"
+                                        [isUnlockable]="_isUnlockable"
                                         (saveNoteValue)="saveNoteValue($event)"
                                     >
                                     </app-dispatch-table-note>
@@ -800,7 +864,11 @@
                             <td class="box-item">
                                 <div
                                     class="main_inside"
-                                    [class.filled]="item.driver && item.truck"
+                                    [class.filled]="
+                                        item.driver &&
+                                        item.truck &&
+                                        _isUnlockable
+                                    "
                                 >
                                     <div class="padding-inside p-0">
                                         <app-dispatch-table-assign-load
@@ -816,6 +884,7 @@
                                                 isDispatchBoardLocked &&
                                                 isHoveringRowIndex === rowIndex
                                             "
+                                            [isUnlockable]="_isUnlockable"
                                         ></app-dispatch-table-assign-load>
                                     </div>
                                 </div>
@@ -826,16 +895,17 @@
 
                 <!-- Unlocked Table - Extra Row - Add -->
 
-                <ng-container *ngIf="!isDispatchBoardLocked">
+                <ng-container *ngIf="!isDispatchBoardLocked && !isDrag">
                     <tr>
                         <td
                             #columnField
                             class="truck-field"
-                            [ngStyle]="{
-                                width: resizedColumnsWidth['truckNumber'] ? resizedColumnsWidth['truckNumber'] + 'px' : hasAdditionalFieldTruck ? '162px' : '122px',
-                                'min-width': resizedColumnsWidth['truckNumber'] ? resizedColumnsWidth['truckNumber'] + 'px' : hasAdditionalFieldTruck ? '162px' : '122px',
-                                'max-width': resizedColumnsWidth['truckNumber'] ? resizedColumnsWidth['truckNumber'] + 'px' : hasAdditionalFieldTruck ? '162px' : '122px',
-                            }"
+                            [ngStyle]="
+                                resizedColumnsWidth
+                                    | dispatchTableColumnWidths
+                                        : 'truckNumber'
+                                        : hasAdditionalFieldTruck
+                            "
                         >
                             <app-dispatch-table-truck-trailer
                                 [type]="'truck'"
@@ -864,11 +934,12 @@
                         <td
                             #columnField
                             class="trailer-field"
-                            [ngStyle]="{
-                                width: resizedColumnsWidth['trailerNumber'] ? resizedColumnsWidth['trailerNumber'] + 'px' : hasAdditionalFieldTrailer ? '162px' : '122px',
-                                'min-width': resizedColumnsWidth['trailerNumber'] ? resizedColumnsWidth['trailerNumber'] + 'px' : hasAdditionalFieldTrailer ? '162px' : '122px',
-                                'max-width': resizedColumnsWidth['trailerNumber'] ? resizedColumnsWidth['trailerNumber'] + 'px' : hasAdditionalFieldTrailer ? '162px' : '122px',
-                            }"
+                            [ngStyle]="
+                                resizedColumnsWidth
+                                    | dispatchTableColumnWidths
+                                        : 'trailerNumber'
+                                        : hasAdditionalFieldTrailer
+                            "
                         >
                             <app-dispatch-table-truck-trailer
                                 [type]="'trailer'"
@@ -897,11 +968,12 @@
                         <td
                             #columnField
                             class="driver-field"
-                            [ngStyle]="{
-                                width: resizedColumnsWidth['firstName'] ? resizedColumnsWidth['firstName'] + 'px' : isDriverEndorsementActive ? '302px' : '242px',
-                                'min-width': resizedColumnsWidth['firstName'] ? resizedColumnsWidth['firstName'] + 'px' : isDriverEndorsementActive ? '302px' : '242px',
-                                'max-width': resizedColumnsWidth['firstName'] ? resizedColumnsWidth['firstName'] + 'px' : isDriverEndorsementActive ? '302px' : '242px',
-                            }"
+                            [ngStyle]="
+                                resizedColumnsWidth
+                                    | dispatchTableColumnWidths
+                                        : 'firstName'
+                                        : isDriverEndorsementActive
+                            "
                         >
                             <app-dispatch-table-driver
                                 [driverList]="driverList"
@@ -943,11 +1015,10 @@
                         <td
                             #columnField
                             class="location-field"
-                            [ngStyle]="{
-                                width: resizedColumnsWidth['city'] ? resizedColumnsWidth['city'] + 'px' : '162px',
-                                'max-width': resizedColumnsWidth['city'] ? resizedColumnsWidth['city'] + 'px' : '302px',
-                                'min-width': resizedColumnsWidth['city'] ? resizedColumnsWidth['city'] + 'px' : '162px',
-                            }"
+                            [ngStyle]="
+                                resizedColumnsWidth
+                                    | dispatchTableColumnWidths : 'city'
+                            "
                         >
                             <ng-container
                                 *ngIf="
@@ -986,11 +1057,10 @@
 
                         <td
                             class="status-field"
-                            [ngStyle]="{
-                                width: resizedColumnsWidth['status'] ? resizedColumnsWidth['status'] + 'px' : '142px',
-                                'max-width': resizedColumnsWidth['status'] ? resizedColumnsWidth['status'] + 'px' : '202px',
-                                'min-width': resizedColumnsWidth['status'] ? resizedColumnsWidth['status'] + 'px' : '142px',
-                            }"
+                            [ngStyle]="
+                                resizedColumnsWidth
+                                    | dispatchTableColumnWidths : 'status'
+                            "
                         >
                             <div class="main_inside">
                                 <div class="padding-inside"></div>
@@ -999,11 +1069,11 @@
 
                         <td
                             class="pickup-delivery-field"
-                            [ngStyle]="{
-                                width: resizedColumnsWidth['pickup_delivery'] ? resizedColumnsWidth['pickup_delivery'] + 'px' : '342px',
-                                'max-width': resizedColumnsWidth['pickup_delivery'] ? resizedColumnsWidth['pickup_delivery'] + 'px' : '342px',
-                                'min-width': resizedColumnsWidth['pickup_delivery'] ? resizedColumnsWidth['pickup_delivery'] + 'px' : '342px',
-                            }"
+                            [ngStyle]="
+                                resizedColumnsWidth
+                                    | dispatchTableColumnWidths
+                                        : 'pickup_delivery'
+                            "
                         >
                             <div class="main_inside">
                                 <div class="padding-inside"></div>
@@ -1013,11 +1083,10 @@
                         <ng-container *ngIf="!columnsToShow[14].hidden">
                             <td
                                 class="progress-field"
-                                [ngStyle]="{
-                                    width: resizedColumnsWidth['progress'] ? resizedColumnsWidth['progress'] + 'px' : '228px',
-                                    'max-width': resizedColumnsWidth['progress'] ? resizedColumnsWidth['progress'] + 'px' : '328px',
-                                    'min-width': resizedColumnsWidth['progress'] ? resizedColumnsWidth['progress'] + 'px' : '228px',
-                                }"
+                                [ngStyle]="
+                                    resizedColumnsWidth
+                                        | dispatchTableColumnWidths : 'progress'
+                                "
                             >
                                 <div class="main_inside">
                                     <div class="padding-inside"></div>
@@ -1027,12 +1096,13 @@
 
                         <ng-container *ngIf="!columnsToShow[15].hidden">
                             <td
+                                #columnField
                                 class="parking-field"
-                                [ngStyle]="{
-                                    width: resizedColumnsWidth['slotNumber'] ? resizedColumnsWidth['slotNumber'] + 'px' : '102px',
-                                    'max-width': resizedColumnsWidth['slotNumber'] ? resizedColumnsWidth['slotNumber'] + 'px' : '102px',
-                                    'min-width': resizedColumnsWidth['slotNumber'] ? resizedColumnsWidth['slotNumber'] + 'px' : '102px',
-                                }"
+                                [ngStyle]="
+                                    resizedColumnsWidth
+                                        | dispatchTableColumnWidths
+                                            : 'slotNumber'
+                                "
                             >
                                 <div class="main_inside">
                                     <div class="padding-inside"></div>
@@ -1052,11 +1122,12 @@
                             <td
                                 class="note-field"
                                 [class.expanded]="_isNoteExpanded"
-                                [ngStyle]="{
-                                    width: !_isNoteExpanded ? '36px' : resizedColumnsWidth['note'] ? resizedColumnsWidth['note'] + 'px' : '238px',
-                                    'max-width': !_isNoteExpanded ? '36px' : resizedColumnsWidth['note'] ? resizedColumnsWidth['note'] + 'px' : '328px',
-                                    'min-width': !_isNoteExpanded ? '36px' : resizedColumnsWidth['note'] ? resizedColumnsWidth['note'] + 'px' : '238px',
-                                }"
+                                [ngStyle]="
+                                    resizedColumnsWidth
+                                        | dispatchTableColumnWidths
+                                            : 'note'
+                                            : _isNoteExpanded
+                                "
                             >
                                 <div class="main_inside">
                                     <div class="padding-inside"></div>
@@ -1085,11 +1156,12 @@
                             <td
                                 #columnField
                                 class="truck-field"
-                                [ngStyle]="{
-                                    width: resizedColumnsWidth['truckNumber'] ? resizedColumnsWidth['truckNumber'] + 'px' : hasAdditionalFieldTruck ? '162px' : '122px',
-                                    'min-width': resizedColumnsWidth['truckNumber'] ? resizedColumnsWidth['truckNumber'] + 'px' : hasAdditionalFieldTruck ? '162px' : '122px',
-                                    'max-width': resizedColumnsWidth['truckNumber'] ? resizedColumnsWidth['truckNumber'] + 'px' : hasAdditionalFieldTruck ? '162px' : '122px',
-                                }"
+                                [ngStyle]="
+                                    resizedColumnsWidth
+                                        | dispatchTableColumnWidths
+                                            : 'truckNumber'
+                                            : hasAdditionalFieldTruck
+                                "
                             >
                                 <div class="main_inside"></div>
                             </td>
@@ -1097,22 +1169,24 @@
                             <td
                                 #columnField
                                 class="trailer-field"
-                                [ngStyle]="{
-                                    width: resizedColumnsWidth['trailerNumber'] ? resizedColumnsWidth['trailerNumber'] + 'px' : hasAdditionalFieldTrailer ? '162px' : '122px',
-                                    'min-width': resizedColumnsWidth['trailerNumber'] ? resizedColumnsWidth['trailerNumber'] + 'px' : hasAdditionalFieldTrailer ? '162px' : '122px',
-                                    'max-width': resizedColumnsWidth['trailerNumber'] ? resizedColumnsWidth['trailerNumber'] + 'px' : hasAdditionalFieldTrailer ? '162px' : '122px',
-                                }"
+                                [ngStyle]="
+                                    resizedColumnsWidth
+                                        | dispatchTableColumnWidths
+                                            : 'trailerNumber'
+                                            : hasAdditionalFieldTrailer
+                                "
                             >
                                 <div class="main_inside"></div>
                             </td>
 
                             <td
                                 class="driver-field"
-                                [ngStyle]="{
-                                    width: resizedColumnsWidth['firstName'] ? resizedColumnsWidth['firstName'] + 'px' : isDriverEndorsementActive ? '302px' : '242px',
-                                    'min-width': resizedColumnsWidth['firstName'] ? resizedColumnsWidth['firstName'] + 'px' : isDriverEndorsementActive ? '302px' : '242px',
-                                    'max-width': resizedColumnsWidth['firstName'] ? resizedColumnsWidth['firstName'] + 'px' : isDriverEndorsementActive ? '302px' : '242px',
-                                }"
+                                [ngStyle]="
+                                    resizedColumnsWidth
+                                        | dispatchTableColumnWidths
+                                            : 'firstName'
+                                            : isDriverEndorsementActive
+                                "
                             >
                                 <div class="main_inside"></div>
                             </td>
@@ -1126,33 +1200,31 @@
                             <td
                                 #columnField
                                 class="location-field"
-                                [ngStyle]="{
-                                    width: resizedColumnsWidth['city'] ? resizedColumnsWidth['city'] + 'px' : '162px',
-                                    'max-width': resizedColumnsWidth['city'] ? resizedColumnsWidth['city'] + 'px' : '302px',
-                                    'min-width': resizedColumnsWidth['city'] ? resizedColumnsWidth['city'] + 'px' : '162px',
-                                }"
+                                [ngStyle]="
+                                    resizedColumnsWidth
+                                        | dispatchTableColumnWidths : 'city'
+                                "
                             >
                                 <div class="main_inside"></div>
                             </td>
 
                             <td
                                 class="status-field"
-                                [ngStyle]="{
-                                    width: resizedColumnsWidth['status'] ? resizedColumnsWidth['status'] + 'px' : '142px',
-                                    'max-width': resizedColumnsWidth['status'] ? resizedColumnsWidth['status'] + 'px' : '202px',
-                                    'min-width': resizedColumnsWidth['status'] ? resizedColumnsWidth['status'] + 'px' : '142px',
-                                }"
+                                [ngStyle]="
+                                    resizedColumnsWidth
+                                        | dispatchTableColumnWidths : 'status'
+                                "
                             >
                                 <div class="main_inside"></div>
                             </td>
 
                             <td
                                 class="pickup-delivery-field"
-                                [ngStyle]="{
-                                    width: resizedColumnsWidth['pickup_delivery'] ? resizedColumnsWidth['pickup_delivery'] + 'px' : '342px',
-                                    'max-width': resizedColumnsWidth['pickup_delivery'] ? resizedColumnsWidth['pickup_delivery'] + 'px' : '342px',
-                                    'min-width': resizedColumnsWidth['pickup_delivery'] ? resizedColumnsWidth['pickup_delivery'] + 'px' : '342px',
-                                }"
+                                [ngStyle]="
+                                    resizedColumnsWidth
+                                        | dispatchTableColumnWidths
+                                            : 'pickup_delivery'
+                                "
                             >
                                 <div class="main_inside"></div>
                             </td>
@@ -1160,11 +1232,11 @@
                             <ng-container *ngIf="!columnsToShow[14].hidden">
                                 <td
                                     class="progress-field"
-                                    [ngStyle]="{
-                                        width: resizedColumnsWidth['progress'] ? resizedColumnsWidth['progress'] + 'px' : '228px',
-                                        'max-width': resizedColumnsWidth['progress'] ? resizedColumnsWidth['progress'] + 'px' : '328px',
-                                        'min-width': resizedColumnsWidth['progress'] ? resizedColumnsWidth['progress'] + 'px' : '228px',
-                                    }"
+                                    [ngStyle]="
+                                        resizedColumnsWidth
+                                            | dispatchTableColumnWidths
+                                                : 'progress'
+                                    "
                                 >
                                     <div class="main_inside"></div>
                                 </td>
@@ -1172,12 +1244,13 @@
 
                             <ng-container *ngIf="!columnsToShow[15].hidden">
                                 <td
+                                    #columnField
                                     class="parking-field"
-                                    [ngStyle]="{
-                                        width: resizedColumnsWidth['slotNumber'] ? resizedColumnsWidth['slotNumber'] + 'px' : '102px',
-                                        'max-width': resizedColumnsWidth['slotNumber'] ? resizedColumnsWidth['slotNumber'] + 'px' : '102px',
-                                        'min-width': resizedColumnsWidth['slotNumber'] ? resizedColumnsWidth['slotNumber'] + 'px' : '102px',
-                                    }"
+                                    [ngStyle]="
+                                        resizedColumnsWidth
+                                            | dispatchTableColumnWidths
+                                                : 'slotNumber'
+                                    "
                                 >
                                     <div class="main_inside"></div>
                                 </td>
@@ -1193,11 +1266,12 @@
                                 <td
                                     class="note-field"
                                     [class.expanded]="_isNoteExpanded"
-                                    [ngStyle]="{
-                                        width: !_isNoteExpanded ? '36px' : resizedColumnsWidth['note'] ? resizedColumnsWidth['note'] + 'px' : '238px',
-                                        'max-width': !_isNoteExpanded ? '36px' : resizedColumnsWidth['note'] ? resizedColumnsWidth['note'] + 'px' : '328px',
-                                        'min-width': !_isNoteExpanded ? '36px' : resizedColumnsWidth['note'] ? resizedColumnsWidth['note'] + 'px' : '238px',
-                                    }"
+                                    [ngStyle]="
+                                        resizedColumnsWidth
+                                            | dispatchTableColumnWidths
+                                                : 'note'
+                                                : _isNoteExpanded
+                                    "
                                 >
                                     <div class="main_inside">
                                         <div class="padding-inside"></div>
@@ -1227,17 +1301,37 @@
                                     'first-row': i === 0,
                                     'second-row': i === 1,
                                     'third-row': i === 2,
-                                    'no-pretrip-column':
-                                        columnsToShow[10].hidden
                                 }"
                             >
                                 <ng-container
                                     *ngFor="
                                         let field of [].constructor(12);
+                                        let ind = index;
                                         trackBy: trackByIdentity
                                     "
                                 >
-                                    <td>
+                                    <td
+                                        [ngClass]="{
+                                            hidden:
+                                                (columnsToShow[10].hidden &&
+                                                    ind === 3) ||
+                                                (columnsToShow[14].hidden &&
+                                                    ind === 7) ||
+                                                (columnsToShow[15].hidden &&
+                                                    ind === 8) ||
+                                                (columnsToShow[16].hidden &&
+                                                    ind === 9) ||
+                                                (columnsToShow[17].hidden &&
+                                                    ind === 10)
+                                        }"
+                                        [ngStyle]="
+                                            resizedColumnsWidth
+                                                | dispatchTableColumnWidths
+                                                    : null
+                                                    : null
+                                                    : ind
+                                        "
+                                    >
                                         <div></div>
                                     </td>
                                 </ng-container>
@@ -1253,22 +1347,43 @@
                 *ngIf="isAllBoardsList || dispatchData?.dispatches?.length"
             >
                 <tfoot>
-                    <tr>
-                        <td>
+                    <tr class="d-flex">
+                        <td
+                            [ngStyle]="
+                                resizedColumnsWidth
+                                    | dispatchTableColumnWidths
+                                        : 'truckNumber'
+                                        : hasAdditionalFieldTruck
+                            "
+                        >
                             <app-dispatch-table-info
                                 [type]="'truck'"
                                 [count]="dispatchData.truckCount"
                             ></app-dispatch-table-info>
                         </td>
 
-                        <td>
+                        <td
+                            [ngStyle]="
+                                resizedColumnsWidth
+                                    | dispatchTableColumnWidths
+                                        : 'trailerNumber'
+                                        : hasAdditionalFieldTrailer
+                            "
+                        >
                             <app-dispatch-table-info
                                 [type]="'trailer'"
                                 [count]="dispatchData.trailerCount"
                             ></app-dispatch-table-info>
                         </td>
 
-                        <td>
+                        <td
+                            [ngStyle]="
+                                resizedColumnsWidth
+                                    | dispatchTableColumnWidths
+                                        : 'firstName'
+                                        : isDriverEndorsementActive
+                            "
+                        >
                             <app-dispatch-table-info
                                 [type]="'driver'"
                                 [count]="dispatchData.driverCount"
@@ -1281,13 +1396,25 @@
                                 trackBy: trackByIdentity
                             "
                         >
-                            <td></td>
+                            <td
+                                [ngStyle]="
+                                    field
+                                        | dispatchTableFooterWidths
+                                            : resizedColumnsWidth
+                                "
+                            ></td>
                         </ng-container>
 
                         <ng-container
                             *ngIf="!columnsToShow[15].hidden; noParking"
                         >
-                            <td>
+                            <td
+                                [ngStyle]="
+                                    resizedColumnsWidth
+                                        | dispatchTableColumnWidths
+                                            : 'slotNumber'
+                                "
+                            >
                                 <app-dispatch-table-info
                                     [type]="'parking'"
                                     [count]="parkingCount"

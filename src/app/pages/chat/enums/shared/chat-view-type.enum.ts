@@ -1,4 +1,4 @@
-export interface ChatViewTypeEnum {
-    REGULAR;
-    ADVANCED;
+export enum ChatViewTypeEnum {
+    REGULAR = 'regular',
+    ADVANCED = 'advanced',
 }

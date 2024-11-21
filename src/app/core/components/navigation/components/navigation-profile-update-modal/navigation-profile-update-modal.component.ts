@@ -29,9 +29,6 @@ import { ModalService } from '@shared/services/modal.service';
 import { UserProfileUpdateService } from '@shared/services/user-profile-update.service';
 import { FormService } from '@shared/services/form.service';
 
-// modules
-import Croppie from 'croppie';
-
 // components
 import { TaModalComponent } from '@shared/components/ta-modal/ta-modal.component';
 import { TaTabSwitchComponent } from '@shared/components/ta-tab-switch/ta-tab-switch.component';
@@ -40,6 +37,7 @@ import { TaInputAddressDropdownComponent } from '@shared/components/ta-input-add
 import { TaLogoChangeComponent } from '@shared/components/ta-logo-change/ta-logo-change.component';
 import { TaCheckboxCardComponent } from '@shared/components/ta-checkbox-card/ta-checkbox-card.component';
 import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-custom-card.component';
+import { CaUploadFilesComponent } from 'ca-components';
 
 // models
 import {
@@ -48,6 +46,10 @@ import {
     UpdateUserCommand,
     UserResponse,
 } from 'appcoretruckassist';
+
+// utils
+import { MethodsGlobalHelper } from '@shared/utils/helpers/methods-global.helper';
+import { NavigationDataConstants } from '../../utils/constants/navigation-data.constants';
 
 @Component({
     selector: 'app-navigation-profile-update-modal',
@@ -70,12 +72,16 @@ import {
         TaCheckboxCardComponent,
         TaLogoChangeComponent,
         TaCustomCardComponent,
+        // components
+        CaUploadFilesComponent,
     ],
 })
 export class NavigationProfileUpdateModalComponent
     implements OnInit, OnDestroy
 {
     private destroy$ = new Subject<void>();
+
+    public uploadOptionsConstants = NavigationDataConstants.UPLOAD_OPTIONS;
 
     private user: SignInResponse;
 
@@ -96,19 +102,6 @@ export class NavigationProfileUpdateModalComponent
             name: 'Additional',
         },
     ];
-
-    public croppieOptions: Croppie.CroppieOptions = {
-        enableExif: true,
-        viewport: {
-            width: 194,
-            height: 194,
-            type: 'circle',
-        },
-        boundary: {
-            width: 456,
-            height: 194,
-        },
-    };
 
     public animationObject = {
         value: this.selectedTab,
@@ -300,7 +293,8 @@ export class NavigationProfileUpdateModalComponent
     }
 
     public onUploadImage(event: any) {
-        this.profileUserForm.get('avatar').patchValue(event);
+        const base64Data = MethodsGlobalHelper.getBase64DataFromEvent(event);
+        this.profileUserForm.get('avatar').patchValue(base64Data);
         this.profileUserForm.get('avatar').setErrors(null);
     }
 

@@ -255,7 +255,7 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
                 this.cdlForm
                     .get(DriverCdlModalStringEnum.RESTRICTIONS_HELPER)
                     .setValue(
-                        this.selectedRestrictions.length
+                        this.selectedRestrictions?.length
                             ? JSON.stringify(this.selectedRestrictions)
                             : null
                     );
@@ -267,7 +267,7 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
                 this.cdlForm
                     .get(DriverCdlModalStringEnum.ENDORSEMENTS_HELPER)
                     .setValue(
-                        this.selectedEndorsments.length
+                        this.selectedEndorsments?.length
                             ? JSON.stringify(this.selectedEndorsments)
                             : null
                     );

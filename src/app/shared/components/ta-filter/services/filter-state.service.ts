@@ -1,7 +1,7 @@
 import { Injectable, OnDestroy } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
-import { takeUntil, Subject } from 'rxjs';
+import { takeUntil, Subject, BehaviorSubject } from 'rxjs';
 
 // store
 import { FilterStateStore } from '@shared/components/ta-filter/state/filter-state.store';
@@ -15,8 +15,6 @@ import {
     StateService,
     DepartmentService,
     LoadService,
-    TruckService,
-    TrailerService,
     RepairTrailerFilterListResponse,
     RepairTruckFilterListResponse,
     PMTrailerListResponse,
@@ -28,9 +26,14 @@ import {
 // services
 import { TruckassistTableService } from '@shared/services/truckassist-table.service';
 
+// Enums
+import { TableStringEnum } from '@shared/enums/table-string.enum';
+
 @Injectable({ providedIn: 'root' })
 export class FilterStateService implements OnDestroy {
     private destroy$ = new Subject<void>();
+    public updateTruckFilters = new BehaviorSubject<any>(null);
+    public updateTrailerFilter = new BehaviorSubject<any>(null);
 
     constructor(
         private filterStateStore: FilterStateStore,
@@ -43,8 +46,6 @@ export class FilterStateService implements OnDestroy {
         private stateService: StateService,
         private departmentService: DepartmentService,
         private loadService: LoadService,
-        private truckService: TruckService,
-        private trailerService: TrailerService,
         private dispatchService: DispatchService
     ) {}
 
@@ -66,8 +67,13 @@ export class FilterStateService implements OnDestroy {
     //     this.filterStateStore.remove(id);
     // }
 
-    public getTruckType() {
-        const truckType = this.TruckTypeService.apiTrucktypeFilterGet()
+    public getTruckType(isDispatchFilter?) {
+        const truckType = this.TruckTypeService.apiTrucktypeFilterGet(
+            '',
+            !isDispatchFilter
+                ? this.getSelectedTab(TableStringEnum.TRUCK_TABLE_VIEW)
+                : 1
+        )
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: (data: any) => {
@@ -80,8 +86,13 @@ export class FilterStateService implements OnDestroy {
             });
     }
 
-    public getTrailerType() {
-        const trailerType = this.TrailerTypeService.apiTrailertypeFilterGet()
+    public getTrailerType(isDispatchFilter?) {
+        const trailerType = this.TrailerTypeService.apiTrailertypeFilterGet(
+            '',
+            !isDispatchFilter
+                ? this.getSelectedTab(TableStringEnum.TRAILER_TAB_VIEW)
+                : 1
+        )
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: (data: any) => {
@@ -160,8 +171,6 @@ export class FilterStateService implements OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: (data /* : DispatcherFilterListResponse */) => {
-                    console.log('getDispatchData data', data);
-
                     this.tableService.sendActionAnimation({
                         animation: 'dispatch-data-update',
                         data: data,
@@ -171,7 +180,7 @@ export class FilterStateService implements OnDestroy {
             });
     }
 
-    public getPmData(mod) {
+    public getPmData(mod: string) {
         if (mod == 'truck') {
             const pmTruckData = this.repairService
                 .apiRepairPmTruckFilterListGet()
@@ -201,8 +210,19 @@ export class FilterStateService implements OnDestroy {
         }
     }
 
+    // Send prop Active = 1 when "Active" tab is displayed and  Active = 0 when "Inactive" tab is displayed.
+    private getSelectedTab(key: string): number {
+        const tableView = JSON.parse(localStorage.getItem(key));
+        return tableView && tableView.tabSelected === TableStringEnum.INACTIVE
+            ? 0
+            : 1;
+    }
+
     public getTruckData() {
-        const truckList = this.TruckTypeService.apiTrucktypeFilterGet()
+        const truckList = this.TruckTypeService.apiTrucktypeFilterGet(
+            '',
+            this.getSelectedTab(TableStringEnum.TRUCK_TABLE_VIEW)
+        )
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: (data: any) => {
@@ -216,7 +236,10 @@ export class FilterStateService implements OnDestroy {
     }
 
     public getTrailerData() {
-        const trailerList = this.TrailerTypeService.apiTrailertypeFilterGet()
+        const trailerList = this.TrailerTypeService.apiTrailertypeFilterGet(
+            '',
+            this.getSelectedTab(TableStringEnum.TRAILER_TAB_VIEW)
+        )
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: (data: any) => {

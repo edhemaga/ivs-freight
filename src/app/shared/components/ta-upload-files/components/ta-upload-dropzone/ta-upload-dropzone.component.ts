@@ -152,6 +152,16 @@ export class TaUploadDropzoneComponent {
         }
     }
 
+    @HostListener('window:dragstart', ['$event'])
+    onDragStart(event: DragEvent) {
+        event.preventDefault();
+    }
+
+    @HostListener('window:dragover', ['$event'])
+    onDragOverWindow(event: DragEvent) {
+        event.preventDefault();
+    }
+
     @HostListener('window:drop', ['$event'])
     onWindowDrop(event: any): void {
         event.preventDefault();

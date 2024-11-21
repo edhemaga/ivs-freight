@@ -36,4 +36,21 @@ export enum ToolbarFilterStringEnum {
 
     // Classes
     ACTIVE = 'active',
+    CLEAR_ALL = 'clearAll',
+
+    // List update
+    DISPATCH_DATA_UPDATE = 'dispatch-data-update',
+    LIST_UPDATE = 'list-update',
+    TRUCK_LIST_UPDATE = 'truck-list-update',
+    NAME = 'name',
+    COUNT = 'count',
+    ICON = 'icon',
+    TRAILER = 'trailer',
+    TRUCK = 'truck',
+    TRAILER_LIST_UPDATE = 'trailer-list-update',
+    TRUCK_TYPE_UPDATE = 'truck-type-update',
+    TRAILER_TYPE_UPDATE = 'trailer-type-update',
+    STATE_DATA_UPDATE = 'state-data-update',
+    REPAIR_CATEGORY_UPDATE = 'repair-category-update',
+    PM_TRUCK_DATA_UPDATE = 'pm-truck-data-update',
 }

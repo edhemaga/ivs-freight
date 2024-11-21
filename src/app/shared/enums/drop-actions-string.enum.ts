@@ -15,6 +15,7 @@ export enum DropActionsStringEnum {
     FAVORITE = 'favorite',
     MOVE = 'move',
     REMOVE = 'remove',
+    WRITE_REVIEW = 'write-review',
 
     // Templates
     INFO = 'info',
@@ -92,6 +93,8 @@ export enum DropActionsStringEnum {
     RENEW_2 = 'Renew',
     EMPTY_SPACE_STRING = ' ',
     TERMINAL = 'terminal',
+    PARKING = 'parking',
+    OFFICE = 'office',
 
     // Size
     SMALL = 'small',

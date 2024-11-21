@@ -9,8 +9,12 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { FileResponse } from './fileResponse';
 import { RatingReviewResponse } from './ratingReviewResponse';
+import { RepairShopOpenHoursResponse } from './repairShopOpenHoursResponse';
 import { RepairShopExpensesResponse } from './repairShopExpensesResponse';
+import { OpenHoursTodayResponse } from './openHoursTodayResponse';
+import { EnumValue } from './enumValue';
 import { RepairShopServiceTypeResponse } from './repairShopServiceTypeResponse';
 import { AddressEntity } from './addressEntity';
 
@@ -33,8 +37,19 @@ export interface MobileRepairShopDetailsResponse {
     totalVisits?: number;
     totalCost?: number | null;
     serviceTypes?: Array<RepairShopServiceTypeResponse> | null;
+    openHours?: Array<RepairShopOpenHoursResponse> | null;
+    openHoursSameAllDays?: boolean | null;
+    openAlways?: boolean | null;
+    startTimeAllDays?: string | null;
+    endTimeAllDays?: string | null;
+    openHoursToday?: OpenHoursTodayResponse;
+    openHoursStatus?: string | null;
+    note?: string | null;
+    status?: number;
+    shopServiceType?: EnumValue;
     repairExpenses?: RepairShopExpensesResponse;
     ratingReviews?: Array<RatingReviewResponse> | null;
+    cover?: FileResponse;
     createdAt?: string;
     updatedAt?: string;
 }

@@ -445,91 +445,11 @@
                 [performanceChartsPlaceholder]="true"
             ></app-dashboard-loading-placeholder>
         </ng-container>
-
-        <ng-container *ngIf="!isLoading && lineChartConfig && barChartConfig">
-            <div
-                class="charts-container"
-                (mouseleave)="handleRemoveChartsHover()"
+        <ng-container *ngIf="!isLoading">
+            <app-ca-chart
+                [chartConfig]="performanceChartConfig"
             >
-                <!-- Line Chart -->
-
-                <div
-                    class="d-flex flex-column justify-content-center dashboard-performance-body-line-chart-container"
-                >
-                    <div
-                        class="d-flex align-items-center justify-content-between line-chart-header"
-                    >
-                        <p class="m-0 ta-font-bold">{{ lineChartDateTitle }}</p>
-
-                        <div
-                            class="d-flex align-items-center line-chart-header-right"
-                        >
-                            <div class="d-flex align-items-center">
-                                <svg-icon
-                                    class="circle-icon circle-icon-price"
-                                    [src]="
-                                        'assets/svg/common/load/ic_circle-default-load.svg'
-                                    "
-                                    [svgStyle]="{
-                                        'width.px': 10,
-                                        'height.px': 10
-                                    }"
-                                ></svg-icon>
-
-                                <p class="m-0 ta-font-semi-bold">
-                                    Price per Gallon
-                                </p>
-                            </div>
-
-                            <div class="d-flex align-items-center">
-                                <svg-icon
-                                    class="circle-icon circle-icon-rate"
-                                    [src]="
-                                        'assets/svg/common/load/ic_circle-default-load.svg'
-                                    "
-                                    [svgStyle]="{
-                                        'width.px': 10,
-                                        'height.px': 10
-                                    }"
-                                ></svg-icon>
-
-                                <p class="m-0 ta-font-semi-bold">
-                                    Load Rate per Mile
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="line-chart-container">
-                        <app-dashboard-data-placeholder
-                            [fullHeight]="true"
-                        ></app-dashboard-data-placeholder>
-                        <!-- <app-ta-chart
-                            #lineChart
-                            [chartConfig]="lineChartConfig"
-                            [axesProperties]="lineChartAxes"
-                            [multipleVerticalLeftAxes]="
-                                multipleVerticalLeftAxes
-                            "
-                            [legendAttributes]="{}"
-                        >
-                        </app-ta-chart> -->
-                    </div>
-                </div>
-
-                <!-- Bar Chart -->
-
-                <!-- <div class="bar-chart-container">
-                    <app-ta-chart
-                        #barChart
-                        [chartConfig]="barChartConfig"
-                        [axesProperties]="barChartAxes"
-                        [legendAttributes]="{}"
-                        (hoverOtherChart)="handleBarChartHover($event)"
-                    >
-                    </app-ta-chart>
-                </div> -->
-            </div>
+            </app-ca-chart>
         </ng-container>
     </div>
 </div>

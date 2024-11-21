@@ -43,6 +43,7 @@ export interface ApiLoadPostRequest {
     RevisedRate?: number;
     TonuRate?: number;
     DriverRate?: number;
+    CoDriverRate?: number;
     EmptyMiles?: number;
     TotalMiles?: number;
     TotalHours?: number;

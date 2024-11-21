@@ -341,6 +341,27 @@
             "iconPath": "/assets/svg/common/trailers/ic_trailer_tanker.svg"
         },
         {
+            "iconName": "ic_trailer_tanker-pneumatic.svg",
+            "iconPath": "/assets/svg/common/trailers/ic_trailer_tanker-pneumatic.svg"
+        },
+        {
+            "iconName": "ic_trailer_end-dump.svg",
+            "iconPath": "/assets/svg/common/trailers/ic_trailer_end-dump.svg"
+        },
+        {
+            "iconName": "ic_trailer_bottom-dump.svg",
+            "iconPath": "/assets/svg/common/trailers/ic_trailer_bottom-dump.svg"
+        },
+        {
+            "iconName": "ic_trailer_hopper.svg",
+            "iconPath": "/assets/svg/common/trailers/ic_trailer_hopper.svg"
+        },
+        {
+            "iconName": "ic_trailer_carhauler-stinger.svg",
+            "iconPath": "/assets/svg/common/trailers/ic_trailer_carhauler-stinger.svg"
+        },
+
+        {
             "iconName": "ic_truck_box-truck.svg",
             "iconPath": "/assets/svg/common/trucks/ic_truck_box-truck.svg"
         },
@@ -364,6 +385,23 @@
             "iconName": "ic_truck_tow-truck.svg",
             "iconPath": "/assets/svg/common/trucks/ic_truck_tow-truck.svg"
         },
+        {
+            "iconName": "ic_truck_reefer.svg",
+            "iconPath": "/assets/svg/common/trucks/ic_truck_reefer.svg"
+        },
+        {
+            "iconName": "ic_truck_dump.svg",
+            "iconPath": "/assets/svg/common/trucks/ic_truck_dump.svg"
+        },
+        {
+            "iconName": "ic_truck_cement.svg",
+            "iconPath": "/assets/svg/common/trucks/ic_truck_cement.svg"
+        },
+        {
+            "iconName": "ic_truck_garbage.svg",
+            "iconPath": "/assets/svg/common/trucks/ic_truck_garbage.svg"
+        },
+
         {
             "iconName": "ic_truck_car-hauler.svg",
             "iconPath": "/assets/svg/common/trucks/ic_truck_car-hauler.svg"
@@ -640,7 +678,95 @@
         {
             "iconName": "finish-order",
             "iconPath": "assets/svg/common/dropdown-finish-order.svg"
+        },
+        {
+            "iconName": "ic_truck_reefer",
+            "iconPath": "/assets/svg/common/trucks/ic_truck_reefer.svg"
+        },
+        {
+            "iconName": "payroll_sceleton_collapsed",
+            "iconPath": "/assets/svg/truckassist-table/sceletons/payroll-table-collapsed.svg"
+        },
+        {
+            "iconName": "payroll_sceleton",
+            "iconPath": "/assets/svg/truckassist-table/sceletons/payroll-table.svg"
+        },
+        {
+            "iconName": "map",
+            "iconPath": "/assets/svg/common/load/ic_load_map.svg"
+        },
+        {
+            "iconName": "burger_menu",
+            "iconPath": "/assets/svg/truckassist-table/burger-icon.svg"
+        },
+        {
+            "iconName": "load_order_num_1",
+            "iconPath": "/assets/svg/svg_numbers/olddash/svg_num_box_1.svg"
+        },
+        {
+            "iconName": "load_order_num_2",
+            "iconPath": "/assets/svg/svg_numbers/olddash/svg_num_box_2.svg"
+        },
+        {
+            "iconName": "load_order_num_3",
+            "iconPath": "/assets/svg/svg_numbers/olddash/svg_num_box_3.svg"
+        },
+        {
+            "iconName": "load_order_num_4",
+            "iconPath": "/assets/svg/svg_numbers/olddash/svg_num_box_4.svg"
+        },
+        {
+            "iconName": "load_order_num_5",
+            "iconPath": "/assets/svg/svg_numbers/olddash/svg_num_box_5.svg"
+        },
+        {
+            "iconName": "load_order_num_6",
+            "iconPath": "/assets/svg/svg_numbers/olddash/svg_num_box_6.svg"
+        },
+        {
+            "iconName": "load_order_num_7",
+            "iconPath": "/assets/svg/svg_numbers/olddash/svg_num_box_7.svg"
+        },
+        {
+            "iconName": "load_order_num_8",
+            "iconPath": "/assets/svg/svg_numbers/olddash/svg_num_box_8.svg"
+        },
+        {
+            "iconName": "load_order_num_9",
+            "iconPath": "/assets/svg/svg_numbers/olddash/svg_num_box_9.svg"
+        },
+
+        {
+            "iconName": "pickup",
+            "iconPath": "/assets/svg/common/ic_pickup.svg"
+        },
+        {
+            "iconName": "delivery",
+            "iconPath": "/assets/svg/common/ic_delivery.svg"
+        },
+        {
+            "iconName": "incorrect",
+            "iconPath": "/assets/svg/common/ic_feedback_mark_incorrect.svg"
+        },
+        {
+            "iconName": "ic_clock",
+            "iconPath": "/assets/svg/common/ic_clock.svg"
+        },
+        {
+            "iconName": "ic_two_arrows",
+            "iconPath": "/assets/ca-components/svg/common/ic_two_arrows.svg"
+        },
+        {
+            "iconName": "ic_arrow_down_updated",
+            "iconPath": "/assets/svg/common/ic_arrow_down_updated.svg"
+        },
+        {
+            "iconName": "ic_route_info",
+            "iconPath": "assets/svg/common/routing/ic_route_info.svg"
         }
+        
+
+        
     ],
     "customIcons": []
 }

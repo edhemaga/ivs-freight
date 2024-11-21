@@ -5,7 +5,6 @@
 >
     <div
         class="icon-text-cont"
-        [ngClass]="{ copied: textCopied }"
         [tooltipBackground]="textCopied ? '#0B49D1' : '#424242'"
         ngbTooltip
         [mainTooltip]="textCopied ? 'Copied' : 'Copy'"
@@ -72,7 +71,7 @@
             </span>
             <span [ngClass]="{ copied: textCopied }">
                 <svg-icon
-                    class="card-icon-copy"
+                    class="card-icon-copy svg-fill-black svg-size-12"
                     src="assets/svg/common/ic_copy.svg"
                 ></svg-icon>
             </span>

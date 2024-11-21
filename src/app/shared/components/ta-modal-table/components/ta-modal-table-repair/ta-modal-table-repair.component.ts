@@ -12,9 +12,10 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
 //components
 import { TaInputDropdownComponent } from '@shared/components/ta-input-dropdown/ta-input-dropdown.component';
 import { TaInputComponent } from '@shared/components/ta-input/ta-input.component';
+import { CaInputDropdownComponent } from 'ca-components';
 
 //enums
-import { TaModalTableStringEnum } from '@shared/components/ta-modal-table/enums/ta-modal-table-string.enum';
+import { TaModalTableStringEnum } from '@shared/components/ta-modal-table/enums/';
 
 //models
 import { ModalTableDropdownOption } from '@shared/models/pm-dropdown-options.model';
@@ -22,6 +23,10 @@ import { RepairSubtotal } from '@pages/repair/pages/repair-modals/repair-order-m
 
 //pipes
 import { TrackByPropertyPipe } from '@shared/pipes/track-by-property.pipe';
+
+// svg routes
+import { ModalTableSvgRoutes } from '@shared/components/ta-modal-table/utils/svg-routes';
+import { EnumValue } from 'appcoretruckassist';
 
 @Component({
     selector: 'app-ta-modal-table-repair',
@@ -37,6 +42,7 @@ import { TrackByPropertyPipe } from '@shared/pipes/track-by-property.pipe';
         // components
         TaInputComponent,
         TaInputDropdownComponent,
+        CaInputDropdownComponent,
 
         //pipes
         TrackByPropertyPipe,
@@ -50,6 +56,9 @@ export class TaModalTableRepairComponent {
     @Input() subTotals: RepairSubtotal[];
     @Input() selectedTruckTrailerRepairPm: [] = [];
     @Input() truckTrailerRepairPmOptions: [] = [];
+    @Input() isFuelTable: boolean;
+    @Input() fuelItemsDropdown: EnumValue[];
+    @Input() activeFuelItem: EnumValue[] = [];
 
     @Output() onSelectDropdown: EventEmitter<{
         dropdownEvent: ModalTableDropdownOption;
@@ -68,7 +77,11 @@ export class TaModalTableRepairComponent {
         return this.modalTableForm?.get(this.arrayName) as UntypedFormArray;
     }
 
-    constructor() {}
+    public svgRoutes = ModalTableSvgRoutes;
+
+    constructor() {
+        console.log(this.fuelItemsDropdown);
+    }
 
     public emitDeleteFormArrayRowClick(index: number): void {
         this.deleteFormArrayRowClick.emit(index);

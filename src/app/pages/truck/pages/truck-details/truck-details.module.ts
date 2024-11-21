@@ -21,8 +21,8 @@ import { TaProgressExpirationComponent } from '@shared/components/ta-progress-ex
 import { TaCounterComponent } from '@shared/components/ta-counter/ta-counter.component';
 import { TaDetailsHeaderComponent } from '@shared/components/ta-details-header/ta-details-header.component';
 import { TaDetailsHeaderCardComponent } from '@shared/components/ta-details-header-card/ta-details-header-card.component';
-import { TaChartComponent } from '@shared/components/ta-chart/ta-chart.component';
 import { TaTabSwitchComponent } from '@shared/components/ta-tab-switch/ta-tab-switch.component';
+import { CaChartComponent } from 'ca-components';
 
 // pipes
 import { FormatDatePipe } from '@shared/pipes/format-date.pipe';
@@ -52,9 +52,9 @@ import { ThousandSeparatorPipe } from '@shared/pipes/thousand-separator.pipe';
         FormatDatePipe,
         TaDetailsHeaderComponent,
         TaDetailsHeaderCardComponent,
-        TaChartComponent,
         TaTabSwitchComponent,
         AngularSvgIconModule,
+        CaChartComponent,
 
         // PIPES
         ThousandSeparatorPipe,

@@ -9,10 +9,10 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { RepairShopMinimalResponsePagination } from './repairShopMinimalResponsePagination';
+import { RepairShopShortResponsePagination } from './repairShopShortResponsePagination';
 
 
 export interface RepairShopMinimalListResponse { 
-    pagination?: RepairShopMinimalResponsePagination;
+    pagination?: RepairShopShortResponsePagination;
 }
 

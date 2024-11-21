@@ -26,6 +26,7 @@
             [tableData]="tableData"
         ></app-ta-table-body>
     </ng-container>
+
     <ng-container *ngIf="activeViewMode === 'Card'">
         <div class="elements">
             <app-customer-card
@@ -48,10 +49,11 @@
                 >
                     <div class="showing ta-font-semi-bold">
                         {{ viewData.length }} OF
-                        {{ activeTableData.length }}
+                        {{ activeTableDataLength }}
                     </div>
+
                     <ng-container
-                        *ngIf="viewData.length < activeTableData.length"
+                        *ngIf="viewData.length < activeTableDataLength"
                     >
                         <div
                             class="show-more ta-font-bold w-fit-content align-items-center d-flex justify-content-between"

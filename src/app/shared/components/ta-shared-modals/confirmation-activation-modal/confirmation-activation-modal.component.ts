@@ -69,7 +69,7 @@ export class ConfirmationActivationModalComponent implements OnInit {
     ngOnInit(): void {
         if (
             this.editData.type === 'status' ||
-            this.editData.data.nameFront !== 'Unassigned'
+            this.editData.data?.nameFront !== 'Unassigned'
         ) {
             this.locationFormBuild();
         }

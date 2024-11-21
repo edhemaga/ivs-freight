@@ -1,0 +1,157 @@
+import { ExtendedRepairShopResponse } from '@pages/repair/pages/repair-shop-details/components/repair-shop-details-card/models';
+import { DetailsConfig } from '@shared/models/details-config.model';
+import { DetailsDropdownOptions } from '@shared/models/details-dropdown-options.model';
+
+export class RepairShopDetailsHelper {
+    static getDetailsDropdownOptions(
+        pinned: boolean,
+        status: number,
+        companyOwned: boolean
+    ): DetailsDropdownOptions {
+        return {
+            disabledMutedStyle: null,
+            toolbarActions: {
+                hideViewMode: false,
+            },
+            config: {
+                showSort: true,
+                sortBy: '',
+                sortDirection: '',
+                disabledColumns: [0],
+                minWidth: 60,
+            },
+            actions: [
+                {
+                    title: 'Edit',
+                    name: 'edit',
+                    svg: 'assets/svg/truckassist-table/dropdown/content/edit.svg',
+                    iconName: 'edit',
+                    disabled: !status,
+                },
+                {
+                    title: 'border',
+                },
+                {
+                    title: 'Add Bill',
+                    name: 'Repair',
+                    svg: 'assets/svg/common/ic_plus.svg',
+                    show: true,
+                    blueIcon: true,
+                    iconName: 'ic_plus',
+                    disabled: !status,
+                },
+                {
+                    title: !pinned ? 'Mark as Favorite' : 'Unmark Favorite',
+                    name: 'move-to-favourite',
+                    svg: 'assets/svg/common/ic_star.svg',
+                    activate: true,
+                    show: true,
+                    iconName: 'ic_star',
+                    blueIcon: !pinned,
+                    disabled: !status || companyOwned,
+                },
+                {
+                    title: 'Write Review',
+                    name: 'write-review',
+                    svg: 'assets/svg/common/review-pen.svg',
+                    show: true,
+                    iconName: 'write-review',
+                    disabled: !status,
+                },
+                {
+                    title: 'border',
+                },
+                {
+                    title: 'Share',
+                    name: 'share',
+                    svg: 'assets/svg/common/share-icon.svg',
+                    show: true,
+                    iconName: 'share',
+                },
+                {
+                    title: 'Print',
+                    name: 'print',
+                    svg: 'assets/svg/common/ic_fax.svg',
+                    show: true,
+                    iconName: 'print',
+                },
+                {
+                    title: 'border',
+                },
+                {
+                    title: !status ? 'Open Business' : 'Close Business',
+                    name: 'close-business',
+                    svg: !status
+                        ? 'assets/svg/common/ic_verify-check.svg'
+                        : 'assets/svg/common/close-business-icon.svg',
+                    greenIcon: !status,
+                    redIcon: !!status,
+                    show: true,
+                    iconName: 'close-business',
+                },
+                {
+                    title: 'Delete',
+                    name: 'delete-item',
+                    svg: 'assets/svg/common/ic_trash_updated.svg',
+                    show: true,
+                    redIcon: true,
+                    iconName: 'delete',
+                },
+            ],
+            export: true,
+        };
+    }
+
+    static getRepairShopDetailsConfig(
+        repairShopData: ExtendedRepairShopResponse
+    ): DetailsConfig[] {
+        const { repairList, cost, repairedVehicleList, ratingReviews, status } =
+            repairShopData;
+
+        return [
+            {
+                id: 0,
+                name: 'Repair Shop Detail',
+                template: 'general',
+                isClosedBusiness: !status,
+                data: repairShopData,
+            },
+            {
+                id: 1,
+                name: 'Repair',
+                template: 'repair',
+                isClosedBusiness: !status,
+                icon: true,
+                hasSearch: true,
+                hasSort: true,
+                hide: false,
+                total: cost,
+                length: repairList?.length || '0',
+                data: repairShopData,
+            },
+            {
+                id: 2,
+                name: 'Vehicle',
+                template: 'repaired-vehicle',
+                icon: false,
+                hasSearch: true,
+                hasSort: true,
+                hide: true,
+                length: repairedVehicleList?.length || '0',
+                data: repairShopData,
+            },
+            {
+                id: 3,
+                name: 'Review',
+                template: 'review',
+                isClosedBusiness: !status,
+                icon: false,
+                hasSearch: true,
+                hasSort: false,
+                hide: false,
+                length: ratingReviews?.length || '0',
+                data: repairShopData,
+            },
+        ];
+    }
+}

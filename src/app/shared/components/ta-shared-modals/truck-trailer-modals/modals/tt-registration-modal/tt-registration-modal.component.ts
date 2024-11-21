@@ -5,6 +5,9 @@ import { CommonModule } from '@angular/common';
 
 import { Subject, takeUntil } from 'rxjs';
 
+// Bootstrap
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+
 // models
 import {
     RegistrationModalResponse,
@@ -15,14 +18,15 @@ import {
 import { TaInputService } from '@shared/services/ta-input.service';
 import { TruckTrailerService } from '@shared/components/ta-shared-modals/truck-trailer-modals/services/truck-trailer.service';
 import { ModalService } from '@shared/services/modal.service';
-import { FormService } from '@shared/services/form.service';
+import { FormService } from '@shared/services/form.service'; 
+import { ConfirmationService } from '@shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
 
 // validations
 import { licensePlateValidation } from '@shared/components/ta-input/validators/ta-input.regex-validations';
 
 // utils
 import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calculations.helper';
-
+ 
 // components
 import { TaModalComponent } from '@shared/components/ta-modal/ta-modal.component';
 import { TaInputComponent } from '@shared/components/ta-input/ta-input.component';
@@ -30,9 +34,12 @@ import { TaInputDropdownComponent } from '@shared/components/ta-input-dropdown/t
 import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-custom-card.component';
 import { TaInputNoteComponent } from '@shared/components/ta-input-note/ta-input-note.component';
 import { TaUploadFilesComponent } from '@shared/components/ta-upload-files/ta-upload-files.component';
+import { ConfirmationModalComponent } from '@shared/components/ta-shared-modals/confirmation-modal/confirmation-modal.component';
 
 //enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
+import { ActionTypesEnum } from '@pages/repair/pages/repair-modals/repair-shop-modal/enums';
+import { LoadModalStringEnum } from '@pages/load/pages/load-modal/enums';
 
 @Component({
     selector: 'app-tt-registration-modal',
@@ -82,12 +89,24 @@ export class TtRegistrationModalComponent implements OnInit, OnDestroy {
         private TruckTrailerService: TruckTrailerService,
         private inputService: TaInputService,
         private modalService: ModalService,
-        private formService: FormService
+        private formService: FormService,
+        private ngbActiveModal: NgbActiveModal,
+        private confirmationService: ConfirmationService
     ) {}
 
     ngOnInit() {
         this.createForm();
         this.getModalDropdowns();
+        this.confirmationData();
+    }
+
+    private confirmationData(): void {
+        this.confirmationService.confirmationData$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((res) => {
+                if (res.action !== TableStringEnum.CLOSE)
+                    this.ngbActiveModal?.close();
+            });
     }
 
     private createForm() {
@@ -104,12 +123,11 @@ export class TtRegistrationModalComponent implements OnInit, OnDestroy {
         });
     }
 
-    public onModalAction(data: { action: string; bool: boolean }) {
+    public onModalAction(data: { action: string }) {
         switch (data.action) {
-            case 'close': {
+            case ActionTypesEnum.CLOSE:
                 break;
-            }
-            case 'save': {
+            case ActionTypesEnum.SAVE:
                 // If Form not valid
                 if (this.registrationForm.invalid || !this.isFormDirty) {
                     this.inputService.markInvalid(this.registrationForm);
@@ -131,10 +149,23 @@ export class TtRegistrationModalComponent implements OnInit, OnDestroy {
                     });
                 }
                 break;
-            }
-            default: {
+            case ActionTypesEnum.DELETE:
+                this.modalService.setProjectionModal({
+                    action: LoadModalStringEnum.OPEN,
+                    payload: {
+                        value: null,
+                        id: this.editData.file_id,
+                        key: null,
+                        data: this.editData,
+                        template: TableStringEnum.REGISTRATION_2,
+                    },
+                    type: LoadModalStringEnum.DELETE_2,
+                    component: ConfirmationModalComponent,
+                    size: LoadModalStringEnum.SMALL,
+                });
                 break;
-            }
+            default:
+                break;
         }
     }
 

@@ -20,6 +20,11 @@ import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta
 // Pipes
 import { FlipCardsPipe } from '@shared/pipes/flip-cards.pipe';
 import { ValueByStringPathPipe } from '@shared/pipes/value-by-string-path.pipe';
+import { CardValuePipe } from '@shared/pipes';
+
+// Store
+import { StoreModule } from '@ngrx/store';
+import { pmCardModalReducer } from '@pages/pm-truck-trailer/pages/pm-card-modal/state';
 
 @NgModule({
     declarations: [PmTableComponent, PmCardComponent],
@@ -42,6 +47,12 @@ import { ValueByStringPathPipe } from '@shared/pipes/value-by-string-path.pipe';
         // Pipes
         FlipCardsPipe,
         ValueByStringPathPipe,
+
+        FlipCardsPipe,
+        CardValuePipe,
+
+        // store
+        StoreModule.forFeature('pmCardData', pmCardModalReducer),
     ],
 })
 export class PmTruckTrailerModule {}

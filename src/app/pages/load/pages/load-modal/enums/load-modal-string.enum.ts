@@ -24,6 +24,7 @@ export enum LoadModalStringEnum {
     HAZARDOUS = 'hazardous',
     STOP_TYPE = 'stopType',
     STOP_ORDER = 'stopOrder',
+    STOP_LOAD_ORDER = 'stopLoadOrder',
     DRIVER_RATE = 'driverRate',
     ADJUSTED_RATE = 'adjustedRate',
     PICKUP_LEG_MILES = 'pickuplegMiles',
@@ -215,4 +216,6 @@ export enum LoadModalStringEnum {
 
     TRUCKS_SVG_ROUTE = 'assets/svg/common/trucks/',
     TRAILERS_SVG_ROUTE = 'assets/svg/common/trailers/',
+    COMMISSION = 'Commission',
+    PERCENT_PAY_TYPE = '%',
 }

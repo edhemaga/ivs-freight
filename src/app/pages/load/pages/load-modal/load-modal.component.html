@@ -8,7 +8,8 @@
         loadForm.valid &&
         isFormDirty &&
         isEachStopItemsRowValid &&
-        !reorderingStarted
+        !reorderingStarted &&
+        !isMilesLoading
     "
     [customClass]="loadModalSize"
     [partClass]="'load-modal-origin-part'"
@@ -19,7 +20,7 @@
     [saveAndAddNew]="true"
     (additionalPartVisibility)="additionalPartVisibility($event)"
     (action)="onModalAction($event)"
-    [enableClickWhileFormInvalid]="true"
+    [isClickEnabledWhileFormInvalid]="true"
     (runFormValidation)="runFormValidation()"
 >
     <!-- Origin Tab -->
@@ -157,14 +158,14 @@
                 <!-- Dispatcher -->
 
                 <div class="dispatcher-container">
-                    <app-ta-input-dropdown
+                    <app-ca-input-dropdown
                         formControlName="dispatcherId"
                         [template]="'load-dispatcher'"
                         [inputConfig]="getDispatcherInputConfig()"
                         [options]="labelsDispatcher"
                         [activeItem]="selectedDispatcher"
                         (selectedItem)="onSelectDropdown($event, 'dispatcher')"
-                    ></app-ta-input-dropdown>
+                    ></app-ca-input-dropdown>
                 </div>
 
                 <!-- Truck -->
@@ -173,53 +174,53 @@
                     <!-- Template Name -->
 
                     <ng-container *ngIf="isConvertedToTemplate">
-                        <app-ta-input
+                        <app-ca-input
                             formControlName="templateName"
                             [inputConfig]="loadTemplateInputConfig"
-                        ></app-ta-input>
+                        ></app-ca-input>
                     </ng-container>
 
                     <ng-container *ngIf="!isConvertedToTemplate">
                         <!-- Only One Company -->
 
-                        <app-ta-input
+                        <app-ca-input
                             *ngIf="labelsCompanies.length <= 1"
                             formControlName="companyId"
                             [inputConfig]="loadMainCompanyInputConfig"
-                        ></app-ta-input>
+                        ></app-ca-input>
 
                         <!-- Multiple Companies -->
 
-                        <app-ta-input-dropdown
+                        <app-ca-input-dropdown
                             *ngIf="labelsCompanies.length > 1"
                             formControlName="companyId"
                             [inputConfig]="loadCompanyInputConfig"
                             [options]="labelsCompanies"
                             [activeItem]="selectedCompany"
                             (selectedItem)="onSelectDropdown($event, 'company')"
-                        ></app-ta-input-dropdown>
+                        ></app-ca-input-dropdown>
                     </ng-container>
                 </div>
             </div>
 
             <div class="load-ftl-fourth-row">
-                <app-ta-input-dropdown
+                <app-ca-input-dropdown
                     formControlName="dispatchId"
                     [template]="'load-dispatches-ttd'"
                     [inputConfig]="loadDispatchesTTDInputConfig"
                     [options]="labelsDispatches"
                     [activeItem]="selectedDispatches"
                     (selectedItem)="onSelectDropdown($event, 'dispatches')"
-                ></app-ta-input-dropdown>
+                ></app-ca-input-dropdown>
             </div>
 
             <!-- Broker -->
             <div class="load-ftl-second-row">
-                <app-ta-input
+                <app-ca-input
                     formControlName="referenceNumber"
                     [inputConfig]="loadReferenceInputConfig"
-                ></app-ta-input>
-                <app-ta-input-dropdown
+                ></app-ca-input>
+                <app-ca-input-dropdown
                     formControlName="brokerId"
                     [template]="'load-broker'"
                     [inputConfig]="loadBrokerInputConfig"
@@ -228,13 +229,13 @@
                     [options]="labelsBroker"
                     [activeItem]="selectedBroker"
                     (selectedItem)="onSelectDropdown($event, 'broker')"
-                ></app-ta-input-dropdown>
+                ></app-ca-input-dropdown>
             </div>
 
             <!-- Reference No, General Commodity, Weight -->
 
             <div class="load-ftl-third-row">
-                <app-ta-input-dropdown
+                <app-ca-input-dropdown
                     formControlName="brokerContactId"
                     [template]="'load-broker-contact'"
                     [inputConfig]="loadBrokerContactsInputConfig"
@@ -243,8 +244,8 @@
                     [options]="labelsBrokerContacts"
                     [activeItem]="selectedBrokerContact"
                     (selectedItem)="onSelectDropdown($event, 'broker-contact')"
-                ></app-ta-input-dropdown>
-                <app-ta-input-dropdown
+                ></app-ca-input-dropdown>
+                <app-ca-input-dropdown
                     formControlName="generalCommodity"
                     [template]="'svgtext-template'"
                     [inputConfig]="loadCommodityInputConfig"
@@ -253,12 +254,12 @@
                     (selectedItem)="
                         onSelectDropdown($event, 'general-commodity')
                     "
-                ></app-ta-input-dropdown>
+                ></app-ca-input-dropdown>
 
-                <app-ta-input
+                <app-ca-input
                     formControlName="weight"
                     [inputConfig]="loadWeightInputConfig"
-                ></app-ta-input>
+                ></app-ca-input>
             </div>
             <!-- Requirement -->
 
@@ -277,7 +278,7 @@
                 >
                     <div class="pt-3">
                         <div class="load-requirements-load-first-row">
-                            <app-ta-input-dropdown
+                            <app-ca-input-dropdown
                                 #truckInputDropdown
                                 formControlName="truckTypeId"
                                 [template]="'svgtext-template'"
@@ -287,9 +288,9 @@
                                 (selectedItem)="
                                     onSelectDropdown($event, 'truck-req')
                                 "
-                            ></app-ta-input-dropdown>
+                            ></app-ca-input-dropdown>
 
-                            <app-ta-input-dropdown
+                            <app-ca-input-dropdown
                                 #trailerInputDropdown
                                 formControlName="trailerTypeId"
                                 [template]="'svgtext-template'"
@@ -299,11 +300,11 @@
                                 (selectedItem)="
                                     onSelectDropdown($event, 'trailer-req')
                                 "
-                            ></app-ta-input-dropdown>
+                            ></app-ca-input-dropdown>
                         </div>
 
                         <div class="load-requirements-load-second-row">
-                            <app-ta-input-dropdown
+                            <app-ca-input-dropdown
                                 formControlName="trailerLengthId"
                                 [inputConfig]="loadTrailerLengthInputConfig"
                                 [options]="labelsTrailerLength"
@@ -311,9 +312,9 @@
                                 (selectedItem)="
                                     onSelectDropdown($event, 'length')
                                 "
-                            ></app-ta-input-dropdown>
+                            ></app-ca-input-dropdown>
 
-                            <app-ta-input-dropdown
+                            <app-ca-input-dropdown
                                 formControlName="doorType"
                                 [inputConfig]="loadDoorTypeInputConfig"
                                 [options]="labelsDoorType"
@@ -321,9 +322,9 @@
                                 (selectedItem)="
                                     onSelectDropdown($event, 'door-type')
                                 "
-                            ></app-ta-input-dropdown>
+                            ></app-ca-input-dropdown>
 
-                            <app-ta-input-dropdown
+                            <app-ca-input-dropdown
                                 formControlName="suspension"
                                 [inputConfig]="loadSuspensionInputConfig"
                                 [options]="labelsSuspension"
@@ -331,9 +332,9 @@
                                 (selectedItem)="
                                     onSelectDropdown($event, 'suspension')
                                 "
-                            ></app-ta-input-dropdown>
+                            ></app-ca-input-dropdown>
 
-                            <app-ta-input-dropdown
+                            <app-ca-input-dropdown
                                 formControlName="year"
                                 [inputConfig]="loadYearInputConfig"
                                 [options]="labelsYear"
@@ -341,7 +342,7 @@
                                 (selectedItem)="
                                     onSelectDropdown($event, 'year')
                                 "
-                            ></app-ta-input-dropdown>
+                            ></app-ca-input-dropdown>
 
                             <div
                                 class="d-flex align-items-center justify-content-end"
@@ -459,7 +460,7 @@
 
                         <div class="row row-no-mt">
                             <div class="col-12">
-                                <app-ta-input-dropdown
+                                <app-ca-input-dropdown
                                     formControlName="pickupShipper"
                                     [template]="'load-shipper'"
                                     [inputConfig]="loadPickupShipperInputConfig"
@@ -481,7 +482,7 @@
                                             .markAsTouched()
                                     "
                                 >
-                                </app-ta-input-dropdown>
+                                </app-ca-input-dropdown>
                             </div>
                         </div>
 
@@ -495,7 +496,7 @@
                                 [type]="'type2-modal-popup'"
                             ></app-ta-tab-switch>
 
-                            <app-ta-input-dropdown
+                            <app-ca-input-dropdown
                                 formControlName="pickupShipperContactId"
                                 [template]="'load-broker-contact'"
                                 [inputConfig]="
@@ -511,7 +512,7 @@
                                         'shipper-contact-pickup'
                                     )
                                 "
-                            ></app-ta-input-dropdown>
+                            ></app-ca-input-dropdown>
                         </div>
 
                         <!--  Date Pickers & Time Pickers -->
@@ -520,7 +521,7 @@
                             class="stop-load-date-time"
                             [ngClass]="{ 'date-range-active': pickupDateRange }"
                         >
-                            <app-ta-input
+                            <app-ca-input
                                 formControlName="pickupDateFrom"
                                 [inputConfig]="getPickupDateFromInputConfig"
                                 (blurInput)="
@@ -529,7 +530,7 @@
                                 (clear)="
                                     markInputAsTouched('pickupDateFrom', true)
                                 "
-                            ></app-ta-input>
+                            ></app-ca-input>
 
                             <ng-container *ngIf="!pickupDateRange">
                                 <div
@@ -556,7 +557,7 @@
                                 </div>
                             </ng-container>
 
-                            <app-ta-input
+                            <app-ca-input
                                 *ngIf="pickupDateRange"
                                 formControlName="pickupDateTo"
                                 [inputConfig]="loadPickupEndDateInputConfig"
@@ -564,9 +565,9 @@
                                 (clear)="
                                     markInputAsTouched('pickupDateTo', true)
                                 "
-                            ></app-ta-input>
+                            ></app-ca-input>
 
-                            <app-ta-input
+                            <app-ca-input
                                 formControlName="pickupTimeFrom"
                                 [inputConfig]="getPickupTimeFromInputConfig"
                                 (blurInput)="
@@ -575,16 +576,16 @@
                                 (clear)="
                                     markInputAsTouched('pickupTimeFrom', true)
                                 "
-                            ></app-ta-input>
+                            ></app-ca-input>
 
-                            <app-ta-input
+                            <app-ca-input
                                 formControlName="pickupTimeTo"
                                 [inputConfig]="getPickupTimeToInputConfig"
                                 (blurInput)="markInputAsTouched('pickupTimeTo')"
                                 (clear)="
                                     markInputAsTouched('pickupTimeTo', true)
                                 "
-                            ></app-ta-input>
+                            ></app-ca-input>
                         </div>
 
                         <div class="stop-load-date-time-driver">
@@ -681,7 +682,7 @@
                                         "
                                         [preventOpening]="isDragAndDropActive"
                                         [firstOrLast]="false"
-                                        [stopNumber]="indx + 2"
+                                        [stopNumber]="extraStopNumbers?.[indx] ?? 1"
                                         [isDelivery]="
                                             selectExtraStopType[indx]
                                                 ?.toString()
@@ -792,7 +793,7 @@
 
                                         <div class="row">
                                             <div class="col-12">
-                                                <app-ta-input-dropdown
+                                                <app-ca-input-dropdown
                                                     formControlName="shipperId"
                                                     [template]="'load-shipper'"
                                                     [inputConfig]="
@@ -822,7 +823,7 @@
                                                             .get('shipperId')
                                                             .markAsTouched()
                                                     "
-                                                ></app-ta-input-dropdown>
+                                                ></app-ca-input-dropdown>
                                             </div>
                                         </div>
 
@@ -843,7 +844,7 @@
                                                 [type]="'type2-modal-popup'"
                                             ></app-ta-tab-switch>
 
-                                            <app-ta-input-dropdown
+                                            <app-ca-input-dropdown
                                                 formControlName="shipperContactId"
                                                 [template]="
                                                     'load-broker-contact'
@@ -870,7 +871,7 @@
                                                         indx
                                                     )
                                                 "
-                                            ></app-ta-input-dropdown>
+                                            ></app-ca-input-dropdown>
                                         </div>
 
                                         <!--  Date Pickers & Time Pickers -->
@@ -884,7 +885,7 @@
                                                     ]
                                             }"
                                         >
-                                            <app-ta-input
+                                            <app-ca-input
                                                 formControlName="dateFrom"
                                                 [inputConfig]="
                                                     getExtraStopsDateFromInputConfig(
@@ -899,7 +900,7 @@
                                                         .get('dateFrom')
                                                         .markAsTouched()
                                                 "
-                                            ></app-ta-input>
+                                            ></app-ca-input>
 
                                             <ng-container
                                                 *ngIf="
@@ -950,7 +951,7 @@
                                                 </div>
                                             </ng-container>
 
-                                            <app-ta-input
+                                            <app-ca-input
                                                 *ngIf="
                                                     loadExtraStopsDateRange[
                                                         indx
@@ -966,9 +967,9 @@
                                                         .get('dateTo')
                                                         .markAsTouched()
                                                 "
-                                            ></app-ta-input>
+                                            ></app-ca-input>
 
-                                            <app-ta-input
+                                            <app-ca-input
                                                 formControlName="timeFrom"
                                                 [inputConfig]="
                                                     getExtraStopsDateFromTimeFromInputConfig(
@@ -983,9 +984,9 @@
                                                         .get('timeFrom')
                                                         .markAsTouched()
                                                 "
-                                            ></app-ta-input>
+                                            ></app-ca-input>
 
-                                            <app-ta-input
+                                            <app-ca-input
                                                 formControlName="timeTo"
                                                 [inputConfig]="
                                                     getExtraStopsDateToTimeToInputConfig(
@@ -1000,7 +1001,7 @@
                                                         .get('timeTo')
                                                         .markAsTouched()
                                                 "
-                                            ></app-ta-input>
+                                            ></app-ca-input>
                                         </div>
 
                                         <!-- Stop Items -->
@@ -1163,7 +1164,7 @@
 
                         <div class="row">
                             <div class="col-12">
-                                <app-ta-input-dropdown
+                                <app-ca-input-dropdown
                                     formControlName="deliveryShipper"
                                     [template]="'load-shipper'"
                                     [inputConfig]="
@@ -1186,7 +1187,7 @@
                                             .get('deliveryShipper')
                                             .markAsTouched()
                                     "
-                                ></app-ta-input-dropdown>
+                                ></app-ca-input-dropdown>
                             </div>
                         </div>
 
@@ -1201,7 +1202,7 @@
                                 [type]="'type2-modal-popup'"
                             ></app-ta-tab-switch>
 
-                            <app-ta-input-dropdown
+                            <app-ca-input-dropdown
                                 formControlName="deliveryShipperContactId"
                                 [template]="'load-broker-contact'"
                                 [inputConfig]="
@@ -1217,7 +1218,7 @@
                                         'shipper-contact-delivery'
                                     )
                                 "
-                            ></app-ta-input-dropdown>
+                            ></app-ca-input-dropdown>
                         </div>
 
                         <!--  Date Pickers & Time Pickers -->
@@ -1228,7 +1229,7 @@
                                 'date-range-active': deliveryDateRange
                             }"
                         >
-                            <app-ta-input
+                            <app-ca-input
                                 formControlName="deliveryDateFrom"
                                 [inputConfig]="getDeliveryDateFromInputConfig"
                                 (blurInput)="
@@ -1236,7 +1237,7 @@
                                         .get('deliveryDateFrom')
                                         .markAsTouched()
                                 "
-                            ></app-ta-input>
+                            ></app-ca-input>
 
                             <ng-container *ngIf="!deliveryDateRange">
                                 <div
@@ -1263,7 +1264,7 @@
                                 </div>
                             </ng-container>
 
-                            <app-ta-input
+                            <app-ca-input
                                 *ngIf="deliveryDateRange"
                                 formControlName="deliveryDateTo"
                                 [inputConfig]="loadDeliveryDateToInputConfig"
@@ -1273,9 +1274,9 @@
                                 (clear)="
                                     markInputAsTouched('deliveryDateTo', true)
                                 "
-                            ></app-ta-input>
+                            ></app-ca-input>
 
-                            <app-ta-input
+                            <app-ca-input
                                 formControlName="deliveryTimeFrom"
                                 [inputConfig]="getDeliveryTimeFromInputConfig"
                                 (blurInput)="
@@ -1284,9 +1285,9 @@
                                 (clear)="
                                     markInputAsTouched('deliveryTimeFrom', true)
                                 "
-                            ></app-ta-input>
+                            ></app-ca-input>
 
-                            <app-ta-input
+                            <app-ca-input
                                 formControlName="deliveryTimeTo"
                                 [inputConfig]="getDeliveryTimeToInputConfig"
                                 (blurInput)="
@@ -1295,7 +1296,7 @@
                                 (clear)="
                                     markInputAsTouched('deliveryTimeTo', true)
                                 "
-                            ></app-ta-input>
+                            ></app-ca-input>
                         </div>
 
                         <!-- Stop Items -->
@@ -1457,7 +1458,7 @@
                         <div class="load-financial-billing">
                             <!-- Base Rate -->
 
-                            <app-ta-input
+                            <app-ca-input
                                 formControlName="baseRate"
                                 [inputConfig]="loadBaseRateInputConfig"
                                 [ngClass]="{
@@ -1465,17 +1466,17 @@
                                         loadForm.get('tonuRate').value ||
                                         loadForm.get('revisedRate').value
                                 }"
-                            ></app-ta-input>
+                            ></app-ca-input>
 
                             <!-- Driver Rate -->
-                            <app-ta-input
+                            <app-ca-input
                                 *ngIf="showDriverRate"
                                 formControlName="driverRate"
                                 [inputConfig]="getDriverRateInputConfig"
-                            ></app-ta-input>
+                            ></app-ca-input>
 
                             <!-- Adjusted Rate -->
-                            <app-ta-input
+                            <app-ca-input
                                 *ngIf="showAdjustedRate"
                                 formControlName="adjustedRate"
                                 [inputConfig]="getAdjustedRateInputConfig"
@@ -1485,21 +1486,21 @@
                                         loadForm.get('tonuRate').value ||
                                         loadForm.get('revisedRate').value
                                 }"
-                            ></app-ta-input>
+                            ></app-ca-input>
 
                             <!-- Tonu Rate -->
-                            <app-ta-input
+                            <app-ca-input
                                 *ngIf="showTonuRate"
                                 formControlName="tonuRate"
                                 [inputConfig]="getTonuRateInputConfig"
-                            ></app-ta-input>
+                            ></app-ca-input>
 
                             <!-- Adjusted Rate -->
-                            <app-ta-input
+                            <app-ca-input
                                 *ngIf="showRevisedRate"
                                 formControlName="revisedRate"
                                 [inputConfig]="getRevisedRateInputConfig"
-                            ></app-ta-input>
+                            ></app-ca-input>
 
                             <div formArrayName="additionalBillings">
                                 <div
@@ -1512,7 +1513,7 @@
                                     [ngStyle]="{ 'margin-bottom': '4px' }"
                                 >
                                     <div [formGroupName]="indx">
-                                        <app-ta-input
+                                        <app-ca-input
                                             [ngClass]="{
                                                 'load-financial-container-override':
                                                     loadForm.get('tonuRate')
@@ -1530,12 +1531,12 @@
                                                     indx
                                                 )
                                             "
-                                        ></app-ta-input>
+                                        ></app-ca-input>
                                     </div>
                                 </div>
                             </div>
                             <ng-container *ngIf="isVisibleBillDropdown">
-                                <app-ta-input-dropdown
+                                <app-ca-input-dropdown
                                     formControlName="billingDropdown"
                                     [inputConfig]="
                                         loadBillingDropdownInputConfig
@@ -1545,7 +1546,7 @@
                                     (selectedItem)="
                                         addAdditionalBilling($event)
                                     "
-                                ></app-ta-input-dropdown>
+                                ></app-ca-input-dropdown>
                             </ng-container>
                         </div>
 
@@ -1565,7 +1566,7 @@
                                 >
                                     <div [formGroupName]="indx">
                                         <div class="load-financial-payment">
-                                            <app-ta-input
+                                            <app-ca-input
                                                 formControlName="pay"
                                                 [inputConfig]="
                                                     getPaymentInputConfig(
@@ -1575,9 +1576,9 @@
                                                 (clear)="
                                                     removePaymentBilling(indx)
                                                 "
-                                            ></app-ta-input>
+                                            ></app-ca-input>
 
-                                            <app-ta-input-dropdown
+                                            <app-ca-input-dropdown
                                                 formControlName="displayPaymentType"
                                                 [inputConfig]="
                                                     loadPaymentTypeInputConfig
@@ -1593,14 +1594,14 @@
                                                         indx
                                                     )
                                                 "
-                                            ></app-ta-input-dropdown>
+                                            ></app-ca-input-dropdown>
 
-                                            <app-ta-input
+                                            <app-ca-input
                                                 formControlName="payDate"
                                                 [inputConfig]="
                                                     loadPaydateInputConfig
                                                 "
-                                            ></app-ta-input>
+                                            ></app-ca-input>
                                         </div>
                                     </div>
                                 </div>
@@ -1612,7 +1613,7 @@
                                     paymentTypesDropdownList.length
                                 "
                             >
-                                <app-ta-input-dropdown
+                                <app-ca-input-dropdown
                                     formControlName="paymentDropdown"
                                     [inputConfig]="
                                         loadPaymentDropdownInputConfig
@@ -1620,15 +1621,15 @@
                                     [options]="paymentTypesDropdownList"
                                     [activeItem]="null"
                                     (selectedItem)="addPaymentBilling($event)"
-                                ></app-ta-input-dropdown>
+                                ></app-ca-input-dropdown>
                             </ng-container>
                         </div>
 
                         <div class="load-financial-invoice">
-                            <app-ta-input
+                            <app-ca-input
                                 formControlName="invoicedDate"
                                 [inputConfig]="loadInvoiceDateInputConfig()"
-                            ></app-ta-input>
+                            ></app-ca-input>
 
                             <ng-container *ngIf="invoicePercent.daysToPay">
                                 <app-ta-progres-bar

@@ -1,22 +1,18 @@
 <div class="details-container-items">
     <ng-container
-        *ngFor="
-            let item of driverDetailsConfig;
-            let i = index;
-            trackBy: trackByIdentity
-        "
+        *ngFor="let item of driverDetailsConfig; trackBy: trackByIdentity"
     >
         <app-ta-details-header
             [options]="detailsDropdownOptions"
             [optionsId]="driverId"
             [route]="'/list/driver'"
             [tooltipHeaderName]="'Back to List'"
-            [headerText]="item.name"
-            [counterData]="item.length"
+            [headerText]="item?.name"
+            [counterData]="item?.length"
             [isInactive]="isInactive"
-            [hasRequest]="item.req"
-            [statusInactive]="item.status"
-            [danger]="item.hasDanger"
+            [hasRequest]="item?.req"
+            [statusInactive]="item?.status"
+            [danger]="item?.hasDanger"
             (dropActions)="onDriverActions($event)"
             (openModalAction)="onModalAction($event)"
         >

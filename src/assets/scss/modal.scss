@@ -398,32 +398,30 @@ ngb-modal-window[aria-hidden='true'] {
                         }
                     }
 
-                    .modal-close {
+                    .modal-close-container {
                         position: relative;
                         right: 1px;
+                        width: 26px;
+                        height: 26px;
+                        background: transparent;
+                        border-radius: 2px;
                         cursor: pointer;
-                        transition: all 0.3s ease-in-out;
+                        transition: background 0.3s ease-in-out;
 
-                        svg {
-                            width: 26px;
-                            height: 26px;
+                        &:hover {
+                            background: $bw2;
 
-                            path {
-                                fill: $bw5;
-                            }
-
-                            rect {
-                                fill: transparent;
-                                border-radius: 2px;
-                                transition: fill 0.3s ease-in-out;
+                            svg {
+                                path {
+                                    fill: $ta-black;
+                                }
                             }
                         }
 
-                        &:hover {
-                            svg {
-                                rect {
-                                    fill: $bw2;
-                                }
+                        svg {
+                            path {
+                                fill: $bw5;
+                                transition: fill 0.3s ease-in-out;
                             }
                         }
                     }
@@ -443,6 +441,13 @@ ngb-modal-window[aria-hidden='true'] {
                 border: none;
                 cursor: -webkit-grab;
                 cursor: grab;
+
+                &-payroll {
+                    padding-top: 0;
+                    .divider { 
+                        margin-bottom: 12px !important;
+                    }
+                }
 
                 &.mutliple-buttons {
                     display: flex;
@@ -673,6 +678,15 @@ ngb-modal-window[aria-hidden='true'] {
 
                     &:hover {
                         background: $ta-blue-14;
+                    }
+                }
+
+                .modal-default-button {
+                    background: $bw2;
+                    color: $ta-black;
+
+                    &:hover {
+                        background: $ta-light-grey-5;
                     }
                 }
 
@@ -1062,9 +1076,8 @@ ngb-modal-window.modal {
             height: 100vh;
 
             .modal-container {
-                margin: 75px auto 60px auto;
+                margin: 60px auto;
             }
         }
     }
 }
-

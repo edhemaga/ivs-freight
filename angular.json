@@ -55,10 +55,7 @@
                         ],
                         "allowedCommonJsDependencies": [
                             "ngx-google-places-autocomplete",
-                            "angular2-chartjs",
-                            "croppie",
-                            "chartjs-plugin-annotation",
-                            "chart.js"
+                            "croppie"
                         ]
                     },
                     "configurations": {
@@ -67,13 +64,13 @@
                             "budgets": [
                                 {
                                     "type": "initial",
-                                    "maximumWarning": "20mb",
-                                    "maximumError": "20mb"
+                                    "maximumWarning": "21mb",
+                                    "maximumError": "25mb"
                                 },
                                 {
                                     "type": "anyComponentStyle",
-                                    "maximumWarning": "20mb",
-                                    "maximumError": "20mb"
+                                    "maximumWarning": "21mb",
+                                    "maximumError": "25mb"
                                 }
                             ],
                             "fileReplacements": [
@@ -90,13 +87,13 @@
                             "budgets": [
                                 {
                                     "type": "initial",
-                                    "maximumWarning": "20mb",
-                                    "maximumError": "20mb"
+                                    "maximumWarning": "21mb",
+                                    "maximumError": "25mb"
                                 },
                                 {
                                     "type": "anyComponentStyle",
-                                    "maximumWarning": "20mb",
-                                    "maximumError": "20mb"
+                                    "maximumWarning": "21mb",
+                                    "maximumError": "25mb"
                                 }
                             ],
                             "fileReplacements": [

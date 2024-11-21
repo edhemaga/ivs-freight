@@ -52,6 +52,7 @@
             >
                 Required
             </span>
+
             <input
                 *ngIf="
                     (!disabled || disabledStillCheckMark) &&
@@ -66,6 +67,7 @@
                 [checked]="getSuperControl.value"
                 (change)="onChange($event.target.checked)"
             />
+
             <span
                 *ngIf="
                     (!disabled ||
@@ -79,6 +81,11 @@
                 disabled: disabledStillCheckMark,
                 'down-position': moveIconDown
             }"
+                ngbTooltip
+                [mainTooltip]="getSuperControl.value ? 'Clear' : 'Select'"
+                [tooltipMarginTop]="'5px'"
+                tooltipBackground="#424242"
+                position="bottom"
             ></span>
 
             <ng-container *ngIf="isDisabledRegularCheck">

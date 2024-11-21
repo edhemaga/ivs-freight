@@ -31,10 +31,10 @@ import { DashboardDropdownComponent } from '@pages/dashboard/components/dashboar
 import { TaTabSwitchComponent } from '@shared/components/ta-tab-switch/ta-tab-switch.component';
 import { TaInputDropdownComponent } from '@shared/components/ta-input-dropdown/ta-input-dropdown.component';
 import { TaCustomPeriodRangeComponent } from '@shared/components/ta-custom-period-range/ta-custom-period-range.component';
-import { TaChartComponent } from '@shared/components/ta-chart/ta-chart.component';
 import { TaSearchV2Component } from '@shared/components/ta-search-v2/ta-search-v2.component';
 import { TaSpinnerComponent } from '@shared/components/ta-spinner/ta-spinner.component';
-import { CaMapComponent } from 'ca-components';
+import { CaChartComponent, CaMapComponent } from 'ca-components';
+
 @NgModule({
     declarations: [
         DashboardComponent,
@@ -70,10 +70,10 @@ import { CaMapComponent } from 'ca-components';
         TaTabSwitchComponent,
         TaInputDropdownComponent,
         TaCustomPeriodRangeComponent,
-        TaChartComponent,
         TaSearchV2Component,
         TaSpinnerComponent,
         CaMapComponent,
+        CaChartComponent
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })

@@ -1,15 +1,16 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-// Components
-import { BrokerCardComponent } from '@pages/customer/pages/broker-card/broker-card.component';
+// components
 import { CustomerTableComponent } from '@pages/customer/pages/customer-table/customer-table.component';
 
-// Resolvers
-import { ShipperItemResolver } from '@pages/customer/resolvers/shipper-item.resolver';
-import { BrokerDetailsResolver } from '@pages/customer/resolvers/broker-details.resolver';
-import { BrokerMinimalListResolver } from '@pages/customer/resolvers/broker-minimal-list.resolver';
-import { ShipperMinimalListResolver } from '@pages/customer/resolvers/shipper-minimal-list.resolver';
+// resolvers
+import {
+    BrokerDetailsResolver,
+    ShipperItemResolver,
+    BrokerMinimalListResolver,
+    ShipperMinimalListResolver,
+} from '@pages/customer/resolvers';
 
 const routes: Routes = [
     {
@@ -40,11 +41,6 @@ const routes: Routes = [
             brokerMinimal: BrokerMinimalListResolver,
         },
         data: { title: 'Broker detail' },
-    },
-    {
-        path: 'card',
-        component: BrokerCardComponent,
-        data: { title: 'Shipper cards' },
     },
 ];
 

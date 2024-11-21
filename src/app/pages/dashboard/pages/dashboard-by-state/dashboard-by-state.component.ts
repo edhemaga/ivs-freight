@@ -15,7 +15,6 @@ import { DashboardService } from '@pages/dashboard/services/dashboard.service';
 
 // enums
 import { DashboardStringEnum } from '@pages/dashboard/enums/dashboard-string.enum';
-import { DashboardChartStringEnum } from '@pages/dashboard/enums/dashboard-chart-string.enum';
 
 // helpers
 import { DashboardHelper } from '@pages/dashboard/utils/helpers/dashboard.helper';
@@ -26,6 +25,7 @@ import { DashboardByStateConstants } from '@pages/dashboard/pages/dashboard-by-s
 import { DashboardSubperiodConstants } from '@pages/dashboard/utils/constants/dashboard-subperiod.constants';
 import { DashboardTopRatedConstants } from '@pages/dashboard/pages/dashboard-top-rated/utils/constants/dashboard-top-rated.constants';
 import { DashboardColors } from '@pages/dashboard/utils/constants/dashboard-colors.constants';
+import { DashboardByStateChartsConfiguration } from '@pages/dashboard/pages/dashboard-by-state/utils/constants';
 
 // models
 import { ByStateListItem } from '@pages/dashboard/pages/dashboard-by-state/models/by-state-list-item.model';
@@ -34,12 +34,8 @@ import { DashboardTab } from '@pages/dashboard/models/dashboard-tab.model';
 import { DropdownListItem } from '@pages/dashboard/models/dropdown-list-item.model';
 import { ByStateColorsPallete } from '@pages/dashboard/models/colors-pallete.model';
 import { CustomPeriodRange } from '@shared/models/custom-period-range.model';
-import {
-    BarChart,
-    BarChartAxes,
-    BarChartConfig,
-    BarChartValues,
-} from '@pages/dashboard/models/dashboard-chart-models/bar-chart.model';
+import { IChartConfiguaration } from 'ca-components/lib/components/ca-chart/models';
+
 import {
     ByStateReportType,
     IntervalLabelResponse,
@@ -57,8 +53,6 @@ import { MapListItem } from '@pages/dashboard/pages/dashboard-by-state/models/ma
     styleUrls: ['./dashboard-by-state.component.scss'],
 })
 export class DashboardByStateComponent implements OnInit, OnDestroy {
-    @ViewChild('barChart') public barChart: BarChart;
-
     private destroy$ = new Subject<void>();
 
     public byStateForm: UntypedFormGroup;
@@ -84,7 +78,7 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
 
     // tabs
     public byStateTabs: DashboardTab[] = [];
-    private currentActiveTab: DashboardTab;
+    public currentActiveTab: DashboardTab;
 
     // dropdowns
     public byStateDropdownList: DropdownItem[] = [];
@@ -105,14 +99,9 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
     // colors
     public mainColorsPallete: ByStateColorsPallete[] = [];
 
-    // charts
-    public barChartConfig: BarChartConfig;
-    public barChartAxes: BarChartAxes;
-    public barChartDateTitle: string;
-    private barChartLabels: string[] | string[][] = [];
-    private barChartTooltipLabels: string[];
-    private barChartValues: BarChartValues =
-        DashboardByStateConstants.BAR_CHART_INIT_VALUES;
+    //chart
+    public pickUpByStateChartConfig: IChartConfiguaration =
+        DashboardByStateChartsConfiguration.PICK_BY_STATE_CHART_CONFIG;
 
     constructor(
         private formBuilder: UntypedFormBuilder,
@@ -142,24 +131,24 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
         item.name;
 
     public resetSelectedValues(): void {
-        for (let i = 0; i < this.selectedByStateList.length; i++) {
-            this.barChart?.removeMultiBarData(this.selectedByStateList[i], true);
-        }
+        // for (let i = 0; i < this.selectedByStateList.length; i++) {
+        //     this.barChart?.removeMultiBarData(this.selectedByStateList[i], true);
+        // }
 
         this.selectedByStateList = [];
 
-        this.barChartValues = {
-            defaultBarValues: {
-                topRatedBarValues: [],
-                otherBarValues: [],
-            },
-            defaultBarPercentages: {
-                topRatedBarPercentage: [],
-                otherBarPercentage: [],
-            },
-            selectedBarValues: [],
-            selectedBarPercentages: [],
-        };
+        // this.barChartValues = {
+        //     defaultBarValues: {
+        //         topRatedBarValues: [],
+        //         otherBarValues: [],
+        //     },
+        //     defaultBarPercentages: {
+        //         topRatedBarPercentage: [],
+        //         otherBarPercentage: [],
+        //     },
+        //     selectedBarValues: [],
+        //     selectedBarPercentages: [],
+        // };
 
         this.clearSearchValue = true;
     }
@@ -405,7 +394,7 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
             byStateListItem
         );
 
-        this.setBarChartData(this.selectedByStateList, byStateListItemIndex);
+        //this.setBarChartData(this.selectedByStateList, byStateListItemIndex);
     }
 
     public handleRemoveSelectedClick(
@@ -428,23 +417,23 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
             (byStateItem) => byStateItem.id !== byStateListItem.id
         );
 
-        this.setBarChartData(
-            this.selectedByStateList,
-            byStateListItemIndex,
-            true,
-            byStateListItem
-        );
+        // this.setBarChartData(
+        //     this.selectedByStateList,
+        //     byStateListItemIndex,
+        //     true,
+        //     byStateListItem
+        // );
     }
 
     public handleHoverSelected(
         index: number,
         removeHover: boolean = false
     ): void {
-        if (!removeHover) {
-            this.barChart?.hoverBarChart(this.selectedByStateList[index]);
-        } else {
-            this.barChart?.hoverBarChart(null);
-        }
+        // if (!removeHover) {
+        //     this.barChart?.hoverBarChart(this.selectedByStateList[index]);
+        // } else {
+        //     this.barChart?.hoverBarChart(null);
+        // }
     }
 
     private getConstantData(): void {
@@ -595,16 +584,6 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
                             ];
                         }
 
-                        this.barChartValues.selectedBarValues = [
-                            ...this.barChartValues.selectedBarValues,
-                            filteredIntervalValues,
-                        ];
-
-                        this.barChartValues.selectedBarPercentages = [
-                            ...this.barChartValues.selectedBarPercentages,
-                            filteredIntervalPercentages,
-                        ];
-
                         return {
                             id: index + 1,
                             state: pickup.stateShortName,
@@ -628,58 +607,10 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
 
                 // intervals
 
-                for (let i = 0; i < pickupData.topTen.length; i++) {
-                    // by state intervals
-                    this.barChartValues.defaultBarValues.topRatedBarValues = [
-                        ...this.barChartValues.defaultBarValues
-                            .topRatedBarValues,
-                        selectedTab === DashboardStringEnum.COUNT
-                            ? pickupData.topTen[i].count
-                            : pickupData.topTen[i].revenue,
-                    ];
-
-                    this.barChartValues.defaultBarPercentages.topRatedBarPercentage =
-                        [
-                            ...this.barChartValues.defaultBarPercentages
-                                .topRatedBarPercentage,
-                            selectedTab === DashboardStringEnum.COUNT
-                                ? pickupData.topTen[i].countPercentage
-                                : pickupData.topTen[i].revenuePercentage,
-                        ];
-
-                    // other intervals
-                    this.barChartValues.defaultBarValues.otherBarValues = [
-                        ...this.barChartValues.defaultBarValues.otherBarValues,
-                        selectedTab === DashboardStringEnum.COUNT
-                            ? pickupData.others[i].count
-                            : pickupData.others[i].revenue,
-                    ];
-
-                    this.barChartValues.defaultBarPercentages.otherBarPercentage =
-                        [
-                            ...this.barChartValues.defaultBarPercentages
-                                .otherBarPercentage,
-                            selectedTab === DashboardStringEnum.COUNT
-                                ? pickupData.others[i].countPercentage
-                                : pickupData.others[i].revenuePercentage,
-                        ];
-                }
-
                 // colors range & map
                 DashboardHelper.setByStateListColorRange(this.byStateList);
 
                 this.setMapByState(this.byStateList);
-
-                // chart
-                this.setBarChartDateTitle(
-                    pickupData.intervalLabels[0].tooltipLabel,
-                    pickupData.intervalLabels[pickupData.topTen.length - 1]
-                        .tooltipLabel
-                );
-
-                this.setBarChartLabels(pickupData.intervalLabels);
-
-                this.setChartData();
             });
     }
 
@@ -715,16 +646,6 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
                             ];
                         }
 
-                        this.barChartValues.selectedBarValues = [
-                            ...this.barChartValues.selectedBarValues,
-                            filteredIntervalValues,
-                        ];
-
-                        this.barChartValues.selectedBarPercentages = [
-                            ...this.barChartValues.selectedBarPercentages,
-                            filteredIntervalPercentages,
-                        ];
-
                         return {
                             id: index + 1,
                             state: delivery.stateShortName,
@@ -748,58 +669,21 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
 
                 // intervals
 
-                for (let i = 0; i < deliveryData.topTen.length; i++) {
-                    // by state intervals
-                    this.barChartValues.defaultBarValues.topRatedBarValues = [
-                        ...this.barChartValues.defaultBarValues
-                            .topRatedBarValues,
-                        selectedTab === DashboardStringEnum.COUNT
-                            ? deliveryData.topTen[i].count
-                            : deliveryData.topTen[i].revenue,
-                    ];
-
-                    this.barChartValues.defaultBarPercentages.topRatedBarPercentage =
-                        [
-                            ...this.barChartValues.defaultBarPercentages
-                                .topRatedBarPercentage,
-                            selectedTab === DashboardStringEnum.COUNT
-                                ? deliveryData.topTen[i].countPercentage
-                                : deliveryData.topTen[i].revenuePercentage,
-                        ];
-
-                    // other intervals
-                    this.barChartValues.defaultBarValues.otherBarValues = [
-                        ...this.barChartValues.defaultBarValues.otherBarValues,
-                        selectedTab === DashboardStringEnum.COUNT
-                            ? deliveryData.others[i].count
-                            : deliveryData.others[i].revenue,
-                    ];
-
-                    this.barChartValues.defaultBarPercentages.otherBarPercentage =
-                        [
-                            ...this.barChartValues.defaultBarPercentages
-                                .otherBarPercentage,
-                            selectedTab === DashboardStringEnum.COUNT
-                                ? deliveryData.others[i].countPercentage
-                                : deliveryData.others[i].revenuePercentage,
-                        ];
-                }
-
                 // colors range & map
                 DashboardHelper.setByStateListColorRange(this.byStateList);
 
                 this.setMapByState(this.byStateList);
 
                 // chart
-                this.setBarChartDateTitle(
-                    deliveryData.intervalLabels[0].tooltipLabel,
-                    deliveryData.intervalLabels[deliveryData.topTen.length - 1]
-                        .tooltipLabel
-                );
+                // this.setBarChartDateTitle(
+                //     deliveryData.intervalLabels[0].tooltipLabel,
+                //     deliveryData.intervalLabels[deliveryData.topTen.length - 1]
+                //         .tooltipLabel
+                // );
 
-                this.setBarChartLabels(deliveryData.intervalLabels);
+                // this.setBarChartLabels(deliveryData.intervalLabels);
 
-                this.setChartData();
+                // this.setChartData();
             });
     }
 
@@ -836,16 +720,6 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
                             ];
                         }
 
-                        this.barChartValues.selectedBarValues = [
-                            ...this.barChartValues.selectedBarValues,
-                            filteredIntervalValues,
-                        ];
-
-                        this.barChartValues.selectedBarPercentages = [
-                            ...this.barChartValues.selectedBarPercentages,
-                            filteredIntervalPercentages,
-                        ];
-
                         return {
                             id: index + 1,
                             state: roadside.stateShortName,
@@ -869,60 +743,21 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
 
                 // intervals
 
-                for (let i = 0; i < roadsideData.topTen.length; i++) {
-                    // by state intervals
-                    this.barChartValues.defaultBarValues.topRatedBarValues = [
-                        ...this.barChartValues.defaultBarValues
-                            .topRatedBarValues,
-                        selectedTab === DashboardStringEnum.COUNT
-                            ? roadsideData.topTen[i].count
-                            : roadsideData.topTen[i].severityWeight,
-                    ];
-
-                    this.barChartValues.defaultBarPercentages.topRatedBarPercentage =
-                        [
-                            ...this.barChartValues.defaultBarPercentages
-                                .topRatedBarPercentage,
-                            selectedTab === DashboardStringEnum.COUNT
-                                ? roadsideData.topTen[i].countPercentage
-                                : roadsideData.topTen[i]
-                                      .severityWeightPercentage,
-                        ];
-
-                    // other intervals
-                    this.barChartValues.defaultBarValues.otherBarValues = [
-                        ...this.barChartValues.defaultBarValues.otherBarValues,
-                        selectedTab === DashboardStringEnum.COUNT
-                            ? roadsideData.others[i].count
-                            : roadsideData.others[i].severityWeight,
-                    ];
-
-                    this.barChartValues.defaultBarPercentages.otherBarPercentage =
-                        [
-                            ...this.barChartValues.defaultBarPercentages
-                                .otherBarPercentage,
-                            selectedTab === DashboardStringEnum.COUNT
-                                ? roadsideData.others[i].countPercentage
-                                : roadsideData.others[i]
-                                      .severityWeightPercentage,
-                        ];
-                }
-
                 // colors range & map
                 DashboardHelper.setByStateListColorRange(this.byStateList);
 
                 this.setMapByState(this.byStateList);
 
                 // chart
-                this.setBarChartDateTitle(
-                    roadsideData.intervalLabels[0].tooltipLabel,
-                    roadsideData.intervalLabels[roadsideData.topTen.length - 1]
-                        .tooltipLabel
-                );
+                // this.setBarChartDateTitle(
+                //     roadsideData.intervalLabels[0].tooltipLabel,
+                //     roadsideData.intervalLabels[roadsideData.topTen.length - 1]
+                //         .tooltipLabel
+                // );
 
-                this.setBarChartLabels(roadsideData.intervalLabels);
+                // this.setBarChartLabels(roadsideData.intervalLabels);
 
-                this.setChartData();
+                // this.setChartData();
             });
     }
 
@@ -959,16 +794,6 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
                             ];
                         }
 
-                        this.barChartValues.selectedBarValues = [
-                            ...this.barChartValues.selectedBarValues,
-                            filteredIntervalValues,
-                        ];
-
-                        this.barChartValues.selectedBarPercentages = [
-                            ...this.barChartValues.selectedBarPercentages,
-                            filteredIntervalPercentages,
-                        ];
-
                         return {
                             id: index + 1,
                             state: violation.stateShortName,
@@ -992,61 +817,12 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
 
                 // intervals
 
-                for (let i = 0; i < violationData.topTen.length; i++) {
-                    // by state intervals
-                    this.barChartValues.defaultBarValues.topRatedBarValues = [
-                        ...this.barChartValues.defaultBarValues
-                            .topRatedBarValues,
-                        selectedTab === DashboardStringEnum.COUNT
-                            ? violationData.topTen[i].count
-                            : violationData.topTen[i].severityWeight,
-                    ];
-
-                    this.barChartValues.defaultBarPercentages.topRatedBarPercentage =
-                        [
-                            ...this.barChartValues.defaultBarPercentages
-                                .topRatedBarPercentage,
-                            selectedTab === DashboardStringEnum.COUNT
-                                ? violationData.topTen[i].countPercentage
-                                : violationData.topTen[i]
-                                      .severityWeightPercentage,
-                        ];
-
-                    // other intervals
-                    this.barChartValues.defaultBarValues.otherBarValues = [
-                        ...this.barChartValues.defaultBarValues.otherBarValues,
-                        selectedTab === DashboardStringEnum.COUNT
-                            ? violationData.others[i].count
-                            : violationData.others[i].severityWeight,
-                    ];
-
-                    this.barChartValues.defaultBarPercentages.otherBarPercentage =
-                        [
-                            ...this.barChartValues.defaultBarPercentages
-                                .otherBarPercentage,
-                            selectedTab === DashboardStringEnum.COUNT
-                                ? violationData.others[i].countPercentage
-                                : violationData.others[i]
-                                      .severityWeightPercentage,
-                        ];
-                }
-
                 // colors range & map
                 DashboardHelper.setByStateListColorRange(this.byStateList);
 
                 this.setMapByState(this.byStateList);
 
                 // chart
-                this.setBarChartDateTitle(
-                    violationData.intervalLabels[0].tooltipLabel,
-                    violationData.intervalLabels[
-                        violationData.topTen.length - 1
-                    ].tooltipLabel
-                );
-
-                this.setBarChartLabels(violationData.intervalLabels);
-
-                this.setChartData();
             });
     }
 
@@ -1083,16 +859,6 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
                             ];
                         }
 
-                        this.barChartValues.selectedBarValues = [
-                            ...this.barChartValues.selectedBarValues,
-                            filteredIntervalValues,
-                        ];
-
-                        this.barChartValues.selectedBarPercentages = [
-                            ...this.barChartValues.selectedBarPercentages,
-                            filteredIntervalPercentages,
-                        ];
-
                         return {
                             id: index + 1,
                             state: accident.stateShortName,
@@ -1116,60 +882,12 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
 
                 // intervals
 
-                for (let i = 0; i < accidentData.topTen.length; i++) {
-                    // by state intervals
-                    this.barChartValues.defaultBarValues.topRatedBarValues = [
-                        ...this.barChartValues.defaultBarValues
-                            .topRatedBarValues,
-                        selectedTab === DashboardStringEnum.COUNT
-                            ? accidentData.topTen[i].count
-                            : accidentData.topTen[i].severityWeight,
-                    ];
-
-                    this.barChartValues.defaultBarPercentages.topRatedBarPercentage =
-                        [
-                            ...this.barChartValues.defaultBarPercentages
-                                .topRatedBarPercentage,
-                            selectedTab === DashboardStringEnum.COUNT
-                                ? accidentData.topTen[i].countPercentage
-                                : accidentData.topTen[i]
-                                      .severityWeightPercentage,
-                        ];
-
-                    // other intervals
-                    this.barChartValues.defaultBarValues.otherBarValues = [
-                        ...this.barChartValues.defaultBarValues.otherBarValues,
-                        selectedTab === DashboardStringEnum.COUNT
-                            ? accidentData.others[i].count
-                            : accidentData.others[i].severityWeight,
-                    ];
-
-                    this.barChartValues.defaultBarPercentages.otherBarPercentage =
-                        [
-                            ...this.barChartValues.defaultBarPercentages
-                                .otherBarPercentage,
-                            selectedTab === DashboardStringEnum.COUNT
-                                ? accidentData.others[i].countPercentage
-                                : accidentData.others[i]
-                                      .severityWeightPercentage,
-                        ];
-                }
-
                 // colors range & map
                 DashboardHelper.setByStateListColorRange(this.byStateList);
 
                 this.setMapByState(this.byStateList);
 
                 // chart
-                this.setBarChartDateTitle(
-                    accidentData.intervalLabels[0].tooltipLabel,
-                    accidentData.intervalLabels[accidentData.topTen.length - 1]
-                        .tooltipLabel
-                );
-
-                this.setBarChartLabels(accidentData.intervalLabels);
-
-                this.setChartData();
             });
     }
 
@@ -1205,16 +923,6 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
                             ];
                         }
 
-                        this.barChartValues.selectedBarValues = [
-                            ...this.barChartValues.selectedBarValues,
-                            filteredIntervalValues,
-                        ];
-
-                        this.barChartValues.selectedBarPercentages = [
-                            ...this.barChartValues.selectedBarPercentages,
-                            filteredIntervalPercentages,
-                        ];
-
                         return {
                             id: index + 1,
                             state: repair.stateShortName,
@@ -1238,58 +946,12 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
 
                 // intervals
 
-                for (let i = 0; i < repairData.topTen.length; i++) {
-                    // by state intervals
-                    this.barChartValues.defaultBarValues.topRatedBarValues = [
-                        ...this.barChartValues.defaultBarValues
-                            .topRatedBarValues,
-                        selectedTab === DashboardStringEnum.COUNT
-                            ? repairData.topTen[i].count
-                            : repairData.topTen[i].cost,
-                    ];
-
-                    this.barChartValues.defaultBarPercentages.topRatedBarPercentage =
-                        [
-                            ...this.barChartValues.defaultBarPercentages
-                                .topRatedBarPercentage,
-                            selectedTab === DashboardStringEnum.COUNT
-                                ? repairData.topTen[i].countPercentage
-                                : repairData.topTen[i].costPercentage,
-                        ];
-
-                    // other intervals
-                    this.barChartValues.defaultBarValues.otherBarValues = [
-                        ...this.barChartValues.defaultBarValues.otherBarValues,
-                        selectedTab === DashboardStringEnum.COUNT
-                            ? repairData.others[i].count
-                            : repairData.others[i].cost,
-                    ];
-
-                    this.barChartValues.defaultBarPercentages.otherBarPercentage =
-                        [
-                            ...this.barChartValues.defaultBarPercentages
-                                .otherBarPercentage,
-                            selectedTab === DashboardStringEnum.COUNT
-                                ? repairData.others[i].countPercentage
-                                : repairData.others[i].costPercentage,
-                        ];
-                }
-
                 // colors range & map
                 DashboardHelper.setByStateListColorRange(this.byStateList);
 
                 this.setMapByState(this.byStateList);
 
                 // chart
-                this.setBarChartDateTitle(
-                    repairData.intervalLabels[0].tooltipLabel,
-                    repairData.intervalLabels[repairData.topTen.length - 1]
-                        .tooltipLabel
-                );
-
-                this.setBarChartLabels(repairData.intervalLabels);
-
-                this.setChartData();
             });
     }
 
@@ -1325,16 +987,6 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
                             ];
                         }
 
-                        this.barChartValues.selectedBarValues = [
-                            ...this.barChartValues.selectedBarValues,
-                            filteredIntervalValues,
-                        ];
-
-                        this.barChartValues.selectedBarPercentages = [
-                            ...this.barChartValues.selectedBarPercentages,
-                            filteredIntervalPercentages,
-                        ];
-
                         return {
                             id: index + 1,
                             state: fuel.stateShortName,
@@ -1358,58 +1010,12 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
 
                 // intervals
 
-                for (let i = 0; i < fuelData.topTen.length; i++) {
-                    // by state intervals
-                    this.barChartValues.defaultBarValues.topRatedBarValues = [
-                        ...this.barChartValues.defaultBarValues
-                            .topRatedBarValues,
-                        selectedTab === DashboardStringEnum.GALLON
-                            ? fuelData.topTen[i].gallon
-                            : fuelData.topTen[i].cost,
-                    ];
-
-                    this.barChartValues.defaultBarPercentages.topRatedBarPercentage =
-                        [
-                            ...this.barChartValues.defaultBarPercentages
-                                .topRatedBarPercentage,
-                            selectedTab === DashboardStringEnum.GALLON
-                                ? fuelData.topTen[i].gallonPercentage
-                                : fuelData.topTen[i].costPercentage,
-                        ];
-
-                    // other intervals
-                    this.barChartValues.defaultBarValues.otherBarValues = [
-                        ...this.barChartValues.defaultBarValues.otherBarValues,
-                        selectedTab === DashboardStringEnum.GALLON
-                            ? fuelData.others[i].gallon
-                            : fuelData.others[i].cost,
-                    ];
-
-                    this.barChartValues.defaultBarPercentages.otherBarPercentage =
-                        [
-                            ...this.barChartValues.defaultBarPercentages
-                                .otherBarPercentage,
-                            selectedTab === DashboardStringEnum.GALLON
-                                ? fuelData.others[i].gallonPercentage
-                                : fuelData.others[i].costPercentage,
-                        ];
-                }
-
                 // colors range & map
                 DashboardHelper.setByStateListColorRange(this.byStateList);
 
                 this.setMapByState(this.byStateList);
 
                 // chart
-                this.setBarChartDateTitle(
-                    fuelData.intervalLabels[0].tooltipLabel,
-                    fuelData.intervalLabels[fuelData.topTen.length - 1]
-                        .tooltipLabel
-                );
-
-                this.setBarChartLabels(fuelData.intervalLabels);
-
-                this.setChartData();
             });
     }
 
@@ -1421,176 +1027,6 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
         this.selectedSubPeriod = selectedSubPeriod;
 
         this.selectedDropdownWidthSubPeriod = selectedSubPeriod;
-    }
-
-    private setBarChartDateTitle(
-        startInterval: string,
-        endInterval: string
-    ): void {
-        const { chartTitle } = DashboardHelper.setChartDateTitle(
-            startInterval,
-            endInterval
-        );
-
-        this.barChartDateTitle = chartTitle;
-    }
-
-    private setBarChartLabels(barChartLables: IntervalLabelResponse[]): void {
-        const selectedSubPeriod = DashboardHelper.ConvertSubPeriod(
-            this.selectedSubPeriod.name
-        );
-
-        const { filteredLabels, filteredTooltipLabels } =
-            DashboardHelper.setBarChartLabels(
-                barChartLables,
-                selectedSubPeriod
-            );
-
-        this.barChartLabels = filteredLabels;
-        this.barChartTooltipLabels = filteredTooltipLabels;
-    }
-
-    private setBarChartConfigAndAxes(barChartValues: BarChartValues): void {
-        this.barChartConfig = {
-            dataProperties: [
-                {
-                    defaultConfig: {
-                        type: DashboardChartStringEnum.BAR,
-                        data: barChartValues?.defaultBarValues
-                            ?.topRatedBarValues,
-                        dataPercentages:
-                            barChartValues?.defaultBarPercentages
-                                ?.topRatedBarPercentage,
-                        backgroundColor:
-                            DashboardChartStringEnum.CHART_COLOR_GREY,
-                        borderColor:
-                            DashboardChartStringEnum.CHART_COLOR_GREY_4,
-                        hoverBackgroundColor:
-                            DashboardChartStringEnum.CHART_COLOR_GREY_5,
-                        hoverBorderColor:
-                            DashboardChartStringEnum.CHART_COLOR_GREY,
-                        label:
-                            this.byStateList.length <= 10
-                                ? DashboardChartStringEnum.BAR_LABEL_TOP_3
-                                : this.byStateList.length > 10 &&
-                                  this.byStateList.length <= 30
-                                ? DashboardChartStringEnum.BAR_LABEL_TOP_5
-                                : DashboardChartStringEnum.BAR_LABEL_TOP_10,
-                        id: DashboardChartStringEnum.BAR_ID_TOP,
-                    },
-                },
-                {
-                    defaultConfig: {
-                        type: DashboardChartStringEnum.BAR,
-                        data: barChartValues?.defaultBarValues?.otherBarValues,
-                        dataPercentages:
-                            barChartValues?.defaultBarPercentages
-                                ?.otherBarPercentage,
-                        backgroundColor:
-                            DashboardChartStringEnum.CHART_COLOR_GREY_2,
-                        borderColor:
-                            DashboardChartStringEnum.CHART_COLOR_GREY_3,
-                        hoverBackgroundColor:
-                            DashboardChartStringEnum.CHART_COLOR_GREY,
-                        hoverBorderColor:
-                            DashboardChartStringEnum.CHART_COLOR_GREY_2,
-                        label: DashboardChartStringEnum.BAR_LABEL_OTHER,
-                        id: DashboardChartStringEnum.BAR_ID_OTHER,
-                    },
-                },
-            ],
-            showLegend: false,
-            chartValues: [2, 2],
-            defaultType: DashboardChartStringEnum.BAR,
-            chartWidth: DashboardChartStringEnum.BAR_1800_WIDTH,
-            chartHeight: DashboardChartStringEnum.BAR_1800_HEIGHT,
-            removeChartMargin: true,
-            gridHoverBackground: true,
-            startGridBackgroundFromZero: true,
-            dataMaxRows: 4,
-            hasHoverData: true,
-            hassecondTabValueage: true,
-            allowAnimation: true,
-            offset: true,
-            tooltipOffset: { min: 105, max: 279 },
-            dataLabels: this.barChartLabels,
-            dataTooltipLabels: this.barChartTooltipLabels,
-            selectedTab: this.currentActiveTab.name,
-            noChartImage: DashboardChartStringEnum.NO_CHART_IMG,
-        };
-
-        // bar max value
-        const barChartMaxValue = +this.byStateList[0]?.value;
-
-        // bar axes
-        this.barChartAxes = {
-            verticalLeftAxes: {
-                visible: true,
-                minValue: 0,
-                maxValue: barChartMaxValue,
-                stepSize: 10,
-                showGridLines: true,
-            },
-            horizontalAxes: {
-                visible: true,
-                position: DashboardChartStringEnum.BAR_AXES_POSITION_BOTTOM,
-                showGridLines: false,
-            },
-        };
-    }
-
-    private setBarChartData(
-        byStateList: ByStateListItem[],
-        byStateListItemIndex: number,
-        isRemoving?: boolean,
-        byStateListItem?: ByStateListItem
-    ): void {
-        if (!isRemoving) {
-            const chartValues =
-                this.barChartValues.selectedBarValues[byStateListItemIndex];
-            const chartPercentages =
-                this.barChartValues.selectedBarPercentages[
-                    byStateListItemIndex
-                ];
-
-            let selectedColors: string[] = [];
-            let selectedHoverColors: string[] = [];
-
-            for (let i = 0; i < byStateList.length; i++) {
-                selectedColors = [
-                    ...selectedColors,
-                    this.mainColorsPallete[i].code,
-                ];
-                selectedHoverColors = [
-                    ...selectedHoverColors,
-                    this.mainColorsPallete[i].code,
-                ];
-            }
-
-            if (this.barChart) {
-                this.barChart?.updateMuiliBar(
-                    byStateList,
-                    chartValues,
-                    chartPercentages,
-                    selectedColors,
-                    selectedHoverColors
-                );
-            }
-        } else {
-            const displayChartDefaultValue =
-                this.selectedByStateList.length === 0;
-
-            this.barChart?.removeMultiBarData(
-                byStateListItem,
-                displayChartDefaultValue
-            );
-        }
-    }
-
-    private setChartData(): void {
-        this.setBarChartConfigAndAxes(this.barChartValues);
-
-        this.changeDetectorRef.detectChanges();
     }
 
     private setMapByState(byStateList: ByStateListItem[]): void {

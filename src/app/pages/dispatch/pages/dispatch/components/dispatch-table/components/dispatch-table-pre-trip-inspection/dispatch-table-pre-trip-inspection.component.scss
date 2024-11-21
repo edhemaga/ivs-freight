@@ -56,4 +56,8 @@
             }
         }
     }
+
+    &.disabled {
+        cursor: default !important;
+    }
 }

@@ -15,7 +15,7 @@ import {
 } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 
-import { Subject, takeUntil } from 'rxjs';
+import { forkJoin, Subject, takeUntil } from 'rxjs';
 
 // modules
 import { AngularSvgIconModule } from 'angular-svg-icon';
@@ -53,10 +53,10 @@ import {
 } from '@shared/components/ta-input/validators/ta-input.regex-validations';
 
 // constants
-import { RepairOrderConstants } from '@pages/repair/pages/repair-modals/repair-order-modal/utils/constants/repair-order.constant';
+import { RepairOrderConstants } from '@pages/repair/pages/repair-modals/repair-order-modal/utils/constants';
 
 // enums
-import { RepairOrderModalStringEnum } from '@pages/repair/pages/repair-modals/repair-order-modal/enums/repair-order-modal-string.enum';
+import { RepairOrderModalStringEnum } from '@pages/repair/pages/repair-modals/repair-order-modal/enums';
 import { TableStringEnum } from '@shared/enums/table-string.enum';
 import { ModalTableTypeEnum } from '@shared/enums/modal-table-type.enum';
 
@@ -85,6 +85,8 @@ import {
     RepairShopShortResponse,
     RepairItemResponse,
     TagResponse,
+    RepairShopService,
+    RepairShopMinimalListResponse,
 } from 'appcoretruckassist';
 import { Tabs } from '@shared/models/tabs.model';
 import { TruckTrailerPmDropdownLists } from '@shared/models/truck-trailer-pm-dropdown-lists.model';
@@ -98,6 +100,9 @@ import {
     ExtendedRepairShopResponse,
     AddUpdateRepairProperties,
 } from '@pages/repair/pages/repair-modals/repair-order-modal/models';
+
+// svg routes
+import { RepairOrderModalSvgRoutes } from '@pages/repair/pages/repair-modals/repair-order-modal/utils/svg-routes';
 
 @Component({
     selector: 'app-repair-order-modal',
@@ -201,7 +206,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
     public tags: TagResponse[] = [];
 
     // enums
-    public modalTableTypeEnum = ModalTableTypeEnum; 
+    public modalTableTypeEnum = ModalTableTypeEnum;
 
     constructor(
         private formBuilder: UntypedFormBuilder,
@@ -215,6 +220,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
         // services
         private inputService: TaInputService,
         private repairService: RepairService,
+        private repairShopController: RepairShopService,
         private modalService: ModalService,
         private formService: FormService,
         private detailsDataService: DetailsDataService,
@@ -293,9 +299,6 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
             ?.toLowerCase()
             ?.includes(RepairOrderModalStringEnum.TRAILER_2);
 
-        if (!this.editData.data)
-            this.onTabChange(this.unitTabs[isTrailer ? 1 : 0]);
-
         this.getRepairDropdowns(
             null,
             null,
@@ -304,6 +307,19 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
                 : RepairOrderModalStringEnum.TRUCKS,
             false
         );
+
+        if (
+            !this.editData?.data ||
+            this.editData?.type === TableStringEnum.ADD_BILL
+        ) {
+            this.onTabChange(this.unitTabs[isTrailer ? 1 : 0]);
+
+            if (this.editData?.type === TableStringEnum.ADD_BILL) {
+                this.selectedRepairShop = { id: this.editData?.data?.id };
+
+                this.getRepairShopById();
+            }
+        }
     }
 
     private checkIsFinishOrder(): void {
@@ -371,7 +387,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
                 break;
             case RepairOrderModalStringEnum.DELETE:
                 if (this.editData.data)
-                    this.deleteRepairById(this.editData.data.id);
+                    this.deleteRepair(this.editData.data.id);
 
                 break;
             case RepairOrderModalStringEnum.FINISH_ORDER:
@@ -610,6 +626,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
             case RepairOrderModalStringEnum.REPAIR_SHOP:
                 if (event?.canOpenModal) {
                     this.ngbActiveModal.close();
+
                     this.modalService.setProjectionModal({
                         action: RepairOrderModalStringEnum.OPEN,
                         payload: {
@@ -633,59 +650,9 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
                 } else {
                     this.selectedRepairShop = event;
 
-                    if (this.selectedRepairShop) {
-                        this.repairOrderForm.patchValue({
-                            repairShopId: this.selectedRepairShop.id,
-                        });
-
-                        this.repairService
-                            .getRepairShopById(this.selectedRepairShop.id)
-                            .pipe(takeUntil(this.destroy$))
-                            .subscribe((res) => {
-                                this.selectedRepairShop = {
-                                    id: res.id,
-                                    name: res.name,
-                                    phone: res.phone,
-                                    email: res.email,
-                                    address: res.address.address,
-                                    shopServiceType: res.shopServiceType,
-                                };
-
-                                this.repairOrderForm
-                                    .get(
-                                        RepairOrderModalStringEnum.SHOP_SERVICE_TYPE
-                                    )
-                                    .patchValue(
-                                        this.selectedRepairShop.shopServiceType
-                                            .id
-                                    );
-
-                                this.serviceTabs = this.serviceTabs.map(
-                                    (serviceTab) => {
-                                        return {
-                                            ...serviceTab,
-                                            checked:
-                                                serviceTab.id ===
-                                                res.shopServiceType.id,
-                                        };
-                                    }
-                                );
-
-                                this.services = res.serviceTypes.map(
-                                    (service) => {
-                                        return {
-                                            id: service.serviceType.id,
-                                            serviceType:
-                                                service.serviceType.name,
-                                            svg: `assets/svg/common/repair-services/${service.logoName}`,
-                                            active: service.active,
-                                            isSelected: service.isSelected,
-                                        };
-                                    }
-                                );
-                            });
-                    }
+                    if (this.selectedRepairShop) this.getRepairShopById();
                 }
+
                 break;
             default:
                 break;
@@ -765,7 +732,10 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
     }
 
     public addRepairItemOnInit(): void {
-        if (!this.editData.data)
+        if (
+            !this.editData.data ||
+            this.editData.type === TableStringEnum.ADD_BILL
+        )
             setTimeout(() => {
                 this.addRepairItem();
             }, 500);
@@ -885,30 +855,33 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
         const conditionaRepairShopId = this.selectedRepairShop?.id ?? null;
 
         // service types
-        const convertedServiceTypes = this.services.map((item) => {
-            return {
-                serviceType: item.serviceType,
-                active: item.active,
-                isSelected: item.isSelected,
-            };
-        });
+        const convertedServiceTypes = this.services
+            .filter((service) => service.id > 2)
+            .map((service) => {
+                return {
+                    serviceType: service.serviceType,
+                    active: service.active,
+                    isSelected: service.isSelected,
+                };
+            });
 
         // items
+
         const convertedItems = this.repairItems.map(
             ({
                 description,
                 price,
                 quantity,
                 subtotal,
-                pmTruck: { id: pmTruckId } = {},
-                pmTrailer: { id: pmTrailerId } = {},
+                pmTruck,
+                pmTrailer,
             }) => ({
                 description,
                 ...(this.selectedHeaderTab === 1 && { price }),
                 quantity,
                 ...(this.selectedHeaderTab === 1 && { subtotal }),
-                pmTruckId,
-                pmTrailerId,
+                pmTruckId: pmTruck?.id,
+                pmTrailerId: pmTrailer?.id,
             })
         );
 
@@ -955,7 +928,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
 
         if (truckId || trailerId)
             this.repairService
-                .getDriver(truckId, trailerId, formatedDate)
+                .getRepairDriversList(truckId, trailerId, formatedDate)
                 .pipe(takeUntil(this.destroy$))
                 .subscribe((driversList) => {
                     if (driversList.length) {
@@ -990,30 +963,37 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
         unitType?: string,
         onlyPMS?: boolean
     ): void {
-        this.repairService
-            .getRepairModalDropdowns(truckId, trailerId)
+        forkJoin([
+            this.repairService.getRepairModalDropdowns(truckId, trailerId),
+            this.repairShopController.apiRepairshopListMinimalGet(),
+        ])
             .pipe(takeUntil(this.destroy$))
-            .subscribe((res: RepairModalResponse) => {
-                // items pm dropdown
-                const truckPmDropdownList = res?.pmTrucks?.map((pmTruck) => {
-                    return {
-                        ...pmTruck,
-                        name: pmTruck.title,
-                        folder: RepairOrderModalStringEnum.COMMON,
-                        subFolder: RepairOrderModalStringEnum.REPAIR_PM,
-                    };
-                });
+            .subscribe((response) => {
+                const getRepairModalData: RepairModalResponse = response[0];
+                const getRepairshopListMinimalData: RepairShopMinimalListResponse =
+                    response[1];
 
-                const trailerPmDropdownList = res?.pmTrailers?.map(
-                    (pmTrailer) => {
+                // items pm dropdown
+                const truckPmDropdownList = getRepairModalData?.pmTrucks?.map(
+                    (pmTruck) => {
+                        return {
+                            ...pmTruck,
+                            name: pmTruck.title,
+                            folder: RepairOrderModalStringEnum.COMMON,
+                            subFolder: RepairOrderModalStringEnum.REPAIR_PM,
+                        };
+                    }
+                );
+
+                const trailerPmDropdownList =
+                    getRepairModalData?.pmTrailers?.map((pmTrailer) => {
                         return {
                             ...pmTrailer,
                             name: pmTrailer.title,
                             folder: RepairOrderModalStringEnum.COMMON,
                             subFolder: RepairOrderModalStringEnum.REPAIR_PM,
                         };
-                    }
-                );
+                    });
 
                 this.truckTrailerPmDropdownLists = {
                     truckPmDropdownList,
@@ -1024,10 +1004,10 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
                 if (onlyPMS) return;
 
                 // pay types
-                this.payTypeDropdownList = res.payTypes;
+                this.payTypeDropdownList = getRepairModalData.payTypes;
 
                 // unit trucks
-                this.unitTrucks = res.trucks.map((item) => {
+                this.unitTrucks = getRepairModalData.trucks.map((item) => {
                     return {
                         ...item,
                         name: item.truckNumber,
@@ -1035,7 +1015,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
                 });
 
                 // unit trailers
-                this.unitTrailers = res.trailers.map((item) => {
+                this.unitTrailers = getRepairModalData.trailers.map((item) => {
                     return {
                         ...item,
                         name: item.trailerNumber,
@@ -1049,21 +1029,22 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
                         : this.unitTrucks;
 
                 // repair shops
-                this.repairShopDropdownList = res.repairShops.map(
-                    (repairShop) => {
-                        return {
-                            ...repairShop,
-                            additionalText: repairShop.address.address,
-                        };
-                    }
-                );
+                this.repairShopDropdownList =
+                    getRepairshopListMinimalData?.pagination?.data?.map(
+                        (repairShop) => {
+                            return {
+                                ...repairShop,
+                                additionalText: repairShop.address?.address,
+                            };
+                        }
+                    );
 
                 // services
-                this.services = res.serviceTypes.map((item) => {
+                this.services = getRepairModalData.serviceTypes.map((item) => {
                     return {
                         id: item.serviceType.id,
                         serviceType: item.serviceType.name,
-                        svg: `assets/svg/common/repair-services/${item.logoName}`,
+                        svg: `${RepairOrderModalSvgRoutes.REPAIR_SERVICES_BASE_ROUTE}${item.logoName}`,
                         active: false,
                         isSelected: false,
                     };
@@ -1074,7 +1055,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
                     .patchValue(JSON.stringify(this.services));
 
                 // tags
-                this.tags = res.tags;
+                this.tags = getRepairModalData.tags;
 
                 // ------------- EDIT --------------
                 if (
@@ -1085,9 +1066,59 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
                     this.isCardanimationDisabled = true;
 
                     this.editRepairById(this.editData.data);
-                } else {
-                    this.startFormChanges();
-                }
+                } else this.startFormChanges();
+            });
+    }
+
+    private getRepairShopById(): void {
+        this.repairService
+            .getRepairShopById(this.selectedRepairShop.id)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((repairShop) => {
+                const {
+                    id,
+                    name,
+                    phone,
+                    email,
+                    address,
+                    shopServiceType,
+                    serviceTypes,
+                } = repairShop;
+
+                this.selectedRepairShop = {
+                    id,
+                    name,
+                    phone,
+                    email,
+                    address: address?.address,
+                    shopServiceType,
+                };
+
+                this.repairOrderForm.patchValue({
+                    repairShopId: this.selectedRepairShop?.id,
+                    shopServiceType:
+                        this.selectedRepairShop?.shopServiceType?.id,
+                });
+
+                this.serviceTabs = this.serviceTabs?.map((serviceTab) => {
+                    return {
+                        ...serviceTab,
+                        checked: serviceTab.id === shopServiceType?.id,
+                    };
+                });
+
+                this.services = serviceTypes.map((service) => {
+                    const { serviceType, logoName, active, isSelected } =
+                        service;
+
+                    return {
+                        id: serviceType?.id,
+                        serviceType: serviceType?.name,
+                        svg: `assets/svg/common/repair-services/${logoName}`,
+                        active,
+                        isSelected,
+                    };
+                });
             });
     }
 
@@ -1248,6 +1279,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
             serviceTypes,
             orderNumber,
         } = editData;
+
         const selectedHeaderTab = {
             id: repairType?.id,
             name: repairType?.name,
@@ -1316,6 +1348,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
                 },
             };
         });
+        this.repairItems = [...this.updatedRepairItems];
 
         this.getRepairDropdowns(truckId, trailerId, unitType.name, true);
 
@@ -1344,7 +1377,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
 
         // documents
         this.documents = editData.files;
-        
+
         // patch form
         this.repairOrderForm.patchValue({
             invoice,
@@ -1354,6 +1387,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
             datePaid:
                 datePaid &&
                 MethodsCalculationsHelper.convertDateFromBackend(datePaid),
+            unitType: unitType.name,
             driver: driver
                 ? driver?.firstName +
                   RepairOrderModalStringEnum.EMPTY_SPACE_STRING +
@@ -1411,6 +1445,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
                 id,
                 orderNumber,
                 repairType: RepairOrderModalStringEnum.ORDER,
+                unitType,
                 truckId: conditionaTruckId,
                 trailerId: conditionaTrailerId,
                 date: convertedDate,
@@ -1426,6 +1461,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
                 id,
                 finishOrder: this.isFinishOrder,
                 repairType: RepairOrderModalStringEnum.BILL,
+                unitType,
                 truckId: conditionaTruckId,
                 trailerId: conditionaTrailerId,
                 driverId: this.selectedDriver?.id ?? null,
@@ -1472,7 +1508,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
             });
     }
 
-    private deleteRepairById(id: number): void {
+    private deleteRepair(id: number): void {
         this.ngbActiveModal.close();
 
         const data = {

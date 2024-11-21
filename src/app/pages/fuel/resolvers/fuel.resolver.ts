@@ -3,105 +3,47 @@ import { Injectable } from '@angular/core';
 import { Observable, forkJoin } from 'rxjs';
 import { tap } from 'rxjs/operators';
 
-//Services
-import { TruckassistTableService } from '@shared/services/truckassist-table.service';
-import { FuelService } from '@shared/services/fuel.service';
+// appcoretruckassist
+import { FuelService as FuelController, FuelStopListResponse, FuelTransactionListResponse } from 'appcoretruckassist';
 
-//Store
-import { FuelState } from '@pages/fuel/state/fuel-state/fuel-state.store';
+// enums
+import { TableStringEnum } from '@shared/enums/table-string.enum';
+
+// services
+import { FuelService } from '@shared/services/fuel.service';
 
 @Injectable({
     providedIn: 'root',
 })
-export class FuelResolver  {
+export class FuelResolver {
     constructor(
-        private fuelService: FuelService,
-        private tableService: TruckassistTableService
+        private fuelController: FuelController,
+        private fuelService: FuelService
     ) {}
 
-    resolve(): Observable<any> {
+    resolve(): Observable<[FuelTransactionListResponse, FuelStopListResponse]> {
         return forkJoin([
-            this.fuelService.getFuelTransactionsList(
-                undefined,
-                undefined,
-                undefined,
-                undefined,
-                undefined,
-                undefined,
-                undefined,
-                undefined,
-                undefined,
-                undefined,
-                undefined,
-                undefined,
-                undefined,
-                undefined,
-                1,
-                25
-            ),
-            this.fuelService.getFuelStopsList(
-                undefined,
-                undefined,
-                undefined,
-                undefined,
-                undefined,
-                undefined,
-                undefined,
-                undefined,
-                undefined,
-                undefined,
-                undefined,
-                undefined,
-                undefined,
-                1,
-                25
-            ),
-            this.tableService.getTableConfig(15),
-            this.tableService.getTableConfig(16),
+            this.fuelController.apiFuelTransactionListGet(),
+            this.fuelController.apiFuelFuelstopListGet(),
         ]).pipe(
-            tap(
-                ([
-                    fuelTransactions,
-                    fuelStops,
-                    tableConfigTransactions,
-                    tableConfigStops,
-                ]) => {
-                    localStorage.setItem(
-                        'fuelTableCount',
-                        JSON.stringify({
-                            fuelTransactions:
-                                fuelTransactions.fuelTransactionCount,
-                            fuelStops: fuelStops.fuelStopCount,
-                            fuelCard: fuelStops.fuelCardCount,
-                        })
-                    );
+            tap(([fuelTransactions, fuelStops]) => {
+                const tableView = JSON.parse(
+                    localStorage.getItem(TableStringEnum.FUEL_TABLE_VIEW)
+                );
 
-                    if (tableConfigTransactions) {
-                        const config = JSON.parse(
-                            tableConfigTransactions.config
-                        );
+                localStorage.setItem(
+                    'fuelTableCount',
+                    JSON.stringify({
+                        fuelTransactions: fuelTransactions?.fuelTransactionCount,
+                        fuelStops: fuelStops?.fuelStopCount,
+                        fuelCard: fuelStops?.fuelCardCount,
+                    })
+                );
 
-                        localStorage.setItem(
-                            `table-${tableConfigTransactions.tableType}-Configuration`,
-                            JSON.stringify(config)
-                        );
-                    }
-
-                    if (tableConfigStops) {
-                        const config = JSON.parse(tableConfigStops.config);
-
-                        localStorage.setItem(
-                            `table-${tableConfigStops.tableType}-Configuration`,
-                            JSON.stringify(config)
-                        );
-                    }
-
-                    this.fuelService.updateStoreFuelTransactionsList =
-                        fuelTransactions.pagination.data;
-                    this.fuelService.updateStoreFuelStopList =
-                        fuelStops.pagination.data;
-                }
-            )
+                if (!tableView || tableView?.tabSelected === TableStringEnum.FUEL_TRANSACTION) 
+                    this.fuelService.updateStoreFuelTransactionsList = fuelTransactions;
+                else this.fuelService.updateStoreFuelStopList = fuelStops;
+            })
         );
     }
 }
