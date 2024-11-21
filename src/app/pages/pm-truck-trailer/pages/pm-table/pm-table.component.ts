@@ -65,6 +65,7 @@ import {
     selectInactiveTabCards,
 } from '../pm-card-modal/state';
 import { RepairOrderModalComponent } from '@pages/repair/pages/repair-modals/repair-order-modal/repair-order-modal.component';
+import { ToolbarFilterStringEnum } from '@shared/components/ta-filter/enums/toolbar-filter-string.enum';
 
 @Component({
     selector: 'app-pm-table',
@@ -142,6 +143,8 @@ export class PmTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
         this.sendPMData();
 
+        this.setTableFilter();
+
         this.resetColumns();
 
         this.toogleColumns();
@@ -188,6 +191,8 @@ export class PmTableComponent implements OnInit, AfterViewInit, OnDestroy {
             toolbarActions: {
                 showGeneralPmBtn: true,
                 hideDeleteButton: true,
+                showTruckFilter: this.selectedTab === TableStringEnum.ACTIVE,
+                showTrailerFilter: this.selectedTab !== TableStringEnum.ACTIVE,
                 hideActivationButton: true,
                 viewModeOptions: [
                     {
@@ -856,6 +861,33 @@ export class PmTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 break;
         }
         this.pmCardsModalService.updateTab(this.selectedTab);
+    }
+
+    public setTableFilter(): void {
+        this.tableService.currentSetTableFilter
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((res) => {
+                if (res?.filterType) {
+                    switch (res.filterType) {
+                        case ToolbarFilterStringEnum.TRUCK_TYPE_FILTER:
+                            // Keep, need for later
+                            // this.pmTruckBackFilterQuery.truckId =
+                            //     res.queryParams;
+
+                            this.pmTruckBackFilter(this.pmTruckBackFilterQuery);
+                            break;
+
+                        // Keep, need for later
+                        // case ToolbarFilterStringEnum.TRAILER_TYPE_FILTER:
+                        //     this.pmTrailerBackFilterQuery.trailerTypes =
+                        //         res.queryParams;
+                        //     break;
+
+                        default:
+                            break;
+                    }
+                }
+            });
     }
 
     private pmTruckBackFilter(
