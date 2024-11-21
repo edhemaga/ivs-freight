@@ -2877,6 +2877,26 @@
                                             </div>
                                         </div>
                                     </ng-container>
+
+                                    <!-- PROGRESS RANGE COLUMN -->
+
+                                    <ng-container *ngIf="column?.ngTemplate === taTableBodyConstants.NG_TEMPLATE_PROGRESS_RANGE">
+                                        <div 
+                                            class="td-content"
+                                            [ngStyle]="{
+                                                width: column.width + 'px',
+                                                'min-width.px':
+                                                    column?.minWidth ?? 'unset'
+                                            }"
+                                        >
+                                            <app-ta-progress-range
+                                                [startRange]="row[column.field]?.startRange"
+                                                [endRange]="row[column.field]?.endRange"
+                                                [value]="row[column.field]?.value"
+                                                [unit]="row[column.field].unit"
+                                            ></app-ta-progress-range>
+                                        </div>
+                                    </ng-container>
                                 </td>
                             </ng-container>
                         </div>
@@ -5471,6 +5491,26 @@
                                                             ?.openHoursToday
                                                 }"
                                             ></app-ta-open-hours-dropdown>
+                                        </div>
+                                    </ng-container>
+
+                                    <!-- PROGRESS RANGE COLUMN -->
+
+                                    <ng-container *ngIf="column?.ngTemplate === taTableBodyConstants.NG_TEMPLATE_PROGRESS_RANGE">
+                                        <div 
+                                            class="td-content"
+                                            [ngStyle]="{
+                                                width: column.width + 'px',
+                                                'min-width.px':
+                                                    column?.minWidth ?? 'unset'
+                                            }"
+                                        >
+                                            <app-ta-progress-range
+                                                [startRange]="row[column.field]?.startRange"
+                                                [endRange]="row[column.field]?.endRange"
+                                                [value]="row[column.field]?.value"
+                                                [unit]="row[column.field].unit"
+                                            ></app-ta-progress-range>
                                         </div>
                                     </ng-container>
                                 </td>

@@ -94,9 +94,6 @@ import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calcula
         TaModalTableComponent,
         TaCopyComponent,
         TaInputDropdownComponent,
-
-        // Pipe
-        SumArraysPipe,
     ],
 })
 export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
@@ -183,7 +180,7 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
                     this.inputService.markInvalid(this.fuelForm);
                     return;
                 }
-                if (this.editData && !this.editData?.isShortModal) {
+                if (this.editData && !this.editData?.isShortModal && this.editData?.id) {
                     this.fuelTransactionType?.name !==
                     FuelValuesStringEnum.MANUAL
                         ? this.updateFuelEFS(this.editData.id)
@@ -340,6 +337,7 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
             fuelItems: this.fuelItems,
             files: this.mapDocuments(),
             filesForDeleteIds: [],
+            payrollOwnerId: this.editData.payrollOwnerId
         };
         this.fuelService
             .addFuelTransaction(newData)

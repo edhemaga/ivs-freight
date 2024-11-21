@@ -26,6 +26,7 @@ export abstract class PayrollReportBaseComponent<
     T extends {
         driver?: { id?: number; fullName?: string | null };
         truck?: { id?: number };
+        id?: number
     }
 > {
     public openedPayroll: T;
@@ -50,7 +51,7 @@ export abstract class PayrollReportBaseComponent<
         this._reportId = value;
     }
 
-    public openAddNewModal(type: string): void {
+    public openAddNewModal(type: string): void { 
         switch (type) {
             case PayrollAdditionalTypes.CREDIT:
                 this.modalService
@@ -119,6 +120,7 @@ export abstract class PayrollReportBaseComponent<
                         {
                             truckId: this.openedPayroll.truck?.id,
                             creditType: this.creditType,
+                            payrollOwnerId: this.openedPayroll.id
                         }
                     )
                     .then(() => {
@@ -183,7 +185,7 @@ export abstract class PayrollReportBaseComponent<
                             {
                                 edit: true,
                                 data: {
-                                    id: item.data.parentPayrollDeductionId,
+                                    id: item.data.parentPayrollDeductionId || item.data.id,
                                 } as CreatePayrollCreditCommand,
                                 creditType: PayrollCreditType.Driver,
                             }
@@ -206,7 +208,7 @@ export abstract class PayrollReportBaseComponent<
                                 subtitle: item.data.subtotal,
                                 date: item.data.date,
                                 label: `${this.openedPayroll.driver.fullName}`,
-                                id: item.data.id
+                                id: item.data.id,
                             }
                         )
                         .then(() => {
@@ -224,7 +226,7 @@ export abstract class PayrollReportBaseComponent<
                                 subtitle: item.data.subtotal,
                                 date: item.data.date,
                                 label: `${this.openedPayroll.driver.fullName}`,
-                                id: item.data.id
+                                id: item.data.id,
                             }
                         )
                         .then(() => {
@@ -242,7 +244,7 @@ export abstract class PayrollReportBaseComponent<
                                 subtitle: item.data.subtotal,
                                 date: item.data.date,
                                 label: `${this.openedPayroll.driver.fullName}`,
-                                id: item.data.id
+                                id: item.data.id,
                             }
                         )
                         .then(() => {
@@ -266,20 +268,27 @@ export abstract class PayrollReportBaseComponent<
             selectedDeductionIds: null,
             selectedBonusIds: null,
         };
+
         if (_title === PayrollAdditionalTypes.CREDIT) {
             dataSend = {
                 ...dataSend,
-                selectedCreditIds: _included.map((load) => load.id),
+                selectedCreditIds: _included.length
+                    ? _included.map((load) => load.id)
+                    : 0,
             };
         } else if (_title === PayrollAdditionalTypes.DEDUCTION) {
             dataSend = {
                 ...dataSend,
-                selectedDeductionIds: _included.map((load) => load.id),
+                selectedDeductionIds: _included.length
+                    ? _included.map((load) => load.id)
+                    : 0,
             };
         } else if (_title === PayrollAdditionalTypes.BONUS) {
             dataSend = {
                 ...dataSend,
-                selectedBonusIds: _included.map((load) => load.id),
+                selectedBonusIds: _included.length
+                    ? _included.map((load) => load.id)
+                    : 0,
             };
         }
 

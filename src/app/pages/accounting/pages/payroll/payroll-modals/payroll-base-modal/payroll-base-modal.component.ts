@@ -21,7 +21,6 @@ import {
 } from 'ca-components';
 import { TaTabSwitchComponent } from '@shared/components/ta-tab-switch/ta-tab-switch.component';
 import { TaCheckboxComponent } from '@shared/components/ta-checkbox/ta-checkbox.component';
-import { TaInputComponent } from '@shared/components/ta-input/ta-input.component';
 import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
 
 // Const
@@ -75,7 +74,6 @@ import { LoadModalStringEnum } from '@pages/load/pages/load-modal/enums';
 
         CaModalComponent,
         CaInputComponent,
-        TaInputComponent,
         TaTabSwitchComponent,
         CaInputDropdownComponent,
         TaCheckboxComponent,

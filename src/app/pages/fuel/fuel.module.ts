@@ -16,9 +16,24 @@ import { TaMapListComponent } from '@shared/components/ta-map-list/ta-map-list.c
 import { TaMapListCardComponent } from '@shared/components/ta-map-list-card/ta-map-list-card.component';
 import { FuelTableComponent } from '@pages/fuel/pages/fuel-table/fuel-table.component';
 import { CaChartComponent } from 'ca-components';
+import { FuelCardComponent } from '@pages/fuel/pages/fuel-card/fuel-card.component';
+import { TaTableCardDropdownActionsComponent } from '@shared/components/ta-table-card-dropdown-actions/ta-table-card-dropdown-actions.component';
+import { TaNoteComponent } from '@shared/components/ta-note/ta-note.component';
+
+// Store
+import { fuelCardModalReducer } from '@pages/fuel/pages/fuel-card-modal/state';
+import { StoreModule } from '@ngrx/store';
+
+// Pipes
+import {
+    CardValuePipe,
+    FlipCardsPipe,
+    FormatCurrencyPipe,
+    FormatDatePipe,
+} from '@shared/pipes';
 
 @NgModule({
-    declarations: [FuelTableComponent],
+    declarations: [FuelTableComponent, FuelCardComponent],
     exports: [],
     imports: [
         // Modules
@@ -35,7 +50,18 @@ import { CaChartComponent } from 'ca-components';
         // TaMapsComponent,
         TaMapListComponent,
         TaMapListCardComponent,
-        CaChartComponent
+        CaChartComponent,
+        TaTableCardDropdownActionsComponent,
+        TaNoteComponent,
+
+        // pipes
+        FormatDatePipe,
+        FormatCurrencyPipe,
+        FlipCardsPipe,
+        CardValuePipe,
+
+        // store
+        StoreModule.forFeature('fuelCardData', fuelCardModalReducer),
     ],
 })
 export class FuelModule {}

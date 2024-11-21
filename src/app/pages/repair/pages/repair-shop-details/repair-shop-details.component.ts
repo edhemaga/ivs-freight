@@ -31,15 +31,21 @@ import { RepairShopDetailsItemComponent } from '@pages/repair/pages/repair-shop-
 
 // enums
 import { RepairShopDetailsStringEnum } from '@pages/repair/pages/repair-shop-details/enums';
+import { RepairTableStringEnum } from '@pages/repair/pages/repair-table/enums';
 
 // helpers
 import { RepairShopDetailsHelper } from '@pages/repair/pages/repair-shop-details/utils/helpers/repair-shop-details.helper';
+import {
+    RepairTableBackFilterDataHelper,
+    RepairTableDateFormaterHelper,
+} from '@pages/repair/pages/repair-table/utils/helpers';
 
 // models
-import { RepairShopResponse } from 'appcoretruckassist';
+import { RepairListResponse, RepairShopResponse } from 'appcoretruckassist';
 import { DetailsDropdownOptions } from '@shared/models/details-dropdown-options.model';
 import { DetailsConfig } from '@shared/models/details-config.model';
 import { ExtendedRepairShopResponse } from '@pages/repair/pages/repair-shop-details/components/repair-shop-details-card/models';
+import { RepairBackFilter } from '@pages/repair/pages/repair-table/models';
 
 @Component({
     selector: 'app-repair-shop-details',
@@ -69,6 +75,9 @@ export class RepairShopDetailsComponent implements OnInit, OnDestroy {
     public repairShopId: number;
     public newRepairShopId: number;
 
+    public backFilterQuery: RepairBackFilter =
+        RepairTableBackFilterDataHelper.backRepairFilterData();
+
     constructor(
         // router
         private router: Router,
@@ -97,6 +106,8 @@ export class RepairShopDetailsComponent implements OnInit, OnDestroy {
 
         this.getStoreData();
 
+        this.setTableFilter();
+
         this.getRepairShopMinimalList();
 
         this.confirmationSubscribe();
@@ -112,6 +123,101 @@ export class RepairShopDetailsComponent implements OnInit, OnDestroy {
 
     public isEmpty<T>(obj: Record<string, T>): boolean {
         return !Object.keys(obj).length;
+    }
+
+    private repairBackFilter(
+        filter: RepairBackFilter,
+        isShowMore?: boolean
+    ): void {
+        this.repairService
+            .getRepairList(
+                filter.repairShopId,
+                filter.unitType,
+                filter.dateFrom,
+                filter.dateTo,
+                filter.isPM,
+                filter.categoryIds,
+                filter.pmTruckTitles,
+                filter.pmTrailerTitles,
+                filter.isOrder,
+                filter.truckNumbers,
+                filter.trailerNumbers,
+                filter.costFrom,
+                filter.costTo,
+                filter.pageIndex,
+                filter.pageSize,
+                filter.companyId,
+                filter.sort,
+                filter.searchOne,
+                filter.searchTwo,
+                filter.searchThree
+            )
+            .pipe(takeUntil(this.destroy$))
+            // leave for now
+            .subscribe((repair: RepairListResponse) => {});
+    }
+
+    // table filters
+    public setTableFilter(): void {
+        this.tableService.currentSetTableFilter
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((res) => {
+                if (res) {
+                    switch (res.filterType) {
+                        case RepairTableStringEnum.CATEGORY_REPAIR_FILTER:
+                            this.backFilterQuery.categoryIds = res.queryParams;
+
+                            this.repairBackFilter(this.backFilterQuery);
+
+                            break;
+                        case RepairTableStringEnum.PM_FILTER:
+                            this.backFilterQuery.pmTruckTitles =
+                                res.queryParams;
+
+                            this.repairBackFilter(this.backFilterQuery);
+
+                            break;
+                        case RepairTableStringEnum.TRAILER_TYPE_FILTER:
+                            this.backFilterQuery.trailerNumbers =
+                                res.queryParams;
+
+                            this.repairBackFilter(this.backFilterQuery);
+
+                            break;
+                        case RepairTableStringEnum.TRUCK_TYPE_FILTER:
+                            this.backFilterQuery.truckNumbers = res.queryParams;
+
+                            this.repairBackFilter(this.backFilterQuery);
+
+                            break;
+                        case RepairTableStringEnum.TIME_FILTER:
+                            const { fromDate, toDate } =
+                                RepairTableDateFormaterHelper.getDateRange(
+                                    res.queryParams?.timeSelected
+                                );
+
+                            this.backFilterQuery.dateTo = toDate;
+                            this.backFilterQuery.dateFrom = fromDate;
+
+                            this.repairBackFilter(this.backFilterQuery);
+
+                            break;
+                        case RepairTableStringEnum.MONEY_FILTER:
+                            this.backFilterQuery.costFrom =
+                                res.queryParams?.from;
+
+                            this.backFilterQuery.costTo = res.queryParams?.to;
+
+                            this.repairBackFilter(this.backFilterQuery);
+
+                            break;
+                        default:
+                            this.backFilterQuery =
+                                RepairTableBackFilterDataHelper.backRepairFilterData();
+                            break;
+                    }
+                }
+            });
     }
 
     private confirmationSubscribe(): void {
@@ -277,6 +383,10 @@ export class RepairShopDetailsComponent implements OnInit, OnDestroy {
             .updateRepairShopStatus(id)
             .pipe(takeUntil(this.destroy$))
             .subscribe();
+    }
+
+    public onFilter(event: any) {
+        this.tableService.sendCurrentSetTableFilter(event);
     }
 
     ngOnDestroy(): void {

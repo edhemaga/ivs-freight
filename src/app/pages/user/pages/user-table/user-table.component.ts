@@ -607,7 +607,7 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 ? this.datePipe.transform(data.updatedAt, 'MM/dd/yy')
                 : '',
             tableActivity: data.lastLogin
-                ? this.activityTimePipe.transform(data.lastLogin)
+                ? this.activityTimePipe.transform(data.lastLogin, TableStringEnum.ACTIVITY)
                 : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
             tableCantSelect: data.userStatus === TableStringEnum.OWNER,
             formType: data.is1099

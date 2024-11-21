@@ -57,11 +57,13 @@ export interface RepairShopResponse {
     dateDeactivated?: string | null;
     serviceTypes?: Array<RepairShopServiceTypeResponse> | null;
     openHours?: Array<RepairShopOpenHoursResponse> | null;
+    openHoursModal?: Array<RepairShopOpenHoursResponse> | null;
     contacts?: Array<RepairShopContactResponse> | null;
     ratingReviews?: Array<RatingReviewResponse> | null;
     files?: Array<FileResponse> | null;
     fileCount?: number | null;
     shopServiceType?: EnumValue;
     cover?: FileResponse;
+    isCompanyRelated?: boolean;
 }
 

@@ -160,5 +160,5 @@ export interface IGetPayrollByIdAndOptions {
     selectedLoadIds?: number[];
     selectedCreditIds?: number[];
     selectedBonusIds?: number[];
-    selectedDeducionIds?: number[];
+    selectedDeductionIds?: number[];
 }

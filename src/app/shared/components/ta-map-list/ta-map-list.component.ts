@@ -39,6 +39,9 @@ import { MapListSvgRoutes } from '@shared/components/ta-map-list/utils/svg-route
 // Models
 import { SortColumn } from '@shared/components/ta-sort-dropdown/models';
 
+// Enums
+import { MapListStringEnum } from '@shared/components/ta-map-list/enums';
+
 @Component({
     selector: 'app-ta-map-list',
     templateUrl: './ta-map-list.component.html',
@@ -110,11 +113,7 @@ export class TaMapListComponent
     }
 
     ngOnInit(): void {
-        this.mapsService.searchLoadingChanged
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((loading) => {
-                this.searchLoading = loading;
-            });
+        this.addMapsServiceListeners();
 
         this.setVisibleColumns();
 
@@ -324,6 +323,26 @@ export class TaMapListComponent
         this.mapsService.sortCategoryChange.next(event.column);
 
         this.sortEvent.emit(event.sortName);
+    }
+
+    public addMapsServiceListeners(): void {
+        this.mapsService.searchLoadingChanged
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((loading) => {
+                this.searchLoading = loading;
+            });
+
+        this.mapsService.selectedMarkerChange
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((markerId) => {
+                if (markerId)
+                    this.listCards
+                        ?.toArray()?.[0]
+                        ?.elementRef?.nativeElement?.scrollIntoView({
+                            behavior: MapListStringEnum.SMOOTH,
+                            block: MapListStringEnum.CENTER,
+                        });
+            });
     }
 
     ngOnDestroy(): void {

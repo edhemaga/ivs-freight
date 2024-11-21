@@ -282,7 +282,7 @@
                             <span class="ic-hed">
                                 <app-ca-filter
                                     [type]="'truckTypeFilter'"
-                                    [truckTypeArray]="[]"
+                                    [truckTypeArray]="truckTypeArray"
                                     [filterTitle]="'Truck Type Filter'"
                                     [icon]="'truck'"
                                     (setFilter)="setFilterValue($event)"
@@ -295,7 +295,7 @@
                             <span class="ic-hed">
                                 <app-ca-filter
                                     [type]="'trailerTypeFilter'"
-                                    [truckTypeArray]="[]"
+                                    [trailerTypeArray]="trailerTypeArray"
                                     [filterTitle]="'Trailer Type Filter'"
                                     [icon]="'trailer'"
                                     (setFilter)="setFilterValue($event)"
@@ -347,12 +347,13 @@
                             <span class="ic-hed">
                                 <!-- DISPECHER FILTER -->
                                 <app-ca-filter
-                                    [type]="'userFilter'"
+                                    [type]="'dispatcherFilter'"
+                                    [icon]="'user'"
                                     [searchState]="true"
                                     [filterTitle]="'Dispatcher Filter'"
-                                    [defFilterHolder]="true"
                                     (setFilter)="setFilterValue($event)"
                                     (clearAll)="setFilterValue($event)"
+                                    [unselectedUser]="unselectedDispatcher"
                                 >
                                 </app-ca-filter>
                             </span>
@@ -365,10 +366,12 @@
                                     [type]="'statusFilter'"
                                     [icon]="'broker-half-circle'"
                                     [filterTitle]="'Status Filter'"
-                                    [defFilterHolder]="true"
                                     [noLeftIcon]="false"
                                     (setFilter)="setFilterValue($event)"
                                     (clearAll)="setFilterValue($event)"
+                                    [loadStatusOptionsArray]="
+                                        loadStatusOptionsArray
+                                    "
                                 >
                                 </app-ca-filter>
                             </span>
@@ -398,11 +401,11 @@
                                     [icon]="'default_pm'"
                                     [filterTitle]="'PM Filter'"
                                     [pmSubtype]="'truck'"
-                                    [defFilterHolder]="true"
                                     [noLeftIcon]="false"
                                     [leftSideIcon]="true"
                                     (setFilter)="setFilterValue($event)"
                                     (clearAll)="setFilterValue($event)"
+                                    [pmFilterArray]="pmFilterArray"
                                 >
                                 </app-ca-filter>
                             </span>
@@ -415,11 +418,11 @@
                                     [type]="'categoryRepairFilter'"
                                     [icon]="'ic_key-repair'"
                                     [filterTitle]="'Category Repair Filter'"
-                                    [defFilterHolder]="true"
                                     [noLeftIcon]="false"
                                     [leftSideIcon]="true"
                                     (setFilter)="setFilterValue($event)"
                                     (clearAll)="setFilterValue($event)"
+                                    [pmFilterArray]="categoryRepairArray"
                                 >
                                 </app-ca-filter>
                             </span>

@@ -63,9 +63,9 @@ export const onClosePayrollCommissionReportDriverSuccess = (
     expandedReportTable: false,
     closeReportPaymentLoading: false,
     payrollCounts: {},
-    selectedDeductionIds: [],
-    selectedBonusIds: [],
-    selectedCreditIds: [],
+    selectedDeductionIds: undefined,
+    selectedBonusIds: undefined,
+    selectedCreditIds: undefined,
     lastLoadDate: undefined,
 });
 
@@ -146,9 +146,9 @@ export const onDriverCommissionPayrollClosedPaymentsSuccess = (
     expandedReportTable: false,
     closeReportPaymentLoading: false,
     payrollCounts: {},
-    selectedDeductionIds: [],
-    selectedBonusIds: [],
-    selectedCreditIds: [],
+    selectedDeductionIds: undefined,
+    selectedBonusIds: undefined,
+    selectedCreditIds: undefined,
     lastLoadDate: undefined,
 });
 

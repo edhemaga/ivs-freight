@@ -525,15 +525,9 @@ export class BrokerDetailsComponent implements OnInit, OnDestroy {
             case LoadFilterStringEnum.DISPATCHER_FILTER:
                 this.backLoadFilterQuery.dispatcherIds =
                     data.queryParams ?? null;
-
-                this.loadBackFilter(this.backLoadFilterQuery);
-
                 break;
             case LoadFilterStringEnum.STATUS_FILTER:
                 this.backLoadFilterQuery.status = data.queryParams ?? null;
-
-                this.loadBackFilter(this.backLoadFilterQuery);
-
                 break;
             case LoadFilterStringEnum.TIME_FILTER:
                 if (data.queryParams?.timeSelected) {
@@ -549,28 +543,22 @@ export class BrokerDetailsComponent implements OnInit, OnDestroy {
                     this.backLoadFilterQuery.dateTo = null;
                     this.backLoadFilterQuery.dateFrom = null;
                 }
-
-                this.loadBackFilter(this.backLoadFilterQuery);
-
                 break;
             case LoadFilterStringEnum.MONEY_FILTER:
                 this.backLoadFilterQuery.rateFrom =
-                    data.queryParams?.firstFormFrom ?? null;
+                    data.queryParams?.moneyArray[0]?.from ?? null;
                 this.backLoadFilterQuery.rateTo =
-                    data.queryParams?.firstFormTo ?? null;
+                    data.queryParams?.moneyArray[0]?.to ?? null;
 
                 this.backLoadFilterQuery.paidFrom =
-                    data.queryParams?.secondFormFrom ?? null;
+                    data.queryParams?.moneyArray[1]?.from ?? null;
                 this.backLoadFilterQuery.paidTo =
-                    data.queryParams?.secondFormTo ?? null;
+                    data.queryParams?.moneyArray[1]?.to ?? null;
 
                 this.backLoadFilterQuery.dueFrom =
-                    data.queryParams?.thirdFormFrom ?? null;
+                    data.queryParams?.moneyArray[2]?.from ?? null;
                 this.backLoadFilterQuery.dueTo =
-                    data.queryParams?.thirdFormTo ?? null;
-
-                this.loadBackFilter(this.backLoadFilterQuery);
-
+                    data.queryParams?.moneyArray[2]?.to ?? null;
                 break;
             case LoadFilterStringEnum.LOCATION_FILTER:
                 this.backLoadFilterQuery.longitude =
@@ -579,13 +567,13 @@ export class BrokerDetailsComponent implements OnInit, OnDestroy {
                     data.queryParams?.latValue ?? null;
                 this.backLoadFilterQuery.distance =
                     data.queryParams?.rangeValue ?? null;
-
-                this.loadBackFilter(this.backLoadFilterQuery);
-
                 break;
+
             default:
                 break;
         }
+
+        this.loadBackFilter(this.backLoadFilterQuery);
     }
 
     private loadBackFilter(

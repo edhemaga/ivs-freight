@@ -1,6 +1,6 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 
 // Models
 import {
@@ -148,13 +148,14 @@ export class PayrollService {
             },
         };
 
-        if (selectedDeducionIds?.length)
-            body.selectedDeducionIds = selectedDeducionIds;
+        //if (selectedDeducionIds?.length)
+        body.selectedDeducionIds = selectedDeducionIds;
 
-        if (selectedLoadIds?.length) body.selectedLoadIds = selectedLoadIds;
+        //if (selectedLoadIds?.length)
+        body.selectedLoadIds = selectedLoadIds;
 
-        if (selectedCreditIds?.length)
-            body.selectedCreditIds = selectedCreditIds;
+        // if (selectedCreditIds?.length)
+        body.selectedCreditIds = selectedCreditIds;
 
         return this.http.put<PayrollDriverMileageResponse>(
             `${environment.API_ENDPOINT}/api/payroll/driver/commission/close`,
@@ -173,22 +174,27 @@ export class PayrollService {
         if (lastLoadDate) {
             params = params.append('LastLoadDate', lastLoadDate);
         }
+
         if (selectedCreditIds)
             selectedCreditIds.map(
                 (creditId) =>
                     (params = params.append('SelectedCreditIds', creditId))
             );
+        else if (typeof selectedCreditIds != 'undefined')
+            params = params.append(
+                'SelectedCreditIds',
+                selectedCreditIds.toString()
+            );
 
-        if (selectedDeducionIds)
+        if (selectedDeducionIds?.length)
             selectedDeducionIds.map(
                 (deductionId) =>
                     (params = params.append('SelectedDeducionIds', deductionId))
             );
-
-        if (selectedBonusIds)
-            selectedBonusIds.map(
-                (bonusId) =>
-                    (params = params.append('SelectedBonusIds', bonusId))
+        else if (typeof selectedDeducionIds != 'undefined')
+            params = params.append(
+                'SelectedDeducionIds',
+                selectedDeducionIds.toString()
             );
 
         return this.http.get<PayrollDriverMileageResponse>(
@@ -219,6 +225,7 @@ export class PayrollService {
                 amount: amount,
             },
         };
+
         return this.http.put<PayrollDriverMileageResponse>(
             `${environment.API_ENDPOINT}/api/payroll/driver/mileage/close`,
             body
@@ -238,10 +245,21 @@ export class PayrollService {
                 (creditId) =>
                     (params = params.append('SelectedLoadIds', creditId))
             );
+        else if (typeof selectedLoadIds != 'undefined')
+            params = params.append(
+                'SelectedLoadIds',
+                selectedLoadIds.toString()
+            );
+
         if (selectedCreditIds)
             selectedCreditIds.map(
                 (creditId) =>
                     (params = params.append('SelectedCreditIds', creditId))
+            );
+        else if (typeof selectedCreditIds != 'undefined')
+            params = params.append(
+                'SelectedCreditIds',
+                selectedCreditIds.toString()
             );
 
         if (selectedDeductionIds)
@@ -251,6 +269,11 @@ export class PayrollService {
                         'SelectedDeductionIds',
                         deductionId
                     ))
+            );
+        else if (typeof selectedDeductionIds != 'undefined')
+            params = params.append(
+                'SelectedDeductionIds',
+                selectedDeductionIds.toString()
             );
 
         return this.http.get<PayrollDriverCommissionByIdResponse>(
@@ -297,19 +320,29 @@ export class PayrollService {
     }: IGet_Payroll_Commission_Driver_Report): Observable<PayrollDriverCommissionByIdResponse> {
         let params = new HttpParams();
 
-        if (selectedLoadIds)
+        if (selectedLoadIds?.length)
             selectedLoadIds.map(
                 (creditId) =>
                     (params = params.append('SelectedLoadIds', creditId))
             );
+        else if (typeof selectedLoadIds != 'undefined')
+            params = params.append(
+                'SelectedLoadIds',
+                selectedLoadIds.toString()
+            );
 
-        if (selectedCreditIds)
+        if (selectedCreditIds?.length)
             selectedCreditIds.map(
                 (creditId) =>
                     (params = params.append('SelectedCreditIds', creditId))
             );
+        else if (typeof selectedCreditIds != 'undefined')
+            params = params.append(
+                'SelectedCreditIds',
+                selectedCreditIds.toString()
+            );
 
-        if (selectedDeductionIds)
+        if (selectedDeductionIds?.length)
             selectedDeductionIds.map(
                 (deductionId) =>
                     (params = params.append(
@@ -317,10 +350,20 @@ export class PayrollService {
                         deductionId
                     ))
             );
+        else if (typeof selectedDeductionIds != 'undefined')
+            params = params.append(
+                'SelectedDeductionIds',
+                selectedDeductionIds.toString()
+            );
 
-        if (selectedFuelIds)
+        if (selectedFuelIds?.length)
             selectedFuelIds.map(
                 (fuel) => (params = params.append('SelectedFuelIds', fuel))
+            );
+        else if (typeof selectedFuelIds != 'undefined')
+            params = params.append(
+                'SelectedFuelIds',
+                selectedFuelIds.toString()
             );
 
         return this.http.get<PayrollOwnerResponse>(
@@ -396,18 +439,29 @@ export class PayrollService {
     }: IGet_Payroll_Commission_Driver_Report): Observable<PayrollDriverFlatRateByIdResponse> {
         let params = new HttpParams();
 
-        if (selectedLoadIds)
+        if (selectedLoadIds?.length)
             selectedLoadIds.map(
                 (creditId) =>
                     (params = params.append('SelectedLoadIds', creditId))
             );
-        if (selectedCreditIds)
+        else if (typeof selectedLoadIds != 'undefined')
+            params = params.append(
+                'SelectedLoadIds',
+                selectedLoadIds.toString()
+            );
+
+        if (selectedCreditIds?.length)
             selectedCreditIds.map(
                 (creditId) =>
                     (params = params.append('SelectedCreditIds', creditId))
             );
+        else if (typeof selectedCreditIds != 'undefined')
+            params = params.append(
+                'SelectedCreditIds',
+                selectedCreditIds.toString()
+            );
 
-        if (selectedDeductionIds)
+        if (selectedDeductionIds?.length)
             selectedDeductionIds.map(
                 (deductionId) =>
                     (params = params.append(
@@ -415,11 +469,10 @@ export class PayrollService {
                         deductionId
                     ))
             );
-
-        if (selectedBonusIds)
-            selectedBonusIds.map(
-                (bonusIds) =>
-                    (params = params.append('SelectedBonusIds', bonusIds))
+        else if (typeof selectedDeductionIds != 'undefined')
+            params = params.append(
+                'SelectedDeductionIds',
+                selectedDeductionIds.toString()
             );
 
         return this.http.get<PayrollDriverFlatRateByIdResponse>(
@@ -448,15 +501,17 @@ export class PayrollService {
             },
         };
 
-        if (selectedDeducionIds?.length)
+        //if (selectedDeducionIds?.length)
             body.selectedDeducionIds = selectedDeducionIds;
 
-        if (selectedLoadIds?.length) body.selectedLoadIds = selectedLoadIds;
+        //if (selectedLoadIds?.length) 
+            body.selectedLoadIds = selectedLoadIds;
 
-        if (selectedCreditIds?.length)
+       // if (selectedCreditIds?.length)
             body.selectedCreditIds = selectedCreditIds;
 
-        if (selectedBonusIds?.length) body.selectedBonusIds = selectedBonusIds;
+        //if (selectedBonusIds?.length) 
+            body.selectedBonusIds = selectedBonusIds;
 
         return this.http.put<PayrollDriverMileageResponse>(
             `${environment.API_ENDPOINT}/api/payroll/driver/flatrate/close`,

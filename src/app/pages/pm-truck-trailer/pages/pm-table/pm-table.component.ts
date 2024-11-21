@@ -722,6 +722,11 @@ export class PmTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     field: TableStringEnum.CUSTOM_FIELD + (index + 1),
                     name: customColumn.title,
                     sortName: TableStringEnum.CUSTOM_FIELD + (index + 1),
+                    headIconStyle: {
+                        width: 14,
+                        height: 14,
+                        imgPath: 'assets/svg/common/repair-pm/oil_pump.svg',
+                    },
                     hidden: false,
                     isPined: false,
                     width: 150,
@@ -755,6 +760,11 @@ export class PmTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     field: TableStringEnum.CUSTOM_FIELD + (index + 1),
                     name: customColumn.title,
                     sortName: TableStringEnum.CUSTOM_FIELD + (index + 1),
+                    headIconStyle: {
+                        width: 14,
+                        height: 14,
+                        imgPath: 'assets/svg/common/repair-pm/oil_pump.svg',
+                    },
                     hidden: false,
                     isPined: false,
                     width: 150,
