@@ -91,48 +91,58 @@
                                             'Item Detail • Description'
                                         "
                                     >
-                                        <div
-                                            class="items-container-body d-flex align-items-center"
+                                        <ng-container
+                                            *ngIf="
+                                                card.descriptionItems?.length;
+                                                else emptyTemplate
+                                            "
                                         >
-                                            <span
-                                                class="checkbox-tooltip d-flex"
-                                                type="button"
-                                                ngbTooltip
-                                                mainTooltip="View Items"
-                                                tooltipBackground="#424242"
-                                                position="bottom"
-                                                customClass="mt-2"
+                                            <div
+                                                class="items-container-body d-flex align-items-center"
                                             >
-                                                <div
-                                                    (click)="
-                                                        onShowDescriptionDropdown(
-                                                            description,
-                                                            card
-                                                        )
-                                                    "
-                                                    #description="ngbPopover"
-                                                    class="description-container d-flex align-items-center"
-                                                    [ngbPopover]="
-                                                        descriptionCardsPopover
-                                                    "
-                                                    container="body"
-                                                    [placement]="'bottom-left'"
-                                                    popoverClass="table-description-popover"
-                                                    [style.width.px]="
-                                                        elementWidth
-                                                    "
-                                                    triggers="manual"
-                                                ></div>
-                                                <div
-                                                    #itemsRepair
-                                                    class="items-container"
-                                                    [innerHtml]="
-                                                        card.descriptionItems
-                                                            | tableDescriptionTextPipe : 291
-                                                    "
-                                                ></div>
-                                            </span>
-                                        </div>
+                                                <span
+                                                    class="checkbox-tooltip d-flex"
+                                                    type="button"
+                                                    ngbTooltip
+                                                    mainTooltip="View Items"
+                                                    tooltipBackground="#424242"
+                                                    position="bottom"
+                                                    customClass="mt-2"
+                                                >
+                                                    <div
+                                                        (click)="
+                                                            onShowDescriptionDropdown(
+                                                                description,
+                                                                card
+                                                            )
+                                                        "
+                                                        #description="ngbPopover"
+                                                        class="description-container d-flex align-items-center"
+                                                        [ngbPopover]="
+                                                            descriptionCardsPopover
+                                                        "
+                                                        container="body"
+                                                        [placement]="
+                                                            'bottom-left'
+                                                        "
+                                                        popoverClass="table-description-popover"
+                                                        [style.width.px]="
+                                                            elementWidth
+                                                        "
+                                                        triggers="manual"
+                                                    ></div>
+                                                    <div
+                                                        #itemsRepair
+                                                        class="items-container"
+                                                        [innerHtml]="
+                                                            card.descriptionItems
+                                                                | tableDescriptionTextPipe
+                                                                    : 291
+                                                        "
+                                                    ></div>
+                                                </span>
+                                            </div>
+                                        </ng-container>
                                     </ng-container>
 
                                     <ng-container
@@ -305,3 +315,5 @@
         </div>
     </div>
 </ng-template>
+
+<ng-template #emptyTemplate>/</ng-template>
