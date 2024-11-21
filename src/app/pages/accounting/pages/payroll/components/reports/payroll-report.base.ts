@@ -26,7 +26,7 @@ export abstract class PayrollReportBaseComponent<
     T extends {
         driver?: { id?: number; fullName?: string | null };
         truck?: { id?: number };
-        owner?: { id?: number };
+        id?: number
     }
 > {
     public openedPayroll: T;
@@ -120,7 +120,7 @@ export abstract class PayrollReportBaseComponent<
                         {
                             truckId: this.openedPayroll.truck?.id,
                             creditType: this.creditType,
-                            payrollOwnerId: this.openedPayroll.owner?.id
+                            payrollOwnerId: this.openedPayroll.id
                         }
                     )
                     .then(() => {
