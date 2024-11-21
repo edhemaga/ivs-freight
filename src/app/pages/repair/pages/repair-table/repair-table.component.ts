@@ -550,6 +550,11 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                     });
 
                     this.handleCloseAnimationAction(false);
+
+                    if (this.activeViewMode === TableStringEnum.MAP) {
+                        this.isAddedNewRepairShop = true;
+                        this.getMapData();
+                    }
                 }
 
                 // On Update Repair
@@ -572,6 +577,11 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                     });
 
                     this.handleCloseAnimationAction(false);
+                    
+                    if (this.activeViewMode === TableStringEnum.MAP) {
+                        this.isAddedNewRepairShop = true;
+                        this.getMapData();
+                    }
                 }
                 // On Delete Repair
                 else if (
