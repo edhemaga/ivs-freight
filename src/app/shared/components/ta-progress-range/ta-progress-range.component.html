@@ -1,4 +1,4 @@
-<ng-container *ngIf="value">
+<ng-container *ngIf="value !== null; else noValue">
     <div class="w-100 h-100 progress-range-wrapper">
         <span class="price-range-level-circle" [ngClass]="priceRangeItem?.circleClassName"></span>
         <span class="price-range-value">{{ unit }} {{ value }}</span>
@@ -13,3 +13,10 @@
         </div>
     </div>
 </ng-container>
+
+<ng-template #noValue>
+    <div class="w-100 h-100 progress-range-wrapper">
+        <span class="price-range-level-circle circle-color-expired-no-value"></span>
+        <span class="price-range-value not-applicable-text">N/A</span>
+    </div>
+</ng-template>

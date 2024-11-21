@@ -42,7 +42,6 @@ import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calcula
 //Models
 import {
     FuelStopListResponse,
-    FuelStopResponse,
     FuelTransactionResponse,
 } from 'appcoretruckassist';
 import { FuelTransactionListResponse } from 'appcoretruckassist';
@@ -673,13 +672,19 @@ export class FuelTableComponent implements OnInit, AfterViewInit, OnDestroy {
             highestPricePerGallon
         } = data || {};
         const { address: addressName } = address || {};
-        const tablePriceRange = lowestPricePerGallon && highestPricePerGallon ? `$${lowestPricePerGallon} - $${highestPricePerGallon}` : TableStringEnum.EMPTY_STRING_PLACEHOLDER;
+        const tablePriceRange = 
+            lowestPricePerGallon && highestPricePerGallon 
+            ? (lowestPricePerGallon === highestPricePerGallon) 
+                ? `$${lowestPricePerGallon}`
+                : `$${lowestPricePerGallon} - $${highestPricePerGallon}` 
+            : TableStringEnum.EMPTY_STRING_PLACEHOLDER;
         const tableExpense = totalCost ? `$${totalCost}` : TableStringEnum.EMPTY_STRING_PLACEHOLDER;
         const tableLast = {
             startRange: lowestPricePerGallon ?? null,
             endRange: highestPricePerGallon ?? null,
             value: pricePerGallon ?? null,
-            unit: eProgressRangeUnit.Dollar
+            unit: eProgressRangeUnit.Dollar,
+            lastUsed: lastUsed
         };
 
         return {
@@ -692,6 +697,7 @@ export class FuelTableComponent implements OnInit, AfterViewInit, OnDestroy {
             tablePPG:
                 pricePerGallon ?? TableStringEnum.EMPTY_STRING_PLACEHOLDER,
             tableLast: tableLast ?? TableStringEnum.EMPTY_STRING_PLACEHOLDER,
+            tableLastVisit: lastUsed ?? TableStringEnum.EMPTY_STRING_PLACEHOLDER,
             tableUsed: used ?? TableStringEnum.EMPTY_STRING_PLACEHOLDER,
             tablePriceRange: tablePriceRange,
             tableExpense: tableExpense,
