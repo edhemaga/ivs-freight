@@ -233,6 +233,7 @@ model/brokerPaymentHistoryChartResponse.ts
 model/brokerPaymentHistoryResponse.ts
 model/brokerResponse.ts
 model/brokerResponsePagination.ts
+model/brokerShortMobileResponse.ts
 model/brokerShortResponse.ts
 model/byStateReportType.ts
 model/cdlEndorsementResponse.ts
@@ -435,6 +436,7 @@ model/dispatchStatusFilterResponse.ts
 model/dispatchStatusResponse.ts
 model/dispatcherFilterResponse.ts
 model/dispatcherIntervalResponse.ts
+model/dispatcherShortMobileResponse.ts
 model/driverAccidentResponse.ts
 model/driverDetailsBankResponse.ts
 model/driverDetailsDispatchResponse.ts
@@ -493,6 +495,7 @@ model/entityTypeActivityLogResponse.ts
 model/entityTypeNote.ts
 model/entityTypeReview.ts
 model/enumValue.ts
+model/equipmentMobileResponse.ts
 model/eventModalResponse.ts
 model/eventResponse.ts
 model/eventType.ts
@@ -613,6 +616,7 @@ model/loadBrokerDetailsResponse.ts
 model/loadBrokerDetailsResponsePagination.ts
 model/loadBrokerInfo.ts
 model/loadDetails.ts
+model/loadDetailsMobileResponse.ts
 model/loadDriverInfo.ts
 model/loadItemUnit.ts
 model/loadListDto.ts
@@ -633,6 +637,7 @@ model/loadPaymentPayResponse.ts
 model/loadPossibleStatusesResponse.ts
 model/loadProgressResponse.ts
 model/loadRequirementsCommand.ts
+model/loadRequirementsMobileResponse.ts
 model/loadRequirementsResponse.ts
 model/loadResponse.ts
 model/loadShortResponse.ts
@@ -648,6 +653,7 @@ model/loadStopItemAutocompleteDescriptionResponse.ts
 model/loadStopItemCommand.ts
 model/loadStopItemResponse.ts
 model/loadStopLoadListResponse.ts
+model/loadStopMobileResponse.ts
 model/loadStopProgressBarResponse.ts
 model/loadStopResponse.ts
 model/loadStopShortResponse.ts
@@ -681,6 +687,7 @@ model/milesByUnitResponse.ts
 model/milesByUnitResponsePagination.ts
 model/milesCountByStateResponse.ts
 model/milesInfo.ts
+model/milesMobileResponse.ts
 model/milesStateFilterResponse.ts
 model/milesStopDetailsResponse.ts
 model/milesStopItemResponse.ts
@@ -931,6 +938,7 @@ model/shipperMinimalResponsePagination.ts
 model/shipperModalResponse.ts
 model/shipperResponse.ts
 model/shipperResponsePagination.ts
+model/shipperShortMobileResponse.ts
 model/shipperShortResponse.ts
 model/signInCommand.ts
 model/signInResponse.ts

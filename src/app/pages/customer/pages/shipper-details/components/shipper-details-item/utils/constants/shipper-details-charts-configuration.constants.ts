@@ -1,4 +1,4 @@
-import { ChartImagesStringEnum, ChartTypesStringEnum } from "ca-components/lib/components/ca-chart/enums";
+import { ChartImagesStringEnum, ChartTypesStringEnum } from "ca-components";
 
 export class ShipperDetailsChartsConfiguration {
     static PAYROLL_CHART_CONFIG = {
