@@ -102,7 +102,9 @@ body {
         .scrollable-element
     ):not(.dropdown-options.scroll):not(.navigation-middle):not(
         .map-list-body
-    ):not(.cluster-marker-container) {
+    ):not(.cluster-marker-container):not(
+        .shop-details-item-repair-main-dropdown
+    ) {
     scrollbar-width: none !important; /* Firefox */
 
     &::-webkit-scrollbar {

@@ -14,6 +14,7 @@ export enum RepairShopDetailsStringEnum {
     EMPTY_STRING = '',
 
     OPEN = 'open',
+    OPEN_2 = 'Open',
     CLOSE = 'close',
     EDIT = 'Edit',
 
@@ -37,5 +38,4 @@ export enum RepairShopDetailsStringEnum {
     FINISH_ORDER_2 = 'Finish Order',
     DOCUMENT = 'Document',
     NOTE = 'Note',
-    MORE = 'More',
 }

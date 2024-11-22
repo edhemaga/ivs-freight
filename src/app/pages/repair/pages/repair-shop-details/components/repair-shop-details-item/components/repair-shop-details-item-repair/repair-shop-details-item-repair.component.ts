@@ -1,19 +1,21 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
+import { Subject, takeUntil } from 'rxjs';
+
 // modules
 import { AngularSvgIconModule } from 'angular-svg-icon';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 // components
-import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
 import { RepairOrderModalComponent } from '@pages/repair/pages/repair-modals/repair-order-modal/repair-order-modal.component';
-import { RepairShopDetailsItemDropdownComponent } from '@pages/repair/pages/repair-shop-details/components/repair-shop-details-item/components/repair-shop-details-item-dropdown/repair-shop-details-item-dropdown.component';
 import { ConfirmationModalComponent } from '@shared/components/ta-shared-modals/confirmation-modal/confirmation-modal.component';
 import { TaNoteComponent } from '@shared/components/ta-note/ta-note.component';
+import { TaDocumentsDrawerComponent } from '@shared/components/ta-documents-drawer/ta-documents-drawer.component';
+import { TaDropdownOptionsComponent } from '@shared/components/ta-dropdown-options/ta-dropdown-options.component';
 
 // services
 import { ModalService } from '@shared/services/modal.service';
+import { ConfirmationService } from '@shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
 
 // constants
 import { RepairShopDetailsItemConstants } from '@pages/repair/pages/repair-shop-details/components/repair-shop-details-item/utils/constants';
@@ -21,9 +23,6 @@ import { RepairShopDetailsItemConstants } from '@pages/repair/pages/repair-shop-
 // helpers
 import { RepairTableHelper } from '@pages/repair/pages/repair-table/utils/helpers';
 import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calculations.helper';
-
-// svg routes
-import { RepairShopDetailsSvgRoutes } from '@pages/repair/pages/repair-shop-details/utils/svg-routes';
 
 // enums
 import { RepairShopDetailsStringEnum } from '@pages/repair/pages/repair-shop-details/enums';
@@ -36,7 +35,6 @@ import { FormatDatePipe, ThousandSeparatorPipe } from '@shared/pipes';
 import { DescriptionItemsTextCountDirective } from '@shared/directives';
 
 // models
-import { RepairActionItem } from '@pages/repair/pages/repair-shop-details/components/repair-shop-details-item/models';
 import { DropdownItem } from '@shared/models/card-models/card-table-data.model';
 import { RepairResponse } from 'appcoretruckassist';
 
@@ -49,12 +47,11 @@ import { RepairResponse } from 'appcoretruckassist';
         // modules
         CommonModule,
         AngularSvgIconModule,
-        NgbModule,
 
         // components
-        TaAppTooltipV2Component,
-        RepairShopDetailsItemDropdownComponent,
+        TaDropdownOptionsComponent,
         TaNoteComponent,
+        TaDocumentsDrawerComponent,
 
         // pipes
         FormatDatePipe,
@@ -69,27 +66,54 @@ export class RepairShopDetailsItemRepairComponent implements OnInit {
         this.createRepairItemData(data);
     }
 
+    private destroy$ = new Subject<void>();
+
     public _repairList: RepairResponse[] = [];
 
-    public repairShopDetailsSvgRoutes = RepairShopDetailsSvgRoutes;
+    public repairShopDetailsSvgRoutes = RepairShopDetailsStringEnum;
+    public repairShopDetailsStringEnum = RepairShopDetailsStringEnum;
 
     public repairHeaderItems: string[] = [];
     public repairDropdownHeaderItems: string[] = [];
-    public repairActionItems: RepairActionItem[] = [];
 
     public repairItemDropdownIndex: number = -1;
     public repairItemOptionsDropdownIndex: number = -1;
-    public actionItemIndex: number = -1;
+    public repairItemDocumentsDrawerIndex: number = -1;
 
-    public repairItemOptions: DropdownItem[];
+    public repairItemOptions: DropdownItem[] = [];
 
-    constructor(private modalService: ModalService) {}
+    constructor(
+        private modalService: ModalService,
+        private confirmationService: ConfirmationService
+    ) {}
 
     ngOnInit(): void {
         this.getConstantData();
+
+        this.confirmationSubscribe();
     }
 
     public trackByIdentity = (index: number): number => index;
+
+    private confirmationSubscribe(): void {
+        this.confirmationService.confirmationData$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe({
+                next: (res) => {
+                    if (
+                        res?.type === RepairShopDetailsStringEnum.DELETE &&
+                        res?.template === TableStringEnum.REPAIR_2
+                    )
+                        this.resetIndexes();
+                },
+            });
+    }
+
+    private resetIndexes(): void {
+        this.repairItemDropdownIndex = -1;
+        this.repairItemOptionsDropdownIndex = -1;
+        this.repairItemDocumentsDrawerIndex = -1;
+    }
 
     private getConstantData(): void {
         this.repairHeaderItems =
@@ -97,9 +121,6 @@ export class RepairShopDetailsItemRepairComponent implements OnInit {
 
         this.repairDropdownHeaderItems =
             RepairShopDetailsItemConstants.REPAIR_DROPDOWN_HEADER_ITEMS;
-
-        this.repairActionItems =
-            RepairShopDetailsItemConstants.REPAIR_ACTION_COLUMNS;
     }
 
     private createRepairItemData(data: RepairResponse[]): void {
@@ -121,8 +142,6 @@ export class RepairShopDetailsItemRepairComponent implements OnInit {
                 pmItemsIndexArray,
             };
         });
-
-        console.log('this._repairList', this._repairList);
     }
 
     private getRepairItemOptions(repair: RepairResponse): void {
@@ -140,11 +159,7 @@ export class RepairShopDetailsItemRepairComponent implements OnInit {
             );
     }
 
-    public handleActionClick(
-        type: string,
-        index?: number,
-        actionItemIndex?: number
-    ): void {
+    public handleActionClick(type: string, index?: number): void {
         const repair = this._repairList[index];
 
         switch (type) {
@@ -153,13 +168,7 @@ export class RepairShopDetailsItemRepairComponent implements OnInit {
 
                 break;
             case RepairShopDetailsStringEnum.DOCUMENT:
-                break;
-            case RepairShopDetailsStringEnum.NOTE:
-                break;
-            case RepairShopDetailsStringEnum.MORE:
-                this.handleRepairOptionsDropdownClick(index, actionItemIndex);
-
-                this.getRepairItemOptions(repair);
+                this.handleDocumentDrawerClick(index);
 
                 break;
             default:
@@ -175,14 +184,25 @@ export class RepairShopDetailsItemRepairComponent implements OnInit {
         this.repairItemOptionsDropdownIndex = -1;
     }
 
-    public handleRepairOptionsDropdownClick(
+    public handleOptionsDropdownClick(
         index: number,
-        actionItemIndex: number
+        repair: RepairResponse
     ): void {
         this.repairItemOptionsDropdownIndex =
             this.repairItemOptionsDropdownIndex === index ? -1 : index;
 
-        this.actionItemIndex = actionItemIndex;
+        if (index !== this.repairItemDocumentsDrawerIndex)
+            this.repairItemDocumentsDrawerIndex = -1;
+
+        this.getRepairItemOptions(repair);
+    }
+
+    public handleDocumentDrawerClick(index: number): void {
+        this.repairItemDocumentsDrawerIndex =
+            this.repairItemDocumentsDrawerIndex === index ? -1 : index;
+
+        this.repairItemDropdownIndex = -1;
+        this.repairItemOptionsDropdownIndex = -1;
     }
 
     private handleFinishOrderClick(repair: RepairResponse): void {
@@ -261,12 +281,19 @@ export class RepairShopDetailsItemRepairComponent implements OnInit {
         );
     }
 
-    public handleDropdownOptionClick(option: string, index: number): void {
+    public handleDropdownOptionClick(
+        option: { type: string },
+        index: number
+    ): void {
         const repair = this._repairList[index];
 
         this.repairItemOptionsDropdownIndex = -1;
 
-        switch (option) {
+        switch (option.type) {
+            case RepairShopDetailsStringEnum.OPEN_2:
+                this.handleOptionsDropdownClick(index, repair);
+
+                break;
             case RepairShopDetailsStringEnum.EDIT:
                 this.handleEditRepairClick(repair);
 

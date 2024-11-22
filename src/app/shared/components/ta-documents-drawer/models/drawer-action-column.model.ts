@@ -1,4 +1,4 @@
-export interface RepairActionItem {
+export interface DrawerActionColumn {
     title: string;
     iconRoute: string;
 }

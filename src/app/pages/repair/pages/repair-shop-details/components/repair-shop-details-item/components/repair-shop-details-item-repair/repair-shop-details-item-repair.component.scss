@@ -31,6 +31,14 @@
             &-order {
                 border: 1px solid $ta-yellow-1;
             }
+
+            &.active-drawer {
+                visibility: hidden;
+
+                .shop-details-item-repair-main-item {
+                    cursor: auto;
+                }
+            }
         }
 
         /* Main Item */
@@ -106,63 +114,6 @@
                 display: grid;
                 grid-template-columns: repeat(3, 26px);
                 grid-gap: 4px;
-
-                &-action {
-                    border-radius: 2px;
-                    transition: background 0.2s ease-in;
-                    cursor: pointer;
-
-                    &:hover {
-                        background: $dark-2;
-
-                        .icon {
-                            svg {
-                                path,
-                                circle {
-                                    fill: $ta-black;
-                                }
-                            }
-                        }
-                    }
-
-                    &.active {
-                        background: $ta-black;
-
-                        .icon {
-                            transform: rotate(90deg);
-
-                            svg {
-                                path,
-                                circle {
-                                    fill: $bw-9;
-                                }
-                            }
-                        }
-                    }
-
-                    .icon {
-                        transition: transform 0.2s ease-in;
-
-                        svg {
-                            path,
-                            circle {
-                                transition: fill 0.2s ease-in;
-                                fill: $bw5;
-                            }
-                        }
-                    }
-                }
-            }
-
-            .options-dropdown-container {
-                display: none;
-                position: absolute;
-                top: 0;
-                right: -146px;
-
-                &.active {
-                    display: block;
-                }
             }
         }
 
@@ -178,9 +129,26 @@
             transition: max-height 0.2s ease-out, padding 0.2s ease-out;
 
             &.expanded {
-                max-height: 222px;
+                max-height: 226px;
                 padding: 4px;
                 margin-bottom: 2px;
+            }
+
+            &.dropdown-scroll {
+                overflow-y: scroll;
+
+                &::-webkit-scrollbar {
+                    width: 2px;
+                }
+
+                &::-webkit-scrollbar-thumb {
+                    background: $ta-light-grey-6;
+                    border-radius: 1px;
+                }
+
+                &::-webkit-scrollbar-track {
+                    background: $ta-light-grey-5;
+                }
             }
 
             /* Dropdown Header */

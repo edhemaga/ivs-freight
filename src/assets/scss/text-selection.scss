@@ -99,6 +99,20 @@
             }
         }
 
+        &-light-grey {
+            color: $ta-light-grey !important;
+
+            &::-moz-selection {
+                background: rgb(229, 229, 229, 0.2) !important;
+                color: $ta-light-grey !important;
+            }
+
+            &::selection {
+                background: rgb(229, 229, 229, 0.2) !important;
+                color: $ta-light-grey !important;
+            }
+        }
+
         &-light-grey-2 {
             color: $ta-light-grey-2 !important;
 
