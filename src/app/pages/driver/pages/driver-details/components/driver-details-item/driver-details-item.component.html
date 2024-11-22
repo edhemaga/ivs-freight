@@ -15,7 +15,7 @@
 
             <ng-container *ngSwitchCase="'cdl'">
                 <app-driver-details-item-cdl
-                    [cardsData]="detailsConfig[1]?.data"
+                    [cdlList]="detailsConfig[1]?.data"
                     [driver]="detailsConfig[0]?.data"
                 ></app-driver-details-item-cdl>
             </ng-container>
@@ -24,7 +24,7 @@
 
             <ng-container *ngSwitchCase="'drug-alcohol'">
                 <app-driver-details-item-test
-                    [cardsData]="detailsConfig[2]?.data"
+                    [testList]="detailsConfig[2]?.data"
                     [driver]="detailsConfig[0]?.data"
                 >
                 </app-driver-details-item-test>
@@ -34,7 +34,7 @@
 
             <ng-container *ngSwitchCase="'medical'">
                 <app-driver-details-item-medical
-                    [cardsData]="detailsConfig[3]?.data"
+                    [medicalList]="detailsConfig[3]?.data"
                     [driver]="detailsConfig[0]?.data"
                 >
                 </app-driver-details-item-medical>
@@ -44,7 +44,7 @@
 
             <ng-container *ngSwitchCase="'mvr'">
                 <app-driver-details-item-mvr
-                    [cardsData]="detailsConfig[4]?.data"
+                    [mvrList]="detailsConfig[4]?.data"
                     [driver]="detailsConfig[0]?.data"
                 >
                 </app-driver-details-item-mvr>

@@ -13,6 +13,7 @@
                 [formGroupName]="i"
             >
                 <!-- Number & Delete -->
+
                 <div
                     class="d-flex justify-content-center align-items-center table-item-number stop-items-number"
                 >
@@ -36,6 +37,7 @@
                             [inputConfig]="descriptionInputConfig"
                         ></app-ta-input>
                     </ng-container>
+
                     <ng-template #hazardousTemplate>
                         <app-ta-input-dropdown
                             formControlName="hazardousMaterialId"

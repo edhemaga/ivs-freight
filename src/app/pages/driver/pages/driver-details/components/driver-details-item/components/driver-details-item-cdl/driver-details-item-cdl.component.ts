@@ -73,7 +73,7 @@ export class DriverDetailsItemCdlComponent
 {
     @ViewChild('driverCdlFiles') driverCdlFiles: TaUploadFilesComponent;
 
-    @Input() cardsData: CdlResponse[];
+    @Input() cdlList: CdlResponse[];
     @Input() driver: DriverResponse;
 
     private destroy$ = new Subject<void>();
@@ -102,12 +102,12 @@ export class DriverDetailsItemCdlComponent
     }
 
     ngOnChanges(changes: SimpleChanges): void {
-        if (changes.cardsData.currentValue) {
-            this.getDetailsOptions(changes.cardsData.currentValue);
+        if (changes.cdlList.currentValue) {
+            this.getDetailsOptions(changes.cdlList.currentValue);
 
-            this.getActiveCdls(changes.cardsData.currentValue);
+            this.getActiveCdls(changes.cdlList.currentValue);
 
-            this.getCdlData(changes.cardsData.currentValue);
+            this.getCdlData(changes.cdlList.currentValue);
         }
     }
 
@@ -390,9 +390,11 @@ export class DriverDetailsItemCdlComponent
                 this.driver?.lastName,
         };
 
-        const cdls = this.cdlData?.filter((licence) => licence.id !== cdl.id);
+        const cdlList = this.cdlData?.filter(
+            (licence) => licence.id !== cdl.id
+        );
 
-        const cdlsDropdownData = cdls.map((cdlItem) => {
+        const cdlsDropdownData = cdlList.map((cdlItem) => {
             return {
                 ...cdlItem,
                 name: cdlItem.cdlNumber,
@@ -423,7 +425,7 @@ export class DriverDetailsItemCdlComponent
         action: string
     ): void {
         const name = DropActionNameHelper.dropActionNameDriver(event, action);
-        const cdl = this.cardsData.find((cdl) => cdl.id === event.id);
+        const cdl = this.cdlList.find((cdl) => cdl.id === event.id);
 
         switch (event.type) {
             case DriverDetailsItemStringEnum.EDIT:

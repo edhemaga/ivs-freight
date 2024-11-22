@@ -1376,7 +1376,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
         });
 
         // documents
-        this.documents = editData.files;
+        this.documents = editData?.files || [];
 
         // patch form
         this.repairOrderForm.patchValue({

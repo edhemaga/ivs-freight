@@ -2,85 +2,16 @@
 
 .text {
     &-color {
-        &-muted {
-            color: $muted !important;
-
-            &::-moz-selection {
-                background-color: rgb(145, 145, 145, 0.2) !important;
-                color: $muted !important;
-            }
-
-            &::selection {
-                background-color: rgb(145, 145, 145, 0.2) !important;
-                color: $muted !important;
-            }
-        }
-
-        &-green {
-            color: $ta-green !important;
-
-            &::-moz-selection {
-                background-color: rgb(86, 180, 172, 0.2) !important;
-                color: $ta-green !important;
-            }
-
-            &::selection {
-                background-color: rgb(86, 180, 172, 0.2) !important;
-                color: $ta-green !important;
-            }
-        }
-        &-blue-13 {
-            color: $ta-blue-13 !important;
-
-            &::-moz-selection {
-                background-color: rgb(102, 146, 24, 0.2) !important;
-                color: $ta-blue-13 !important;
-            }
-
-            &::selection {
-                background-color: rgb(102, 146, 24, 0.2) !important;
-                color: $ta-blue-13 !important;
-            }
-        }
-
-        &-blue-18 {
-            color: $ta-blue-18 !important;
-
-            &::-moz-selection {
-                background-color: rgb(59, 115, 237, 0.2) !important;
-                color: $ta-blue-18 !important;
-            }
-
-            &::selection {
-                background-color: rgb(59, 115, 237, 0.2) !important;
-                color: $ta-blue-18 !important;
-            }
-        }
-
-        &-red-10 {
-            color: $ta-red-10 !important;
-
-            &::-moz-selection {
-                background-color: rgb(230, 103, 103, 0.2) !important;
-                color: $ta-red-10 !important;
-            }
-
-            &::selection {
-                background-color: rgb(230, 103, 103, 0.2) !important;
-                color: $ta-red-10 !important;
-            }
-        }
-
         &-black {
             color: $ta-black !important;
 
             &::-moz-selection {
-                background-color: rgb(66, 66, 66, 0.2) !important;
+                background: rgb(66, 66, 66, 0.2) !important;
                 color: $ta-black !important;
             }
 
             &::selection {
-                background-color: rgb(66, 66, 66, 0.2) !important;
+                background: rgb(66, 66, 66, 0.2) !important;
                 color: $ta-black !important;
             }
         }
@@ -89,13 +20,96 @@
             color: $ta-black-2 !important;
 
             &::-moz-selection {
-                background-color: rgb(47, 47, 47, 0.2) !important;
+                background: rgb(47, 47, 47, 0.2) !important;
                 color: $ta-black-2 !important;
             }
 
             &::selection {
-                background-color: rgb(47, 47, 47, 0.2) !important;
+                background: rgb(47, 47, 47, 0.2) !important;
                 color: $ta-black-2 !important;
+            }
+        }
+
+        &-muted {
+            color: $muted !important;
+
+            &::-moz-selection {
+                background: rgb(145, 145, 145, 0.2) !important;
+                color: $muted !important;
+            }
+
+            &::selection {
+                background: rgb(145, 145, 145, 0.2) !important;
+                color: $muted !important;
+            }
+        }
+
+        &-green {
+            color: $ta-green !important;
+
+            &::-moz-selection {
+                background: rgb(86, 180, 172, 0.2) !important;
+                color: $ta-green !important;
+            }
+
+            &::selection {
+                background: rgb(86, 180, 172, 0.2) !important;
+                color: $ta-green !important;
+            }
+        }
+        &-blue-13 {
+            color: $ta-blue-13 !important;
+
+            &::-moz-selection {
+                background: rgb(102, 146, 24, 0.2) !important;
+                color: $ta-blue-13 !important;
+            }
+
+            &::selection {
+                background: rgb(102, 146, 24, 0.2) !important;
+                color: $ta-blue-13 !important;
+            }
+        }
+
+        &-blue-18 {
+            color: $ta-blue-18 !important;
+
+            &::-moz-selection {
+                background: rgb(59, 115, 237, 0.2) !important;
+                color: $ta-blue-18 !important;
+            }
+
+            &::selection {
+                background: rgb(59, 115, 237, 0.2) !important;
+                color: $ta-blue-18 !important;
+            }
+        }
+
+        &-red-10 {
+            color: $ta-red-10 !important;
+
+            &::-moz-selection {
+                background: rgb(230, 103, 103, 0.2) !important;
+                color: $ta-red-10 !important;
+            }
+
+            &::selection {
+                background: rgb(230, 103, 103, 0.2) !important;
+                color: $ta-red-10 !important;
+            }
+        }
+
+        &-light-grey {
+            color: $ta-light-grey !important;
+
+            &::-moz-selection {
+                background: rgb(229, 229, 229, 0.2) !important;
+                color: $ta-light-grey !important;
+            }
+
+            &::selection {
+                background: rgb(229, 229, 229, 0.2) !important;
+                color: $ta-light-grey !important;
             }
         }
 
@@ -103,13 +117,13 @@
             color: $ta-light-grey-2 !important;
 
             &::-moz-selection {
-                background-color: rgb(170, 170, 170, 0.2) !important;
-                color: $ta-light-grey-2;
+                background: rgb(170, 170, 170, 0.2) !important;
+                color: $ta-light-grey-2 !important;
             }
 
             &::selection {
-                background-color: rgb(170, 170, 170, 0.2) !important;
-                color: $ta-light-grey-2;
+                background: rgb(170, 170, 170, 0.2) !important;
+                color: $ta-light-grey-2 !important;
             }
         }
 
@@ -169,18 +183,40 @@
             }
         }
 
+        &-bw6-2 {
+            color: $bw6-2 !important;
+
+            &::-moz-selection {
+                color: $bw6-2 !important;
+                background: rgba(108, 108, 108, 0.2) !important;
+            }
+            &::selection {
+                color: $bw6-2 !important;
+                background: rgba(108, 108, 108, 0.2) !important;
+            }
+        }
+
         &-grey {
-            color: $bw5;
+            color: $bw5 !important;
+
+            &::-moz-selection {
+                color: $bw5 !important;
+                background: rgba(145, 145, 145, 0.2) !important;
+            }
+            &::selection {
+                color: $bw5 !important;
+                background: rgba(145, 145, 145, 0.2) !important;
+            }
 
             .address-text,
             .marker-bold-text {
                 &::-moz-selection {
-                    color: $bw5;
-                    background: rgba(145, 145, 145, 0.2);
+                    color: $bw5 !important;
+                    background: rgba(145, 145, 145, 0.2) !important;
                 }
                 &::selection {
-                    color: $bw5;
-                    background: rgba(145, 145, 145, 0.2);
+                    color: $bw5 !important;
+                    background: rgba(145, 145, 145, 0.2) !important;
                 }
             }
         }

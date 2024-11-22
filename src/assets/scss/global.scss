@@ -102,7 +102,9 @@ body {
         .scrollable-element
     ):not(.dropdown-options.scroll):not(.navigation-middle):not(
         .map-list-body
-    ):not(.cluster-marker-container) {
+    ):not(.cluster-marker-container):not(
+        .shop-details-item-repair-main-dropdown
+    ) {
     scrollbar-width: none !important; /* Firefox */
 
     &::-webkit-scrollbar {
@@ -493,6 +495,18 @@ app-load-modal {
         width: 18px;
         height: 24px;
     }
+}
+
+// description items text count directive
+.items-counter-count {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 25px;
+    height: 18px;
+    border-radius: 50%;
+    margin-left: auto;
+    background: $dark-2;
 }
 
 .pl {
