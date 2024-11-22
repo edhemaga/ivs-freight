@@ -114,23 +114,19 @@ export class FuelTableComponent implements OnInit, AfterViewInit, OnDestroy {
     public displayRows$: Observable<any>; //leave this as any for now
 
     constructor(
-        private modalService: ModalService,
-        private tableService: TruckassistTableService,
-        private thousandSeparator: ThousandSeparatorPipe,
         public datePipe: DatePipe,
-        private fuelQuery: FuelQuery,
-        private ref: ChangeDetectorRef,
-        private confiramtionService: ConfirmationService,
-        private fuelService: FuelService,
         private nameInitialsPipe: NameInitialsPipe,
         private activityTimePipe: ActivityTimePipe,
+        private thousandSeparator: ThousandSeparatorPipe,
+        private modalService: ModalService,
+        private tableService: TruckassistTableService,
+        private confiramtionService: ConfirmationService,
         private payrollService: PayrollService,
-
-        // services
+        private fuelService: FuelService,
         private fuelCardsModalService: FuelCardsModalService,
-
-        // store
-        private store: Store,
+        private fuelQuery: FuelQuery,
+        private ref: ChangeDetectorRef,
+        private store: Store
     ) {}
 
     //-------------------------------NG ON INIT-------------------------------
