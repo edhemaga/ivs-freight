@@ -70,7 +70,7 @@
                                 !truckTrailerRepairPmOptions?.trailerPmDropdownList
                         }"
                     >
-                        <app-ca-input-dropdown
+                        <app-ta-input-dropdown
                             formControlName="pm"
                             [template]="'svgtext-template'"
                             [inputConfig]="{
@@ -99,7 +99,7 @@
                                 truckTrailerRepairPmOptions?.trailerPmDropdownList
                             "
                             (selectedItem)="emitOnSelectDropdown($event, i)"
-                        ></app-ca-input-dropdown>
+                        ></app-ta-input-dropdown>
                     </div>
                 </ng-container>
 
