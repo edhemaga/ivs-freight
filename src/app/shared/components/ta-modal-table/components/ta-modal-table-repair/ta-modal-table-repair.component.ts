@@ -11,6 +11,7 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
 
 //components
 import { CaInputDropdownComponent, CaInputComponent } from 'ca-components';
+import { TaInputDropdownComponent } from '@shared/components/ta-input-dropdown/ta-input-dropdown.component';
 
 //enums
 import { TaModalTableStringEnum } from '@shared/components/ta-modal-table/enums/';
@@ -39,6 +40,7 @@ import { EnumValue } from 'appcoretruckassist';
 
         CaInputDropdownComponent,
         CaInputComponent,
+        TaInputDropdownComponent,
 
         //pipes
         TrackByPropertyPipe,
