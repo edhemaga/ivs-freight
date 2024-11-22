@@ -140,7 +140,9 @@ export class TaToolbarFiltersComponent implements OnInit, OnChanges, OnDestroy {
             this.filterService.getStateData();
 
         if (this.options.toolbarActions.showCategoryRepairFilter)
-            this.filterService.getRepairCategory();
+            this.filterService.getRepairCategory(
+                this.activeTableData?.title === 'Shop'
+            );
 
         if (this.options.toolbarActions.showCategoryFuelFilter)
             this.filterService.getFuelCategory();
