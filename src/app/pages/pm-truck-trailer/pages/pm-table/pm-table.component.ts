@@ -49,6 +49,7 @@ import { TruckNameStringEnum } from '@shared/enums/truck-name-string.enum';
 import { TrailerNameStringEnum } from '@shared/enums/trailer-name-string.enum';
 import { TooltipColorsStringEnum } from '@shared/enums/tooltip-colors-string.enum';
 import { TableActionsStringEnum } from '@shared/enums/table-actions-string.enum';
+import { ToolbarFilterStringEnum } from '@shared/components/ta-filter/enums/toolbar-filter-string.enum';
 
 // Store
 import { PmTruckQuery } from '@pages/pm-truck-trailer/state/pm-truck-state/pm-truck.query';
@@ -65,7 +66,6 @@ import {
     selectInactiveTabCards,
 } from '../pm-card-modal/state';
 import { RepairOrderModalComponent } from '@pages/repair/pages/repair-modals/repair-order-modal/repair-order-modal.component';
-import { ToolbarFilterStringEnum } from '@shared/components/ta-filter/enums/toolbar-filter-string.enum';
 
 @Component({
     selector: 'app-pm-table',
