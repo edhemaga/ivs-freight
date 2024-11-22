@@ -1,4 +1,4 @@
-<div class="repair-details-item-container">
+<div class="repair-shop-details-item-container">
     <!-- repair-component {{ customClass }} -->
     <ng-container
         *ngFor="let repairShopItem of detailsConfig; trackBy: trackByIdentity"
@@ -26,55 +26,13 @@
 
             <!-- Vehicle -->
 
-            <!--  <div *ngSwitchCase="'repaired-vehicle'">
-        <div
-            class="repaired-vehicle-container"
-            *ngIf="repairedVehicleListData?.length"
-        >
-            <div class="repair-vehicle-header">
-                <span class="repaier-headers">UNIT</span>
-                <span class="repaier-headers">TYPE</span>
-                <span class="repair-svg-holder">
-                    <svg-icon
-                        src="assets/svg/common/ic_key-repair.svg"
-                    ></svg-icon>
-                </span>
-                <span class="repaier-headers last-value-align">COST</span>
-            </div>
-            <div class="divider"></div>
-            <div
-                class="repair-items-vehicle"
-                *ngFor="
-                    let vehicle of repairedVehicleListData;
-                    let i = index
-                "
-            >
-                <div class="items-vehicle">
-                    <span class="unit">{{ vehicle.unitNumber }}</span>
-
-                    <svg-icon
-                        class="vehicle-icon"
-                        *ngIf="vehicle.unitType === 'Trailer'"
-                        src="assets/svg/common/trailers/{{
-                            vehicle.logoName
-                        }} "
-                    ></svg-icon>
-                    <svg-icon
-                        class="vehicle-icon truck-icon"
-                        *ngIf="vehicle.unitType === 'Truck'"
-                        src="assets/svg/common/trucks/{{
-                            vehicle.logoName
-                        }} "
-                    ></svg-icon>
-                    <span class="date">{{ vehicle.totalRepairs }}</span>
-                    <span class="cost">{{
-                        vehicle.totalCost | formatCurrency
-                    }}</span>
-                </div>
-                <div class="divider"></div>
-            </div>
-        </div>
-    </div> -->
+            <ng-container *ngSwitchCase="'repaired-vehicle'">
+                <app-repair-shop-details-item-repaired-vehicle
+                    [repairedVehicleList]="
+                        detailsConfig[1]?.data?.repairedVehicleList
+                    "
+                ></app-repair-shop-details-item-repaired-vehicle>
+            </ng-container>
 
             <!-- <div *ngSwitchCase="'review'">
         <div class="likes-count-container">

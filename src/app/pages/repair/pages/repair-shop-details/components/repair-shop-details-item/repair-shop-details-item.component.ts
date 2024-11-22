@@ -9,9 +9,7 @@ import { ReviewsRatingService } from '@shared/services/reviews-rating.service';
 // components
 import { RepairShopDetailsCard } from '@pages/repair/pages/repair-shop-details/components/repair-shop-details-card/repair-shop-details-card.component';
 import { RepairShopDetailsItemRepairComponent } from '@pages/repair/pages/repair-shop-details/components/repair-shop-details-item/components/repair-shop-details-item-repair/repair-shop-details-item-repair.component';
-
-// animations
-import { cardComponentAnimation } from '@shared/animations/card-component.animation';
+import { RepairShopDetailsItemRepairedVehicleComponent } from '@pages/repair/pages/repair-shop-details/components/repair-shop-details-item/components/repair-shop-details-item-repaired-vehicle/repair-shop-details-item-repaired-vehicle.component';
 
 // models
 import { RepairShopResponse, UpdateReviewCommand } from 'appcoretruckassist';
@@ -21,7 +19,6 @@ import { DetailsConfig } from '@shared/models/details-config.model';
     selector: 'app-repair-shop-details-item',
     templateUrl: './repair-shop-details-item.component.html',
     styleUrls: ['./repair-shop-details-item.component.scss'],
-    animations: [cardComponentAnimation('showHideCardBody', '0px', '0px')],
     standalone: true,
     imports: [
         // modules
@@ -30,6 +27,7 @@ import { DetailsConfig } from '@shared/models/details-config.model';
         // components
         RepairShopDetailsCard,
         RepairShopDetailsItemRepairComponent,
+        RepairShopDetailsItemRepairedVehicleComponent,
     ],
 })
 export class RepairShopDetailsItemComponent {

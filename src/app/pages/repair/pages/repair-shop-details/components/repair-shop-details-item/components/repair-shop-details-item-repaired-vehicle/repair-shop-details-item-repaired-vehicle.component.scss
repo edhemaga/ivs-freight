@@ -1,0 +1,60 @@
+@import 'src/theme/variables';
+
+.repaired-vehicle-list-container {
+    padding: 6px;
+    border-radius: 3px;
+    background: $white;
+
+    /* Header */
+
+    .repaired-vehicle-list-header {
+        display: grid;
+        grid-template-columns: 60px 42px 34px 72px;
+        grid-gap: 27px;
+        padding: 6px;
+        border-bottom: 1px solid $bw-9;
+        margin-bottom: 6px;
+    }
+
+    /* Body */
+
+    .repaired-vehicle-list-body {
+        &-item {
+            display: grid;
+            grid-template-columns: 60px 42px 34px 72px;
+            grid-gap: 27px;
+            padding: 8px 6px;
+            margin-bottom: 2px;
+            border-radius: 2px;
+            transition: background 0.2s ease-in-out;
+
+            &:hover {
+                background: $bw2;
+            }
+
+            .vehicle-unit-container {
+                cursor: pointer;
+
+                &:hover {
+                    p {
+                        color: $ta-blue-15 !important;
+                    }
+                }
+
+                p {
+                    transition: color 0.2s ease-in-out;
+                }
+            }
+
+            .vehicle-type-container {
+                .vehicle-icon {
+                    height: 18px;
+
+                    svg {
+                        height: 18px;
+                    }
+                }
+            }
+        }
+    }
+}

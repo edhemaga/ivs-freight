@@ -1,4 +1,4 @@
-<div class="repair-details-container">
+<div class="repair-shop-details-container">
     <ng-container
         *ngFor="let item of repairShopDetailsConfig; trackBy: trackByIdentity"
     >
@@ -24,6 +24,7 @@
             [moneyFilter]="true"
             [repairOrderFilter]="true"
             (dropActions)="onRepairShopActions($event)"
+            (openModalAction)="onModalAction($event)"
             (filterActions)="onFilter($event)"
             (specialFilterActions)="onFilter($event)"
         >

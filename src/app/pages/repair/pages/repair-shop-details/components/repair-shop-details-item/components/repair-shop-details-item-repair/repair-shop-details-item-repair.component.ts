@@ -63,7 +63,7 @@ import { RepairResponse } from 'appcoretruckassist';
 })
 export class RepairShopDetailsItemRepairComponent implements OnInit {
     @Input() set repairList(data: RepairResponse[]) {
-        this.createRepairItemData(data);
+        this.createRepairData(data);
     }
 
     private destroy$ = new Subject<void>();
@@ -123,7 +123,7 @@ export class RepairShopDetailsItemRepairComponent implements OnInit {
             RepairShopDetailsItemConstants.REPAIR_DROPDOWN_HEADER_ITEMS;
     }
 
-    private createRepairItemData(data: RepairResponse[]): void {
+    private createRepairData(data: RepairResponse[]): void {
         this._repairList = data.map((repair) => {
             const { items } = repair;
 

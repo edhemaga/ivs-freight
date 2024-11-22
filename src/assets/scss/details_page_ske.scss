@@ -993,11 +993,11 @@ p {
     }
 
     .repair-details-container {
-        grid-template-columns: 440px 712px 320px 260px !important;
+        grid-template-columns: 440px 734px repeat(2, 312px) !important;
     }
 
     .repair-details-cmp {
-        grid-template-columns: 440px 712px 320px 260px !important;
+        grid-template-columns: 440px 734px repeat(2, 312px) !important;
     }
 
     .responsiveHolderRepair {

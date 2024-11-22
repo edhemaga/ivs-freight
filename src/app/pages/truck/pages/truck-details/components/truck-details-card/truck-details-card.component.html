@@ -10,10 +10,10 @@
         [searchInputName]="'Search Truck'"
         [options]="truckDropDowns"
         [currentName]="truck?.truckNumber"
-        [deactivate]="!truck.status"
-        [owner]="!truck.companyOwned"
-        [ownerName]="truck.owner.name"
-        [cardDetailsDateTerminated]="truck.updatedAt | formatDateP"
+        [deactivate]="!truck?.status"
+        [owner]="!truck?.companyOwned"
+        [ownerName]="truck?.owner?.name"
+        [cardDetailsDateTerminated]="truck?.updatedAt | formatDateP"
         [sortOptions]="'active-drivers'"
         (selectValue)="onSelectedTruck($event)"
         (changeEvent)="onChangeTruck($event)"
@@ -23,7 +23,7 @@
                 <div class="details-header-avatar">
                     <div
                         class="svg-truck-wrapper"
-                        [class.inactiveTruckLogo]="truck.status == 0"
+                        [class.inactiveTruckLogo]="truck?.status == 0"
                     >
                         <svg-icon
                             class="truck truck-color-code"
@@ -47,7 +47,7 @@
                             >
                             </svg-icon>
                         </div>
-                        <p class="header-text">{{ truck.model }}</p>
+                        <p class="header-text">{{ truck?.model }}</p>
                     </div>
                 </div>
                 <div class="details-header-data">
@@ -125,7 +125,7 @@
                         ></svg-icon>
                         <app-ta-copy
                             [textFontSize]="'18px'"
-                            [copyValue]="getLastSixChars(truck.vin)"
+                            [copyValue]="getLastSixChars(truck?.vin)"
                             [textColor]="'#2f2f2f'"
                             [boldText]="true"
                             [arrayText]="truck.vin.length > 6 ? true : false"
@@ -935,20 +935,16 @@
                 [hasHeaderSvg]="'assets/svg/common/arrow_top_right.svg'"
                 [customClass]="'detailsPadding'"
             >
-                <div
-                    class="charts-template perfomance"
-                >
+                <div class="charts-template perfomance">
                     <!-- <div [class.d-none]="payrollChart.hoveringStatus"> -->
-                        <app-ta-tab-switch
-                            [type]="'type2-modal-popup'"
-                            (switchClicked)="changeTabFuel($event)"
-                            [tabs]="buttonsArrayFuel"
-                        >
-                        </app-ta-tab-switch>
-                    <!-- </div> -->
-                    <app-ca-chart
-                        [chartConfig]="fuelConsumptionChartConfig"
+                    <app-ta-tab-switch
+                        [type]="'type2-modal-popup'"
+                        (switchClicked)="changeTabFuel($event)"
+                        [tabs]="buttonsArrayFuel"
                     >
+                    </app-ta-tab-switch>
+                    <!-- </div> -->
+                    <app-ca-chart [chartConfig]="fuelConsumptionChartConfig">
                     </app-ca-chart>
                 </div>
             </app-ta-custom-card>
@@ -962,20 +958,16 @@
                 [isCardOpen]="true"
                 [customClass]="'detailsPadding'"
             >
-                <div
-                    class="charts-template perfomance"
-                >
+                <div class="charts-template perfomance">
                     <!-- <div [class.d-none]="revenueChart.hoveringStatus"> -->
-                        <app-ta-tab-switch
-                            [type]="'type2-modal-popup'"
-                            (switchClicked)="changeTabRevenue($event)"
-                            [tabs]="buttonsArrayRevenue"
-                        >
-                        </app-ta-tab-switch>
-                    <!-- </div> -->
-                    <app-ca-chart
-                        [chartConfig]="revenueChartConfig"
+                    <app-ta-tab-switch
+                        [type]="'type2-modal-popup'"
+                        (switchClicked)="changeTabRevenue($event)"
+                        [tabs]="buttonsArrayRevenue"
                     >
+                    </app-ta-tab-switch>
+                    <!-- </div> -->
+                    <app-ca-chart [chartConfig]="revenueChartConfig">
                     </app-ca-chart>
                 </div>
             </app-ta-custom-card>
@@ -985,20 +977,16 @@
                 [bodyTemplate]="'card'"
                 [isCardOpen]="true"
             >
-                <div
-                    class="charts-template perfomance"
-                >
+                <div class="charts-template perfomance">
                     <!-- <div [class.d-none]="stackedBarChart.hoveringStatus"> -->
-                        <app-ta-tab-switch
-                            [type]="'type2-modal-popup'"
-                            (switchClicked)="changeTabExpenses($event)"
-                            [tabs]="buttonsArrayPerfomance"
-                        >
-                        </app-ta-tab-switch>
-                    <!-- </div> -->
-                    <app-ca-chart
-                        [chartConfig]="expensesChartConfig"
+                    <app-ta-tab-switch
+                        [type]="'type2-modal-popup'"
+                        (switchClicked)="changeTabExpenses($event)"
+                        [tabs]="buttonsArrayPerfomance"
                     >
+                    </app-ta-tab-switch>
+                    <!-- </div> -->
+                    <app-ca-chart [chartConfig]="expensesChartConfig">
                     </app-ca-chart>
                 </div>
             </app-ta-custom-card>

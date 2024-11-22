@@ -38,4 +38,6 @@ export enum RepairShopDetailsStringEnum {
     FINISH_ORDER_2 = 'Finish Order',
     DOCUMENT = 'Document',
     NOTE = 'Note',
+
+    REPAIR = 'Repair',
 }

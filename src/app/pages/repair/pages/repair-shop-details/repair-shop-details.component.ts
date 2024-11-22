@@ -18,6 +18,7 @@ import { DetailsPageService } from '@shared/services/details-page.service';
 import { TruckassistTableService } from '@shared/services/truckassist-table.service';
 import { DetailsDataService } from '@shared/services/details-data.service';
 import { ConfirmationActivationService } from '@shared/components/ta-shared-modals/confirmation-activation-modal/services/confirmation-activation.service';
+import { ModalService } from '@shared/services/modal.service';
 
 // store
 import { RepairDetailsQuery } from '@pages/repair/state/repair-details-state/repair-details.query';
@@ -28,6 +29,7 @@ import { RepairMinimalListQuery } from '@pages/repair/state/driver-details-minim
 // components
 import { TaDetailsHeaderComponent } from '@shared/components/ta-details-header/ta-details-header.component';
 import { RepairShopDetailsItemComponent } from '@pages/repair/pages/repair-shop-details/components/repair-shop-details-item/repair-shop-details-item.component';
+import { RepairOrderModalComponent } from '@pages/repair/pages/repair-modals/repair-order-modal/repair-order-modal.component';
 
 // enums
 import { RepairShopDetailsStringEnum } from '@pages/repair/pages/repair-shop-details/enums';
@@ -55,7 +57,7 @@ import { RepairBackFilter } from '@pages/repair/pages/repair-table/models';
     changeDetection: ChangeDetectionStrategy.OnPush,
     standalone: true,
     imports: [
-        // Modules
+        // modules
         CommonModule,
 
         TaDetailsHeaderComponent,
@@ -92,6 +94,7 @@ export class RepairShopDetailsComponent implements OnInit, OnDestroy {
         private dropDownService: DropDownService,
         private detailsDataService: DetailsDataService,
         private confirmationActivationService: ConfirmationActivationService,
+        private modalService: ModalService,
 
         // ref
         private cdRef: ChangeDetectorRef,
@@ -158,7 +161,6 @@ export class RepairShopDetailsComponent implements OnInit, OnDestroy {
             .subscribe((repair: RepairListResponse) => {});
     }
 
-    // table filters
     public setTableFilter(): void {
         this.tableService.currentSetTableFilter
             .pipe(takeUntil(this.destroy$))
@@ -356,6 +358,19 @@ export class RepairShopDetailsComponent implements OnInit, OnDestroy {
 
                 this.cdRef.detectChanges();
             });
+    }
+
+    public onModalAction(action: string): void {
+        switch (action) {
+            case RepairShopDetailsStringEnum.REPAIR:
+                this.modalService.openModal(RepairOrderModalComponent, {
+                    size: TableStringEnum.SMALL,
+                });
+
+                break;
+            default:
+                break;
+        }
     }
 
     public onRepairShopActions<T>(event: {
