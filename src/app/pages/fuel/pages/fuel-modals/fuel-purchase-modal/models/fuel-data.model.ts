@@ -7,4 +7,5 @@ export interface FuelData {
     data: FuelTransactionListResponse;
     truckId: number;
     isShortModal: boolean;
+    payrollOwnerId: number;
 }

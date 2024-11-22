@@ -166,13 +166,16 @@ export class PayrollDeductionModalComponent implements OnInit {
     }
 
     private generateModel(): CreatePayrollDeductionCommand {
-        const isRecurring = this.payrollCreditForm.get(PayrollStringEnum.RECURRING).value;
+        const isRecurring = this.payrollCreditForm.get(
+            PayrollStringEnum.RECURRING
+        ).value;
         return {
             type: this.payrollCreditForm.get(PayrollStringEnum.SELECTED_TYPE_ID)
                 .value,
-            recurringType: isRecurring ? this.payrollCreditForm.get(
-                PayrollStringEnum.RECURRING_TYPE
-            ).value : null,
+            recurringType: isRecurring
+                ? this.payrollCreditForm.get(PayrollStringEnum.RECURRING_TYPE)
+                      .value
+                : null,
             driverId: this.payrollCreditForm.get(
                 PayrollStringEnum.SELECTED_DRIVER_ID
             ).value,
@@ -188,15 +191,20 @@ export class PayrollDeductionModalComponent implements OnInit {
             amount: MethodsCalculationsHelper.convertThousanSepInNumber(
                 this.payrollCreditForm.get(PayrollStringEnum.AMOUNT).value
             ),
-            recurring: isRecurring, 
+            recurring: isRecurring,
             limited: this.payrollCreditForm.get(PayrollStringEnum.LIMITED)
                 .value,
-            limitedAmount: isRecurring ? MethodsCalculationsHelper.convertThousanSepInNumber(this.payrollCreditForm.get(
-                PayrollStringEnum.LIMITED_AMOUNT
-            ).value) : null,
-            limitedNumber: isRecurring ?  this.payrollCreditForm.get(
-                PayrollStringEnum.LIMITED_NUMBER
-            ).value : null,
+            limitedAmount: isRecurring
+                ? MethodsCalculationsHelper.convertThousanSepInNumber(
+                      this.payrollCreditForm.get(
+                          PayrollStringEnum.LIMITED_AMOUNT
+                      ).value
+                  )
+                : null,
+            limitedNumber: isRecurring
+                ? this.payrollCreditForm.get(PayrollStringEnum.LIMITED_NUMBER)
+                      .value
+                : null,
         };
     }
 
@@ -244,28 +252,32 @@ export class PayrollDeductionModalComponent implements OnInit {
                     this.onCloseModal();
                 });
         } else if (action === TaModalActionEnums.DELETE) {
-            this.payrollService.raiseDeleteModal(TableStringEnum.DEDUCTION, ConfirmationModalStringEnum.DELETE_DEDUCTION, this.editData.data.id, 
+            this.payrollService.raiseDeleteModal(
+                TableStringEnum.DEDUCTION,
+                ConfirmationModalStringEnum.DELETE_DEDUCTION,
+                this.editData.data.id,
                 {
                     title: this.deduction.description,
                     subtitle: this.deduction.amount,
                     date: this.deduction.date,
                     label: `${this.deduction.driver.firstName} ${this.deduction.driver.lastName}`,
-                    id: this.deduction.id
-            });
+                    id: this.deduction.id,
+                }
+            );
         }
     }
 
     public calculateRemainingPayment(index: number): string {
         const value =
             this.deduction.amount - index * this.deduction.limitedAmount;
-        return `$${MethodsCalculationsHelper.convertNumberInThousandSep(
-            value
-        )}`;
+        return `$${parseFloat(
+            MethodsCalculationsHelper.convertNumberInThousandSep(value)
+        ).toFixed(2)}`;
     }
 
     public getPaymentString(): string {
         return `$${MethodsCalculationsHelper.convertNumberInThousandSep(
-            this.deduction.limitedAmount
+            Number(this.deduction.limitedAmount.toFixed(2))
         )}`;
     }
 
