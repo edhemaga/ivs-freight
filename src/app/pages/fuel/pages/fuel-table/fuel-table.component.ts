@@ -687,7 +687,7 @@ export class FuelTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 ? `$${lowestPricePerGallon}`
                 : `$${lowestPricePerGallon} - $${highestPricePerGallon}` 
             : TableStringEnum.EMPTY_STRING_PLACEHOLDER;
-        const tableExpense = totalCost ? `$${totalCost}` : TableStringEnum.EMPTY_STRING_PLACEHOLDER;
+        const tableExpense = totalCost ? `$${totalCost}` : FuelTableConstants.NO_EXPENSE;
         const tableLast = {
             startRange: lowestPricePerGallon ?? null,
             endRange: highestPricePerGallon ?? null,
