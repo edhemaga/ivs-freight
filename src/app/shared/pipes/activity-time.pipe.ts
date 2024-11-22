@@ -6,16 +6,15 @@ import moment from 'moment';
     standalone: true,
 })
 export class ActivityTimePipe implements PipeTransform {
-    transform(value: Date | string | number): string {
+    transform(value: Date | string | number, type?: string): string {
         const backendTime = moment.utc(value).local().unix();
-
         const currentTime = moment().unix();
-
         const diffInSeconds = currentTime - backendTime;
 
-        if (diffInSeconds < 600) return 'Online';
-        else if (diffInSeconds < 3600) {
-            const minutes = Math.floor(diffInSeconds / 60);
+        if (type === 'activity') if (diffInSeconds < 600) return 'Online';
+
+        if (diffInSeconds < 3600) {
+            let minutes = Math.ceil(diffInSeconds / 60);
             return `${minutes} minute${minutes === 1 ? '' : 's'} ago`;
         } else if (diffInSeconds < 86400) {
             const hours = Math.floor(diffInSeconds / 3600);

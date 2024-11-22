@@ -10,9 +10,7 @@ import {
 import { AngularSvgIconModule } from 'angular-svg-icon';
 
 //components
-import { TaInputDropdownComponent } from '@shared/components/ta-input-dropdown/ta-input-dropdown.component';
-import { TaInputComponent } from '@shared/components/ta-input/ta-input.component';
-import { CaInputDropdownComponent } from 'ca-components';
+import { CaInputDropdownComponent, CaInputComponent } from 'ca-components';
 
 //enums
 import { TaModalTableStringEnum } from '@shared/components/ta-modal-table/enums/';
@@ -39,10 +37,8 @@ import { EnumValue } from 'appcoretruckassist';
         AngularSvgIconModule,
         ReactiveFormsModule,
 
-        // components
-        TaInputComponent,
-        TaInputDropdownComponent,
         CaInputDropdownComponent,
+        CaInputComponent,
 
         //pipes
         TrackByPropertyPipe,

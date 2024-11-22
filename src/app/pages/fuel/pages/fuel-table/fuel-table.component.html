@@ -27,6 +27,20 @@
         ></app-ta-table-body>
     </ng-container>
 
+    <ng-container *ngIf="activeViewMode === 'Card'">
+        <div class="elements">
+            <app-fuel-card
+                [viewData]="viewData"
+                [rows]="rows"
+                [cardTitle]="cardTitle"
+                [displayRowsFront]="(displayRows$ | async).displayRowsFront"
+                [displayRowsBack]="(displayRows$ | async).displayRowsBack"
+                [page]="page"
+                [selectedTab]="selectedTab"
+            ></app-fuel-card>
+        </div>
+    </ng-container>
+
     <ng-container *ngIf="activeViewMode === 'Map'">
         <div class="customer-map-container">
             <app-ta-map-list
