@@ -32,7 +32,7 @@ import { RepairedVehicleListResponse } from 'appcoretruckassist';
         AngularSvgIconModule,
         NgbModule,
 
-        //components
+        // components
         TaAppTooltipV2Component,
 
         // pipes

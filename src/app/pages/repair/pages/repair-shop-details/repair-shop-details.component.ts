@@ -388,18 +388,11 @@ export class RepairShopDetailsComponent implements OnInit, OnDestroy {
         this.repairService
             .deleteRepairShop(id)
             .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: () => {
-                    this.router.navigate([
-                        RepairShopDetailsStringEnum.REPAIR_LIST_ROUTE,
-                    ]);
-                },
-                error: () => {
-                    this.router.navigate([
-                        RepairShopDetailsStringEnum.REPAIR_LIST_ROUTE,
-                    ]);
-                },
-            });
+            .subscribe(() =>
+                this.router.navigate([
+                    RepairShopDetailsStringEnum.REPAIR_LIST_ROUTE,
+                ])
+            );
     }
 
     public deleteRepair(
