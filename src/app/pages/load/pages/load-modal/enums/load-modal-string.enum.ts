@@ -218,4 +218,5 @@ export enum LoadModalStringEnum {
     TRAILERS_SVG_ROUTE = 'assets/svg/common/trailers/',
     COMMISSION = 'Commission',
     PERCENT_PAY_TYPE = '%',
+    TEXT_SUFFIX = 'text-suffix'
 }

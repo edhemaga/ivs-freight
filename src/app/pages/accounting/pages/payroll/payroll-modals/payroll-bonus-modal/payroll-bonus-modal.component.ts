@@ -150,14 +150,7 @@ export class PayrollBonusModalComponent implements OnInit {
                 .subscribe((response) => {
                     this.onCloseModal();
                 });
-        } else if (action === TaModalActionEnums.MOVE_TO_THIS_PERIOD) {
-            this.payrollBonusService
-                .movePayrollBonus(this.editData.data.id)
-                .pipe(takeUntil(this.destroy$))
-                .subscribe((response) => {
-                    this.onCloseModal();
-                });
-        } else if (action === TaModalActionEnums.DELETE) {
+        }  else if (action === TaModalActionEnums.DELETE) {
             this.payrollService.raiseDeleteModal(
                 TableStringEnum.BONUS,
                 ConfirmationModalStringEnum.DELETE_BONUS,
