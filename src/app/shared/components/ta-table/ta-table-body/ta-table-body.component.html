@@ -2897,7 +2897,8 @@
                                                 [startRange]="row[column.field]?.startRange"
                                                 [endRange]="row[column.field]?.endRange"
                                                 [value]="row[column.field]?.value"
-                                                [unit]="row[column.field].unit"
+                                                [unit]="row[column.field]?.unit"
+                                                [lastUsed]="row[column.field]?.lastUsed"
                                             ></app-ta-progress-range>
                                         </div>
                                     </ng-container>
@@ -5495,7 +5496,8 @@
                                                 [startRange]="row[column.field]?.startRange"
                                                 [endRange]="row[column.field]?.endRange"
                                                 [value]="row[column.field]?.value"
-                                                [unit]="row[column.field].unit"
+                                                [unit]="row[column.field]?.unit"
+                                                [lastUsed]="row[column.field]?.lastUsed"
                                             ></app-ta-progress-range>
                                         </div>
                                     </ng-container>
