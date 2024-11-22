@@ -4,5 +4,6 @@ export enum eProgressRangePrice {
     Low,
     Moderate,
     High,
-    MostExpensive
+    MostExpensive,
+    Inactive
 }

@@ -105,9 +105,9 @@ export class FilterStateService implements OnDestroy {
             });
     }
 
-    public getRepairCategory() {
+    public getRepairCategory(isFromRepairShop?: boolean) {
         const repairCategory = this.repairService
-            .apiRepairCategoryFilterGet()
+            .apiRepairCategoryFilterGet(isFromRepairShop)
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: (data: any) => {
