@@ -141,6 +141,7 @@ export interface MappedShipperBroker {
     tableContactData?: ShipperContactResponse[] | BrokerContactResponse[];
     tableAdded?: string;
     tableEdited?: string;
+    tableLastUsed?: string;
     tableDropdownContent?: {
         hasContent?: boolean;
         content?: DropdownItem[];
