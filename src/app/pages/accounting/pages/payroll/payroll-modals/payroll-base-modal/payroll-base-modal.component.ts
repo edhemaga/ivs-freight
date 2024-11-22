@@ -28,6 +28,8 @@ import { PayrollCreditConst } from '@pages/accounting/pages/payroll/state/utils/
 
 // Enums
 import { PayrollStringEnum } from '@pages/accounting/pages/payroll/state/enums';
+import { TableStringEnum } from '@shared/enums/table-string.enum';
+import { LoadModalStringEnum } from '@pages/load/pages/load-modal/enums';
 
 // Utils
 import { PayrollSvgRoutes } from '@pages/accounting/pages/payroll/state/utils';
@@ -40,7 +42,6 @@ import {
     PayrollCreditModalResponse,
     PayrollCreditType,
     PayrollDeductionRecurringType,
-    TruckMinimalResponse,
 } from 'appcoretruckassist';
 import { ITaInput } from '@shared/components/ta-input/config/ta-input.config';
 import {
@@ -54,12 +55,10 @@ import {
 import { PayrollCreditService } from '@pages/accounting/pages/payroll/payroll-modals/payroll-credit-bonus/services/payroll-credit.service';
 import { PayrollBonusService } from '@pages/accounting/pages/payroll/payroll-modals/payroll-bonus-modal/services/payroll-bonus.service';
 import { PayrollFacadeService } from '@pages/accounting/pages/payroll/state/services';
+import { ConfirmationService } from '@shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
 
 // Helpers
 import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calculations.helper';
-import { TableStringEnum } from '@shared/enums/table-string.enum';
-import { ConfirmationService } from '@shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
-import { LoadModalStringEnum } from '@pages/load/pages/load-modal/enums';
 
 @Component({
     selector: 'app-payroll-base-modal',
@@ -291,7 +290,7 @@ export class PayrollBaseModalComponent implements OnInit {
                         logoName: null,
                     },
                 ],
-                customClass: 'text-suffix',
+                customClass: LoadModalStringEnum.TEXT_SUFFIX,
             },
         };
     }
@@ -311,7 +310,6 @@ export class PayrollBaseModalComponent implements OnInit {
     }
 
     public selectTruck(truck: any): void {
-        console.log('truck: ', truck);
         this.selectedTruck = truck;
         this.baseForm
             .get(PayrollStringEnum.SELECTED_TRUCK_ID)
