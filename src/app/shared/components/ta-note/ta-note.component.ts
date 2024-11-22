@@ -48,6 +48,9 @@ import { TaSpinnerComponent } from '@shared/components/ta-spinner/ta-spinner.com
 import { ActiveOptions } from '@shared/components/ta-note/models';
 import { EntityTypeNote } from 'appcoretruckassist/model/entityTypeNote';
 
+// enums
+import { TableStringEnum } from '@shared/enums/table-string.enum';
+
 @Component({
     selector: 'app-ta-note',
     templateUrl: './ta-note.component.html',
@@ -422,11 +425,12 @@ export class TaNoteComponent implements OnInit, OnDestroy {
     }
 
     private correctEntityType(): void {
-        if (this.entityType == 'User') {
-            this.entityType = 'CompanyUser';
-        }
-        if (this.entityType == 'Customer') {
-            this.entityType = 'Broker';
+        if (this.entityType === TableStringEnum.USER) {
+            this.entityType = EntityTypeNote.CompanyUser;
+        } else if (this.entityType === TableStringEnum.CUSTOMER) {
+            this.entityType = EntityTypeNote.Broker;
+        } else if (this.entityType === TableStringEnum.FUEL) {
+            this.entityType = EntityTypeNote.FuelStopStore;
         }
     }
 
