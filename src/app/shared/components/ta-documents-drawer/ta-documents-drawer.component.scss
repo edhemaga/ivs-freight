@@ -1,0 +1,299 @@
+@import 'src/theme/variables';
+
+.documents-drawer-container {
+    visibility: visible !important;
+
+    /* Open Icon */
+
+    .documents-drawer-icon-container {
+        width: 26px;
+        height: 26px;
+        border-radius: 2px;
+        transition: background 0.2s ease-in;
+        cursor: pointer;
+
+        &:hover {
+            background: $dark-2;
+
+            .documents-drawer-icon {
+                svg {
+                    path {
+                        fill: $ta-black;
+                    }
+                }
+            }
+        }
+
+        &.active {
+            background: $ta-black;
+
+            .documents-drawer-icon {
+                svg {
+                    path {
+                        fill: $bw-9;
+                    }
+                }
+            }
+        }
+
+        .documents-drawer-icon {
+            position: relative;
+            bottom: 1px;
+
+            svg {
+                path {
+                    transition: fill 0.2s ease-in;
+                    fill: $bw5;
+                }
+            }
+        }
+    }
+
+    /* Main */
+
+    .documents-drawer-main-container {
+        position: absolute;
+        top: 0;
+        left: -1px;
+        border-radius: 3px;
+        z-index: 2;
+
+        /* Toolbar */
+
+        .documents-drawer-main-toolbar {
+            display: grid;
+            grid-template-columns: 120px 134px 26px 329px 86px;
+            grid-gap: 4px;
+            border-top-left-radius: 3px;
+            border-top-right-radius: 3px;
+            padding: 4px 6px;
+            cursor: pointer;
+            background: $ta-black-2;
+
+            .toolbar-border {
+                width: 1px;
+                height: 20px;
+                background: $bw6-2;
+            }
+
+            &-counter {
+                padding-left: 4px;
+
+                &-text {
+                    margin-right: 4px !important;
+                }
+
+                &-count {
+                    width: fit-content;
+                    height: 18px;
+                    padding: 2px 5px;
+                    border-radius: 50px;
+                    background: $bw-9;
+                }
+            }
+
+            &-tags {
+                &-row {
+                    max-width: 0;
+
+                    &.active {
+                        max-width: 100%;
+
+                        .documents-drawer-main-toolbar-tags-row-tag {
+                            visibility: visible;
+                        }
+                    }
+
+                    &-tag {
+                        width: fit-content;
+                        height: 18px;
+                        padding: 0 8px;
+                        border-radius: 50px;
+                        margin-right: 4px;
+                        visibility: hidden;
+                        transition: background 0.2s ease-in-out;
+                        background: $ta-black;
+
+                        &:hover {
+                            background: $bw2;
+
+                            p {
+                                color: $ta-black !important;
+
+                                &::-moz-selection {
+                                    color: $ta-black !important;
+                                    background: rgb(66, 66, 66, 0.2) !important;
+                                }
+
+                                &::selection {
+                                    color: $ta-black !important;
+                                    background: rgb(66, 66, 66, 0.2) !important;
+                                }
+                            }
+                        }
+
+                        &.active {
+                            background: $ta-blue-18;
+
+                            p {
+                                color: $white !important;
+
+                                &::-moz-selection {
+                                    color: $white !important;
+                                    background: rgb(
+                                        255,
+                                        255,
+                                        255,
+                                        0.2
+                                    ) !important;
+                                }
+
+                                &::selection {
+                                    color: $white !important;
+                                    background: rgb(
+                                        255,
+                                        255,
+                                        255,
+                                        0.2
+                                    ) !important;
+                                }
+                            }
+
+                            &:hover {
+                                background: $ta-blue-16;
+
+                                p {
+                                    color: $ta-blue-15 !important;
+
+                                    &::-moz-selection {
+                                        color: $ta-blue-15 !important;
+                                        background: rgb(
+                                            11,
+                                            73,
+                                            209,
+                                            0.2
+                                        ) !important;
+                                    }
+
+                                    &::selection {
+                                        color: $ta-blue-15 !important;
+                                        background: rgb(
+                                            11,
+                                            73,
+                                            209,
+                                            0.2
+                                        ) !important;
+                                    }
+                                }
+                            }
+                        }
+
+                        p {
+                            transition: color 0.2s ease-in-out;
+                        }
+                    }
+                }
+
+                &-btn {
+                    cursor: pointer;
+                    transition: transform 0.2s ease-in-out;
+                    transform: rotate(180deg);
+
+                    &:hover {
+                        .documents-drawer-main-toolbar-tags-btn-icon {
+                            svg {
+                                path {
+                                    fill: $bw-9;
+                                }
+                            }
+                        }
+                    }
+
+                    &.active {
+                        transform: unset;
+                    }
+
+                    &-icon {
+                        position: relative;
+                        top: -1px;
+
+                        svg {
+                            path {
+                                transition: fill 0.2s ease-in;
+                                fill: $bw5;
+                            }
+                        }
+                    }
+                }
+            }
+
+            &-actions {
+                display: grid;
+                grid-template-columns: repeat(3, 26px);
+                grid-gap: 4px;
+
+                &-action {
+                    height: 26px;
+                    border-radius: 2px;
+                    transition: background 0.2s ease-in;
+                    cursor: pointer;
+
+                    &:hover {
+                        background: $dark-3;
+
+                        .icon {
+                            svg {
+                                path,
+                                circle {
+                                    fill: $bw-9;
+                                }
+                            }
+                        }
+                    }
+
+                    &.active {
+                        background: $bw-9;
+
+                        .icon {
+                            transform: rotate(90deg);
+
+                            svg {
+                                path,
+                                circle {
+                                    fill: $ta-black;
+                                }
+                            }
+                        }
+                    }
+
+                    &:first-of-type {
+                        .icon {
+                            position: relative;
+                            bottom: 1px;
+                        }
+                    }
+
+                    .icon {
+                        transition: transform 0.2s ease-in;
+
+                        svg {
+                            path,
+                            circle {
+                                transition: fill 0.2s ease-in;
+                                fill: $bw5;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        /* Documents */
+
+        .documents-drawer-main-documents {
+            padding: 4px;
+            height: 202px;
+            background: $ta-light-grey-5;
+        }
+    }
+}

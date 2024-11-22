@@ -22,19 +22,6 @@ export class RepairTableHelper {
                 svgClass: TableStringEnum.REGULAR,
             },
             {
-                title: TableStringEnum.VIEW_DETAILS_2,
-                name: TableStringEnum.VIEW_DETAILS,
-                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Information.svg',
-                svgStyle: {
-                    width: 18,
-                    height: 18,
-                },
-                svgClass: TableStringEnum.REGULAR,
-                tableListDropdownContentStyle: {
-                    'margin-bottom.px': 4,
-                },
-            },
-            {
                 title:
                     repairType === TableStringEnum.ORDER
                         ? TableStringEnum.ALL_ORDERS
@@ -105,9 +92,8 @@ export class RepairTableHelper {
             svgClass: TableStringEnum.ACTIVATE,
         };
 
-        if (repairType === TableStringEnum.ORDER) {
-            commonDropdownContent.splice(2, 0, orderDropdownContent);
-        }
+        if (repairType === TableStringEnum.ORDER)
+            commonDropdownContent.splice(1, 0, orderDropdownContent);
 
         return commonDropdownContent;
     }
