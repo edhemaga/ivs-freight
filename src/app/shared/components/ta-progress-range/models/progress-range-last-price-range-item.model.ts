@@ -2,6 +2,6 @@ import { eProgressRangePrice } from "@shared/components/ta-progress-range/enums/
 
 export interface IProgressRangeLastPriceRangeItem {
     id: eProgressRangePrice,
-    arrowClassName: string,
     circleClassName: string
+    arrowClassName?: string,
 }

@@ -75,9 +75,7 @@ export class TaModalTableRepairComponent {
 
     public svgRoutes = ModalTableSvgRoutes;
 
-    constructor() {
-        console.log(this.fuelItemsDropdown);
-    }
+    constructor() {}
 
     public emitDeleteFormArrayRowClick(index: number): void {
         this.deleteFormArrayRowClick.emit(index);

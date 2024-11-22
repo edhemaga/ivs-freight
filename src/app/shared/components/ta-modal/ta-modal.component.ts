@@ -45,8 +45,6 @@ import { TaCustomScrollbarComponent } from '@shared/components/ta-custom-scrollb
 import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
 import { TaSpinnerComponent } from '@shared/components/ta-spinner/ta-spinner.component';
 import { TaTabSwitchComponent } from '@shared/components/ta-tab-switch/ta-tab-switch.component';
-import { TaFilterComponent } from '@shared/components/ta-filter/ta-filter.component';
-import { TaSearchComponent } from '@shared/components/ta-search/ta-search.component';
 import { CaFilterComponent } from 'ca-components';
 
 // guards
@@ -55,16 +53,16 @@ import { AuthGuard } from '@core/guards/authentication.guard';
 // models
 import { DropZoneConfig } from '@shared/components/ta-upload-files/models/dropzone-config.model';
 import { UploadFile } from '@shared/components/ta-upload-files/models/upload-file.model';
+import { AssignedLoadResponse } from 'appcoretruckassist';
 import { ArrayStatus } from '@shared/components/ta-filter/models/array-status.model';
 
 // enums
 import { LoadModalStringEnum } from '@pages/load/pages/load-modal/enums';
-import { AssignedLoadResponse } from 'appcoretruckassist';
 import { TaModalActionEnums } from './enums';
 import { ToolbarFilterStringEnum } from '@shared/components/ta-filter/enums/toolbar-filter-string.enum';
 
 // directive
-import { PreventMultipleclicksDirective } from '@shared/directives/prevent-multipleclicks.directive';
+import { PreventMultipleclicksDirective } from '@shared/directives/';
 
 // svg routes
 import { ModalSvgRoutes } from '@shared/components/ta-modal/utils/svg-routes';
@@ -86,18 +84,19 @@ import { FilterIconRoutes } from '@shared/components/ta-filter/utils/constants/f
         NgbModule,
 
         // components
-        FormatDatePipe,
+
         TaCustomScrollbarComponent,
         TaUploadDropzoneComponent,
         TaAppTooltipV2Component,
         TaSpinnerComponent,
         TaTabSwitchComponent,
-        TaFilterComponent,
-        TaSearchComponent,
         CaFilterComponent,
 
-        // Directives
+        // directives
         PreventMultipleclicksDirective,
+
+        // pipes
+        FormatDatePipe,
     ],
     animations: [
         trigger('widthGrow', [

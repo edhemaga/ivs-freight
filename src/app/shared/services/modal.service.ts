@@ -166,14 +166,6 @@ export class ModalService {
             setTimeout(fx, 100);
         };
 
-        console.log("WHAT IS MODAL HERE", modal.result);
-
-        // return modal.afterClosed()
-        //   .pipe(
-        //     map((response: ModalOutput<T>) => response || { continue: false }),
-        //     take(1)
-        //   );
-
         return modal.result;
     }
 }
