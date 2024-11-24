@@ -5,7 +5,6 @@ import {
     ViewEncapsulation,
     OnChanges,
     SimpleChanges,
-    ViewChild,
     OnDestroy,
 } from '@angular/core';
 import { Subject, takeUntil } from 'rxjs';
@@ -24,16 +23,21 @@ import { TruckassistTableService } from '@shared/services/truckassist-table.serv
 // Models
 import {
     BrokerInvoiceAgeingResponse,
+    BrokerMileageRateChartResponse,
+    BrokerMileageRateResponse,
+    BrokerPaidInvoiceChartResponse,
+    BrokerPaidInvoiceResponse,
+    BrokerPaymentHistoryResponse,
     BrokerResponse,
 } from 'appcoretruckassist';
 import { BrokerDropdown } from '@pages/customer/pages/broker-details/models/';
 import { TabOptions } from '@shared/components/ta-tab-switch/models/tab-options.model';
 import { IChartConfiguaration } from 'ca-components/lib/components/ca-chart/models';
+import { ChartLegendProperty, Tabs } from '@shared/models';
 
 // Constants
 import {
     BrokerChartsConfiguration,
-    BrokerConstants,
 } from '@pages/customer/pages/broker-details/utils/constants/';
 import { BrokerInvoiceAgingConstants } from '@pages/customer/pages/broker-details/utils/constants/';
 
@@ -47,11 +51,16 @@ import { FormatDatePipe } from '@shared/pipes/format-date.pipe';
 import {
     ChartTabStringEnum,
     TableStringEnum,
-    ArrowActionsStringEnum
+    ArrowActionsStringEnum,
 } from '@shared/enums';
 
 // Svg routes
 import { BrokerDetailsSvgRoutes } from '@pages/customer/pages/broker-details/utils/svg-routes/';
+
+// Helpers
+import { ChartHelper } from '@shared/utils/helpers';
+import { ChartConfiguration } from '@shared/utils/constants';
+import { ChartLegendConfiguration } from '@shared/utils/constants/charts/chart-legend-configuration.constants';
 
 @Component({
     selector: 'app-broker-details-card',
@@ -93,13 +102,17 @@ export class BrokerDetailsCardComponent
     public brokerDetailsSvgRoutes = BrokerDetailsSvgRoutes;
 
     //Chart
+    public invoiceChartConfig: IChartConfiguaration = BrokerChartsConfiguration.INVOICE_CHART_CONFIG;
+    public invoiceChartLegend!: ChartLegendProperty[];
+    public invoiceChartTabs: Tabs[] = ChartHelper.generateTimeTabs();
 
-    public invoiceChartConfig: IChartConfiguaration =
-        BrokerChartsConfiguration.INVOICE_CHART_CONFIG;
-    public mileageChartConfig: IChartConfiguaration =
-        BrokerChartsConfiguration.MILEAGE_CHART_CONFIG;
-    public paymentChartConfig: IChartConfiguaration =
-        BrokerChartsConfiguration.PAYMENT_CHART_CONFIG;
+    public mileageChartConfig: IChartConfiguaration = BrokerChartsConfiguration.MILEAGE_CHART_CONFIG;
+    public mileageChartLegendData!: ChartLegendProperty[];
+    public mileageChartTabs: Tabs[] = ChartHelper.generateTimeTabs();
+
+    public paymentChartConfig: IChartConfiguaration = BrokerChartsConfiguration.PAYMENT_CHART_CONFIG;
+    public paymentChartLegendData!: ChartLegendProperty[];
+    public paymentChartTabs: Tabs[] = ChartHelper.generateTimeTabs();
 
     constructor(
         // Store
@@ -119,8 +132,6 @@ export class BrokerDetailsCardComponent
             this.getBrokerDropdown();
             this.getInvoiceAgeingCount(changes.broker.currentValue);
         }
-
-        //this.updateCharts(changes.broker?.currentValue.id);
     }
 
     ngOnInit(): void {
@@ -132,6 +143,66 @@ export class BrokerDetailsCardComponent
         this.brokerIndex = currentIndex;
 
         this.actionAnimationSubscribe();
+
+        this.getMileageRateHistory();
+
+        this.getInvoiceChartData();
+
+        this.getPaymentChartData();
+    }
+
+    private getMileageRateHistory(timeFilter?: number): void {
+        this.brokerService.getMileageChartData(this.broker.id, timeFilter || 1)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((response: BrokerMileageRateResponse) => {
+                if (timeFilter && this.mileageChartTabs[timeFilter - 1])
+                    this.mileageChartTabs[timeFilter - 1].checked = true;
+                this.mileageChartConfig = {
+                    ...this.mileageChartConfig,
+                    chartData: ChartHelper.generateDataByDateTime<BrokerMileageRateChartResponse>(
+                        response.brokerMileageRateChartResponse,
+                        ChartConfiguration.mileageRateConfiguration
+                    )
+                };
+                this.mileageChartLegendData =
+                    ChartLegendConfiguration.mileageLegendConfiguration(response);
+            });
+    }
+
+    private getInvoiceChartData(timeFilter?: number): void {
+        this.brokerService.getInvoiceChartData(this.broker.id, timeFilter || 1)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((response: BrokerPaidInvoiceResponse) => {
+                if (timeFilter && this.invoiceChartTabs[timeFilter - 1])
+                    this.invoiceChartTabs[timeFilter - 1].checked = true;
+                this.invoiceChartConfig = {
+                    ...this.invoiceChartConfig,
+                    chartData: ChartHelper.generateDataByDateTime<BrokerPaidInvoiceChartResponse>
+                        (
+                            response.brokerPaidInvoiceChartResponse,
+                            ChartConfiguration.brokerPaidInvoiceConfiguration
+                        )
+                };
+                this.invoiceChartLegend = ChartLegendConfiguration.invoiceChartLegendConfiguration(response);
+            })
+    }
+
+    private getPaymentChartData(timeFilter?: number): void {
+        this.brokerService.getPaymentChartData(this.broker.id, timeFilter || 1)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((response: BrokerPaymentHistoryResponse) => {
+                if (timeFilter && this.invoiceChartTabs[timeFilter - 1])
+                    this.invoiceChartTabs[timeFilter - 1].checked = true;
+                this.paymentChartConfig = {
+                    ...this.paymentChartConfig,
+                    chartData: ChartHelper.generateDataByDateTime<BrokerPaymentHistoryResponse>
+                        (
+                            response.brokerPaymentHistoryChartResponse,
+                            ChartConfiguration.brokerPaidInvoiceConfiguration
+                        )
+                };
+                this.paymentChartLegendData = ChartLegendConfiguration.brokerPaymentHistory(response);
+            })
     }
 
     public tabsButton(): void {
@@ -265,16 +336,16 @@ export class BrokerDetailsCardComponent
         }
     }
 
-    public changeMileageTab(ev: TabOptions): void {
-        this.selectedTab = ev.id;
+    public changeMileageTab(event: TabOptions): void {
+        this.getMileageRateHistory(event.id);
     }
 
-    public changePaymentTab(ev: TabOptions): void {
-        this.selectedTab = ev.id;
+    public changePaymentTab(event: TabOptions): void {
+        this.getPaymentChartData(event.id);
     }
 
-    public changeInvoiceTab(ev: TabOptions): void {
-        this.selectedTab = ev.id;
+    public changeInvoiceTab(event: TabOptions): void {
+        this.getInvoiceChartData(event.id);
     }
 
     public changeInvoiceAgingTab(event: { id: number }): void {

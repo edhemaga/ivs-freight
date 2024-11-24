@@ -6,6 +6,12 @@ import { IChartConfiguaration } from 'ca-components/lib/components/ca-chart/mode
 
 // Const
 import { FuelDetailsChartsConfiguration } from '@pages/fuel/utils/constants';
+import { FuelService } from '@shared/services/fuel.service';
+import { Subject, takeUntil } from 'rxjs';
+import { FuelStopExpensesResponse } from 'appcoretruckassist';
+import { ChartHelper } from '@shared/utils/helpers';
+import { ChartConfiguration, ChartLegendConfiguration } from '@shared/utils/constants';
+import { ChartLegendProperty, Tabs } from '@shared/models';
 
 @Component({
     selector: 'app-fuel-details-item',
@@ -14,17 +20,22 @@ import { FuelDetailsChartsConfiguration } from '@pages/fuel/utils/constants';
     encapsulation: ViewEncapsulation.None,
 })
 export class FuelDetailsItemComponent implements OnInit {
+    private destroy$ = new Subject<void>();
+
     @Input() fuelData: any;
     public noteControl: UntypedFormControl = new UntypedFormControl();
     public dummyDataVehicle: any[] = [];
     public dummyDataFuel: any[] = [];
     public dummyData: any;
-    public tabsFuel: any[] = [];
+    public tabsFuel: Tabs[] = ChartHelper.generateTimeTabs();
     public selectedTab: number;
     public fuelDropdown: any;
     public storeDropdown: any;
-    public fuelChartConfig: IChartConfiguaration =
-        FuelDetailsChartsConfiguration.FUEL_CHART_CONFIG;
+
+    // Charts 
+    public fuelChartConfig!: IChartConfiguaration;
+    public fuelChartLegend!: ChartLegendProperty[];
+
     public fuelPriceColors: any[] = [
         '#4DB6A2',
         '#81C784',
@@ -33,7 +44,7 @@ export class FuelDetailsItemComponent implements OnInit {
         '#E57373',
         '#919191',
     ];
-    constructor() {}
+    constructor(private fuelService: FuelService) { }
 
     ngOnInit(): void {
         this.initTableOptions();
@@ -41,7 +52,6 @@ export class FuelDetailsItemComponent implements OnInit {
         this.dummyDataRep();
         this.fuelDropDown();
         this.storeDropDown();
-        this.noteControl.patchValue('Neki note fuel');
         this.tabsFuel = [
             {
                 id: 221,
@@ -168,6 +178,7 @@ export class FuelDetailsItemComponent implements OnInit {
     }
     public changeTab(ev: any) {
         this.selectedTab = ev.id;
+        this.getFuelExpenses(this.selectedTab);
     }
     public dummyDataRep() {
         this.dummyDataFuel = [
@@ -731,5 +742,23 @@ export class FuelDetailsItemComponent implements OnInit {
                 blue_back: false,
             },
         ];
+    }
+
+    private getFuelExpenses(timeFilter?: number): void {
+        this.fuelService.getFuelExpensesGet(this.fuelData.id, timeFilter || 1).pipe(takeUntil(this.destroy$))
+            .subscribe((response: FuelStopExpensesResponse) => {
+                this.fuelChartConfig = {
+                    ...FuelDetailsChartsConfiguration.FUEL_CHART_CONFIG,
+                    chartData: ChartHelper.generateDataByDateTime(response.fuelStopExpensesChartResponse,
+                        ChartConfiguration.fuelExpensesConfiguration
+                    )
+                }
+                this.fuelChartLegend = ChartLegendConfiguration.fuelExpensesLegend(response);
+            })
+    }
+
+    ngOnDestroy(): void {
+        this.destroy$.next();
+        this.destroy$.complete();
     }
 }

@@ -1,5 +1,4 @@
 import {
-    ChangeDetectorRef,
     Component,
     Input,
     OnChanges,
@@ -13,7 +12,7 @@ import {
     UntypedFormBuilder,
     UntypedFormGroup,
 } from '@angular/forms';
-import { Subject, BehaviorSubject, takeUntil } from 'rxjs';
+import { Subject, takeUntil } from 'rxjs';
 
 // Services
 import { DetailsPageService } from '@shared/services/details-page.service';
@@ -25,6 +24,7 @@ import { TaTabSwitchComponent } from '@shared/components/ta-tab-switch/ta-tab-sw
 import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-custom-card.component';
 import { TaUploadFilesComponent } from '@shared/components/ta-upload-files/ta-upload-files.component';
 import { TaInputNoteComponent } from '@shared/components/ta-input-note/ta-input-note.component';
+import { TaChartLegendComponent } from '@shared/components/ta-chart-legend/ta-chart-legend.component';
 import { DriverDetailsTitleCardComponent } from '@pages/driver/pages/driver-details/components/driver-details-card/components/driver-details-title-card/driver-details-title-card.component';
 import { DriverDetailsAssignToCardComponent } from '@pages/driver/pages/driver-details/components/driver-details-card/components/driver-details-assign-to-card/driver-details-assign-to-card.component';
 import { DriverDetailsAdditionalInfoCardComponent } from '@pages/driver/pages/driver-details/components/driver-details-card/components/driver-details-additional-info-card/driver-details-additional-info-card.component';
@@ -57,11 +57,14 @@ import { ChartHelper } from '@shared/utils/helpers';
 import { DriverMinimalResponse, DriverPayrollChartResponse, DriverPayrollResponse, DriverResponse } from 'appcoretruckassist';
 import { TabOptions } from '@shared/components/ta-tab-switch/models/tab-options.model';
 import { IChartConfiguaration } from 'ca-components/lib/components/ca-chart/models';
+import { ChartLegendProperty, Tabs } from '@shared/models';
 
 // Enums
-import { ChartTypesStringEnum } from 'ca-components/lib/components/ca-chart/enums';
-import { ChartLegendProperty, Tabs } from '@shared/models';
-import { ChartTabStringEnum, ChartValueLabelEnum } from '@shared/enums';
+import { ChartTabStringEnum } from '@shared/enums';
+import {
+    ChartConfiguration,
+    ChartLegendConfiguration
+} from '@shared/utils/constants';
 
 @Component({
     selector: 'app-driver-details-card',
@@ -78,6 +81,7 @@ import { ChartTabStringEnum, ChartValueLabelEnum } from '@shared/enums';
         TaCustomCardComponent,
         TaUploadFilesComponent,
         TaInputNoteComponent,
+        TaChartLegendComponent,
         DriverDetailsTitleCardComponent,
         DriverDetailsAssignToCardComponent,
         DriverDetailsAdditionalInfoCardComponent,
@@ -103,14 +107,13 @@ export class DriverDetailsCardComponent
     public driversDropdownList: DriverMinimalResponse[];
 
     // Payroll chart card
-    public barChartTabs!: Tabs[];
+    public barChartTabs: Tabs[] = ChartHelper.generateTimeTabs();
     public chartLegendData: ChartLegendProperty[];
 
     // Note card
     public noteForm: UntypedFormGroup;
 
-    public payrollChartConfig: IChartConfiguaration =
-        DriverDetailsChartsConfiguration.PAYROLL_CHART_CONFIG;
+    public payrollChartConfig!: IChartConfiguaration;
 
     constructor(
         private formBuilder: UntypedFormBuilder,
@@ -143,47 +146,26 @@ export class DriverDetailsCardComponent
     }
 
     private initDriverPayrollData(): void {
-        this.barChartTabs = Object.keys(ChartTabStringEnum)
-            ?.map((key: string, indx: number) => {
-                const tab: Tabs = {
-                    id: indx + 1,
-                    name: ChartTabStringEnum[key],
-                    checked: indx === 0
-                }
-                return tab;
-            })
-
         this.getDriverPayroll();
     }
 
     private getDriverPayroll(timeFilter?: number): void {
         this.driverService
             .getDriverPayroll(this.driver.id, timeFilter || 1)
-            .subscribe((data: DriverPayrollResponse) => {
+            .subscribe((response: DriverPayrollResponse) => {
                 if (timeFilter && this.barChartTabs[timeFilter - 1])
                     this.barChartTabs[timeFilter - 1].checked = true;
                 this.payrollChartConfig = {
-                    ...this.payrollChartConfig,
+                    ...DriverDetailsChartsConfiguration.PAYROLL_CHART_CONFIG,
                     chartData: ChartHelper
                         .generateDataByDateTime<DriverPayrollChartResponse>(
-                            data.getDriverPayrollChartResponse,
-                            [
-                                {
-                                    value: ChartValueLabelEnum.MILES,
-                                    type: ChartTypesStringEnum.LINE,
-                                    color: '#6692F1',
-                                },
-                                {
-                                    value: ChartValueLabelEnum.EARNINGS,
-                                    type: ChartTypesStringEnum.BAR,
-                                    color: '#FBC88B',
-                                }
-                            ]
+                            response.getDriverPayrollChartResponse,
+                            ChartConfiguration.driverConfiguration
                         )
                 };
 
-                this.chartLegendData = ChartHelper
-                    .generateLegendData(this.payrollChartConfig.chartData.datasets);
+                this.chartLegendData =
+                    ChartLegendConfiguration.driverLegendConfiguration(response);
             })
     }
 
@@ -247,7 +229,6 @@ export class DriverDetailsCardComponent
     }
 
     public onPayrollTabChange(tab: TabOptions): void {
-        this.payrollChartConfig = null;
         this.getDriverPayroll(tab.id);
     }
 

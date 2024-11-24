@@ -69,13 +69,9 @@ export class RepairShopDetailsRepairExpenseCardComponent implements OnDestroy {
 
         // change detection
         private cdRef: ChangeDetectorRef
-    ) {}
+    ) { }
 
     private getConstantData(): void {
-        // this.barChartConfig = RepairExpenseCartConstants.BAR_CHART_CONFIG;
-        // this.barChartAxes = RepairExpenseCartConstants.BAR_CHART_AXES;
-        // this.barChartLegend = RepairExpenseCartConstants.BAR_CHART_LEGEND;
-
         this.repairCall = RepairExpenseCartConstants.REPAIR_CALL;
 
         this.monthList = RepairExpenseCartConstants.MONTH_LIST;

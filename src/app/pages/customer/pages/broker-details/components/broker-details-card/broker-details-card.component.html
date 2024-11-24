@@ -120,21 +120,22 @@
                 }"
                 [customClass]="'detailsPadding'"
             >
-                <div
-                    class="charts-template perfomance"
-                >
+                <div class="charts-template perfomance">
                     <div>
                         <app-ta-tab-switch
                             [type]="'type2-modal-popup'"
                             (switchClicked)="changeInvoiceTab($event)"
-                            [tabs]="tabsBroker"
+                            [tabs]="invoiceChartTabs"
                         >
                         </app-ta-tab-switch>
                     </div>
-                    <app-ca-chart
-                    [chartConfig]="invoiceChartConfig"
-                    >
-                    </app-ca-chart>
+                    <ng-container *ngIf="invoiceChartConfig">
+                        <app-ta-chart-legend
+                            [data]="invoiceChartLegend"
+                        ></app-ta-chart-legend>
+                        <app-ca-chart [chartConfig]="invoiceChartConfig">
+                        </app-ca-chart>
+                    </ng-container>
                 </div>
             </app-ta-custom-card>
             <app-ta-custom-card
@@ -150,25 +151,26 @@
                 }"
                 [customClass]="'detailsPadding'"
             >
-                <div
-                    class="charts-template perfomance"
-                >
+                <div class="charts-template perfomance">
                     <!-- <ng-container *ngIf="!mileageChart?.hoveringStatus"> -->
-                        <div>
-                            <app-ta-tab-switch
-                                [type]="'type2-modal-popup'"
-                                [tabs]="tabsBroker"
-                                (switchClicked)="changeMileageTab($event)"
-                            >
-                            </app-ta-tab-switch>
-                        </div>
+                    <div>
+                        <app-ta-tab-switch
+                            [type]="'type2-modal-popup'"
+                            [tabs]="mileageChartTabs"
+                            (switchClicked)="changeMileageTab($event)"
+                        >
+                        </app-ta-tab-switch>
+                    </div>
                     <!-- </ng-container> -->
-                    <app-ca-chart
-                        [chartConfig]="mileageChartConfig"
-                    >
-                    </app-ca-chart>
+
+                    <ng-container *ngIf="mileageChartConfig">
+                        <app-ta-chart-legend
+                            [data]="mileageChartLegendData"
+                        ></app-ta-chart-legend>
+                        <app-ca-chart [chartConfig]="mileageChartConfig">
+                        </app-ca-chart>
+                    </ng-container>
                 </div>
-                
             </app-ta-custom-card>
             <app-ta-custom-card
                 [bodyTemplate]="'card'"
@@ -431,23 +433,22 @@
                 }"
                 [customClass]="'detailsPadding'"
             >
-             <div
-                    class="charts-template perfomance"
-                >
-                    <!-- <ng-container *ngIf="!mileageChart?.hoveringStatus"> -->
-                        <div>
-                            <app-ta-tab-switch
-                                [type]="'type2-modal-popup'"
-                                [tabs]="tabsBroker"
-                                (switchClicked)="changeMileageTab($event)"
-                            >
-                            </app-ta-tab-switch>
-                        </div>
-                    <!-- </ng-container> -->
-                    <app-ca-chart
-                    [chartConfig]="paymentChartConfig"
-                >
-                </app-ca-chart>
+                <div class="charts-template perfomance">
+                    <div>
+                        <app-ta-tab-switch
+                            [type]="'type2-modal-popup'"
+                            [tabs]="paymentChartTabs"
+                            (switchClicked)="changePaymentTab($event)"
+                        >
+                        </app-ta-tab-switch>
+                    </div>
+                    <ng-container *ngIf="paymentChartConfig">
+                        <app-ta-chart-legend
+                            [data]="paymentChartLegendData"
+                        ></app-ta-chart-legend>
+                        <app-ca-chart [chartConfig]="paymentChartConfig">
+                        </app-ca-chart>
+                    </ng-container>
                 </div>
             </app-ta-custom-card>
 

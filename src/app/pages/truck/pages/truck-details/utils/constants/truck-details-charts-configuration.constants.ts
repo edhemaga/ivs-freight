@@ -29,14 +29,14 @@ export class TruckDetailsChartsConfiguration {
     };
 
     static EXPENSES_CHART_CONFIG = {
-        chartType: ChartTypesStringEnum.LINE,
+        chartType: ChartTypesStringEnum.BAR,
         chartData: {
             labels: [],
             datasets: [],
         },
-        height: 130,
+        height: 150,
         width: 100,
         noDataImage: ChartImagesStringEnum.CHART_NO_DATA_STACKED,
-        chartOptions: {},
+        chartOptions: {}
     };
 }

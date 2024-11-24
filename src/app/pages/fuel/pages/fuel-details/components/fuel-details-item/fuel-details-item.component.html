@@ -189,11 +189,14 @@
                             [type]="'type2-modal-popup'"
                             (switchClicked)="changeTab($event)"
                         >
+                            <ng-container *ngIf="fuelChartConfig">
+                                <app-ta-chart-legend
+                                    [data]="fuelChartLegend"
+                                ></app-ta-chart-legend>
+                                <app-ca-chart [chartConfig]="fuelChartConfig">
+                                </app-ca-chart>
+                            </ng-container>
                         </app-ta-tab-switch>
-                        <app-ca-chart
-                            [chartConfig]="fuelChartConfig"
-                        >
-                        </app-ca-chart>
                     </div>
                 </app-ta-custom-card>
                 <div class="divider"></div>

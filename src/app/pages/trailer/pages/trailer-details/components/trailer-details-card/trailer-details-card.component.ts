@@ -6,15 +6,15 @@ import {
     OnDestroy,
     Input,
     SimpleChanges,
-    ViewChild,
 } from '@angular/core';
 import { UntypedFormControl } from '@angular/forms';
-import { Subject } from 'rxjs';
+import { Subject, takeUntil } from 'rxjs';
 
-// services
+// Services
 import { DetailsPageService } from '@shared/services/details-page.service';
+import { TrailerService } from '@shared/services/trailer.service';
 
-// animations
+// Animations
 import {
     animate,
     style,
@@ -24,19 +24,26 @@ import {
 } from '@angular/animations';
 import { cardComponentAnimation } from '@shared/animations/card-component.animation';
 
-// store
+// Store
 import { TrailersMinimalListQuery } from '@pages/trailer/state/trailer-minimal-list-state/trailer-minimal.query';
 
-// models
+// Models
 import { TrailerDropdown } from '@pages/trailer/pages/trailer-details/models/trailer-dropdown.model';
-import { TrailerMinimalResponse } from 'appcoretruckassist';
+import { TrailerFuelConsumptionChartResponse, TrailerFuelConsumptionResponse, TrailerMinimalResponse } from 'appcoretruckassist';
 import { IChartConfiguaration } from 'ca-components/lib/components/ca-chart/models';
+import { Tabs } from '@shared/models';
 
-// enums
+// Enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
 
-//constants
+// Constants
 import { TrailerDetailsChartsConfiguration } from '@pages/trailer/pages/trailer-details/utils/constants';
+import { ChartConfiguration, ChartLegendConfiguration } from '@shared/utils/constants';
+
+// Helpers
+import { ChartHelper } from '@shared/utils/helpers';
+import { TabOptions } from '@shared/components/ta-tab-switch/models/tab-options.model';
+import { TraillerData } from '@pages/trailer/pages/trailer-table/models/trailer-data.model';
 
 @Component({
     selector: 'app-trailer-details-card',
@@ -68,9 +75,8 @@ import { TrailerDetailsChartsConfiguration } from '@pages/trailer/pages/trailer-
     ],
 })
 export class TrailerDetailsCardComponent
-    implements OnInit, OnChanges, OnDestroy
-{
-    @Input() trailer: any;
+    implements OnInit, OnChanges, OnDestroy {
+    @Input() trailer: TraillerData;
     @Input() templateCard: boolean = false;
 
     private destroy$ = new Subject<void>();
@@ -86,13 +92,17 @@ export class TrailerDetailsCardComponent
         this.trailerMinimalQuery.getAll();
     public trailerIndex: number;
     public ownerCardOpened: boolean = true;
-    public payrollChartConfig: IChartConfiguaration =
-        TrailerDetailsChartsConfiguration.PAYROLL_CHART_CONFIG;
+
+    // Chart
+    public fuelConsumptionChartConfig!: IChartConfiguaration;
+    public fuelConsumptionChartLegend!: ChartLegendConfiguration[];
+    public fuelConsumptionTabs: Tabs[] = ChartHelper.generateTimeTabs();
 
     constructor(
         private detailsPageDriverSer: DetailsPageService,
-        private trailerMinimalQuery: TrailersMinimalListQuery
-    ) {}
+        private trailerMinimalQuery: TrailersMinimalListQuery,
+        private trailerService: TrailerService
+    ) { }
 
     ngOnChanges(changes: SimpleChanges): void {
         if (!changes?.trailer?.firstChange) {
@@ -107,7 +117,6 @@ export class TrailerDetailsCardComponent
     ngOnInit(): void {
         this.initTableOptions();
         this.getTrailerDropdown();
-
         setTimeout(() => {
             let currentIndex = this.trailerDropDowns.findIndex(
                 (trailer) => trailer.id === this.trailer.id
@@ -115,6 +124,8 @@ export class TrailerDetailsCardComponent
 
             this.trailerIndex = currentIndex;
         }, 300);
+
+        this.getTrailerFuelConsumption();
     }
 
     /**Function for toggle page in cards */
@@ -266,6 +277,29 @@ export class TrailerDetailsCardComponent
         }
 
         return lastSixChars;
+    }
+
+    private getTrailerFuelConsumption(timeFilter?: number): void {
+        // If not reefer, return
+        if (this.trailer.trailerType.id !== 9) return;
+        this.trailerService.getTrailerFuelConsumption(this.trailer.id, timeFilter || 1)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((response: TrailerFuelConsumptionResponse) => {
+                if (timeFilter && this.fuelConsumptionTabs[timeFilter - 1])
+                    this.fuelConsumptionTabs[timeFilter - 1].checked = true;
+                this.fuelConsumptionChartConfig = {
+                    ...TrailerDetailsChartsConfiguration.PAYROLL_CHART_CONFIG,
+                    chartData: ChartHelper.generateDataByDateTime<TrailerFuelConsumptionChartResponse>(
+                        response.trailerFuelConsumptionCharts,
+                        ChartConfiguration.trailerFuelExpensesConfiguration
+                    ),
+                };
+                this.fuelConsumptionChartLegend = ChartLegendConfiguration.trailerFuelConsumptionConfiguration(response)
+            })
+    }
+
+    public changeFuelConsumptionTab(event: TabOptions): void {
+        this.getTrailerFuelConsumption(event.id);
     }
 
     ngOnDestroy(): void {
