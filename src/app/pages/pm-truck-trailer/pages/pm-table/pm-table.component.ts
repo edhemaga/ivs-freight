@@ -11,6 +11,7 @@ import { MethodsGlobalHelper } from '@shared/utils/helpers/methods-global.helper
 
 // Components
 import { PmModalComponent } from '@pages/pm-truck-trailer/pages/pm-modal/pm-modal.component';
+import { RepairOrderModalComponent } from '@pages/repair/pages/repair-modals/repair-order-modal/repair-order-modal.component';
 
 // Models
 import { DropdownItem } from '@shared/models/card-models/card-table-data.model';
@@ -55,16 +56,15 @@ import { PmTruckQuery } from '@pages/pm-truck-trailer/state/pm-truck-state/pm-tr
 import { PmTrailerQuery } from '@pages/pm-truck-trailer/state/pm-trailer-state/pm-trailer.query';
 import { PmListTruckQuery } from '@pages/pm-truck-trailer/state/pm-list-truck-state/pm-list-truck.query';
 import { PmListTrailerQuery } from '@pages/pm-truck-trailer/state/pm-list-trailer-state/pm-list-trailer.query';
+import {
+    selectActiveTabCards,
+    selectInactiveTabCards,
+} from '@pages/pm-truck-trailer/pages/pm-card-modal/state';
 
 // Pipes
 import { ThousandSeparatorPipe } from '@shared/pipes/thousand-separator.pipe';
 import { ThousandToShortFormatPipe } from '@shared/pipes/thousand-to-short-format.pipe';
 import { select, Store } from '@ngrx/store';
-import {
-    selectActiveTabCards,
-    selectInactiveTabCards,
-} from '../pm-card-modal/state';
-import { RepairOrderModalComponent } from '@pages/repair/pages/repair-modals/repair-order-modal/repair-order-modal.component';
 
 @Component({
     selector: 'app-pm-table',

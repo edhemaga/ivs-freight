@@ -84,6 +84,7 @@
                                 <div
                                     #parentElement
                                     class="bottom-item-body d-flex align-items-center"
+                                    [class.gap-1]="cardRow.title === 'Driver'"
                                 >
                                     <ng-container
                                         *ngIf="
@@ -146,12 +147,46 @@
                                     </ng-container>
 
                                     <ng-container
+                                        *ngIf="cardRow.title === 'Driver'"
+                                    >
+                                        <ng-container *ngIf="card?.driver">
+                                            <app-ca-profile-image
+                                                [avatarImg]="
+                                                    card.driver?.avatarFile?.url
+                                                "
+                                                [indx]="i"
+                                                [size]="'small'"
+                                                [type]="'driver'"
+                                                [isRound]="false"
+                                                [name]="
+                                                    card.driver?.firstName +
+                                                    ' ' +
+                                                    card.driver?.lastName
+                                                "
+                                            ></app-ca-profile-image>
+                                        </ng-container>
+                                        {{
+                                            card.driver
+                                                ? card.driver?.firstName +
+                                                  ' ' +
+                                                  card.driver?.lastName
+                                                : '/'
+                                        }}
+                                    </ng-container>
+
+                                    <ng-container
                                         *ngIf="
                                             cardRow.title !==
-                                            'Item Detail • Description'
+                                                'Item Detail • Description' &&
+                                            cardRow.title !== 'Driver'
                                         "
                                     >
-                                        {{ card | cardValue : cardRow }}
+                                        {{
+                                            cardRow.title === 'Last Visit'
+                                                ? (card
+                                                  | activityTime : 'activity')
+                                                : (card | cardValue : cardRow)
+                                        }}
                                     </ng-container>
                                 </div>
                             </div>
@@ -172,19 +207,21 @@
 
                         <!-- Note element -->
 
-                        <div
-                            class="note-container right-side-svg d-flex align-items-center justify-content-center flex-column"
-                        >
-                            <app-ta-note
-                                [note]="card.note"
-                                [mainData]="card"
-                                [entityId]="card.id"
-                                [entityType]="'User'"
-                                [openedAll]="false"
-                                [parking]="false"
+                        <ng-container *ngIf="selectedTab === 'FUEL_STOP'">
+                            <div
+                                class="note-container right-side-svg d-flex align-items-center justify-content-center flex-column"
                             >
-                            </app-ta-note>
-                        </div>
+                                <app-ta-note
+                                    [note]="card.note"
+                                    [mainData]="card"
+                                    [entityId]="card.id"
+                                    [entityType]="'FuelStopStore'"
+                                    [openedAll]="false"
+                                    [parking]="false"
+                                >
+                                </app-ta-note>
+                            </div>
+                        </ng-container>
 
                         <!-- Expand element -->
 

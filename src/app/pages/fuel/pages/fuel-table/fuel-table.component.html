@@ -37,6 +37,7 @@
                 [displayRowsBack]="(displayRows$ | async).displayRowsBack"
                 [page]="page"
                 [selectedTab]="selectedTab"
+                (bodyActions)="onTableBodyActions($event)"
             ></app-fuel-card>
         </div>
     </ng-container>
