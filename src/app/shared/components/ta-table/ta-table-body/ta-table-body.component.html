@@ -753,10 +753,14 @@
                                                 'avatar-is-owner': row.isOwner
                                             }"
                                         >
-                                            
                                             <ng-container
-                                                [ngTemplateOutlet]="avatarColumn"
-                                                [ngTemplateOutletContext]="{ row: row, column: column }"
+                                                [ngTemplateOutlet]="
+                                                    avatarColumn
+                                                "
+                                                [ngTemplateOutletContext]="{
+                                                    row: row,
+                                                    column: column
+                                                }"
                                             ></ng-container>
 
                                             <img
@@ -2877,6 +2881,27 @@
                                             </div>
                                         </div>
                                     </ng-container>
+
+                                    <!-- PROGRESS RANGE COLUMN -->
+
+                                    <ng-container *ngIf="column?.ngTemplate === taTableBodyConstants.NG_TEMPLATE_PROGRESS_RANGE">
+                                        <div 
+                                            class="td-content"
+                                            [ngStyle]="{
+                                                width: column.width + 'px',
+                                                'min-width.px':
+                                                    column?.minWidth ?? 'unset'
+                                            }"
+                                        >
+                                            <app-ta-progress-range
+                                                [startRange]="row[column.field]?.startRange"
+                                                [endRange]="row[column.field]?.endRange"
+                                                [value]="row[column.field]?.value"
+                                                [unit]="row[column.field]?.unit"
+                                                [lastUsed]="row[column.field]?.lastUsed"
+                                            ></app-ta-progress-range>
+                                        </div>
+                                    </ng-container>
                                 </td>
                             </ng-container>
                         </div>
@@ -3339,10 +3364,15 @@
                                                 'avatar-is-owner': row.isOwner
                                             }"
                                         >
-                                        <ng-container
-                                            [ngTemplateOutlet]="avatarColumn"
-                                            [ngTemplateOutletContext]="{ row: row, column: column }"
-                                        ></ng-container>
+                                            <ng-container
+                                                [ngTemplateOutlet]="
+                                                    avatarColumn
+                                                "
+                                                [ngTemplateOutletContext]="{
+                                                    row: row,
+                                                    column: column
+                                                }"
+                                            ></ng-container>
 
                                             <img
                                                 class="avatar-owner"
@@ -3398,10 +3428,12 @@
                                                 class="avatar-assign-text"
                                                 [ngStyle]="{
                                                     'background-color':
-                                                        row?.avatarColor?.background ??
+                                                        row?.avatarColor
+                                                            ?.background ??
                                                         'unset',
                                                     color:
-                                                        row?.avatarColor?.color ?? 'unset'
+                                                        row?.avatarColor
+                                                            ?.color ?? 'unset'
                                                 }"
                                             >
                                                 {{ row.tableDriver }}
@@ -4714,33 +4746,8 @@
                                         </ng-container>
                                     </div>
 
-                                    <!-- ENDORSEMENT & RESTRICTIONS COLUMN -->
-
-                                    <!-- <ng-container
-                                        *ngIf="
-                                            column.title === 'Endorsement' ||
-                                            column.title === 'Restriction'
-                                        "
-                                    >
-                                        <div
-                                            class="td-content"
-                                            [ngStyle]="{
-                                                width: column.width + 'px',
-                                                'min-width.px': column?.minWidth
-                                                    ? column.minWidth
-                                                    : 'unset'
-                                            }"
-                                        >
-                                            <p
-                                                class="d-flex align-items-center m-0 table-text-count"
-                                                [innerHtml]="
-                                                    row[column.field]
-                                                        | tableTextCount
-                                                "
-                                            ></p>
-                                        </div>
-                                    </ng-container> -->
-
+                                    
+                                
                                     <!-- SEMI BOLD TEXT COLUMN -->
 
                                     <div
@@ -5471,6 +5478,27 @@
                                                             ?.openHoursToday
                                                 }"
                                             ></app-ta-open-hours-dropdown>
+                                        </div>
+                                    </ng-container>
+
+                                    <!-- PROGRESS RANGE COLUMN -->
+
+                                    <ng-container *ngIf="column?.ngTemplate === taTableBodyConstants.NG_TEMPLATE_PROGRESS_RANGE">
+                                        <div 
+                                            class="td-content"
+                                            [ngStyle]="{
+                                                width: column.width + 'px',
+                                                'min-width.px':
+                                                    column?.minWidth ?? 'unset'
+                                            }"
+                                        >
+                                            <app-ta-progress-range
+                                                [startRange]="row[column.field]?.startRange"
+                                                [endRange]="row[column.field]?.endRange"
+                                                [value]="row[column.field]?.value"
+                                                [unit]="row[column.field]?.unit"
+                                                [lastUsed]="row[column.field]?.lastUsed"
+                                            ></app-ta-progress-range>
                                         </div>
                                     </ng-container>
                                 </td>

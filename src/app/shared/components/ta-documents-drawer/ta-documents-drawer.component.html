@@ -1,0 +1,206 @@
+<div class="d-flex documents-drawer-container">
+    <!-- Open Icon -->
+
+    <ng-container *ngIf="!isDrawerActive; else drawerActive">
+        <div
+            class="d-flex align-items-center justify-content-center documents-drawer-icon-container"
+            [ngClass]="{
+                active: isDrawerActive
+            }"
+            ngbTooltip
+            mainTooltip="Document"
+            tooltipBackground="#424242"
+            position="bottom"
+            (click)="handleActionClick($event, documentsDrawerStringEnum.OPEN)"
+        >
+            <svg-icon
+                class="documents-drawer-icon"
+                [src]="documentsDrawerSvgRoutes.documentIcon"
+                [svgStyle]="{
+                    'width.px': 18,
+                    'height.px': 18
+                }"
+            ></svg-icon>
+        </div>
+    </ng-container>
+
+    <!-- Drawer Main-->
+
+    <ng-template #drawerActive>
+        <div class="d-flex flex-column documents-drawer-main-container">
+            <!-- Toolbar -->
+
+            <div class="align-items-center documents-drawer-main-toolbar">
+                <!-- Title -->
+
+                <div class="d-flex align-items-center justify-content-between">
+                    <p class="m-0 ta-font-bold text-size-14 text-color-white">
+                        TRUCKB1
+                    </p>
+
+                    <div class="toolbar-border"></div>
+                </div>
+
+                <!-- Counter -->
+
+                <div
+                    class="d-flex align-items-center justify-content-between documents-drawer-main-toolbar-counter"
+                >
+                    <div class="d-flex align-items-center">
+                        <p
+                            class="m-0 ta-font-medium text-size-14 text-color-white documents-drawer-main-toolbar-counter-text"
+                        >
+                            Document
+                        </p>
+
+                        <div
+                            class="d-flex align-items-center justify-content-center documents-drawer-main-toolbar-counter-count"
+                        >
+                            <p
+                                class="m-0 ta-font-bold text-size-11 text-color-black"
+                            >
+                                3 of 3
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="toolbar-border"></div>
+                </div>
+
+                <!-- Filter -->
+
+                <div class="d-flex align-items-center justify-content-center">
+                    <svg-icon
+                        [src]="documentsDrawerSvgRoutes.filterIcon"
+                        [svgStyle]="{
+                            'width.px': 18,
+                            'height.px': 18
+                        }"
+                    ></svg-icon>
+                </div>
+
+                <!-- Tags -->
+
+                <div
+                    class="d-flex align-items-center documents-drawer-main-toolbar-tags"
+                >
+                    <div
+                        class="d-flex align-items-center documents-drawer-main-toolbar-tags-row"
+                        [ngClass]="{ active: isTagRowExpanded }"
+                    >
+                        <ng-container
+                            *ngFor="
+                                let tag of tags;
+                                let tagIndex = index;
+                                trackBy: trackByIdentity
+                            "
+                        >
+                            <div
+                                class="d-flex align-items-center justify-content-center documents-drawer-main-toolbar-tags-row-tag"
+                                [ngClass]="{ active: tag?.isSelected }"
+                                ngbTooltip
+                                [mainTooltip]="
+                                    tag?.isSelected ? 'Remove' : 'Select'
+                                "
+                                tooltipBackground="#424242"
+                                position="bottom"
+                                (click)="
+                                    handleActionClick(
+                                        $event,
+                                        documentsDrawerStringEnum.TAG,
+                                        tagIndex
+                                    )
+                                "
+                            >
+                                <p
+                                    class="m-0 ta-font-bold text-size-11 text-color-light-grey"
+                                >
+                                    {{ tag?.title }}
+                                </p>
+                            </div>
+                        </ng-container>
+                    </div>
+
+                    <!-- Expand Tags Btn -->
+
+                    <div
+                        class="d-flex align-items-center justify-content-center documents-drawer-main-toolbar-tags-btn"
+                        [ngClass]="{ active: isTagRowExpanded }"
+                        ngbTooltip
+                        [mainTooltip]="isTagRowExpanded ? 'Collapse' : 'Expand'"
+                        tooltipBackground="#424242"
+                        position="bottom"
+                        (click)="
+                            handleActionClick(
+                                $event,
+                                documentsDrawerStringEnum.EXPAND_COLLAPSE
+                            )
+                        "
+                    >
+                        <svg-icon
+                            class="documents-drawer-main-toolbar-tags-btn-icon"
+                            [src]="documentsDrawerSvgRoutes.expandTagsIcon"
+                        ></svg-icon>
+                    </div>
+                </div>
+
+                <!-- Action  Btns -->
+
+                <div
+                    class="align-items-center documents-drawer-main-toolbar-actions"
+                >
+                    <ng-container
+                        *ngFor="
+                            let actionItem of drawerActionColumns;
+                            let actionItemIndex = index;
+                            trackBy: trackByIdentity
+                        "
+                    >
+                        <div
+                            class="d-flex align-items-center justify-content-center documents-drawer-main-toolbar-actions-action"
+                            ngbTooltip
+                            [mainTooltip]="actionItem.title"
+                            tooltipBackground="#424242"
+                            position="bottom"
+                            (click)="
+                                handleActionClick($event, actionItem.title)
+                            "
+                        >
+                            <ng-container
+                                *ngIf="
+                                    actionItemIndex !== 2;
+                                    else optionsDropdown
+                                "
+                            >
+                                <svg-icon
+                                    class="icon"
+                                    [src]="actionItem.iconRoute"
+                                    [svgStyle]="{
+                                        'width.px': 18,
+                                        'height.px': 18
+                                    }"
+                                ></svg-icon>
+                            </ng-container>
+
+                            <ng-template #optionsDropdown>
+                                <!-- Options -->
+
+                                <app-ta-dropdown-options
+                                    [options]="options"
+                                    [isDarkBackground]="true"
+                                    (dropdownOptionEmitter)="
+                                        handleDropdownClick($event)
+                                    "
+                                ></app-ta-dropdown-options>
+                            </ng-template>
+                        </div>
+                    </ng-container>
+                </div>
+            </div>
+
+            <!-- Documents -->
+
+            <div class="d-flex documents-drawer-main-documents"></div>
+        </div>
+    </ng-template>
+</div>

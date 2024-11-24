@@ -1,5 +1,25 @@
 @import 'src/theme/variables';
 
+.repair-details-item-container {
+    display: grid;
+    grid-template-columns: 440px 734px repeat(2, 312px);
+    grid-gap: 12px;
+}
+
+/* Responsive */
+
+/* @media (max-width: 1700px) {
+    .repair-details-item-container {
+        grid-template-columns: 400px minmax(0, 1.5fr) 312px;
+    }
+}
+
+@media (max-width: 1500px) {
+    .repair-details-item-container {
+        grid-template-columns: 360px minmax(0, 1fr) 268px;
+    }
+} */
+
 app-repair-shop-details-item {
     .have-pm-description {
         color: #536bc2 !important;
