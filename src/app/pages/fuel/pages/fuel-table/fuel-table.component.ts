@@ -39,7 +39,7 @@ import { FuelTableConstants } from '@pages/fuel/pages/fuel-table/utils/constants
 import { FuelTableSvgRoutes } from '@pages/fuel/pages/fuel-table/utils/svg-routes/fuel-table-svg-routes';
 
 //Pipes
-import { ThousandSeparatorPipe, NameInitialsPipe } from '@shared/pipes';
+import { ThousandSeparatorPipe, NameInitialsPipe, ActivityTimePipe } from '@shared/pipes';
 
 //Helpers
 import { DataFilterHelper } from '@shared/utils/helpers/data-filter.helper';
@@ -49,7 +49,6 @@ import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calcula
 //Models
 import {
     FuelStopListResponse,
-    FuelStopResponse,
     FuelTransactionResponse,
 } from 'appcoretruckassist';
 import { FuelTransactionListResponse } from 'appcoretruckassist';
@@ -87,7 +86,7 @@ import { ConfirmationModalStringEnum } from '@shared/components/ta-shared-modals
         './fuel-table.component.scss',
         '../../../../../assets/scss/maps.scss',
     ],
-    providers: [ThousandSeparatorPipe, NameInitialsPipe],
+    providers: [ThousandSeparatorPipe, NameInitialsPipe, ActivityTimePipe],
 })
 export class FuelTableComponent implements OnInit, AfterViewInit, OnDestroy {
     @ViewChild('mapsComponent', { static: false }) public mapsComponent: any;
@@ -125,22 +124,26 @@ export class FuelTableComponent implements OnInit, AfterViewInit, OnDestroy {
     public displayRows$: Observable<any>; //leave this as any for now
 
     constructor(
-        private modalService: ModalService,
-        private tableService: TruckassistTableService,
-        private thousandSeparator: ThousandSeparatorPipe,
-        public datePipe: DatePipe,
-        private fuelQuery: FuelQuery,
         private ref: ChangeDetectorRef,
-        private confiramtionService: ConfirmationService,
-        private fuelService: FuelService,
+
+        // pipes
+        public datePipe: DatePipe,
         private nameInitialsPipe: NameInitialsPipe,
-        private payrollService: PayrollService,
+        private activityTimePipe: ActivityTimePipe,
+        private thousandSeparator: ThousandSeparatorPipe,
+
 
         // services
         private fuelCardsModalService: FuelCardsModalService,
+        private confiramtionService: ConfirmationService,
+        private payrollService: PayrollService,
+        private fuelService: FuelService,
+        private modalService: ModalService,
+        private tableService: TruckassistTableService,
 
         // store
-        private store: Store
+        private store: Store,
+        private fuelQuery: FuelQuery,
     ) {}
 
     //-------------------------------NG ON INIT-------------------------------
@@ -716,19 +719,23 @@ export class FuelTableComponent implements OnInit, AfterViewInit, OnDestroy {
             highestPricePerGallon,
         } = data || {};
         const { address: addressName } = address || {};
-        const tablePriceRange =
-            lowestPricePerGallon && highestPricePerGallon
-                ? `$${lowestPricePerGallon} - $${highestPricePerGallon}`
-                : TableStringEnum.EMPTY_STRING_PLACEHOLDER;
-        const tableExpense = totalCost
-            ? `$${totalCost}`
+
+        const tablePriceRange = 
+            lowestPricePerGallon && highestPricePerGallon 
+            ? (lowestPricePerGallon === highestPricePerGallon) 
+                ? `$${lowestPricePerGallon}`
+                : `$${lowestPricePerGallon} - $${highestPricePerGallon}` 
             : TableStringEnum.EMPTY_STRING_PLACEHOLDER;
+        const tableExpense = totalCost ? `$${totalCost}` : FuelTableConstants.NO_EXPENSE;
+
         const tableLast = {
             startRange: lowestPricePerGallon ?? null,
             endRange: highestPricePerGallon ?? null,
             value: pricePerGallon ?? null,
             unit: eProgressRangeUnit.Dollar,
+            lastUsed: lastUsed
         };
+        const tableLastVisit = lastUsed ? this.activityTimePipe.transform(lastUsed) : TableStringEnum.EMPTY_STRING_PLACEHOLDER
 
         return {
             ...data,
@@ -740,6 +747,7 @@ export class FuelTableComponent implements OnInit, AfterViewInit, OnDestroy {
             tablePPG:
                 pricePerGallon ?? TableStringEnum.EMPTY_STRING_PLACEHOLDER,
             tableLast: tableLast ?? TableStringEnum.EMPTY_STRING_PLACEHOLDER,
+            tableLastVisit: tableLastVisit,
             tableUsed: used ?? TableStringEnum.EMPTY_STRING_PLACEHOLDER,
             tableLastUsed: lastUsed ?? TableStringEnum.EMPTY_STRING_PLACEHOLDER,
             tablePriceRange: tablePriceRange,

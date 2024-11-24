@@ -5,6 +5,8 @@
 }
 
 ::ng-deep app-fuel-table {
+    $padding-left-note-header-icon: 10px;
+
     .table-container {
         app-ta-table-head {
             table {
@@ -12,12 +14,7 @@
                     app-table-head-actions {
                         tr {
                             th:nth-child(2) {
-                                width: 5px !important;
-                                min-width: 5px !important;
-
-                                @media (max-width: 1260px) {
-                                    width: 20px !important;
-                                }
+                                padding-left: $padding-left-note-header-icon;
                             }
                         }
                     }

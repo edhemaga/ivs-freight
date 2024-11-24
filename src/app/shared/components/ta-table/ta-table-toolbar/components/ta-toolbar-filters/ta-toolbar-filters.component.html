@@ -167,6 +167,19 @@
     >
     </app-ca-filter>
 
+    <!-- DEPARTMENT FILTER -->
+    <app-ca-filter
+        *ngIf="options.toolbarActions.showDepartmentFilter"
+        [type]="'departmentFilter'"
+        [icon]="'department'"
+        [filterTitle]="'Department Filter'"
+        [noLeftIcon]="true"
+        (setFilter)="onFilter($event)"
+        (clearAll)="onFilter($event)"
+        [pmFilterArray]="[]"
+    >
+    </app-ca-filter>
+
     <!-- STATE FILTER -->
     <app-ca-filter
         *ngIf="options.toolbarActions.showStateFilter"
@@ -280,7 +293,7 @@
         *ngIf="options.toolbarActions.showCategoryFuelFilter"
         [type]="'pmFilter'"
         [icon]="'funnel'"
-        [filterTitle]="'Category Filter'"
+        [filterTitle]="'Fuel Item Filter'"
         [noLeftIcon]="true"
         (setFilter)="onFilter($event)"
         (clearAll)="onFilter($event)"

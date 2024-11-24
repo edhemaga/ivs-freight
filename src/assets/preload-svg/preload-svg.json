@@ -732,11 +732,6 @@
             "iconPath": "/assets/svg/svg_numbers/olddash/svg_num_box_8.svg"
         },
         {
-            "iconName": "load_order_num_9",
-            "iconPath": "/assets/svg/svg_numbers/olddash/svg_num_box_9.svg"
-        },
-
-        {
             "iconName": "pickup",
             "iconPath": "/assets/svg/common/ic_pickup.svg"
         },
@@ -764,9 +759,6 @@
             "iconName": "ic_route_info",
             "iconPath": "assets/svg/common/routing/ic_route_info.svg"
         }
-        
-
-        
     ],
     "customIcons": []
 }

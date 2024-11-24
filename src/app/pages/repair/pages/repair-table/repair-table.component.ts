@@ -312,25 +312,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                         if (this.selectedTab === TableStringEnum.REPAIR_SHOP) {
                             this.deleteRepairShop(res?.id);
                         } else {
-                            const repairId = res.array?.[0]?.id ?? res.id;
-
-                            this.repairService
-                                .deleteRepair(repairId, this.selectedTab)
-                                .pipe(takeUntil(this.destroy$))
-                                .subscribe({
-                                    next: () => {
-                                        this.updateDataCount();
-
-                                        if (res.array?.length) {
-                                            this.tableService.sendRowsSelected(
-                                                []
-                                            );
-                                            this.tableService.sendResetSelectedColumns(
-                                                true
-                                            );
-                                        }
-                                    },
-                                });
+                            this.deleteRepair(res?.id);
                         }
                     }
                 }
@@ -427,6 +409,26 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     /* Repair */
+
+    private deleteRepair(repairId: number): void {
+        this.repairService
+            .deleteRepair(repairId, null, this.selectedTab)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe({
+                next: () => {
+                    this.viewData = this.viewData.map((repair) =>
+                        repair.id === repairId
+                            ? {
+                                  ...repair,
+                                  actionAnimation: TableStringEnum.DELETE,
+                              }
+                            : repair
+                    );
+
+                    this.handleAfterActions();
+                },
+            });
+    }
 
     /* Repair Shop */
 
@@ -550,6 +552,11 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                     });
 
                     this.handleCloseAnimationAction(false);
+
+                    if (this.activeViewMode === TableStringEnum.MAP) {
+                        this.isAddedNewRepairShop = true;
+                        this.getMapData();
+                    }
                 }
 
                 // On Update Repair
@@ -572,6 +579,11 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                     });
 
                     this.handleCloseAnimationAction(false);
+
+                    if (this.activeViewMode === TableStringEnum.MAP) {
+                        this.isAddedNewRepairShop = true;
+                        this.getMapData();
+                    }
                 }
                 // On Delete Repair
                 else if (
@@ -1906,11 +1918,11 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
     ): void {
         this.repairService
             .getRepairShopClusters(
-                this.mapClustersObject.northEastLatitude,
-                this.mapClustersObject.northEastLongitude,
-                this.mapClustersObject.southWestLatitude,
-                this.mapClustersObject.southWestLongitude,
-                this.mapClustersObject.zoomLevel,
+                this.mapClustersObject?.northEastLatitude,
+                this.mapClustersObject?.northEastLongitude,
+                this.mapClustersObject?.southWestLatitude,
+                this.mapClustersObject?.southWestLongitude,
+                this.mapClustersObject?.zoomLevel,
                 this.isAddedNewRepairShop, // addedNew flag
                 null, // shipperLong
                 null, // shipperLat
@@ -2058,10 +2070,10 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
 
         this.repairService
             .getRepairShopMapList(
-                this.mapClustersObject.northEastLatitude,
-                this.mapClustersObject.northEastLongitude,
-                this.mapClustersObject.southWestLatitude,
-                this.mapClustersObject.southWestLongitude,
+                this.mapClustersObject?.northEastLatitude,
+                this.mapClustersObject?.northEastLongitude,
+                this.mapClustersObject?.southWestLatitude,
+                this.mapClustersObject?.southWestLongitude,
                 this.backFilterQuery.categoryIds, // category ids
                 null, // _long
                 null, // lat
@@ -2128,9 +2140,11 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
 
         this.mapsService.selectedMarker(null);
 
-        this.getRepairShopClusters();
+        if (this.activeViewMode === TableStringEnum.MAP) {
+            this.getRepairShopClusters();
 
-        this.getRepairShopMapList();
+            this.getRepairShopMapList();
+        }
     }
 
     public addMapListScrollEvent(): void {
@@ -2224,9 +2238,11 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
             pageIndex: 1,
         };
 
-        this.getRepairShopClusters(isClusterPagination, selectedMarkerId);
+        if (this.activeViewMode === TableStringEnum.MAP) {
+            this.getRepairShopClusters(isClusterPagination, selectedMarkerId);
 
-        this.getRepairShopMapList();
+            this.getRepairShopMapList();
+        }
     }
 
     public trackByIdentity = (index: number, item: any): number => item?.id;
