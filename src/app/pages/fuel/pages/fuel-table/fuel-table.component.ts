@@ -122,6 +122,7 @@ export class FuelTableComponent implements OnInit, AfterViewInit, OnDestroy {
         {} as { [key: string]: AvatarColors };
 
     public displayRows$: Observable<any>; //leave this as any for now
+    public tableDataLength: number;
 
     constructor(
         private ref: ChangeDetectorRef,
@@ -523,6 +524,8 @@ export class FuelTableComponent implements OnInit, AfterViewInit, OnDestroy {
         ];
 
         const td = this.tableData.find((t) => t.field === this.selectedTab);
+
+        this.tableDataLength = td.length;
         this.setFuelData(td);
         this.updateCardView();
     }
@@ -1157,6 +1160,12 @@ export class FuelTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 break;
         }
         this.fuelCardsModalService.updateTab(this.selectedTab);
+    }
+
+    public onShowMore(): void {
+        this.onTableBodyActions({
+            type: TableStringEnum.SHOW_MORE,
+        });
     }
 
     ngOnDestroy(): void {
