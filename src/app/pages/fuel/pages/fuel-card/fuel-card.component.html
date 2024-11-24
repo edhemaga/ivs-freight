@@ -223,6 +223,23 @@
                             </div>
                         </ng-container>
 
+                        <ng-container *ngIf="card.fileCount">
+                            <div
+                                class="card-attachments-icon-container d-flex flex-column align-items-center"
+                            >
+                                <svg-icon
+                                    [src]="fuelImageRoutes.attachment"
+                                    [svgStyle]="{
+                                        'width.px': '18',
+                                        'height.px': '18'
+                                    }"
+                                ></svg-icon>
+                                <div class="file_count">
+                                    {{ card.fileCount }}
+                                </div>
+                            </div>
+                        </ng-container>
+
                         <!-- Expand element -->
 
                         <div

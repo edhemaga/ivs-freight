@@ -14,6 +14,9 @@ import { CardHelper } from '@shared/utils/helpers/card-helper';
 import { TruckassistTableService } from '@shared/services/truckassist-table.service';
 import { NgbPopover } from '@ng-bootstrap/ng-bootstrap';
 
+// utils
+import { FuelCardSvgRoutes } from '@pages/fuel/pages/fuel-card/utils/svg-routes/fuel-card-svg-routes';
+
 @Component({
     selector: 'app-fuel-card',
     templateUrl: './fuel-card.component.html',
@@ -31,8 +34,6 @@ export class FuelCardComponent implements OnInit, OnDestroy {
     
     @Input() set viewData(value: CardDetails[]) {
         this._viewData = value;
-
-        console.log(value, '_viewdata')
     }
 
     // Card body endpoints
@@ -54,6 +55,8 @@ export class FuelCardComponent implements OnInit, OnDestroy {
     public activeDescriptionDropdown: number = -1;
 
     public itemsForRepair: string[] = [];
+
+    public fuelImageRoutes = FuelCardSvgRoutes;
 
     private destroy$ = new Subject<void>();
 
