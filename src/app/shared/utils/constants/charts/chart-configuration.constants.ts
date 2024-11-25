@@ -1,11 +1,13 @@
 // Enums
 import { ChartValueLabelEnum } from "@shared/enums";
+import { ChartTypeProperty } from "@shared/models";
+import { BrokerPaymentHistoryResponse } from "appcoretruckassist";
 import { ChartTypesStringEnum } from "ca-components";
 
 // Models
 
 export class ChartConfiguration {
-    public static mileageRateConfiguration = [
+    public static mileageRateConfiguration: ChartTypeProperty[] = [
         {
             type: ChartTypesStringEnum.LINE,
             color: '#6692F1',
@@ -13,13 +15,29 @@ export class ChartConfiguration {
         },
         {
             type: ChartTypesStringEnum.BAR,
-            color: 'linear-gradient(#e66465, #9198e5)',
+            color: '#86C9C3',
+            color2: '#FAB15C',
             value: ChartValueLabelEnum.AVERAGE_RATE,
             maxValue: ChartValueLabelEnum.HIGHEST_RATE,
             minValue: ChartValueLabelEnum.LOWEST_RARE
         }
     ];
-    public static driverConfiguration = [
+    public static paymentHistoryConfiguration = (data: BrokerPaymentHistoryResponse): ChartTypeProperty[] => [
+        {
+            value: ChartValueLabelEnum.AVERAGE_PAY_PERIOD_DAYS,
+            type: ChartTypesStringEnum.LINE,
+            color: '#3074D3',
+            colorEdgeValue: data.payTerm,
+            color2: '#DF3C3C',
+            fill: true
+        },
+        {
+            value: ChartValueLabelEnum.PAY_TERM,
+            type: ChartTypesStringEnum.LINE,
+            color: '#FAB15C'
+        }
+    ];
+    public static driverConfiguration: ChartTypeProperty[] = [
         {
             value: ChartValueLabelEnum.MILES,
             type: ChartTypesStringEnum.LINE,
@@ -31,7 +49,7 @@ export class ChartConfiguration {
             color: '#FBC88B',
         }
     ];
-    public static brokerPaidInvoiceConfiguration = [
+    public static brokerPaidInvoiceConfiguration: ChartTypeProperty[] = [
         {
             value: ChartValueLabelEnum.COUNT,
             type: ChartTypesStringEnum.LINE,
@@ -45,7 +63,7 @@ export class ChartConfiguration {
         },
     ];
 
-    public static truckFuelConsumptionConfiguration = [
+    public static truckFuelConsumptionConfiguration: ChartTypeProperty[] = [
         {
             value: ChartValueLabelEnum.MILES_PER_GALLON,
             type: ChartTypesStringEnum.LINE,
@@ -59,7 +77,7 @@ export class ChartConfiguration {
         },
     ];
 
-    public static truckRevenueConfiguration = [
+    public static truckRevenueConfiguration: ChartTypeProperty[] = [
         {
             value: ChartValueLabelEnum.REVENUE,
             type: ChartTypesStringEnum.LINE,
@@ -73,24 +91,22 @@ export class ChartConfiguration {
         },
     ];
 
-    public static truckExpensesConfiguration = [
+    public static truckExpensesConfiguration: ChartTypeProperty[] = [
         {
             maxValue: ChartValueLabelEnum.FUEL_COST,
             value: ChartValueLabelEnum.FUEL_COST,
             type: ChartTypesStringEnum.BAR,
             color: '#FAB15C',
-            stack: true
         },
         {
             maxValue: ChartValueLabelEnum.REPAIR_COST,
             value: ChartValueLabelEnum.REPAIR_COST,
             type: ChartTypesStringEnum.BAR,
             color: '#6692F1',
-            stack: true
         },
     ];
 
-    public static fuelExpensesConfiguration = [
+    public static fuelExpensesConfiguration: ChartTypeProperty[] = [
         {
             maxValue: ChartValueLabelEnum.GALLON,
             value: ChartValueLabelEnum.GALLON,
@@ -104,7 +120,7 @@ export class ChartConfiguration {
         },
     ];
 
-    public static trailerFuelExpensesConfiguration = [
+    public static trailerFuelExpensesConfiguration: ChartTypeProperty[] = [
         {
             maxValue: ChartValueLabelEnum.MILES_PER_GALLON,
             value: ChartValueLabelEnum.MILES_PER_GALLON,

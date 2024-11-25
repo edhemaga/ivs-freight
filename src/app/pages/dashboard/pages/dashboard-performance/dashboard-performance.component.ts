@@ -39,7 +39,7 @@ import {
     SubintervalType,
     TimeInterval,
 } from 'appcoretruckassist';
-import { IChartConfiguaration } from 'ca-components/lib/components/ca-chart/models';
+import { IChartConfiguration } from 'ca-components/lib/components/ca-chart/models';
 
 @Component({
     selector: 'app-dashboard-performance',
@@ -76,7 +76,7 @@ export class DashboardPerformanceComponent implements OnInit, OnDestroy {
     public performanceDataColors: PerformanceColorsPallete[] = [];
 
     // charts
-    public performanceChartConfig: IChartConfiguaration =
+    public performanceChartConfig: IChartConfiguration =
         DashboardPerformanceChartsConfiguration.PERFORMANCE_CHART_CONFIG;
 
     private axisNumber: number = -1;
@@ -87,7 +87,7 @@ export class DashboardPerformanceComponent implements OnInit, OnDestroy {
         private dashboardService: DashboardService,
         private dashboardPerformanceService: DashboardPerformanceService,
         private changeDetectorRef: ChangeDetectorRef
-    ) {}
+    ) { }
 
     ngOnInit(): void {
         this.createForm();
@@ -239,7 +239,7 @@ export class DashboardPerformanceComponent implements OnInit, OnDestroy {
 
         if (
             this.selectedPerformanceDataCount ===
-                this.maxPerformanceDataItemsSelected &&
+            this.maxPerformanceDataItemsSelected &&
             !performanceDataItem.isSelected
         ) {
             return;

@@ -30,7 +30,7 @@ import { TrailersMinimalListQuery } from '@pages/trailer/state/trailer-minimal-l
 // Models
 import { TrailerDropdown } from '@pages/trailer/pages/trailer-details/models/trailer-dropdown.model';
 import { TrailerFuelConsumptionChartResponse, TrailerFuelConsumptionResponse, TrailerMinimalResponse } from 'appcoretruckassist';
-import { IChartConfiguaration } from 'ca-components/lib/components/ca-chart/models';
+import { IChartConfiguration } from 'ca-components/lib/components/ca-chart/models';
 import { Tabs } from '@shared/models';
 
 // Enums
@@ -94,7 +94,7 @@ export class TrailerDetailsCardComponent
     public ownerCardOpened: boolean = true;
 
     // Chart
-    public fuelConsumptionChartConfig!: IChartConfiguaration;
+    public fuelConsumptionChartConfig!: IChartConfiguration;
     public fuelConsumptionChartLegend!: ChartLegendConfiguration[];
     public fuelConsumptionTabs: Tabs[] = ChartHelper.generateTimeTabs();
 

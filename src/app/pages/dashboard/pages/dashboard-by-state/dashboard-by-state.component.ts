@@ -34,7 +34,7 @@ import { DashboardTab } from '@pages/dashboard/models/dashboard-tab.model';
 import { DropdownListItem } from '@pages/dashboard/models/dropdown-list-item.model';
 import { ByStateColorsPallete } from '@pages/dashboard/models/colors-pallete.model';
 import { CustomPeriodRange } from '@shared/models/custom-period-range.model';
-import { IChartConfiguaration } from 'ca-components/lib/components/ca-chart/models';
+import { IChartConfiguration } from 'ca-components/lib/components/ca-chart/models';
 
 import {
     ByStateReportType,
@@ -100,7 +100,7 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
     public mainColorsPallete: ByStateColorsPallete[] = [];
 
     //chart
-    public pickUpByStateChartConfig: IChartConfiguaration =
+    public pickUpByStateChartConfig: IChartConfiguration =
         DashboardByStateChartsConfiguration.PICK_BY_STATE_CHART_CONFIG;
 
     constructor(
@@ -108,7 +108,7 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
         private changeDetectorRef: ChangeDetectorRef,
         private dashboardByStateService: DashboardByStateService,
         private dashboardService: DashboardService
-    ) {}
+    ) { }
 
     ngOnInit(): void {
         this.createForm();
@@ -486,7 +486,7 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
 
         const byStateArgumentsData = [
             ...(this.byStateTitle === DashboardStringEnum.PICKUP ||
-            this.byStateTitle === DashboardStringEnum.DELIVERY
+                this.byStateTitle === DashboardStringEnum.DELIVERY
                 ? [loadStopType]
                 : []),
             selectedTab,
@@ -716,7 +716,7 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
                                 selectedTab === DashboardStringEnum.COUNT
                                     ? roadside.intervals[i].countPercentage
                                     : roadside.intervals[i]
-                                          .severityWeightPercentage,
+                                        .severityWeightPercentage,
                             ];
                         }
 
@@ -790,7 +790,7 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
                                 selectedTab === DashboardStringEnum.COUNT
                                     ? violation.intervals[i].countPercentage
                                     : violation.intervals[i]
-                                          .severityWeightPercentage,
+                                        .severityWeightPercentage,
                             ];
                         }
 
@@ -855,7 +855,7 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
                                 selectedTab === DashboardStringEnum.COUNT
                                     ? accident.intervals[i].countPercentage
                                     : accident.intervals[i]
-                                          .severityWeightPercentage,
+                                        .severityWeightPercentage,
                             ];
                         }
 

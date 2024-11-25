@@ -54,13 +54,18 @@ import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calcula
 import { ChartHelper } from '@shared/utils/helpers';
 
 // Models
-import { DriverMinimalResponse, DriverPayrollChartResponse, DriverPayrollResponse, DriverResponse } from 'appcoretruckassist';
+import {
+    DriverMinimalResponse,
+    DriverPayrollChartResponse,
+    DriverPayrollResponse,
+    DriverResponse
+} from 'appcoretruckassist';
 import { TabOptions } from '@shared/components/ta-tab-switch/models/tab-options.model';
-import { IChartConfiguaration } from 'ca-components/lib/components/ca-chart/models';
+import { IChartConfiguration } from 'ca-components/lib/components/ca-chart/models';
 import { ChartLegendProperty, Tabs } from '@shared/models';
 
 // Enums
-import { ChartTabStringEnum } from '@shared/enums';
+import { } from '@shared/enums';
 import {
     ChartConfiguration,
     ChartLegendConfiguration
@@ -113,7 +118,7 @@ export class DriverDetailsCardComponent
     // Note card
     public noteForm: UntypedFormGroup;
 
-    public payrollChartConfig!: IChartConfiguaration;
+    public payrollChartConfig!: IChartConfiguration;
 
     constructor(
         private formBuilder: UntypedFormBuilder,

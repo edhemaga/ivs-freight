@@ -21,10 +21,10 @@ export class ChartHelper {
             let properties: IBaseDataset = {
                 type: property?.type,
                 label: property.value,
-                borderColor: property?.color,
-                backgroundColor: property?.color,
                 borderWidth: property?.borderWidth || 2,
                 data: [],
+                color1: property?.color,
+                color2: property?.color2 || property.color
             };
 
             switch (property.type) {
@@ -33,6 +33,9 @@ export class ChartHelper {
                         ...datasets,
                         {
                             ...properties,
+                            borderColor: property.color,
+                            fill: property.fill,
+                            colorEdgeValue: property.colorEdgeValue,
                             data: [...rawData.map((item: T) => {
                                 return item[property.value] || 0;
                             })],
@@ -44,13 +47,13 @@ export class ChartHelper {
                         ...datasets,
                         {
                             ...properties,
-                            data: [...rawData.map((item: T) => {
+                            borderWidth: 0,
+                            data: [...rawData.map((item: T): [number, number] => {
                                 return [
                                     item[property.minValue] ?? 0,
                                     item[property.maxValue] ?? 0
                                 ]
                             })],
-                            yAxisID: 'y-axis-0'
                         },
                     ];
                     break;

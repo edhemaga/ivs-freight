@@ -148,7 +148,7 @@ export class ChartLegendConfiguration {
     public static brokerPaymentHistory = (data: BrokerPaymentHistoryResponse): ChartLegendProperty[] => [
         {
             name: 'Avg. Pay Period',
-            value: Number(data.averagePayPeriod.totalDays),
+            value: Number(data.averagePayPeriod.totalDays) ?? 0,
             color: 'linear-gradient(135deg, #F77D3B 50%, #6692F1 50%)',
             unit: 'days',
         },

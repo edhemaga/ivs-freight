@@ -32,7 +32,7 @@ import {
 } from 'appcoretruckassist';
 import { BrokerDropdown } from '@pages/customer/pages/broker-details/models/';
 import { TabOptions } from '@shared/components/ta-tab-switch/models/tab-options.model';
-import { IChartConfiguaration } from 'ca-components/lib/components/ca-chart/models';
+import { IChartConfiguration } from 'ca-components/lib/components/ca-chart/models';
 import { ChartLegendProperty, Tabs } from '@shared/models';
 
 // Constants
@@ -102,15 +102,15 @@ export class BrokerDetailsCardComponent
     public brokerDetailsSvgRoutes = BrokerDetailsSvgRoutes;
 
     //Chart
-    public invoiceChartConfig: IChartConfiguaration = BrokerChartsConfiguration.INVOICE_CHART_CONFIG;
+    public invoiceChartConfig: IChartConfiguration = BrokerChartsConfiguration.INVOICE_CHART_CONFIG;
     public invoiceChartLegend!: ChartLegendProperty[];
     public invoiceChartTabs: Tabs[] = ChartHelper.generateTimeTabs();
 
-    public mileageChartConfig: IChartConfiguaration = BrokerChartsConfiguration.MILEAGE_CHART_CONFIG;
+    public mileageChartConfig: IChartConfiguration = BrokerChartsConfiguration.MILEAGE_CHART_CONFIG;
     public mileageChartLegendData!: ChartLegendProperty[];
     public mileageChartTabs: Tabs[] = ChartHelper.generateTimeTabs();
 
-    public paymentChartConfig: IChartConfiguaration = BrokerChartsConfiguration.PAYMENT_CHART_CONFIG;
+    public paymentChartConfig: IChartConfiguration = BrokerChartsConfiguration.PAYMENT_CHART_CONFIG;
     public paymentChartLegendData!: ChartLegendProperty[];
     public paymentChartTabs: Tabs[] = ChartHelper.generateTimeTabs();
 
@@ -161,7 +161,8 @@ export class BrokerDetailsCardComponent
                     ...this.mileageChartConfig,
                     chartData: ChartHelper.generateDataByDateTime<BrokerMileageRateChartResponse>(
                         response.brokerMileageRateChartResponse,
-                        ChartConfiguration.mileageRateConfiguration
+                        ChartConfiguration.mileageRateConfiguration,
+
                     )
                 };
                 this.mileageChartLegendData =
@@ -198,7 +199,7 @@ export class BrokerDetailsCardComponent
                     chartData: ChartHelper.generateDataByDateTime<BrokerPaymentHistoryResponse>
                         (
                             response.brokerPaymentHistoryChartResponse,
-                            ChartConfiguration.brokerPaidInvoiceConfiguration
+                            ChartConfiguration.paymentHistoryConfiguration(response),
                         )
                 };
                 this.paymentChartLegendData = ChartLegendConfiguration.brokerPaymentHistory(response);

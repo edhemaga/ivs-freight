@@ -46,7 +46,7 @@ import {
 } from 'appcoretruckassist';
 import { TopRatedApiArguments } from '@pages/dashboard/pages/dashboard-top-rated/models/top-rated-api-arguments.model';
 import { TopRatedWithoutTabApiArguments } from '@pages/dashboard/pages/dashboard-top-rated/models/top-rated-without-tab-api-arguments.model';
-import { IChartConfiguaration } from 'ca-components/lib/components/ca-chart/models';
+import { IChartConfiguration } from 'ca-components/lib/components/ca-chart/models';
 
 @Component({
     selector: 'app-dashboard-top-rated',
@@ -103,9 +103,9 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
     public secondaryColorsPallete: TopRatedSecondaryColorsPallete[] = [];
 
     // charts
-    public doughnutChartConfig: IChartConfiguaration =
+    public doughnutChartConfig: IChartConfiguration =
         DashboardTopRatedChartsConfiguration.DOUGHNUT_CHART_CONFIG;
-    public barChartConfig: IChartConfiguaration =
+    public barChartConfig: IChartConfiguration =
         DashboardTopRatedChartsConfiguration.BAR_CHART_CONFIG;
 
     constructor(
@@ -113,7 +113,7 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
         private changeDetectorRef: ChangeDetectorRef,
         private dashboardTopRatedService: DashboardTopRatedService,
         private dashboardService: DashboardService
-    ) {}
+    ) { }
 
     ngOnInit(): void {
         this.createForm();
@@ -610,16 +610,16 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                                 ...filteredIntervalValues,
                                 selectedTab === DashboardStringEnum.LOAD
                                     ? dispatcher.intervals[i]
-                                          .dispatcherLoadCount
+                                        .dispatcherLoadCount
                                     : dispatcher.intervals[i].dispatcherRevenue,
                             ];
                             filteredIntervalPercentages = [
                                 ...filteredIntervalPercentages,
                                 selectedTab === DashboardStringEnum.LOAD
                                     ? dispatcher.intervals[i]
-                                          .dispatcherLoadPercentage
+                                        .dispatcherLoadPercentage
                                     : dispatcher.intervals[i]
-                                          .dispatcherRevenuePercentage,
+                                        .dispatcherRevenuePercentage,
                             ];
                         }
 

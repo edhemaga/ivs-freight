@@ -20,7 +20,7 @@ import { RepairExpenseCartConstants, RepairShopChartsConfiguration } from '@page
 // models
 import { RepairShopResponse } from 'appcoretruckassist';
 import { Tabs } from '@shared/models/tabs.model';
-import { IChartConfiguaration } from 'ca-components/lib/components/ca-chart/models';
+import { IChartConfiguration } from 'ca-components/lib/components/ca-chart/models';
 
 @Component({
     selector: 'app-repair-shop-details-repair-expense-card',
@@ -62,7 +62,7 @@ export class RepairShopDetailsRepairExpenseCardComponent implements OnDestroy {
 
     public chartTabs: Tabs[];
 
-    public repairShopChartConfig: IChartConfiguaration = RepairShopChartsConfiguration.REPAIR_CHART_CONFIG;
+    public repairShopChartConfig: IChartConfiguration = RepairShopChartsConfiguration.REPAIR_CHART_CONFIG;
 
     constructor(
         private repairService: RepairService,
@@ -110,35 +110,12 @@ export class RepairShopDetailsRepairExpenseCardComponent implements OnDestroy {
             .getRepairShopChart(id, chartType)
             .pipe(takeUntil(this.destroy$))
             .subscribe((item) => {
-                // this.barChartConfig.dataLabels = [];
-                // this.barChartConfig.chartValues = [item.repair, item.cost];
-
-                // this.barChartLegend[0].value = item.repair;
-                // this.barChartLegend[1].value = item.cost;
-
-                // let hasValue = false;
-
-                // this.barChartLegend.forEach((leg) => {
-                //     if (leg.value > 0) hasValue = true;
-                // });
-
-                // this.barChartConfig.hasValue = hasValue;
-
                 let milesPerGallon = [],
                     costPerGallon = [],
                     labels = [],
                     maxValue = 0,
                     maxValue2 = 0;
-
-                // if (item?.repairShopExpensesChartResponse?.length > 17) {
-                //     this.barChartConfig.dataProperties[1].defaultConfig.barThickness = 10;
-                // } else {
-                //     this.barChartConfig.dataProperties[1].defaultConfig.barThickness = 18;
-                // }
-
-                //this.repairExpensesChart.toolTipData = [];
                 item.repairShopExpensesChartResponse.forEach((data) => {
-                    //this.repairExpensesChart.toolTipData.push(data);
                     milesPerGallon.push(data.repair);
                     costPerGallon.push(data.repairCost);
 
@@ -155,26 +132,6 @@ export class RepairShopDetailsRepairExpenseCardComponent implements OnDestroy {
                         labels.push([this.monthList[data.month - 1]]);
                     }
                 });
-
-                // this.barChartAxes['verticalLeftAxes']['maxValue'] = maxValue;
-                // this.barChartAxes['verticalRightAxes']['maxValue'] = maxValue2;
-
-                // this.barChartConfig.dataLabels = labels;
-                // this.barChartConfig.dataProperties[0].defaultConfig.data =
-                //     costPerGallon;
-                // this.barChartConfig.dataProperties[1].defaultConfig.data =
-                //     milesPerGallon;
-
-                // this.repairExpensesChart.chartDataCheck(
-                //     this.barChartConfig.chartValues
-                // );
-                // this.repairExpensesChart.updateChartData(hideAnimation);
-                // this.repairExpensesChart.saveValues = JSON.parse(
-                //     JSON.stringify(this.barChartLegend)
-                // );
-                // this.repairExpensesChart.legendAttributes = JSON.parse(
-                //     JSON.stringify(this.barChartLegend)
-                // );
             });
 
         this.cdRef.detectChanges();

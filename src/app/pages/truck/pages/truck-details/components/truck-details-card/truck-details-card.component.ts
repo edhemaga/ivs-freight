@@ -39,7 +39,7 @@ import { ChartConfiguration, ChartLegendConfiguration } from '@shared/utils/cons
 
 // Models
 import { TruckResponse, TruckPerformanceResponse, TruckFuelConsumptionResponse, TruckFuelConsumptionChartResponse, TruckRevenueResponse, TruckRevenueChartResponse, TruckExpensesResponse, TruckExpensesChartResponse } from 'appcoretruckassist';
-import { IChartConfiguaration } from 'ca-components/lib/components/ca-chart/models';
+import { IChartConfiguration } from 'ca-components/lib/components/ca-chart/models';
 import { ChartLegendProperty, Tabs } from '@shared/models';
 import { TabOptions } from '@shared/components/ta-tab-switch/models/tab-options.model';
 
@@ -97,15 +97,15 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
     public ownerCardOpened: boolean = true;
     public featureNumber: number = 0;
 
-    public fuelConsumptionChartConfig!: IChartConfiguaration;
+    public fuelConsumptionChartConfig!: IChartConfiguration;
     public fuelConsumptionChartLegend!: ChartLegendProperty[];
     public fuelConsumptionChartTabs: Tabs[] = ChartHelper.generateTimeTabs();
 
-    public revenueChartConfig!: IChartConfiguaration;
+    public revenueChartConfig!: IChartConfiguration;
     public revenueChartLegend!: ChartLegendProperty[];
     public revenueChartTabs: Tabs[] = ChartHelper.generateTimeTabs();
 
-    public expensesChartConfig!: IChartConfiguaration;
+    public expensesChartConfig!: IChartConfiguration;
     public expensesChartChartLegend!: ChartLegendProperty[];
     public expensesChartChartTabs: Tabs[] = ChartHelper.generateTimeTabs();
 
