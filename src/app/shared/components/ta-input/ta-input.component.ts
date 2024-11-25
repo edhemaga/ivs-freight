@@ -51,7 +51,7 @@ import { LoadStatusColorPipe } from '@shared/pipes/load-status-color.pipe';
 import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calculations.helper';
 
 // directives
-import { HoverSvgDirective } from '@shared/directives/hover-svg.directive';
+import { HoverSvgDirective } from '@shared/directives/';
 
 // services
 import { TaInputService } from '@shared/services/ta-input.service';
@@ -2869,15 +2869,19 @@ export class TaInputComponent
                     if (
                         this._inputConfig.isFutureDateDisabled &&
                         moment(this.dateTimeInputDate).isAfter(moment())
-                    )  this.getSuperControl.setErrors({ invalid: true }); // don't accept future dates
-                      else {
+                    )
+                        this.getSuperControl.setErrors({
+                            invalid: true,
+                        }); // don't accept future dates
+                    else {
                         if (
                             this._inputConfig.expiredDateInvalid &&
                             moment(this.dateTimeInputDate).isBefore(moment())
                         )
                             this.getSuperControl.setErrors({
                                 invalid: true,
-                            }); // don't accept expired dates
+                            });
+                        // don't accept expired dates
                         else
                             this.calendarService.dateChanged.next(
                                 this.dateTimeInputDate

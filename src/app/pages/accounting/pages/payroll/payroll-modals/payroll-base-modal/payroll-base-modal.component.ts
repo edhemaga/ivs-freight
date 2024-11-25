@@ -21,7 +21,6 @@ import {
 } from 'ca-components';
 import { TaTabSwitchComponent } from '@shared/components/ta-tab-switch/ta-tab-switch.component';
 import { TaCheckboxComponent } from '@shared/components/ta-checkbox/ta-checkbox.component';
-import { TaInputComponent } from '@shared/components/ta-input/ta-input.component';
 import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
 
 // Const
@@ -29,6 +28,8 @@ import { PayrollCreditConst } from '@pages/accounting/pages/payroll/state/utils/
 
 // Enums
 import { PayrollStringEnum } from '@pages/accounting/pages/payroll/state/enums';
+import { TableStringEnum } from '@shared/enums/table-string.enum';
+import { LoadModalStringEnum } from '@pages/load/pages/load-modal/enums';
 
 // Utils
 import { PayrollSvgRoutes } from '@pages/accounting/pages/payroll/state/utils';
@@ -41,7 +42,6 @@ import {
     PayrollCreditModalResponse,
     PayrollCreditType,
     PayrollDeductionRecurringType,
-    TruckMinimalResponse,
 } from 'appcoretruckassist';
 import { ITaInput } from '@shared/components/ta-input/config/ta-input.config';
 import {
@@ -55,12 +55,10 @@ import {
 import { PayrollCreditService } from '@pages/accounting/pages/payroll/payroll-modals/payroll-credit-bonus/services/payroll-credit.service';
 import { PayrollBonusService } from '@pages/accounting/pages/payroll/payroll-modals/payroll-bonus-modal/services/payroll-bonus.service';
 import { PayrollFacadeService } from '@pages/accounting/pages/payroll/state/services';
+import { ConfirmationService } from '@shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
 
 // Helpers
 import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calculations.helper';
-import { TableStringEnum } from '@shared/enums/table-string.enum';
-import { ConfirmationService } from '@shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
-import { PayrollDeductionService } from '../payroll-deduction-modal/services/payroll-deduction.service';
 
 @Component({
     selector: 'app-payroll-base-modal',
@@ -75,7 +73,6 @@ import { PayrollDeductionService } from '../payroll-deduction-modal/services/pay
 
         CaModalComponent,
         CaInputComponent,
-        TaInputComponent,
         TaTabSwitchComponent,
         CaInputDropdownComponent,
         TaCheckboxComponent,
@@ -101,11 +98,16 @@ export class PayrollBaseModalComponent implements OnInit {
     public selectedTab: TabOptions;
 
     // Drivers
+    public driverConfig: ITaInput = this.payrollCreditConst.driverConfig(
+        '',
+        ''
+    );
     public selectedDriver: PayrollDriver;
     public driversDropdownList: PayrollDriver[];
     // Trucks
     public selectedTruck: EnumValue;
     public trucksDropdownList: PayrollTruck[];
+    public truckConfig: ITaInput = this.payrollCreditConst.truckConfig;
     private destroy$ = new Subject<void>();
     public creditTitle: string = '';
     public periodTabs: TabOptions[];
@@ -115,7 +117,7 @@ export class PayrollBaseModalComponent implements OnInit {
         private payrollBonusService: PayrollBonusService,
         private ngbActiveModal: NgbActiveModal,
         private payrollFacadeService: PayrollFacadeService,
-        private confirmationService: ConfirmationService,
+        private confirmationService: ConfirmationService
     ) {}
 
     ngOnInit() {
@@ -269,24 +271,74 @@ export class PayrollBaseModalComponent implements OnInit {
             .get(PayrollStringEnum.SELECTED_DRIVER_ID)
             .patchValue(driver?.id ?? null);
         this.creditTitle = driver?.name + driver?.suffix;
+        this.driverConfig = {
+            ...this.driverConfig,
+            multipleInputValues: {
+                options: [
+                    {
+                        value: driver.name,
+                        isImg: true,
+                        isSvg: false,
+                        folder: null,
+                        subFolder: null,
+                        isOwner: false,
+                        logoType: null,
+                        logoName: this.selectedDriver?.logoName,
+                    },
+                    {
+                        value: `${driver.suffix}`,
+                        logoName: null,
+                    },
+                ],
+                customClass: LoadModalStringEnum.TEXT_SUFFIX,
+            },
+        };
     }
 
-    private mapTrucks(trucks: TruckMinimalResponse[]): void {
-        this.trucksDropdownList = trucks.map(({ id, truckNumber, owner }) => {
+    private mapTrucks(trucks: any[]): void {
+        this.trucksDropdownList = trucks.map((item) => {
             return {
-                id,
-                name: truckNumber,
-                suffix: owner ? ` • ${owner}` : '',
+                ...item,
+                name: item.truckNumber,
+                logoType: item.truckType?.name,
+                logoName: item.truckType?.logoName,
+                folder: LoadModalStringEnum.COMMON,
+                subFolder: LoadModalStringEnum.TRUCKS,
+                suffix: item.owner ? `${item.owner}` : '',
             };
         });
     }
 
-    public selectTruck(truck: PayrollTruck): void {
+    public selectTruck(truck: any): void {
         this.selectedTruck = truck;
         this.baseForm
             .get(PayrollStringEnum.SELECTED_TRUCK_ID)
             .patchValue(truck?.id ?? null);
-        this.creditTitle = truck?.name + truck.suffix;
+        this.creditTitle = truck ? truck?.name + truck.suffix : null;
+        
+        this.truckConfig = {
+            ...this.truckConfig,
+            multipleInputValues: truck ? {
+                options: [
+                    {
+                        id: truck.id,
+                        value: truck.name,
+                        isImg: false,
+                        isSvg: true,
+                        folder: LoadModalStringEnum.COMMON,
+                        subFolder: LoadModalStringEnum.TRUCKS,
+                        logoName: truck?.logoName,
+                        logoType: truck?.logoType
+                    },
+
+                    {
+                        value: `${truck.owner}`,
+                        logoName: null,
+                    },
+                ],
+                customClass: 'text-suffix',
+            } : null,
+        };
     }
 
     private clearDriverTruckValidators(): void {
@@ -346,13 +398,6 @@ export class PayrollBaseModalComponent implements OnInit {
         return (
             this.isDeductionModal &&
             this.baseForm.get(PayrollStringEnum.LIMITED)?.value
-        );
-    }
-
-    public get driverConfig(): ITaInput {
-        return this.payrollCreditConst.driverConfig(
-            this.selectedDriver?.logoName,
-            this.selectedDriver?.name
         );
     }
 

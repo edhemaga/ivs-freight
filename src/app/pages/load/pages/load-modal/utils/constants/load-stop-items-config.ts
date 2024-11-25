@@ -8,6 +8,7 @@ export class LoadStopItemsConfig {
         type: 'text',
         label: 'Description',
         placeholderInsteadOfLabel: true,
+        textTransform: 'capitalize',
         isRequired: true,
         hideErrorMessage: true,
         dropdownWidthClass: 'w-col-150',
@@ -136,7 +137,7 @@ export class LoadStopItemsConfig {
         fixedPlacholder: '°F',
         priceSeparatorLimitation: 6,
         removeLeadingZero: true,
-        negativeLeadingZero: true
+        negativeLeadingZero: true,
     };
 
     static IS_CREATED_NEW_STOP_ITEMS_ROW: LoadItemStop = {

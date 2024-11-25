@@ -13,6 +13,12 @@ import {
     ViewChild,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import {
+    ControlValueAccessor,
+    FormsModule,
+    NgControl,
+    ReactiveFormsModule,
+} from '@angular/forms';
 
 import { debounceTime, skip, Subject, takeUntil } from 'rxjs';
 
@@ -53,13 +59,7 @@ import { LoadStatusColorPipe } from '@shared/pipes/load-status-color.pipe';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 
 // directives
-import { HoverSvgDirective } from '@shared/directives/hover-svg.directive';
-import {
-    ControlValueAccessor,
-    FormsModule,
-    NgControl,
-    ReactiveFormsModule,
-} from '@angular/forms';
+import { HoverSvgDirective } from '@shared/directives/';
 
 // svg routes
 import { InputDropdownSvgRoutes } from '@shared/components/ta-input-dropdown/utils/svg-routes/input-dropdown-svg-routes';

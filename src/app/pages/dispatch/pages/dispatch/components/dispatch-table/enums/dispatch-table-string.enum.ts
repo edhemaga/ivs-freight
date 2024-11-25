@@ -86,4 +86,5 @@ export enum DispatchTableStringEnum {
 
     // Progress bar
     NO_GPS_DEVICE = 'NO GPS DEVICE',
+    DEADHEAD = 'DeadHead',
 }

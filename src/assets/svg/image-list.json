@@ -535,7 +535,7 @@
     "assets/svg/common/trucks/ic_truck_dump.svg",
     "assets/svg/common/trucks/ic_truck_cement.svg",
     "assets/svg/common/trucks/ic_truck_garbage.svg",
-    
+
     "assets/svg/common/trucksmake/ic_truck_chevrolet.svg",
     "assets/svg/common/trucksmake/ic_truck_ford.svg",
     "assets/svg/common/trucksmake/ic_truck_freightliner.svg",
@@ -791,6 +791,7 @@
     "assets/svg/truckassist-table/violation/violation-truck.svg",
     "assets/svg/truckassist-table/x_white.svg",
     "assets/svg/truckassist-table/x.svg",
+    "assets/svg/truckassist-progress-range/progress-range-last-price-bar.svg",
     "assets/svg/under_construction.svg",
     "assets/svg/user-in-color.svg",
     "assets/svg/weather-icons/sun.svg",

@@ -17,12 +17,6 @@
                                 COMMISSION
                                 <span>{{ payroll_report?.commission }}%</span>
                             </div>
-                            <div class="edit d-f-aic-jcc">
-                                <svg-icon
-                                    [svgClass]="'d-flex'"
-                                    name="edit"
-                                ></svg-icon>
-                            </div>
                             <div
                                 class="edit d-f-aic-jcc"
                                 [class.active]="showMap"
@@ -33,7 +27,7 @@
                                     name="map"
                                 ></svg-icon>
                             </div>
-                            <div class="edit d-f-aic-jcc burger_menu">
+                            <div class="edit d-f-aic-jcc burger_menu" (click)="openPreviewModal()">
                                 <svg-icon
                                     [svgClass]="'d-flex'"
                                     name="burger_menu"

@@ -31,6 +31,7 @@ import { RepairShopDetailsItemComponent } from '@pages/repair/pages/repair-shop-
 
 // enums
 import { RepairShopDetailsStringEnum } from '@pages/repair/pages/repair-shop-details/enums';
+import { TableStringEnum } from '@shared/enums/table-string.enum';
 import { RepairTableStringEnum } from '@pages/repair/pages/repair-table/enums';
 
 // helpers
@@ -225,12 +226,20 @@ export class RepairShopDetailsComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: (res) => {
-                    if (
-                        res?.template ===
-                            RepairShopDetailsStringEnum.REPAIR_SHOP &&
-                        res?.type === RepairShopDetailsStringEnum.DELETE
-                    )
-                        this.deleteRepairShop(res.data.id);
+                    if (res?.type === RepairShopDetailsStringEnum.DELETE) {
+                        if (
+                            res?.template ===
+                            RepairShopDetailsStringEnum.REPAIR_SHOP
+                        ) {
+                            this.deleteRepairShop(res?.data?.id);
+                        } else {
+                            this.deleteRepair(
+                                res?.data?.id,
+                                res?.data?.repairShop?.id,
+                                res?.data?.unitType?.id
+                            );
+                        }
+                    }
                 },
             });
     }
@@ -376,6 +385,22 @@ export class RepairShopDetailsComponent implements OnInit, OnDestroy {
                     ]);
                 },
             });
+    }
+
+    public deleteRepair(
+        id: number,
+        repairShopId: number,
+        unitTypeId: number
+    ): void {
+        const unitType =
+            unitTypeId === 1
+                ? TableStringEnum.ACTIVE
+                : TableStringEnum.INACTIVE;
+
+        this.repairService
+            .deleteRepair(id, repairShopId, unitType)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe();
     }
 
     private handleOpenCloseRepairShop(id: number): void {

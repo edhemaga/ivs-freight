@@ -1,0 +1,373 @@
+<div class="cards-container">
+    <ng-container
+        *ngFor="let card of _viewData; let i = index; trackBy: trackCard"
+    >
+        <div class="custom-card">
+            <!-- Card splited on left and right side -->
+
+            <div
+                class="card-body d-flex justify-content-between"
+                [ngClass]="{
+                    'body-active':
+                        isCardFlippedCheckInCards.includes(i) ||
+                        isAllCardsFlipp,
+                    'body-checked': card.isSelected
+                }"
+            >
+                <!-- Left side of the card -->
+
+                <div class="card-body-left p-1">
+                    <!-- Head of the card -->
+
+                    <div class="card-header d-flex align-items-center">
+                        <div class="checkbox-holder d-flex align-items-center">
+                            <!-- Checkbox -->
+                            <span
+                                class="checkbox-tooltip"
+                                type="button"
+                                ngbTooltip
+                                tooltipBackground="#424242"
+                                position="bottom"
+                                [ngClass]="{
+                                    'rotate-svg':
+                                        isCardFlippedCheckInCards.includes(i),
+                                    'svg-position':
+                                        !isCardFlippedCheckInCards.includes(i)
+                                }"
+                            >
+                                <input
+                                    class="table-checkbox"
+                                    type="checkbox"
+                                    id="checkbox{{ i }}"
+                                    [checked]="card.isSelected"
+                                    (change)="onCheckboxSelect(i, card)"
+                                />
+                                <label
+                                    class="table-checkbox-label"
+                                    for="checkbox{{ i }}"
+                                ></label>
+                            </span>
+                        </div>
+                        <div class="name d-flex ta-font-bold">
+                            <span class="title">
+                                <span class="title-tooltip" customClass="mt-1">
+                                    {{
+                                        selectedTab === 'FUEL_TRANSACTION'
+                                            ? card?.invoice
+                                            : card?.businessName
+                                    }}
+                                </span>
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- Card body front-->
+
+                    <div class="card-body-content flipped">
+                        <ng-container
+                            *ngFor="
+                                let cardRow of displayRowsFront
+                                    | flipCards
+                                        : i
+                                        : isCardFlippedCheckInCards
+                                        : isAllCardsFlipp
+                                        : displayRowsBack;
+                                trackBy: trackCard
+                            "
+                        >
+                            <div class="one-row">
+                                <div class="item-body">
+                                    <div class="top-item-body">
+                                        {{ cardRow.title }}
+                                    </div>
+                                </div>
+                                <div
+                                    #parentElement
+                                    class="bottom-item-body d-flex align-items-center"
+                                    [class.gap-1]="cardRow.title === 'Driver'"
+                                >
+                                    <ng-container
+                                        *ngIf="
+                                            cardRow.title ===
+                                            'Item Detail • Description'
+                                        "
+                                    >
+                                        <ng-container
+                                            *ngIf="
+                                                card.descriptionItems?.length;
+                                                else emptyTemplate
+                                            "
+                                        >
+                                            <div
+                                                class="items-container-body d-flex align-items-center"
+                                            >
+                                                <span
+                                                    class="checkbox-tooltip d-flex"
+                                                    type="button"
+                                                    ngbTooltip
+                                                    mainTooltip="View Items"
+                                                    tooltipBackground="#424242"
+                                                    position="bottom"
+                                                    customClass="mt-2"
+                                                >
+                                                    <div
+                                                        (click)="
+                                                            onShowDescriptionDropdown(
+                                                                description,
+                                                                card
+                                                            )
+                                                        "
+                                                        #description="ngbPopover"
+                                                        class="description-container d-flex align-items-center"
+                                                        [ngbPopover]="
+                                                            descriptionCardsPopover
+                                                        "
+                                                        container="body"
+                                                        [placement]="
+                                                            'bottom-left'
+                                                        "
+                                                        popoverClass="table-description-popover"
+                                                        [style.width.px]="
+                                                            elementWidth
+                                                        "
+                                                        triggers="manual"
+                                                    ></div>
+                                                    <div
+                                                        #itemsRepair
+                                                        class="items-container"
+                                                        [innerHtml]="
+                                                            card.descriptionItems
+                                                                | tableDescriptionTextPipe
+                                                                    : 291
+                                                        "
+                                                    ></div>
+                                                </span>
+                                            </div>
+                                        </ng-container>
+                                    </ng-container>
+
+                                    <ng-container
+                                        *ngIf="cardRow.title === 'Driver'"
+                                    >
+                                        <ng-container *ngIf="card?.driver">
+                                            <app-ca-profile-image
+                                                [avatarImg]="
+                                                    card.driver?.avatarFile?.url
+                                                "
+                                                [indx]="i"
+                                                [size]="'small'"
+                                                [type]="'driver'"
+                                                [isRound]="false"
+                                                [name]="
+                                                    card.driver?.firstName +
+                                                    ' ' +
+                                                    card.driver?.lastName
+                                                "
+                                            ></app-ca-profile-image>
+                                        </ng-container>
+                                        {{
+                                            card.driver
+                                                ? card.driver?.firstName +
+                                                  ' ' +
+                                                  card.driver?.lastName
+                                                : '/'
+                                        }}
+                                    </ng-container>
+
+                                    <ng-container
+                                        *ngIf="
+                                            cardRow.title !==
+                                                'Item Detail • Description' &&
+                                            cardRow.title !== 'Driver'
+                                        "
+                                    >
+                                        {{
+                                            cardRow.title === 'Last Visit'
+                                                ? (card
+                                                  | activityTime : 'activity')
+                                                : (card | cardValue : cardRow)
+                                        }}
+                                    </ng-container>
+                                </div>
+                            </div>
+                        </ng-container>
+                    </div>
+                </div>
+
+                <!-- Right side of card -->
+
+                <div class="card-body-right">
+                    <div class="top-side">
+                        <!-- Open dropdown element-->
+
+                        <app-ta-table-card-dropdown-actions
+                            [card]="card"
+                            (bodyActions)="onCardActions($event)"
+                        ></app-ta-table-card-dropdown-actions>
+
+                        <!-- Note element -->
+
+                        <ng-container *ngIf="selectedTab === 'FUEL_STOP'">
+                            <div
+                                class="note-container right-side-svg d-flex align-items-center justify-content-center flex-column"
+                            >
+                                <app-ta-note
+                                    [note]="card.note"
+                                    [mainData]="card"
+                                    [entityId]="card.id"
+                                    [entityType]="'FuelStopStore'"
+                                    [openedAll]="false"
+                                    [parking]="false"
+                                >
+                                </app-ta-note>
+                            </div>
+                        </ng-container>
+
+                        <ng-container *ngIf="card.fileCount">
+                            <div
+                                class="card-attachments-icon-container d-flex flex-column align-items-center"
+                            >
+                                <svg-icon
+                                    [src]="fuelImageRoutes.attachment"
+                                    [svgStyle]="{
+                                        'width.px': '18',
+                                        'height.px': '18'
+                                    }"
+                                ></svg-icon>
+                                <div class="file_count">
+                                    {{ card.fileCount }}
+                                </div>
+                            </div>
+                        </ng-container>
+
+                        <!-- Expand element -->
+
+                        <div
+                            class="bottom-side d-flex justify-content-center"
+                            (click)="flipCard(i)"
+                        >
+                            <span
+                                class="expand-card"
+                                type="button"
+                                ngbTooltip
+                                mainTooltip="Flip Card"
+                                tooltipBackground="#424242"
+                                position="bottom"
+                                [ngClass]="{
+                                    'rotate-svg':
+                                        isCardFlippedCheckInCards.includes(i) ||
+                                        isAllCardsFlipp,
+                                    'svg-position':
+                                        !isCardFlippedCheckInCards.includes(i)
+                                }"
+                            >
+                                <svg-icon
+                                    [src]="'assets/svg/common/resize-arrow.svg'"
+                                ></svg-icon>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </ng-container>
+</div>
+
+<ng-template #descriptionCardsPopover let-data="data">
+    <div class="card-dropdown-container" [style.width.px]="291">
+        <div class="description-titles d-flex align-items-center">
+            <div
+                class="number-title ta-font-bold d-flex align-items-center justify-content-center"
+            >
+                #
+            </div>
+            <div class="dropdown-titles d-flex justify-content-between">
+                <ng-container *ngIf="data.isRepairOrder">
+                    <p
+                        class="dropdown-left m-0 ta-font-bold d-flex align-items-center"
+                    >
+                        DESCRIPTION
+                    </p>
+                    <p
+                        class="dropdown-right m-0 ta-font-bold d-flex align-items-center"
+                    >
+                        QTY
+                    </p>
+                </ng-container>
+                <ng-container *ngIf="!data.isRepairOrder">
+                    <p
+                        class="dropdown-left m-0 ta-font-bold d-flex align-items-center"
+                    >
+                        DESC • QTY • PRICE
+                    </p>
+                    <div class="dropdown-right">
+                        <p class="price-total-title ta-font-semi-bold m-0">
+                            {{ data.tabelDescriptionDropTotal }}
+                        </p>
+                    </div>
+                </ng-container>
+            </div>
+        </div>
+        <div class="description-items">
+            <div class="description-item d-flex flex-column">
+                <ng-container
+                    *ngFor="
+                        let item of data.descriptionItems;
+                        let i = index;
+                        trackBy: trackCard
+                    "
+                >
+                    <div class="d-flex align-items-center item-description">
+                        <div
+                            class="item-index d-flex justify-content-center align-items-center"
+                        >
+                            {{ i + 1 }}
+                        </div>
+                        <ng-container *ngIf="item.pmDescription">
+                            <div class="pm-item">
+                                <svg-icon
+                                    [src]="
+                                        'assets/svg/common/repair-pm/' +
+                                        item.pmDescription.logoName
+                                    "
+                                    [svgStyle]="{
+                                        'width.px': '20',
+                                        'height.px': '20'
+                                    }"
+                                ></svg-icon>
+                            </div>
+                        </ng-container>
+                        <div
+                            class="items-holder d-flex justify-content-between"
+                        >
+                            <div class="left-description">
+                                <div class="item-title ta-font-medium">
+                                    {{ item.description }}
+                                </div>
+                                <div class="items-number-items-cost d-flex">
+                                    <div
+                                        class="number-of-items ta-font-regular"
+                                    >
+                                        {{ item.quantity }} X
+                                        {{ item.descriptionPrice }}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div
+                                class="item-total-cost d-flex align-items-center"
+                                [ngClass]="{
+                                    'pm-style': item.pmDescription
+                                }"
+                            >
+                                {{ item.descriptionTotalPrice }}
+                            </div>
+                        </div>
+                    </div>
+                </ng-container>
+            </div>
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #emptyTemplate>/</ng-template>

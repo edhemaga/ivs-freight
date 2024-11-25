@@ -2,6 +2,7 @@ export enum FuelValuesStringEnum {
     TRUCK_ID = 'truckId',
     TRAILER_ID = 'trailerId',
     TRANSACTION_DATE = 'transactionDate',
+    TRANSACTION_TIME = 'transactionTime',
     UPDATE = 'update',
     ITEM_ID = 'itemId',
     PRICE = 'price',

@@ -1,0 +1,22 @@
+<ng-container *ngIf="value !== null; else noValue">
+    <div class="w-100 h-100 progress-range-wrapper">
+        <span class="price-range-level-circle" [ngClass]="priceRangeItem?.circleClassName"></span>
+        <span class="price-range-value">{{ unit }} {{ value }}</span>
+
+        <div class="progress-range-hover-box-wrapper">
+            <svg-icon [src]="svgRoutes.ICON_LAST_PRICE_CURSOR" [className]="priceRangeItem?.arrowClassName"></svg-icon>
+            <svg-icon class="last-price-bar" [src]="svgRoutes.ICON_LAST_PRICE_BAR"></svg-icon>
+            <div class="d-flex justify-content-between hover-box-text-wrapper">
+                <span>{{ unit }} {{ startRange }}</span>
+                <span>{{ unit }} {{ endRange }}</span>
+            </div>
+        </div>
+    </div>
+</ng-container>
+
+<ng-template #noValue>
+    <div class="w-100 h-100 progress-range-wrapper">
+        <span class="price-range-level-circle circle-color-expired-no-value"></span>
+        <span class="price-range-value not-applicable-text">N/A</span>
+    </div>
+</ng-template>

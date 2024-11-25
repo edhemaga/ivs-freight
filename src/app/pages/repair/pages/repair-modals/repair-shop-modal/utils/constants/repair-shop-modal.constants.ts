@@ -1,6 +1,3 @@
-// Helpers
-import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calculations.helper';
-
 // Enums
 import { OpenHourDays, OpenWorkingHours } from '@pages/repair/pages/repair-modals/repair-shop-modal/enums';
 
@@ -10,13 +7,10 @@ import { OpenHours } from '@pages/repair/pages/repair-modals/repair-shop-modal/m
 export type WorkingHoursType = OpenHourDays[];
 
 export class RepairShopConstants {
-    static startTime = MethodsCalculationsHelper.convertTimeFromBackend(
+    static startTime =
         OpenWorkingHours.EIGHTAM
-    );
-    static endTime = MethodsCalculationsHelper.convertTimeFromBackend(
+    static endTime = 
         OpenWorkingHours.FIVEAM
-    );
-
     static OPEN_HOUR_DAYS: WorkingHoursType = [
         OpenHourDays.Sunday,
         OpenHourDays.Monday,

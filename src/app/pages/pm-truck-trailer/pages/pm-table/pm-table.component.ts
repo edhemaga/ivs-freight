@@ -11,6 +11,7 @@ import { MethodsGlobalHelper } from '@shared/utils/helpers/methods-global.helper
 
 // Components
 import { PmModalComponent } from '@pages/pm-truck-trailer/pages/pm-modal/pm-modal.component';
+import { RepairOrderModalComponent } from '@pages/repair/pages/repair-modals/repair-order-modal/repair-order-modal.component';
 
 // Models
 import { DropdownItem } from '@shared/models/card-models/card-table-data.model';
@@ -49,22 +50,22 @@ import { TruckNameStringEnum } from '@shared/enums/truck-name-string.enum';
 import { TrailerNameStringEnum } from '@shared/enums/trailer-name-string.enum';
 import { TooltipColorsStringEnum } from '@shared/enums/tooltip-colors-string.enum';
 import { TableActionsStringEnum } from '@shared/enums/table-actions-string.enum';
+import { ToolbarFilterStringEnum } from '@shared/components/ta-filter/enums/toolbar-filter-string.enum';
 
 // Store
 import { PmTruckQuery } from '@pages/pm-truck-trailer/state/pm-truck-state/pm-truck.query';
 import { PmTrailerQuery } from '@pages/pm-truck-trailer/state/pm-trailer-state/pm-trailer.query';
 import { PmListTruckQuery } from '@pages/pm-truck-trailer/state/pm-list-truck-state/pm-list-truck.query';
 import { PmListTrailerQuery } from '@pages/pm-truck-trailer/state/pm-list-trailer-state/pm-list-trailer.query';
+import {
+    selectActiveTabCards,
+    selectInactiveTabCards,
+} from '@pages/pm-truck-trailer/pages/pm-card-modal/state';
 
 // Pipes
 import { ThousandSeparatorPipe } from '@shared/pipes/thousand-separator.pipe';
 import { ThousandToShortFormatPipe } from '@shared/pipes/thousand-to-short-format.pipe';
 import { select, Store } from '@ngrx/store';
-import {
-    selectActiveTabCards,
-    selectInactiveTabCards,
-} from '../pm-card-modal/state';
-import { RepairOrderModalComponent } from '@pages/repair/pages/repair-modals/repair-order-modal/repair-order-modal.component';
 
 @Component({
     selector: 'app-pm-table',
@@ -142,6 +143,8 @@ export class PmTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
         this.sendPMData();
 
+        this.setTableFilter();
+
         this.resetColumns();
 
         this.toogleColumns();
@@ -188,6 +191,8 @@ export class PmTableComponent implements OnInit, AfterViewInit, OnDestroy {
             toolbarActions: {
                 showGeneralPmBtn: true,
                 hideDeleteButton: true,
+                showTruckFilter: this.selectedTab === TableStringEnum.ACTIVE,
+                showTrailerFilter: this.selectedTab !== TableStringEnum.ACTIVE,
                 hideActivationButton: true,
                 viewModeOptions: [
                     {
@@ -856,6 +861,33 @@ export class PmTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 break;
         }
         this.pmCardsModalService.updateTab(this.selectedTab);
+    }
+
+    public setTableFilter(): void {
+        this.tableService.currentSetTableFilter
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((res) => {
+                if (res?.filterType) {
+                    switch (res.filterType) {
+                        case ToolbarFilterStringEnum.TRUCK_TYPE_FILTER:
+                            // Keep, need for later
+                            // this.pmTruckBackFilterQuery.truckId =
+                            //     res.queryParams;
+
+                            this.pmTruckBackFilter(this.pmTruckBackFilterQuery);
+                            break;
+
+                        // Keep, need for later
+                        // case ToolbarFilterStringEnum.TRAILER_TYPE_FILTER:
+                        //     this.pmTrailerBackFilterQuery.trailerTypes =
+                        //         res.queryParams;
+                        //     break;
+
+                        default:
+                            break;
+                    }
+                }
+            });
     }
 
     private pmTruckBackFilter(
