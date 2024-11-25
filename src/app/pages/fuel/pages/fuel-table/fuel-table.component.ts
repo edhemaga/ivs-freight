@@ -465,7 +465,7 @@ export class FuelTableComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     sendFuelData() {
-        const { data, integratedFuelTransactionsCount } = this.fuelData;
+        const { data, integratedFuelTransactionsCount, fuelStopClosedCount } = this.fuelData;
         
         this.initTableOptions();
         this.checkActiveViewMode();
@@ -494,9 +494,10 @@ export class FuelTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 length: fuelCount.fuelStops,
                 data: data,
                 gridNameTitle: TableStringEnum.FUEL,
+                fuelStopClosedCount: fuelStopClosedCount,
                 closedArray: DataFilterHelper.checkSpecialFilterArray(
                     data,
-                    TableStringEnum.IS_CLOSED
+                    TableStringEnum.CLOSED_ARRAY
                 ),
                 tableConfiguration: TableStringEnum.FUEL_STOP,
                 showFuelStopFilter:
@@ -678,7 +679,8 @@ export class FuelTableComponent implements OnInit, AfterViewInit, OnDestroy {
             used,
             favourite,
             lowestPricePerGallon,
-            highestPricePerGallon
+            highestPricePerGallon,
+            isClosed
         } = data || {};
         const { address: addressName } = address || {};
         const tablePriceRange = 
@@ -714,6 +716,7 @@ export class FuelTableComponent implements OnInit, AfterViewInit, OnDestroy {
             tableProgressRangeStart: lowestPricePerGallon ?? TableStringEnum.EMPTY_STRING_PLACEHOLDER,
             tableProgressRangeEnd: highestPricePerGallon ?? TableStringEnum.EMPTY_STRING_PLACEHOLDER,
             tableProgressRangeValue: pricePerGallon ?? TableStringEnum.EMPTY_STRING_PLACEHOLDER,
+            tableFuelStopIsClosed: isClosed,
             isFavorite: favourite,
             tableDropdownContent: {
                 hasContent: true,
@@ -738,13 +741,15 @@ export class FuelTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 });
             }
         } else if (event.action === TableStringEnum.TAB_SELECTED) {
-            const { integratedFuelTransactionsCount } = this.fuelData || {};
+            const { integratedFuelTransactionsCount, fuelStopClosedCount } = this.fuelData || {};
             this.selectedTab = event.tabData.field;
 
             this.fuelData = {
                 data: [],
                 integratedFuelTransactionsCount: integratedFuelTransactionsCount,
                 integratedFuelTransactionsFilterActive: false,
+                fuelStopClosedCount: fuelStopClosedCount,
+                fuelStopClosedFilterActive: false,
                 pageIndex: 0
             }
             
@@ -905,12 +910,16 @@ export class FuelTableComponent implements OnInit, AfterViewInit, OnDestroy {
     ): void {
         const { data, pageIndex } = response?.pagination;
         const { integrationFuelTransactionCount } = response;
+        const { fuelStopClosedCount } = <FuelStopListResponse>response;
         const integratedFuelTransactionsFilterActive = this.fuelData?.integratedFuelTransactionsFilterActive ?? false;
+        const fuelStopClosedFilterActive = this.fuelData?.fuelStopClosedFilterActive ?? false;
 
         this.fuelData = {
             data: data,
             integratedFuelTransactionsCount: integrationFuelTransactionCount,
             integratedFuelTransactionsFilterActive: integratedFuelTransactionsFilterActive,
+            fuelStopClosedCount: fuelStopClosedCount,
+            fuelStopClosedFilterActive: fuelStopClosedFilterActive,
             pageIndex: pageIndex
         } as IFuelTableData;
     }
@@ -927,7 +936,7 @@ export class FuelTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 });
         } else if (this.selectedTab === TableStringEnum.FUEL_STOP) {
             this.fuelService
-                .getFuelStopsList(null, null, null, null, null, null, null, null, null, null, null, null, null, null, this.fuelData.pageIndex, FuelTableConstants.TABLE_PAGE_SIZE)
+                .getFuelStopsList(null, null, null, null, null, null, null, null, null, null, null, null, null, null, this.fuelData?.fuelStopClosedFilterActive, this.fuelData.pageIndex, FuelTableConstants.TABLE_PAGE_SIZE)
                 .pipe(takeUntil(this.destroy$))
                 .subscribe((response) => {
                     this.updateStoreData(response);
@@ -976,10 +985,17 @@ export class FuelTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 this.fuelData.integratedFuelTransactionsFilterActive =
                     currentFilter?.filterName === TableStringEnum.FUEL_ARRAY && 
                     currentFilter?.selectedFilter;
+
+                this.fuelData.fuelStopClosedFilterActive = 
+                    currentFilter?.filterName === TableStringEnum.CLOSED_ARRAY &&
+                    currentFilter?.selectedFilter;
+
                 this.fuelData.pageIndex = 1;
 
-                if (!!currentFilter) return this.fuelService
-                    .getFuelTransactionsList(null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, this.fuelData.integratedFuelTransactionsFilterActive, this.fuelData.pageIndex, FuelTableConstants.TABLE_PAGE_SIZE);
+                if (!!currentFilter && currentFilter?.filterName === TableStringEnum.FUEL_ARRAY) return this.fuelService
+                    .getFuelTransactionsList(null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, this.fuelData?.integratedFuelTransactionsFilterActive, this.fuelData.pageIndex, FuelTableConstants.TABLE_PAGE_SIZE);
+                else if (!!currentFilter && currentFilter?.filterName === TableStringEnum.CLOSED_ARRAY) return this.fuelService
+                    .getFuelStopsList(null, null, null, null, null, null, null, null, null, null, null, null, null, null, this.fuelData?.fuelStopClosedFilterActive, this.fuelData.pageIndex, FuelTableConstants.TABLE_PAGE_SIZE);
                 else return of();
             }))
             .subscribe(response => {
