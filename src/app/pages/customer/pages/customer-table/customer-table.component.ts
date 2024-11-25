@@ -194,6 +194,7 @@ export class CustomerTableComponent
         ShipperMapConfig.shipperMapListSortColumns;
     public isAddedNewShipper: boolean = false;
     public mapStateFilter: string[] | null = null;
+    public isSelectedFromMapList: boolean = false;
 
     constructor(
         // ref
@@ -2333,8 +2334,13 @@ export class CustomerTableComponent
         }
     }
 
-    public onGetInfoWindowData(markerId: number): void {
+    public onGetInfoWindowData(
+        markerId: number,
+        isFromMapList?: boolean
+    ): void {
         this.mapsService.selectedMarker(markerId);
+
+        this.isSelectedFromMapList = isFromMapList;
 
         this.getMapData(false, markerId);
     }
@@ -2370,6 +2376,8 @@ export class CustomerTableComponent
             selectedMarkerData,
         };
 
+        this.isSelectedFromMapList = false;
+
         this.mapsService.selectedMarker(null);
 
         this.getShipperClusters();
@@ -2403,14 +2411,14 @@ export class CustomerTableComponent
                 null, // lastTo?: number,
                 null, // ppgFrom?: number,
                 null, // ppgTo?: number,
-                this.mapsService.selectedMarkerId ?? null, // selectedId
+                this.isSelectedFromMapList
+                    ? this.mapsService.selectedMarkerId
+                    : null, // selectedId
                 this.filter === TableStringEnum.CLOSED_FILTER ? 0 : 1, // active
                 this.mapClustersPagination.pageIndex, // pageIndex
                 this.mapClustersPagination.pageSize, // pageSize
                 null, // companyId
-                this.mapsService.selectedMarkerId
-                    ? 'selectedDesc'
-                    : this.mapListSortDirection, // sortBy
+                this.mapListSortDirection ?? null, // sortBy
                 null, // search
                 null, // search1
                 null // search2
@@ -2542,12 +2550,13 @@ export class CustomerTableComponent
                 null, // shipperLat
                 null, // shipperDistance
                 this.mapStateFilter, // shipperStates
+                !this.isSelectedFromMapList
+                    ? this.mapsService.selectedMarkerId
+                    : null, // selectedId
                 this.mapListPagination.pageIndex,
                 this.mapListPagination.pageSize,
                 null, // companyId
-                this.mapsService.selectedMarkerId
-                    ? 'selectedDesc'
-                    : this.mapListSortDirection, // sort
+                this.mapListSortDirection ?? null, // sort
                 this.mapListSearchValue, // search
                 null, // search1
                 null // search2
@@ -2665,9 +2674,7 @@ export class CustomerTableComponent
         this.mapsService.selectedMapListCardChange
             .pipe(takeUntil(this.destroy$))
             .subscribe((id) => {
-                console.log('selectedMapListCardChange id', id);
-
-                if (id) this.onGetInfoWindowData(id);
+                if (id) this.onGetInfoWindowData(id, true);
                 else this.onResetSelectedMarkerItem();
             });
     }

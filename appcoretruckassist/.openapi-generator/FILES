@@ -631,6 +631,7 @@ model/loadMobileListItemResponse.ts
 model/loadMobileListItemResponsePagination.ts
 model/loadMobileListResponse.ts
 model/loadMobileResponse.ts
+model/loadMobileSortBy.ts
 model/loadModalResponse.ts
 model/loadPaymentPayCommand.ts
 model/loadPaymentPayResponse.ts
