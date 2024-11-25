@@ -42,6 +42,8 @@ import { ConfirmationModalComponent } from '@shared/components/ta-shared-modals/
 // Enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
 import { ConfirmationModalStringEnum } from '@shared/components/ta-shared-modals/confirmation-modal/enums/confirmation-modal-string.enum';
+import { PayrollType } from '@pages/accounting/pages/payroll/state/types/payroll.type';
+import { PayrollTypeEnum } from 'ca-components/lib/components/ca-period-content/enums';
 
 @Injectable({ providedIn: 'root' })
 export class PayrollService {
@@ -61,6 +63,31 @@ export class PayrollService {
         return this.http.get<PayrollDriverMileageListResponse[]>(
             `${environment.API_ENDPOINT}/api/payroll/driver/mileage/list`
         );
+    }
+
+    public generateReport(id: number, type: PayrollType) {
+        return this.http.get(
+            `${environment.API_ENDPOINT}${this.getReportURL(type)}/${id}`,
+            { responseType: 'blob' }
+        );
+    }
+
+    private getReportURL(type: PayrollType): string {
+        if(type ===  PayrollTypeEnum.OWNER_COMMISSION) {
+            return '/api/payroll/owner/report' ;
+        }
+
+        if(type ===  PayrollTypeEnum.FLAT_RATE) {
+            return '/api/payroll/flatrate/report' ;
+        }
+
+        if(type ===  PayrollTypeEnum.MILEAGE) {
+            return '/api/payroll/mileage/report' ;
+        }
+
+        if(type ===  PayrollTypeEnum.COMMISSION) {
+            return '/api/payroll/commission/report' ;
+        }
     }
 
     public addPayrollClosedReportPayment(
@@ -502,16 +529,16 @@ export class PayrollService {
         };
 
         //if (selectedDeducionIds?.length)
-            body.selectedDeducionIds = selectedDeducionIds;
+        body.selectedDeducionIds = selectedDeducionIds;
 
-        //if (selectedLoadIds?.length) 
-            body.selectedLoadIds = selectedLoadIds;
+        //if (selectedLoadIds?.length)
+        body.selectedLoadIds = selectedLoadIds;
 
-       // if (selectedCreditIds?.length)
-            body.selectedCreditIds = selectedCreditIds;
+        // if (selectedCreditIds?.length)
+        body.selectedCreditIds = selectedCreditIds;
 
-        //if (selectedBonusIds?.length) 
-            body.selectedBonusIds = selectedBonusIds;
+        //if (selectedBonusIds?.length)
+        body.selectedBonusIds = selectedBonusIds;
 
         return this.http.put<PayrollDriverMileageResponse>(
             `${environment.API_ENDPOINT}/api/payroll/driver/flatrate/close`,
