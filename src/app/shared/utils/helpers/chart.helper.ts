@@ -1,11 +1,13 @@
 // Models
-import { ChartTabStringEnum } from '@shared/enums';
 import { ChartTypeProperty, Tabs } from '@shared/models';
-import { ChartTypesStringEnum } from 'ca-components';
 import {
     IBaseDataset,
     IChartData,
 } from 'ca-components/lib/components/ca-chart/models';
+
+// Enums
+import { ChartTypesStringEnum } from 'ca-components';
+import { ChartTabStringEnum } from '@shared/enums';
 
 export class ChartHelper {
     public static generateDataByDateTime<T>(
