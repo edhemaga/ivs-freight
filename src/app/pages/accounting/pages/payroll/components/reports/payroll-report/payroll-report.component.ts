@@ -29,7 +29,7 @@ import {
     PayrollCreditType,
     PayrollDriverMileageByIdResponse,
 } from 'appcoretruckassist';
-import { ColumnConfig } from 'ca-components';
+import { ColumnConfig, PayrollTypeEnum } from 'ca-components';
 
 // components
 import { PayrollProccessPaymentModalComponent } from '@pages/accounting/pages/payroll/payroll-modals/payroll-proccess-payment-modal/payroll-proccess-payment-modal.component';
@@ -57,6 +57,7 @@ export class PayrollReportComponent
 {
     columns: ColumnConfig[];
     creditType = PayrollCreditType.Driver;
+    payrollType = PayrollTypeEnum.MILEAGE;
 
     @Input() set reportId(report_id: string) {
         this._reportId = report_id;
