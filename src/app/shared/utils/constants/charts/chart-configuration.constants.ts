@@ -1,10 +1,10 @@
 // Enums
 import { ChartValueLabelEnum } from "@shared/enums";
-import { ChartTypeProperty } from "@shared/models";
-import { BrokerPaymentHistoryResponse } from "appcoretruckassist";
 import { ChartTypesStringEnum } from "ca-components";
 
 // Models
+import { ChartTypeProperty } from "@shared/models";
+import { BrokerPaymentHistoryResponse } from "appcoretruckassist";
 
 export class ChartConfiguration {
     public static mileageRateConfiguration: ChartTypeProperty[] = [

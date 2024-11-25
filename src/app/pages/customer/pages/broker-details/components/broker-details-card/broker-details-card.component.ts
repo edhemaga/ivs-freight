@@ -93,7 +93,7 @@ export class BrokerDetailsCardComponent
     public invoiceAgingTabs: TabOptions[] =
         BrokerInvoiceAgingConstants.invoiceAgingTabs;
     public invoiceAgingSelectedTab: number = 1;
-    public inoviceAgingData: BrokerInvoiceAgeingResponse;
+    public invoiceAgingData: BrokerInvoiceAgeingResponse;
 
     //private monthList: string[] = ChartConstants.MONTH_LIST_SHORT;
     private destroy$ = new Subject<void>();
@@ -102,15 +102,15 @@ export class BrokerDetailsCardComponent
     public brokerDetailsSvgRoutes = BrokerDetailsSvgRoutes;
 
     //Chart
-    public invoiceChartConfig: IChartConfiguration = BrokerChartsConfiguration.INVOICE_CHART_CONFIG;
+    public invoiceChartConfig!: IChartConfiguration;
     public invoiceChartLegend!: ChartLegendProperty[];
     public invoiceChartTabs: Tabs[] = ChartHelper.generateTimeTabs();
 
-    public mileageChartConfig: IChartConfiguration = BrokerChartsConfiguration.MILEAGE_CHART_CONFIG;
+    public mileageChartConfig!: IChartConfiguration;
     public mileageChartLegendData!: ChartLegendProperty[];
     public mileageChartTabs: Tabs[] = ChartHelper.generateTimeTabs();
 
-    public paymentChartConfig: IChartConfiguration = BrokerChartsConfiguration.PAYMENT_CHART_CONFIG;
+    public paymentChartConfig!: IChartConfiguration;
     public paymentChartLegendData!: ChartLegendProperty[];
     public paymentChartTabs: Tabs[] = ChartHelper.generateTimeTabs();
 
@@ -158,11 +158,10 @@ export class BrokerDetailsCardComponent
                 if (timeFilter && this.mileageChartTabs[timeFilter - 1])
                     this.mileageChartTabs[timeFilter - 1].checked = true;
                 this.mileageChartConfig = {
-                    ...this.mileageChartConfig,
+                    ...BrokerChartsConfiguration.MILEAGE_CHART_CONFIG,
                     chartData: ChartHelper.generateDataByDateTime<BrokerMileageRateChartResponse>(
                         response.brokerMileageRateChartResponse,
                         ChartConfiguration.mileageRateConfiguration,
-
                     )
                 };
                 this.mileageChartLegendData =
@@ -177,7 +176,7 @@ export class BrokerDetailsCardComponent
                 if (timeFilter && this.invoiceChartTabs[timeFilter - 1])
                     this.invoiceChartTabs[timeFilter - 1].checked = true;
                 this.invoiceChartConfig = {
-                    ...this.invoiceChartConfig,
+                    ...BrokerChartsConfiguration.INVOICE_CHART_CONFIG,
                     chartData: ChartHelper.generateDataByDateTime<BrokerPaidInvoiceChartResponse>
                         (
                             response.brokerPaidInvoiceChartResponse,
@@ -195,14 +194,15 @@ export class BrokerDetailsCardComponent
                 if (timeFilter && this.invoiceChartTabs[timeFilter - 1])
                     this.invoiceChartTabs[timeFilter - 1].checked = true;
                 this.paymentChartConfig = {
-                    ...this.paymentChartConfig,
+                    ...BrokerChartsConfiguration.PAYMENT_CHART_CONFIG,
                     chartData: ChartHelper.generateDataByDateTime<BrokerPaymentHistoryResponse>
                         (
                             response.brokerPaymentHistoryChartResponse,
                             ChartConfiguration.paymentHistoryConfiguration(response),
                         )
                 };
-                this.paymentChartLegendData = ChartLegendConfiguration.brokerPaymentHistory(response);
+                this.paymentChartLegendData = ChartLegendConfiguration
+                    .brokerPaymentHistory(response);
             })
     }
 
@@ -259,8 +259,8 @@ export class BrokerDetailsCardComponent
             firstGroup + secondGroup + threeGroup + fourGroup;
 
         if (this.invoiceAgingSelectedTab === 1)
-            this.inoviceAgingData = data?.brokerUnpaidInvoiceAgeing;
-        else this.inoviceAgingData = data?.brokerPaidInvoiceAgeing;
+            this.invoiceAgingData = data?.brokerUnpaidInvoiceAgeing;
+        else this.invoiceAgingData = data?.brokerPaidInvoiceAgeing;
     }
 
     public getBrokerDropdown(): void {
@@ -360,8 +360,8 @@ export class BrokerDetailsCardComponent
         });
 
         if (event.id === 1)
-            this.inoviceAgingData = this.broker.brokerUnpaidInvoiceAgeing;
-        else this.inoviceAgingData = this.broker.brokerPaidInvoiceAgeing;
+            this.invoiceAgingData = this.broker.brokerUnpaidInvoiceAgeing;
+        else this.invoiceAgingData = this.broker.brokerPaidInvoiceAgeing;
     }
 
     public actionAnimationSubscribe(): void {

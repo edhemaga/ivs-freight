@@ -477,7 +477,9 @@
                             [tabs]="fuelConsumptionTabs"
                         >
                         </app-ta-tab-switch>
-                        <ng-container *ngIf="fuelConsumptionChartConfig">
+                        <ng-container
+                            *ngIf="fuelConsumptionChartConfig?.chartData"
+                        >
                             <app-ta-chart-legend
                                 [data]="fuelConsumptionChartLegend"
                             ></app-ta-chart-legend>

@@ -325,7 +325,6 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
                 };
                 this.revenueChartLegend =
                     ChartLegendConfiguration.truckRevenueConfiguration(response);
-                console.log(this.revenueChartLegend);
             });
     }
 

@@ -942,7 +942,7 @@
                         [tabs]="fuelConsumptionChartTabs"
                     >
                     </app-ta-tab-switch>
-                    <ng-container *ngIf="fuelConsumptionChartConfig">
+                    <ng-container *ngIf="fuelConsumptionChartConfig?.chartData">
                         <app-ta-chart-legend
                             [data]="fuelConsumptionChartLegend"
                         ></app-ta-chart-legend>
@@ -970,7 +970,7 @@
                         [tabs]="revenueChartTabs"
                     >
                     </app-ta-tab-switch>
-                    <ng-container *ngIf="revenueChartConfig">
+                    <ng-container *ngIf="revenueChartConfig?.chartData">
                         <app-ta-chart-legend
                             [data]="revenueChartLegend"
                         ></app-ta-chart-legend>
@@ -992,7 +992,7 @@
                         [tabs]="expensesChartChartTabs"
                     >
                     </app-ta-tab-switch>
-                    <ng-container *ngIf="expensesChartConfig">
+                    <ng-container *ngIf="expensesChartConfig?.chartData">
                         <app-ta-chart-legend
                             [data]="expensesChartChartLegend"
                         ></app-ta-chart-legend>

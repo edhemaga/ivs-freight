@@ -128,7 +128,7 @@ export class ChartLegendConfiguration {
         {
             name: 'Fuel Cost',
             value: data.fuelCost,
-            color: '#56B4AC',
+            color: '#FAB15C',
             unit: '$',
         },
         {
@@ -140,7 +140,7 @@ export class ChartLegendConfiguration {
         {
             name: 'Total Cost',
             value: data.fuelCost + data.repairCost,
-            color: '#56B4AC',
+            color: '#ffffff',
             unit: '$',
         },
     ];
