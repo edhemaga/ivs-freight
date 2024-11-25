@@ -102,6 +102,7 @@ export enum TableStringEnum {
 
     //Empty string
     EMPTY_STRING_PLACEHOLDER = '',
+    EMPTY_STRING_SPACE = ' ',
     NA = 'NA',
 
     // Separators
@@ -573,4 +574,5 @@ export enum TableStringEnum {
     PAYROLL = 'payroll',
     BONUS = 'bonus',
     ACTIVITY = 'activity',
+    NULL = 'null',
 }

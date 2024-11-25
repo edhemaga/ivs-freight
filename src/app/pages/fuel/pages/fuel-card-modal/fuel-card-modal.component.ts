@@ -82,7 +82,7 @@ export class FuelCardModalComponent implements OnInit, OnDestroy {
     public setDefaultDataFront: CardRows[];
     public setDefaultDataBack: CardRows[];
 
-    public cardsAllData: CardRows[] = FuelCardsModalData.allDataLoad;
+    public cardsAllData: CardRows[] = FuelCardsModalData.allDataFuelTransaction;
 
     public hasFormChanged: boolean = false;
     public isChecked: boolean = false;
@@ -371,7 +371,10 @@ export class FuelCardModalComponent implements OnInit, OnDestroy {
                     this.setDefaultDataBack = data.back_side;
                 })
         );
-        this.cardsAllData = FuelCardsModalData.allDataLoad;
+        this.cardsAllData =
+            type !== TableStringEnum.INACTIVE
+                ? FuelCardsModalData.allDataFuelTransaction
+                : FuelCardsModalData.allDataFuelStop;
     }
 
     public identity(item: CardRows): number {
