@@ -98,19 +98,19 @@ export class PayrollReportComponent implements OnInit {
         }
     }
 
-    public zoomIn() {
+    public zoomIn(): void {
         if (this.pdfZoom < MAX_ZOOM) {
             this.pdfZoom += ZOOM_STEP;
         }
     }
 
-    public zoomOut() {
+    public zoomOut(): void {
         if (this.pdfZoom > DEFAULT_ZOOM) {
             this.pdfZoom -= ZOOM_STEP;
         }
     }
 
-    public resetZoom() {
+    public resetZoom(): void {
         this.pdfZoom = DEFAULT_ZOOM;
     }
 
