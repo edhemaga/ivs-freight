@@ -42,8 +42,9 @@ import { ConfirmationModalComponent } from '@shared/components/ta-shared-modals/
 // Enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
 import { ConfirmationModalStringEnum } from '@shared/components/ta-shared-modals/confirmation-modal/enums/confirmation-modal-string.enum';
-import { PayrollType } from '@pages/accounting/pages/payroll/state/types/payroll.type';
-import { PayrollTypeEnum } from 'ca-components/lib/components/ca-period-content/enums';
+import { PayrollType, PayrollTypeEnum } from '@pages/accounting/pages/payroll/state/types/payroll.type';
+// TODO: Slaviša
+// import { PayrollTypeEnum } from 'ca-components/lib/components/ca-period-content/enums';
 
 @Injectable({ providedIn: 'root' })
 export class PayrollService {
@@ -78,15 +79,15 @@ export class PayrollService {
         }
 
         if(type ===  PayrollTypeEnum.FLAT_RATE) {
-            return '/api/payroll/flatrate/report' ;
+            return '/api/payroll/driver/flatrate/report' ;
         }
 
         if(type ===  PayrollTypeEnum.MILEAGE) {
-            return '/api/payroll/mileage/report' ;
+            return '/api/payroll/driver/mileage/report' ;
         }
 
         if(type ===  PayrollTypeEnum.COMMISSION) {
-            return '/api/payroll/commission/report' ;
+            return '/api/payroll/driver/commission/report' ;
         }
     }
 

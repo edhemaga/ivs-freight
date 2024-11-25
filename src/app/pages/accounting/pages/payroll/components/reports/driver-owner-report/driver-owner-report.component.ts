@@ -274,7 +274,7 @@ export class DriverOwnerReportComponent
             {
                 data: {
                     id: 210,
-                    type: 'mileage',
+                    type: 'MILEAGE',
                 },
             }
         );
