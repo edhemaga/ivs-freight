@@ -1,6 +1,6 @@
 <div class="card-width">
     <app-ta-common-card
-        *ngFor="let test of cardsData; let i = index; trackBy: trackByIdentity"
+        *ngFor="let test of testList; let i = index; trackBy: trackByIdentity"
         [cardNameCurrent]="'test'"
         [cardNameCommon]="formatDate(test?.testingDate)"
         [cardSecondResult]="test?.result?.name"

@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, Input, OnInit } from '@angular/core';
 
 // enums
-import { eProgressRangeUnit } from '@shared/components/ta-progress-range/enums/index';
+import { eProgressRangePrice, eProgressRangeUnit } from '@shared/components/ta-progress-range/enums/index';
 
 // modules
 import { AngularSvgIconModule } from 'angular-svg-icon';
@@ -13,6 +13,7 @@ import { TaProgressRangeConstants } from 'src/app/shared/components/ta-progress-
 
 // models
 import { IProgressRangeLastPriceRangeItem } from '@shared/components/ta-progress-range/models/index';
+import moment from 'moment';
 
 @Component({
 	selector: 'app-ta-progress-range',
@@ -29,6 +30,7 @@ export class TaProgressRangeComponent implements OnInit {
 	@Input() endRange: number;
 	@Input() value: number;
 	@Input() unit: eProgressRangeUnit
+	@Input() lastUsed: string;
 
 	public svgRoutes = TaProgressRangeSvgRoutes;
 
@@ -41,6 +43,15 @@ export class TaProgressRangeComponent implements OnInit {
 	}
 
 	private calculatePriceRange(): void {
+		const dateNow = moment();
+		const diff = moment(dateNow).diff(this.lastUsed, 'days');
+
+		if (diff > 7) {
+			this.priceRangeItem = { id: eProgressRangePrice.Expired, circleClassName: TaProgressRangeConstants.CLASS_CIRCLE_EXPIRED_NO_VALUE } as IProgressRangeLastPriceRangeItem;
+
+			return;
+		}
+
 		if (this.startRange && this.endRange && this.value) {
 			const range: number = Math.abs(this.endRange - this.startRange);
 			const step: number = range / TaProgressRangeConstants.PROGRESS_RANGE_LAST_PRICE_ITEMS?.length;

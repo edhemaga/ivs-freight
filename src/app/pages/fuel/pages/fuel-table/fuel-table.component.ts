@@ -9,7 +9,14 @@ import { DatePipe } from '@angular/common';
 import { AfterViewInit } from '@angular/core';
 
 //Rxjs
-import { combineLatest, Observable, of, Subject, switchMap, takeUntil } from 'rxjs';
+import {
+    combineLatest,
+    Observable,
+    of,
+    Subject,
+    switchMap,
+    takeUntil,
+} from 'rxjs';
 
 //Components
 import { FuelPurchaseModalComponent } from '@pages/fuel/pages/fuel-modals/fuel-purchase-modal/fuel-purchase-modal.component';
@@ -32,7 +39,7 @@ import { FuelTableConstants } from '@pages/fuel/pages/fuel-table/utils/constants
 import { FuelTableSvgRoutes } from '@pages/fuel/pages/fuel-table/utils/svg-routes/fuel-table-svg-routes';
 
 //Pipes
-import { ThousandSeparatorPipe, NameInitialsPipe } from '@shared/pipes';
+import { ThousandSeparatorPipe, NameInitialsPipe, ActivityTimePipe } from '@shared/pipes';
 
 //Helpers
 import { DataFilterHelper } from '@shared/utils/helpers/data-filter.helper';
@@ -42,7 +49,6 @@ import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calcula
 //Models
 import {
     FuelStopListResponse,
-    FuelStopResponse,
     FuelTransactionResponse,
 } from 'appcoretruckassist';
 import { FuelTransactionListResponse } from 'appcoretruckassist';
@@ -55,7 +61,10 @@ import { SortTypes } from '@shared/models/sort-types.model';
 //Store
 import { FuelQuery } from '@pages/fuel/state/fuel-state/fuel-state.query';
 import { select, Store } from '@ngrx/store';
-import { selectActiveTabCards, selectInactiveTabCards } from '@pages/fuel/pages/fuel-card-modal/state';
+import {
+    selectActiveTabCards,
+    selectInactiveTabCards,
+} from '@pages/fuel/pages/fuel-card-modal/state';
 
 //Enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
@@ -77,7 +86,7 @@ import { ConfirmationModalStringEnum } from '@shared/components/ta-shared-modals
         './fuel-table.component.scss',
         '../../../../../assets/scss/maps.scss',
     ],
-    providers: [ThousandSeparatorPipe, NameInitialsPipe],
+    providers: [ThousandSeparatorPipe, NameInitialsPipe, ActivityTimePipe],
 })
 export class FuelTableComponent implements OnInit, AfterViewInit, OnDestroy {
     @ViewChild('mapsComponent', { static: false }) public mapsComponent: any;
@@ -113,24 +122,29 @@ export class FuelTableComponent implements OnInit, AfterViewInit, OnDestroy {
         {} as { [key: string]: AvatarColors };
 
     public displayRows$: Observable<any>; //leave this as any for now
+    public tableDataLength: number;
 
     constructor(
-        private modalService: ModalService,
-        private tableService: TruckassistTableService,
-        private thousandSeparator: ThousandSeparatorPipe,
-        public datePipe: DatePipe,
-        private fuelQuery: FuelQuery,
         private ref: ChangeDetectorRef,
-        private confiramtionService: ConfirmationService,
-        private fuelService: FuelService,
+
+        // pipes
+        public datePipe: DatePipe,
         private nameInitialsPipe: NameInitialsPipe,
-        private payrollService: PayrollService,
+        private activityTimePipe: ActivityTimePipe,
+        private thousandSeparator: ThousandSeparatorPipe,
+
 
         // services
         private fuelCardsModalService: FuelCardsModalService,
+        private confiramtionService: ConfirmationService,
+        private payrollService: PayrollService,
+        private fuelService: FuelService,
+        private modalService: ModalService,
+        private tableService: TruckassistTableService,
 
         // store
         private store: Store,
+        private fuelQuery: FuelQuery,
     ) {}
 
     //-------------------------------NG ON INIT-------------------------------
@@ -266,7 +280,7 @@ export class FuelTableComponent implements OnInit, AfterViewInit, OnDestroy {
                         case TableStringEnum.DELETE:
                             if (res.template === TableStringEnum.FUEL_1) {
                                 // this.deletFuelTransactionById();
-                                this.deleteFuelTransactionList([res.id])
+                                this.deleteFuelTransactionList([res.id]);
                             } else {
                                 /*  this.deletFuelTransactionById() */
                             }
@@ -301,8 +315,7 @@ export class FuelTableComponent implements OnInit, AfterViewInit, OnDestroy {
             .subscribe();
     }
 
-    private deletFuelTransactionById() {
-    }
+    private deletFuelTransactionById() {}
 
     private deleteFuelTransactionList(ids: number[]): void {
         this.fuelService
@@ -470,7 +483,7 @@ export class FuelTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
     sendFuelData() {
         const { data, integratedFuelTransactionsCount } = this.fuelData;
-        
+
         this.initTableOptions();
         this.checkActiveViewMode();
 
@@ -511,6 +524,8 @@ export class FuelTableComponent implements OnInit, AfterViewInit, OnDestroy {
         ];
 
         const td = this.tableData.find((t) => t.field === this.selectedTab);
+
+        this.tableDataLength = td.length;
         this.setFuelData(td);
         this.updateCardView();
     }
@@ -626,7 +641,19 @@ export class FuelTableComponent implements OnInit, AfterViewInit, OnDestroy {
             tableTransactionTime: 'Treba da se poveze',
             tableFuelStopName:
                 businessName ?? TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-            tableLocation:
+            tableLocation: address
+                ? address.city +
+                  TableStringEnum.COMA +
+                  (address.stateShortName &&
+                  address.stateShortName !== TableStringEnum.NULL
+                      ? address.stateShortName +
+                        TableStringEnum.EMPTY_STRING_SPACE
+                      : TableStringEnum.EMPTY_STRING_PLACEHOLDER) +
+                  (address.zipCode && address.zipCode !== TableStringEnum.NULL
+                      ? address.zipCode
+                      : TableStringEnum.EMPTY_STRING_PLACEHOLDER)
+                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
+            tableAddress:
                 addressName ?? TableStringEnum.EMPTY_STRING_PLACEHOLDER,
             tableDescription: fuelItems ?? null,
             descriptionItems: fuelItems
@@ -666,6 +693,16 @@ export class FuelTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 hasContent: true,
                 content: this.getDropdownOwnerContent(),
             },
+            tableAdded: this.datePipe.transform(
+                data.createdAt,
+                TableStringEnum.DATE_FORMAT
+            ),
+            tableEdited: data.updatedAt
+                ? this.datePipe.transform(
+                      data.updatedAt,
+                      TableStringEnum.DATE_FORMAT
+                  )
+                : null,
             isIntegratedFuelTransaction:
                 fuelTransactionTypeId !== eFuelTransactionType.Manual,
         };
@@ -682,17 +719,26 @@ export class FuelTableComponent implements OnInit, AfterViewInit, OnDestroy {
             used,
             favourite,
             lowestPricePerGallon,
-            highestPricePerGallon
+            highestPricePerGallon,
         } = data || {};
         const { address: addressName } = address || {};
-        const tablePriceRange = lowestPricePerGallon && highestPricePerGallon ? `$${lowestPricePerGallon} - $${highestPricePerGallon}` : TableStringEnum.EMPTY_STRING_PLACEHOLDER;
-        const tableExpense = totalCost ? `$${totalCost}` : TableStringEnum.EMPTY_STRING_PLACEHOLDER;
+
+        const tablePriceRange = 
+            lowestPricePerGallon && highestPricePerGallon 
+            ? (lowestPricePerGallon === highestPricePerGallon) 
+                ? `$${lowestPricePerGallon}`
+                : `$${lowestPricePerGallon} - $${highestPricePerGallon}` 
+            : TableStringEnum.EMPTY_STRING_PLACEHOLDER;
+        const tableExpense = totalCost ? `$${totalCost}` : FuelTableConstants.NO_EXPENSE;
+
         const tableLast = {
             startRange: lowestPricePerGallon ?? null,
             endRange: highestPricePerGallon ?? null,
             value: pricePerGallon ?? null,
-            unit: eProgressRangeUnit.Dollar
+            unit: eProgressRangeUnit.Dollar,
+            lastUsed: lastUsed
         };
+        const tableLastVisit = lastUsed ? this.activityTimePipe.transform(lastUsed) : TableStringEnum.EMPTY_STRING_PLACEHOLDER
 
         return {
             ...data,
@@ -704,13 +750,48 @@ export class FuelTableComponent implements OnInit, AfterViewInit, OnDestroy {
             tablePPG:
                 pricePerGallon ?? TableStringEnum.EMPTY_STRING_PLACEHOLDER,
             tableLast: tableLast ?? TableStringEnum.EMPTY_STRING_PLACEHOLDER,
+            tableLastVisit: tableLastVisit,
             tableUsed: used ?? TableStringEnum.EMPTY_STRING_PLACEHOLDER,
+            tableLastUsed: lastUsed ?? TableStringEnum.EMPTY_STRING_PLACEHOLDER,
             tablePriceRange: tablePriceRange,
             tableExpense: tableExpense,
-            tableProgressRangeStart: lowestPricePerGallon ?? TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-            tableProgressRangeEnd: highestPricePerGallon ?? TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-            tableProgressRangeValue: pricePerGallon ?? TableStringEnum.EMPTY_STRING_PLACEHOLDER,
+            tableProgressRangeStart:
+                lowestPricePerGallon ??
+                TableStringEnum.EMPTY_STRING_PLACEHOLDER,
+            tableProgressRangeEnd:
+                highestPricePerGallon ??
+                TableStringEnum.EMPTY_STRING_PLACEHOLDER,
+            tableProgressRangeValue:
+                pricePerGallon ?? TableStringEnum.EMPTY_STRING_PLACEHOLDER,
             isFavorite: favourite,
+            tableLocation: address
+                ? address.city +
+                  TableStringEnum.COMA +
+                  (address.stateShortName &&
+                  address.stateShortName !== TableStringEnum.NULL
+                      ? address.stateShortName +
+                        TableStringEnum.EMPTY_STRING_SPACE
+                      : TableStringEnum.EMPTY_STRING_PLACEHOLDER) +
+                  (address.zipCode && address.zipCode !== TableStringEnum.NULL
+                      ? address.zipCode
+                      : TableStringEnum.EMPTY_STRING_PLACEHOLDER)
+                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
+            tableAdded: this.datePipe.transform(
+                data.createdAt,
+                TableStringEnum.DATE_FORMAT
+            ),
+            tableEdited: data.updatedAt
+                ? this.datePipe.transform(
+                      data.updatedAt,
+                      TableStringEnum.DATE_FORMAT
+                  )
+                : null,
+            tableDeactivated: data.deactivatedAt
+                ? this.datePipe.transform(
+                      data.deactivatedAt,
+                      TableStringEnum.DATE_FORMAT
+                  )
+                : null,
             tableDropdownContent: {
                 hasContent: true,
                 content: this.getDropdownOwnerContent(),
@@ -739,11 +820,12 @@ export class FuelTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
             this.fuelData = {
                 data: [],
-                integratedFuelTransactionsCount: integratedFuelTransactionsCount,
+                integratedFuelTransactionsCount:
+                    integratedFuelTransactionsCount,
                 integratedFuelTransactionsFilterActive: false,
-                pageIndex: 0
-            }
-            
+                pageIndex: 0,
+            };
+
             this.fetchApiDataPaginated();
         } else if (event.action === TableStringEnum.VIEW_MODE) {
             this.activeViewMode = event.mode;
@@ -793,7 +875,7 @@ export class FuelTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     subtitle: event.data.total,
                     date: event.data.transactionDate,
                     label: event.data.truck?.truckNumber,
-                    id: event.data.id
+                    id: event.data.id,
                 }
             );
         } else if (event.type === TableStringEnum.SHOW_MORE) {
@@ -901,13 +983,15 @@ export class FuelTableComponent implements OnInit, AfterViewInit, OnDestroy {
     ): void {
         const { data, pageIndex } = response?.pagination;
         const { integrationFuelTransactionCount } = response;
-        const integratedFuelTransactionsFilterActive = this.fuelData?.integratedFuelTransactionsFilterActive ?? false;
+        const integratedFuelTransactionsFilterActive =
+            this.fuelData?.integratedFuelTransactionsFilterActive ?? false;
 
         this.fuelData = {
             data: data,
             integratedFuelTransactionsCount: integrationFuelTransactionCount,
-            integratedFuelTransactionsFilterActive: integratedFuelTransactionsFilterActive,
-            pageIndex: pageIndex
+            integratedFuelTransactionsFilterActive:
+                integratedFuelTransactionsFilterActive,
+            pageIndex: pageIndex,
         } as IFuelTableData;
     }
 
@@ -916,14 +1000,52 @@ export class FuelTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
         if (this.selectedTab === TableStringEnum.FUEL_TRANSACTION) {
             this.fuelService
-                .getFuelTransactionsList(null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, this.fuelData.integratedFuelTransactionsFilterActive, this.fuelData.pageIndex, FuelTableConstants.TABLE_PAGE_SIZE)
+                .getFuelTransactionsList(
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    this.fuelData.integratedFuelTransactionsFilterActive,
+                    this.fuelData.pageIndex,
+                    FuelTableConstants.TABLE_PAGE_SIZE
+                )
                 .pipe(takeUntil(this.destroy$))
                 .subscribe((response) => {
                     this.updateStoreData(response);
                 });
         } else if (this.selectedTab === TableStringEnum.FUEL_STOP) {
             this.fuelService
-                .getFuelStopsList(null, null, null, null, null, null, null, null, null, null, null, null, null, null, this.fuelData.pageIndex, FuelTableConstants.TABLE_PAGE_SIZE)
+                .getFuelStopsList(
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    this.fuelData.pageIndex,
+                    FuelTableConstants.TABLE_PAGE_SIZE
+                )
                 .pipe(takeUntil(this.destroy$))
                 .subscribe((response) => {
                     this.updateStoreData(response);
@@ -968,17 +1090,42 @@ export class FuelTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
         this.tableService.currentSetTableFilter
             .pipe(takeUntil(this.destroy$))
-            .pipe(switchMap(currentFilter => {
-                this.fuelData.integratedFuelTransactionsFilterActive =
-                    currentFilter?.filterName === TableStringEnum.FUEL_ARRAY && 
-                    currentFilter?.selectedFilter;
-                this.fuelData.pageIndex = 1;
+            .pipe(
+                switchMap((currentFilter) => {
+                    this.fuelData.integratedFuelTransactionsFilterActive =
+                        currentFilter?.filterName ===
+                            TableStringEnum.FUEL_ARRAY &&
+                        currentFilter?.selectedFilter;
+                    this.fuelData.pageIndex = 1;
 
-                if (!!currentFilter) return this.fuelService
-                    .getFuelTransactionsList(null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, this.fuelData.integratedFuelTransactionsFilterActive, this.fuelData.pageIndex, FuelTableConstants.TABLE_PAGE_SIZE);
-                else return of();
-            }))
-            .subscribe(response => {
+                    if (!!currentFilter)
+                        return this.fuelService.getFuelTransactionsList(
+                            null,
+                            null,
+                            null,
+                            null,
+                            null,
+                            null,
+                            null,
+                            null,
+                            null,
+                            null,
+                            null,
+                            null,
+                            null,
+                            null,
+                            null,
+                            null,
+                            null,
+                            this.fuelData
+                                .integratedFuelTransactionsFilterActive,
+                            this.fuelData.pageIndex,
+                            FuelTableConstants.TABLE_PAGE_SIZE
+                        );
+                    else return of();
+                })
+            )
+            .subscribe((response) => {
                 this.updateStoreData(response, true);
             });
     }
@@ -1013,6 +1160,12 @@ export class FuelTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 break;
         }
         this.fuelCardsModalService.updateTab(this.selectedTab);
+    }
+
+    public onShowMore(): void {
+        this.onTableBodyActions({
+            type: TableStringEnum.SHOW_MORE,
+        });
     }
 
     ngOnDestroy(): void {

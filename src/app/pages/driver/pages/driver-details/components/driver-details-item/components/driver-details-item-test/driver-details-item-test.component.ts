@@ -65,7 +65,7 @@ export class DriverDetailsItemTestComponent
 {
     @ViewChild('driverTestFiles') driverTestFiles: TaUploadFilesComponent;
 
-    @Input() cardsData: TestResponse[];
+    @Input() testList: TestResponse[];
     @Input() driver: DriverResponse;
 
     private destroy$ = new Subject<void>();
@@ -87,7 +87,7 @@ export class DriverDetailsItemTestComponent
     }
 
     ngOnChanges(changes: SimpleChanges): void {
-        if (changes.cardsData?.currentValue) this.getDetailsOptions();
+        if (changes.testList?.currentValue) this.getDetailsOptions();
     }
 
     public trackByIdentity(index: number): number {
@@ -125,7 +125,7 @@ export class DriverDetailsItemTestComponent
         action: string
     ): void {
         const name = DropActionNameHelper.dropActionNameDriver(event, action);
-        const test = this.cardsData.find((test) => test.id === event.id);
+        const test = this.testList.find((test) => test.id === event.id);
 
         if (
             event.type === DriverDetailsItemStringEnum.EDIT ||

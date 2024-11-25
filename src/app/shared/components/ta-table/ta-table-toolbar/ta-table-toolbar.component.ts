@@ -66,10 +66,10 @@ import {
     UntypedFormControl,
 } from '@angular/forms';
 
-// Directive
-import { PreventMultipleclicksDirective } from '@shared/directives/prevent-multipleclicks.directive';
+// directives
+import { PreventMultipleclicksDirective } from '@shared/directives/';
 
-// Const
+// constants
 import {
     TableToolbarRoutes,
     TableToolbarConstants,

@@ -70,7 +70,7 @@ export class DriverDetailsItemMvrComponent
 {
     @ViewChild('driverMvrFiles') driverMvrFiles: TaUploadFilesComponent;
 
-    @Input() cardsData: MvrResponse[];
+    @Input() mvrList: MvrResponse[];
     @Input() driver: DriverResponse;
 
     private destroy$ = new Subject<void>();
@@ -99,10 +99,10 @@ export class DriverDetailsItemMvrComponent
     }
 
     ngOnChanges(changes: SimpleChanges): void {
-        if (changes.cardsData?.currentValue) {
+        if (changes.mvrList?.currentValue) {
             this.getDetailsOptions();
 
-            this.getMvrData(changes.cardsData.currentValue);
+            this.getMvrData(changes.mvrList.currentValue);
         }
     }
 
@@ -180,7 +180,7 @@ export class DriverDetailsItemMvrComponent
         action: string
     ): void {
         const name = DropActionNameHelper.dropActionNameDriver(event, action);
-        const mvr = this.cardsData.find((mvr) => mvr.id === event.id);
+        const mvr = this.mvrList.find((mvr) => mvr.id === event.id);
 
         if (
             event.type === DriverDetailsItemStringEnum.EDIT ||
