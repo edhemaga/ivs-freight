@@ -367,6 +367,8 @@ export class ShipperService {
         lastTo?: number,
         ppgFrom?: number,
         ppgTo?: number,
+        selectedId?: number,
+        active?: number,
         pageIndex?: number,
         pageSize?: number,
         companyId?: number,
@@ -375,7 +377,7 @@ export class ShipperService {
         search1?: string,
         search2?: string
     ): Observable<Array<ClusterResponse>> {
-        return of(null); /*  this.shipperService.apiShipperClustersGet(
+        return this.shipperService.apiShipperClustersGet(
             northEastLatitude,
             northEastLongitude,
             southWestLatitude,
@@ -396,6 +398,8 @@ export class ShipperService {
             lastTo,
             ppgFrom,
             ppgTo,
+            selectedId,
+            active,
             pageIndex,
             pageSize,
             companyId,
@@ -405,7 +409,7 @@ export class ShipperService {
             search,
             search1,
             search2
-        ); */
+        );
     }
 
     public getShipperMapList(
@@ -417,6 +421,7 @@ export class ShipperService {
         shipperLat?: number,
         shipperDistance?: number,
         shipperStates?: Array<string>,
+        selectedId?: number,
         pageIndex?: number,
         pageSize?: number,
         companyId?: number,
@@ -434,6 +439,7 @@ export class ShipperService {
             shipperLat,
             shipperDistance,
             shipperStates,
+            selectedId,
             pageIndex,
             pageSize,
             companyId,
@@ -518,7 +524,7 @@ export class ShipperService {
             paidFrom,
             paidTo,
             dueFrom,
-            dueTo,
+            dueTo
             // pickup,
             // delivery,
             // longitude,

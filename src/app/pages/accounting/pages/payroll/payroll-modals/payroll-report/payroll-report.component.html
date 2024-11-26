@@ -1,0 +1,103 @@
+<app-ca-modal
+    [modalTitle]="'Preview Report'"
+    [rightHeaderTemplate]="rightModalContent"
+    [customClass]="'modal-container-load modal-payroll-report'"
+>
+    <div origin class="w-full">
+        <div class="divider divider--dark divider--small"></div>
+        <ng-container *ngIf="!isLoading; else loading">
+            <div class="wrapper">
+                <div class="h-full pos-relative">
+                    <pdf-viewer
+                        [src]="pdfSrc"
+                        [render-text]="true"
+                        [original-size]="true"
+                        [zoom]="pdfZoom"
+                        style="display: block; width: 100%; height: 600px"
+                    ></pdf-viewer>
+
+                    <div
+                        class="pdf-button-wrapper pos-absolute d-flex align-items-center justify-content-center"
+                    >
+                        <div
+                            class="pdf-button pdf-button-zoom-in d-flex align-items-center justify-content-center c-pointer"
+                            (click)="zoomIn()"
+                        >
+                            <svg-icon
+                                class="svg-size-12"
+                                [ngClass]="
+                                    pdfZoom >= maxZoom
+                                        ? 'svg-fill-light-grey-6'
+                                        : 'svg-fill-muted svg-hover-black'
+                                "
+                                [src]="svgRoutes.plusIcon"
+                            ></svg-icon>
+                        </div>
+                        <div
+                            (click)="zoomOut()"
+                            class="pdf-button pdf-button-zoom-out d-flex align-items-center justify-content-center c-pointer"
+                        >
+                            <svg-icon
+                                class="svg-size-12"
+                                [ngClass]="
+                                    pdfZoom === 1
+                                        ? 'svg-fill-light-grey-6'
+                                        : 'svg-fill-muted svg-hover-black'
+                                "
+                                [src]="svgRoutes.minusIcon"
+                            ></svg-icon>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </ng-container>
+
+        <ng-template #loading>
+            <div class="wrapper">
+                <div
+                    class="d-flex align-items-center justify-content-center h-full w-full"
+                >
+                    <app-ta-spinner
+                        [size]="'small'"
+                        [color]="'black'"
+                    ></app-ta-spinner>
+                </div>
+            </div>
+        </ng-template>
+    </div>
+</app-ca-modal>
+
+<ng-template #rightModalContent>
+    <ng-container *ngIf="!isLoading">
+        <div
+            class="d-flex justify-content-center align-items-center modal-close-container"
+            ngbTooltip
+            mainTooltip="Cancel"
+            tooltipBackground="#424242"
+            position="bottom"
+            (click)="onCloseModal()"
+        >
+            <svg-icon
+                [src]="svgRoutes.downloadIcon"
+                class="modal-buttons"
+                (click)="downloadReport()"
+            ></svg-icon>
+        </div>
+        <div
+            class="modal-date-border d-flex align-items-center justify-content-center"
+        ></div>
+    </ng-container>
+    <div
+        class="d-flex justify-content-center align-items-center modal-close-container"
+        ngbTooltip
+        mainTooltip="Cancel"
+        tooltipBackground="#424242"
+        position="bottom"
+        (click)="onCloseModal()"
+    >
+        <svg-icon
+            class="modal-close svg-size-14 svg-fill-muted modal-buttons"
+            [src]="svgRoutes.closeIcon"
+        ></svg-icon>
+    </div>
+</ng-template>
