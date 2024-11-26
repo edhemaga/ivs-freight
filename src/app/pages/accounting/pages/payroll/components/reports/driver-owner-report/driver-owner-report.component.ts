@@ -24,7 +24,7 @@ import {
     PayrollDriverMileageByIdResponse,
     PayrollOwnerResponse,
 } from 'appcoretruckassist';
-import { ColumnConfig } from 'ca-components';
+import { ColumnConfig, PayrollTypeEnum } from 'ca-components';
 import {
     IGetPayrollByIdAndOptions,
     IPayrollProccessPaymentModal,
@@ -68,6 +68,7 @@ export class DriverOwnerReportComponent
 
     public columns: ColumnConfig[];
     public creditType = PayrollCreditType.Truck;
+    public payrollType = PayrollTypeEnum.OWNER_COMMISSION;
     @Input() selectedTab: PayrollTablesStatus;
     public showMap: boolean = false;
 

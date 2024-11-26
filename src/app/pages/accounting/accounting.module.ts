@@ -19,6 +19,7 @@ import {
     CaProfileImageComponent,
     CaSearchMultipleStatesComponent,
     CaFilterComponent,
+    CaBurgerMenuComponent,
 } from 'ca-components';
 
 import { PayrollComponent } from '@pages/accounting/pages/payroll/payroll.component';
@@ -97,6 +98,7 @@ import { PayrollTableCommissionTotalPipe } from '@pages/accounting/pages/payroll
         TaAppTooltipComponent,
         TaTableToolbarComponent,
         CaSearchMultipleStatesComponent,
+        CaBurgerMenuComponent,
         TaInputComponent,
         TaProfileImagesComponent,
         TaCustomCardComponent,
