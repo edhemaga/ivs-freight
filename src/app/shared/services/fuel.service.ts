@@ -2,7 +2,7 @@ import { Observable, of, tap } from 'rxjs';
 import { Injectable } from '@angular/core';
 
 // models
-import { FuelStopResponse, SortOrder } from 'appcoretruckassist';
+import { FuelStopExpensesResponse, FuelStopResponse, SortOrder } from 'appcoretruckassist';
 import {
     FuelService as FuelBackendService,
     FuelStopListResponse,
@@ -33,7 +33,7 @@ export class FuelService {
         private fuelService: FuelBackendService,
         private fuelStore: FuelStore,
         private formDataService: FormDataService
-    ) {}
+    ) { }
 
     // **************** FUEL TRANSACTION ****************
 
@@ -237,7 +237,7 @@ export class FuelService {
     public deleteFuelStopList(fuelStopIds: number[]) {
         return this.fuelService
             .apiFuelFuelstopListDelete(fuelStopIds)
-            .pipe(tap(() => {}));
+            .pipe(tap(() => { }));
     }
 
     public addFuelStop(data: any): Observable<CreateResponse> {
@@ -442,5 +442,9 @@ export class FuelService {
                 );
             })
         );
+    }
+
+    public getFuelExpensesGet(id: number, timeFilter?: number): Observable<FuelStopExpensesResponse> {
+        return this.fuelService.apiFuelExpensesGet(id, timeFilter);
     }
 }

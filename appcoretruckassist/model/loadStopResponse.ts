@@ -38,5 +38,6 @@ export interface LoadStopResponse {
     legMinutes?: number | null;
     shape?: string | null;
     statusHistory?: Array<LoadStatusHistoryResponse> | null;
+    driverAssist?: boolean;
 }
 

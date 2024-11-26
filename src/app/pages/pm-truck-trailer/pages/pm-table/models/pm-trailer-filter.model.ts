@@ -1,7 +1,7 @@
 export interface PMTrailerFilter {
     trailerId?: number;
     hideInactivePMs?: number;
-    trailerTypeId?: number;
+    trailerTypeId?: number[];
     pageIndex?: number;
     pageSize?: number;
     companyId?: number;

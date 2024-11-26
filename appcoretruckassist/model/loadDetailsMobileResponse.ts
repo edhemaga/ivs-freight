@@ -24,7 +24,7 @@ export interface LoadDetailsMobileResponse {
     loadNumber?: string | null;
     statusType?: EnumValue;
     status?: LoadStatusResponse;
-    totalRate?: number;
+    totalRate?: number | null;
     lastStatusPassed?: { [key: string]: number; } | null;
     referenceNumber?: string | null;
     broker?: BrokerShortMobileResponse;
@@ -33,7 +33,7 @@ export interface LoadDetailsMobileResponse {
     miles?: MilesMobileResponse;
     loadRequirements?: LoadRequirementsMobileResponse;
     isInActivePayroll?: boolean;
-    paidDate?: string | null;
+    closingPayrollDate?: string | null;
     driverAssist?: string | null;
     equipment?: EquipmentMobileResponse;
     payType?: string | null;

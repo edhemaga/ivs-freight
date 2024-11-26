@@ -59,7 +59,7 @@ export class PmService {
     public getPMTruckUnitList(
         truckId?: number,
         hideInactivePMs?: number,
-        truckTypeId?: number,
+        truckTypeId?: number[],
         pageIndex?: number,
         pageSize?: number,
         companyId?: number,
@@ -186,7 +186,7 @@ export class PmService {
     public getPMTrailerUnitList(
         trailerId?: number,
         hideInactivePMs?: number,
-        trailerTypeId?: number,
+        trailerTypeId?: number[],
         pageIndex?: number,
         pageSize?: number,
         companyId?: number,

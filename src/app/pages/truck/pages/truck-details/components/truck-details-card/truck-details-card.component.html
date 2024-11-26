@@ -935,21 +935,22 @@
                 [hasHeaderSvg]="'assets/svg/common/arrow_top_right.svg'"
                 [customClass]="'detailsPadding'"
             >
-                <div
-                    class="charts-template perfomance"
-                >
-                    <!-- <div [class.d-none]="payrollChart.hoveringStatus"> -->
-                        <app-ta-tab-switch
-                            [type]="'type2-modal-popup'"
-                            (switchClicked)="changeTabFuel($event)"
-                            [tabs]="buttonsArrayFuel"
-                        >
-                        </app-ta-tab-switch>
-                    <!-- </div> -->
-                    <app-ca-chart
-                        [chartConfig]="fuelConsumptionChartConfig"
+                <div class="charts-template perfomance">
+                    <app-ta-tab-switch
+                        [type]="'type2-modal-popup'"
+                        (switchClicked)="changeTabFuel($event)"
+                        [tabs]="fuelConsumptionChartTabs"
                     >
-                    </app-ca-chart>
+                    </app-ta-tab-switch>
+                    <ng-container *ngIf="fuelConsumptionChartConfig?.chartData">
+                        <app-ta-chart-legend
+                            [data]="fuelConsumptionChartLegend"
+                        ></app-ta-chart-legend>
+                        <app-ca-chart
+                            [chartConfig]="fuelConsumptionChartConfig"
+                        >
+                        </app-ca-chart>
+                    </ng-container>
                 </div>
             </app-ta-custom-card>
 
@@ -962,21 +963,20 @@
                 [isCardOpen]="true"
                 [customClass]="'detailsPadding'"
             >
-                <div
-                    class="charts-template perfomance"
-                >
-                    <!-- <div [class.d-none]="revenueChart.hoveringStatus"> -->
-                        <app-ta-tab-switch
-                            [type]="'type2-modal-popup'"
-                            (switchClicked)="changeTabRevenue($event)"
-                            [tabs]="buttonsArrayRevenue"
-                        >
-                        </app-ta-tab-switch>
-                    <!-- </div> -->
-                    <app-ca-chart
-                        [chartConfig]="revenueChartConfig"
+                <div class="charts-template perfomance">
+                    <app-ta-tab-switch
+                        [type]="'type2-modal-popup'"
+                        (switchClicked)="changeTabRevenue($event)"
+                        [tabs]="revenueChartTabs"
                     >
-                    </app-ca-chart>
+                    </app-ta-tab-switch>
+                    <ng-container *ngIf="revenueChartConfig?.chartData">
+                        <app-ta-chart-legend
+                            [data]="revenueChartLegend"
+                        ></app-ta-chart-legend>
+                        <app-ca-chart [chartConfig]="revenueChartConfig">
+                        </app-ca-chart>
+                    </ng-container>
                 </div>
             </app-ta-custom-card>
             <!--------Perfomance--------->
@@ -985,21 +985,20 @@
                 [bodyTemplate]="'card'"
                 [isCardOpen]="true"
             >
-                <div
-                    class="charts-template perfomance"
-                >
-                    <!-- <div [class.d-none]="stackedBarChart.hoveringStatus"> -->
-                        <app-ta-tab-switch
-                            [type]="'type2-modal-popup'"
-                            (switchClicked)="changeTabExpenses($event)"
-                            [tabs]="buttonsArrayPerfomance"
-                        >
-                        </app-ta-tab-switch>
-                    <!-- </div> -->
-                    <app-ca-chart
-                        [chartConfig]="expensesChartConfig"
+                <div class="charts-template perfomance">
+                    <app-ta-tab-switch
+                        [type]="'type2-modal-popup'"
+                        (switchClicked)="changeTabExpenses($event)"
+                        [tabs]="expensesChartChartTabs"
                     >
-                    </app-ca-chart>
+                    </app-ta-tab-switch>
+                    <ng-container *ngIf="expensesChartConfig?.chartData">
+                        <app-ta-chart-legend
+                            [data]="expensesChartChartLegend"
+                        ></app-ta-chart-legend>
+                        <app-ca-chart [chartConfig]="expensesChartConfig">
+                        </app-ca-chart>
+                    </ng-container>
                 </div>
             </app-ta-custom-card>
             <!--------Owner History--------->
