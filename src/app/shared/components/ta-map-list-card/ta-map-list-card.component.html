@@ -171,38 +171,37 @@
                 </div>
             </ng-container>
 
-            <ng-container *ngIf="selectedSortColumn.name === 'Pickups'">
+            <ng-container *ngIf="selectedSortColumn.name === 'Pickup Count'">
                 <div>
                     <div class="marker-like-text marker-medium-text">
-                        <span class="marker-bold-text">{{
-                            item.pickups != null ? item.pickups : '73'
-                        }}</span>
+                        <span class="marker-bold-text">
+                            {{ item.tableLoads.pickups ?? '73' }}
+                        </span>
                         Pickups
                     </div>
                 </div>
             </ng-container>
 
-            <ng-container *ngIf="selectedSortColumn.name === 'Deliveries'">
+            <ng-container *ngIf="selectedSortColumn.name === 'Delivery Count'">
                 <div>
                     <div class="marker-like-text marker-medium-text">
-                        <span class="marker-bold-text">{{
-                            item.deliveries != null ? item.deliveries : '246'
-                        }}</span>
+                        <span class="marker-bold-text">
+                            {{ item.tableLoads?.deliveries ?? '246' }}
+                        </span>
                         Deliveries
                     </div>
                 </div>
             </ng-container>
 
-            <ng-container *ngIf="selectedSortColumn.name === 'Avg. Pickup Time'">
+            <ng-container
+                *ngIf="selectedSortColumn.name === 'Avg. Pickup Time'"
+            >
                 <div>
                     <div class="marker-like-text marker-medium-text">
-                        Avg. Pickup<span class="marker-bold-text">
-                            {{
-                                item.avgPickupTime != null
-                                    ? item.avgPickupTime
-                                    : '0m'
-                            }}</span
-                        >
+                        Avg. Pickup
+                        <span class="marker-bold-text">
+                            {{ item.tableAverageWatingTimePickup ?? '0m' }}
+                        </span>
                     </div>
                 </div>
             </ng-container>
@@ -212,13 +211,10 @@
             >
                 <div>
                     <div class="marker-like-text marker-medium-text">
-                        Avg. Delivery<span class="marker-bold-text">
-                            {{
-                                item.avgDeliveryTime != null
-                                    ? item.avgDeliveryTime
-                                    : '0m'
-                            }}</span
-                        >
+                        Avg. Delivery
+                        <span class="marker-bold-text">
+                            {{ item.tableAverageWatingTimeDelivery ?? '0m' }}
+                        </span>
                     </div>
                 </div>
             </ng-container>
@@ -319,7 +315,9 @@
                 </div>
             </ng-container>
 
-            <ng-container *ngIf="selectedSortColumn.name === 'Inspection Level'">
+            <ng-container
+                *ngIf="selectedSortColumn.name === 'Inspection Level'"
+            >
                 <div>
                     <div class="marker-like-text">
                         Insp. lvl

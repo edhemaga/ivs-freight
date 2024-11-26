@@ -41,6 +41,7 @@ import {
     RatingReviewResponse,
     RepairShopListResponse,
     CreateWithUploadsResponse,
+    RepairShopSortBy,
 } from 'appcoretruckassist';
 import { AddUpdateRepairProperties } from '@pages/repair/pages/repair-modals/repair-order-modal/models';
 import { CreateShopModel } from '@pages/repair/pages/repair-modals/repair-shop-modal/models';
@@ -281,7 +282,7 @@ export class RepairService {
         companyId: number = null,
         sort: string = null,
         sortOrder: SortOrder = null,
-        sortBy: object = null,
+        sortBy: RepairShopSortBy = null,
         search: string = null,
         search1: string = null,
         search2: string = null
