@@ -69,8 +69,11 @@ export const selectPayrollReportMapData = createSelector(
     (state) => {
         const routeMarkers: IMapMarkers[] = [];
         const routePaths: IMapRoutePath[] = [];
-        const mapData = state.payrollOpenedReport?.mapLocations;
+        const mapData = (
+            state.payrollOpenedReport || state.ownerPayrollResponse
+        )?.mapLocations;
         mapData?.map((loadStop, index) => {
+            const nextLoadNumber = mapData[index]?.loadNumber;
             const routeMarker: IMapMarkers = {
                 position: { lat: loadStop.latitude, lng: loadStop.longitude },
                 icon: {
@@ -80,9 +83,9 @@ export const selectPayrollReportMapData = createSelector(
                     ),
                     labelOrigin: new google.maps.Point(90, 15),
                 },
-                label: {
-                    text: "Hello"
-                }
+                label: loadStop.loadNumber && {
+                    text: loadStop.loadNumber,
+                },
             };
 
             routeMarkers.push(routeMarker);
@@ -96,9 +99,10 @@ export const selectPayrollReportMapData = createSelector(
                         },
                         { lat: loadStop.latitude!, lng: loadStop.longitude! },
                     ],
-                    strokeColor: "#919191",
+                    strokeColor: '#919191',
                     strokeOpacity: 1,
                     strokeWeight: 4,
+                    isDashed: !!nextLoadNumber,
                 };
 
                 routePaths.push(routePath);
@@ -106,7 +110,7 @@ export const selectPayrollReportMapData = createSelector(
                 if (index === 1) {
                     routePaths.push({
                         ...routePath,
-                        strokeColor: "#919191",
+                        strokeColor: '#919191',
                         strokeOpacity: 1,
                         strokeWeight: 2,
                     });
