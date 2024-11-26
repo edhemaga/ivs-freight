@@ -12,4 +12,5 @@ export interface ChartTypeProperty {
     minValue?: string;
     maxValue?: string;
     fill?: boolean;
+    shiftValue?: number;
 };

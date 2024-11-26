@@ -23,6 +23,7 @@ export class ChartConfiguration {
         }
     ];
     public static paymentHistoryConfiguration = (data: BrokerPaymentHistoryResponse): ChartTypeProperty[] => [
+
         {
             value: ChartValueLabelEnum.AVERAGE_PAY_PERIOD_DAYS,
             type: ChartTypesStringEnum.LINE,
@@ -34,8 +35,8 @@ export class ChartConfiguration {
         {
             value: ChartValueLabelEnum.PAY_TERM,
             type: ChartTypesStringEnum.LINE,
-            color: '#FAB15C'
-        }
+            color: '#DF3C3C'
+        },
     ];
     public static driverConfiguration: ChartTypeProperty[] = [
         {
