@@ -55,9 +55,9 @@ export class PayrollReportComponent
     extends PayrollReportBaseComponent<PayrollDriverMileageByIdResponse>
     implements OnInit, OnDestroy
 {
-    columns: ColumnConfig[];
-    creditType = PayrollCreditType.Driver;
-    payrollType = PayrollTypeEnum.MILEAGE;
+    public columns: ColumnConfig[];
+    public creditType = PayrollCreditType.Driver;
+    public payrollType = PayrollTypeEnum.MILEAGE;
 
     @Input() set reportId(report_id: string) {
         this._reportId = report_id;

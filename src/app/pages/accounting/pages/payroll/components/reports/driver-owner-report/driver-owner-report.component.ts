@@ -68,7 +68,7 @@ export class DriverOwnerReportComponent
 
     public columns: ColumnConfig[];
     public creditType = PayrollCreditType.Truck;
-    payrollType = PayrollTypeEnum.OWNER_COMMISSION;
+    public payrollType = PayrollTypeEnum.OWNER_COMMISSION;
     @Input() selectedTab: PayrollTablesStatus;
     public showMap: boolean = false;
 

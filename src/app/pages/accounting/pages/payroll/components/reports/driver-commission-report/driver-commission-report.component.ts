@@ -60,7 +60,7 @@ export class DriverCommissionReportComponent
 {
     public columns: ColumnConfig[];
     public creditType = PayrollCreditType.Driver;
-    payrollType = PayrollTypeEnum.COMMISSION;
+    public payrollType = PayrollTypeEnum.COMMISSION;
 
     @Input() set reportId(report_id: string) {
         this._reportId = report_id;

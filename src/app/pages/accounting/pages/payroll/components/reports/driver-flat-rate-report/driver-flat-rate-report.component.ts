@@ -60,7 +60,7 @@ export class DriverFlatRateReportComponent
 {
     public columns: ColumnConfig[];
     public creditType = PayrollCreditType.Driver;
-    payrollType = PayrollTypeEnum.FLAT_RATE;
+    public payrollType = PayrollTypeEnum.FLAT_RATE;
 
     @Input() set reportId(report_id: string) {
         this._reportId = report_id;

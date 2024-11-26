@@ -16,13 +16,13 @@ import { PayrollBonusModalComponent } from '@pages/accounting/pages/payroll/payr
 import { PayrollDeductionModalComponent } from '@pages/accounting/pages/payroll/payroll-modals/payroll-deduction-modal/payroll-deduction-modal.component';
 import { FuelPurchaseModalComponent } from '@pages/fuel/pages/fuel-modals/fuel-purchase-modal/fuel-purchase-modal.component';
 import { PayrollReportComponent } from '@pages/accounting/pages/payroll/payroll-modals/payroll-report/payroll-report.component';
-import { PayrollTypeEnum } from 'ca-components';
 
 // Enums
-import { PayrollAdditionalTypes, PayrollStringEnum } from '../../state/enums';
+import { PayrollAdditionalTypes, PayrollStringEnum } from '@pages/accounting/pages/payroll/state/enums';
 import { TableStringEnum } from '@shared/enums/table-string.enum';
 import { ConfirmationModalStringEnum } from '@shared/components/ta-shared-modals/confirmation-modal/enums/confirmation-modal-string.enum';
 import { DriverMVrModalStringEnum } from '@pages/driver/pages/driver-modals/driver-mvr-modal/enums/driver-mvrl-modal-string.enum';
+import { PayrollTypeEnum } from 'ca-components';
 
 export abstract class PayrollReportBaseComponent<
     T extends {
