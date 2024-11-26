@@ -75,7 +75,7 @@ export function getFuelTransactionColumnDefinition() {
         },
         {
             ngTemplate: 'text',
-            title: 'Truck',
+            title: 'Unit',
             field: 'tableTruckNumber',
             name: 'Truck',
             sortName: 'truckNumber',

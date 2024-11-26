@@ -12,7 +12,7 @@ import { Observable, Subject, takeUntil } from 'rxjs';
 import { CdkDrag, CdkDragDrop } from '@angular/cdk/drag-drop';
 
 // Components
-import { ColumnConfig } from 'ca-components';
+import { ColumnConfig, PayrollTypeEnum } from 'ca-components';
 import { PayrollProccessPaymentModalComponent } from '@pages/accounting/pages/payroll/payroll-modals/payroll-proccess-payment-modal/payroll-proccess-payment-modal.component';
 
 // Services
@@ -60,6 +60,7 @@ export class DriverCommissionReportComponent
 {
     public columns: ColumnConfig[];
     public creditType = PayrollCreditType.Driver;
+    public payrollType = PayrollTypeEnum.COMMISSION;
 
     @Input() set reportId(report_id: string) {
         this._reportId = report_id;

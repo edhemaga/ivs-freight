@@ -58,6 +58,8 @@ import { RepairService } from '@shared/services/repair.service';
 import { TaLikeDislikeService } from '@shared/components/ta-like-dislike/services/ta-like-dislike.service';
 import { ReviewsRatingService } from '@shared/services/reviews-rating.service';
 import { TaInputService } from '@shared/services/ta-input.service';
+import { ConfirmationService } from '@shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
+import { ConfirmationActivationService } from '@shared/components/ta-shared-modals/confirmation-activation-modal/services/confirmation-activation.service';
 
 // Validators
 import {
@@ -94,10 +96,11 @@ import { CaUploadFilesComponent } from 'ca-components';
 import { TaUserReviewComponent } from '@shared/components/ta-user-review/ta-user-review.component';
 import { ConfirmationActivationModalComponent } from '@shared/components/ta-shared-modals/confirmation-activation-modal/confirmation-activation-modal.component';
 import { TaCheckboxCardComponent } from '@shared/components/ta-checkbox-card/ta-checkbox-card.component';
+import { ConfirmationModalComponent } from '@shared/components/ta-shared-modals/confirmation-modal/confirmation-modal.component';
 
 // Modules
 import { AngularSvgIconModule } from 'angular-svg-icon';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbActiveModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 // Enums
 import { ModalTableTypeEnum } from '@shared/enums/modal-table-type.enum';
@@ -251,6 +254,9 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
         private taLikeDislikeService: TaLikeDislikeService,
         private formService: FormService,
         private reviewRatingService: ReviewsRatingService,
+        private confirmationService: ConfirmationService,
+        private ngbActiveModal: NgbActiveModal,
+        private confirmationActivationService: ConfirmationActivationService,
         private inputService: TaInputService
     ) {}
 
@@ -374,7 +380,26 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
         this.initTabs();
         this.generateForm();
         this.initializeServices();
+        this.confirmationActivationSubscribe();
+        this.confirmationData();
         this.companyUser = JSON.parse(localStorage.getItem('user'));
+    }
+
+    private confirmationActivationSubscribe(): void {
+        this.confirmationActivationService.getConfirmationActivationData$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe(() => {
+                this.ngbActiveModal?.close();
+            });
+    }
+
+    private confirmationData(): void {
+        this.confirmationService.confirmationData$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((res) => {
+                if (res.action !== TableStringEnum.CLOSE)
+                    this.ngbActiveModal?.close();
+            });
     }
 
     private generateForm(): void {
@@ -427,7 +452,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
             RepairShopModalStringEnum.EMAIL,
             this.destroy$
         );
- 
+
         this.isCompanyRelated = this.editData?.companyOwned;
     }
 
@@ -521,7 +546,9 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
         this.files = res.files;
         this.coverPhoto = res.cover;
 
-        this.repairShopForm.get(RepairShopModalStringEnum.SERVICE_HELPER).patchValue(JSON.stringify(this.services));
+        this.repairShopForm
+            .get(RepairShopModalStringEnum.SERVICE_HELPER)
+            .patchValue(JSON.stringify(this.services));
 
         this.updatedRepairShopContacts = res.contacts;
 
@@ -936,6 +963,13 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
     }
 
     public onModalAction(data: RepairShopModalAction): void {
+        if (data.action === ActionTypesEnum.DELETE) {
+            this.showDeleteBusinessModal();
+        }
+        if (data.action === ActionTypesEnum.CLOSE_BUSINESS) {
+            this.showCloseBusinessModal();
+        }
+
         // Prevent double click
         if (!this.isModalValidToSubmit || this.isRequestInProgress) {
             return;
@@ -955,13 +989,6 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
             }
 
             return;
-        }
-
-        if (data.action === ActionTypesEnum.DELETE) {
-            this.deleteRepairShop(this.editData.id);
-        }
-        if (data.action === ActionTypesEnum.CLOSE_BUSINESS) {
-            this.showCloseBusinessModal();
         }
     }
 
@@ -1124,9 +1151,8 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
                 next: () => {
                     if (addNewShop) {
                         this.setModalSpinner(null, true, true, true);
-                        
                     }
-                    
+
                     this.setModalSpinner(null, false, !addNewShop);
                 },
                 error: () => {
@@ -1149,18 +1175,6 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
             });
     }
 
-    private deleteRepairShop(id: number): void {
-        this.shopService
-            .deleteRepairShop(id)
-            .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: () =>
-                    this.setModalSpinner(ActionTypesEnum.DELETE, true, false),
-                error: () =>
-                    this.setModalSpinner(ActionTypesEnum.DELETE, false, false),
-            });
-    }
-
     private setModalSpinner(
         action:
             | null
@@ -1175,12 +1189,38 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
             status,
             close,
         });
-        
+
         if (addNew) {
-            this.modalService.openModal(RepairShopModalComponent, { });}
+            this.modalService.openModal(RepairShopModalComponent, {});
+        }
 
         // Wait for modal to close to prevent click while closing it
         setTimeout(() => (this.isRequestInProgress = false), 400);
+    }
+
+    private showDeleteBusinessModal(): void {
+        // close current modal
+        const mappedEvent = {
+            ...this.repairShop,
+            data: this.repairShop,
+            type: this.repairShop.status
+                ? TableStringEnum.CLOSE
+                : TableStringEnum.OPEN,
+            modalTitle: this.repairShop.name,
+            modalSecondTitle: this.repairShop.address?.address
+                ? this.repairShop.address.address
+                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
+        };
+
+        this.modalService.openModal(
+            ConfirmationModalComponent,
+            { size: TableStringEnum.SMALL },
+            {
+                ...mappedEvent,
+                template: TableStringEnum.REPAIR_SHOP,
+                type: TableStringEnum.DELETE,
+            }
+        );
     }
 
     private showCloseBusinessModal(): void {
@@ -1208,8 +1248,6 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
                     : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
             }
         );
-
-        this.setModalSpinner(null, true, true);
     }
 
     // Contact tab

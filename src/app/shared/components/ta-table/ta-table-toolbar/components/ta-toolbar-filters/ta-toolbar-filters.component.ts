@@ -90,6 +90,7 @@ export class TaToolbarFiltersComponent implements OnInit, OnChanges, OnDestroy {
     public loadParkingOptionsArray: ArrayStatus[];
     public categoryFuelArray: ArrayStatus[];
     public fuelStopArray: ArrayStatus[] = DirectiveConstants.FUEL_STOP_ARRAY;
+    public tableStringEnum = TableStringEnum;
 
     constructor(
         private tableSevice: TruckassistTableService,
@@ -458,7 +459,7 @@ export class TaToolbarFiltersComponent implements OnInit, OnChanges, OnDestroy {
         if (
             this.activeTableData?.dnuArray ||
             this.activeTableData?.bannedArray ||
-            this.activeTableData?.closedArray
+            this.activeTableData?.isClosed
         ) {
             this.customerFilter = {
                 ...this.customerFilter,

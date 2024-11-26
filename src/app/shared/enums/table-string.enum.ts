@@ -395,6 +395,8 @@ export enum TableStringEnum {
     FUEL_TABLE_COUNT = 'fuelTableCount',
     FUEL_TABLE_VIEW = 'Fuel-table-view',
     ASC = 'asc',
+    FUEL_TRANSACTION_FILTER_INTEGRATED = 'fuel-filter',
+    FUEL_STOP_FILTER_CLOSED = 'closed-filter',
 
     // Contact
     DELTETE_CONTACT = 'delete-contact',

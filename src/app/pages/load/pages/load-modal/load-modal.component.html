@@ -1647,9 +1647,7 @@
             </div>
 
             <!-- Comments -->
-            <ng-container
-                *ngIf="editData?.type?.includes('edit') && comments?.length"
-            >
+            <ng-container *ngIf="editData?.type?.includes('edit')">
                 <div class="load-modal-row">
                     <app-ta-custom-card
                         [cardName]="'Comment'"

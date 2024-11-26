@@ -506,32 +506,36 @@
         [selectedFilter]="this.activeTableData.dnuArray.selectedFilter"
     ></app-ta-special-filter>
 
-    <app-ta-special-filter
+    <ng-container 
         *ngIf="
             (options.toolbarActions.showBrokerFilter ||
                 options.toolbarActions.showRepairShop ||
                 options.toolbarActions.showBrokerFilterClosed ||
-                options.toolbarActions.showFuelPermanentlyClosed) &&
-            this.activeTableData?.closedArray?.filteredArray?.length > 0
-        "
-        [type]="'closed-filter'"
-        [icon]="'ic_closed_broker'"
-        [filterTitle]="'Permanently Closed'"
-        [dataArray]="this.activeTableData.closedArray"
-        (setFilter)="onSpecialFilter($event, 'closedArray')"
-        [selectedFilter]="this.activeTableData.closedArray.selectedFilter"
-    ></app-ta-special-filter>
+                options.toolbarActions.showFuelPermanentlyClosed)
+            "
+    >
+        <app-ta-special-filter
+            [type]="tableStringEnum.FUEL_STOP_FILTER_CLOSED"
+            [icon]="'ic_closed_broker'"
+            [filterTitle]="'Permanently Closed'"
+            [dataArray]="activeTableData.data"
+            [dataCount]="activeTableData.fuelStopClosedCount"
+            (setFilter)="onSpecialFilter($event, tableStringEnum.CLOSED_ARRAY)"
+            [selectedFilter]="activeTableData?.closedArray?.selectedFilter"
+        ></app-ta-special-filter>
+    </ng-container>
+    
 
     <ng-container
         *ngIf="options.toolbarActions.showIntegratedFuelTransactionsFilter"
     >
         <app-ta-special-filter
-            [type]="'fuel-filter'"
+            [type]="tableStringEnum.FUEL_TRANSACTION_FILTER_INTEGRATED"
             [icon]="'ic_fuel_transaction'"
             [filterTitle]="'Fuel Transaction'"
             [dataArray]="activeTableData.data"
             [dataCount]="activeTableData.integratedDataCount"
-            (setFilter)="onSpecialFilter($event, 'fuelArray')"
+            (setFilter)="onSpecialFilter($event, tableStringEnum.FUEL_ARRAY)"
             [selectedFilter]="activeTableData?.fuelArray?.selectedFilter"
         ></app-ta-special-filter>
     </ng-container>

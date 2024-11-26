@@ -1,0 +1,29 @@
+@import 'src/theme/variables.scss';
+
+.pdf-button {
+    width: 22px;
+    height: 22px;
+
+    &-wrapper {
+        width: 30px;
+        height: 52px;
+        flex-direction: column;
+        box-shadow: 0px 0px 4px 0px $ta-border-grey inset;
+        border-radius: 50px;
+        padding: 4px; 
+        margin-left: auto;    
+        bottom: 12px;
+        right: 12px;
+        z-index: 2;
+        background: $white;
+    }
+}
+
+.wrapper {
+    height: 600px;
+}
+
+.modal-date-border {
+    height: 18px; 
+    border-right: 1px solid $ta-light-grey-6;
+}
