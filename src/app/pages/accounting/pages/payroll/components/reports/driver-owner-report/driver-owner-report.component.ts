@@ -24,7 +24,7 @@ import {
     PayrollDriverMileageByIdResponse,
     PayrollOwnerResponse,
 } from 'appcoretruckassist';
-import { ColumnConfig } from 'ca-components';
+import { ColumnConfig, PayrollTypeEnum } from 'ca-components';
 import {
     IGetPayrollByIdAndOptions,
     IPayrollProccessPaymentModal,
@@ -34,6 +34,7 @@ import { OwnerLoadShortReponseWithRowType } from '@pages/accounting/pages/payrol
 
 // Components
 import { PayrollProccessPaymentModalComponent } from '@pages/accounting/pages/payroll/payroll-modals/payroll-proccess-payment-modal/payroll-proccess-payment-modal.component';
+import { PayrollReportComponent } from '@pages/accounting/pages/payroll/payroll-modals/payroll-report/payroll-report.component';
 
 // Enums
 import { PayrollTablesStatus } from '@pages/accounting/pages/payroll/state/enums';
@@ -67,6 +68,7 @@ export class DriverOwnerReportComponent
 
     public columns: ColumnConfig[];
     public creditType = PayrollCreditType.Truck;
+    public payrollType = PayrollTypeEnum.OWNER_COMMISSION;
     @Input() selectedTab: PayrollTablesStatus;
     public showMap: boolean = false;
 
@@ -111,7 +113,7 @@ export class DriverOwnerReportComponent
         payrollService: PayrollService
     ) {
         super(modalService, payrollService);
-    } 
+    }
 
     ngOnInit(): void {
         this.subscribeToStoreData();
@@ -262,6 +264,19 @@ export class DriverOwnerReportComponent
         this.payrollDriverOwnerFacadeService.getPayrollDriverOwnerReport(
             getData ?? {
                 reportId: `${this.reportId}`,
+            }
+        );
+    }
+
+    public openPreviewModal(): void {
+        this.modalService.openModal(
+            PayrollReportComponent,
+            {},
+            {
+                data: {
+                    id: 210,
+                    type: 'MILEAGE',
+                },
             }
         );
     }

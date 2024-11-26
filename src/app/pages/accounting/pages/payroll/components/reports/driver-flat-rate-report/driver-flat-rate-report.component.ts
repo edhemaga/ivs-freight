@@ -12,7 +12,7 @@ import { Observable, Subject, takeUntil } from 'rxjs';
 import { CdkDrag, CdkDragDrop } from '@angular/cdk/drag-drop';
 
 // Components
-import { ColumnConfig } from 'ca-components';
+import { ColumnConfig, PayrollTypeEnum } from 'ca-components';
 
 // Services
 import { PayrollFacadeService } from '@pages/accounting/pages/payroll/state/services';
@@ -60,6 +60,7 @@ export class DriverFlatRateReportComponent
 {
     public columns: ColumnConfig[];
     public creditType = PayrollCreditType.Driver;
+    public payrollType = PayrollTypeEnum.FLAT_RATE;
 
     @Input() set reportId(report_id: string) {
         this._reportId = report_id;

@@ -15,22 +15,25 @@ import { PayrollCreditBonusComponent } from '@pages/accounting/pages/payroll/pay
 import { PayrollBonusModalComponent } from '@pages/accounting/pages/payroll/payroll-modals/payroll-bonus-modal/payroll-bonus-modal.component';
 import { PayrollDeductionModalComponent } from '@pages/accounting/pages/payroll/payroll-modals/payroll-deduction-modal/payroll-deduction-modal.component';
 import { FuelPurchaseModalComponent } from '@pages/fuel/pages/fuel-modals/fuel-purchase-modal/fuel-purchase-modal.component';
+import { PayrollReportComponent } from '@pages/accounting/pages/payroll/payroll-modals/payroll-report/payroll-report.component';
 
 // Enums
-import { PayrollAdditionalTypes } from '../../state/enums';
+import { PayrollAdditionalTypes, PayrollStringEnum } from '@pages/accounting/pages/payroll/state/enums';
 import { TableStringEnum } from '@shared/enums/table-string.enum';
 import { ConfirmationModalStringEnum } from '@shared/components/ta-shared-modals/confirmation-modal/enums/confirmation-modal-string.enum';
 import { DriverMVrModalStringEnum } from '@pages/driver/pages/driver-modals/driver-mvr-modal/enums/driver-mvrl-modal-string.enum';
+import { PayrollTypeEnum } from 'ca-components';
 
 export abstract class PayrollReportBaseComponent<
     T extends {
         driver?: { id?: number; fullName?: string | null };
         truck?: { id?: number };
-        id?: number
+        id?: number;
     }
 > {
     public openedPayroll: T;
     abstract creditType: PayrollCreditType;
+    abstract payrollType: PayrollTypeEnum;
 
     protected _reportId: string;
 
@@ -51,7 +54,22 @@ export abstract class PayrollReportBaseComponent<
         this._reportId = value;
     }
 
-    public openAddNewModal(type: string): void { 
+    public openMenu(data: { type: string }) {
+        if (data.type === PayrollStringEnum.REPORT) {
+            this.modalService.openModal(
+                PayrollReportComponent,
+                {},
+                {
+                    data: {
+                        id: this.openedPayroll.id,
+                        type: this.payrollType,
+                    },
+                }
+            );
+        }
+    }
+
+    public openAddNewModal(type: string): void {
         switch (type) {
             case PayrollAdditionalTypes.CREDIT:
                 this.modalService
@@ -120,7 +138,7 @@ export abstract class PayrollReportBaseComponent<
                         {
                             truckId: this.openedPayroll.truck?.id,
                             creditType: this.creditType,
-                            payrollOwnerId: this.openedPayroll.id
+                            payrollOwnerId: this.openedPayroll.id,
                         }
                     )
                     .then(() => {
@@ -185,7 +203,9 @@ export abstract class PayrollReportBaseComponent<
                             {
                                 edit: true,
                                 data: {
-                                    id: item.data.parentPayrollDeductionId || item.data.id,
+                                    id:
+                                        item.data.parentPayrollDeductionId ||
+                                        item.data.id,
                                 } as CreatePayrollCreditCommand,
                                 creditType: PayrollCreditType.Driver,
                             }

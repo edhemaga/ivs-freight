@@ -20,7 +20,10 @@ export class FuelCardsModalConfig {
         },
         {
             title: 'Item Detail • Total Cost',
-            key: 'tabelDescriptionDropTotal',
+            secondTitle: 'Title Cost',
+            key: 'fuelStopStore',
+            secondKey: 'totalCost',
+            prefix: '$',
         },
         null,
         null,
@@ -28,28 +31,20 @@ export class FuelCardsModalConfig {
 
     static displayRowsBackActive: CardRows[] = [
         {
-            title: 'Status',
-            key: 'fuelType',
-            secondKey: 'name',
+            title: 'Fuel Stop Detail • Name',
+            key: 'tableFuelStopName',
         },
-
         {
-            title: 'Payroll • Pay Type',
-            secondTitle: 'Pay Type',
-            key: 'paymentType',
-            secondKey: 'name',
+            title: 'Fuel Stop Detail • Location',
+            key: 'tableLocation',
         },
-
         {
-            title: 'Payroll • Commission',
-            key: 'commission',
-            sufix: '%',
+            title: 'Driver',
+            key: 'driver',
         },
-
         {
-            title: 'Payroll • Salary',
-            key: 'salary',
-            type: 'money',
+            title: 'Card Detail • Number',
+            key: 'TableDropdownComponentConstantsCardNumber',
         },
         null,
         null,
@@ -57,22 +52,21 @@ export class FuelCardsModalConfig {
 
     static displayRowsFrontInactive: CardRows[] = [
         {
-            title: 'Department',
-            key: 'tableTableDept',
-        },
-        {
-            title: 'Employee • Phone',
+            title: 'Phone',
             key: 'phone',
         },
-
         {
-            title: 'Employee • Email',
-            key: 'email',
+            title: 'Fax',
+            key: 'fax',
+        },
+        {
+            title: 'Address',
+            key: 'tableAddress',
         },
 
         {
-            title: 'Activity',
-            key: 'tableActivity',
+            title: 'Expense',
+            key: 'tableExpense',
         },
         null,
         null,
@@ -80,26 +74,23 @@ export class FuelCardsModalConfig {
 
     static displayRowsBackInactive: CardRows[] = [
         {
-            title: 'Status',
-            key: 'fuelType',
-            secondKey: 'name',
+            title: 'Times Used',
+            key: 'tableUsed',
         },
 
         {
-            title: 'Payroll • Pay Type',
-            secondTitle: 'Pay Type',
-            key: 'paymentType',
-            secondKey: 'name',
+            title: 'Price Range',
+            key: 'tablePriceRange',
         },
 
         {
-            title: 'Payroll • Commission',
+            title: 'Last Price',
             key: 'commission',
             sufix: '%',
         },
 
         {
-            title: 'Payroll • Salary',
+            title: 'Last Visit',
             key: 'salary',
             type: 'money',
         },

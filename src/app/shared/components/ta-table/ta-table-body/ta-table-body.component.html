@@ -1078,7 +1078,10 @@
                                                     "
                                                     [tooltipColor]="'#ffff'"
                                                     position="bottom"
-                                                >
+                                                >   
+                                                    <ng-container *ngIf="row?.tableFuelStopIsClosed">
+                                                        <svg-icon [src]="tableBodySvgRoutes.BROKER_CLOSED_SVG_ROUTE"></svg-icon>
+                                                    </ng-container>
                                                     {{
                                                         row[column.field]
                                                             ?.name ||
@@ -1107,6 +1110,9 @@
                                                         goToDetails(column, row)
                                                     "
                                                 >
+                                                    <ng-container *ngIf="row?.tableFuelStopIsClosed">
+                                                        <svg-icon [src]="tableBodySvgRoutes.BROKER_CLOSED_SVG_ROUTE"></svg-icon>
+                                                    </ng-container>
                                                     {{ row[column.field] }}
                                                 </div>
                                             </ng-container>
@@ -1568,6 +1574,10 @@
                                             (shown)="
                                                 descriptionPopoverOpen = row.id
                                             "
+                                        ></div>
+                                        <div 
+                                            [appDescriptionItemsTextCount]="row[column.field]" 
+                                            [containerWidth]="column.width"
                                         ></div>
                                     </div>
 
@@ -3560,6 +3570,9 @@
                                                 [tooltipColor]="'#ffff'"
                                                 position="bottom"
                                             >
+                                                <ng-container *ngIf="row?.tableFuelStopIsClosed">
+                                                    <svg-icon [src]="tableBodySvgRoutes.BROKER_CLOSED_SVG_ROUTE"></svg-icon>
+                                                </ng-container>
                                                 {{ row[column.field] }}
                                             </div>
                                         </ng-container>
@@ -3580,6 +3593,9 @@
                                                     goToDetails(column, row)
                                                 "
                                             >
+                                                <ng-container *ngIf="row?.tableFuelStopIsClosed">
+                                                    <svg-icon [src]="tableBodySvgRoutes.BROKER_CLOSED_SVG_ROUTE"></svg-icon>
+                                                </ng-container>
                                                 {{ row[column.field] }}
                                             </div>
                                         </ng-container>
@@ -4066,6 +4082,10 @@
                                                         descriptionPopoverOpen =
                                                             row.id
                                                     "
+                                                ></div>
+                                                <div 
+                                                    [appDescriptionItemsTextCount]="row[column.field]" 
+                                                    [containerWidth]="column.width"
                                                 ></div>
                                             </div>
                                         </ng-container>

@@ -102,6 +102,7 @@ export enum TableStringEnum {
 
     //Empty string
     EMPTY_STRING_PLACEHOLDER = '',
+    EMPTY_STRING_SPACE = ' ',
     NA = 'NA',
 
     // Separators
@@ -394,6 +395,8 @@ export enum TableStringEnum {
     FUEL_TABLE_COUNT = 'fuelTableCount',
     FUEL_TABLE_VIEW = 'Fuel-table-view',
     ASC = 'asc',
+    FUEL_TRANSACTION_FILTER_INTEGRATED = 'fuel-filter',
+    FUEL_STOP_FILTER_CLOSED = 'closed-filter',
 
     // Contact
     DELTETE_CONTACT = 'delete-contact',
@@ -573,4 +576,5 @@ export enum TableStringEnum {
     PAYROLL = 'payroll',
     BONUS = 'bonus',
     ACTIVITY = 'activity',
+    NULL = 'null',
 }
