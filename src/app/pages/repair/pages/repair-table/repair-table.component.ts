@@ -198,6 +198,8 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
         RepairShopMapConfig.repairShopMapListSortColumns;
     public isAddedNewRepairShop: boolean = false;
     public mapStateFilter: string[] | null = null;
+    public mapListCount: number = 0;
+    public isSelectedFromMapList: boolean = false;
 
     constructor(
         // router
@@ -742,6 +744,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                 showMoveToOpenList:
                     this.selectedTab === TableStringEnum.REPAIR_SHOP,
                 showMoveToClosedList: true,
+                hideSearch: this.activeViewMode === TableStringEnum.MAP,
                 viewModeOptions: this.getViewModeOptions(),
             },
         };
@@ -764,9 +767,11 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                 viewModeOptions = this.getViewModeOptions();
             }
 
-            this.tableOptions.toolbarActions.viewModeOptions = [
-                ...viewModeOptions,
-            ];
+            this.tableOptions.toolbarActions = {
+                ...this.tableOptions.toolbarActions,
+                viewModeOptions: [...viewModeOptions],
+                hideSearch: this.activeViewMode === TableStringEnum.MAP,
+            };
         }
     }
 
@@ -1833,8 +1838,13 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
             });
     }
 
-    public onGetInfoWindowData(markerId: number): void {
+    public onGetInfoWindowData(
+        markerId: number,
+        isFromMapList?: boolean
+    ): void {
         this.mapsService.selectedMarker(markerId);
+
+        this.isSelectedFromMapList = isFromMapList;
 
         this.getMapData(false, markerId);
     }
@@ -1844,7 +1854,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
             .getRepairShopById(markerId)
             .pipe(takeUntil(this.destroy$))
             .subscribe({
-                next: (res: any) => {
+                next: (res) => {
                     const repairShopData = this.mapShopData(res);
 
                     let selectedMarkerData: IMapSelectedMarkerData | null =
@@ -1892,6 +1902,8 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                     );
 
                     this.mapData = { ...this.mapData, selectedMarkerData };
+                    
+                    this.ref.detectChanges();
                 },
                 error: () => {},
             });
@@ -1938,14 +1950,14 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                 null, // lastTo?: number,
                 null, // ppgFrom?: number,
                 null, // ppgTo?: number,
-                this.mapsService.selectedMarkerId ?? null, // selectedId
+                this.isSelectedFromMapList
+                    ? this.mapsService.selectedMarkerId
+                    : null, // selectedId
                 this.filter === TableStringEnum.CLOSED_ARRAY ? 0 : 1, // active
                 this.mapClustersPagination.pageIndex, // pageIndex
                 this.mapClustersPagination.pageSize, // pageSize
                 null, // companyId
-                this.mapsService.selectedMarkerId
-                    ? 'selectedDesc'
-                    : this.mapListSortDirection, // sortBy
+                this.mapListSortDirection ?? null, // sortBy
                 null, // search
                 null, // search1
                 null // search2
@@ -2082,19 +2094,19 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                 this.backFilterQuery.costTo, // costTo
                 this.filter === TableStringEnum.CLOSED_ARRAY ? 0 : 1, // active
                 this.mapStateFilter, // states
-                this.mapsService.selectedMarkerId ?? null, // selectedId
+                !this.isSelectedFromMapList
+                    ? this.mapsService.selectedMarkerId
+                    : null, // selectedId
                 this.mapListPagination.pageIndex,
                 this.mapListPagination.pageSize,
                 null, // companyId
-                this.mapsService.selectedMarkerId
-                    ? 'selectedDesc'
-                    : this.mapListSortDirection, // sort
+                this.mapListSortDirection ?? null, // sort
                 this.mapListSearchValue, // search
                 null, // search1
                 null // search2
             )
             .pipe(takeUntil(this.destroy$))
-            .subscribe((mapListResponse: any) => {
+            .subscribe((mapListResponse) => {
                 const mappedListData = mapListResponse?.pagination?.data?.map(
                     (item) => {
                         const mapItemData = this.mapShopData(item);
@@ -2103,15 +2115,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                     }
                 );
 
-                const newMapListData = {
-                    ...mapListResponse,
-                    pagination: {
-                        ...mapListResponse?.pagination,
-                        data: mappedListData,
-                    },
-                    addData:
-                        this.mapListPagination.pageIndex > 1 ? true : false,
-                };
+                this.mapListCount = mapListResponse?.pagination?.count;
 
                 this.mapListData =
                     this.mapListPagination.pageIndex > 1
@@ -2138,6 +2142,8 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
             selectedMarkerData,
         };
 
+        this.isSelectedFromMapList = false;
+
         this.mapsService.selectedMarker(null);
 
         if (this.activeViewMode === TableStringEnum.MAP) {
@@ -2145,18 +2151,25 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
 
             this.getRepairShopMapList();
         }
+
+        this.ref.detectChanges();
     }
 
     public addMapListScrollEvent(): void {
         this.mapsService.mapListScrollChange
             .pipe(takeUntil(this.destroy$))
             .subscribe(() => {
-                this.mapListPagination = {
-                    ...this.mapListPagination,
-                    pageIndex: this.mapListPagination.pageIndex + 1,
-                };
+                const isNewPage =
+                    this.mapListCount / this.mapListPagination.pageIndex > 25;
 
-                this.getRepairShopMapList();
+                if (isNewPage) {
+                    this.mapListPagination = {
+                        ...this.mapListPagination,
+                        pageIndex: this.mapListPagination.pageIndex + 1,
+                    };
+
+                    this.getRepairShopMapList();
+                }
             });
     }
 
@@ -2164,7 +2177,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
         this.mapsService.selectedMapListCardChange
             .pipe(takeUntil(this.destroy$))
             .subscribe((id) => {
-                if (id) this.onGetInfoWindowData(id);
+                if (id) this.onGetInfoWindowData(id, true);
                 else this.onResetSelectedMarkerItem();
             });
     }
@@ -2181,6 +2194,8 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
             ) ?? null;
 
         this.mapData = { ...this.mapData, selectedMarkerData };
+
+        this.ref.detectChanges();
     }
 
     public onClusterListScroll(clusterMarker: IMapMarkers): void {

@@ -1,7 +1,7 @@
 export interface PMTruckFilter {
     truckId?: number;
     hideInactivePMs?: number;
-    truckTypeId?: number;
+    truckTypeId?: number[];
     pageIndex?: number;
     pageSize?: number;
     companyId?: number;

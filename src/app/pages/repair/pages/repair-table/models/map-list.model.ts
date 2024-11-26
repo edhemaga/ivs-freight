@@ -1,4 +1,4 @@
 export interface MapList {
-    isSelected: boolean;
-    id: number;
+    isSelected?: boolean;
+    id?: number;
 }
