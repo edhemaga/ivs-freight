@@ -96,6 +96,7 @@ import { CaUploadFilesComponent } from 'ca-components';
 import { TaUserReviewComponent } from '@shared/components/ta-user-review/ta-user-review.component';
 import { ConfirmationActivationModalComponent } from '@shared/components/ta-shared-modals/confirmation-activation-modal/confirmation-activation-modal.component';
 import { TaCheckboxCardComponent } from '@shared/components/ta-checkbox-card/ta-checkbox-card.component';
+import { ConfirmationModalComponent } from '@shared/components/ta-shared-modals/confirmation-modal/confirmation-modal.component';
 
 // Modules
 import { AngularSvgIconModule } from 'angular-svg-icon';
@@ -122,7 +123,6 @@ import { RepairShopModalSvgRoutes } from '@pages/repair/pages/repair-modals/repa
 import { OpenedTab } from '@pages/repair/pages/repair-modals/repair-shop-modal/types';
 import { ITaInput } from '@shared/components/ta-input/config/ta-input.config';
 import { ContactsModalConstants } from '@pages/contacts/pages/contacts-modal/utils/constants/contacts-modal.constants';
-import { ConfirmationModalComponent } from '@shared/components/ta-shared-modals/confirmation-modal/confirmation-modal.component';
 
 @Component({
     selector: 'app-repair-shop-modal',
@@ -401,6 +401,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
                     this.ngbActiveModal?.close();
             });
     }
+
     private generateForm(): void {
         this.repairShopForm = this.formBuilder.group({
             [RepairShopModalStringEnum.NAME]: [
