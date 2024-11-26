@@ -1575,6 +1575,10 @@
                                                 descriptionPopoverOpen = row.id
                                             "
                                         ></div>
+                                        <div 
+                                            [appDescriptionItemsTextCount]="row[column.field]" 
+                                            [containerWidth]="column.width"
+                                        ></div>
                                     </div>
 
                                     <!-- SHARED COLUMN-->
@@ -4078,6 +4082,10 @@
                                                         descriptionPopoverOpen =
                                                             row.id
                                                     "
+                                                ></div>
+                                                <div 
+                                                    [appDescriptionItemsTextCount]="row[column.field]" 
+                                                    [containerWidth]="column.width"
                                                 ></div>
                                             </div>
                                         </ng-container>
