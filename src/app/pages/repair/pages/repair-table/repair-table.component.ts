@@ -1902,7 +1902,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                     );
 
                     this.mapData = { ...this.mapData, selectedMarkerData };
-                    
+
                     this.ref.detectChanges();
                 },
                 error: () => {},
@@ -1950,9 +1950,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                 null, // lastTo?: number,
                 null, // ppgFrom?: number,
                 null, // ppgTo?: number,
-                this.isSelectedFromMapList
-                    ? this.mapsService.selectedMarkerId
-                    : null, // selectedId
+                this.mapsService.selectedMarkerId ?? null, // selectedId
                 this.filter === TableStringEnum.CLOSED_ARRAY ? 0 : 1, // active
                 this.mapClustersPagination.pageIndex, // pageIndex
                 this.mapClustersPagination.pageSize, // pageSize

@@ -2444,9 +2444,7 @@ export class CustomerTableComponent
                 null, // lastTo?: number,
                 null, // ppgFrom?: number,
                 null, // ppgTo?: number,
-                this.isSelectedFromMapList
-                    ? this.mapsService.selectedMarkerId
-                    : null, // selectedId
+                this.mapsService.selectedMarkerId ?? null, // selectedId
                 this.filter === TableStringEnum.CLOSED_FILTER ? 0 : 1, // active
                 this.mapClustersPagination.pageIndex, // pageIndex
                 this.mapClustersPagination.pageSize, // pageSize
