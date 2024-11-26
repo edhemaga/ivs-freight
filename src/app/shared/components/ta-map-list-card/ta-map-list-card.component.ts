@@ -108,7 +108,6 @@ export class TaMapListCardComponent implements OnInit, OnDestroy {
             this.hasClickedOnDots = false;
             return;
         }
-        console.log('selectCard click');
 
         const selectId = this.isSelected ? 0 : this.item.id;
         this.mapsService.selectedMapListCard(selectId);

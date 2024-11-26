@@ -28,6 +28,8 @@ export interface MilesStopDetailsResponse {
     stopDuration?: { [key: string]: number; } | null;
     travelHours?: number | null;
     travelMinutes?: number | null;
+    isIntegrated?: boolean | null;
+    loadId?: number | null;
     loadNumber?: string | null;
     trailerNumber?: string | null;
     trailerType?: TrailerTypeResponse;

@@ -11,7 +11,6 @@
  */
 import { LoadStopType } from './loadStopType';
 import { LoadStopItemCommand } from './loadStopItemCommand';
-import { YesNoEnum } from './yesNoEnum';
 
 
 export interface LoadStopCommand { 
@@ -32,7 +31,7 @@ export interface LoadStopCommand {
     legHours?: number | null;
     legMinutes?: number | null;
     shape?: string | null;
-    driverAssist?: YesNoEnum;
+    driverAssist?: boolean;
     items?: Array<LoadStopItemCommand> | null;
 }
 

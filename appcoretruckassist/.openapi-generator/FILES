@@ -866,6 +866,7 @@ model/repairShopListDtoPagination.ts
 model/repairShopListResponse.ts
 model/repairShopMinimalListResponse.ts
 model/repairShopMinimalResponse.ts
+model/repairShopMobileSortBy.ts
 model/repairShopModalResponse.ts
 model/repairShopNewListResponse.ts
 model/repairShopOpenHoursCommand.ts
@@ -877,7 +878,9 @@ model/repairShopServiceTypeCommand.ts
 model/repairShopServiceTypeResponse.ts
 model/repairShopShortResponse.ts
 model/repairShopShortResponsePagination.ts
+model/repairShopSortBy.ts
 model/repairShortResponse.ts
+model/repairSortBy.ts
 model/repairTrailerFilterListResponse.ts
 model/repairTrailerFilterResponse.ts
 model/repairTruckFilterListResponse.ts
