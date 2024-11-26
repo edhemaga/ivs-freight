@@ -29,7 +29,7 @@ import {
     PayrollCreditType,
     PayrollDriverMileageByIdResponse,
 } from 'appcoretruckassist';
-import { ColumnConfig, PayrollTypeEnum } from 'ca-components';
+import { ColumnConfig, ICaMapProps, PayrollTypeEnum } from 'ca-components';
 
 // components
 import { PayrollProccessPaymentModalComponent } from '@pages/accounting/pages/payroll/payroll-modals/payroll-proccess-payment-modal/payroll-proccess-payment-modal.component';
@@ -79,6 +79,8 @@ export class PayrollReportComponent
     public payrollReportList: MilesStopShortReponseWithRowType[] = [];
     public allowedLoadIds: number[];
     public showMap: boolean = false;
+
+    public mapData$: Observable<ICaMapProps>;
 
     @ViewChild('customCountTemplate', { static: false })
     public readonly customCountTemplate!: ElementRef;
@@ -211,6 +213,8 @@ export class PayrollReportComponent
 
         this.includedLoads$ =
             this.payrollFacadeService.selectPayrollReportIncludedLoads$;
+
+        this.mapData$ = this.payrollFacadeService.getPayrollReportMapData$;
 
         this.payrollFacadeService.selectPayrollReportDriverMileageLoads$
             .pipe(takeUntil(this.destroy$))

@@ -12,7 +12,7 @@ import { Observable, Subject, takeUntil } from 'rxjs';
 import { CdkDrag, CdkDragDrop } from '@angular/cdk/drag-drop';
 
 // Components
-import { ColumnConfig, PayrollTypeEnum } from 'ca-components';
+import { ColumnConfig, ICaMapProps, PayrollTypeEnum } from 'ca-components';
 
 // Services
 import { PayrollFacadeService } from '@pages/accounting/pages/payroll/state/services';
@@ -73,6 +73,7 @@ export class DriverFlatRateReportComponent
 
     @Input() selectedTab: PayrollTablesStatus;
     public showMap: boolean = false;
+    public mapData$: Observable<ICaMapProps>;
 
     public loading$: Observable<boolean>;
 
@@ -198,6 +199,8 @@ export class DriverFlatRateReportComponent
 
         this.payrollFlatRateDriverLoads$ =
             this.payrollDriverFlatRateFacadeService.selectPayrollReportDriverFlatRateLoads$;
+
+        this.mapData$ = this.payrollFacadeService.getPayrollReportMapData$;
     }
 
     public customSortPredicate = (

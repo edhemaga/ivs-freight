@@ -12,7 +12,7 @@ import { Observable, Subject, takeUntil } from 'rxjs';
 import { CdkDrag, CdkDragDrop } from '@angular/cdk/drag-drop';
 
 // Components
-import { ColumnConfig, PayrollTypeEnum } from 'ca-components';
+import { ColumnConfig, ICaMapProps, PayrollTypeEnum } from 'ca-components';
 import { PayrollProccessPaymentModalComponent } from '@pages/accounting/pages/payroll/payroll-modals/payroll-proccess-payment-modal/payroll-proccess-payment-modal.component';
 
 // Services
@@ -73,6 +73,7 @@ export class DriverCommissionReportComponent
 
     @Input() selectedTab: PayrollTablesStatus;
     public showMap: boolean = false;
+    public mapData$: Observable<ICaMapProps>;
 
     public loading$: Observable<boolean>;
 
@@ -207,6 +208,8 @@ export class DriverCommissionReportComponent
 
         this.includedLoads$ =
             this.payrollCommissionFacadeService.selectPayrollReportIncludedLoads$;
+
+        this.mapData$ = this.payrollFacadeService.getPayrollReportMapData$;
     }
 
     public onProccessPayroll(

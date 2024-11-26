@@ -24,7 +24,7 @@ import {
     PayrollDriverMileageByIdResponse,
     PayrollOwnerResponse,
 } from 'appcoretruckassist';
-import { ColumnConfig, PayrollTypeEnum } from 'ca-components';
+import { ColumnConfig, ICaMapProps, PayrollTypeEnum } from 'ca-components';
 import {
     IGetPayrollByIdAndOptions,
     IPayrollProccessPaymentModal,
@@ -71,6 +71,7 @@ export class DriverOwnerReportComponent
     public payrollType = PayrollTypeEnum.OWNER_COMMISSION;
     @Input() selectedTab: PayrollTablesStatus;
     public showMap: boolean = false;
+    public mapData$: Observable<ICaMapProps>;
 
     public loading$: Observable<boolean>;
     public includedLoads$: Observable<LoadWithMilesStopResponse[]>;
@@ -139,6 +140,8 @@ export class DriverOwnerReportComponent
             .subscribe((owner) => {
                 this.payrollOpenedReport = owner;
             });
+
+        this.mapData$ = this.payrollFacadeService.getPayrollReportMapData$;
     }
 
     ngAfterViewInit(): void {

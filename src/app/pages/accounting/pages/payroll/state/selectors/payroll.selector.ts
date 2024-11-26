@@ -15,6 +15,13 @@ import {
 import { PayrollDriverMilesTableSettingsConstants } from '@pages/accounting/utils/constants/payroll-driver-miles-table-settings.constants';
 import { PayrollDriverCommisionTableSettingsConstants } from '@pages/accounting/utils/constants/payroll-driver-commision-table-settings.constants';
 import { PayrollOwnerTableSettingsConstants } from '@pages/accounting/utils/constants/payroll-owner-table-settings.constants';
+import {
+    ICaMapProps,
+    IMapMarkers,
+    IMapRoutePath,
+    MapMarkerIconHelper,
+    MapOptionsConstants,
+} from 'ca-components';
 
 const payrollNamesData = {
     soloMiles: { text: 'Driver', type: 'Miles' },
@@ -55,6 +62,68 @@ export const selectPayrollReportLoading = createSelector(
 export const selectPayrollReportTableExpanded = createSelector(
     selectPayrollState,
     (state) => state.expandedReportTable
+);
+
+export const selectPayrollReportMapData = createSelector(
+    selectPayrollState,
+    (state) => {
+        const routeMarkers: IMapMarkers[] = [];
+        const routePaths: IMapRoutePath[] = [];
+        const mapData = state.payrollOpenedReport?.mapLocations;
+        mapData?.map((loadStop, index) => {
+            const routeMarker: IMapMarkers = {
+                position: { lat: loadStop.latitude, lng: loadStop.longitude },
+                icon: {
+                    url: MapMarkerIconHelper.getRoutingMarkerIcon(
+                        loadStop.orderInLoad ?? 0,
+                        loadStop.type.name.toLowerCase()
+                    ),
+                    labelOrigin: new google.maps.Point(90, 15),
+                },
+                label: {
+                    text: "Hello"
+                }
+            };
+
+            routeMarkers.push(routeMarker);
+
+            if (index > 0) {
+                const routePath: IMapRoutePath = {
+                    path: [
+                        {
+                            lat: mapData[index - 1].latitude!,
+                            lng: mapData[index - 1].longitude!,
+                        },
+                        { lat: loadStop.latitude!, lng: loadStop.longitude! },
+                    ],
+                    strokeColor: "#919191",
+                    strokeOpacity: 1,
+                    strokeWeight: 4,
+                };
+
+                routePaths.push(routePath);
+
+                if (index === 1) {
+                    routePaths.push({
+                        ...routePath,
+                        strokeColor: "#919191",
+                        strokeOpacity: 1,
+                        strokeWeight: 2,
+                    });
+                }
+            }
+        });
+
+        return {
+            markers: [],
+            clusterMarkers: [],
+            darkMode: false,
+            isZoomShown: true,
+            isVerticalZoom: true,
+            routingMarkers: routeMarkers,
+            routePaths: routePaths,
+        } as ICaMapProps;
+    }
 );
 
 export const selectPayrollOpenedReport = createSelector(

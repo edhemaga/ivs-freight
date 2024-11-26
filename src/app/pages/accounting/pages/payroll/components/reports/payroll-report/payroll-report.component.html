@@ -76,7 +76,7 @@
             </div>
             <ng-container *ngIf="showMap">
                 <div class="map-holder">
-                    <app-ca-map [data]="data"></app-ca-map>
+                    <app-ca-map [data]="mapData$ | async"></app-ca-map>
                 </div>
             </ng-container>
         </div>
