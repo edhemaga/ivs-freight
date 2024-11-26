@@ -1787,8 +1787,6 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                 },
             };
             setTimeout(() => {
-                console.log(this.showDriverRate, 'showDriverRate')
-
                 if (this.showDriverRate) {
                     this.inputService.changeValidators(
                         this.loadForm.get(LoadModalStringEnum.DRIVER_RATE)
