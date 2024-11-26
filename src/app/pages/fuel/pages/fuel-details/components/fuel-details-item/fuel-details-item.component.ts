@@ -1,17 +1,22 @@
 import { Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
 import { UntypedFormControl } from '@angular/forms';
+import { Subject, takeUntil } from 'rxjs';
 
-// Components
+// Models
+import { FuelStopExpensesResponse } from 'appcoretruckassist';
+import { ChartLegendProperty, Tabs } from '@shared/models';
 import { IChartConfiguration } from 'ca-components/lib/components/ca-chart/models';
+
 
 // Const
 import { FuelDetailsChartsConfiguration } from '@pages/fuel/utils/constants';
-import { FuelService } from '@shared/services/fuel.service';
-import { Subject, takeUntil } from 'rxjs';
-import { FuelStopExpensesResponse } from 'appcoretruckassist';
-import { ChartHelper } from '@shared/utils/helpers';
 import { ChartConfiguration, ChartLegendConfiguration } from '@shared/utils/constants';
-import { ChartLegendProperty, Tabs } from '@shared/models';
+
+// Services
+import { FuelService } from '@shared/services/fuel.service';
+
+// Helpers
+import { ChartHelper } from '@shared/utils/helpers';
 
 @Component({
     selector: 'app-fuel-details-item',
