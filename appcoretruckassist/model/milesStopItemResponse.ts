@@ -22,5 +22,7 @@ export interface MilesStopItemResponse {
     totalMiles?: number;
     longitude?: number;
     latitude?: number;
+    isIntegrated?: boolean | null;
+    loadId?: number | null;
 }
 
