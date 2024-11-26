@@ -195,6 +195,7 @@ export class CustomerTableComponent
     public isAddedNewShipper: boolean = false;
     public mapStateFilter: string[] | null = null;
     public isSelectedFromMapList: boolean = false;
+    public mapListCount: number = 0;
 
     constructor(
         // ref
@@ -684,6 +685,8 @@ export class CustomerTableComponent
                                         filterData.id === customerData.id
                                 )
                         );
+
+                        this.updateMapItem();
                     }
 
                     if (!res.selectedFilter && res.filterName === this.filter) {
@@ -691,6 +694,8 @@ export class CustomerTableComponent
                         this.viewData = this.customerTableData;
 
                         this.sendCustomerData();
+
+                        this.updateMapItem();
                     }
 
                     if (res.filterName === TableStringEnum.BAN) {
@@ -1453,8 +1458,6 @@ export class CustomerTableComponent
                 : ((this.sendDataToCardsFront = this.displayRowsFrontShipper),
                   (this.sendDataToCardsBack = this.displayRowsBackShipper));
 
-            this.mapListData = JSON.parse(JSON.stringify(this.viewData));
-
             // Get Tab Table Data For Selected Tab
             this.getSelectedTabTableData();
         } else {
@@ -2098,6 +2101,10 @@ export class CustomerTableComponent
                     }, 1000);
 
                     this.mapsService.addRating(res);
+
+                    this.updateMapItem(
+                        this.viewData.find((item) => item.id === event.data.id)
+                    );
                 });
         } else if (event.type === TableStringEnum.CREATE_LOAD) {
             this.modalService.openModal(
@@ -2318,6 +2325,8 @@ export class CustomerTableComponent
             ) ?? null;
 
         this.mapData = { ...this.mapData, selectedMarkerData };
+
+        this.ref.detectChanges();
     }
 
     public onClusterListScroll(clusterMarker: IMapMarkers): void {
@@ -2383,6 +2392,8 @@ export class CustomerTableComponent
         this.getShipperClusters();
 
         this.getShipperMapList();
+
+        this.ref.detectChanges();
     }
 
     public getShipperClusters(
@@ -2562,7 +2573,7 @@ export class CustomerTableComponent
                 null // search2
             )
             .pipe(takeUntil(this.destroy$))
-            .subscribe((mapListResponse: any) => {
+            .subscribe((mapListResponse) => {
                 const mappedListData = mapListResponse?.pagination?.data?.map(
                     (item) => {
                         const mapItemData = this.mapShipperData(item);
@@ -2570,6 +2581,8 @@ export class CustomerTableComponent
                         return mapItemData;
                     }
                 );
+
+                this.mapListCount = mapListResponse.pagination.count;
 
                 this.mapListData =
                     this.mapListPagination.pageIndex > 1
@@ -2633,6 +2646,8 @@ export class CustomerTableComponent
                     );
 
                     this.mapData = { ...this.mapData, selectedMarkerData };
+
+                    this.ref.detectChanges();
                 },
                 error: () => {},
             });
@@ -2661,12 +2676,17 @@ export class CustomerTableComponent
         this.mapsService.mapListScrollChange
             .pipe(takeUntil(this.destroy$))
             .subscribe(() => {
-                this.mapListPagination = {
-                    ...this.mapListPagination,
-                    pageIndex: this.mapListPagination.pageIndex + 1,
-                };
+                const isNewPage =
+                    this.mapListCount / this.mapListPagination.pageIndex > 25;
 
-                this.getShipperMapList();
+                if (isNewPage) {
+                    this.mapListPagination = {
+                        ...this.mapListPagination,
+                        pageIndex: this.mapListPagination.pageIndex + 1,
+                    };
+
+                    this.getShipperMapList();
+                }
             });
     }
 

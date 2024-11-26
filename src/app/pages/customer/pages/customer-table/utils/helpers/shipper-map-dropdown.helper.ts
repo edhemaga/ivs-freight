@@ -52,18 +52,40 @@ export class ShipperMapDropdownHelper {
             expandedContent: [
                 { template: 'divider', field: '' },
                 {
+                    template: 'subtitle',
+                    field: '',
+                    title: 'Available Hours',
+                    customClassText: 'mb-2',
+                },
+                {
                     template: 'side-by-side',
                     field: '',
                     sideBySideInfo: {
                         leftSide: {
-                            template: 'open-hours',
-                            field: 'tableAvailableHoursShipping',
+                            template: 'small-subtitle',
+                            customClassText: 'ca-font-bold',
+                            field: '',
                             title: 'Shipping',
                         },
                         rightSide: {
-                            template: 'open-hours',
-                            field: 'tableAvailableHoursReceiving',
+                            template: 'small-subtitle',
+                            customClassText: 'ca-font-bold',
+                            field: '',
                             title: 'Receiving',
+                        },
+                    },
+                },
+                {
+                    template: 'side-by-side',
+                    field: '',
+                    sideBySideInfo: {
+                        leftSide: {
+                            template: 'text',
+                            field: 'tableAvailableHoursReceiving',
+                        },
+                        rightSide: {
+                            template: 'text',
+                            field: 'tableAvailableHoursShipping',
                         },
                     },
                 },
@@ -72,20 +94,43 @@ export class ShipperMapDropdownHelper {
                     template: 'title-count',
                     field: 'loads',
                     title: 'Load',
+                    customClassContainer: 'mb-2',
                 },
                 {
                     template: 'side-by-side',
                     field: '',
                     sideBySideInfo: {
                         leftSide: {
-                            template: 'title-count',
-                            field: 'tableLoads.pickups',
+                            template: 'text-count',
+                            customClassText: 'black-text',
+                            field: 'tableLoads',
+                            secondField: 'pickups',
                             title: 'Pickup',
                         },
                         rightSide: {
-                            template: 'money-text',
-                            field: 'tableLoads.deliveries',
+                            template: 'text-count',
+                            customClassText: 'dark-gray-text',
+                            field: 'tableLoads',
+                            secondField: 'deliveries',
                             title: 'Delivery',
+                        },
+                    },
+                },
+                {
+                    template: 'side-by-side',
+                    field: '',
+                    sideBySideInfo: {
+                        leftSide: {
+                            template: 'text-count',
+                            customClassText: 'small-text gray-text',
+                            field: 'tableAverageWatingTimePickup',
+                            title: 'Avg. Loading',
+                        },
+                        rightSide: {
+                            template: 'text-count',
+                            customClassText: 'small-text gray-text',
+                            field: 'tableAverageWatingTimeDelivery',
+                            title: 'Avg. Offloading',
                         },
                     },
                 },

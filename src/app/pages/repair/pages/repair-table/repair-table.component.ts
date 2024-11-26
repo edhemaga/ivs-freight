@@ -198,6 +198,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
         RepairShopMapConfig.repairShopMapListSortColumns;
     public isAddedNewRepairShop: boolean = false;
     public mapStateFilter: string[] | null = null;
+    public mapListCount: number = 0;
 
     constructor(
         // router
@@ -1847,7 +1848,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
             .getRepairShopById(markerId)
             .pipe(takeUntil(this.destroy$))
             .subscribe({
-                next: (res: any) => {
+                next: (res) => {
                     const repairShopData = this.mapShopData(res);
 
                     let selectedMarkerData: IMapSelectedMarkerData | null =
@@ -2097,7 +2098,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                 null // search2
             )
             .pipe(takeUntil(this.destroy$))
-            .subscribe((mapListResponse: any) => {
+            .subscribe((mapListResponse) => {
                 const mappedListData = mapListResponse?.pagination?.data?.map(
                     (item) => {
                         const mapItemData = this.mapShopData(item);
@@ -2106,15 +2107,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                     }
                 );
 
-                const newMapListData = {
-                    ...mapListResponse,
-                    pagination: {
-                        ...mapListResponse?.pagination,
-                        data: mappedListData,
-                    },
-                    addData:
-                        this.mapListPagination.pageIndex > 1 ? true : false,
-                };
+                this.mapListCount = mapListResponse?.pagination?.count;
 
                 this.mapListData =
                     this.mapListPagination.pageIndex > 1
@@ -2154,12 +2147,17 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
         this.mapsService.mapListScrollChange
             .pipe(takeUntil(this.destroy$))
             .subscribe(() => {
-                this.mapListPagination = {
-                    ...this.mapListPagination,
-                    pageIndex: this.mapListPagination.pageIndex + 1,
-                };
+                const isNewPage =
+                    this.mapListCount / this.mapListPagination.pageIndex > 25;
 
-                this.getRepairShopMapList();
+                if (isNewPage) {
+                    this.mapListPagination = {
+                        ...this.mapListPagination,
+                        pageIndex: this.mapListPagination.pageIndex + 1,
+                    };
+
+                    this.getRepairShopMapList();
+                }
             });
     }
 

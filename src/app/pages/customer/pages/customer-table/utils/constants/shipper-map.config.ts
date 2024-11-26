@@ -121,27 +121,27 @@ export class ShipperMapConfig {
         },
         {
             name: 'Date Added',
-            sortName: 'dateAdded',
+            sortName: 'createdAt',
         },
         {
             name: 'Last Used',
-            sortName: 'lastUsedDate',
+            sortName: 'updatedAt',
         },
         {
             name: 'Pickup Count',
-            sortName: 'pickup',
+            sortName: 'pickups',
         },
         {
             name: 'Delivery Count',
-            sortName: 'delivery',
+            sortName: 'deliveries',
         },
         {
             name: 'Avg. Pickup Time',
-            sortName: 'pickupTime',
+            sortName: 'avgPickupTime',
         },
         {
             name: 'Avg. Delivery Time',
-            sortName: 'deliveryTime',
+            sortName: 'avgDeliveriesTime',
         },
     ];
 }
