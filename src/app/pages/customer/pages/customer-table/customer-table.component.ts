@@ -686,7 +686,8 @@ export class CustomerTableComponent
                                 )
                         );
 
-                        this.updateMapItem();
+                        if (this.activeViewMode === TableStringEnum.MAP)
+                            this.updateMapItem();
                     }
 
                     if (!res.selectedFilter && res.filterName === this.filter) {
@@ -695,7 +696,8 @@ export class CustomerTableComponent
 
                         this.sendCustomerData();
 
-                        this.updateMapItem();
+                        if (this.activeViewMode === TableStringEnum.MAP)
+                            this.updateMapItem();
                     }
 
                     if (res.filterName === TableStringEnum.BAN) {
@@ -742,10 +744,23 @@ export class CustomerTableComponent
                                             address.address.state
                                     )
                             );
+
+                            this.mapStateFilter = [
+                                ...res.queryParams.canadaArray.map(
+                                    (canadaState) => {
+                                        return canadaState.stateName;
+                                    }
+                                ),
+                                ...res.queryParams.usaArray.map((usaState) => {
+                                    return usaState.stateName;
+                                }),
+                            ];
                         }
 
-                        if (res.action === TableStringEnum.CLEAR)
+                        if (res.action === TableStringEnum.CLEAR) {
                             this.viewData = this.customerTableData;
+                            this.mapStateFilter = null;
+                        }
                     } else if (
                         res.filterType === TableStringEnum.LOCATION_FILTER
                     ) {
@@ -882,6 +897,11 @@ export class CustomerTableComponent
                             );
                         } else this.viewData = this.customerTableData;
                     }
+                }
+
+                if (this.activeViewMode === TableStringEnum.MAP) {
+                    this.isAddedNewShipper = true;
+                    this.getMapData();
                 }
             });
     }
@@ -2400,6 +2420,8 @@ export class CustomerTableComponent
         isClusterPagination?: boolean,
         selectedMarkerId?: number
     ): void {
+        if (!this.mapClustersObject) return;
+
         this.shipperService
             .getShipperClusters(
                 this.mapClustersObject.northEastLatitude,
@@ -2657,6 +2679,8 @@ export class CustomerTableComponent
         isClusterPagination?: boolean,
         selectedMarkerId?: number
     ): void {
+        if (this.activeViewMode !== TableStringEnum.MAP) return;
+
         this.mapListPagination = {
             ...this.mapListPagination,
             pageIndex: 1,
