@@ -32,6 +32,8 @@ export interface FuelTransactionResponse {
     timezoneOffset?: number | null;
     supplierId?: number | null;
     total?: number | null;
+    pricePerGallon?: number | null;
+    gallon?: number | null;
     fuelTransactionType?: EnumValue;
     paidWith?: EnumValue;
     fuelItems?: Array<FuelItemResponse> | null;

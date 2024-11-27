@@ -75,7 +75,7 @@ export function getFuelTransactionColumnDefinition() {
         },
         {
             ngTemplate: 'text',
-            title: 'Truck',
+            title: 'Unit',
             field: 'tableTruckNumber',
             name: 'Truck',
             sortName: 'truckNumber',
@@ -365,8 +365,8 @@ export function getFuelStopColumnDefinition() {
             isPined: true
         },
         {
-            ngTemplate: 'text',
-            title: 'Name',
+            ngTemplate: 'nameLink',
+            title: 'Name ',
             field: 'tableName',
             name: 'Name',
             sortName: 'name',
@@ -385,7 +385,9 @@ export function getFuelStopColumnDefinition() {
             disabled: false,
             export: true,
             resizable: true,
-            isPined: true
+            link: {
+                routerLinkStart: '/dashboard'
+            }
         },
         {
             ngTemplate: 'text',
@@ -587,7 +589,11 @@ export function getFuelStopColumnDefinition() {
             disabled: false,
             export: true,
             resizable: false,
-            isAction: true,
+            isAction: {
+                width: 45,
+                height: 45,
+                imgPath: '',
+            },
         },
         {
             ngTemplate: 'note',
@@ -612,8 +618,8 @@ export function getFuelStopColumnDefinition() {
             resizable: false,
             isAction: true,
             headIconStyle: {
-                width: 14,
-                height: 14,
+                width: 16,
+                height: 16,
                 imgPath: AccountingFuelColumnSvgRoutes.ICON_NOTE,
             },
         },

@@ -12,7 +12,7 @@ import { Observable, Subject, takeUntil } from 'rxjs';
 import { CdkDrag, CdkDragDrop } from '@angular/cdk/drag-drop';
 
 // Components
-import { ColumnConfig } from 'ca-components';
+import { ColumnConfig, ICaMapProps, PayrollTypeEnum } from 'ca-components';
 import { PayrollProccessPaymentModalComponent } from '@pages/accounting/pages/payroll/payroll-modals/payroll-proccess-payment-modal/payroll-proccess-payment-modal.component';
 
 // Services
@@ -34,6 +34,7 @@ import {
     IGetPayrollByIdAndOptions,
     PayrollTypes,
 } from '@pages/accounting/pages/payroll/state/models';
+import { OptionsPopupContent } from 'ca-components/lib/components/ca-burger-menu/models/burger-menu.model';
 
 import { CommissionLoadShortReponseWithRowType } from '@pages/accounting/pages/payroll/state/models';
 
@@ -44,6 +45,9 @@ import { PayrollReportBaseComponent } from '@pages/accounting/pages/payroll/comp
 import { PayrollTablesStatus } from '@pages/accounting/pages/payroll/state/enums';
 import { DriverMVrModalStringEnum } from '@pages/driver/pages/driver-modals/driver-mvr-modal/enums/driver-mvrl-modal-string.enum';
 import { TableStringEnum } from '@shared/enums/table-string.enum';
+
+// Constants
+import { TableToolbarConstants } from '../constants/report.constants';
 
 @Component({
     selector: 'app-driver-commission-report',
@@ -60,6 +64,10 @@ export class DriverCommissionReportComponent
 {
     public columns: ColumnConfig[];
     public creditType = PayrollCreditType.Driver;
+    public payrollType = PayrollTypeEnum.COMMISSION;
+
+    public optionsPopupContent: OptionsPopupContent[] =
+        TableToolbarConstants.closedReportPayroll;
 
     @Input() set reportId(report_id: string) {
         this._reportId = report_id;
@@ -70,8 +78,21 @@ export class DriverCommissionReportComponent
         return super.reportId; // Call the base class getter
     }
 
-    @Input() selectedTab: PayrollTablesStatus;
+    public _selectedTab: PayrollTablesStatus;
+    @Input() set selectedTab(tab: PayrollTablesStatus) {
+        this.optionsPopupContent =
+            tab === PayrollTablesStatus.OPEN
+                ? TableToolbarConstants.openReportPayroll
+                : TableToolbarConstants.closedReportPayroll;
+        this._selectedTab = tab;
+    }
+
+    public get selectedTab() {
+        return this._selectedTab;
+    }
+
     public showMap: boolean = false;
+    public mapData$: Observable<ICaMapProps>;
 
     public loading$: Observable<boolean>;
 
@@ -206,6 +227,8 @@ export class DriverCommissionReportComponent
 
         this.includedLoads$ =
             this.payrollCommissionFacadeService.selectPayrollReportIncludedLoads$;
+
+        this.mapData$ = this.payrollFacadeService.getPayrollReportMapData$;
     }
 
     public onProccessPayroll(

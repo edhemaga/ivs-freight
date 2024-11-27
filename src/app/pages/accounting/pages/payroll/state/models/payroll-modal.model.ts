@@ -1,5 +1,6 @@
 import { PayrollCreditType } from 'appcoretruckassist';
 import { PayrollStringEnum } from '../enums';
+import { PayrollType } from '@pages/accounting/pages/payroll/state/types/payroll.type';
 
 export type PayrollModalAction =
     | PayrollStringEnum.EDIT
@@ -16,4 +17,5 @@ export interface PayrollModal {
     data: any;
     // This will preselect tab when user add payroll from payroll table
     creditType: PayrollCreditType;
+    type: PayrollType;
 }

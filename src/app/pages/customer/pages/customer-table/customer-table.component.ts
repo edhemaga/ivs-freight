@@ -32,7 +32,14 @@ import { TableCardDropdownActionsService } from '@shared/components/ta-table-car
 import { ConfirmationMoveService } from '@shared/components/ta-shared-modals/confirmation-move-modal/services/confirmation-move.service';
 import { ConfirmationActivationService } from '@shared/components/ta-shared-modals/confirmation-activation-modal/services/confirmation-activation.service';
 import { CustomerCardsModalService } from '@pages/customer/pages/customer-table/components/customer-card-modal/services';
-import { CaSearchMultipleStatesService } from 'ca-components';
+import {
+    CaSearchMultipleStatesService,
+    CaMapComponent,
+    ICaMapProps,
+    IMapBoundsZoom,
+    IMapMarkers,
+    IMapSelectedMarkerData,
+} from 'ca-components';
 
 // store
 import { BrokerState } from '@pages/customer/state/broker-state/broker.store';
@@ -64,9 +71,13 @@ import { FilterOptionShipper } from '@pages/customer/pages/customer-table/models
 import { CardTableData } from '@shared/models/table-models/card-table-data.model';
 import { TableColumnConfig } from '@shared/models/table-models/table-column-config.model';
 import { MapList } from '@pages/repair/pages/repair-table/models';
+import { SortColumn } from '@shared/components/ta-sort-dropdown/models';
 
 // constants
-import { CustomerCardDataConfigConstants } from '@pages/customer/pages/customer-table/utils/constants/customer-card-data-config.constants';
+import {
+    CustomerCardDataConfigConstants,
+    ShipperMapConfig,
+} from './utils/constants';
 import { TableDropdownComponentConstants } from '@shared/utils/constants/table-dropdown-component.constants';
 
 // pipes
@@ -90,6 +101,10 @@ import {
     getShipperColumnDefinition,
 } from '@shared/utils/settings/table-settings/customer-columns';
 import { MethodsGlobalHelper } from '@shared/utils/helpers/methods-global.helper';
+import {
+    ShipperMapMarkersHelper,
+    ShipperMapDropdownHelper,
+} from '@pages/customer/pages/customer-table/utils/helpers';
 
 @Component({
     selector: 'app-customer-table',
@@ -103,7 +118,8 @@ import { MethodsGlobalHelper } from '@shared/utils/helpers/methods-global.helper
 export class CustomerTableComponent
     implements OnInit, AfterViewInit, OnDestroy
 {
-    @ViewChild('mapsComponent', { static: false }) public mapsComponent: any; // :TaMapsComponent;;
+    @ViewChild('mapsComponent', { static: false })
+    public mapsComponent: CaMapComponent;
 
     private destroy$ = new Subject<void>();
 
@@ -159,6 +175,27 @@ export class CustomerTableComponent
 
     // map
     public mapListData: MapList[] = [];
+
+    public mapData: ICaMapProps = ShipperMapConfig.shipperMapConfig;
+    public mapListPagination: { pageIndex: number; pageSize: number } =
+        ShipperMapConfig.shipperMapListPagination;
+    public mapClustersPagination: { pageIndex: number; pageSize: number } =
+        ShipperMapConfig.shipperMapListPagination;
+    public mapClustersObject: {
+        northEastLatitude: number;
+        northEastLongitude: number;
+        southWestLatitude: number;
+        southWestLongitude: number;
+        zoomLevel: number;
+    } = null;
+    public mapListSearchValue: string | null = null;
+    public mapListSortDirection: string | null = null;
+    public shipperMapListSortColumns: SortColumn[] =
+        ShipperMapConfig.shipperMapListSortColumns;
+    public isAddedNewShipper: boolean = false;
+    public mapStateFilter: string[] | null = null;
+    public isSelectedFromMapList: boolean = false;
+    public mapListCount: number = 0;
 
     constructor(
         // ref
@@ -221,6 +258,10 @@ export class CustomerTableComponent
         this.rowsSelected();
 
         this.openCloseBussinessSelectedRows();
+
+        this.addMapListScrollEvent();
+
+        this.addSelectedMarkerListener();
     }
 
     ngAfterViewInit(): void {
@@ -644,6 +685,9 @@ export class CustomerTableComponent
                                         filterData.id === customerData.id
                                 )
                         );
+
+                        if (this.activeViewMode === TableStringEnum.MAP)
+                            this.updateMapItem();
                     }
 
                     if (!res.selectedFilter && res.filterName === this.filter) {
@@ -651,6 +695,9 @@ export class CustomerTableComponent
                         this.viewData = this.customerTableData;
 
                         this.sendCustomerData();
+
+                        if (this.activeViewMode === TableStringEnum.MAP)
+                            this.updateMapItem();
                     }
 
                     if (res.filterName === TableStringEnum.BAN) {
@@ -697,10 +744,23 @@ export class CustomerTableComponent
                                             address.address.state
                                     )
                             );
+
+                            this.mapStateFilter = [
+                                ...res.queryParams.canadaArray.map(
+                                    (canadaState) => {
+                                        return canadaState.stateName;
+                                    }
+                                ),
+                                ...res.queryParams.usaArray.map((usaState) => {
+                                    return usaState.stateName;
+                                }),
+                            ];
                         }
 
-                        if (res.action === TableStringEnum.CLEAR)
+                        if (res.action === TableStringEnum.CLEAR) {
                             this.viewData = this.customerTableData;
+                            this.mapStateFilter = null;
+                        }
                     } else if (
                         res.filterType === TableStringEnum.LOCATION_FILTER
                     ) {
@@ -838,6 +898,11 @@ export class CustomerTableComponent
                         } else this.viewData = this.customerTableData;
                     }
                 }
+
+                if (this.activeViewMode === TableStringEnum.MAP) {
+                    this.isAddedNewShipper = true;
+                    this.getMapData();
+                }
             });
     }
 
@@ -935,6 +1000,11 @@ export class CustomerTableComponent
                     this.viewData.push(this.mapShipperData(res.data));
 
                     this.addData(res.id);
+
+                    if (this.activeViewMode === TableStringEnum.MAP) {
+                        this.isAddedNewShipper = true;
+                        this.getMapData();
+                    }
                 }
 
                 // Update Shipper
@@ -945,6 +1015,11 @@ export class CustomerTableComponent
                     const updatedShipper = this.mapShipperData(res.data);
 
                     this.updateData(res.id, updatedShipper);
+
+                    if (this.activeViewMode === TableStringEnum.MAP) {
+                        this.isAddedNewShipper = true;
+                        this.getMapData();
+                    }
                 }
 
                 // Update Multiple Shippers
@@ -1231,10 +1306,10 @@ export class CustomerTableComponent
                       name: TableStringEnum.CARD,
                       active: this.activeViewMode === TableStringEnum.CARD,
                   },
-                  //   {
-                  //       name: TableStringEnum.MAP,
-                  //       active: this.activeViewMode === TableStringEnum.MAP,
-                  //   }, this is not going into this sprint
+                  {
+                      name: TableStringEnum.MAP,
+                      active: this.activeViewMode === TableStringEnum.MAP,
+                  },
               ];
     }
 
@@ -1403,8 +1478,6 @@ export class CustomerTableComponent
                 : ((this.sendDataToCardsFront = this.displayRowsFrontShipper),
                   (this.sendDataToCardsBack = this.displayRowsBackShipper));
 
-            this.mapListData = JSON.parse(JSON.stringify(this.viewData));
-
             // Get Tab Table Data For Selected Tab
             this.getSelectedTabTableData();
         } else {
@@ -1565,6 +1638,12 @@ export class CustomerTableComponent
             tableEdited: data?.updatedAt
                 ? this.datePipe.transform(
                       data?.updatedAt,
+                      TableStringEnum.DATE_FORMAT
+                  )
+                : null,
+            tableLastUsed: data?.lastUsedAt
+                ? this.datePipe.transform(
+                      data?.lastUsedAt,
                       TableStringEnum.DATE_FORMAT
                   )
                 : null,
@@ -2042,6 +2121,10 @@ export class CustomerTableComponent
                     }, 1000);
 
                     this.mapsService.addRating(res);
+
+                    this.updateMapItem(
+                        this.viewData.find((item) => item.id === event.data.id)
+                    );
                 });
         } else if (event.type === TableStringEnum.CREATE_LOAD) {
             this.modalService.openModal(
@@ -2233,100 +2316,418 @@ export class CustomerTableComponent
     }
 
     // map
-    public selectItem(data: any): void {
-        this.mapsComponent.clickedMarker(data[0]);
+    public onMapListSearch(search: string): void {
+        this.mapListSearchValue = search;
 
-        this.mapListData.map((item) => {
-            if (item.id == data[0]) {
-                let itemIndex = this.mapsComponent.viewData.findIndex(
-                    (item2) => item2.id === item.id
-                );
+        this.mapListPagination = {
+            ...this.mapListPagination,
+            pageIndex: 1,
+        };
 
-                if (
-                    itemIndex > -1 &&
-                    this.mapsComponent.viewData[itemIndex].showMarker
-                ) {
-                    item.isSelected =
-                        this.mapsComponent.viewData[itemIndex].isSelected;
-                } else {
-                    this.mapsComponent.clusterMarkers.map((cluster) => {
-                        var clusterData = cluster.pagination.data;
-
-                        let clusterItemIndex = clusterData.findIndex(
-                            (item2) => item2.id === data[0]
-                        );
-
-                        if (clusterItemIndex > -1) {
-                            if (!data[1]) {
-                                if (
-                                    !cluster.isSelected ||
-                                    (cluster.isSelected &&
-                                        cluster.detailedInfo?.id == data[0])
-                                ) {
-                                    this.mapsComponent.clickedCluster(cluster);
-                                }
-
-                                if (cluster.isSelected) {
-                                    this.mapsComponent.showClusterItemInfo([
-                                        cluster,
-                                        clusterData[clusterItemIndex],
-                                    ]);
-                                }
-                            }
-
-                            item.isSelected = cluster.isSelected;
-                        }
-                    });
-                }
-            }
-        });
+        this.getShipperMapList();
     }
 
-    public updateMapList(mapListResponse): void {
-        const newMapList = mapListResponse.pagination.data;
-        const addData = mapListResponse.addData ? true : false;
+    public onMapListSort(sortDirection: string): void {
+        this.mapListSortDirection = sortDirection;
 
-        let listChanged = false;
+        this.getShipperMapList();
+    }
 
-        if (!addData) {
-            for (var i = 0; i < this.mapListData.length; i++) {
-                let item = this.mapListData[i];
+    public onClusterMarkerClick(selectedMarker: IMapMarkers): void {
+        if (this.mapsService.selectedMarkerId) this.onResetSelectedMarkerItem();
 
-                let itemIndex = newMapList.findIndex(
-                    (item2) => item2.id === item.id
+        const selectedMarkerData: IMapSelectedMarkerData | null =
+            this.mapData.clusterMarkers.find(
+                (clusterMarker) =>
+                    clusterMarker.position.lat ===
+                        selectedMarker.position.lat &&
+                    clusterMarker.position.lng === selectedMarker.position.lng
+            ) ?? null;
+
+        this.mapData = { ...this.mapData, selectedMarkerData };
+
+        this.ref.detectChanges();
+    }
+
+    public onClusterListScroll(clusterMarker: IMapMarkers): void {
+        if (
+            clusterMarker?.data?.count / this.mapClustersPagination.pageIndex >
+            25
+        ) {
+            this.mapClustersPagination = {
+                ...this.mapClustersPagination,
+                pageIndex: this.mapClustersPagination.pageIndex + 1,
+            };
+
+            this.getShipperClusters(true);
+        }
+    }
+
+    public onGetInfoWindowData(
+        markerId: number,
+        isFromMapList?: boolean
+    ): void {
+        this.mapsService.selectedMarker(markerId);
+
+        this.isSelectedFromMapList = isFromMapList;
+
+        this.getMapData(false, markerId);
+    }
+
+    public onMapBoundsChange(event: IMapBoundsZoom): void {
+        const ne = event.bounds.getNorthEast(); // LatLng of the north-east corner
+        const sw = event.bounds.getSouthWest(); // LatLng of the south-west corder
+
+        this.mapClustersObject = {
+            northEastLatitude: parseFloat(ne.lat().toFixed(6)),
+            northEastLongitude: parseFloat(ne.lng().toFixed(6)),
+            southWestLatitude: parseFloat(sw.lat().toFixed(6)),
+            southWestLongitude: parseFloat(sw.lng().toFixed(6)),
+            zoomLevel: event.zoom,
+        };
+
+        this.getMapData();
+    }
+
+    public onResetSelectedMarkerItem(isBackButton?: boolean): void {
+        const selectedMarkerData = isBackButton
+            ? {
+                  ...this.mapData.selectedMarkerData,
+                  infoWindowContent: {
+                      ...this.mapData.selectedMarkerData.infoWindowContent,
+                      selectedClusterItemData: null,
+                  },
+              }
+            : null;
+
+        this.mapData = {
+            ...this.mapData,
+            selectedMarkerData,
+        };
+
+        this.isSelectedFromMapList = false;
+
+        this.mapsService.selectedMarker(null);
+
+        this.getShipperClusters();
+
+        this.getShipperMapList();
+
+        this.ref.detectChanges();
+    }
+
+    public getShipperClusters(
+        isClusterPagination?: boolean,
+        selectedMarkerId?: number
+    ): void {
+        if (!this.mapClustersObject) return;
+
+        this.shipperService
+            .getShipperClusters(
+                this.mapClustersObject.northEastLatitude,
+                this.mapClustersObject.northEastLongitude,
+                this.mapClustersObject.southWestLatitude,
+                this.mapClustersObject.southWestLongitude,
+                this.mapClustersObject.zoomLevel,
+                this.isAddedNewShipper, // addedNew flag
+                null, // shipperLong
+                null, // shipperLat
+                null, // shipperDistance
+                this.mapStateFilter, // shipperStates
+                null, // categoryIds?: Array<number>,
+                null, // _long?: number,
+                null, // lat?: number,
+                null, // distance?: number,
+                null, // costFrom?: number,
+                null, // costTo?: number,
+                null, // lastFrom?: number,
+                null, // lastTo?: number,
+                null, // ppgFrom?: number,
+                null, // ppgTo?: number,
+                this.mapsService.selectedMarkerId ?? null, // selectedId
+                this.filter === TableStringEnum.CLOSED_FILTER ? 0 : 1, // active
+                this.mapClustersPagination.pageIndex, // pageIndex
+                this.mapClustersPagination.pageSize, // pageSize
+                null, // companyId
+                this.mapListSortDirection ?? null, // sortBy
+                null, // search
+                null, // search1
+                null // search2
+            )
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((clustersResponse) => {
+                if (isClusterPagination) {
+                    let selectedMarkerData: IMapMarkers | null = {
+                        ...this.mapData.selectedMarkerData,
+                    };
+
+                    const findClusterData = clustersResponse.find(
+                        (data) =>
+                            this.mapData.selectedMarkerData?.position?.lat ===
+                                data.latitude &&
+                            this.mapData.selectedMarkerData?.position.lng ===
+                                data.longitude
+                    );
+
+                    if (findClusterData) {
+                        selectedMarkerData = {
+                            ...selectedMarkerData,
+                            infoWindowContent: {
+                                ...selectedMarkerData.infoWindowContent,
+                                clusterData: [
+                                    ...selectedMarkerData.infoWindowContent
+                                        .clusterData,
+                                    ...findClusterData.pagination.data,
+                                ],
+                            },
+                        };
+                    }
+
+                    this.mapData = {
+                        ...this.mapData,
+                        selectedMarkerData,
+                    };
+                } else {
+                    const clusterMarkers: IMapMarkers[] = [];
+                    const markers: IMapMarkers[] = [];
+
+                    clustersResponse?.forEach((data, index) => {
+                        const previousClusterData =
+                            this.mapData.clusterMarkers.find(
+                                (item) =>
+                                    item.position.lat === data.latitude &&
+                                    item.position.lng === data.longitude
+                            );
+
+                        let clusterInfoWindowContent = data.pagination?.data
+                            ? {
+                                  clusterData: [...data.pagination.data],
+                                  selectedClusterItemData: null,
+                              }
+                            : null;
+
+                        if (
+                            previousClusterData?.infoWindowContent
+                                ?.selectedClusterItemData
+                        ) {
+                            clusterInfoWindowContent = {
+                                ...clusterInfoWindowContent,
+                                selectedClusterItemData:
+                                    previousClusterData?.infoWindowContent
+                                        ?.selectedClusterItemData,
+                            };
+                        }
+
+                        const markerData = {
+                            position: {
+                                lat: data.latitude,
+                                lng: data.longitude,
+                            },
+                            icon: {
+                                url: ShipperMapMarkersHelper.getMapMarker(
+                                    data.favourite,
+                                    data.isClosed,
+                                    data?.count,
+                                    data?.count > 1
+                                ),
+                                labelOrigin: new google.maps.Point(80, 15),
+                            },
+                            infoWindowContent: clusterInfoWindowContent,
+                            label: data.name
+                                ? {
+                                      text: data.name.toUpperCase(),
+                                      fontSize: '11px',
+                                      color: '#424242',
+                                      fontWeight: '500',
+                                  }
+                                : null,
+                            labelOrigin: { x: 90, y: 15 },
+                            options: {
+                                zIndex: index + 1,
+                                animation: google.maps.Animation.DROP,
+                            },
+                            data,
+                        };
+
+                        if (data.count > 1) clusterMarkers.push(markerData);
+                        else markers.push(markerData);
+                    });
+
+                    this.mapData = {
+                        ...this.mapData,
+                        clusterMarkers,
+                        markers,
+                    };
+                }
+
+                if (this.isAddedNewShipper) this.isAddedNewShipper = false;
+
+                if (selectedMarkerId) this.getShipperById(selectedMarkerId);
+
+                this.ref.detectChanges();
+            });
+    }
+
+    public getShipperMapList(): void {
+        if (!this.mapClustersObject) return;
+
+        this.shipperService
+            .getShipperMapList(
+                this.mapClustersObject.northEastLatitude,
+                this.mapClustersObject.northEastLongitude,
+                this.mapClustersObject.southWestLatitude,
+                this.mapClustersObject.southWestLongitude,
+                null, // shipperLong
+                null, // shipperLat
+                null, // shipperDistance
+                this.mapStateFilter, // shipperStates
+                !this.isSelectedFromMapList
+                    ? this.mapsService.selectedMarkerId
+                    : null, // selectedId
+                this.mapListPagination.pageIndex,
+                this.mapListPagination.pageSize,
+                null, // companyId
+                this.mapListSortDirection ?? null, // sort
+                this.mapListSearchValue, // search
+                null, // search1
+                null // search2
+            )
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((mapListResponse) => {
+                const mappedListData = mapListResponse?.pagination?.data?.map(
+                    (item) => {
+                        const mapItemData = this.mapShipperData(item);
+
+                        return mapItemData;
+                    }
                 );
 
-                if (itemIndex == -1) {
-                    this.mapListData.splice(i, 1);
-                    listChanged = true;
-                    i--;
+                this.mapListCount = mapListResponse.pagination.count;
+
+                this.mapListData =
+                    this.mapListPagination.pageIndex > 1
+                        ? [...this.mapListData, ...mappedListData]
+                        : mappedListData;
+
+                this.ref.detectChanges();
+            });
+    }
+
+    public getShipperById(markerId: number): void {
+        this.shipperService
+            .getShipperById(markerId)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe({
+                next: (res) => {
+                    const shipperData = this.mapShipperData(res);
+
+                    let selectedMarkerData: IMapSelectedMarkerData | null =
+                        null;
+
+                    this.mapData.clusterMarkers.forEach((clusterMarker) => {
+                        const clusterItemIndex =
+                            clusterMarker.data.pagination?.data?.findIndex(
+                                (clusterItem) => clusterItem.id === markerId
+                            );
+
+                        if (clusterItemIndex > -1) {
+                            selectedMarkerData = {
+                                ...clusterMarker,
+                                infoWindowContent: {
+                                    ...clusterMarker.infoWindowContent,
+                                    selectedClusterItemData: {
+                                        ...ShipperMapDropdownHelper.getShipperMapDropdownConfig(
+                                            shipperData,
+                                            true
+                                        ),
+                                        data: shipperData,
+                                    },
+                                },
+                            };
+                        }
+                    });
+
+                    const markerData = this.mapData.markers.find(
+                        (marker) => marker.data?.id === markerId
+                    );
+
+                    if (markerData)
+                        selectedMarkerData = {
+                            ...markerData,
+                            infoWindowContent:
+                                ShipperMapDropdownHelper.getShipperMapDropdownConfig(
+                                    shipperData
+                                ),
+                            data: shipperData,
+                        };
+
+                    this.mapsService.selectedMarker(
+                        selectedMarkerData ? shipperData.id : null
+                    );
+
+                    this.mapData = { ...this.mapData, selectedMarkerData };
+
+                    this.ref.detectChanges();
+                },
+                error: () => {},
+            });
+    }
+
+    public getMapData(
+        isClusterPagination?: boolean,
+        selectedMarkerId?: number
+    ): void {
+        if (this.activeViewMode !== TableStringEnum.MAP) return;
+
+        this.mapListPagination = {
+            ...this.mapListPagination,
+            pageIndex: 1,
+        };
+
+        this.mapClustersPagination = {
+            ...this.mapClustersPagination,
+            pageIndex: 1,
+        };
+
+        this.getShipperClusters(isClusterPagination, selectedMarkerId);
+
+        this.getShipperMapList();
+    }
+
+    public addMapListScrollEvent(): void {
+        this.mapsService.mapListScrollChange
+            .pipe(takeUntil(this.destroy$))
+            .subscribe(() => {
+                const isNewPage =
+                    this.mapListCount / this.mapListPagination.pageIndex > 25;
+
+                if (isNewPage) {
+                    this.mapListPagination = {
+                        ...this.mapListPagination,
+                        pageIndex: this.mapListPagination.pageIndex + 1,
+                    };
+
+                    this.getShipperMapList();
                 }
-            }
-        }
+            });
+    }
 
-        for (var b = 0; b < newMapList.length; b++) {
-            let item = newMapList[b];
+    public addSelectedMarkerListener(): void {
+        this.mapsService.selectedMapListCardChange
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((id) => {
+                if (id) this.onGetInfoWindowData(id, true);
+                else this.onResetSelectedMarkerItem();
+            });
+    }
 
-            let itemIndex = this.mapListData.findIndex(
-                (item2) => item2.id === item.id
-            );
+    public updateMapItem(item?): void {
+        if (this.activeViewMode === TableStringEnum.MAP) {
+            this.isAddedNewShipper = true;
 
-            if (itemIndex == -1) {
-                if (addData) {
-                    this.mapListData.push(item);
-                } else {
-                    this.mapListData.splice(b, 0, item);
-                    listChanged = true;
-                    b--;
-                }
-            }
-        }
+            this.getMapData();
 
-        if (listChanged || mapListResponse.changedSort) {
-            if (mapListResponse.changedSort)
-                this.mapListData = mapListResponse.pagination.data;
-            //this.tableData[1].length = mapListResponse.pagination.count;
-            this.ref.detectChanges();
+            if (item) this.mapsService.markerUpdate(item);
         }
     }
 

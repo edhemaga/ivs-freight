@@ -4,4 +4,5 @@ export class FuelTableConstants {
     static AVATAR_SIZE_PX: number = 18;
     static AVATAR_FONT_SIZE_PX: number = 7;
     static AVATAR_IS_HOVER_EFFECT: boolean = true;
+    static NO_EXPENSE: string = '$0.00';
 }

@@ -1295,7 +1295,7 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
             },
             total: miles?.totalMiles,
             empty: miles?.emptyMiles,
-            loaded: miles?.loaded,
+            loaded: miles?.loadedMiles,
             tableDoorType: loadRequirements?.doorType?.name,
             tableSuspension: loadRequirements?.suspension?.name,
             year: loadRequirements?.year,

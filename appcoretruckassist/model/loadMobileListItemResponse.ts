@@ -24,6 +24,6 @@ export interface LoadMobileListItemResponse {
     pickup?: LoadStopInfo;
     delivery?: LoadStopInfo;
     isInActivePayroll?: boolean;
-    paidDate?: string | null;
+    closingPayrollDate?: string | null;
 }
 
