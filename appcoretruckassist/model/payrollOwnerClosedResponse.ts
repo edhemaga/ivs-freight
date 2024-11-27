@@ -42,8 +42,8 @@ export interface PayrollOwnerClosedResponse {
     includedLoads?: Array<PayrollLoadMinimalResponse> | null;
     totalFuels?: number | null;
     fuels?: Array<PayrollFuelMinimalResponse> | null;
-    totalTransactions?: number | null;
-    transactions?: Array<PayrollPaymentsMinimalResponse> | null;
+    totalPayments?: number | null;
+    payments?: Array<PayrollPaymentsMinimalResponse> | null;
     mapLocations?: Array<PayrollMapLocation> | null;
     sums?: PayrollCommissionTotalSum;
 }

@@ -16,7 +16,7 @@
                         <div class="report-count-item-load-right d-f-aic">
                             <div class="report-tickets d-f-aic-jcc">
                                 COMMISSION
-                                <span>{{ payroll_report?.commission }}%</span>
+                                <span>{{ payroll_report?.commission }}</span>
                             </div>
                             <div
                                 class="edit d-f-aic-jcc"
@@ -29,7 +29,10 @@
                                 ></svg-icon>
                             </div>
                             <div class="edit d-f-aic-jcc burger_menu">
-                                <ca-burger-menu (onClick)="openMenu($event)"></ca-burger-menu>
+                                <ca-burger-menu
+                                    [optionsPopupContent]="optionsPopupContent"
+                                    (onClick)="openMenu($event)"
+                                ></ca-burger-menu>
                             </div>
                         </div>
                     </div>
@@ -51,7 +54,7 @@
             </div>
             <ng-container *ngIf="showMap">
                 <div class="map-holder">
-                    <app-ca-map [data]="data"></app-ca-map>
+                    <app-ca-map [data]="mapData$ | async"></app-ca-map>
                 </div>
             </ng-container>
         </div>
@@ -103,7 +106,10 @@
 <ng-template #customLocationTypeLoad let-data let-index="index">
     <div class="load-description d-flex align-items-center">
         <ng-container *ngIf="data.orderNumber">
-            <svg-icon [svgClass]="'d-flex'" name="load_order_num_{{ data.orderNumber }}"></svg-icon>
+            <svg-icon
+                [svgClass]="'d-flex'"
+                name="load_order_num_{{ data.orderNumber }}"
+            ></svg-icon>
         </ng-container>
         <div class="load-description-name">
             <div class="load-description-address">{{ data.address }}</div>
@@ -130,7 +136,10 @@
 <ng-template #cusstomLoadDescriptionTemplate let-data>
     <div class="load-description d-flex align-items-center normal">
         <ng-container *ngIf="data.length">
-            <svg-icon [svgClass]="'d-flex'" name="load_order_num_{{ data.length }}"></svg-icon>
+            <svg-icon
+                [svgClass]="'d-flex'"
+                name="load_order_num_{{ data.length }}"
+            ></svg-icon>
         </ng-container>
         <div class="load-description-name">
             <div class="load-description-address">{{ data[0].address }}</div>

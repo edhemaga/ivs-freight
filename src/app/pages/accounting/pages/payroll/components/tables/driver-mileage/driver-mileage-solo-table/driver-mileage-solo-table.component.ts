@@ -28,8 +28,7 @@ import { ColumnConfig } from 'ca-components';
     styleUrls: [
         '../../../../../payroll/payroll.component.scss',
         './driver-mileage-solo-table.component.scss',
-    ],
-    changeDetection: ChangeDetectionStrategy.OnPush,
+    ]
 })
 export class DriverMileageSoloTableComponent
     implements OnInit, AfterViewInit, OnDestroy
