@@ -7,7 +7,7 @@ import svgList from 'src/assets/svg/image-list.json';
     styleUrls: ['./catalog-svg-definitions.component.scss'],
 })
 export class CatalogSvgDefinitionsComponent implements OnInit {
-    imageList: any[] = svgList;
+    imageList: any[] = svgList.imageArray;
     constructor() {}
 
     ngOnInit(): void {}

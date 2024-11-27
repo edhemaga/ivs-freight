@@ -69,7 +69,6 @@ import {
 //Enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
 import { eFuelTransactionType } from '@pages/fuel/pages/fuel-table/enums';
-import { eProgressRangeUnit } from '@shared/components/ta-progress-range/enums';
 
 //Services
 import { FuelService } from '@shared/services/fuel.service';
@@ -737,7 +736,7 @@ export class FuelTableComponent implements OnInit, AfterViewInit, OnDestroy {
             startRange: lowestPricePerGallon ?? null,
             endRange: highestPricePerGallon ?? null,
             value: pricePerGallon ?? null,
-            unit: eProgressRangeUnit.Dollar,
+            unit: FuelTableConstants.DOLLAR,
             lastUsed: lastUsed
         };
         const tableLastVisit = lastUsed ? this.activityTimePipe.transform(lastUsed) : TableStringEnum.EMPTY_STRING_PLACEHOLDER
