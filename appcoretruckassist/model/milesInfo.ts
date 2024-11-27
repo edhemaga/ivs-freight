@@ -12,7 +12,7 @@
 
 
 export interface MilesInfo { 
-    loaded?: number;
+    loadedMiles?: number;
     totalMiles?: number | null;
     emptyMiles?: number | null;
 }

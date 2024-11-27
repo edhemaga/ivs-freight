@@ -335,13 +335,23 @@ export class TaMapListComponent
         this.mapsService.selectedMarkerChange
             .pipe(takeUntil(this.destroy$))
             .subscribe((markerId) => {
-                if (markerId)
+                if (markerId) {
+                    const cardIndex =
+                        this.listCards
+                            ?.toArray()
+                            ?.findIndex(
+                                (listCard) => listCard.item?.id === markerId
+                            ) ?? 0;
+
                     this.listCards
-                        ?.toArray()?.[0]
-                        ?.elementRef?.nativeElement?.scrollIntoView({
+                        ?.toArray()
+                        ?.[
+                            cardIndex
+                        ]?.elementRef?.nativeElement?.scrollIntoView({
                             behavior: MapListStringEnum.SMOOTH,
                             block: MapListStringEnum.CENTER,
                         });
+                }
             });
     }
 
