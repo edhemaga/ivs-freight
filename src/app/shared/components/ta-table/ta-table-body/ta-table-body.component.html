@@ -1857,12 +1857,9 @@
                                         }"
                                     >
                                         <ng-container *ngIf="row[column.field]">
-                                            <span
-                                                class="table-text"
-                                                [innerHtml]="
-                                                    '$' + row[column.field]
-                                                "
-                                            ></span>
+                                            <span class="table-text">{{
+                                                '$' + row[column.field]
+                                            }}</span>
                                         </ng-container>
                                     </div>
 
@@ -2932,11 +2929,19 @@
                                         >
                                             <app-ca-progress-range
                                                 [data]="{
-                                                    startRange: row[column.field]?.startRange,
-                                                    endRange: row[column.field]?.endRange,
-                                                    value: row[column.field]?.value,
-                                                    unit: row[column.field]?.unit,
-                                                    lastUsed: row[column.field]?.lastUsed
+                                                    startRange:
+                                                        row[column.field]
+                                                            ?.startRange,
+                                                    endRange:
+                                                        row[column.field]
+                                                            ?.endRange,
+                                                    value: row[column.field]
+                                                        ?.value,
+                                                    unit: row[column.field]
+                                                        ?.unit,
+                                                    lastUsed:
+                                                        row[column.field]
+                                                            ?.lastUsed
                                                 }"
                                             ></app-ca-progress-range>
                                         </div>
@@ -4458,12 +4463,9 @@
                                         }"
                                     >
                                         <ng-container *ngIf="row[column.field]">
-                                            <span
-                                                class="table-text"
-                                                [innerHtml]="
-                                                    '$' + row[column.field]
-                                                "
-                                            ></span>
+                                            <span class="table-text">{{
+                                                '$' + row[column.field]
+                                            }}</span>
                                         </ng-container>
                                     </div>
 
@@ -5570,11 +5572,19 @@
                                         >
                                             <app-ca-progress-range
                                                 [data]="{
-                                                    startRange: row[column.field]?.startRange,
-                                                    endRange: row[column.field]?.endRange,
-                                                    value: row[column.field]?.value,
-                                                    unit: row[column.field]?.unit,
-                                                    lastUsed: row[column.field]?.lastUsed
+                                                    startRange:
+                                                        row[column.field]
+                                                            ?.startRange,
+                                                    endRange:
+                                                        row[column.field]
+                                                            ?.endRange,
+                                                    value: row[column.field]
+                                                        ?.value,
+                                                    unit: row[column.field]
+                                                        ?.unit,
+                                                    lastUsed:
+                                                        row[column.field]
+                                                            ?.lastUsed
                                                 }"
                                             ></app-ca-progress-range>
                                         </div>
