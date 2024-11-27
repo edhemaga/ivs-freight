@@ -221,7 +221,7 @@ export function getFuelTransactionColumnDefinition() {
         {
             ngTemplate: 'text',
             title: 'Gal',
-            field: 'tableQTY',
+            field: 'tableGallon',
             name: 'Gal',
             sortName: 'qty',
             hidden: false,

@@ -122,14 +122,13 @@ export class FuelCardsModalData {
                 {
                     title: 'Item Detail • Gallon',
                     secondTitle: 'Gallon',
-                    key: 'fuelStopStore',
-                    secondKey: '',
+                    key: 'tableGallon',
+                    sufix: ' gal'
                 },
                 {
                     title: 'Item Detail • Price per Gal.',
                     secondTitle: 'Price per Gal.',
-                    key: 'fuelStopStore',
-                    secondKey: 'pricePerGallon',
+                    key: 'tablePPG',
                     prefix: '$',
                 },
                 {

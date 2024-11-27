@@ -597,6 +597,8 @@ export class FuelTableComponent implements OnInit, AfterViewInit, OnDestroy {
             fuelTransactionType,
             files,
             invoice,
+            gallon,
+            pricePerGallon,
         } = data || {};
         const { avatarFile, firstName, lastName, id } = driver || {};
         const { truckNumber } = truck || {};
@@ -684,8 +686,8 @@ export class FuelTableComponent implements OnInit, AfterViewInit, OnDestroy {
                       };
                   })
                 : null,
-            tableQTY: 1,
-            tablePPG: 1,
+            tableGallon: gallon ?? null,
+            tablePPG: pricePerGallon ?? null,
             tabelDescriptionDropTotal: tableDescriptionDropTotal,
             tableTotal: tableDescriptionDropTotal,
             tableAttachments: files,
