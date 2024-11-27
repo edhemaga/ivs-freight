@@ -55,9 +55,9 @@ import { TaPasswordAccountHiddenCharactersComponent } from '@shared/components/t
 import { LoadStatusStringComponent } from '@pages/load/components/load-status-string/load-status-string.component';
 import { TaStatusComponentComponent } from '@shared/components/ta-status-component/ta-status-component.component';
 import { TaOpenHoursDropdownComponent } from '@shared/components/ta-open-hours-dropdown/ta-open-hours-dropdown.component';
-import { TaProgressRangeComponent } from '@shared/components/ta-progress-range/ta-progress-range.component';
 import {
     CaProfileImageComponent,
+    CaProgressRangeComponent,
     CaSearchMultipleStatesService,
 } from 'ca-components';
 
@@ -139,7 +139,7 @@ import { TableBodySvgRoutes } from '@shared/components/ta-table/ta-table-body/ut
         TaStatusComponentComponent,
         TaOpenHoursDropdownComponent,
         CaProfileImageComponent,
-        TaProgressRangeComponent,
+        CaProgressRangeComponent,
 
         // pipes
         TableHighlightSearchTextPipe,
