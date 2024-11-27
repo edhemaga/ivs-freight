@@ -49,6 +49,7 @@ export class RightSidePanelComponent implements OnDestroy {
     public usersFilterData: ActivityLogDepartmentResponse[] = [];
     public modulesFilterData: ActivityLogModuleFilterResponse[] = [];
     public actionsFilterData: ActivityLogActionFilterResponse[] = [];
+    public companyData: CompanyResponse;
     private destroy$ = new Subject<void>();
 
     @Output() isSidePanelPinned: EventEmitter<boolean> = new EventEmitter();
@@ -68,6 +69,9 @@ export class RightSidePanelComponent implements OnDestroy {
                     this.getCurrentUserHelper.currentUserId
                 );
                 this.getActivityLogs(companyUserIds);
+                break;
+            case SelectedModule.COMPANY_INFO:
+                this.setMainCompanyData();
                 break;
             default:
                 break;
@@ -192,6 +196,28 @@ export class RightSidePanelComponent implements OnDestroy {
                 isDivision: company.isDivision,
             })) ?? []
         );
+    }
+
+    private setMainCompanyData(): void {
+        this.companyService
+            .getCompany()
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((res: CompanyResponse) => {
+                this.companyData = res;
+            });
+    }
+
+    public selectedDivisionIdEvent(divisionId: number): void {
+        this.setDivisionCompanyData(divisionId);
+    }
+
+    private setDivisionCompanyData(divisionId: number): void {
+        this.companyService
+            .getDivisionById(divisionId)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((res: CompanyResponse) => {
+                this.companyData = res;
+            });
     }
 
     ngOnDestroy(): void {
