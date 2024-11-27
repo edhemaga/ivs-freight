@@ -10,7 +10,6 @@ import {
 import { CommonModule } from '@angular/common';
 import {
     FormArray,
-    FormGroup,
     FormsModule,
     ReactiveFormsModule,
     UntypedFormArray,
@@ -427,7 +426,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
             RepairShopModalStringEnum.EMAIL,
             this.destroy$
         );
- 
+
         this.isCompanyRelated = this.editData?.companyOwned;
     }
 
@@ -521,7 +520,9 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
         this.files = res.files;
         this.coverPhoto = res.cover;
 
-        this.repairShopForm.get(RepairShopModalStringEnum.SERVICE_HELPER).patchValue(JSON.stringify(this.services));
+        this.repairShopForm
+            .get(RepairShopModalStringEnum.SERVICE_HELPER)
+            .patchValue(JSON.stringify(this.services));
 
         this.updatedRepairShopContacts = res.contacts;
 
@@ -1124,9 +1125,8 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
                 next: () => {
                     if (addNewShop) {
                         this.setModalSpinner(null, true, true, true);
-                        
                     }
-                    
+
                     this.setModalSpinner(null, false, !addNewShop);
                 },
                 error: () => {
@@ -1175,9 +1175,10 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
             status,
             close,
         });
-        
+
         if (addNew) {
-            this.modalService.openModal(RepairShopModalComponent, { });}
+            this.modalService.openModal(RepairShopModalComponent, {});
+        }
 
         // Wait for modal to close to prevent click while closing it
         setTimeout(() => (this.isRequestInProgress = false), 400);

@@ -1,7 +1,7 @@
 <div class="repair-shop-details-item-container">
     <!-- repair-component {{ customClass }} -->
     <ng-container
-        *ngFor="let repairShopItem of detailsConfig; trackBy: trackByIdentity"
+        *ngFor="let repairShopItem of _detailsConfig; trackBy: trackByIdentity"
     >
         <ng-container [ngSwitch]="repairShopItem.template">
             <!-- General -->
@@ -9,7 +9,7 @@
             <ng-container *ngSwitchCase="'general'">
                 <!--  <div  class="repair-general-holder"> -->
                 <app-repair-shop-details-card
-                    [repairShop]="detailsConfig[0]?.data"
+                    [repairShop]="_detailsConfig[0]?.data"
                 >
                 </app-repair-shop-details-card>
                 <!--  </div> -->
@@ -19,7 +19,8 @@
 
             <ng-container *ngSwitchCase="'repair'">
                 <app-repair-shop-details-item-repair
-                    [repairList]="detailsConfig[1]?.data?.repairList"
+                    [repairList]="_detailsConfig[1]?.data?.repairList"
+                    [searchConfig]="searchConfig"
                 >
                 </app-repair-shop-details-item-repair>
             </ng-container>
@@ -29,55 +30,34 @@
             <ng-container *ngSwitchCase="'repaired-vehicle'">
                 <app-repair-shop-details-item-repaired-vehicle
                     [repairedVehicleList]="
-                        detailsConfig[1]?.data?.repairedVehicleList
+                        _detailsConfig[2]?.data?.repairedVehicleList
                     "
+                    [searchConfig]="searchConfig"
                 ></app-repair-shop-details-item-repaired-vehicle>
             </ng-container>
 
-            <!-- <div *ngSwitchCase="'review'">
-        <div class="likes-count-container">
-            <div class="likes-item">
-                <div class="ic-counter">
-                    <svg-icon
-                        class="like"
-                        src="assets/svg/common/ic_dislike.svg"
-                    ></svg-icon>
-                    <app-ta-counter
-                        [countColor]="'#919191'"
-                        [countHeight]="'24px'"
-                        [countWidth]="'24px'"
-                        [count]="repairShopLikes"
-                    >
-                    </app-ta-counter>
-                </div>
-                <div class="border-vertical"></div>
-                <div class="ic-counter">
-                    <app-ta-counter
-                        [countColor]="'#919191'"
-                        [countHeight]="'24px'"
-                        [countWidth]="'24px'"
-                        [count]="repairShopDislike"
-                    >
-                    </app-ta-counter>
-                    <svg-icon
-                        class="dislike"
-                        src="assets/svg/common/ic_dislike.svg"
-                    ></svg-icon>
-                </div>
-            </div>
-        </div>
-        <div class="review-container">
-            <div *ngIf="!reviewsRepair?.length" class="no-reviews-details">
-                No review
-            </div>
-            <app-ta-user-review
-                *ngIf="reviewsRepair?.length"
-                [reviewData]="reviewsRepair"
-                [isNewReview]="reviewsRepair[0].isNewReview"
-                (changeReviewsEvent)="changeReviewsEvent($event)"
-            ></app-ta-user-review>
-        </div>
-    </div> -->
+            <!-- Contact & Review -->
+
+            <ng-container *ngSwitchCase="'contact-review'">
+                <ng-container
+                    *ngIf="
+                        repairShopItem?.multipleDetailsSelectDropdown[0]
+                            .isActive;
+                        else review
+                    "
+                >
+                    <div class="contacts-container">
+                        <app-ta-contacts-card
+                            [departmentContacts]="departmentContacts"
+                            [viewData]="_detailsConfig[3]?.data"
+                        ></app-ta-contacts-card>
+                    </div>
+                </ng-container>
+
+                <ng-template #review>
+                    <app-repair-shop-details-item-review></app-repair-shop-details-item-review>
+                </ng-template>
+            </ng-container>
         </ng-container>
     </ng-container>
 </div>

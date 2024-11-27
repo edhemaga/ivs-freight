@@ -12,6 +12,7 @@ import { ConfirmationModalComponent } from '@shared/components/ta-shared-modals/
 import { TaNoteComponent } from '@shared/components/ta-note/ta-note.component';
 import { TaDocumentsDrawerComponent } from '@shared/components/ta-documents-drawer/ta-documents-drawer.component';
 import { TaDropdownOptionsComponent } from '@shared/components/ta-dropdown-options/ta-dropdown-options.component';
+import { CaSearchMultipleStatesComponent } from 'ca-components';
 
 // services
 import { ModalService } from '@shared/services/modal.service';
@@ -52,6 +53,7 @@ import { RepairResponse } from 'appcoretruckassist';
         TaDropdownOptionsComponent,
         TaNoteComponent,
         TaDocumentsDrawerComponent,
+        CaSearchMultipleStatesComponent,
 
         // pipes
         FormatDatePipe,
@@ -65,6 +67,7 @@ export class RepairShopDetailsItemRepairComponent implements OnInit {
     @Input() set repairList(data: RepairResponse[]) {
         this.createRepairData(data);
     }
+    @Input() searchConfig: boolean[];
 
     private destroy$ = new Subject<void>();
 

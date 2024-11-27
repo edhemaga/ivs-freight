@@ -1,4 +1,18 @@
 <div class="d-flex flex-column justify-content-center shop-details-item-repair">
+    <!-- Search -->
+
+    <ng-container *ngIf="searchConfig[0]">
+        <div class="shop-details-item-repair-search">
+            <app-ca-search-multiple-states
+                [searchType]="'Repair'"
+                [toolbarSearch]="true"
+                [selectedTabData]="{
+                    gridNameTitle: 'Repair'
+                }"
+            ></app-ca-search-multiple-states>
+        </div>
+    </ng-container>
+
     <!-- Header -->
 
     <div class="align-items-center shop-details-item-repair-header">

@@ -51,9 +51,9 @@ import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
     ],
 })
 export class TaContactsCardComponent {
-    @Input() public type: string;
+    @Input() public type?: string;
     @Input() public departmentContacts: DepartmentContacts[];
-    @Input() public viewData: BrokerResponse | ShipperResponse;
+    @Input() public viewData?: BrokerResponse | ShipperResponse;
 
     public contactsImageRoutes = ContactsCardSvgRoutes;
 

@@ -4,6 +4,17 @@
     display: grid;
     grid-template-columns: 440px 734px repeat(2, 312px);
     grid-gap: 10px;
+
+    .contacts-container {
+        background: $white;
+        border-radius: 3px;
+        padding: 6px;
+        height: fit-content;
+    }
+}
+
+app-ta-contacts-card .ta-card-header {
+    padding: 0 6px;
 }
 
 /* Responsive */

@@ -17,6 +17,13 @@
             [statusInactive]="item?.hide"
             [totalCost]="item?.total"
             [mainData]="item"
+            [hasMultipleDetailsSelectDropdown]="
+                item?.hasMultipleDetailsSelectDropdown
+            "
+            [multipleDetailsSelectDropdown]="
+                item?.multipleDetailsSelectDropdown
+            "
+            [isSearchBtn]="true"
             [timeFilter]="true"
             [truckTypeFilter]="true"
             [trailerTypeFilter]="true"
@@ -25,6 +32,10 @@
             [repairOrderFilter]="true"
             (dropActions)="onRepairShopActions($event)"
             (openModalAction)="onModalAction($event)"
+            (searchBtnEmitter)="onSearchBtnClick($event, item.name)"
+            (multipleDetailsSelectDropdownEmitter)="
+                onDetailsSelectClick($event)
+            "
             (filterActions)="onFilter($event)"
             (specialFilterActions)="onFilter($event)"
         >
@@ -33,7 +44,10 @@
 
     <div>
         <!-- repair-details-cmp -->
-        <app-repair-shop-details-item [detailsConfig]="repairShopDetailsConfig">
+        <app-repair-shop-details-item
+            [detailsConfig]="repairShopDetailsConfig"
+            [searchConfig]="searchConfig"
+        >
         </app-repair-shop-details-item>
 
         <!-- Keep, need for later -->

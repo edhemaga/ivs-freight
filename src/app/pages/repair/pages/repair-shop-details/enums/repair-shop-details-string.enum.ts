@@ -17,6 +17,7 @@ export enum RepairShopDetailsStringEnum {
     OPEN_2 = 'Open',
     CLOSE = 'close',
     EDIT = 'Edit',
+    EDIT_2 = 'edit',
 
     NEXT = 'next',
     PREVIOUS = 'previous',
@@ -40,4 +41,7 @@ export enum RepairShopDetailsStringEnum {
     NOTE = 'Note',
 
     REPAIR = 'Repair',
+    VEHICLE = 'Vehicle',
+    REVIEW = 'Review',
+    CONTACT = 'Contact',
 }

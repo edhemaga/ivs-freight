@@ -4,9 +4,9 @@ import { LoadDetailsConstants } from '@pages/load/pages/load-details/utils/const
 import { DetailsDropdownOptions } from '@shared/models/details-dropdown-options.model';
 import { DetailsConfig } from '@shared/models/details-config.model';
 import { LoadResponse } from 'appcoretruckassist';
-import { MultipleSelectDetailsDropdownItem } from '@pages/load/pages/load-details/components/load-details-item/models/multiple-select-details-dropdown-item.model';
+import { MultipleSelectDetailsDropdownItem } from '@shared/models/multiple-select-details-dropdown-item.model';
 
-// Enums
+// enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
 
 export class LoadDetailsHelper {

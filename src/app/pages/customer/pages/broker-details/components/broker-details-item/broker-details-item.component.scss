@@ -59,7 +59,7 @@ app-broker-details-single {
 
             .miles-broker-name {
                 text-align: end;
-                
+
                 &::-moz-selection {
                     color: $bw6-2;
                     background: rgb(145, 145, 145, 0.2);
@@ -339,7 +339,7 @@ app-broker-details-single {
             }
         }
     }
-    
+
     .divider {
         height: 1px;
         background: $bw-9;
@@ -425,5 +425,5 @@ app-broker-details-single {
 }
 
 app-ta-contacts-card .header-content {
-    padding-left: 8px;
+    padding-left: 9px;
 }

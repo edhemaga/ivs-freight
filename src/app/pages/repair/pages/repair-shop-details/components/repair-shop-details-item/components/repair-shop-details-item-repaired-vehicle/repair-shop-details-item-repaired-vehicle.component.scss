@@ -5,6 +5,12 @@
     border-radius: 3px;
     background: $white;
 
+    /* Search */
+
+    .repaired-vehicle-list-search {
+        margin-bottom: 4px;
+    }
+
     /* Header */
 
     .repaired-vehicle-list-header {
@@ -56,5 +62,13 @@
                 }
             }
         }
+    }
+
+    /* Footer */
+
+    .repaired-vehicle-list-footer {
+        padding: 6px 6px 0 6px;
+        margin-top: 4px;
+        border-top: 1px solid $bw-9;
     }
 }

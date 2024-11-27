@@ -11,6 +11,7 @@ import { RepairShopDetailsSvgRoutes } from '@pages/repair/pages/repair-shop-deta
 
 // components
 import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
+import { CaSearchMultipleStatesComponent } from 'ca-components';
 
 // constants
 import { RepairShopDetailsItemConstants } from '@pages/repair/pages/repair-shop-details/components/repair-shop-details-item/utils/constants';
@@ -34,6 +35,7 @@ import { RepairedVehicleListResponse } from 'appcoretruckassist';
 
         // components
         TaAppTooltipV2Component,
+        CaSearchMultipleStatesComponent,
 
         // pipes
         ThousandSeparatorPipe,
@@ -43,6 +45,7 @@ export class RepairShopDetailsItemRepairedVehicleComponent implements OnInit {
     @Input() set repairedVehicleList(data: RepairedVehicleListResponse[]) {
         this.createRepairedVehicleListData(data);
     }
+    @Input() searchConfig: boolean[];
 
     public _repairedVehicleList: RepairedVehicleListResponse[] = [];
 
@@ -62,8 +65,6 @@ export class RepairShopDetailsItemRepairedVehicleComponent implements OnInit {
         data: RepairedVehicleListResponse[]
     ): void {
         this._repairedVehicleList = data;
-
-        console.log('this._repairedVehicleList', this._repairedVehicleList);
     }
 
     private getConstantData(): void {

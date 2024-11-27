@@ -1,6 +1,20 @@
 <div
     class="d-flex flex-column justify-content-center repaired-vehicle-list-container"
 >
+    <!-- Search -->
+
+    <ng-container *ngIf="searchConfig[1]">
+        <div class="repaired-vehicle-list-search">
+            <app-ca-search-multiple-states
+                [searchType]="'Vehicle'"
+                [toolbarSearch]="false"
+                [selectedTabData]="{
+                    gridNameTitle: 'Vehicle'
+                }"
+            ></app-ca-search-multiple-states>
+        </div>
+    </ng-container>
+
     <!-- Header -->
 
     <div class="align-items-center repaired-vehicle-list-header">
@@ -110,5 +124,16 @@
                 </div>
             </div>
         </ng-container>
+    </div>
+
+    <!-- Footer -->
+
+    <div
+        class="d-flex align-items-center justify-content-between repaired-vehicle-list-footer"
+    >
+        <p class="m-0 ta-font-semi-bold text-size-11 text-color-bw6-2">
+            {{ _repairedVehicleList.length }} OF
+            {{ _repairedVehicleList.length }}
+        </p>
     </div>
 </div>
