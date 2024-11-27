@@ -177,8 +177,7 @@ export class FuelCardsModalData {
         },
         {
             title: 'Last Price',
-            key: 'commission',
-            sufix: '%',
+            key: 'tableLast',
         },
         {
             title: 'Last Visit',
