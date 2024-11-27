@@ -39,7 +39,7 @@ import {
     SubintervalType,
     TimeInterval,
 } from 'appcoretruckassist';
-import { IChartConfiguration } from 'ca-components/lib/components/ca-chart/models';
+import { IChartConfiguaration } from 'ca-components/lib/components/ca-chart/models';
 
 @Component({
     selector: 'app-dashboard-performance',
@@ -76,7 +76,7 @@ export class DashboardPerformanceComponent implements OnInit, OnDestroy {
     public performanceDataColors: PerformanceColorsPallete[] = [];
 
     // charts
-    public performanceChartConfig: IChartConfiguration =
+    public performanceChartConfig: IChartConfiguaration =
         DashboardPerformanceChartsConfiguration.PERFORMANCE_CHART_CONFIG;
 
     private axisNumber: number = -1;

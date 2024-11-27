@@ -28,7 +28,7 @@ import {
 } from 'appcoretruckassist';
 import { BrokerDropdown } from '@pages/customer/pages/broker-details/models/';
 import { TabOptions } from '@shared/components/ta-tab-switch/models/tab-options.model';
-import { IChartConfiguration } from 'ca-components/lib/components/ca-chart/models';
+import { IChartConfiguaration } from 'ca-components/lib/components/ca-chart/models';
 
 // Constants
 import {
@@ -93,11 +93,11 @@ export class BrokerDetailsCardComponent
 
     //Chart
 
-    public invoiceChartConfig: IChartConfiguration =
+    public invoiceChartConfig: IChartConfiguaration =
         BrokerChartsConfiguration.INVOICE_CHART_CONFIG;
-    public mileageChartConfig: IChartConfiguration =
+    public mileageChartConfig: IChartConfiguaration =
         BrokerChartsConfiguration.MILEAGE_CHART_CONFIG;
-    public paymentChartConfig: IChartConfiguration =
+    public paymentChartConfig: IChartConfiguaration =
         BrokerChartsConfiguration.PAYMENT_CHART_CONFIG;
 
     constructor(

@@ -40,7 +40,7 @@ import { TruckDetailsChartsConfiguration } from '@pages/truck/pages/truck-detail
 
 // models
 import { TruckResponse, TruckPerformanceResponse } from 'appcoretruckassist';
-import { IChartConfiguration } from 'ca-components/lib/components/ca-chart/models';
+import { IChartConfiguaration } from 'ca-components/lib/components/ca-chart/models';
 
 @Component({
     selector: 'app-truck-details-card',
@@ -93,11 +93,11 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
     public ownerCardOpened: boolean = true;
     public featureNumber: number = 0;
 
-    public fuelConsumptionChartConfig: IChartConfiguration =
+    public fuelConsumptionChartConfig: IChartConfiguaration =
         TruckDetailsChartsConfiguration.FUEL_CHART_CONFIG;
-    public revenueChartConfig: IChartConfiguration =
+    public revenueChartConfig: IChartConfiguaration =
         TruckDetailsChartsConfiguration.REVENUE_CHART_CONFIG;
-    public expensesChartConfig: IChartConfiguration =
+    public expensesChartConfig: IChartConfiguaration =
         TruckDetailsChartsConfiguration.EXPENSES_CHART_CONFIG;
 
     public performance: TruckPerformanceResponse;

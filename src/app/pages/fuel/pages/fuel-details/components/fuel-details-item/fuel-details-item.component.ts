@@ -2,7 +2,7 @@ import { Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
 import { UntypedFormControl } from '@angular/forms';
 
 // Components
-import { IChartConfiguration } from 'ca-components/lib/components/ca-chart/models';
+import { IChartConfiguaration } from 'ca-components/lib/components/ca-chart/models';
 
 // Const
 import { FuelDetailsChartsConfiguration } from '@pages/fuel/utils/constants';
@@ -23,7 +23,7 @@ export class FuelDetailsItemComponent implements OnInit {
     public selectedTab: number;
     public fuelDropdown: any;
     public storeDropdown: any;
-    public fuelChartConfig: IChartConfiguration =
+    public fuelChartConfig: IChartConfiguaration =
         FuelDetailsChartsConfiguration.FUEL_CHART_CONFIG;
     public fuelPriceColors: any[] = [
         '#4DB6A2',
