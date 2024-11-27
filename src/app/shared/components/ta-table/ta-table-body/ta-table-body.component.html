@@ -2903,13 +2903,15 @@
                                                     column?.minWidth ?? 'unset'
                                             }"
                                         >
-                                            <app-ta-progress-range
-                                                [startRange]="row[column.field]?.startRange"
-                                                [endRange]="row[column.field]?.endRange"
-                                                [value]="row[column.field]?.value"
-                                                [unit]="row[column.field]?.unit"
-                                                [lastUsed]="row[column.field]?.lastUsed"
-                                            ></app-ta-progress-range>
+                                            <app-ca-progress-range
+                                                [data]="{
+                                                    startRange: row[column.field]?.startRange,
+                                                    endRange: row[column.field]?.endRange,
+                                                    value: row[column.field]?.value,
+                                                    unit: row[column.field]?.unit,
+                                                    lastUsed: row[column.field]?.lastUsed
+                                                }"
+                                            ></app-ca-progress-range>
                                         </div>
                                     </ng-container>
                                 </td>
@@ -5512,13 +5514,15 @@
                                                     column?.minWidth ?? 'unset'
                                             }"
                                         >
-                                            <app-ta-progress-range
-                                                [startRange]="row[column.field]?.startRange"
-                                                [endRange]="row[column.field]?.endRange"
-                                                [value]="row[column.field]?.value"
-                                                [unit]="row[column.field]?.unit"
-                                                [lastUsed]="row[column.field]?.lastUsed"
-                                            ></app-ta-progress-range>
+                                            <app-ca-progress-range
+                                                [data]="{
+                                                    startRange: row[column.field]?.startRange,
+                                                    endRange: row[column.field]?.endRange,
+                                                    value: row[column.field]?.value,
+                                                    unit: row[column.field]?.unit,
+                                                    lastUsed: row[column.field]?.lastUsed
+                                                }"
+                                            ></app-ca-progress-range>
                                         </div>
                                     </ng-container>
                                 </td>
