@@ -16,7 +16,6 @@
             marginBottom: '10px'
         }"
         class="shipper-contact-container"
-        [customClass]="'detailsPadding'"
     >
         <ng-container
             *ngFor="
@@ -26,11 +25,13 @@
         >
             <div class="parking-template-data">
                 <div
-                    class="parking-template-item parking-template-email parking-name"
+                    class="d-flex align-items-center parking-template-item parking-template-email parking-name"
                 >
-                    <span class="parking-template-name">{{
-                        shipperContact?.fullName
-                    }}</span>
+                    <span
+                        class="ta-font-medium text-color-black-2 text-size-14"
+                        >{{ shipperContact?.fullName }}</span
+                    >
+
                     <div class="svg-wrapper">
                         <div
                             ngbTooltip
@@ -58,12 +59,14 @@
                         </div>
                     </div>
                 </div>
+
                 <ng-container *ngIf="shipperContact?.phone">
                     <div class="parking-template-item">
                         <svg-icon
                             src="{{ contactsImageRoutes.phone }}"
                         ></svg-icon>
-                        <span class="parking-template-text text-color-black-2 d-flex"
+                        <span
+                            class="parking-template-text text-color-black-2 d-flex"
                             ><app-ta-copy
                                 [copyValue]="
                                     shipperContact?.phoneExt
