@@ -13,6 +13,9 @@ import {
 } from "appcoretruckassist";
 
 export class ChartLegendConfiguration {
+    // In general, functions are used in order to pass corresponding values and not to map them in other place
+    // On each data update, the legend is updated as well
+    // TODO move to ca-components
     public static driverLegendConfiguration =
         (data: DriverPayrollResponse): ChartLegendProperty[] => [
             {
@@ -31,6 +34,7 @@ export class ChartLegendConfiguration {
         (data: BrokerMileageRateResponse): ChartLegendProperty[] => [
             {
                 name: 'Avg. Rate',
+                // For some values, BE does not return fully formatted data
                 value: Number(data.averageRate.toFixed(2)),
                 color: '#6692F1',
                 unit: '$',
@@ -149,6 +153,7 @@ export class ChartLegendConfiguration {
         {
             name: 'Avg. Pay Period',
             value: Number(data.averagePayPeriod.totalDays) ?? 0,
+            // Since 'background' property is set with color, linear gradient can be used as well
             color: 'linear-gradient(135deg, #F77D3B 50%, #6692F1 50%)',
             unit: 'days',
         },

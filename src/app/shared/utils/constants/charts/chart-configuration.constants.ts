@@ -23,19 +23,19 @@ export class ChartConfiguration {
         }
     ];
     public static paymentHistoryConfiguration = (data: BrokerPaymentHistoryResponse): ChartTypeProperty[] => [
-
+        {
+            value: ChartValueLabelEnum.PAY_TERM,
+            type: ChartTypesStringEnum.LINE,
+            color: '#DF3C3C'
+        },
         {
             value: ChartValueLabelEnum.AVERAGE_PAY_PERIOD_DAYS,
             type: ChartTypesStringEnum.LINE,
             color: '#3074D3',
             colorEdgeValue: data.payTerm,
             color2: '#DF3C3C',
-            fill: true
-        },
-        {
-            value: ChartValueLabelEnum.PAY_TERM,
-            type: ChartTypesStringEnum.LINE,
-            color: '#DF3C3C'
+            fill: true,
+            shiftValue: data.payTerm
         },
     ];
     public static driverConfiguration: ChartTypeProperty[] = [

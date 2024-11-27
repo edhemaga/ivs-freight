@@ -12,6 +12,10 @@ export class BrokerChartsConfiguration {
         width: 100,
         noDataImage: ChartImagesStringEnum.CHART_NO_DATA_YELLOW,
         chartOptions: {},
+        // On some graphs we are gonna need y Axes that are independent of each other
+        // By default, and if the parameter is not specified the configuration is going to treat is a single Y axis chat
+        // Otherwise, specify parameter
+        // See Broker Detail invoice chart
         isMultiYAxis: true
     };
 
@@ -37,6 +41,5 @@ export class BrokerChartsConfiguration {
         width: 100,
         noDataImage: ChartImagesStringEnum.CHART_NO_DATA_PAY,
         chartOptions: {},
-        isMultiYAxis: false,
     };
 }
