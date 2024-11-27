@@ -5,8 +5,10 @@
     [usersFilter]="usersFilterData"
     [modulesFilter]="modulesFilterData"
     [actionsFilter]="actionsFilterData"
+    [mainCompanyData]="companyData"
     (selectedNavModule)="selectedNavModuleEvent($event)"
     (activityLogFilterParams)="activityLogFilterParamsEvent($event)"
     (isSidePanelPinned)="sidePanelPinEvent($event)"
     (isNavOpen)="navOpenEvent($event)"
+    (selectedDivisionId)="selectedDivisionIdEvent($event)"
 ></app-ca-right-side-panel>
