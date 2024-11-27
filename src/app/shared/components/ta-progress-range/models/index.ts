@@ -1,1 +1,0 @@
-export * from './progress-range-last-price-range-item.model';
