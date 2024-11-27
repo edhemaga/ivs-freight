@@ -78,7 +78,7 @@ export class DriverOwnerReportComponent
     public creditType = PayrollCreditType.Truck;
     public payrollType = PayrollTypeEnum.OWNER_COMMISSION;
 
-    _selectedTab: PayrollTablesStatus;
+    public _selectedTab: PayrollTablesStatus;
     @Input() set selectedTab(tab: PayrollTablesStatus) {
         this.optionsPopupContent =
             tab === PayrollTablesStatus.OPEN

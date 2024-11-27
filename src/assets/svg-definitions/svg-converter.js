@@ -26,4 +26,3 @@ const imageArray = getImagesFromFolders(imageDirectory);
 
 const jsonFilePath = path.join(__dirname, '../svg/image-list.json');
 fs.writeFileSync(jsonFilePath, JSON.stringify({ imageArray }, null, 2), 'utf-8');
-console.log(imageArray);

@@ -78,7 +78,7 @@ export class DriverCommissionReportComponent
         return super.reportId; // Call the base class getter
     }
 
-    _selectedTab: PayrollTablesStatus;
+    public _selectedTab: PayrollTablesStatus;
     @Input() set selectedTab(tab: PayrollTablesStatus) {
         this.optionsPopupContent =
             tab === PayrollTablesStatus.OPEN
