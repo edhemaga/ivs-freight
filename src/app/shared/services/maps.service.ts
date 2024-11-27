@@ -161,11 +161,11 @@ export class MapsService implements OnDestroy {
             dropActions = [
                 {
                     title: 'Edit',
-                    name: 'edit-cutomer-or-shipper',
-                    svg: 'assets/svg/truckassist-table/new-list-dropdown/Edit.svg',
+                    name: 'edit',
+                    svg: 'assets/svg/truckassist-table/dropdown/content/edit.svg',
                     show: true,
                     iconName: 'edit',
-                    disabled: !data.status || data.isClosed,
+                    disabled: data.status == 0 || data.isClosed,
                 },
                 {
                     title: 'border',
@@ -179,59 +179,62 @@ export class MapsService implements OnDestroy {
                 },
                 {
                     title: 'Add Contact',
-                    name: 'add-contact',
-                    svg: 'assets/svg/common/ic_broker-user.svg',
+                    name: 'Contact',
+                    svg: 'assets/svg/truckassist-table/customer/contact-column-avatar.svg',
                     show: true,
                     iconName: 'add-contact',
-                    disabled: !data.status || data.isClosed,
+                    disabled: data.status == 0 || data.isClosed,
                 },
                 {
                     title: 'Write Review',
-                    name: 'write-review',
+                    name: 'Review',
                     svg: 'assets/svg/common/review-pen.svg',
                     show: true,
                     iconName: 'write-review',
-                    disabled: !data.status || data.isClosed,
+                    disabled: data.status == 0 || data.isClosed,
                 },
                 {
                     title: 'border',
                 },
-                // {
-                //     title: 'Share',
-                //     name: 'share',
-                //     svg: 'assets/svg/common/share-icon.svg',
-                //     show: true,
-                //     iconName: 'share',
-                // },
-                // {
-                //     title: 'Print',
-                //     name: 'print',
-                //     svg: 'assets/svg/common/ic_fax.svg',
-                //     show: true,
-                //     iconName: 'print',
-                // },
-                // {
-                //     title: 'border',
-                // },
+                {
+                    title: 'Share',
+                    name: 'share',
+                    svg: 'assets/svg/common/share-icon.svg',
+                    show: true,
+                    iconName: 'share',
+                },
+                {
+                    title: 'Print',
+                    name: 'print',
+                    svg: 'assets/svg/common/ic_fax.svg',
+                    show: true,
+                    iconName: 'print',
+                },
+                {
+                    title: 'border',
+                },
                 {
                     title:
-                        !data.status || data.isClosed
+                        data.status == 0 || data.isClosed
                             ? 'Open Business'
                             : 'Close Business',
-                    name: 'close-business',
+                    name:
+                        data.status == 0 || data.isClosed
+                            ? 'open-business'
+                            : 'close-business',
                     svg: 'assets/svg/common/close-business-icon.svg',
-                    redIcon: data.status && !data.isClosed,
-                    greenIcon: !data.status || data.isClosed,
+                    redIcon: data.status != 0 && !data.isClosed,
+                    greenIcon: data.status == 0 || data.isClosed,
                     show: true,
                     iconName:
-                        !data.status || data.isClosed
+                        data.status == 0 || data.isClosed
                             ? 'mark-as-done'
                             : 'close-business',
                 },
                 {
                     title: 'Delete',
-                    name: 'delete',
-                    svg: 'assets/svg/truckassist-table/new-list-dropdown/Delete.svg',
+                    name: 'delete-item',
+                    svg: 'assets/svg/common/ic_trash_updated.svg',
                     redIcon: true,
                     show: true,
                     iconName: 'delete',

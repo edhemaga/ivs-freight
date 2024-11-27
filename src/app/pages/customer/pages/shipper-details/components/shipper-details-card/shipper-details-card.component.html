@@ -137,26 +137,23 @@
                 }"
                 [customClass]="'detailsPadding'"
             >
-                <div class="charts-template perfomance">
+                <div
+                    class="charts-template perfomance"
+                >
                     <!-- <div [class.d-none]="stackedBarChart.hoveringStatus"> -->
-                    <app-ta-tab-switch
-                        [tabs]="shipperTabs"
-                        (switchClicked)="changeShipperTabs($event)"
-                        [type]="'type2-modal-popup'"
-                    >
-                    </app-ta-tab-switch>
+                        <app-ta-tab-switch
+                            [tabs]="shipperTabs"
+                            (switchClicked)="changeShipperTabs($event)"
+                            [type]="'type2-modal-popup'"
+                        >
+                        </app-ta-tab-switch>
                     <!-- </div> -->
-                    <app-ca-chart [chartConfig]="payrollChartConfig">
+                    <app-ca-chart
+                        [chartConfig]="payrollChartConfig"
+                    >
                     </app-ca-chart>
                 </div>
             </app-ta-custom-card>
-
-            <!-- Map & Cover Photo Card -->
-
-            <app-shipper-details-map-cover-card
-                [cardData]="shipper"
-            ></app-shipper-details-map-cover-card>
-
             <!--------Note--------->
             <div class="divider"></div>
             <div class="note-cards">
