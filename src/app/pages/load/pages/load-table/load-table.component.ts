@@ -30,6 +30,7 @@ import { ConfirmationActivationService } from '@shared/components/ta-shared-moda
 import { CaSearchMultipleStatesService } from 'ca-components';
 import { BrokerService } from '@pages/customer/services';
 import { CommentsService } from '@shared/services/comments.service';
+import { DispatchHubService } from '@shared/services/dispatch-hub.service';
 
 // Models
 import {
@@ -159,6 +160,7 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
         private tableService: TruckassistTableService,
         private modalService: ModalService,
         private loadServices: LoadService,
+        private dispatchHubService: DispatchHubService,
         private tableDropdownService: TableCardDropdownActionsService,
         private loadActiveQuery: LoadActiveQuery,
         private loadClosedQuery: LoadClosedQuery,
@@ -215,6 +217,10 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
         this.upadateStatus();
 
         this.onLoadChange();
+        
+        this.dispatchHubService.connect();
+
+        this.manageDispatchHubListeners();
     }
 
     ngAfterViewInit(): void {
@@ -1889,6 +1895,10 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     this.loadServices.updateLoadPartily();
                 });
             });
+    }
+
+    private manageDispatchHubListeners(): void {
+        this.dispatchHubService.onLoadChanged();
     }
 
     public saveValueNote(event: { value: string; id: number }): void {

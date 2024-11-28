@@ -39,6 +39,7 @@ import { DispatchTableDragNDropHelper } from '@pages/dispatch/pages/dispatch/com
 
 // services
 import { DispatcherService } from '@pages/dispatch/services/dispatcher.service';
+import { DispatchHubService } from '@shared/services/dispatch-hub.service';
 
 // constants
 import { DispatchTableConstants } from '@pages/dispatch/pages/dispatch/components/dispatch-table/utils/constants';
@@ -215,7 +216,8 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
 
         // services
         private dispatcherService: DispatcherService,
-        private parkingService: ParkingService
+        private parkingService: ParkingService,
+        private dispatchHubService: DispatchHubService
     ) {}
 
     set checkEmptySet(value: string) {
@@ -234,6 +236,8 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
         this.getTableBodyRowWidth();
 
         this.getColumnWidths();
+
+        this.dispatchHubService.connect();
     }
 
     public getLoadInformationForSignleDispatchResponse(item: DispatchResponse) {
