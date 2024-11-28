@@ -173,7 +173,9 @@ export class TaInputAddressDropdownComponent
                                 isLoading: false,
                             },
                         };
-                        this.addressList = [];
+                        if (this.inputConfig.isDispatchLocationDropdown)
+                            this.addressList = null;
+                        else this.addressList = [];
                     } else if (
                         term != this.currentAddressData?.address.address &&
                         this.inputConfig.name == 'RoutingAddress'

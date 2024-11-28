@@ -1078,9 +1078,17 @@
                                                     "
                                                     [tooltipColor]="'#ffff'"
                                                     position="bottom"
-                                                >   
-                                                    <ng-container *ngIf="row?.tableFuelStopIsClosed">
-                                                        <svg-icon [src]="tableBodySvgRoutes.BROKER_CLOSED_SVG_ROUTE"></svg-icon>
+                                                >
+                                                    <ng-container
+                                                        *ngIf="
+                                                            row?.tableFuelStopIsClosed
+                                                        "
+                                                    >
+                                                        <svg-icon
+                                                            [src]="
+                                                                tableBodySvgRoutes.BROKER_CLOSED_SVG_ROUTE
+                                                            "
+                                                        ></svg-icon>
                                                     </ng-container>
                                                     {{
                                                         row[column.field]
@@ -1110,8 +1118,16 @@
                                                         goToDetails(column, row)
                                                     "
                                                 >
-                                                    <ng-container *ngIf="row?.tableFuelStopIsClosed">
-                                                        <svg-icon [src]="tableBodySvgRoutes.BROKER_CLOSED_SVG_ROUTE"></svg-icon>
+                                                    <ng-container
+                                                        *ngIf="
+                                                            row?.tableFuelStopIsClosed
+                                                        "
+                                                    >
+                                                        <svg-icon
+                                                            [src]="
+                                                                tableBodySvgRoutes.BROKER_CLOSED_SVG_ROUTE
+                                                            "
+                                                        ></svg-icon>
                                                     </ng-container>
                                                     {{ row[column.field] }}
                                                 </div>
@@ -1575,8 +1591,10 @@
                                                 descriptionPopoverOpen = row.id
                                             "
                                         ></div>
-                                        <div 
-                                            [appDescriptionItemsTextCount]="row[column.field]" 
+                                        <div
+                                            [appDescriptionItemsTextCount]="
+                                                row[column.field]
+                                            "
                                             [containerWidth]="column.width"
                                         ></div>
                                     </div>
@@ -1838,10 +1856,11 @@
                                                 : 'unset'
                                         }"
                                     >
-                                        <span
-                                            class="table-text"
-                                            [innerHtml]="'$0'"
-                                        ></span>
+                                        <ng-container *ngIf="row[column.field]">
+                                            <span class="table-text">{{
+                                                '$' + row[column.field]
+                                            }}</span>
+                                        </ng-container>
                                     </div>
 
                                     <!-- URL COLUMN -->
@@ -2894,8 +2913,13 @@
 
                                     <!-- PROGRESS RANGE COLUMN -->
 
-                                    <ng-container *ngIf="column?.ngTemplate === taTableBodyConstants.NG_TEMPLATE_PROGRESS_RANGE">
-                                        <div 
+                                    <ng-container
+                                        *ngIf="
+                                            column?.ngTemplate ===
+                                            taTableBodyConstants.NG_TEMPLATE_PROGRESS_RANGE
+                                        "
+                                    >
+                                        <div
                                             class="td-content"
                                             [ngStyle]="{
                                                 width: column.width + 'px',
@@ -2903,13 +2927,23 @@
                                                     column?.minWidth ?? 'unset'
                                             }"
                                         >
-                                            <app-ta-progress-range
-                                                [startRange]="row[column.field]?.startRange"
-                                                [endRange]="row[column.field]?.endRange"
-                                                [value]="row[column.field]?.value"
-                                                [unit]="row[column.field]?.unit"
-                                                [lastUsed]="row[column.field]?.lastUsed"
-                                            ></app-ta-progress-range>
+                                            <app-ca-progress-range
+                                                [data]="{
+                                                    startRange:
+                                                        row[column.field]
+                                                            ?.startRange,
+                                                    endRange:
+                                                        row[column.field]
+                                                            ?.endRange,
+                                                    value: row[column.field]
+                                                        ?.value,
+                                                    unit: row[column.field]
+                                                        ?.unit,
+                                                    lastUsed:
+                                                        row[column.field]
+                                                            ?.lastUsed
+                                                }"
+                                            ></app-ca-progress-range>
                                         </div>
                                     </ng-container>
                                 </td>
@@ -3570,8 +3604,16 @@
                                                 [tooltipColor]="'#ffff'"
                                                 position="bottom"
                                             >
-                                                <ng-container *ngIf="row?.tableFuelStopIsClosed">
-                                                    <svg-icon [src]="tableBodySvgRoutes.BROKER_CLOSED_SVG_ROUTE"></svg-icon>
+                                                <ng-container
+                                                    *ngIf="
+                                                        row?.tableFuelStopIsClosed
+                                                    "
+                                                >
+                                                    <svg-icon
+                                                        [src]="
+                                                            tableBodySvgRoutes.BROKER_CLOSED_SVG_ROUTE
+                                                        "
+                                                    ></svg-icon>
                                                 </ng-container>
                                                 {{ row[column.field] }}
                                             </div>
@@ -3593,8 +3635,16 @@
                                                     goToDetails(column, row)
                                                 "
                                             >
-                                                <ng-container *ngIf="row?.tableFuelStopIsClosed">
-                                                    <svg-icon [src]="tableBodySvgRoutes.BROKER_CLOSED_SVG_ROUTE"></svg-icon>
+                                                <ng-container
+                                                    *ngIf="
+                                                        row?.tableFuelStopIsClosed
+                                                    "
+                                                >
+                                                    <svg-icon
+                                                        [src]="
+                                                            tableBodySvgRoutes.BROKER_CLOSED_SVG_ROUTE
+                                                        "
+                                                    ></svg-icon>
                                                 </ng-container>
                                                 {{ row[column.field] }}
                                             </div>
@@ -4083,9 +4133,13 @@
                                                             row.id
                                                     "
                                                 ></div>
-                                                <div 
-                                                    [appDescriptionItemsTextCount]="row[column.field]" 
-                                                    [containerWidth]="column.width"
+                                                <div
+                                                    [appDescriptionItemsTextCount]="
+                                                        row[column.field]
+                                                    "
+                                                    [containerWidth]="
+                                                        column.width
+                                                    "
                                                 ></div>
                                             </div>
                                         </ng-container>
@@ -4408,10 +4462,11 @@
                                                 : 'unset'
                                         }"
                                     >
-                                        <span
-                                            class="table-text"
-                                            [innerHtml]="'$0'"
-                                        ></span>
+                                        <ng-container *ngIf="row[column.field]">
+                                            <span class="table-text">{{
+                                                '$' + row[column.field]
+                                            }}</span>
+                                        </ng-container>
                                     </div>
 
                                     <!-- URL COLUMN -->
@@ -4766,8 +4821,6 @@
                                         </ng-container>
                                     </div>
 
-                                    
-                                
                                     <!-- SEMI BOLD TEXT COLUMN -->
 
                                     <div
@@ -5503,8 +5556,13 @@
 
                                     <!-- PROGRESS RANGE COLUMN -->
 
-                                    <ng-container *ngIf="column?.ngTemplate === taTableBodyConstants.NG_TEMPLATE_PROGRESS_RANGE">
-                                        <div 
+                                    <ng-container
+                                        *ngIf="
+                                            column?.ngTemplate ===
+                                            taTableBodyConstants.NG_TEMPLATE_PROGRESS_RANGE
+                                        "
+                                    >
+                                        <div
                                             class="td-content"
                                             [ngStyle]="{
                                                 width: column.width + 'px',
@@ -5512,13 +5570,23 @@
                                                     column?.minWidth ?? 'unset'
                                             }"
                                         >
-                                            <app-ta-progress-range
-                                                [startRange]="row[column.field]?.startRange"
-                                                [endRange]="row[column.field]?.endRange"
-                                                [value]="row[column.field]?.value"
-                                                [unit]="row[column.field]?.unit"
-                                                [lastUsed]="row[column.field]?.lastUsed"
-                                            ></app-ta-progress-range>
+                                            <app-ca-progress-range
+                                                [data]="{
+                                                    startRange:
+                                                        row[column.field]
+                                                            ?.startRange,
+                                                    endRange:
+                                                        row[column.field]
+                                                            ?.endRange,
+                                                    value: row[column.field]
+                                                        ?.value,
+                                                    unit: row[column.field]
+                                                        ?.unit,
+                                                    lastUsed:
+                                                        row[column.field]
+                                                            ?.lastUsed
+                                                }"
+                                            ></app-ca-progress-range>
                                         </div>
                                     </ng-container>
                                 </td>
