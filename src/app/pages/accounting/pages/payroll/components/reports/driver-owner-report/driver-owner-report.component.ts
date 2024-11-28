@@ -79,7 +79,6 @@ export class DriverOwnerReportComponent
 
     public _selectedTab: PayrollTablesStatus;
     @Input() set selectedTab(tab: PayrollTablesStatus) {
-        console.log('IS THIS TAB OPENED BAAAA', tab);
         this.optionsPopupContent =
             tab === PayrollTablesStatus.OPEN
                 ? TableToolbarConstants.openReportPayroll

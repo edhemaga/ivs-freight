@@ -511,7 +511,6 @@ export class PayrollComponent implements OnInit, AfterViewInit, OnDestroy {
         data?: T,
         expandedTable?: boolean
     ): void {
-        console.log('DSFFSDFSDFSD', payrollType);
         if (data && (this.reportTableDataId != data?.id || !expandedTable)) {
             this.reportTableDataId = data.id;
             this.payrollFacadeService.setPayrollReportTableExpanded(true);
