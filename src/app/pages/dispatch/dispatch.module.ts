@@ -62,7 +62,7 @@ import { DispatchHistoryModalGroupComponent } from '@pages/dispatch/pages/dispat
 import { DriverEndorsementsPipe } from '@pages/dispatch/pipes/driver-endorsements.pipe';
 import { DispatchAllowedTruckTrailerPipe } from '@pages/dispatch/pages/dispatch/components/dispatch-table/pipes/dispatch-allowed-truck-trailer.pipe';
 import { DispatchHiddenAddTrailerPipe } from '@pages/dispatch/pages/dispatch/components/dispatch-table/pipes/dispatch-hidden-add-trailer.pipe';
-import { DispatchColorFinderPipe } from '@pages/dispatch/pages/dispatch/components/dispatch-table/pipes/dispatch-color-finder.pipe';
+import { DispatchColorFinderPipe } from '@shared/pipes';
 import { DispatchTableFooterWidthsPipe } from '@pages/dispatch/pages/dispatch/components/dispatch-table/pipes/dispatch-table-footer-widths.pipe';
 import { DispatchTableColumnWidthsPipe } from '@pages/dispatch/pages/dispatch/components/dispatch-table/pipes/dispatch-table-column-widths.pipe';
 
@@ -97,7 +97,6 @@ import { ResizableDirective } from '@pages/dispatch/pages/dispatch/components/di
         TooltipWidthPipe,
         DispatchAllowedTruckTrailerPipe,
         DispatchHiddenAddTrailerPipe,
-        DispatchColorFinderPipe,
         DispatchTableFooterWidthsPipe,
         DispatchTableColumnWidthsPipe,
     ],
@@ -118,6 +117,7 @@ import { ResizableDirective } from '@pages/dispatch/pages/dispatch/components/di
         DispatchTableInfoTextPipe,
         DispatchTableHeaderShowPipe,
         DriverEndorsementsPipe,
+        DispatchColorFinderPipe,
 
         //directives
         ResizableDirective,

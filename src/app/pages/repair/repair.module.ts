@@ -4,9 +4,6 @@ import { CommonModule } from '@angular/common';
 // modules
 import { AngularSvgIconModule } from 'angular-svg-icon';
 import { RepairRoutingModule } from '@pages/repair/repair-routing.module';
-// import { AgmSnazzyInfoWindowModule } from '@agm/snazzy-info-window';
-// import { AgmCoreModule } from '@agm/core';
-// import { AgmDirectionModule } from 'agm-direction';
 import { SharedModule } from '@shared/shared.module';
 
 // components
@@ -14,7 +11,6 @@ import { RepairTableComponent } from '@pages/repair/pages/repair-table/repair-ta
 import { RepairCardComponent } from '@pages/repair/pages/repair-card/repair-card.component';
 import { TaMapListCardComponent } from '@shared/components/ta-map-list-card/ta-map-list-card.component';
 import { TaMapListComponent } from '@shared/components/ta-map-list/ta-map-list.component';
-//import { TaMapsComponent } from '@shared/components/ta-maps/ta-maps.component';
 import { TaNoteComponent } from '@shared/components/ta-note/ta-note.component';
 import { TaTableBodyComponent } from '@shared/components/ta-table/ta-table-body/ta-table-body.component';
 import { TaTableHeadComponent } from '@shared/components/ta-table/ta-table-head/ta-table-head.component';
@@ -42,20 +38,16 @@ import { repairCardModalReducer } from '@pages/repair/pages/repair-card-modal/st
 @NgModule({
     declarations: [RepairTableComponent, RepairCardComponent],
     imports: [
-        // Modules
+        // modules
         CommonModule,
         RepairRoutingModule,
         AngularSvgIconModule,
         SharedModule,
-        // AgmCoreModule,
-        // AgmSnazzyInfoWindowModule,
-        // AgmDirectionModule,
 
-        // Components
+        // components
         TaTableToolbarComponent,
         TaTableBodyComponent,
         TaTableHeadComponent,
-        // TaMapsComponent,
         TaMapListCardComponent,
         TaMapListComponent,
         TaNoteComponent,
@@ -73,7 +65,7 @@ import { repairCardModalReducer } from '@pages/repair/pages/repair-card-modal/st
         NgForLengthFilterPipe,
         CardValuePipe,
 
-        // Store
+        // store
         StoreModule.forFeature('repairCardData', repairCardModalReducer),
     ],
 })

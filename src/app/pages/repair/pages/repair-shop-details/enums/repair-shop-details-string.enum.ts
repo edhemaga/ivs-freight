@@ -5,6 +5,7 @@ export enum RepairShopDetailsStringEnum {
 
     STAR_ROUTE = 'ic_star.svg',
     CLOSED_ROUTE = 'ic_permanently_closed.svg',
+    COMPANY_OWNED_ROUTE = 'ic_company.svg',
 
     COMMON = 'common',
     MEDIUM = 'medium',
@@ -17,6 +18,7 @@ export enum RepairShopDetailsStringEnum {
     OPEN_2 = 'Open',
     CLOSE = 'close',
     EDIT = 'Edit',
+    EDIT_2 = 'edit',
 
     NEXT = 'next',
     PREVIOUS = 'previous',
@@ -33,9 +35,15 @@ export enum RepairShopDetailsStringEnum {
 
     REPAIR_SHOP = 'repair_shop',
     BUSINESS = 'business',
+    REPAIR_SHOP_CONTACT = 'repair shop contact',
 
     FINISH_ORDER = 'finish-order',
     FINISH_ORDER_2 = 'Finish Order',
     DOCUMENT = 'Document',
     NOTE = 'Note',
+
+    REPAIR = 'Repair',
+    VEHICLE = 'Vehicle',
+    REVIEW = 'Review',
+    CONTACT = 'Contact',
 }

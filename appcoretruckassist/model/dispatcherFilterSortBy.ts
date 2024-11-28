@@ -9,17 +9,12 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { RepairUnitType } from './repairUnitType';
 
 
-export interface RepairedVehicleResponse { 
-    unitId?: number | null;
-    unitType?: RepairUnitType;
-    unitNumber?: string | null;
-    totalRepairs?: number | null;
-    vehicleTypeId?: number | null;
-    vehicleName?: string | null;
-    logoName?: string | null;
-    totalCost?: number | null;
-}
+export type DispatcherFilterSortBy = 'FullName' | 'Count';
+
+export const DispatcherFilterSortBy = {
+    FullName: 'FullName' as DispatcherFilterSortBy,
+    Count: 'Count' as DispatcherFilterSortBy
+};
 

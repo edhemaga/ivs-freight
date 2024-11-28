@@ -18,6 +18,8 @@ import { DetailsPageService } from '@shared/services/details-page.service';
 import { TruckassistTableService } from '@shared/services/truckassist-table.service';
 import { DetailsDataService } from '@shared/services/details-data.service';
 import { ConfirmationActivationService } from '@shared/components/ta-shared-modals/confirmation-activation-modal/services/confirmation-activation.service';
+import { ModalService } from '@shared/services/modal.service';
+import { CaSearchMultipleStatesService } from 'ca-components';
 
 // store
 import { RepairDetailsQuery } from '@pages/repair/state/repair-details-state/repair-details.query';
@@ -28,6 +30,8 @@ import { RepairMinimalListQuery } from '@pages/repair/state/driver-details-minim
 // components
 import { TaDetailsHeaderComponent } from '@shared/components/ta-details-header/ta-details-header.component';
 import { RepairShopDetailsItemComponent } from '@pages/repair/pages/repair-shop-details/components/repair-shop-details-item/repair-shop-details-item.component';
+import { RepairOrderModalComponent } from '@pages/repair/pages/repair-modals/repair-order-modal/repair-order-modal.component';
+import { RepairShopModalComponent } from '@pages/repair/pages/repair-modals/repair-shop-modal/repair-shop-modal.component';
 
 // enums
 import { RepairShopDetailsStringEnum } from '@pages/repair/pages/repair-shop-details/enums';
@@ -35,7 +39,7 @@ import { TableStringEnum } from '@shared/enums/table-string.enum';
 import { RepairTableStringEnum } from '@pages/repair/pages/repair-table/enums';
 
 // helpers
-import { RepairShopDetailsHelper } from '@pages/repair/pages/repair-shop-details/utils/helpers/repair-shop-details.helper';
+import { RepairShopDetailsHelper } from '@pages/repair/pages/repair-shop-details/utils/helpers';
 import {
     RepairTableBackFilterDataHelper,
     RepairTableDateFormaterHelper,
@@ -55,7 +59,7 @@ import { RepairBackFilter } from '@pages/repair/pages/repair-table/models';
     changeDetection: ChangeDetectionStrategy.OnPush,
     standalone: true,
     imports: [
-        // Modules
+        // modules
         CommonModule,
 
         TaDetailsHeaderComponent,
@@ -76,6 +80,8 @@ export class RepairShopDetailsComponent implements OnInit, OnDestroy {
     public repairShopId: number;
     public newRepairShopId: number;
 
+    public searchConfig: boolean[] = [false, false, false, false];
+
     public backFilterQuery: RepairBackFilter =
         RepairTableBackFilterDataHelper.backRepairFilterData();
 
@@ -92,6 +98,8 @@ export class RepairShopDetailsComponent implements OnInit, OnDestroy {
         private dropDownService: DropDownService,
         private detailsDataService: DetailsDataService,
         private confirmationActivationService: ConfirmationActivationService,
+        private modalService: ModalService,
+        private caSearchMultipleStatesService: CaSearchMultipleStatesService,
 
         // ref
         private cdRef: ChangeDetectorRef,
@@ -114,6 +122,8 @@ export class RepairShopDetailsComponent implements OnInit, OnDestroy {
         this.confirmationSubscribe();
 
         this.confirmationActivationSubscribe();
+
+        this.searchSubscribe();
 
         this.handleRepairShopIdRouteChange();
     }
@@ -158,7 +168,6 @@ export class RepairShopDetailsComponent implements OnInit, OnDestroy {
             .subscribe((repair: RepairListResponse) => {});
     }
 
-    // table filters
     public setTableFilter(): void {
         this.tableService.currentSetTableFilter
             .pipe(takeUntil(this.destroy$))
@@ -232,6 +241,10 @@ export class RepairShopDetailsComponent implements OnInit, OnDestroy {
                             RepairShopDetailsStringEnum.REPAIR_SHOP
                         ) {
                             this.deleteRepairShop(res?.data?.id);
+                        } else if (
+                            res?.template ===
+                            RepairShopDetailsStringEnum.REPAIR_SHOP_CONTACT
+                        ) {
                         } else {
                             this.deleteRepair(
                                 res?.data?.id,
@@ -257,6 +270,40 @@ export class RepairShopDetailsComponent implements OnInit, OnDestroy {
                     ].includes(res?.type as RepairShopDetailsStringEnum)
                 )
                     this.handleOpenCloseRepairShop(res?.id);
+            });
+    }
+
+    private searchSubscribe(): void {
+        this.caSearchMultipleStatesService.currentSearchTableData
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((res) => {
+                if (res) {
+                    /*  this.backFilterQuery.pageIndex = 1;
+                    this.shopFilterQuery.pageIndex = 1;
+
+                    const searchEvent = MethodsGlobalHelper.tableSearch(
+                        res,
+                        this.selectedTab !== TableStringEnum.REPAIR_SHOP
+                            ? this.backFilterQuery
+                            : this.shopFilterQuery
+                    );
+
+                    if (searchEvent) {
+                        if (searchEvent.action === TableStringEnum.API) {
+                            if (
+                                this.selectedTab !== TableStringEnum.REPAIR_SHOP
+                            ) {
+                                this.repairBackFilter(this.backFilterQuery);
+                            } else {
+                                this.shopBackFilter(this.shopFilterQuery);
+                            }
+                        } else if (
+                            searchEvent.action === TableStringEnum.STORE
+                        ) {
+                            this.sendRepairData();
+                        }
+                    } */
+                }
             });
     }
 
@@ -358,6 +405,39 @@ export class RepairShopDetailsComponent implements OnInit, OnDestroy {
             });
     }
 
+    public onModalAction(action: string): void {
+        switch (action) {
+            case RepairShopDetailsStringEnum.REPAIR:
+                this.modalService.openModal(RepairOrderModalComponent, {
+                    size: TableStringEnum.SMALL,
+                });
+
+                break;
+            case RepairShopDetailsStringEnum.CONTACT:
+            case RepairShopDetailsStringEnum.REVIEW:
+                const mappedEvent = {
+                    id: this.repairShopObject.id,
+                    type: RepairShopDetailsStringEnum.EDIT_2,
+                    openedTab:
+                        action === RepairShopDetailsStringEnum.CONTACT
+                            ? TableStringEnum.CONTACT
+                            : TableStringEnum.REVIEW,
+                };
+
+                this.modalService.openModal(
+                    RepairShopModalComponent,
+                    { size: TableStringEnum.SMALL },
+                    {
+                        ...mappedEvent,
+                    }
+                );
+
+                break;
+            default:
+                break;
+        }
+    }
+
     public onRepairShopActions<T>(event: {
         id: number;
         data: T;
@@ -369,22 +449,40 @@ export class RepairShopDetailsComponent implements OnInit, OnDestroy {
         );
     }
 
+    public onSearchBtnClick(isSearch: boolean, type: string): void {
+        const index =
+            type === RepairShopDetailsStringEnum.REPAIR
+                ? 0
+                : type === RepairShopDetailsStringEnum.VEHICLE
+                ? 1
+                : type === RepairShopDetailsStringEnum.REVIEW
+                ? 2
+                : 3;
+
+        this.searchConfig[index] = isSearch;
+    }
+
     public deleteRepairShop(id: number): void {
         this.repairService
             .deleteRepairShop(id)
             .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: () => {
-                    this.router.navigate([
-                        RepairShopDetailsStringEnum.REPAIR_LIST_ROUTE,
-                    ]);
-                },
-                error: () => {
-                    this.router.navigate([
-                        RepairShopDetailsStringEnum.REPAIR_LIST_ROUTE,
-                    ]);
-                },
-            });
+            .subscribe(() =>
+                this.router.navigate([
+                    RepairShopDetailsStringEnum.REPAIR_LIST_ROUTE,
+                ])
+            );
+    }
+
+    public onDetailsSelectClick(id: number): void {
+        this.repairShopDetailsConfig =
+            RepairShopDetailsHelper.getRepairShopDetailsConfig(
+                this.repairShopObject,
+                id
+            );
+    }
+
+    public onFilter<T>(event: T): void {
+        this.tableService.sendCurrentSetTableFilter(event);
     }
 
     public deleteRepair(
@@ -408,10 +506,6 @@ export class RepairShopDetailsComponent implements OnInit, OnDestroy {
             .updateRepairShopStatus(id)
             .pipe(takeUntil(this.destroy$))
             .subscribe();
-    }
-
-    public onFilter(event: any) {
-        this.tableService.sendCurrentSetTableFilter(event);
     }
 
     ngOnDestroy(): void {

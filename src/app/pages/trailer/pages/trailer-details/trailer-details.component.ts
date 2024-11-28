@@ -30,7 +30,10 @@ import { TruckDetailsEnum } from '@pages/truck/pages/truck-details/enums/truck-d
 import { TrailerConfigData } from '@pages/trailer/pages/trailer-details/models/trailer-config-data.model';
 import { TrailerResponse } from 'appcoretruckassist';
 import { TrailerDetailsConfig } from '@pages/trailer/pages/trailer-details/models/trailer-details-config.model';
-import { TrailerUiData, TrailerCombinedData } from '@pages/trailer/pages/trailer-modal/models/';
+import {
+    TrailerUiData,
+    TrailerCombinedData,
+} from '@pages/trailer/pages/trailer-modal/models/';
 
 @Component({
     selector: 'app-trailer-details',
@@ -235,7 +238,7 @@ export class TrailerDetailsComponent implements OnInit, OnDestroy {
         })
             .pipe(
                 tap((data: TrailerCombinedData) => {
-                    let trailerData= data.trailerData as TrailerUiData;
+                    let trailerData = data.trailerData as TrailerUiData;
                     trailerData.registrations = data.trailerRegistrations;
                     trailerData.inspections = data.trailerInspection;
                     trailerData.titles = data.trailerTitles;
@@ -243,7 +246,7 @@ export class TrailerDetailsComponent implements OnInit, OnDestroy {
                     this.trailerConf(trailerData);
                 }),
                 catchError((error) => {
-                    return of(null); 
+                    return of(null);
                 })
             )
             .subscribe();
@@ -366,8 +369,8 @@ export class TrailerDetailsComponent implements OnInit, OnDestroy {
         this.tableService.currentActionAnimation
             .pipe(takeUntil(this.destroy$))
             .subscribe((res) => {
-                if (res?.animation) {
-                    this.getTrailerById(res.data.id);
+                if (res?.animation && res?.data?.id) {
+                    this.getTrailerById(res?.data?.id);
                 }
             });
     }

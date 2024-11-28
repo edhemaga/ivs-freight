@@ -46,7 +46,7 @@ import { DetailsHeaderSvgRoutes } from '@shared/components/ta-details-header/uti
 import { FilterIconRoutes } from '@shared/components/ta-filter/utils/constants/filter-icons-routes.constants';
 
 // models
-import { MultipleSelectDetailsDropdownItem } from '@pages/load/pages/load-details/components/load-details-item/models/multiple-select-details-dropdown-item.model';
+import { MultipleSelectDetailsDropdownItem } from '@shared/models/multiple-select-details-dropdown-item.model';
 import { LoadsSortDropdownModel } from '@pages/customer/models/loads-sort-dropdown.model';
 import { ArrayStatus } from '@shared/components/ta-filter/models/array-status.model';
 
@@ -123,7 +123,7 @@ export class TaDetailsHeaderComponent implements OnInit, OnChanges {
     @Input() isMapDisplayed: boolean;
     @Input() hasMultipleDetailsSelectDropdown: boolean;
     @Input() multipleDetailsSelectDropdown: MultipleSelectDetailsDropdownItem[];
-    @Input() isSearchBtn: boolean;
+    @Input() isSearchBtn: boolean = false;
     @Input() pickupFilter: boolean = false;
     @Input() deliveryFilter: boolean = false;
     @Input() pickupFilterData: {

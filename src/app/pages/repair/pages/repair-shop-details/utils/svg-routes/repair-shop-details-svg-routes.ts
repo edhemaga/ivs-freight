@@ -9,4 +9,7 @@ export class RepairShopDetailsSvgRoutes {
     static favoriteRoute: string = 'assets/svg/common/ic_star.svg';
     static companyOwnedRoute: string = 'assets/svg/common/ic_company.svg';
     static closedRoute: string = 'assets/svg/common/ic_permanently_closed.svg';
+    static repairRoute: string = 'assets/svg/common/ic_key-repair.svg';
+    static trucksRoute: string = 'assets/svg/common/trucks/';
+    static trailersRoute: string = 'assets/svg/common/trailers/';
 }
