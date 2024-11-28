@@ -26,6 +26,7 @@ import {
     IMapMarkers,
     IMapBoundsZoom,
     IMapSelectedMarkerData,
+    SortColumn,
 } from 'ca-components';
 
 // store
@@ -102,7 +103,6 @@ import { TableToolbarActions } from '@shared/models/table-models/table-toolbar-a
 import { CardRows } from '@shared/models/card-models/card-rows.model';
 import { CardTableData } from '@shared/models/table-models/card-table-data.model';
 import { TableColumnConfig } from '@shared/models/table-models/table-column-config.model';
-import { SortColumn } from '@shared/components/ta-sort-dropdown/models';
 
 @Component({
     selector: 'app-repair-table',
@@ -1952,7 +1952,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                 null, // ppgFrom?: number,
                 null, // ppgTo?: number,
                 this.mapsService.selectedMarkerId ?? null, // selectedId
-                this.filter === TableStringEnum.CLOSED_ARRAY ? 0 : 1, // active
+                this.filter === TableStringEnum.CLOSED_ARRAY ? 0 : null, // active
                 this.mapClustersPagination.pageIndex, // pageIndex
                 this.mapClustersPagination.pageSize, // pageSize
                 null, // companyId
@@ -2091,7 +2091,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                 null, // distance
                 this.backFilterQuery.costFrom, // costFrom
                 this.backFilterQuery.costTo, // costTo
-                this.filter === TableStringEnum.CLOSED_ARRAY ? 0 : 1, // active
+                this.filter === TableStringEnum.CLOSED_ARRAY ? 0 : null, // active
                 this.mapStateFilter, // states
                 !this.isSelectedFromMapList
                     ? this.mapsService.selectedMarkerId

@@ -1,6 +1,5 @@
 // Models
-import { SortColumn } from '@shared/components/ta-sort-dropdown/models';
-import { ICaMapProps } from 'ca-components';
+import { ICaMapProps, SortColumn } from 'ca-components';
 import { MapDropdownContent } from 'ca-components/lib/components/ca-map-dropdown/models';
 
 export class ShipperMapConfig {

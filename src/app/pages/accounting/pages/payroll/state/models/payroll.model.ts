@@ -156,9 +156,11 @@ export enum PayrollTypes {
 }
 export interface IGetPayrollByIdAndOptions {
     reportId: string;
+    payrollOpenedTab: PayrollTablesStatus;
     lastLoadDate?: string;
     selectedLoadIds?: number[];
     selectedCreditIds?: number[];
     selectedBonusIds?: number[];
     selectedDeductionIds?: number[];
+    selectedFuelIds?: number[];
 }
