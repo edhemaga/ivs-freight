@@ -8,6 +8,7 @@ import {
     OnChanges,
     SimpleChanges,
     ViewChild,
+    ChangeDetectorRef,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -200,6 +201,10 @@ export class TaDetailsHeaderComponent implements OnInit, OnChanges {
     }
 
     ngOnChanges(changes: SimpleChanges): void {
+        console.log('changes', changes);
+
+        if (changes?.hasSearch?.currentValue) this.handleSearchDisplay();
+
         if (
             changes?.isMapDisplayed?.currentValue !==
             changes?.isMapDisplayed?.previousValue
@@ -215,7 +220,15 @@ export class TaDetailsHeaderComponent implements OnInit, OnChanges {
                 (item) => item.active
             );
         }
+
         this.handleFilterInitialization();
+    }
+
+    private handleSearchDisplay(): void {
+        this.isSearchBtnDisplayed = true;
+
+        console.log('this.isSearchBtnDisplayed', this.isSearchBtnDisplayed);
+        console.log('this.isSearchBtn', this.isSearchBtn);
     }
 
     public handleFilterInitialization(): void {

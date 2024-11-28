@@ -20,6 +20,7 @@ import { DetailsDataService } from '@shared/services/details-data.service';
 import { ConfirmationActivationService } from '@shared/components/ta-shared-modals/confirmation-activation-modal/services/confirmation-activation.service';
 import { ModalService } from '@shared/services/modal.service';
 import { CaSearchMultipleStatesService } from 'ca-components';
+import { RepairShopDetailsService } from '@pages/repair/pages/repair-shop-details/services';
 
 // store
 import { RepairDetailsQuery } from '@pages/repair/state/repair-details-state/repair-details.query';
@@ -100,6 +101,7 @@ export class RepairShopDetailsComponent implements OnInit, OnDestroy {
         private confirmationActivationService: ConfirmationActivationService,
         private modalService: ModalService,
         private caSearchMultipleStatesService: CaSearchMultipleStatesService,
+        private repairShopDetailsService: RepairShopDetailsService,
 
         // ref
         private cdRef: ChangeDetectorRef,
@@ -274,6 +276,7 @@ export class RepairShopDetailsComponent implements OnInit, OnDestroy {
     }
 
     private searchSubscribe(): void {
+        // search subscribe
         this.caSearchMultipleStatesService.currentSearchTableData
             .pipe(takeUntil(this.destroy$))
             .subscribe((res) => {
@@ -304,6 +307,24 @@ export class RepairShopDetailsComponent implements OnInit, OnDestroy {
                         }
                     } */
                 }
+            });
+
+        // close search subscribe
+        this.repairShopDetailsService.getCloseSearchStatus$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((detailsPartIndex) => {
+                console.log('detailsPartIndex', detailsPartIndex);
+
+                this.searchConfig[detailsPartIndex] = false;
+
+                this.repairShopDetailsConfig = this.repairShopDetailsConfig.map(
+                    (item, index) =>
+                        index === detailsPartIndex
+                            ? { ...item, hasSearch: true }
+                            : item
+                );
+
+                this.cdRef.detectChanges();
             });
     }
 
