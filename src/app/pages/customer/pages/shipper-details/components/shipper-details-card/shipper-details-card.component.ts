@@ -35,7 +35,6 @@ import { IChartConfiguration } from 'ca-components/lib/components/ca-chart/model
 import { TableStringEnum } from '@shared/enums/table-string.enum';
 import { ShipperDetailsChartsConfiguration } from '../shipper-details-item/utils/constants';
 
-
 @Component({
     selector: 'app-shipper-details-card',
     templateUrl: './shipper-details-card.component.html',
@@ -52,7 +51,8 @@ export class ShipperDetailsCardComponent
     public shipperList: any[] = this.shipperMinimalListQuery.getAll();
     public note: UntypedFormControl = new UntypedFormControl();
     public shipperTabs: any[] = [];
-    public payrollChartConfig: IChartConfiguration = ShipperDetailsChartsConfiguration.PAYROLL_CHART_CONFIG;
+    public payrollChartConfig: IChartConfiguration =
+        ShipperDetailsChartsConfiguration.PAYROLL_CHART_CONFIG;
 
     public monthList: any[] = [
         'JAN',
