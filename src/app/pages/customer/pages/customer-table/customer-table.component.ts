@@ -39,6 +39,7 @@ import {
     IMapBoundsZoom,
     IMapMarkers,
     IMapSelectedMarkerData,
+    SortColumn,
 } from 'ca-components';
 
 // store
@@ -71,7 +72,6 @@ import { FilterOptionShipper } from '@pages/customer/pages/customer-table/models
 import { CardTableData } from '@shared/models/table-models/card-table-data.model';
 import { TableColumnConfig } from '@shared/models/table-models/table-column-config.model';
 import { MapList } from '@pages/repair/pages/repair-table/models';
-import { SortColumn } from '@shared/components/ta-sort-dropdown/models';
 
 // constants
 import {
@@ -2445,7 +2445,7 @@ export class CustomerTableComponent
                 null, // ppgFrom?: number,
                 null, // ppgTo?: number,
                 this.mapsService.selectedMarkerId ?? null, // selectedId
-                this.filter === TableStringEnum.CLOSED_FILTER ? 0 : 1, // active
+                this.filter === TableStringEnum.CLOSED_FILTER ? 0 : null, // active
                 this.mapClustersPagination.pageIndex, // pageIndex
                 this.mapClustersPagination.pageSize, // pageSize
                 null, // companyId

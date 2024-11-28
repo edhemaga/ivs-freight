@@ -31,13 +31,13 @@ import { MapsService } from '@shared/services/maps.service';
 
 // component
 import { TaSearchV2Component } from '@shared/components/ta-search-v2/ta-search-v2.component';
-import { TaSortDropdownComponent } from '@shared/components/ta-sort-dropdown/ta-sort-dropdown.component';
+import { CaSortDropdownComponent } from 'ca-components';
 
 // Svg Routes
 import { MapListSvgRoutes } from '@shared/components/ta-map-list/utils/svg-routes';
 
 // Models
-import { SortColumn } from '@shared/components/ta-sort-dropdown/models';
+import { SortColumn } from 'ca-components';
 
 // Enums
 import { MapListStringEnum } from '@shared/components/ta-map-list/enums';
@@ -56,7 +56,7 @@ import { MapListStringEnum } from '@shared/components/ta-map-list/enums';
 
         // Components
         TaSearchV2Component,
-        TaSortDropdownComponent,
+        CaSortDropdownComponent,
     ],
 })
 export class TaMapListComponent
@@ -83,7 +83,7 @@ export class TaMapListComponent
     actionColumns: any[] = [];
     public tooltip: any;
     public showExpandButton: boolean = false;
-    activeSortType: any = {};
+    activeSortType: SortColumn | null = null;
     searchIsActive: boolean = false;
     searchLoading: boolean = false;
     searchTimeout: any;
