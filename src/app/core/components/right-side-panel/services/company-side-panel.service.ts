@@ -15,4 +15,8 @@ export class CompanySidePanelService {
     public getCompany(): Observable<CompanyResponse> {
         return this.companyService.apiCompanyGet();
     }
+
+    public getDivisionById(divisionId: number): Observable<CompanyResponse> {
+        return this.companyService.apiCompanyDivisionIdGet(divisionId);
+    }
 }

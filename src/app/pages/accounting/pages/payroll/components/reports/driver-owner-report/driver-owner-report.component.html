@@ -28,7 +28,10 @@
                                 ></svg-icon>
                             </div>
                             <div class="edit d-f-aic-jcc burger_menu">
-                                <ca-burger-menu (onClick)="openMenu($event)"></ca-burger-menu>
+                                <ca-burger-menu
+                                    [optionsPopupContent]="optionsPopupContent"
+                                    (onClick)="openMenu($event)"
+                                ></ca-burger-menu>
                             </div>
                         </div>
                     </div>
@@ -50,7 +53,7 @@
             </div>
             <ng-container *ngIf="showMap">
                 <div class="map-holder">
-                    <app-ca-map [data]="data"></app-ca-map>
+                    <app-ca-map [data]="mapData$ | async"></app-ca-map>
                 </div>
             </ng-container>
         </div>

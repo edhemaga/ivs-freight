@@ -175,10 +175,20 @@
                                     </ng-container>
 
                                     <ng-container
+                                        *ngIf="cardRow.title === 'Last Price'"
+                                    >
+                                        <app-ca-progress-range
+                                            [data]="card?.tableLast"
+                                        >
+                                        </app-ca-progress-range>
+                                    </ng-container>
+
+                                    <ng-container
                                         *ngIf="
                                             cardRow.title !==
                                                 'Item Detail • Description' &&
-                                            cardRow.title !== 'Driver'
+                                            cardRow.title !== 'Driver' &&
+                                            cardRow.title !== 'Last Price'
                                         "
                                     >
                                         {{

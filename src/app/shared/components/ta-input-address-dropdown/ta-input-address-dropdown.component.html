@@ -14,16 +14,16 @@
                 isDispatchBoardAddress ? 'svgtext-dispatch-template' : ''
             "
             [inputConfig]="inputConfig"
-            [options]="addressList?.length ? addressList : [{
-                id: 7654,
-                name: 'No Results',
-            }]"
             [activeItem]="activeAddress"
             [incorrectValue]="incorrectValue"
             (incorrectEvent)="onIncorrectInput($event)"
             (selectedItem)="onSelectDropdown($event, 'address')"
             (closeDropdown)="onCloseDropdown($event)"
             (clearInputEvent)="onClearInputEvent()"
+            [options]="addressList?.length ? addressList : (addressList?.length === 0 ? [{
+                id: 7654,
+                name: 'No Results',
+            }] : addressList )"
         ></app-ta-input-dropdown>
 
         <div
