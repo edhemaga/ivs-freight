@@ -278,8 +278,6 @@ export class RepairShopDetailsComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe((res) => {
                 if (res) {
-                    console.log('res', res);
-
                     /*  this.backFilterQuery.pageIndex = 1;
                     this.shopFilterQuery.pageIndex = 1;
 
@@ -338,8 +336,6 @@ export class RepairShopDetailsComponent implements OnInit, OnDestroy {
         };
 
         this.newRepairShopId = dataId;
-
-        console.log('repairShopData', repairShopData);
 
         this.getDetailsConfig(repairShopData);
     }
