@@ -1,0 +1,38 @@
+<div
+    class="d-grid empty-column-grid"
+    [ngClass]="
+        view === taStringEnum.LIST ? 'empty-grid-list' : 'empty-grid-card'
+    "
+>
+    <div
+        *ngFor="let column of emptyColums"
+        class="empty-column"
+        [ngClass]="
+            view === taStringEnum.LIST
+                ? 'empty-column-list'
+                : 'empty-column-card'
+        "
+    ></div>
+</div>
+
+<div
+    class="d-flex align-items-center flex-column text-center"
+    [class.mt-80]="view === taStringEnum.CARD"
+    [class.mt-negative]="view === taStringEnum.LIST"
+>
+    <p class="text-color-bw-9 text-size-28 ta-font-extra-bold">
+        SUBTLE <br />
+        ILLUSTRATION <br />
+        <span class="ta-font-regular">(Empty State)</span>
+    </p>
+
+    <h4 class="text-color-muted text-size-26 ta-font-extra-bold mb-3 mt-80">
+        No data found
+    </h4>
+    <p class="text-color-muted text-size-11 ta-font-medium mb-5">
+        This page is currently empty. <br />
+        Start by adding entries or import from external source.
+    </p>
+</div>
+
+<ng-container *ngTemplateOutlet="actionTemplate"> </ng-container>
