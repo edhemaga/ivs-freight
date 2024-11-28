@@ -241,6 +241,10 @@ export class RepairShopDetailsComponent implements OnInit, OnDestroy {
                             RepairShopDetailsStringEnum.REPAIR_SHOP
                         ) {
                             this.deleteRepairShop(res?.data?.id);
+                        } else if (
+                            res?.template ===
+                            RepairShopDetailsStringEnum.REPAIR_SHOP_CONTACT
+                        ) {
                         } else {
                             this.deleteRepair(
                                 res?.data?.id,

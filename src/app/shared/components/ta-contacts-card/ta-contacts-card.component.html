@@ -37,7 +37,7 @@
                             ngbTooltip
                             mainTooltip="Edit"
                             position="top"
-                            tooltipBackground="#6C6C6C"
+                            tooltipBackground="#424242"
                             (click)="editContact()"
                             class="action_buttons d-flex justify-content-center align-items-center"
                         >
@@ -49,7 +49,7 @@
                             ngbTooltip
                             mainTooltip="Delete"
                             position="top"
-                            tooltipBackground="#6C6C6C"
+                            tooltipBackground="#DF3C3C"
                             (click)="deleteContactModal(shipperContact)"
                             class="action_buttons delete d-flex justify-content-center align-items-center delete"
                         >
@@ -61,12 +61,14 @@
                 </div>
 
                 <ng-container *ngIf="shipperContact?.phone">
-                    <div class="parking-template-item">
+                    <div
+                        class="d-flex align-items-center parking-template-item"
+                    >
                         <svg-icon
+                            class="icon"
                             src="{{ contactsImageRoutes.phone }}"
                         ></svg-icon>
-                        <span
-                            class="parking-template-text text-color-black-2 d-flex"
+                        <span class="parking-template-text"
                             ><app-ta-copy
                                 [copyValue]="
                                     shipperContact?.phoneExt
@@ -85,11 +87,14 @@
                     </div>
                 </ng-container>
                 <ng-container *ngIf="shipperContact?.email">
-                    <div class="parking-template-item parking-template-email">
+                    <div
+                        class="d-flex align-items-center parking-template-item parking-template-email"
+                    >
                         <svg-icon
+                            class="icon"
                             src="{{ contactsImageRoutes.email }}"
                         ></svg-icon>
-                        <span class="parking-template-text text-color-black-2"
+                        <span class="parking-template-text"
                             ><app-ta-copy [copyValue]="shipperContact?.email">
                             </app-ta-copy
                         ></span>

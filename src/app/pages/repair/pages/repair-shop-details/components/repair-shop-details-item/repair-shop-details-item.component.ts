@@ -35,8 +35,6 @@ export class RepairShopDetailsItemComponent {
     @Input() set detailsConfig(data: DetailsConfig) {
         this._detailsConfig = data;
 
-        console.log('data', data);
-
         this.orderContacts(this._detailsConfig[3]?.data.contacts);
     }
     @Input() searchConfig: boolean[];

@@ -34,6 +34,7 @@ export enum RepairShopDetailsStringEnum {
 
     REPAIR_SHOP = 'repair_shop',
     BUSINESS = 'business',
+    REPAIR_SHOP_CONTACT = 'repair shop contact',
 
     FINISH_ORDER = 'finish-order',
     FINISH_ORDER_2 = 'Finish Order',
