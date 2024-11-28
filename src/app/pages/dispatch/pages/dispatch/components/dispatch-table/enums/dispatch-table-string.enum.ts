@@ -68,6 +68,8 @@ export enum DispatchTableStringEnum {
     PRE_TRIP = 'PreTrip',
     CITY = 'city',
 
+    NUMBER = 'number',
+
     // Resize
     CURSOR = 'cursor',
     COL_RESIZE = 'col-resize',
