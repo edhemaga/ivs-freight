@@ -50,6 +50,7 @@ export class CompanyRepairShopService {
             costTo,
             visitedByMe,
             driverId,
+            [],
             pageIndex,
             pageSize,
             companyId,

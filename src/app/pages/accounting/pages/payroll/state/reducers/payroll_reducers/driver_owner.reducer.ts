@@ -1,5 +1,8 @@
 // Models
-import { PayrollOwnerClosedResponse, PayrollOwnerResponse } from 'appcoretruckassist';
+import {
+    PayrollOwnerClosedResponse,
+    PayrollOwnerResponse,
+} from 'appcoretruckassist';
 import { IDriverOwnerList } from '@pages/accounting/pages/payroll/state/models';
 import {
     IGet_Payroll_Commission_Driver_Report,
@@ -36,6 +39,7 @@ export const onGetPayrollOwnerReport = (
     selectedDeductionIds:
         params.selectedDeductionIds ?? state.selectedDeductionIds,
     selectedCreditIds: params.selectedCreditIds ?? state.selectedCreditIds,
+    selectedFuelIds: params.selectedFuelIds ?? state.selectedFuelIds,
 });
 
 export const onGetPayrollOwnerReportSuccess = (
@@ -140,11 +144,25 @@ export const onDriverOwnerPayrollClosedPaymentsError = (
     closeReportPaymentError: true,
 });
 
+export const onGetPayrollOwnerDriverClosedPayroll = (state: PayrollState) => ({
+    ...state,
+    ownerPayrollResponse: null,
+    reportLoading: true,
+});
+
 export const onGetPayrollOwnerDriverClosedPayrollSuccess = (
     state: PayrollState,
     data: { payroll: PayrollOwnerClosedResponse }
-) => ({
-    ...state,
-    ownerPayrollResponse: data.payroll,
-    reportLoading: false,
-});
+) => {
+    return {
+        ...state,
+        ownerPayrollResponse: {
+            ...data.payroll,
+            excludedDeductions: [],
+            excludedCredits: [],
+            excludedLoads: [],
+            includedBonuses: [],
+        },
+        reportLoading: false,
+    };
+};

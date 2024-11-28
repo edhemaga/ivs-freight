@@ -302,6 +302,7 @@ export class RepairService {
             costTo,
             visitedByMe,
             driverId,
+            [],
             pageIndex,
             pageSize,
             companyId,
