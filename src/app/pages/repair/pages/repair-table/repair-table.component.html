@@ -123,20 +123,23 @@
     </ng-container>
 </div>
 
-<ng-container *ngIf="!viewData.length">
-    <ng-template #actionTemplate>
-        <div class="d-flex align-items-center justify-content-center flex-column">
-            <button (click)="onToolBarAction({action : 'open-modal'})" class="mb-12 ca-btn ca-btn-primary">
-                Add Repair
-            </button>
+<ng-template #actionTemplate>
+    <div class="d-flex align-items-center justify-content-center flex-column">
+        <button
+            (click)="onToolBarAction({ action: 'open-modal' })"
+            class="mb-12 ca-btn ca-btn-primary"
+        >
+            Add Repair
+        </button>
 
-            <button class="ca-btn ca-btn-secondary">
-                Import list
-            </button>
-        </div>
-    </ng-template>
-    <app-ta-table-empty
-        [actionTemplate]="actionTemplate"
-        [view]="activeViewMode"
-    ></app-ta-table-empty>
-</ng-container>
+        <button class="ca-btn ca-btn-secondary">Import list</button>
+    </div>
+</ng-template>
+
+<app-ta-table-empty
+    [actionTemplate]="actionTemplate"
+    [filteredResults]="tabResultLength"
+    [hasResults]="viewData.length"
+    [view]="activeViewMode"
+    (resetFilter$)="resetFilter()"
+></app-ta-table-empty>

@@ -940,4 +940,13 @@
         color: $ta-blue-14;
         background: none;
     }
+
+    &-tertiary {
+        color: $white;
+        background-color: $bw6-2;
+
+        &:hover {
+            background-color: $ta-black;
+        }
+    }
 }

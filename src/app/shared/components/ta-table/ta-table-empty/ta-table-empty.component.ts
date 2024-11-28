@@ -1,9 +1,11 @@
 import { CommonModule } from '@angular/common';
 import {
     Component,
+    EventEmitter,
     Input,
     OnChanges,
     OnInit,
+    Output,
     TemplateRef,
 } from '@angular/core';
 
@@ -24,6 +26,9 @@ export class TaTableEmptyComponent implements OnInit, OnChanges {
     @Input() view: TableStringEnum.LIST | TableStringEnum.CARD =
         TableStringEnum.LIST;
     @Input() actionTemplate: TemplateRef<Element>;
+    @Input() filteredResults: boolean;
+    @Input() hasResults: boolean;
+    @Output() resetFilter$: EventEmitter<any> = new EventEmitter();
 
     ngOnInit(): void {
         this.fillColumns();
@@ -39,5 +44,17 @@ export class TaTableEmptyComponent implements OnInit, OnChanges {
                 ? this.columnCountList
                 : this.columnCountCard
         ).fill(0);
+    }
+
+    public get isEmptyList(): boolean {
+        if (!this.hasResults && this.filteredResults) {
+            return true;
+        }
+
+        return false;
+    }
+
+    public resetFilters(): void {
+        this.resetFilter$.emit(true);
     }
 }
