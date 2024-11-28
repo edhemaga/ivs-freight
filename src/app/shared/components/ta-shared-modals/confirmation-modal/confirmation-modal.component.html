@@ -1035,13 +1035,15 @@
                             </div>
                         </ng-container>
 
-                        <!-- Broker and Shipper Contact -->
+                        <!-- Broker, Shipper, Repair Shop Contact -->
 
                         <ng-container
                             *ngSwitchCase="
-                                ['broker contact', 'shipper contact'].includes(
-                                    editData?.template
-                                )
+                                [
+                                    'broker contact',
+                                    'shipper contact',
+                                    'repair shop contact'
+                                ].includes(editData?.template)
                                     ? editData?.template
                                     : ''
                             "
@@ -1458,7 +1460,13 @@
             </div>
         </ng-container>
 
-        <ng-container *ngIf="['deduction', 'credit', 'bonus', 'fuel'].includes(editData?.template)">
+        <ng-container
+            *ngIf="
+                ['deduction', 'credit', 'bonus', 'fuel'].includes(
+                    editData?.template
+                )
+            "
+        >
             <div
                 class="d-flex flex-column justify-content-center confirmation-array-body"
             >
@@ -1466,10 +1474,23 @@
                     class="d-flex align-items-center confirmation-body confirmation-body-content"
                 >
                     <div class="confirmation-info">
-                        <p class="m-0 confirmation-text-1 text-size-16 text-color-black">{{editData?.extras?.title}} - ${{editData?.extras?.subtitle}}</p>
-                        <p class="m-0 confirmation-text-2 large-text-2">{{editData?.extras?.date  | date : 'MM/dd/yy hh:mm a' }}</p>
+                        <p
+                            class="m-0 confirmation-text-1 text-size-16 text-color-black"
+                        >
+                            {{ editData?.extras?.title }} - ${{
+                                editData?.extras?.subtitle
+                            }}
+                        </p>
+                        <p class="m-0 confirmation-text-2 large-text-2">
+                            {{
+                                editData?.extras?.date
+                                    | date : 'MM/dd/yy hh:mm a'
+                            }}
+                        </p>
                         <div class="unit-container px-1">
-                            <p class="text-3 ta-font-bold">{{editData?.extras?.label}}  </p>
+                            <p class="text-3 ta-font-bold">
+                                {{ editData?.extras?.label }}
+                            </p>
                         </div>
                     </div>
                 </div>

@@ -206,7 +206,7 @@
                             autoClose="outside"
                             [ngbPopover]="multipleDetailsSelect"
                             [popoverClass]="'popover-main'"
-                            [placement]="['bottom']"
+                            [placement]="['bottom-end']"
                             [container]="'body'"
                             [ngClass]="{ active: popover?.isOpen() }"
                         >
@@ -247,7 +247,7 @@
                     </ng-container>
                 </div>
 
-                <ng-container *ngIf="hasSearch">
+                <ng-container *ngIf="hasSearch && !isSearchBtn">
                     <div class="border-line-left"></div>
                     <span class="mx-1">
                         <app-ca-search-multiple-states

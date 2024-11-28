@@ -1,17 +1,17 @@
 import { MultipleSelectDetailsDropdownItem } from '@shared/models/multiple-select-details-dropdown-item.model';
 
-export class LoadDetailsConstants {
+export class RepairShopDetailsConstants {
     static MULTIPLE_SELECT_DETAILS_DROPDOWN: MultipleSelectDetailsDropdownItem[] =
         [
             {
                 id: 1,
-                title: 'Comment',
+                title: 'Contact',
                 length: null,
                 isActive: true,
             },
             {
                 id: 2,
-                title: 'Status History',
+                title: 'Review',
                 length: null,
                 isActive: false,
             },

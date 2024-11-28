@@ -1,4 +1,8 @@
+import { MultipleSelectDetailsDropdownItem } from '@shared/models/multiple-select-details-dropdown-item.model';
+
+// models
 import { ExtendedRepairShopResponse } from '@pages/repair/pages/repair-shop-details/components/repair-shop-details-card/models';
+import { RepairShopDetailsConstants } from '@pages/repair/pages/repair-shop-details/utils/constants';
 import { DetailsConfig } from '@shared/models/details-config.model';
 import { DetailsDropdownOptions } from '@shared/models/details-dropdown-options.model';
 
@@ -103,10 +107,17 @@ export class RepairShopDetailsHelper {
     }
 
     static getRepairShopDetailsConfig(
-        repairShopData: ExtendedRepairShopResponse
+        repairShopData: ExtendedRepairShopResponse,
+        dropdownItemId: number = 1
     ): DetailsConfig[] {
-        const { repairList, cost, repairedVehicleList, ratingReviews, status } =
-            repairShopData;
+        const {
+            repairList,
+            cost,
+            repairedVehicleList,
+            ratingReviews,
+            contacts,
+            status,
+        } = repairShopData;
 
         return [
             {
@@ -142,16 +153,56 @@ export class RepairShopDetailsHelper {
             },
             {
                 id: 3,
-                name: 'Review',
-                template: 'review',
-                isClosedBusiness: !status,
-                icon: false,
+                name: dropdownItemId === 1 ? 'Contact' : 'Review',
+                template: 'contact-review',
                 hasSearch: true,
                 hasSort: false,
                 hide: false,
-                length: ratingReviews?.length || '0',
+                hasMultipleDetailsSelectDropdown: true,
+                multipleDetailsSelectDropdown:
+                    this.getMultipleSelectDetailsDropdown(
+                        repairShopData,
+                        dropdownItemId
+                    ),
                 data: repairShopData,
+                length:
+                    (dropdownItemId === 1
+                        ? contacts?.length
+                        : ratingReviews?.length) || '0',
             },
         ];
+    }
+
+    static getMultipleSelectDetailsDropdown(
+        repairShop: ExtendedRepairShopResponse,
+        dropdownItemId: number = 1
+    ): MultipleSelectDetailsDropdownItem[] {
+        let multipleSelectDetailsDropdown: MultipleSelectDetailsDropdownItem[] =
+            JSON.parse(
+                JSON.stringify(
+                    RepairShopDetailsConstants.MULTIPLE_SELECT_DETAILS_DROPDOWN
+                )
+            );
+
+        if (dropdownItemId) {
+            multipleSelectDetailsDropdown = multipleSelectDetailsDropdown.map(
+                (dropdownItem) => {
+                    return {
+                        ...dropdownItem,
+                        isActive: dropdownItem.id === dropdownItemId,
+                    };
+                }
+            );
+        }
+
+        return multipleSelectDetailsDropdown.map((dropdownItem, index) => {
+            return {
+                ...dropdownItem,
+                length:
+                    index === 0
+                        ? repairShop?.contacts?.length
+                        : repairShop?.ratingReviews?.length,
+            };
+        });
     }
 }

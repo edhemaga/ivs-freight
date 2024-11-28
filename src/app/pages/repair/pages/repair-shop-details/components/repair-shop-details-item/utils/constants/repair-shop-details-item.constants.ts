@@ -14,4 +14,11 @@ export class RepairShopDetailsItemConstants {
         'PRICE',
         'TOTAL',
     ];
+
+    static REPAIRED_VEHICLES_LIST_HEADER_ITEMS: string[] = [
+        'UNIT',
+        'TYPE',
+        null,
+        'COST',
+    ];
 }
