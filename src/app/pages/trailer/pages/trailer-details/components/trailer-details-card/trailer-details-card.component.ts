@@ -30,7 +30,7 @@ import { TrailersMinimalListQuery } from '@pages/trailer/state/trailer-minimal-l
 // models
 import { TrailerDropdown } from '@pages/trailer/pages/trailer-details/models/trailer-dropdown.model';
 import { TrailerMinimalResponse } from 'appcoretruckassist';
-import { IChartConfiguaration } from 'ca-components/lib/components/ca-chart/models';
+import { IChartConfiguration } from 'ca-components/lib/components/ca-chart/models';
 
 // enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
@@ -86,7 +86,7 @@ export class TrailerDetailsCardComponent
         this.trailerMinimalQuery.getAll();
     public trailerIndex: number;
     public ownerCardOpened: boolean = true;
-    public payrollChartConfig: IChartConfiguaration =
+    public payrollChartConfig: IChartConfiguration =
         TrailerDetailsChartsConfiguration.PAYROLL_CHART_CONFIG;
 
     constructor(
