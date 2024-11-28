@@ -362,6 +362,7 @@ export * from './dispatchStatus';
 export * from './dispatchStatusFilterResponse';
 export * from './dispatchStatusResponse';
 export * from './dispatcherFilterResponse';
+export * from './dispatcherFilterSortBy';
 export * from './dispatcherIntervalResponse';
 export * from './dispatcherShortMobileResponse';
 export * from './driverAccidentResponse';

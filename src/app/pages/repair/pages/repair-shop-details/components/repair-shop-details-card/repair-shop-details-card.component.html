@@ -27,7 +27,12 @@
             <div class="repair-shop-details-cards">
                 <!-- Open Hours Card -->
 
-                <app-repair-shop-details-open-hours-card></app-repair-shop-details-open-hours-card>
+                <app-repair-shop-details-open-hours-card
+                    [cardData]="{
+                        openHours: _repairShop?.openHours,
+                        openHoursToday: _repairShop?.openHoursToday
+                    }"
+                ></app-repair-shop-details-open-hours-card>
 
                 <!-- Services Card -->
 

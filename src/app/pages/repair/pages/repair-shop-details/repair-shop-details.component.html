@@ -1,4 +1,4 @@
-<div class="repair-details-container">
+<div class="repair-shop-details-container">
     <ng-container
         *ngFor="let item of repairShopDetailsConfig; trackBy: trackByIdentity"
     >
@@ -17,6 +17,13 @@
             [statusInactive]="item?.hide"
             [totalCost]="item?.total"
             [mainData]="item"
+            [hasMultipleDetailsSelectDropdown]="
+                item?.hasMultipleDetailsSelectDropdown
+            "
+            [multipleDetailsSelectDropdown]="
+                item?.multipleDetailsSelectDropdown
+            "
+            [isSearchBtn]="true"
             [timeFilter]="true"
             [truckTypeFilter]="true"
             [trailerTypeFilter]="true"
@@ -24,6 +31,11 @@
             [moneyFilter]="true"
             [repairOrderFilter]="true"
             (dropActions)="onRepairShopActions($event)"
+            (openModalAction)="onModalAction($event)"
+            (searchBtnEmitter)="onSearchBtnClick($event, item.name)"
+            (multipleDetailsSelectDropdownEmitter)="
+                onDetailsSelectClick($event)
+            "
             (filterActions)="onFilter($event)"
             (specialFilterActions)="onFilter($event)"
         >
@@ -31,18 +43,10 @@
     </ng-container>
 
     <div>
-        <!-- repair-details-cmp -->
-        <app-repair-shop-details-item [detailsConfig]="repairShopDetailsConfig">
-        </app-repair-shop-details-item>
-
-        <!-- Keep, need for later -->
-
-        <!-- <app-repair-shop-details-item
-            class="repair-component"
-            [class.vehicleHolder]="item.nameDefault === 'Repaired Vehicle'"
-            [class.reviewShopHolder]="item.nameDefault === 'Review & Rating'"
-            [customClass]=" item.nameDefault === 'Repaired Vehicle' ? 'vehicleHolder' : '' || item.nameDefault === 'Review & Rating' ? 'reviewShopHolder' : '' "
+        <app-repair-shop-details-item
+            [detailsConfig]="repairShopDetailsConfig"
+            [searchConfig]="searchConfig"
         >
-        </app-repair-shop-details-item> -->
+        </app-repair-shop-details-item>
     </div>
 </div>

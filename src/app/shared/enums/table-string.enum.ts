@@ -558,6 +558,7 @@ export enum TableStringEnum {
 
     BROKER_CONTACT = 'broker contact',
     SHIPPER_CONTACT = 'shipper contact',
+    REPAIR_SHOP_CONTACT = 'repair shop contact',
     VOIDED = 'VOIDED',
 
     // Card States

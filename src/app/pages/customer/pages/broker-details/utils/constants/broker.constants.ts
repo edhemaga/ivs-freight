@@ -1,9 +1,8 @@
 // Models
 import { LoadsSortDropdownModel } from '@pages/customer/models/loads-sort-dropdown.model';
-import { MultipleSelectDetailsDropdownItem } from '@pages/load/pages/load-details/components/load-details-item/models/multiple-select-details-dropdown-item.model';
+import { MultipleSelectDetailsDropdownItem } from '@shared/models/multiple-select-details-dropdown-item.model';
 
 export class BrokerConstants {
-
     static MULTIPLE_SELECT_DETAILS_DROPDOWN: MultipleSelectDetailsDropdownItem[] =
         [
             {

@@ -33,6 +33,8 @@ import { CreateWithUploadsResponse } from '../model/createWithUploadsResponse';
 // @ts-ignore
 import { DispatcherFilterResponse } from '../model/dispatcherFilterResponse';
 // @ts-ignore
+import { DispatcherFilterSortBy } from '../model/dispatcherFilterSortBy';
+// @ts-ignore
 import { FileResponse } from '../model/fileResponse';
 // @ts-ignore
 import { GetHazardousMaterialDropdownModalQuery } from '../model/getHazardousMaterialDropdownModalQuery';
@@ -179,13 +181,15 @@ export class LoadService {
      * @param isTemplate 
      * @param searchString 
      * @param sort 
+     * @param sortBy 
+     * @param sortOrder 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiLoadDispatcherFilterGet(loadStatusType?: LoadStatusType, isTemplate?: boolean, searchString?: string, sort?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<Array<DispatcherFilterResponse>>;
-    public apiLoadDispatcherFilterGet(loadStatusType?: LoadStatusType, isTemplate?: boolean, searchString?: string, sort?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<Array<DispatcherFilterResponse>>>;
-    public apiLoadDispatcherFilterGet(loadStatusType?: LoadStatusType, isTemplate?: boolean, searchString?: string, sort?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<Array<DispatcherFilterResponse>>>;
-    public apiLoadDispatcherFilterGet(loadStatusType?: LoadStatusType, isTemplate?: boolean, searchString?: string, sort?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
+    public apiLoadDispatcherFilterGet(loadStatusType?: LoadStatusType, isTemplate?: boolean, searchString?: string, sort?: string, sortBy?: DispatcherFilterSortBy, sortOrder?: SortOrder, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<Array<DispatcherFilterResponse>>;
+    public apiLoadDispatcherFilterGet(loadStatusType?: LoadStatusType, isTemplate?: boolean, searchString?: string, sort?: string, sortBy?: DispatcherFilterSortBy, sortOrder?: SortOrder, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<Array<DispatcherFilterResponse>>>;
+    public apiLoadDispatcherFilterGet(loadStatusType?: LoadStatusType, isTemplate?: boolean, searchString?: string, sort?: string, sortBy?: DispatcherFilterSortBy, sortOrder?: SortOrder, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<Array<DispatcherFilterResponse>>>;
+    public apiLoadDispatcherFilterGet(loadStatusType?: LoadStatusType, isTemplate?: boolean, searchString?: string, sort?: string, sortBy?: DispatcherFilterSortBy, sortOrder?: SortOrder, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
         let localVarQueryParameters = new HttpParams({encoder: this.encoder});
         if (loadStatusType !== undefined && loadStatusType !== null) {
@@ -203,6 +207,14 @@ export class LoadService {
         if (sort !== undefined && sort !== null) {
           localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
             <any>sort, 'Sort');
+        }
+        if (sortBy !== undefined && sortBy !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>sortBy, 'SortBy');
+        }
+        if (sortOrder !== undefined && sortOrder !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>sortOrder, 'SortOrder');
         }
 
         let localVarHeaders = this.defaultHeaders;
