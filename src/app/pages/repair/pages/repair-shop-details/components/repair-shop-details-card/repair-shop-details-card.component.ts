@@ -39,6 +39,7 @@ import { RepairShopDetailsCardHelper } from '@pages/repair/pages/repair-shop-det
 import {
     RepairShopMinimalResponse,
     RepairShopResponse,
+    RepairShopShortResponse,
 } from 'appcoretruckassist';
 
 @Component({
@@ -120,20 +121,32 @@ export class RepairShopDetailsCard implements OnInit, OnDestroy {
     public getRepairShopsDropdownList(): void {
         this.repairShopDropdownList = this.repairMinimalListQuery
             .getAll()
-            .map((repairShop) => {
-                const { id, name, address, pinned, status } = repairShop;
-
-                return {
+            .map((repairShop: RepairShopShortResponse) => {
+                const {
                     id,
+                    companyOwned,
                     name,
                     address,
                     pinned,
-                    repairs: '10', // dummy w8 for back
-                    expense: '45334.34', // dummy w8 for back
+                    repairsCount,
+                    cost,
+                    status,
+                } = repairShop;
+
+                return {
+                    id,
+                    companyOwned,
+                    name,
+                    address,
+                    pinned,
+                    repairs: repairsCount,
+                    expense: cost,
                     status,
                     isRepairShopDetails: true,
                     svg: !status
                         ? RepairShopDetailsStringEnum.CLOSED_ROUTE
+                        : companyOwned
+                        ? RepairShopDetailsStringEnum.COMPANY_OWNED_ROUTE
                         : pinned
                         ? RepairShopDetailsStringEnum.STAR_ROUTE
                         : RepairShopDetailsStringEnum.EMPTY_STRING,

@@ -34,7 +34,7 @@ import { DashboardTab } from '@pages/dashboard/models/dashboard-tab.model';
 import { DropdownListItem } from '@pages/dashboard/models/dropdown-list-item.model';
 import { ByStateColorsPallete } from '@pages/dashboard/models/colors-pallete.model';
 import { CustomPeriodRange } from '@shared/models/custom-period-range.model';
-import { IChartConfiguration } from 'ca-components/lib/components/ca-chart/models';
+import { IChartConfiguaration } from 'ca-components/lib/components/ca-chart/models';
 
 import {
     ByStateReportType,
@@ -100,7 +100,7 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
     public mainColorsPallete: ByStateColorsPallete[] = [];
 
     //chart
-    public pickUpByStateChartConfig: IChartConfiguration =
+    public pickUpByStateChartConfig: IChartConfiguaration =
         DashboardByStateChartsConfiguration.PICK_BY_STATE_CHART_CONFIG;
 
     constructor(

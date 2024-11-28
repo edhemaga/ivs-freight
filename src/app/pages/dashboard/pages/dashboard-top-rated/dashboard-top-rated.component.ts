@@ -46,7 +46,7 @@ import {
 } from 'appcoretruckassist';
 import { TopRatedApiArguments } from '@pages/dashboard/pages/dashboard-top-rated/models/top-rated-api-arguments.model';
 import { TopRatedWithoutTabApiArguments } from '@pages/dashboard/pages/dashboard-top-rated/models/top-rated-without-tab-api-arguments.model';
-import { IChartConfiguration } from 'ca-components/lib/components/ca-chart/models';
+import { IChartConfiguaration } from 'ca-components/lib/components/ca-chart/models';
 
 @Component({
     selector: 'app-dashboard-top-rated',
@@ -103,9 +103,9 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
     public secondaryColorsPallete: TopRatedSecondaryColorsPallete[] = [];
 
     // charts
-    public doughnutChartConfig: IChartConfiguration =
+    public doughnutChartConfig: IChartConfiguaration =
         DashboardTopRatedChartsConfiguration.DOUGHNUT_CHART_CONFIG;
-    public barChartConfig: IChartConfiguration =
+    public barChartConfig: IChartConfiguaration =
         DashboardTopRatedChartsConfiguration.BAR_CHART_CONFIG;
 
     constructor(

@@ -56,7 +56,7 @@ import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calcula
 // models
 import { DriverMinimalResponse, DriverResponse } from 'appcoretruckassist';
 import { TabOptions } from '@shared/components/ta-tab-switch/models/tab-options.model';
-import { IChartConfiguration } from 'ca-components/lib/components/ca-chart/models';
+import { IChartConfiguaration } from 'ca-components/lib/components/ca-chart/models';
 
 @Component({
     selector: 'app-driver-details-card',
@@ -103,7 +103,7 @@ export class DriverDetailsCardComponent
     // note card
     public noteForm: UntypedFormGroup;
 
-    public payrollChartConfig: IChartConfiguration =
+    public payrollChartConfig: IChartConfiguaration =
         DriverDetailsChartsConfiguration.PAYROLL_CHART_CONFIG;
 
     constructor(

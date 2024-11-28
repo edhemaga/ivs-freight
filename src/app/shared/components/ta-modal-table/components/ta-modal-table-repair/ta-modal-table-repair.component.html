@@ -135,6 +135,8 @@
                         isRequired: true,
                         hideErrorMessage: true,
                         hideRequiredCheck: true,
+                        priceSeparator: true,
+                        priceSeparatorLimitation: 16,
                         isInputBackgroundRemoved:
                             repairBillItemRow.valid && !isInputHoverRows[i][1],
                         isBlueText:
@@ -157,14 +159,14 @@
                             type: 'text',
                             label: 'Price',
                             placeholderInsteadOfLabel: true,
-                            priceSeparatorLimitation: 6,
+                            
                             minLength: 5,
                             maxLength: 64,
                             isRequired: true,
                             hideErrorMessage: true,
                             hideRequiredCheck: true,
                             priceSeparator: true,
-                            priceSeparatorLimitation: 6,
+                            priceSeparatorLimitation: 16,
                             isInputBackgroundRemoved:
                                 repairBillItemRow.valid &&
                                 !isInputHoverRows[i][2],
