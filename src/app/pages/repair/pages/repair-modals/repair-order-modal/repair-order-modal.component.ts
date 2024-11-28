@@ -478,7 +478,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
         } else {
             this.truckOrTrailer = event.name;
 
-            if (!this.editData.data) this.isResetSelectedPm = true;
+            if (!this.editData?.data) this.isResetSelectedPm = true;
 
             setTimeout(() => {
                 this.unitTabs = this.unitTabs.map((item) => {
@@ -521,7 +521,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
                 this.selectedDriver = null;
                 this.driversDropdownList = [];
 
-                if (!this.editData.data) this.isResetSelectedPm = false;
+                if (!this.editData?.data) this.isResetSelectedPm = false;
             }, 100);
         }
     }
@@ -733,7 +733,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
 
     public addRepairItemOnInit(): void {
         if (
-            !this.editData.data ||
+            !this.editData?.data ||
             this.editData.type === TableStringEnum.ADD_BILL
         )
             setTimeout(() => {
@@ -1376,7 +1376,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
         });
 
         // documents
-        this.documents = editData.files;
+        this.documents = editData?.files || [];
 
         // patch form
         this.repairOrderForm.patchValue({

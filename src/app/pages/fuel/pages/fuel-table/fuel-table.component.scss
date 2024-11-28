@@ -1,3 +1,5 @@
+@import '/src/theme/variables.scss';
+
 .table-container {
     width: calc(100% - 92px);
     position: absolute;
@@ -5,6 +7,8 @@
 }
 
 ::ng-deep app-fuel-table {
+    $padding-left-note-header-icon: 10px;
+
     .table-container {
         app-ta-table-head {
             table {
@@ -12,17 +16,38 @@
                     app-table-head-actions {
                         tr {
                             th:nth-child(2) {
-                                width: 5px !important;
-                                min-width: 5px !important;
-
-                                @media (max-width: 1260px) {
-                                    width: 20px !important;
-                                }
+                                padding-left: $padding-left-note-header-icon;
                             }
                         }
                     }
                 }
             }
+        }
+    }
+}
+
+.show-more-container {
+    height: 18px;
+    width: 100%;
+    margin-top: 2px;
+
+    .showing,
+    .show-more {
+        height: 100%;
+    }
+
+    .showing {
+        font-size: 11px;
+        min-width: 80px;
+    }
+
+    .show-more {
+        cursor: pointer;
+        font-size: 11px;
+
+        &:hover {
+            color: $light-blue;
+            transform: 0.25s;
         }
     }
 }

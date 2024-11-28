@@ -27,22 +27,8 @@ export class RepairMinimalResolver {
             .getRepairShopMinimalList(this.pageIndex, this.pageSize)
             .pipe(
                 tap((repairShopMinimalList) => {
-                    const dummy = repairShopMinimalList.pagination.data.map(
-                        (dum) => {
-                            if (dum.name === '44') {
-                                return {
-                                    ...dum,
-                                    companyOwned: false,
-                                };
-                            }
-
-                            return dum;
-                        }
-                    );
-
                     this.repairMinimalListStore.set(
-                        dummy
-                        /*   repairShopMinimalList.pagination.data */
+                        repairShopMinimalList.pagination.data
                     );
                 }),
                 catchError(() => {

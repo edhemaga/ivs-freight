@@ -31,7 +31,6 @@ export interface LoadStopItemResponse {
     secure?: EnumValue;
     tarp?: EnumValue;
     stackable?: EnumValue;
-    driverAssist?: EnumValue;
     hazardousMaterial?: HazardousMaterialResponse;
 }
 

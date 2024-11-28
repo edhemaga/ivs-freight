@@ -20,6 +20,7 @@ import {
     selectPayrollOpenedReport,
     selectPayrollOpenedTab,
     selectPayrollReportLoading,
+    selectPayrollReportMapData,
     selectPayrollReportsIncludedStops,
     selectPayrollReportTableExpanded,
     selectPayrollState,
@@ -46,6 +47,7 @@ import { PayrollDriverMileageResponse } from 'appcoretruckassist/model/payrollDr
 
 // Enums
 import { PayrollTablesStatus } from '@pages/accounting/pages/payroll/state/enums';
+import { ICaMapProps } from 'ca-components';
 
 @Injectable({
     providedIn: 'root',
@@ -77,6 +79,10 @@ export class PayrollFacadeService {
 
     public payrollReportLoading$: Observable<boolean> = this.store.pipe(
         select(selectPayrollReportLoading)
+    );
+
+    public getPayrollReportMapData$: Observable<ICaMapProps> = this.store.pipe(
+        select(selectPayrollReportMapData)
     );
 
     public selectPayrollReportStates$: Observable<{
@@ -176,11 +182,12 @@ export class PayrollFacadeService {
         selectedCreditIds,
         selectedBonusIds,
         selectedDeductionIds,
+        payrollOpenedTab
     }: IGetPayrollByIdAndOptions) {
         this.store
             .pipe(select(selectPayrollState), take(1))
             .subscribe((payrollState) => {
-                if (payrollState.payrollOpenedTab === 'closed') {
+                if (payrollOpenedTab === 'closed') {
                     this.store.dispatch(
                         PayrollDriverMileageSolo.getPayrollMileageDriverClosedPayroll(
                             {

@@ -24,16 +24,18 @@ import {
     PayrollDriverMileageByIdResponse,
     PayrollOwnerResponse,
 } from 'appcoretruckassist';
-import { ColumnConfig } from 'ca-components';
+import { ColumnConfig, ICaMapProps, PayrollTypeEnum } from 'ca-components';
 import {
     IGetPayrollByIdAndOptions,
     IPayrollProccessPaymentModal,
 } from '@pages/accounting/pages/payroll/state/models';
 
 import { OwnerLoadShortReponseWithRowType } from '@pages/accounting/pages/payroll/state/models';
+import { OptionsPopupContent } from 'ca-components/lib/components/ca-burger-menu/models/burger-menu.model';
 
 // Components
 import { PayrollProccessPaymentModalComponent } from '@pages/accounting/pages/payroll/payroll-modals/payroll-proccess-payment-modal/payroll-proccess-payment-modal.component';
+import { PayrollReportComponent } from '@pages/accounting/pages/payroll/payroll-modals/payroll-report/payroll-report.component';
 
 // Enums
 import { PayrollTablesStatus } from '@pages/accounting/pages/payroll/state/enums';
@@ -42,6 +44,9 @@ import { DriverMVrModalStringEnum } from '@pages/driver/pages/driver-modals/driv
 
 // Classes
 import { PayrollReportBaseComponent } from '@pages/accounting/pages/payroll/components/reports/payroll-report.base';
+
+// Constants
+import { TableToolbarConstants } from '../constants/report.constants';
 
 @Component({
     selector: 'app-driver-owner-report',
@@ -61,14 +66,32 @@ export class DriverOwnerReportComponent
         this.getReportDataResults();
     }
 
+    public optionsPopupContent: OptionsPopupContent[] =
+        TableToolbarConstants.closedReportPayroll;
+
     get reportId(): string {
         return super.reportId; // Call the base class getter
     }
 
     public columns: ColumnConfig[];
     public creditType = PayrollCreditType.Truck;
-    @Input() selectedTab: PayrollTablesStatus;
+    public payrollType = PayrollTypeEnum.OWNER_COMMISSION;
+
+    public _selectedTab: PayrollTablesStatus;
+    @Input() set selectedTab(tab: PayrollTablesStatus) {
+        this.optionsPopupContent =
+            tab === PayrollTablesStatus.OPEN
+                ? TableToolbarConstants.openReportPayroll
+                : TableToolbarConstants.closedReportPayroll;
+        this._selectedTab = tab;
+    }
+
+    public get selectedTab() {
+        return this._selectedTab;
+    }
+
     public showMap: boolean = false;
+    public mapData$: Observable<ICaMapProps>;
 
     public loading$: Observable<boolean>;
     public includedLoads$: Observable<LoadWithMilesStopResponse[]>;
@@ -111,7 +134,7 @@ export class DriverOwnerReportComponent
         payrollService: PayrollService
     ) {
         super(modalService, payrollService);
-    } 
+    }
 
     ngOnInit(): void {
         this.subscribeToStoreData();
@@ -137,6 +160,8 @@ export class DriverOwnerReportComponent
             .subscribe((owner) => {
                 this.payrollOpenedReport = owner;
             });
+
+        this.mapData$ = this.payrollFacadeService.getPayrollReportMapData$;
     }
 
     ngAfterViewInit(): void {
@@ -253,6 +278,7 @@ export class DriverOwnerReportComponent
                 this.getReportDataResults({
                     reportId: `${this.reportId}`,
                     selectedLoadIds: loadList,
+                    payrollOpenedTab: this.selectedTab,
                 });
             }
         }
@@ -260,8 +286,27 @@ export class DriverOwnerReportComponent
 
     public getReportDataResults(getData?: IGetPayrollByIdAndOptions): void {
         this.payrollDriverOwnerFacadeService.getPayrollDriverOwnerReport(
-            getData ?? {
-                reportId: `${this.reportId}`,
+            getData
+                ? {
+                      ...getData,
+                      payrollOpenedTab: this.selectedTab,
+                  }
+                : {
+                      reportId: `${this.reportId}`,
+                      payrollOpenedTab: this.selectedTab,
+                  }
+        );
+    }
+
+    public openPreviewModal(): void {
+        this.modalService.openModal(
+            PayrollReportComponent,
+            {},
+            {
+                data: {
+                    id: 210,
+                    type: 'MILEAGE',
+                },
             }
         );
     }

@@ -1,0 +1,138 @@
+@import 'src/theme/variables';
+
+/* Icon */
+
+.dropdown-icon-container {
+    border-radius: 2px;
+    transition: background 0.2s ease-in;
+    cursor: pointer;
+    width: 26px;
+    height: 26px;
+
+    &:hover {
+        background: $dark-2;
+
+        .icon {
+            svg {
+                path,
+                circle {
+                    fill: $ta-black;
+                }
+            }
+        }
+    }
+
+    &.active {
+        background: $ta-black;
+        padding-left: 2px;
+
+        .icon {
+            transform: rotate(90deg);
+
+            svg {
+                path,
+                circle {
+                    fill: $bw-9;
+                }
+            }
+        }
+    }
+
+    &.dark-background {
+        .icon {
+            svg {
+                circle {
+                    fill: $bw5;
+                }
+            }
+        }
+
+        &:hover {
+            background: $dark-3;
+
+            .icon {
+                svg {
+                    circle {
+                        fill: $bw-9;
+                    }
+                }
+            }
+        }
+
+        &.active {
+            background: $bw-9;
+
+            .icon {
+                svg {
+                    circle {
+                        fill: $ta-black;
+                    }
+                }
+            }
+        }
+    }
+
+    .icon {
+        transition: transform 0.2s ease-in;
+
+        svg {
+            path,
+            circle {
+                transition: fill 0.2s ease-in;
+                fill: $bw5;
+            }
+        }
+    }
+}
+
+/* Dropdown */
+
+.dropdown-container {
+    width: 142px;
+    padding: 4px;
+    border-radius: 3px;
+    background: $ta-black-2;
+
+    .dropdown-item {
+        &.has-border {
+            padding-bottom: 4px;
+            border-bottom: 1px solid $ta-black;
+            margin-bottom: 4px;
+        }
+
+        &-inner {
+            padding: 4px;
+            transition: background 0.2s ease-in;
+
+            &:hover {
+                background: $ta-black;
+            }
+
+            &-icon {
+                &.regular {
+                    svg {
+                        path {
+                            fill: $bw5;
+                        }
+                    }
+                }
+
+                &.activate {
+                    svg {
+                        path {
+                            fill: $ta-blue-13;
+                        }
+                    }
+                }
+
+                &.delete {
+                    svg {
+                        path {
+                            fill: $ta-red-10;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

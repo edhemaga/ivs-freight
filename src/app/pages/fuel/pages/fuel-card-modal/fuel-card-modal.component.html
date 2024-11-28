@@ -1,0 +1,169 @@
+<app-ta-modal
+    [modalTitle]="'Columns'"
+    [cardsSecTitle]="
+        tabSelected === 'inactive' ? 'Fuel | Stop' : 'Fuel | Transaction'
+    "
+    isCardsModal="true"
+    (action)="onActionModal($event)"
+    [isModalValid]="hasFormChanged"
+    [isResetFormCards]="resetForm"
+>
+    <div origin>
+        <!-- Number of rows -->
+        <form [formGroup]="cardsForm">
+            <div
+                class="d-flex justify-content-between form-holder head-title modal-cards align-items-center"
+            >
+                <div class="ta-font-extra-bold title-card-modal">
+                    No. of Rows
+                </div>
+                <div class="form-radio-btns d-flex">
+                    <ng-container
+                        *ngFor="let item of rowValues; trackBy: identity"
+                    >
+                        <label class="d-flex align-items-center radio-label">
+                            <input
+                                type="radio"
+                                formControlName="numberOfRows"
+                                [value]="item"
+                                class="radio-input"
+                            />
+                            <span class="ta-font-semi-bold radio-span">
+                                {{ item }}
+                            </span>
+                        </label>
+                    </ng-container>
+                </div>
+            </div>
+
+            <!-- Divider -->
+            <div class="divider card-color"></div>
+
+            <!-- Front Side -->
+            <div class="modal-cards">
+                <!-- For Front side of cards -->
+                <div class="front-side-body">
+                    <div
+                        class="ta-font-extra-bold title-card-modal title-margin"
+                    >
+                        Front Side
+                    </div>
+
+                    <div class="d-grid inputs-holder">
+                        <ng-container
+                            formArrayName="front_side"
+                            *ngFor="
+                                let frontRow of cardsForm.controls
+                                    | ngForLengthFilter
+                                        : cardsForm.get('numberOfRows').value;
+                                let i = index;
+                                trackBy: identity
+                            "
+                        >
+                            <div
+                                [formGroupName]="i"
+                                class="modal-holder first-row modal-holder-first d-grid align-items-end d-grid align-items-end"
+                            >
+                                <ng-container
+                                    *ngIf="
+                                        front_side_form.at(i).get('inputItem')
+                                            .value.title !== 'empty'
+                                    "
+                                >
+                                    <span
+                                        class="input-title ta-font-semi-bold"
+                                        >{{ i + 1 | numberOrdinal }}</span
+                                    ></ng-container
+                                >
+
+                                <app-modal-input-form
+                                    [dataCardModal]="cardsAllData"
+                                    [defaultValue]="
+                                        (displayData$ | async).front_side[
+                                            i
+                                        ] || {
+                                            title: i + 1 | numberOrdinal
+                                        }
+                                    "
+                                    [backupValue]="i + 1 | numberOrdinal"
+                                    formControlName="inputItem"
+                                    [titlesInForm]="titlesInForm"
+                                >
+                                </app-modal-input-form>
+                            </div>
+                        </ng-container>
+                    </div>
+                </div>
+
+                <!-- Divider -->
+                <div class="divider card-color"></div>
+
+                <!-- For Back side of cards -->
+                <div
+                    class="back-side-body"
+                    [ngStyle]="{
+                        'margin-bottom': cardsForm.get('checked').value
+                            ? '21px'
+                            : '8px'
+                    }"
+                >
+                    <div class="checkbox-modal">
+                        <app-ta-checkbox
+                            formControlName="checked"
+                            [label]="'Back Side'"
+                        ></app-ta-checkbox>
+                    </div>
+                    <ng-container *ngIf="cardsForm.get('checked').value">
+                        <div class="d-grid inputs-holder">
+                            <ng-container
+                                formArrayName="back_side"
+                                *ngFor="
+                                    let backRow of cardsForm.controls
+                                        | ngForLengthFilter
+                                            : cardsForm.get('numberOfRows')
+                                                  .value;
+                                    let i = index;
+                                    trackBy: identity
+                                "
+                            >
+                                <div
+                                    [formGroupName]="i"
+                                    class="modal-holder first-row modal-holder-first d-grid align-items-end d-grid align-items-end"
+                                >
+                                    <ng-container
+                                        *ngIf="
+                                            back_side_form
+                                                .at(i)
+                                                .get('inputItem').value
+                                                .title !== 'empty'
+                                        "
+                                    >
+                                        <span
+                                            class="input-title ta-font-semi-bold"
+                                            >{{ i + 1 | numberOrdinal }}</span
+                                        ></ng-container
+                                    >
+
+                                    <app-modal-input-form
+                                        [dataCardModal]="cardsAllData"
+                                        [defaultValue]="
+                                            (displayData$ | async).back_side[
+                                                i
+                                            ] || {
+                                                title: i + 1 | numberOrdinal
+                                            }
+                                        "
+                                        [backupValue]="i + 1 | numberOrdinal"
+                                        formControlName="inputItem"
+                                        [titlesInForm]="titlesInForm"
+                                    >
+                                    </app-modal-input-form>
+                                </div>
+                            </ng-container>
+                        </div>
+                    </ng-container>
+                </div>
+            </div>
+        </form>
+    </div>
+</app-ta-modal>

@@ -69,6 +69,9 @@ import { fullNameValidation } from '@shared/components/ta-input/validators/ta-in
 //Methods
 import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calculations.helper';
 
+// Moment
+import moment from 'moment';
+
 @Component({
     selector: 'app-fuel-purchase-modal',
     templateUrl: './fuel-purchase-modal.component.html',
@@ -94,9 +97,6 @@ import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calcula
         TaModalTableComponent,
         TaCopyComponent,
         TaInputDropdownComponent,
-
-        // Pipe
-        SumArraysPipe,
     ],
 })
 export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
@@ -183,7 +183,11 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
                     this.inputService.markInvalid(this.fuelForm);
                     return;
                 }
-                if (this.editData && !this.editData?.isShortModal) {
+                if (
+                    this.editData &&
+                    !this.editData?.isShortModal &&
+                    this.editData?.id
+                ) {
                     this.fuelTransactionType?.name !==
                     FuelValuesStringEnum.MANUAL
                         ? this.updateFuelEFS(this.editData.id)
@@ -340,6 +344,7 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
             fuelItems: this.fuelItems,
             files: this.mapDocuments(),
             filesForDeleteIds: [],
+            payrollOwnerId: this.editData.payrollOwnerId,
         };
         this.fuelService
             .addFuelTransaction(newData)
@@ -508,13 +513,19 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
                     if (
                         this.selectedTruckType &&
                         this.fuelForm.get(FuelValuesStringEnum.TRANSACTION_DATE)
+                            .value &&
+                        this.fuelForm.get(FuelValuesStringEnum.TRANSACTION_TIME)
                             .value
                     ) {
+                        const date =  this.fuelForm.get(
+                            FuelValuesStringEnum.TRANSACTION_DATE
+                        ).value;
+                        const time = this.fuelForm.get(
+                            FuelValuesStringEnum.TRANSACTION_TIME
+                        ).value;
                         return this.fuelService.getDriverBySelectedTruckAndDate(
                             this.selectedTruckType.id,
-                            this.fuelForm.get(
-                                FuelValuesStringEnum.TRANSACTION_DATE
-                            ).value
+                            moment.utc(new Date(date + ' ' + time)).format()
                         );
                     } else {
                         return of();

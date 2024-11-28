@@ -1,0 +1,106 @@
+@import 'src/theme/variables';
+
+.repaired-vehicle-list-container {
+    padding: 6px;
+    border-radius: 3px;
+    background: $white;
+
+    /* Search */
+
+    .repaired-vehicle-list-search {
+        margin-bottom: 4px;
+    }
+
+    /* Header */
+
+    .repaired-vehicle-list-header {
+        display: grid;
+        grid-template-columns: 60px 42px 34px 72px;
+        grid-gap: 27px;
+        padding: 6px;
+        border-bottom: 1px solid $bw-9;
+        margin-bottom: 6px;
+    }
+
+    /* Body */
+
+    .repaired-vehicle-list-body {
+        &-item {
+            display: grid;
+            grid-template-columns: 60px 42px 34px 72px;
+            grid-gap: 27px;
+            padding: 8px 6px;
+            margin-bottom: 2px;
+            border-radius: 2px;
+            transition: background 0.2s ease-in-out;
+
+            &:hover {
+                background: $bw2;
+            }
+
+            .vehicle-unit-container {
+                cursor: pointer;
+
+                &:hover {
+                    p {
+                        color: $ta-blue-15 !important;
+                    }
+                }
+
+                p {
+                    transition: color 0.2s ease-in-out;
+                }
+            }
+
+            .vehicle-type-container {
+                .vehicle-icon {
+                    height: 18px;
+
+                    &.blue {
+                        svg {
+                            path {
+                                fill: $ta-blue-14 !important;
+                            }
+                        }
+                    }
+
+                    &.yellow {
+                        svg {
+                            path {
+                                fill: $ta-yellow-5 !important;
+                            }
+                        }
+                    }
+
+                    &.red {
+                        svg {
+                            path {
+                                fill: $ta-red-11 !important;
+                            }
+                        }
+                    }
+
+                    &.green {
+                        svg {
+                            path {
+                                fill: $ta-green-2 !important;
+                            }
+                        }
+                    }
+
+                    svg {
+                        height: 18px;
+                    }
+                }
+            }
+        }
+    }
+
+    /* Footer */
+
+    .repaired-vehicle-list-footer {
+        padding: 6px 6px 0 6px;
+        margin-top: 4px;
+        border-top: 1px solid $bw-9;
+    }
+}

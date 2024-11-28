@@ -181,6 +181,7 @@ export class FuelService {
         costTo?: number,
         ppgFrom?: number,
         ppgTo?: number,
+        closed?: boolean,
         pageIndex?: number,
         pageSize?: any,
         companyId?: number,

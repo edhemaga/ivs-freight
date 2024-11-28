@@ -102,7 +102,9 @@ body {
         .scrollable-element
     ):not(.dropdown-options.scroll):not(.navigation-middle):not(
         .map-list-body
-    ):not(.cluster-marker-container) {
+    ):not(.cluster-marker-container):not(
+        .shop-details-item-repair-main-dropdown
+    ) {
     scrollbar-width: none !important; /* Firefox */
 
     &::-webkit-scrollbar {
@@ -495,6 +497,18 @@ app-load-modal {
     }
 }
 
+// description items text count directive
+.items-counter-count {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 25px;
+    height: 18px;
+    border-radius: 50%;
+    margin-left: auto;
+    background: $dark-2;
+}
+
 .pl {
     &-0 {
         padding-left: 0 !important;
@@ -508,5 +522,11 @@ html ngb-modal-backdrop {
     &:first-of-type {
         opacity: 0.2 !important;
         background: $bw5 !important;
+    }
+}
+
+.modal-payroll-report {
+    .modal-original-part {
+        width: 100%;
     }
 }

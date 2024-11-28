@@ -70,7 +70,7 @@ export class DriverDetailsItemMedicalComponent
 {
     @ViewChild('driverMedicalFiles') driverMedicalFiles: TaUploadFilesComponent;
 
-    @Input() cardsData: MedicalResponse[];
+    @Input() medicalList: MedicalResponse[];
     @Input() driver: DriverResponse;
 
     private destroy$ = new Subject<void>();
@@ -99,10 +99,10 @@ export class DriverDetailsItemMedicalComponent
     }
 
     ngOnChanges(changes: SimpleChanges): void {
-        if (changes.cardsData?.currentValue) {
+        if (changes.medicalList?.currentValue) {
             this.getDetailsOptions();
 
-            this.getMedicalData(changes.cardsData.currentValue);
+            this.getMedicalData(changes.medicalList.currentValue);
         }
     }
 
@@ -182,7 +182,7 @@ export class DriverDetailsItemMedicalComponent
         action: string
     ): void {
         const name = DropActionNameHelper.dropActionNameDriver(event, action);
-        const medical = this.cardsData.find(
+        const medical = this.medicalList.find(
             (medical) => medical.id === event.id
         );
 

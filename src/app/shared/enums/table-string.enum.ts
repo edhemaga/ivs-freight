@@ -102,6 +102,7 @@ export enum TableStringEnum {
 
     //Empty string
     EMPTY_STRING_PLACEHOLDER = '',
+    EMPTY_STRING_SPACE = ' ',
     NA = 'NA',
 
     // Separators
@@ -394,6 +395,8 @@ export enum TableStringEnum {
     FUEL_TABLE_COUNT = 'fuelTableCount',
     FUEL_TABLE_VIEW = 'Fuel-table-view',
     ASC = 'asc',
+    FUEL_TRANSACTION_FILTER_INTEGRATED = 'fuel-filter',
+    FUEL_STOP_FILTER_CLOSED = 'closed-filter',
 
     // Contact
     DELTETE_CONTACT = 'delete-contact',
@@ -555,6 +558,7 @@ export enum TableStringEnum {
 
     BROKER_CONTACT = 'broker contact',
     SHIPPER_CONTACT = 'shipper contact',
+    REPAIR_SHOP_CONTACT = 'repair shop contact',
     VOIDED = 'VOIDED',
 
     // Card States
@@ -567,8 +571,11 @@ export enum TableStringEnum {
     USER_CARD_STATE = 'userCardState',
     TRUCK_CARD_STATE = 'truckCardState',
     PM_CARD_STATE = 'pmCardState',
+    FUEL_CARD_STATE = 'fuelCardState',
     DEDUCTION = 'deduction',
     CREDIT = 'credit',
     PAYROLL = 'payroll',
-    BONUS = 'bonus'
+    BONUS = 'bonus',
+    ACTIVITY = 'activity',
+    NULL = 'null',
 }

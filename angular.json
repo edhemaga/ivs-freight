@@ -43,7 +43,8 @@
                             "./node_modules/ngx-toastr/toastr.css",
                             "./node_modules/croppie/croppie.css",
                             "./node_modules/slick-carousel/slick/slick.scss",
-                            "./node_modules/slick-carousel/slick/slick-theme.scss"
+                            "./node_modules/slick-carousel/slick/slick-theme.scss",
+                            "./node_modules/ca-components/assets/scss/ca-global.scss"
                         ],
                         "scripts": [
                             "./node_modules/jquery/dist/jquery.min.js",
@@ -83,6 +84,7 @@
                             "outputHashing": "all"
                         },
                         "staging": {
+                            "optimization": true,
                             "budgets": [
                                 {
                                     "type": "initial",

@@ -81,10 +81,11 @@
 
         <script type="text/javascript">
             window.FontAwesomeConfig = { autoReplaceSvg: false };
+            function gmNoop() { console.log('GMap Callback') }
         </script>
         <script src="https://cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.min.js"></script>
         <script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
-        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCw4WQw1T4N6TjFWdS731mM09x88SGW81I&callback=Function.prototype&libraries=places,geometry,visualization&language=en"></script>
+        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCw4WQw1T4N6TjFWdS731mM09x88SGW81I&callback=Function.prototype&libraries=places,geometry,visualization&language=en&callback=gmNoop"></script>
     </head>
     <body>
         <app-root></app-root>

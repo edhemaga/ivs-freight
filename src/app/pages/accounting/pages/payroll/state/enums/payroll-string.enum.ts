@@ -21,4 +21,5 @@ export enum PayrollStringEnum {
     MODAL_DEDUCTION = 'MODAL_DEDUCTION',
     MODAL_CREDIT = 'MODAL_CREDIT',
     MODAL_BONUS = 'MODAL_BONUS',
+    REPORT = 'report'
 }

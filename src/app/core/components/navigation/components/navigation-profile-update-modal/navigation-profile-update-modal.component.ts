@@ -34,7 +34,6 @@ import { TaModalComponent } from '@shared/components/ta-modal/ta-modal.component
 import { TaTabSwitchComponent } from '@shared/components/ta-tab-switch/ta-tab-switch.component';
 import { TaInputComponent } from '@shared/components/ta-input/ta-input.component';
 import { TaInputAddressDropdownComponent } from '@shared/components/ta-input-address-dropdown/ta-input-address-dropdown.component';
-import { TaLogoChangeComponent } from '@shared/components/ta-logo-change/ta-logo-change.component';
 import { TaCheckboxCardComponent } from '@shared/components/ta-checkbox-card/ta-checkbox-card.component';
 import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-custom-card.component';
 import { CaUploadFilesComponent } from 'ca-components';
@@ -70,7 +69,6 @@ import { NavigationDataConstants } from '../../utils/constants/navigation-data.c
         TaInputComponent,
         TaInputAddressDropdownComponent,
         TaCheckboxCardComponent,
-        TaLogoChangeComponent,
         TaCustomCardComponent,
         // components
         CaUploadFilesComponent,

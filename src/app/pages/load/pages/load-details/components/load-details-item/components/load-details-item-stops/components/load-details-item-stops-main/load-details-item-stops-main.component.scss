@@ -245,9 +245,9 @@
                 .columns-scroll {
                     display: grid;
                     grid-template-columns: 74px 34px 50px repeat(4, 34px) 56px 80px 90px repeat(
-                        2,
-                        60px
-                    );
+                            2,
+                            60px
+                        );
                     grid-gap: 17.33px;
                     overflow-x: auto;
 
@@ -257,7 +257,7 @@
                         &::-webkit-scrollbar {
                             height: 4px;
                         }
-                    
+
                         &::-webkit-scrollbar-thumb {
                             background-color: $bw-9;
                             border: 0px;
@@ -268,7 +268,7 @@
                                 background-color: $bw4;
                             }
                         }
-                    
+
                         &::-webkit-scrollbar-track {
                             background: transparent;
                             height: 4px;

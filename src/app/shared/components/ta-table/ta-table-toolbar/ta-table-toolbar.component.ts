@@ -49,6 +49,7 @@ import { CustomerCardModalComponent } from '@pages/customer/pages/customer-table
 import { TrailerCardModalComponent } from '@pages/trailer/pages/trailer-card-modal/trailer-card-modal.component';
 import { DriverCardModalComponent } from '@pages/driver/pages/driver-card-modal/driver-card-modal.component';
 import { UserCardModalComponent } from '@pages/user/pages/user-card-modal/user-card-modal.component';
+import { FuelCardModalComponent } from '@pages/fuel/pages/fuel-card-modal/fuel-card-modal.component';
 
 // enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
@@ -65,10 +66,10 @@ import {
     UntypedFormControl,
 } from '@angular/forms';
 
-// Directive
-import { PreventMultipleclicksDirective } from '@shared/directives/prevent-multipleclicks.directive';
+// directives
+import { PreventMultipleclicksDirective } from '@shared/directives/';
 
-// Const
+// constants
 import {
     TableToolbarRoutes,
     TableToolbarConstants,
@@ -243,6 +244,10 @@ export class TaTableToolbarComponent implements OnInit, OnChanges, OnDestroy {
             });
         } else if (this.listName === TableStringEnum.USER) {
             this.modalService.openModal(UserCardModalComponent, {
+                size: TableStringEnum.SMALL,
+            });
+        } else if (this.listName === TableStringEnum.FUEL) {
+            this.modalService.openModal(FuelCardModalComponent, {
                 size: TableStringEnum.SMALL,
             });
         } else {
