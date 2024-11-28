@@ -619,9 +619,6 @@
                 .columns-container {
                     width: 100%;
                     height: fit-content;
-                    // max-height: 495px;
-                    // overflow-x: hidden;
-                    // overflow-y: scroll;
 
                     .column,
                     .group-columns-container {
@@ -2267,12 +2264,14 @@
     .multiple-details-container {
         position: relative;
         top: -4px;
-        width: 162px;
+        width: 140px;
         border-radius: 3px;
-        padding: 4px 7px;
+        padding: 4px;
         background: $ta-black-2;
 
         .popover-item {
+            padding: 4px 6px;
+            margin-bottom: 4px;
             text-transform: capitalize;
 
             &:hover:not(.active) {
@@ -2281,7 +2280,7 @@
 
             &.active {
                 .counter-container {
-                    background: $ta-blue-13;
+                    background: $ta-blue-18;
 
                     p {
                         color: $white;
@@ -2290,7 +2289,8 @@
             }
 
             .counter-container {
-                padding: 2px 5px;
+                width: 18px;
+                height: 18px;
                 border-radius: 10px;
                 background: $ta-black;
 

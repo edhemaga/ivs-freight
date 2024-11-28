@@ -29,6 +29,7 @@ import {
     PayrollDriverMileageListResponse,
 } from 'appcoretruckassist';
 import { PayrollDriverMileageExpandedListResponse } from '@pages/accounting/pages/payroll/state/models';
+import { PayrollTablesStatus } from '../enums';
 
 @Injectable({
     providedIn: 'root',
@@ -83,16 +84,18 @@ export class PayrollDriverCommissionFacadeService {
         selectedLoadIds,
         selectedCreditIds,
         selectedDeductionIds,
+        payrollOpenedTab,
     }: {
         reportId: string;
         selectedLoadIds?: number[];
         selectedCreditIds?: number[];
         selectedDeductionIds?: number[];
+        payrollOpenedTab: PayrollTablesStatus;
     }): void {
         this.store
             .pipe(select(selectPayrollState), take(1))
             .subscribe((payrollState) => {
-                if (payrollState.payrollOpenedTab === 'closed') {
+                if (payrollOpenedTab === 'closed') {
                     this.store.dispatch(
                         PayrollCommissionActions.getPayrollCommissionReportDriverClosedPayroll(
                             {

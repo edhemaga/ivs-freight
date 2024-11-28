@@ -36,8 +36,8 @@
                 </div>
 
                 <ng-container *ngIf="!isFuelTable; else showItemsDropdown">
-                    <app-ta-input
-                        formControlName="description"
+                    <app-ca-input
+                        [formControl]="repairBillItemRow.get('description')"
                         [inputConfig]="{
                         name: 'description',
                         type: 'text',
@@ -45,7 +45,7 @@
                         placeholderInsteadOfLabel: true,
                         minLength: 5,
                         maxLength: 64,
-                        textTransform: 'lowercase',
+                        textTransform: 'capitalize',
                         hideErrorMessage: true,
                         hideRequiredCheck: true,
                         isRequired: true,
@@ -56,12 +56,12 @@
                             !isInputHoverRows[i][0] &&
                             selectedTruckTrailerRepairPm[i],
                         blackInput:
-                            formArray.at(i).get('description').value &&
+                            repairBillItemRow.get('description').value &&
                             !isInputHoverRows[i][0],
                     }"
                         (mouseenter)="emitOnInputHover(true, i, 0)"
                         (mouseleave)="emitOnInputHover(false, i, 0)"
-                    ></app-ta-input>
+                    ></app-ca-input>
                     <div
                         class="pm-dropdown-container"
                         [ngClass]="{
@@ -105,7 +105,7 @@
 
                 <ng-template #showItemsDropdown>
                     <app-ca-input-dropdown
-                        formControlName="itemfuel"
+                        [formControl]="repairBillItemRow.get('itemfuel')"
                         [inputConfig]="{
                         name: 'Input Dropdown',
                         type: 'text',
@@ -123,9 +123,8 @@
                         (selectedItem)="emitOnSelectDropdown($event, i)"
                     ></app-ca-input-dropdown>
                 </ng-template>
-
-                <app-ta-input
-                    [formControlName]="!isFuelTable ? 'quantity' : 'qty'"
+                <app-ca-input
+                    [formControl]="repairBillItemRow.get(!isFuelTable ? 'quantity' : 'qty')"
                     [inputConfig]="{
                         name: 'qty',
                         type: 'text',
@@ -136,6 +135,8 @@
                         isRequired: true,
                         hideErrorMessage: true,
                         hideRequiredCheck: true,
+                        priceSeparator: true,
+                        priceSeparatorLimitation: 16,
                         isInputBackgroundRemoved:
                             repairBillItemRow.valid && !isInputHoverRows[i][1],
                         isBlueText:
@@ -143,29 +144,29 @@
                             !isInputHoverRows[i][1] &&
                             selectedTruckTrailerRepairPm[i],
                         blackInput:
-                            formArray.at(i).get('quantity').value &&
+                            repairBillItemRow.get('quantity').value &&
                             !isInputHoverRows[i][1]
                     }"
                     (mouseenter)="emitOnInputHover(true, i, 1)"
                     (mouseleave)="emitOnInputHover(false, i, 1)"
-                ></app-ta-input>
+                ></app-ca-input>
 
                 <ng-container *ngIf="!isRepairOrderTable">
-                    <app-ta-input
-                        formControlName="price"
+                    <app-ca-input
+                        [formControl]="repairBillItemRow.get('price')"
                         [inputConfig]="{
                             name: 'price',
                             type: 'text',
                             label: 'Price',
                             placeholderInsteadOfLabel: true,
-                            priceSeparatorLimitation: 6,
+                            
                             minLength: 5,
                             maxLength: 64,
                             isRequired: true,
                             hideErrorMessage: true,
                             hideRequiredCheck: true,
                             priceSeparator: true,
-                            priceSeparatorLimitation: 6,
+                            priceSeparatorLimitation: 16,
                             isInputBackgroundRemoved:
                                 repairBillItemRow.valid &&
                                 !isInputHoverRows[i][2],
@@ -174,12 +175,12 @@
                                 !isInputHoverRows[i][2] &&
                                 selectedTruckTrailerRepairPm[i],
                             blackInput:
-                                formArray.at(i).get('price').value &&
+                                repairBillItemRow.get('price').value &&
                                 !isInputHoverRows[i][2]
                         }"
                         (mouseenter)="emitOnInputHover(true, i, 2)"
                         (mouseleave)="emitOnInputHover(false, i, 2)"
-                    ></app-ta-input>
+                    ></app-ca-input>
 
                     <div
                         class="subtotal d-flex justify-content-end"

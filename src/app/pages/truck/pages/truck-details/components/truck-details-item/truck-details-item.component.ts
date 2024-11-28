@@ -190,7 +190,7 @@ export class TruckDetailsItemComponent implements OnInit, OnDestroy, OnChanges {
         objects: TruckDetailsConfigData[]
     ): boolean {
         const currentDate = moment().valueOf();
-        return objects.some((object) => {
+        return objects?.some((object) => {
             const expDate = moment(object.expDate).valueOf();
             const isExpiredOrVoided = expDate < currentDate || object.voidedOn;
             return isExpiredOrVoided;

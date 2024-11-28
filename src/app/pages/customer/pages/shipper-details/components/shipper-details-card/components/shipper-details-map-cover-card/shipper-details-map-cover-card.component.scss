@@ -1,0 +1,32 @@
+@import 'src/theme/variables';
+
+.shop-details-map-location-cover {
+    &-header {
+        margin-bottom: 12px;
+    }
+
+    &-main {
+        width: 416px;
+        height: 277px;
+        border-radius: 3px;
+
+        &-map,
+        &-cover {
+            width: 100%;
+            height: 100%;
+
+            img {
+                width: 100%;
+                height: 100%;
+                border-radius: 3px;
+
+                object-fit: fill;
+                -o-object-fit: fill;
+            }
+        }
+
+        &-map {
+            background: $bw-9;
+        }
+    }
+}

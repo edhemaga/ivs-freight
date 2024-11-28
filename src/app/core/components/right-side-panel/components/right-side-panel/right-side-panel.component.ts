@@ -1,22 +1,30 @@
 import { CommonModule, formatDate } from '@angular/common';
 import { Component, EventEmitter, OnDestroy, Output } from '@angular/core';
-import { forkJoin, Subject, takeUntil } from 'rxjs';
+import { catchError, forkJoin, map, of, Subject, takeUntil } from 'rxjs';
 
 // models
 import {
     ActivityLogActionFilterResponse,
     ActivityLogDepartmentResponse,
     ActivityLogModuleFilterResponse,
+    CompanyResponse,
+    CompanyShortResponse,
     CompanyUserActivityLogListResponse,
     CompanyUserActivityLogResponse,
 } from 'appcoretruckassist';
-import { ActivityLogFilterParams } from '@core/components/right-side-panel/models';
+import {
+    ActivityLogFilterParams,
+    CompanySidePanelData,
+} from '@core/components/right-side-panel/models';
 
 // components
 import { CaRightSidePanelComponent } from 'ca-components';
 
 // services
-import { ActivityLogService } from '@core/components/right-side-panel/services/activity-log.service';
+import {
+    ActivityLogService,
+    CompanySidePanelService,
+} from '@core/components/right-side-panel/services';
 
 // enums
 import {
@@ -36,16 +44,20 @@ import { GetCurrentUserHelper } from '@pages/chat/utils/helpers';
 })
 export class RightSidePanelComponent implements OnDestroy {
     private getCurrentUserHelper = GetCurrentUserHelper;
+    public companiesData: CompanySidePanelData[] = [];
     public activityLogData: CompanyUserActivityLogResponse[] = [];
     public usersFilterData: ActivityLogDepartmentResponse[] = [];
     public modulesFilterData: ActivityLogModuleFilterResponse[] = [];
     public actionsFilterData: ActivityLogActionFilterResponse[] = [];
+    public companyData: CompanyResponse;
     private destroy$ = new Subject<void>();
 
-    @Output() isSidePanelPinned: EventEmitter<boolean> =
-    new EventEmitter();
+    @Output() isSidePanelPinned: EventEmitter<boolean> = new EventEmitter();
 
-    constructor(private activityLogService: ActivityLogService) {}
+    constructor(
+        private activityLogService: ActivityLogService,
+        private companyService: CompanySidePanelService
+    ) {}
 
     public selectedNavModuleEvent(selectedNavModule: SelectedModule): void {
         switch (selectedNavModule) {
@@ -57,6 +69,9 @@ export class RightSidePanelComponent implements OnDestroy {
                     this.getCurrentUserHelper.currentUserId
                 );
                 this.getActivityLogs(companyUserIds);
+                break;
+            case SelectedModule.COMPANY_INFO:
+                this.setMainCompanyData();
                 break;
             default:
                 break;
@@ -147,6 +162,62 @@ export class RightSidePanelComponent implements OnDestroy {
 
     public sidePanelPinEvent(isSidePanelPinned: boolean): void {
         this.isSidePanelPinned.emit(isSidePanelPinned);
+    }
+
+    public navOpenEvent(isNavOpen: boolean): void {
+        if (isNavOpen) this.setCompaniesData();
+    }
+
+    private setCompaniesData(): void {
+        this.companyService
+            .getCompany()
+            .pipe(
+                takeUntil(this.destroy$),
+                map((res: CompanyResponse) =>
+                    this.transformCompaniesData(res.divisions)
+                ),
+                catchError(() => {
+                    return of([]);
+                })
+            )
+            .subscribe((companies) => {
+                this.companiesData = companies;
+            });
+    }
+
+    private transformCompaniesData(
+        divisions: CompanyShortResponse[]
+    ): CompanySidePanelData[] {
+        return (
+            divisions?.map((company) => ({
+                ...company,
+                id: company.id,
+                companyName: company.companyName,
+                isDivision: company.isDivision,
+            })) ?? []
+        );
+    }
+
+    private setMainCompanyData(): void {
+        this.companyService
+            .getCompany()
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((res: CompanyResponse) => {
+                this.companyData = res;
+            });
+    }
+
+    public selectedDivisionIdEvent(divisionId: number): void {
+        this.setDivisionCompanyData(divisionId);
+    }
+
+    private setDivisionCompanyData(divisionId: number): void {
+        this.companyService
+            .getDivisionById(divisionId)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((res: CompanyResponse) => {
+                this.companyData = res;
+            });
     }
 
     ngOnDestroy(): void {

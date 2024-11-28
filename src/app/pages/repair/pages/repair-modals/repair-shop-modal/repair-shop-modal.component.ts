@@ -10,7 +10,6 @@ import {
 import { CommonModule } from '@angular/common';
 import {
     FormArray,
-    FormGroup,
     FormsModule,
     ReactiveFormsModule,
     UntypedFormArray,
@@ -30,7 +29,6 @@ import {
     EnumValue,
     FileResponse,
     RepairShopContactCommand,
-    RepairShopContactListResponse,
     RepairShopContactResponse,
     RepairShopOpenHoursCommand,
     RepairShopResponse,
@@ -58,6 +56,9 @@ import { FormService } from '@shared/services/form.service';
 import { RepairService } from '@shared/services/repair.service';
 import { TaLikeDislikeService } from '@shared/components/ta-like-dislike/services/ta-like-dislike.service';
 import { ReviewsRatingService } from '@shared/services/reviews-rating.service';
+import { TaInputService } from '@shared/services/ta-input.service';
+import { ConfirmationService } from '@shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
+import { ConfirmationActivationService } from '@shared/components/ta-shared-modals/confirmation-activation-modal/services/confirmation-activation.service';
 
 // Validators
 import {
@@ -94,10 +95,11 @@ import { CaUploadFilesComponent } from 'ca-components';
 import { TaUserReviewComponent } from '@shared/components/ta-user-review/ta-user-review.component';
 import { ConfirmationActivationModalComponent } from '@shared/components/ta-shared-modals/confirmation-activation-modal/confirmation-activation-modal.component';
 import { TaCheckboxCardComponent } from '@shared/components/ta-checkbox-card/ta-checkbox-card.component';
+import { ConfirmationModalComponent } from '@shared/components/ta-shared-modals/confirmation-modal/confirmation-modal.component';
 
 // Modules
 import { AngularSvgIconModule } from 'angular-svg-icon';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbActiveModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 // Enums
 import { ModalTableTypeEnum } from '@shared/enums/modal-table-type.enum';
@@ -105,7 +107,6 @@ import { TableStringEnum } from '@shared/enums/table-string.enum';
 import { ConfirmationActivationStringEnum } from '@shared/components/ta-shared-modals/confirmation-activation-modal/enums/confirmation-activation-string.enum';
 import {
     ActionTypesEnum,
-    FileActionEvent,
     OpenWorkingHours,
     RepairShopModalStringEnum,
     RepairShopModalEnum,
@@ -121,7 +122,6 @@ import { RepairShopModalSvgRoutes } from '@pages/repair/pages/repair-modals/repa
 import { OpenedTab } from '@pages/repair/pages/repair-modals/repair-shop-modal/types';
 import { ITaInput } from '@shared/components/ta-input/config/ta-input.config';
 import { ContactsModalConstants } from '@pages/contacts/pages/contacts-modal/utils/constants/contacts-modal.constants';
-import { MethodsGlobalHelper } from '@shared/utils/helpers/methods-global.helper';
 
 @Component({
     selector: 'app-repair-shop-modal',
@@ -238,7 +238,8 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
         RepairShopConfig.getOpenHoursFormField();
     public businessStatus: number;
     private repairShop: RepairShopResponse;
-
+    public isCompanyRelated: boolean = false;
+    public isFormDirty: boolean = false;
     constructor(
         private formBuilder: UntypedFormBuilder,
 
@@ -251,13 +252,17 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
         private modalService: ModalService,
         private taLikeDislikeService: TaLikeDislikeService,
         private formService: FormService,
-        private reviewRatingService: ReviewsRatingService
+        private reviewRatingService: ReviewsRatingService,
+        private confirmationService: ConfirmationService,
+        private ngbActiveModal: NgbActiveModal,
+        private confirmationActivationService: ConfirmationActivationService,
+        private inputService: TaInputService
     ) {}
 
     public get isModalValidToSubmit(): boolean {
         return (
             this.repairShopForm.valid &&
-            this.repairShopForm.dirty &&
+            this.isFormDirty &&
             this.isEachContactRowValid
         );
     }
@@ -374,7 +379,26 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
         this.initTabs();
         this.generateForm();
         this.initializeServices();
+        this.confirmationActivationSubscribe();
+        this.confirmationData();
         this.companyUser = JSON.parse(localStorage.getItem('user'));
+    }
+
+    private confirmationActivationSubscribe(): void {
+        this.confirmationActivationService.getConfirmationActivationData$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe(() => {
+                this.ngbActiveModal?.close();
+            });
+    }
+
+    private confirmationData(): void {
+        this.confirmationService.confirmationData$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((res) => {
+                if (res.action !== TableStringEnum.CLOSE)
+                    this.ngbActiveModal?.close();
+            });
     }
 
     private generateForm(): void {
@@ -418,8 +442,17 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
             [RepairShopModalStringEnum.RENT]: [null],
             [RepairShopModalStringEnum.OPEN_HOURS]: this.formBuilder.array([]),
             [RepairShopModalStringEnum.COVER]: [null],
+            [RepairShopModalStringEnum.SERVICE_HELPER]: null,
         });
         this.tabTitle = this.editData?.data?.name;
+
+        this.inputService.customInputValidator(
+            this.repairShopForm.get(RepairShopModalStringEnum.EMAIL),
+            RepairShopModalStringEnum.EMAIL,
+            this.destroy$
+        );
+
+        this.isCompanyRelated = this.editData?.companyOwned;
     }
 
     // Inside your component
@@ -433,8 +466,6 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: ({ dropdowns, repairShop }) => {
-                    this.initWorkingHours(repairShop);
-
                     this.services = RepairShopHelper.mapServices(
                         dropdowns,
                         true
@@ -493,7 +524,12 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
                         });
 
                         this.mapEditData(repairShop);
+                        this.isCompanyRelated =
+                            this.editData?.companyOwned ||
+                            repairShop.isCompanyRelated;
                     }
+
+                    this.initWorkingHours(repairShop);
 
                     this.preSelectService(repairShop?.shopServiceType);
                 },
@@ -508,6 +544,10 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
         this.isBankSelected = !!res.bank;
         this.files = res.files;
         this.coverPhoto = res.cover;
+
+        this.repairShopForm
+            .get(RepairShopModalStringEnum.SERVICE_HELPER)
+            .patchValue(JSON.stringify(this.services));
 
         this.updatedRepairShopContacts = res.contacts;
 
@@ -626,7 +666,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
     private initWorkingHours(repairShop: RepairShopResponse): void {
         if (this.editData?.id) {
             this.workingDaysLabel.forEach((day) => {
-                const matchingOpenHours = repairShop.openHours.filter(
+                const matchingOpenHours = repairShop.openHoursModal.filter(
                     (openDay) => openDay.dayOfWeek === day.dayOfWeek
                 );
 
@@ -664,6 +704,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
                 );
             });
         }
+        setTimeout(() => this.startFormChanges(), 500);
     }
 
     public addShift(dayIndex: number): void {
@@ -793,6 +834,19 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
 
     public activeRepairService(service: RepairShopModalService): void {
         service.active = !service.active;
+        this.repairShopForm
+            .get(RepairShopModalStringEnum.SERVICE_HELPER)
+            .patchValue(JSON.stringify(this.services));
+    }
+
+    private startFormChanges(): void {
+        this.formService.checkFormChange(this.repairShopForm);
+
+        this.formService.formValueChange$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe(
+                (isFormChange: boolean) => (this.isFormDirty = isFormChange)
+            );
     }
 
     // Bank
@@ -908,6 +962,13 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
     }
 
     public onModalAction(data: RepairShopModalAction): void {
+        if (data.action === ActionTypesEnum.DELETE) {
+            this.showDeleteBusinessModal();
+        }
+        if (data.action === ActionTypesEnum.CLOSE_BUSINESS) {
+            this.showCloseBusinessModal();
+        }
+
         // Prevent double click
         if (!this.isModalValidToSubmit || this.isRequestInProgress) {
             return;
@@ -927,13 +988,6 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
             }
 
             return;
-        }
-
-        if (data.action === ActionTypesEnum.DELETE) {
-            this.deleteRepairShop(this.editData.id);
-        }
-        if (data.action === ActionTypesEnum.CLOSE_BUSINESS) {
-            this.showCloseBusinessModal();
         }
     }
 
@@ -985,19 +1039,40 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
                 RepairShopModalStringEnum.SHOP_SERVICE_TYPE
             ),
             openHours: this.formatOpenHours(),
-            weeklyDay: this.selectedWeeklyDay
-                ? this.selectedWeeklyDay.id
+            weeklyDay: !this.getFromFieldValue(
+                RepairShopModalStringEnum.COMPANY_OWNED
+            )
+                ? this.selectedWeeklyDay
+                    ? this.selectedWeeklyDay.id
+                    : null
                 : null,
-            payPeriod: this.selectedPayPeriod
-                ? this.selectedPayPeriod.id
+            payPeriod: !this.getFromFieldValue(
+                RepairShopModalStringEnum.COMPANY_OWNED
+            )
+                ? this.selectedPayPeriod
+                    ? this.selectedPayPeriod.id
+                    : null
                 : null,
-            monthlyDay: this.selectedMonthlyDays
-                ? this.selectedMonthlyDays.id
+            monthlyDay: !this.getFromFieldValue(
+                RepairShopModalStringEnum.COMPANY_OWNED
+            )
+                ? this.selectedMonthlyDays
+                    ? this.selectedMonthlyDays.id
+                    : null
                 : null,
-            // this.getFromFieldValue(RepairShopModalStringEnum.COMPANY_OWNED)
-            companyOwned: true,
-            isCompanyRelated: true,
-            rent: this.getFromFieldValue(RepairShopModalStringEnum.RENT),
+            companyOwned: this.isCompanyRelated
+                ? this.getFromFieldValue(
+                      RepairShopModalStringEnum.COMPANY_OWNED
+                  )
+                : null,
+            isCompanyRelated: this.isCompanyRelated,
+            rent: !this.getFromFieldValue(
+                RepairShopModalStringEnum.COMPANY_OWNED
+            )
+                ? MethodsCalculationsHelper.convertThousanSepInNumber(
+                      this.getFromFieldValue(RepairShopModalStringEnum.RENT)
+                  )
+                : null,
             cover: this.convertCoverDocumentForRequest(),
         };
 
@@ -1073,16 +1148,11 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
-                    this.setModalSpinner(null, false, !addNewShop);
                     if (addNewShop) {
-                        this.formService.resetForm(this.repairShopForm);
-                        this.tabChange(this.tabs[0]);
-                        this.showPhoneExt = false;
-                        this.selectedAddress = null;
-                        this.isBankSelected = null;
-                        this.files = [];
-                        this.filesForDelete = [];
+                        this.setModalSpinner(null, true, true, true);
                     }
+
+                    this.setModalSpinner(null, false, !addNewShop);
                 },
                 error: () => {
                     this.setModalSpinner(null, false, false);
@@ -1104,25 +1174,14 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
             });
     }
 
-    private deleteRepairShop(id: number): void {
-        this.shopService
-            .deleteRepairShop(id)
-            .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: () =>
-                    this.setModalSpinner(ActionTypesEnum.DELETE, true, false),
-                error: () =>
-                    this.setModalSpinner(ActionTypesEnum.DELETE, false, false),
-            });
-    }
-
     private setModalSpinner(
         action:
             | null
             | ActionTypesEnum.SAVE_AND_ADD_NEW
             | ActionTypesEnum.DELETE,
         status: boolean,
-        close: boolean
+        close: boolean,
+        addNew?: boolean
     ): void {
         this.modalService.setModalSpinner({
             action,
@@ -1130,8 +1189,37 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
             close,
         });
 
+        if (addNew) {
+            this.modalService.openModal(RepairShopModalComponent, {});
+        }
+
         // Wait for modal to close to prevent click while closing it
         setTimeout(() => (this.isRequestInProgress = false), 400);
+    }
+
+    private showDeleteBusinessModal(): void {
+        // close current modal
+        const mappedEvent = {
+            ...this.repairShop,
+            data: this.repairShop,
+            type: this.repairShop.status
+                ? TableStringEnum.CLOSE
+                : TableStringEnum.OPEN,
+            modalTitle: this.repairShop.name,
+            modalSecondTitle: this.repairShop.address?.address
+                ? this.repairShop.address.address
+                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
+        };
+
+        this.modalService.openModal(
+            ConfirmationModalComponent,
+            { size: TableStringEnum.SMALL },
+            {
+                ...mappedEvent,
+                template: TableStringEnum.REPAIR_SHOP,
+                type: TableStringEnum.DELETE,
+            }
+        );
     }
 
     private showCloseBusinessModal(): void {
@@ -1159,8 +1247,6 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
                     : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
             }
         );
-
-        this.setModalSpinner(null, true, true);
     }
 
     // Contact tab

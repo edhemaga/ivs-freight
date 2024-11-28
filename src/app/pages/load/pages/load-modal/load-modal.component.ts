@@ -1786,19 +1786,21 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                     customClass: LoadModalStringEnum.LOAD_DISPATCHES_TTD,
                 },
             };
-            if (this.showDriverRate) {
-                this.inputService.changeValidators(
-                    this.loadForm.get(LoadModalStringEnum.DRIVER_RATE)
-                );
-
-                this.additionalBillingTypes =
-                    this.additionalBillingTypes.filter((item) => item.id !== 6);
-            } else {
-                this.inputService.changeValidators(
-                    this.loadForm.get(LoadModalStringEnum.DRIVER_RATE),
-                    false
-                );
-            }
+            setTimeout(() => {
+                if (this.showDriverRate) {
+                    this.inputService.changeValidators(
+                        this.loadForm.get(LoadModalStringEnum.DRIVER_RATE)
+                    );
+    
+                    this.additionalBillingTypes =
+                        this.additionalBillingTypes.filter((item) => item.id !== 6);
+                } else {
+                    this.inputService.changeValidators(
+                        this.loadForm.get(LoadModalStringEnum.DRIVER_RATE),
+                        false
+                    );
+                }
+            }, 200);
         } else {
             this.loadDispatchesTTDInputConfig = {
                 ...this.loadDispatchesTTDInputConfig,

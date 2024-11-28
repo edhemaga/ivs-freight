@@ -29,7 +29,8 @@ import {
     PayrollCreditType,
     PayrollDriverMileageByIdResponse,
 } from 'appcoretruckassist';
-import { ColumnConfig } from 'ca-components';
+import { ColumnConfig, ICaMapProps, PayrollTypeEnum } from 'ca-components';
+import { OptionsPopupContent } from 'ca-components/lib/components/ca-burger-menu/models/burger-menu.model';
 
 // components
 import { PayrollProccessPaymentModalComponent } from '@pages/accounting/pages/payroll/payroll-modals/payroll-proccess-payment-modal/payroll-proccess-payment-modal.component';
@@ -41,6 +42,9 @@ import { TableStringEnum } from '@shared/enums/table-string.enum';
 
 // Classes
 import { PayrollReportBaseComponent } from '@pages/accounting/pages/payroll/components/reports/payroll-report.base';
+
+// Constants
+import { TableToolbarConstants } from '../constants/report.constants';
 @Component({
     selector: 'app-payroll-report',
     templateUrl: './payroll-report.component.html',
@@ -55,8 +59,12 @@ export class PayrollReportComponent
     extends PayrollReportBaseComponent<PayrollDriverMileageByIdResponse>
     implements OnInit, OnDestroy
 {
-    columns: ColumnConfig[];
-    creditType = PayrollCreditType.Driver;
+    public columns: ColumnConfig[];
+    public creditType = PayrollCreditType.Driver;
+    public payrollType = PayrollTypeEnum.MILEAGE;
+
+    public optionsPopupContent: OptionsPopupContent[] =
+        TableToolbarConstants.closedReportPayroll;
 
     @Input() set reportId(report_id: string) {
         this._reportId = report_id;
@@ -67,7 +75,18 @@ export class PayrollReportComponent
         return super.reportId; // Call the base class getter
     }
 
-    @Input() selectedTab: PayrollTablesStatus;
+    public _selectedTab: PayrollTablesStatus;
+    @Input() set selectedTab(tab: PayrollTablesStatus) {
+        this.optionsPopupContent =
+            tab === PayrollTablesStatus.OPEN
+                ? TableToolbarConstants.openReportPayroll
+                : TableToolbarConstants.closedReportPayroll;
+        this._selectedTab = tab;
+    }
+
+    public get selectedTab() {
+        return this._selectedTab;
+    }
 
     public payrollReport$: Observable<PayrollDriverMileageByIdResponse>;
     public payrollMileageDriverLoads$: Observable<
@@ -78,6 +97,8 @@ export class PayrollReportComponent
     public payrollReportList: MilesStopShortReponseWithRowType[] = [];
     public allowedLoadIds: number[];
     public showMap: boolean = false;
+
+    public mapData$: Observable<ICaMapProps>;
 
     @ViewChild('customCountTemplate', { static: false })
     public readonly customCountTemplate!: ElementRef;
@@ -211,6 +232,8 @@ export class PayrollReportComponent
         this.includedLoads$ =
             this.payrollFacadeService.selectPayrollReportIncludedLoads$;
 
+        this.mapData$ = this.payrollFacadeService.getPayrollReportMapData$;
+
         this.payrollFacadeService.selectPayrollReportDriverMileageLoads$
             .pipe(takeUntil(this.destroy$))
             .subscribe((payrollLoadList) => {
@@ -254,6 +277,7 @@ export class PayrollReportComponent
                 this.getReportDataResults({
                     reportId: `${this.reportId}`,
                     lastLoadDate: load.date,
+                    payrollOpenedTab: this.selectedTab,
                 });
             }
         }
@@ -283,9 +307,15 @@ export class PayrollReportComponent
 
     public getReportDataResults(getData?: IGetPayrollByIdAndOptions): void {
         this.payrollFacadeService.getPayrollDriverMileageReport(
-            getData ?? {
-                reportId: `${this.reportId}`,
-            }
+            getData
+                ? {
+                      ...getData,
+                      payrollOpenedTab: this.selectedTab,
+                  }
+                : {
+                      reportId: `${this.reportId}`,
+                      payrollOpenedTab: this.selectedTab,
+                  }
         );
     }
 

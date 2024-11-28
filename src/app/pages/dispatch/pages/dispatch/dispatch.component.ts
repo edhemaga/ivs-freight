@@ -135,28 +135,24 @@ export class DispatchComponent
         this.tableService.currentSetTableFilter
             .pipe(takeUntil(this.destroy$))
             .subscribe((res) => {
-                if (res?.filterType && res.action !== TableStringEnum.CLEAR) {
+                if (res?.filterType) {
                     switch (res.filterType) {
                         case ToolbarFilterStringEnum.TRUCK_TYPE_FILTER:
                             this.backFilterQuery.truckTypes = res.queryParams;
-                            this.dispatchFilters(this.backFilterQuery);
-
                             break;
+
                         case ToolbarFilterStringEnum.TRAILER_TYPE_FILTER:
                             this.backFilterQuery.trailerTypes = res.queryParams;
-                            this.dispatchFilters(this.backFilterQuery);
 
                             break;
                         case ToolbarFilterStringEnum.STATUS_FILTER:
                             this.backFilterQuery.statuses = res.queryParams;
-                            this.dispatchFilters(this.backFilterQuery);
-
                             break;
+
                         case ToolbarFilterStringEnum.PARKING_FILTER:
                             this.backFilterQuery.parkings = res.queryParams;
-                            this.dispatchFilters(this.backFilterQuery);
-
                             break;
+
                         case ToolbarFilterStringEnum.LOCATION_FILTER:
                             this.backFilterQuery.longitude =
                                 res.queryParams?.longValue;
@@ -164,22 +160,17 @@ export class DispatchComponent
                                 res.queryParams?.latValue;
                             this.backFilterQuery.distance =
                                 res.queryParams?.rangeValue;
-
-                            this.dispatchFilters(this.backFilterQuery);
-
                             break;
+
                         case ToolbarFilterStringEnum.VACATION_FILTER:
                             this.backFilterQuery.vacation = res.vacation;
-                            this.dispatchFilters(this.backFilterQuery);
                             break;
+
                         default:
                             break;
                     }
-                }
 
-                if (res?.action === TableStringEnum.CLEAR) {
                     this.dispatchFilters(this.backFilterQuery);
-                    this.dispatchTableList = this.dispatchTableList;
                 }
             });
     }
@@ -508,12 +499,6 @@ export class DispatchComponent
                 }
 
                 this.dispatcherService.dispatchList = dispatchersList;
-
-                this.backFilterQuery = JSON.parse(
-                    JSON.stringify(
-                        TableDropdownComponentConstants.DISPATCH_BACK_FILTER
-                    )
-                );
             });
     }
 

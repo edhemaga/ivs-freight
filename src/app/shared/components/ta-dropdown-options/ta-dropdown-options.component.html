@@ -1,0 +1,58 @@
+<div
+    class="d-flex align-items-center justify-content-center dropdown-icon-container"
+    [ngClass]="{
+        active: dropdownPopover.isOpen(),
+        'dark-background': isDarkBackground
+    }"
+    ngbTooltip
+    mainTooltip="More"
+    tooltipBackground="#424242"
+    position="bottom"
+    #dropdownPopover="ngbPopover"
+    [ngbPopover]="dropdownOptions"
+    triggers="'manual'"
+    [autoClose]="'outside'"
+    [placement]="placement"
+    (click)="handleDropdownOpenCloseClick(dropdownPopover)"
+>
+    <svg-icon
+        class="icon"
+        [src]="dropdownOptionsSvgRoutes.dropdownIcon"
+        [svgStyle]="{
+            'width.px': 18,
+            'height.px': 18
+        }"
+    ></svg-icon>
+</div>
+
+<!-- Dropdown -->
+
+<ng-template #dropdownOptions>
+    <div class="d-flex flex-column justify-content-center dropdown-container">
+        <ng-container *ngFor="let option of options; trackBy: trackByIdentity">
+            <div
+                class="d-flex align-items-center dropdown-item"
+                [ngClass]="{ 'has-border': option?.hasBorder }"
+                (click)="handleDropdownOptionClick(option?.title)"
+            >
+                <div
+                    class="d-flex align-items-center justify-content-between w-100 dropdown-item-inner"
+                >
+                    <p class="m-0 text-size-14 text-color-white">
+                        {{ option?.title }}
+                    </p>
+
+                    <svg-icon
+                        class="dropdown-item-inner-icon"
+                        [ngClass]="option?.svgClass"
+                        [src]="option?.svgUrl"
+                        [svgStyle]="{
+                            'width.px': 18,
+                            'height.px': 18
+                        }"
+                    ></svg-icon>
+                </div>
+            </div>
+        </ng-container>
+    </div>
+</ng-template>

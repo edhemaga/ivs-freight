@@ -1,0 +1,438 @@
+<ng-container *ngIf="_repairList.length">
+    <div
+        class="d-flex flex-column justify-content-center shop-details-item-repair"
+    >
+        <!-- Search -->
+
+        <ng-container *ngIf="searchConfig[0]">
+            <div class="shop-details-item-repair-search">
+                <app-ca-search-multiple-states
+                    [searchType]="'Repair'"
+                    [toolbarSearch]="true"
+                    [selectedTabData]="{
+                        gridNameTitle: 'Repair'
+                    }"
+                ></app-ca-search-multiple-states>
+            </div>
+        </ng-container>
+
+        <!-- Header -->
+
+        <div class="align-items-center shop-details-item-repair-header">
+            <ng-container
+                *ngFor="
+                    let headerItem of repairHeaderItems;
+                    trackBy: trackByIdentity
+                "
+            >
+                <div
+                    class="d-flex align-items-center shop-details-item-repair-header-item"
+                    [ngClass]="{ 'justify-content-end': headerItem === 'COST' }"
+                >
+                    <p class="m-0 ta-font-bold text-size-11 text-color-bw6-2">
+                        {{ headerItem }}
+                    </p>
+                </div>
+            </ng-container>
+        </div>
+
+        <!-- Main -->
+
+        <div
+            class="d-flex flex-column justify-content-center shop-details-item-repair-main"
+        >
+            <ng-container
+                *ngFor="
+                    let repair of _repairList;
+                    let repairIndex = index;
+                    trackBy: trackByIdentity
+                "
+            >
+                <div
+                    class="shop-details-item-repair-main-border"
+                    [ngClass]="{
+                        'shop-details-item-repair-main-border-order':
+                            repair?.repairType?.name === 'Order',
+                        'active-drawer':
+                            repairIndex === repairItemDocumentsDrawerIndex
+                    }"
+                >
+                    <!-- Repair Item -->
+
+                    <div
+                        class="d-flex align-items-center shop-details-item-repair-main-item"
+                        [ngClass]="{
+                            active: repairIndex === repairItemDropdownIndex,
+                            'active-options':
+                                repairIndex === repairItemOptionsDropdownIndex
+                        }"
+                    >
+                        <div
+                            class="align-items-center shop-details-item-repair-main-item-left"
+                            (click)="handleRepairDropdownClick(repairIndex)"
+                        >
+                            <!-- Invoice -->
+
+                            <div class="d-flex align-items-center">
+                                <p
+                                    class="m-0 ta-font-bold text-size-14 text-color-black"
+                                >
+                                    {{ repair?.invoice || repair?.orderNumber }}
+                                </p>
+                            </div>
+
+                            <!-- Date -->
+
+                            <div class="d-flex align-items-center">
+                                <p class="m-0 text-size-14 text-color-black-2">
+                                    {{ repair?.createdAt | formatDateP }}
+                                </p>
+                            </div>
+
+                            <!-- Unit -->
+
+                            <div class="d-flex align-items-center">
+                                <p class="m-0 text-size-14 text-color-black-2">
+                                    {{
+                                        repair?.truck?.truckNumber ||
+                                            repair?.trailer?.trailerNumber
+                                    }}
+                                </p>
+                            </div>
+
+                            <!-- Description -->
+
+                            <div
+                                class="d-flex align-items-center"
+                                [appDescriptionItemsTextCount]="
+                                    repair?.filteredItemNames
+                                "
+                                [itemSpecialStylesIndexArray]="
+                                    repair?.pmItemsIndexArray
+                                "
+                                [containerWidth]="232"
+                            ></div>
+
+                            <!-- Cost -->
+
+                            <div
+                                class="d-flex align-items-center justify-content-end cost-container"
+                                [ngStyle]="{
+                                    'padding-right':
+                                        repair?.repairType?.name === 'Order'
+                                            ? 0
+                                            : '8px'
+                                }"
+                            >
+                                <ng-container
+                                    *ngIf="
+                                        repair?.repairType?.name === 'Order';
+                                        else bill
+                                    "
+                                >
+                                    <button
+                                        type="button"
+                                        class="d-flex justify-content-center align-items-center ta-font-bold text-size-11 finish-order-btn"
+                                        (click)="
+                                            $event.stopPropagation(
+                                                handleActionClick(
+                                                    'finish-order',
+                                                    repairIndex
+                                                )
+                                            )
+                                        "
+                                    >
+                                        FINISH ORDER
+                                    </button>
+                                </ng-container>
+
+                                <ng-template #bill>
+                                    <p
+                                        class="m-0 ta-font-bold text-size-14 text-color-black"
+                                    >
+                                        ${{ repair?.total | thousandSeparator }}
+                                    </p>
+                                </ng-template>
+                            </div>
+                        </div>
+
+                        <!-- Actions -->
+
+                        <div class="align-items-center actions-container">
+                            <!-- Document -->
+
+                            <app-ta-documents-drawer
+                                [isActive]="
+                                    repairIndex ===
+                                    repairItemDocumentsDrawerIndex
+                                "
+                                [options]="repairItemOptions"
+                                (actionsEmitter)="
+                                    handleActionClick(
+                                        repairShopDetailsStringEnum.DOCUMENT,
+                                        repairIndex
+                                    )
+                                "
+                                (dropdownEmitter)="
+                                    handleDropdownOptionClick(
+                                        $event,
+                                        repairIndex
+                                    )
+                                "
+                            ></app-ta-documents-drawer>
+
+                            <!-- Note -->
+
+                            <app-ta-note
+                                [note]="repair?.note"
+                                [mainData]="repair"
+                                [entityId]="repair?.id"
+                                [entityType]="'Repair'"
+                                [openedAll]="false"
+                                [parking]="false"
+                            >
+                            </app-ta-note>
+
+                            <!-- Options -->
+
+                            <app-ta-dropdown-options
+                                [options]="repairItemOptions"
+                                (dropdownOptionEmitter)="
+                                    handleDropdownOptionClick(
+                                        $event,
+                                        repairIndex
+                                    )
+                                "
+                            ></app-ta-dropdown-options>
+                        </div>
+                    </div>
+
+                    <!-- Repair Item Dropdown -->
+
+                    <div
+                        class="d-flex flex-column shop-details-item-repair-main-dropdown"
+                        [ngClass]="{
+                            expanded: repairIndex === repairItemDropdownIndex,
+                            'dropdown-scroll': repair?.items?.length >= 8
+                        }"
+                    >
+                        <!-- Dropdown Header -->
+
+                        <div
+                            class="align-items-center shop-details-item-repair-main-dropdown-header"
+                            [ngClass]="{
+                                'order-header':
+                                    repair?.repairType?.name === 'Order'
+                            }"
+                        >
+                            <ng-container
+                                *ngFor="
+                                    let dropdownHeaderItem of repair?.repairType
+                                        ?.name === 'Order'
+                                        ? (repairDropdownHeaderItems
+                                          | slice : 0 : 3)
+                                        : repairDropdownHeaderItems;
+                                    let dropdownHeaderItemIndex = index;
+                                    trackBy: trackByIdentity
+                                "
+                            >
+                                <div
+                                    class="d-flex align-items-center shop-details-item-repair-main-dropdown-header-item"
+                                    [ngClass]="{
+                                        'justify-content-center':
+                                            dropdownHeaderItemIndex === 0 ||
+                                            dropdownHeaderItemIndex === 2,
+                                        'justify-content-end':
+                                            dropdownHeaderItemIndex > 2
+                                    }"
+                                >
+                                    <p
+                                        class="m-0 ta-font-bold text-size-11 text-color-bw6-2"
+                                    >
+                                        {{ dropdownHeaderItem }}
+                                    </p>
+                                </div>
+                            </ng-container>
+                        </div>
+
+                        <!-- Dropdown Main -->
+
+                        <div
+                            class="d-flex flex-column justify-content-center shop-details-item-repair-main-dropdown-main"
+                        >
+                            <ng-container
+                                *ngFor="
+                                    let repairItem of repair?.items;
+                                    let repairItemIndex = index;
+                                    trackBy: trackByIdentity
+                                "
+                            >
+                                <!-- Dropdown Main Item -->
+
+                                <div
+                                    class="align-items-center shop-details-item-repair-main-dropdown-main-item"
+                                    [ngClass]="{
+                                        'order-item':
+                                            repair?.repairType?.name === 'Order'
+                                    }"
+                                >
+                                    <!-- # -->
+
+                                    <div
+                                        class="d-flex align-items-center justify-content-center"
+                                    >
+                                        <p
+                                            class="m-0 ta-font-medium text-size-11 text-color-grey"
+                                            [ngClass]="{
+                                                'text-color-blue-18':
+                                                    repairItem?.pmTruck ||
+                                                    repairItem?.pmTrailer,
+                                                'text-color-black': !(
+                                                    repairItem?.pmTruck ||
+                                                    repairItem?.pmTrailer
+                                                )
+                                            }"
+                                        >
+                                            {{ repairItemIndex + 1 }}
+                                        </p>
+                                    </div>
+
+                                    <!-- Item Name -->
+
+                                    <div
+                                        class="d-flex align-items-center name-container"
+                                    >
+                                        <p
+                                            class="m-0 ta-font-medium text-size-11 text-color-blue-18"
+                                            [ngClass]="{
+                                                'text-color-blue-18':
+                                                    repairItem?.pmTruck ||
+                                                    repairItem?.pmTrailer,
+                                                'text-color-black': !(
+                                                    repairItem?.pmTruck ||
+                                                    repairItem?.pmTrailer
+                                                )
+                                            }"
+                                        >
+                                            {{ repairItem?.description }}
+                                        </p>
+
+                                        <svg-icon
+                                            *ngIf="
+                                                repairItem?.pmTruck ||
+                                                repairItem?.pmTrailer
+                                            "
+                                            class="pm-icon"
+                                            [src]="
+                                                repairItem?.pmTruck?.logoName ||
+                                                repairItem?.pmTrailer.logoName
+                                            "
+                                            [svgStyle]="{
+                                                'width.px': 14,
+                                                'height.px': 14
+                                            }"
+                                        ></svg-icon>
+                                    </div>
+
+                                    <!-- Quantity -->
+
+                                    <div
+                                        class="d-flex align-items-center justify-content-center"
+                                    >
+                                        <p
+                                            class="m-0 text-size-11 text-color-black-2"
+                                            [ngClass]="{
+                                                'text-color-blue-18':
+                                                    repairItem?.pmTruck ||
+                                                    repairItem?.pmTrailer,
+                                                'text-color-black': !(
+                                                    repairItem?.pmTruck ||
+                                                    repairItem?.pmTrailer
+                                                )
+                                            }"
+                                        >
+                                            {{ repairItem?.quantity }}
+                                        </p>
+                                    </div>
+
+                                    <ng-container
+                                        *ngIf="
+                                            repair?.repairType?.name !== 'Order'
+                                        "
+                                    >
+                                        <!-- Price -->
+
+                                        <div
+                                            class="d-flex align-items-center justify-content-end"
+                                        >
+                                            <p
+                                                class="m-0 text-size-11 text-color-black-2"
+                                                [ngClass]="{
+                                                    'text-color-blue-18':
+                                                        repairItem?.pmTruck ||
+                                                        repairItem?.pmTrailer,
+                                                    'text-color-black': !(
+                                                        repairItem?.pmTruck ||
+                                                        repairItem?.pmTrailer
+                                                    )
+                                                }"
+                                            >
+                                                ${{
+                                                    repairItem?.price
+                                                        | thousandSeparator
+                                                }}
+                                            </p>
+                                        </div>
+
+                                        <!-- Total -->
+
+                                        <div
+                                            class="d-flex align-items-center justify-content-end"
+                                        >
+                                            <p
+                                                class="m-0 ta-font-medium text-size-11 text-color-black"
+                                                [ngClass]="{
+                                                    'text-color-blue-18':
+                                                        repairItem?.pmTruck ||
+                                                        repairItem?.pmTrailer,
+                                                    'text-color-black': !(
+                                                        repairItem?.pmTruck ||
+                                                        repairItem?.pmTrailer
+                                                    )
+                                                }"
+                                            >
+                                                ${{
+                                                    repairItem?.subtotal
+                                                        | thousandSeparator
+                                                }}
+                                            </p>
+                                        </div>
+                                    </ng-container>
+                                </div>
+                            </ng-container>
+                        </div>
+                    </div>
+                </div>
+            </ng-container>
+        </div>
+
+        <!-- Footer -->
+
+        <div
+            class="d-flex align-items-center justify-content-between shop-details-item-repair-footer"
+        >
+            <p class="m-0 ta-font-semi-bold text-size-11 text-color-bw6-2">
+                {{ _repairList.length }} OF {{ _repairList.length }}
+            </p>
+
+            <div
+                class="d-flex align-items-center show-more-btn"
+                (click)="handleActionClick('show-more')"
+            >
+                <p class="m-0 ta-font-bold text-size-11 text-color-black">
+                    SHOW MORE
+                </p>
+            </div>
+        </div>
+    </div>
+</ng-container>

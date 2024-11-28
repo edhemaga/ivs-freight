@@ -18,6 +18,7 @@ export interface ApiFuelTransactionPostRequest1 {
     TruckId?: number;
     TrailerId?: number;
     FuelStopStoreId?: number;
+    PayrollOwnerId?: number;
     TransactionDate?: string;
     Total?: number;
     PaidWith?: number;

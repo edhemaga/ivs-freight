@@ -32,7 +32,7 @@ import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta
 
 // Models
 import { AddressEntity } from 'appcoretruckassist';
-import { SortColumn } from '@shared/components/ta-sort-dropdown/models';
+import { SortColumn } from 'ca-components';
 
 // tooltip
 import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
@@ -159,12 +159,6 @@ export class TaMapListCardComponent implements OnInit, OnDestroy {
     public addRemoveSelection(isAdd: boolean): void {
         this.isSelected = isAdd;
         this.item.isSelected = isAdd;
-
-        if (isAdd)
-            this.elementRef.nativeElement.scrollIntoView({
-                behavior: 'smooth',
-                block: 'center',
-            });
 
         this.ref.detectChanges();
     }

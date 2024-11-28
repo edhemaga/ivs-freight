@@ -1,0 +1,117 @@
+@import 'src/theme/variables.scss';
+
+.form-holder {
+    margin: 8px 0;
+    padding: 0 8px 0 0;
+
+    .form-radio-btns {
+        gap: 12px;
+
+        .radio-label {
+            gap: 4px;
+
+            .radio-span {
+                color: $ta-light-grey-2;
+                font-size: 14px;
+                position: relative;
+                padding-left: 30px;
+                cursor: pointer;
+
+                &::before {
+                    content: '';
+                    position: absolute;
+                    top: 2px;
+                    right: 14px;
+                    height: 12px;
+                    width: 12px;
+                    border-radius: 50%;
+                    background-color: $ta-light-grey-6;
+                }
+            }
+
+            .radio-input {
+                height: 12px;
+                width: 12px;
+                opacity: 0;
+                position: absolute;
+
+                &:checked + .radio-span::before {
+                    background-color: $white;
+                    border: 3px solid $ta-blue-13;
+                }
+
+                &:checked + .radio-span {
+                    color: $ta-black;
+                }
+            }
+        }
+    }
+}
+app-ta-modal .modal-container {
+    overflow: none !important;
+}
+.head-title {
+    line-height: 16px;
+}
+
+.card-color {
+    background-color: $bw-9 !important;
+    height: 1px !important;
+}
+
+.modal-cards {
+    .front-side-body {
+        margin-bottom: 21px !important;
+    }
+
+    .inputs-holder {
+        gap: 0px 12px;
+        grid-template-columns: repeat(auto-fill, minmax(47%, 1fr));
+
+        .modal-holder {
+            position: relative;
+
+            .input-title {
+                padding-left: 6px;
+                bottom: 26px;
+                font-size: 11px;
+                color: $ta-black;
+                position: absolute;
+                line-height: 14px;
+            }
+        }
+
+        .first-row {
+            margin-top: 26px;
+        }
+
+        .sec-row {
+            margin-top: 32px;
+        }
+
+        .last-row {
+            margin-bottom: 22px;
+        }
+    }
+
+    .title-card-modal {
+        font-size: 14px;
+        color: $ta-black;
+        line-height: 18px;
+    }
+
+    .title-margin {
+        margin-top: 8px;
+    }
+
+    .back-side-body {
+        .checkbox-modal {
+            margin: 8px 0 0 0;
+            line-height: 18px;
+        }
+    }
+}
+
+.cdk-drag {
+    overflow: visible !important;
+}

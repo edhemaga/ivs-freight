@@ -203,20 +203,23 @@
 
                     <ng-container *ngIf="hasDispatcherFilter">
                         <div class="me-1">
-                            <app-ta-filter
-                                [type]="'userFilter'"
+                            <app-ca-filter
+                                [type]="'dispatcherFilter'"
+                                [icon]="'user'"
                                 [searchState]="true"
                                 [filterTitle]="'Dispatcher Filter'"
                                 [defFilterHolder]="true"
                                 (setFilter)="setFilterValue($event)"
+                                (clearAll)="setFilterValue($event)"
+                                [unselectedUser]="unselectedDispatcher"
                             >
-                            </app-ta-filter>
+                            </app-ca-filter>
                         </div>
                     </ng-container>
 
                     <ng-container *ngIf="hasTruckTypeFilter">
                         <div class="me-1">
-                            <app-ta-filter
+                            <app-ca-filter
                                 [type]="'truckTypeFilter'"
                                 [icon]="'truck'"
                                 [filterTitle]="'Truck Type Filter'"
@@ -226,14 +229,16 @@
                                 [isDispatchFilter]="!isAssignLoadModal"
                                 [isRepairFilter]="false"
                                 (setFilter)="setFilterValue($event)"
+                                (clearAll)="setFilterValue($event)"
+                                [truckTypeArray]="truckTypeArray"
                             >
-                            </app-ta-filter>
+                            </app-ca-filter>
                         </div>
                     </ng-container>
 
                     <ng-container *ngIf="hasTrailerTypeFilter">
                         <div class="me-1">
-                            <app-ta-filter
+                            <app-ca-filter
                                 [type]="'trailerTypeFilter'"
                                 [icon]="'trailer'"
                                 [filterTitle]="'Trailer Type Filter'"
@@ -243,22 +248,25 @@
                                 [isDispatchFilter]="!isAssignLoadModal"
                                 [isRepairFilter]="false"
                                 (setFilter)="setFilterValue($event)"
+                                (clearAll)="setFilterValue($event)"
+                                [trailerTypeArray]="trailerTypeArray"
                             >
-                            </app-ta-filter>
+                            </app-ca-filter>
                         </div>
                     </ng-container>
 
                     <ng-container *ngIf="hasLocationFilter">
                         <div class="me-1">
-                            <app-ta-filter
+                            <app-ca-filter
                                 [type]="'locationFilter'"
                                 [icon]="'address'"
                                 [filterTitle]="'Area Filter'"
                                 [areaFilter]="areaFilter"
                                 [locationDefType]="true"
                                 (setFilter)="setFilterValue($event)"
+                                (clearAll)="setFilterValue($event)"
                             >
-                            </app-ta-filter>
+                            </app-ca-filter>
                         </div>
                     </ng-container>
 
@@ -448,7 +456,11 @@
                                     class="modal-deactivate-btn"
                                     type="button"
                                 >
-                                    {{businessStatus === 1 ? 'Close Business' : 'Open Business'}}
+                                    {{
+                                        businessStatus === 1
+                                            ? 'Close Business'
+                                            : 'Open Business'
+                                    }}
                                 </button>
                             </ng-container>
 
@@ -926,6 +938,7 @@
                                     'User',
                                     'broker contact',
                                     'shipper contact',
+                                    'repair shop contact',
                                     'deduction',
                                     'credit',
                                     'fuel',

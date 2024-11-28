@@ -31,13 +31,16 @@ import { MapsService } from '@shared/services/maps.service';
 
 // component
 import { TaSearchV2Component } from '@shared/components/ta-search-v2/ta-search-v2.component';
-import { TaSortDropdownComponent } from '@shared/components/ta-sort-dropdown/ta-sort-dropdown.component';
+import { CaSortDropdownComponent } from 'ca-components';
 
 // Svg Routes
 import { MapListSvgRoutes } from '@shared/components/ta-map-list/utils/svg-routes';
 
 // Models
-import { SortColumn } from '@shared/components/ta-sort-dropdown/models';
+import { SortColumn } from 'ca-components';
+
+// Enums
+import { MapListStringEnum } from '@shared/components/ta-map-list/enums';
 
 @Component({
     selector: 'app-ta-map-list',
@@ -53,7 +56,7 @@ import { SortColumn } from '@shared/components/ta-sort-dropdown/models';
 
         // Components
         TaSearchV2Component,
-        TaSortDropdownComponent,
+        CaSortDropdownComponent,
     ],
 })
 export class TaMapListComponent
@@ -80,7 +83,7 @@ export class TaMapListComponent
     actionColumns: any[] = [];
     public tooltip: any;
     public showExpandButton: boolean = false;
-    activeSortType: any = {};
+    activeSortType: SortColumn | null = null;
     searchIsActive: boolean = false;
     searchLoading: boolean = false;
     searchTimeout: any;
@@ -110,11 +113,7 @@ export class TaMapListComponent
     }
 
     ngOnInit(): void {
-        this.mapsService.searchLoadingChanged
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((loading) => {
-                this.searchLoading = loading;
-            });
+        this.addMapsServiceListeners();
 
         this.setVisibleColumns();
 
@@ -324,6 +323,36 @@ export class TaMapListComponent
         this.mapsService.sortCategoryChange.next(event.column);
 
         this.sortEvent.emit(event.sortName);
+    }
+
+    public addMapsServiceListeners(): void {
+        this.mapsService.searchLoadingChanged
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((loading) => {
+                this.searchLoading = loading;
+            });
+
+        this.mapsService.selectedMarkerChange
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((markerId) => {
+                if (markerId) {
+                    const cardIndex =
+                        this.listCards
+                            ?.toArray()
+                            ?.findIndex(
+                                (listCard) => listCard.item?.id === markerId
+                            ) ?? 0;
+
+                    this.listCards
+                        ?.toArray()
+                        ?.[
+                            cardIndex
+                        ]?.elementRef?.nativeElement?.scrollIntoView({
+                            behavior: MapListStringEnum.SMOOTH,
+                            block: MapListStringEnum.CENTER,
+                        });
+                }
+            });
     }
 
     ngOnDestroy(): void {

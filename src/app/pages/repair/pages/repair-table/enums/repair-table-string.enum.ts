@@ -6,6 +6,7 @@ export enum RepairTableStringEnum {
     TRUCK_FILTER = 'truckFilter',
     TRUCK_TYPE_FILTER = 'truckTypeFilter',
     TIME_FILTER = 'timeFilter',
+    STATE_FILTER = 'stateFilter',
     MONEY_FILTER = 'moneyFilter',
     DAY = 'day',
     DAYS = 'days',

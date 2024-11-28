@@ -68,6 +68,8 @@ export enum DispatchTableStringEnum {
     PRE_TRIP = 'PreTrip',
     CITY = 'city',
 
+    NUMBER = 'number',
+
     // Resize
     CURSOR = 'cursor',
     COL_RESIZE = 'col-resize',
@@ -86,4 +88,5 @@ export enum DispatchTableStringEnum {
 
     // Progress bar
     NO_GPS_DEVICE = 'NO GPS DEVICE',
+    DEADHEAD = 'DeadHead',
 }

@@ -206,7 +206,7 @@
                             autoClose="outside"
                             [ngbPopover]="multipleDetailsSelect"
                             [popoverClass]="'popover-main'"
-                            [placement]="['bottom']"
+                            [placement]="['bottom-end']"
                             [container]="'body'"
                             [ngClass]="{ active: popover?.isOpen() }"
                         >
@@ -247,7 +247,7 @@
                     </ng-container>
                 </div>
 
-                <ng-container *ngIf="hasSearch">
+                <ng-container *ngIf="hasSearch && !isSearchBtn">
                     <div class="border-line-left"></div>
                     <span class="mx-1">
                         <app-ca-search-multiple-states
@@ -295,7 +295,7 @@
                             <span class="ic-hed">
                                 <app-ca-filter
                                     [type]="'trailerTypeFilter'"
-                                    [truckTypeArray]="trailerTypeArray"
+                                    [trailerTypeArray]="trailerTypeArray"
                                     [filterTitle]="'Trailer Type Filter'"
                                     [icon]="'trailer'"
                                     (setFilter)="setFilterValue($event)"
@@ -348,9 +348,9 @@
                                 <!-- DISPECHER FILTER -->
                                 <app-ca-filter
                                     [type]="'dispatcherFilter'"
+                                    [icon]="'user'"
                                     [searchState]="true"
                                     [filterTitle]="'Dispatcher Filter'"
-                                    [defFilterHolder]="true"
                                     (setFilter)="setFilterValue($event)"
                                     (clearAll)="setFilterValue($event)"
                                     [unselectedUser]="unselectedDispatcher"
@@ -366,7 +366,6 @@
                                     [type]="'statusFilter'"
                                     [icon]="'broker-half-circle'"
                                     [filterTitle]="'Status Filter'"
-                                    [defFilterHolder]="true"
                                     [noLeftIcon]="false"
                                     (setFilter)="setFilterValue($event)"
                                     (clearAll)="setFilterValue($event)"
@@ -402,7 +401,6 @@
                                     [icon]="'default_pm'"
                                     [filterTitle]="'PM Filter'"
                                     [pmSubtype]="'truck'"
-                                    [defFilterHolder]="true"
                                     [noLeftIcon]="false"
                                     [leftSideIcon]="true"
                                     (setFilter)="setFilterValue($event)"
@@ -420,7 +418,6 @@
                                     [type]="'categoryRepairFilter'"
                                     [icon]="'ic_key-repair'"
                                     [filterTitle]="'Category Repair Filter'"
-                                    [defFilterHolder]="true"
                                     [noLeftIcon]="false"
                                     [leftSideIcon]="true"
                                     (setFilter)="setFilterValue($event)"

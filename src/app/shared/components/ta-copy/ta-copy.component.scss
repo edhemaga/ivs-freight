@@ -51,7 +51,7 @@
         opacity: 0;
         visibility: hidden;
         cursor: pointer;
-        transition: opacity .3s;
+        transition: opacity 0.3s;
     }
     &:hover {
         .card-icon-copy {
@@ -100,19 +100,7 @@
         }
     }
 }
-.copy-text {
-    &:hover {
-        color: #3c3c3c;
-    }
-    &::-moz-selection {
-        color: #6c6c6c;
-        background: rgb(108, 108, 108, 0.2);
-    }
-    &::selection {
-        color: #6c6c6c;
-        background: rgb(108, 108, 108, 0.2);
-    }
-}
+
 .hidden-svg-eyes {
     margin-right: 6px;
 }

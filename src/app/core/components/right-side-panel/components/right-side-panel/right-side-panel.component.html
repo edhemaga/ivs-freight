@@ -1,10 +1,14 @@
-<ca-right-side-panel
+<app-ca-right-side-panel
     class="right-side-panel"
-    [data]="activityLogData"
+    [companiesData]="companiesData"
+    [activityLogData]="activityLogData"
     [usersFilter]="usersFilterData"
     [modulesFilter]="modulesFilterData"
     [actionsFilter]="actionsFilterData"
+    [mainCompanyData]="companyData"
     (selectedNavModule)="selectedNavModuleEvent($event)"
     (activityLogFilterParams)="activityLogFilterParamsEvent($event)"
     (isSidePanelPinned)="sidePanelPinEvent($event)"
-></ca-right-side-panel>
+    (isNavOpen)="navOpenEvent($event)"
+    (selectedDivisionId)="selectedDivisionIdEvent($event)"
+></app-ca-right-side-panel>
