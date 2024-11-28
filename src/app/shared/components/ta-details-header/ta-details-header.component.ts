@@ -215,7 +215,6 @@ export class TaDetailsHeaderComponent implements OnInit, OnChanges {
                 (item) => item.active
             );
         }
-        this.handleFilterInitialization();
     }
 
     public handleFilterInitialization(): void {
