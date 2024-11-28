@@ -34,6 +34,7 @@ export interface RepairShopResponse {
     distance?: number | null;
     pinned?: boolean;
     order?: number;
+    bill?: number;
     cost?: number;
     openHoursToday?: OpenHoursTodayResponse;
     note?: string | null;
