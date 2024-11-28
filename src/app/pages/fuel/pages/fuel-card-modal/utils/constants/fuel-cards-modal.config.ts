@@ -85,8 +85,7 @@ export class FuelCardsModalConfig {
 
         {
             title: 'Last Price',
-            key: 'commission',
-            sufix: '%',
+            key: 'tableLast',
         },
 
         {
