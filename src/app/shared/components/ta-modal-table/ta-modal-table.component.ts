@@ -1357,7 +1357,9 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
                                 ? item.qty
                                 : item.quantity;
                             const calculateSubtotal =
-                                quantity *
+                                MethodsCalculationsHelper.convertThousanSepInNumber(
+                                    quantity
+                                ) *
                                 MethodsCalculationsHelper.convertThousanSepInNumber(
                                     item.price
                                 );
