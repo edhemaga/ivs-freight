@@ -20,7 +20,7 @@ import { RepairExpenseCartConstants, RepairShopChartsConfiguration } from '@page
 // models
 import { RepairShopResponse } from 'appcoretruckassist';
 import { Tabs } from '@shared/models/tabs.model';
-import { IChartConfiguaration } from 'ca-components/lib/components/ca-chart/models';
+import { IChartConfiguration } from 'ca-components/lib/components/ca-chart/models';
 
 @Component({
     selector: 'app-repair-shop-details-repair-expense-card',
@@ -62,7 +62,7 @@ export class RepairShopDetailsRepairExpenseCardComponent implements OnDestroy {
 
     public chartTabs: Tabs[];
 
-    public repairShopChartConfig: IChartConfiguaration = RepairShopChartsConfiguration.REPAIR_CHART_CONFIG;
+    public repairShopChartConfig: IChartConfiguration = RepairShopChartsConfiguration.REPAIR_CHART_CONFIG;
 
     constructor(
         private repairService: RepairService,

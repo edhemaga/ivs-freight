@@ -182,11 +182,12 @@ export class PayrollFacadeService {
         selectedCreditIds,
         selectedBonusIds,
         selectedDeductionIds,
+        payrollOpenedTab
     }: IGetPayrollByIdAndOptions) {
         this.store
             .pipe(select(selectPayrollState), take(1))
             .subscribe((payrollState) => {
-                if (payrollState.payrollOpenedTab === 'closed') {
+                if (payrollOpenedTab === 'closed') {
                     this.store.dispatch(
                         PayrollDriverMileageSolo.getPayrollMileageDriverClosedPayroll(
                             {

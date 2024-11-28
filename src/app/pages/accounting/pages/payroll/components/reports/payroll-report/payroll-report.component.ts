@@ -277,6 +277,7 @@ export class PayrollReportComponent
                 this.getReportDataResults({
                     reportId: `${this.reportId}`,
                     lastLoadDate: load.date,
+                    payrollOpenedTab: this.selectedTab,
                 });
             }
         }
@@ -306,9 +307,15 @@ export class PayrollReportComponent
 
     public getReportDataResults(getData?: IGetPayrollByIdAndOptions): void {
         this.payrollFacadeService.getPayrollDriverMileageReport(
-            getData ?? {
-                reportId: `${this.reportId}`,
-            }
+            getData
+                ? {
+                      ...getData,
+                      payrollOpenedTab: this.selectedTab,
+                  }
+                : {
+                      reportId: `${this.reportId}`,
+                      payrollOpenedTab: this.selectedTab,
+                  }
         );
     }
 

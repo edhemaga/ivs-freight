@@ -56,7 +56,6 @@ export class PayrollComponent implements OnInit, AfterViewInit, OnDestroy {
     @ViewChildren('container', { read: ViewContainerRef })
     containers!: QueryList<ViewContainerRef>;
 
-
     public PayrollTables = PayrollTables;
     private componentRef: ComponentRef<any> | null = null;
 
@@ -512,6 +511,7 @@ export class PayrollComponent implements OnInit, AfterViewInit, OnDestroy {
         data?: T,
         expandedTable?: boolean
     ): void {
+        console.log('DSFFSDFSDFSD', payrollType);
         if (data && (this.reportTableDataId != data?.id || !expandedTable)) {
             this.reportTableDataId = data.id;
             this.payrollFacadeService.setPayrollReportTableExpanded(true);
@@ -520,6 +520,8 @@ export class PayrollComponent implements OnInit, AfterViewInit, OnDestroy {
                 if (this.payrollReportType != payrollType) {
                     this.selectedTabForReport = this.selectedTab;
                     this.payrollReportType = payrollType;
+                } else if (this.selectedTabForReport != this.selectedTab) {
+                    this.selectedTabForReport = this.selectedTab;
                 }
             }
         }
@@ -549,7 +551,7 @@ export class PayrollComponent implements OnInit, AfterViewInit, OnDestroy {
 
     trackByIndex(index: number, item: any): number {
         return index;
-      }
+    }
 
     public closeOpenPreview(e: Event): void {
         e.preventDefault();

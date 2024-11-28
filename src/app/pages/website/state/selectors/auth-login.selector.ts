@@ -13,6 +13,8 @@ export const selectAuthState = createFeatureSelector<AuthState>('auth');
 export const selectAuthLoginError = createSelector(
     selectAuthState,
     (state): { type: string; error: Record<string, boolean> } => {
+
+        console.log("LOGIN ERRORS", state);
         if (!state.error) return null;
         const errorMessage = state.error.error;
 
