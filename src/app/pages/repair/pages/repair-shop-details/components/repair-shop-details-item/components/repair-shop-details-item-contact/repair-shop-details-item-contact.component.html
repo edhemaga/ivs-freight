@@ -1,0 +1,26 @@
+<ng-container *ngIf="departmentContacts?.length">
+    <div class="contacts-container">
+        <!-- Search -->
+
+        <ng-container *ngIf="searchConfig[3]">
+            <div class="contacts-container-search">
+                <app-ca-search-multiple-states
+                    [searchType]="'Contact'"
+                    [toolbarSearch]="false"
+                    [selectedTabData]="{
+                        gridNameTitle: 'Contact'
+                    }"
+                    (close)="handleCloseSearchEmit()"
+                ></app-ca-search-multiple-states>
+            </div>
+        </ng-container>
+
+        <!-- List -->
+
+        <app-ta-contacts-card
+            [type]="'repair-shop'"
+            [departmentContacts]="departmentContacts"
+            [viewData]="viewData"
+        ></app-ta-contacts-card>
+    </div>
+</ng-container>

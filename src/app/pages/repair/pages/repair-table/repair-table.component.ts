@@ -667,6 +667,8 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
         this.caSearchMultipleStatesService.currentSearchTableData
             .pipe(takeUntil(this.destroy$))
             .subscribe((res) => {
+                console.log('res', res);
+
                 if (res) {
                     this.backFilterQuery.pageIndex = 1;
                     this.shopFilterQuery.pageIndex = 1;

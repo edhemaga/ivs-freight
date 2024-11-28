@@ -313,8 +313,6 @@ export class RepairShopDetailsComponent implements OnInit, OnDestroy {
         this.repairShopDetailsService.getCloseSearchStatus$
             .pipe(takeUntil(this.destroy$))
             .subscribe((detailsPartIndex) => {
-                console.log('detailsPartIndex', detailsPartIndex);
-
                 this.searchConfig[detailsPartIndex] = false;
 
                 this.repairShopDetailsConfig = this.repairShopDetailsConfig.map(
@@ -323,8 +321,6 @@ export class RepairShopDetailsComponent implements OnInit, OnDestroy {
                             ? { ...item, hasSearch: true }
                             : item
                 );
-
-                this.cdRef.detectChanges();
             });
     }
 
