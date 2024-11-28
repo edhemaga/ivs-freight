@@ -31,6 +31,7 @@ export const onGetPayrollSoloMileageReportDriver = (
     selectedCreditIds: params.selectedCreditIds ?? state.selectedCreditIds,
     selectedDeductionIds:
         params.selectedDeductionIds ?? state.selectedDeductionIds,
+    selectedFuelIds: params.selectedFuelIds ?? state.selectedFuelIds
 });
 
 export const onGetPayrollSoloMileageReportDriverErrorSuccess = (
@@ -151,6 +152,12 @@ export const onGetPayrollMileageDriverClosedPayrollSuccess = (
     data: { payroll: PayrollDriverMileageResponse }
 ) => ({
     ...state,
-    payrollOpenedReport: data.payroll,
+    payrollOpenedReport: {
+        ...data.payroll,
+        excludedDeductions: [],
+        excludedCredits: [],
+        excludedLoads: [],
+        includedBonuses: [],
+    },
     reportLoading: false,
 });

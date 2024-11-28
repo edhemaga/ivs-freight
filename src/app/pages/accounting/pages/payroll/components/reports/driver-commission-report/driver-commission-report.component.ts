@@ -274,6 +274,7 @@ export class DriverCommissionReportComponent
                 this.getReportDataResults({
                     reportId: `${this.reportId}`,
                     selectedLoadIds: loadList,
+                    payrollOpenedTab: this.selectedTab,
                 });
             }
         }
@@ -281,9 +282,15 @@ export class DriverCommissionReportComponent
 
     public getReportDataResults(getData?: IGetPayrollByIdAndOptions) {
         this.payrollCommissionFacadeService.getPayrollDriverCommissionReport(
-            getData ?? {
-                reportId: `${this.reportId}`,
-            }
+            getData
+                ? {
+                      ...getData,
+                      payrollOpenedTab: this.selectedTab,
+                  }
+                : {
+                      reportId: `${this.reportId}`,
+                      payrollOpenedTab: this.selectedTab,
+                  }
         );
     }
 

@@ -30,11 +30,14 @@ export const authReducer = createReducer(
         loading: false,
         hideSIdebar: true,
     })),
-    on(AuthLoginActions.authLoginError, (state, error) => ({
-        ...state,
-        error: error.error,
-        loading: false,
-    })),
+
+    on(AuthLoginActions.authLoginError, (state, error) => {
+        return {
+            ...state,
+            error: error.error,
+            loading: false,
+        };
+    }),
 
     // Register Actions
     on(AuthRegisterActions.authRegister, (state) => ({

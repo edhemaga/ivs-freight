@@ -93,7 +93,6 @@ export class RefreshTokenInterceptor implements HttpInterceptor {
                         );
                     }),
                     catchError((err: HttpErrorResponse) => {
-
                         this.ngbModal.dismissAll();
 
                         localStorage.clear();
@@ -103,6 +102,12 @@ export class RefreshTokenInterceptor implements HttpInterceptor {
                         return throwError(() => err);
                     })
                 );
+        } else if (!user?.refreshToken) {
+            this.ngbModal.dismissAll();
+
+            localStorage.clear();
+
+            this.websiteAuthService.accountLogout();
         }
         return throwError(() => err);
     }
