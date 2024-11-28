@@ -2,6 +2,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
     name: 'dispatchColorFinder',
+    standalone: true,
 })
 export class DispatchColorFinderPipe implements PipeTransform {
     transform(id: number, type: string, isTooltip?: boolean): string {

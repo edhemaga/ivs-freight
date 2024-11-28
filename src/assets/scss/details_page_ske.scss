@@ -1092,10 +1092,6 @@ p {
         grid-template-columns: 430px 702px 310px 250px !important;
     }
 
-    .repair-general-holder {
-        width: 430px;
-    }
-
     .repair-container {
         width: 702px !important;
     }
@@ -1182,10 +1178,6 @@ p {
 
     .repair-details-cmp {
         grid-template-columns: 420px 692px 300px 240px !important;
-    }
-
-    .repair-general-holder {
-        width: 420px;
     }
 
     .repair-container {
@@ -1305,10 +1297,6 @@ p {
         grid-template-columns: 475px 760px 410px 0px !important;
     }
 
-    .repair-general-holder {
-        width: 475px;
-    }
-
     .repair-container {
         width: 760px !important;
     }
@@ -1337,17 +1325,6 @@ p {
         .repair-component {
             column-gap: 0px;
             height: 40px;
-            &.vehicleHolder {
-                grid-row: 1 !important;
-                grid-column: 3 !important;
-                height: fit-content;
-            }
-
-            &.reviewShopHolder {
-                grid-row: 2 !important;
-                grid-column: 3 !important;
-                width: 410px !important;
-            }
         }
 
         .review-container {
@@ -1410,10 +1387,6 @@ p {
         grid-template-columns: 455px 740px 390px 0px !important;
     }
 
-    .repair-general-holder {
-        width: 455px;
-    }
-
     .repair-container {
         width: 740px !important;
     }
@@ -1442,17 +1415,6 @@ p {
         .repair-component {
             column-gap: 0px;
             height: 40px;
-            &.vehicleHolder {
-                grid-row: 1 !important;
-                grid-column: 3 !important;
-                height: fit-content;
-            }
-
-            &.reviewShopHolder {
-                grid-row: 2 !important;
-                grid-column: 3 !important;
-                width: 410px !important;
-            }
         }
 
         .review-container {
@@ -1525,10 +1487,6 @@ p {
 
     .repair-details-container {
         grid-template-columns: 400px 740px 390px 0px !important;
-    }
-
-    .repair-general-holder {
-        width: 400px;
     }
 
     .details-header-wrapper-repair-shop {
@@ -1606,13 +1564,6 @@ p {
 
     .repair-details-cmp {
         grid-template-columns: 400px 720px 370px 0px !important;
-        .repair-component {
-            &.reviewShopHolder {
-                grid-row: 2 !important;
-                grid-column: 3 !important;
-                width: 370px !important;
-            }
-        }
 
         .review-container {
             width: 370px !important;
@@ -1682,13 +1633,6 @@ p {
 
     .repair-details-cmp {
         grid-template-columns: 380px 710px 350px 0px !important;
-        .repair-component {
-            &.reviewShopHolder {
-                grid-row: 2 !important;
-                grid-column: 3 !important;
-                width: 350px !important;
-            }
-        }
 
         .review-container {
             width: 350px !important;
@@ -1872,11 +1816,6 @@ p {
 
     .repair-details-cmp {
         grid-template-columns: 360px 700px 272px 0px !important;
-        .repair-component {
-            &.reviewShopHolder {
-                width: 272px !important;
-            }
-        }
 
         .review-container {
             width: 272px !important;

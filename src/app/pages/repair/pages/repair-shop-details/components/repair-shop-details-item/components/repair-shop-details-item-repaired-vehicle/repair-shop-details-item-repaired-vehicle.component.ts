@@ -17,7 +17,7 @@ import { CaSearchMultipleStatesComponent } from 'ca-components';
 import { RepairShopDetailsItemConstants } from '@pages/repair/pages/repair-shop-details/components/repair-shop-details-item/utils/constants';
 
 // pipes
-import { ThousandSeparatorPipe } from '@shared/pipes';
+import { DispatchColorFinderPipe, ThousandSeparatorPipe } from '@shared/pipes';
 
 // models
 import { RepairedVehicleListResponse } from 'appcoretruckassist';
@@ -39,11 +39,12 @@ import { RepairedVehicleListResponse } from 'appcoretruckassist';
 
         // pipes
         ThousandSeparatorPipe,
+        DispatchColorFinderPipe,
     ],
 })
 export class RepairShopDetailsItemRepairedVehicleComponent implements OnInit {
     @Input() set repairedVehicleList(data: RepairedVehicleListResponse[]) {
-        this.createRepairedVehicleListData(data);
+        this._repairedVehicleList = data;
     }
     @Input() searchConfig: boolean[];
 
@@ -60,12 +61,6 @@ export class RepairShopDetailsItemRepairedVehicleComponent implements OnInit {
     }
 
     public trackByIdentity = (index: number): number => index;
-
-    private createRepairedVehicleListData(
-        data: RepairedVehicleListResponse[]
-    ): void {
-        this._repairedVehicleList = data;
-    }
 
     private getConstantData(): void {
         this.repairedVehicleListHeaderItems =

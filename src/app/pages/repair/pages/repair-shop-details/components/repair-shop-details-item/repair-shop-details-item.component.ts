@@ -43,9 +43,6 @@ export class RepairShopDetailsItemComponent {
 
     public departmentContacts: DepartmentContacts[];
 
-    /////////////////////////////////////////////
-    @Input() customClass: string | any = '';
-
     constructor() {}
 
     public trackByIdentity(_: number, item: DetailsConfig): number {

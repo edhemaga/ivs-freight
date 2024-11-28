@@ -1,5 +1,4 @@
 <div class="repair-shop-details-item-container">
-    <!-- repair-component {{ customClass }} -->
     <ng-container
         *ngFor="let repairShopItem of _detailsConfig; trackBy: trackByIdentity"
     >
@@ -7,12 +6,10 @@
             <!-- General -->
 
             <ng-container *ngSwitchCase="'general'">
-                <!--  <div  class="repair-general-holder"> -->
                 <app-repair-shop-details-card
                     [repairShop]="_detailsConfig[0]?.data"
                 >
                 </app-repair-shop-details-card>
-                <!--  </div> -->
             </ng-container>
 
             <!-- Repair  -->
@@ -46,13 +43,15 @@
                         else review
                     "
                 >
-                    <div class="contacts-container">
-                        <app-ta-contacts-card
-                            [type]="'repair-shop'"
-                            [departmentContacts]="departmentContacts"
-                            [viewData]="_detailsConfig[3]?.data"
-                        ></app-ta-contacts-card>
-                    </div>
+                    <ng-container *ngIf="departmentContacts?.length">
+                        <div class="contacts-container">
+                            <app-ta-contacts-card
+                                [type]="'repair-shop'"
+                                [departmentContacts]="departmentContacts"
+                                [viewData]="_detailsConfig[3]?.data"
+                            ></app-ta-contacts-card>
+                        </div>
+                    </ng-container>
                 </ng-container>
 
                 <ng-template #review>

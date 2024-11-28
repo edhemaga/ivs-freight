@@ -56,6 +56,38 @@
                 .vehicle-icon {
                     height: 18px;
 
+                    &.blue {
+                        svg {
+                            path {
+                                fill: $ta-blue-14 !important;
+                            }
+                        }
+                    }
+
+                    &.yellow {
+                        svg {
+                            path {
+                                fill: $ta-yellow-5 !important;
+                            }
+                        }
+                    }
+
+                    &.red {
+                        svg {
+                            path {
+                                fill: $ta-red-11 !important;
+                            }
+                        }
+                    }
+
+                    &.green {
+                        svg {
+                            path {
+                                fill: $ta-green-2 !important;
+                            }
+                        }
+                    }
+
                     svg {
                         height: 18px;
                     }

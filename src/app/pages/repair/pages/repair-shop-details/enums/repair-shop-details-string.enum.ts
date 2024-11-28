@@ -5,6 +5,7 @@ export enum RepairShopDetailsStringEnum {
 
     STAR_ROUTE = 'ic_star.svg',
     CLOSED_ROUTE = 'ic_permanently_closed.svg',
+    COMPANY_OWNED_ROUTE = 'ic_company.svg',
 
     COMMON = 'common',
     MEDIUM = 'medium',

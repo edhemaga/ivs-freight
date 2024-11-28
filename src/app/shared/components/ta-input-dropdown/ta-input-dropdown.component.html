@@ -588,7 +588,8 @@
                                     'margin-right':
                                         option?.isRepairShopDetails &&
                                         option?.status &&
-                                        !option?.pinned
+                                        !option?.pinned &&
+                                        !option?.companyOwned
                                             ? i === hoveringIndex
                                                 ? '-2px'
                                                 : '-6px'
@@ -634,6 +635,7 @@
                                     [ngClass]="{
                                         pinned:
                                             option?.pinned &&
+                                            !option?.companyOwned &&
                                             i !== hoveringIndex,
                                         closed:
                                             option?.isRepairShopDetails &&

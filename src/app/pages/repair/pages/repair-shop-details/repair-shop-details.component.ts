@@ -447,8 +447,6 @@ export class RepairShopDetailsComponent implements OnInit, OnDestroy {
         data: T;
         type: string;
     }): void {
-        console.log('event', event);
-
         this.dropDownService.dropActionsHeaderRepair(
             event,
             this.repairShopObject
@@ -487,6 +485,10 @@ export class RepairShopDetailsComponent implements OnInit, OnDestroy {
             );
     }
 
+    public onFilter<T>(event: T): void {
+        this.tableService.sendCurrentSetTableFilter(event);
+    }
+
     public deleteRepair(
         id: number,
         repairShopId: number,
@@ -508,10 +510,6 @@ export class RepairShopDetailsComponent implements OnInit, OnDestroy {
             .updateRepairShopStatus(id)
             .pipe(takeUntil(this.destroy$))
             .subscribe();
-    }
-
-    public onFilter(event: any) {
-        this.tableService.sendCurrentSetTableFilter(event);
     }
 
     ngOnDestroy(): void {
