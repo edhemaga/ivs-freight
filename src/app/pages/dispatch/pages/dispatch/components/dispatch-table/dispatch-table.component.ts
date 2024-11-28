@@ -558,6 +558,8 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
                 (location?.address ? location : null) ||
                 (locationValue?.address?.address
                     ? locationValue.address
+                    : typeof locationValue === DispatchTableStringEnum.NUMBER
+                    ? null
                     : locationValue
                     ? locationValue
                     : null),
