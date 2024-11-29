@@ -1791,9 +1791,11 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                     this.inputService.changeValidators(
                         this.loadForm.get(LoadModalStringEnum.DRIVER_RATE)
                     );
-    
+
                     this.additionalBillingTypes =
-                        this.additionalBillingTypes.filter((item) => item.id !== 6);
+                        this.additionalBillingTypes.filter(
+                            (item) => item.id !== 6
+                        );
                 } else {
                     this.inputService.changeValidators(
                         this.loadForm.get(LoadModalStringEnum.DRIVER_RATE),
@@ -3362,7 +3364,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             stops.push({
                 id: this.isActiveLoad ? this.stops?.[0]?.id ?? null : null,
                 stopOrder: stops.length + 1,
-                stopLoadOrder: pickupStopOrder,
+                stopLoadOrder: 1,
                 stopType: pickupStop,
                 shipper: this.originalShippers.find(
                     (shipper) => shipper.id === this.selectedPickupShipper.id
@@ -3412,9 +3414,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                           )
                         : item.get(LoadModalStringEnum.STOP_TYPE).value,
                     stopOrder: stops.length + 1,
-                    stopLoadOrder:
-                        this.extraStopNumbers?.[index] ??
-                        item.get(LoadModalStringEnum.STOP_ORDER).value,
+                    stopLoadOrder: index + 2,
                     shipperId: this.selectedExtraStopShipper[index]?.id,
                     shipper: this.originalShippers.find(
                         (shipper) =>
@@ -3463,9 +3463,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                     : null,
                 stopType: deliveryStop,
                 stopOrder: stops.length + 1,
-                stopLoadOrder: this.loadForm.get(
-                    LoadModalStringEnum.DELIVERY_STOP_ORDER
-                ).value,
+                stopLoadOrder: stops.length + 1,
                 shipperId: this.selectedDeliveryShipper.id,
                 shipper: this.originalShippers.find(
                     (shipper) => shipper.id === this.selectedDeliveryShipper.id
