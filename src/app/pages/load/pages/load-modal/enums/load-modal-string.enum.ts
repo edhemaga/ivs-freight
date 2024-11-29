@@ -14,6 +14,7 @@ export enum LoadModalStringEnum {
     DRIVER_MESSAGE = 'driverMessage',
     NOTE = 'note',
     PICKUP_TIME_TO = 'pickupTimeTo',
+    PICKUP_INVOLVE_DRIVER = 'pickupInvolveDriver',
     DELIVERY_TIME_TO = 'deliveryTimeTo',
     DATE_FROM = 'dateFrom',
     DATE_TO = 'dateTo',

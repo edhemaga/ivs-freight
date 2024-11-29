@@ -476,6 +476,8 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         this.getLoadDropdowns();
 
         this.trackBillingPayment();
+
+        this.monitorInvolveDriverValueChange();
     }
 
     ngDoCheck(): void {
@@ -497,6 +499,42 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             +!!this.showTonuRate +
             +!!this.showRevisedRate
         );
+    }
+
+    private monitorInvolveDriverValueChange(): void {
+        this.loadForm
+            .get(LoadModalStringEnum.PICKUP_INVOLVE_DRIVER)
+            .valueChanges.pipe(takeUntil(this.destroy$))
+            .subscribe((value) => {
+                const lumperIndex =
+                    this.additionalBillings().controls.findIndex(
+                        (control) =>
+                            control.get(LoadModalStringEnum.NAME)?.value ===
+                            LoadModalStringEnum.LUMPER
+                    );
+
+                if (!this.editData?.data) {
+                    if (value && lumperIndex < 0) {
+                        const financialActionEvent = {
+                            type: LoadModalStringEnum.BILLING,
+                            action: true,
+                        };
+                        const additionalBillingEvent = {
+                            name: LoadModalStringEnum.LUMPER,
+                            id: 2,
+                            checked: false,
+                        };
+
+                        this.onFinancialAction(financialActionEvent);
+                        this.addAdditionalBilling(additionalBillingEvent);
+                    } else if (!value) {
+                        this.removeAdditionalBilling(
+                            LoadModalStringEnum.BILLING,
+                            lumperIndex
+                        );
+                    }
+                }
+            });
     }
 
     public hanndleShowAdjustedRate(): void {
