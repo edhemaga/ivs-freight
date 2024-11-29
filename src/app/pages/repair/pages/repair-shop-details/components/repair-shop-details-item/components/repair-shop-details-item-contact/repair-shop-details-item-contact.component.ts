@@ -37,6 +37,7 @@ export class RepairShopDetailsItemContactComponent {
         this.orderContacts(this._viewData?.contacts);
     }
     @Input() searchConfig: boolean[];
+    @Input() searchValue?: string;
 
     public _viewData: RepairShopResponse;
 

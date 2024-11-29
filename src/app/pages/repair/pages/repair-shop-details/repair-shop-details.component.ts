@@ -48,7 +48,12 @@ import {
 import { MethodsGlobalHelper } from '@shared/utils/helpers/methods-global.helper';
 
 // models
-import { RepairListResponse, RepairShopResponse } from 'appcoretruckassist';
+import {
+    RepairListResponse,
+    RepairResponse,
+    RepairShopContactResponse,
+    RepairShopResponse,
+} from 'appcoretruckassist';
 import { DetailsDropdownOptions } from '@shared/models/details-dropdown-options.model';
 import { DetailsConfig } from '@shared/models/details-config.model';
 import { ExtendedRepairShopResponse } from '@pages/repair/pages/repair-shop-details/components/repair-shop-details-card/models';
@@ -77,10 +82,12 @@ export class RepairShopDetailsComponent implements OnInit, OnDestroy {
     public currentIndex: number = 0;
 
     public repairShopList: RepairMinimalListState;
-    public repairShopObject: RepairShopResponse;
+    public repairShopObject: ExtendedRepairShopResponse;
 
     public repairShopId: number;
     public newRepairShopId: number;
+
+    public contactListSearchValue: string;
 
     public searchConfig: boolean[] = [false, false, false, false];
 
@@ -167,9 +174,12 @@ export class RepairShopDetailsComponent implements OnInit, OnDestroy {
                 filter.searchThree
             )
             .pipe(takeUntil(this.destroy$))
-            // leave for now
             .subscribe((repairList: RepairListResponse) => {
-                console.log('repairList FILTER', repairList);
+                const {
+                    pagination: { data },
+                } = repairList;
+
+                if (data.length) this.handleRepairListSearchData(data);
             });
     }
 
@@ -284,25 +294,26 @@ export class RepairShopDetailsComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe((res) => {
                 if (res) {
-                    console.log('res', res);
-                    this.backFilterQuery.pageIndex = 1;
+                    const { searchType } = res;
 
-                    const searchEvent = MethodsGlobalHelper.tableSearch(
-                        res,
-                        this.backFilterQuery
-                    );
+                    switch (searchType) {
+                        case RepairShopDetailsStringEnum.REPAIR:
+                            this.handleRepairListSearch(res);
 
-                    console.log('searchEvent', searchEvent);
+                            break;
+                        case RepairShopDetailsStringEnum.VEHICLE:
+                            break;
+                        case RepairShopDetailsStringEnum.CONTACT:
+                            this.handleContactListSearch(res);
 
-                    if (searchEvent) {
-                        if (searchEvent.action === TableStringEnum.API) {
-                            this.repairBackFilter(this.backFilterQuery);
-                        } else if (
-                            searchEvent.action === TableStringEnum.STORE
-                        ) {
-                            /*    this.sendRepairData(); */
-                        }
+                            break;
+                        case RepairShopDetailsStringEnum.REVIEW:
+                            break;
+                        default:
+                            break;
                     }
+
+                    this.cdRef.detectChanges();
                 }
             });
 
@@ -312,13 +323,126 @@ export class RepairShopDetailsComponent implements OnInit, OnDestroy {
             .subscribe((detailsPartIndex) => {
                 this.searchConfig[detailsPartIndex] = false;
 
-                this.repairShopDetailsConfig = this.repairShopDetailsConfig.map(
-                    (item, index) =>
-                        index === detailsPartIndex
-                            ? { ...item, hasSearch: true }
-                            : item
-                );
+                if (detailsPartIndex === 3) this.contactListSearchValue = null;
             });
+    }
+
+    private handleRepairListSearch<T>(res: T): void {
+        this.backFilterQuery.pageIndex = 1;
+
+        const searchEvent = MethodsGlobalHelper.tableSearch(
+            res,
+            this.backFilterQuery
+        );
+
+        if (searchEvent) {
+            searchEvent.action === TableStringEnum.API
+                ? this.repairBackFilter(this.backFilterQuery)
+                : this.handleRepairListSearchData(
+                      this.repairShopObject.repairList
+                  );
+        }
+    }
+
+    private handleContactListSearch<T extends { search: string }>(
+        res: T
+    ): void {
+        const { search } = res;
+
+        const searchToLowerCase = search?.toLowerCase();
+
+        this.contactListSearchValue = searchToLowerCase;
+
+        if (search) {
+            const filteredContacts = this.repairShopObject.contacts.filter(
+                ({ fullName, phone, email }) =>
+                    fullName.toLowerCase().includes(searchToLowerCase) ||
+                    phone.includes(searchToLowerCase) ||
+                    email.toLowerCase().includes(searchToLowerCase)
+            );
+
+            this.handleContactListSearchData(filteredContacts);
+        } else {
+            this.handleContactListSearchData(this.repairShopObject.contacts);
+        }
+    }
+
+    private handleRepairListSearchData(repairList: RepairResponse[]): void {
+        this.repairShopDetailsConfig = this.repairShopDetailsConfig.map(
+            (item, index) =>
+                index === 1
+                    ? {
+                          ...item,
+                          data: { ...item.data, repairList },
+                      }
+                    : item
+        );
+    }
+
+    private handleContactListSearchData(
+        contacts: RepairShopContactResponse[]
+    ): void {
+        this.repairShopDetailsConfig = this.repairShopDetailsConfig.map(
+            (item, index) =>
+                index === 3
+                    ? {
+                          ...item,
+                          data: {
+                              ...item.data,
+                              contacts: contacts?.length
+                                  ? contacts
+                                  : this.repairShopObject.contacts,
+                          },
+                      }
+                    : item
+        );
+    }
+
+    private handleRepairShopIdRouteChange(): void {
+        this.detailsPageService.pageDetailChangeId$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((id) => {
+                let query;
+
+                this.newRepairShopId = id;
+
+                if (this.repairDetailsQuery.hasEntity(id)) {
+                    query = this.repairDetailsQuery
+                        .selectEntity(id)
+                        .pipe(take(1));
+
+                    query.subscribe((res: ExtendedRepairShopResponse) => {
+                        this.currentIndex = this.repairShopList.findIndex(
+                            (repairShop: RepairShopResponse) =>
+                                repairShop.id === res.id
+                        );
+
+                        this.getDetailsConfig(res);
+                        this.getDetailsOptions(this.repairShopObject);
+
+                        if (
+                            this.router.url.includes(
+                                RepairShopDetailsStringEnum.DETAILS
+                            )
+                        ) {
+                            this.router.navigate([
+                                `/list/repair/${res.id}/details`,
+                            ]);
+                        }
+                    });
+                } else {
+                    this.router.navigate([`/list/repair/${id}/details`]);
+                }
+
+                this.cdRef.detectChanges();
+            });
+    }
+
+    private handleOpenCloseRepairShop(id: number): void {
+        this.repairService
+            .updateRepairShopStatus(id)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe();
     }
 
     private getStoreData(): void {
@@ -379,46 +503,6 @@ export class RepairShopDetailsComponent implements OnInit, OnDestroy {
             );
     }
 
-    private handleRepairShopIdRouteChange(): void {
-        this.detailsPageService.pageDetailChangeId$
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((id) => {
-                let query;
-
-                this.newRepairShopId = id;
-
-                if (this.repairDetailsQuery.hasEntity(id)) {
-                    query = this.repairDetailsQuery
-                        .selectEntity(id)
-                        .pipe(take(1));
-
-                    query.subscribe((res: ExtendedRepairShopResponse) => {
-                        this.currentIndex = this.repairShopList.findIndex(
-                            (repairShop: RepairShopResponse) =>
-                                repairShop.id === res.id
-                        );
-
-                        this.getDetailsConfig(res);
-                        this.getDetailsOptions(this.repairShopObject);
-
-                        if (
-                            this.router.url.includes(
-                                RepairShopDetailsStringEnum.DETAILS
-                            )
-                        ) {
-                            this.router.navigate([
-                                `/list/repair/${res.id}/details`,
-                            ]);
-                        }
-                    });
-                } else {
-                    this.router.navigate([`/list/repair/${id}/details`]);
-                }
-
-                this.cdRef.detectChanges();
-            });
-    }
-
     public onModalAction(action: string): void {
         switch (action) {
             case RepairShopDetailsStringEnum.REPAIR:
@@ -476,17 +560,6 @@ export class RepairShopDetailsComponent implements OnInit, OnDestroy {
         this.searchConfig[index] = isSearch;
     }
 
-    public deleteRepairShop(id: number): void {
-        this.repairService
-            .deleteRepairShop(id)
-            .pipe(takeUntil(this.destroy$))
-            .subscribe(() =>
-                this.router.navigate([
-                    RepairShopDetailsStringEnum.REPAIR_LIST_ROUTE,
-                ])
-            );
-    }
-
     public onDetailsSelectClick(id: number): void {
         this.repairShopDetailsConfig =
             RepairShopDetailsHelper.getRepairShopDetailsConfig(
@@ -497,6 +570,17 @@ export class RepairShopDetailsComponent implements OnInit, OnDestroy {
 
     public onFilter<T>(event: T): void {
         this.tableService.sendCurrentSetTableFilter(event);
+    }
+
+    public deleteRepairShop(id: number): void {
+        this.repairService
+            .deleteRepairShop(id)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe(() =>
+                this.router.navigate([
+                    RepairShopDetailsStringEnum.REPAIR_LIST_ROUTE,
+                ])
+            );
     }
 
     public deleteRepair(
@@ -511,13 +595,6 @@ export class RepairShopDetailsComponent implements OnInit, OnDestroy {
 
         this.repairService
             .deleteRepair(id, repairShopId, unitType)
-            .pipe(takeUntil(this.destroy$))
-            .subscribe();
-    }
-
-    private handleOpenCloseRepairShop(id: number): void {
-        this.repairService
-            .updateRepairShopStatus(id)
             .pipe(takeUntil(this.destroy$))
             .subscribe();
     }
