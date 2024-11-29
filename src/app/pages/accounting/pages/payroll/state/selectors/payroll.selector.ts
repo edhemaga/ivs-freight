@@ -79,7 +79,9 @@ export const selectPayrollReportMapData = createSelector(
                 icon: {
                     url: MapMarkerIconHelper.getRoutingMarkerIcon(
                         loadStop.orderInLoad ?? 0,
-                        loadStop.type.name.toLowerCase()
+                        loadStop.type.name.toLowerCase(),
+                        false,
+                        true
                     ),
                     labelOrigin: new google.maps.Point(90, 15),
                 },

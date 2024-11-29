@@ -27,6 +27,7 @@ import {
     IMapBoundsZoom,
     IMapSelectedMarkerData,
     SortColumn,
+    MapMarkerIconHelper,
 } from 'ca-components';
 
 // store
@@ -64,7 +65,6 @@ import { RepairConfiguration } from '@pages/repair/pages/repair-table/utils/cons
 import { DataFilterHelper } from '@shared/utils/helpers/data-filter.helper';
 import { MethodsGlobalHelper } from '@shared/utils/helpers/methods-global.helper';
 import {
-    RepairShopMapMarkersHelper,
     RepairShopMapDropdownHelper,
     RepairTableBackFilterDataHelper,
     RepairTableDateFormaterHelper,
@@ -2029,18 +2029,24 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                             };
                         }
 
+                        const markerIcon =
+                            data?.count > 1
+                                ? MapMarkerIconHelper.getClusterMarker(
+                                      data?.count,
+                                      !!clusterInfoWindowContent?.selectedClusterItemData
+                                  )
+                                : MapMarkerIconHelper.getMapMarker(
+                                      data.favourite,
+                                      data.isClosed
+                                  );
+
                         const markerData = {
                             position: {
                                 lat: data.latitude,
                                 lng: data.longitude,
                             },
                             icon: {
-                                url: RepairShopMapMarkersHelper.getMapMarker(
-                                    data.favourite,
-                                    data.isClosed,
-                                    data?.count,
-                                    data?.count > 1
-                                ),
+                                url: markerIcon,
                                 labelOrigin: new google.maps.Point(80, 15),
                             },
                             infoWindowContent: clusterInfoWindowContent,

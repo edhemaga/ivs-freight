@@ -40,6 +40,7 @@ import {
     IMapMarkers,
     IMapSelectedMarkerData,
     SortColumn,
+    MapMarkerIconHelper,
 } from 'ca-components';
 
 // store
@@ -101,10 +102,7 @@ import {
     getShipperColumnDefinition,
 } from '@shared/utils/settings/table-settings/customer-columns';
 import { MethodsGlobalHelper } from '@shared/utils/helpers/methods-global.helper';
-import {
-    ShipperMapMarkersHelper,
-    ShipperMapDropdownHelper,
-} from '@pages/customer/pages/customer-table/utils/helpers';
+import { ShipperMapDropdownHelper } from '@pages/customer/pages/customer-table/utils/helpers';
 
 @Component({
     selector: 'app-customer-table',
@@ -2527,18 +2525,24 @@ export class CustomerTableComponent
                             };
                         }
 
+                        const markerIcon =
+                            data?.count > 1
+                                ? MapMarkerIconHelper.getClusterMarker(
+                                      data?.count,
+                                      !!clusterInfoWindowContent?.selectedClusterItemData
+                                  )
+                                : MapMarkerIconHelper.getMapMarker(
+                                      data.favourite,
+                                      data.isClosed
+                                  );
+
                         const markerData = {
                             position: {
                                 lat: data.latitude,
                                 lng: data.longitude,
                             },
                             icon: {
-                                url: ShipperMapMarkersHelper.getMapMarker(
-                                    data.favourite,
-                                    data.isClosed,
-                                    data?.count,
-                                    data?.count > 1
-                                ),
+                                url: markerIcon,
                                 labelOrigin: new google.maps.Point(80, 15),
                             },
                             infoWindowContent: clusterInfoWindowContent,
