@@ -196,6 +196,7 @@ export class CustomerTableComponent
     public mapStateFilter: string[] | null = null;
     public isSelectedFromMapList: boolean = false;
     public mapListCount: number = 0;
+    public isSelectedFromDetails: boolean = false;
 
     constructor(
         // ref
@@ -262,6 +263,8 @@ export class CustomerTableComponent
         this.addMapListScrollEvent();
 
         this.addSelectedMarkerListener();
+
+        this.checkSelectedMarker();
     }
 
     ngAfterViewInit(): void {
@@ -1277,6 +1280,7 @@ export class CustomerTableComponent
                 hideActivationButton: true,
                 fuelMoneyFilter: false,
                 loadMoneyFilter: false,
+                hideSearch: this.activeViewMode === TableStringEnum.MAP,
                 viewModeOptions: this.getViewModeOptions(),
             },
         };
@@ -1434,9 +1438,11 @@ export class CustomerTableComponent
                 viewModeOptions = this.getViewModeOptions();
             }
 
-            this.tableOptions.toolbarActions.viewModeOptions = [
-                ...viewModeOptions,
-            ];
+            this.tableOptions.toolbarActions = {
+                ...this.tableOptions.toolbarActions,
+                viewModeOptions: [...viewModeOptions],
+                hideSearch: this.activeViewMode === TableStringEnum.MAP,
+            };
         }
     }
 
@@ -1857,7 +1863,7 @@ export class CustomerTableComponent
             this.activeViewMode = event.mode;
 
             this.tableOptions.toolbarActions.hideSearch =
-                event.mode == TableStringEnum.MAP;
+                event.mode === TableStringEnum.MAP;
 
             this.filter = null;
 
@@ -2386,7 +2392,10 @@ export class CustomerTableComponent
             zoomLevel: event.zoom,
         };
 
-        this.getMapData();
+        if (this.isSelectedFromDetails) {
+            this.onGetInfoWindowData(this.mapsService.selectedMarkerId);
+            this.isSelectedFromDetails = false;
+        } else this.getMapData();
     }
 
     public onResetSelectedMarkerItem(isBackButton?: boolean): void {
@@ -2729,6 +2738,15 @@ export class CustomerTableComponent
 
             if (item) this.mapsService.markerUpdate(item);
         }
+    }
+
+    public checkSelectedMarker(): void {
+        const isAlreadySelectedMarker =
+            this.mapData?.selectedMarkerData?.data?.id ===
+            this.mapsService.selectedMarkerId;
+
+        if (this.mapsService.selectedMarkerId && !isAlreadySelectedMarker)
+            this.isSelectedFromDetails = true;
     }
 
     ngOnDestroy(): void {

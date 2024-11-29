@@ -199,6 +199,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
     public mapStateFilter: string[] | null = null;
     public mapListCount: number = 0;
     public isSelectedFromMapList: boolean = false;
+    public isSelectedFromDetails: boolean = false;
 
     constructor(
         // router
@@ -262,6 +263,8 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
         this.confirmationSubscribe();
 
         this.confirmationActivationSubscribe();
+
+        this.checkSelectedMarker();
     }
 
     ngAfterViewInit(): void {
@@ -1920,7 +1923,10 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
             zoomLevel: event.zoom,
         };
 
-        this.getMapData();
+        if (this.isSelectedFromDetails) {
+            this.onGetInfoWindowData(this.mapsService.selectedMarkerId);
+            this.isSelectedFromDetails = false;
+        } else this.getMapData();
     }
 
     public getRepairShopClusters(
@@ -2255,6 +2261,15 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
 
             this.getRepairShopMapList();
         }
+    }
+
+    public checkSelectedMarker(): void {
+        const isAlreadySelectedMarker =
+            this.mapData?.selectedMarkerData?.data?.id ===
+            this.mapsService.selectedMarkerId;
+
+        if (this.mapsService.selectedMarkerId && !isAlreadySelectedMarker)
+            this.isSelectedFromDetails = true;
     }
 
     public trackByIdentity = (index: number, item: any): number => item?.id;
