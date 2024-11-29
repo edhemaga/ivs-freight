@@ -842,6 +842,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     }
 
     private watchFormChanges() {
+        console.log(this.editData);
         setTimeout(() => {
             this.formService.checkFormChange(this.loadForm);
 
@@ -4019,7 +4020,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         return {
             selectedTab: this.editData?.selectedTab,
             id: form.id,
-            isEditMode: this.isEditingMode,
+            isEditMode: true,
             previousStatus: this.selectedStatus,
             loadAction: this.editData?.loadAction,
             data: {
