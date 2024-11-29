@@ -208,6 +208,7 @@ export enum LoadModalStringEnum {
     PICKUP_SHAPE = 'pickupShape',
     DELIVERY_SHAPE = 'deliveryShape',
     SHAPE = 'shape',
+    INVOLVE_DRIVER = 'involveDriver',
     ID = 'id',
     DISPATCH_LOAD_SAVE_AND_ASSIGN_NEW = 'assign-save-and-assign-new',
     DISPATCH_LOAD_SAVE_CHANGES = 'assign-save-changes',
@@ -218,5 +219,5 @@ export enum LoadModalStringEnum {
     TRAILERS_SVG_ROUTE = 'assets/svg/common/trailers/',
     COMMISSION = 'Commission',
     PERCENT_PAY_TYPE = '%',
-    TEXT_SUFFIX = 'text-suffix'
+    TEXT_SUFFIX = 'text-suffix',
 }
