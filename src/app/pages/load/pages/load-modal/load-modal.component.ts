@@ -842,7 +842,6 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     }
 
     private watchFormChanges() {
-        console.log(this.editData);
         setTimeout(() => {
             this.formService.checkFormChange(this.loadForm);
 
