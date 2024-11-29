@@ -291,7 +291,8 @@ export class TrailerDetailsCardComponent
                     ...TrailerDetailsChartsConfiguration.PAYROLL_CHART_CONFIG,
                     chartData: ChartHelper.generateDataByDateTime<TrailerFuelConsumptionChartResponse>(
                         response.trailerFuelConsumptionCharts,
-                        ChartConfiguration.trailerFuelExpensesConfiguration
+                        ChartConfiguration.trailerFuelExpensesConfiguration,
+                        timeFilter
                     ),
                 };
                 this.fuelConsumptionChartLegend = ChartLegendConfiguration.trailerFuelConsumptionConfiguration(response)

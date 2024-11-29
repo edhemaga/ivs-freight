@@ -165,7 +165,8 @@ export class DriverDetailsCardComponent
                     chartData: ChartHelper
                         .generateDataByDateTime<DriverPayrollChartResponse>(
                             response.getDriverPayrollChartResponse,
-                            ChartConfiguration.driverConfiguration
+                            ChartConfiguration.driverConfiguration,
+                            timeFilter
                         )
                 };
 

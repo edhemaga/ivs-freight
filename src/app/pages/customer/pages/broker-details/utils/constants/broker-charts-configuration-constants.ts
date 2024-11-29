@@ -12,7 +12,9 @@ export class BrokerChartsConfiguration {
         width: 100,
         noDataImage: ChartImagesStringEnum.CHART_NO_DATA_YELLOW,
         chartOptions: {},
-        isMultiYAxis: true
+        isMultiYAxis: true,
+        showTooltipBackground: false,
+        showXAxisLabels: true
     };
 
     static MILEAGE_CHART_CONFIG = {
@@ -25,6 +27,8 @@ export class BrokerChartsConfiguration {
         width: 100,
         noDataImage: ChartImagesStringEnum.CHART_NO_DATA_MIXED,
         chartOptions: {},
+        showTooltipBackground: false,
+        showXAxisLabels: true
     };
 
     static PAYMENT_CHART_CONFIG = {
@@ -38,5 +42,7 @@ export class BrokerChartsConfiguration {
         noDataImage: ChartImagesStringEnum.CHART_NO_DATA_PAY,
         chartOptions: {},
         isMultiYAxis: false,
+        showTooltipBackground: false,
+        showXAxisLabels: true
     };
 }

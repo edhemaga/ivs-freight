@@ -14,6 +14,8 @@ export class TruckDetailsChartsConfiguration {
         width: 100,
         noDataImage: ChartImagesStringEnum.CHART_NO_DATA_YELLOW,
         chartOptions: {},
+        showTooltipBackground: false,
+        showXAxisLabels: true
     };
 
     static REVENUE_CHART_CONFIG = {
@@ -26,6 +28,8 @@ export class TruckDetailsChartsConfiguration {
         width: 100,
         noDataImage: ChartImagesStringEnum.CHART_NO_DATA_GREEN,
         chartOptions: {},
+        showTooltipBackground: false,
+        showXAxisLabels: true
     };
 
     static EXPENSES_CHART_CONFIG = {
@@ -38,6 +42,8 @@ export class TruckDetailsChartsConfiguration {
         width: 100,
         noDataImage: ChartImagesStringEnum.CHART_NO_DATA_STACKED,
         chartOptions: {},
-        isStacked: true
+        showTooltipBackground: false,
+        showXAxisLabels: true,
+        isStacked: true,
     };
 }
