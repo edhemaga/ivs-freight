@@ -864,11 +864,16 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                 );
             }
 
-            this.formService.formValueChange$
-                .pipe(takeUntil(this.destroy$))
-                .subscribe((isFormChange: boolean) => {
-                    this.isFormDirty = isFormChange;
-                });
+            if (this.editData?.isEditMode) {
+                this.isFormDirty = true;
+            } else {
+                this.formService.formValueChange$
+                    .pipe(takeUntil(this.destroy$))
+                    .subscribe(
+                        (isFormChange: boolean) =>
+                            (this.isFormDirty = isFormChange)
+                    );
+            }
         }, 500);
     }
 
