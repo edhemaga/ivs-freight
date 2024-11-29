@@ -19,7 +19,6 @@ export class BrokerChartsConfiguration {
         // By default, and if the parameter is not specified the configuration is going to treat is a single Y axis chat
         // Otherwise, specify parameter
         // See Broker Detail invoice chart
-        isMultiYAxis: true
     };
 
     static MILEAGE_CHART_CONFIG = {
