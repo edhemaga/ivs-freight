@@ -680,6 +680,8 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                             : this.shopFilterQuery
                     );
 
+                    console.log('searchEvent', searchEvent);
+
                     if (searchEvent) {
                         if (searchEvent.action === TableStringEnum.API) {
                             if (

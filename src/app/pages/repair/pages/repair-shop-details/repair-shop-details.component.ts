@@ -45,6 +45,7 @@ import {
     RepairTableBackFilterDataHelper,
     RepairTableDateFormaterHelper,
 } from '@pages/repair/pages/repair-table/utils/helpers';
+import { MethodsGlobalHelper } from '@shared/utils/helpers/methods-global.helper';
 
 // models
 import { RepairListResponse, RepairShopResponse } from 'appcoretruckassist';
@@ -167,7 +168,9 @@ export class RepairShopDetailsComponent implements OnInit, OnDestroy {
             )
             .pipe(takeUntil(this.destroy$))
             // leave for now
-            .subscribe((repair: RepairListResponse) => {});
+            .subscribe((repairList: RepairListResponse) => {
+                console.log('repairList FILTER', repairList);
+            });
     }
 
     public setTableFilter(): void {
@@ -281,31 +284,25 @@ export class RepairShopDetailsComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe((res) => {
                 if (res) {
-                    /*  this.backFilterQuery.pageIndex = 1;
-                    this.shopFilterQuery.pageIndex = 1;
+                    console.log('res', res);
+                    this.backFilterQuery.pageIndex = 1;
 
                     const searchEvent = MethodsGlobalHelper.tableSearch(
                         res,
-                        this.selectedTab !== TableStringEnum.REPAIR_SHOP
-                            ? this.backFilterQuery
-                            : this.shopFilterQuery
+                        this.backFilterQuery
                     );
+
+                    console.log('searchEvent', searchEvent);
 
                     if (searchEvent) {
                         if (searchEvent.action === TableStringEnum.API) {
-                            if (
-                                this.selectedTab !== TableStringEnum.REPAIR_SHOP
-                            ) {
-                                this.repairBackFilter(this.backFilterQuery);
-                            } else {
-                                this.shopBackFilter(this.shopFilterQuery);
-                            }
+                            this.repairBackFilter(this.backFilterQuery);
                         } else if (
                             searchEvent.action === TableStringEnum.STORE
                         ) {
-                            this.sendRepairData();
+                            /*    this.sendRepairData(); */
                         }
-                    } */
+                    }
                 }
             });
 
