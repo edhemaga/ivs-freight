@@ -864,11 +864,16 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                 );
             }
 
-            this.formService.formValueChange$
-                .pipe(takeUntil(this.destroy$))
-                .subscribe((isFormChange: boolean) => {
-                    this.isFormDirty = isFormChange;
-                });
+            if (this.editData?.isEditMode) {
+                this.isFormDirty = true;
+            } else {
+                this.formService.formValueChange$
+                    .pipe(takeUntil(this.destroy$))
+                    .subscribe(
+                        (isFormChange: boolean) =>
+                            (this.isFormDirty = isFormChange)
+                    );
+            }
         }, 500);
     }
 
@@ -4014,7 +4019,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         return {
             selectedTab: this.editData?.selectedTab,
             id: form.id,
-            isEditMode: this.isEditingMode,
+            isEditMode: true,
             previousStatus: this.selectedStatus,
             loadAction: this.editData?.loadAction,
             data: {
