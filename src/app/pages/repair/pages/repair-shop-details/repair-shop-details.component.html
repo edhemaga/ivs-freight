@@ -14,6 +14,7 @@
             [showClosedBadge]="item?.isClosedBusiness"
             [businessOpen]="!item?.isClosedBusiness"
             [hasSort]="item?.hasSort"
+            [isSortBtn]="item?.isSortBtn"
             [statusInactive]="item?.hide"
             [totalCost]="item?.total"
             [mainData]="item"
@@ -32,7 +33,8 @@
             [repairOrderFilter]="true"
             (dropActions)="onRepairShopActions($event)"
             (openModalAction)="onModalAction($event)"
-            (searchBtnEmitter)="onSearchBtnClick($event, item.name)"
+            (sortActions)="onRepairShopSortActions($event)"
+            (searchBtnEmitter)="onSearchBtnClick($event, item?.name)"
             (multipleDetailsSelectDropdownEmitter)="
                 onDetailsSelectClick($event)
             "

@@ -42,6 +42,7 @@ export interface DetailsConfig {
     areaFilter?: boolean;
     moneyFilter?: boolean;
     hasSort?: boolean;
+    isSortBtn?: boolean;
     sortDropdown?: LoadsSortDropdownModel[];
     isClosedBusiness?: boolean;
     data?:

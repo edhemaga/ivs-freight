@@ -143,6 +143,7 @@ export class TaDetailsHeaderComponent implements OnInit, OnChanges {
     @Input() locationFilter: boolean = false;
     @Input() areaFilter: boolean = false;
     @Input() hasSort: boolean = false;
+    @Input() isSortBtn: boolean = false;
     @Input() sortDropdown: LoadsSortDropdownModel[];
 
     @Output() openModalAction = new EventEmitter<any>();
@@ -159,6 +160,7 @@ export class TaDetailsHeaderComponent implements OnInit, OnChanges {
         column: LoadsSortDropdownModel;
         sortDirection: string;
     }>();
+    @Output() sortActions = new EventEmitter<any>();
 
     private destroy$ = new Subject<void>();
 
@@ -605,12 +607,26 @@ export class TaDetailsHeaderComponent implements OnInit, OnChanges {
         this.multipleDetailsPopover.close();
     }
 
-    public setFilterValue(data): void {
+    public setFilterValue<T>(data: T): void {
         this.filterActions.emit(data);
     }
 
-    public onSpecialFilter(data, type): void {
+    public onSpecialFilter<T>(data: T, type: string): void {
         this.specialFilterActions.emit({ data, type });
+    }
+
+    public handleSortClick(isDateSort: boolean): void {
+        if (isDateSort) {
+            this.sortDirection = this.sortDirection === 'desc' ? 'asc' : 'desc';
+
+            const capitalizedDirection =
+                this.sortDirection.charAt(0).toUpperCase() +
+                this.sortDirection.slice(1);
+
+            const dateSortDirection = 'dateAdded' + capitalizedDirection;
+
+            this.sortActions.emit({ direction: dateSortDirection });
+        }
     }
 
     public sortItems(
@@ -648,7 +664,6 @@ export class TaDetailsHeaderComponent implements OnInit, OnChanges {
         this.isSortDropdownOpen = false;
     }
 
-    // --------------------------------NgOnDestroy---------------------------------
     ngOnDestroy(): void {
         this.tableService.sendCurrentSetTableFilter(null);
     }

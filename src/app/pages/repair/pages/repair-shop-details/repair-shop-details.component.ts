@@ -312,8 +312,6 @@ export class RepairShopDetailsComponent implements OnInit, OnDestroy {
                         default:
                             break;
                     }
-
-                    this.cdRef.detectChanges();
                 }
             });
 
@@ -377,6 +375,8 @@ export class RepairShopDetailsComponent implements OnInit, OnDestroy {
                       }
                     : item
         );
+
+        this.cdRef.detectChanges();
     }
 
     private handleContactListSearchData(
@@ -396,6 +396,8 @@ export class RepairShopDetailsComponent implements OnInit, OnDestroy {
                       }
                     : item
         );
+
+        this.cdRef.detectChanges();
     }
 
     private handleRepairShopIdRouteChange(): void {
@@ -545,6 +547,15 @@ export class RepairShopDetailsComponent implements OnInit, OnDestroy {
             event,
             this.repairShopObject
         );
+    }
+
+    public onRepairShopSortActions(event: any): void {
+        console.log('event', event);
+
+        this.backFilterQuery.sort = event.direction;
+        this.backFilterQuery.pageIndex = 1;
+
+        this.repairBackFilter(this.backFilterQuery);
     }
 
     public onSearchBtnClick(isSearch: boolean, type: string): void {

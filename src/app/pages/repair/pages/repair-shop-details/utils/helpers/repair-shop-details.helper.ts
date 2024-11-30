@@ -135,6 +135,7 @@ export class RepairShopDetailsHelper {
                 icon: true,
                 hasSearch: true,
                 hasSort: true,
+                isSortBtn: true,
                 hide: false,
                 total: cost,
                 length: repairList?.length || '0',

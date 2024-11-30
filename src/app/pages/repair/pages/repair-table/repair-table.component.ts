@@ -667,8 +667,6 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
         this.caSearchMultipleStatesService.currentSearchTableData
             .pipe(takeUntil(this.destroy$))
             .subscribe((res) => {
-                console.log('res', res);
-
                 if (res) {
                     this.backFilterQuery.pageIndex = 1;
                     this.shopFilterQuery.pageIndex = 1;
@@ -679,8 +677,6 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                             ? this.backFilterQuery
                             : this.shopFilterQuery
                     );
-
-                    console.log('searchEvent', searchEvent);
 
                     if (searchEvent) {
                         if (searchEvent.action === TableStringEnum.API) {
@@ -1361,6 +1357,8 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
         action: string;
         direction: string;
     }): void {
+        console.log('TABLE SORT EVENT', event);
+
         if (event.action === TableStringEnum.SORT) {
             if (event.direction) {
                 this.backFilterQuery.sort = event.direction;
