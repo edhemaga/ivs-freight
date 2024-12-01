@@ -115,6 +115,13 @@
     }
 }
 
+.progress-address {
+    width: 244px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
 // Progress Container
 .bg-sliver-container {
     background: $dark-2;

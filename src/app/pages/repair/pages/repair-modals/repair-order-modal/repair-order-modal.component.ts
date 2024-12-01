@@ -320,6 +320,11 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
                 this.getRepairShopById();
             }
         }
+
+        if (this.editData?.preSelectedUnit)
+            setTimeout(() => {
+                this.loadPreSelected();
+            }, 2000);
     }
 
     private checkIsFinishOrder(): void {
@@ -1540,6 +1545,22 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
                         : TableStringEnum.TRAILER_2,
             }
         );
+    }
+
+    private loadPreSelected(): void {
+        const selectedUnit = (this.unitDropdownList as any[]).find(
+            (unit) => unit.id === this.editData.preSelectedUnit
+        );
+
+        this.onSelectDropDown(
+            selectedUnit,
+            RepairOrderModalStringEnum.REPAIR_UNIT
+        );
+        this.repairOrderForm.patchValue({
+            unit: selectedUnit?.truckNumber
+                ? selectedUnit.truckNumber
+                : selectedUnit?.trailerNumber,
+        });
     }
 
     ngOnDestroy(): void {
