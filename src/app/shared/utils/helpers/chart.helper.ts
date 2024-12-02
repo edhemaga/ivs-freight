@@ -113,12 +113,14 @@ export class ChartHelper {
      * contain `day`, `month`, and `year` properties. Depending on the `timeFilter` value, 
      * it formats the labels for individual days, months, or years using abbreviated month names.
      *
-     * - If `timeFilter` corresponds to daily or weekly views (values 1, 2, 3, 6, or falsy),
+     * - If `timeFilter` corresponds to daily or weekly views (values 1, 2, 3, 6, or empty ),
      *   the label is formatted as "21 DEC" (day and abbreviated month).
      * - If `timeFilter` corresponds to monthly or yearly views (values 4 or 5):
      * - For January (`month === 1`), it shows the year ("exp. 2023").
      * - For other months, it shows the abbreviated month ("exp. DEC").
      * - For unsupported `timeFilter` values, it returns an empty string.
+     * 
+     * ---The logic is changed for some scenarios it has to be updated, also response from BE will heve to be reworked 
      */
     private static getXAxisFormatedLabels<T>(
         rawData: T[],

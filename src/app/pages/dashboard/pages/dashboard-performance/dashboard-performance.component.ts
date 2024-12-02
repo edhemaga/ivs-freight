@@ -422,15 +422,6 @@ export class DashboardPerformanceComponent implements OnInit, OnDestroy {
                     );
                 this.barPerformanceChartConfig.chartData.datasets =
                     barPerformanceChartData;
-
-                console.log(
-                    'linePerformanceChartConfig:',
-                    this.linePerformanceChartConfig.chartData.datasets
-                );
-                console.log(
-                    'barPerformanceChartConfig:',
-                    this.barPerformanceChartConfig.chartData.datasets
-                );
             });
     }
 
