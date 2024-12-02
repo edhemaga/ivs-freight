@@ -1438,7 +1438,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
 
                 break;
             case LoadModalStringEnum.DISPATCHES:
-                this.onSelectDropdownDispatches(event);
+                this.onSelectDropdownDispatches(event, isClick);
 
                 break;
             case LoadModalStringEnum.BROKER:
@@ -1755,7 +1755,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         }
     }
 
-    private onSelectDropdownDispatches(event): void {
+    private onSelectDropdownDispatches(event, isClick?: boolean): void {
         if (event) {
             this.selectedDispatches = {
                 ...event,
@@ -1835,6 +1835,14 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                         this.loadForm.get(LoadModalStringEnum.DRIVER_RATE)
                     );
 
+                    if (isClick && this.selectedDispatches.driver?.driverRate)
+                        this.loadForm
+                            .get(LoadModalStringEnum.DRIVER_RATE)
+                            .patchValue(
+                                this.selectedDispatches.driver?.driverRate
+                            );
+                     
+
                     this.additionalBillingTypes =
                         this.additionalBillingTypes.filter(
                             (item) => item.id !== 6
@@ -1842,6 +1850,8 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                 } else {
                     this.inputService.changeValidators(
                         this.loadForm.get(LoadModalStringEnum.DRIVER_RATE),
+                        false,
+                        [],
                         false
                     );
                 }
@@ -1865,6 +1875,8 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
 
             this.inputService.changeValidators(
                 this.loadForm.get(LoadModalStringEnum.DRIVER_RATE),
+                false,
+                [],
                 false
             );
 
@@ -2811,9 +2823,10 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                         ...this.loadModalBill,
                         baseRate: 0,
                     };
-
                     this.inputService.changeValidators(
                         this.loadForm.get(LoadModalStringEnum.DRIVER_RATE),
+                        false,
+                        [],
                         false
                     );
                     this.inputService.changeValidators(
@@ -2828,36 +2841,6 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                 }
             });
 
-        // driver rate
-        this.loadForm
-            .get(LoadModalStringEnum.DRIVER_RATE)
-            .valueChanges.pipe(takeUntil(this.destroy$))
-            .subscribe((value) => {
-                if (value) {
-                    if (
-                        !this.loadForm.get(LoadModalStringEnum.BASE_RATE)
-                            .value ||
-                        MethodsCalculationsHelper.convertThousanSepInNumber(
-                            value
-                        ) >
-                            MethodsCalculationsHelper.convertThousanSepInNumber(
-                                this.loadForm.get(LoadModalStringEnum.BASE_RATE)
-                                    .value
-                            )
-                    ) {
-                        this.loadForm
-                            .get(LoadModalStringEnum.DRIVER_RATE)
-                            .reset();
-                        this.loadForm
-                            .get(LoadModalStringEnum.DRIVER_RATE)
-                            .setErrors({ invalid: true });
-                    } else {
-                        this.loadForm
-                            .get(LoadModalStringEnum.DRIVER_RATE)
-                            .setErrors(null);
-                    }
-                }
-            });
 
         // advance rate
         this.additionalPayments()
