@@ -27,6 +27,7 @@ import {
     IMapBoundsZoom,
     IMapSelectedMarkerData,
     SortColumn,
+    MapMarkerIconHelper,
 } from 'ca-components';
 
 // store
@@ -64,7 +65,6 @@ import { RepairConfiguration } from '@pages/repair/pages/repair-table/utils/cons
 import { DataFilterHelper } from '@shared/utils/helpers/data-filter.helper';
 import { MethodsGlobalHelper } from '@shared/utils/helpers/methods-global.helper';
 import {
-    RepairShopMapMarkersHelper,
     RepairShopMapDropdownHelper,
     RepairTableBackFilterDataHelper,
     RepairTableDateFormaterHelper,
@@ -199,6 +199,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
     public mapStateFilter: string[] | null = null;
     public mapListCount: number = 0;
     public isSelectedFromMapList: boolean = false;
+    public isSelectedFromDetails: boolean = false;
 
     constructor(
         // router
@@ -261,7 +262,9 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
 
         this.confirmationSubscribe();
 
-        this.confirmationActivationSubscribe(); 
+        this.confirmationActivationSubscribe();
+
+        this.checkSelectedMarker();
     }
 
     ngAfterViewInit(): void {
@@ -1927,7 +1930,10 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
             zoomLevel: event.zoom,
         };
 
-        this.getMapData();
+        if (this.isSelectedFromDetails) {
+            this.onGetInfoWindowData(this.mapsService.selectedMarkerId);
+            this.isSelectedFromDetails = false;
+        } else this.getMapData();
     }
 
     public getRepairShopClusters(
@@ -2030,18 +2036,24 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                             };
                         }
 
+                        const markerIcon =
+                            data?.count > 1
+                                ? MapMarkerIconHelper.getClusterMarker(
+                                      data?.count,
+                                      !!clusterInfoWindowContent?.selectedClusterItemData
+                                  )
+                                : MapMarkerIconHelper.getMapMarker(
+                                      data.favourite,
+                                      data.isClosed
+                                  );
+
                         const markerData = {
                             position: {
                                 lat: data.latitude,
                                 lng: data.longitude,
                             },
                             icon: {
-                                url: RepairShopMapMarkersHelper.getMapMarker(
-                                    data.favourite,
-                                    data.isClosed,
-                                    data?.count,
-                                    data?.count > 1
-                                ),
+                                url: markerIcon,
                                 labelOrigin: new google.maps.Point(80, 15),
                             },
                             infoWindowContent: clusterInfoWindowContent,
@@ -2262,6 +2274,15 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
 
             this.getRepairShopMapList();
         }
+    }
+
+    public checkSelectedMarker(): void {
+        const isAlreadySelectedMarker =
+            this.mapData?.selectedMarkerData?.data?.id ===
+            this.mapsService.selectedMarkerId;
+
+        if (this.mapsService.selectedMarkerId && !isAlreadySelectedMarker)
+            this.isSelectedFromDetails = true;
     }
 
     public trackByIdentity = (index: number, item: any): number => item?.id;
