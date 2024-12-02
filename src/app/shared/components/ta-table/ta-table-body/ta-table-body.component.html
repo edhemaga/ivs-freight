@@ -5083,36 +5083,63 @@
                                         >
                                             <ng-container
                                                 *ngIf="
-                                                    row[column.field]
-                                                        ?.expirationDaysText
+                                                    column.field !==
+                                                        'reeferUnit' ||
+                                                    (column.field ===
+                                                        'reeferUnit' &&
+                                                        row.tableTrailerName ===
+                                                            'Reefer')
                                                 "
                                             >
-                                                <span
-                                                    class="checkbox-tooltip"
-                                                    type="button"
-                                                    ngbTooltip
-                                                    [mainTooltip]="column.title"
-                                                    tooltipBackground="#424242"
-                                                    position="bottom"
+                                                <ng-container
+                                                    *ngIf="
+                                                        row[column.field]
+                                                            ?.expirationDaysText
+                                                    "
                                                 >
-                                                    <app-ta-progres-bar
-                                                        [percents]="
-                                                            row[column.field]
-                                                                .percentage
+                                                    <span
+                                                        class="checkbox-tooltip"
+                                                        type="button"
+                                                        ngbTooltip
+                                                        [mainTooltip]="
+                                                            'View PM'
                                                         "
-                                                        [text]="
-                                                            row[column.field]
-                                                                .expirationDaysText
-                                                        "
-                                                        [data]="row"
-                                                        [columnField]="
-                                                            column.field
-                                                        "
-                                                        [hasPopover]="true"
-                                                        [isTable]="true"
-                                                        [type]="'days'"
-                                                    ></app-ta-progres-bar>
-                                                </span>
+                                                        tooltipBackground="#424242"
+                                                        position="bottom"
+                                                    >
+                                                        <app-ta-progres-bar
+                                                            [percents]="
+                                                                row[
+                                                                    column.field
+                                                                ].percentage
+                                                            "
+                                                            [text]="
+                                                                row[
+                                                                    column.field
+                                                                ]
+                                                                    .expirationDaysText
+                                                            "
+                                                            [data]="row"
+                                                            [columnField]="
+                                                                column.field
+                                                            "
+                                                            [hasPopover]="true"
+                                                            [isTable]="true"
+                                                            [type]="'days'"
+                                                        ></app-ta-progres-bar>
+                                                    </span>
+                                                </ng-container>
+
+                                                <ng-container
+                                                    *ngIf="
+                                                        !row[column.field]
+                                                            ?.expirationDaysText
+                                                    "
+                                                    [ngTemplateOutlet]="addPm"
+                                                    [ngTemplateOutletContext]="{
+                                                        row: row
+                                                    }"
+                                                ></ng-container>
                                             </ng-container>
                                         </div>
                                     </ng-container>
@@ -5144,7 +5171,7 @@
                                                     class="checkbox-tooltip"
                                                     type="button"
                                                     ngbTooltip
-                                                    [mainTooltip]="column.title"
+                                                    [mainTooltip]="'View PM'"
                                                     tooltipBackground="#424242"
                                                     position="bottom"
                                                 >
@@ -5167,6 +5194,17 @@
                                                     ></app-ta-progres-bar>
                                                 </span>
                                             </ng-container>
+
+                                            <ng-container
+                                                *ngIf="
+                                                    !row[column.field]
+                                                        ?.expirationMilesText
+                                                "
+                                                [ngTemplateOutlet]="addPm"
+                                                [ngTemplateOutletContext]="{
+                                                    row: row
+                                                }"
+                                            ></ng-container>
                                         </div>
                                     </ng-container>
 
@@ -6579,6 +6617,18 @@
             </div>
             <div class="right-background"></div>
         </div>
+    </div>
+</ng-template>
+
+<!-- Add PM -->
+
+<ng-template #addPm let-row="row">
+    <div
+        class="add-pm-container d-flex align-items-center gap-1"
+        (click)="addPmItem(row)"
+    >
+        <div class="add-pm-icon"></div>
+        <div class="add-pm-text text-color-black text-size-14">Add PM Item</div>
     </div>
 </ng-template>
 
