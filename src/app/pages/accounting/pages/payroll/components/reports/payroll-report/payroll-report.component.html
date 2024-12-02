@@ -138,7 +138,10 @@
         </ng-container>
 
         <div class="load-description-name">
-            <div class="load-description-address">{{ data.address }}</div>
+            <div class="load-description-address">{{ data.address }}
+                <ng-container *ngIf="data.isTonu"
+                    ><span class="load-description-tonu">T</span></ng-container
+                ></div>
             <div class="load-description-stop-type">
                 {{ data.stopType.name }}
             </div>
