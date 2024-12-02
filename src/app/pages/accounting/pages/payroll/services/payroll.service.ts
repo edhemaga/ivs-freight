@@ -198,8 +198,7 @@ export class PayrollService {
         reportId: string,
         lastLoadDate: string,
         selectedCreditIds?: number[],
-        selectedDeducionIds?: number[],
-        selectedBonusIds?: number[]
+        selectedDeducionIds?: number[]
     ): Observable<PayrollDriverMileageResponse> {
         let params = new HttpParams();
         if (lastLoadDate) {
