@@ -25,6 +25,8 @@ import { DashboardHelper } from '@pages/dashboard/utils/helpers/dashboard.helper
 
 // enums
 import { DashboardStringEnum } from '@pages/dashboard/enums/dashboard-string.enum';
+import { DashboardChartStringEnum } from '@pages/dashboard/enums/dashboard-chart-string.enum';
+import { ChartTypesStringEnum } from 'ca-components';
 
 // models
 import { DashboardTab } from '@pages/dashboard/models/dashboard-tab.model';
@@ -36,10 +38,14 @@ import { PerformanceApiArguments } from '@pages/dashboard/pages/dashboard-perfor
 import { DashboardArrayHelper } from '@pages/dashboard/utils/helpers/dashboard-array-helper';
 import {
     IntervalLabelResponse,
+    PerformanceGraphResponse,
     SubintervalType,
     TimeInterval,
 } from 'appcoretruckassist';
-import { IChartConfiguration } from 'ca-components/lib/components/ca-chart/models';
+import {
+    IBaseDataset,
+    IChartConfiguration,
+} from 'ca-components/lib/components/ca-chart/models';
 
 @Component({
     selector: 'app-dashboard-performance',
@@ -76,8 +82,11 @@ export class DashboardPerformanceComponent implements OnInit, OnDestroy {
     public performanceDataColors: PerformanceColorsPallete[] = [];
 
     // charts
-    public performanceChartConfig: IChartConfiguration =
-        DashboardPerformanceChartsConfiguration.PERFORMANCE_CHART_CONFIG;
+    public linePerformanceChartConfig: IChartConfiguration =
+        DashboardPerformanceChartsConfiguration.LINE_CHART_PERFORMANCE_CONFIG;
+
+    public barPerformanceChartConfig: IChartConfiguration =
+        DashboardPerformanceChartsConfiguration.BAR_CHART_PERFORMANCE_CONFIG;
 
     private axisNumber: number = -1;
     public multipleVerticalLeftAxes: number[];
@@ -87,7 +96,7 @@ export class DashboardPerformanceComponent implements OnInit, OnDestroy {
         private dashboardService: DashboardService,
         private dashboardPerformanceService: DashboardPerformanceService,
         private changeDetectorRef: ChangeDetectorRef
-    ) { }
+    ) {}
 
     ngOnInit(): void {
         this.createForm();
@@ -239,7 +248,7 @@ export class DashboardPerformanceComponent implements OnInit, OnDestroy {
 
         if (
             this.selectedPerformanceDataCount ===
-            this.maxPerformanceDataItemsSelected &&
+                this.maxPerformanceDataItemsSelected &&
             !performanceDataItem.isSelected
         ) {
             return;
@@ -394,7 +403,83 @@ export class DashboardPerformanceComponent implements OnInit, OnDestroy {
                 );
 
                 // charts
+
+                const { linePerformanceChartData, barPerformanceChartData } =
+                    this.groupPerformanceDataByChartType(
+                        performanceData.performanceGraph.performanceGraphs
+                    );
+
+                this.linePerformanceChartConfig.chartData.labels =
+                    performanceData.intervalLabels.map(
+                        (item) => item.label || ''
+                    );
+                this.linePerformanceChartConfig.chartData.datasets =
+                    linePerformanceChartData;
+
+                this.barPerformanceChartConfig.chartData.labels =
+                    performanceData.intervalLabels.map(
+                        (item) => item.label || ''
+                    );
+                this.barPerformanceChartConfig.chartData.datasets =
+                    barPerformanceChartData;
+
+                console.log(
+                    'linePerformanceChartConfig:',
+                    this.linePerformanceChartConfig.chartData.datasets
+                );
+                console.log(
+                    'barPerformanceChartConfig:',
+                    this.barPerformanceChartConfig.chartData.datasets
+                );
             });
+    }
+
+    private groupPerformanceDataByChartType(
+        performanceGraphs: PerformanceGraphResponse[]
+    ): {
+        linePerformanceChartData: IBaseDataset[];
+        barPerformanceChartData: IBaseDataset[];
+    } {
+        const performanceDataMap = new Map<string, number[]>();
+
+        performanceGraphs.forEach((graph) => {
+            graph.performanceGraphMetrics.forEach(
+                (metric: { performanceType: string; value: number | null }) => {
+                    const { performanceType, value } = metric;
+
+                    if (!performanceDataMap.has(performanceType)) {
+                        performanceDataMap.set(performanceType, []);
+                    }
+
+                    performanceDataMap.get(performanceType).push(value ?? 0);
+                }
+            );
+        });
+
+        const barPerformanceTypes: string[] = [
+            DashboardChartStringEnum.BAR_LABEL_PER_GALLON,
+            DashboardChartStringEnum.BAR_LABEL_LOAD_PER_MILE,
+        ];
+
+        const barPerformanceChartData = Array.from(performanceDataMap.entries())
+            .filter(([key]) => barPerformanceTypes.includes(key))
+            .map(([key, values]) => ({
+                label: key,
+                data: values,
+                type: ChartTypesStringEnum.BAR,
+            }));
+
+        const linePerformanceChartData = Array.from(
+            performanceDataMap.entries()
+        )
+            .filter(([key]) => !barPerformanceTypes.includes(key))
+            .map(([key, values]) => ({
+                label: key,
+                data: values,
+                type: ChartTypesStringEnum.LINE,
+            }));
+
+        return { linePerformanceChartData, barPerformanceChartData };
     }
 
     private getOverallCompanyDuration(): void {

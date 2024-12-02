@@ -447,7 +447,11 @@
         </ng-container>
         <ng-container *ngIf="!isLoading">
             <app-ca-chart
-                [chartConfig]="performanceChartConfig"
+                [chartConfig]="linePerformanceChartConfig"
+            >
+            </app-ca-chart>
+            <app-ca-chart
+                [chartConfig]="barPerformanceChartConfig"
             >
             </app-ca-chart>
         </ng-container>
