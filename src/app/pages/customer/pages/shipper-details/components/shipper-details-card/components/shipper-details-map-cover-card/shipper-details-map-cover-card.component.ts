@@ -1,11 +1,16 @@
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
 
 // components
 import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-custom-card.component';
 import { TaTabSwitchComponent } from '@shared/components/ta-tab-switch/ta-tab-switch.component';
 import { TaUploadFilesComponent } from '@shared/components/ta-upload-files/ta-upload-files.component';
-import { CaMapComponent, ICaMapProps } from 'ca-components';
+import {
+    CaMapComponent,
+    ICaMapProps,
+    MapMarkerIconHelper,
+} from 'ca-components';
 
 // constants
 import { RepairShopDetailsCardConstants } from '@pages/repair/pages/repair-shop-details/components/repair-shop-details-card/utils/constants';
@@ -14,7 +19,12 @@ import { ShipperMapConfig } from '@pages/customer/pages/customer-table/utils/con
 // models
 import { ShipperResponse } from 'appcoretruckassist';
 import { Tabs } from '@shared/models/tabs.model';
-import { RepairShopMapMarkersHelper } from '@pages/repair/pages/repair-table/utils/helpers';
+
+// services
+import { MapsService } from '@shared/services/maps.service';
+
+// enums
+import { TableStringEnum } from '@shared/enums/table-string.enum';
 
 @Component({
     selector: 'app-shipper-details-map-cover-card',
@@ -44,6 +54,8 @@ export class ShipperDetailsMapCoverCardComponent {
 
     public mapData: ICaMapProps = ShipperMapConfig.shipperMapConfig;
 
+    constructor(private router: Router, private mapsService: MapsService) {}
+
     private createMapCoverCardData(data: ShipperResponse): void {
         this._cardData = data;
 
@@ -72,10 +84,7 @@ export class ShipperDetailsMapCoverCardComponent {
                 lng: data.longitude,
             },
             icon: {
-                url: RepairShopMapMarkersHelper.getMapMarker(
-                    false,
-                    !data.status
-                ),
+                url: MapMarkerIconHelper.getMapMarker(false, !data.status),
                 labelOrigin: new google.maps.Point(95, 25),
                 scaledSize: new google.maps.Size(45, 50),
             },
@@ -107,5 +116,19 @@ export class ShipperDetailsMapCoverCardComponent {
         };
     }
 
-    public onOpenInMap(): void {}
+    public onOpenInMap(): void {
+        this.mapsService.selectedMarker(this._cardData.id);
+
+        const customerTableView = {
+            tabSelected: TableStringEnum.INACTIVE,
+            viewMode: TableStringEnum.MAP,
+        };
+
+        localStorage.setItem(
+            TableStringEnum.CUSTOMER_TABLE_VIEW,
+            JSON.stringify(customerTableView)
+        );
+
+        this.router.navigate(['/list/customer']);
+    }
 }
