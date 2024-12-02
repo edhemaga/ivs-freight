@@ -28,6 +28,8 @@ import { TaSpecialFilterComponent } from '@shared/components/ta-special-filter/t
 import {
     CaSearchMultipleStatesComponent,
     CaFilterComponent,
+    CaSortDropdownComponent,
+    SortColumn,
 } from 'ca-components';
 
 // icon
@@ -38,9 +40,10 @@ import { FormatCurrencyPipe } from '@shared/pipes/format-currency.pipe';
 
 // enums
 import { ToolbarFilterStringEnum } from '@shared/components/ta-filter/enums/toolbar-filter-string.enum';
+import { DetailsHeaderStringEnum } from '@shared/components/ta-details-header/enums';
 
 // svg routes
-import { DetailsHeaderSvgRoutes } from '@shared/components/ta-details-header/utils/svg-routes/details-header-svg-routes';
+import { DetailsHeaderSvgRoutes } from '@shared/components/ta-details-header/utils/svg-routes';
 
 // constants
 import { FilterIconRoutes } from '@shared/components/ta-filter/utils/constants/filter-icons-routes.constants';
@@ -75,6 +78,7 @@ import { FilterStateService } from '@shared/components/ta-filter/services/filter
         TaSpecialFilterComponent,
         CaSearchMultipleStatesComponent,
         CaFilterComponent,
+        CaSortDropdownComponent,
 
         // pipes
         FormatCurrencyPipe,
@@ -144,6 +148,7 @@ export class TaDetailsHeaderComponent implements OnInit, OnChanges {
     @Input() areaFilter: boolean = false;
     @Input() hasSort: boolean = false;
     @Input() isSortBtn: boolean = false;
+    @Input() sortColumns?: SortColumn[] = [];
     @Input() sortDropdown: LoadsSortDropdownModel[];
 
     @Output() openModalAction = new EventEmitter<any>();
@@ -177,6 +182,7 @@ export class TaDetailsHeaderComponent implements OnInit, OnChanges {
     public selectedSort: LoadsSortDropdownModel = null;
     public sortPopover: NgbPopover;
     public isSortDropdownOpen: boolean = false;
+    public activeSortType: SortColumn | null = null;
 
     public loadStatusOptionsArray: ArrayStatus[];
     public unselectedDispatcher: ArrayStatus[];
@@ -615,17 +621,28 @@ export class TaDetailsHeaderComponent implements OnInit, OnChanges {
         this.specialFilterActions.emit({ data, type });
     }
 
-    public handleSortClick(isDateSort: boolean): void {
-        if (isDateSort) {
-            this.sortDirection = this.sortDirection === 'desc' ? 'asc' : 'desc';
+    public handleSortClick(event: {
+        column: SortColumn;
+        sortName: string;
+    }): void {
+        if (!event.sortName) {
+            this.sortDirection =
+                this.sortDirection === DetailsHeaderStringEnum.DESC
+                    ? DetailsHeaderStringEnum.ASC
+                    : DetailsHeaderStringEnum.DESC;
 
             const capitalizedDirection =
                 this.sortDirection.charAt(0).toUpperCase() +
                 this.sortDirection.slice(1);
 
-            const dateSortDirection = 'dateAdded' + capitalizedDirection;
+            const dateSortDirection =
+                DetailsHeaderStringEnum.DATE_ADDED + capitalizedDirection;
 
             this.sortActions.emit({ direction: dateSortDirection });
+        } else {
+            this.activeSortType = event.column;
+
+            this.sortActions.emit({ direction: event.sortName });
         }
     }
 

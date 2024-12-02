@@ -5,6 +5,7 @@ import { ExtendedRepairShopResponse } from '@pages/repair/pages/repair-shop-deta
 import { RepairShopDetailsConstants } from '@pages/repair/pages/repair-shop-details/utils/constants';
 import { DetailsConfig } from '@shared/models/details-config.model';
 import { DetailsDropdownOptions } from '@shared/models/details-dropdown-options.model';
+import { RepairShopContactResponse } from 'appcoretruckassist';
 
 export class RepairShopDetailsHelper {
     static getDetailsDropdownOptions(
@@ -148,6 +149,7 @@ export class RepairShopDetailsHelper {
                 icon: false,
                 hasSearch: true,
                 hasSort: true,
+                sortColumns: RepairShopDetailsConstants.VEHICLE_SORT_COLUMNS,
                 hide: true,
                 length: repairedVehicleList?.length || '0',
                 data: repairShopData,
@@ -205,5 +207,17 @@ export class RepairShopDetailsHelper {
                         : repairShop?.ratingReviews?.length,
             };
         });
+    }
+
+    static filterRepairShopContacts(
+        contacts: RepairShopContactResponse[],
+        searchValue: string
+    ): RepairShopContactResponse[] {
+        return contacts.filter(
+            ({ fullName, phone, email }) =>
+                fullName.toLowerCase().includes(searchValue) ||
+                phone.includes(searchValue) ||
+                email.toLowerCase().includes(searchValue)
+        );
     }
 }

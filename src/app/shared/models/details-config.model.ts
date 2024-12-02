@@ -7,6 +7,7 @@ import {
     MvrResponse,
     TestResponse,
 } from 'appcoretruckassist';
+import { SortColumn } from 'ca-components';
 
 export interface DetailsConfig {
     id?: number;
@@ -43,6 +44,7 @@ export interface DetailsConfig {
     moneyFilter?: boolean;
     hasSort?: boolean;
     isSortBtn?: boolean;
+    sortColumns?: SortColumn[];
     sortDropdown?: LoadsSortDropdownModel[];
     isClosedBusiness?: boolean;
     data?:

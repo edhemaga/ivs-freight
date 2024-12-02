@@ -49,6 +49,8 @@ import { MethodsGlobalHelper } from '@shared/utils/helpers/methods-global.helper
 
 // models
 import {
+    RepairedVehicleListResponse,
+    RepairedVehicleResponse,
     RepairListResponse,
     RepairResponse,
     RepairShopContactResponse,
@@ -93,6 +95,9 @@ export class RepairShopDetailsComponent implements OnInit, OnDestroy {
 
     public backFilterQuery: RepairBackFilter =
         RepairTableBackFilterDataHelper.backRepairFilterData();
+
+    public backRepairedVehiclesFilterQuery: RepairBackFilter =
+        RepairTableBackFilterDataHelper.backRepairedVehiclesFilterData();
 
     constructor(
         // router
@@ -180,6 +185,25 @@ export class RepairShopDetailsComponent implements OnInit, OnDestroy {
                 } = repairList;
 
                 if (data.length) this.handleRepairListSearchData(data);
+            });
+    }
+
+    private repairedVehiclesBackFilter(filter: RepairBackFilter): void {
+        this.repairService
+            .getRepairShopRepairedVehicle(
+                filter.repairShopId,
+                filter.pageIndex,
+                filter.pageSize,
+                filter.companyId,
+                filter.sort
+            )
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((repairedVehiclesList: RepairedVehicleListResponse) => {
+                const {
+                    pagination: { data },
+                } = repairedVehiclesList;
+
+                if (data.length) this.handleRepairedVehicleListSearchData(data);
             });
     }
 
@@ -352,12 +376,11 @@ export class RepairShopDetailsComponent implements OnInit, OnDestroy {
         this.contactListSearchValue = searchToLowerCase;
 
         if (search) {
-            const filteredContacts = this.repairShopObject.contacts.filter(
-                ({ fullName, phone, email }) =>
-                    fullName.toLowerCase().includes(searchToLowerCase) ||
-                    phone.includes(searchToLowerCase) ||
-                    email.toLowerCase().includes(searchToLowerCase)
-            );
+            const filteredContacts =
+                RepairShopDetailsHelper.filterRepairShopContacts(
+                    this.repairShopObject?.contacts,
+                    searchToLowerCase
+                );
 
             this.handleContactListSearchData(filteredContacts);
         } else {
@@ -372,6 +395,22 @@ export class RepairShopDetailsComponent implements OnInit, OnDestroy {
                     ? {
                           ...item,
                           data: { ...item.data, repairList },
+                      }
+                    : item
+        );
+
+        this.cdRef.detectChanges();
+    }
+
+    private handleRepairedVehicleListSearchData(
+        repairedVehicleList: RepairedVehicleResponse[]
+    ): void {
+        this.repairShopDetailsConfig = this.repairShopDetailsConfig.map(
+            (item, index) =>
+                index === 2
+                    ? {
+                          ...item,
+                          data: { ...item.data, repairedVehicleList },
                       }
                     : item
         );
@@ -549,13 +588,23 @@ export class RepairShopDetailsComponent implements OnInit, OnDestroy {
         );
     }
 
-    public onRepairShopSortActions(event: any): void {
-        console.log('event', event);
+    public onRepairShopSortActions(
+        event: { direction: string },
+        type: string
+    ): void {
+        if (type === RepairShopDetailsStringEnum.REPAIR) {
+            this.backFilterQuery.sort = event.direction;
 
-        this.backFilterQuery.sort = event.direction;
-        this.backFilterQuery.pageIndex = 1;
+            this.repairBackFilter(this.backFilterQuery);
+        } else {
+            this.backRepairedVehiclesFilterQuery.repairShopId =
+                this.repairShopObject.id;
+            this.backRepairedVehiclesFilterQuery.sort = event.direction;
 
-        this.repairBackFilter(this.backFilterQuery);
+            this.repairedVehiclesBackFilter(
+                this.backRepairedVehiclesFilterQuery
+            );
+        }
     }
 
     public onSearchBtnClick(isSearch: boolean, type: string): void {

@@ -491,6 +491,18 @@
 
                     <ng-template #sortComponent>
                         <div
+                            class="d-flex align-items-center sort-container-dropdown"
+                        >
+                            <app-ca-sort-dropdown
+                                [sortColumns]="sortColumns"
+                                [activeSortColumn]="activeSortType"
+                                [dropdownPosition]="'right-top'"
+                                [dropdownWidth]="107"
+                                (onSortChange)="handleSortClick($event)"
+                            ></app-ca-sort-dropdown>
+                        </div>
+
+                        <!--   <div
                             class="sort-container d-flex align-items-center me-1"
                         >
                             <div
@@ -525,7 +537,7 @@
                                     'height.px': '18'
                                 }"
                             ></svg-icon>
-                        </div>
+                        </div> -->
                     </ng-template>
                 </ng-container>
 

@@ -20,6 +20,16 @@ export class RepairTableBackFilterDataHelper {
             pageSize: 25,
             companyId: null,
             sort: null,
+        };
+    }
+
+    static backRepairedVehiclesFilterData(): RepairBackFilter {
+        return {
+            repairShopId: null,
+            pageIndex: 1,
+            pageSize: 25,
+            companyId: null,
+            sort: null,
             searchOne: null,
             searchTwo: null,
             searchThree: null,
