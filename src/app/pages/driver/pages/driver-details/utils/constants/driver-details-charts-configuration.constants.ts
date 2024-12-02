@@ -13,6 +13,8 @@ export class DriverDetailsChartsConfiguration {
         height: 130,
         width: 100,
         noDataImage: ChartImagesStringEnum.CHART_NO_DATA_YELLOW,
-        chartOptions: {}
+        chartOptions: {},
+        showTooltipBackground: false,
+        showXAxisLabels: true
     };
 }

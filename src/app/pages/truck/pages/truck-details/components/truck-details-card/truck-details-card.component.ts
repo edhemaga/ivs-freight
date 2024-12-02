@@ -34,11 +34,26 @@ import { TruckDetailsEnum } from '@pages/truck/pages/truck-details/enums/truck-d
 
 // Constants
 import { TruckDetailsConstants } from '@pages/truck/pages/truck-details/utils/constants/truck-details.constants';
-import { TruckDetailsChartsConfiguration } from '@pages/truck/pages/truck-details/utils/constants';
-import { ChartConfiguration, ChartLegendConfiguration } from '@shared/utils/constants';
+import {
+    PerformanceTabSwitchConfiguration,
+    TruckDetailsChartsConfiguration,
+} from '@pages/truck/pages/truck-details/utils/constants';
+import {
+    ChartConfiguration,
+    ChartLegendConfiguration,
+} from '@shared/utils/constants';
 
 // Models
-import { TruckResponse, TruckPerformanceResponse, TruckFuelConsumptionResponse, TruckFuelConsumptionChartResponse, TruckRevenueResponse, TruckRevenueChartResponse, TruckExpensesResponse, TruckExpensesChartResponse } from 'appcoretruckassist';
+import {
+    TruckResponse,
+    TruckPerformanceResponse,
+    TruckFuelConsumptionResponse,
+    TruckFuelConsumptionChartResponse,
+    TruckRevenueResponse,
+    TruckRevenueChartResponse,
+    TruckExpensesResponse,
+    TruckExpensesChartResponse,
+} from 'appcoretruckassist';
 import { IChartConfiguration } from 'ca-components/lib/components/ca-chart/models';
 import { ChartLegendProperty, Tabs } from '@shared/models';
 import { TabOptions } from '@shared/components/ta-tab-switch/models/tab-options.model';
@@ -81,9 +96,8 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
     public fhwaNote: UntypedFormControl = new UntypedFormControl();
     public registrationNote: UntypedFormControl = new UntypedFormControl();
     public titleNote: UntypedFormControl = new UntypedFormControl();
-    public buttonsArrayPerfomance: any;
-    public buttonsArrayFuel: any;
-    public buttonsArrayRevenue: any;
+    public performanceTabs: Tabs[] =
+        PerformanceTabSwitchConfiguration.PERFORMANCE_TAB_CONFIG;
     public toggler: boolean[] = [];
     public togglerOwner: boolean;
     public truckDropDowns: any[] = [];
@@ -93,7 +107,6 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
     @Input() truck: TruckResponse;
     public ownersData: any;
     public truck_list: any[] = this.truckMinimalListQuery.getAll();
-    //private monthList: string[] = ChartConstants.MONTH_LIST_SHORT;
     public ownerCardOpened: boolean = true;
     public featureNumber: number = 0;
 
@@ -118,7 +131,7 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
         private detailsPageDriverSer: DetailsPageService,
         private truckMinimalListQuery: TrucksMinimalListQuery,
         private truckService: TruckService
-    ) { }
+    ) {}
 
     ngOnChanges(changes: SimpleChanges): void {
         if (!changes?.truck.firstChange && changes?.truck) {
@@ -145,7 +158,6 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
     ngOnInit(): void {
         this.noteControl.patchValue(this.truck.note);
         this.getTruckDropdown();
-        this.buttonSwitcher();
         this.initTableOptions();
 
         let array1 = [...this.truck.ownerHistories];
@@ -169,90 +181,6 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
             '--dynamic-colour',
             this.truck?.color?.code ? this.truck.color.code : '#aaa'
         );
-    }
-
-    public buttonSwitcher(): void {
-        this.buttonsArrayPerfomance = [
-            {
-                id: 5,
-                name: '1M',
-                checked: true,
-            },
-            {
-                id: 10,
-                name: '3M',
-            },
-            {
-                id: 12,
-                name: '6M',
-            },
-            {
-                id: 15,
-                name: '1Y',
-            },
-            {
-                id: 20,
-                name: 'YTD',
-            },
-            {
-                id: 30,
-                name: 'ALL',
-            },
-        ];
-        this.buttonsArrayRevenue = [
-            {
-                id: 36,
-                name: '1M',
-                checked: true,
-            },
-            {
-                id: 66,
-                name: '3M',
-            },
-            {
-                id: 97,
-                name: '6M',
-            },
-            {
-                id: 99,
-                name: '1Y',
-            },
-            {
-                id: 101,
-                name: 'YTD',
-            },
-            {
-                id: 103,
-                name: 'ALL',
-            },
-        ];
-        this.buttonsArrayFuel = [
-            {
-                id: 222,
-                name: '1M',
-                checked: true,
-            },
-            {
-                id: 333,
-                name: '3M',
-            },
-            {
-                id: 444,
-                name: '6M',
-            },
-            {
-                id: 555,
-                name: '1Y',
-            },
-            {
-                id: 231,
-                name: 'YTD',
-            },
-            {
-                id: 213,
-                name: 'ALL',
-            },
-        ];
     }
 
     /**Function for dots in cards */
@@ -291,61 +219,73 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     private getFuelConsumption(timeFilter?: number): void {
-        this.truckService.getFuelConsumption(this.truck.id, timeFilter || 1)
+        this.truckService
+            .getFuelConsumption(this.truck.id, timeFilter || 1)
             .pipe(takeUntil(this.destroy$))
             .subscribe((response: TruckFuelConsumptionResponse) => {
                 if (timeFilter && this.fuelConsumptionChartTabs[timeFilter - 1])
-                    this.fuelConsumptionChartTabs[timeFilter - 1].checked = true;
+                    this.fuelConsumptionChartTabs[timeFilter - 1].checked =
+                        true;
                 this.fuelConsumptionChartConfig = {
                     ...TruckDetailsChartsConfiguration.FUEL_CHART_CONFIG,
-                    chartData: ChartHelper.generateDataByDateTime<TruckFuelConsumptionChartResponse>
-                        (
+                    chartData:
+                        ChartHelper.generateDataByDateTime<TruckFuelConsumptionChartResponse>(
                             response.truckFuelConsumptionCharts,
-                            ChartConfiguration.truckFuelConsumptionConfiguration
-                        )
+                            ChartConfiguration.truckFuelConsumptionConfiguration,
+                            timeFilter
+                        ),
                 };
                 this.fuelConsumptionChartLegend =
-                    ChartLegendConfiguration.truckFuelConsumptionConfiguration(response);
+                    ChartLegendConfiguration.truckFuelConsumptionConfiguration(
+                        response
+                    );
             });
     }
 
     private getRevenue(timeFilter?: number): void {
-        this.truckService.getRevenue(this.truck.id, timeFilter || 1)
+        this.truckService
+            .getRevenue(this.truck.id, timeFilter || 1)
             .pipe(takeUntil(this.destroy$))
             .subscribe((response: TruckRevenueResponse) => {
                 if (timeFilter && this.revenueChartTabs[timeFilter - 1])
                     this.revenueChartTabs[timeFilter - 1].checked = true;
                 this.revenueChartConfig = {
                     ...TruckDetailsChartsConfiguration.REVENUE_CHART_CONFIG,
-                    chartData: ChartHelper.generateDataByDateTime<TruckRevenueChartResponse>
-                        (
+                    chartData:
+                        ChartHelper.generateDataByDateTime<TruckRevenueChartResponse>(
                             response.truckRevenueCharts,
-                            ChartConfiguration.truckRevenueConfiguration
-                        )
+                            ChartConfiguration.truckRevenueConfiguration,
+                            timeFilter
+                        ),
                 };
                 this.revenueChartLegend =
-                    ChartLegendConfiguration.truckRevenueConfiguration(response);
+                    ChartLegendConfiguration.truckRevenueConfiguration(
+                        response
+                    );
             });
     }
 
     private getExpenses(timeFilter?: number): void {
-        this.truckService.getExpenses(this.truck.id, timeFilter || 1)
+        this.truckService
+            .getExpenses(this.truck.id, timeFilter || 1)
             .pipe(takeUntil(this.destroy$))
             .subscribe((response: TruckExpensesResponse) => {
                 if (timeFilter && this.expensesChartChartTabs[timeFilter - 1])
                     this.expensesChartChartTabs[timeFilter - 1].checked = true;
                 this.expensesChartConfig = {
                     ...TruckDetailsChartsConfiguration.EXPENSES_CHART_CONFIG,
-                    chartData: ChartHelper.generateDataByDateTime<TruckExpensesChartResponse>
-                        (
+                    chartData:
+                        ChartHelper.generateDataByDateTime<TruckExpensesChartResponse>(
                             response.truckExpensesCharts,
-                            ChartConfiguration.truckExpensesConfiguration
-                        )
+                            ChartConfiguration.truckExpensesConfiguration,
+                            timeFilter
+                        ),
                 };
                 this.expensesChartChartLegend =
-                    ChartLegendConfiguration.truckExpensesConfiguration(response);
+                    ChartLegendConfiguration.truckExpensesConfiguration(
+                        response
+                    );
             });
-
     }
 
     // Function for toggle page in cards
@@ -485,6 +425,10 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
             lastSixChars = [mod.slice(0, firsNum), mod.slice(-6)];
         }
         return lastSixChars;
+    }
+
+    public changeTabPerfomance(event: TabOptions): void {
+        console.log('Selected tab is:', event.name);
     }
 
     public changeTabFuel(event: TabOptions): void {

@@ -162,6 +162,7 @@ export class BrokerDetailsCardComponent
                     chartData: ChartHelper.generateDataByDateTime<BrokerMileageRateChartResponse>(
                         response.brokerMileageRateChartResponse,
                         ChartConfiguration.mileageRateConfiguration,
+                        timeFilter
                     )
                 };
                 this.mileageChartLegendData =
@@ -180,7 +181,8 @@ export class BrokerDetailsCardComponent
                     chartData: ChartHelper.generateDataByDateTime<BrokerPaidInvoiceChartResponse>
                         (
                             response.brokerPaidInvoiceChartResponse,
-                            ChartConfiguration.brokerPaidInvoiceConfiguration
+                            ChartConfiguration.brokerPaidInvoiceConfiguration,
+                            timeFilter
                         )
                 };
                 this.invoiceChartLegend = ChartLegendConfiguration.invoiceChartLegendConfiguration(response);
@@ -199,6 +201,7 @@ export class BrokerDetailsCardComponent
                         (
                             response.brokerPaymentHistoryChartResponse,
                             ChartConfiguration.paymentHistoryConfiguration(response),
+                            timeFilter
                         )
                 };
                 this.paymentChartLegendData = ChartLegendConfiguration
