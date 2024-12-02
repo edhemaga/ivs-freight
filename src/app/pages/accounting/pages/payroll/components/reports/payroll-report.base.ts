@@ -118,7 +118,7 @@ export abstract class PayrollReportBaseComponent<
                     .openModal(
                         PayrollDeductionModalComponent,
                         {
-                            size: DriverMVrModalStringEnum.SMALL
+                            size: DriverMVrModalStringEnum.SMALL,
                         },
                         {
                             data: {
