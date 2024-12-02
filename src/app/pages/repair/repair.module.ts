@@ -30,6 +30,7 @@ import { CardValuePipe } from '@shared/pipes/card-value.pipe';
 
 // components
 import { RepairShopDetailsComponent } from '@pages/repair/pages/repair-shop-details/repair-shop-details.component';
+import { TaTableEmptyComponent } from '@shared/components/ta-table/ta-table-empty/ta-table-empty.component';
 
 // store
 import { StoreModule } from '@ngrx/store';
@@ -57,6 +58,7 @@ import { repairCardModalReducer } from '@pages/repair/pages/repair-card-modal/st
         CaMapComponent,
         TaInputDropdownContactsComponent,
         TaOpenHoursDropdownComponent,
+        TaTableEmptyComponent,
 
         // Pipes
         FormatDatePipe,

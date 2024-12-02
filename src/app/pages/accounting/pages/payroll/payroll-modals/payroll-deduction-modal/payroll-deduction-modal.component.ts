@@ -276,8 +276,14 @@ export class PayrollDeductionModalComponent implements OnInit {
     }
 
     public getPaymentString(): string {
+        if(this.deduction.limited) {
+            return `$${MethodsCalculationsHelper.convertNumberInThousandSep(
+                Number(this.deduction.limitedAmount.toFixed(2))
+            )}`;
+        }
+
         return `$${MethodsCalculationsHelper.convertNumberInThousandSep(
-            Number(this.deduction.limitedAmount.toFixed(2))
+            Number(this.deduction.amount.toFixed(2))
         )}`;
     }
 

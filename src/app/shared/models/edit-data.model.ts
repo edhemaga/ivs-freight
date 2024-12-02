@@ -29,4 +29,5 @@ export interface EditData<T = undefined> {
         | TableStringEnum.CONVERT_TO_LOAD;
     isEditMode?: boolean;
     previousStatus?: SelectedStatus;
+    preSelectedUnit?: number;
 }

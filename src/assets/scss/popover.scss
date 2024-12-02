@@ -329,7 +329,7 @@
     .progress-dropdown {
         margin-top: -6px;
         width: 260px;
-        height: 200px;
+        height: auto !important;
         background: $ta-black-2;
         border-radius: 3px;
         padding: 8px;
