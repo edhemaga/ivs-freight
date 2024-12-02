@@ -371,30 +371,30 @@ export class TableDropdownComponentConstants {
                 'margin-bottom.px': 4,
             },
         },
-        {
-            title: TableStringEnum.SHARE_2,
-            name: TableStringEnum.SHARE,
-            svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Share.svg',
-            svgStyle: {
-                width: 18,
-                height: 18,
-            },
-            svgClass: TableStringEnum.REGULAR,
-            tableListDropdownContentStyle: {
-                'margin-bottom.px': 4,
-            },
-        },
-        {
-            title: TableStringEnum.PRINT_2,
-            name: TableStringEnum.PRINT,
-            svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Print.svg',
-            svgStyle: {
-                width: 18,
-                height: 18,
-            },
-            svgClass: TableStringEnum.REGULAR,
-            hasBorder: true,
-        },
+        // {
+        //     title: TableStringEnum.SHARE_2,
+        //     name: TableStringEnum.SHARE,
+        //     svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Share.svg',
+        //     svgStyle: {
+        //         width: 18,
+        //         height: 18,
+        //     },
+        //     svgClass: TableStringEnum.REGULAR,
+        //     tableListDropdownContentStyle: {
+        //         'margin-bottom.px': 4,
+        //     },
+        // },
+        // {
+        //     title: TableStringEnum.PRINT_2,
+        //     name: TableStringEnum.PRINT,
+        //     svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Print.svg',
+        //     svgStyle: {
+        //         width: 18,
+        //         height: 18,
+        //     },
+        //     svgClass: TableStringEnum.REGULAR,
+        //     hasBorder: true,
+        // },
         {
             title: TableStringEnum.DELETE_2,
             name: TableStringEnum.DELETE_ITEM,
