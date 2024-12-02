@@ -118,7 +118,7 @@ export abstract class PayrollReportBaseComponent<
                     .openModal(
                         PayrollDeductionModalComponent,
                         {
-                            size: DriverMVrModalStringEnum.SMALL,
+                            size: DriverMVrModalStringEnum.SMALL
                         },
                         {
                             data: {
@@ -169,7 +169,7 @@ export abstract class PayrollReportBaseComponent<
                                     driverId: this.openedPayroll.driver?.id,
                                     truckId: this.openedPayroll.truck?.id,
                                 } as CreatePayrollCreditCommand,
-                                creditType: PayrollCreditType.Driver,
+                                creditType: this.creditType,
                             }
                         )
                         .then(() => {
@@ -190,7 +190,7 @@ export abstract class PayrollReportBaseComponent<
                                     driverId: this.openedPayroll.driver?.id,
                                     truckId: this.openedPayroll.truck?.id,
                                 } as CreatePayrollCreditCommand,
-                                creditType: PayrollCreditType.Driver,
+                                creditType: this.creditType,
                             }
                         )
                         .then(() => {
@@ -211,7 +211,7 @@ export abstract class PayrollReportBaseComponent<
                                         item.data.parentPayrollDeductionId ||
                                         item.data.id,
                                 } as CreatePayrollCreditCommand,
-                                creditType: PayrollCreditType.Driver,
+                                creditType: this.creditType,
                             }
                         )
                         .then(() => {
