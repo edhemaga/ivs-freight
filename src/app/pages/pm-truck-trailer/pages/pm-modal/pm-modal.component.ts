@@ -215,11 +215,11 @@ export class PmModalComponent implements OnInit, OnDestroy {
         if (this.editData.type === TableStringEnum.NEW) {
             if (this.newPMs.at(index).value.id) {
                 switch (this.editData.header) {
-                    case TableStringEnum.TRUCK_2:
+                    case TableStringEnum.TRUCK_PM_SETTINGS:
                         this.deleteTruckPMList(this.newPMs.at(index).value.id);
                         break;
 
-                    case TableStringEnum.TRAILER_3:
+                    case TableStringEnum.TRAILER_PM_SETTINGS:
                         this.deleteTrailerPMList(
                             this.newPMs.at(index).value.id
                         );
@@ -238,13 +238,13 @@ export class PmModalComponent implements OnInit, OnDestroy {
         if (this.editData.type === TableStringEnum.NEW) {
             if (this.defaultPMs.at(index).value.id) {
                 switch (this.editData.header) {
-                    case TableStringEnum.TRUCK_2:
+                    case TableStringEnum.TRUCK_PM_SETTINGS:
                         this.deleteTruckPMList(
                             this.defaultPMs.at(index).value.id
                         );
                         break;
 
-                    case TableStringEnum.TRAILER_3:
+                    case TableStringEnum.TRAILER_PM_SETTINGS:
                         this.deleteTrailerPMList(
                             this.defaultPMs.at(index).value.id
                         );
@@ -284,7 +284,7 @@ export class PmModalComponent implements OnInit, OnDestroy {
                 switch (this.editData.type) {
                     case TableStringEnum.NEW:
                         switch (this.editData.header) {
-                            case TableStringEnum.TRUCK_2:
+                            case TableStringEnum.TRUCK_PM_SETTINGS:
                                 if (this.removedPMs?.length) {
                                     this.removedPMs.map((removedPmIndex) => {
                                         this.removeNewPMs(removedPmIndex);
@@ -299,7 +299,7 @@ export class PmModalComponent implements OnInit, OnDestroy {
                                 });
                                 break;
 
-                            case TableStringEnum.TRAILER_3:
+                            case TableStringEnum.TRAILER_PM_SETTINGS:
                                 if (this.removedPMs?.length) {
                                     this.removedPMs.map((removedPmIndex) => {
                                         this.removeNewPMs(removedPmIndex);
@@ -803,11 +803,11 @@ export class PmModalComponent implements OnInit, OnDestroy {
         // Global List
         if (this.editData.type === TableStringEnum.NEW) {
             switch (this.editData.header) {
-                case TableStringEnum.TRUCK_2:
+                case TableStringEnum.TRUCK_PM_SETTINGS:
                     this.getPMTruckList();
                     break;
 
-                case TableStringEnum.TRAILER_3:
+                case TableStringEnum.TRAILER_PM_SETTINGS:
                     this.getPMTrailerList();
                     break;
 
@@ -818,7 +818,7 @@ export class PmModalComponent implements OnInit, OnDestroy {
         // Per Unit list
         else {
             if (
-                [TableStringEnum.TRUCK_2, TableStringEnum.TRAILER_3].includes(
+                [TableStringEnum.TRUCK_PM_SETTINGS, TableStringEnum.TRAILER_PM_SETTINGS].includes(
                     this.editData?.type
                 )
             ) {
@@ -826,7 +826,7 @@ export class PmModalComponent implements OnInit, OnDestroy {
                     sessionStorage.getItem(this.editData.key)
                 );
 
-                if (this.editData.type === TableStringEnum.TRUCK_2) {
+                if (this.editData.type === TableStringEnum.TRUCK_PM_SETTINGS) {
                     this.editData = {
                         ...this.editData,
                         id: data.id,
@@ -840,7 +840,7 @@ export class PmModalComponent implements OnInit, OnDestroy {
                     };
                 }
 
-                if (this.editData.type === TableStringEnum.TRAILER_3) {
+                if (this.editData.type === TableStringEnum.TRAILER_PM_SETTINGS) {
                     this.editData = {
                         ...this.editData,
                         id: data.id,
@@ -910,7 +910,7 @@ export class PmModalComponent implements OnInit, OnDestroy {
                 );
             } else if (existingPmIndex > -1) {
                 const defaultPmsIndex =
-                    this.editData.header === TableStringEnum.TRUCK_2 ||
+                    this.editData.header === TableStringEnum.TRUCK_PM_SETTINGS ||
                     this.editData.header ===
                         TableStringEnum.EDIT_TRUCK_PM_HEADER
                         ? 4

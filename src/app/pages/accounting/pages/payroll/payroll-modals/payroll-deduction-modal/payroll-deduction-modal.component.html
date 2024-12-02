@@ -67,7 +67,7 @@
 </ng-template>
 
 <ng-template #paymentHistoryTemplate>
-    <ng-container *ngIf="isEditMode && deduction?.childPayrollDeductions">
+    <ng-container *ngIf="isEditMode && deduction?.childPayrollDeductions?.length">
         <div class="divider divider--dark divider--small mb-0"></div>
         <app-ta-custom-card
             [cardName]="'Payment History'"
