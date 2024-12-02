@@ -129,7 +129,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
     public resizeObserver: ResizeObserver;
 
     public selectedTab: string = TableStringEnum.ACTIVE;
-
+    public tabResultLength: number = 0;
     public activeTableDataLength: number;
 
     public isTrailerTabClicked: boolean = false;
@@ -261,7 +261,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
 
         this.confirmationSubscribe();
 
-        this.confirmationActivationSubscribe();
+        this.confirmationActivationSubscribe(); 
     }
 
     ngAfterViewInit(): void {
@@ -983,6 +983,8 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
 
         this.setRepairData(td);
         this.updateCardView();
+
+        this.tabResultLength = td.data.length;
     }
 
     private filterClosedRepairShopData(
@@ -1005,6 +1007,10 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                 this.viewData
             );
         }, 900);
+    }
+
+    public resetFilter() : void{
+        this.tableService.sendCurrentSetTableFilter({});
     }
 
     public setTableFilter(): void {
@@ -1269,6 +1275,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
     public onToolBarAction(event: TableToolbarActions): void {
         if (event.action === TableStringEnum.TAB_SELECTED) {
             this.selectedTab = event.tabData.field;
+            this.tabResultLength = event.tabData.length;
 
             this.backFilterQuery.pageIndex = 1;
             this.shopFilterQuery.pageIndex = 1;
