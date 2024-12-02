@@ -322,7 +322,7 @@ export class PmTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     { size: TableStringEnum.SMALL },
                     {
                         type: TableStringEnum.NEW,
-                        header: TableStringEnum.TRUCK_2,
+                        header: TableStringEnum.TRUCK_PM_SETTINGS,
                         action: TableStringEnum.GENERIC_PM,
                     }
                 );
@@ -332,7 +332,7 @@ export class PmTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     { size: TableStringEnum.SMALL },
                     {
                         type: TableStringEnum.NEW,
-                        header: TableStringEnum.TRAILER_3,
+                        header: TableStringEnum.TRAILER_PM_SETTINGS,
                         action: TableStringEnum.GENERIC_PM,
                     }
                 );
@@ -397,7 +397,24 @@ export class PmTableComponent implements OnInit, AfterViewInit, OnDestroy {
                         }
                     );
                 }
-
+            case TableStringEnum.ADD_PM_ITEM:
+                this.modalService.openModal(
+                    RepairOrderModalComponent,
+                    {
+                        size: TableStringEnum.LARGE,
+                    },
+                    {
+                        type:
+                            this.selectedTab === TableStringEnum.ACTIVE
+                                ? TableStringEnum.NEW_TRUCK
+                                : TableStringEnum.NEW_TRAILER,
+                        preSelectedUnit:
+                            this.selectedTab === TableStringEnum.ACTIVE
+                                ? event.data.truck?.id
+                                : event.data.trailer?.id,
+                    }
+                );
+                break;
             default: {
                 break;
             }
@@ -611,6 +628,7 @@ export class PmTableComponent implements OnInit, AfterViewInit, OnDestroy {
             if (pmColumn) {
                 if (
                     pm.diffMileage &&
+                    pm.lastService &&
                     pmColumn.isSelectColumn &&
                     pm.status?.name !== PMStatus.Inactive
                 ) {
@@ -624,6 +642,7 @@ export class PmTableComponent implements OnInit, AfterViewInit, OnDestroy {
                                 pm.mileage
                             ) + ' mi',
                         percentage: Math.floor(pm.percentage),
+                        serviceData: pm.lastService,
                     };
                 } else {
                     truck[pmColumn.field] = defaultPMData;
@@ -687,6 +706,7 @@ export class PmTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
             if (
                 pm.diffDays &&
+                pm.lastService &&
                 pmColumn.isSelectColumn &&
                 pm.status?.name !== PMStatus.Inactive
             ) {
@@ -695,6 +715,7 @@ export class PmTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     expirationDaysText: Math.abs(pm.diffDays).toString(),
                     totalValueText: pm.months + ' month period',
                     percentage: Math.floor(pm.percentage),
+                    serviceData: pm.lastService,
                 };
             } else {
                 trailer[pmColumn.field] = defaultPMData;

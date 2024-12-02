@@ -32,7 +32,7 @@ import { dispatchBackgroundAnimation } from '@shared/animations/dispatch-backgro
 import { CdkDrag, CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 
 // pipes
-import { DispatchColorFinderPipe } from '@pages/dispatch/pages/dispatch/components/dispatch-table/pipes/dispatch-color-finder.pipe';
+import { DispatchColorFinderPipe } from '@shared/pipes';
 
 // helpers
 import { DispatchTableDragNDropHelper } from '@pages/dispatch/pages/dispatch/components/dispatch-table/utils/helpers';
@@ -558,6 +558,8 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
                 (location?.address ? location : null) ||
                 (locationValue?.address?.address
                     ? locationValue.address
+                    : typeof locationValue === DispatchTableStringEnum.NUMBER
+                    ? null
                     : locationValue
                     ? locationValue
                     : null),

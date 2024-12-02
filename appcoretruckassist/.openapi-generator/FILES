@@ -435,6 +435,7 @@ model/dispatchStatus.ts
 model/dispatchStatusFilterResponse.ts
 model/dispatchStatusResponse.ts
 model/dispatcherFilterResponse.ts
+model/dispatcherFilterSortBy.ts
 model/dispatcherIntervalResponse.ts
 model/dispatcherShortMobileResponse.ts
 model/driverAccidentResponse.ts

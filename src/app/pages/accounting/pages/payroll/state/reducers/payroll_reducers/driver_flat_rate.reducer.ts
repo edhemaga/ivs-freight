@@ -40,6 +40,7 @@ export const onGetPayrollFlatRateReportDriver = (
         params.selectedDeductionIds ?? state.selectedDeductionIds,
     selectedCreditIds: params.selectedCreditIds ?? state.selectedCreditIds,
     SelectedBonusIds: params.selectedBonusIds ?? state.selectedBonusIds,
+    selectedFuelIds: params.selectedFuelIds ?? state.selectedFuelIds
 });
 
 export const onGetPayrollFlatRateReportDriverSuccess = (
@@ -128,7 +129,13 @@ export const onGetPayrollFlatRateDriverClosedPayrollSuccess = (
     data: { payroll: PayrollDriverFlatRateClosedByIdResponse }
 ) => ({
     ...state,
-    payrollOpenedReport: data.payroll,
+    payrollOpenedReport: {
+        ...data.payroll,
+        excludedDeductions: [],
+        excludedCredits: [],
+        excludedLoads: [],
+        includedBonuses: [],
+    },
     reportLoading: false,
 });
 

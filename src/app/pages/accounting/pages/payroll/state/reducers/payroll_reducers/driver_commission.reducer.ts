@@ -35,10 +35,11 @@ export const onGetPayrollCommissionReportDriver = (
     params: IGet_Payroll_Commission_Driver_Report
 ) => ({
     ...state,
-    selectedLoadIds: params.selectedLoadIds,
+    selectedLoadIds: params.selectedLoadIds ?? state.selectedLoadIds,
     selectedDeductionIds:
         params.selectedDeductionIds ?? state.selectedDeductionIds,
     selectedCreditIds: params.selectedCreditIds ?? state.selectedCreditIds,
+    selectedFuelIds: params.selectedFuelIds ?? state.selectedFuelIds
 });
 
 export const onGetPayrollCommissionReportDriverSuccess = (
@@ -127,7 +128,13 @@ export const onGetPayrollCommissionDriverClosedPayrollSuccess = (
     data: { payroll: PayrollDriverCommissionClosedByIdResponse }
 ) => ({
     ...state,
-    payrollOpenedReport: data.payroll,
+    payrollOpenedReport: {
+        ...data.payroll,
+        excludedDeductions: [],
+        excludedCredits: [],
+        excludedLoads: [],
+        includedBonuses: [],
+    },
     reportLoading: false,
 });
 

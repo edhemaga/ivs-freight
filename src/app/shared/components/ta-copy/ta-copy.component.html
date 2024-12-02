@@ -24,7 +24,7 @@
         >
             <span
                 *ngIf="!accountCompany && !arrayText"
-                class="copy-text"
+                class="text-color-black-2 copy-text"
                 [class.boldVinSpan]="boldText"
                 >{{
                     hasEye
@@ -34,7 +34,7 @@
             >
             <span
                 *ngIf="accountCompany && !arrayText"
-                class="copy-text"
+                class="text-color-black-2 copy-text"
                 [class.boldVinSpan]="boldText"
                 >{{
                     hasEye
@@ -44,7 +44,11 @@
             >
             <span *ngIf="arrayText"
                 >{{ copyValue[0]
-                }}<span class="boldVinSpan" [class.contactType]="type === 'Contacts'">{{ copyValue[1] }}</span>
+                }}<span
+                    class="boldVinSpan"
+                    [class.contactType]="type === 'Contacts'"
+                    >{{ copyValue[1] }}</span
+                >
             </span>
         </div>
         <div class="app-icon-copy" [class.leftIconOrder]="leftSideIcon">

@@ -211,8 +211,7 @@ export function getPayrollSoloMileageReportEffect(
                             action.reportId,
                             action.lastLoadDate,
                             action.selectedCreditIds,
-                            action.selectedDeductionIds,
-                            action.selectedBonusIds
+                            action.selectedDeductionIds
                         )
                         .pipe(
                             map((data) => {

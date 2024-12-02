@@ -196,6 +196,19 @@
             }
         }
 
+        &-bw-9 {
+            color: $bw-9 !important;
+
+            &::-moz-selection {
+                color: $bw6-2 !important;
+                background: rgba(108, 108, 108, 0.2) !important;
+            }
+            &::selection {
+                color: $bw6-2 !important;
+                background: rgba(108, 108, 108, 0.2) !important;
+            }
+        }
+
         &-grey {
             color: $bw5 !important;
 

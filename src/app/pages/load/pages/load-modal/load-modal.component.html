@@ -592,6 +592,7 @@
                             <app-ta-checkbox
                                 formControlName="pickupInvolveDriver"
                                 [customClass]="'medium'"
+                                [disabled]="isHazardousPicked"
                                 [label]="'Involve driver in loading the cargo'"
                                 name="pickupInvolveDriver"
                             ></app-ta-checkbox>
@@ -1002,6 +1003,17 @@
                                                         .markAsTouched()
                                                 "
                                             ></app-ca-input>
+                                        </div>
+
+                                        <div class="stop-load-date-time-driver">
+                                            <app-ta-checkbox
+                                                formControlName="involveDriver"
+                                                [customClass]="'medium'"
+                                                [label]="
+                                                    'Involve driver in loading the cargo'
+                                                "
+                                                name="involveDriver"
+                                            ></app-ta-checkbox>
                                         </div>
 
                                         <!-- Stop Items -->

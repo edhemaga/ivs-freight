@@ -35,7 +35,6 @@ import { IChartConfiguration } from 'ca-components/lib/components/ca-chart/model
 import { TableStringEnum } from '@shared/enums/table-string.enum';
 import { ShipperDetailsChartsConfiguration } from '../shipper-details-item/utils/constants';
 
-
 @Component({
     selector: 'app-shipper-details-card',
     templateUrl: './shipper-details-card.component.html',

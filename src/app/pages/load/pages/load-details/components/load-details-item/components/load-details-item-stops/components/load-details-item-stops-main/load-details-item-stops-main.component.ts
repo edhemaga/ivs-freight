@@ -16,7 +16,14 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
 import { LoadDetailsItemSvgRoutes } from '@pages/load/pages/load-details/components/load-details-item/utils/svg-routes/load-details-item-svg.routes';
 
 // components
-//import { TaMapsComponent } from '@shared/components/ta-maps/ta-maps.component';
+import {
+    CaMapComponent,
+    ICaMapProps,
+    IMapMarkers,
+    IMapRoutePath,
+    MapMarkerIconHelper,
+    MapOptionsConstants,
+} from 'ca-components';
 
 // helpers
 import { LoadDetailsItemHelper } from '@pages/load/pages/load-details/components/load-details-item/utils/helpers/load-details-item.helper';
@@ -53,7 +60,7 @@ import { LoadStopLastStatus } from '@pages/load/pages/load-details/components/lo
         AngularSvgIconModule,
 
         // components
-        // TaMapsComponent,
+        CaMapComponent,
 
         // pipes
         FormatDatePipe,
@@ -80,6 +87,9 @@ export class LoadDetailsItemStopsMainComponent implements OnChanges, OnDestroy {
     public stopItemDropdownIndex: number = -1;
 
     public itemHoveringIndex: number = -1;
+
+    // map
+    public mapData: ICaMapProps = MapOptionsConstants.defaultMapConfig;
 
     constructor() {}
 
@@ -131,6 +141,8 @@ export class LoadDetailsItemStopsMainComponent implements OnChanges, OnDestroy {
                 items: this.getLoadStopItemsData(stop),
             };
         });
+
+        this.getMapData();
     }
 
     private getLoadStopItemsData(stop: LoadStopResponse): LoadStopItem[] {
@@ -301,6 +313,59 @@ export class LoadDetailsItemStopsMainComponent implements OnChanges, OnDestroy {
         columnsScrollElements?.forEach((element) => {
             element.removeAllListeners('scroll');
         });
+    }
+
+    public getMapData(): void {
+        const routeMarkers: IMapMarkers[] = [];
+        const routePaths: IMapRoutePath[] = [];
+
+        this.loadStopData.forEach((loadStop, index) => {
+            const routeMarker: IMapMarkers = {
+                position: {
+                    lat: loadStop.shipper.latitude,
+                    lng: loadStop.shipper.longitude,
+                },
+                icon: {
+                    url: MapMarkerIconHelper.getRoutingMarkerIcon(
+                        loadStop.stopLoadOrder ?? 0,
+                        loadStop.stopType.name.toLowerCase(),
+                        false,
+                        true
+                    ),
+                    labelOrigin: new google.maps.Point(90, 15),
+                },
+            };
+
+            routeMarkers.push(routeMarker);
+
+            if (index > 0) {
+                const routePath: IMapRoutePath = {
+                    path: [
+                        {
+                            lat: this.loadStopData[index - 1].shipper.latitude!,
+                            lng: this.loadStopData[index - 1].shipper
+                                .longitude!,
+                        },
+                        {
+                            lat: loadStop.shipper.latitude!,
+                            lng: loadStop.shipper.longitude!,
+                        },
+                    ],
+                    strokeColor: MapOptionsConstants.routingPathColors.gray,
+                    strokeOpacity: 1,
+                    strokeWeight: 4,
+                };
+
+                routePaths.push(routePath);
+            }
+        });
+
+        this.mapData = {
+            ...this.mapData,
+            isZoomShown: true,
+            routingMarkers: routeMarkers,
+            routePaths: routePaths,
+        };
     }
 
     ngOnDestroy(): void {

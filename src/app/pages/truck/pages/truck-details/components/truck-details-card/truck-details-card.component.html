@@ -10,10 +10,10 @@
         [searchInputName]="'Search Truck'"
         [options]="truckDropDowns"
         [currentName]="truck?.truckNumber"
-        [deactivate]="!truck.status"
-        [owner]="!truck.companyOwned"
-        [ownerName]="truck.owner.name"
-        [cardDetailsDateTerminated]="truck.updatedAt | formatDateP"
+        [deactivate]="!truck?.status"
+        [owner]="!truck?.companyOwned"
+        [ownerName]="truck?.owner?.name"
+        [cardDetailsDateTerminated]="truck?.updatedAt | formatDateP"
         [sortOptions]="'active-drivers'"
         (selectValue)="onSelectedTruck($event)"
         (changeEvent)="onChangeTruck($event)"
@@ -23,7 +23,7 @@
                 <div class="details-header-avatar">
                     <div
                         class="svg-truck-wrapper"
-                        [class.inactiveTruckLogo]="truck.status == 0"
+                        [class.inactiveTruckLogo]="truck?.status == 0"
                     >
                         <svg-icon
                             class="truck truck-color-code"
@@ -47,7 +47,7 @@
                             >
                             </svg-icon>
                         </div>
-                        <p class="header-text">{{ truck.model }}</p>
+                        <p class="header-text">{{ truck?.model }}</p>
                     </div>
                 </div>
                 <div class="details-header-data">
@@ -125,7 +125,7 @@
                         ></svg-icon>
                         <app-ta-copy
                             [textFontSize]="'18px'"
-                            [copyValue]="getLastSixChars(truck.vin)"
+                            [copyValue]="getLastSixChars(truck?.vin)"
                             [textColor]="'#2f2f2f'"
                             [boldText]="true"
                             [arrayText]="truck.vin.length > 6 ? true : false"

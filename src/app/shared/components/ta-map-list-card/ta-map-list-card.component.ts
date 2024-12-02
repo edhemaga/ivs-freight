@@ -32,7 +32,7 @@ import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta
 
 // Models
 import { AddressEntity } from 'appcoretruckassist';
-import { SortColumn } from '@shared/components/ta-sort-dropdown/models';
+import { SortColumn } from 'ca-components';
 
 // tooltip
 import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';

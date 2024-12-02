@@ -26,7 +26,7 @@
         max-width: 60%;
 
         &.open {
-            max-width: 500px;
+            max-width: 600px;
         }
     }
 
@@ -362,6 +362,18 @@
             line-height: 12px;
             color: #919191;
         }
+    }
+
+    .load-description-tonu {
+        background-color: #e66767;
+        line-height: 13px;
+        text-align: center;
+        height: 12px;
+        width: 12px;
+        display: inline-block;
+        border-radius: 1px;
+        font-weight: 700;
+        color: #fff;
     }
 
     &.delivery {

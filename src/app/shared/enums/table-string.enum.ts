@@ -558,6 +558,7 @@ export enum TableStringEnum {
 
     BROKER_CONTACT = 'broker contact',
     SHIPPER_CONTACT = 'shipper contact',
+    REPAIR_SHOP_CONTACT = 'repair shop contact',
     VOIDED = 'VOIDED',
 
     // Card States
@@ -577,4 +578,7 @@ export enum TableStringEnum {
     BONUS = 'bonus',
     ACTIVITY = 'activity',
     NULL = 'null',
+    ADD_PM_ITEM = 'ADD_PM_ITEM',
+    TRUCK_PM_SETTINGS = "Truck PM Settings",
+    TRAILER_PM_SETTINGS = "Trailer PM Settings",
 }

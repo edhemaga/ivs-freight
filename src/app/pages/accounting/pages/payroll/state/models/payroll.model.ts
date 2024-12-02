@@ -123,6 +123,7 @@ export interface IPayrollProccessPaymentModal {
 export interface IAddPayrollClosedPayment {
     payrollDriverMileageId?: number;
     payrollDriverCommissionId?: number;
+    payrollDriverFlatRateId?: number;
     payrollOwnerId?: number;
     paymentType?: string;
     modalId?: number;
@@ -156,9 +157,11 @@ export enum PayrollTypes {
 }
 export interface IGetPayrollByIdAndOptions {
     reportId: string;
+    payrollOpenedTab: PayrollTablesStatus;
     lastLoadDate?: string;
     selectedLoadIds?: number[];
     selectedCreditIds?: number[];
     selectedBonusIds?: number[];
     selectedDeductionIds?: number[];
+    selectedFuelIds?: number[];
 }

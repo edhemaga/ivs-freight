@@ -18,7 +18,11 @@ import { FuelPurchaseModalComponent } from '@pages/fuel/pages/fuel-modals/fuel-p
 import { PayrollReportComponent } from '@pages/accounting/pages/payroll/payroll-modals/payroll-report/payroll-report.component';
 
 // Enums
-import { PayrollAdditionalTypes, PayrollStringEnum } from '@pages/accounting/pages/payroll/state/enums';
+import {
+    PayrollAdditionalTypes,
+    PayrollStringEnum,
+    PayrollTablesStatus,
+} from '@pages/accounting/pages/payroll/state/enums';
 import { TableStringEnum } from '@shared/enums/table-string.enum';
 import { ConfirmationModalStringEnum } from '@shared/components/ta-shared-modals/confirmation-modal/enums/confirmation-modal-string.enum';
 import { DriverMVrModalStringEnum } from '@pages/driver/pages/driver-modals/driver-mvr-modal/enums/driver-mvrl-modal-string.enum';
@@ -165,7 +169,7 @@ export abstract class PayrollReportBaseComponent<
                                     driverId: this.openedPayroll.driver?.id,
                                     truckId: this.openedPayroll.truck?.id,
                                 } as CreatePayrollCreditCommand,
-                                creditType: PayrollCreditType.Driver,
+                                creditType: this.creditType,
                             }
                         )
                         .then(() => {
@@ -186,7 +190,7 @@ export abstract class PayrollReportBaseComponent<
                                     driverId: this.openedPayroll.driver?.id,
                                     truckId: this.openedPayroll.truck?.id,
                                 } as CreatePayrollCreditCommand,
-                                creditType: PayrollCreditType.Driver,
+                                creditType: this.creditType,
                             }
                         )
                         .then(() => {
@@ -207,7 +211,7 @@ export abstract class PayrollReportBaseComponent<
                                         item.data.parentPayrollDeductionId ||
                                         item.data.id,
                                 } as CreatePayrollCreditCommand,
-                                creditType: PayrollCreditType.Driver,
+                                creditType: this.creditType,
                             }
                         )
                         .then(() => {
@@ -287,6 +291,8 @@ export abstract class PayrollReportBaseComponent<
             selectedCreditIds: null,
             selectedDeductionIds: null,
             selectedBonusIds: null,
+            selectedFuelIds: null,
+            payrollOpenedTab: PayrollTablesStatus.OPEN,
         };
 
         if (_title === PayrollAdditionalTypes.CREDIT) {
@@ -307,6 +313,13 @@ export abstract class PayrollReportBaseComponent<
             dataSend = {
                 ...dataSend,
                 selectedBonusIds: _included.length
+                    ? _included.map((load) => load.id)
+                    : 0,
+            };
+        } else if (_title === PayrollAdditionalTypes.FUEL) {
+            dataSend = {
+                ...dataSend,
+                selectedFuelIds: _included.length
                     ? _included.map((load) => load.id)
                     : 0,
             };

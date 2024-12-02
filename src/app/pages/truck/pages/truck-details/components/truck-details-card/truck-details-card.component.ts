@@ -417,7 +417,7 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
     public getLastSixChars(mod: string): string | string[] {
         let lastSixChars: string | string[] = mod;
 
-        if (mod.length > 6) {
+        if (mod?.length > 6) {
             lastSixChars = mod.slice(-6);
 
             let stringLength = mod.length;

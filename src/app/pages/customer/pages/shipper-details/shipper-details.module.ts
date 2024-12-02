@@ -21,6 +21,7 @@ import { TaInputNoteComponent } from '@shared/components/ta-input-note/ta-input-
 import { TaDetailsHeaderComponent } from '@shared/components/ta-details-header/ta-details-header.component';
 import { TaTabSwitchComponent } from '@shared/components/ta-tab-switch/ta-tab-switch.component';
 import { TaContactsCardComponent } from '@shared/components/ta-contacts-card/ta-contacts-card.component';
+import { ShipperDetailsMapCoverCardComponent } from '@pages/customer/pages/shipper-details/components/shipper-details-card/components/shipper-details-map-cover-card/shipper-details-map-cover-card.component';
 import { CaChartComponent } from 'ca-components';
 
 // Pipes
@@ -54,6 +55,7 @@ import { FormatPhonePipe } from '@shared/pipes/format-phone.pipe';
         TaDetailsHeaderComponent,
         TaTabSwitchComponent,
         TaContactsCardComponent,
+        ShipperDetailsMapCoverCardComponent,
         CaChartComponent,
 
         // Pipes

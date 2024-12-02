@@ -1,125 +1,63 @@
-<div class="repair-details-item-container">
-    <!-- repair-component {{ customClass }} -->
+<div class="repair-shop-details-item-container">
     <ng-container
-        *ngFor="let repairShopItem of detailsConfig; trackBy: trackByIdentity"
+        *ngFor="let repairShopItem of _detailsConfig; trackBy: trackByIdentity"
     >
         <ng-container [ngSwitch]="repairShopItem.template">
             <!-- General -->
 
             <ng-container *ngSwitchCase="'general'">
-                <!--  <div  class="repair-general-holder"> -->
                 <app-repair-shop-details-card
-                    [repairShop]="detailsConfig[0]?.data"
+                    [repairShop]="_detailsConfig[0]?.data"
                 >
                 </app-repair-shop-details-card>
-                <!--  </div> -->
             </ng-container>
 
             <!-- Repair  -->
 
             <ng-container *ngSwitchCase="'repair'">
                 <app-repair-shop-details-item-repair
-                    [repairList]="detailsConfig[1]?.data?.repairList"
+                    [repairList]="_detailsConfig[1]?.data?.repairList"
+                    [searchConfig]="searchConfig"
                 >
                 </app-repair-shop-details-item-repair>
             </ng-container>
 
             <!-- Vehicle -->
 
-            <!--  <div *ngSwitchCase="'repaired-vehicle'">
-        <div
-            class="repaired-vehicle-container"
-            *ngIf="repairedVehicleListData?.length"
-        >
-            <div class="repair-vehicle-header">
-                <span class="repaier-headers">UNIT</span>
-                <span class="repaier-headers">TYPE</span>
-                <span class="repair-svg-holder">
-                    <svg-icon
-                        src="assets/svg/common/ic_key-repair.svg"
-                    ></svg-icon>
-                </span>
-                <span class="repaier-headers last-value-align">COST</span>
-            </div>
-            <div class="divider"></div>
-            <div
-                class="repair-items-vehicle"
-                *ngFor="
-                    let vehicle of repairedVehicleListData;
-                    let i = index
-                "
-            >
-                <div class="items-vehicle">
-                    <span class="unit">{{ vehicle.unitNumber }}</span>
+            <ng-container *ngSwitchCase="'repaired-vehicle'">
+                <app-repair-shop-details-item-repaired-vehicle
+                    [repairedVehicleList]="
+                        _detailsConfig[2]?.data?.repairedVehicleList
+                    "
+                    [searchConfig]="searchConfig"
+                ></app-repair-shop-details-item-repaired-vehicle>
+            </ng-container>
 
-                    <svg-icon
-                        class="vehicle-icon"
-                        *ngIf="vehicle.unitType === 'Trailer'"
-                        src="assets/svg/common/trailers/{{
-                            vehicle.logoName
-                        }} "
-                    ></svg-icon>
-                    <svg-icon
-                        class="vehicle-icon truck-icon"
-                        *ngIf="vehicle.unitType === 'Truck'"
-                        src="assets/svg/common/trucks/{{
-                            vehicle.logoName
-                        }} "
-                    ></svg-icon>
-                    <span class="date">{{ vehicle.totalRepairs }}</span>
-                    <span class="cost">{{
-                        vehicle.totalCost | formatCurrency
-                    }}</span>
-                </div>
-                <div class="divider"></div>
-            </div>
-        </div>
-    </div> -->
+            <!-- Contact & Review -->
 
-            <!-- <div *ngSwitchCase="'review'">
-        <div class="likes-count-container">
-            <div class="likes-item">
-                <div class="ic-counter">
-                    <svg-icon
-                        class="like"
-                        src="assets/svg/common/ic_dislike.svg"
-                    ></svg-icon>
-                    <app-ta-counter
-                        [countColor]="'#919191'"
-                        [countHeight]="'24px'"
-                        [countWidth]="'24px'"
-                        [count]="repairShopLikes"
-                    >
-                    </app-ta-counter>
-                </div>
-                <div class="border-vertical"></div>
-                <div class="ic-counter">
-                    <app-ta-counter
-                        [countColor]="'#919191'"
-                        [countHeight]="'24px'"
-                        [countWidth]="'24px'"
-                        [count]="repairShopDislike"
-                    >
-                    </app-ta-counter>
-                    <svg-icon
-                        class="dislike"
-                        src="assets/svg/common/ic_dislike.svg"
-                    ></svg-icon>
-                </div>
-            </div>
-        </div>
-        <div class="review-container">
-            <div *ngIf="!reviewsRepair?.length" class="no-reviews-details">
-                No review
-            </div>
-            <app-ta-user-review
-                *ngIf="reviewsRepair?.length"
-                [reviewData]="reviewsRepair"
-                [isNewReview]="reviewsRepair[0].isNewReview"
-                (changeReviewsEvent)="changeReviewsEvent($event)"
-            ></app-ta-user-review>
-        </div>
-    </div> -->
+            <ng-container *ngSwitchCase="'contact-review'">
+                <ng-container
+                    *ngIf="
+                        repairShopItem?.multipleDetailsSelectDropdown[0]
+                            .isActive;
+                        else review
+                    "
+                >
+                    <ng-container *ngIf="departmentContacts?.length">
+                        <div class="contacts-container">
+                            <app-ta-contacts-card
+                                [type]="'repair-shop'"
+                                [departmentContacts]="departmentContacts"
+                                [viewData]="_detailsConfig[3]?.data"
+                            ></app-ta-contacts-card>
+                        </div>
+                    </ng-container>
+                </ng-container>
+
+                <ng-template #review>
+                    <app-repair-shop-details-item-review></app-repair-shop-details-item-review>
+                </ng-template>
+            </ng-container>
         </ng-container>
     </ng-container>
 </div>

@@ -320,6 +320,11 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
                 this.getRepairShopById();
             }
         }
+
+        if (this.editData?.preSelectedUnit)
+            setTimeout(() => {
+                this.loadPreSelected();
+            }, 2000);
     }
 
     private checkIsFinishOrder(): void {
@@ -478,7 +483,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
         } else {
             this.truckOrTrailer = event.name;
 
-            if (!this.editData.data) this.isResetSelectedPm = true;
+            if (!this.editData?.data) this.isResetSelectedPm = true;
 
             setTimeout(() => {
                 this.unitTabs = this.unitTabs.map((item) => {
@@ -521,7 +526,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
                 this.selectedDriver = null;
                 this.driversDropdownList = [];
 
-                if (!this.editData.data) this.isResetSelectedPm = false;
+                if (!this.editData?.data) this.isResetSelectedPm = false;
             }, 100);
         }
     }
@@ -733,7 +738,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
 
     public addRepairItemOnInit(): void {
         if (
-            !this.editData.data ||
+            !this.editData?.data ||
             this.editData.type === TableStringEnum.ADD_BILL
         )
             setTimeout(() => {
@@ -1540,6 +1545,22 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
                         : TableStringEnum.TRAILER_2,
             }
         );
+    }
+
+    private loadPreSelected(): void {
+        const selectedUnit = (this.unitDropdownList as any[]).find(
+            (unit) => unit.id === this.editData.preSelectedUnit
+        );
+
+        this.onSelectDropDown(
+            selectedUnit,
+            RepairOrderModalStringEnum.REPAIR_UNIT
+        );
+        this.repairOrderForm.patchValue({
+            unit: selectedUnit?.truckNumber
+                ? selectedUnit.truckNumber
+                : selectedUnit?.trailerNumber,
+        });
     }
 
     ngOnDestroy(): void {

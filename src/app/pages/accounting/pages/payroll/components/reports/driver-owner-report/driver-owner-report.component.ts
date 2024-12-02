@@ -66,9 +66,8 @@ export class DriverOwnerReportComponent
         this.getReportDataResults();
     }
 
-
     public optionsPopupContent: OptionsPopupContent[] =
-    TableToolbarConstants.closedReportPayroll;
+        TableToolbarConstants.closedReportPayroll;
 
     get reportId(): string {
         return super.reportId; // Call the base class getter
@@ -279,6 +278,7 @@ export class DriverOwnerReportComponent
                 this.getReportDataResults({
                     reportId: `${this.reportId}`,
                     selectedLoadIds: loadList,
+                    payrollOpenedTab: this.selectedTab,
                 });
             }
         }
@@ -286,9 +286,15 @@ export class DriverOwnerReportComponent
 
     public getReportDataResults(getData?: IGetPayrollByIdAndOptions): void {
         this.payrollDriverOwnerFacadeService.getPayrollDriverOwnerReport(
-            getData ?? {
-                reportId: `${this.reportId}`,
-            }
+            getData
+                ? {
+                      ...getData,
+                      payrollOpenedTab: this.selectedTab,
+                  }
+                : {
+                      reportId: `${this.reportId}`,
+                      payrollOpenedTab: this.selectedTab,
+                  }
         );
     }
 

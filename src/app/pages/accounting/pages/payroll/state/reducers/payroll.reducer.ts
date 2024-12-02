@@ -289,6 +289,10 @@ export const payrollReducer = createReducer(
 
     // CLOSED OWNER REPORT
     on(
+        PayrollOwnerDriverActions.getPayrollOwnerDriverClosedReportPayroll,
+        PayrollOwnerDriverReducers.onGetPayrollOwnerDriverClosedPayroll
+    ),
+    on(
         PayrollOwnerDriverActions.getPayrollOwnerDriverClosedReportPayrollSuccess,
         PayrollOwnerDriverReducers.onGetPayrollOwnerDriverClosedPayrollSuccess
     ),

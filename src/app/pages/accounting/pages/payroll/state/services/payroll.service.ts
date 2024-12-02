@@ -182,11 +182,12 @@ export class PayrollFacadeService {
         selectedCreditIds,
         selectedBonusIds,
         selectedDeductionIds,
+        payrollOpenedTab,
     }: IGetPayrollByIdAndOptions) {
         this.store
             .pipe(select(selectPayrollState), take(1))
             .subscribe((payrollState) => {
-                if (payrollState.payrollOpenedTab === 'closed') {
+                if (payrollOpenedTab === 'closed') {
                     this.store.dispatch(
                         PayrollDriverMileageSolo.getPayrollMileageDriverClosedPayroll(
                             {
@@ -226,7 +227,9 @@ export class PayrollFacadeService {
         } else if (payrollType == 'commission') {
             body.payrollDriverCommissionId = body.modalId;
         } else if (payrollType == 'flat rate') {
-            //body.payro
+            body.payrollDriverFlatRateId = body.modalId;
+        } else if (payrollType == 'owner') {
+            body.payrollOwnerId = body.modalId;
         }
 
         this.store.dispatch(
