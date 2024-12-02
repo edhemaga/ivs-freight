@@ -140,7 +140,10 @@
         </ng-container>
 
         <div class="load-description-name">
-            <div class="load-description-address">{{ data[0].address }}</div>
+            <div class="load-description-address">{{ data[0].address }}
+                <ng-container *ngIf="data.isTonu"
+                    ><span class="load-description-tonu">T</span></ng-container
+                ></div>
             <div class="load-description-stop-type">
                 {{ data[0].date | date : 'MM/dd/yy hh:mm a' }}
             </div>
