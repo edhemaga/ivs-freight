@@ -101,7 +101,7 @@ export const selectPayrollReportMapData = createSelector(
                         },
                         { lat: loadStop.latitude!, lng: loadStop.longitude! },
                     ],
-                    strokeColor: '#919191',
+                    strokeColor: MapOptionsConstants.routingPathColors.gray,
                     strokeOpacity: 1,
                     strokeWeight: 4,
                     isDashed: !!nextLoadNumber,
@@ -112,7 +112,7 @@ export const selectPayrollReportMapData = createSelector(
                 if (index === 1) {
                     routePaths.push({
                         ...routePath,
-                        strokeColor: '#919191',
+                        strokeColor: MapOptionsConstants.routingPathColors.gray,
                         strokeOpacity: 1,
                         strokeWeight: 2,
                     });
