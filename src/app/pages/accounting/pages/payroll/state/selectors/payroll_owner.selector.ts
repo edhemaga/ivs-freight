@@ -26,12 +26,9 @@ export const selectDriverOwnerCollapsedTable = createSelector(
 export const selectPayrollOwnerOpenedReport = createSelector(
     selectPayrollState,
     (state) => {
-        console.log(state.ownerPayrollResponse, 'state.ownerPayrollResponse');
         return {
             ...state.ownerPayrollResponse,
             fullName: `${state.ownerPayrollResponse?.truck?.truckNumber} - ${state.ownerPayrollResponse?.owner.name}`,
-            // userId: state.ownerPayrollResponse?.driver?.id,
-            // avatar: state.ownerPayrollResponse?.driver?.avatarFile,
         };
     }
 );

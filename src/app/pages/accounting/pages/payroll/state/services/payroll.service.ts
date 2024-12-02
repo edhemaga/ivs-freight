@@ -182,7 +182,7 @@ export class PayrollFacadeService {
         selectedCreditIds,
         selectedBonusIds,
         selectedDeductionIds,
-        payrollOpenedTab
+        payrollOpenedTab,
     }: IGetPayrollByIdAndOptions) {
         this.store
             .pipe(select(selectPayrollState), take(1))
@@ -227,7 +227,9 @@ export class PayrollFacadeService {
         } else if (payrollType == 'commission') {
             body.payrollDriverCommissionId = body.modalId;
         } else if (payrollType == 'flat rate') {
-            //body.payro
+            body.payrollDriverFlatRateId = body.modalId;
+        } else if (payrollType == 'owner') {
+            body.payrollOwnerId = body.modalId;
         }
 
         this.store.dispatch(

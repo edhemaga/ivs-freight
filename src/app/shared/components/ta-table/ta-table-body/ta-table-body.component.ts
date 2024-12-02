@@ -1168,6 +1168,13 @@ export class TaTableBodyComponent
     private getCompanyUser(): void {
         this.companyUser = JSON.parse(localStorage.getItem('user'));
     }
+    
+    public addPmItem(row: any): void {
+        this.bodyActions.emit({
+            data: row,
+            type: TableStringEnum.ADD_PM_ITEM,
+        });
+    }
 
     // --------------------------------ON DESTROY---------------------------------
     ngOnDestroy(): void {

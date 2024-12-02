@@ -139,7 +139,10 @@
                         stop?.shipper?.address?.city +
                             ', ' +
                             stop?.shipper?.address?.stateShortName +
-                            ' ' + ( stop?.shipper?.address?.zipCode ? stop?.shipper?.address?.zipCode?.split('-')[0] : '' )
+                            ' ' +
+                            (stop?.shipper?.address?.zipCode
+                                ? stop?.shipper?.address?.zipCode?.split('-')[0]
+                                : '')
                     }}
                 </p>
 
@@ -506,11 +509,7 @@
 
     <ng-container *ngIf="isMapDisplayed">
         <div class="d-flex justify-content-center align-items-center stops-map">
-            <!-- <app-ta-maps
-                [mapType]="'routing'"
-                [routes]="loadStopRoutes"
-                [ngStyle]="{ width: '100%', height: '100%' }"
-            ></app-ta-maps> -->
+            <app-ca-map [data]="mapData"></app-ca-map>
         </div>
     </ng-container>
 </div>

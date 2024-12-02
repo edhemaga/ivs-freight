@@ -476,6 +476,8 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         this.getLoadDropdowns();
 
         this.trackBillingPayment();
+
+        this.monitorInvolveDriverValueChange();
     }
 
     ngDoCheck(): void {
@@ -497,6 +499,42 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             +!!this.showTonuRate +
             +!!this.showRevisedRate
         );
+    }
+
+    private monitorInvolveDriverValueChange(): void {
+        this.loadForm
+            .get(LoadModalStringEnum.PICKUP_INVOLVE_DRIVER)
+            .valueChanges.pipe(takeUntil(this.destroy$))
+            .subscribe((value) => {
+                const lumperIndex =
+                    this.additionalBillings().controls.findIndex(
+                        (control) =>
+                            control.get(LoadModalStringEnum.NAME)?.value ===
+                            LoadModalStringEnum.LUMPER
+                    );
+
+                if (!this.editData?.data) {
+                    if (value && lumperIndex < 0) {
+                        const financialActionEvent = {
+                            type: LoadModalStringEnum.BILLING,
+                            action: true,
+                        };
+                        const additionalBillingEvent = {
+                            name: LoadModalStringEnum.LUMPER,
+                            id: 2,
+                            checked: false,
+                        };
+
+                        this.onFinancialAction(financialActionEvent);
+                        this.addAdditionalBilling(additionalBillingEvent);
+                    } else if (!value) {
+                        this.removeAdditionalBilling(
+                            LoadModalStringEnum.BILLING,
+                            lumperIndex
+                        );
+                    }
+                }
+            });
     }
 
     public hanndleShowAdjustedRate(): void {
@@ -864,11 +902,16 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                 );
             }
 
-            this.formService.formValueChange$
-                .pipe(takeUntil(this.destroy$))
-                .subscribe((isFormChange: boolean) => {
-                    this.isFormDirty = isFormChange;
-                });
+            if (this.editData?.isEditMode) {
+                this.isFormDirty = true;
+            } else {
+                this.formService.formValueChange$
+                    .pipe(takeUntil(this.destroy$))
+                    .subscribe(
+                        (isFormChange: boolean) =>
+                            (this.isFormDirty = isFormChange)
+                    );
+            }
         }, 500);
     }
 
@@ -3061,6 +3104,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             openClose: [true],
             waitTime: [null],
             shape: [null],
+            involveDriver: [null],
         });
     }
 
@@ -3333,7 +3377,6 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
 
         const {
             pickupStop,
-            pickupStopOrder,
             pickupDateFrom,
             pickupDateTo,
             pickupTimeFrom,
@@ -3342,7 +3385,6 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             pickuplegHours,
             pickuplegMinutes,
             deliveryStop,
-            deliveryStopOrder,
             deliveryDateFrom,
             deliveryDateTo,
             deliveryTimeFrom,
@@ -3352,6 +3394,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             deliverylegMinutes,
             arrive,
             depart,
+            pickupInvolveDriver,
         } = this.loadForm.value;
 
         // pickup
@@ -3393,6 +3436,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                 legMinutes,
                 items: this.remapStopItems(this.savedPickupStopItems),
                 shape: this.stops?.[0]?.shape,
+                driverAssist: pickupInvolveDriver,
             });
         }
 
@@ -3404,6 +3448,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                     item.get(LoadModalStringEnum.LEG_MINUTES).value,
                     item.get(LoadModalStringEnum.LEG_MILES).value
                 );
+
                 stops.push({
                     id: this.isActiveLoad
                         ? item.get(LoadModalStringEnum.ID).value ?? null
@@ -3447,6 +3492,8 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                     legMinutes,
                     items: this.remapStopItems(this.savedExtraStopItems[index]),
                     shape: item.get(LoadModalStringEnum.SHAPE).value,
+                    driverAssist: item.get(LoadModalStringEnum.INVOLVE_DRIVER)
+                        .value,
                 });
             });
         }
@@ -4014,7 +4061,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         return {
             selectedTab: this.editData?.selectedTab,
             id: form.id,
-            isEditMode: this.isEditingMode,
+            isEditMode: true,
             previousStatus: this.selectedStatus,
             loadAction: this.editData?.loadAction,
             data: {
@@ -4492,6 +4539,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
 
         const adjustedRate = this.adjustedRate;
         const { documents, tagsArray } = this.mapDocumentsAndTags();
+
         return {
             dispatcherId: this.getIdOrNull(this.selectedDispatcher),
             dispatchId: this.getIdOrNull(this.selectedDispatches),
@@ -4587,8 +4635,9 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             };
         }
 
-        const { id, dateCreated, status, loadRequirements } = (this.editData
-            .data || this.editData) as LoadResponse;
+        const { id, dateCreated, loadRequirements } = (this.editData.data ||
+            this.editData) as LoadResponse;
+
         return {
             ...commonData,
             id,
@@ -4634,7 +4683,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                               data.id
                           );
 
-                    loadServiceObservable.subscribe((newLoadData) => {
+                    loadServiceObservable.subscribe(() => {
                         this.loadService.addNewLoad();
                         this.setModalSpinner(null, true, true, addNew);
                     });
@@ -4965,6 +5014,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             pickupWaitTime: pickupStop
                 ? this.formatTimeDifference(pickupStop.wait)
                 : null,
+            pickupInvolveDriver: pickupStop?.driverAssist,
 
             // delivery
             deliveryDateFrom: deliveryStop

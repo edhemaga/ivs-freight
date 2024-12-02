@@ -35,7 +35,7 @@ export const onGetPayrollCommissionReportDriver = (
     params: IGet_Payroll_Commission_Driver_Report
 ) => ({
     ...state,
-    selectedLoadIds: params.selectedLoadIds,
+    selectedLoadIds: params.selectedLoadIds ?? state.selectedLoadIds,
     selectedDeductionIds:
         params.selectedDeductionIds ?? state.selectedDeductionIds,
     selectedCreditIds: params.selectedCreditIds ?? state.selectedCreditIds,
