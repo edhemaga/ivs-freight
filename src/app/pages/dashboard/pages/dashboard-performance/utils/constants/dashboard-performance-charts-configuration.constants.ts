@@ -14,6 +14,8 @@ export class DashboardPerformanceChartsConfiguration {
         width: 100,
         noDataImage: ChartImagesStringEnum.CHART_NO_DATA_PAY,
         chartOptions: {},
+        showXAxisLabels: false,
+        showTooltipBackground: true
     };
 
     static BAR_CHART_PERFORMANCE_CONFIG = {
@@ -26,7 +28,7 @@ export class DashboardPerformanceChartsConfiguration {
         width: 100,
         noDataImage: ChartImagesStringEnum.CHART_NO_DATA_PAY,
         chartOptions: {},
-        //TODO - show for bar chart, not for line chart
-        showXAxisLabels: true
+        showXAxisLabels: true, 
+        showTooltipBackground: true
     };
 }

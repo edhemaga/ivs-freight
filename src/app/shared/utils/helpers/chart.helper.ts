@@ -34,6 +34,7 @@ export class ChartHelper {
         chartTypeProperties?.forEach((property: ChartTypeProperty) => {
             let properties: IBaseDataset = {
                 type: property?.type,
+                order: property?.type === ChartTypesStringEnum.BAR ? 2 : 1,
                 label: property.value,
                 borderWidth: property?.borderWidth || 2,
                 data: [],
@@ -105,6 +106,20 @@ export class ChartHelper {
         );
     }
 
+    /**
+     * Generates formatted labels for the X-axis of a chart based on the provided data and time filter.
+     *
+     * The function processes an array of objects, where each object is expected to 
+     * contain `day`, `month`, and `year` properties. Depending on the `timeFilter` value, 
+     * it formats the labels for individual days, months, or years using abbreviated month names.
+     *
+     * - If `timeFilter` corresponds to daily or weekly views (values 1, 2, 3, 6, or falsy),
+     *   the label is formatted as "21 DEC" (day and abbreviated month).
+     * - If `timeFilter` corresponds to monthly or yearly views (values 4 or 5):
+     * - For January (`month === 1`), it shows the year ("exp. 2023").
+     * - For other months, it shows the abbreviated month ("exp. DEC").
+     * - For unsupported `timeFilter` values, it returns an empty string.
+     */
     private static getXAxisFormatedLabels<T>(
         rawData: T[],
         timeFilter: number
