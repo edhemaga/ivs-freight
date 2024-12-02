@@ -338,6 +338,11 @@
     width: auto;
     height: 480px;
     border-radius: 3px;
+
+    app-ca-map {
+        width: 100%;
+        height: 100%;
+    }
 }
 
 /* Responsive */

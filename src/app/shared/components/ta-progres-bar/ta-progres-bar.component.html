@@ -184,21 +184,24 @@
                 >
                     <div class="progress-info-container">
                         <div class="progress-info-title">Last Serviced</div>
-                        <div class="progress-info-text">
-                            {{ progressDropdownData.row.lastService ?? '/' }}
+                        <div class="progress-info-text text-color-white">
+                            {{ progressDropdownData.column?.serviceData?.date ? (progressDropdownData.column.serviceData.date | date: 'MM/dd/yy') : '/' }}
                         </div>
                     </div>
                     <div class="progress-info-container">
                         <div class="progress-info-title">Odometer</div>
-                        <div class="progress-info-text">
-                            {{ progressDropdownData.row.textOdometer ?? '/' }}
+                        <div class="progress-info-text text-color-white">
+                            {{ progressDropdownData.column?.serviceData?.odometer ? (progressDropdownData.column?.serviceData?.odometer | thousandSeparator) : '/' }}
                         </div>
                     </div>
                 </div>
                 <div class="progress-info-container">
                     <div class="progress-info-title">Repair Shop</div>
-                    <div class="progress-info-text">
-                        {{ progressDropdownData.row.textRepairShop ?? '/' }}
+                    <div class="progress-info-text text-color-white">
+                        {{ progressDropdownData.column?.serviceData?.repairShop?.name ?? '/' }}
+                    </div>
+                    <div class="text-size-14 text-color-grey progress-address">
+                        {{ progressDropdownData.column?.serviceData?.repairShop?.address?.address ?? '/' }}
                     </div>
                 </div>
                 <div
@@ -206,14 +209,14 @@
                 >
                     <div class="progress-info-container">
                         <div class="progress-info-title">Invoice</div>
-                        <div class="progress-info-text">
-                            {{ progressDropdownData.row.textInv ?? '/' }}
+                        <div class="progress-info-text text-color-white">
+                            {{ progressDropdownData.column?.serviceData?.invoice ?? '/' }}
                         </div>
                     </div>
                     <div class="progress-info-container">
                         <div class="progress-info-title">Cost</div>
-                        <div class="progress-info-text">
-                            {{ progressDropdownData.row.cost ?? '/' }}
+                        <div class="progress-info-text text-color-white">
+                            {{ progressDropdownData.column?.serviceData?.total ? (progressDropdownData.column.serviceData.total | formatCurrency) : '/' }}
                         </div>
                     </div>
                 </div>
@@ -225,7 +228,7 @@
                 >
                     <div class="progress-info-container">
                         <div class="progress-info-title">Total Credit</div>
-                        <div class="progress-info-text">
+                        <div class="progress-info-text text-color-white">
                             {{
                                 progressDropdownData.row.creditLimit
                                     ? (progressDropdownData.row.creditLimit
@@ -236,7 +239,7 @@
                     </div>
                     <div class="progress-info-container">
                         <div class="progress-info-title">Pay Term</div>
-                        <div class="progress-info-text">
+                        <div class="progress-info-text text-color-white">
                             {{ progressDropdownData.row.payTerm?.name ?? '/' }}
                         </div>
                     </div>
