@@ -89,7 +89,7 @@ export class UserService {
                             )
                         );
 
-                        userCount.actvie++;
+                        userCount.active++;
 
                         localStorage.setItem(
                             TableStringEnum.USER_TABLE_COUNT,
