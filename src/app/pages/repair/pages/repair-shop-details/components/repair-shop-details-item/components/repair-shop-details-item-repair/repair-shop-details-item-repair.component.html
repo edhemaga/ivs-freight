@@ -9,9 +9,11 @@
                 <app-ca-search-multiple-states
                     [searchType]="'Repair'"
                     [toolbarSearch]="true"
+                    [isDetailsPageSearch]="true"
                     [selectedTabData]="{
                         gridNameTitle: 'Repair'
                     }"
+                    (close)="handleCloseSearchEmit()"
                 ></app-ca-search-multiple-states>
             </div>
         </ng-container>

@@ -15,6 +15,7 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
 // pipes
 import { DriverHideAccountPipe } from '@shared/components/ta-copy/pipes/driver-hide-account.pipe';
 import { HidePasswordPipe } from '@shared/pipes/hide-password.pipe';
+import { HighlightSearchPipe } from '@shared/pipes';
 
 @Component({
     selector: 'app-ta-copy',
@@ -29,11 +30,12 @@ import { HidePasswordPipe } from '@shared/pipes/hide-password.pipe';
         AngularSvgIconModule,
         DriverHideAccountPipe,
 
-        // Pipes
+        // pipes
         HidePasswordPipe,
+        HighlightSearchPipe,
     ],
 })
-export class TaCopyComponent implements OnInit {
+export class TaCopyComponent {
     @Input() copyValue: string;
     @Input() textFontSize: string = '14px';
     @Input() textColor: string = '#6c6c6c';
@@ -46,12 +48,14 @@ export class TaCopyComponent implements OnInit {
     @Input() accountCompany: boolean;
     @Input() maxWidth: string;
     @Input() type: string;
+    @Input() public searchValue?: string;
+
     @Output() showHideEye = new EventEmitter<any>();
+
     public textCopied: boolean;
     public isVisible: boolean;
-    constructor(private clipboar: Clipboard) {}
 
-    ngOnInit(): void {}
+    constructor(private clipboar: Clipboard) {}
 
     /* To copy any Text */
     public copyText(event: Event, val: string) {

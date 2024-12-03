@@ -6,6 +6,9 @@ import { Router } from '@angular/router';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
+// services
+import { RepairShopDetailsService } from '@pages/repair/pages/repair-shop-details/services';
+
 // svg routes
 import { RepairShopDetailsSvgRoutes } from '@pages/repair/pages/repair-shop-details/utils/svg-routes';
 
@@ -54,7 +57,12 @@ export class RepairShopDetailsItemRepairedVehicleComponent implements OnInit {
 
     public repairedVehicleListHeaderItems: string[];
 
-    constructor(private router: Router) {}
+    constructor(
+        private router: Router,
+
+        // services
+        private repairShopDetailsService: RepairShopDetailsService
+    ) {}
 
     ngOnInit(): void {
         this.getConstantData();
@@ -69,5 +77,11 @@ export class RepairShopDetailsItemRepairedVehicleComponent implements OnInit {
 
     public handleViewDetailClick(unitType: string, id: number): void {
         this.router.navigate([`/list/${unitType.toLowerCase()}/${id}/details`]);
+    }
+
+    public handleCloseSearchEmit(): void {
+        const detailsPartIndex = 1;
+
+        this.repairShopDetailsService.setCloseSearchStatus(detailsPartIndex);
     }
 }
