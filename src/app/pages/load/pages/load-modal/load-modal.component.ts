@@ -1359,8 +1359,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                 }
 
                 if (
-                    this.isEditingMode &&
-                    this.editData?.selectedTab === TableStringEnum.TEMPLATE
+                    this.isEditingMode && this.isConvertedToTemplate && this.editData.loadAction !== TableStringEnum.CONVERT_TO_TEMPLATE
                 ) {
                     this.updateLoadTemplate(addNew);
                 } else if (this.isConvertedToTemplate) {
@@ -3504,8 +3503,9 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                     legMinutes,
                     items: this.remapStopItems(this.savedExtraStopItems[index]),
                     shape: item.get(LoadModalStringEnum.SHAPE).value,
-                    driverAssist: item.get(LoadModalStringEnum.INVOLVE_DRIVER)
-                        .value,
+                    driverAssist:
+                        item.get(LoadModalStringEnum.INVOLVE_DRIVER).value ??
+                        false,
                 });
             });
         }
@@ -3550,6 +3550,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                 legMinutes,
                 items: this.remapStopItems(this.savedDeliveryStopItems),
                 shape: this.stops?.[this.stops.length - 1]?.shape,
+                driverAssist: false,
             });
         }
 
@@ -4951,10 +4952,13 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             : {};
 
         // Ensure dispatcher exists before attempting to spread
-        const editedDispatcher = dispatcher
+        const selectedDispatcher = this.labelsDispatcher.find(
+            (dispatch) => dispatch.id !== dispatcher.id
+        );
+        const editedDispatcher = selectedDispatcher
             ? {
-                  ...dispatcher,
-                  name: dispatcher?.fullName,
+                  ...selectedDispatcher,
+                  name: selectedDispatcher?.fullName,
               }
             : {};
 
