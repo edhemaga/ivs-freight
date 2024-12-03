@@ -5083,12 +5083,18 @@
                                         >
                                             <ng-container
                                                 *ngIf="
-                                                    column.field !==
-                                                        'reeferUnit' ||
+                                                    (activeTableData?.gridNameTitle ===
+                                                        'PM' &&
+                                                        column.field !==
+                                                            'reeferUnit') ||
                                                     (column.field ===
                                                         'reeferUnit' &&
                                                         row.tableTrailerName ===
-                                                            'Reefer')
+                                                            'Reefer') ||
+                                                    (activeTableData?.gridNameTitle !==
+                                                        'PM' &&
+                                                        row[column.field]
+                                                            ?.expirationDaysText)
                                                 "
                                             >
                                                 <ng-container
@@ -5102,7 +5108,10 @@
                                                         type="button"
                                                         ngbTooltip
                                                         [mainTooltip]="
-                                                            'View PM'
+                                                            activeTableData?.gridNameTitle ===
+                                                            'PM'
+                                                                ? 'View PM'
+                                                                : column.title
                                                         "
                                                         tooltipBackground="#424242"
                                                         position="bottom"
