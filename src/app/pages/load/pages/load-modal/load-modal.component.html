@@ -1758,6 +1758,8 @@
         ></app-load-modal-hazardous>
 
         <!-- Map -->
-        <app-ca-map *ngIf="!isHazardousVisible" [data]="mapData"></app-ca-map>
+        <ng-container *ngIf="!isHazardousVisible">
+            <app-ca-map [data]="mapData"></app-ca-map>
+        </ng-container>
     </div>
 </app-ta-modal>
