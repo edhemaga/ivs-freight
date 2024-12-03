@@ -33,6 +33,7 @@ export abstract class PayrollReportBaseComponent<
         driver?: { id?: number; fullName?: string | null };
         truck?: { id?: number };
         id?: number;
+        owner?: { name?: string | null;}
     }
 > {
     public openedPayroll: T;
@@ -153,6 +154,8 @@ export abstract class PayrollReportBaseComponent<
     }
 
     public onOpenActionEditItems(item: any): void {
+        const label = this.openedPayroll.truck ? this.openedPayroll.owner?.name : this.openedPayroll.driver.fullName;
+
         if (item.$event.type === TableStringEnum.EDIT_2) {
             switch (item.title) {
                 case PayrollAdditionalTypes.CREDIT:
@@ -231,7 +234,7 @@ export abstract class PayrollReportBaseComponent<
                                 title: item.data.description,
                                 subtitle: item.data.subtotal,
                                 date: item.data.date,
-                                label: `${this.openedPayroll.driver.fullName}`,
+                                label: `${label}`,
                                 id: item.data.id,
                             }
                         )
@@ -249,7 +252,7 @@ export abstract class PayrollReportBaseComponent<
                                 title: item.data.description,
                                 subtitle: item.data.subtotal,
                                 date: item.data.date,
-                                label: `${this.openedPayroll.driver.fullName}`,
+                                label: `${label}`,
                                 id: item.data.id,
                             }
                         )
@@ -267,7 +270,7 @@ export abstract class PayrollReportBaseComponent<
                                 title: item.data.description,
                                 subtitle: item.data.subtotal,
                                 date: item.data.date,
-                                label: `${this.openedPayroll.driver.fullName}`,
+                                label: `${label}`,
                                 id: item.data.id,
                             }
                         )

@@ -252,6 +252,7 @@ export class PayrollDeductionModalComponent implements OnInit {
                     this.onCloseModal();
                 });
         } else if (action === TaModalActionEnums.DELETE) {
+            const label = this.deduction.driver ? `${this.deduction.driver.firstName} ${this.deduction.driver.lastName}` : this.deduction.truck.owner;
             this.payrollService.raiseDeleteModal(
                 TableStringEnum.DEDUCTION,
                 ConfirmationModalStringEnum.DELETE_DEDUCTION,
@@ -260,7 +261,7 @@ export class PayrollDeductionModalComponent implements OnInit {
                     title: this.deduction.description,
                     subtitle: this.deduction.amount,
                     date: this.deduction.date,
-                    label: `${this.deduction.driver.firstName} ${this.deduction.driver.lastName}`,
+                    label: `${label}`,
                     id: this.deduction.id,
                 }
             );
