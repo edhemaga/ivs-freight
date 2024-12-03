@@ -24,8 +24,8 @@ const MAX_ZOOM: number = 2;
 
 @Component({
     selector: 'app-payroll-report',
-    templateUrl: './payroll-report.component.html',
-    styleUrls: ['./payroll-report.component.scss'],
+    templateUrl: './payroll-pdf-report.component.html',
+    styleUrls: ['./payroll-pdf-report.component.scss'],
     standalone: true,
     imports: [
         // Module
@@ -38,7 +38,7 @@ const MAX_ZOOM: number = 2;
         TaSpinnerComponent,
     ],
 })
-export class PayrollReportComponent implements OnInit {
+export class PayrollPdfReportComponent implements OnInit {
     @Input() editData: PayrollModal;
     public pdfSrc: string | ArrayBuffer | undefined;
     public pdfBlob: Blob | undefined;
