@@ -123,6 +123,7 @@ export interface IPayrollProccessPaymentModal {
 export interface IAddPayrollClosedPayment {
     payrollDriverMileageId?: number;
     payrollDriverCommissionId?: number;
+    payrollDriverFlatRateId?: number;
     payrollOwnerId?: number;
     paymentType?: string;
     modalId?: number;

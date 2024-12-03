@@ -95,7 +95,12 @@
 <ng-template #customInvBrk let-data>
     <div class="load-description d-flex align-items-center">
         <div class="load-description-name">
-            <div class="load-description-address">{{ data.loadNumber }}</div>
+            <div class="load-description-address">
+                {{ data.loadNumber }}
+                <ng-container *ngIf="data.isTonu"
+                    ><span class="load-description-tonu">T</span></ng-container
+                >
+            </div>
             <div class="load-description-stop-type">
                 {{ data.brokerName }}
             </div>

@@ -524,12 +524,26 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                         };
 
                         this.onFinancialAction(financialActionEvent);
-                        this.addAdditionalBilling(additionalBillingEvent);
+                        this.addAdditionalBilling(additionalBillingEvent, true);
                     } else if (!value) {
-                        this.removeAdditionalBilling(
-                            LoadModalStringEnum.BILLING,
-                            lumperIndex
-                        );
+                        const lumperIndex =
+                            this.additionalBillings().controls.findIndex(
+                                (control) =>
+                                    control.get(LoadModalStringEnum.NAME)
+                                        ?.value === LoadModalStringEnum.LUMPER
+                            );
+
+                        if (lumperIndex !== -1) {
+                            const control =
+                                this.additionalBillings().at(lumperIndex);
+
+                            if (control) {
+                                control.clearValidators();
+                                control.updateValueAndValidity();
+
+                                this.additionalBillings().removeAt(lumperIndex);
+                            }
+                        }
                     }
                 }
             });
@@ -1436,7 +1450,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
 
                 break;
             case LoadModalStringEnum.DISPATCHES:
-                this.onSelectDropdownDispatches(event);
+                this.onSelectDropdownDispatches(event, isClick);
 
                 break;
             case LoadModalStringEnum.BROKER:
@@ -1753,7 +1767,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         }
     }
 
-    private onSelectDropdownDispatches(event): void {
+    private onSelectDropdownDispatches(event, isClick?: boolean): void {
         if (event) {
             this.selectedDispatches = {
                 ...event,
@@ -1833,6 +1847,13 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                         this.loadForm.get(LoadModalStringEnum.DRIVER_RATE)
                     );
 
+                    if (isClick && this.selectedDispatches.driver?.driverRate)
+                        this.loadForm
+                            .get(LoadModalStringEnum.DRIVER_RATE)
+                            .patchValue(
+                                this.selectedDispatches.driver?.driverRate
+                            );
+
                     this.additionalBillingTypes =
                         this.additionalBillingTypes.filter(
                             (item) => item.id !== 6
@@ -1840,6 +1861,8 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                 } else {
                     this.inputService.changeValidators(
                         this.loadForm.get(LoadModalStringEnum.DRIVER_RATE),
+                        false,
+                        [],
                         false
                     );
                 }
@@ -1863,6 +1886,8 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
 
             this.inputService.changeValidators(
                 this.loadForm.get(LoadModalStringEnum.DRIVER_RATE),
+                false,
+                [],
                 false
             );
 
@@ -2639,19 +2664,28 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         ) as UntypedFormArray;
     }
 
-    public createAdditionaBilling(data: {
-        id: number;
-        name: string;
-        billingValue: number;
-    }): UntypedFormGroup {
+    public createAdditionaBilling(
+        data: {
+            id: number;
+            name: string;
+            billingValue: number;
+        },
+        setAsRequired?: boolean
+    ): UntypedFormGroup {
         return this.formBuilder.group({
             id: [data?.id ? data.id : null],
             name: [data?.name ? data.name : null],
-            billingValue: [data?.billingValue ? data.billingValue : null],
+            billingValue: [
+                data?.billingValue ? data.billingValue : null,
+                setAsRequired ? [Validators.required] : null,
+            ],
         });
     }
 
-    public addAdditionalBilling(event: LoadAdditionalBilling): void {
+    public addAdditionalBilling(
+        event: LoadAdditionalBilling,
+        setAsRequired?: boolean
+    ): void {
         if (event) {
             this.selectedAdditionalBillings.push(
                 this.additionalBillingTypes.find((item) => item.id === event.id)
@@ -2674,11 +2708,14 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             );
 
             this.additionalBillings().push(
-                this.createAdditionaBilling({
-                    id: event.id,
-                    name: event.name,
-                    billingValue: event?.billingValue,
-                })
+                this.createAdditionaBilling(
+                    {
+                        id: event.id,
+                        name: event.name,
+                        billingValue: event?.billingValue,
+                    },
+                    setAsRequired
+                )
             );
         }
 
@@ -2715,7 +2752,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                         this.additionalBillings().at(index).value.name
                 );
 
-            switch (this.additionalBillings().at(index).value.name) {
+            switch (this.additionalBillings().at(index)?.value.name) {
                 case LoadModalStringEnum.LAYOVER:
                     this.loadModalBill.layover = 0;
                     break;
@@ -2809,9 +2846,10 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                         ...this.loadModalBill,
                         baseRate: 0,
                     };
-
                     this.inputService.changeValidators(
                         this.loadForm.get(LoadModalStringEnum.DRIVER_RATE),
+                        false,
+                        [],
                         false
                     );
                     this.inputService.changeValidators(
@@ -2823,37 +2861,6 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                         ...this.loadModalBill,
                         baseRate: this.convertNumbers(value),
                     };
-                }
-            });
-
-        // driver rate
-        this.loadForm
-            .get(LoadModalStringEnum.DRIVER_RATE)
-            .valueChanges.pipe(takeUntil(this.destroy$))
-            .subscribe((value) => {
-                if (value) {
-                    if (
-                        !this.loadForm.get(LoadModalStringEnum.BASE_RATE)
-                            .value ||
-                        MethodsCalculationsHelper.convertThousanSepInNumber(
-                            value
-                        ) >
-                            MethodsCalculationsHelper.convertThousanSepInNumber(
-                                this.loadForm.get(LoadModalStringEnum.BASE_RATE)
-                                    .value
-                            )
-                    ) {
-                        this.loadForm
-                            .get(LoadModalStringEnum.DRIVER_RATE)
-                            .reset();
-                        this.loadForm
-                            .get(LoadModalStringEnum.DRIVER_RATE)
-                            .setErrors({ invalid: true });
-                    } else {
-                        this.loadForm
-                            .get(LoadModalStringEnum.DRIVER_RATE)
-                            .setErrors(null);
-                    }
                 }
             });
 
@@ -2947,16 +2954,23 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                         item.name
                 );
 
-                return {
-                    id: action === LoadModalStringEnum.UPDATE ? item.id : null,
-                    additionalBillingType: item.id,
-                    rate: biilingRate
-                        ? biilingRate.get(LoadModalStringEnum.BILLING_VALUE)
-                              .value
-                        : null,
-                };
+                if (item) {
+                    return {
+                        id:
+                            action === LoadModalStringEnum.UPDATE
+                                ? item.id
+                                : null,
+                        additionalBillingType: item.id,
+                        rate: biilingRate
+                            ? biilingRate.get(LoadModalStringEnum.BILLING_VALUE)
+                                  .value
+                            : null,
+                    };
+                }
+
+                return undefined;
             })
-            .filter((item) => item.additionalBillingType !== 6);
+            .filter((item) => item && item.additionalBillingType !== 6);
     }
 
     public get hasValidSteps(): boolean {
@@ -4047,7 +4061,6 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         const adjustedRate = form.adjustedRate;
         const advancePay = form.advancePay;
         const statusType = form.statusType;
-
         return {
             selectedTab: this.editData?.selectedTab,
             id: form.id,

@@ -210,7 +210,9 @@
                     [inputConfig]="loadDispatchesTTDInputConfig"
                     [options]="labelsDispatches"
                     [activeItem]="selectedDispatches"
-                    (selectedItem)="onSelectDropdown($event, 'dispatches')"
+                    (selectedItem)="
+                        onSelectDropdown($event, 'dispatches', 0, true)
+                    "
                 ></app-ca-input-dropdown>
             </div>
 

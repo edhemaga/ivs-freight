@@ -42,7 +42,10 @@ import { ConfirmationModalComponent } from '@shared/components/ta-shared-modals/
 // Enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
 import { ConfirmationModalStringEnum } from '@shared/components/ta-shared-modals/confirmation-modal/enums/confirmation-modal-string.enum';
-import { PayrollType, PayrollTypeEnum } from '@pages/accounting/pages/payroll/state/types/payroll.type';
+import {
+    PayrollType,
+    PayrollTypeEnum,
+} from '@pages/accounting/pages/payroll/state/types/payroll.type';
 // TODO: Slaviša
 // import { PayrollTypeEnum } from 'ca-components/lib/components/ca-period-content/enums';
 
@@ -74,20 +77,20 @@ export class PayrollService {
     }
 
     private getReportURL(type: PayrollType): string {
-        if(type ===  PayrollTypeEnum.OWNER_COMMISSION) {
-            return '/api/payroll/owner/report' ;
+        if (type === PayrollTypeEnum.OWNER_COMMISSION) {
+            return '/api/payroll/owner/report';
         }
 
-        if(type ===  PayrollTypeEnum.FLAT_RATE) {
-            return '/api/payroll/driver/flatrate/report' ;
+        if (type === PayrollTypeEnum.FLAT_RATE) {
+            return '/api/payroll/driver/flatrate/report';
         }
 
-        if(type ===  PayrollTypeEnum.MILEAGE) {
-            return '/api/payroll/driver/mileage/report' ;
+        if (type === PayrollTypeEnum.MILEAGE) {
+            return '/api/payroll/driver/mileage/report';
         }
 
-        if(type ===  PayrollTypeEnum.COMMISSION) {
-            return '/api/payroll/driver/commission/report' ;
+        if (type === PayrollTypeEnum.COMMISSION) {
+            return '/api/payroll/driver/commission/report';
         }
     }
 
@@ -195,8 +198,7 @@ export class PayrollService {
         reportId: string,
         lastLoadDate: string,
         selectedCreditIds?: number[],
-        selectedDeducionIds?: number[],
-        selectedBonusIds?: number[]
+        selectedDeducionIds?: number[]
     ): Observable<PayrollDriverMileageResponse> {
         let params = new HttpParams();
         if (lastLoadDate) {
