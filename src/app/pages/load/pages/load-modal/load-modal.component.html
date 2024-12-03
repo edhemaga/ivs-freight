@@ -1756,12 +1756,6 @@
         ></app-load-modal-hazardous>
 
         <!-- Map -->
-        <app-ca-map *ngIf="!isHazardousVisible" [data]="data"></app-ca-map>
-        <!-- <app-ta-maps
-            *ngIf="!isHazardousVisible"
-            [mapType]="'routing'"
-            [routes]="loadStopRoutes"
-            [ngStyle]="{ width: '100%', height: '100%' }"
-        ></app-ta-maps> -->
+        <app-ca-map *ngIf="!isHazardousVisible" [data]="mapData"></app-ca-map>
     </div>
 </app-ta-modal>
