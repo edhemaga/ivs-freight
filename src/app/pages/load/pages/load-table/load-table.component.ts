@@ -51,6 +51,7 @@ import { FilterOptionsLoad } from '@pages/load/pages/load-table/models/filter-op
 import { CardRows } from '@shared/models/card-models/card-rows.model';
 import {
     AddressResponse,
+    LoadListDto,
     LoadListResponse,
     LoadStatus,
     LoadTemplateListResponse,
@@ -738,6 +739,8 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 const loadCount = JSON.parse(
                     localStorage.getItem(TableStringEnum.LOAD_TABLE_COUNT)
                 );
+
+                console.log('INIT DATA', response);
 
                 const loadTemplateData =
                     this.selectedTab === TableStringEnum.TEMPLATE
@@ -1898,7 +1901,155 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     private manageDispatchHubListeners(): void {
-        this.dispatchHubService.onLoadChanged();
+        this.dispatchHubService
+            .onLoadChanged()
+            .pipe(takeUntil(this.destroy$))
+            .subscribe(response => {
+                const loadChanged: LoadListDto = response[0];
+                
+                this.refreshLoad(loadChanged);
+
+                console.log('LoadChanged', response);
+                console.log(this.viewData);
+            });
+    }
+
+    private refreshLoad(loadChanged: LoadListDto): void {
+        const loadOld = this.viewData.find(_ => _.id === loadChanged.id);
+        const index = this.viewData.findIndex(_ => _.id === loadOld?.id);
+        const { 
+            status: loadChangedStatus,
+            statusType: loadChangedStatusType
+        } = loadChanged || {};
+        const { 
+            id: loadChangedStatusTypeId,
+            name: loadChangedStatusName
+        } = loadChangedStatusType || {};
+        console.log('selected tab', this.selectedTab);
+        console.log(loadChangedStatusName);
+        const {
+            isSelected,
+            loadInvoice,
+            loadDispatcher,
+            avatarImg,
+            tableDriver,
+            tableTruck,
+            tableTrailer,
+            loadTotal,
+            loadBroker,
+            contact,
+            phone,
+            referenceNumber,
+            textCommodity,
+            textWeight,
+            tableTrailerColor,
+            tableTrailerName,
+            tableTruckColor,
+            truckTypeClass,
+            tableTrailerTypeClass,
+            tableTruckName,
+            loadTrailerNumber,
+            loadTruckNumber,
+            loadPickup,
+            total,
+            empty,
+            loaded,
+            tableDoorType,
+            tableSuspension,
+            year,
+            liftgate,
+            tableAssignedUnitTruck,
+            tableAssignedUnitTrailer,
+            tabelLength,
+            textBase,
+            textAdditional,
+            textAdvance,
+            textPayTerms,
+            textDriver,
+            comments,
+            rate,
+            tableInvoice,
+            tablePaid,
+            paid,
+            payTerm,
+            ageUnpaid,
+            agePaid,
+            due,
+            tableAdded,
+            tableEdited,
+            tableAttachments,
+            fileCount,
+            tableDropdownContent,
+            statusType: LoadOldStatusType
+        } = loadOld || {};
+        const { id: loadOldStatusTypeId } = LoadOldStatusType || {};
+        const updatingItem = {
+            ...loadChanged,
+            isSelected,
+            loadInvoice,
+            loadDispatcher,
+            avatarImg,
+            tableDriver,
+            tableTruck,
+            tableTrailer,
+            loadTotal,
+            loadBroker,
+            contact,
+            phone,
+            referenceNumber,
+            textCommodity,
+            textWeight,
+            tableTrailerColor,
+            tableTrailerName,
+            tableTruckColor,
+            truckTypeClass,
+            tableTrailerTypeClass,
+            tableTruckName,
+            loadTrailerNumber,
+            loadTruckNumber,
+            loadPickup,
+            loadStatus: loadChangedStatus,
+            total,
+            empty,
+            loaded,
+            tableDoorType,
+            tableSuspension,
+            year,
+            liftgate,
+            tableAssignedUnitTruck,
+            tableAssignedUnitTrailer,
+            tabelLength,
+            textBase,
+            textAdditional,
+            textAdvance,
+            textPayTerms,
+            textDriver,
+            comments,
+            rate,
+            tableInvoice,
+            tablePaid,
+            paid,
+            payTerm,
+            ageUnpaid,
+            agePaid,
+            due,
+            tableAdded,
+            tableEdited,
+            tableAttachments,
+            fileCount,
+            tableDropdownContent
+        };
+
+        // this.mapLoadData(loadChanged);
+
+        if (loadChangedStatusTypeId !== loadOldStatusTypeId && loadChangedStatusName?.toLowerCase() === this.selectedTab) this.viewData.push(updatingItem);
+        else if (loadChangedStatusTypeId !== loadOldStatusTypeId) this.viewData.splice(index, 1);
+        else if (index >= 0) this.viewData.splice(index, 1, updatingItem);
+        else this.viewData.push(updatingItem);
+
+        this.loadServices.refreshLoadDataLocal(loadChanged);
+        this.viewData = [...this.viewData];
+        this.getTabData(this.selectedTab);
     }
 
     public saveValueNote(event: { value: string; id: number }): void {

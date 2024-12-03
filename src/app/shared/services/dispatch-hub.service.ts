@@ -7,6 +7,16 @@ import * as signalR from '@microsoft/signalr';
 // env
 import { environment } from 'src/environments/environment';
 
+// models
+import {
+    DispatchBoardResponse,
+    DispatchResponse,
+    LoadListDto,
+} from 'appcoretruckassist';
+
+// constants
+import { DispatchHubConstants } from '@shared/utils/constants';
+
 @Injectable({
     providedIn: 'root',
 })
@@ -24,7 +34,7 @@ export class DispatchHubService {
             .withUrl(`${environment.API_ENDPOINT}/dispatchHub`, {
                 withCredentials: false,
                 skipNegotiation: false,
-                accessTokenFactory: async () => this.token
+                accessTokenFactory: async () => this.token,
             })
             .build();
     }
@@ -41,7 +51,12 @@ export class DispatchHubService {
                 signalR.HubConnectionState.Connected
         )
             return;
-        DispatchHubService.hubConnection.start().then().catch(e => console.log(e));
+
+        DispatchHubService.hubConnection
+            .start()
+            .then()
+            .catch((e) => console.log(e));
+
         DispatchHubService.hubConnection.onclose(() => {
             DispatchHubService.hubConnection.start();
         });
@@ -51,21 +66,36 @@ export class DispatchHubService {
         DispatchHubService.hubConnection.stop();
     }
 
-    public onLoadChanged(): void {
-        DispatchHubService.hubConnection.on('LoadChanged', response => {
-            console.log(response);
+    public onLoadChanged(): Observable<LoadListDto[]> {
+        return new Observable<LoadListDto[]>((observer) => {
+            DispatchHubService.hubConnection.on(
+                DispatchHubConstants.HUB_EVENT_LOAD_CHANGED,
+                (response) => {
+                    observer.next(response);
+                }
+            );
         });
     }
 
-    public onDispatchChanged(): void {
-        DispatchHubService.hubConnection.on('DispatchChanged', response => {
-            console.log(response);
+    public onDispatchChanged(): Observable<DispatchResponse> {
+        return new Observable<DispatchResponse>((observer) => {
+            DispatchHubService.hubConnection.on(
+                DispatchHubConstants.HUB_EVENT_DISPATCH_CHANGED,
+                (response) => {
+                    observer.next(response);
+                }
+            );
         });
     }
 
-    public onDispatchBoardChanged(): void {
-        DispatchHubService.hubConnection.on('DispatchBoardChanged', response => {
-            console.log(response);
+    public onDispatchBoardChanged(): Observable<DispatchBoardResponse> {
+        return new Observable<DispatchBoardResponse>((observer) => {
+            DispatchHubService.hubConnection.on(
+                DispatchHubConstants.HUB_EVENT_DISPATCH_BOARD_CHANGED,
+                (response) => {
+                    observer.next(response);
+                }
+            );
         });
-    } 
+    }
 }

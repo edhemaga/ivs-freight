@@ -238,6 +238,8 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
         this.getColumnWidths();
 
         this.dispatchHubService.connect();
+
+        this.manageDispatchHubListeners();
     }
 
     public getLoadInformationForSignleDispatchResponse(item: DispatchResponse) {
@@ -1303,6 +1305,20 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
         else
             this.resizedColumnsWidth =
                 DispatchTableColumnWidthsConstants.DispatchColumnWidths;
+    }
+
+    private manageDispatchHubListeners(): void {
+        this.dispatchHubService.onDispatchChanged()
+        .pipe(takeUntil(this.destroy$))
+        .subscribe(response => {
+            console.log(response);
+        });
+
+        this.dispatchHubService.onDispatchBoardChanged()
+        .pipe(takeUntil(this.destroy$))
+        .subscribe(response => {
+            console.log(response);
+        });
     }
 
     ngOnDestroy(): void {
