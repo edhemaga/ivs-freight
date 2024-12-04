@@ -33,7 +33,7 @@ export abstract class PayrollReportBaseComponent<
         driver?: { id?: number; fullName?: string | null };
         truck?: { id?: number };
         id?: number;
-        owner?: { name?: string | null;}
+        owner?: { name?: string | null };
     }
 > {
     public openedPayroll: T;
@@ -154,7 +154,9 @@ export abstract class PayrollReportBaseComponent<
     }
 
     public onOpenActionEditItems(item: any): void {
-        const label = this.openedPayroll.truck ? this.openedPayroll.owner?.name : this.openedPayroll.driver.fullName;
+        const label = this.openedPayroll.truck
+            ? this.openedPayroll.owner?.name
+            : this.openedPayroll.driver.fullName;
 
         if (item.$event.type === TableStringEnum.EDIT_2) {
             switch (item.title) {
@@ -303,28 +305,28 @@ export abstract class PayrollReportBaseComponent<
                 ...dataSend,
                 selectedCreditIds: _included.length
                     ? _included.map((load) => load.id)
-                    : 0,
+                    : [0],
             };
         } else if (_title === PayrollAdditionalTypes.DEDUCTION) {
             dataSend = {
                 ...dataSend,
                 selectedDeductionIds: _included.length
                     ? _included.map((load) => load.id)
-                    : 0,
+                    : [0],
             };
         } else if (_title === PayrollAdditionalTypes.BONUS) {
             dataSend = {
                 ...dataSend,
                 selectedBonusIds: _included.length
                     ? _included.map((load) => load.id)
-                    : 0,
+                    : [0],
             };
         } else if (_title === PayrollAdditionalTypes.FUEL) {
             dataSend = {
                 ...dataSend,
                 selectedFuelIds: _included.length
                     ? _included.map((load) => load.id)
-                    : 0,
+                    : [0],
             };
         }
 
