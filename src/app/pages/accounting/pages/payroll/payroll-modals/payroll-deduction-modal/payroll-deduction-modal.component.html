@@ -111,7 +111,7 @@
                 </div>
                 <div class=" ta-font-regular text-size-14"
                 [ngClass]="payments.isNext? 'text-color-muted' : 'text-color-black-2'">
-                    {{ payments.date | date : 'MM/dd/yy' }} <ng-container *ngIf="payments.isNext">
+                    {{ formatDate(payments.date)  }} <ng-container *ngIf="payments.isNext">
                         <span  
                         [ngClass]="payments.isLast? 'text-color-blue-13' : 'text-color-muted'">
                             {{payments.isLast ? '- Last Payment' : '- Next Payment'}}

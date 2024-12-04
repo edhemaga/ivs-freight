@@ -94,7 +94,7 @@ export class PayrollCreditBonusComponent implements OnInit {
             [PayrollStringEnum.DRIVER_ID]: [data?.driverId ?? null],
             [PayrollStringEnum.TRUCK_ID]: [data?.truckId ?? null],
             [PayrollStringEnum.DATE]: [
-                data.date ?? new Date(),
+                MethodsCalculationsHelper.convertDateFromBackend(data.date) ?? new Date(),
                 Validators.required,
             ],
             [PayrollStringEnum.DESCRIPTION]: [

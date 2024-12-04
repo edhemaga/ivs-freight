@@ -124,7 +124,8 @@ export class TaToolbarFiltersComponent implements OnInit, OnChanges, OnDestroy {
             this.activeTableData = changes.activeTableData.currentValue;
         }
 
-        this.handleFilterInitialization();
+        if (this.options.toolbarActions.showStateFilter)
+            this.filterService.getStateData();
     }
 
     public handleFilterInitialization(): void {
@@ -331,7 +332,35 @@ export class TaToolbarFiltersComponent implements OnInit, OnChanges, OnDestroy {
                     ) {
                         if (res.data.pmTrucks?.length) {
                             const newData = res.data.pmTrucks.map(
-                                (type: any) => {
+                                (
+                                    type: any
+                                    // leave any for now
+                                ) => {
+                                    type[ToolbarFilterStringEnum.ICON] =
+                                        FilterIconRoutes.repairPmSVG +
+                                        type.logoName;
+                                    type[ToolbarFilterStringEnum.NAME] =
+                                        type.title;
+
+                                    return type;
+                                }
+                            );
+                            this.pmFilterArray = newData;
+                        } else {
+                            this.pmFilterArray = [];
+                        }
+                    }
+
+                    if (
+                        res?.animation ===
+                        ToolbarFilterStringEnum.PM_TRAILER_DATA_UPDATE
+                    ) {
+                        if (res.data.pmTrailers?.length) {
+                            const newData = res.data.pmTrailers.map(
+                                (
+                                    type: any
+                                    // leave any for now
+                                ) => {
                                     type[ToolbarFilterStringEnum.ICON] =
                                         FilterIconRoutes.repairPmSVG +
                                         type.logoName;
