@@ -8,7 +8,8 @@ import { UserTableDropdown } from '@pages/user/models/user-table-dropdown.model'
 export class UserConstants {
     static getUserTableDropdown(
         data: CompanyUserResponse,
-        selectedTab: string
+        selectedTab: string,
+        isInvitationSent?: boolean
     ): UserTableDropdown[] {
         return [
             {
@@ -41,13 +42,13 @@ export class UserConstants {
                     selectedTab === TableStringEnum.INACTIVE,
             },
             {
-                title: 'Resend Invitation',
+                title: isInvitationSent
+                    ? 'Invitation Sent'
+                    : 'Resend Invitation',
                 name: TableStringEnum.RESEND_INVITATION,
-                svgUrl:
-                    data.userStatus === TableStringEnum.EXPIRED ||
-                    data.userStatus === TableStringEnum.INVITED
-                        ? 'assets/svg/truckassist-table/new-list-dropdown/Email - Invitation.svg'
-                        : 'assets/svg/truckassist-table/new-list-dropdown/Check.svg',
+                svgUrl: !isInvitationSent
+                    ? 'assets/svg/truckassist-table/new-list-dropdown/Email - Invitation.svg'
+                    : 'assets/svg/applicant/confirm-circle.svg',
                 svgStyle: {
                     width:
                         data.userStatus === TableStringEnum.EXPIRED ||
@@ -60,15 +61,15 @@ export class UserConstants {
                             ? 18
                             : 14,
                 },
-                svgClass:
-                    data.userStatus !== TableStringEnum.EXPIRED &&
-                    data.userStatus !== TableStringEnum.INVITED
-                        ? TableStringEnum.CHECK
-                        : TableStringEnum.REGULAR,
+                svgClass: isInvitationSent
+                    ? TableStringEnum.CHECK
+                    : TableStringEnum.REGULAR,
                 hasBorder: true,
                 mutedStyle:
-                    data.userStatus !== TableStringEnum.EXPIRED &&
-                    data.userStatus !== TableStringEnum.INVITED,
+                    (data.userStatus !== TableStringEnum.EXPIRED &&
+                        data.userStatus !== TableStringEnum.INVITED &&
+                        data.userStatus !== TableStringEnum.OWNER) ||
+                    isInvitationSent,
             },
             {
                 title:
@@ -96,7 +97,8 @@ export class UserConstants {
                 },
                 mutedStyle:
                     data.userStatus === TableStringEnum.EXPIRED ||
-                    data.userStatus === TableStringEnum.INVITED,
+                    data.userStatus === TableStringEnum.INVITED ||
+                    data.userStatus === TableStringEnum.OWNER,
             },
             {
                 title: TableStringEnum.DELETE_2,
@@ -106,6 +108,7 @@ export class UserConstants {
                     width: 18,
                     height: 18,
                 },
+                mutedStyle: data.userStatus === TableStringEnum.OWNER,
                 svgClass: TableStringEnum.DELETE,
             },
         ];
