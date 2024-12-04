@@ -15,7 +15,7 @@ import { PayrollCreditBonusComponent } from '@pages/accounting/pages/payroll/pay
 import { PayrollBonusModalComponent } from '@pages/accounting/pages/payroll/payroll-modals/payroll-bonus-modal/payroll-bonus-modal.component';
 import { PayrollDeductionModalComponent } from '@pages/accounting/pages/payroll/payroll-modals/payroll-deduction-modal/payroll-deduction-modal.component';
 import { FuelPurchaseModalComponent } from '@pages/fuel/pages/fuel-modals/fuel-purchase-modal/fuel-purchase-modal.component';
-import { PayrollReportComponent } from '@pages/accounting/pages/payroll/payroll-modals/payroll-report/payroll-report.component';
+import { PayrollPdfReportComponent } from '@pages/accounting/pages/payroll/payroll-modals/payroll-report/payroll-pdf-report.component';
 
 // Enums
 import {
@@ -62,7 +62,7 @@ export abstract class PayrollReportBaseComponent<
     public openMenu(data: { type: string }) {
         if (data.type === PayrollStringEnum.REPORT) {
             this.modalService.openModal(
-                PayrollReportComponent,
+                PayrollPdfReportComponent,
                 {},
                 {
                     data: {
