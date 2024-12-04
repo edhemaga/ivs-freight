@@ -7,7 +7,7 @@ import { UserService } from '@pages/user/services/user.service';
 
 // store
 import { UserActiveStore } from '@pages/user/state/user-active-state/user-active.store';
-import { UserInactiveStore } from '../state/user-inactive-state/user-inactive.store';
+import { UserInactiveStore } from '@pages/user/state/user-inactive-state/user-inactive.store';
 
 @Injectable({
     providedIn: 'root',
