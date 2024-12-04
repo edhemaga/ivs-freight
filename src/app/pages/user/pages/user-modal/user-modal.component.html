@@ -217,12 +217,14 @@
                             <app-ta-checkbox-card
                                 formControlName="resetPassword"
                                 [label]="
-                                    currentUserStatus === 'Invited'
+                                    currentUserStatus === 'Invited' ||
+                                    currentUserStatus === 'Expired'
                                         ? 'Resend Invitation'
                                         : 'Reset Password'
                                 "
                                 [name]="
-                                    currentUserStatus === 'Invited'
+                                    currentUserStatus === 'Invited' ||
+                                    currentUserStatus === 'Expired'
                                         ? 'resend-invitation'
                                         : 'reset-password'
                                 "
