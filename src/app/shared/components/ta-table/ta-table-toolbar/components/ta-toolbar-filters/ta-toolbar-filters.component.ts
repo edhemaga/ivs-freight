@@ -332,7 +332,10 @@ export class TaToolbarFiltersComponent implements OnInit, OnChanges, OnDestroy {
                     ) {
                         if (res.data.pmTrucks?.length) {
                             const newData = res.data.pmTrucks.map(
-                                (type: any) => {
+                                (
+                                    type: any
+                                    // leave any for now
+                                ) => {
                                     type[ToolbarFilterStringEnum.ICON] =
                                         FilterIconRoutes.repairPmSVG +
                                         type.logoName;
@@ -342,7 +345,6 @@ export class TaToolbarFiltersComponent implements OnInit, OnChanges, OnDestroy {
                                     return type;
                                 }
                             );
-
                             this.pmFilterArray = newData;
                         } else {
                             this.pmFilterArray = [];
@@ -355,7 +357,10 @@ export class TaToolbarFiltersComponent implements OnInit, OnChanges, OnDestroy {
                     ) {
                         if (res.data.pmTrailers?.length) {
                             const newData = res.data.pmTrailers.map(
-                                (type: any) => {
+                                (
+                                    type: any
+                                    // leave any for now
+                                ) => {
                                     type[ToolbarFilterStringEnum.ICON] =
                                         FilterIconRoutes.repairPmSVG +
                                         type.logoName;
