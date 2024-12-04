@@ -58,7 +58,7 @@
     <div>
         <svg-icon
             class="modal-close svg-size-14 svg-fill-muted modal-buttons"
-            src="assets/svg/applicant/invalid-review-x.svg"
+            [src]="svgRoutes.closeIcon"
             (click)="onCloseModal()"
         ></svg-icon>
     </div>
@@ -100,14 +100,12 @@
                         [color]="'black'"
                     ></app-ta-spinner>
                 </div>
-                <span
-                    *ngIf="isPaidInFull"
-                    >Pay in Full</span
-                >
-                <span
-                    *ngIf="!isPaidInFull"
-                    >Short Pay</span
-                >
+                <ng-container *ngIf="isPaidInFull">
+                    <span>Pay in Full</span>
+                </ng-container>
+                <ng-container *ngIf="!isPaidInFull">
+                    <span>Short Pay</span>
+                </ng-container>
             </button>
         </div>
     </div>

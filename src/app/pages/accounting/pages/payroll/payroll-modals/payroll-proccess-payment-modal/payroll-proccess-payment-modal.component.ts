@@ -57,6 +57,9 @@ import {
     inputConfig,
 } from '@pages/accounting/pages/payroll/config/payroll_proccess_payment';
 
+// Svg
+import { PayrollSvgRoutes } from '@pages/accounting/pages/payroll/state/utils';
+
 @Component({
     selector: 'app-payroll-proccess-payment-modal',
     templateUrl: './payroll-proccess-payment-modal.component.html',
@@ -86,6 +89,7 @@ export class PayrollProccessPaymentModalComponent implements OnDestroy {
 
     private destroy$ = new Subject<void>();
     public isPaidInFull: boolean = true;
+    public svgRoutes = PayrollSvgRoutes;
 
     constructor(
         private formBuilder: UntypedFormBuilder,
