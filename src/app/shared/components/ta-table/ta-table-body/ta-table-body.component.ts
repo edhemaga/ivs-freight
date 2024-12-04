@@ -618,6 +618,8 @@ export class TaTableBodyComponent
             this.actionsWidth + notPinedWidth + this.pinedWidth + 22;
 
         this.isDropdownPositionBottom = this.tableWidth > 1650;
+
+        console.log('notPinedColumns', this.notPinedColumns);
     }
 
     // Get Tab Table Data For Selected Tab
@@ -1168,7 +1170,7 @@ export class TaTableBodyComponent
     private getCompanyUser(): void {
         this.companyUser = JSON.parse(localStorage.getItem('user'));
     }
-    
+
     public addPmItem(row: any): void {
         this.bodyActions.emit({
             data: row,

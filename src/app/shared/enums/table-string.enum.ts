@@ -112,6 +112,8 @@ export enum TableStringEnum {
     PERCENTS = '%',
     SVG = '.svg',
 
+    LETTER_M_MILES = 'M',
+
     // Local storage get for tables
     LOAD_TABLE_COUNT = 'loadTableCount',
     LOAD_TABLE_VIEW = 'Load-table-view',
@@ -579,6 +581,6 @@ export enum TableStringEnum {
     ACTIVITY = 'activity',
     NULL = 'null',
     ADD_PM_ITEM = 'ADD_PM_ITEM',
-    TRUCK_PM_SETTINGS = "Truck PM Settings",
-    TRAILER_PM_SETTINGS = "Trailer PM Settings",
+    TRUCK_PM_SETTINGS = 'Truck PM Settings',
+    TRAILER_PM_SETTINGS = 'Trailer PM Settings',
 }

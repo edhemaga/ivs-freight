@@ -1675,38 +1675,47 @@
 
                                     <!-- TOTAL  COLUMN-->
 
-                                    <div
-                                        class="td-content"
+                                    <ng-container
                                         *ngIf="column.ngTemplate === 'total'"
-                                        [ngStyle]="{
-                                            width: column.width + 'px',
-                                            'min-width.px': column?.minWidth
-                                                ? column.minWidth
-                                                : 'unset'
-                                        }"
                                     >
-                                        <span
-                                            *ngIf="
-                                                !row.isRepairOrder &&
-                                                descriptionPopoverOpen !==
-                                                    row.id
-                                            "
-                                            class="table-total"
-                                            [innerHtml]="
-                                                row[column.field]
-                                                    ? row[column.field]
-                                                    : ''
-                                            "
-                                        ></span>
-
                                         <div
-                                            class="finish-order-action d-flex justify-content-center"
-                                            (click)="onFinishOrder(row.id)"
-                                            *ngIf="row.isRepairOrder"
+                                            class="d-flex justify-content-end td-content"
+                                            [ngStyle]="{
+                                                width: column.width + 'px',
+                                                'min-width.px':
+                                                    column?.minWidth ?? 'unset'
+                                            }"
                                         >
-                                            Finish Order
+                                            <ng-container
+                                                *ngIf="
+                                                    !row.isRepairOrder &&
+                                                        descriptionPopoverOpen !==
+                                                            row.id;
+                                                    else repairOrder
+                                                "
+                                            >
+                                                <span
+                                                    class="table-total"
+                                                    [innerHtml]="
+                                                        row[column.field]
+                                                            ? row[column.field]
+                                                            : ''
+                                                    "
+                                                ></span>
+                                            </ng-container>
+
+                                            <ng-template #repairOrder>
+                                                <div
+                                                    class="finish-order-action d-flex justify-content-center"
+                                                    (click)="
+                                                        onFinishOrder(row.id)
+                                                    "
+                                                >
+                                                    Finish Order
+                                                </div>
+                                            </ng-template>
                                         </div>
-                                    </div>
+                                    </ng-container>
 
                                     <!-- COMPACT TEXT -->
 
@@ -4374,38 +4383,47 @@
 
                                     <!-- TOTAL  COLUMN-->
 
-                                    <div
-                                        class="td-content"
+                                    <ng-container
                                         *ngIf="column.ngTemplate === 'total'"
-                                        [ngStyle]="{
-                                            width: column.width + 'px',
-                                            'min-width.px': column?.minWidth
-                                                ? column.minWidth
-                                                : 'unset'
-                                        }"
                                     >
-                                        <span
-                                            *ngIf="
-                                                !row.isRepairOrder &&
-                                                descriptionPopoverOpen !==
-                                                    row.id
-                                            "
-                                            class="table-total"
-                                            [innerHtml]="
-                                                row[column.field]
-                                                    ? row[column.field]
-                                                    : ''
-                                            "
-                                        ></span>
-
                                         <div
-                                            class="finish-order-action"
-                                            (click)="onFinishOrder(row.id)"
-                                            *ngIf="row.isRepairOrder"
+                                            class="d-flex justify-content-end td-content"
+                                            [ngStyle]="{
+                                                width: column.width + 'px',
+                                                'min-width.px':
+                                                    column?.minWidth ?? 'unset'
+                                            }"
                                         >
-                                            Finish Order
+                                            <ng-container
+                                                *ngIf="
+                                                    !row.isRepairOrder &&
+                                                        descriptionPopoverOpen !==
+                                                            row.id;
+                                                    else repairOrder
+                                                "
+                                            >
+                                                <span
+                                                    class="table-total"
+                                                    [innerHtml]="
+                                                        row[column.field]
+                                                            ? row[column.field]
+                                                            : ''
+                                                    "
+                                                ></span>
+                                            </ng-container>
+
+                                            <ng-template #repairOrder>
+                                                <div
+                                                    class="finish-order-action d-flex justify-content-center"
+                                                    (click)="
+                                                        onFinishOrder(row.id)
+                                                    "
+                                                >
+                                                    Finish Order
+                                                </div>
+                                            </ng-template>
                                         </div>
-                                    </div>
+                                    </ng-container>
 
                                     <!-- SERVICE COLUMN-->
 

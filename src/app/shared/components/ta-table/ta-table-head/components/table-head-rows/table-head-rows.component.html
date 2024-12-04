@@ -141,7 +141,8 @@
                                     column.sortDirection !== '' &&
                                     column.sortDirection,
                                 'th-title-locked-cursor':
-                                    tableHeadRowsData?.locked
+                                    tableHeadRowsData?.locked,
+                'justify-content-end': column.ngTemplate === 'total',
                             }"
                             [ngStyle]="{
                                 'width.px':
@@ -216,6 +217,7 @@
                                     tableHeadRowsData?.tableData[0]
                                         .gridNameTitle !== 'User',
                                 'd-flex gap-1 align-items-center': column.headIconStyle,
+                'd-flex justify-content-end': column.ngTemplate === 'total',
                             }"
                         >
                             <ng-container *ngIf="column.headIconStyle">
@@ -319,7 +321,8 @@
                                 column.sortDirection !== '' &&
                                 column.sortDirection,
                             'th-title-locked-cursor': tableHeadRowsData?.locked,
-                            'set-center-th-title': column.setCenter
+                            'set-center-th-title': column.setCenter,
+                            'd-flex justify-content-end': column.ngTemplate === 'total',
                         }"
                         (click)="handleTableHeadRowsActionClick(column, 'sort')"
                     >
