@@ -25,9 +25,6 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
 import { tabsModalAnimation } from '@shared/animations';
 
 // Components
-import { TaInputDropdownComponent } from '@shared/components/ta-input-dropdown/ta-input-dropdown.component';
-import { TaInputComponent } from '@shared/components/ta-input/ta-input.component';
-import { TaModalComponent } from '@shared/components/ta-modal/ta-modal.component';
 import { TaTabSwitchComponent } from '@shared/components/ta-tab-switch/ta-tab-switch.component';
 import { TaSpinnerComponent } from '@shared/components/ta-spinner/ta-spinner.component';
 import {
@@ -50,11 +47,18 @@ import { TaInputService } from '@shared/services/ta-input.service';
 import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calculations.helper';
 
 // Pipes
-import { GetNumbersPipe } from '@pages/accounting/pages/payroll/pipes/get-numbers/get-numbers.pipe';
 import { PayrollTablesStatus } from '../../state/enums';
+import { PayrollStringEnum } from '@pages/accounting/pages/payroll/state/enums';
 
 // Config
-import { dropDownInputConfig, dropdownOption, inputConfig } from '@pages/accounting/pages/payroll/config/payroll_proccess_payment';
+import {
+    dropDownInputConfig,
+    dropdownOption,
+    inputConfig,
+} from '@pages/accounting/pages/payroll/config/payroll_proccess_payment';
+
+// Svg
+import { PayrollSvgRoutes } from '@pages/accounting/pages/payroll/state/utils';
 
 @Component({
     selector: 'app-payroll-proccess-payment-modal',
@@ -70,16 +74,11 @@ import { dropDownInputConfig, dropdownOption, inputConfig } from '@pages/account
         AngularSvgIconModule,
 
         // Component
-        TaModalComponent,
         TaTabSwitchComponent,
-        TaInputComponent,
-        TaInputDropdownComponent,
         CaInputComponent,
         CaModalComponent,
         CaInputDropdownComponent,
         TaSpinnerComponent,
-        // Pipes
-        GetNumbersPipe,
     ],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -89,6 +88,8 @@ export class PayrollProccessPaymentModalComponent implements OnDestroy {
     @Input() editData: EditData<IPayrollProccessPaymentModal>;
 
     private destroy$ = new Subject<void>();
+    public isPaidInFull: boolean = true;
+    public svgRoutes = PayrollSvgRoutes;
 
     constructor(
         private formBuilder: UntypedFormBuilder,
@@ -138,7 +139,32 @@ export class PayrollProccessPaymentModalComponent implements OnDestroy {
         setTimeout(() => {
             this.chDetRef.detectChanges();
         }, 200);
+
+        this.setAmmoutWatchers();
     }
+
+    private setAmmoutWatchers() {
+        const ammount = this.paymentForm.get(PayrollStringEnum.AMOUNT);
+    
+        // Manually handle the initial value
+        const initialValue = MethodsCalculationsHelper.convertThousanSepInNumber(ammount.value);
+        this.handleAmountChange(initialValue);
+    
+        ammount.valueChanges.subscribe((val) => {
+            const convertToNumber = MethodsCalculationsHelper.convertThousanSepInNumber(val);
+            this.handleAmountChange(convertToNumber);
+        });
+    }
+    
+    private handleAmountChange(convertToNumber: number) {
+        const totalEarnings = this.modalData?.totalEarnings;
+    
+        if (convertToNumber > totalEarnings) {
+            this.paymentForm.get(PayrollStringEnum.AMOUNT).patchValue(totalEarnings, { emitEvent: false });
+        }
+        this.isPaidInFull = convertToNumber === totalEarnings;
+    }
+    
 
     private subscribeToStore(): void {
         this.payrollFacadeService.selectPayrollReportStates$
