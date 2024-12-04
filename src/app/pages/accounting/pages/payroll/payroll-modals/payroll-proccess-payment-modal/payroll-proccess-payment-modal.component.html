@@ -6,6 +6,7 @@
     [footerTemplate]="footerContent"
 >
     <div origin>
+        <div class="divider divider--dark divider--small"></div>
         <app-ta-tab-switch
             [tabs]="tabs"
             (switchClicked)="tabChange($event)"
@@ -56,8 +57,8 @@
 <ng-template #rightModalContent>
     <div>
         <svg-icon
-            class="modal-close"
-            src="assets/svg/ic_x.svg"
+            class="modal-close svg-size-14 svg-fill-muted modal-buttons"
+            src="assets/svg/applicant/invalid-review-x.svg"
             (click)="onCloseModal()"
         ></svg-icon>
     </div>
@@ -100,17 +101,11 @@
                     ></app-ta-spinner>
                 </div>
                 <span
-                    *ngIf="
-                        (paymentForm.get('amount').value | getNumbers) >=
-                            modalData?.totalEarnings && !loading
-                    "
+                    *ngIf="isPaidInFull"
                     >Pay in Full</span
                 >
                 <span
-                    *ngIf="
-                        (paymentForm.get('amount').value | getNumbers) <
-                            modalData?.totalEarnings && !loading
-                    "
+                    *ngIf="!isPaidInFull"
                     >Short Pay</span
                 >
             </button>
