@@ -474,8 +474,6 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         this.getLoadDropdowns();
 
         this.trackBillingPayment();
-
-        this.monitorInvolveDriverValueChange();
     }
 
     ngDoCheck(): void {
@@ -498,57 +496,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             +!!this.showRevisedRate
         );
     }
-
-    private monitorInvolveDriverValueChange(): void {
-        this.loadForm
-            .get(LoadModalStringEnum.PICKUP_INVOLVE_DRIVER)
-            .valueChanges.pipe(takeUntil(this.destroy$))
-            .subscribe((value) => {
-                const lumperIndex =
-                    this.additionalBillings().controls.findIndex(
-                        (control) =>
-                            control.get(LoadModalStringEnum.NAME)?.value ===
-                            LoadModalStringEnum.LUMPER
-                    );
-
-                if (!this.editData?.data) {
-                    if (value && lumperIndex < 0) {
-                        const financialActionEvent = {
-                            type: LoadModalStringEnum.BILLING,
-                            action: true,
-                        };
-                        const additionalBillingEvent = {
-                            name: LoadModalStringEnum.LUMPER,
-                            id: 2,
-                            checked: false,
-                        };
-
-                        this.onFinancialAction(financialActionEvent);
-                        this.addAdditionalBilling(additionalBillingEvent, true);
-                    } else if (!value) {
-                        const lumperIndex =
-                            this.additionalBillings().controls.findIndex(
-                                (control) =>
-                                    control.get(LoadModalStringEnum.NAME)
-                                        ?.value === LoadModalStringEnum.LUMPER
-                            );
-
-                        if (lumperIndex !== -1) {
-                            const control =
-                                this.additionalBillings().at(lumperIndex);
-
-                            if (control) {
-                                control.clearValidators();
-                                control.updateValueAndValidity();
-
-                                this.additionalBillings().removeAt(lumperIndex);
-                            }
-                        }
-                    }
-                }
-            });
-    }
-
+ 
     public hanndleShowAdjustedRate(): void {
         const selectedDispatcher: DispatchLoadModalResponse =
             this.selectedDispatches;
@@ -1359,8 +1307,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                 }
 
                 if (
-                    this.isEditingMode &&
-                    this.editData?.selectedTab === TableStringEnum.TEMPLATE
+                    this.isEditingMode && this.isConvertedToTemplate && this.editData.loadAction !== TableStringEnum.CONVERT_TO_TEMPLATE
                 ) {
                     this.updateLoadTemplate(addNew);
                 } else if (this.isConvertedToTemplate) {
@@ -1846,7 +1793,6 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                     this.inputService.changeValidators(
                         this.loadForm.get(LoadModalStringEnum.DRIVER_RATE)
                     );
-
                     if (isClick && this.selectedDispatches.driver?.driverRate)
                         this.loadForm
                             .get(LoadModalStringEnum.DRIVER_RATE)
@@ -3448,7 +3394,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                 legMinutes,
                 items: this.remapStopItems(this.savedPickupStopItems),
                 shape: this.stops?.[0]?.shape,
-                driverAssist: pickupInvolveDriver,
+                driverAssist: pickupInvolveDriver ?? false,
             });
         }
 
@@ -3504,8 +3450,9 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                     legMinutes,
                     items: this.remapStopItems(this.savedExtraStopItems[index]),
                     shape: item.get(LoadModalStringEnum.SHAPE).value,
-                    driverAssist: item.get(LoadModalStringEnum.INVOLVE_DRIVER)
-                        .value,
+                    driverAssist:
+                        item.get(LoadModalStringEnum.INVOLVE_DRIVER).value ??
+                        false,
                 });
             });
         }
@@ -3550,6 +3497,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                 legMinutes,
                 items: this.remapStopItems(this.savedDeliveryStopItems),
                 shape: this.stops?.[this.stops.length - 1]?.shape,
+                driverAssist: false,
             });
         }
 
@@ -3580,6 +3528,55 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         }
 
         return [];
+    }
+
+    public onPickupDriver(): void { 
+        setTimeout(() => {
+            const value =  this.loadForm
+        .get(LoadModalStringEnum.PICKUP_INVOLVE_DRIVER).value;
+                const lumperIndex =
+                    this.additionalBillings().controls.findIndex(
+                        (control) =>
+                            control.get(LoadModalStringEnum.NAME)?.value ===
+                            LoadModalStringEnum.LUMPER
+                    );
+
+                if (!this.editData?.data) {
+                    if (value && lumperIndex < 0) {
+                        const financialActionEvent = {
+                            type: LoadModalStringEnum.BILLING,
+                            action: true,
+                        };
+                        const additionalBillingEvent = {
+                            name: LoadModalStringEnum.LUMPER,
+                            id: 2,
+                            checked: false,
+                        };
+
+                        this.onFinancialAction(financialActionEvent);
+                        this.addAdditionalBilling(additionalBillingEvent, true);
+                    } else if (!value) {
+                        const lumperIndex =
+                            this.additionalBillings().controls.findIndex(
+                                (control) =>
+                                    control.get(LoadModalStringEnum.NAME)
+                                        ?.value === LoadModalStringEnum.LUMPER
+                            );
+
+                        if (lumperIndex !== -1) {
+                            const control =
+                                this.additionalBillings().at(lumperIndex);
+
+                            if (control) {
+                                control.clearValidators();
+                                control.updateValueAndValidity();
+
+                                this.additionalBillings().removeAt(lumperIndex);
+                            }
+                        }
+                    }
+                } 
+        }, 10)
     }
 
     public drawStopOnMap(): void {
@@ -4951,10 +4948,13 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             : {};
 
         // Ensure dispatcher exists before attempting to spread
-        const editedDispatcher = dispatcher
+        const selectedDispatcher = this.labelsDispatcher.find(
+            (dispatch) => dispatch.id !== dispatcher.id
+        );
+        const editedDispatcher = selectedDispatcher
             ? {
-                  ...dispatcher,
-                  name: dispatcher?.fullName,
+                  ...selectedDispatcher,
+                  name: selectedDispatcher?.fullName,
               }
             : {};
 
