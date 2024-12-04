@@ -2165,8 +2165,6 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                     this.mapListPagination.pageIndex > 1
                         ? [...this.mapListData, ...mappedListData]
                         : mappedListData;
-
-                this.ref.detectChanges();
             });
     }
 

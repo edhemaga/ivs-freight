@@ -92,7 +92,7 @@ export class PayrollBonusModalComponent implements OnInit {
         this.payrollCreditForm = this.fb.group({
             [PayrollStringEnum.DRIVER_ID]: [data?.driverId ?? null],
             [PayrollStringEnum.DATE]: [
-                data.date ?? new Date(),
+                MethodsCalculationsHelper.convertDateFromBackend(data.date) ?? new Date(),
                 Validators.required,
             ],
             [PayrollStringEnum.DESCRIPTION]: [

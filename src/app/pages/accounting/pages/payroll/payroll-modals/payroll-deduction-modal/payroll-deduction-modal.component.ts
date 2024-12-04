@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import {  Component, Input, OnInit } from '@angular/core';
 import {
     FormBuilder,
     FormGroup,
@@ -113,7 +113,7 @@ export class PayrollDeductionModalComponent implements OnInit {
             [PayrollStringEnum.SELECTED_TRUCK_ID]: [data?.truckId ?? null],
             [PayrollStringEnum.SELECTED_TYPE_ID]: [creditType],
             [PayrollStringEnum.DATE]: [
-                data.date ?? new Date(),
+                MethodsCalculationsHelper.convertDateFromBackend(data.date) ?? new Date(),
                 Validators.required,
             ],
             [PayrollStringEnum.DESCRIPTION]: [
@@ -286,6 +286,10 @@ export class PayrollDeductionModalComponent implements OnInit {
         return `$${MethodsCalculationsHelper.convertNumberInThousandSep(
             Number(this.deduction.amount.toFixed(2))
         )}`;
+    }
+
+    public formatDate(date: string): string {
+        return MethodsCalculationsHelper.convertDateFromBackend(date);
     }
 
     ngOnDestroy(): void {

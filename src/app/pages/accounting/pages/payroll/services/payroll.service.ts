@@ -179,13 +179,10 @@ export class PayrollService {
             },
         };
 
-        //if (selectedDeducionIds?.length)
         body.selectedDeducionIds = selectedDeducionIds;
 
-        //if (selectedLoadIds?.length)
         body.selectedLoadIds = selectedLoadIds;
 
-        // if (selectedCreditIds?.length)
         body.selectedCreditIds = selectedCreditIds;
 
         return this.http.put<PayrollDriverMileageResponse>(
