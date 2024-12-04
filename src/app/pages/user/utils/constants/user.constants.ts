@@ -67,8 +67,7 @@ export class UserConstants {
                 hasBorder: true,
                 mutedStyle:
                     (data.userStatus !== TableStringEnum.EXPIRED &&
-                        data.userStatus !== TableStringEnum.INVITED &&
-                        data.userStatus !== TableStringEnum.OWNER) ||
+                        data.userStatus !== TableStringEnum.INVITED) ||
                     isInvitationSent,
             },
             {
