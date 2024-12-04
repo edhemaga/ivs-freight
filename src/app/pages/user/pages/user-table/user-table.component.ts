@@ -407,6 +407,8 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 hideDataCount: true,
                 showCountSelectedInList: false,
                 showDepartmentFilter: true,
+                showActivateButton:
+                    this.selectedTab === TableStringEnum.INACTIVE,
                 viewModeOptions: [
                     {
                         name: TableStringEnum.LIST,

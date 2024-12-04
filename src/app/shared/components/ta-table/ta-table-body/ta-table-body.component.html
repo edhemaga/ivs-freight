@@ -375,7 +375,11 @@
                                             popoverClass="toolbar-options-popover"
                                             triggers="manual"
                                             (hidden)="optionsPopupOpen = false"
-                                            mainTooltip="Tooltip"
+                                            [mainTooltip]="
+                                                !row.isSelected
+                                                    ? 'Select'
+                                                    : 'Clear'
+                                            "
                                             [tooltipBackground]="
                                                 optionsPopupOpen
                                                     ? '#CCCCCC'
@@ -5935,6 +5939,11 @@
                                                 'min-width.px':
                                                     column?.minWidth ?? 'unset'
                                             }"
+                                            ngbTooltip
+                                            mainTooltip="More"
+                                            [tooltipBackground]="'#424242'"
+                                            [tooltipColor]="'#ffff'"
+                                            position="bottom"
                                         >
                                             <div
                                                 #t2="ngbPopover"
