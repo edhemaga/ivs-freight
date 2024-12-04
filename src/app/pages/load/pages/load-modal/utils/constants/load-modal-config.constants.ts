@@ -209,7 +209,7 @@ export class LoadModalConfig {
         priceSeparator: true,
         priceSeparatorLimitation: 6,
         placeholderIconRightSide: 'dollar',
-        placeholderIconColor: 'blue',
+        placeholderIconColor: 'gray',
         inputCursorOnRightSide: true,
         hideErrorMessage: true,
         errorInsideInput: true,
