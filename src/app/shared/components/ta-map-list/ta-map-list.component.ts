@@ -31,13 +31,13 @@ import { MapsService } from '@shared/services/maps.service';
 
 // component
 import { TaSearchV2Component } from '@shared/components/ta-search-v2/ta-search-v2.component';
-import { TaSortDropdownComponent } from '@shared/components/ta-sort-dropdown/ta-sort-dropdown.component';
+import { CaSortDropdownComponent } from 'ca-components';
 
 // Svg Routes
 import { MapListSvgRoutes } from '@shared/components/ta-map-list/utils/svg-routes';
 
 // Models
-import { SortColumn } from '@shared/components/ta-sort-dropdown/models';
+import { SortColumn } from 'ca-components';
 
 // Enums
 import { MapListStringEnum } from '@shared/components/ta-map-list/enums';
@@ -56,38 +56,41 @@ import { MapListStringEnum } from '@shared/components/ta-map-list/enums';
 
         // Components
         TaSearchV2Component,
-        TaSortDropdownComponent,
+        CaSortDropdownComponent,
     ],
 })
 export class TaMapListComponent
     implements OnInit, OnChanges, OnDestroy, AfterContentInit
 {
-    private destroy$ = new Subject<void>();
-
     @Input() sortTypes: any[] = [];
     @Input() type: string = '';
     @Input() columns: any;
     @Input() mapListContent: any[] = [];
     @Input() sortColumns: SortColumn[] = [];
+
     @Output() changeSortCategory: EventEmitter<any> = new EventEmitter<any>();
     @Output() changeSortDirection: EventEmitter<any> = new EventEmitter<any>();
     @Output() searchEvent: EventEmitter<string> = new EventEmitter<string>();
     @Output() sortEvent: EventEmitter<string> = new EventEmitter<string>();
     @Output() headActions: EventEmitter<any> = new EventEmitter();
+
     @ContentChildren('listCard') listCards!: QueryList<any>;
+
+    private destroy$ = new Subject<void>();
+
     public mapListExpanded: boolean = true;
     public sortDirection: string = 'desc';
-    visibleColumns: any[] = [];
-    pinedColumns: any[] = [];
-    notPinedColumns: any[] = [];
-    actionColumns: any[] = [];
+    public visibleColumns: any[] = [];
+    public pinedColumns: any[] = [];
+    public notPinedColumns: any[] = [];
+    public actionColumns: any[] = [];
     public tooltip: any;
     public showExpandButton: boolean = false;
-    activeSortType: any = {};
-    searchIsActive: boolean = false;
-    searchLoading: boolean = false;
-    searchTimeout: any;
-    searchResultsCount: number = 0;
+    public activeSortType: SortColumn | null = null;
+    public searchIsActive: boolean = false;
+    public searchLoading: boolean = false;
+    public searchTimeout: any;
+    public searchResultsCount: number = 0;
     public previousScrollTime = null;
     public searchValue: string | null = null;
 

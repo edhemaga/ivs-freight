@@ -210,7 +210,9 @@
                     [inputConfig]="loadDispatchesTTDInputConfig"
                     [options]="labelsDispatches"
                     [activeItem]="selectedDispatches"
-                    (selectedItem)="onSelectDropdown($event, 'dispatches')"
+                    (selectedItem)="
+                        onSelectDropdown($event, 'dispatches', 0, true)
+                    "
                 ></app-ca-input-dropdown>
             </div>
 
@@ -592,7 +594,9 @@
                             <app-ta-checkbox
                                 formControlName="pickupInvolveDriver"
                                 [customClass]="'medium'"
+                                [disabled]="isHazardousPicked"
                                 [label]="'Involve driver in loading the cargo'"
+                                (click)="onPickupDriver()"
                                 name="pickupInvolveDriver"
                             ></app-ta-checkbox>
                         </div>
@@ -1002,6 +1006,17 @@
                                                         .markAsTouched()
                                                 "
                                             ></app-ca-input>
+                                        </div>
+
+                                        <div class="stop-load-date-time-driver">
+                                            <app-ta-checkbox
+                                                formControlName="involveDriver"
+                                                [customClass]="'medium'"
+                                                [label]="
+                                                    'Involve driver in loading the cargo'
+                                                "
+                                                name="involveDriver"
+                                            ></app-ta-checkbox>
                                         </div>
 
                                         <!-- Stop Items -->
@@ -1744,12 +1759,8 @@
         ></app-load-modal-hazardous>
 
         <!-- Map -->
-        <app-ca-map *ngIf="!isHazardousVisible" [data]="data"></app-ca-map>
-        <!-- <app-ta-maps
-            *ngIf="!isHazardousVisible"
-            [mapType]="'routing'"
-            [routes]="loadStopRoutes"
-            [ngStyle]="{ width: '100%', height: '100%' }"
-        ></app-ta-maps> -->
+        <ng-container *ngIf="!isHazardousVisible">
+            <app-ca-map [data]="mapData"></app-ca-map>
+        </ng-container>
     </div>
 </app-ta-modal>

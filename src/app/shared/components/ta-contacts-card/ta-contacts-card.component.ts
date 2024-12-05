@@ -13,6 +13,7 @@ import { RepairShopModalComponent } from '@pages/repair/pages/repair-modals/repa
 
 //Pipes
 import { FormatPhonePipe } from '@shared/pipes/format-phone.pipe';
+import { HighlightSearchPipe } from '@shared/pipes';
 
 //Models
 import { DepartmentContacts } from '@shared/models/department-contacts.model';
@@ -43,22 +44,24 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     encapsulation: ViewEncapsulation.None,
     standalone: true,
     imports: [
-        //Moduless
+        // modules
         CommonModule,
         AngularSvgIconModule,
         NgbModule,
 
-        //Components
+        // components
         TaCustomCardComponent,
         TaCopyComponent,
         TaAppTooltipV2Component,
 
-        //Pipes
+        // pipes
         FormatPhonePipe,
+        HighlightSearchPipe,
     ],
 })
 export class TaContactsCardComponent {
     @Input() public type?: string;
+    @Input() public searchValue?: string;
     @Input() public departmentContacts: DepartmentContacts[];
     @Input() public viewData?:
         | BrokerResponse

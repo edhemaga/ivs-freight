@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import {  Component, Input, OnInit } from '@angular/core';
 import {
     FormBuilder,
     FormGroup,
@@ -113,7 +113,7 @@ export class PayrollDeductionModalComponent implements OnInit {
             [PayrollStringEnum.SELECTED_TRUCK_ID]: [data?.truckId ?? null],
             [PayrollStringEnum.SELECTED_TYPE_ID]: [creditType],
             [PayrollStringEnum.DATE]: [
-                data.date ?? new Date(),
+                MethodsCalculationsHelper.convertDateFromBackend(data.date) ?? new Date(),
                 Validators.required,
             ],
             [PayrollStringEnum.DESCRIPTION]: [
@@ -252,6 +252,7 @@ export class PayrollDeductionModalComponent implements OnInit {
                     this.onCloseModal();
                 });
         } else if (action === TaModalActionEnums.DELETE) {
+            const label = this.deduction.driver ? `${this.deduction.driver.firstName} ${this.deduction.driver.lastName}` : this.deduction.truck.owner;
             this.payrollService.raiseDeleteModal(
                 TableStringEnum.DEDUCTION,
                 ConfirmationModalStringEnum.DELETE_DEDUCTION,
@@ -260,7 +261,7 @@ export class PayrollDeductionModalComponent implements OnInit {
                     title: this.deduction.description,
                     subtitle: this.deduction.amount,
                     date: this.deduction.date,
-                    label: `${this.deduction.driver.firstName} ${this.deduction.driver.lastName}`,
+                    label: `${label}`,
                     id: this.deduction.id,
                 }
             );
@@ -276,9 +277,19 @@ export class PayrollDeductionModalComponent implements OnInit {
     }
 
     public getPaymentString(): string {
+        if(this.deduction.limited) {
+            return `$${MethodsCalculationsHelper.convertNumberInThousandSep(
+                Number(this.deduction.limitedAmount.toFixed(2))
+            )}`;
+        }
+
         return `$${MethodsCalculationsHelper.convertNumberInThousandSep(
-            Number(this.deduction.limitedAmount.toFixed(2))
+            Number(this.deduction.amount.toFixed(2))
         )}`;
+    }
+
+    public formatDate(date: string): string {
+        return MethodsCalculationsHelper.convertDateFromBackend(date);
     }
 
     ngOnDestroy(): void {

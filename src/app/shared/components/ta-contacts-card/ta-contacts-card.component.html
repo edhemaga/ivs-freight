@@ -27,10 +27,19 @@
                 <div
                     class="d-flex align-items-center parking-template-item parking-template-email parking-name"
                 >
-                    <span
+                    <div
                         class="ta-font-medium text-color-black-2 text-size-14"
-                        >{{ shipperContact?.fullName }}</span
-                    >
+                        [innerHtml]="
+                            shipperContact?.fullName
+                                | taHighlight
+                                    : [
+                                          {
+                                              index: 1,
+                                              text: searchValue
+                                          }
+                                      ]
+                        "
+                    ></div>
 
                     <div class="svg-wrapper">
                         <div
@@ -81,6 +90,7 @@
                                 "
                                 [arrayText]="shipperContact?.phoneExt ?? false"
                                 [type]="'Contacts'"
+                                [searchValue]="searchValue"
                             >
                             </app-ta-copy>
                         </span>
@@ -95,7 +105,10 @@
                             src="{{ contactsImageRoutes.email }}"
                         ></svg-icon>
                         <span class="parking-template-text"
-                            ><app-ta-copy [copyValue]="shipperContact?.email">
+                            ><app-ta-copy
+                                [copyValue]="shipperContact?.email"
+                                [searchValue]="searchValue"
+                            >
                             </app-ta-copy
                         ></span>
                     </div>

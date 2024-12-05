@@ -2,6 +2,7 @@
 import { PayrollDriverMileageListResponse } from 'appcoretruckassist';
 import {
     IGet_Payroll_Commission_Driver_Report,
+    IGet_Payroll_Solo_Mileage_Driver_Report,
     PayrollDriverMileageCollapsedListResponse,
     PayrollDriverMileageExpandedListResponse,
     PayrollState,
@@ -24,10 +25,10 @@ export const onGetPayrollSoloMileageDriverSuccess = (
 
 export const onGetPayrollSoloMileageReportDriver = (
     state: PayrollState,
-    params: IGet_Payroll_Commission_Driver_Report
+    params: IGet_Payroll_Solo_Mileage_Driver_Report
 ) => ({
     ...state,
-    selectedLoadIds: params.selectedLoadIds,
+    lastLoadDate: params.lastLoadDate ?? state.lastLoadDate,
     selectedCreditIds: params.selectedCreditIds ?? state.selectedCreditIds,
     selectedDeductionIds:
         params.selectedDeductionIds ?? state.selectedDeductionIds,
@@ -151,6 +152,12 @@ export const onGetPayrollMileageDriverClosedPayrollSuccess = (
     data: { payroll: PayrollDriverMileageResponse }
 ) => ({
     ...state,
-    payrollOpenedReport: data.payroll,
+    payrollOpenedReport: {
+        ...data.payroll,
+        excludedDeductions: [],
+        excludedCredits: [],
+        excludedLoads: [],
+        includedBonuses: [],
+    },
     reportLoading: false,
 });

@@ -67,7 +67,7 @@
 </ng-template>
 
 <ng-template #paymentHistoryTemplate>
-    <ng-container *ngIf="isEditMode && deduction?.childPayrollDeductions">
+    <ng-container *ngIf="isEditMode && deduction?.childPayrollDeductions?.length">
         <div class="divider divider--dark divider--small mb-0"></div>
         <app-ta-custom-card
             [cardName]="'Payment History'"
@@ -111,7 +111,7 @@
                 </div>
                 <div class=" ta-font-regular text-size-14"
                 [ngClass]="payments.isNext? 'text-color-muted' : 'text-color-black-2'">
-                    {{ payments.date | date : 'MM/dd/yy' }} <ng-container *ngIf="payments.isNext">
+                    {{ formatDate(payments.date)  }} <ng-container *ngIf="payments.isNext">
                         <span  
                         [ngClass]="payments.isLast? 'text-color-blue-13' : 'text-color-muted'">
                             {{payments.isLast ? '- Last Payment' : '- Next Payment'}}

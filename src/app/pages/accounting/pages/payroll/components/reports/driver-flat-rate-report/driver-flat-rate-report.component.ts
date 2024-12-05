@@ -266,6 +266,7 @@ export class DriverFlatRateReportComponent
                 this.getReportDataResults({
                     reportId: `${this.reportId}`,
                     selectedLoadIds: loadList,
+                    payrollOpenedTab: this.selectedTab
                 });
             }
         }
@@ -273,9 +274,15 @@ export class DriverFlatRateReportComponent
 
     public getReportDataResults(getData?: IGetPayrollByIdAndOptions): void {
         this.payrollDriverFlatRateFacadeService.getPayrollDriverFlatRateReport(
-            getData ?? {
-                reportId: `${this.reportId}`,
-            }
+            getData
+                ? {
+                      ...getData,
+                      payrollOpenedTab: this.selectedTab,
+                  }
+                : {
+                      reportId: `${this.reportId}`,
+                      payrollOpenedTab: this.selectedTab,
+                  }
         );
     }
 

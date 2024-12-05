@@ -20,6 +20,7 @@ import { DetailsDataService } from '@shared/services/details-data.service';
 import { ConfirmationActivationService } from '@shared/components/ta-shared-modals/confirmation-activation-modal/services/confirmation-activation.service';
 import { ModalService } from '@shared/services/modal.service';
 import { CaSearchMultipleStatesService } from 'ca-components';
+import { RepairShopDetailsService } from '@pages/repair/pages/repair-shop-details/services';
 
 // store
 import { RepairDetailsQuery } from '@pages/repair/state/repair-details-state/repair-details.query';
@@ -44,9 +45,17 @@ import {
     RepairTableBackFilterDataHelper,
     RepairTableDateFormaterHelper,
 } from '@pages/repair/pages/repair-table/utils/helpers';
+import { MethodsGlobalHelper } from '@shared/utils/helpers/methods-global.helper';
 
 // models
-import { RepairListResponse, RepairShopResponse } from 'appcoretruckassist';
+import {
+    RepairedVehicleListResponse,
+    RepairedVehicleResponse,
+    RepairListResponse,
+    RepairResponse,
+    RepairShopContactResponse,
+    RepairShopResponse,
+} from 'appcoretruckassist';
 import { DetailsDropdownOptions } from '@shared/models/details-dropdown-options.model';
 import { DetailsConfig } from '@shared/models/details-config.model';
 import { ExtendedRepairShopResponse } from '@pages/repair/pages/repair-shop-details/components/repair-shop-details-card/models';
@@ -75,15 +84,20 @@ export class RepairShopDetailsComponent implements OnInit, OnDestroy {
     public currentIndex: number = 0;
 
     public repairShopList: RepairMinimalListState;
-    public repairShopObject: RepairShopResponse;
+    public repairShopObject: ExtendedRepairShopResponse;
 
     public repairShopId: number;
     public newRepairShopId: number;
+
+    public contactListSearchValue: string;
 
     public searchConfig: boolean[] = [false, false, false, false];
 
     public backFilterQuery: RepairBackFilter =
         RepairTableBackFilterDataHelper.backRepairFilterData();
+
+    public backRepairedVehiclesFilterQuery: RepairBackFilter =
+        RepairTableBackFilterDataHelper.backRepairedVehiclesFilterData();
 
     constructor(
         // router
@@ -100,6 +114,7 @@ export class RepairShopDetailsComponent implements OnInit, OnDestroy {
         private confirmationActivationService: ConfirmationActivationService,
         private modalService: ModalService,
         private caSearchMultipleStatesService: CaSearchMultipleStatesService,
+        private repairShopDetailsService: RepairShopDetailsService,
 
         // ref
         private cdRef: ChangeDetectorRef,
@@ -164,8 +179,32 @@ export class RepairShopDetailsComponent implements OnInit, OnDestroy {
                 filter.searchThree
             )
             .pipe(takeUntil(this.destroy$))
-            // leave for now
-            .subscribe((repair: RepairListResponse) => {});
+            .subscribe((repairList: RepairListResponse) => {
+                const {
+                    pagination: { data },
+                } = repairList;
+
+                if (data.length) this.handleRepairListSearchData(data);
+            });
+    }
+
+    private repairedVehiclesBackFilter(filter: RepairBackFilter): void {
+        this.repairService
+            .getRepairShopRepairedVehicle(
+                filter.repairShopId,
+                filter.pageIndex,
+                filter.pageSize,
+                filter.companyId,
+                filter.sort
+            )
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((repairedVehiclesList: RepairedVehicleListResponse) => {
+                const {
+                    pagination: { data },
+                } = repairedVehiclesList;
+
+                if (data.length) this.handleRepairedVehicleListSearchData(data);
+            });
     }
 
     public setTableFilter(): void {
@@ -274,37 +313,177 @@ export class RepairShopDetailsComponent implements OnInit, OnDestroy {
     }
 
     private searchSubscribe(): void {
+        // search subscribe
         this.caSearchMultipleStatesService.currentSearchTableData
             .pipe(takeUntil(this.destroy$))
             .subscribe((res) => {
                 if (res) {
-                    /*  this.backFilterQuery.pageIndex = 1;
-                    this.shopFilterQuery.pageIndex = 1;
+                    const { searchType } = res;
 
-                    const searchEvent = MethodsGlobalHelper.tableSearch(
-                        res,
-                        this.selectedTab !== TableStringEnum.REPAIR_SHOP
-                            ? this.backFilterQuery
-                            : this.shopFilterQuery
-                    );
+                    switch (searchType) {
+                        case RepairShopDetailsStringEnum.REPAIR:
+                            this.handleRepairListSearch(res);
 
-                    if (searchEvent) {
-                        if (searchEvent.action === TableStringEnum.API) {
-                            if (
-                                this.selectedTab !== TableStringEnum.REPAIR_SHOP
-                            ) {
-                                this.repairBackFilter(this.backFilterQuery);
-                            } else {
-                                this.shopBackFilter(this.shopFilterQuery);
-                            }
-                        } else if (
-                            searchEvent.action === TableStringEnum.STORE
-                        ) {
-                            this.sendRepairData();
-                        }
-                    } */
+                            break;
+                        case RepairShopDetailsStringEnum.VEHICLE:
+                            break;
+                        case RepairShopDetailsStringEnum.CONTACT:
+                            this.handleContactListSearch(res);
+
+                            break;
+                        case RepairShopDetailsStringEnum.REVIEW:
+                            break;
+                        default:
+                            break;
+                    }
                 }
             });
+
+        // close search subscribe
+        this.repairShopDetailsService.getCloseSearchStatus$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((detailsPartIndex) => {
+                this.searchConfig[detailsPartIndex] = false;
+
+                if (detailsPartIndex === 3) this.contactListSearchValue = null;
+            });
+    }
+
+    private handleRepairListSearch<T>(res: T): void {
+        this.backFilterQuery.pageIndex = 1;
+
+        const searchEvent = MethodsGlobalHelper.tableSearch(
+            res,
+            this.backFilterQuery
+        );
+
+        if (searchEvent) {
+            searchEvent.action === TableStringEnum.API
+                ? this.repairBackFilter(this.backFilterQuery)
+                : this.handleRepairListSearchData(
+                      this.repairShopObject.repairList
+                  );
+        }
+    }
+
+    private handleContactListSearch<T extends { search: string }>(
+        res: T
+    ): void {
+        const { search } = res;
+
+        const searchToLowerCase = search?.toLowerCase();
+
+        this.contactListSearchValue = searchToLowerCase;
+
+        if (search) {
+            const filteredContacts =
+                RepairShopDetailsHelper.filterRepairShopContacts(
+                    this.repairShopObject?.contacts,
+                    searchToLowerCase
+                );
+
+            this.handleContactListSearchData(filteredContacts);
+        } else {
+            this.handleContactListSearchData(this.repairShopObject.contacts);
+        }
+    }
+
+    private handleRepairListSearchData(repairList: RepairResponse[]): void {
+        this.repairShopDetailsConfig = this.repairShopDetailsConfig.map(
+            (item, index) =>
+                index === 1
+                    ? {
+                          ...item,
+                          data: { ...item.data, repairList },
+                      }
+                    : item
+        );
+
+        this.cdRef.detectChanges();
+    }
+
+    private handleRepairedVehicleListSearchData(
+        repairedVehicleList: RepairedVehicleResponse[]
+    ): void {
+        this.repairShopDetailsConfig = this.repairShopDetailsConfig.map(
+            (item, index) =>
+                index === 2
+                    ? {
+                          ...item,
+                          data: { ...item.data, repairedVehicleList },
+                      }
+                    : item
+        );
+
+        this.cdRef.detectChanges();
+    }
+
+    private handleContactListSearchData(
+        contacts: RepairShopContactResponse[]
+    ): void {
+        this.repairShopDetailsConfig = this.repairShopDetailsConfig.map(
+            (item, index) =>
+                index === 3
+                    ? {
+                          ...item,
+                          data: {
+                              ...item.data,
+                              contacts: contacts?.length
+                                  ? contacts
+                                  : this.repairShopObject.contacts,
+                          },
+                      }
+                    : item
+        );
+
+        this.cdRef.detectChanges();
+    }
+
+    private handleRepairShopIdRouteChange(): void {
+        this.detailsPageService.pageDetailChangeId$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((id) => {
+                let query;
+
+                this.newRepairShopId = id;
+
+                if (this.repairDetailsQuery.hasEntity(id)) {
+                    query = this.repairDetailsQuery
+                        .selectEntity(id)
+                        .pipe(take(1));
+
+                    query.subscribe((res: ExtendedRepairShopResponse) => {
+                        this.currentIndex = this.repairShopList.findIndex(
+                            (repairShop: RepairShopResponse) =>
+                                repairShop.id === res.id
+                        );
+
+                        this.getDetailsConfig(res);
+                        this.getDetailsOptions(this.repairShopObject);
+
+                        if (
+                            this.router.url.includes(
+                                RepairShopDetailsStringEnum.DETAILS
+                            )
+                        ) {
+                            this.router.navigate([
+                                `/list/repair/${res.id}/details`,
+                            ]);
+                        }
+                    });
+                } else {
+                    this.router.navigate([`/list/repair/${id}/details`]);
+                }
+
+                this.cdRef.detectChanges();
+            });
+    }
+
+    private handleOpenCloseRepairShop(id: number): void {
+        this.repairService
+            .updateRepairShopStatus(id)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe();
     }
 
     private getStoreData(): void {
@@ -365,46 +544,6 @@ export class RepairShopDetailsComponent implements OnInit, OnDestroy {
             );
     }
 
-    private handleRepairShopIdRouteChange(): void {
-        this.detailsPageService.pageDetailChangeId$
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((id) => {
-                let query;
-
-                this.newRepairShopId = id;
-
-                if (this.repairDetailsQuery.hasEntity(id)) {
-                    query = this.repairDetailsQuery
-                        .selectEntity(id)
-                        .pipe(take(1));
-
-                    query.subscribe((res: ExtendedRepairShopResponse) => {
-                        this.currentIndex = this.repairShopList.findIndex(
-                            (repairShop: RepairShopResponse) =>
-                                repairShop.id === res.id
-                        );
-
-                        this.getDetailsConfig(res);
-                        this.getDetailsOptions(this.repairShopObject);
-
-                        if (
-                            this.router.url.includes(
-                                RepairShopDetailsStringEnum.DETAILS
-                            )
-                        ) {
-                            this.router.navigate([
-                                `/list/repair/${res.id}/details`,
-                            ]);
-                        }
-                    });
-                } else {
-                    this.router.navigate([`/list/repair/${id}/details`]);
-                }
-
-                this.cdRef.detectChanges();
-            });
-    }
-
     public onModalAction(action: string): void {
         switch (action) {
             case RepairShopDetailsStringEnum.REPAIR:
@@ -449,6 +588,25 @@ export class RepairShopDetailsComponent implements OnInit, OnDestroy {
         );
     }
 
+    public onRepairShopSortActions(
+        event: { direction: string },
+        type: string
+    ): void {
+        if (type === RepairShopDetailsStringEnum.REPAIR) {
+            this.backFilterQuery.sort = event.direction;
+
+            this.repairBackFilter(this.backFilterQuery);
+        } else {
+            this.backRepairedVehiclesFilterQuery.repairShopId =
+                this.repairShopObject.id;
+            this.backRepairedVehiclesFilterQuery.sort = event.direction;
+
+            this.repairedVehiclesBackFilter(
+                this.backRepairedVehiclesFilterQuery
+            );
+        }
+    }
+
     public onSearchBtnClick(isSearch: boolean, type: string): void {
         const index =
             type === RepairShopDetailsStringEnum.REPAIR
@@ -460,17 +618,6 @@ export class RepairShopDetailsComponent implements OnInit, OnDestroy {
                 : 3;
 
         this.searchConfig[index] = isSearch;
-    }
-
-    public deleteRepairShop(id: number): void {
-        this.repairService
-            .deleteRepairShop(id)
-            .pipe(takeUntil(this.destroy$))
-            .subscribe(() =>
-                this.router.navigate([
-                    RepairShopDetailsStringEnum.REPAIR_LIST_ROUTE,
-                ])
-            );
     }
 
     public onDetailsSelectClick(id: number): void {
@@ -485,6 +632,17 @@ export class RepairShopDetailsComponent implements OnInit, OnDestroy {
         this.tableService.sendCurrentSetTableFilter(event);
     }
 
+    public deleteRepairShop(id: number): void {
+        this.repairService
+            .deleteRepairShop(id)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe(() =>
+                this.router.navigate([
+                    RepairShopDetailsStringEnum.REPAIR_LIST_ROUTE,
+                ])
+            );
+    }
+
     public deleteRepair(
         id: number,
         repairShopId: number,
@@ -497,13 +655,6 @@ export class RepairShopDetailsComponent implements OnInit, OnDestroy {
 
         this.repairService
             .deleteRepair(id, repairShopId, unitType)
-            .pipe(takeUntil(this.destroy$))
-            .subscribe();
-    }
-
-    private handleOpenCloseRepairShop(id: number): void {
-        this.repairService
-            .updateRepairShopStatus(id)
             .pipe(takeUntil(this.destroy$))
             .subscribe();
     }

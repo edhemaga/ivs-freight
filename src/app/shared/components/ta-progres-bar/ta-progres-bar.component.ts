@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { Component, Input, OnInit } from '@angular/core';
 import {
     NgbModule,
@@ -9,6 +9,7 @@ import {
 // Pipes
 import { ThousandToShortFormatPipe } from '@shared/pipes/thousand-to-short-format.pipe';
 import { FormatCurrencyPipe } from '@shared/pipes/format-currency.pipe';
+import { ThousandSeparatorPipe } from '@shared/pipes';
 
 // Models
 import { ProgressDropdownData } from '@shared/components/ta-progres-bar/models/progress-dropdown-data.model';
@@ -26,6 +27,8 @@ import { ProgressDropdownData } from '@shared/components/ta-progres-bar/models/p
         // Pipes
         ThousandToShortFormatPipe,
         FormatCurrencyPipe,
+        DatePipe,
+        ThousandSeparatorPipe,
     ],
     standalone: true,
     providers: [ThousandToShortFormatPipe],

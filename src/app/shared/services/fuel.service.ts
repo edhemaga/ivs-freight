@@ -420,13 +420,17 @@ export class FuelService {
             tap(() => {
                 ids.forEach((id) => {
                     this.fuelStore.update((store) => ({
-                        fuelTransactions: store.fuelTransactions.filter(
-                            (transaction: FuelTransactionResponse) =>
-                                transaction.id !== id
-                        ),
-                        fuelStops: store.fuelStops.filter(
-                            (stop: FuelStopResponse) => stop.id !== id
-                        ),
+                        fuelTransactions: Array.isArray(store?.fuelTransactions)
+                            ? store.fuelTransactions.filter(
+                                  (transaction: FuelTransactionResponse) =>
+                                      transaction.id !== id
+                              )
+                            : [],
+                        fuelStops: Array.isArray(store?.fuelStops)
+                            ? store.fuelStops.filter(
+                                  (stop: FuelStopResponse) => stop.id !== id
+                              )
+                            : [],
                     }));
                 });
 

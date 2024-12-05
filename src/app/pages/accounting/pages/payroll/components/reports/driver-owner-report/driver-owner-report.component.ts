@@ -35,7 +35,7 @@ import { OptionsPopupContent } from 'ca-components/lib/components/ca-burger-menu
 
 // Components
 import { PayrollProccessPaymentModalComponent } from '@pages/accounting/pages/payroll/payroll-modals/payroll-proccess-payment-modal/payroll-proccess-payment-modal.component';
-import { PayrollReportComponent } from '@pages/accounting/pages/payroll/payroll-modals/payroll-report/payroll-report.component';
+import { PayrollPdfReportComponent } from '@pages/accounting/pages/payroll/payroll-modals/payroll-report/payroll-pdf-report.component';
 
 // Enums
 import { PayrollTablesStatus } from '@pages/accounting/pages/payroll/state/enums';
@@ -66,9 +66,8 @@ export class DriverOwnerReportComponent
         this.getReportDataResults();
     }
 
-
     public optionsPopupContent: OptionsPopupContent[] =
-    TableToolbarConstants.closedReportPayroll;
+        TableToolbarConstants.closedReportPayroll;
 
     get reportId(): string {
         return super.reportId; // Call the base class getter
@@ -279,6 +278,7 @@ export class DriverOwnerReportComponent
                 this.getReportDataResults({
                     reportId: `${this.reportId}`,
                     selectedLoadIds: loadList,
+                    payrollOpenedTab: this.selectedTab,
                 });
             }
         }
@@ -286,15 +286,21 @@ export class DriverOwnerReportComponent
 
     public getReportDataResults(getData?: IGetPayrollByIdAndOptions): void {
         this.payrollDriverOwnerFacadeService.getPayrollDriverOwnerReport(
-            getData ?? {
-                reportId: `${this.reportId}`,
-            }
+            getData
+                ? {
+                      ...getData,
+                      payrollOpenedTab: this.selectedTab,
+                  }
+                : {
+                      reportId: `${this.reportId}`,
+                      payrollOpenedTab: this.selectedTab,
+                  }
         );
     }
 
     public openPreviewModal(): void {
         this.modalService.openModal(
-            PayrollReportComponent,
+            PayrollPdfReportComponent,
             {},
             {
                 data: {

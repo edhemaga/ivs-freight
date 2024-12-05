@@ -255,10 +255,14 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     LoadStatusEnum[16],
                 ].includes(status.dataBack);
 
+                const isTonuFromCancelled = [
+                    LoadStatusEnum[25],
+                ].includes(status.dataBack) && foundObject?.loadStatus.status === LoadStatusEnum[55];
+
                 if (
                     (isAssignedStatusSelected &&
                         !isTruckTrailerDriverSelected) ||
-                    isPaidOrShortPaid
+                    isPaidOrShortPaid || isTonuFromCancelled
                 ) {
                     this.onTableBodyActions({
                         type: TableStringEnum.EDIT,

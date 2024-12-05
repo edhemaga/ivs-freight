@@ -329,7 +329,7 @@
     .progress-dropdown {
         margin-top: -6px;
         width: 260px;
-        height: 200px;
+        height: auto !important;
         background: $ta-black-2;
         border-radius: 3px;
         padding: 8px;
@@ -1927,11 +1927,7 @@
 }
 
 .map-list-card-dropdown {
-    //margin: 3px 0px 0px 16px;
-
-    // &.marker-dropdown-popover {
-    //     //margin: 11px 0px 0px 12px;
-    // }
+    background: none !important;
 
     .svg-text-dropdown {
         padding-right: 10px;

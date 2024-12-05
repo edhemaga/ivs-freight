@@ -407,6 +407,8 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 hideDataCount: true,
                 showCountSelectedInList: false,
                 showDepartmentFilter: true,
+                showActivateButton:
+                    this.selectedTab === TableStringEnum.INACTIVE,
                 viewModeOptions: [
                     {
                         name: TableStringEnum.LIST,
@@ -537,7 +539,7 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     // Map User Data
-    public mapUserData(data: CompanyUserResponse, dontMapIndex?: boolean): any {
+    public mapUserData(data: CompanyUserResponse, dontMapIndex?: boolean, isInvitationSent?: boolean): any {
         //leave this any for now
         if (!data.avatarFile?.url && !dontMapIndex) this.mapingIndex++;
 
@@ -620,28 +622,17 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
             // User Dropdown Action Set Up
             tableDropdownContent: {
                 hasContent: true,
-                content:
-                    data.userStatus === TableStringEnum.OWNER
-                        ? this.getOwnerDropdown(data)
-                        : this.getDropdownContent(data),
+                content: this.getDropdownContent(data, isInvitationSent),
             },
         };
     }
 
-    // Get User Dropdown Content
-    public getOwnerDropdown(data: CompanyUserResponse): DropdownItem[] {
-        return UserConstants.getUserTableOwnerDropdown(data);
-    }
-
-    public getDropdownContent(data: CompanyUserResponse): DropdownItem[] {
+    public getDropdownContent(data: CompanyUserResponse, isInvitationSent?: boolean): DropdownItem[] {
         const dropdownContent = UserConstants.getUserTableDropdown(
             data,
-            this.selectedTab
+            this.selectedTab,
+            isInvitationSent,
         );
-        data.userStatus !== TableStringEnum.INVITED &&
-        data.userStatus !== TableStringEnum.EXPIRED
-            ? dropdownContent.splice(2, 1)
-            : dropdownContent;
         return dropdownContent;
     }
 
@@ -956,7 +947,11 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
             this.userService
                 .userResendIvitation(event.data.id)
                 .pipe(takeUntil(this.destroy$))
-                .subscribe(() => {});
+                .subscribe(() => {
+                    this.viewData = this.viewData.map((data: CompanyUserResponse) => {
+                        return this.mapUserData(data, true, event.data.id === data.id ? true : false);
+                    });
+                });
         }
         // User Delete
         else if (event.type === TableStringEnum.DELETE) {

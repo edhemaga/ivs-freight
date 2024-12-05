@@ -39,6 +39,8 @@ import {
     IMapBoundsZoom,
     IMapMarkers,
     IMapSelectedMarkerData,
+    SortColumn,
+    MapMarkerIconHelper,
 } from 'ca-components';
 
 // store
@@ -71,7 +73,6 @@ import { FilterOptionShipper } from '@pages/customer/pages/customer-table/models
 import { CardTableData } from '@shared/models/table-models/card-table-data.model';
 import { TableColumnConfig } from '@shared/models/table-models/table-column-config.model';
 import { MapList } from '@pages/repair/pages/repair-table/models';
-import { SortColumn } from '@shared/components/ta-sort-dropdown/models';
 
 // constants
 import {
@@ -101,10 +102,7 @@ import {
     getShipperColumnDefinition,
 } from '@shared/utils/settings/table-settings/customer-columns';
 import { MethodsGlobalHelper } from '@shared/utils/helpers/methods-global.helper';
-import {
-    ShipperMapMarkersHelper,
-    ShipperMapDropdownHelper,
-} from '@pages/customer/pages/customer-table/utils/helpers';
+import { ShipperMapDropdownHelper } from '@pages/customer/pages/customer-table/utils/helpers';
 
 @Component({
     selector: 'app-customer-table',
@@ -196,6 +194,7 @@ export class CustomerTableComponent
     public mapStateFilter: string[] | null = null;
     public isSelectedFromMapList: boolean = false;
     public mapListCount: number = 0;
+    public isSelectedFromDetails: boolean = false;
 
     constructor(
         // ref
@@ -262,6 +261,8 @@ export class CustomerTableComponent
         this.addMapListScrollEvent();
 
         this.addSelectedMarkerListener();
+
+        this.checkSelectedMarker();
     }
 
     ngAfterViewInit(): void {
@@ -1277,6 +1278,7 @@ export class CustomerTableComponent
                 hideActivationButton: true,
                 fuelMoneyFilter: false,
                 loadMoneyFilter: false,
+                hideSearch: this.activeViewMode === TableStringEnum.MAP,
                 viewModeOptions: this.getViewModeOptions(),
             },
         };
@@ -1434,9 +1436,11 @@ export class CustomerTableComponent
                 viewModeOptions = this.getViewModeOptions();
             }
 
-            this.tableOptions.toolbarActions.viewModeOptions = [
-                ...viewModeOptions,
-            ];
+            this.tableOptions.toolbarActions = {
+                ...this.tableOptions.toolbarActions,
+                viewModeOptions: [...viewModeOptions],
+                hideSearch: this.activeViewMode === TableStringEnum.MAP,
+            };
         }
     }
 
@@ -1857,7 +1861,7 @@ export class CustomerTableComponent
             this.activeViewMode = event.mode;
 
             this.tableOptions.toolbarActions.hideSearch =
-                event.mode == TableStringEnum.MAP;
+                event.mode === TableStringEnum.MAP;
 
             this.filter = null;
 
@@ -2386,7 +2390,10 @@ export class CustomerTableComponent
             zoomLevel: event.zoom,
         };
 
-        this.getMapData();
+        if (this.isSelectedFromDetails) {
+            this.onGetInfoWindowData(this.mapsService.selectedMarkerId);
+            this.isSelectedFromDetails = false;
+        } else this.getMapData();
     }
 
     public onResetSelectedMarkerItem(isBackButton?: boolean): void {
@@ -2445,7 +2452,7 @@ export class CustomerTableComponent
                 null, // ppgFrom?: number,
                 null, // ppgTo?: number,
                 this.mapsService.selectedMarkerId ?? null, // selectedId
-                this.filter === TableStringEnum.CLOSED_FILTER ? 0 : 1, // active
+                this.filter === TableStringEnum.CLOSED_FILTER ? 0 : null, // active
                 this.mapClustersPagination.pageIndex, // pageIndex
                 this.mapClustersPagination.pageSize, // pageSize
                 null, // companyId
@@ -2518,18 +2525,24 @@ export class CustomerTableComponent
                             };
                         }
 
+                        const markerIcon =
+                            data?.count > 1
+                                ? MapMarkerIconHelper.getClusterMarker(
+                                      data?.count,
+                                      !!clusterInfoWindowContent?.selectedClusterItemData
+                                  )
+                                : MapMarkerIconHelper.getMapMarker(
+                                      data.favourite,
+                                      data.isClosed
+                                  );
+
                         const markerData = {
                             position: {
                                 lat: data.latitude,
                                 lng: data.longitude,
                             },
                             icon: {
-                                url: ShipperMapMarkersHelper.getMapMarker(
-                                    data.favourite,
-                                    data.isClosed,
-                                    data?.count,
-                                    data?.count > 1
-                                ),
+                                url: markerIcon,
                                 labelOrigin: new google.maps.Point(80, 15),
                             },
                             infoWindowContent: clusterInfoWindowContent,
@@ -2729,6 +2742,15 @@ export class CustomerTableComponent
 
             if (item) this.mapsService.markerUpdate(item);
         }
+    }
+
+    public checkSelectedMarker(): void {
+        const isAlreadySelectedMarker =
+            this.mapData?.selectedMarkerData?.data?.id ===
+            this.mapsService.selectedMarkerId;
+
+        if (this.mapsService.selectedMarkerId && !isAlreadySelectedMarker)
+            this.isSelectedFromDetails = true;
     }
 
     ngOnDestroy(): void {
