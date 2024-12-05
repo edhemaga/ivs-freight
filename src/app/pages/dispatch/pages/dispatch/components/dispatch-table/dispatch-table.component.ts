@@ -1311,14 +1311,26 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
         this.dispatchHubService.onDispatchChanged()
         .pipe(takeUntil(this.destroy$))
         .subscribe(response => {
+            this.refreshDispatchTable(response);
             console.log(response);
         });
 
         this.dispatchHubService.onDispatchBoardChanged()
         .pipe(takeUntil(this.destroy$))
         .subscribe(response => {
-            console.log(response);
+            console.log('onDispatchBoardChanged', response);
         });
+    }
+
+    private refreshDispatchTable(dispatchChanged: DispatchResponse): void {
+        const { dispatches } = this.dispatchData || {};
+        const index = dispatches?.findIndex(d => d.id === dispatchChanged.id)
+        // let dispatchToChange = dispatches?.find(d => d.id === dispatchChange.id);
+
+        if (index >= 0)
+            this.dispatchData.dispatches.splice(index, 1, dispatchChanged);
+
+        this.initDispatchData(this.dispatchData);
     }
 
     ngOnDestroy(): void {
