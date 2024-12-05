@@ -209,6 +209,7 @@ export class LoadModalConfig {
         priceSeparator: true,
         priceSeparatorLimitation: 6,
         placeholderIconRightSide: 'dollar',
+        isPlaceHolderIconRightSideDynamicColor: true,
         placeholderIconColor: 'gray',
         inputCursorOnRightSide: true,
         hideErrorMessage: true,
