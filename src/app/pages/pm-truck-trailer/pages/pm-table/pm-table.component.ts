@@ -607,6 +607,7 @@ export class PmTableComponent implements OnInit, AfterViewInit, OnDestroy {
             },
             truck: truckUnit.truck,
             pmId: truckUnit.id,
+            id: truckUnit.id
         };
 
         const defaultPMData = {

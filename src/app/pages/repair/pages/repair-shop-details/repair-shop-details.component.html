@@ -14,6 +14,8 @@
             [showClosedBadge]="item?.isClosedBusiness"
             [businessOpen]="!item?.isClosedBusiness"
             [hasSort]="item?.hasSort"
+            [isSortBtn]="item?.isSortBtn"
+            [sortColumns]="item?.sortColumns"
             [statusInactive]="item?.hide"
             [totalCost]="item?.total"
             [mainData]="item"
@@ -32,7 +34,8 @@
             [repairOrderFilter]="true"
             (dropActions)="onRepairShopActions($event)"
             (openModalAction)="onModalAction($event)"
-            (searchBtnEmitter)="onSearchBtnClick($event, item.name)"
+            (sortActions)="onRepairShopSortActions($event, item?.name)"
+            (searchBtnEmitter)="onSearchBtnClick($event, item?.name)"
             (multipleDetailsSelectDropdownEmitter)="
                 onDetailsSelectClick($event)
             "
@@ -46,6 +49,7 @@
         <app-repair-shop-details-item
             [detailsConfig]="repairShopDetailsConfig"
             [searchConfig]="searchConfig"
+            [searchValue]="contactListSearchValue"
         >
         </app-repair-shop-details-item>
     </div>

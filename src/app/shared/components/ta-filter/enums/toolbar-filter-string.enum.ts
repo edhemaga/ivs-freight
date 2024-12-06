@@ -54,4 +54,5 @@ export enum ToolbarFilterStringEnum {
     FUEL_CATEGORY_UPDATE = 'fuel-category-update',
     REPAIR_CATEGORY_UPDATE = 'repair-category-update',
     PM_TRUCK_DATA_UPDATE = 'pm-truck-data-update',
+    PM_TRAILER_DATA_UPDATE = 'pm-trailer-data-update',
 }

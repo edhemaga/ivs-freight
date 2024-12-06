@@ -466,39 +466,79 @@
 
             <div class="header-plus-button">
                 <ng-container *ngIf="hasSort">
-                    <div class="sort-container d-flex align-items-center me-1">
+                    <ng-container *ngIf="isSortBtn; else sortComponent">
                         <div
-                            class="sort-text-container"
-                            [class.active-dropdown]="isSortDropdownOpen"
-                            [class.disabled]="!selectedSort"
-                            #sortPopover="ngbPopover"
-                            autoClose="outside"
-                            [ngbPopover]="sortDropdownPopover"
-                            [popoverClass]="'popover-main'"
-                            [placement]="['bottom-left']"
-                            [container]="'body'"
-                            (click)="
-                                selectedSort && showSortDropdown(sortPopover)
-                            "
-                            (hidden)="sortDropdownClosed()"
-                            triggers="manual"
+                            class="sort-container d-flex align-items-center me-1"
                         >
-                            <span class="sort-text ta-font-medium">
-                                {{ selectedSort?.name ?? 'Date' }}
-                            </span>
+                            <div class="sort-text-container">
+                                <span class="sort-text ta-font-medium">
+                                    Date
+                                </span>
+                            </div>
+
+                            <svg-icon
+                                class="sort-arrow d-flex align-items-center justify-content-center"
+                                [class.rotate]="sortDirection === 'asc'"
+                                [src]="detailsHeaderSvgRoutes.sortRoute"
+                                [svgStyle]="{
+                                    'width.px': '18',
+                                    'height.px': '18'
+                                }"
+                                (click)="handleSortClick(true)"
+                            ></svg-icon>
+                        </div>
+                    </ng-container>
+
+                    <ng-template #sortComponent>
+                        <div
+                            class="d-flex align-items-center sort-container-dropdown"
+                        >
+                            <app-ca-sort-dropdown
+                                [sortColumns]="sortColumns"
+                                [activeSortColumn]="activeSortType"
+                                [dropdownPosition]="'right-top'"
+                                [dropdownWidth]="107"
+                                (onSortChange)="handleSortClick($event)"
+                            ></app-ca-sort-dropdown>
                         </div>
 
-                        <svg-icon
-                            (click)="sortItems(selectedSort, true)"
-                            class="sort-arrow d-flex align-items-center justify-content-center"
-                            [class.rotate]="sortDirection === 'asc'"
-                            src="/assets/svg/common/sortArrow_filter.svg"
-                            [svgStyle]="{
-                                'width.px': '18',
-                                'height.px': '18'
-                            }"
-                        ></svg-icon>
-                    </div>
+                        <!--   <div
+                            class="sort-container d-flex align-items-center me-1"
+                        >
+                            <div
+                                class="sort-text-container"
+                                [class.active-dropdown]="isSortDropdownOpen"
+                                [class.disabled]="!selectedSort"
+                                #sortPopover="ngbPopover"
+                                autoClose="outside"
+                                [ngbPopover]="sortDropdownPopover"
+                                [popoverClass]="'popover-main'"
+                                [placement]="['bottom-left']"
+                                [container]="'body'"
+                                (click)="
+                                    selectedSort &&
+                                        showSortDropdown(sortPopover)
+                                "
+                                (hidden)="sortDropdownClosed()"
+                                triggers="manual"
+                            >
+                                <span class="sort-text ta-font-medium">
+                                    {{ selectedSort?.name ?? 'Date' }}
+                                </span>
+                            </div>
+
+                            <svg-icon
+                                (click)="sortItems(selectedSort, true)"
+                                class="sort-arrow d-flex align-items-center justify-content-center"
+                                [class.rotate]="sortDirection === 'asc'"
+                                src="/assets/svg/common/sortArrow_filter.svg"
+                                [svgStyle]="{
+                                    'width.px': '18',
+                                    'height.px': '18'
+                                }"
+                            ></svg-icon>
+                        </div> -->
+                    </ng-template>
                 </ng-container>
 
                 <div class="date-arrow-repair">

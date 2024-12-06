@@ -6,6 +6,8 @@ import { Pipe, PipeTransform } from '@angular/core';
 })
 export class GetNumbersPipe implements PipeTransform {
     transform(value: string): string {
+        if (!value) return null;
+
         if (typeof value === 'number') return value;
         return value.replace(/\D/g, ''); // Removes all non-numeric characters
     }

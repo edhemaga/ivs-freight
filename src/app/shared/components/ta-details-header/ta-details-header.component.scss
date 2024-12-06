@@ -348,7 +348,6 @@ p {
 
                 &:hover {
                     background: $bw2;
-                    cursor: pointer;
                 }
 
                 &.disabled {
@@ -361,6 +360,7 @@ p {
                 height: 26px;
                 border-radius: 2px;
                 transition: background 0.2s ease-in;
+                cursor: pointer;
 
                 svg {
                     transform: rotate(0deg);
@@ -388,8 +388,13 @@ p {
                 }
             }
         }
+
+        .sort-container-dropdown {
+            padding-right: 4px;
+        }
     }
 }
+
 .border-line-left {
     border: none;
     border-radius: 1px;

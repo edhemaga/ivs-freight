@@ -1367,6 +1367,8 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
         action: string;
         direction: string;
     }): void {
+        console.log('TABLE SORT EVENT', event);
+
         if (event.action === TableStringEnum.SORT) {
             if (event.direction) {
                 this.backFilterQuery.sort = event.direction;
@@ -2137,8 +2139,6 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                     this.mapListPagination.pageIndex > 1
                         ? [...this.mapListData, ...mappedListData]
                         : mappedListData;
-
-                this.ref.detectChanges();
             });
     }
 

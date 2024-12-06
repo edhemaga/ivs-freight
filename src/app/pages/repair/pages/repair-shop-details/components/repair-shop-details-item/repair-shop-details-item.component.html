@@ -1,13 +1,13 @@
 <div class="repair-shop-details-item-container">
     <ng-container
-        *ngFor="let repairShopItem of _detailsConfig; trackBy: trackByIdentity"
+        *ngFor="let repairShopItem of detailsConfig; trackBy: trackByIdentity"
     >
         <ng-container [ngSwitch]="repairShopItem.template">
             <!-- General -->
 
             <ng-container *ngSwitchCase="'general'">
                 <app-repair-shop-details-card
-                    [repairShop]="_detailsConfig[0]?.data"
+                    [repairShop]="detailsConfig[0]?.data"
                 >
                 </app-repair-shop-details-card>
             </ng-container>
@@ -16,7 +16,7 @@
 
             <ng-container *ngSwitchCase="'repair'">
                 <app-repair-shop-details-item-repair
-                    [repairList]="_detailsConfig[1]?.data?.repairList"
+                    [repairList]="detailsConfig[1]?.data?.repairList"
                     [searchConfig]="searchConfig"
                 >
                 </app-repair-shop-details-item-repair>
@@ -27,7 +27,7 @@
             <ng-container *ngSwitchCase="'repaired-vehicle'">
                 <app-repair-shop-details-item-repaired-vehicle
                     [repairedVehicleList]="
-                        _detailsConfig[2]?.data?.repairedVehicleList
+                        detailsConfig[2]?.data?.repairedVehicleList
                     "
                     [searchConfig]="searchConfig"
                 ></app-repair-shop-details-item-repaired-vehicle>
@@ -43,15 +43,11 @@
                         else review
                     "
                 >
-                    <ng-container *ngIf="departmentContacts?.length">
-                        <div class="contacts-container">
-                            <app-ta-contacts-card
-                                [type]="'repair-shop'"
-                                [departmentContacts]="departmentContacts"
-                                [viewData]="_detailsConfig[3]?.data"
-                            ></app-ta-contacts-card>
-                        </div>
-                    </ng-container>
+                    <app-repair-shop-details-item-contact
+                        [viewData]="detailsConfig[3]?.data"
+                        [searchConfig]="searchConfig"
+                        [searchValue]="searchValue"
+                    ></app-repair-shop-details-item-contact>
                 </ng-container>
 
                 <ng-template #review>
