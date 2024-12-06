@@ -17,6 +17,7 @@ import { CaSearchMultipleStatesComponent } from 'ca-components';
 // services
 import { ModalService } from '@shared/services/modal.service';
 import { ConfirmationService } from '@shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
+import { RepairShopDetailsService } from '@pages/repair/pages/repair-shop-details/services';
 
 // constants
 import { RepairShopDetailsItemConstants } from '@pages/repair/pages/repair-shop-details/components/repair-shop-details-item/utils/constants';
@@ -87,7 +88,8 @@ export class RepairShopDetailsItemRepairComponent implements OnInit {
 
     constructor(
         private modalService: ModalService,
-        private confirmationService: ConfirmationService
+        private confirmationService: ConfirmationService,
+        private repairShopDetailsService: RepairShopDetailsService
     ) {}
 
     ngOnInit(): void {
@@ -312,5 +314,11 @@ export class RepairShopDetailsItemRepairComponent implements OnInit {
             default:
                 break;
         }
+    }
+
+    public handleCloseSearchEmit(): void {
+        const detailsPartIndex = 0;
+
+        this.repairShopDetailsService.setCloseSearchStatus(detailsPartIndex);
     }
 }

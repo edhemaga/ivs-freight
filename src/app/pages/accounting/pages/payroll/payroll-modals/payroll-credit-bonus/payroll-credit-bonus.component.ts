@@ -94,7 +94,7 @@ export class PayrollCreditBonusComponent implements OnInit {
             [PayrollStringEnum.DRIVER_ID]: [data?.driverId ?? null],
             [PayrollStringEnum.TRUCK_ID]: [data?.truckId ?? null],
             [PayrollStringEnum.DATE]: [
-                data.date ?? new Date(),
+                MethodsCalculationsHelper.convertDateFromBackend(data.date) ?? new Date(),
                 Validators.required,
             ],
             [PayrollStringEnum.DESCRIPTION]: [
@@ -187,6 +187,7 @@ export class PayrollCreditBonusComponent implements OnInit {
                     this.onCloseModal();
                 });
         } else if (action === TaModalActionEnums.DELETE) {
+            const label = this.credit.driver ? `${this.credit.driver.firstName} ${this.credit.driver.lastName}` : this.credit.truck.owner;
             this.payrollInternalService.raiseDeleteModal(
                 TableStringEnum.CREDIT,
                 ConfirmationModalStringEnum.DELETE_CREDIT,
@@ -195,7 +196,7 @@ export class PayrollCreditBonusComponent implements OnInit {
                     title: this.credit.description,
                     subtitle: this.credit.amount,
                     date: this.credit.date,
-                    label: `${this.credit.driver.firstName} ${this.credit.driver.lastName}`,
+                    label: `${label}`,
                     id: this.credit.id
                 }
             );
