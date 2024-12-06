@@ -38,7 +38,7 @@ export class ChartHelper {
                 label: property.value,
                 borderWidth: property?.borderWidth || 2,
                 data: [],
-                color1: property?.color,
+                color: property?.color,
                 color2: property?.color2 || property.color,
                 shiftValue: property.shiftValue
             };
@@ -56,7 +56,7 @@ export class ChartHelper {
                             fill: property.fill,
                             colorEdgeValue: property.colorEdgeValue,
                             data: [...rawData.map((item: T) => {
-                                return item[property.value] || 0; // For mock purposes replace '|| 0' with '|| Math.random() * 10'; use bigger values for random if needed
+                                return item[property.value] || Math.random() * 10; // For mock purposes replace '|| 0' with '|| Math.random() * 10'; use bigger values for random if needed
                             })],
                         },
                     ];
@@ -126,7 +126,7 @@ export class ChartHelper {
         rawData: T[],
         timeFilter: number
     ): string[] {
-       
+
         return rawData.map((item: T) => {
             const day = item['day'] as number;
             const month = item['month'] as number;
