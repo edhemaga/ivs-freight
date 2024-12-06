@@ -11,9 +11,9 @@ export class dispatchStatusColorPipe implements PipeTransform {
     ): { color: string; backgroundColor?: string } {
         const adjustedStatus = status.replace(/\s+/g, '');
 
-        const statusDarkGreyColorCondition = ['DeadHeading', 'Off'].includes(
-            adjustedStatus
-        );
+        const statusDarkGreyColorCondition = adjustedStatus === 'DeadHeading';
+
+        const statusDarkGreyColorReversedCondition = adjustedStatus === 'Off';
 
         const statusLightPurpleColorCondition = adjustedStatus === 'Towing';
         const statusLightYellowColorCondition = adjustedStatus === 'Empty';
@@ -55,6 +55,8 @@ export class dispatchStatusColorPipe implements PipeTransform {
 
         if (statusDarkGreyColorCondition) {
             return { color: isDarkColor ? '#AAAAAA' : '#919191' };
+        } else if (statusDarkGreyColorReversedCondition) {
+            return { color: isDarkColor ? '#919191' : '#AAAAAA' };
         } else if (statusBlueColorCondition) {
             return { color: isDarkColor ? '#92B1F5' : '#3B73ED' };
         } else if (statusTurquoiseColorCondition) {
@@ -68,11 +70,11 @@ export class dispatchStatusColorPipe implements PipeTransform {
         } else if (statusDarkRed2ColorCondition) {
             return { color: isDarkColor ? ' #F4BEBE' : '#C20C0C' };
         } else if (statusLightGreenColorCondition) {
-            return { color: isDarkColor ? '#50AC25' : '#9ED186' };
+            return { color: isDarkColor ? '#9ED186' : '#50AC25' };
         } else if (statusLightPurpleColorCondition) {
-            return { color: isDarkColor ? '#9E47EC' : '#C999F4' };
+            return { color: isDarkColor ? '#C999F4' : '#9E47EC' };
         } else if (statusLightOrangeColorCondition) {
-            return { color: isDarkColor ? '#FF7043' : '#FFB097' };
+            return { color: isDarkColor ? '#FFB097' : '#FF7043' };
         } else if (statusLightYellowColorCondition) {
             return { color: isDarkColor ? '#FAB15C' : '#F89B2E' };
         }
