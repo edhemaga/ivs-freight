@@ -56,7 +56,7 @@ export class ChartHelper {
                             fill: property.fill,
                             colorEdgeValue: property.colorEdgeValue,
                             data: [...rawData.map((item: T) => {
-                                return item[property.value] || Math.random() * 10; // For mock purposes replace '|| 0' with '|| Math.random() * 10'; use bigger values for random if needed
+                                return item[property.value] || 0; // For mock purposes replace '|| 0' with '|| Math.random() * 10'; use bigger values for random if needed
                             })],
                         },
                     ];
