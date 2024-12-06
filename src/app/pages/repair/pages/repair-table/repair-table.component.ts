@@ -87,7 +87,7 @@ import {
 // models
 import {
     MapList,
-    MappedTruckTrailer,
+    MappedRepair,
     ShopBackFilter,
     ShopBackFilterQuery,
     RepairBackFilter,
@@ -1369,8 +1369,6 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
         action: string;
         direction: string;
     }): void {
-        console.log('TABLE SORT EVENT', event);
-
         if (event.action === TableStringEnum.SORT) {
             if (event.direction) {
                 this.backFilterQuery.sort = event.direction;
@@ -1575,9 +1573,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
         this.tableData = [...updatedTableData];
     }
 
-    private mapRepairData(repair: RepairResponse): MappedTruckTrailer {
-        console.log('repair', repair);
-
+    private mapRepairData(repair: RepairResponse): MappedRepair {
         const {
             repairType,
             date,
@@ -1649,9 +1645,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
             tableShopAdress: repairShop?.address?.address,
             tableServiceType: shopServiceType?.name,
             tableServices: serviceTypes,
-
-            tableDescription: items,
-            descriptionItems: items
+            tableDescription: items
                 ? items.map((item) => {
                       return {
                           ...item,
@@ -1671,11 +1665,10 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                       };
                   })
                 : null,
-            tabelDescriptionDropTotal: total
+            tableDescriptionDropTotal: total
                 ? TableStringEnum.DOLLAR_SIGN +
                   this.thousandSeparator.transform(total)
                 : null,
-
             tableCost: total
                 ? TableStringEnum.DOLLAR_SIGN +
                   this.thousandSeparator.transform(total)

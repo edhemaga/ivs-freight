@@ -313,7 +313,6 @@ export enum TableStringEnum {
     REPAIR_TRUCK_TRAILER_TABLE_COUNT = 'repairTruckTrailerTableCount',
     ORDER = 'Order',
     ORDER_2 = 'order',
-    DIV_ELEMENT_DESCRIPTION_DOT_CONTAINER = '<div class="description-dot-container"><span class="description-dot"></span></div>',
     REPAIR_TRUCK = 'REPAIR_TRUCK',
     REPAIR_TRAILER = 'REPAIR_TRAILER',
     REPAIR_TABLE_VIEW = 'Repair-table-view',

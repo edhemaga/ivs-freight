@@ -344,7 +344,7 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
             fuelItems: this.fuelItems,
             files: this.mapDocuments(),
             filesForDeleteIds: [],
-            payrollOwnerId: this.editData.payrollOwnerId,
+            payrollOwnerId: this.editData?.payrollOwnerId,
         };
         this.fuelService
             .addFuelTransaction(newData)
@@ -517,7 +517,7 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
                         this.fuelForm.get(FuelValuesStringEnum.TRANSACTION_TIME)
                             .value
                     ) {
-                        const date =  this.fuelForm.get(
+                        const date = this.fuelForm.get(
                             FuelValuesStringEnum.TRANSACTION_DATE
                         ).value;
                         const time = this.fuelForm.get(
@@ -537,7 +537,9 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
                     this.selectedDispatchHistory = res;
                     this.fuelForm
                         .get(FuelValuesStringEnum.DRIVER_FULL_NAME)
-                        .patchValue(res.firstName?.concat(' ', res.lastName) ?? null);
+                        .patchValue(
+                            res.firstName?.concat(' ', res.lastName) ?? null
+                        );
                     this.fuelForm
                         .get(FuelValuesStringEnum.TRAILER_ID)
                         .patchValue(res.trailerNumber);

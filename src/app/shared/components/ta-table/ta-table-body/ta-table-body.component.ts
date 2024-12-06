@@ -95,14 +95,17 @@ import {
 import { TableBodyColorLabel } from '@shared/models/table-models/table-body-color-label.model';
 import { TableBodyOptionActions } from '@shared/components/ta-table/ta-table-body/models/table-body-option-actions.model';
 import { TableBodyColumns } from '@shared/components/ta-table/ta-table-body/models/table-body-columns.model';
+import { MappedRepair } from '@pages/repair/pages/repair-table/models';
 
 // constants
 import { TaStateImageTextComponent } from '@shared/components/ta-state-image-text/ta-state-image-text.component';
-import { RepairDescriptionPopoverConstants } from '@shared/components/ta-table/ta-table-body/utils/constants';
 import { TaTableBodyConstants } from '@shared/components/ta-table/ta-table-body/utils/constants/ta-table-body.constants';
 
 // directive
-import { PreventMultipleclicksDirective } from '@shared/directives/';
+import {
+    DescriptionItemsTextCountDirective,
+    PreventMultipleclicksDirective,
+} from '@shared/directives/';
 
 // svg routes
 import { TableBodySvgRoutes } from '@shared/components/ta-table/ta-table-body/utils/svg-routes';
@@ -151,6 +154,7 @@ import { TableBodySvgRoutes } from '@shared/components/ta-table/ta-table-body/ut
 
         // directives
         PreventMultipleclicksDirective,
+        DescriptionItemsTextCountDirective,
     ],
     providers: [
         {
@@ -199,9 +203,6 @@ export class TaTableBodyComponent
     viewDataTimeOut: any;
     tableWidthTimeout: any;
     rowData: any;
-    activeDescriptionDropdown: number = -1;
-    descriptionTooltip: any;
-    descriptionPopoverOpen: number = -1;
     invoiceDropdownActive: number = -1;
     invoiceDropdownType: string = null;
     invoiceDropdownData: any;
@@ -227,8 +228,8 @@ export class TaTableBodyComponent
     public statusDetails: LoadPossibleStatusesResponse;
     public stops: LoadListLoadStopResponse;
     public isLoading = false;
-    public popoverDescriptionItems: { title: string; className: string }[] =
-        RepairDescriptionPopoverConstants.descriptionItems;
+    public descriptionPopoverHeaderItems: { title: string }[] =
+        TaTableBodyConstants.DESCRIPTION_POPOVER_HEADER_ITEMS;
 
     public isDropdownPositionBottom: boolean = false;
 
@@ -253,6 +254,7 @@ export class TaTableBodyComponent
 
     // --------------------------------NgOnInit---------------------------------
     ngOnInit(): void {
+        console.log('tableData', this.tableData);
         // Get Selected Tab Data
         this.getSelectedTabTableData();
         this.viewDataEmpty = this.viewData.length ? false : true;
@@ -889,17 +891,50 @@ export class TaTableBodyComponent
     }
 
     // Show Description Dropdown
-    public onShowDescriptionDropdown(
-        popup: NgbPopover,
-        row: any,
-        width: number,
-        column: any,
-        field: string
+    public onShowDescriptionDropdown<T>(
+        popover: NgbPopover,
+        tableType: string,
+        columnWidth: number,
+        row: T
     ): void {
-        this.restriction = false;
+        console.log('popover', popover);
+        console.log('tableType', tableType);
+        console.log('columnWidth', columnWidth);
+        console.log('row', row);
+
+        switch (tableType) {
+            case TableStringEnum.REPAIR:
+                const repairRow = row as MappedRepair;
+
+                const {
+                    isRepairOrder,
+                    tableDescription,
+                    tableDescriptionDropTotal,
+                } = repairRow;
+
+                const repairItemsData = {
+                    isRepairOrder,
+                    descriptionItems: tableDescription,
+                    totalCost: tableDescriptionDropTotal,
+                };
+
+                this.widthPopover = isRepairOrder
+                    ? columnWidth
+                    : columnWidth + 100;
+
+                popover.isOpen()
+                    ? popover.close()
+                    : popover.open({ data: repairItemsData });
+
+                break;
+            default:
+                break;
+        }
+
+        /*   this.restriction = false;
         this.endorsement = false;
         this.widthPopover = width;
-        this.descriptionTooltip = popup;
+
         if (row.tableOffDutyLocation) {
             if (field !== 'tableOffDutyLocation') {
                 this.endorsement = true;
@@ -912,14 +947,18 @@ export class TaTableBodyComponent
             } else {
                 popup.open({ data: column });
             }
-        } else if (row.descriptionItems.length) {
+        } else if (row.tableDescription.length) {
             if (popup.isOpen()) {
                 popup.close();
             } else {
                 popup.open({ data: row });
             }
         }
-        this.activeDescriptionDropdown = popup.isOpen() ? row.id : -1;
+
+
+        
+
+       */
     }
 
     // Show Invoice Aging Dropdown

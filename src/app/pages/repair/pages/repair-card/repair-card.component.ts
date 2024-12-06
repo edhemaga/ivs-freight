@@ -62,9 +62,7 @@ export class RepairCardComponent implements OnInit, AfterViewInit, OnDestroy {
 
     public isCardFlippedCheckInCards: number[] = [];
     public _viewData: CardDetails[];
-    public descriptionTooltip: NgbPopover;
     public descriptionIsOpened: number;
-    public activeDescriptionDropdown: number = -1;
 
     public elementWidth: number;
 
@@ -125,8 +123,6 @@ export class RepairCardComponent implements OnInit, AfterViewInit, OnDestroy {
         card: CardDetails
     ): void {
         if (card.descriptionItems.length > 1) {
-            this.descriptionTooltip = popup;
-
             if (popup.isOpen()) {
                 popup.close();
                 this.descriptionIsOpened = null;
@@ -134,8 +130,6 @@ export class RepairCardComponent implements OnInit, AfterViewInit, OnDestroy {
                 popup.open({ data: card });
                 this.descriptionIsOpened = card.id;
             }
-
-            this.activeDescriptionDropdown = popup.isOpen() ? card.id : -1;
         }
     }
 

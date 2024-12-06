@@ -1,4 +1,16 @@
-import { Component, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output, QueryList, Renderer2, ViewChild, ViewChildren } from '@angular/core';
+import {
+    Component,
+    ElementRef,
+    EventEmitter,
+    Input,
+    OnDestroy,
+    OnInit,
+    Output,
+    QueryList,
+    Renderer2,
+    ViewChild,
+    ViewChildren,
+} from '@angular/core';
 import { Subject, takeUntil } from 'rxjs';
 
 // models
@@ -29,9 +41,9 @@ export class FuelCardComponent implements OnInit, OnDestroy {
 
     @ViewChildren('itemsRepair', { read: ElementRef })
     public itemsContainers!: QueryList<ElementRef>;
-    
+
     @Output() bodyActions: EventEmitter<SendDataCard> = new EventEmitter();
-    
+
     @Input() set viewData(value: CardDetails[]) {
         this._viewData = value;
     }
@@ -50,9 +62,7 @@ export class FuelCardComponent implements OnInit, OnDestroy {
     public cardsBack: CardDataResult[][][] = [];
     public titleArray: string[][] = [];
     public isAllCardsFlipp: boolean;
-    public descriptionTooltip: NgbPopover;
     public descriptionIsOpened: number;
-    public activeDescriptionDropdown: number = -1;
 
     public itemsForRepair: string[] = [];
 
@@ -62,7 +72,7 @@ export class FuelCardComponent implements OnInit, OnDestroy {
 
     constructor(
         private renderer: Renderer2,
-        
+
         // services
         private tableService: TruckassistTableService,
 
@@ -137,8 +147,6 @@ export class FuelCardComponent implements OnInit, OnDestroy {
         card: CardDetails
     ): void {
         if (card.descriptionItems.length > 1) {
-            this.descriptionTooltip = popup;
-
             if (popup.isOpen()) {
                 popup.close();
                 this.descriptionIsOpened = null;
@@ -146,8 +154,6 @@ export class FuelCardComponent implements OnInit, OnDestroy {
                 popup.open({ data: card });
                 this.descriptionIsOpened = card.id;
             }
-
-            this.activeDescriptionDropdown = popup.isOpen() ? card.id : -1;
         }
     }
 

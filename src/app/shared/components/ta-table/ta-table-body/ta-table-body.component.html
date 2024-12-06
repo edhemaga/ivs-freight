@@ -37,8 +37,6 @@
                         'regular-row': !row.isSelected,
                         'selected-row':
                             row.isSelected || dropDownActive === row.id,
-                        'row-repair-order':
-                            row.isRepairOrder && !row.actionAnimation,
                         'user-archived': row.userStatus === 0,
                         'add-animation': row.actionAnimation === 'add',
                         'update-animation': row.actionAnimation === 'update',
@@ -76,6 +74,11 @@
                                             column.ngTemplate !== 'checkbox' &&
                                             column.ngTemplate !==
                                                 'user-checkbox'
+                                    }"
+                                    [ngStyle]="{
+                                        'margin-right':
+                                            column.ngTemplate ===
+                                                'description' && 0
                                     }"
                                 >
                                     <!-- NO TEMPLATE -->
@@ -1086,7 +1089,7 @@
                                                     >
                                                         <svg-icon
                                                             [src]="
-                                                                tableBodySvgRoutes.BROKER_CLOSED_SVG_ROUTE
+                                                                tableBodySvgRoutes.brokerClosedRoute
                                                             "
                                                         ></svg-icon>
                                                     </ng-container>
@@ -1125,11 +1128,30 @@
                                                     >
                                                         <svg-icon
                                                             [src]="
-                                                                tableBodySvgRoutes.BROKER_CLOSED_SVG_ROUTE
+                                                                tableBodySvgRoutes.brokerClosedRoute
                                                             "
                                                         ></svg-icon>
                                                     </ng-container>
+
                                                     {{ row[column.field] }}
+
+                                                    <ng-container
+                                                        *ngIf="
+                                                            row.isRepairOrder &&
+                                                            !row.actionAnimation
+                                                        "
+                                                    >
+                                                        <svg-icon
+                                                            class="repair-order-icon"
+                                                            [src]="
+                                                                tableBodySvgRoutes.circleRoute
+                                                            "
+                                                            [svgStyle]="{
+                                                                'width.px': 10,
+                                                                'height.px': 10
+                                                            }"
+                                                        ></svg-icon>
+                                                    </ng-container>
                                                 </div>
                                             </ng-container>
                                         </div>
@@ -1547,57 +1569,129 @@
                                         </div>
                                     </ng-container>
 
-                                    <!-- DESCRIPTION COLUMN -->
+                                    <!-- DESCRIPTION & TOTAL COLUMN -->
 
-                                    <div
-                                        class="td-content"
+                                    <ng-container
                                         *ngIf="
-                                            column.ngTemplate === 'description'
+                                            ['description', 'total'].includes(
+                                                column.ngTemplate
+                                            )
                                         "
-                                        [ngStyle]="{
-                                            width: column.width + 'px'
-                                        }"
                                     >
                                         <div
-                                            #t1="ngbPopover"
-                                            *ngIf="row[column.field]"
-                                            [ngStyle]="{
-                                                width: column.width - 5 + 'px'
-                                            }"
-                                            class="description-container"
-                                            [innerHtml]="
-                                                row[column.field]
-                                                    | tableDescriptionTextPipe
-                                                        : column.width
+                                            class="td-content description-cost-container"
+                                            ngbTooltip
+                                            tooltipBackground="#424242"
+                                            position="bottom"
+                                            [mainTooltip]="
+                                                column.field ===
+                                                'tableDescription'
+                                                    ? 'Show Items'
+                                                    : ''
                                             "
+                                            [ngClass]="{
+                                                'order-cost-container':
+                                                    column.ngTemplate ===
+                                                        'total' &&
+                                                    row?.isRepairOrder,
+                                                hovered:
+                                                    descriptionCostHoverIndex ===
+                                                        i && !row?.isRepairOrder
+                                            }"
+                                            [ngStyle]="{
+                                                width: column.width + 'px',
+                                                'min-width.px':
+                                                    column?.minWidth ?? 'unset'
+                                            }"
+                                            #t1="ngbPopover"
+                                            container="body"
+                                            placement="bottom-left"
+                                            triggers="manual"
+                                            popoverClass="table-description-popover"
+                                            [ngbPopover]="descriptionPopover"
                                             (click)="
                                                 onShowDescriptionDropdown(
                                                     t1,
-                                                    row,
-                                                    column.width,
-                                                    row[column.field],
-                                                    column.field
+                                                    tableData[0]?.gridNameTitle,
+                                                    column?.width,
+                                                    row
                                                 )
                                             "
-                                            [ngbPopover]="descriptionPopover"
-                                            container="body"
-                                            [placement]="'bottom-left'"
-                                            popoverClass="table-description-popover"
-                                            triggers="manual"
-                                            (hidden)="
-                                                descriptionPopoverOpen = -1
+                                            (mouseenter)="
+                                                descriptionCostHoverIndex = i
                                             "
-                                            (shown)="
-                                                descriptionPopoverOpen = row.id
+                                            (mouseleave)="
+                                                descriptionCostHoverIndex = -1
                                             "
-                                        ></div>
-                                        <div
-                                            [appDescriptionItemsTextCount]="
-                                                row[column.field]
-                                            "
-                                            [containerWidth]="column.width"
-                                        ></div>
-                                    </div>
+                                        >
+                                            <!-- DESCRIPTION COLUMN -->
+
+                                            <ng-container
+                                                *ngIf="
+                                                    column.ngTemplate ===
+                                                    'description'
+                                                "
+                                            >
+                                                <div class="w-100">
+                                                    <div
+                                                        [appDescriptionItemsTextCount]="
+                                                            row[column.field]
+                                                        "
+                                                        [containerWidth]="
+                                                            column.width
+                                                        "
+                                                    ></div>
+                                                </div>
+                                            </ng-container>
+
+                                            <!-- TOTAL  COLUMN-->
+
+                                            <ng-container
+                                                *ngIf="
+                                                    column.ngTemplate ===
+                                                    'total'
+                                                "
+                                            >
+                                                <div
+                                                    class="d-flex align-items-center justify-content-end w-100"
+                                                >
+                                                    <ng-container
+                                                        *ngIf="
+                                                            !row.isRepairOrder;
+                                                            else repairOrder
+                                                        "
+                                                    >
+                                                        <span
+                                                            class="ta-font-semi-bold text-size-14 text-color-black"
+                                                            [innerHtml]="
+                                                                row[
+                                                                    column.field
+                                                                ]
+                                                                    ? row[
+                                                                          column
+                                                                              .field
+                                                                      ]
+                                                                    : ''
+                                                            "
+                                                        ></span>
+                                                    </ng-container>
+
+                                                    <ng-template #repairOrder>
+                                                        <div
+                                                            class="d-flex justify-content-center align-items-center ta-font-bold text-size-11 finish-order-action"
+                                                            (click)="
+                                                                onFinishOrder(
+                                                                    row.id
+                                                                )
+                                                            "
+                                                        >
+                                                            FINISH ORDER
+                                                        </div>
+                                                    </ng-template>
+                                                </div>
+                                            </ng-container>
+                                        </div>
+                                    </ng-container>
 
                                     <!-- SHARED COLUMN-->
 
@@ -1672,50 +1766,6 @@
                                             }}
                                         </div>
                                     </div>
-
-                                    <!-- TOTAL  COLUMN-->
-
-                                    <ng-container
-                                        *ngIf="column.ngTemplate === 'total'"
-                                    >
-                                        <div
-                                            class="d-flex justify-content-end td-content"
-                                            [ngStyle]="{
-                                                width: column.width + 'px',
-                                                'min-width.px':
-                                                    column?.minWidth ?? 'unset'
-                                            }"
-                                        >
-                                            <ng-container
-                                                *ngIf="
-                                                    !row.isRepairOrder &&
-                                                        descriptionPopoverOpen !==
-                                                            row.id;
-                                                    else repairOrder
-                                                "
-                                            >
-                                                <span
-                                                    class="table-total"
-                                                    [innerHtml]="
-                                                        row[column.field]
-                                                            ? row[column.field]
-                                                            : ''
-                                                    "
-                                                ></span>
-                                            </ng-container>
-
-                                            <ng-template #repairOrder>
-                                                <div
-                                                    class="finish-order-action d-flex justify-content-center"
-                                                    (click)="
-                                                        onFinishOrder(row.id)
-                                                    "
-                                                >
-                                                    Finish Order
-                                                </div>
-                                            </ng-template>
-                                        </div>
-                                    </ng-container>
 
                                     <!-- COMPACT TEXT -->
 
@@ -2982,14 +3032,19 @@
                             <ng-container
                                 *ngFor="
                                     let column of notPinedColumns;
-                                    let c = index;
+                                    let notPinedColumnIndex = index;
                                     trackBy: trackTableNotPinedColumns
                                 "
                             >
                                 <td
                                     class="not-pined-td"
                                     [ngClass]="{
-                                        'space-left': c === 0
+                                        'space-left': notPinedColumnIndex === 0
+                                    }"
+                                    [ngStyle]="{
+                                        'margin-right':
+                                            column.ngTemplate ===
+                                                'description' && 0
                                     }"
                                 >
                                     <!-- NO TEMPLATE -->
@@ -3620,7 +3675,7 @@
                                                 >
                                                     <svg-icon
                                                         [src]="
-                                                            tableBodySvgRoutes.BROKER_CLOSED_SVG_ROUTE
+                                                            tableBodySvgRoutes.brokerClosedRoute
                                                         "
                                                     ></svg-icon>
                                                 </ng-container>
@@ -3651,7 +3706,7 @@
                                                 >
                                                     <svg-icon
                                                         [src]="
-                                                            tableBodySvgRoutes.BROKER_CLOSED_SVG_ROUTE
+                                                            tableBodySvgRoutes.brokerClosedRoute
                                                         "
                                                     ></svg-icon>
                                                 </ng-container>
@@ -4070,89 +4125,132 @@
                                         </div>
                                     </ng-container>
 
-                                    <!-- DESCRIPTION COLUMN -->
+                                    <!-- DESCRIPTION & TOTAL COLUMN -->
 
-                                    <div
-                                        class="td-content"
+                                    <ng-container
                                         *ngIf="
-                                            column.ngTemplate === 'description'
+                                            ['description', 'total'].includes(
+                                                column.ngTemplate
+                                            )
                                         "
-                                        [ngStyle]="{
-                                            width: column.width + 'px'
-                                        }"
                                     >
-                                        <ng-container
-                                            *ngIf="
-                                                row[column.field] &&
-                                                row[column.field]?.length
+                                        <div
+                                            class="td-content description-cost-container"
+                                            ngbTooltip
+                                            tooltipBackground="#424242"
+                                            position="bottom"
+                                            [mainTooltip]="
+                                                column.field ===
+                                                'tableDescription'
+                                                    ? 'Show Items'
+                                                    : ''
+                                            "
+                                            [ngClass]="{
+                                                'order-cost-container':
+                                                    column.ngTemplate ===
+                                                        'total' &&
+                                                    row?.isRepairOrder,
+                                                hovered:
+                                                    descriptionCostHoverIndex ===
+                                                        i && !row?.isRepairOrder
+                                            }"
+                                            [ngStyle]="{
+                                                width: column.width + 'px',
+                                                'min-width.px':
+                                                    column?.minWidth ?? 'unset'
+                                            }"
+                                            #t1="ngbPopover"
+                                            container="body"
+                                            placement="bottom-left"
+                                            triggers="manual"
+                                            popoverClass="table-description-popover"
+                                            [ngbPopover]="descriptionPopover"
+                                            (click)="
+                                                column.ngTemplate ===
+                                                    'description' &&
+                                                    onShowDescriptionDropdown(
+                                                        t1,
+                                                        tableData[0]
+                                                            ?.gridNameTitle,
+                                                        column?.width,
+                                                        row
+                                                    )
+                                            "
+                                            (mouseenter)="
+                                                descriptionCostHoverIndex = i
+                                            "
+                                            (mouseleave)="
+                                                descriptionCostHoverIndex = -1
                                             "
                                         >
-                                            <div
-                                                ngbTooltip
-                                                [mainTooltip]="
-                                                    column.field !==
-                                                    'tableOffDutyLocation'
-                                                        ? column.field !==
-                                                          'tableCdlDetailRestriction'
-                                                            ? 'View Endorsements'
-                                                            : 'View Restrictions'
-                                                        : 'View Off Duty Locations'
+                                            <!-- DESCRIPTION COLUMN -->
+
+                                            <ng-container
+                                                *ngIf="
+                                                    column.ngTemplate ===
+                                                    'description'
                                                 "
-                                                tooltipBackground="#424242"
-                                                position="bottom"
+                                            >
+                                                <div class="w-100">
+                                                    <div
+                                                        [appDescriptionItemsTextCount]="
+                                                            row[column.field]
+                                                        "
+                                                        [containerWidth]="
+                                                            column.width
+                                                        "
+                                                    ></div>
+                                                </div>
+                                            </ng-container>
+
+                                            <!-- TOTAL  COLUMN-->
+
+                                            <ng-container
+                                                *ngIf="
+                                                    column.ngTemplate ===
+                                                    'total'
+                                                "
                                             >
                                                 <div
-                                                    #t1="ngbPopover"
-                                                    [ngStyle]="{
-                                                        width:
-                                                            column.width -
-                                                            5 +
-                                                            'px'
-                                                    }"
-                                                    class="description-container"
-                                                    [innerHtml]="
-                                                        row[column.field]
-                                                            | tableDescriptionTextPipe
-                                                                : column.width
-                                                    "
-                                                    (click)="
-                                                        onShowDescriptionDropdown(
-                                                            t1,
-                                                            row,
-                                                            column.width,
-                                                            row[column.field],
-                                                            column.field
-                                                        )
-                                                    "
-                                                    [ngbPopover]="
-                                                        row.tableOffDutyLocation
-                                                            ? driverDescriptionPopover
-                                                            : descriptionPopover
-                                                    "
-                                                    container="body"
-                                                    [placement]="'bottom-left'"
-                                                    popoverClass="table-description-popover"
-                                                    triggers="manual"
-                                                    (hidden)="
-                                                        descriptionPopoverOpen =
-                                                            -1
-                                                    "
-                                                    (shown)="
-                                                        descriptionPopoverOpen =
-                                                            row.id
-                                                    "
-                                                ></div>
-                                                <div
-                                                    [appDescriptionItemsTextCount]="
-                                                        row[column.field]
-                                                    "
-                                                    [containerWidth]="
-                                                        column.width
-                                                    "
-                                                ></div>
-                                            </div>
-                                        </ng-container>
-                                    </div>
+                                                    class="d-flex align-items-center justify-content-end w-100"
+                                                >
+                                                    <ng-container
+                                                        *ngIf="
+                                                            !row.isRepairOrder;
+                                                            else repairOrder
+                                                        "
+                                                    >
+                                                        <span
+                                                            class="ta-font-semi-bold text-size-14 text-color-black"
+                                                            [innerHtml]="
+                                                                row[
+                                                                    column.field
+                                                                ]
+                                                                    ? row[
+                                                                          column
+                                                                              .field
+                                                                      ]
+                                                                    : ''
+                                                            "
+                                                        ></span>
+                                                    </ng-container>
+
+                                                    <ng-template #repairOrder>
+                                                        <div
+                                                            class="d-flex justify-content-center align-items-center ta-font-bold text-size-11 finish-order-action"
+                                                            (click)="
+                                                                onFinishOrder(
+                                                                    row.id
+                                                                )
+                                                            "
+                                                        >
+                                                            FINISH ORDER
+                                                        </div>
+                                                    </ng-template>
+                                                </div>
+                                            </ng-container>
+                                        </div>
+                                    </ng-container>
 
                                     <!-- SHARED COLUMN-->
 
@@ -4380,50 +4478,6 @@
                                             }}
                                         </div>
                                     </div>
-
-                                    <!-- TOTAL  COLUMN-->
-
-                                    <ng-container
-                                        *ngIf="column.ngTemplate === 'total'"
-                                    >
-                                        <div
-                                            class="d-flex justify-content-end td-content"
-                                            [ngStyle]="{
-                                                width: column.width + 'px',
-                                                'min-width.px':
-                                                    column?.minWidth ?? 'unset'
-                                            }"
-                                        >
-                                            <ng-container
-                                                *ngIf="
-                                                    !row.isRepairOrder &&
-                                                        descriptionPopoverOpen !==
-                                                            row.id;
-                                                    else repairOrder
-                                                "
-                                            >
-                                                <span
-                                                    class="table-total"
-                                                    [innerHtml]="
-                                                        row[column.field]
-                                                            ? row[column.field]
-                                                            : ''
-                                                    "
-                                                ></span>
-                                            </ng-container>
-
-                                            <ng-template #repairOrder>
-                                                <div
-                                                    class="finish-order-action d-flex justify-content-center"
-                                                    (click)="
-                                                        onFinishOrder(row.id)
-                                                    "
-                                                >
-                                                    Finish Order
-                                                </div>
-                                            </ng-template>
-                                        </div>
-                                    </ng-container>
 
                                     <!-- SERVICE COLUMN-->
 
@@ -6578,71 +6632,153 @@
 <ng-template #descriptionPopover let-data="data">
     <div
         class="description-dropdown-container"
+        [ngClass]="data.isRepairOrder ? 'repair-order' : 'repair-bill'"
         [ngStyle]="{
-            width: widthPopover + 100 + 'px'
+            width: widthPopover + 'px'
         }"
     >
-        <div class="description-titles">
-            <div
+        <!-- Header -->
+
+        <div class="align-items-center description-titles">
+            <ng-container
                 *ngFor="
-                    let popoverDescriptionItem of popoverDescriptionItems;
+                    let descriptionPopoverHeaderItem of data.isRepairOrder
+                        ? (descriptionPopoverHeaderItems | slice : 0 : 3)
+                        : descriptionPopoverHeaderItems;
+                    let descriptionPopoverHeaderItemIndex = index;
                     trackBy: trackByDescriptionIdentity
                 "
-                [ngClass]="popoverDescriptionItem.className"
             >
-                {{ popoverDescriptionItem.title }}
-            </div>
-            <div class="price-total-title">
-                {{ data.tabelDescriptionDropTotal }}
+                <div
+                    class="d-flex align-items-center"
+                    [ngStyle]="{
+                        'margin-left':
+                            descriptionPopoverHeaderItemIndex === 1 && '-4px'
+                    }"
+                    [ngClass]="{
+                        'justify-content-center':
+                            descriptionPopoverHeaderItemIndex === 0 ||
+                            (data.isRepairOrder &&
+                                descriptionPopoverHeaderItemIndex === 2),
+                        'justify-content-end':
+                            descriptionPopoverHeaderItemIndex === 2 ||
+                            descriptionPopoverHeaderItemIndex === 3
+                    }"
+                >
+                    <p
+                        class="m-0 ta-font-bold text-size-11 text-color-light-grey-6"
+                    >
+                        {{ descriptionPopoverHeaderItem.title }}
+                    </p>
+                </div>
+            </ng-container>
+
+            <div class="d-flex align-items-center justify-content-end">
+                <p class="m-0 ta-font-semi-bold text-size-14 text-color-white">
+                    {{ data.totalCost }}
+                </p>
             </div>
         </div>
+
+        <!-- Dropdown -->
+
         <div
-            class="description-items"
-            [ngStyle]="{
-                width: widthPopover + 100 + 'px'
+            class="d-flex flex-column description-items"
+            [ngClass]="{
+                'dropdown-scroll': data.descriptionItems.length >= 8
             }"
         >
-            <div
-                class="description-item"
-                [ngClass]="{ 'description-item-margin': i !== 0 }"
-                *ngFor="let item of data.descriptionItems; let i = index"
+            <ng-container
+                *ngFor="
+                    let descriptionPopoverItem of data.descriptionItems;
+                    let descriptionPopoverItemIndex = index;
+                    trackBy: trackByIdentity
+                "
             >
-                <div class="item-index">{{ i + 1 }}</div>
-                <div class="pm-item" *ngIf="item.pmDescription">
-                    <svg-icon
-                        [src]="
-                            'assets/svg/common/repair-pm/' +
-                            item.pmDescription.logoName
+                <div
+                    class="align-items-center description-items-item"
+                    [ngClass]="{
+                        'pm-item':
+                            descriptionPopoverItem?.pmTruck ||
+                            descriptionPopoverItem?.pmTrailer
+                    }"
+                >
+                    <!-- # -->
+
+                    <div
+                        class="d-flex align-items-center justify-content-center"
+                    >
+                        <span
+                            class="m-0 ta-font-medium text-size-14 text-color-grey"
+                        >
+                            {{ descriptionPopoverItemIndex + 1 }}
+                        </span>
+                    </div>
+
+                    <!-- Description -->
+
+                    <div class="d-flex align-items-center description-box">
+                        <p class="m-0 text-size-14 text-color-white">
+                            {{ descriptionPopoverItem?.description }}
+                        </p>
+
+                        <svg-icon
+                            *ngIf="
+                                descriptionPopoverItem?.pmTruck ||
+                                descriptionPopoverItem?.pmTrailer
+                            "
+                            class="pm-icon"
+                            [src]="
+                                descriptionPopoverItem?.pmTruck?.logoName ||
+                                descriptionPopoverItem?.pmTrailer.logoName
+                            "
+                            [svgStyle]="{
+                                'width.px': 14,
+                                'height.px': 14
+                            }"
+                        ></svg-icon>
+                    </div>
+
+                    <!-- Quantity -->
+
+                    <div
+                        class="d-flex align-items-center"
+                        [ngClass]="
+                            data.isRepairOrder
+                                ? 'justify-content-center'
+                                : 'justify-content-end'
                         "
-                        [svgStyle]="{ 'width.px': '20', 'height.px': '20' }"
-                    ></svg-icon>
+                    >
+                        <p class="m-0 text-size-14 text-color-white">
+                            {{ descriptionPopoverItem?.quantity }}
+                        </p>
+                    </div>
+
+                    <ng-container *ngIf="!data.isRepairOrder">
+                        <!-- Price -->
+
+                        <div
+                            class="d-flex align-items-center justify-content-end"
+                        >
+                            <p class="m-0 text-size-14 text-color-white">
+                                {{ descriptionPopoverItem?.descriptionPrice }}
+                            </p>
+                        </div>
+
+                        <!-- Cost -->
+
+                        <div
+                            class="d-flex align-items-center justify-content-end"
+                        >
+                            <p class="m-0 text-size-14 text-color-white">
+                                {{
+                                    descriptionPopoverItem?.descriptionTotalPrice
+                                }}
+                            </p>
+                        </div>
+                    </ng-container>
                 </div>
-                <div
-                    class="item-title"
-                    [ngClass]="{ 'pm-style': item.pmDescription }"
-                >
-                    {{ item.description }}
-                </div>
-                <div
-                    class="number-of-items"
-                    [ngClass]="{ 'pm-style': item.pmDescription }"
-                >
-                    {{ item.quantity }}
-                </div>
-                <div
-                    class="item-cost"
-                    [ngClass]="{ 'pm-style': item.pmDescription }"
-                >
-                    {{ item.descriptionPrice }}
-                </div>
-                <div
-                    class="item-total-cost"
-                    [ngClass]="{ 'pm-style': item.pmDescription }"
-                >
-                    {{ item.descriptionTotalPrice }}
-                </div>
-            </div>
-            <div class="right-background"></div>
+            </ng-container>
         </div>
     </div>
 </ng-template>

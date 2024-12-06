@@ -53,8 +53,6 @@
                 <div
                     class="shop-details-item-repair-main-border"
                     [ngClass]="{
-                        'shop-details-item-repair-main-border-order':
-                            repair?.repairType?.name === 'Order',
                         'active-drawer':
                             repairIndex === repairItemDocumentsDrawerIndex
                     }"
@@ -75,12 +73,29 @@
                         >
                             <!-- Invoice -->
 
-                            <div class="d-flex align-items-center">
+                            <div
+                                class="d-flex align-items-center invoice-container"
+                            >
                                 <p
                                     class="m-0 ta-font-bold text-size-14 text-color-black"
                                 >
                                     {{ repair?.invoice || repair?.orderNumber }}
                                 </p>
+
+                                <ng-container
+                                    *ngIf="repair?.repairType?.name === 'Order'"
+                                >
+                                    <svg-icon
+                                        class="repair-order-icon"
+                                        [src]="
+                                            repairShopDetailsSvgRoutes.circleRoute
+                                        "
+                                        [svgStyle]="{
+                                            'width.px': 10,
+                                            'height.px': 10
+                                        }"
+                                    ></svg-icon>
+                                </ng-container>
                             </div>
 
                             <!-- Date -->

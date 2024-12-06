@@ -5,7 +5,7 @@ import {
 } from 'appcoretruckassist';
 import { DropdownItem } from '@shared/models/dropdown-item.model';
 
-export interface MappedTruckTrailer {
+export interface MappedRepair {
     tablePaid: string;
     isSelected: boolean;
     isRepairOrder: boolean;
@@ -28,7 +28,7 @@ export interface MappedTruckTrailer {
     tableServiceType: string;
     tableServices: RepairServiceTypeResponse[];
     tableDescription: RepairItemResponse[];
-    tabelDescriptionDropTotal: string;
+    tableDescriptionDropTotal: string;
     tableCost: string;
     tableAdded: string;
     tableEdited: string;
@@ -37,5 +37,4 @@ export interface MappedTruckTrailer {
         hasContent: boolean;
         content: DropdownItem[];
     };
-    descriptionItems: Array<RepairItemResponse>;
 }

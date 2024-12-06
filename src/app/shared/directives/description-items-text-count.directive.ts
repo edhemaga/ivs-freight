@@ -15,6 +15,8 @@ export class DescriptionItemsTextCountDirective implements AfterViewInit {
     set items(value: string[]) {
         this._items = value;
 
+        this.createStringArray(this._items);
+
         this.updateItems();
     }
 
@@ -30,13 +32,25 @@ export class DescriptionItemsTextCountDirective implements AfterViewInit {
         this.updateItems();
     }
 
+    private createStringArray<T extends { description?: string } | string>(
+        value: T[]
+    ): void {
+        const isStringArray = value.every((item) => typeof item === 'string');
+
+        if (!isStringArray) {
+            const objectArray = value as { description?: string }[];
+
+            this._items = objectArray.map((item) => item.description);
+        }
+    }
+
     private updateItems(): void {
         const container = this.element.nativeElement;
 
         // clear the container and set styles
         this.renderer.setProperty(container, 'innerHTML', '');
 
-        this.renderer.setStyle(container, 'display', 'inline-block');
+        this.renderer.setStyle(container, 'display', 'flex');
         this.renderer.setStyle(container, 'overflow', 'hidden');
         this.renderer.setStyle(container, 'white-space', 'nowrap');
 

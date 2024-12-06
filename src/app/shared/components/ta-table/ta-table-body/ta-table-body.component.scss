@@ -522,6 +522,7 @@ table.truckassist-table-body-style {
                         }
 
                         // CONTACTS COLUMN
+
                         .contacts-container {
                             margin-left: -4px;
                         }
@@ -567,6 +568,26 @@ table.truckassist-table-body-style {
                         }
 
                         // DESCRIPTION COLUMN
+
+                        &.description-cost-container {
+                            transition: background 0.2s ease-in;
+                            padding-right: 8px;
+                            cursor: pointer;
+
+                            &:hover,
+                            &.hovered {
+                                background: $dark-2;
+                            }
+
+                            &.order-cost-container {
+                                padding-right: 4px;
+
+                                &:hover {
+                                    background: transparent;
+                                }
+                            }
+                        }
+
                         .round-number span {
                             height: 18px;
                             min-width: 18px;
@@ -575,25 +596,9 @@ table.truckassist-table-body-style {
                             padding: 0px 5px;
                             background: $dark-2;
                         }
-                        .description-container {
-                            cursor: pointer;
-                            color: $bw6-2;
-                            font-size: 14px;
-                            font-weight: 400;
-                            height: 18px;
-                            line-height: 18px;
-                            display: flex;
-                            overflow: hidden;
-                            white-space: nowrap;
-                            text-overflow: ellipsis;
-
-                            &::selection {
-                                color: $bw6-2;
-                                background: $bw6-3;
-                            }
-                        }
 
                         // VL COLUMN
+
                         .active-vl-count,
                         .zero-vl-count {
                             color: $bw6-2;
@@ -797,6 +802,17 @@ table.truckassist-table-body-style {
                             &::selection {
                                 color: $ta-black;
                                 background: $bw6-3;
+                            }
+
+                            .repair-order-icon {
+                                position: relative;
+                                bottom: 1px;
+
+                                svg {
+                                    circle {
+                                        fill: $ta-yellow-1;
+                                    }
+                                }
                             }
                         }
 
@@ -1226,18 +1242,6 @@ table.truckassist-table-body-style {
                             }
                         }
 
-                        // TOTAL TEXT COLUMN
-                        .table-total {
-                            font-size: 14px;
-                            font-weight: 600;
-                            color: $bw6-2;
-
-                            &::selection {
-                                color: $bw6-2;
-                                background: $bw6-3;
-                            }
-                        }
-
                         // COMMENT COLUMN
                         .comment-container {
                             cursor: pointer;
@@ -1514,21 +1518,17 @@ table.truckassist-table-body-style {
 
                         // FINISH ORDER COLUMN
                         .finish-order-action {
-                            width: 98px;
-                            height: 24px;
-                            display: flex;
+                            width: 105px;
+                            height: 22px;
                             border-radius: 2px;
-                            color: $ta-blue-13;
-                            font-size: 11px;
-                            font-weight: 800;
-                            align-items: center;
-                            justify-content: center;
-                            overflow: hidden;
-                            white-space: nowrap;
-                            text-overflow: ellipsis;
+                            color: $ta-blue-18;
                             cursor: pointer;
+                            transition: background 0.2s ease-in,
+                                color 0.2s ease-in;
+
                             &:hover {
                                 background: $ta-blue-15;
+                                color: $white;
                             }
                         }
 
@@ -2225,7 +2225,7 @@ table.truckassist-table-body-style {
                                 border-radius: 2px;
                                 background-color: $dark-2;
                             }
-                            
+
                             .add-pm-text {
                                 display: none;
                                 font-weight: 600;
@@ -2807,18 +2807,8 @@ table.truckassist-table-body-style {
                     background-color: $ta-light-grey !important;
 
                     .finish-order-action {
-                        width: 98px;
-                        height: 24px;
-                        border-radius: 2px;
-                        background: $ta-blue-14;
+                        background: $ta-blue-18;
                         color: $white;
-                        font-size: 11px;
-                        font-weight: 800;
-                        align-items: center;
-                        overflow: hidden;
-                        white-space: nowrap;
-                        text-overflow: ellipsis;
-                        cursor: pointer;
                     }
 
                     .td-content {
@@ -2968,11 +2958,6 @@ table.truckassist-table-body-style {
                     }
                 }
             }
-        }
-
-        // Repair Order Row
-        .row-repair-order {
-            border: 1px solid $ta-yellow-1;
         }
 
         // Border Scroll Section
