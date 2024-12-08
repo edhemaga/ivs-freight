@@ -1106,26 +1106,7 @@ export class LoadService {
 
         if (statusType === null || statusType === undefined) return;
 
-        switch (name) {
-            case LoadStatusType.Pending:
-                console.log('PENDING STATUS');
-
-                this.updateStoreEntityLocal(loadChanged, name);
-
-                break;
-            case LoadStatusType.Active:
-                console.log('ACTIVE STATUS');
-
-                this.updateStoreEntityLocal(loadChanged, name);
-
-                break;
-            case LoadStatusType.Closed:
-                console.log('CLOSED STATUS');
-
-                this.updateStoreEntityLocal(loadChanged, name);
-
-                break;
-        }
+        this.updateStoreEntityLocal(loadChanged, name as LoadStatusType);
     }
 
     private updateStoreEntityLocal(loadChanged: LoadListDto | LoadTemplateResponse, loadStatusType: LoadStatusType): void {

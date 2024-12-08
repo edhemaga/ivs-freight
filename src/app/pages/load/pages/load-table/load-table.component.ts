@@ -744,8 +744,6 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     localStorage.getItem(TableStringEnum.LOAD_TABLE_COUNT)
                 );
 
-                console.log('INIT DATA', response);
-
                 const loadTemplateData =
                     this.selectedTab === TableStringEnum.TEMPLATE
                         ? this.getTabData(TableStringEnum.TEMPLATE)
@@ -1912,9 +1910,6 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 const loadChanged: LoadListDto = response[0];
                 
                 this.refreshLoad(loadChanged);
-
-                console.log('LoadChanged', response);
-                console.log(this.viewData);
             });
     }
 
@@ -1929,8 +1924,6 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
             id: loadChangedStatusTypeId,
             name: loadChangedStatusName
         } = loadChangedStatusType || {};
-        console.log('selected tab', this.selectedTab);
-        console.log(loadChangedStatusName);
         const {
             isSelected,
             loadInvoice,
@@ -2044,15 +2037,15 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
             tableDropdownContent
         };
 
-        // this.mapLoadData(loadChanged);
-
         if (loadChangedStatusTypeId !== loadOldStatusTypeId && loadChangedStatusName?.toLowerCase() === this.selectedTab) this.viewData.push(updatingItem);
         else if (loadChangedStatusTypeId !== loadOldStatusTypeId) this.viewData.splice(index, 1);
         else if (index >= 0) this.viewData.splice(index, 1, updatingItem);
         else this.viewData.push(updatingItem);
 
         this.loadServices.refreshLoadDataLocal(loadChanged);
-        this.viewData = [...this.viewData];
+        this.viewData = this.viewData.map((data: LoadModel) => {
+            return this.mapLoadData(data);
+        });
         this.getTabData(this.selectedTab);
     }
 
