@@ -34,6 +34,8 @@ import { TruckDetailsEnum } from '@pages/truck/pages/truck-details/enums/truck-d
 
 // Constants
 import { TruckDetailsConstants } from '@pages/truck/pages/truck-details/utils/constants/truck-details.constants';
+
+// Config
 import {
     PerformanceTabSwitchConfiguration,
     TruckDetailsChartsConfiguration,
@@ -353,7 +355,6 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
                     this.onSelectedTruck({
                         id: this.truckDropDowns[currentIndex].id,
                     });
-                    //this.truckIndex = currentIndex;
                 }
                 break;
             }
@@ -369,7 +370,6 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
                     this.onSelectedTruck({
                         id: this.truckDropDowns[currentIndex].id,
                     });
-                    //this.truckIndex = currentIndex;
                 }
 
                 break;
