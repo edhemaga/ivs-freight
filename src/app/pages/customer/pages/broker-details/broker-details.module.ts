@@ -25,6 +25,7 @@ import { TaUserReviewComponent } from '@shared/components/ta-user-review/ta-user
 import { TaCounterComponent } from '@shared/components/ta-counter/ta-counter.component';
 import { TaContactsCardComponent } from '@shared/components/ta-contacts-card/ta-contacts-card.component';
 import { CaChartComponent } from 'ca-components';
+import { TaChartLegendComponent } from '@shared/components/ta-chart-legend/ta-chart-legend.component';
 
 // Pipes
 import { FormatCurrencyPipe } from '@shared/pipes/format-currency.pipe';
@@ -64,6 +65,7 @@ import { LoadStatusColorPipe } from '@shared/pipes/load-status-color.pipe';
         TaCounterComponent,
         TaContactsCardComponent,
         CaChartComponent,
+        TaChartLegendComponent,
 
         // Pipes
         FormatCurrencyPipe,
@@ -74,4 +76,4 @@ import { LoadStatusColorPipe } from '@shared/pipes/load-status-color.pipe';
         LoadStatusColorPipe,
     ],
 })
-export class BrokerDetailsModule {}
+export class BrokerDetailsModule { }
