@@ -743,7 +743,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             ],
             name: [null],
             loadTemplateId: [null],
-            dispatcherId: [null],
+            dispatcherId: [null, Validators.required],
             status: [null],
             companyId: [this.companyUser.companyName, Validators.required],
             brokerId: [null, Validators.required],

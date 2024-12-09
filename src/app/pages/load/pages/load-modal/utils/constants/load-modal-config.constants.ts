@@ -417,6 +417,7 @@ export class LoadModalConfig {
             type: 'text',
             label: 'Dispatcher',
             isDropdown: true,
+            isRequired: true,
             dropdownImageInput: {
                 withText: true,
                 svg: false,
