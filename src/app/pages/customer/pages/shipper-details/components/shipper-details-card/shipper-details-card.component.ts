@@ -42,8 +42,7 @@ import { ShipperDetailsChartsConfiguration } from '../shipper-details-item/utils
     styleUrls: ['./shipper-details-card.component.scss'],
 })
 export class ShipperDetailsCardComponent
-    implements OnInit, OnChanges, OnDestroy
-{
+    implements OnInit, OnChanges, OnDestroy {
     private destroy$ = new Subject<void>();
     @Input() shipper: any;
     @Input() templateCard: boolean;
@@ -51,8 +50,7 @@ export class ShipperDetailsCardComponent
     public shipperList: any[] = this.shipperMinimalListQuery.getAll();
     public note: UntypedFormControl = new UntypedFormControl();
     public shipperTabs: any[] = [];
-    public payrollChartConfig: IChartConfiguration =
-        ShipperDetailsChartsConfiguration.PAYROLL_CHART_CONFIG;
+    public payrollChartConfig: IChartConfiguration = ShipperDetailsChartsConfiguration.PAYROLL_CHART_CONFIG;
 
     public monthList: any[] = [
         'JAN',
@@ -84,7 +82,7 @@ export class ShipperDetailsCardComponent
 
         // Store
         private shipperMinimalListQuery: ShipperMinimalListQuery
-    ) {}
+    ) { }
 
     ngOnChanges(changes: SimpleChanges): void {
         if (changes.shipper?.currentValue != changes.shipper?.previousValue) {
@@ -244,8 +242,8 @@ export class ShipperDetailsCardComponent
             .pipe(takeUntil(this.destroy$))
             .subscribe((item) => {
                 let avgPickupTime = this.convertTimeSpanToMinutes(
-                        item.avgPickupTime
-                    ),
+                    item.avgPickupTime
+                ),
                     avgDeliveryTime = this.convertTimeSpanToMinutes(
                         item.avgDeliveryTime
                     );
