@@ -38,7 +38,7 @@ export class ChartHelper {
                 label: property.value,
                 borderWidth: property?.borderWidth || 2,
                 data: [],
-                color1: property?.color,
+                color: property?.color,
                 color2: property?.color2 || property.color,
                 shiftValue: property.shiftValue
             };
@@ -126,7 +126,7 @@ export class ChartHelper {
         rawData: T[],
         timeFilter: number
     ): string[] {
-       
+
         return rawData.map((item: T) => {
             const day = item['day'] as number;
             const month = item['month'] as number;
