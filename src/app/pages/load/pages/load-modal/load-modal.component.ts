@@ -4172,6 +4172,11 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                     )?.status.statusValue.name;
 
                     this.handleTonuRateVisiblity();
+
+                    setTimeout(() => {
+                        this.startFormChanges();
+                    }, 2000);
+                    
                 });
         }
         const id =
@@ -5513,6 +5518,16 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             routingMarkers: routeMarkers,
             routePaths: routePaths,
         };
+    }
+
+    private startFormChanges(): void {
+        this.formService.checkFormChange(this.loadForm);
+
+        this.formService.formValueChange$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((isFormChange: boolean) => {
+                this.isFormDirty = isFormChange;
+            });
     }
 
     ngOnDestroy(): void {
