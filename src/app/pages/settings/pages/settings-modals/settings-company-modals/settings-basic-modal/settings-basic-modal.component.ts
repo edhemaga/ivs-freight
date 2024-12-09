@@ -624,7 +624,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
                 data?.extensionPhone ? data?.extensionPhone : null,
                 [...phoneExtension],
             ],
-            email: [data?.email ? data?.email : null, [Validators.required]],
+            email: [data?.email ? data?.email : null, [Validators.required, Validators.email]],
         });
     }
 
