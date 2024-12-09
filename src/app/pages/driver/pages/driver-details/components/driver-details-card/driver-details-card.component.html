@@ -85,10 +85,7 @@
                         marginBottom: '4px'
                     }"
                 >
-                    <div
-                        class="charts-template perfomance"
-                    >
-
+                    <div class="charts-template perfomance">
                         <!-- <ng-container *ngIf="!payrollChart.hoveringStatus"> -->
                         <div>
                             <app-ta-tab-switch
@@ -98,11 +95,13 @@
                             >
                             </app-ta-tab-switch>
                         </div>
-                        <!-- </ng-container> -->
-                        <app-ca-chart 
-                            [chartConfig]="payrollChartConfig"
-                        >
-                        </app-ca-chart>
+                        <ng-container *ngIf="payrollChartConfig?.chartData">
+                            <app-ta-chart-legend
+                                [data]="chartLegendData"
+                            ></app-ta-chart-legend>
+                            <app-ca-chart [chartConfig]="payrollChartConfig">
+                            </app-ca-chart>
+                        </ng-container>
                     </div>
                 </app-ta-custom-card>
 

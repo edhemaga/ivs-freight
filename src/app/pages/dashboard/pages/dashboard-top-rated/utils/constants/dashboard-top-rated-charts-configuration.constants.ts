@@ -26,5 +26,6 @@ export class DashboardTopRatedChartsConfiguration {
         width: 100,
         noDataImage: ChartImagesStringEnum.CHART_NO_DATA_MIXED,
         chartOptions: {},
+        showXAxisLabels: true
     };
 }

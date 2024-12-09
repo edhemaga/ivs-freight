@@ -2,12 +2,12 @@ import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 
-// modules
+// Modules
 import { SharedModule } from '@shared/shared.module';
 import { TruckDetailsRoutingModule } from '@pages/truck/pages/truck-details/truck-details-routing.module';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 
-// components
+// Components
 import { TruckDetailsItemComponent } from '@pages/truck/pages/truck-details/components/truck-details-item/truck-details-item.component';
 import { TruckDetailsComponent } from '@pages/truck/pages/truck-details/truck-details.component';
 import { TruckDetailsCardComponent } from '@pages/truck/pages/truck-details/components/truck-details-card/truck-details-card.component';
@@ -23,8 +23,9 @@ import { TaDetailsHeaderComponent } from '@shared/components/ta-details-header/t
 import { TaDetailsHeaderCardComponent } from '@shared/components/ta-details-header-card/ta-details-header-card.component';
 import { TaTabSwitchComponent } from '@shared/components/ta-tab-switch/ta-tab-switch.component';
 import { CaChartComponent } from 'ca-components';
+import { TaChartLegendComponent } from '@shared/components/ta-chart-legend/ta-chart-legend.component';
 
-// pipes
+// Pipes
 import { FormatDatePipe } from '@shared/pipes/format-date.pipe';
 import { ThousandSeparatorPipe } from '@shared/pipes/thousand-separator.pipe';
 
@@ -55,10 +56,10 @@ import { ThousandSeparatorPipe } from '@shared/pipes/thousand-separator.pipe';
         TaTabSwitchComponent,
         AngularSvgIconModule,
         CaChartComponent,
-
+        TaChartLegendComponent,
         // PIPES
         ThousandSeparatorPipe,
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
-export class TruckDetailsModule {}
+export class TruckDetailsModule { }
