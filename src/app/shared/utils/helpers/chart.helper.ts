@@ -6,7 +6,7 @@ import {
 } from 'ca-components/lib/components/ca-chart/models';
 
 // Constants
-import { ChartConstants } from '../constants/charts/chart.constants';
+import { ChartConstants } from '@shared/utils/constants';
 
 // Enums
 import { ChartTypesStringEnum } from 'ca-components';

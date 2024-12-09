@@ -39,7 +39,11 @@ import { ChartLegendProperty, Tabs } from '@shared/models';
 import {
     BrokerChartsConfiguration,
 } from '@pages/customer/pages/broker-details/utils/constants/';
-import { BrokerInvoiceAgingConstants } from '@pages/customer/pages/broker-details/utils/constants/';
+import { BrokerInvoiceAgingConstants } from '@pages/customer/pages/broker-details/utils/constants';
+import {
+    ChartConfiguration,
+    ChartLegendConfiguration
+} from '@shared/utils/constants';
 
 // Components
 import { BrokerModalComponent } from '@pages/customer/pages/broker-modal/broker-modal.component';
@@ -59,8 +63,6 @@ import { BrokerDetailsSvgRoutes } from '@pages/customer/pages/broker-details/uti
 
 // Helpers
 import { ChartHelper } from '@shared/utils/helpers';
-import { ChartConfiguration } from '@shared/utils/constants';
-import { ChartLegendConfiguration } from '@shared/utils/constants/charts/chart-legend-configuration.constants';
 
 @Component({
     selector: 'app-broker-details-card',

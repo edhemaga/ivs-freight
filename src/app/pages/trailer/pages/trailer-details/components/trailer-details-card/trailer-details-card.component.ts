@@ -29,6 +29,7 @@ import { TrailersMinimalListQuery } from '@pages/trailer/state/trailer-minimal-l
 
 // Models
 import { TrailerDropdown } from '@pages/trailer/pages/trailer-details/models/trailer-dropdown.model';
+import { TrailerData } from '@pages/trailer/pages/trailer-table/models/trailer-data.model';
 import { TrailerFuelConsumptionChartResponse, TrailerFuelConsumptionResponse, TrailerMinimalResponse } from 'appcoretruckassist';
 import { IChartConfiguration } from 'ca-components/lib/components/ca-chart/models';
 import { Tabs } from '@shared/models';
@@ -43,7 +44,6 @@ import { ChartConfiguration, ChartLegendConfiguration } from '@shared/utils/cons
 // Helpers
 import { ChartHelper } from '@shared/utils/helpers';
 import { TabOptions } from '@shared/components/ta-tab-switch/models/tab-options.model';
-import { TraillerData } from '@pages/trailer/pages/trailer-table/models/trailer-data.model';
 
 @Component({
     selector: 'app-trailer-details-card',
@@ -76,7 +76,7 @@ import { TraillerData } from '@pages/trailer/pages/trailer-table/models/trailer-
 })
 export class TrailerDetailsCardComponent
     implements OnInit, OnChanges, OnDestroy {
-    @Input() trailer: TraillerData;
+    @Input() trailer: TrailerData;
     @Input() templateCard: boolean = false;
 
     private destroy$ = new Subject<void>();

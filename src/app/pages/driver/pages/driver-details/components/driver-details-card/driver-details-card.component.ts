@@ -40,7 +40,7 @@ import { CaChartComponent } from 'ca-components';
 
 // Constants
 import { DriverDetailsCardSvgRoutes } from '@pages/driver/pages/driver-details/components/driver-details-card/utils/svg-routes/driver-details-card-svg-routes';
-import { DriverDetailsChartsConfiguration } from '../../utils/constants';
+import { DriverDetailsChartsConfiguration } from '@pages/driver/pages/driver-details/utils/constants';
 
 // Store
 import { DriversMinimalListQuery } from '@pages/driver/state/driver-details-minimal-list-state/driver-minimal-list.query';
@@ -141,17 +141,13 @@ export class DriverDetailsCardComponent
 
         this.getDriversDropdown();
 
-        this.initDriverPayrollData();
+        this.getDriverPayroll();
     }
 
     ngOnChanges(changes: SimpleChanges): void {
         if (!changes?.driver?.firstChange && changes?.driver.currentValue) {
             this.getDriversDropdown();
         }
-    }
-
-    private initDriverPayrollData(): void {
-        this.getDriverPayroll();
     }
 
     private getDriverPayroll(timeFilter?: number): void {

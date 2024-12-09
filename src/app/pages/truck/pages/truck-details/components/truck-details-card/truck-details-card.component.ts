@@ -133,7 +133,7 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
         private detailsPageDriverSer: DetailsPageService,
         private truckMinimalListQuery: TrucksMinimalListQuery,
         private truckService: TruckService
-    ) {}
+    ) { }
 
     ngOnChanges(changes: SimpleChanges): void {
         if (!changes?.truck.firstChange && changes?.truck) {
