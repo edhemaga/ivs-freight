@@ -494,8 +494,3 @@ export const mileValidation = [Validators.min(0), Validators.max(10)];
 
 export const perStopValidation = [Validators.min(0), Validators.max(5000)];
 export const perLoadValidation = [Validators.min(0), Validators.max(50000)];
-
-//---------------- Email(Customer, Driver, Repair, Owner, Contacts, Settings)
-export const emailValidation = Validators.pattern(
-    /^[a-z0-9!#$%&'*+/=?^_`{|}~@.-]{5,64}$/
-);

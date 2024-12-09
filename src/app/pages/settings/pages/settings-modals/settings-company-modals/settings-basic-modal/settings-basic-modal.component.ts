@@ -72,7 +72,6 @@ import {
     startingValidation,
     cvcValidation,
     bankCardTypeValidation,
-    emailValidation,
 } from '@shared/components/ta-input/validators/ta-input.regex-validations';
 
 // constants
@@ -625,7 +624,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
                 data?.extensionPhone ? data?.extensionPhone : null,
                 [...phoneExtension],
             ],
-            email: [data?.email ? data?.email : null, [Validators.required, emailValidation]],
+            email: [data?.email ? data?.email : null, [Validators.required, Validators.email]],
         });
     }
 
