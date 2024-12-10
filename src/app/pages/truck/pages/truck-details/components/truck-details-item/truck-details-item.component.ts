@@ -111,7 +111,7 @@ export class TruckDetailsItemComponent implements OnInit, OnDestroy, OnChanges {
         private commonTruckService: TruckTrailerService,
         private dropDownService: DropDownService,
         private truckService: TruckService
-    ) {}
+    ) { }
 
     ngOnChanges(changes: SimpleChanges): void {
         this.truck.map((object: TruckDetailsConfig) => {
@@ -152,7 +152,6 @@ export class TruckDetailsItemComponent implements OnInit, OnDestroy, OnChanges {
                         case TruckDetailsEnum.VOID_2:
                             let voidedReg;
                             let unVoidedReg;
-                            console.log(res);
                             if (res.array.length) {
                                 voidedReg = res?.array[0]?.id;
                                 unVoidedReg = res.data.id;
@@ -432,10 +431,10 @@ export class TruckDetailsItemComponent implements OnInit, OnDestroy, OnChanges {
         cdlsArray.length
             ? this.optionsEvent({ id: id, type: 'void' }, data, 'registration')
             : this.optionsEvent(
-                  { id: id, type: 'activate' },
-                  data,
-                  'registration'
-              );
+                { id: id, type: 'activate' },
+                data,
+                'registration'
+            );
     }
 
     public formatDate(mod) {

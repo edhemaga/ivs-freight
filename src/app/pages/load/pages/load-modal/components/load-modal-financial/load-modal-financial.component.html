@@ -35,7 +35,7 @@
                 <div
                     [ngClass]="{
                         'd-flex flex-column align-items-end with-adjusted':
-                            adjusted
+                            _adjusted
                     }"
                 >
                     <ng-container *ngIf="tonu">
@@ -62,9 +62,9 @@
                         {{ billing }}
                     </p>
 
-                    <ng-container *ngIf="adjusted && !(tonu || revised)">
+                    <ng-container *ngIf="_adjusted && !(tonu || revised)">
                         <p class="m-0 load-financial-adjusted">
-                            {{ toNumber(adjusted) | currency }}
+                            {{ toNumber(_adjusted) | currency }}
                         </p>
                     </ng-container>
                 </div>

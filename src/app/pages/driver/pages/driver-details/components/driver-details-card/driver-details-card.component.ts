@@ -12,18 +12,19 @@ import {
     UntypedFormBuilder,
     UntypedFormGroup,
 } from '@angular/forms';
-
 import { Subject, takeUntil } from 'rxjs';
 
-// services
+// Services
 import { DetailsPageService } from '@shared/services/details-page.service';
 import { ModalService } from '@shared/services/modal.service';
+import { DriverService } from '@pages/driver/services/driver.service';
 
-// components
+// Components
 import { TaTabSwitchComponent } from '@shared/components/ta-tab-switch/ta-tab-switch.component';
 import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-custom-card.component';
 import { TaUploadFilesComponent } from '@shared/components/ta-upload-files/ta-upload-files.component';
 import { TaInputNoteComponent } from '@shared/components/ta-input-note/ta-input-note.component';
+import { TaChartLegendComponent } from '@shared/components/ta-chart-legend/ta-chart-legend.component';
 import { DriverDetailsTitleCardComponent } from '@pages/driver/pages/driver-details/components/driver-details-card/components/driver-details-title-card/driver-details-title-card.component';
 import { DriverDetailsAssignToCardComponent } from '@pages/driver/pages/driver-details/components/driver-details-card/components/driver-details-assign-to-card/driver-details-assign-to-card.component';
 import { DriverDetailsAdditionalInfoCardComponent } from '@pages/driver/pages/driver-details/components/driver-details-card/components/driver-details-additional-info-card/driver-details-additional-info-card.component';
@@ -37,26 +38,38 @@ import { DriverNotificationCardComponent } from '@pages/driver/pages/driver-deta
 import { DriverModalComponent } from '@pages/driver/pages/driver-modals/driver-modal/driver-modal.component';
 import { CaChartComponent } from 'ca-components';
 
-// constants
+// Constants
 import { DriverDetailsCardSvgRoutes } from '@pages/driver/pages/driver-details/components/driver-details-card/utils/svg-routes/driver-details-card-svg-routes';
+import { DriverDetailsChartsConfiguration } from '@pages/driver/pages/driver-details/utils/constants';
 
-// store
+// Store
 import { DriversMinimalListQuery } from '@pages/driver/state/driver-details-minimal-list-state/driver-minimal-list.query';
 
-// enums
+// Enums
 import { ArrowActionsStringEnum } from '@shared/enums/arrow-actions-string.enum';
 import { DriverDetailsCardStringEnum } from '@pages/driver/pages/driver-details/components/driver-details-card/enums/driver-details-card-string.enum';
 
-// const
-import { DriverDetailsChartsConfiguration } from '@pages/driver/pages/driver-details/utils/constants';
-
-// helpers
+// Helpers
 import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calculations.helper';
+import { ChartHelper } from '@shared/utils/helpers';
 
-// models
-import { DriverMinimalResponse, DriverResponse } from 'appcoretruckassist';
+// Models
+import {
+    DriverMinimalResponse,
+    DriverPayrollChartResponse,
+    DriverPayrollResponse,
+    DriverResponse
+} from 'appcoretruckassist';
 import { TabOptions } from '@shared/components/ta-tab-switch/models/tab-options.model';
 import { IChartConfiguration } from 'ca-components/lib/components/ca-chart/models';
+import { ChartLegendProperty, Tabs } from '@shared/models';
+
+// Enums
+import { } from '@shared/enums';
+import {
+    ChartConfiguration,
+    ChartLegendConfiguration
+} from '@shared/utils/constants';
 
 @Component({
     selector: 'app-driver-details-card',
@@ -73,6 +86,7 @@ import { IChartConfiguration } from 'ca-components/lib/components/ca-chart/model
         TaCustomCardComponent,
         TaUploadFilesComponent,
         TaInputNoteComponent,
+        TaChartLegendComponent,
         DriverDetailsTitleCardComponent,
         DriverDetailsAssignToCardComponent,
         DriverDetailsAdditionalInfoCardComponent,
@@ -87,46 +101,47 @@ import { IChartConfiguration } from 'ca-components/lib/components/ca-chart/model
     ],
 })
 export class DriverDetailsCardComponent
-    implements OnInit, OnChanges, OnDestroy
-{
+    implements OnInit, OnChanges, OnDestroy {
     @Input() driver: DriverResponse;
 
     private destroy$ = new Subject<void>();
 
     public driverCurrentIndex: number;
 
-    // drivers dropdown
+    // Drivers dropdown
     public driversDropdownList: DriverMinimalResponse[];
 
-    // payroll chart card
+    // Payroll chart card
+    public barChartTabs: Tabs[] = ChartHelper.generateTimeTabs();
+    public chartLegendData: ChartLegendProperty[];
 
-    // note card
+    // Note card
     public noteForm: UntypedFormGroup;
 
-    public payrollChartConfig: IChartConfiguration =
-        DriverDetailsChartsConfiguration.PAYROLL_CHART_CONFIG;
+    public payrollChartConfig!: IChartConfiguration;
 
     constructor(
         private formBuilder: UntypedFormBuilder,
 
-        // services
+        // Services
         private detailsPageService: DetailsPageService,
         private modalService: ModalService,
+        private driverService: DriverService,
 
-        // store
+        // Store
         private driverMinimalQuery: DriversMinimalListQuery
-    ) {}
+    ) { }
 
     ngOnInit(): void {
         this.createForm();
-
-        this.getConstantData();
 
         this.getStoreData(true);
 
         this.getCurrentIndex();
 
         this.getDriversDropdown();
+
+        this.getDriverPayroll();
     }
 
     ngOnChanges(changes: SimpleChanges): void {
@@ -135,22 +150,31 @@ export class DriverDetailsCardComponent
         }
     }
 
+    private getDriverPayroll(timeFilter?: number): void {
+        this.driverService
+            .getDriverPayroll(this.driver.id, timeFilter || 1)
+            .subscribe((response: DriverPayrollResponse) => {
+                if (timeFilter && this.barChartTabs[timeFilter - 1])
+                    this.barChartTabs[timeFilter - 1].checked = true;
+                this.payrollChartConfig = {
+                    ...DriverDetailsChartsConfiguration.PAYROLL_CHART_CONFIG,
+                    chartData: ChartHelper
+                        .generateDataByDateTime<DriverPayrollChartResponse>(
+                            response.getDriverPayrollChartResponse,
+                            ChartConfiguration.driverConfiguration,
+                            timeFilter
+                        )
+                };
+
+                this.chartLegendData =
+                    ChartLegendConfiguration.driverLegendConfiguration(response);
+            })
+    }
+
     private createForm(): void {
         this.noteForm = this.formBuilder.group({
             note: [this.driver.note],
         });
-    }
-
-    private getConstantData(): void {
-        // this.barChartTabs = JSON.parse(
-        //     JSON.stringify(DriverDetailsCardConstants.BAR_CHART_TABS)
-        // );
-        // this.barChartConfig = DriverDetailsCardConstants.BAR_CHART_CONFIG;
-        // this.barChartLegend = DriverDetailsCardConstants.BAR_CHART_LEGEND;
-        // this.barAxes = DriverDetailsCardConstants.BAR_CHART_AXES;
-        // this.barChartPayrollCall =
-        //     DriverDetailsCardConstants.BAR_CHART_PAYROLL_API_CALL;
-        // this.barChartMonthList = ChartConstants.MONTH_LIST_SHORT;
     }
 
     private getStoreData(isInit: boolean = false): void {
@@ -195,8 +219,8 @@ export class DriverDetailsCardComponent
                     active: id === this.driver.id,
                     hiredAt: hiredAt
                         ? MethodsCalculationsHelper.convertDateFromBackend(
-                              hiredAt
-                          )
+                            hiredAt
+                        )
                         : null,
                 };
             });
@@ -207,8 +231,7 @@ export class DriverDetailsCardComponent
     }
 
     public onPayrollTabChange(tab: TabOptions): void {
-        // const chartType = this.payrollChart?.detailsTimePeriod(tab.name);
-        // this.getDriverPayrollChartData(this.driver.id, chartType);
+        this.getDriverPayroll(tab.id);
     }
 
     public onSelectedDriver(event: DriverMinimalResponse): void {
@@ -221,7 +244,7 @@ export class DriverDetailsCardComponent
                     const fullname =
                         firstName +
                         DriverDetailsCardStringEnum.EMPTY_STRING +
-                        +lastName;
+                        lastName;
 
                     return {
                         id,

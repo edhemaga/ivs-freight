@@ -285,6 +285,9 @@
             .load-stop-header-badge {
                 background-color: $ta-red-20;
             }
+            .color-red {
+                display: none;
+            }
         }
 
         &.stop-finished {
