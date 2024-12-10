@@ -113,7 +113,7 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
         private changeDetectorRef: ChangeDetectorRef,
         private dashboardTopRatedService: DashboardTopRatedService,
         private dashboardService: DashboardService
-    ) {}
+    ) { }
 
     ngOnInit(): void {
         this.createForm();
@@ -610,16 +610,16 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                                 ...filteredIntervalValues,
                                 selectedTab === DashboardStringEnum.LOAD
                                     ? dispatcher.intervals[i]
-                                          .dispatcherLoadCount
+                                        .dispatcherLoadCount
                                     : dispatcher.intervals[i].dispatcherRevenue,
                             ];
                             filteredIntervalPercentages = [
                                 ...filteredIntervalPercentages,
                                 selectedTab === DashboardStringEnum.LOAD
                                     ? dispatcher.intervals[i]
-                                          .dispatcherLoadPercentage
+                                        .dispatcherLoadPercentage
                                     : dispatcher.intervals[i]
-                                          .dispatcherRevenuePercentage,
+                                        .dispatcherRevenuePercentage,
                             ];
                         }
 
