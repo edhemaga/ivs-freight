@@ -595,6 +595,9 @@
                 >
                     <div
                         class="modal-open-container"
+                        [class.disabled]="
+                            options.toolbarActions.disableOpenModalButton
+                        "
                         (click)="onToolBarAction('open-modal')"
                     >
                         <svg-icon
