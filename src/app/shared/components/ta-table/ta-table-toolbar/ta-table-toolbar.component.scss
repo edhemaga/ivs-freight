@@ -432,6 +432,11 @@
                     }
                 }
             }
+
+            &.disabled {
+                background: $ta-light-grey-6;
+                pointer-events: none;
+            }
         }
     }
 
@@ -479,7 +484,7 @@
     .pm-border {
         width: 1px;
         height: 18px;
-        
+
         background-color: $ta-light-grey-6;
     }
 

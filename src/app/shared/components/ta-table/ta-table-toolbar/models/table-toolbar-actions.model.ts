@@ -41,6 +41,7 @@ export interface ToolbarActions {
     hideDriverFilter?: boolean;
     hideUnassignedDevicesButton?: boolean;
     hideSearch?: boolean;
+    disableOpenModalButton?: boolean;
     fuelMoneyFilter?: boolean;
     viewModeOptions?: ViewModelOption[];
 }
