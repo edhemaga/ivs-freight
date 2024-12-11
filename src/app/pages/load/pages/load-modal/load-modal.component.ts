@@ -2529,6 +2529,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                 this.isActivePickupStop = event;
 
                 this.isActivePickupStop = !this.isActivePickupStop;
+                this.isActiveDeliveryStop = false;
 
                 this.loadExtraStops().controls.filter((item) => {
                     item.get(LoadModalStringEnum.OPEN_CLOSE).patchValue(false);
