@@ -862,7 +862,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                 );
             }
 
-            if (this.editData?.isEditMode) {
+            if (this.editData?.type === 'edit') {
                 this.isFormDirty = true;
             } else {
                 this.formService.formValueChange$
@@ -4962,7 +4962,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
 
         // Ensure dispatcher exists before attempting to spread
         const selectedDispatcher = this.labelsDispatcher.find(
-            (dispatch) => dispatch.id !== dispatcher.id
+            (dispatch) => dispatch.id === dispatcher.id
         );
         const editedDispatcher = selectedDispatcher
             ? {
@@ -5531,11 +5531,15 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     private startFormChanges(): void {
         this.formService.checkFormChange(this.loadForm);
 
-        this.formService.formValueChange$
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((isFormChange: boolean) => {
-                this.isFormDirty = isFormChange;
-            });
+        if (this.editData?.type === 'edit') {
+            this.isFormDirty = true;
+        } else {
+            this.formService.formValueChange$
+                .pipe(takeUntil(this.destroy$))
+                .subscribe((isFormChange: boolean) => {
+                    this.isFormDirty = isFormChange;
+                });
+        }
     }
 
     ngOnDestroy(): void {
