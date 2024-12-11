@@ -862,7 +862,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                 );
             }
 
-            if (this.editData?.type === 'edit') {
+            if (this.editData?.type === 'edit' || this.editData?.isEditMode) {
                 this.isFormDirty = true;
             } else {
                 this.formService.formValueChange$
@@ -5531,7 +5531,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     private startFormChanges(): void {
         this.formService.checkFormChange(this.loadForm);
 
-        if (this.editData?.type === 'edit') {
+        if (this.editData?.type === 'edit' || this.editData?.isEditMode) {
             this.isFormDirty = true;
         } else {
             this.formService.formValueChange$
