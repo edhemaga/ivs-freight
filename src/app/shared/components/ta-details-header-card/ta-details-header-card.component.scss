@@ -12,6 +12,8 @@ $font-extrabold: 800;
 
 $border-radius: 3px;
 
+$arrow-default-color: #AAAAAA;
+
 // GENERAL SWITCHER DRIVER
 .details-header-wrapper {
     background-color: $white;
@@ -29,7 +31,7 @@ $border-radius: 3px;
 
         .arrows {
             display: flex;
-            align-items: center;
+            align-items: baseline;
             justify-content: flex-end;
             margin-bottom: 4px;
 
@@ -40,6 +42,20 @@ $border-radius: 3px;
                     background: $ta-light-grey-4;
                     border-radius: 2px;
                     cursor: pointer;
+                    .arrow-right {
+                        svg {
+                            path {
+                                fill: $ta-black;
+                            }
+                        }
+                    }
+                    .arrow-left {
+                        svg {
+                            path {
+                                fill: $ta-black;
+                            }
+                        }
+                    }
                 }
             }
             .arrow-left {
@@ -371,6 +387,13 @@ $border-radius: 3px;
 
             &:hover {
                 background-color: transparent !important;
+                svg-icon {
+                    svg {
+                        path {
+                            fill: $arrow-default-color !important;
+                        }
+                    }
+                }
             }
         }
     }
@@ -388,6 +411,13 @@ $border-radius: 3px;
 
             &:hover {
                 background-color: transparent !important;
+                svg-icon {
+                    svg {
+                        path {
+                            fill: $arrow-default-color !important;
+                        }
+                    }
+                }
             }
         }
     }

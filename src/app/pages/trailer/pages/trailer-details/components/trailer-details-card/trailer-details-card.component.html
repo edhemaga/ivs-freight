@@ -460,32 +460,38 @@
             >
                 <div class="owner-history-container"></div>
             </app-ta-custom-card>
-            <app-ta-custom-card
-                [tooltipName]="'View in Modal'"
-                [bodyTemplate]="'card'"
-                [cardName]="'Fuel Consumption'"
-                [isCardOpen]="true"
-                [hasHeaderSvg]="'assets/svg/common/arrow_top_right.svg'"
-                class="item-cards"
-                [customClass]="'detailsPadding'"
-            >
-                <div
-                    class="charts-template perfomance"
+            <ng-container *ngIf="trailer.trailerType.id === 9">
+                <app-ta-custom-card
+                    [tooltipName]="'View in Modal'"
+                    [bodyTemplate]="'card'"
+                    [cardName]="'Fuel Consumption'"
+                    [isCardOpen]="true"
+                    [hasHeaderSvg]="'assets/svg/common/arrow_top_right.svg'"
+                    class="item-cards"
+                    [customClass]="'detailsPadding'"
                 >
-                    <!-- <div [class.d-none]="payrollChart.hoveringStatus"> -->
+                    <div class="charts-template perfomance">
                         <app-ta-tab-switch
                             [type]="'type2-modal-popup'"
-                            (switchClicked)="changeTabFuel($event)"
-                            [tabs]="buttonsArrayFuel"
+                            (switchClicked)="changeFuelConsumptionTab($event)"
+                            [tabs]="fuelConsumptionTabs"
                         >
                         </app-ta-tab-switch>
-                    <!-- </div> -->
-                    <app-ca-chart
-                        [chartConfig]="payrollChartConfig"
-                    >
-                    </app-ca-chart>
-                </div>
-            </app-ta-custom-card>
+                        <ng-container
+                            *ngIf="fuelConsumptionChartConfig?.chartData"
+                        >
+                            <app-ta-chart-legend
+                                [data]="fuelConsumptionChartLegend"
+                            ></app-ta-chart-legend>
+                            <app-ca-chart
+                                [chartConfig]="fuelConsumptionChartConfig"
+                            >
+                            </app-ca-chart>
+                        </ng-container>
+                    </div>
+                </app-ta-custom-card>
+            </ng-container>
+
             <app-ta-custom-card
                 *ngIf="trailer?.files.length"
                 [cardName]="'Document'"

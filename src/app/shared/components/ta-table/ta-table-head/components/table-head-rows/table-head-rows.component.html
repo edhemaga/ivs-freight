@@ -224,7 +224,9 @@
                         >
                             <ng-container *ngIf="column.headIconStyle">
                                 <div
-                                    class="icons"
+                                    class="icons {{
+                                        column.headIconStyle.customClass
+                                    }}"
                                     (click)="
                                         handleTableHeadRowsActionClick(
                                             column,

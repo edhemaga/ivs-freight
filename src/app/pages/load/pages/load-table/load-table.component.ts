@@ -29,6 +29,7 @@ import { ConfirmationActivationService } from '@shared/components/ta-shared-moda
 import { CaSearchMultipleStatesService } from 'ca-components';
 import { BrokerService } from '@pages/customer/services';
 import { CommentsService } from '@shared/services/comments.service';
+import { DispatchHubService } from '@shared/services/dispatch-hub.service';
 
 // Models
 import {
@@ -49,6 +50,7 @@ import { FilterOptionsLoad } from '@pages/load/pages/load-table/models/filter-op
 import { CardRows } from '@shared/models/card-models/card-rows.model';
 import {
     AddressResponse,
+    LoadListDto,
     LoadListResponse,
     LoadStatus,
     LoadTemplateListResponse,
@@ -158,6 +160,7 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
         private tableService: TruckassistTableService,
         private modalService: ModalService,
         private loadServices: LoadService,
+        private dispatchHubService: DispatchHubService,
         private tableDropdownService: TableCardDropdownActionsService,
         private loadActiveQuery: LoadActiveQuery,
         private loadClosedQuery: LoadClosedQuery,
@@ -214,6 +217,10 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
         this.upadateStatus();
 
         this.onLoadChange();
+        
+        this.dispatchHubService.connect();
+
+        this.manageDispatchHubListeners();
     }
 
     ngAfterViewInit(): void {
@@ -1892,6 +1899,153 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     this.loadServices.updateLoadPartily();
                 });
             });
+    }
+
+    private manageDispatchHubListeners(): void {
+        this.dispatchHubService
+            .onLoadChanged()
+            .pipe(takeUntil(this.destroy$))
+            .subscribe(response => {
+                const loadChanged: LoadListDto = response[0];
+                
+                this.refreshLoad(loadChanged);
+            });
+    }
+
+    private refreshLoad(loadChanged: LoadListDto): void {
+        const loadOld = this.viewData.find(_ => _.id === loadChanged.id);
+        const index = this.viewData.findIndex(_ => _.id === loadOld?.id);
+        const { 
+            status: loadChangedStatus,
+            statusType: loadChangedStatusType
+        } = loadChanged || {};
+        const { 
+            id: loadChangedStatusTypeId,
+            name: loadChangedStatusName
+        } = loadChangedStatusType || {};
+        const {
+            isSelected,
+            loadInvoice,
+            loadDispatcher,
+            avatarImg,
+            tableDriver,
+            tableTruck,
+            tableTrailer,
+            loadTotal,
+            loadBroker,
+            contact,
+            phone,
+            referenceNumber,
+            textCommodity,
+            textWeight,
+            tableTrailerColor,
+            tableTrailerName,
+            tableTruckColor,
+            truckTypeClass,
+            tableTrailerTypeClass,
+            tableTruckName,
+            loadTrailerNumber,
+            loadTruckNumber,
+            loadPickup,
+            total,
+            empty,
+            loaded,
+            tableDoorType,
+            tableSuspension,
+            year,
+            liftgate,
+            tableAssignedUnitTruck,
+            tableAssignedUnitTrailer,
+            tabelLength,
+            textBase,
+            textAdditional,
+            textAdvance,
+            textPayTerms,
+            textDriver,
+            comments,
+            rate,
+            tableInvoice,
+            tablePaid,
+            paid,
+            payTerm,
+            ageUnpaid,
+            agePaid,
+            due,
+            tableAdded,
+            tableEdited,
+            tableAttachments,
+            fileCount,
+            tableDropdownContent,
+            statusType: LoadOldStatusType
+        } = loadOld || {};
+        const { id: loadOldStatusTypeId } = LoadOldStatusType || {};
+        const updatingItem = {
+            ...loadChanged,
+            isSelected,
+            loadInvoice,
+            loadDispatcher,
+            avatarImg,
+            tableDriver,
+            tableTruck,
+            tableTrailer,
+            loadTotal,
+            loadBroker,
+            contact,
+            phone,
+            referenceNumber,
+            textCommodity,
+            textWeight,
+            tableTrailerColor,
+            tableTrailerName,
+            tableTruckColor,
+            truckTypeClass,
+            tableTrailerTypeClass,
+            tableTruckName,
+            loadTrailerNumber,
+            loadTruckNumber,
+            loadPickup,
+            loadStatus: loadChangedStatus,
+            total,
+            empty,
+            loaded,
+            tableDoorType,
+            tableSuspension,
+            year,
+            liftgate,
+            tableAssignedUnitTruck,
+            tableAssignedUnitTrailer,
+            tabelLength,
+            textBase,
+            textAdditional,
+            textAdvance,
+            textPayTerms,
+            textDriver,
+            comments,
+            rate,
+            tableInvoice,
+            tablePaid,
+            paid,
+            payTerm,
+            ageUnpaid,
+            agePaid,
+            due,
+            tableAdded,
+            tableEdited,
+            tableAttachments,
+            fileCount,
+            tableDropdownContent
+        };
+
+        if (loadChangedStatusTypeId !== loadOldStatusTypeId && loadChangedStatusName?.toLowerCase() === this.selectedTab) this.viewData.push(updatingItem);
+        else if (loadChangedStatusTypeId !== loadOldStatusTypeId) this.viewData.splice(index, 1);
+        else if (index >= 0) this.viewData.splice(index, 1, updatingItem);
+        else this.viewData.push(updatingItem);
+
+        this.loadServices.refreshLoadDataLocal(loadChanged);
+        this.viewData = this.viewData.map((data: LoadModel) => {
+            return this.mapLoadData(data);
+        });
+        this.getTabData(this.selectedTab);
     }
 
     public saveValueNote(event: { value: string; id: number }): void {

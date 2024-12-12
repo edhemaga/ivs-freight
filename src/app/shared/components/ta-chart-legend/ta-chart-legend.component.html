@@ -1,0 +1,36 @@
+<ng-container *ngIf="data">
+    <div [ngClass]="hasHighlightedBackground && 'colored-background'">
+        <ng-container *ngIf="title">
+            <div class="legend-title font-size-14 ta-font-extra-bold">
+                {{ title }}
+            </div>
+        </ng-container>
+        <div class="legend-wrapper d-flex">
+            <ng-container *ngFor="let item of data">
+                <div class="w-100">
+                    <div
+                        class="d-flex align-content-center text-size-11 ta-font-bold"
+                    >
+                        <span>{{ item?.name }}</span>
+                        <span
+                            [ngClass]="
+                                item?.isLineIndicator
+                                    ? 'line-indicator'
+                                    : 'circle-indicator'
+                            "
+                            [ngStyle]="{ background: item?.color }"
+                        ></span>
+                    </div>
+                    <div class="text-size-18">
+                        {{
+                            (item?.value !== 0
+                                ? (item?.value | thousandSeparator)
+                                : 0
+                            ) | unitPosition : item?.unit
+                        }}
+                    </div>
+                </div>
+            </ng-container>
+        </div>
+    </div>
+</ng-container>

@@ -137,6 +137,26 @@
                     }
                 }
             }
+
+            &.pickup-icon {
+                svg-icon {
+                    svg {
+                        path {
+                            fill: $ta-green;
+                        }
+                    }
+                }
+            }
+
+            &.delivery-icon {
+                svg-icon {
+                    svg {
+                        path {
+                            fill: $ta-red-10;
+                        }
+                    }
+                }
+            }
         }
 
         // titles

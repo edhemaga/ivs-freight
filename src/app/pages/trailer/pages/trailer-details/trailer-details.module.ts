@@ -26,6 +26,8 @@ import { TrailerDetailsCardComponent } from '@pages/trailer/pages/trailer-detail
 import { TrailerDetailsItemComponent } from '@pages/trailer/pages/trailer-details/components/trailer-details-item/trailer-details-item.component';
 import { TrailerDetailsComponent } from '@pages/trailer/pages/trailer-details/trailer-details.component';
 import { CaChartComponent } from 'ca-components';
+import { TaTabSwitchComponent } from '@shared/components/ta-tab-switch/ta-tab-switch.component';
+import { TaChartLegendComponent } from '@shared/components/ta-chart-legend/ta-chart-legend.component';
 
 @NgModule({
     declarations: [
@@ -51,6 +53,8 @@ import { CaChartComponent } from 'ca-components';
         ReactiveFormsModule,
         AngularSvgIconModule,
         CaChartComponent,
+        TaTabSwitchComponent,
+        TaChartLegendComponent,
 
         // PIPES
         ThousandSeparatorPipe,

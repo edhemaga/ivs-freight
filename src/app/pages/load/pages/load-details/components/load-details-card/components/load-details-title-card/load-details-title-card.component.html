@@ -1,12 +1,10 @@
 <app-ta-details-header-card
     [ngClass]="{
-        disabedPreviousArrow: [0, -1].includes(loadCurrentIndex),
-        disableNextArrow: loadCurrentIndex === loadsDropdownList.length - 1
+        disabedPreviousArrow: loadsDropdownList?.length <= 1,
+        disableNextArrow: loadsDropdownList?.length <= 1
     }"
-    [tooltipNext]="
-        loadCurrentIndex === loadsDropdownList.length - 1 ? '' : 'Next'
-    "
-    [tooltipPrevious]="[0, -1].includes(loadCurrentIndex) ? '' : 'Previous'"
+    [tooltipNext]="loadsDropdownList?.length <= 1 ? '' : 'Next'"
+    [tooltipPrevious]="loadsDropdownList?.length <= 1 ? '' : 'Back'"
     [cardDetailsDate]="cardData.dateCreated | formatDateP"
     [dateClosed]="
         cardData.loadDeliveryTime
