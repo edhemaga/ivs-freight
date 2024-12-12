@@ -35,7 +35,7 @@ export class DescriptionItemsTextCountDirective implements AfterViewInit {
     private createStringArray<T extends { description?: string } | string>(
         value: T[]
     ): void {
-        const isStringArray = value.every((item) => typeof item === 'string');
+        const isStringArray = value?.every((item) => typeof item === 'string');
 
         if (!isStringArray) {
             const objectArray = value as { description?: string }[];

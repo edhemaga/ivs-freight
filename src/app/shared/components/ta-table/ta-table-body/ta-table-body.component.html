@@ -78,7 +78,13 @@
                                     [ngStyle]="{
                                         'margin-right':
                                             column.ngTemplate ===
-                                                'description' && 0
+                                                'description' ||
+                                            column.ngTemplate === 'gallon' ||
+                                            column.ngTemplate === 'ppg'
+                                                ? 0
+                                                : column.ngTemplate === 'total'
+                                                ? '12px'
+                                                : ''
                                     }"
                                 >
                                     <!-- NO TEMPLATE -->
@@ -1569,26 +1575,20 @@
                                         </div>
                                     </ng-container>
 
-                                    <!-- DESCRIPTION & TOTAL COLUMN -->
+                                    <!-- DESCRIPTION COLUMN (GALLON, PPG, TOTAL)-->
 
                                     <ng-container
                                         *ngIf="
-                                            ['description', 'total'].includes(
-                                                column.ngTemplate
-                                            )
+                                            [
+                                                'description',
+                                                'total',
+                                                'gallon',
+                                                'ppg'
+                                            ].includes(column.ngTemplate)
                                         "
                                     >
                                         <div
-                                            class="td-content description-cost-container"
-                                            ngbTooltip
-                                            tooltipBackground="#424242"
-                                            position="bottom"
-                                            [mainTooltip]="
-                                                column.field ===
-                                                'tableDescription'
-                                                    ? 'Show Items'
-                                                    : ''
-                                            "
+                                            class="td-content description-items-container"
                                             [ngClass]="{
                                                 'order-cost-container':
                                                     column.ngTemplate ===
@@ -1596,10 +1596,20 @@
                                                     row?.isRepairOrder,
                                                 hovered:
                                                     descriptionCostHoverIndex ===
-                                                        i && !row?.isRepairOrder
+                                                        i &&
+                                                    !row?.isRepairOrder,
+                                                'd-flex justify-content-end':
+                                                    column.ngTemplate ===
+                                                    'gallon'
                                             }"
                                             [ngStyle]="{
-                                                width: column.width + 'px',
+                                                width:
+                                                    (column.ngTemplate ===
+                                                        'ppg' ||
+                                                    column.ngTemplate ===
+                                                        'total'
+                                                        ? column.width + 6
+                                                        : column.width) + 'px',
                                                 'min-width.px':
                                                     column?.minWidth ?? 'unset'
                                             }"
@@ -1610,12 +1620,15 @@
                                             popoverClass="table-description-popover"
                                             [ngbPopover]="descriptionPopover"
                                             (click)="
-                                                onShowDescriptionDropdown(
-                                                    t1,
-                                                    tableData[0]?.gridNameTitle,
-                                                    column?.width,
-                                                    row
-                                                )
+                                                column.ngTemplate ===
+                                                    'description' &&
+                                                    onShowDescriptionDropdown(
+                                                        t1,
+                                                        tableData[0]
+                                                            ?.gridNameTitle,
+                                                        column?.width,
+                                                        row
+                                                    )
                                             "
                                             (mouseenter)="
                                                 descriptionCostHoverIndex = i
@@ -1624,16 +1637,27 @@
                                                 descriptionCostHoverIndex = -1
                                             "
                                         >
-                                            <!-- DESCRIPTION COLUMN -->
-
                                             <ng-container
-                                                *ngIf="
-                                                    column.ngTemplate ===
-                                                    'description'
-                                                "
+                                                [ngSwitch]="column.ngTemplate"
                                             >
-                                                <div class="w-100">
+                                                <!-- DESCRIPTION COLUMN -->
+
+                                                <ng-container
+                                                    *ngSwitchCase="
+                                                        'description'
+                                                    "
+                                                >
                                                     <div
+                                                        class="w-100"
+                                                        ngbTooltip
+                                                        tooltipBackground="#424242"
+                                                        position="bottom"
+                                                        [mainTooltip]="
+                                                            column.field ===
+                                                            'tableDescription'
+                                                                ? 'Show Items'
+                                                                : ''
+                                                        "
                                                         [appDescriptionItemsTextCount]="
                                                             row[column.field]
                                                         "
@@ -1641,54 +1665,126 @@
                                                             column.width
                                                         "
                                                     ></div>
-                                                </div>
-                                            </ng-container>
+                                                </ng-container>
 
-                                            <!-- TOTAL  COLUMN-->
+                                                <!-- TOTAL COLUMN -->
 
-                                            <ng-container
-                                                *ngIf="
-                                                    column.ngTemplate ===
-                                                    'total'
-                                                "
-                                            >
-                                                <div
-                                                    class="d-flex align-items-center justify-content-end w-100"
+                                                <ng-container
+                                                    *ngSwitchCase="'total'"
                                                 >
-                                                    <ng-container
-                                                        *ngIf="
-                                                            !row.isRepairOrder;
-                                                            else repairOrder
-                                                        "
+                                                    <div
+                                                        class="d-flex align-items-center justify-content-end w-100"
+                                                    >
+                                                        <ng-container
+                                                            *ngIf="
+                                                                !row.isRepairOrder;
+                                                                else repairOrder
+                                                            "
+                                                        >
+                                                            <span
+                                                                class="ta-font-semi-bold text-size-14 text-color-black"
+                                                                [innerHtml]="
+                                                                    row[
+                                                                        column
+                                                                            .field
+                                                                    ]
+                                                                        ? row[
+                                                                              column
+                                                                                  .field
+                                                                          ]
+                                                                        : ''
+                                                                "
+                                                            ></span>
+                                                        </ng-container>
+
+                                                        <ng-template
+                                                            #repairOrder
+                                                        >
+                                                            <div
+                                                                class="d-flex justify-content-center align-items-center ta-font-bold text-size-11 text-color-blue-18 finish-order-action"
+                                                                (click)="
+                                                                    onFinishOrder(
+                                                                        row.id
+                                                                    )
+                                                                "
+                                                            >
+                                                                FINISH ORDER
+                                                            </div>
+                                                        </ng-template>
+                                                    </div>
+                                                </ng-container>
+
+                                                <!-- GALLON COLUMN -->
+
+                                                <ng-container
+                                                    *ngIf="
+                                                        column.ngTemplate ===
+                                                        'gallon'
+                                                    "
+                                                >
+                                                    <div
+                                                        class="d-flex justify-content-end gallon-container"
                                                     >
                                                         <span
-                                                            class="ta-font-semi-bold text-size-14 text-color-black"
+                                                            class="table-text"
                                                             [innerHtml]="
                                                                 row[
                                                                     column.field
                                                                 ]
-                                                                    ? row[
+                                                                    ? (row[
                                                                           column
                                                                               .field
                                                                       ]
+                                                                      | tableHighlightSearchText
+                                                                          : chipsForHighlight)
                                                                     : ''
                                                             "
                                                         ></span>
-                                                    </ng-container>
+                                                    </div>
+                                                </ng-container>
 
-                                                    <ng-template #repairOrder>
+                                                <!-- PPG COLUMN -->
+
+                                                <ng-container
+                                                    *ngSwitchCase="'ppg'"
+                                                >
+                                                    <ng-container
+                                                        *ngIf="
+                                                            row[column.field]
+                                                        "
+                                                    >
                                                         <div
-                                                            class="d-flex justify-content-center align-items-center ta-font-bold text-size-11 finish-order-action"
-                                                            (click)="
-                                                                onFinishOrder(
-                                                                    row.id
-                                                                )
-                                                            "
+                                                            class="d-flex align-items-center justify-content-end w-100 ppg-container"
                                                         >
-                                                            FINISH ORDER
+                                                            <svg-icon
+                                                                class="ppg-status-icon"
+                                                                [svgStyle]="{
+                                                                    'width.px': 10,
+                                                                    'height.px': 10
+                                                                }"
+                                                                [src]="
+                                                                    tableBodySvgRoutes.circleRoute
+                                                                "
+                                                            >
+                                                            </svg-icon>
+
+                                                            <span
+                                                                class="table-text"
+                                                                [ngClass]="{
+                                                                    'align-end':
+                                                                        column.isJustifyEnd
+                                                                }"
+                                                                >{{
+                                                                    '$' +
+                                                                        row[
+                                                                            column
+                                                                                .field
+                                                                        ]
+                                                                }}</span
+                                                            >
                                                         </div>
-                                                    </ng-template>
-                                                </div>
+                                                    </ng-container>
+                                                </ng-container>
                                             </ng-container>
                                         </div>
                                     </ng-container>
@@ -1903,24 +1999,52 @@
                                         </div>
                                     </ng-container>
 
-                                    <!-- PPG COLUMN-->
-
-                                    <div
-                                        class="td-content"
+                                    <ng-container
                                         *ngIf="column.ngTemplate === 'ppg'"
-                                        [ngStyle]="{
-                                            width: column.width + 'px',
-                                            'min-width.px': column?.minWidth
-                                                ? column.minWidth
-                                                : 'unset'
-                                        }"
                                     >
-                                        <ng-container *ngIf="row[column.field]">
-                                            <span class="table-text">{{
-                                                '$' + row[column.field]
-                                            }}</span>
-                                        </ng-container>
-                                    </div>
+                                        <div
+                                            class="td-content"
+                                            [ngStyle]="{
+                                                width: column.width + 'px',
+                                                'min-width.px':
+                                                    column?.minWidth ?? 'unset'
+                                            }"
+                                        >
+                                            <ng-container
+                                                *ngIf="row[column.field]"
+                                            >
+                                                <div
+                                                    class="d-flex align-items-center justify-content-end w-100 ppg-container"
+                                                >
+                                                    <svg-icon
+                                                        class="ppg-status-icon"
+                                                        [svgStyle]="{
+                                                            'width.px': 10,
+                                                            'height.px': 10
+                                                        }"
+                                                        [src]="
+                                                            tableBodySvgRoutes.circleRoute
+                                                        "
+                                                    >
+                                                    </svg-icon>
+
+                                                    <span
+                                                        class="table-text"
+                                                        [ngClass]="{
+                                                            'align-end':
+                                                                column.isJustifyEnd
+                                                        }"
+                                                        >{{
+                                                            '$' +
+                                                                row[
+                                                                    column.field
+                                                                ]
+                                                        }}</span
+                                                    >
+                                                </div>
+                                            </ng-container>
+                                        </div>
+                                    </ng-container>
 
                                     <!-- URL COLUMN -->
 
@@ -2226,6 +2350,13 @@
 
                                         <span
                                             class="table-text"
+                                            [ngClass]="{
+                                                'ta-font-semi-bold':
+                                                    column.isTextBold ||
+                                                    row[column.field] ===
+                                                        'Unlimited',
+                                                'align-end': column.isJustifyEnd
+                                            }"
                                             [innerHtml]="
                                                 row[column.field]
                                                     ? (row[column.field]
@@ -3044,7 +3175,13 @@
                                     [ngStyle]="{
                                         'margin-right':
                                             column.ngTemplate ===
-                                                'description' && 0
+                                                'description' ||
+                                            column.ngTemplate === 'gallon' ||
+                                            column.ngTemplate === 'ppg'
+                                                ? 0
+                                                : column.ngTemplate === 'total'
+                                                ? '12px'
+                                                : ''
                                     }"
                                 >
                                     <!-- NO TEMPLATE -->
@@ -4125,26 +4262,20 @@
                                         </div>
                                     </ng-container>
 
-                                    <!-- DESCRIPTION & TOTAL COLUMN -->
+                                    <!-- DESCRIPTION COLUMN (GALLON, PPG, TOTAL)-->
 
                                     <ng-container
                                         *ngIf="
-                                            ['description', 'total'].includes(
-                                                column.ngTemplate
-                                            )
+                                            [
+                                                'description',
+                                                'total',
+                                                'gallon',
+                                                'ppg'
+                                            ].includes(column.ngTemplate)
                                         "
                                     >
                                         <div
-                                            class="td-content description-cost-container"
-                                            ngbTooltip
-                                            tooltipBackground="#424242"
-                                            position="bottom"
-                                            [mainTooltip]="
-                                                column.field ===
-                                                'tableDescription'
-                                                    ? 'Show Items'
-                                                    : ''
-                                            "
+                                            class="td-content description-items-container"
                                             [ngClass]="{
                                                 'order-cost-container':
                                                     column.ngTemplate ===
@@ -4152,10 +4283,20 @@
                                                     row?.isRepairOrder,
                                                 hovered:
                                                     descriptionCostHoverIndex ===
-                                                        i && !row?.isRepairOrder
+                                                        i &&
+                                                    !row?.isRepairOrder,
+                                                'd-flex justify-content-end':
+                                                    column.ngTemplate ===
+                                                    'gallon'
                                             }"
                                             [ngStyle]="{
-                                                width: column.width + 'px',
+                                                width:
+                                                    (column.ngTemplate ===
+                                                        'ppg' ||
+                                                    column.ngTemplate ===
+                                                        'total'
+                                                        ? column.width + 6
+                                                        : column.width) + 'px',
                                                 'min-width.px':
                                                     column?.minWidth ?? 'unset'
                                             }"
@@ -4183,16 +4324,27 @@
                                                 descriptionCostHoverIndex = -1
                                             "
                                         >
-                                            <!-- DESCRIPTION COLUMN -->
-
                                             <ng-container
-                                                *ngIf="
-                                                    column.ngTemplate ===
-                                                    'description'
-                                                "
+                                                [ngSwitch]="column.ngTemplate"
                                             >
-                                                <div class="w-100">
+                                                <!-- DESCRIPTION COLUMN -->
+
+                                                <ng-container
+                                                    *ngSwitchCase="
+                                                        'description'
+                                                    "
+                                                >
                                                     <div
+                                                        class="w-100"
+                                                        ngbTooltip
+                                                        tooltipBackground="#424242"
+                                                        position="bottom"
+                                                        [mainTooltip]="
+                                                            column.field ===
+                                                            'tableDescription'
+                                                                ? 'Show Items'
+                                                                : ''
+                                                        "
                                                         [appDescriptionItemsTextCount]="
                                                             row[column.field]
                                                         "
@@ -4200,54 +4352,126 @@
                                                             column.width
                                                         "
                                                     ></div>
-                                                </div>
-                                            </ng-container>
+                                                </ng-container>
 
-                                            <!-- TOTAL  COLUMN-->
+                                                <!-- TOTAL COLUMN -->
 
-                                            <ng-container
-                                                *ngIf="
-                                                    column.ngTemplate ===
-                                                    'total'
-                                                "
-                                            >
-                                                <div
-                                                    class="d-flex align-items-center justify-content-end w-100"
+                                                <ng-container
+                                                    *ngSwitchCase="'total'"
                                                 >
-                                                    <ng-container
-                                                        *ngIf="
-                                                            !row.isRepairOrder;
-                                                            else repairOrder
-                                                        "
+                                                    <div
+                                                        class="d-flex align-items-center justify-content-end w-100"
+                                                    >
+                                                        <ng-container
+                                                            *ngIf="
+                                                                !row.isRepairOrder;
+                                                                else repairOrder
+                                                            "
+                                                        >
+                                                            <span
+                                                                class="ta-font-semi-bold text-size-14 text-color-black"
+                                                                [innerHtml]="
+                                                                    row[
+                                                                        column
+                                                                            .field
+                                                                    ]
+                                                                        ? row[
+                                                                              column
+                                                                                  .field
+                                                                          ]
+                                                                        : ''
+                                                                "
+                                                            ></span>
+                                                        </ng-container>
+
+                                                        <ng-template
+                                                            #repairOrder
+                                                        >
+                                                            <div
+                                                                class="d-flex justify-content-center align-items-center ta-font-bold text-size-11 text-color-blue-18 finish-order-action"
+                                                                (click)="
+                                                                    onFinishOrder(
+                                                                        row.id
+                                                                    )
+                                                                "
+                                                            >
+                                                                FINISH ORDER
+                                                            </div>
+                                                        </ng-template>
+                                                    </div>
+                                                </ng-container>
+
+                                                <!-- GALLON COLUMN -->
+
+                                                <ng-container
+                                                    *ngIf="
+                                                        column.ngTemplate ===
+                                                        'gallon'
+                                                    "
+                                                >
+                                                    <div
+                                                        class="d-flex justify-content-end gallon-container"
                                                     >
                                                         <span
-                                                            class="ta-font-semi-bold text-size-14 text-color-black"
+                                                            class="table-text"
                                                             [innerHtml]="
                                                                 row[
                                                                     column.field
                                                                 ]
-                                                                    ? row[
+                                                                    ? (row[
                                                                           column
                                                                               .field
                                                                       ]
+                                                                      | tableHighlightSearchText
+                                                                          : chipsForHighlight)
                                                                     : ''
                                                             "
                                                         ></span>
-                                                    </ng-container>
+                                                    </div>
+                                                </ng-container>
 
-                                                    <ng-template #repairOrder>
+                                                <!-- PPG COLUMN -->
+
+                                                <ng-container
+                                                    *ngSwitchCase="'ppg'"
+                                                >
+                                                    <ng-container
+                                                        *ngIf="
+                                                            row[column.field]
+                                                        "
+                                                    >
                                                         <div
-                                                            class="d-flex justify-content-center align-items-center ta-font-bold text-size-11 finish-order-action"
-                                                            (click)="
-                                                                onFinishOrder(
-                                                                    row.id
-                                                                )
-                                                            "
+                                                            class="d-flex align-items-center justify-content-end w-100 ppg-container"
                                                         >
-                                                            FINISH ORDER
+                                                            <svg-icon
+                                                                class="ppg-status-icon"
+                                                                [svgStyle]="{
+                                                                    'width.px': 10,
+                                                                    'height.px': 10
+                                                                }"
+                                                                [src]="
+                                                                    tableBodySvgRoutes.circleRoute
+                                                                "
+                                                            >
+                                                            </svg-icon>
+
+                                                            <span
+                                                                class="table-text"
+                                                                [ngClass]="{
+                                                                    'align-end':
+                                                                        column.isJustifyEnd
+                                                                }"
+                                                                >{{
+                                                                    '$' +
+                                                                        row[
+                                                                            column
+                                                                                .field
+                                                                        ]
+                                                                }}</span
+                                                            >
                                                         </div>
-                                                    </ng-template>
-                                                </div>
+                                                    </ng-container>
+                                                </ng-container>
                                             </ng-container>
                                         </div>
                                     </ng-container>
@@ -4522,25 +4746,6 @@
                                         </div>
                                     </ng-container>
 
-                                    <!-- PPG COLUMN-->
-
-                                    <div
-                                        class="td-content"
-                                        *ngIf="column.ngTemplate === 'ppg'"
-                                        [ngStyle]="{
-                                            width: column.width + 'px',
-                                            'min-width.px': column?.minWidth
-                                                ? column.minWidth
-                                                : 'unset'
-                                        }"
-                                    >
-                                        <ng-container *ngIf="row[column.field]">
-                                            <span class="table-text">{{
-                                                '$' + row[column.field]
-                                            }}</span>
-                                        </ng-container>
-                                    </div>
-
                                     <!-- URL COLUMN -->
 
                                     <div
@@ -4811,7 +5016,9 @@
                                                     'ta-font-semi-bold':
                                                         column.isTextBold ||
                                                         row[column.field] ===
-                                                            'Unlimited'
+                                                            'Unlimited',
+                                                    'align-end':
+                                                        column.isJustifyEnd
                                                 }"
                                                 [innerHtml]="
                                                     row[column.field]
@@ -6632,7 +6839,13 @@
 <ng-template #descriptionPopover let-data="data">
     <div
         class="description-dropdown-container"
-        [ngClass]="data.isRepairOrder ? 'repair-order' : 'repair-bill'"
+        [ngClass]="
+            data.isFuelDescription
+                ? 'description-item-fuel'
+                : data.isRepairOrder
+                ? 'description-item-repair-order'
+                : 'description-item-repair-bill'
+        "
         [ngStyle]="{
             width: widthPopover + 'px'
         }"
@@ -6770,7 +6983,9 @@
                         <div
                             class="d-flex align-items-center justify-content-end"
                         >
-                            <p class="m-0 text-size-14 text-color-white">
+                            <p
+                                class="m-0 ta-font-medium text-size-14 text-color-white"
+                            >
                                 {{
                                     descriptionPopoverItem?.descriptionTotalPrice
                                 }}

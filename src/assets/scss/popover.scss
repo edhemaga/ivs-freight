@@ -1065,14 +1065,21 @@
             position: absolute;
             top: -34px;
 
-            &.repair-order {
+            &.description-item-fuel {
+                .description-titles,
+                .description-items-item {
+                    grid-template-columns: 18px 1fr 78px 72px 89px;
+                }
+            }
+
+            &.description-item-repair-order {
                 .description-titles,
                 .description-items-item {
                     grid-template-columns: 18px 1fr 50px;
                 }
             }
 
-            &.repair-bill {
+            &.description-item-repair-bill {
                 .description-titles,
                 .description-items-item {
                     grid-template-columns: 18px 478px 73px 86px 93px;

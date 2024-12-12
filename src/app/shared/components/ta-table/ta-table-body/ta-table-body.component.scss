@@ -567,36 +567,6 @@ table.truckassist-table-body-style {
                             }
                         }
 
-                        // DESCRIPTION COLUMN
-
-                        &.description-cost-container {
-                            transition: background 0.2s ease-in;
-                            padding-right: 8px;
-                            cursor: pointer;
-
-                            &:hover,
-                            &.hovered {
-                                background: $dark-2;
-                            }
-
-                            &.order-cost-container {
-                                padding-right: 4px;
-
-                                &:hover {
-                                    background: transparent;
-                                }
-                            }
-                        }
-
-                        .round-number span {
-                            height: 18px;
-                            min-width: 18px;
-                            border-radius: 50px;
-                            margin-left: 5px;
-                            padding: 0px 5px;
-                            background: $dark-2;
-                        }
-
                         // VL COLUMN
 
                         .active-vl-count,
@@ -852,6 +822,11 @@ table.truckassist-table-body-style {
                             white-space: nowrap;
                             text-overflow: ellipsis;
                             width: 100%;
+
+                            &.align-end {
+                                text-align: end;
+                                margin-right: 10px;
+                            }
 
                             &::selection {
                                 color: $bw6-2;
@@ -1472,7 +1447,6 @@ table.truckassist-table-body-style {
                                 }
                             }
                         }
-                        // }
 
                         // STATUS COLUMN
                         .status-containers {
@@ -1516,6 +1490,35 @@ table.truckassist-table-body-style {
                             }
                         }
 
+                        // DESCRIPTION COLUMN
+                        &.description-items-container {
+                            transition: background 0.2s ease-in;
+                            padding-right: 8px;
+                            cursor: pointer;
+
+                            &:hover,
+                            &.hovered {
+                                background: $dark-2;
+                            }
+
+                            &.order-cost-container {
+                                padding-right: 4px;
+
+                                &:hover {
+                                    background: transparent;
+                                }
+                            }
+                        }
+
+                        .round-number span {
+                            height: 18px;
+                            min-width: 18px;
+                            border-radius: 50px;
+                            margin-left: 5px;
+                            padding: 0px 5px;
+                            background: $dark-2;
+                        }
+
                         // FINISH ORDER COLUMN
                         .finish-order-action {
                             width: 105px;
@@ -1527,8 +1530,34 @@ table.truckassist-table-body-style {
                                 color 0.2s ease-in;
 
                             &:hover {
-                                background: $ta-blue-15;
-                                color: $white;
+                                background: $ta-blue-15 !important;
+                                color: $white !important;
+                            }
+                        }
+
+                        // GALLON COLUMN
+                        .gallon-container {
+                            padding-right: 2px !important;
+                            width: unset !important;
+                        }
+
+                        // PPG COLUMN
+                        .ppg-container {
+                            .ppg-status-icon {
+                                margin-right: 4px;
+
+                                svg {
+                                    path {
+                                        circle {
+                                            fill: $dark-2;
+                                        }
+                                    }
+                                }
+                            }
+
+                            .table-text {
+                                width: unset !important;
+                                margin-right: 0 !important;
                             }
                         }
 
@@ -2807,8 +2836,8 @@ table.truckassist-table-body-style {
                     background-color: $ta-light-grey !important;
 
                     .finish-order-action {
-                        background: $ta-blue-18;
-                        color: $white;
+                        background: $ta-blue-18 !important;
+                        color: $white !important;
                     }
 
                     .td-content {

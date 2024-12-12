@@ -53,6 +53,7 @@ import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calcula
 //Models
 import {
     FuelStopListResponse,
+    FuelStopResponse,
     FuelTransactionResponse,
 } from 'appcoretruckassist';
 import { FuelTransactionListResponse } from 'appcoretruckassist';
@@ -588,7 +589,7 @@ export class FuelTableComponent implements OnInit, AfterViewInit, OnDestroy {
         this.fuelTableData = this.viewData;
     }
 
-    private mapFuelTransactionsData(data: any) {
+    private mapFuelTransactionsData(data: FuelTransactionResponse) {
         const {
             driver,
             truck,
@@ -610,11 +611,10 @@ export class FuelTableComponent implements OnInit, AfterViewInit, OnDestroy {
         const { address: addressName } = address || {};
         const { url } = avatarFile || {};
         const { id: fuelTransactionTypeId } = fuelTransactionType || {};
-        const driverFullName =
-            firstName && lastName ? `${firstName} ${lastName}` : null;
+        const driverFullName = firstName ? `${firstName} ${lastName}` : null;
         const tableDescriptionDropTotal = total
-            ? `$ ${this.thousandSeparator.transform(total)}`
-            : TableStringEnum.EMPTY_STRING_PLACEHOLDER;
+            ? `$${this.thousandSeparator.transform(total)}`
+            : null;
 
         if (
             driver &&
@@ -635,18 +635,13 @@ export class FuelTableComponent implements OnInit, AfterViewInit, OnDestroy {
             avatarImg: url ?? null,
             avatarIsHoverEffect: FuelTableConstants.AVATAR_IS_HOVER_EFFECT,
             isSelected: false,
-            tableTruckNumber:
-                truckNumber ?? TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-            tableDriverName:
-                driverFullName ?? TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-            TableDropdownComponentConstantsCardNumber:
-                cardNumber ?? TableStringEnum.EMPTY_STRING_PLACEHOLDER,
+            tableTruckNumber: truckNumber,
+            tableDriverName: driverFullName,
+            tableDropdownComponentConstantsCardNumber: cardNumber ?? null,
             tableTransactionDate: transactionDate
                 ? this.datePipe.transform(transactionDate, 'MM/dd/yy hh:mm a')
-                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-            tableTransactionTime: 'Treba da se poveze',
-            tableFuelStopName:
-                businessName ?? TableStringEnum.EMPTY_STRING_PLACEHOLDER,
+                : null,
+            tableFuelStopName: businessName,
             tableLocation: address
                 ? address.city +
                   TableStringEnum.COMA +
@@ -654,44 +649,31 @@ export class FuelTableComponent implements OnInit, AfterViewInit, OnDestroy {
                   address.stateShortName !== TableStringEnum.NULL
                       ? address.stateShortName +
                         TableStringEnum.EMPTY_STRING_SPACE
-                      : TableStringEnum.EMPTY_STRING_PLACEHOLDER) +
+                      : null) +
                   (address.zipCode && address.zipCode !== TableStringEnum.NULL
                       ? address.zipCode
-                      : TableStringEnum.EMPTY_STRING_PLACEHOLDER)
-                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-            tableAddress:
-                addressName ?? TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-            tableDescription: fuelItems ?? null,
-            descriptionItems: fuelItems
+                      : null)
+                : null,
+            tableAddress: addressName ?? null,
+            tableDescription: fuelItems
                 ? fuelItems.map((item) => {
                       return {
-                          quantity:
-                              item?.itemFuel?.qty ??
-                              TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-                          description:
-                              item?.itemFuel?.name ??
-                              TableStringEnum.EMPTY_STRING_PLACEHOLDER,
+                          ...item,
+                          description: item?.itemFuel?.name,
                           descriptionPrice: item?.price
-                              ? `$${this.thousandSeparator.transform(
-                                    item.price
-                                )}`
-                              : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-                          price: item?.price
-                              ? `$${this.thousandSeparator.transform(
-                                    item.price
-                                )}`
-                              : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-                          descriptionTotalPrice: item?.subtotal
-                              ? `$${this.thousandSeparator.transform(
-                                    item.subtotal
-                                )}`
-                              : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
+                              ? TableStringEnum.DOLLAR_SIGN +
+                                this.thousandSeparator.transform(item.price)
+                              : null,
+                          descriptionTotalPrice:
+                              TableStringEnum.DOLLAR_SIGN +
+                              this.thousandSeparator.transform(item.subtotal),
+                          quantity: item?.qty,
                       };
                   })
                 : null,
-            tableGallon: gallon ?? null,
-            tablePPG: pricePerGallon ?? null,
-            tableDescriptionDropTotal: tableDescriptionDropTotal,
+            tableDescriptionDropTotal,
+            tableGallon: gallon,
+            tablePPG: pricePerGallon,
             tableTotal: tableDescriptionDropTotal,
             tableAttachments: files,
             fileCount: files ? files.length : 0,
@@ -703,18 +685,16 @@ export class FuelTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 data.createdAt,
                 TableStringEnum.DATE_FORMAT
             ),
-            tableEdited: data.updatedAt
-                ? this.datePipe.transform(
-                      data.updatedAt,
-                      TableStringEnum.DATE_FORMAT
-                  )
-                : null,
+            tableEdited: this.datePipe.transform(
+                data.updatedAt,
+                TableStringEnum.DATE_FORMAT
+            ),
             isIntegratedFuelTransaction:
                 fuelTransactionTypeId !== eFuelTransactionType.Manual,
         };
     }
 
-    private mapFuelStopsData(data: any) {
+    private mapFuelStopsData(data: FuelStopResponse) {
         const {
             businessName,
             store,

@@ -1657,11 +1657,8 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                               ? TableStringEnum.DOLLAR_SIGN +
                                 this.thousandSeparator.transform(item.subtotal)
                               : null,
-                          pmDescription: item?.pmTruck
-                              ? item.pmTruck
-                              : item?.pmTrailer
-                              ? item.pmTrailer
-                              : null,
+                          pmDescription:
+                              item?.pmTruck || item?.pmTrailer || null,
                       };
                   })
                 : null,

@@ -91,6 +91,7 @@ import {
     SignInResponse,
     LoadListLoadStopResponse,
     LoadPossibleStatusesResponse,
+    FuelTransactionResponse,
 } from 'appcoretruckassist';
 import { TableBodyColorLabel } from '@shared/models/table-models/table-body-color-label.model';
 import { TableBodyOptionActions } from '@shared/components/ta-table/ta-table-body/models/table-body-option-actions.model';
@@ -254,7 +255,6 @@ export class TaTableBodyComponent
 
     // --------------------------------NgOnInit---------------------------------
     ngOnInit(): void {
-        console.log('tableData', this.tableData);
         // Get Selected Tab Data
         this.getSelectedTabTableData();
         this.viewDataEmpty = this.viewData.length ? false : true;
@@ -620,8 +620,6 @@ export class TaTableBodyComponent
             this.actionsWidth + notPinedWidth + this.pinedWidth + 22;
 
         this.isDropdownPositionBottom = this.tableWidth > 1650;
-
-        console.log('notPinedColumns', this.notPinedColumns);
     }
 
     // Get Tab Table Data For Selected Tab
@@ -897,10 +895,7 @@ export class TaTableBodyComponent
         columnWidth: number,
         row: T
     ): void {
-        console.log('popover', popover);
-        console.log('tableType', tableType);
-        console.log('columnWidth', columnWidth);
-        console.log('row', row);
+        let data = null;
 
         switch (tableType) {
             case TableStringEnum.REPAIR:
@@ -920,16 +915,30 @@ export class TaTableBodyComponent
 
                 this.widthPopover = isRepairOrder
                     ? columnWidth
-                    : columnWidth + 100;
+                    : columnWidth + 105;
 
-                popover.isOpen()
-                    ? popover.close()
-                    : popover.open({ data: repairItemsData });
+                data = repairItemsData;
+
+                break;
+            case TableStringEnum.FUEL:
+                const fuelRow = row as MappedRepair;
+
+                const fuelItemsData = {
+                    isFuelDescription: true,
+                    descriptionItems: fuelRow.tableDescription,
+                    totalCost: fuelRow.tableDescriptionDropTotal,
+                };
+
+                this.widthPopover = columnWidth + 255;
+
+                data = fuelItemsData;
 
                 break;
             default:
                 break;
         }
+
+        popover.isOpen() ? popover.close() : popover.open({ data });
 
         /*   this.restriction = false;
         this.endorsement = false;

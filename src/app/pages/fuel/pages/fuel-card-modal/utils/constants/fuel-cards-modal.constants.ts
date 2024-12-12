@@ -34,7 +34,7 @@ export class FuelCardsModalData {
         },
         {
             title: 'Card Detail • Number',
-            key: 'TableDropdownComponentConstantsCardNumber',
+            key: 'tableDropdownComponentConstantsCardNumber',
         },
     ];
 
@@ -63,7 +63,7 @@ export class FuelCardsModalData {
                 {
                     title: 'Card Detail • Number',
                     secondTitle: 'Card No.',
-                    key: 'TableDropdownComponentConstantsCardNumber',
+                    key: 'tableDropdownComponentConstantsCardNumber',
                 },
                 {
                     title: 'Card Detail • Type',
