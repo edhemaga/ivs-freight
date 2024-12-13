@@ -20,7 +20,7 @@
   "private": true,
   "dependencies": {
     "@almothafar/angular-signature-pad": "^5.0.1",
-    "@angular-slider/ngx-slider": "^16.0.1",
+    "@angular-slider/ngx-slider": "^18.0.0",
     "@angular/animations": "^17.3.12",
     "@angular/cdk": "^17.3.10",
     "@angular/common": "^17.3.12",
@@ -59,7 +59,7 @@
     "angular-svg-icon-preloader": "^6.0.0",
     "bank-routing-number-validator": "0.0.4",
     "bootstrap": "^5.2.3",
-    "ca-components": "^1.0.58",
+    "ca-components": "/Users/slavisamarkovic/Documents/CARRIERA/carriera-components-library/dist/ca-components",
     "chart.js": "^4.4.5",
     "chartjs-plugin-annotation": "^3.1.0",
     "croppie": "^2.6.5",
