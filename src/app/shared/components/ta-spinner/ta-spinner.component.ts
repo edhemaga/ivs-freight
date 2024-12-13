@@ -7,7 +7,7 @@ import {
     SimpleChanges,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { LottieModule } from 'ngx-lottie';
+import { LottieComponent } from 'ngx-lottie';
 
 @Component({
     selector: 'app-ta-spinner',
@@ -19,7 +19,8 @@ import { LottieModule } from 'ngx-lottie';
         // Module
         CommonModule,
         FormsModule,
-        LottieModule,
+        // Components
+        LottieComponent,
     ],
 })
 export class TaSpinnerComponent implements OnChanges {
@@ -34,6 +35,7 @@ export class TaSpinnerComponent implements OnChanges {
     ngOnChanges(changes: SimpleChanges): void {
         if (changes.size?.currentValue != changes.size?.previousValue) {
             this.lottieSpinner = {
+                ...this.lottieSpinner,
                 path: `/assets/lottie/ta-lottie-spinner/${
                     this.size === 'small' ? '18px' : '32px'
                 }/${this.color}.json`,
