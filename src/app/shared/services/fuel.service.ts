@@ -2,7 +2,7 @@ import { Observable, of, tap } from 'rxjs';
 import { Injectable } from '@angular/core';
 
 // models
-import { FuelStopResponse, SortOrder } from 'appcoretruckassist';
+import { FuelStopExpensesResponse, FuelStopResponse, SortOrder } from 'appcoretruckassist';
 import {
     FuelService as FuelBackendService,
     FuelStopListResponse,
@@ -33,7 +33,7 @@ export class FuelService {
         private fuelService: FuelBackendService,
         private fuelStore: FuelStore,
         private formDataService: FormDataService
-    ) {}
+    ) { }
 
     // **************** FUEL TRANSACTION ****************
 
@@ -237,7 +237,7 @@ export class FuelService {
     public deleteFuelStopList(fuelStopIds: number[]) {
         return this.fuelService
             .apiFuelFuelstopListDelete(fuelStopIds)
-            .pipe(tap(() => {}));
+            .pipe(tap(() => { }));
     }
 
     public addFuelStop(data: any): Observable<CreateResponse> {
@@ -420,13 +420,17 @@ export class FuelService {
             tap(() => {
                 ids.forEach((id) => {
                     this.fuelStore.update((store) => ({
-                        fuelTransactions: store.fuelTransactions.filter(
-                            (transaction: FuelTransactionResponse) =>
-                                transaction.id !== id
-                        ),
-                        fuelStops: store.fuelStops.filter(
-                            (stop: FuelStopResponse) => stop.id !== id
-                        ),
+                        fuelTransactions: Array.isArray(store?.fuelTransactions)
+                            ? store.fuelTransactions.filter(
+                                  (transaction: FuelTransactionResponse) =>
+                                      transaction.id !== id
+                              )
+                            : [],
+                        fuelStops: Array.isArray(store?.fuelStops)
+                            ? store.fuelStops.filter(
+                                  (stop: FuelStopResponse) => stop.id !== id
+                              )
+                            : [],
                     }));
                 });
 
@@ -442,5 +446,9 @@ export class FuelService {
                 );
             })
         );
+    }
+
+    public getFuelExpensesGet(id: number, timeFilter?: number): Observable<FuelStopExpensesResponse> {
+        return this.fuelService.apiFuelExpensesGet(id, timeFilter);
     }
 }

@@ -223,6 +223,22 @@ export abstract class PayrollReportBaseComponent<
                             this.getReportDataResults();
                         });
                     break;
+                    case PayrollAdditionalTypes.FUEL:
+                        this.modalService
+                            .openModal(
+                                FuelPurchaseModalComponent,
+                                {
+                                    size: DriverMVrModalStringEnum.SMALL,
+                                },
+                                {
+                                    id: item.data.id,
+                                    type: TableStringEnum.EDIT
+                                }
+                            )
+                            .then(() => {
+                                this.getReportDataResults();
+                            });
+                        break;
             }
         } else if (item.$event.type === TableStringEnum.DELETE_2) {
             switch (item.title) {
@@ -282,6 +298,24 @@ export abstract class PayrollReportBaseComponent<
                             this.getReportDataResults();
                         });
                     break;
+                    case PayrollAdditionalTypes.FUEL:
+                        this.payrollService
+                            .raiseDeleteModal(
+                                TableStringEnum.FUEL_1,
+                                ConfirmationModalStringEnum.DELETE_FUEL,
+                                item.data.id,
+                                {
+                                    title: item.data.description,
+                                    subtitle: item.data.subtotal,
+                                    date: item.data.date,
+                                    label: `${label}`,
+                                    id: item.data.id,
+                                }
+                            )
+                            .then(() => {
+                                this.getReportDataResults();
+                            });
+                        break;
             }
         }
     }

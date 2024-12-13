@@ -515,6 +515,7 @@
                                                         )
                                                     "
                                                 ></app-ta-input-dropdown>
+
                                                 <app-ta-input
                                                     formControlName="phone"
                                                     [inputConfig]="{
@@ -522,9 +523,7 @@
                                                         name: 'Phone',
                                                         type: 'text',
                                                         mask: '(000) 000-0000',
-                                                        maxLength: 14,
-                                                        hideRequiredCheck: true,
-                                                        hideErrorMessage: true
+                                                        maxLength: 14
                                                     }"
                                                 ></app-ta-input>
                                                 <app-ta-input
@@ -549,9 +548,7 @@
                                                         minLength: 5,
                                                         maxLength: 64,
                                                         textTransform:
-                                                            'lowercase',
-                                                        hideRequiredCheck: true,
-                                                        hideErrorMessage: true
+                                                            'lowercase'
                                                     }"
                                                 ></app-ta-input>
                                                 <div

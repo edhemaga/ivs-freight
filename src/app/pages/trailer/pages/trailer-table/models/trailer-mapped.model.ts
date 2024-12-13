@@ -1,7 +1,7 @@
 import { DropdownItem } from '@shared/models/card-models/card-table-data.model';
-import { TraillerData } from '@pages/trailer/pages/trailer-table/models/trailer-data.model';
+import { TrailerData } from '@pages/trailer/pages/trailer-table/models/trailer-data.model';
 
-export interface TrailerMapped extends TraillerData {
+export interface TrailerMapped extends TrailerData {
     isSelected: boolean;
     tableTrailerTypeIcon: string;
     tableVin: {
