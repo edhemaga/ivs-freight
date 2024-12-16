@@ -3254,75 +3254,85 @@
                                                     *ngFor="
                                                         let rowField of row[
                                                             column.field
-                                                        ]
+                                                        ];
+                                                        let i = index
                                                     "
                                                 >
                                                     <div
-                                                        class="pickup-delivery-counter"
-                                                        [ngClass]="{
-                                                            'pickup-count':
-                                                                !rowField.delivery &&
-                                                                row.count !==
-                                                                    'S',
-                                                            'delivery-count':
-                                                                rowField.delivery &&
-                                                                rowField.count !==
-                                                                    'S',
-                                                            'special-count':
-                                                                rowField.count ===
-                                                                'S'
+                                                        class="d-flex align-items-center"
+                                                        [ngStyle]="{
+                                                            'margin-right': !i
+                                                                ? '10px'
+                                                                : '0'
                                                         }"
                                                     >
-                                                        {{ rowField.count }}
-                                                    </div>
-
-                                                    <div
-                                                        class="pickup-delivery-location-container"
-                                                    >
                                                         <div
-                                                            class="location"
-                                                            [ngStyle]="{
-                                                                width:
-                                                                    column.width -
-                                                                    28 +
-                                                                    'px'
+                                                            class="pickup-delivery-counter"
+                                                            [ngClass]="{
+                                                                'pickup-count':
+                                                                    !rowField.delivery &&
+                                                                    row.count !==
+                                                                        'S',
+                                                                'delivery-count':
+                                                                    rowField.delivery &&
+                                                                    rowField.count !==
+                                                                        'S',
+                                                                'special-count':
+                                                                    rowField.count ===
+                                                                    'S'
                                                             }"
                                                         >
-                                                            {{
-                                                                rowField.location
-                                                            }}
+                                                            {{ rowField.count }}
                                                         </div>
-                                                        <ng-container
-                                                            *ngIf="
-                                                                rowField.date ||
-                                                                rowField.time
-                                                            "
+
+                                                        <div
+                                                            class="pickup-delivery-location-container"
                                                         >
                                                             <div
-                                                                class="date-time-container"
+                                                                class="location"
                                                                 [ngStyle]="{
                                                                     width:
                                                                         column.width -
-                                                                        30 +
+                                                                        28 +
                                                                         'px'
                                                                 }"
                                                             >
-                                                                <div
-                                                                    class="date"
-                                                                >
-                                                                    {{
-                                                                        rowField.date
-                                                                    }}
-                                                                </div>
-                                                                <div
-                                                                    class="time"
-                                                                >
-                                                                    {{
-                                                                        rowField.time
-                                                                    }}
-                                                                </div>
+                                                                {{
+                                                                    rowField.location
+                                                                }}
                                                             </div>
-                                                        </ng-container>
+                                                            <ng-container
+                                                                *ngIf="
+                                                                    rowField.date ||
+                                                                    rowField.time
+                                                                "
+                                                            >
+                                                                <div
+                                                                    class="date-time-container"
+                                                                    [ngStyle]="{
+                                                                        width:
+                                                                            column.width -
+                                                                            30 +
+                                                                            'px'
+                                                                    }"
+                                                                >
+                                                                    <div
+                                                                        class="date"
+                                                                    >
+                                                                        {{
+                                                                            rowField.date
+                                                                        }}
+                                                                    </div>
+                                                                    <div
+                                                                        class="time"
+                                                                    >
+                                                                        {{
+                                                                            rowField.time
+                                                                        }}
+                                                                    </div>
+                                                                </div>
+                                                            </ng-container>
+                                                        </div>
                                                     </div>
                                                 </ng-container>
                                             </div>

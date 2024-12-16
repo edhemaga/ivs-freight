@@ -107,16 +107,7 @@ export function closePayrollCommissionReportEffect(
                         .pipe(
                             map((data) => {
                                 return PayrollCommissionDriverActions
-                                    .closePayrollCommissionReportDriverSuccess
-                                    // {
-                                    //     payroll: data,
-                                    // }
-                                    ();
-                            }),
-                            tap((data) => {
-                                // this.store.dispatch(
-                                //   PaymentActions.restartRefreshDataSuccess({ flag: false })
-                                // );
+                                    .closePayrollCommissionReportDriverSuccess();
                             }),
                             catchError((error) =>
                                 of(
