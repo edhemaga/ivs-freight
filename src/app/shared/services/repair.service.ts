@@ -461,12 +461,16 @@ export class RepairService {
     public getRepairShopRepairedVehicle(
         repairShopId?: number,
         pageIndex?: number,
-        pageSize?: number
+        pageSize?: number,
+        companyId?: number,
+        sort?: string
     ): Observable<RepairedVehicleListResponse> {
         return this.repairShopService.apiRepairshopRepairedvehicleGet(
             repairShopId,
             pageIndex,
-            pageSize
+            pageSize,
+            companyId,
+            sort
         );
     }
 

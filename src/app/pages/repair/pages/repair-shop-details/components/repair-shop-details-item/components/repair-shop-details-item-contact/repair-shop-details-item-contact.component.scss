@@ -1,0 +1,18 @@
+@import 'src/theme/variables';
+
+.contacts-container {
+    /* Search */
+
+    &-search {
+        margin-bottom: 6px;
+    }
+
+    background: $white;
+    border-radius: 3px;
+    padding: 6px;
+    height: fit-content;
+
+    app-ta-contacts-card .ta-card-header {
+        padding: 0 6px;
+    }
+}

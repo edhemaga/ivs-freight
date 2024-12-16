@@ -23,6 +23,7 @@ export interface ITaInput {
     placeholderIcon?: string;
     placeholderIconRightSide?: string;
     placeholderIconFolllowTextOnRightSide?: string;
+    isPlaceHolderIconRightSideDynamicColor?: boolean;
     placeholderIconColor?: string;
     placeholderText?: string;
     placeholderInsteadOfLabel?: boolean;

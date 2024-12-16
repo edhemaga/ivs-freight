@@ -364,6 +364,18 @@
         }
     }
 
+    .load-description-tonu {
+        background-color: #e66767;
+        line-height: 13px;
+        text-align: center;
+        height: 12px;
+        width: 12px;
+        display: inline-block;
+        border-radius: 1px;
+        font-weight: 700;
+        color: #fff;
+    }
+
     &.delivery {
         svg-icon {
             rect {

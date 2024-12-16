@@ -49,6 +49,7 @@ import {
     SortOrder,
     LoadSortBy,
     AddressResponse,
+    LoadListDto,
 } from 'appcoretruckassist';
 import {
     Comment,
@@ -208,7 +209,7 @@ export class LoadService {
             // pageIndex,
             // pageSize,
             // companyId,
-            null,
+            null
             // order,
             // sortBy,
             // search,
@@ -1095,5 +1096,49 @@ export class LoadService {
             searchTwo,
             searchThree
         );
+    }
+
+    public refreshLoadDataLocal(
+        loadChanged: LoadListDto | LoadTemplateResponse
+    ): void {
+        const { statusType } = (loadChanged as LoadListDto) || {};
+        const { name } = statusType || {};
+
+        if (statusType === null || statusType === undefined) return;
+
+        this.updateStoreEntityLocal(loadChanged, name as LoadStatusType);
+    }
+
+    private updateStoreEntityLocal(loadChanged: LoadListDto | LoadTemplateResponse, loadStatusType: LoadStatusType): void {
+        const { id } = loadChanged || {};
+        const hasEntityPending = this.loadPendingQuery.hasEntity(id);
+        const hasEntityActive = this.loadActiveQuery.hasEntity(id);
+        const hasEntityClosed = this.loadClosedQuery.hasEntity(id);
+
+        if (hasEntityPending && loadStatusType === LoadStatusType.Pending) {
+            this.loadPendingStore.update(id, loadChanged);
+        } else if (hasEntityPending && loadStatusType === LoadStatusType.Active) {
+            this.loadActiveStore.remove(id);
+            this.loadPendingStore.add(loadChanged);
+        } else if (hasEntityPending && loadStatusType === LoadStatusType.Closed) {
+            this.loadClosedStore.remove(id);
+            this.loadPendingStore.add(loadChanged);
+        } else if (hasEntityActive && loadStatusType === LoadStatusType.Pending) {
+            this.loadPendingStore.remove(id);
+            this.loadActiveStore.add(loadChanged);
+        } else if (hasEntityActive && loadStatusType === LoadStatusType.Active) {
+            this.loadActiveStore.update(id, loadChanged);
+        } else if (hasEntityActive && loadStatusType === LoadStatusType.Closed) {
+            this.loadClosedStore.remove(id);
+            this.loadActiveStore.add(loadChanged);
+        } else if (hasEntityClosed && loadStatusType === LoadStatusType.Pending) {
+            this.loadPendingStore.remove(id);
+            this.loadClosedStore.add(loadChanged);
+        } else if (hasEntityClosed && loadStatusType === LoadStatusType.Active) {
+            this.loadActiveStore.remove(id);
+            this.loadClosedStore.add(loadChanged);
+        } else if (hasEntityClosed && loadStatusType === LoadStatusType.Closed) {
+            this.loadClosedStore.update(id, loadChanged);   
+        }
     }
 }

@@ -15,7 +15,7 @@ import { PayrollCreditBonusComponent } from '@pages/accounting/pages/payroll/pay
 import { PayrollBonusModalComponent } from '@pages/accounting/pages/payroll/payroll-modals/payroll-bonus-modal/payroll-bonus-modal.component';
 import { PayrollDeductionModalComponent } from '@pages/accounting/pages/payroll/payroll-modals/payroll-deduction-modal/payroll-deduction-modal.component';
 import { FuelPurchaseModalComponent } from '@pages/fuel/pages/fuel-modals/fuel-purchase-modal/fuel-purchase-modal.component';
-import { PayrollReportComponent } from '@pages/accounting/pages/payroll/payroll-modals/payroll-report/payroll-report.component';
+import { PayrollPdfReportComponent } from '@pages/accounting/pages/payroll/payroll-modals/payroll-report/payroll-pdf-report.component';
 
 // Enums
 import {
@@ -33,6 +33,7 @@ export abstract class PayrollReportBaseComponent<
         driver?: { id?: number; fullName?: string | null };
         truck?: { id?: number };
         id?: number;
+        owner?: { name?: string | null };
     }
 > {
     public openedPayroll: T;
@@ -61,7 +62,7 @@ export abstract class PayrollReportBaseComponent<
     public openMenu(data: { type: string }) {
         if (data.type === PayrollStringEnum.REPORT) {
             this.modalService.openModal(
-                PayrollReportComponent,
+                PayrollPdfReportComponent,
                 {},
                 {
                     data: {
@@ -153,6 +154,10 @@ export abstract class PayrollReportBaseComponent<
     }
 
     public onOpenActionEditItems(item: any): void {
+        const label = this.openedPayroll.truck
+            ? this.openedPayroll.owner?.name
+            : this.openedPayroll.driver.fullName;
+
         if (item.$event.type === TableStringEnum.EDIT_2) {
             switch (item.title) {
                 case PayrollAdditionalTypes.CREDIT:
@@ -218,6 +223,22 @@ export abstract class PayrollReportBaseComponent<
                             this.getReportDataResults();
                         });
                     break;
+                    case PayrollAdditionalTypes.FUEL:
+                        this.modalService
+                            .openModal(
+                                FuelPurchaseModalComponent,
+                                {
+                                    size: DriverMVrModalStringEnum.SMALL,
+                                },
+                                {
+                                    id: item.data.id,
+                                    type: TableStringEnum.EDIT
+                                }
+                            )
+                            .then(() => {
+                                this.getReportDataResults();
+                            });
+                        break;
             }
         } else if (item.$event.type === TableStringEnum.DELETE_2) {
             switch (item.title) {
@@ -231,7 +252,7 @@ export abstract class PayrollReportBaseComponent<
                                 title: item.data.description,
                                 subtitle: item.data.subtotal,
                                 date: item.data.date,
-                                label: `${this.openedPayroll.driver.fullName}`,
+                                label: `${label}`,
                                 id: item.data.id,
                             }
                         )
@@ -249,8 +270,10 @@ export abstract class PayrollReportBaseComponent<
                                 title: item.data.description,
                                 subtitle: item.data.subtotal,
                                 date: item.data.date,
-                                label: `${this.openedPayroll.driver.fullName}`,
-                                id: item.data.id,
+                                label: `${label}`,
+                                id:
+                                    item.data.parentPayrollDeductionId ||
+                                    item.data.id,
                             }
                         )
                         .then(() => {
@@ -267,7 +290,7 @@ export abstract class PayrollReportBaseComponent<
                                 title: item.data.description,
                                 subtitle: item.data.subtotal,
                                 date: item.data.date,
-                                label: `${this.openedPayroll.driver.fullName}`,
+                                label: `${label}`,
                                 id: item.data.id,
                             }
                         )
@@ -275,6 +298,24 @@ export abstract class PayrollReportBaseComponent<
                             this.getReportDataResults();
                         });
                     break;
+                    case PayrollAdditionalTypes.FUEL:
+                        this.payrollService
+                            .raiseDeleteModal(
+                                TableStringEnum.FUEL_1,
+                                ConfirmationModalStringEnum.DELETE_FUEL,
+                                item.data.id,
+                                {
+                                    title: item.data.description,
+                                    subtitle: item.data.subtotal,
+                                    date: item.data.date,
+                                    label: `${label}`,
+                                    id: item.data.id,
+                                }
+                            )
+                            .then(() => {
+                                this.getReportDataResults();
+                            });
+                        break;
             }
         }
     }
@@ -300,28 +341,28 @@ export abstract class PayrollReportBaseComponent<
                 ...dataSend,
                 selectedCreditIds: _included.length
                     ? _included.map((load) => load.id)
-                    : 0,
+                    : [0],
             };
         } else if (_title === PayrollAdditionalTypes.DEDUCTION) {
             dataSend = {
                 ...dataSend,
                 selectedDeductionIds: _included.length
                     ? _included.map((load) => load.id)
-                    : 0,
+                    : [0],
             };
         } else if (_title === PayrollAdditionalTypes.BONUS) {
             dataSend = {
                 ...dataSend,
                 selectedBonusIds: _included.length
                     ? _included.map((load) => load.id)
-                    : 0,
+                    : [0],
             };
         } else if (_title === PayrollAdditionalTypes.FUEL) {
             dataSend = {
                 ...dataSend,
                 selectedFuelIds: _included.length
                     ? _included.map((load) => load.id)
-                    : 0,
+                    : [0],
             };
         }
 

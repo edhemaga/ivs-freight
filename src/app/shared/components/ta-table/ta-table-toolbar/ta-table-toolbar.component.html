@@ -181,10 +181,28 @@
             >
                 <div
                     (click)="activeSelectedRows()"
-                    class="action-div d-flex justify-content-center align-items-center"
+                    class="action-div d-flex justify-content-center align-items-center action-hover"
+                    [class.blue-background]="
+                        options.toolbarActions.showActivateButton
+                    "
+                    ngbTooltip
+                    [mainTooltip]="
+                        options.toolbarActions.showActivateButton
+                            ? 'Activate (' + tableRowsSelected.length + ')'
+                            : 'Deactivate (' + tableRowsSelected.length + ')'
+                    "
+                    tooltipBackground="#424242"
+                    tooltipColor="#FFFFFF"
+                    position="bottom"
                 >
                     <svg-icon
                         [svgStyle]="{ 'width.px': 18, 'height.px': 18 }"
+                        [ngClass]="{
+                            'activate-icon':
+                                options.toolbarActions.showActivateButton,
+                            'deactivate-icon':
+                                !options.toolbarActions.showActivateButton
+                        }"
                         class="action-div-icon"
                         [src]="
                             'assets/svg/truckassist-table/activation-icon.svg'
@@ -577,6 +595,9 @@
                 >
                     <div
                         class="modal-open-container"
+                        [class.disabled]="
+                            options.toolbarActions.disableOpenModalButton
+                        "
                         (click)="onToolBarAction('open-modal')"
                     >
                         <svg-icon

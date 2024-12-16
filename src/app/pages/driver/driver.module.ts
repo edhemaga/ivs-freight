@@ -73,4 +73,4 @@ import { driverCardModalReducer } from '@pages/driver/pages/driver-card-modal/st
         StoreModule.forFeature('driverCardData', driverCardModalReducer),
     ],
 })
-export class DriverModule {}
+export class DriverModule { }

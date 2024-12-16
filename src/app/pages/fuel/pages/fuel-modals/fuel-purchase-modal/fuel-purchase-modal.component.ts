@@ -382,7 +382,7 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
                             ? res.trailer.trailerNumber
                             : null,
                         driverFullName: res.driver
-                            ? res.driver.firstName.concat(
+                            ? res.driver.firstName?.concat(
                                   ' ',
                                   res.driver.lastName
                               )
@@ -404,19 +404,19 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
                     });
 
                     this.selectedTruckType = {
-                        id: res.truck.id,
-                        number: res.truck.truckNumber,
-                        logoName: res.truck.truckType.logoName,
-                        name: res.truck.truckNumber,
+                        id: res.truck?.id,
+                        number: res.truck?.truckNumber,
+                        logoName: res.truck?.truckType.logoName,
+                        name: res.truck?.truckNumber,
                         folder: FuelValuesStringEnum.COMMON,
                         subFolder: FuelValuesStringEnum.TRUCKS,
                     };
 
                     this.selectedTrailerType = {
-                        id: res.trailer.id,
-                        number: res.trailer.trailerNumber,
-                        logoName: res.trailer.trailerType.logoName,
-                        name: res.trailer.trailerNumber,
+                        id: res.trailer?.id,
+                        number: res.trailer?.trailerNumber,
+                        logoName: res.trailer?.trailerType.logoName,
+                        name: res.trailer?.trailerNumber,
                         folder: FuelValuesStringEnum.COMMON,
                         subFolder: FuelValuesStringEnum.TRAILERS,
                     };
@@ -537,7 +537,7 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
                     this.selectedDispatchHistory = res;
                     this.fuelForm
                         .get(FuelValuesStringEnum.DRIVER_FULL_NAME)
-                        .patchValue(res.firstName.concat(' ', res.lastName));
+                        .patchValue(res.firstName?.concat(' ', res.lastName) ?? null);
                     this.fuelForm
                         .get(FuelValuesStringEnum.TRAILER_ID)
                         .patchValue(res.trailerNumber);

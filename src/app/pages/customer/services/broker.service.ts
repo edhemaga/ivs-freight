@@ -31,6 +31,9 @@ import {
     BrokerByIdResponse,
     ReviewResponse,
     RatingReviewResponse,
+    BrokerPaidInvoiceResponse,
+    BrokerPaymentHistoryResponse,
+    BrokerMileageRateResponse,
 } from 'appcoretruckassist';
 
 // Eenums
@@ -57,7 +60,7 @@ export class BrokerService {
         private bls: BrokerDetailsListStore,
         private brokerItemStore: BrokerDetailsStore,
         private brokerMinimalQuery: BrokerMinimalListQuery
-    ) {}
+    ) { }
 
     // Add Broker
     public addBroker(data: any): Observable<CreateResponse> {
@@ -748,15 +751,15 @@ export class BrokerService {
             );
     }
 
-    public getMileageChartData(id: number, chartType: number) {
+    public getMileageChartData(id: number, chartType: number): Observable<BrokerMileageRateResponse> {
         return this.brokerService.apiBrokerMileageratehistoryGet(id, chartType);
     }
 
-    public getPaymentChartData(id: number, chartType: number) {
+    public getPaymentChartData(id: number, chartType: number): Observable<BrokerPaymentHistoryResponse> {
         return this.brokerService.apiBrokerPaymenthistoryGet(id, chartType);
     }
 
-    public getInvoiceChartData(id: number, chartType: number) {
+    public getInvoiceChartData(id: number, chartType: number): Observable<BrokerPaidInvoiceResponse> {
         return this.brokerService.apiBrokerPaidinvoiceGet(id, chartType);
     }
 }
