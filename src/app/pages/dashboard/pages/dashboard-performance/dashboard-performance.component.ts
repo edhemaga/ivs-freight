@@ -26,7 +26,7 @@ import { DashboardHelper } from '@pages/dashboard/utils/helpers/dashboard.helper
 // enums
 import { DashboardStringEnum } from '@pages/dashboard/enums/dashboard-string.enum';
 import { DashboardChartStringEnum } from '@pages/dashboard/enums/dashboard-chart-string.enum';
-import { ChartTypesStringEnum } from 'ca-components';
+import { CaChartComponent, ChartTypesStringEnum } from 'ca-components';
 
 // models
 import { DashboardTab } from '@pages/dashboard/models/dashboard-tab.model';
@@ -53,6 +53,7 @@ import {
     styleUrls: ['./dashboard-performance.component.scss'],
 })
 export class DashboardPerformanceComponent implements OnInit, OnDestroy {
+    
     private destroy$: Subject<void> = new Subject<void>();
 
     public isLoading: boolean = false;
@@ -106,6 +107,8 @@ export class DashboardPerformanceComponent implements OnInit, OnDestroy {
         this.getOverallCompanyDuration();
 
         this.getPerformanceListData();
+
+        //this.setPerformanceDefaultStateData();
     }
 
     private createForm(): void {
@@ -268,18 +271,51 @@ export class DashboardPerformanceComponent implements OnInit, OnDestroy {
             performanceDataItem.selectedHoverColor =
                 firstAvailableColor.hoverCode;
 
+            this.linePerformanceChartConfig.chartData.datasets = this.linePerformanceChartConfig.chartData.datasets.map(
+                (dataset) => {
+                    const datasetToUpperCase = dataset.label.toUpperCase();
+                    if (datasetToUpperCase === performanceDataItem.title.toUpperCase()) {
+                        return {
+                            ...dataset,
+                            borderColor: firstAvailableColor.code,
+                            hidden: false,
+                            spanGaps: true
+                        };
+                    }
+                    return dataset; // Return unchanged dataset
+                }
+            );
+            //here the hidden property is set to false and object look fine, but it doesnt reflect on the chart 
+            console.log("this.linePerformanceChartConfig.chartData.datasets", this.linePerformanceChartConfig.chartData.datasets)
+    
             this.selectedPerformanceDataCount++;
         } else {
             // data boxes
             performanceDataItem.selectedColor = null;
             performanceDataItem.selectedHoverColor = null;
 
+            this.linePerformanceChartConfig.chartData.datasets = this.linePerformanceChartConfig.chartData.datasets.map(
+                (dataset) => {
+                    const datasetToUpperCase = dataset.label.toUpperCase();
+                    if (datasetToUpperCase === performanceDataItem.title.toUpperCase()) {
+                        return {
+                            ...dataset,
+                            borderColor: performanceDataItem.selectedColor,
+                            hidden: true,
+                        };
+                    }
+                    return dataset; // Return unchanged dataset
+                }
+            );
+            
             this.performanceDataColors.find(
                 (color) => color.code === selectedColor
             ).isSelected = false;
 
             this.selectedPerformanceDataCount--;
         }
+
+        this.linePerformanceChartConfig = JSON.parse(JSON.stringify(this.linePerformanceChartConfig));
     }
 
     public handleCustomPeriodRangeClose(): void {
@@ -297,19 +333,19 @@ export class DashboardPerformanceComponent implements OnInit, OnDestroy {
         if (!removeHover) {
             selectedPerformanceDataItem.isHovered = true;
 
-            //     if (selectedPerformanceDataItem.selectedColor) {
-            //         // this.lineChart?.changeChartFillProperty(
-            //         //     selectedPerformanceDataItem.title,
-            //         //     selectedPerformanceDataItem.selectedColor.slice(1)
-            //         // );
-            //     }
-            // } else {
-            //     selectedPerformanceDataItem.isHovered = false;
+                if (selectedPerformanceDataItem.selectedColor) {
+                    // this.lineChart?.changeChartFillProperty(
+                    //     selectedPerformanceDataItem.title,
+                    //     selectedPerformanceDataItem.selectedColor.slice(1)
+                    // );
+                }
+            } else {
+                selectedPerformanceDataItem.isHovered = false;
 
-            //     // this.lineChart?.changeChartFillProperty(
-            //     //     this.performanceData[index].title,
-            //     //     DashboardChartStringEnum.EMPTY_STRING
-            //     // );
+                // this.lineChart?.changeChartFillProperty(
+                //     this.performanceData[index].title,
+                //     DashboardChartStringEnum.EMPTY_STRING
+                // );
         }
     }
 
@@ -401,9 +437,9 @@ export class DashboardPerformanceComponent implements OnInit, OnDestroy {
                         return performanceDataItem;
                     }
                 );
-
+                console.log("this.performanceData", this.performanceData);
                 // charts
-
+                console.log("performanceData", performanceData);
                 const { linePerformanceChartData, barPerformanceChartData } =
                     this.groupPerformanceDataByChartType(
                         performanceData.performanceGraph.performanceGraphs
@@ -415,7 +451,15 @@ export class DashboardPerformanceComponent implements OnInit, OnDestroy {
                     );
                 this.linePerformanceChartConfig.chartData.datasets =
                     linePerformanceChartData;
-
+                    
+                    this.linePerformanceChartConfig.chartData.datasets = linePerformanceChartData.map((dataset) => {
+                        return {
+                            ...dataset,
+                            spanGaps: true,
+                        };
+                    });
+                    
+                console.log("initialChartSetup", this.linePerformanceChartConfig);
                 this.barPerformanceChartConfig.chartData.labels =
                     performanceData.intervalLabels.map(
                         (item) => item.label || ''
@@ -468,6 +512,7 @@ export class DashboardPerformanceComponent implements OnInit, OnDestroy {
                 label: key,
                 data: values,
                 type: ChartTypesStringEnum.LINE,
+                hidden: true,
             }));
 
         return { linePerformanceChartData, barPerformanceChartData };

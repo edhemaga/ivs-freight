@@ -12,6 +12,7 @@ export class DashboardPerformanceChartsConfiguration {
         },
         height: 350,
         width: 100,
+        isMultiYAxis: true,
         noDataImage: ChartImagesStringEnum.CHART_NO_DATA_PAY,
         chartOptions: {},
         showXAxisLabels: false,
