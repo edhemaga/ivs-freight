@@ -174,33 +174,25 @@ export class LoadDetailsCardComponent implements OnInit, OnChanges {
 
         switch (action) {
             case ArrowActionsStringEnum.PREVIOUS:
-                currentIndex = --currentIndex;
-
-                if (currentIndex !== -1) {
-                    this.detailsPageDriverService.getDataDetailId(
-                        this.loadsDropdownList[currentIndex].id
-                    );
-
-                    this.loadCurrentIndex = currentIndex;
-                }
-
+                currentIndex = (currentIndex - 1 + this.loadsDropdownList.length) % this.loadsDropdownList.length;
+    
+                this.detailsPageDriverService.getDataDetailId(
+                    this.loadsDropdownList[currentIndex].id
+                );
+    
+                this.loadCurrentIndex = currentIndex;
                 break;
-
+    
             case ArrowActionsStringEnum.NEXT:
-                currentIndex = ++currentIndex;
-
-                if (
-                    currentIndex !== -1 &&
-                    this.loadsDropdownList.length > currentIndex
-                ) {
-                    this.detailsPageDriverService.getDataDetailId(
-                        this.loadsDropdownList[currentIndex].id
-                    );
-
-                    this.loadCurrentIndex = currentIndex;
-                }
-
+                currentIndex = (currentIndex + 1) % this.loadsDropdownList.length;
+    
+                this.detailsPageDriverService.getDataDetailId(
+                    this.loadsDropdownList[currentIndex].id
+                );
+    
+                this.loadCurrentIndex = currentIndex;
                 break;
+    
             default:
                 break;
         }

@@ -16,6 +16,7 @@ export class SettingsDocumentsConstants {
         toolbarActions: {
             showArhiveFilter: false,
             viewModeOptions: [],
+            hideListColumn: true,
         },
         actions: [],
     };

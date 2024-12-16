@@ -1,5 +1,6 @@
 import { DOCUMENT } from '@angular/common';
 import {
+    AfterViewInit,
     Component,
     Inject,
     OnDestroy,
@@ -22,6 +23,7 @@ import { WebsiteAuthService } from '@pages/website/services/website-auth.service
 
 // models
 import { SelectCompanyResponse, SignInResponse } from 'appcoretruckassist';
+import { Carousel } from 'bootstrap';
 
 @Component({
     selector: 'app-select-company',
@@ -29,7 +31,9 @@ import { SelectCompanyResponse, SignInResponse } from 'appcoretruckassist';
     styleUrls: ['./select-company.component.scss'],
     encapsulation: ViewEncapsulation.None,
 })
-export class SelectCompanyComponent implements OnInit, OnDestroy {
+export class SelectCompanyComponent
+    implements OnInit, OnDestroy, AfterViewInit
+{
     private destroy$ = new Subject<void>();
 
     public saveCompany: any;
@@ -40,6 +44,9 @@ export class SelectCompanyComponent implements OnInit, OnDestroy {
     public dates: any = [];
     public newUser: any;
     public id: any;
+    public startingScrollPosition: number = 0;
+    public selectedCompanyId: number = 0;
+    public selectedCompanyIndex: number = 0;
 
     constructor(
         @Inject(DOCUMENT) private document: HTMLDocument,
@@ -56,6 +63,11 @@ export class SelectCompanyComponent implements OnInit, OnDestroy {
         this.userData.companies.length < 5
             ? (this.dotsTrue = false)
             : (this.dotsTrue = true);
+    }
+
+    ngAfterViewInit(): void {
+        this.setStartingScrollPosition();
+        setTimeout(() => this.carouselSlide(), 1000);
     }
 
     public user(data): void {
@@ -95,6 +107,8 @@ export class SelectCompanyComponent implements OnInit, OnDestroy {
                 };
             }),
         };
+
+        console.log('newUser', this.newUser);
 
         //Slick Carousel Config
         this.slideConfig = {
@@ -156,9 +170,9 @@ export class SelectCompanyComponent implements OnInit, OnDestroy {
         this.websiteAuthService.accountLogout();
     }
 
-    public onCompanySelect(): void {
-        const center: any = this.document.querySelectorAll('.slick-center');
-        let id = center[0]?.firstChild?.id;
+    public onCompanySelect(id): void {
+        // const selectedCompany = this.document.querySelector('.active');
+        // let id = selectedCompany?.id;
 
         this.websiteAuthService
             .selectCompanyAccount({
@@ -188,6 +202,129 @@ export class SelectCompanyComponent implements OnInit, OnDestroy {
                 })
             )
             .subscribe();
+    }
+
+    public carouselSlide(): void {
+        let multipleCardCarousel = document.querySelector(
+            '#carouselExampleControls'
+        );
+
+        let carousel = new Carousel(multipleCardCarousel, {
+            interval: false, // Disable automatic sliding
+            wrap: false, // Prevent wrapping at the end
+        });
+
+        let carouselWidth =
+            document.querySelector('.carousel-inner').scrollWidth;
+        let cardWidth = (
+            document.querySelector('.carousel-item') as HTMLElement
+        ).offsetWidth;
+        let scrollPosition = this.startingScrollPosition;
+
+        console.log('carouselWidth', carouselWidth);
+        console.log('cardWidth', cardWidth);
+
+        document
+            .querySelector('#carouselExampleControls .carousel-control-next')
+            .addEventListener('click', function () {
+                console.log('next click', scrollPosition);
+                if (scrollPosition < carouselWidth - cardWidth * 4) {
+                    scrollPosition += cardWidth;
+
+                    const selectedIndex = Math.floor(
+                        scrollPosition / cardWidth
+                    );
+
+                    document
+                        .querySelectorAll('.carousel-item')
+                        .forEach((item, index) => {
+                            if (index === selectedIndex) {
+                                item.classList.add('active');
+                                this.selectedCompanyId = item.id;
+                            } else item.classList.remove('active');
+                        });
+
+                    console.log(
+                        'selectedElement',
+                        document.querySelectorAll('.carousel-item')[
+                            selectedIndex
+                        ]
+                    );
+                    console.log('selectedCompanyId', this.selectedCompanyId);
+
+                    document
+                        .querySelector(
+                            '#carouselExampleControls .carousel-inner'
+                        )
+                        .scroll({
+                            left: scrollPosition,
+                            behavior: 'smooth',
+                        });
+                }
+            });
+
+        document
+            .querySelector('#carouselExampleControls .carousel-control-prev')
+            .addEventListener('click', function () {
+                console.log('previous click', scrollPosition);
+                if (scrollPosition >= cardWidth) {
+                    scrollPosition -= cardWidth;
+
+                    const selectedIndex = Math.floor(
+                        scrollPosition / cardWidth
+                    );
+
+                    document
+                        .querySelectorAll('.carousel-item')
+                        .forEach((item, index) => {
+                            if (index === selectedIndex) {
+                                item.classList.add('active');
+                                this.selectedCompanyId = item.id;
+                            } else item.classList.remove('active');
+                        });
+
+                    console.log(
+                        'selectedElement',
+                        document.querySelectorAll('.carousel-item')[
+                            selectedIndex
+                        ]
+                    );
+                    console.log('selectedCompanyId', this.selectedCompanyId);
+
+                    document
+                        .querySelector(
+                            '#carouselExampleControls .carousel-inner'
+                        )
+                        .scroll({
+                            left: scrollPosition,
+                            behavior: 'smooth',
+                        });
+                }
+            });
+    }
+
+    public setStartingScrollPosition(): void {
+        let cardWidth = (
+            document.querySelector('.carousel-item') as HTMLElement
+        ).offsetWidth;
+        let scrollPosition = 0;
+
+        this.newUser.companies.forEach((company, index) => {
+            if (company.LastActiveCompany) {
+                scrollPosition = cardWidth * index + 1;
+                this.selectedCompanyId = company.id;
+                this.selectedCompanyIndex = index;
+            }
+        });
+
+        this.startingScrollPosition = scrollPosition;
+
+        document
+            .querySelector('#carouselExampleControls .carousel-inner')
+            .scroll({
+                left: scrollPosition,
+                behavior: 'smooth',
+            });
     }
 
     ngOnDestroy() {

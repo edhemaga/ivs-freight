@@ -2,7 +2,7 @@
 
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { HttpClientModule } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 
@@ -35,8 +35,7 @@ import { TaCounterComponent } from '@shared/components/ta-counter/ta-counter.com
 import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-custom-card.component';
 import { TaModalTableComponent } from '@shared/components/ta-modal-table/ta-modal-table.component';
 
-@NgModule({
-    declarations: [
+@NgModule({ declarations: [
         ApplicantComponent,
         ApplicantHeaderComponent,
         ApplicantFooterComponent,
@@ -45,20 +44,21 @@ import { TaModalTableComponent } from '@shared/components/ta-modal-table/ta-moda
         ApplicantEndScreenComponent,
         ApplicantReviewFeedbackComponent,
     ],
-    imports: [
+    exports: [
+        ApplicantHeaderComponent,
+        ApplicantFooterComponent,
+        ApplicantSignaturePadComponent,
+        ApplicantReviewFeedbackComponent,
+    ], imports: [
         /* MODULES */
-
         ApplicantRoutingModule,
         CommonModule,
-        HttpClientModule,
         RouterModule,
         FormsModule,
         ReactiveFormsModule,
         SharedModule,
         AngularSignaturePadModule,
-
         /* COMPONENTS */
-
         TaAppTooltipV2Component,
         TaInputAddressDropdownComponent,
         TaCheckboxComponent,
@@ -70,16 +70,6 @@ import { TaModalTableComponent } from '@shared/components/ta-modal-table/ta-moda
         TaCounterComponent,
         TaCustomCardComponent,
         TaModalTableComponent,
-
         /* PIPES */
-
-        SumArraysPipe,
-    ],
-    exports: [
-        ApplicantHeaderComponent,
-        ApplicantFooterComponent,
-        ApplicantSignaturePadComponent,
-        ApplicantReviewFeedbackComponent,
-    ],
-})
+        SumArraysPipe], providers: [provideHttpClient(withInterceptorsFromDi())] })
 export class ApplicantModule {}

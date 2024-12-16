@@ -1448,7 +1448,11 @@
                         !additionalBillingTypes?.length
                     "
                     [adjusted]="
-                        adjustedRate || loadForm.get('driverRate').value
+                        showAdjustedRate && loadForm.get('adjustedRate').value
+                            ? loadForm.get('adjustedRate').value
+                            : showDriverRate && loadForm.get('driverRate').value
+                            ? loadForm.get('driverRate').value
+                            : null
                     "
                     [secondHeaderTitle]="'Payment'"
                     [paymentCount]="additionalPayments().length"
@@ -1559,7 +1563,7 @@
                                     [options]="additionalBillingTypes"
                                     [activeItem]="null"
                                     (selectedItem)="
-                                        addAdditionalBilling($event)
+                                        addAdditionalBilling($event, true)
                                     "
                                 ></app-ca-input-dropdown>
                             </ng-container>

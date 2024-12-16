@@ -417,6 +417,7 @@ export class LoadModalConfig {
             type: 'text',
             label: 'Dispatcher',
             isDropdown: true,
+            isRequired: true,
             dropdownImageInput: {
                 withText: true,
                 svg: false,
@@ -506,6 +507,7 @@ export class LoadModalConfig {
             hideErrorMessage: true,
             hideRequiredCheck: true,
             hideDangerMark: true,
+            errorInsideInput: true,
         };
     }
 
@@ -526,6 +528,7 @@ export class LoadModalConfig {
             hideErrorMessage: true,
             hideRequiredCheck: true,
             hideDangerMark: true,
+            errorInsideInput: true,
         };
     }
 
