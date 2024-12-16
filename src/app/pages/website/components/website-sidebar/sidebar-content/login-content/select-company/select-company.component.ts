@@ -66,8 +66,8 @@ export class SelectCompanyComponent
     }
 
     ngAfterViewInit(): void {
-        this.setStartingScrollPosition();
-        setTimeout(() => this.carouselSlide(), 1000);
+        // this.setStartingScrollPosition();
+        // setTimeout(() => this.carouselSlide(), 1000);
     }
 
     public user(data): void {
