@@ -7,7 +7,14 @@ import {
     SimpleChanges,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { LottieComponent } from 'ngx-lottie';
+
+// Lottie
+import {
+    AnimationLoader,
+    LottieComponent,
+    provideLottieOptions,
+} from 'ngx-lottie';
+import player from 'lottie-web';
 
 @Component({
     selector: 'app-ta-spinner',
@@ -21,6 +28,12 @@ import { LottieComponent } from 'ngx-lottie';
         FormsModule,
         // Components
         LottieComponent,
+    ],
+    providers: [
+        provideLottieOptions({
+            player: () => player,
+        }),
+        AnimationLoader,
     ],
 })
 export class TaSpinnerComponent implements OnChanges {
