@@ -37,10 +37,15 @@ export class DescriptionItemsTextCountDirective implements AfterViewInit {
     ): void {
         const isStringArray = value?.every((item) => typeof item === 'string');
 
-        if (!isStringArray) {
-            const objectArray = value as { description?: string }[];
+        if (!isStringArray && Array.isArray(value)) {
+            const objectArray = value as {
+                description?: string;
+                nickname?: string;
+            }[];
 
-            this._items = objectArray.map((item) => item.description);
+            this._items = objectArray.map(
+                (item) => item.description || item.nickname
+            );
         }
     }
 
@@ -57,7 +62,7 @@ export class DescriptionItemsTextCountDirective implements AfterViewInit {
         let currentWidth = 0;
         let overflowCount = 0;
 
-        for (let i = 0; i < this._items.length; i++) {
+        for (let i = 0; i < this._items?.length; i++) {
             const item = this._items[i];
             const isLastItem = i === this._items.length - 1;
 

@@ -562,6 +562,11 @@ export enum TableStringEnum {
     REPAIR_SHOP_CONTACT = 'repair shop contact',
     VOIDED = 'VOIDED',
 
+    // Columns
+    TABLE_UNPAID_INV_AGING = 'tableUnpaidInvAging',
+    TABLE_OFF_DUTY_LOCATIONS = 'tableOffDutyLocation',
+    TABLE_CDL_DETAIL_RESTRICTION = 'tableCdlDetailRestriction',
+
     // Card States
     CUSTOMER_CARD_STATE = 'customerCardState',
     DRIVER_CARD_STATE = 'driverCardState',

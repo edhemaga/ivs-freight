@@ -1086,6 +1086,18 @@
                 }
             }
 
+            &.description-item-driver {
+                .description-titles,
+                .description-items-item {
+                    grid-template-columns: 25px 1fr;
+                    grid-gap: 4px;
+                }
+
+                .description-text {
+                    margin-left: 4px !important;
+                }
+            }
+
             .description-titles,
             .description-items-item {
                 display: grid;
@@ -1109,11 +1121,12 @@
                 padding: 4px;
                 background: $ta-black-2;
                 border-radius: 3px;
-                max-height: 200px;
+
                 animation: descriptionDropdownAnimation 0.3s ease-in;
                 -webkit-animation: descriptionDropdownAnimation 0.3s ease-in;
 
                 &.dropdown-scroll {
+                    max-height: 200px;
                     overflow-y: scroll;
 
                     &::-webkit-scrollbar {
@@ -1138,10 +1151,6 @@
 
                     &:hover {
                         background: $ta-black;
-                    }
-
-                    &:last-of-type {
-                        margin-bottom: 0px;
                     }
 
                     &.pm-item {
@@ -1175,88 +1184,6 @@
                         }
                     }
                 }
-            }
-
-            /////////////////////////
-
-            .description-popover-items {
-                position: relative;
-                min-width: 554px;
-                height: -webkit-fit-content;
-                height: -moz-fit-content;
-                height: fit-content;
-                overflow: hidden;
-                padding: 4px;
-                background: $ta-black-2;
-                border-radius: 3px;
-                box-shadow: 0 0 4px 0 rgb(0 0 0 / 15%);
-                max-height: 400px;
-                -webkit-animation: descriptionDropdownAnimation 0.3s ease-in-out;
-                animation: descriptionDropdownAnimation 0.3s ease-in-out;
-            }
-
-            .description-popover-item {
-                height: 28px;
-                padding: 0px 4px 0px 0px;
-                gap: 4px;
-                border-radius: 2px 0px 0px 0px;
-                opacity: 0px;
-
-                &:hover {
-                    background: $ta-black;
-                    cursor: default;
-                }
-            }
-
-            .number {
-                flex: 0 0 30px;
-                text-align: center;
-                font-size: 14px;
-                color: $muted;
-                line-height: 18px;
-                font-weight: 400;
-            }
-
-            .content {
-                flex: 1;
-            }
-
-            .title {
-                font-size: 11px;
-                font-weight: 500;
-                color: $white;
-                line-height: 14px;
-            }
-            .white-line {
-                width: 6px;
-                color: $white;
-                height: 18px;
-                font-size: 14px;
-                font-weight: 500;
-                color: $white;
-                line-height: 14px;
-            }
-            .title-endorsment {
-                width: 25px;
-                height: 18px;
-                gap: 0px;
-                opacity: 0px;
-                font-size: 14px;
-                font-weight: 600;
-                color: $white;
-                line-height: 14px;
-            }
-            .subtitle-endorsment {
-                font-size: 14px;
-                font-weight: 400;
-                color: $white;
-                line-height: 14px;
-            }
-            .address {
-                font-size: 11px;
-                font-weight: 400;
-                color: $muted;
-                line-height: 14px;
             }
         }
 

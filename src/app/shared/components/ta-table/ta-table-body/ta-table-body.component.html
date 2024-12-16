@@ -4498,6 +4498,65 @@
                                         </div>
                                     </ng-container>
 
+                                    <!-- DESCRIPTION COLUMN DRIVER (OFFDUTY LOCATION, RESTRICTION, ENDORSEMENT) -->
+
+                                    <ng-container
+                                        *ngIf="
+                                            column.ngTemplate ===
+                                            'description-driver'
+                                        "
+                                    >
+                                        <div
+                                            class="td-content description-items-driver-container"
+                                            [ngStyle]="{
+                                                width: column.width + 'px',
+                                                'min-width.px':
+                                                    column?.minWidth ?? 'unset'
+                                            }"
+                                            [ngClass]="{
+                                                'has-value':
+                                                    row[column.field]?.length
+                                            }"
+                                            #t3="ngbPopover"
+                                            container="body"
+                                            placement="bottom-left"
+                                            triggers="manual"
+                                            popoverClass="table-description-popover"
+                                            [ngbPopover]="
+                                                driverDescriptionPopover
+                                            "
+                                            (click)="
+                                                row[column.field]?.length &&
+                                                    onShowDescriptionDropdown(
+                                                        t3,
+                                                        tableData[0]
+                                                            ?.gridNameTitle,
+                                                        column?.width,
+                                                        row,
+                                                        column.field
+                                                    )
+                                            "
+                                        >
+                                            <div
+                                                ngbTooltip
+                                                tooltipBackground="#424242"
+                                                position="bottom"
+                                                [mainTooltip]="
+                                                    column.name.includes('Duty')
+                                                        ? 'View Off Duty locations'
+                                                        : column.name ===
+                                                          'Restriction'
+                                                        ? 'View Restrictions'
+                                                        : 'View Endorsements'
+                                                "
+                                                [appDescriptionItemsTextCount]="
+                                                    row[column.field]
+                                                "
+                                                [containerWidth]="column.width"
+                                            ></div>
+                                        </div>
+                                    </ng-container>
+
                                     <!-- SHARED COLUMN-->
 
                                     <div
@@ -7040,8 +7099,112 @@
 <!-- DRIVER DESCRIPTION POPOVER -->
 
 <ng-template #driverDescriptionPopover let-data="data">
-    <div class="description-dropdown-container">
-        <ng-container *ngIf="endorsement; else tableOffDutyLocation">
+    <div
+        class="description-dropdown-container description-item-driver"
+        [ngStyle]="{
+            width: widthPopover + 'px'
+        }"
+    >
+        <!-- Header -->
+
+        <div class="align-items-center description-titles">
+            <div class="d-flex align-items-center justify-content-center">
+                <p
+                    class="m-0 ta-font-bold text-size-11 text-color-light-grey-6"
+                >
+                    #
+                </p>
+            </div>
+
+            <p class="m-0 ta-font-bold text-size-11 text-color-light-grey-6">
+                {{
+                    data.isOffDutyLocations
+                        ? 'NAME • ADDRESS, CITY, STATE'
+                        : data.isRestrictions
+                        ? 'RESTRICTION'
+                        : 'ENDORSEMENT'
+                }}
+            </p>
+        </div>
+
+        <!-- Dropdown -->
+
+        <div
+            class="d-flex flex-column description-items"
+            [ngClass]="{
+                'dropdown-scroll': data.descriptionDriverItems.length >= 8
+            }"
+            [ngStyle]="{ width: data.isOffDutyLocations ? '320px' : '233px' }"
+        >
+            <ng-container
+                *ngFor="
+                    let descriptionDriverPopoverItem of data.descriptionDriverItems;
+                    let descriptionDriverPopoverItemIndex = index;
+                    trackBy: trackByIdentity
+                "
+            >
+                <div class="align-items-center description-items-item">
+                    <!-- # -->
+
+                    <div
+                        class="d-flex align-items-center justify-content-center"
+                    >
+                        <span
+                            class="m-0 text-size-14 text-color-grey"
+                            [ngClass]="{
+                                'text-color-grey': data.isOffDutyLocations,
+                                'text-color-white ta-font-semi-bold':
+                                    !data.isOffDutyLocations
+                            }"
+                        >
+                            {{
+                                data.isOffDutyLocations
+                                    ? descriptionDriverPopoverItemIndex + 1
+                                    : descriptionDriverPopoverItem.code
+                            }}
+                        </span>
+                    </div>
+
+                    <!-- Description -->
+
+                    <ng-container
+                        *ngIf="
+                            data.isOffDutyLocations;
+                            else restrictionEndorsement
+                        "
+                    >
+                        <div class="d-flex flex-column">
+                            <p
+                                class="m-0 ta-font-medium text-size-11 text-color-white"
+                            >
+                                {{ descriptionDriverPopoverItem?.nickname }}
+                            </p>
+
+                            <p class="m-0 text-size-11 text-color-grey">
+                                {{
+                                    descriptionDriverPopoverItem?.address
+                                        .address
+                                }}
+                            </p>
+                        </div>
+                    </ng-container>
+
+                    <ng-template #restrictionEndorsement>
+                        <div class="d-flex align-items-center">
+                            <p class="m-0 text-size-11 text-color-white">-</p>
+
+                            <p
+                                class="m-0 text-size-11 text-color-white description-text"
+                            >
+                                {{ descriptionDriverPopoverItem?.description }}
+                            </p>
+                        </div>
+                    </ng-template>
+                </div>
+            </ng-container>
+        </div>
+
+        <!--    <ng-container *ngIf="endorsement; else tableOffDutyLocation">
             <div
                 class="description-titles"
                 [ngStyle]="{
@@ -7074,35 +7237,7 @@
                 </div>
                 <div class="right-background"></div>
             </div>
-        </ng-container>
-        <ng-template #tableOffDutyLocation>
-            <div
-                class="description-titles"
-                [ngStyle]="{
-                    width: widthPopover + 'px'
-                }"
-            >
-                <div class="item-title"># NAME • ADDRESS, CITY, STATE</div>
-            </div>
-            <div
-                class="description-popover-items"
-                [ngStyle]="{
-                    'min-width': '320px'
-                }"
-            >
-                <div
-                    class="description-popover-item"
-                    *ngFor="let item of data; let i = index"
-                >
-                    <div class="number">{{ i + 1 }}</div>
-                    <div class="content">
-                        <div class="title">{{ item.nickname }}</div>
-                        <div class="address">{{ item.address.address }}</div>
-                    </div>
-                </div>
-                <div class="right-background"></div>
-            </div>
-        </ng-template>
+        </ng-container> -->
     </div>
 </ng-template>
 

@@ -1494,6 +1494,7 @@ table.truckassist-table-body-style {
                         &.description-items-container {
                             transition: background 0.2s ease-in;
                             padding-right: 8px;
+                            border-radius: 2px;
                             cursor: pointer;
 
                             &:hover,
@@ -1517,6 +1518,18 @@ table.truckassist-table-body-style {
                             margin-left: 5px;
                             padding: 0px 5px;
                             background: $dark-2;
+                        }
+
+                        // DESCRIPTION DRIVER COLUMN
+                        &.description-items-driver-container {
+                            transition: background 0.2s ease-in;
+                            padding: 0 4px;
+                            border-radius: 2px;
+
+                            &.has-value:hover {
+                                background: $dark-2;
+                                cursor: pointer;
+                            }
                         }
 
                         // FINISH ORDER COLUMN

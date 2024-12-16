@@ -83,7 +83,6 @@ import { TableLoadStatusPipe } from '@shared/pipes/table-load-status.pipe';
 
 // enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
-import { TableBodyStringEnum } from '@shared/components/ta-table/ta-table-body/enums';
 
 // models
 import {
@@ -91,12 +90,10 @@ import {
     SignInResponse,
     LoadListLoadStopResponse,
     LoadPossibleStatusesResponse,
-    FuelTransactionResponse,
 } from 'appcoretruckassist';
 import { TableBodyColorLabel } from '@shared/models/table-models/table-body-color-label.model';
 import { TableBodyOptionActions } from '@shared/components/ta-table/ta-table-body/models/table-body-option-actions.model';
 import { TableBodyColumns } from '@shared/components/ta-table/ta-table-body/models/table-body-columns.model';
-import { MappedRepair } from '@pages/repair/pages/repair-table/models';
 
 // constants
 import { TaStateImageTextComponent } from '@shared/components/ta-state-image-text/ta-state-image-text.component';
@@ -223,8 +220,7 @@ export class TaTableBodyComponent
     viewDataLength: number = 0;
     chipsForHighlight: string[] = [];
     public widthPopover: number = 0;
-    public endorsement: boolean = false;
-    public restriction: boolean = false;
+
     public companyUser: SignInResponse;
     public statusDetails: LoadPossibleStatusesResponse;
     public stops: LoadListLoadStopResponse;
@@ -889,23 +885,22 @@ export class TaTableBodyComponent
     }
 
     // Show Description Dropdown
-    public onShowDescriptionDropdown<T>(
+    public onShowDescriptionDropdown(
         popover: NgbPopover,
         tableType: string,
         columnWidth: number,
-        row: T
+        row: any,
+        field: string
     ): void {
         let data = null;
 
         switch (tableType) {
             case TableStringEnum.REPAIR:
-                const repairRow = row as MappedRepair;
-
                 const {
                     isRepairOrder,
                     tableDescription,
                     tableDescriptionDropTotal,
-                } = repairRow;
+                } = row;
 
                 const repairItemsData = {
                     isRepairOrder,
@@ -921,12 +916,10 @@ export class TaTableBodyComponent
 
                 break;
             case TableStringEnum.FUEL:
-                const fuelRow = row as MappedRepair;
-
                 const fuelItemsData = {
                     isFuelDescription: true,
-                    descriptionItems: fuelRow.tableDescription,
-                    totalCost: fuelRow.tableDescriptionDropTotal,
+                    descriptionItems: row.tableDescription,
+                    totalCost: row.tableDescriptionDropTotal,
                 };
 
                 this.widthPopover = columnWidth + 255;
@@ -934,40 +927,38 @@ export class TaTableBodyComponent
                 data = fuelItemsData;
 
                 break;
+            case TableStringEnum.DRIVER_1:
+                if (field === TableStringEnum.TABLE_OFF_DUTY_LOCATIONS) {
+                    const offDutyLocationItemsData = {
+                        isOffDutyLocations: true,
+                        descriptionDriverItems: row.tableOffDutyLocation,
+                    };
+
+                    data = offDutyLocationItemsData;
+                } else {
+                    const restrictionEndorsementItemsData = {
+                        isOffDutyLocations: false,
+                        isRestrictions:
+                            field ===
+                            TableStringEnum.TABLE_CDL_DETAIL_RESTRICTION,
+                        descriptionDriverItems:
+                            field ===
+                            TableStringEnum.TABLE_CDL_DETAIL_RESTRICTION
+                                ? row.tableCdlDetailRestriction
+                                : row.tableCdlDetailEndorsment,
+                    };
+
+                    data = restrictionEndorsementItemsData;
+                }
+
+                this.widthPopover = columnWidth;
+
+                break;
             default:
                 break;
         }
 
         popover.isOpen() ? popover.close() : popover.open({ data });
-
-        /*   this.restriction = false;
-        this.endorsement = false;
-        this.widthPopover = width;
-
-        if (row.tableOffDutyLocation) {
-            if (field !== 'tableOffDutyLocation') {
-                this.endorsement = true;
-            }
-            if (field === 'tableCdlDetailRestriction') {
-                this.restriction = true;
-            }
-            if (popup.isOpen()) {
-                popup.close();
-            } else {
-                popup.open({ data: column });
-            }
-        } else if (row.tableDescription.length) {
-            if (popup.isOpen()) {
-                popup.close();
-            } else {
-                popup.open({ data: row });
-            }
-        }
-
-
-        
-
-       */
     }
 
     // Show Invoice Aging Dropdown
@@ -992,7 +983,7 @@ export class TaTableBodyComponent
 
         this.invoiceDropdownData = {
             isUnPaidAging:
-                column?.field === TableBodyStringEnum.TABLE_UNPAID_INV_AGING,
+                column?.field === TableStringEnum.TABLE_UNPAID_INV_AGING,
             invAgingGroups: [
                 invoiceAgeingGroupOne,
                 invoiceAgeingGroupTwo,
