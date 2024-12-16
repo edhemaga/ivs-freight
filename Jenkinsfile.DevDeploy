@@ -53,9 +53,10 @@ pipeline {
                 color: 'danger'
             )
         }
-    }
-
-    always {
+        always {
             cleanWs()
         }
+    }
+
+   
 }
