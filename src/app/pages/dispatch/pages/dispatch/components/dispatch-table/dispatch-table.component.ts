@@ -39,6 +39,7 @@ import { DispatchTableDragNDropHelper } from '@pages/dispatch/pages/dispatch/com
 
 // services
 import { DispatcherService } from '@pages/dispatch/services/dispatcher.service';
+import { DispatchHubService } from '@shared/services/dispatch-hub.service';
 
 // constants
 import { DispatchTableConstants } from '@pages/dispatch/pages/dispatch/components/dispatch-table/utils/constants';
@@ -215,7 +216,8 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
 
         // services
         private dispatcherService: DispatcherService,
-        private parkingService: ParkingService
+        private parkingService: ParkingService,
+        private dispatchHubService: DispatchHubService
     ) {}
 
     set checkEmptySet(value: string) {
@@ -234,6 +236,10 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
         this.getTableBodyRowWidth();
 
         this.getColumnWidths();
+
+        this.dispatchHubService.connect();
+
+        this.manageDispatchHubListeners();
     }
 
     public getLoadInformationForSignleDispatchResponse(item: DispatchResponse) {
@@ -1301,6 +1307,32 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
         else
             this.resizedColumnsWidth =
                 DispatchTableColumnWidthsConstants.DispatchColumnWidths;
+    }
+
+    private manageDispatchHubListeners(): void {
+        this.dispatchHubService.onDispatchChanged()
+        .pipe(takeUntil(this.destroy$))
+        .subscribe(response => {
+            this.refreshDispatchTable(response);
+            console.log(response);
+        });
+
+        this.dispatchHubService.onDispatchBoardChanged()
+        .pipe(takeUntil(this.destroy$))
+        .subscribe(response => {
+            console.log('onDispatchBoardChanged', response);
+        });
+    }
+
+    private refreshDispatchTable(dispatchChanged: DispatchResponse): void {
+        const { dispatches } = this.dispatchData || {};
+        const index = dispatches?.findIndex(d => d.id === dispatchChanged.id)
+        // let dispatchToChange = dispatches?.find(d => d.id === dispatchChange.id);
+
+        if (index >= 0)
+            this.dispatchData.dispatches.splice(index, 1, dispatchChanged);
+
+        this.initDispatchData(this.dispatchData);
     }
 
     ngOnDestroy(): void {

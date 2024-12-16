@@ -55,7 +55,6 @@ import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-cust
 import { TaCheckboxComponent } from '@shared/components/ta-checkbox/ta-checkbox.component';
 import { TaUploadFilesComponent } from '@shared/components/ta-upload-files/ta-upload-files.component';
 import { TaInputNoteComponent } from '@shared/components/ta-input-note/ta-input-note.component';
-//import { TaMapsComponent } from '@shared/components/ta-maps/ta-maps.component';
 import { TaCommentComponent } from '@shared/components/ta-comment/ta-comment.component';
 import { LoadModalHazardousComponent } from '@pages/load/pages/load-modal/components/load-modal-hazardous/load-modal-hazardous.component';
 import { LoadModalWaitTimeComponent } from '@pages/load/pages/load-modal/components/load-modal-wait-time/load-modal-wait-time.component';
@@ -161,6 +160,10 @@ import {
     ICaMapProps,
     CaInputDropdownComponent,
     CaInputComponent,
+    MapOptionsConstants,
+    IMapMarkers,
+    IMapRoutePath,
+    MapMarkerIconHelper,
 } from 'ca-components';
 
 @Component({
@@ -186,7 +189,6 @@ import {
         LoadModalFinancialComponent,
         TaUploadFilesComponent,
         TaInputNoteComponent,
-        //TaMapsComponent,
         TaCommentComponent,
         LoadModalHazardousComponent,
         TaProgresBarComponent,
@@ -219,11 +221,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
 
     @Input() editData: EditData;
 
-    data: ICaMapProps = {
-        markers: [],
-        clusterMarkers: [],
-        routingMarkers: [],
-    };
+    public mapData: ICaMapProps = MapOptionsConstants.defaultMapConfig;
 
     private destroy$ = new Subject<void>();
 
@@ -476,8 +474,6 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         this.getLoadDropdowns();
 
         this.trackBillingPayment();
-
-        this.monitorInvolveDriverValueChange();
     }
 
     ngDoCheck(): void {
@@ -499,42 +495,6 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             +!!this.showTonuRate +
             +!!this.showRevisedRate
         );
-    }
-
-    private monitorInvolveDriverValueChange(): void {
-        this.loadForm
-            .get(LoadModalStringEnum.PICKUP_INVOLVE_DRIVER)
-            .valueChanges.pipe(takeUntil(this.destroy$))
-            .subscribe((value) => {
-                const lumperIndex =
-                    this.additionalBillings().controls.findIndex(
-                        (control) =>
-                            control.get(LoadModalStringEnum.NAME)?.value ===
-                            LoadModalStringEnum.LUMPER
-                    );
-
-                if (!this.editData?.data) {
-                    if (value && lumperIndex < 0) {
-                        const financialActionEvent = {
-                            type: LoadModalStringEnum.BILLING,
-                            action: true,
-                        };
-                        const additionalBillingEvent = {
-                            name: LoadModalStringEnum.LUMPER,
-                            id: 2,
-                            checked: false,
-                        };
-
-                        this.onFinancialAction(financialActionEvent);
-                        this.addAdditionalBilling(additionalBillingEvent);
-                    } else if (!value) {
-                        this.removeAdditionalBilling(
-                            LoadModalStringEnum.BILLING,
-                            lumperIndex
-                        );
-                    }
-                }
-            });
     }
 
     public hanndleShowAdjustedRate(): void {
@@ -783,7 +743,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             ],
             name: [null],
             loadTemplateId: [null],
-            dispatcherId: [null],
+            dispatcherId: [null, Validators.required],
             status: [null],
             companyId: [this.companyUser.companyName, Validators.required],
             brokerId: [null, Validators.required],
@@ -902,7 +862,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                 );
             }
 
-            if (this.editData?.isEditMode) {
+            if (this.editData?.type === 'edit' || this.editData?.isEditMode) {
                 this.isFormDirty = true;
             } else {
                 this.formService.formValueChange$
@@ -1348,7 +1308,9 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
 
                 if (
                     this.isEditingMode &&
-                    this.editData?.selectedTab === TableStringEnum.TEMPLATE
+                    this.isConvertedToTemplate &&
+                    this.editData.loadAction !==
+                        TableStringEnum.CONVERT_TO_TEMPLATE
                 ) {
                     this.updateLoadTemplate(addNew);
                 } else if (this.isConvertedToTemplate) {
@@ -1438,7 +1400,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
 
                 break;
             case LoadModalStringEnum.DISPATCHES:
-                this.onSelectDropdownDispatches(event);
+                this.onSelectDropdownDispatches(event, isClick);
 
                 break;
             case LoadModalStringEnum.BROKER:
@@ -1755,7 +1717,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         }
     }
 
-    private onSelectDropdownDispatches(event): void {
+    private onSelectDropdownDispatches(event, isClick?: boolean): void {
         if (event) {
             this.selectedDispatches = {
                 ...event,
@@ -1834,6 +1796,12 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                     this.inputService.changeValidators(
                         this.loadForm.get(LoadModalStringEnum.DRIVER_RATE)
                     );
+                    if (isClick && this.selectedDispatches.driver?.driverRate)
+                        this.loadForm
+                            .get(LoadModalStringEnum.DRIVER_RATE)
+                            .patchValue(
+                                this.selectedDispatches.driver?.driverRate
+                            );
 
                     this.additionalBillingTypes =
                         this.additionalBillingTypes.filter(
@@ -1842,6 +1810,8 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                 } else {
                     this.inputService.changeValidators(
                         this.loadForm.get(LoadModalStringEnum.DRIVER_RATE),
+                        false,
+                        [],
                         false
                     );
                 }
@@ -1865,6 +1835,8 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
 
             this.inputService.changeValidators(
                 this.loadForm.get(LoadModalStringEnum.DRIVER_RATE),
+                false,
+                [],
                 false
             );
 
@@ -2557,6 +2529,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                 this.isActivePickupStop = event;
 
                 this.isActivePickupStop = !this.isActivePickupStop;
+                this.isActiveDeliveryStop = false;
 
                 this.loadExtraStops().controls.filter((item) => {
                     item.get(LoadModalStringEnum.OPEN_CLOSE).patchValue(false);
@@ -2625,7 +2598,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         return this.formBuilder.group({
             id: [data.id ?? null],
             name: [data.name],
-            pay: [data.pay ?? null],
+            pay: [data.pay ?? null, [Validators.required]],
             advancePay: [null],
             payType: [null],
             payDate: [data?.payDate ? data.payDate : null],
@@ -2641,19 +2614,28 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         ) as UntypedFormArray;
     }
 
-    public createAdditionaBilling(data: {
-        id: number;
-        name: string;
-        billingValue: number;
-    }): UntypedFormGroup {
+    public createAdditionaBilling(
+        data: {
+            id: number;
+            name: string;
+            billingValue: number;
+        },
+        setAsRequired?: boolean
+    ): UntypedFormGroup {
         return this.formBuilder.group({
             id: [data?.id ? data.id : null],
             name: [data?.name ? data.name : null],
-            billingValue: [data?.billingValue ? data.billingValue : null],
+            billingValue: [
+                data?.billingValue ? data.billingValue : null,
+                setAsRequired ? [Validators.required] : null,
+            ],
         });
     }
 
-    public addAdditionalBilling(event: LoadAdditionalBilling): void {
+    public addAdditionalBilling(
+        event: LoadAdditionalBilling,
+        setAsRequired?: boolean
+    ): void {
         if (event) {
             this.selectedAdditionalBillings.push(
                 this.additionalBillingTypes.find((item) => item.id === event.id)
@@ -2676,11 +2658,14 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             );
 
             this.additionalBillings().push(
-                this.createAdditionaBilling({
-                    id: event.id,
-                    name: event.name,
-                    billingValue: event?.billingValue,
-                })
+                this.createAdditionaBilling(
+                    {
+                        id: event.id,
+                        name: event.name,
+                        billingValue: event?.billingValue,
+                    },
+                    setAsRequired
+                )
             );
         }
 
@@ -2717,7 +2702,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                         this.additionalBillings().at(index).value.name
                 );
 
-            switch (this.additionalBillings().at(index).value.name) {
+            switch (this.additionalBillings().at(index)?.value.name) {
                 case LoadModalStringEnum.LAYOVER:
                     this.loadModalBill.layover = 0;
                     break;
@@ -2811,9 +2796,10 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                         ...this.loadModalBill,
                         baseRate: 0,
                     };
-
                     this.inputService.changeValidators(
                         this.loadForm.get(LoadModalStringEnum.DRIVER_RATE),
+                        false,
+                        [],
                         false
                     );
                     this.inputService.changeValidators(
@@ -2825,37 +2811,6 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                         ...this.loadModalBill,
                         baseRate: this.convertNumbers(value),
                     };
-                }
-            });
-
-        // driver rate
-        this.loadForm
-            .get(LoadModalStringEnum.DRIVER_RATE)
-            .valueChanges.pipe(takeUntil(this.destroy$))
-            .subscribe((value) => {
-                if (value) {
-                    if (
-                        !this.loadForm.get(LoadModalStringEnum.BASE_RATE)
-                            .value ||
-                        MethodsCalculationsHelper.convertThousanSepInNumber(
-                            value
-                        ) >
-                            MethodsCalculationsHelper.convertThousanSepInNumber(
-                                this.loadForm.get(LoadModalStringEnum.BASE_RATE)
-                                    .value
-                            )
-                    ) {
-                        this.loadForm
-                            .get(LoadModalStringEnum.DRIVER_RATE)
-                            .reset();
-                        this.loadForm
-                            .get(LoadModalStringEnum.DRIVER_RATE)
-                            .setErrors({ invalid: true });
-                    } else {
-                        this.loadForm
-                            .get(LoadModalStringEnum.DRIVER_RATE)
-                            .setErrors(null);
-                    }
                 }
             });
 
@@ -2949,16 +2904,23 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                         item.name
                 );
 
-                return {
-                    id: action === LoadModalStringEnum.UPDATE ? item.id : null,
-                    additionalBillingType: item.id,
-                    rate: biilingRate
-                        ? biilingRate.get(LoadModalStringEnum.BILLING_VALUE)
-                              .value
-                        : null,
-                };
+                if (item) {
+                    return {
+                        id:
+                            action === LoadModalStringEnum.UPDATE
+                                ? item.id
+                                : null,
+                        additionalBillingType: item.id,
+                        rate: biilingRate
+                            ? biilingRate.get(LoadModalStringEnum.BILLING_VALUE)
+                                  .value
+                            : null,
+                    };
+                }
+
+                return undefined;
             })
-            .filter((item) => item.additionalBillingType !== 6);
+            .filter((item) => item && item.additionalBillingType !== 6);
     }
 
     public get hasValidSteps(): boolean {
@@ -3436,7 +3398,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                 legMinutes,
                 items: this.remapStopItems(this.savedPickupStopItems),
                 shape: this.stops?.[0]?.shape,
-                driverAssist: pickupInvolveDriver,
+                driverAssist: pickupInvolveDriver ?? false,
             });
         }
 
@@ -3492,8 +3454,9 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                     legMinutes,
                     items: this.remapStopItems(this.savedExtraStopItems[index]),
                     shape: item.get(LoadModalStringEnum.SHAPE).value,
-                    driverAssist: item.get(LoadModalStringEnum.INVOLVE_DRIVER)
-                        .value,
+                    driverAssist:
+                        item.get(LoadModalStringEnum.INVOLVE_DRIVER).value ??
+                        false,
                 });
             });
         }
@@ -3538,6 +3501,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                 legMinutes,
                 items: this.remapStopItems(this.savedDeliveryStopItems),
                 shape: this.stops?.[this.stops.length - 1]?.shape,
+                driverAssist: false,
             });
         }
 
@@ -3568,6 +3532,55 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         }
 
         return [];
+    }
+
+    public onPickupDriver(): void {
+        setTimeout(() => {
+            const value = this.loadForm.get(
+                LoadModalStringEnum.PICKUP_INVOLVE_DRIVER
+            ).value;
+            const lumperIndex = this.additionalBillings().controls.findIndex(
+                (control) =>
+                    control.get(LoadModalStringEnum.NAME)?.value ===
+                    LoadModalStringEnum.LUMPER
+            );
+
+            if (!this.editData?.data) {
+                if (value && lumperIndex < 0) {
+                    const financialActionEvent = {
+                        type: LoadModalStringEnum.BILLING,
+                        action: true,
+                    };
+                    const additionalBillingEvent = {
+                        name: LoadModalStringEnum.LUMPER,
+                        id: 2,
+                        checked: false,
+                    };
+
+                    this.onFinancialAction(financialActionEvent);
+                    this.addAdditionalBilling(additionalBillingEvent, true);
+                } else if (!value) {
+                    const lumperIndex =
+                        this.additionalBillings().controls.findIndex(
+                            (control) =>
+                                control.get(LoadModalStringEnum.NAME)?.value ===
+                                LoadModalStringEnum.LUMPER
+                        );
+
+                    if (lumperIndex !== -1) {
+                        const control =
+                            this.additionalBillings().at(lumperIndex);
+
+                        if (control) {
+                            control.clearValidators();
+                            control.updateValueAndValidity();
+
+                            this.additionalBillings().removeAt(lumperIndex);
+                        }
+                    }
+                }
+            }
+        }, 10);
     }
 
     public drawStopOnMap(): void {
@@ -3677,15 +3690,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                             }),
                         };
 
-                        this.data.routingMarkers = routes.map((routes) => {
-                            return {
-                                icon: null,
-                                position: {
-                                    lat: routes.latitude,
-                                    lng: routes.longitude,
-                                },
-                            };
-                        });
+                        this.setMapData(routes);
 
                         if (res?.legs?.length) {
                             res.legs.forEach((item, index) => {
@@ -4057,7 +4062,6 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         const adjustedRate = form.adjustedRate;
         const advancePay = form.advancePay;
         const statusType = form.statusType;
-
         return {
             selectedTab: this.editData?.selectedTab,
             id: form.id,
@@ -4172,6 +4176,10 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                     )?.status.statusValue.name;
 
                     this.handleTonuRateVisiblity();
+
+                    setTimeout(() => {
+                        this.startFormChanges();
+                    }, 2000);
                 });
         }
         const id =
@@ -4540,7 +4548,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         const adjustedRate = this.adjustedRate;
         const { documents, tagsArray } = this.mapDocumentsAndTags();
 
-        return {
+        const commonLoadData: Load = {
             dispatcherId: this.getIdOrNull(this.selectedDispatcher),
             dispatchId: this.getIdOrNull(this.selectedDispatches),
             brokerId: this.getIdOrNull(this.selectedBroker),
@@ -4562,8 +4570,6 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             },
             stops: this.premmapedStops() as LoadStopCommand[],
             baseRate: this.convertNumbers(baseRate),
-            adjustedRate: this.convertNumbers(adjustedRate),
-            driverRate: this.convertNumbers(driverRate),
             advancePay: this.convertNumbers(advancePay),
             additionalBillingRates: this.premmapedAdditionalBillingRate(
                 LoadModalStringEnum.CREATE
@@ -4580,6 +4586,14 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             revisedRate,
             invoicedDate: this.initialinvoicedDate ?? invoicedDate,
         };
+
+        if (this.showDriverRate)
+            commonLoadData.driverRate = this.convertNumbers(driverRate);
+
+        if (this.showAdjustedRate)
+            commonLoadData.adjustedRate = this.convertNumbers(adjustedRate);
+
+        return commonLoadData;
     }
 
     private mapPayments(): LoadPaymentPayResponse[] {
@@ -4948,10 +4962,13 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             : {};
 
         // Ensure dispatcher exists before attempting to spread
-        const editedDispatcher = dispatcher
+        const selectedDispatcher = this.labelsDispatcher.find(
+            (dispatch) => dispatch.id === dispatcher.id
+        );
+        const editedDispatcher = selectedDispatcher
             ? {
-                  ...dispatcher,
-                  name: dispatcher?.fullName,
+                  ...selectedDispatcher,
+                  name: selectedDispatcher?.fullName,
               }
             : {};
 
@@ -5451,6 +5468,79 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         this.loadForm
             .get(LoadModalStringEnum.DELIVERY_STOP_ORDER)
             .patchValue(deliveryStopNumber + 1);
+    }
+
+    private setMapData(routes: LoadStopRoutes[]): void {
+        const routeMarkers: IMapMarkers[] = [];
+        const routePaths: IMapRoutePath[] = [];
+
+        routes.forEach((loadStop, index) => {
+            const stopType = loadStop.pickup
+                ? LoadModalStringEnum.PICKUP
+                : loadStop.delivery
+                ? LoadModalStringEnum.DELIVERY
+                : null;
+
+            const routeMarker: IMapMarkers = {
+                position: {
+                    lat: loadStop.latitude,
+                    lng: loadStop.longitude,
+                },
+                icon: {
+                    url: MapMarkerIconHelper.getRoutingMarkerIcon(
+                        loadStop.stopNumber ?? 0,
+                        stopType,
+                        false,
+                        true
+                    ),
+                    labelOrigin: new google.maps.Point(90, 15),
+                },
+            };
+
+            routeMarkers.push(routeMarker);
+
+            if (index > 0) {
+                const routePath: IMapRoutePath = {
+                    path: [
+                        {
+                            lat: routes[index - 1].latitude!,
+                            lng: routes[index - 1].longitude!,
+                        },
+                        {
+                            lat: loadStop.latitude!,
+                            lng: loadStop.longitude!,
+                        },
+                    ],
+                    strokeColor: MapOptionsConstants.routingPathColors.gray,
+                    strokeOpacity: 1,
+                    strokeWeight: 4,
+                };
+
+                routePaths.push(routePath);
+            }
+        });
+
+        this.mapData = {
+            ...this.mapData,
+            isZoomShown: true,
+            isVerticalZoom: true,
+            routingMarkers: routeMarkers,
+            routePaths: routePaths,
+        };
+    }
+
+    private startFormChanges(): void {
+        this.formService.checkFormChange(this.loadForm);
+
+        if (this.editData?.type === 'edit' || this.editData?.isEditMode) {
+            this.isFormDirty = true;
+        } else {
+            this.formService.formValueChange$
+                .pipe(takeUntil(this.destroy$))
+                .subscribe((isFormChange: boolean) => {
+                    this.isFormDirty = isFormChange;
+                });
+        }
     }
 
     ngOnDestroy(): void {

@@ -141,10 +141,10 @@
                     "builder": "@angular-devkit/build-angular:dev-server",
                     "configurations": {
                         "production": {
-                            "browserTarget": "carrierassist-fe:build:production"
+                          "buildTarget": "carrierassist-fe:build:production"
                         },
                         "development": {
-                            "browserTarget": "carrierassist-fe:build:development"
+                          "buildTarget": "carrierassist-fe:build:development"
                         }
                     },
                     "defaultConfiguration": "development"
@@ -152,7 +152,7 @@
                 "extract-i18n": {
                     "builder": "@angular-devkit/build-angular:extract-i18n",
                     "options": {
-                        "browserTarget": "carrierassist-fe:build"
+                      "buildTarget": "carrierassist-fe:build"
                     }
                 },
                 "test": {

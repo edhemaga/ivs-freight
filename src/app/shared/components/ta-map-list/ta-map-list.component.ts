@@ -62,32 +62,35 @@ import { MapListStringEnum } from '@shared/components/ta-map-list/enums';
 export class TaMapListComponent
     implements OnInit, OnChanges, OnDestroy, AfterContentInit
 {
-    private destroy$ = new Subject<void>();
-
     @Input() sortTypes: any[] = [];
     @Input() type: string = '';
     @Input() columns: any;
     @Input() mapListContent: any[] = [];
     @Input() sortColumns: SortColumn[] = [];
+
     @Output() changeSortCategory: EventEmitter<any> = new EventEmitter<any>();
     @Output() changeSortDirection: EventEmitter<any> = new EventEmitter<any>();
     @Output() searchEvent: EventEmitter<string> = new EventEmitter<string>();
     @Output() sortEvent: EventEmitter<string> = new EventEmitter<string>();
     @Output() headActions: EventEmitter<any> = new EventEmitter();
+
     @ContentChildren('listCard') listCards!: QueryList<any>;
+
+    private destroy$ = new Subject<void>();
+
     public mapListExpanded: boolean = true;
     public sortDirection: string = 'desc';
-    visibleColumns: any[] = [];
-    pinedColumns: any[] = [];
-    notPinedColumns: any[] = [];
-    actionColumns: any[] = [];
+    public visibleColumns: any[] = [];
+    public pinedColumns: any[] = [];
+    public notPinedColumns: any[] = [];
+    public actionColumns: any[] = [];
     public tooltip: any;
     public showExpandButton: boolean = false;
-    activeSortType: SortColumn | null = null;
-    searchIsActive: boolean = false;
-    searchLoading: boolean = false;
-    searchTimeout: any;
-    searchResultsCount: number = 0;
+    public activeSortType: SortColumn | null = null;
+    public searchIsActive: boolean = false;
+    public searchLoading: boolean = false;
+    public searchTimeout: any;
+    public searchResultsCount: number = 0;
     public previousScrollTime = null;
     public searchValue: string | null = null;
 

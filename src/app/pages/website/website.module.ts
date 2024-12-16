@@ -5,7 +5,7 @@ import { RouterModule } from '@angular/router';
 // modules
 import { WebsiteRoutingModule } from '@pages/website/website-routing.module';
 import { SharedModule } from '@shared/shared.module';
-import { SlickCarouselModule } from 'ngx-slick-carousel';
+//import { SlickCarouselModule } from 'ngx-slick-carousel';
 
 // components
 import { WebsiteMainComponent } from '@pages/website/pages/website-main/website-main.component';
@@ -80,7 +80,7 @@ import { CaComponentsLibModule } from 'ca-components';
         CommonModule,
         WebsiteRoutingModule,
         SharedModule,
-        SlickCarouselModule,
+        //SlickCarouselModule,
         RouterModule,
 
         // components

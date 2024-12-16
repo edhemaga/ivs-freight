@@ -92,7 +92,7 @@ export class PayrollBonusModalComponent implements OnInit {
         this.payrollCreditForm = this.fb.group({
             [PayrollStringEnum.DRIVER_ID]: [data?.driverId ?? null],
             [PayrollStringEnum.DATE]: [
-                data.date ?? new Date(),
+                MethodsCalculationsHelper.convertDateFromBackend(data.date) ?? new Date(),
                 Validators.required,
             ],
             [PayrollStringEnum.DESCRIPTION]: [
@@ -151,6 +151,7 @@ export class PayrollBonusModalComponent implements OnInit {
                     this.onCloseModal();
                 });
         }  else if (action === TaModalActionEnums.DELETE) {
+            const label = this.editData.data.driver ? `${this.editData.data.driver.firstName} ${this.editData.data.driver.lastName}` : this.editData.data.truck.owner;
             this.payrollService.raiseDeleteModal(
                 TableStringEnum.BONUS,
                 ConfirmationModalStringEnum.DELETE_BONUS,
@@ -159,7 +160,7 @@ export class PayrollBonusModalComponent implements OnInit {
                     title: this.editData.data.description,
                     subtitle: this.editData.data.amount,
                     date: this.editData.data.date,
-                    label: `${this.editData.data.driver.firstName} ${this.editData.data.driver.lastName}`,
+                    label: `${label}`,
                     id: this.editData.data.id
                 }
             );

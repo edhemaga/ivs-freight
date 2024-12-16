@@ -22,34 +22,54 @@
                 'max-width': maxWidth
             }"
         >
-            <span
-                *ngIf="!accountCompany && !arrayText"
-                class="text-color-black-2 copy-text"
-                [class.boldVinSpan]="boldText"
-                >{{
-                    hasEye
-                        ? (copyValue | hideAccount : 'account' : isVisible)
-                        : copyValue
-                }}</span
-            >
-            <span
-                *ngIf="accountCompany && !arrayText"
-                class="text-color-black-2 copy-text"
-                [class.boldVinSpan]="boldText"
-                >{{
-                    hasEye
-                        ? (copyValue | hidePassword : 'account' : isVisible)
-                        : copyValue
-                }}</span
-            >
-            <span *ngIf="arrayText"
-                >{{ copyValue[0]
-                }}<span
-                    class="boldVinSpan"
-                    [class.contactType]="type === 'Contacts'"
-                    >{{ copyValue[1] }}</span
-                >
-            </span>
+            <ng-container *ngIf="!accountCompany && !arrayText">
+                <div
+                    class="text-color-black-2 copy-text"
+                    [class.boldVinSpan]="boldText"
+                    [innerHtml]="
+                        hasEye
+                            ? (copyValue | hideAccount : 'account' : isVisible)
+                            : (copyValue
+                              | taHighlight
+                                  : [
+                                        {
+                                            index: 1,
+                                            text: searchValue
+                                        }
+                                    ])
+                    "
+                ></div>
+            </ng-container>
+
+            <ng-container *ngIf="accountCompany && !arrayText">
+                <div
+                    class="text-color-black-2 copy-text"
+                    [class.boldVinSpan]="boldText"
+                    [innerHtml]="
+                        hasEye
+                            ? (copyValue | hidePassword : 'account' : isVisible)
+                            : (copyValue
+                              | taHighlight
+                                  : [
+                                        {
+                                            index: 1,
+                                            text: searchValue
+                                        }
+                                    ])
+                    "
+                ></div>
+            </ng-container>
+
+            <ng-container *ngIf="arrayText">
+                <span
+                    >{{ copyValue[0]
+                    }}<span
+                        class="boldVinSpan"
+                        [class.contactType]="type === 'Contacts'"
+                        >{{ copyValue[1] }}</span
+                    >
+                </span>
+            </ng-container>
         </div>
         <div class="app-icon-copy" [class.leftIconOrder]="leftSideIcon">
             <span

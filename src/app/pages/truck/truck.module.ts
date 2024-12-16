@@ -1,12 +1,12 @@
 import { NgModule } from '@angular/core';
 import { CommonModule, DatePipe } from '@angular/common';
 
-//modules
+// Modules
 import { TruckRoutingModule } from '@pages/truck/truck-routing.module';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
-//components
+// Components
 import { TruckTableComponent } from '@pages/truck/pages/truck-table/truck-table.component';
 import { TruckCardComponent } from '@pages/truck/pages/truck-card/truck-card.component';
 
@@ -17,14 +17,15 @@ import { TaTableHeadComponent } from '@shared/components/ta-table/ta-table-head/
 import { TaNoteComponent } from '@shared/components/ta-note/ta-note.component';
 import { TaTableCardDropdownActionsComponent } from '@shared/components/ta-table-card-dropdown-actions/ta-table-card-dropdown-actions.component';
 import { TaProgresBarComponent } from '@shared/components/ta-progres-bar/ta-progres-bar.component';
+import { TaTabSwitchComponent } from '@shared/components/ta-tab-switch/ta-tab-switch.component';
 
-//pipes
+// Pipes
 import { FlipCardsPipe } from '@shared/pipes/flip-cards.pipe';
 import { ThousandSeparatorPipe } from '@shared/pipes/thousand-separator.pipe';
 import { FormatDatePipe } from '@shared/pipes/format-date.pipe';
 import { CardValuePipe } from '@shared/pipes/card-value.pipe';
 
-//store
+//Store
 import { StoreModule } from '@ngrx/store';
 import { truckCardModalReducer } from '@pages/truck/pages/truck-card-modal/state/truck-card-modal.reducer';
 
@@ -45,6 +46,7 @@ import { truckCardModalReducer } from '@pages/truck/pages/truck-card-modal/state
         TaNoteComponent,
         TaTableCardDropdownActionsComponent,
         TaProgresBarComponent,
+        TaTabSwitchComponent,
 
         //pipes
         ThousandSeparatorPipe,
@@ -56,4 +58,4 @@ import { truckCardModalReducer } from '@pages/truck/pages/truck-card-modal/state
         StoreModule.forFeature('truckCardData', truckCardModalReducer),
     ],
 })
-export class TruckModule {}
+export class TruckModule { }

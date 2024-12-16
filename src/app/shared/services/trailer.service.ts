@@ -12,6 +12,7 @@ import {
     TitleService,
     InspectionService,
     TrailerAutocompleteModelResponse,
+    TrailerFuelConsumptionResponse,
 } from 'appcoretruckassist';
 
 // store
@@ -59,7 +60,7 @@ export class TrailerService implements OnDestroy {
         private trailerService: TrailerTService,
         private tableService: TruckassistTableService,
         private filterService: FilterStateService
-    ) {}
+    ) { }
 
     /* Observable<CreateTrailerResponse> */
     public addTrailer(
@@ -354,7 +355,6 @@ export class TrailerService implements OnDestroy {
                     JSON.stringify(trailerItem.entities)
                 );
                 let trailerData = trailerList[trailerId];
-                console.log(trailerData);
                 this.getTrailerRegistrationsById(trailerId).subscribe({
                     next: (res: any) => {
                         trailerData.registrations = res;
@@ -435,7 +435,7 @@ export class TrailerService implements OnDestroy {
                 next: () => {
                     const storedTrailerData = {
                         ...this.trailerItemStore?.getValue()?.entities[
-                            trailerId
+                        trailerId
                         ],
                     };
                     const subTrailer = this.getTrailerById(trailerId)
@@ -470,18 +470,22 @@ export class TrailerService implements OnDestroy {
             if (data.id === trailer.id) {
                 data.selectedTab === TableActionsStringEnum.ACTIVE
                     ? this.trailerActiveStore.update(trailer.id, (entity) => ({
-                          ...entity,
-                          note: data.value,
-                      }))
+                        ...entity,
+                        note: data.value,
+                    }))
                     : this.trailerInactiveStore.update(
-                          trailer.id,
-                          (entity) => ({
-                              ...entity,
-                              note: data.value,
-                          })
-                      );
+                        trailer.id,
+                        (entity) => ({
+                            ...entity,
+                            note: data.value,
+                        })
+                    );
             }
         });
+    }
+
+    public getTrailerFuelConsumption(id: number, timeFilter?: number): Observable<TrailerFuelConsumptionResponse> {
+        return this.trailerService.apiTrailerFuelconsumptionGet(id, timeFilter);
     }
 
     ngOnDestroy(): void {

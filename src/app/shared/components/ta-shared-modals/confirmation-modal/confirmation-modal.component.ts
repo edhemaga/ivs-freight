@@ -21,6 +21,7 @@ import { ConfirmationService } from '@shared/components/ta-shared-modals/confirm
 import { PayrollDeductionService } from '@pages/accounting/pages/payroll/payroll-modals/payroll-deduction-modal/services/payroll-deduction.service';
 import { PayrollBonusService } from '@pages/accounting/pages/payroll/payroll-modals/payroll-bonus-modal/services/payroll-bonus.service';
 import { PayrollCreditService } from '@pages/accounting/pages/payroll/payroll-modals/payroll-credit-bonus/services/payroll-credit.service';
+import { FuelService } from '@shared/services/fuel.service';
 
 // bootstrap
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
@@ -86,7 +87,8 @@ export class ConfirmationModalComponent implements OnInit {
         private formBuilder: UntypedFormBuilder,
         private payrollDeductionService: PayrollDeductionService,
         private payrolCreditService: PayrollCreditService,
-        private payrollBonusService: PayrollBonusService
+        private payrollBonusService: PayrollBonusService,
+        private fuelService: FuelService
     ) {}
 
     ngOnInit() {
@@ -99,6 +101,7 @@ export class ConfirmationModalComponent implements OnInit {
         if (this.editData.extras && data.type === TableStringEnum.DELETE) {
             this.deletePayroll(data.extras.id, data.template);
             this.confirmationDataSubject.sendConfirmationData(data);
+            return;
         } else if (this.editData.type === 'multiple delete') {
             this.confirmationDataSubject.sendConfirmationData({
                 ...data,
@@ -130,11 +133,19 @@ export class ConfirmationModalComponent implements OnInit {
         if (template === TableStringEnum.DEDUCTION) {
             this.payrollDeductionService
                 .deletePayrollDeductionById(id)
-                .subscribe();
+                .subscribe((response) => this.ngbActiveModal.close());
         } else if (template === TableStringEnum.CREDIT) {
-            this.payrolCreditService.deletePayrollCreditById(id).subscribe();
+            this.payrolCreditService
+                .deletePayrollCreditById(id)
+                .subscribe((response) => this.ngbActiveModal.close());
         } else if (template === TableStringEnum.BONUS) {
-            this.payrollBonusService.deletePayrollBonusById(id).subscribe();
+            this.payrollBonusService
+                .deletePayrollBonusById(id)
+                .subscribe((response) => this.ngbActiveModal.close());
+        }else if (template === TableStringEnum.FUEL_1) {
+            this.fuelService 
+                .deleteFuelTransactionsList([id])
+                .subscribe((response) => this.ngbActiveModal.close());
         }
     }
 

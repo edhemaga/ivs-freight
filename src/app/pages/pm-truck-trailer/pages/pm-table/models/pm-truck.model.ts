@@ -42,4 +42,5 @@ export interface PmTruck {
     };
     truck: TruckShortResponse;
     pmId: number;
+    id: number;
 }

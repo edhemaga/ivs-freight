@@ -35,7 +35,7 @@ import { OptionsPopupContent } from 'ca-components/lib/components/ca-burger-menu
 
 // Components
 import { PayrollProccessPaymentModalComponent } from '@pages/accounting/pages/payroll/payroll-modals/payroll-proccess-payment-modal/payroll-proccess-payment-modal.component';
-import { PayrollReportComponent } from '@pages/accounting/pages/payroll/payroll-modals/payroll-report/payroll-report.component';
+import { PayrollPdfReportComponent } from '@pages/accounting/pages/payroll/payroll-modals/payroll-report/payroll-pdf-report.component';
 
 // Enums
 import { PayrollTablesStatus } from '@pages/accounting/pages/payroll/state/enums';
@@ -235,6 +235,8 @@ export class DriverOwnerReportComponent
         ];
     }
 
+
+
     public customSortPredicate = (
         index: number,
         data: CdkDrag<any>
@@ -300,7 +302,7 @@ export class DriverOwnerReportComponent
 
     public openPreviewModal(): void {
         this.modalService.openModal(
-            PayrollReportComponent,
+            PayrollPdfReportComponent,
             {},
             {
                 data: {

@@ -15,7 +15,7 @@ export interface ShopBackFilter {
     pageSize?: number;
     companyId?: number | undefined;
     sort?: string | undefined;
-    searchOne: string | undefined;
-    searchTwo: string | undefined;
-    searchThree: string | undefined;
+    searchOne?: string | undefined;
+    searchTwo?: string | undefined;
+    searchThree?: string | undefined;
 }

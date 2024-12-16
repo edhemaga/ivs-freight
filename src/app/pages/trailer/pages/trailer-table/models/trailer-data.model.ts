@@ -4,7 +4,7 @@ import {
     TitleResponse,
 } from 'appcoretruckassist';
 
-export interface TraillerData {
+export interface TrailerData {
     axles: string;
 
     color: {

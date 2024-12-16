@@ -120,21 +120,22 @@
                 }"
                 [customClass]="'detailsPadding'"
             >
-                <div
-                    class="charts-template perfomance"
-                >
+                <div class="charts-template perfomance">
                     <div>
                         <app-ta-tab-switch
                             [type]="'type2-modal-popup'"
                             (switchClicked)="changeInvoiceTab($event)"
-                            [tabs]="tabsBroker"
+                            [tabs]="invoiceChartTabs"
                         >
                         </app-ta-tab-switch>
                     </div>
-                    <app-ca-chart
-                    [chartConfig]="invoiceChartConfig"
-                    >
-                    </app-ca-chart>
+                    <ng-container *ngIf="invoiceChartConfig?.chartData">
+                        <app-ta-chart-legend
+                            [data]="invoiceChartLegend"
+                        ></app-ta-chart-legend>
+                        <app-ca-chart [chartConfig]="invoiceChartConfig">
+                        </app-ca-chart>
+                    </ng-container>
                 </div>
             </app-ta-custom-card>
             <app-ta-custom-card
@@ -150,25 +151,24 @@
                 }"
                 [customClass]="'detailsPadding'"
             >
-                <div
-                    class="charts-template perfomance"
-                >
-                    <!-- <ng-container *ngIf="!mileageChart?.hoveringStatus"> -->
-                        <div>
-                            <app-ta-tab-switch
-                                [type]="'type2-modal-popup'"
-                                [tabs]="tabsBroker"
-                                (switchClicked)="changeMileageTab($event)"
-                            >
-                            </app-ta-tab-switch>
-                        </div>
-                    <!-- </ng-container> -->
-                    <app-ca-chart
-                        [chartConfig]="mileageChartConfig"
-                    >
-                    </app-ca-chart>
+                <div class="charts-template perfomance">
+                    <div>
+                        <app-ta-tab-switch
+                            [type]="'type2-modal-popup'"
+                            [tabs]="mileageChartTabs"
+                            (switchClicked)="changeMileageTab($event)"
+                        >
+                        </app-ta-tab-switch>
+                    </div>
+
+                    <ng-container *ngIf="mileageChartConfig?.chartData">
+                        <app-ta-chart-legend
+                            [data]="mileageChartLegendData"
+                        ></app-ta-chart-legend>
+                        <app-ca-chart [chartConfig]="mileageChartConfig">
+                        </app-ca-chart>
+                    </ng-container>
                 </div>
-                
             </app-ta-custom-card>
             <app-ta-custom-card
                 [bodyTemplate]="'card'"
@@ -267,8 +267,8 @@
                         }}</span>
                         <span class="value-ageing ta-font-medium">{{
                             (invoiceAgingSelectedTab === 1
-                                ? inoviceAgingData?.totalPaid
-                                : inoviceAgingData?.totalDebt
+                                ? invoiceAgingData?.totalPaid
+                                : invoiceAgingData?.totalDebt
                             ) | formatCurrency
                         }}</span>
                     </div>
@@ -277,7 +277,7 @@
                             Avg.
                             <span class="avg-days-invoice"
                                 >{{
-                                    inoviceAgingData?.invoiceAgeingGroup
+                                    invoiceAgingData?.invoiceAgeingGroup
                                         ?.averageDays ?? 0
                                 }}
                                 Days</span
@@ -290,24 +290,24 @@
                     <ng-container
                         *ngIf="
                             broker?.payTerm?.name !== 'Unlimited' &&
-                            inoviceAgingData?.invoiceAgeingGroupOne
+                            invoiceAgingData?.invoiceAgeingGroupOne
                         "
                     >
                         <app-ta-progress-invoices
                             [invoiceDays]="
-                                inoviceAgingData?.invoiceAgeingGroupOne
+                                invoiceAgingData?.invoiceAgeingGroupOne
                                     ?.periodOfDays
                             "
                             [invoiceCounter]="
-                                inoviceAgingData?.invoiceAgeingGroupOne
+                                invoiceAgingData?.invoiceAgeingGroupOne
                                     ?.countInvoice
                             "
                             [invoiceTotal]="
-                                inoviceAgingData?.invoiceAgeingGroupOne
+                                invoiceAgingData?.invoiceAgeingGroupOne
                                     ?.totalSum
                             "
                             [invoicePercentage]="
-                                inoviceAgingData?.invoiceAgeingGroupOne
+                                invoiceAgingData?.invoiceAgeingGroupOne
                                     ?.percentage
                             "
                             [template]="'light-blue'"
@@ -323,24 +323,24 @@
                     <ng-container
                         *ngIf="
                             broker?.payTerm?.name !== 'Unlimited' &&
-                            inoviceAgingData?.invoiceAgeingGroupTwo
+                            invoiceAgingData?.invoiceAgeingGroupTwo
                         "
                     >
                         <app-ta-progress-invoices
                             [invoiceDays]="
-                                inoviceAgingData?.invoiceAgeingGroupTwo
+                                invoiceAgingData?.invoiceAgeingGroupTwo
                                     ?.periodOfDays
                             "
                             [invoiceCounter]="
-                                inoviceAgingData?.invoiceAgeingGroupTwo
+                                invoiceAgingData?.invoiceAgeingGroupTwo
                                     ?.countInvoice
                             "
                             [invoiceTotal]="
-                                inoviceAgingData?.invoiceAgeingGroupTwo
+                                invoiceAgingData?.invoiceAgeingGroupTwo
                                     ?.totalSum
                             "
                             [invoicePercentage]="
-                                inoviceAgingData?.invoiceAgeingGroupTwo
+                                invoiceAgingData?.invoiceAgeingGroupTwo
                                     ?.percentage
                             "
                             [template]="'mid-blue'"
@@ -355,24 +355,24 @@
                     <ng-container
                         *ngIf="
                             broker?.payTerm?.name !== 'Unlimited' &&
-                            inoviceAgingData?.invoiceAgeingGroupThree
+                            invoiceAgingData?.invoiceAgeingGroupThree
                         "
                     >
                         <app-ta-progress-invoices
                             [invoiceDays]="
-                                inoviceAgingData?.invoiceAgeingGroupThree
+                                invoiceAgingData?.invoiceAgeingGroupThree
                                     ?.periodOfDays
                             "
                             [invoiceCounter]="
-                                inoviceAgingData?.invoiceAgeingGroupThree
+                                invoiceAgingData?.invoiceAgeingGroupThree
                                     ?.countInvoice
                             "
                             [invoiceTotal]="
-                                inoviceAgingData?.invoiceAgeingGroupThree
+                                invoiceAgingData?.invoiceAgeingGroupThree
                                     ?.totalSum
                             "
                             [invoicePercentage]="
-                                inoviceAgingData?.invoiceAgeingGroupThree
+                                invoiceAgingData?.invoiceAgeingGroupThree
                                     ?.percentage
                             "
                             [template]="'dark-blue'"
@@ -387,24 +387,24 @@
                     <ng-container
                         *ngIf="
                             broker?.payTerm?.name !== 'Unlimited' &&
-                            inoviceAgingData?.invoiceAgeingGroupFour
+                            invoiceAgingData?.invoiceAgeingGroupFour
                         "
                     >
                         <app-ta-progress-invoices
                             [invoiceDays]="
-                                inoviceAgingData?.invoiceAgeingGroupFour
+                                invoiceAgingData?.invoiceAgeingGroupFour
                                     ?.periodOfDays
                             "
                             [invoiceCounter]="
-                                inoviceAgingData?.invoiceAgeingGroupFour
+                                invoiceAgingData?.invoiceAgeingGroupFour
                                     ?.countInvoice
                             "
                             [invoiceTotal]="
-                                inoviceAgingData?.invoiceAgeingGroupFour
+                                invoiceAgingData?.invoiceAgeingGroupFour
                                     ?.totalSum
                             "
                             [invoicePercentage]="
-                                inoviceAgingData?.invoiceAgeingGroupFour
+                                invoiceAgingData?.invoiceAgeingGroupFour
                                     ?.percentage
                             "
                             [template]="'danger'"
@@ -431,23 +431,22 @@
                 }"
                 [customClass]="'detailsPadding'"
             >
-             <div
-                    class="charts-template perfomance"
-                >
-                    <!-- <ng-container *ngIf="!mileageChart?.hoveringStatus"> -->
-                        <div>
-                            <app-ta-tab-switch
-                                [type]="'type2-modal-popup'"
-                                [tabs]="tabsBroker"
-                                (switchClicked)="changeMileageTab($event)"
-                            >
-                            </app-ta-tab-switch>
-                        </div>
-                    <!-- </ng-container> -->
-                    <app-ca-chart
-                    [chartConfig]="paymentChartConfig"
-                >
-                </app-ca-chart>
+                <div class="charts-template perfomance">
+                    <div>
+                        <app-ta-tab-switch
+                            [type]="'type2-modal-popup'"
+                            [tabs]="paymentChartTabs"
+                            (switchClicked)="changePaymentTab($event)"
+                        >
+                        </app-ta-tab-switch>
+                    </div>
+                    <ng-container *ngIf="paymentChartConfig?.chartData">
+                        <app-ta-chart-legend
+                            [data]="paymentChartLegendData"
+                        ></app-ta-chart-legend>
+                        <app-ca-chart [chartConfig]="paymentChartConfig">
+                        </app-ca-chart>
+                    </ng-container>
                 </div>
             </app-ta-custom-card>
 
