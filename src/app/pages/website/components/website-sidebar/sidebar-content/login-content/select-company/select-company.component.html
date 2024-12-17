@@ -21,6 +21,83 @@
         <div class="row">
             <p class="sub-text">Please choose your company</p>
         </div>
+
+        <div class="row align-items-center gap-5 m-5">
+            @for(company of newUser?.companies ; track company.id){
+            <div
+                class="temporary-company-name"
+                (click)="onCompanySelect(company.id)"
+            >
+                {{ company.companyName }}
+            </div>
+            }
+        </div>
+
+        <!-- <div class="row">
+            <div id="carouselExampleControls" class="carousel" data-bs-wrap="false">
+                <div class="carousel-inner">
+                    <div class="card empty"></div>
+                    @for(company of newUser?.companies ; track company.id){
+                    <div
+                        class="carousel-item card"
+                        [class.active]="company?.LastActiveCompany"
+                        [id]="company.id"
+                    >
+                        <span class="company-name" *ngIf="!company.logo">{{
+                            company.companyName
+                        }}</span>
+                        <img
+                            class="logo"
+                            *ngIf="company.logo"
+                            src="{{ 'data:image/jpg;base64,' + company.logo }}"
+                        />
+                        <div
+                            *ngIf="company?.LastActiveCompany"
+                            class="last-login"
+                        >
+                            <span class="text"> Last login </span>
+                            <span class="time" *ngIf="lastLoginInCompany == 0">
+                                Today
+                            </span>
+                            <span class="time" *ngIf="lastLoginInCompany == 1">
+                                Yesterday
+                            </span>
+                            <span class="time" *ngIf="lastLoginInCompany > 1">
+                                {{ lastLoginInCompany }}
+                            </span>
+                        </div>
+                    </div>
+                    }
+                    
+                    <div class="card empty"></div>
+                </div>
+                <button
+                    class="carousel-control-prev slick-prev slick-arrow"
+                    type="button"
+                    data-bs-target="#carouselExampleControls"
+                    data-bs-slide="prev"
+                >
+                    <span
+                        class="carousel-control-prev-icon"
+                        aria-hidden="true"
+                    ></span>
+                    <span class="visually-hidden">Previous</span>
+                </button>
+                <button
+                    class="carousel-control-next slick-next slick-arrow"
+                    type="button"
+                    data-bs-target="#carouselExampleControls"
+                    data-bs-slide="next"
+                >
+                    <span
+                        class="carousel-control-next-icon"
+                        aria-hidden="true"
+                    ></span>
+                    <span class="visually-hidden">Next</span>
+                </button>
+            </div>
+        </div> -->
+
         <div class="row">
             <!-- <ngx-slick-carousel
                 #slickModal="slick-carousel"
@@ -73,9 +150,9 @@
             </form>
         </div>
         <div class="row bottons">
-            <div (click)="onCompanySelect()" class="select_company_main_button">
+            <!-- <div (click)="onCompanySelect()" class="select_company_main_button">
                 SELECT
-            </div>
+            </div> -->
             <div class="logout" (click)="goToLogin()">Logout</div>
         </div>
     </div>
