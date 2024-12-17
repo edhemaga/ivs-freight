@@ -68,7 +68,8 @@
                                         <span class="title-tooltip">
                                             {{
                                                 selectedTab !== 'repair_shop'
-                                                    ? card.invoice
+                                                    ? card.invoice ||
+                                                      card.orderNumber
                                                     : card.name
                                             }}
                                         </span>

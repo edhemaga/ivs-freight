@@ -1806,6 +1806,63 @@
                                         </div>
                                     </ng-container>
 
+                                    <!-- DESCRIPTION COLUMN DRIVER (OFFDUTY LOCATION, RESTRICTION, ENDORSEMENT) -->
+
+                                    <ng-container
+                                        *ngIf="
+                                            column.ngTemplate ===
+                                            'description-driver'
+                                        "
+                                    >
+                                        <div
+                                            class="td-content description-items-driver-container"
+                                            [ngStyle]="{
+                                                width: column.width + 'px',
+                                                'min-width.px':
+                                                    column?.minWidth ?? 'unset'
+                                            }"
+                                            [ngClass]="{
+                                                'has-value':
+                                                    row[column.field]?.length
+                                            }"
+                                            #t3="ngbPopover"
+                                            container="body"
+                                            placement="bottom-left"
+                                            triggers="manual"
+                                            popoverClass="table-description-popover"
+                                            [ngbPopover]="descriptionPopover"
+                                            (click)="
+                                                row[column.field]?.length &&
+                                                    onShowDescriptionDropdown(
+                                                        t3,
+                                                        tableData[0]
+                                                            ?.gridNameTitle,
+                                                        column?.width,
+                                                        row,
+                                                        column.field
+                                                    )
+                                            "
+                                        >
+                                            <div
+                                                ngbTooltip
+                                                tooltipBackground="#424242"
+                                                position="bottom"
+                                                [mainTooltip]="
+                                                    column.name.includes('Duty')
+                                                        ? 'View Off Duty locations'
+                                                        : column.name ===
+                                                          'Restriction'
+                                                        ? 'View Restrictions'
+                                                        : 'View Endorsements'
+                                                "
+                                                [appDescriptionItemsTextCount]="
+                                                    row[column.field]
+                                                "
+                                                [containerWidth]="column.width"
+                                            ></div>
+                                        </div>
+                                    </ng-container>
+
                                     <!-- SHARED COLUMN-->
 
                                     <div
@@ -4522,9 +4579,7 @@
                                             placement="bottom-left"
                                             triggers="manual"
                                             popoverClass="table-description-popover"
-                                            [ngbPopover]="
-                                                driverDescriptionPopover
-                                            "
+                                            [ngbPopover]="descriptionPopover"
                                             (click)="
                                                 row[column.field]?.length &&
                                                     onShowDescriptionDropdown(
@@ -6928,6 +6983,8 @@
         [ngClass]="
             data.isFuelDescription
                 ? 'description-item-fuel'
+                : data.isDriverDescription
+                ? 'description-item-driver'
                 : data.isRepairOrder
                 ? 'description-item-repair-order'
                 : 'description-item-repair-bill'
@@ -6940,43 +6997,75 @@
 
         <div class="align-items-center description-titles">
             <ng-container
-                *ngFor="
-                    let descriptionPopoverHeaderItem of data.isRepairOrder
-                        ? (descriptionPopoverHeaderItems | slice : 0 : 3)
-                        : descriptionPopoverHeaderItems;
-                    let descriptionPopoverHeaderItemIndex = index;
-                    trackBy: trackByDescriptionIdentity
+                *ngIf="
+                    data.isDriverDescription;
+                    else notDriverDescriptionHeader
                 "
             >
-                <div
-                    class="d-flex align-items-center"
-                    [ngStyle]="{
-                        'margin-left':
-                            descriptionPopoverHeaderItemIndex === 1 && '-4px'
-                    }"
-                    [ngClass]="{
-                        'justify-content-center':
-                            descriptionPopoverHeaderItemIndex === 0 ||
-                            (data.isRepairOrder &&
-                                descriptionPopoverHeaderItemIndex === 2),
-                        'justify-content-end':
-                            descriptionPopoverHeaderItemIndex === 2 ||
-                            descriptionPopoverHeaderItemIndex === 3
-                    }"
-                >
+                <div class="d-flex align-items-center justify-content-center">
                     <p
                         class="m-0 ta-font-bold text-size-11 text-color-light-grey-6"
                     >
-                        {{ descriptionPopoverHeaderItem.title }}
+                        #
                     </p>
                 </div>
+
+                <p
+                    class="m-0 ta-font-bold text-size-11 text-color-light-grey-6"
+                >
+                    {{
+                        data.isOffDutyLocations
+                            ? 'NAME • ADDRESS, CITY, STATE'
+                            : data.isRestrictions
+                            ? 'RESTRICTION'
+                            : 'ENDORSEMENT'
+                    }}
+                </p>
             </ng-container>
 
-            <div class="d-flex align-items-center justify-content-end">
-                <p class="m-0 ta-font-semi-bold text-size-14 text-color-white">
-                    {{ data.totalCost }}
-                </p>
-            </div>
+            <ng-template #notDriverDescriptionHeader>
+                <ng-container
+                    *ngFor="
+                        let descriptionPopoverHeaderItem of data.isRepairOrder
+                            ? (descriptionPopoverHeaderItems | slice : 0 : 3)
+                            : descriptionPopoverHeaderItems;
+                        let descriptionPopoverHeaderItemIndex = index;
+                        trackBy: trackByDescriptionIdentity
+                    "
+                >
+                    <div
+                        class="d-flex align-items-center"
+                        [ngStyle]="{
+                            'margin-left':
+                                descriptionPopoverHeaderItemIndex === 1 &&
+                                '-4px'
+                        }"
+                        [ngClass]="{
+                            'justify-content-center':
+                                descriptionPopoverHeaderItemIndex === 0 ||
+                                (data.isRepairOrder &&
+                                    descriptionPopoverHeaderItemIndex === 2),
+                            'justify-content-end':
+                                descriptionPopoverHeaderItemIndex === 2 ||
+                                descriptionPopoverHeaderItemIndex === 3
+                        }"
+                    >
+                        <p
+                            class="m-0 ta-font-bold text-size-11 text-color-light-grey-6"
+                        >
+                            {{ descriptionPopoverHeaderItem.title }}
+                        </p>
+                    </div>
+                </ng-container>
+
+                <div class="d-flex align-items-center justify-content-end">
+                    <p
+                        class="m-0 ta-font-semi-bold text-size-14 text-color-white"
+                    >
+                        {{ data.totalCost }}
+                    </p>
+                </div>
+            </ng-template>
         </div>
 
         <!-- Dropdown -->
@@ -6985,6 +7074,13 @@
             class="d-flex flex-column description-items"
             [ngClass]="{
                 'dropdown-scroll': data.descriptionItems.length >= 8
+            }"
+            [ngStyle]="{
+                width: data.isDriverDescription
+                    ? data.isOffDutyLocations
+                        ? '320px'
+                        : '233px'
+                    : '100%'
             }"
         >
             <ng-container
@@ -7008,75 +7104,136 @@
                         class="d-flex align-items-center justify-content-center"
                     >
                         <span
-                            class="m-0 ta-font-medium text-size-14 text-color-grey"
+                            class="m-0 text-size-14"
+                            [ngClass]="{
+                                'text-color-grey':
+                                    !data.isDriverDescription ||
+                                    data.isOffDutyLocations,
+                                'text-color-white ta-font-semi-bold':
+                                    data.isDriverDescription &&
+                                    !data.isOffDutyLocations
+                            }"
                         >
-                            {{ descriptionPopoverItemIndex + 1 }}
+                            {{
+                                !data.isDriverDescription ||
+                                data.isOffDutyLocations
+                                    ? descriptionPopoverItemIndex + 1
+                                    : descriptionPopoverItem.code
+                            }}
                         </span>
                     </div>
 
                     <!-- Description -->
 
-                    <div class="d-flex align-items-center description-box">
-                        <p class="m-0 text-size-14 text-color-white">
-                            {{ descriptionPopoverItem?.description }}
-                        </p>
-
-                        <svg-icon
-                            *ngIf="
-                                descriptionPopoverItem?.pmTruck ||
-                                descriptionPopoverItem?.pmTrailer
-                            "
-                            class="pm-icon"
-                            [src]="
-                                descriptionPopoverItem?.pmTruck?.logoName ||
-                                descriptionPopoverItem?.pmTrailer.logoName
-                            "
-                            [svgStyle]="{
-                                'width.px': 14,
-                                'height.px': 14
-                            }"
-                        ></svg-icon>
-                    </div>
-
-                    <!-- Quantity -->
-
-                    <div
-                        class="d-flex align-items-center"
-                        [ngClass]="
-                            data.isRepairOrder
-                                ? 'justify-content-center'
-                                : 'justify-content-end'
+                    <ng-container
+                        *ngIf="
+                            data.isDriverDescription;
+                            else notDriverDescription
                         "
                     >
-                        <p class="m-0 text-size-14 text-color-white">
-                            {{ descriptionPopoverItem?.quantity }}
-                        </p>
-                    </div>
+                        <ng-container
+                            *ngIf="
+                                data.isOffDutyLocations;
+                                else restrictionEndorsement
+                            "
+                        >
+                            <div class="d-flex flex-column">
+                                <p
+                                    class="m-0 ta-font-medium text-size-11 text-color-white"
+                                >
+                                    {{ descriptionPopoverItem?.nickname }}
+                                </p>
 
-                    <ng-container *ngIf="!data.isRepairOrder">
-                        <!-- Price -->
+                                <p class="m-0 text-size-11 text-color-grey">
+                                    {{
+                                        descriptionPopoverItem?.address.address
+                                    }}
+                                </p>
+                            </div>
+                        </ng-container>
+
+                        <ng-template #restrictionEndorsement>
+                            <div class="d-flex align-items-center">
+                                <p class="m-0 text-size-11 text-color-white">
+                                    -
+                                </p>
+
+                                <p
+                                    class="m-0 text-size-11 text-color-white description-text"
+                                >
+                                    {{ descriptionPopoverItem?.description }}
+                                </p>
+                            </div>
+                        </ng-template>
+                    </ng-container>
+
+                    <ng-template #notDriverDescription>
+                        <div class="d-flex align-items-center description-box">
+                            <p class="m-0 text-size-14 text-color-white">
+                                {{ descriptionPopoverItem?.description }}
+                            </p>
+
+                            <svg-icon
+                                *ngIf="
+                                    descriptionPopoverItem?.pmTruck ||
+                                    descriptionPopoverItem?.pmTrailer
+                                "
+                                class="pm-icon"
+                                [src]="
+                                    descriptionPopoverItem?.pmTruck?.logoName ||
+                                    descriptionPopoverItem?.pmTrailer.logoName
+                                "
+                                [svgStyle]="{
+                                    'width.px': 14,
+                                    'height.px': 14
+                                }"
+                            ></svg-icon>
+                        </div>
+                    </ng-template>
+
+                    <ng-container *ngIf="!data.isDriverDescription">
+                        <!-- Quantity -->
 
                         <div
-                            class="d-flex align-items-center justify-content-end"
+                            class="d-flex align-items-center"
+                            [ngClass]="
+                                data.isRepairOrder
+                                    ? 'justify-content-center'
+                                    : 'justify-content-end'
+                            "
                         >
                             <p class="m-0 text-size-14 text-color-white">
-                                {{ descriptionPopoverItem?.descriptionPrice }}
+                                {{ descriptionPopoverItem?.quantity }}
                             </p>
                         </div>
 
-                        <!-- Cost -->
+                        <ng-container *ngIf="!data.isRepairOrder">
+                            <!-- Price -->
 
-                        <div
-                            class="d-flex align-items-center justify-content-end"
-                        >
-                            <p
-                                class="m-0 ta-font-medium text-size-14 text-color-white"
+                            <div
+                                class="d-flex align-items-center justify-content-end"
                             >
-                                {{
-                                    descriptionPopoverItem?.descriptionTotalPrice
-                                }}
-                            </p>
-                        </div>
+                                <p class="m-0 text-size-14 text-color-white">
+                                    {{
+                                        descriptionPopoverItem?.descriptionPrice
+                                    }}
+                                </p>
+                            </div>
+
+                            <!-- Cost -->
+
+                            <div
+                                class="d-flex align-items-center justify-content-end"
+                            >
+                                <p
+                                    class="m-0 ta-font-medium text-size-14 text-color-white"
+                                >
+                                    {{
+                                        descriptionPopoverItem?.descriptionTotalPrice
+                                    }}
+                                </p>
+                            </div>
+                        </ng-container>
                     </ng-container>
                 </div>
             </ng-container>
@@ -7093,151 +7250,6 @@
     >
         <div class="add-pm-icon"></div>
         <div class="add-pm-text text-color-black text-size-14">Add PM Item</div>
-    </div>
-</ng-template>
-
-<!-- DRIVER DESCRIPTION POPOVER -->
-
-<ng-template #driverDescriptionPopover let-data="data">
-    <div
-        class="description-dropdown-container description-item-driver"
-        [ngStyle]="{
-            width: widthPopover + 'px'
-        }"
-    >
-        <!-- Header -->
-
-        <div class="align-items-center description-titles">
-            <div class="d-flex align-items-center justify-content-center">
-                <p
-                    class="m-0 ta-font-bold text-size-11 text-color-light-grey-6"
-                >
-                    #
-                </p>
-            </div>
-
-            <p class="m-0 ta-font-bold text-size-11 text-color-light-grey-6">
-                {{
-                    data.isOffDutyLocations
-                        ? 'NAME • ADDRESS, CITY, STATE'
-                        : data.isRestrictions
-                        ? 'RESTRICTION'
-                        : 'ENDORSEMENT'
-                }}
-            </p>
-        </div>
-
-        <!-- Dropdown -->
-
-        <div
-            class="d-flex flex-column description-items"
-            [ngClass]="{
-                'dropdown-scroll': data.descriptionDriverItems.length >= 8
-            }"
-            [ngStyle]="{ width: data.isOffDutyLocations ? '320px' : '233px' }"
-        >
-            <ng-container
-                *ngFor="
-                    let descriptionDriverPopoverItem of data.descriptionDriverItems;
-                    let descriptionDriverPopoverItemIndex = index;
-                    trackBy: trackByIdentity
-                "
-            >
-                <div class="align-items-center description-items-item">
-                    <!-- # -->
-
-                    <div
-                        class="d-flex align-items-center justify-content-center"
-                    >
-                        <span
-                            class="m-0 text-size-14 text-color-grey"
-                            [ngClass]="{
-                                'text-color-grey': data.isOffDutyLocations,
-                                'text-color-white ta-font-semi-bold':
-                                    !data.isOffDutyLocations
-                            }"
-                        >
-                            {{
-                                data.isOffDutyLocations
-                                    ? descriptionDriverPopoverItemIndex + 1
-                                    : descriptionDriverPopoverItem.code
-                            }}
-                        </span>
-                    </div>
-
-                    <!-- Description -->
-
-                    <ng-container
-                        *ngIf="
-                            data.isOffDutyLocations;
-                            else restrictionEndorsement
-                        "
-                    >
-                        <div class="d-flex flex-column">
-                            <p
-                                class="m-0 ta-font-medium text-size-11 text-color-white"
-                            >
-                                {{ descriptionDriverPopoverItem?.nickname }}
-                            </p>
-
-                            <p class="m-0 text-size-11 text-color-grey">
-                                {{
-                                    descriptionDriverPopoverItem?.address
-                                        .address
-                                }}
-                            </p>
-                        </div>
-                    </ng-container>
-
-                    <ng-template #restrictionEndorsement>
-                        <div class="d-flex align-items-center">
-                            <p class="m-0 text-size-11 text-color-white">-</p>
-
-                            <p
-                                class="m-0 text-size-11 text-color-white description-text"
-                            >
-                                {{ descriptionDriverPopoverItem?.description }}
-                            </p>
-                        </div>
-                    </ng-template>
-                </div>
-            </ng-container>
-        </div>
-
-        <!--    <ng-container *ngIf="endorsement; else tableOffDutyLocation">
-            <div
-                class="description-titles"
-                [ngStyle]="{
-                    width: widthPopover + 'px'
-                }"
-            >
-                <div class="item-title">
-                    {{ restriction ? '# RESTRICTION' : '# ENDORSEMENT' }}
-                </div>
-            </div>
-            <div
-                class="description-popover-items"
-                [ngStyle]="{
-                    'min-width': '233px'
-                }"
-            >
-                <div
-                    class="description-popover-item d-flex align-items-center"
-                    *ngFor="let item of data; let i = index"
-                >
-                    <div
-                        class="title-endorsment d-flex justify-content-center align-items-center"
-                    >
-                        {{ item.code }}
-                    </div>
-                    <div class="white-line">-</div>
-                    <div class="subtitle-endorsment">
-                        {{ item.description }}
-                    </div>
-                </div>
-                <div class="right-background"></div>
-            </div>
-        </ng-container> -->
     </div>
 </ng-template>
 

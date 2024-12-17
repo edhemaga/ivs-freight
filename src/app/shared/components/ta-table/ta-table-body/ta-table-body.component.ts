@@ -930,18 +930,20 @@ export class TaTableBodyComponent
             case TableStringEnum.DRIVER_1:
                 if (field === TableStringEnum.TABLE_OFF_DUTY_LOCATIONS) {
                     const offDutyLocationItemsData = {
+                        isDriverDescription: true,
                         isOffDutyLocations: true,
-                        descriptionDriverItems: row.tableOffDutyLocation,
+                        descriptionItems: row.tableOffDutyLocation,
                     };
 
                     data = offDutyLocationItemsData;
                 } else {
                     const restrictionEndorsementItemsData = {
+                        isDriverDescription: true,
                         isOffDutyLocations: false,
                         isRestrictions:
                             field ===
                             TableStringEnum.TABLE_CDL_DETAIL_RESTRICTION,
-                        descriptionDriverItems:
+                        descriptionItems:
                             field ===
                             TableStringEnum.TABLE_CDL_DETAIL_RESTRICTION
                                 ? row.tableCdlDetailRestriction

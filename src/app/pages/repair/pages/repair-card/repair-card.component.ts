@@ -50,6 +50,8 @@ export class RepairCardComponent implements OnInit, AfterViewInit, OnDestroy {
     // All data
     @Input() set viewData(value: CardDetails[]) {
         this._viewData = value;
+
+        console.log('this._viewData', this._viewData);
     }
 
     // Card body endpoints
@@ -89,6 +91,8 @@ export class RepairCardComponent implements OnInit, AfterViewInit, OnDestroy {
 
     ngOnInit() {
         this.flipAllCards();
+
+        console.log('tis.displayRowsFront', this.displayRowsFront);
     }
 
     ngAfterViewInit(): void {
