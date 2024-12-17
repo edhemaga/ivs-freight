@@ -13,15 +13,19 @@ import {
     ViewChild,
     ViewChildren,
 } from '@angular/core';
-import { Subject, takeUntil } from 'rxjs';
-import { NgbPopover } from '@ng-bootstrap/ng-bootstrap';
 import { Router } from '@angular/router';
+
+import { Subject, takeUntil } from 'rxjs';
+
+// modules
+import { NgbPopover } from '@ng-bootstrap/ng-bootstrap';
 
 // Models
 import { CardDetails } from '@shared/models/card-models/card-table-data.model';
 import { SendDataCard } from '@shared/models/card-models/send-data-card.model';
 import { CardRows } from '@shared/models/card-models/card-rows.model';
 import { CardDataResult } from '@shared/models/card-models/card-data-result.model';
+import { MappedRepair } from '@pages/repair/pages/repair-table/models';
 
 // Services
 import { TruckassistTableService } from '@shared/services/truckassist-table.service';
@@ -51,7 +55,7 @@ export class RepairCardComponent implements OnInit, AfterViewInit, OnDestroy {
     @Input() set viewData(value: CardDetails[]) {
         this._viewData = value;
 
-        console.log('this._viewData', this._viewData);
+        this.getDescriptionSpecialStyleIndexes();
     }
 
     // Card body endpoints
@@ -64,7 +68,6 @@ export class RepairCardComponent implements OnInit, AfterViewInit, OnDestroy {
 
     public isCardFlippedCheckInCards: number[] = [];
     public _viewData: CardDetails[];
-    public descriptionIsOpened: number;
 
     public elementWidth: number;
 
@@ -75,24 +78,20 @@ export class RepairCardComponent implements OnInit, AfterViewInit, OnDestroy {
     public cardsBack: CardDataResult[][][] = [];
     public titleArray: string[][] = [];
 
-    public itemsForRepair: string[] = [];
-
     constructor(
         private ngZone: NgZone,
         private renderer: Renderer2,
         public router: Router,
 
-        //Services
+        // Services
         private tableService: TruckassistTableService,
 
-        //Helpers
+        // Helpers
         private cardHelper: CardHelper
     ) {}
 
     ngOnInit() {
         this.flipAllCards();
-
-        console.log('tis.displayRowsFront', this.displayRowsFront);
     }
 
     ngAfterViewInit(): void {
@@ -122,19 +121,41 @@ export class RepairCardComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     // Description
+    private getDescriptionSpecialStyleIndexes(): void {
+        this._viewData = this._viewData.map((repair) => {
+            const { items } = repair;
+
+            const pmItemsIndexArray = [];
+
+            items.forEach(
+                (item, index) =>
+                    (item?.pmTruck || item?.pmTrailer) &&
+                    pmItemsIndexArray.push(index)
+            );
+
+            return {
+                ...repair,
+                pmItemsIndexArray,
+            };
+        });
+    }
+
     public onShowDescriptionDropdown(
-        popup: NgbPopover,
-        card: CardDetails
+        popover: NgbPopover,
+        card: MappedRepair
     ): void {
-        if (card.descriptionItems.length > 1) {
-            if (popup.isOpen()) {
-                popup.close();
-                this.descriptionIsOpened = null;
-            } else {
-                popup.open({ data: card });
-                this.descriptionIsOpened = card.id;
-            }
-        }
+        const { isRepairOrder, tableDescription, tableDescriptionDropTotal } =
+            card;
+
+        const repairItemsData = {
+            isRepairOrder,
+            descriptionItems: tableDescription,
+            totalCost: tableDescriptionDropTotal,
+        };
+
+        popover.isOpen()
+            ? popover.close()
+            : popover.open({ data: repairItemsData });
     }
 
     // On window resize update width of description popup
@@ -145,10 +166,12 @@ export class RepairCardComponent implements OnInit, AfterViewInit, OnDestroy {
 
             const resizeObserver = new ResizeObserver(() => {
                 const width = parentElement.offsetWidth;
+
                 this.ngZone.run(() => {
                     this.elementWidth = width;
                 });
             });
+
             resizeObserver.observe(parentElement);
         }
     }

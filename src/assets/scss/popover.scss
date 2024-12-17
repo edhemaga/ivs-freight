@@ -1061,7 +1061,8 @@
 // Table Body Description Popover
 .table-description-popover {
     .popover-body {
-        .description-dropdown-container {
+        .description-dropdown-container,
+        .card-dropdown-container {
             position: absolute;
             top: -34px;
 
@@ -1182,6 +1183,48 @@
                                 }
                             }
                         }
+                    }
+                }
+            }
+        }
+
+        // Cards Description Popover
+        .card-dropdown-container {
+            position: absolute;
+            top: -30px;
+
+            &.description-item-repair-order {
+                .description-titles,
+                .description-items-item {
+                    grid-template-columns: 18px 1fr 24px;
+                }
+            }
+
+            &.description-item-repair-bill {
+                .description-titles,
+                .description-items-item {
+                    grid-template-columns: 18px 1fr 67px;
+                }
+            }
+
+            .description-titles,
+            .description-items-item {
+                display: grid;
+                grid-gap: 4px;
+            }
+
+            .description-items {
+                &.dropdown-scroll {
+                    max-height: 280px;
+                }
+
+                &-item {
+                    .description-box {
+                        margin-left: unset;
+                    }
+
+                    .quantity-x-text {
+                        margin-right: 2px;
                     }
                 }
             }

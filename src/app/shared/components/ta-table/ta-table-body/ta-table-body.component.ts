@@ -76,7 +76,6 @@ import { DomSanitizer } from '@angular/platform-browser';
 // pipes
 import { TableHighlightSearchTextPipe } from '@shared/components/ta-table/ta-table-body/pipes/table-highlight-search-text.pipe';
 import { ContactPhoneEmailIconPipe } from '@shared/components/ta-table/ta-table-body/pipes/contact-phone-email-icon.pipe';
-import { TableDescriptionTextPipe } from '@shared/components/ta-table/ta-table-body/pipes/table-description-text.pipe';
 import { FormatCurrencyPipe } from '@shared/pipes/format-currency.pipe';
 import { ThousandToShortFormatPipe } from '@shared/pipes/thousand-to-short-format.pipe';
 import { TableLoadStatusPipe } from '@shared/pipes/table-load-status.pipe';
@@ -144,7 +143,6 @@ import { TableBodySvgRoutes } from '@shared/components/ta-table/ta-table-body/ut
 
         // pipes
         TableHighlightSearchTextPipe,
-        TableDescriptionTextPipe,
         ContactPhoneEmailIconPipe,
         FormatCurrencyPipe,
         ThousandToShortFormatPipe,

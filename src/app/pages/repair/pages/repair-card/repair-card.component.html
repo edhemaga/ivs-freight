@@ -121,43 +121,36 @@
                                         <div
                                             class="items-container-body d-flex align-items-center"
                                         >
-                                            <span
-                                                class="checkbox-tooltip d-flex"
-                                                type="button"
-                                                ngbTooltip
-                                                mainTooltip="View Items"
-                                                tooltipBackground="#424242"
-                                                position="bottom"
-                                                customClass="mt-2"
+                                            <div
+                                                #description="ngbPopover"
+                                                container="body"
+                                                placement="bottom-left"
+                                                triggers="manual"
+                                                popoverClass="table-description-popover"
+                                                [ngbPopover]="
+                                                    descriptionCardsPopover
+                                                "
+                                                (click)="
+                                                    onShowDescriptionDropdown(
+                                                        description,
+                                                        card
+                                                    )
+                                                "
                                             >
                                                 <div
-                                                    (click)="
-                                                        onShowDescriptionDropdown(
-                                                            description,
-                                                            card
-                                                        )
+                                                    ngbTooltip
+                                                    tooltipBackground="#424242"
+                                                    position="bottom"
+                                                    mainTooltip="View Items"
+                                                    [appDescriptionItemsTextCount]="
+                                                        card?.tableDescription
                                                     "
-                                                    #description="ngbPopover"
-                                                    class="description-container d-flex align-items-center"
-                                                    [ngbPopover]="
-                                                        descriptionCardsPopover
+                                                    [itemSpecialStylesIndexArray]="
+                                                        card?.pmItemsIndexArray
                                                     "
-                                                    container="body"
-                                                    [placement]="'bottom-left'"
-                                                    popoverClass="table-description-popover"
-                                                    [style.width.px]="
-                                                        elementWidth
-                                                    "
-                                                    triggers="manual"
+                                                    [containerWidth]="270"
                                                 ></div>
-                                                <div
-                                                    #itemsRepair
-                                                    class="items-container"
-                                                    [innerHTML]="
-                                                        itemsForRepair[i]
-                                                    "
-                                                ></div>
-                                            </span>
+                                            </div>
                                         </div>
                                     </ng-container>
 
@@ -374,98 +367,136 @@
 
 <!-- Description-->
 <ng-template #descriptionCardsPopover let-data="data">
-    <div class="card-dropdown-container" [style.width.px]="elementWidth">
-        <div class="description-titles d-flex align-items-center">
-            <div
-                class="number-title ta-font-bold d-flex align-items-center justify-content-center"
-            >
-                #
+    <div
+        class="card-dropdown-container"
+        [style.width.px]="elementWidth"
+        [ngClass]="
+            data.isRepairOrder
+                ? 'description-item-repair-order'
+                : 'description-item-repair-bill'
+        "
+    >
+        <!-- Header -->
+
+        <div class="align-items-center description-titles">
+            <div class="d-flex align-items-center justify-content-center">
+                <p
+                    class="m-0 ta-font-bold text-size-11 text-color-light-grey-6"
+                >
+                    #
+                </p>
             </div>
-            <div class="dropdown-titles d-flex justify-content-between">
-                <ng-container *ngIf="data.isRepairOrder">
-                    <p
-                        class="dropdown-left m-0 ta-font-bold d-flex align-items-center"
-                    >
-                        DESCRIPTION
-                    </p>
-                    <p
-                        class="dropdown-right m-0 ta-font-bold d-flex align-items-center"
-                    >
-                        QTY
-                    </p>
-                </ng-container>
-                <ng-container *ngIf="!data.isRepairOrder">
-                    <p
-                        class="dropdown-left m-0 ta-font-bold d-flex align-items-center"
-                    >
-                        DESC • QTY • PRICE
-                    </p>
-                    <div class="dropdown-right">
-                        <p class="price-total-title ta-font-semi-bold m-0">
-                            {{ data.tableDescriptionDropTotal }}
-                        </p>
-                    </div>
-                </ng-container>
+
+            <p class="m-0 ta-font-bold text-size-11 text-color-light-grey-6">
+                {{ data.isRepairOrder ? 'DESCRIPTION' : 'DESC • QTY • PRICE' }}
+            </p>
+
+            <div class="d-flex align-items-center justify-content-end">
+                <p
+                    class="m-0 text-size-11"
+                    [ngClass]="{
+                        'ta-font-bold text-color-light-grey-6':
+                            data.isRepairOrder,
+                        'ta-font-semi-bold text-color-white':
+                            !data.isRepairOrder
+                    }"
+                >
+                    {{ data.isRepairOrder ? 'QTY' : data.totalCost }}
+                </p>
             </div>
         </div>
-        <div class="description-items">
-            <div class="description-item d-flex flex-column">
-                <ng-container
-                    *ngFor="
-                        let item of data.descriptionItems;
-                        let i = index;
-                        trackBy: trackCard
-                    "
-                >
-                    <div class="d-flex align-items-center item-description">
-                        <div
-                            class="item-index d-flex justify-content-center align-items-center"
-                        >
-                            {{ i + 1 }}
-                        </div>
-                        <ng-container *ngIf="item.pmDescription">
-                            <div class="pm-item">
-                                <svg-icon
-                                    [src]="
-                                        'assets/svg/common/repair-pm/' +
-                                        item.pmDescription.logoName
-                                    "
-                                    [svgStyle]="{
-                                        'width.px': '20',
-                                        'height.px': '20'
-                                    }"
-                                ></svg-icon>
-                            </div>
-                        </ng-container>
-                        <div
-                            class="items-holder d-flex justify-content-between"
-                        >
-                            <div class="left-description">
-                                <div class="item-title ta-font-medium">
-                                    {{ item.description }}
-                                </div>
-                                <div class="items-number-items-cost d-flex">
-                                    <div
-                                        class="number-of-items ta-font-regular"
-                                    >
-                                        {{ item.quantity }} X
-                                        {{ item.descriptionPrice }}
-                                    </div>
-                                </div>
-                            </div>
 
-                            <div
-                                class="item-total-cost d-flex align-items-center"
-                                [ngClass]="{
-                                    'pm-style': item.pmDescription
-                                }"
-                            >
-                                {{ item.descriptionTotalPrice }}
-                            </div>
-                        </div>
+        <!-- Dropdown -->
+
+        <div
+            class="d-flex flex-column description-items"
+            [ngClass]="{
+                'dropdown-scroll': data.descriptionItems.length >= 8
+            }"
+        >
+            <ng-container
+                *ngFor="
+                    let descriptionPopoverItem of data.descriptionItems;
+                    let descriptionPopoverItemIndex = index;
+                    trackBy: trackCard
+                "
+            >
+                <div
+                    class="align-items-center description-items-item"
+                    [ngClass]="{
+                        'pm-item':
+                            descriptionPopoverItem?.pmTruck ||
+                            descriptionPopoverItem?.pmTrailer
+                    }"
+                >
+                    <!-- # -->
+
+                    <div
+                        class="d-flex align-items-center justify-content-center"
+                    >
+                        <span class="m-0 text-size-14 text-color-grey">
+                            {{ descriptionPopoverItemIndex + 1 }}
+                        </span>
                     </div>
-                </ng-container>
-            </div>
+
+                    <!-- Description -->
+
+                    <div class="d-flex flex-column description-box">
+                        <div class="d-flex align-items-center">
+                            <p
+                                class="m-0 ta-font-medium text-size-11 text-color-white"
+                            >
+                                {{ descriptionPopoverItem?.description }}
+                            </p>
+
+                            <svg-icon
+                                *ngIf="
+                                    descriptionPopoverItem?.pmTruck ||
+                                    descriptionPopoverItem?.pmTrailer
+                                "
+                                class="pm-icon"
+                                [src]="
+                                    descriptionPopoverItem?.pmTruck?.logoName ||
+                                    descriptionPopoverItem?.pmTrailer.logoName
+                                "
+                                [svgStyle]="{
+                                    'width.px': 14,
+                                    'height.px': 14
+                                }"
+                            ></svg-icon>
+                        </div>
+
+                        <ng-container *ngIf="!data.isRepairOrder">
+                            <span class="text-size-11 text-color-grey">
+                                {{ descriptionPopoverItem?.quantity }} x
+                                {{ descriptionPopoverItem?.descriptionPrice }}
+                            </span>
+                        </ng-container>
+                    </div>
+
+                    <!-- Price -->
+
+                    <div class="d-flex align-items-center justify-content-end">
+                        <ng-contaner *ngIf="data.isRepairOrder">
+                            <span
+                                class="text-size-14 text-color-grey quantity-x-text"
+                            >
+                                x
+                            </span>
+                        </ng-contaner>
+
+                        <p
+                            class="m-0 ta-font-medium text-size-14 text-color-white"
+                        >
+                            {{
+                                data.isRepairOrder
+                                    ? descriptionPopoverItem?.quantity
+                                    : descriptionPopoverItem?.descriptionTotalPrice
+                            }}
+                        </p>
+                    </div>
+                </div>
+            </ng-container>
         </div>
     </div>
 </ng-template>
