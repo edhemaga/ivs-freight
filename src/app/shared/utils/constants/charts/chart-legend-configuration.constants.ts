@@ -1,9 +1,9 @@
 // Models
+import { IBrokerPaymentHistory } from "@pages/customer/pages/broker-details/models";
 import { ChartLegendProperty } from "@shared/models";
 import {
     BrokerMileageRateResponse,
     BrokerPaidInvoiceChartResponse,
-    BrokerPaymentHistoryResponse,
     DriverPayrollResponse,
     FuelStopExpensesResponse,
     TrailerFuelConsumptionChartResponse,
@@ -149,10 +149,10 @@ export class ChartLegendConfiguration {
         },
     ];
 
-    public static brokerPaymentHistory = (data: BrokerPaymentHistoryResponse): ChartLegendProperty[] => [
+    public static brokerPaymentHistory = (data: IBrokerPaymentHistory): ChartLegendProperty[] => [
         {
             name: 'Avg. Pay Period',
-            value: Number(data.averagePayPeriod.totalDays) ?? 0,
+            value: data.averagePayPeriod || 0,
             // Since 'background' property is set with color, linear gradient can be used as well
             color: 'linear-gradient(135deg, #F77D3B 50%, #6692F1 50%)',
             unit: 'days',
