@@ -21,7 +21,8 @@ export interface MappedRepair {
     tableYear: number;
     tablePayType: string;
     tableOdometer: string;
-    tableDriver: { name: string; avatar: string };
+    avatarImg: string;
+    tableDriver: string;
     tableIssued: string;
     tableShopName: string;
     tableShopAdress: string;

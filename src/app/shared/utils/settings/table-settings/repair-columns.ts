@@ -278,7 +278,7 @@ export function getRepairTruckAndTrailerColumnDefinition() {
             resizable: true,
         },
         {
-            ngTemplate: 'dispatcher-avatar',
+            ngTemplate: 'avatar-assign',
             title: 'Driver',
             field: 'tableDriver',
             name: 'Driver',

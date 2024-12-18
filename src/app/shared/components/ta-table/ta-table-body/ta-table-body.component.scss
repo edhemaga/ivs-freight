@@ -596,10 +596,6 @@ table.truckassist-table-body-style {
                             display: flex;
                             transition: transform 0.2s;
                             .avatar-assign-img {
-                                &:hover {
-                                    transform: scale(1.5);
-                                    transition: 0.2s;
-                                }
                                 img {
                                     width: 18px;
                                     height: 20px;

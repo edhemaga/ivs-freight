@@ -1635,14 +1635,10 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                 ? this.thousandSeparator.transform(odometer) +
                   TableStringEnum.LETTER_M_MILES
                 : null,
-            tableDriver: {
-                name: driver
-                    ? `${driver?.firstName} ${driver?.lastName}`
-                    : null,
-                avatar: TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-                /*    driver?.avatarFile?.url ??
-                null,  w8 for back */
-            },
+            avatarImg: driver?.avatarFile?.url,
+            tableDriver: driver
+                ? `${driver?.firstName} ${driver?.lastName}`
+                : null,
             tableShopName: repairShop?.name,
             tableShopAdress: repairShop?.address?.address,
             tableServiceType: shopServiceType?.name,
