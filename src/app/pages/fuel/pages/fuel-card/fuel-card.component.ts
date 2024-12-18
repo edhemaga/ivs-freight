@@ -1,8 +1,10 @@
 import {
+    AfterViewInit,
     Component,
     ElementRef,
     EventEmitter,
     Input,
+    NgZone,
     OnDestroy,
     OnInit,
     Output,
@@ -18,6 +20,7 @@ import { CardRows } from '@shared/models/card-models/card-rows.model';
 import { CardDetails } from '@shared/models/card-models/card-table-data.model';
 import { CardDataResult } from '@shared/models/card-models/card-data-result.model';
 import { SendDataCard } from '@shared/models/card-models/send-data-card.model';
+import { MappedRepair } from '@pages/repair/pages/repair-table/models';
 
 // helpers
 import { CardHelper } from '@shared/utils/helpers/card-helper';
@@ -35,7 +38,7 @@ import { FuelCardSvgRoutes } from '@pages/fuel/pages/fuel-card/utils/svg-routes/
     styleUrls: ['./fuel-card.component.scss'],
     providers: [CardHelper],
 })
-export class FuelCardComponent implements OnInit, OnDestroy {
+export class FuelCardComponent implements OnInit, AfterViewInit, OnDestroy {
     @ViewChild('parentElement', { read: ElementRef })
     private cardBodyElement!: ElementRef;
 
@@ -60,17 +63,16 @@ export class FuelCardComponent implements OnInit, OnDestroy {
     public _viewData: CardDetails[];
     public cardsFront: CardDataResult[][][] = [];
     public cardsBack: CardDataResult[][][] = [];
-    public titleArray: string[][] = [];
     public isAllCardsFlipp: boolean;
-    public descriptionIsOpened: number;
 
-    public itemsForRepair: string[] = [];
+    public elementWidth: number;
 
     public fuelImageRoutes = FuelCardSvgRoutes;
 
     private destroy$ = new Subject<void>();
 
     constructor(
+        private ngZone: NgZone,
         private renderer: Renderer2,
 
         // services
@@ -82,6 +84,12 @@ export class FuelCardComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
         this.flipAllCards();
+    }
+
+    ngAfterViewInit(): void {
+        this.windowResizeUpdateDescriptionDropdown();
+
+        this.windownResizeUpdateCountNumberInCards();
     }
 
     public windownResizeUpdateCountNumberInCards(): void {
@@ -142,18 +150,38 @@ export class FuelCardComponent implements OnInit, OnDestroy {
         this.bodyActions.emit(event);
     }
 
+    // Description
     public onShowDescriptionDropdown(
-        popup: NgbPopover,
-        card: CardDetails
+        popover: NgbPopover,
+        card: MappedRepair
     ): void {
-        if (card.descriptionItems.length > 1) {
-            if (popup.isOpen()) {
-                popup.close();
-                this.descriptionIsOpened = null;
-            } else {
-                popup.open({ data: card });
-                this.descriptionIsOpened = card.id;
-            }
+        const { tableDescription, tableDescriptionDropTotal } = card;
+
+        const fuelItemsData = {
+            descriptionItems: tableDescription,
+            totalCost: tableDescriptionDropTotal,
+        };
+
+        popover.isOpen()
+            ? popover.close()
+            : popover.open({ data: fuelItemsData });
+    }
+
+    // On window resize update width of description popup
+    public windowResizeUpdateDescriptionDropdown(): void {
+        if (this.cardBodyElement) {
+            const parentElement = this.cardBodyElement
+                .nativeElement as HTMLElement;
+
+            const resizeObserver = new ResizeObserver(() => {
+                const width = parentElement.offsetWidth;
+
+                this.ngZone.run(() => {
+                    this.elementWidth = width;
+                });
+            });
+
+            resizeObserver.observe(parentElement);
         }
     }
 

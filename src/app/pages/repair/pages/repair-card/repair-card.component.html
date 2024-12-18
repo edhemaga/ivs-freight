@@ -366,6 +366,7 @@
 </div>
 
 <!-- Description-->
+
 <ng-template #descriptionCardsPopover let-data="data">
     <div
         class="card-dropdown-container"
@@ -373,7 +374,7 @@
         [ngClass]="
             data.isRepairOrder
                 ? 'description-item-repair-order'
-                : 'description-item-repair-bill'
+                : 'description-item-repair-bill-fuel-trans'
         "
     >
         <!-- Header -->
@@ -444,7 +445,12 @@
                     <div class="d-flex flex-column description-box">
                         <div class="d-flex align-items-center">
                             <p
-                                class="m-0 ta-font-medium text-size-11 text-color-white"
+                                class="m-0 ta-font-medium text-size-11 text-color-white d-inline-block text-truncate"
+                                [ngStyle]="{
+                                    'max-width': data.isRepairOrder
+                                        ? '240px'
+                                        : '200px'
+                                }"
                             >
                                 {{ descriptionPopoverItem?.description }}
                             </p>
