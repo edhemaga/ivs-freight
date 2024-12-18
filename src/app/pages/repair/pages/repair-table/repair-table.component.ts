@@ -1574,6 +1574,8 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     private mapRepairData(repair: RepairResponse): MappedRepair {
+        console.log('repair', repair);
+
         const {
             repairType,
             date,
