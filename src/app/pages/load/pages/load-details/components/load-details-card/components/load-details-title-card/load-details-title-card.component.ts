@@ -10,6 +10,7 @@ import { CommonModule } from '@angular/common';
 
 // modules
 import { AngularSvgIconModule } from 'angular-svg-icon';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 // routes
 import { LoadDetailsCardSvgRoutes } from '@pages/load/pages/load-details/components/load-details-card/utils/svg-routes/load-details-card-svg-routes';
@@ -17,6 +18,7 @@ import { LoadDetailsCardSvgRoutes } from '@pages/load/pages/load-details/compone
 // components
 import { TaDetailsHeaderCardComponent } from '@shared/components/ta-details-header-card/ta-details-header-card.component';
 import { LoadStatusStringComponent } from '@pages/load/components/load-status-string/load-status-string.component';
+import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
 
 // pipes
 import { FormatDatePipe } from '@shared/pipes/format-date.pipe';
@@ -43,10 +45,12 @@ import { StatusOrder } from '@pages/load/models/status-order.model';
         // modules
         CommonModule,
         AngularSvgIconModule,
+        NgbModule,
 
         // components
         TaDetailsHeaderCardComponent,
         LoadStatusStringComponent,
+        TaAppTooltipV2Component,
 
         // pipes
         FormatDatePipe,

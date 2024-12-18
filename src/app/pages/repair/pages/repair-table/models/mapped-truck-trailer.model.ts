@@ -5,26 +5,31 @@ import {
 } from 'appcoretruckassist';
 import { DropdownItem } from '@shared/models/dropdown-item.model';
 
-export interface MappedTruckTrailer {
-    invoice: string;
+export interface MappedRepair {
+    tablePaid: string;
     isSelected: boolean;
     isRepairOrder: boolean;
-    tableUnit?: string;
-    tableType: string;
+    tableUnit: string;
+    tableVehicleType: string;
+    vehicleTypeClass: string;
+    vehicleTooltipColor: string;
+    vehicleTooltipTitle: string;
     tableMake: string;
     tableNumber: string;
     tableModel: string;
-    fileCount?: number | null;
-    tableYear: string;
-    payType: string;
+    fileCount: number | null;
+    tableYear: number;
+    tablePayType: string;
     tableOdometer: string;
-    driver: string;
+    avatarImg: string;
+    tableDriver: string;
     tableIssued: string;
     tableShopName: string;
     tableShopAdress: string;
+    tableServiceType: string;
     tableServices: RepairServiceTypeResponse[];
     tableDescription: RepairItemResponse[];
-    tabelDescriptionDropTotal: string;
+    tableDescriptionDropTotal: string;
     tableCost: string;
     tableAdded: string;
     tableEdited: string;
@@ -33,5 +38,4 @@ export interface MappedTruckTrailer {
         hasContent: boolean;
         content: DropdownItem[];
     };
-    descriptionItems: Array<RepairItemResponse>;
 }

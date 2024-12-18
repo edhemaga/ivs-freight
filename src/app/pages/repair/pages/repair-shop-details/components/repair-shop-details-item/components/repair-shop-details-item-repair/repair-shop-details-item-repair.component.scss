@@ -34,10 +34,6 @@
         &-border {
             margin-bottom: 2px;
 
-            &-order {
-                border: 1px solid $ta-yellow-1;
-            }
-
             &.active-drawer {
                 visibility: hidden;
 
@@ -93,6 +89,20 @@
                 grid-template-columns: 115px 76px 80px 232px 101px;
                 grid-gap: 4px;
                 padding: 4px 6px;
+
+                .invoice-container {
+                    .repair-order-icon {
+                        position: relative;
+                        bottom: 1px;
+                        margin-left: 6px;
+
+                        svg {
+                            circle {
+                                fill: $ta-yellow-1;
+                            }
+                        }
+                    }
+                }
 
                 .cost-container {
                     .finish-order-btn {

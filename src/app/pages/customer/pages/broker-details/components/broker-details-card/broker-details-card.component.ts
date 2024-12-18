@@ -33,7 +33,7 @@ import {
 import { BrokerDropdown } from '@pages/customer/pages/broker-details/models/';
 import { TabOptions } from '@shared/components/ta-tab-switch/models/tab-options.model';
 import { IChartConfiguration } from 'ca-components/lib/components/ca-chart/models';
-import { ChartLegendProperty, Tabs } from '@shared/models';
+import { ChartLegendProperty, ChartTypeProperty, Tabs } from '@shared/models';
 
 // Constants
 import {
@@ -57,8 +57,12 @@ import {
     TableStringEnum,
     ArrowActionsStringEnum,
 } from '@shared/enums';
+import {
+    EChartAnnotationType,
+    EChartEventProperties
+} from 'ca-components';
 
-// Svg routes
+// SVG routes
 import { BrokerDetailsSvgRoutes } from '@pages/customer/pages/broker-details/utils/svg-routes/';
 
 // Helpers
@@ -97,7 +101,6 @@ export class BrokerDetailsCardComponent
     public invoiceAgingSelectedTab: number = 1;
     public invoiceAgingData: BrokerInvoiceAgeingResponse;
 
-    //private monthList: string[] = ChartConstants.MONTH_LIST_SHORT;
     private destroy$ = new Subject<void>();
 
     // Svg routes
@@ -197,14 +200,26 @@ export class BrokerDetailsCardComponent
             .subscribe((response: BrokerPaymentHistoryResponse) => {
                 if (timeFilter && this.invoiceChartTabs[timeFilter - 1])
                     this.invoiceChartTabs[timeFilter - 1].checked = true;
+
+                const paymentHistoryDataConfig: ChartTypeProperty[] =
+                    ChartConfiguration.paymentHistoryConfiguration(response);
+
                 this.paymentChartConfig = {
                     ...BrokerChartsConfiguration.PAYMENT_CHART_CONFIG,
                     chartData: ChartHelper.generateDataByDateTime<BrokerPaymentHistoryResponse>
                         (
                             response.brokerPaymentHistoryChartResponse,
-                            ChartConfiguration.paymentHistoryConfiguration(response),
+                            paymentHistoryDataConfig,
                             timeFilter
-                        )
+                        ),
+                    annotations: [
+                        {
+                            value: response.payTerm,
+                            type: EChartAnnotationType.LINE,
+                            axis: EChartEventProperties.Y_AXIS_0,
+                            color: paymentHistoryDataConfig[0].color,
+                        }
+                    ]
                 };
                 this.paymentChartLegendData = ChartLegendConfiguration
                     .brokerPaymentHistory(response);

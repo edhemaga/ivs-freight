@@ -1,4 +1,7 @@
-import { ChartImagesStringEnum, ChartTypesStringEnum } from "ca-components";
+import {
+    ChartImagesStringEnum,
+    ChartTypesStringEnum
+} from "ca-components";
 
 export class BrokerChartsConfiguration {
 
@@ -32,7 +35,8 @@ export class BrokerChartsConfiguration {
         noDataImage: ChartImagesStringEnum.CHART_NO_DATA_MIXED,
         chartOptions: {},
         showTooltipBackground: false,
-        showXAxisLabels: true
+        showXAxisLabels: true,
+        hasVerticalDashedAnnotation: true
     };
 
     static PAYMENT_CHART_CONFIG = {
@@ -46,6 +50,6 @@ export class BrokerChartsConfiguration {
         noDataImage: ChartImagesStringEnum.CHART_NO_DATA_PAY,
         chartOptions: {},
         showTooltipBackground: false,
-        showXAxisLabels: true
+        showXAxisLabels: true,
     };
 }
