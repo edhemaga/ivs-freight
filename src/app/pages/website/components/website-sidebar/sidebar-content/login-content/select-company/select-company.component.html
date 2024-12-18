@@ -27,44 +27,56 @@
                         <div class="carousel-company-item empty"></div>
                         <div class="carousel-company-item empty"></div>
 
-                        @for(company of newUser?.companies; let i = $index; track company.id) {
-                        <div
-                            class="carousel-item"
-                            [class.active]="company?.isLastActiveCompany"
-                            [id]="company.id"
-                            (click)="scrollToCompanyIndex(i)"
-                        >
+                        @for (
+                            company of newUser?.companies;
+                            let i = $index;
+                            track company.id
+                        ) {
                             <div
-                                class="company-container d-flex align-items-center flex-column w-100"
+                                class="carousel-item"
+                                [class.active]="company?.isLastActiveCompany"
+                                [id]="company.id"
+                                (click)="scrollToCompanyIndex(i)"
                             >
-                                @if (company.logoFile) {
-                                <img
-                                    class="logo"
-                                    [src]="company.logoFile.url"
-                                />
-                                } @else {
-                                <span class="company-name"
-                                    >{{ company.companyName }}
-                                </span>
-                                } 
-                                
-                                @if (lastActiveCompanyId === company.id) {
-                                <div class="last-login">
-                                    <span class="text"> Last login </span>
-
-                                    @if ( !lastLoginInCompany ) {
-                                    <span class="time"> Today </span>
-                                    } @else if (lastLoginInCompany === 1) {
-                                    <span class="time"> Yesterday </span>
+                                <div
+                                    class="company-container d-flex align-items-center flex-column w-100"
+                                >
+                                    @if (company.logoFile) {
+                                        <img
+                                            class="logo"
+                                            [src]="company.logoFile.url"
+                                        />
                                     } @else {
-                                    <span class="time">
-                                        {{ lastLoginInCompany }}
-                                    </span>
+                                        <span class="company-name"
+                                            >{{ company.companyName }}
+                                        </span>
+                                    }
+
+                                    @if (lastActiveCompanyId === company.id) {
+                                        <div class="last-login">
+                                            <span class="text">
+                                                Last login
+                                            </span>
+
+                                            @if (!lastLoginInCompany) {
+                                                <span class="time">
+                                                    Today
+                                                </span>
+                                            } @else if (
+                                                lastLoginInCompany === 1
+                                            ) {
+                                                <span class="time">
+                                                    Yesterday
+                                                </span>
+                                            } @else {
+                                                <span class="time">
+                                                    {{ lastLoginInCompany }}
+                                                </span>
+                                            }
+                                        </div>
                                     }
                                 </div>
-                                }
                             </div>
-                        </div>
                         }
 
                         <div class="carousel-company-item empty"></div>
@@ -103,16 +115,20 @@
             </form>
         </div>
         @if (hasCarouselDots) {
-        <div class="row">
-            <div class="carousel-dots">
-                @for(company of newUser?.companies; let i = $index; track company.id) {
-                <div
-                    [class.active]="selectedCompanyIndex === i"
-                    (click)="scrollToCompanyIndex(i)"
-                ></div>
-                }
+            <div class="row">
+                <div class="carousel-dots">
+                    @for (
+                        company of newUser?.companies;
+                        let i = $index;
+                        track company.id
+                    ) {
+                        <div
+                            [class.active]="selectedCompanyIndex === i"
+                            (click)="scrollToCompanyIndex(i)"
+                        ></div>
+                    }
+                </div>
             </div>
-        </div>
         }
         <div class="row buttons">
             <div (click)="onCompanySelect()" class="select_company_main_button">
