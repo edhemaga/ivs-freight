@@ -2598,7 +2598,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         return this.formBuilder.group({
             id: [data.id ?? null],
             name: [data.name],
-            pay: [data.pay ?? null],
+            pay: [data.pay ?? null, [Validators.required]],
             advancePay: [null],
             payType: [null],
             payDate: [data?.payDate ? data.payDate : null],
