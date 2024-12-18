@@ -827,6 +827,8 @@ export class TaTableToolbarComponent implements OnInit, OnChanges, OnDestroy {
 
     // Toaggle Group Column
     public onToaggleGroupColumn(columnGroup: any, index: number): void {
+        if (columnGroup.isGroupItemDisabled) return;
+
         clearTimeout(this.timeOutToaggleGroupColumn);
 
         this.timeOutToaggleGroupColumn = setTimeout(() => {
