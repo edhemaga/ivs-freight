@@ -192,7 +192,7 @@
                                     broker?.availableCredit | formatCurrency
                                 }}</span>
                                 <div class="percntage-broker ta-font-medium">
-                                    {{ getPercntageOfPaid }}%
+                                    {{ getPercentageOfPaid }}%
                                 </div>
                             </div>
                         </div>
@@ -202,16 +202,16 @@
                     <div
                         class="table-progress-bar-container my-2"
                         [ngClass]="
-                            getPercntageOfPaid | progressBarColors : false
+                            getPercentageOfPaid | progressBarColors : false
                         "
                     >
                         <div
                             class="table-progress-bar"
                             [ngClass]="
-                                getPercntageOfPaid | progressBarColors : true
+                                getPercentageOfPaid | progressBarColors : true
                             "
                             [ngStyle]="{
-                                width: getPercntageOfPaid + '%'
+                                width: getPercentageOfPaid + '%'
                             }"
                         ></div>
                     </div>

@@ -7,7 +7,11 @@ import {
     SimpleChanges,
     OnDestroy,
 } from '@angular/core';
-import { Subject, takeUntil } from 'rxjs';
+import {
+    map,
+    Subject,
+    takeUntil
+} from 'rxjs';
 import { UntypedFormControl } from '@angular/forms';
 
 // Store
@@ -27,13 +31,22 @@ import {
     BrokerMileageRateResponse,
     BrokerPaidInvoiceChartResponse,
     BrokerPaidInvoiceResponse,
+    BrokerPaymentHistoryChartResponse,
     BrokerPaymentHistoryResponse,
     BrokerResponse,
 } from 'appcoretruckassist';
-import { BrokerDropdown } from '@pages/customer/pages/broker-details/models/';
+import {
+    BrokerDropdown,
+    IBrokerPaymentHistory,
+    IBrokerPaymentHistoryChart
+} from '@pages/customer/pages/broker-details/models/';
 import { TabOptions } from '@shared/components/ta-tab-switch/models/tab-options.model';
 import { IChartConfiguration } from 'ca-components/lib/components/ca-chart/models';
-import { ChartLegendProperty, ChartTypeProperty, Tabs } from '@shared/models';
+import {
+    ChartLegendProperty,
+    ChartTypeProperty,
+    Tabs
+} from '@shared/models';
 
 // Constants
 import {
@@ -86,7 +99,7 @@ export class BrokerDetailsCardComponent
 
     //Invoice
     public invoiceAgeingCounter: number = 0;
-    public getPercntageOfPaid: number = 0;
+    public getPercentageOfPaid: number = 0;
 
     //Tabs
     public selectedTab: number;
@@ -175,6 +188,8 @@ export class BrokerDetailsCardComponent
             });
     }
 
+
+
     private getInvoiceChartData(timeFilter?: number): void {
         this.brokerService.getInvoiceChartData(this.broker.id, timeFilter || 1)
             .pipe(takeUntil(this.destroy$))
@@ -196,8 +211,26 @@ export class BrokerDetailsCardComponent
 
     private getPaymentChartData(timeFilter?: number): void {
         this.brokerService.getPaymentChartData(this.broker.id, timeFilter || 1)
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((response: BrokerPaymentHistoryResponse) => {
+            .pipe(takeUntil(this.destroy$),
+                map((data: BrokerPaymentHistoryResponse): IBrokerPaymentHistory => {
+                    const averagePayPeriod: string = String(data.averagePayPeriod);
+                    return {
+                        ...data,
+                        averagePayPeriod: this.timeSpanToDecimal(averagePayPeriod),
+                        brokerPaymentHistoryChartResponse:
+                            [...data.brokerPaymentHistoryChartResponse.map(
+                                (item: BrokerPaymentHistoryChartResponse): IBrokerPaymentHistoryChart => {
+                                    const averagePayPeriodItem: string = String(item.averagePayPeriod);
+                                    return {
+                                        ...item,
+                                        averagePayPeriod: this.timeSpanToDecimal(averagePayPeriodItem)
+                                    }
+                                }
+                            )]
+                    }
+                })
+            )
+            .subscribe((response: IBrokerPaymentHistory) => {
                 if (timeFilter && this.invoiceChartTabs[timeFilter - 1])
                     this.invoiceChartTabs[timeFilter - 1].checked = true;
 
@@ -206,7 +239,7 @@ export class BrokerDetailsCardComponent
 
                 this.paymentChartConfig = {
                     ...BrokerChartsConfiguration.PAYMENT_CHART_CONFIG,
-                    chartData: ChartHelper.generateDataByDateTime<BrokerPaymentHistoryResponse>
+                    chartData: ChartHelper.generateDataByDateTime<IBrokerPaymentHistory>
                         (
                             response.brokerPaymentHistoryChartResponse,
                             paymentHistoryDataConfig,
@@ -221,6 +254,7 @@ export class BrokerDetailsCardComponent
                         }
                     ]
                 };
+
                 this.paymentChartLegendData = ChartLegendConfiguration
                     .brokerPaymentHistory(response);
             })
@@ -262,7 +296,7 @@ export class BrokerDetailsCardComponent
     }
 
     public getInvoiceAgeingCount(data: BrokerResponse): void {
-        this.getPercntageOfPaid = Math.round(
+        this.getPercentageOfPaid = Math.round(
             (data?.availableCredit / data?.creditLimit) * 100
         );
 
@@ -396,6 +430,37 @@ export class BrokerDetailsCardComponent
                     this.getBrokerDropdown();
                 }
             });
+    }
+
+    // TODO extract to helper
+    private timeSpanToDecimal(timeSpan: string): number {
+        // Check if the timespan is negative and remove the negative sign for easier processing
+        const isNegative = timeSpan.startsWith('-');
+        const cleanTimeSpan = isNegative ? timeSpan.slice(1) : timeSpan;
+
+        // Split the cleanTimeSpan string into its parts: day.hour:minute:second:millisecond
+        const [dayHour, minute, second, millisecond] = cleanTimeSpan.split(':');
+
+        // Handle cases where day is missing, default days to 0
+        const [daysOrHours, hours] = dayHour.includes('.')
+            ? dayHour.split('.').map(Number)
+            : [0, Number(dayHour)];
+
+        const days = daysOrHours;
+
+        // Convert all parts into their respective time fractions
+        const hoursInDays = hours / 24;
+        const minutesInDays = Number(minute) / (24 * 60);
+        const secondsInDays = Number(second) / (24 * 60 * 60);
+
+        // Sum up all parts to get the total decimal representation
+        let totalDays = days + hoursInDays + minutesInDays + secondsInDays;
+
+        // If the original timespan was negative, return the negative value
+        if (isNegative)
+            totalDays = -totalDays;
+
+        return Number(totalDays.toFixed(2));
     }
 
     ngOnDestroy(): void {
