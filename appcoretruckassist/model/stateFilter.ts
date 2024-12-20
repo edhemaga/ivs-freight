@@ -9,13 +9,13 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { FileResponse } from './fileResponse';
 
 
-export interface RepairDriverResponse { 
-    id?: number;
-    firstName?: string | null;
-    lastName?: string | null;
-    avatarFile?: FileResponse;
-}
+export type StateFilter = 'Broker' | 'Shipper' | 'RepairShop';
+
+export const StateFilter = {
+    Broker: 'Broker' as StateFilter,
+    Shipper: 'Shipper' as StateFilter,
+    RepairShop: 'RepairShop' as StateFilter
+};
 

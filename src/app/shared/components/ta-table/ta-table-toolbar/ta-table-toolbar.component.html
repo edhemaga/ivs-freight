@@ -963,7 +963,10 @@
                                             "
                                         >
                                             <ng-container
-                                                *ngIf="!columnGroup.isPined"
+                                                *ngIf="
+                                                    !columnGroup.isPined &&
+                                                    !columnGroup.isGroupItemDisabled
+                                                "
                                             >
                                                 <div class="checkbox">
                                                     <input
@@ -988,7 +991,10 @@
                                             </ng-container>
 
                                             <ng-container
-                                                *ngIf="columnGroup.isPined"
+                                                *ngIf="
+                                                    columnGroup.isPined ||
+                                                    columnGroup.isGroupItemDisabled
+                                                "
                                             >
                                                 <div
                                                     class="d-flex justify-content-center align-items-center not-allowed-action"
@@ -1009,7 +1015,8 @@
                                                 class="column-text"
                                                 [ngClass]="{
                                                     'selectable-text':
-                                                        !columnGroup.isPined,
+                                                        !columnGroup.isPined &&
+                                                        !columnGroup.isGroupItemDisabled,
                                                     'ta-font-semi-bold':
                                                         !columnGroup.hidden
                                                 }"

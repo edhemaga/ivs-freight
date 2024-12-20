@@ -9,13 +9,9 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { FileResponse } from './fileResponse';
 
 
-export interface RepairDriverResponse { 
-    id?: number;
-    firstName?: string | null;
-    lastName?: string | null;
-    avatarFile?: FileResponse;
+export interface LinkTokenResponse { 
+    link_token?: string | null;
 }
 

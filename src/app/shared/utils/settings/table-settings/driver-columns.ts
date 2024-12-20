@@ -394,7 +394,7 @@ export function getDriverColumnsDefinition(tableData: DriverResponse[]) {
             resizable: true,
         },
         {
-            ngTemplate: 'description',
+            ngTemplate: 'description-driver',
             title: 'Off Duty Location',
             field: 'tableOffDutyLocation',
             name: 'Off-Duty Location',
@@ -646,7 +646,7 @@ export function getDriverColumnsDefinition(tableData: DriverResponse[]) {
             resizable: true,
         },
         {
-            ngTemplate: 'description',
+            ngTemplate: 'description-driver',
             title: 'Endorsement',
             field: 'tableCdlDetailEndorsment',
             name: 'Endorsement',
@@ -671,7 +671,7 @@ export function getDriverColumnsDefinition(tableData: DriverResponse[]) {
             resizable: true,
         },
         {
-            ngTemplate: 'description',
+            ngTemplate: 'description-driver',
             title: 'Restriction',
             field: 'tableCdlDetailRestriction',
             name: 'Restriction',

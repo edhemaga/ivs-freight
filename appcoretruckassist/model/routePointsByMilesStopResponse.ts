@@ -9,13 +9,12 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { FileResponse } from './fileResponse';
+import { LongLat } from './longLat';
+import { MilesStopResponse } from './milesStopResponse';
 
 
-export interface RepairDriverResponse { 
-    id?: number;
-    firstName?: string | null;
-    lastName?: string | null;
-    avatarFile?: FileResponse;
+export interface RoutePointsByMilesStopResponse { 
+    milesStop?: MilesStopResponse;
+    routePoints?: Array<LongLat> | null;
 }
 
