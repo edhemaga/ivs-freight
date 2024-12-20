@@ -8,6 +8,7 @@
     "watch": "ng build --watch --configuration development",
     "build:production": "ng build --configuration=production --output-hashing=all",
     "build:stage": "ng build --configuration=staging --output-hashing=all",
+    "build:beta": "ng build --configuration=beta --output-hashing=all",
     "test": "ng test",
     "dev": "lite-server",
     "svg:preview": "node ./src/assets/svg-definitions/svg-converter.js",
