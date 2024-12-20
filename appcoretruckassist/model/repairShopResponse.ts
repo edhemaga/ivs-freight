@@ -65,5 +65,6 @@ export interface RepairShopResponse {
     shopServiceType?: EnumValue;
     cover?: FileResponse;
     isCompanyRelated?: boolean;
+    openAlways?: boolean;
 }
 

@@ -8,7 +8,6 @@ import {
 } from '@angular/core';
 import {
     filter,
-    forkJoin,
     Observable,
     Subject,
     Subscription,

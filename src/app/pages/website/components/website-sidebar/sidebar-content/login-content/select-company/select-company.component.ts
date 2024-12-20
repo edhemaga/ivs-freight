@@ -1,5 +1,6 @@
 import { DOCUMENT } from '@angular/common';
 import {
+    AfterViewInit,
     Component,
     Inject,
     OnDestroy,
@@ -7,7 +8,7 @@ import {
     ViewEncapsulation,
 } from '@angular/core';
 import { Router } from '@angular/router';
-import { UntypedFormBuilder } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 
 import { Subject, takeUntil, tap } from 'rxjs';
 
@@ -27,19 +28,21 @@ import { SelectCompanyResponse, SignInResponse } from 'appcoretruckassist';
     selector: 'app-select-company',
     templateUrl: './select-company.component.html',
     styleUrls: ['./select-company.component.scss'],
-    encapsulation: ViewEncapsulation.None,
 })
-export class SelectCompanyComponent implements OnInit, OnDestroy {
+export class SelectCompanyComponent
+    implements OnInit, OnDestroy, AfterViewInit
+{
     private destroy$ = new Subject<void>();
 
-    public saveCompany: any;
-    public dotsTrue: boolean;
-    public slideConfig: any;
+    public saveCompany: UntypedFormGroup;
+    public hasCarouselDots: boolean;
+    public dates: string[] = [];
     public userData: SignInResponse;
-    public lastLoginInCompany: any;
-    public dates: any = [];
-    public newUser: any;
-    public id: any;
+    public newUser: SignInResponse;
+    public selectedCompanyId: number | null = null;
+    public selectedCompanyIndex: number | null = null;
+    public lastActiveCompanyId: number | null = null;
+    public lastLoginInCompany: number | null = null;
 
     constructor(
         @Inject(DOCUMENT) private document: HTMLDocument,
@@ -49,84 +52,68 @@ export class SelectCompanyComponent implements OnInit, OnDestroy {
     ) {}
 
     ngOnInit() {
-        this.user(JSON.parse(localStorage.getItem('user')));
+        this.setUserData(JSON.parse(localStorage.getItem('user')));
 
         this.createForm();
-
-        this.userData.companies.length < 5
-            ? (this.dotsTrue = false)
-            : (this.dotsTrue = true);
     }
 
-    public user(data): void {
+    ngAfterViewInit(): void {
+        this.setStartingScrollPosition();
+        this.carouselArrowEvents();
+    }
+
+    public setUserData(data: SignInResponse): void {
         this.userData = data;
 
-        data.companies.forEach((res) => {
+        const companiesData = this.userData.companies.map((company) => {
             this.lastLoginInCompany = this.calculateDiff(
-                MethodsCalculationsHelper.convertTimeFromBackend(res.lastLogin)
+                MethodsCalculationsHelper.convertTimeFromBackend(company.lastLogin)
             );
             this.dates.push(
-                moment.utc(res.lastLogin).local().format('MM/DD/YY HH:mm:ss')
+                moment.utc(company.lastLogin).local().format('MM/DD/YY HH:mm:ss')
             );
+
+            return {
+                ...company,
+                lastLogin: moment
+                            .utc(company.lastLogin)
+                            .local()
+                            .format('MM/DD/YY HH:mm:ss'),
+            }
         });
 
-        let createNewObject = {
-            ...this.userData,
-            companies: this.userData.companies.map((item) => {
-                return {
-                    ...item,
-                    lastLogin: moment
-                        .utc(item.lastLogin)
-                        .local()
-                        .format('MM/DD/YY HH:mm:ss'),
-                };
-            }),
-        };
-
         this.newUser = {
-            ...createNewObject,
-            companies: createNewObject.companies.map((item) => {
-                return {
-                    ...item,
-                    LastActiveCompany:
-                        item.lastLogin == this.getNewerDate(this.dates)
-                            ? (this.id = item.id)
-                            : null,
-                };
-            }),
+            ...this.userData,
+            companies: [...companiesData],
         };
 
-        //Slick Carousel Config
-        this.slideConfig = {
-            infinite: false,
-            slidesToScroll: 1,
-            dots: this.dotsTrue,
-            arrows: true,
-            variableWidth: true,
-            focusOnSelect: true,
-            centerMode: true,
-            initialSlide: this.newUser.companies.findIndex(
-                (x) => x.id === this.id
-            ),
-        };
+        this.newUser.companies.forEach((item, index) => {
+            if ( item.lastLogin === this.getNewerDate(this.dates) ) {
+                this.lastActiveCompanyId = item.id;
+                this.selectedCompanyId = item.id;
+                this.selectedCompanyIndex = index;
+            }
+        });
+
+        this.hasCarouselDots = this.newUser.companies.length > 5;
     }
 
     public getNewerDate(dates: string[]) {
         let newestDate = moment.utc(dates[0], 'MM/DD/YY HH:mm:ss');
 
-        for (let i = 1; i < dates.length; i++) {
-            const currentDate = moment.utc(dates[i], 'MM/DD/YY HH:mm:ss');
+        dates.forEach((date) => {
+            const currentDate = moment.utc(date, 'MM/DD/YY HH:mm:ss');
 
             if (currentDate.isAfter(newestDate)) {
                 newestDate = currentDate;
             }
-        }
+        });
 
         return newestDate.format('MM/DD/YY HH:mm:ss');
     }
 
     //Calculate last login in company to display
-    public calculateDiff(dateSent) {
+    public calculateDiff(dateSent: Date) {
         let currentDate = new Date();
 
         dateSent = new Date(dateSent);
@@ -157,12 +144,9 @@ export class SelectCompanyComponent implements OnInit, OnDestroy {
     }
 
     public onCompanySelect(): void {
-        const center: any = this.document.querySelectorAll('.slick-center');
-        let id = center[0]?.firstChild?.id;
-
         this.websiteAuthService
             .selectCompanyAccount({
-                companyId: parseInt(id),
+                companyId: this.selectedCompanyId,
             })
             .pipe(
                 takeUntil(this.destroy$),
@@ -190,7 +174,57 @@ export class SelectCompanyComponent implements OnInit, OnDestroy {
             .subscribe();
     }
 
-    ngOnDestroy() {
+    public carouselArrowEvents(): void {
+        document
+            .querySelector('#myCarousel .carousel-control-next')
+            .addEventListener('click', () => {
+                if (
+                    this.selectedCompanyIndex <
+                    this.newUser.companies.length - 1
+                ) {
+                    this.selectedCompanyIndex += 1;
+
+                    this.scrollToCompanyIndex(this.selectedCompanyIndex);
+                }
+            });
+
+        document
+            .querySelector('#myCarousel .carousel-control-prev')
+            .addEventListener('click', () => {
+                if (this.selectedCompanyIndex > 0) {
+                    this.selectedCompanyIndex -= 1;
+
+                    this.scrollToCompanyIndex(this.selectedCompanyIndex);
+                }
+            });
+    }
+
+    public setStartingScrollPosition(): void {
+        const lastCompanyIndex = this.newUser.companies.findIndex(
+            (company) => this.lastActiveCompanyId === company.id
+        );
+        this.scrollToCompanyIndex(lastCompanyIndex);
+    }
+
+    public scrollToCompanyIndex(selectedIndex: number): void {
+        const carouselItemWidth = (document.querySelector('.carousel-item') as HTMLElement).offsetWidth + 12; // Carousel item width + margin width
+        const scrollPosition = carouselItemWidth * selectedIndex;
+
+        document.querySelectorAll('.carousel-item').forEach((item, index) => {
+            if (index === selectedIndex) {
+                item.classList.add('active');
+                this.selectedCompanyId = parseInt(item.id);
+                this.selectedCompanyIndex = index;
+            } else item.classList.remove('active');
+        });
+
+        document.querySelector('#myCarousel .carousel-inner').scroll({
+            left: scrollPosition,
+            behavior: 'smooth',
+        });
+    }
+
+    ngOnDestroy(): void {
         this.destroy$.next();
         this.destroy$.complete();
     }

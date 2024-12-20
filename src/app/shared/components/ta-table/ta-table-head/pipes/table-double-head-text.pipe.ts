@@ -18,7 +18,9 @@ export class TableDoubleHeadTextPipe implements PipeTransform {
                         TableHeadTitleStringEnum.OFF_DUTY_LOCATION ||
                     tableHeadTitle === TableHeadTitleStringEnum.TWIC_EXP ||
                     tableHeadTitle === TableHeadTitleStringEnum.MEDICAL_EXP ||
-                    tableHeadTitle === TableHeadTitleStringEnum.HIRED));
+                    tableHeadTitle === TableHeadTitleStringEnum.HIRED)) ||
+            (gridNameTitle === TableHeadTitleStringEnum.REPAIR &&
+                tableHeadTitle === TableHeadTitleStringEnum.SERVICE_TYPE);
 
         return emptyStringCondition
             ? TableHeadTitleStringEnum.EMPTY_STRING_CODE

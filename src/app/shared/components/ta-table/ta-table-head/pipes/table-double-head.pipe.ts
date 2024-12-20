@@ -78,7 +78,8 @@ export class TableDoubleHeadPipe implements PipeTransform {
                 (tableHeadTitle === TableHeadTitleStringEnum.NAME_4 ||
                     tableHeadTitle === TableHeadTitleStringEnum.NUMBER_5 ||
                     tableHeadTitle === TableHeadTitleStringEnum.DESCRIPTION ||
-                    tableHeadTitle === TableHeadTitleStringEnum.NAME);
+                    tableHeadTitle === TableHeadTitleStringEnum.NAME ||
+                    tableHeadTitle === TableHeadTitleStringEnum.SERVICE_TYPE);
 
             const brokerTableColumnsCondition =
                 gridNameTitle === TableHeadTitleStringEnum.CUSTOMER &&
@@ -108,13 +109,11 @@ export class TableDoubleHeadPipe implements PipeTransform {
                     tableHeadTitle === TableHeadTitleStringEnum.PAY_TYPE ||
                     tableHeadTitle === TableHeadTitleStringEnum.NAME);
 
-            const fuelTableColumnsCondition = 
+            const fuelTableColumnsCondition =
                 gridNameTitle === TableHeadTitleStringEnum.FUEL &&
-                    (
-                        tableHeadTitle === TableHeadTitleStringEnum.DESCRIPTION ||
-                        tableHeadTitle === TableHeadTitleStringEnum.NUMBER_2 ||
-                        tableHeadTitle === TableHeadTitleStringEnum.FUEL_STOP_NAME
-                    );
+                (tableHeadTitle === TableHeadTitleStringEnum.DESCRIPTION ||
+                    tableHeadTitle === TableHeadTitleStringEnum.NUMBER_2 ||
+                    tableHeadTitle === TableHeadTitleStringEnum.FUEL_STOP_NAME);
 
             if (
                 contactsTableColumnsCondition ||
@@ -198,7 +197,8 @@ export class TableDoubleHeadPipe implements PipeTransform {
                 (tableHeadTitle !== TableHeadTitleStringEnum.NAME_4 &&
                     tableHeadTitle !== TableHeadTitleStringEnum.NUMBER_5 &&
                     tableHeadTitle !== TableHeadTitleStringEnum.DESCRIPTION &&
-                    tableHeadTitle !== TableHeadTitleStringEnum.NAME);
+                    tableHeadTitle !== TableHeadTitleStringEnum.NAME &&
+                    tableHeadTitle !== TableHeadTitleStringEnum.SERVICE_TYPE);
 
             const brokerTableColumnsCondition =
                 gridNameTitle !== TableHeadTitleStringEnum.CUSTOMER ||
@@ -228,13 +228,11 @@ export class TableDoubleHeadPipe implements PipeTransform {
                     tableHeadTitle !== TableHeadTitleStringEnum.PAY_TYPE &&
                     tableHeadTitle !== TableHeadTitleStringEnum.NAME);
 
-            const fuelTableColumnsCondition = 
+            const fuelTableColumnsCondition =
                 gridNameTitle !== TableHeadTitleStringEnum.FUEL ||
-                (
-                    tableHeadTitle !== TableHeadTitleStringEnum.DESCRIPTION &&
+                (tableHeadTitle !== TableHeadTitleStringEnum.DESCRIPTION &&
                     tableHeadTitle !== TableHeadTitleStringEnum.NUMBER_2 &&
-                    tableHeadTitle !== TableHeadTitleStringEnum.FUEL_STOP_NAME
-                );
+                    tableHeadTitle !== TableHeadTitleStringEnum.FUEL_STOP_NAME);
 
             return (
                 contactsTableColumnsCondition &&
