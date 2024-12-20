@@ -1,6 +1,6 @@
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output, ViewEncapsulation } from '@angular/core';
 
 // modules
 import { NgbModule, NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
@@ -28,6 +28,8 @@ import { TableHeadRowsActionEmit } from '@shared/components/ta-table/ta-table-he
     templateUrl: './table-head-rows.component.html',
     styleUrls: ['./table-head-rows.component.scss'],
     standalone: true,
+    // https://ivanjeboss.atlassian.net/browse/CAR-2736
+    encapsulation: ViewEncapsulation.ShadowDom,
     imports: [
         // modules
         CommonModule,
