@@ -47,6 +47,7 @@ export interface DetailsConfig {
     sortColumns?: SortColumn[];
     sortDropdown?: LoadsSortDropdownModel[];
     isClosedBusiness?: boolean;
+    businessOpen?: boolean;
     data?:
         | DriverResponse
         | CdlResponse

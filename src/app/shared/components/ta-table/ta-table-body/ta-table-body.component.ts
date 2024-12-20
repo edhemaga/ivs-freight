@@ -76,14 +76,12 @@ import { DomSanitizer } from '@angular/platform-browser';
 // pipes
 import { TableHighlightSearchTextPipe } from '@shared/components/ta-table/ta-table-body/pipes/table-highlight-search-text.pipe';
 import { ContactPhoneEmailIconPipe } from '@shared/components/ta-table/ta-table-body/pipes/contact-phone-email-icon.pipe';
-import { TableDescriptionTextPipe } from '@shared/components/ta-table/ta-table-body/pipes/table-description-text.pipe';
 import { FormatCurrencyPipe } from '@shared/pipes/format-currency.pipe';
 import { ThousandToShortFormatPipe } from '@shared/pipes/thousand-to-short-format.pipe';
 import { TableLoadStatusPipe } from '@shared/pipes/table-load-status.pipe';
 
 // enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
-import { TableBodyStringEnum } from '@shared/components/ta-table/ta-table-body/enums';
 
 // models
 import {
@@ -98,11 +96,13 @@ import { TableBodyColumns } from '@shared/components/ta-table/ta-table-body/mode
 
 // constants
 import { TaStateImageTextComponent } from '@shared/components/ta-state-image-text/ta-state-image-text.component';
-import { RepairDescriptionPopoverConstants } from '@shared/components/ta-table/ta-table-body/utils/constants';
 import { TaTableBodyConstants } from '@shared/components/ta-table/ta-table-body/utils/constants/ta-table-body.constants';
 
 // directive
-import { PreventMultipleclicksDirective } from '@shared/directives/';
+import {
+    DescriptionItemsTextCountDirective,
+    PreventMultipleclicksDirective,
+} from '@shared/directives/';
 
 // svg routes
 import { TableBodySvgRoutes } from '@shared/components/ta-table/ta-table-body/utils/svg-routes';
@@ -143,7 +143,6 @@ import { TableBodySvgRoutes } from '@shared/components/ta-table/ta-table-body/ut
 
         // pipes
         TableHighlightSearchTextPipe,
-        TableDescriptionTextPipe,
         ContactPhoneEmailIconPipe,
         FormatCurrencyPipe,
         ThousandToShortFormatPipe,
@@ -151,6 +150,7 @@ import { TableBodySvgRoutes } from '@shared/components/ta-table/ta-table-body/ut
 
         // directives
         PreventMultipleclicksDirective,
+        DescriptionItemsTextCountDirective,
     ],
     providers: [
         {
@@ -199,9 +199,6 @@ export class TaTableBodyComponent
     viewDataTimeOut: any;
     tableWidthTimeout: any;
     rowData: any;
-    activeDescriptionDropdown: number = -1;
-    descriptionTooltip: any;
-    descriptionPopoverOpen: number = -1;
     invoiceDropdownActive: number = -1;
     invoiceDropdownType: string = null;
     invoiceDropdownData: any;
@@ -221,14 +218,13 @@ export class TaTableBodyComponent
     viewDataLength: number = 0;
     chipsForHighlight: string[] = [];
     public widthPopover: number = 0;
-    public endorsement: boolean = false;
-    public restriction: boolean = false;
+
     public companyUser: SignInResponse;
     public statusDetails: LoadPossibleStatusesResponse;
     public stops: LoadListLoadStopResponse;
     public isLoading = false;
-    public popoverDescriptionItems: { title: string; className: string }[] =
-        RepairDescriptionPopoverConstants.descriptionItems;
+    public descriptionPopoverHeaderItems: { title: string }[] =
+        TaTableBodyConstants.DESCRIPTION_POPOVER_HEADER_ITEMS;
 
     public isDropdownPositionBottom: boolean = false;
 
@@ -888,36 +884,81 @@ export class TaTableBodyComponent
 
     // Show Description Dropdown
     public onShowDescriptionDropdown(
-        popup: NgbPopover,
+        popover: NgbPopover,
+        tableType: string,
+        columnWidth: number,
         row: any,
-        width: number,
-        column: any,
         field: string
     ): void {
-        this.restriction = false;
-        this.endorsement = false;
-        this.widthPopover = width;
-        this.descriptionTooltip = popup;
-        if (row.tableOffDutyLocation) {
-            if (field !== 'tableOffDutyLocation') {
-                this.endorsement = true;
-            }
-            if (field === 'tableCdlDetailRestriction') {
-                this.restriction = true;
-            }
-            if (popup.isOpen()) {
-                popup.close();
-            } else {
-                popup.open({ data: column });
-            }
-        } else if (row.descriptionItems.length) {
-            if (popup.isOpen()) {
-                popup.close();
-            } else {
-                popup.open({ data: row });
-            }
+        let data = null;
+
+        switch (tableType) {
+            case TableStringEnum.REPAIR:
+                const {
+                    isRepairOrder,
+                    tableDescription,
+                    tableDescriptionDropTotal,
+                } = row;
+
+                const repairItemsData = {
+                    isRepairOrder,
+                    descriptionItems: tableDescription,
+                    totalCost: tableDescriptionDropTotal,
+                };
+
+                this.widthPopover = isRepairOrder
+                    ? columnWidth
+                    : columnWidth + 105;
+
+                data = repairItemsData;
+
+                break;
+            case TableStringEnum.FUEL:
+                const fuelItemsData = {
+                    isFuelDescription: true,
+                    descriptionItems: row.tableDescription,
+                    totalCost: row.tableDescriptionDropTotal,
+                };
+
+                this.widthPopover = columnWidth + 255;
+
+                data = fuelItemsData;
+
+                break;
+            case TableStringEnum.DRIVER_1:
+                if (field === TableStringEnum.TABLE_OFF_DUTY_LOCATIONS) {
+                    const offDutyLocationItemsData = {
+                        isDriverDescription: true,
+                        isOffDutyLocations: true,
+                        descriptionItems: row.tableOffDutyLocation,
+                    };
+
+                    data = offDutyLocationItemsData;
+                } else {
+                    const restrictionEndorsementItemsData = {
+                        isDriverDescription: true,
+                        isOffDutyLocations: false,
+                        isRestrictions:
+                            field ===
+                            TableStringEnum.TABLE_CDL_DETAIL_RESTRICTION,
+                        descriptionItems:
+                            field ===
+                            TableStringEnum.TABLE_CDL_DETAIL_RESTRICTION
+                                ? row.tableCdlDetailRestriction
+                                : row.tableCdlDetailEndorsment,
+                    };
+
+                    data = restrictionEndorsementItemsData;
+                }
+
+                this.widthPopover = columnWidth;
+
+                break;
+            default:
+                break;
         }
-        this.activeDescriptionDropdown = popup.isOpen() ? row.id : -1;
+
+        popover.isOpen() ? popover.close() : popover.open({ data });
     }
 
     // Show Invoice Aging Dropdown
@@ -942,7 +983,7 @@ export class TaTableBodyComponent
 
         this.invoiceDropdownData = {
             isUnPaidAging:
-                column?.field === TableBodyStringEnum.TABLE_UNPAID_INV_AGING,
+                column?.field === TableStringEnum.TABLE_UNPAID_INV_AGING,
             invAgingGroups: [
                 invoiceAgeingGroupOne,
                 invoiceAgeingGroupTwo,
@@ -1168,7 +1209,7 @@ export class TaTableBodyComponent
     private getCompanyUser(): void {
         this.companyUser = JSON.parse(localStorage.getItem('user'));
     }
-    
+
     public addPmItem(row: any): void {
         this.bodyActions.emit({
             data: row,

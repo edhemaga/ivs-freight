@@ -12,10 +12,13 @@
 import { FileResponse } from './fileResponse';
 
 
-export interface RepairDriverResponse { 
+export interface LoadDispatcherMobileResponse { 
     id?: number;
-    firstName?: string | null;
-    lastName?: string | null;
+    fullName?: string | null;
     avatarFile?: FileResponse;
+    phone?: string | null;
+    extensionPhone?: string | null;
+    email?: string | null;
+    dispatchBoard?: string | null;
 }
 

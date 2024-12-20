@@ -45,7 +45,7 @@ import { StoreModule } from '@ngrx/store';
 
 // ngrx reducers
 import { authReducer } from '@pages/website/state/auth.reducer';
-import { CaComponentsLibModule } from 'ca-components';
+import { CaComponentsLibModule, CaProfileImageComponent } from 'ca-components';
 
 @NgModule({
     declarations: [
@@ -88,6 +88,7 @@ import { CaComponentsLibModule } from 'ca-components';
         TaInputAddressDropdownComponent,
         TaCheckboxComponent,
         TaSpinnerComponent,
+        CaProfileImageComponent,
 
        // CaComponentsLibModule,
         // ngrx effects

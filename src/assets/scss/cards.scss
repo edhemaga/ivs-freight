@@ -44,15 +44,6 @@
             }
         }
 
-        .description-container {
-            overflow: hidden;
-            width: 100%;
-            height: 26px;
-            cursor: pointer;
-            z-index: 2;
-            position: absolute;
-        }
-
         .container-count {
             background: $dark-2;
             border-radius: 50px;
@@ -325,7 +316,7 @@
 
                         .contacts-holder {
                             gap: 4px;
-                            
+
                             svg-icon {
                                 width: 18px;
                                 height: 18px;
@@ -337,34 +328,17 @@
                         }
 
                         .items-container-body {
-                            width: 100%;
                             position: relative;
                             left: -4px;
-                            padding-left: 4px;
-                            padding-right: 13px;
+                            width: 100%;
+                            height: 26px;
+                            padding: 0 4px;
+                            border-radius: 2px;
+                            cursor: pointer;
+                            transition: background 0.2s ease-in;
 
                             &:hover {
                                 background: $dark-2;
-                            }
-
-                            .items-container {
-                                position: relative;
-                                top: 3px;
-                                height: 26px;
-                                width: 100%;
-                                white-space: nowrap;
-                                overflow: hidden;
-                                text-overflow: ellipsis;
-                                color: $ta-black-2;
-
-                                &::-moz-selection {
-                                    color: $ta-black-2;
-                                    background: rgb(47, 47, 47, 0.2);
-                                }
-                                &::selection {
-                                    color: $ta-black-2;
-                                    background: rgb(47, 47, 47, 0.2);
-                                }
                             }
                         }
 
@@ -592,109 +566,6 @@
                 color: $white !important;
 
                 transition: color 0.25s, background 0.25s;
-            }
-        }
-    }
-}
-
-// Dropdown for cards
-.card-dropdown-container {
-    cursor: pointer;
-    transform: translateY(-30px);
-
-    .description-titles {
-        background: $ta-black-2;
-        color: $ta-light-grey-6;
-        height: 26px;
-        border-radius: 2px;
-        padding: 4px;
-        font-size: 11px;
-
-        .number-title {
-            font-size: 11px;
-            width: 18px;
-            height: 18px;
-        }
-
-        .dropdown-titles {
-            width: calc(100% - 18px);
-
-            .dropdown-right {
-                padding-right: 4px;
-                font-size: 11px;
-
-                .price-total-title {
-                    font-size: 14px;
-                    color: $white;
-                }
-            }
-        }
-    }
-
-    .description-items {
-        background: $ta-black-2;
-        border-radius: 3px;
-        padding: 4px;
-        margin-top: 4px;
-
-        .description-item {
-            gap: 2px;
-            max-height: 254px;
-            overflow-y: scroll;
-
-            &::-webkit-scrollbar {
-                width: 2px !important;
-            }
-
-            &::-webkit-scrollbar-thumb {
-                background-color: $muted !important;
-                border-radius: 1px !important;
-            }
-
-            &::-webkit-scrollbar-track {
-                background-color: $ta-black-2 !important;
-            }
-
-            .item-description {
-                color: $white;
-
-                &:hover {
-                    background: $ta-black;
-                    border-radius: 3px;
-                }
-
-                .item-index {
-                    width: 18px;
-                    height: 18px;
-                    color: $muted;
-                    margin-right: 4px;
-                }
-
-                .items-holder {
-                    width: 100%;
-
-                    .left-description {
-                        padding: 2px 0;
-
-                        .item-title {
-                            font-size: 11px;
-                            height: 13px;
-                            width: 100%;
-                            overflow: hidden;
-                            text-overflow: ellipsis;
-                        }
-
-                        .items-number-items-cost {
-                            font-size: 11px;
-                            height: 13px;
-                            color: $bw5;
-                        }
-                    }
-
-                    .item-total-cost {
-                        margin-right: 4px;
-                    }
-                }
             }
         }
     }
