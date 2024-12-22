@@ -747,7 +747,8 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                     this.selectedTab !== TableStringEnum.REPAIR_SHOP,
                 showMoveToOpenList:
                     this.selectedTab === TableStringEnum.REPAIR_SHOP,
-                showMoveToClosedList: true,
+                showMoveToClosedList:
+                    this.selectedTab === TableStringEnum.REPAIR_SHOP,
                 hideSearch: this.activeViewMode === TableStringEnum.MAP,
                 viewModeOptions: this.getViewModeOptions(),
             },
@@ -1574,8 +1575,6 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     private mapRepairData(repair: RepairResponse): MappedRepair {
-        console.log('repair', repair);
-
         const {
             repairType,
             date,

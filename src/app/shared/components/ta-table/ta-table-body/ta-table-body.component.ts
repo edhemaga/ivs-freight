@@ -888,7 +888,7 @@ export class TaTableBodyComponent
         tableType: string,
         columnWidth: number,
         row: any,
-        field: string
+        field?: string
     ): void {
         let data = null;
 
