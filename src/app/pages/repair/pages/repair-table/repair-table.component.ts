@@ -1598,6 +1598,15 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
             fileCount,
         } = repair;
 
+        // description items special styles index array
+        const pmItemsIndexArray = [];
+
+        items.forEach(
+            (item, index) =>
+                (item?.pmTruck || item?.pmTrailer) &&
+                pmItemsIndexArray.push(index)
+        );
+
         return {
             ...repair,
             isSelected: false,
@@ -1659,6 +1668,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                       };
                   })
                 : null,
+            tableDescriptionSpecialStylesIndexArray: pmItemsIndexArray,
             tableDescriptionDropTotal: total
                 ? TableStringEnum.DOLLAR_SIGN +
                   this.thousandSeparator.transform(total)
