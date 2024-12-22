@@ -5,7 +5,7 @@ import { CommonModule } from '@angular/common';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 
 // pipes
-import { TableDoubleHeadHeightPipe } from '@shared/components/ta-table/ta-table-head/pipes/table-double-head-height.pipe';
+import { TableDoubleHeadHeightPipe } from '@shared/components/ta-table/ta-table-head/pipes';
 
 // models
 import { TableHeadActionsData } from '@shared/components/ta-table/ta-table-head/models/table-head-actions-data.model';

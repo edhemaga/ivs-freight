@@ -1,5 +1,5 @@
 // svg routes
-import { AccountingFuelColumnSvgRoutes } from "@shared/utils/svg-routes";
+import { AccountingFuelColumnSvgRoutes } from '@shared/utils/svg-routes';
 
 export function getFuelTransactionColumnDefinition() {
     return [
@@ -46,8 +46,8 @@ export function getFuelTransactionColumnDefinition() {
             export: true,
             resizable: true,
             link: {
-                routerLinkStart: '/dashboard'
-            }
+                routerLinkStart: '/dashboard',
+            },
         },
         {
             ngTemplate: 'text',
@@ -121,7 +121,7 @@ export function getFuelTransactionColumnDefinition() {
             progress: null,
             hoverTemplate: null,
             filterable: true,
-            disabled: true,
+            disabled: false,
             export: true,
             resizable: true,
             class: 'overflow-unset',
@@ -196,14 +196,15 @@ export function getFuelTransactionColumnDefinition() {
         },
         {
             ngTemplate: 'description',
-            title: 'DESCRIPTION',
-            field: 'descriptionItems',
+            title: 'Description',
+            field: 'tableDescription',
             name: 'Description',
             sortName: 'description',
+            groupName: 'Item Detail ',
             isPined: false,
             hidden: false,
-            width: 300,
-            minWidth: 300,
+            width: 238,
+            minWidth: 238,
             filter: '',
             isNumeric: false,
             index: 8,
@@ -215,18 +216,20 @@ export function getFuelTransactionColumnDefinition() {
             filterable: true,
             disabled: true,
             export: true,
-            resizable: true,
+            resizable: false,
             objectIn: true,
+            isGroupItemDisabled: true,
         },
         {
-            ngTemplate: 'text',
+            ngTemplate: 'gallon',
             title: 'Gal',
             field: 'tableGallon',
-            name: 'Gal',
+            name: 'Gallon',
             sortName: 'qty',
+            groupName: 'Item Detail ',
             hidden: false,
-            width: 86,
-            minWidth: 86,
+            width: 64,
+            minWidth: 64,
             filter: '',
             isNumeric: false,
             index: 9,
@@ -239,17 +242,19 @@ export function getFuelTransactionColumnDefinition() {
             disabled: false,
             export: true,
             resizable: true,
+            isJustifyEnd: true,
+            isGroupItemDisabled: true,
         },
         {
             ngTemplate: 'ppg',
-            title: 'PPG',
+            title: 'Ppg',
             field: 'tablePPG',
-            name: 'PPG',
+            name: 'Price per Gal.',
             sortName: 'ppg',
             groupName: 'Item Detail ',
             hidden: false,
-            width: 86,
-            minWidth: 86,
+            width: 80,
+            minWidth: 80,
             filter: '',
             isNumeric: false,
             index: 10,
@@ -262,12 +267,14 @@ export function getFuelTransactionColumnDefinition() {
             disabled: false,
             export: true,
             resizable: true,
+            isJustifyEnd: true,
+            isGroupItemDisabled: true,
         },
         {
             ngTemplate: 'total',
-            title: 'Cost',
+            title: 'Total',
             field: 'tableTotal',
-            name: 'Cost',
+            name: 'Total Cost',
             sortName: 'total',
             groupName: 'Item Detail ',
             hidden: false,
@@ -285,6 +292,8 @@ export function getFuelTransactionColumnDefinition() {
             disabled: false,
             export: true,
             resizable: true,
+            isJustifyEnd: true,
+            isGroupItemDisabled: true,
         },
         {
             ngTemplate: 'attachments',
@@ -362,7 +371,7 @@ export function getFuelStopColumnDefinition() {
             disabled: false,
             export: false,
             resizable: false,
-            isPined: true
+            isPined: true,
         },
         {
             ngTemplate: 'nameLink',
@@ -386,8 +395,8 @@ export function getFuelStopColumnDefinition() {
             export: true,
             resizable: true,
             link: {
-                routerLinkStart: '/dashboard'
-            }
+                routerLinkStart: '/dashboard',
+            },
         },
         {
             ngTemplate: 'text',
@@ -522,7 +531,7 @@ export function getFuelStopColumnDefinition() {
             filterable: true,
             disabled: false,
             export: true,
-            resizable: true
+            resizable: true,
         },
         {
             ngTemplate: 'text',
@@ -547,7 +556,7 @@ export function getFuelStopColumnDefinition() {
             resizable: true,
         },
         {
-            ngTemplate: 'total',
+            ngTemplate: 'text',
             title: 'Expense',
             field: 'tableExpense',
             name: 'Expense',
@@ -566,7 +575,9 @@ export function getFuelStopColumnDefinition() {
             filterable: true,
             disabled: false,
             export: true,
-            resizable: true
+            isTextBold: true,
+            resizable: true,
+            isJustifyEnd: true,
         },
         {
             ngTemplate: 'favorite',

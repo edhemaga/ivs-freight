@@ -92,58 +92,38 @@
                                             'Item Detail • Description'
                                         "
                                     >
-                                        <ng-container
-                                            *ngIf="
-                                                card.descriptionItems?.length;
-                                                else emptyTemplate
-                                            "
+                                        <div
+                                            class="items-container-body d-flex align-items-center"
                                         >
                                             <div
-                                                class="items-container-body d-flex align-items-center"
+                                                class="w-100"
+                                                #description="ngbPopover"
+                                                container="body"
+                                                placement="bottom-left"
+                                                triggers="manual"
+                                                popoverClass="table-description-popover"
+                                                [ngbPopover]="
+                                                    descriptionCardsPopover
+                                                "
+                                                (click)="
+                                                    onShowDescriptionDropdown(
+                                                        description,
+                                                        card
+                                                    )
+                                                "
                                             >
-                                                <span
-                                                    class="checkbox-tooltip d-flex"
-                                                    type="button"
+                                                <div
                                                     ngbTooltip
-                                                    mainTooltip="View Items"
                                                     tooltipBackground="#424242"
                                                     position="bottom"
-                                                    customClass="mt-2"
-                                                >
-                                                    <div
-                                                        (click)="
-                                                            onShowDescriptionDropdown(
-                                                                description,
-                                                                card
-                                                            )
-                                                        "
-                                                        #description="ngbPopover"
-                                                        class="description-container d-flex align-items-center"
-                                                        [ngbPopover]="
-                                                            descriptionCardsPopover
-                                                        "
-                                                        container="body"
-                                                        [placement]="
-                                                            'bottom-left'
-                                                        "
-                                                        popoverClass="table-description-popover"
-                                                        [style.width.px]="
-                                                            elementWidth
-                                                        "
-                                                        triggers="manual"
-                                                    ></div>
-                                                    <div
-                                                        #itemsRepair
-                                                        class="items-container"
-                                                        [innerHtml]="
-                                                            card.descriptionItems
-                                                                | tableDescriptionTextPipe
-                                                                    : 291
-                                                        "
-                                                    ></div>
-                                                </span>
+                                                    mainTooltip="View Items"
+                                                    [appDescriptionItemsTextCount]="
+                                                        card?.tableDescription
+                                                    "
+                                                    [containerWidth]="270"
+                                                ></div>
                                             </div>
-                                        </ng-container>
+                                        </div>
                                     </ng-container>
 
                                     <ng-container
@@ -283,7 +263,94 @@
     </ng-container>
 </div>
 
+<!-- Description-->
+
 <ng-template #descriptionCardsPopover let-data="data">
+    <div
+        class="card-dropdown-container description-item-repair-bill-fuel-trans"
+        [style.width.px]="elementWidth"
+    >
+        <!-- Header -->
+
+        <div class="align-items-center description-titles">
+            <div class="d-flex align-items-center justify-content-center">
+                <p
+                    class="m-0 ta-font-bold text-size-11 text-color-light-grey-6"
+                >
+                    #
+                </p>
+            </div>
+
+            <p class="m-0 ta-font-bold text-size-11 text-color-light-grey-6">
+                DESC • QTY • PRICE
+            </p>
+
+            <div class="d-flex align-items-center justify-content-end">
+                <p class="m-0 text-size-11 text-color-white ta-font-semi-bold">
+                    {{ data.totalCost }}
+                </p>
+            </div>
+        </div>
+
+        <!-- Dropdown -->
+
+        <div
+            class="d-flex flex-column description-items"
+            [ngClass]="{
+                'dropdown-scroll': data.descriptionItems.length >= 8
+            }"
+        >
+            <ng-container
+                *ngFor="
+                    let descriptionPopoverItem of data.descriptionItems;
+                    let descriptionPopoverItemIndex = index;
+                    trackBy: trackCard
+                "
+            >
+                <div class="align-items-center description-items-item">
+                    <!-- # -->
+
+                    <div
+                        class="d-flex align-items-center justify-content-center"
+                    >
+                        <span class="m-0 text-size-14 text-color-grey">
+                            {{ descriptionPopoverItemIndex + 1 }}
+                        </span>
+                    </div>
+
+                    <!-- Description -->
+
+                    <div class="d-flex flex-column description-box">
+                        <div class="d-flex align-items-center">
+                            <p
+                                class="m-0 ta-font-medium text-size-11 text-color-white"
+                            >
+                                {{ descriptionPopoverItem?.description }}
+                            </p>
+                        </div>
+
+                        <span class="text-size-11 text-color-grey">
+                            {{ descriptionPopoverItem?.quantity }} x
+                            {{ descriptionPopoverItem?.descriptionPrice }}
+                        </span>
+                    </div>
+
+                    <!-- Price -->
+
+                    <div class="d-flex align-items-center justify-content-end">
+                        <p
+                            class="m-0 ta-font-medium text-size-14 text-color-white"
+                        >
+                            {{ descriptionPopoverItem?.descriptionTotalPrice }}
+                        </p>
+                    </div>
+                </div>
+            </ng-container>
+        </div>
+    </div>
+</ng-template>
+
+<!-- <ng-template #descriptionCardsPopover let-data="data">
     <div class="card-dropdown-container" [style.width.px]="291">
         <div class="description-titles d-flex align-items-center">
             <div
@@ -312,7 +379,7 @@
                     </p>
                     <div class="dropdown-right">
                         <p class="price-total-title ta-font-semi-bold m-0">
-                            {{ data.tabelDescriptionDropTotal }}
+                            {{ data.tableDescriptionDropTotal }}
                         </p>
                     </div>
                 </ng-container>
@@ -379,5 +446,4 @@
         </div>
     </div>
 </ng-template>
-
-<ng-template #emptyTemplate>/</ng-template>
+ -->

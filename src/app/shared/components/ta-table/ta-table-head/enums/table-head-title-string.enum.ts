@@ -19,6 +19,7 @@ export enum TableHeadTitleStringEnum {
     NUMBER = 'NUMBER ',
     NUMBER_2 = 'NUMBER',
     ISSUED = 'ISSUED',
+    SERVICE_TYPE = 'SERVICE TYPE',
     GENERAL = 'GENERAL',
     TRUCK_2 = 'TRUCK',
     NAME_2 = 'NAME  ',
@@ -54,6 +55,7 @@ export enum TableHeadTitleStringEnum {
     OWNER = 'OWNER',
     BANK = 'BANK',
     FUEL_CARD = 'FUEL CARD',
+    COST = 'COST',
     CDL = 'CDL',
     TEST = 'TEST',
     NOTIFICATION = 'NOTIFICATION',
@@ -95,5 +97,5 @@ export enum TableHeadTitleStringEnum {
     HIRED = 'HIRED',
     CARD = 'CARD',
     FUEL_STOP_NAME = 'NAME',
-    FUEL_STOP = 'FUEL STOP'
+    FUEL_STOP = 'FUEL STOP',
 }

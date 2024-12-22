@@ -139,7 +139,7 @@ export interface CardDetails {
         price?: number;
         quantity?: number;
         subtotal?: number;
-    };
+    }[];
     rating?: Rating[];
     textCommodity?: string;
     textMiles?: string;

@@ -16,7 +16,7 @@ export class FuelCardsModalData {
         },
         {
             title: 'Item Detail • Total Cost',
-            key: 'tabelDescriptionDropTotal',
+            key: 'tableDescriptionDropTotal',
         },
     ];
     static backDataLoad: CardRows[] = [
@@ -34,7 +34,7 @@ export class FuelCardsModalData {
         },
         {
             title: 'Card Detail • Number',
-            key: 'TableDropdownComponentConstantsCardNumber',
+            key: 'tableDropdownComponentConstantsCardNumber',
         },
     ];
 
@@ -63,7 +63,7 @@ export class FuelCardsModalData {
                 {
                     title: 'Card Detail • Number',
                     secondTitle: 'Card No.',
-                    key: 'TableDropdownComponentConstantsCardNumber',
+                    key: 'tableDropdownComponentConstantsCardNumber',
                 },
                 {
                     title: 'Card Detail • Type',
@@ -123,7 +123,7 @@ export class FuelCardsModalData {
                     title: 'Item Detail • Gallon',
                     secondTitle: 'Gallon',
                     key: 'tableGallon',
-                    sufix: ' gal'
+                    sufix: ' gal',
                 },
                 {
                     title: 'Item Detail • Price per Gal.',

@@ -141,7 +141,8 @@
                                     column.sortDirection !== '' &&
                                     column.sortDirection,
                                 'th-title-locked-cursor':
-                                    tableHeadRowsData?.locked
+                                    tableHeadRowsData?.locked,
+                                'justify-content-end': column?.isJustifyEnd,
                             }"
                             [ngStyle]="{
                                 'width.px':
@@ -215,7 +216,15 @@
                                     column.tableHeadTitle === 'STATUS' &&
                                     tableHeadRowsData?.tableData[0]
                                         .gridNameTitle !== 'User',
-                                'd-flex gap-1 align-items-center': column.headIconStyle,
+                                'd-flex gap-1 align-items-center':
+                                    column.headIconStyle,
+                                'd-flex justify-content-end':
+                                    column?.isJustifyEnd,
+                                'border-right':
+                                    column.tableHeadTitle
+                                    | tableHeadRightBorder
+                                        : tableHeadRowsData?.tableData[0]
+                                              .gridNameTitle
                             }"
                         >
                             <ng-container *ngIf="column.headIconStyle">
@@ -321,7 +330,8 @@
                                 column.sortDirection !== '' &&
                                 column.sortDirection,
                             'th-title-locked-cursor': tableHeadRowsData?.locked,
-                            'set-center-th-title': column.setCenter
+                            'set-center-th-title': column.setCenter,
+                            'd-flex justify-content-end': column?.isJustifyEnd
                         }"
                         (click)="handleTableHeadRowsActionClick(column, 'sort')"
                     >
