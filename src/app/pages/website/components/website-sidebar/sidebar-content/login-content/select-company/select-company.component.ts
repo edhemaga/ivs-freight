@@ -32,8 +32,7 @@ import { Carousel } from 'bootstrap';
     encapsulation: ViewEncapsulation.None,
 })
 export class SelectCompanyComponent
-    implements OnInit, OnDestroy, AfterViewInit
-{
+    implements OnInit, OnDestroy, AfterViewInit {
     private destroy$ = new Subject<void>();
 
     public saveCompany: any;
@@ -53,7 +52,7 @@ export class SelectCompanyComponent
         private router: Router,
         private websiteAuthService: WebsiteAuthService,
         private formBuilder: UntypedFormBuilder
-    ) {}
+    ) { }
 
     ngOnInit() {
         this.user(JSON.parse(localStorage.getItem('user')));
@@ -108,8 +107,6 @@ export class SelectCompanyComponent
             }),
         };
 
-        console.log('newUser', this.newUser);
-
         //Slick Carousel Config
         this.slideConfig = {
             infinite: false,
@@ -156,7 +153,7 @@ export class SelectCompanyComponent
                     dateSent.getMonth(),
                     dateSent.getDate()
                 )) /
-                (1000 * 60 * 60 * 24)
+            (1000 * 60 * 60 * 24)
         );
     }
 
@@ -247,7 +244,7 @@ export class SelectCompanyComponent
                     console.log(
                         'selectedElement',
                         document.querySelectorAll('.carousel-item')[
-                            selectedIndex
+                        selectedIndex
                         ]
                     );
                     console.log('selectedCompanyId', this.selectedCompanyId);
@@ -286,7 +283,7 @@ export class SelectCompanyComponent
                     console.log(
                         'selectedElement',
                         document.querySelectorAll('.carousel-item')[
-                            selectedIndex
+                        selectedIndex
                         ]
                     );
                     console.log('selectedCompanyId', this.selectedCompanyId);
