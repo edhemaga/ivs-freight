@@ -83,7 +83,7 @@
                                             column.ngTemplate === 'ppg'
                                                 ? 0
                                                 : column.ngTemplate === 'total'
-                                                ? '12px'
+                                                ? '7px'
                                                 : ''
                                     }"
                                 >
@@ -1611,6 +1611,9 @@
                                                     column.ngTemplate ===
                                                         'total' &&
                                                     row?.isRepairOrder,
+                                                'order-items-active':
+                                                    descriptionOrderActiveIndex ===
+                                                    i,
                                                 hovered:
                                                     descriptionCostHoverIndex ===
                                                         i &&
@@ -1653,6 +1656,12 @@
                                             (mouseleave)="
                                                 descriptionCostHoverIndex = -1
                                             "
+                                            (shown)="
+                                                descriptionOrderActiveIndex = i
+                                            "
+                                            (hidden)="
+                                                descriptionOrderActiveIndex = -1
+                                            "
                                         >
                                             <ng-container
                                                 [ngSwitch]="column.ngTemplate"
@@ -1677,6 +1686,9 @@
                                                         "
                                                         [appDescriptionItemsTextCount]="
                                                             row[column.field]
+                                                        "
+                                                        [itemSpecialStylesIndexArray]="
+                                                            row.tableDescriptionSpecialStylesIndexArray
                                                         "
                                                         [containerWidth]="
                                                             column.width
@@ -3254,7 +3266,7 @@
                                             column.ngTemplate === 'ppg'
                                                 ? 0
                                                 : column.ngTemplate === 'total'
-                                                ? '12px'
+                                                ? '7px'
                                                 : ''
                                     }"
                                 >
@@ -4370,6 +4382,9 @@
                                                     column.ngTemplate ===
                                                         'total' &&
                                                     row?.isRepairOrder,
+                                                'order-items-active':
+                                                    descriptionOrderActiveIndex ===
+                                                    i,
                                                 hovered:
                                                     descriptionCostHoverIndex ===
                                                         i &&
@@ -4412,6 +4427,12 @@
                                             (mouseleave)="
                                                 descriptionCostHoverIndex = -1
                                             "
+                                            (shown)="
+                                                descriptionOrderActiveIndex = i
+                                            "
+                                            (hidden)="
+                                                descriptionOrderActiveIndex = -1
+                                            "
                                         >
                                             <ng-container
                                                 [ngSwitch]="column.ngTemplate"
@@ -4436,6 +4457,9 @@
                                                         "
                                                         [appDescriptionItemsTextCount]="
                                                             row[column.field]
+                                                        "
+                                                        [itemSpecialStylesIndexArray]="
+                                                            row.tableDescriptionSpecialStylesIndexArray
                                                         "
                                                         [containerWidth]="
                                                             column.width

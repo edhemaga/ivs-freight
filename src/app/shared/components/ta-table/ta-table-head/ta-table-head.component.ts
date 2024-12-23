@@ -319,9 +319,10 @@ export class TaTableHeadComponent implements OnInit, OnChanges, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe((response: number) => {
                 if (this.viewData.length) {
-                    let scroll = document.getElementById(
-                        TableHeadStringEnum.SCROLL
-                    );
+                    const shadowHost = document.querySelector(`#${TableHeadStringEnum.PARENT_SCROLL}`);
+                    const shadowRoot = shadowHost.shadowRoot;
+                    const scroll = shadowRoot.querySelector(`#${TableHeadStringEnum.SCROLL}`);
+                    
                     if (scroll) scroll.scrollLeft = response;
                 }
             });

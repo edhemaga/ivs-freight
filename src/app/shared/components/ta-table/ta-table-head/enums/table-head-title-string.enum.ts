@@ -55,6 +55,7 @@ export enum TableHeadTitleStringEnum {
     OWNER = 'OWNER',
     BANK = 'BANK',
     FUEL_CARD = 'FUEL CARD',
+    COST = 'COST',
     CDL = 'CDL',
     TEST = 'TEST',
     NOTIFICATION = 'NOTIFICATION',
