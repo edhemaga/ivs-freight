@@ -26,7 +26,10 @@ export class DescriptionItemsTextCountDirective implements AfterViewInit {
 
     private _items: string[] = [];
 
-    constructor(private element: ElementRef, private renderer: Renderer2) {}
+    constructor(
+        private element: ElementRef,
+        private renderer: Renderer2
+    ) {}
 
     ngAfterViewInit(): void {
         this.updateItems();
@@ -165,7 +168,7 @@ export class DescriptionItemsTextCountDirective implements AfterViewInit {
         this.renderer.setStyle(span, 'white-space', 'nowrap');
 
         // apply special style if the index is in itemSpecialStylesIndexArray
-        if (this.itemSpecialStylesIndexArray.includes(index))
+        if (this.itemSpecialStylesIndexArray?.includes(index))
             this.renderer.addClass(span, 'text-color-blue-18');
 
         return span;
