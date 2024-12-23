@@ -1,6 +1,14 @@
-import { ApplicationConfig, CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
+import {
+    ApplicationConfig,
+    CUSTOM_ELEMENTS_SCHEMA,
+    NgModule,
+} from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import {
+    HTTP_INTERCEPTORS,
+    provideHttpClient,
+    withInterceptorsFromDi,
+} from '@angular/common/http';
 import { CommonModule, DatePipe, CurrencyPipe } from '@angular/common';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
@@ -43,20 +51,23 @@ import player from 'lottie-web';
 import { ReactiveFormsModule } from '@angular/forms';
 import { NgIdleModule } from '@ng-idle/core';
 
-
 import { provideLottieOptions } from 'ngx-lottie';
+import { AngularSvgIconPreloaderModule } from 'angular-svg-icon-preloader';
 
 export const appConfig: ApplicationConfig = {
-  providers: [
-    provideLottieOptions({
-      player: () => player,
-    }),
-  ],
+    providers: [
+        provideLottieOptions({
+            player: () => player,
+        }),
+    ],
 };
 
-@NgModule({ declarations: [AppComponent, ChangeLogoPipe],
+@NgModule({
+    declarations: [AppComponent, ChangeLogoPipe],
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
-    bootstrap: [AppComponent], imports: [BrowserModule,
+    bootstrap: [AppComponent],
+    imports: [
+        BrowserModule,
         CommonModule,
         //BrowserTransferStateModule,
         BrowserAnimationsModule,
@@ -72,6 +83,9 @@ export const appConfig: ApplicationConfig = {
             toastComponent: TaCustomToastMessagesComponent, // added custom toast!
         }),
         NgIdleModule.forRoot(),
+        AngularSvgIconPreloaderModule.forRoot({
+            configUrl: 'assets/preload-svg/preload-svg.json',
+        }),
         ApiModule,
         BlockedContentPipe,
         NavigationComponent,
@@ -79,16 +93,19 @@ export const appConfig: ApplicationConfig = {
         RightSidePanelComponent,
         ReactiveFormsModule.withConfig({
             warnOnNgModelWithFormControl: 'never',
-        }),
+        }), 
         StoreModule.forRoot([]),
         EffectsModule.forRoot([]),
-        //components 
+        //components
         ReusableTemplatesComponent,
         // routing
-        AppRoutingModule], providers: [
+        AppRoutingModule,
+    ],
+    providers: [
         {
             provide: Configuration,
-            useFactory: (userLoggedService: WebsiteUserLoggedService) => configFactory(userLoggedService),
+            useFactory: (userLoggedService: WebsiteUserLoggedService) =>
+                configFactory(userLoggedService),
             deps: [WebsiteUserLoggedService],
             multi: false,
         },
@@ -111,5 +128,6 @@ export const appConfig: ApplicationConfig = {
         CurrencyPipe,
         BlockedContentPipe,
         provideHttpClient(withInterceptorsFromDi()),
-    ] })
+    ],
+})
 export class AppModule {}
