@@ -297,6 +297,7 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
                         ...foundObject,
                         data: {
                             ...foundObject,
+                            isRevert: status.isRevert,
                             nameBack: status.dataBack,
                             nameFront: status.dataFront,
                         },
