@@ -16,6 +16,7 @@ export enum TableHeadStringEnum {
 
     TABLE_CONTAINER_CLASS = '.table-container',
     SCROLL = 'scroll',
+    PARENT_SCROLL = 'parent-scroll',
 
     DESC = 'desc',
 }

@@ -142,7 +142,7 @@
                                     column.sortDirection,
                                 'th-title-locked-cursor':
                                     tableHeadRowsData?.locked,
-                                'justify-content-end': column?.isJustifyEnd
+                                'justify-content-end': column?.isJustifyEnd,
                             }"
                             [ngStyle]="{
                                 'width.px':
@@ -219,7 +219,12 @@
                                 'd-flex gap-1 align-items-center':
                                     column.headIconStyle,
                                 'd-flex justify-content-end':
-                                    column?.isJustifyEnd
+                                    column?.isJustifyEnd,
+                                'border-right':
+                                    column.tableHeadTitle
+                                    | tableHeadRightBorder
+                                        : tableHeadRowsData?.tableData[0]
+                                              .gridNameTitle
                             }"
                         >
                             <ng-container *ngIf="column.headIconStyle">

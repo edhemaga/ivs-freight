@@ -1505,15 +1505,13 @@ table.truckassist-table-body-style {
                                     background: transparent;
                                 }
                             }
-                        }
 
-                        .round-number span {
-                            height: 18px;
-                            min-width: 18px;
-                            border-radius: 50px;
-                            margin-left: 5px;
-                            padding: 0px 5px;
-                            background: $dark-2;
+                            &.order-items-active {
+                                .finish-order-action {
+                                    background: $ta-blue-18 !important;
+                                    color: $white !important;
+                                }
+                            }
                         }
 
                         // DESCRIPTION DRIVER COLUMN
@@ -2994,6 +2992,12 @@ table.truckassist-table-body-style {
                     &:hover {
                         background-image: url('/assets/svg/truckassist-table/favorite-icon-hover.svg') !important;
                     }
+                }
+
+                // FINISH ORDER
+                .finish-order-action {
+                    background: $ta-blue-18 !important;
+                    color: $white !important;
                 }
             }
         }
