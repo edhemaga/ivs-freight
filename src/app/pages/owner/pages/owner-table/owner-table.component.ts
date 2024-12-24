@@ -712,7 +712,7 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     private getDropdownOwnerContent(): DropdownItem[] {
-        return DropdownContentHelper.getDropdownOwnerContent();
+        return DropdownContentHelper.getDropdownOwnerContent(this.selectedTab);
     }
 
     private getTabData(dataType: string) {

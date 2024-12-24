@@ -8,7 +8,6 @@ import {
 import { DatePipe } from '@angular/common';
 import { AfterViewInit } from '@angular/core';
 
-//Rxjs
 import {
     combineLatest,
     Observable,
@@ -18,18 +17,18 @@ import {
     takeUntil,
 } from 'rxjs';
 
-//Components
+// components
 import { FuelPurchaseModalComponent } from '@pages/fuel/pages/fuel-modals/fuel-purchase-modal/fuel-purchase-modal.component';
 import { FuelStopModalComponent } from '@pages/fuel/pages/fuel-modals/fuel-stop-modal/fuel-stop-modal.component';
 import { ConfirmationModalComponent } from '@shared/components/ta-shared-modals/confirmation-modal/confirmation-modal.component';
 
-//Services
+// services
 import { ModalService } from '@shared/services/modal.service';
 import { TruckassistTableService } from '@shared/services/truckassist-table.service';
 import { ConfirmationService } from '@shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
 import { PayrollService } from '@pages/accounting/pages/payroll/services/payroll.service';
 
-//Utils
+// utils
 import {
     getFuelStopColumnDefinition,
     getFuelTransactionColumnDefinition,
@@ -38,7 +37,7 @@ import { TableDropdownComponentConstants } from '@shared/utils/constants/table-d
 import { FuelTableConstants } from '@pages/fuel/pages/fuel-table/utils/constants/fuel-table.constants';
 import { FuelTableSvgRoutes } from '@pages/fuel/pages/fuel-table/utils/svg-routes/fuel-table-svg-routes';
 
-//Pipes
+// pipes
 import {
     ThousandSeparatorPipe,
     NameInitialsPipe,
@@ -50,7 +49,7 @@ import { DataFilterHelper } from '@shared/utils/helpers/data-filter.helper';
 import { MethodsGlobalHelper } from '@shared/utils/helpers/methods-global.helper';
 import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calculations.helper';
 
-//Models
+// models
 import {
     FuelStopListResponse,
     FuelStopResponse,
@@ -63,7 +62,7 @@ import { IFuelTableData } from '@pages/fuel/pages/fuel-table/models/fuel-table-d
 import { AvatarColors } from '@pages/driver/pages/driver-table/models/avatar-colors.model';
 import { SortTypes } from '@shared/models/sort-types.model';
 
-//Store
+// store
 import { FuelQuery } from '@pages/fuel/state/fuel-state/fuel-state.query';
 import { select, Store } from '@ngrx/store';
 import {
@@ -71,17 +70,18 @@ import {
     selectInactiveTabCards,
 } from '@pages/fuel/pages/fuel-card-modal/state';
 
-//Enums
+// enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
 import { eFuelTransactionType } from '@pages/fuel/pages/fuel-table/enums';
+import { ConfirmationModalStringEnum } from '@shared/components/ta-shared-modals/confirmation-modal/enums/confirmation-modal-string.enum';
 
-//Services
+// services
 import { FuelService } from '@shared/services/fuel.service';
 import { FuelCardsModalService } from '@pages/fuel/pages/fuel-card-modal/services/fuel-cards-modal.service';
 
-//Helpers
+// helpers
 import { AvatarColorsHelper } from '@shared/utils/helpers/avatar-colors.helper';
-import { ConfirmationModalStringEnum } from '@shared/components/ta-shared-modals/confirmation-modal/enums/confirmation-modal-string.enum';
+import { DropdownContentHelper } from '@shared/utils/helpers';
 
 @Component({
     selector: 'app-fuel-table',
@@ -677,10 +677,6 @@ export class FuelTableComponent implements OnInit, AfterViewInit, OnDestroy {
             tableTotal: tableDescriptionDropTotal,
             tableAttachments: files,
             fileCount: files ? files.length : 0,
-            tableDropdownContent: {
-                hasContent: true,
-                content: this.getDropdownOwnerContent(),
-            },
             tableAdded: this.datePipe.transform(
                 data.createdAt,
                 TableStringEnum.DATE_FORMAT
@@ -691,6 +687,10 @@ export class FuelTableComponent implements OnInit, AfterViewInit, OnDestroy {
             ),
             isIntegratedFuelTransaction:
                 fuelTransactionTypeId !== eFuelTransactionType.Manual,
+            tableDropdownContent: {
+                hasContent: true,
+                content: this.getDropdownFuelTransactionContent(false),
+            },
         };
     }
 
@@ -786,13 +786,22 @@ export class FuelTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 : null,
             tableDropdownContent: {
                 hasContent: true,
-                content: this.getDropdownOwnerContent(),
+                content: this.getDropdownFuelStopContent(),
             },
         };
     }
 
-    private getDropdownOwnerContent(): DropdownItem[] {
-        return TableDropdownComponentConstants.DROPDOWN_FUEL_CONTENT;
+    private getDropdownFuelTransactionContent(
+        isAutomaticTransaction: boolean
+    ): DropdownItem[] {
+        return DropdownContentHelper.getDropdownFuelTransactionContent(
+            isAutomaticTransaction
+        );
+    }
+
+    private getDropdownFuelStopContent(): DropdownItem[] {
+        // TODO
+        return DropdownContentHelper.getDropdownFuelStopContent();
     }
 
     onToolBarAction(event: any) {

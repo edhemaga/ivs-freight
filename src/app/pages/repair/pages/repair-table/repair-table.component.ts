@@ -69,8 +69,8 @@ import {
     RepairShopMapDropdownHelper,
     RepairTableBackFilterDataHelper,
     RepairTableDateFormaterHelper,
-    RepairTableHelper,
 } from '@pages/repair/pages/repair-table/utils/helpers';
+import { DropdownContentHelper } from '@shared/utils/helpers';
 
 // components
 import { ConfirmationModalComponent } from '@shared/components/ta-shared-modals/confirmation-modal/confirmation-modal.component';
@@ -877,11 +877,12 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                 ? ((this.sendDataToCardsFront = this.displayRowsFrontTruck),
                   (this.sendDataToCardsBack = this.displayRowsBackTruck))
                 : this.selectedTab === TableStringEnum.INACTIVE
-                ? ((this.sendDataToCardsFront = this.displayRowsFrontTrailer),
-                  (this.sendDataToCardsBack = this.displayRowsBackTrailer))
-                : ((this.sendDataToCardsFront =
-                      this.displayRowsFrontRepairShop),
-                  (this.sendDataToCardsBack = this.displayRowsBackRepairShop));
+                  ? ((this.sendDataToCardsFront = this.displayRowsFrontTrailer),
+                    (this.sendDataToCardsBack = this.displayRowsBackTrailer))
+                  : ((this.sendDataToCardsFront =
+                        this.displayRowsFrontRepairShop),
+                    (this.sendDataToCardsBack =
+                        this.displayRowsBackRepairShop));
 
             // get Tab Table Data For Selected Tab
             this.getSelectedTabTableData();
@@ -1415,8 +1416,8 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                     event.type === TableStringEnum.ADD_CONTRACT
                         ? TableStringEnum.CONTRACT
                         : event.type === TableStringEnum.WRITE_REVIEW
-                        ? TableStringEnum.REVIEW
-                        : TableStringEnum.DETAILS;
+                          ? TableStringEnum.REVIEW
+                          : TableStringEnum.DETAILS;
 
                 this.modalService.openModal(
                     RepairShopModalComponent,
@@ -1786,7 +1787,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     private getRepairTableDropdownContent(repairType: string): DropdownItem[] {
-        return RepairTableHelper.getRepairTableDropdownContent(
+        return DropdownContentHelper.getRepairTableDropdownContent(
             this.selectedTab,
             repairType
         );
@@ -1797,7 +1798,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
         isPinned: boolean,
         isCompanyOwned: boolean
     ): DropdownItem[] {
-        return RepairTableHelper.getRepairShopTableDropdownContent(
+        return DropdownContentHelper.getRepairShopTableDropdownContent(
             status,
             isPinned,
             isCompanyOwned
