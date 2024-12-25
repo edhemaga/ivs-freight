@@ -94,60 +94,26 @@
                     }
 
                     // Icon Specific Classes
-                    .regular {
-                        svg {
-                            path {
-                                fill: $bw5;
-                            }
-                        }
+                    .regular svg path {
+                        fill: $bw5;
                     }
 
-                    .deactivate {
-                        svg {
-                            path {
-                                fill: $dark-3;
-                            }
-                        }
+                    .delete svg path {
+                        fill: $ta-red-10;
                     }
 
-                    .delete {
-                        svg {
-                            path {
-                                fill: $ta-red-10;
-                            }
-                        }
+                    .activate svg path {
+                        fill: $ta-blue-13;
                     }
 
-                    .activate {
-                        svg {
-                            path {
-                                fill: $ta-blue-7;
-                            }
-                        }
+                    .open-business svg path {
+                        fill: $ta-green;
                     }
 
-                    .check {
-                        svg {
-                            path {
-                                fill: $ta-review-green;
-                            }
-                        }
-                    }
+                    ////////
 
-                    .favourite {
-                        svg {
-                            path {
-                                fill: $ta-blue-13;
-                            }
-                        }
-                    }
-
-                    .open-business {
-                        svg {
-                            path {
-                                fill: $ta-green;
-                            }
-                        }
+                    .deactivate svg path {
+                        fill: $dark-3;
                     }
                 }
 
@@ -231,7 +197,7 @@
                         fill: $dark-3 !important;
                     }
 
-                    .favourite svg path {
+                    .activate svg path {
                         fill: $ta-blue-21 !important;
                     }
 
@@ -239,7 +205,7 @@
                         fill: $ta-red-20 !important;
                     }
 
-                    .hire-applicant svg path {
+                    .open-business svg path {
                         fill: $ta-green-5 !important;
                     }
                 }
@@ -1647,7 +1613,9 @@
             top: 4px !important;
             right: 0px !important;
             opacity: 1 !important;
-            transition: top 0.3s, opacity 0.3s;
+            transition:
+                top 0.3s,
+                opacity 0.3s;
         }
     }
 }

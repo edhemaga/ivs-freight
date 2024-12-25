@@ -214,7 +214,6 @@ export interface DropdownItem {
     name?: string;
     svgUrl?: string;
     class?: string;
-    mutedStyle?: boolean;
     contentType?: string;
     text?: string;
     svgStyle?: { width: number; height: number };

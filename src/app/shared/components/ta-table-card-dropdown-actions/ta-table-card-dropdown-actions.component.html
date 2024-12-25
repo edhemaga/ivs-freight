@@ -37,7 +37,7 @@
             class="table-list-dropdown-content-container"
             [ngClass]="{
                 'table-list-dropdown-inner-dropdown-active':
-                    action?.isInnerDropActive
+                    action?.isInnerDropActive,
             }"
             *ngFor="let action of data; trackBy: trackByIdentity"
         >
@@ -51,11 +51,11 @@
                         : onShowInnerDropdown(action)
                 "
                 [ngClass]="{
-                    'table-list-dropdown-content-muted': action.mutedStyle,
                     'table-list-dropdown-content-dropdown': action?.isDropdown,
                     'table-list-dropdown-content-dropdown-active':
                         action?.isInnerDropActive,
-                    'table-list-dropdown-content-dropdown-disabled': action.mutedStyle 
+                    'table-list-dropdown-content-dropdown-disabled':
+                        action.isDisabled,
                 }"
                 [ngStyle]="action?.tableListDropdownContentStyle"
             >
@@ -68,12 +68,12 @@
                         [class]="action?.svgClass"
                         class="table-list-dropdown-content-icon"
                         [ngClass]="{
-                            'inner-dropdown-open': action?.isInnerDropActive
+                            'inner-dropdown-open': action?.isInnerDropActive,
                         }"
                         [src]="action?.svgUrl"
                         [svgStyle]="{
                             'width.px': action?.svgStyle.width,
-                            'height.px': action?.svgStyle.height
+                            'height.px': action?.svgStyle.height,
                         }"
                     ></svg-icon>
                 </ng-container>
@@ -84,7 +84,7 @@
                 class="table-list-inner-dropdown"
                 [ngClass]="{
                     'table-list-inner-dropdown-active':
-                        action?.isInnerDropActive
+                        action?.isInnerDropActive,
                 }"
             >
                 <ng-container

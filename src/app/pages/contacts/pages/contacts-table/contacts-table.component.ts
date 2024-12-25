@@ -25,13 +25,11 @@ import { MethodsGlobalHelper } from '@shared/utils/helpers/methods-global.helper
 import { getToolsContactsColumnDefinition } from '@shared/utils/settings/table-settings/contacts-columns';
 import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calculations.helper';
 import { AvatarColorsHelper } from '@shared/utils/helpers/avatar-colors.helper';
+import { DropdownContentHelper } from '@shared/utils/helpers';
 
 // enums
 import { ContactsStringEnum } from '@pages/contacts/enums/contacts-string.enum';
 import { TableStringEnum } from '@shared/enums/table-string.enum';
-
-// constants
-import { TableDropdownComponentConstants } from '@shared/utils/constants/table-dropdown-component.constants';
 
 // data for cards
 import { ContactsCardData } from '@pages/contacts/utils/constants/contacts-card-data.constants';
@@ -530,7 +528,7 @@ export class ContactsTableComponent
         };
     }
     public getDropdownContactContent(): DropdownItem[] {
-        return TableDropdownComponentConstants.DROPDOWN_CONTACTS_CONTENT;
+        return DropdownContentHelper.getDropdownContactContent();
     }
 
     // Contact Back Filter

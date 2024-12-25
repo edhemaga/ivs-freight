@@ -63,7 +63,6 @@ export enum TableStringEnum {
     LOADS = 'loads',
     VIEW_MODE = 'view-mode',
     REGULAR = 'regular',
-    CHECK = 'check',
 
     ADD_NEW = 'add-new',
     ADD_NEW_2 = 'Add New',
@@ -296,7 +295,6 @@ export enum TableStringEnum {
     // Repair
     SHOP = 'Shop',
     FAVORITE = 'favorite',
-    FAVOURITE = 'favourite',
     FINISH_ORDER = 'finish-order',
     FINISH_ORDER_2 = 'finish order',
     FINISH_ORDER_3 = 'Finish Order',

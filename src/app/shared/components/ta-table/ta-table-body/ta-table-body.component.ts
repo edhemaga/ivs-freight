@@ -1011,7 +1011,7 @@ export class TaTableBodyComponent
         }
 
         // Only If Action Is Not Muted
-        if (!action?.mutedStyle) {
+        if (!action?.isDisabled) {
             // Send Drop Action
             this.bodyActions.emit({
                 id: this.dropDownActive,
