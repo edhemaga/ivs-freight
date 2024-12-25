@@ -29,6 +29,7 @@ export interface MappedRepair {
     tableServiceType: string;
     tableServices: RepairServiceTypeResponse[];
     tableDescription: RepairItemResponse[];
+    tableDescriptionSpecialStylesIndexArray: number[];
     tableDescriptionDropTotal: string;
     tableCost: string;
     tableAdded: string;
