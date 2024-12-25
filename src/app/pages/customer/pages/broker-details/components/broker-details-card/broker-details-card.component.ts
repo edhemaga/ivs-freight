@@ -120,14 +120,17 @@ export class BrokerDetailsCardComponent
     public brokerDetailsSvgRoutes = BrokerDetailsSvgRoutes;
 
     //Chart
+    public invoiceChartData!: BrokerPaidInvoiceResponse;
     public invoiceChartConfig!: IChartConfiguration;
     public invoiceChartLegend!: ChartLegendProperty[];
     public invoiceChartTabs: Tabs[] = ChartHelper.generateTimeTabs();
 
+    public mileageChartData!: BrokerMileageRateResponse;
     public mileageChartConfig!: IChartConfiguration;
     public mileageChartLegendData!: ChartLegendProperty[];
     public mileageChartTabs: Tabs[] = ChartHelper.generateTimeTabs();
 
+    public paymentChartData!: IBrokerPaymentHistory;
     public paymentChartConfig!: IChartConfiguration;
     public paymentChartLegendData!: ChartLegendProperty[];
     public paymentChartTabs: Tabs[] = ChartHelper.generateTimeTabs();
@@ -175,20 +178,21 @@ export class BrokerDetailsCardComponent
             .subscribe((response: BrokerMileageRateResponse) => {
                 if (timeFilter && this.mileageChartTabs[timeFilter - 1])
                     this.mileageChartTabs[timeFilter - 1].checked = true;
+
+                this.mileageChartData = { ...response };
+
                 this.mileageChartConfig = {
                     ...BrokerChartsConfiguration.MILEAGE_CHART_CONFIG,
                     chartData: ChartHelper.generateDataByDateTime<BrokerMileageRateChartResponse>(
-                        response.brokerMileageRateChartResponse,
+                        this.mileageChartData.brokerMileageRateChartResponse,
                         ChartConfiguration.mileageRateConfiguration,
                         timeFilter
                     )
                 };
                 this.mileageChartLegendData =
-                    ChartLegendConfiguration.mileageLegendConfiguration(response);
+                    ChartLegendConfiguration.mileageLegendConfiguration(this.mileageChartData);
             });
     }
-
-
 
     private getInvoiceChartData(timeFilter?: number): void {
         this.brokerService.getInvoiceChartData(this.broker.id, timeFilter || 1)
@@ -196,16 +200,20 @@ export class BrokerDetailsCardComponent
             .subscribe((response: BrokerPaidInvoiceResponse) => {
                 if (timeFilter && this.invoiceChartTabs[timeFilter - 1])
                     this.invoiceChartTabs[timeFilter - 1].checked = true;
+
+                this.invoiceChartData = { ...response };
+
                 this.invoiceChartConfig = {
                     ...BrokerChartsConfiguration.INVOICE_CHART_CONFIG,
                     chartData: ChartHelper.generateDataByDateTime<BrokerPaidInvoiceChartResponse>
                         (
-                            response.brokerPaidInvoiceChartResponse,
+                            this.invoiceChartData.brokerPaidInvoiceChartResponse,
                             ChartConfiguration.brokerPaidInvoiceConfiguration,
                             timeFilter
                         )
                 };
-                this.invoiceChartLegend = ChartLegendConfiguration.invoiceChartLegendConfiguration(response);
+                this.invoiceChartLegend =
+                    ChartLegendConfiguration.invoiceChartLegendConfiguration(this.invoiceChartData);
             })
     }
 
@@ -231,23 +239,26 @@ export class BrokerDetailsCardComponent
                 })
             )
             .subscribe((response: IBrokerPaymentHistory) => {
+
                 if (timeFilter && this.invoiceChartTabs[timeFilter - 1])
                     this.invoiceChartTabs[timeFilter - 1].checked = true;
 
+                this.paymentChartData = { ...response };
+
                 const paymentHistoryDataConfig: ChartTypeProperty[] =
-                    ChartConfiguration.paymentHistoryConfiguration(response);
+                    ChartConfiguration.paymentHistoryConfiguration(this.paymentChartData);
 
                 this.paymentChartConfig = {
                     ...BrokerChartsConfiguration.PAYMENT_CHART_CONFIG,
                     chartData: ChartHelper.generateDataByDateTime<IBrokerPaymentHistory>
                         (
-                            response.brokerPaymentHistoryChartResponse,
+                            this.paymentChartData.brokerPaymentHistoryChartResponse,
                             paymentHistoryDataConfig,
                             timeFilter
                         ),
                     annotations: [
                         {
-                            value: response.payTerm,
+                            value: this.paymentChartData.payTerm,
                             type: EChartAnnotationType.LINE,
                             axis: EChartEventProperties.Y_AXIS_0,
                             color: paymentHistoryDataConfig[0].color,
@@ -256,8 +267,21 @@ export class BrokerDetailsCardComponent
                 };
 
                 this.paymentChartLegendData = ChartLegendConfiguration
-                    .brokerPaymentHistory(response);
+                    .brokerPaymentHistory(this.paymentChartData);
             })
+    }
+
+    public setMileageLegendOnHover(index: number): void {
+        this.mileageChartLegendData =
+            ChartLegendConfiguration.mileageLegendConfiguration(this.mileageChartData.brokerMileageRateChartResponse[index]);
+    }
+
+    public setInvoiceLegendOnHover(index: number): void {
+        this.invoiceChartLegend = ChartLegendConfiguration.invoiceChartLegendConfiguration(this.invoiceChartData.brokerPaidInvoiceChartResponse[index])
+    }
+
+    public setPaymentHistoryLegendOnHover(index: number): void {
+        this.paymentChartLegendData = ChartLegendConfiguration.brokerPaymentHistory(this.paymentChartData.brokerPaymentHistoryChartResponse[index]);
     }
 
     public tabsButton(): void {

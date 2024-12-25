@@ -2,7 +2,7 @@
     <app-ta-details-header-card
         [ngClass]="{
             disabedPreviousArrow: !brokerIndex,
-            disableNextArrow: brokerIndex === brokerList.length - 1
+            disableNextArrow: brokerIndex === brokerList.length - 1,
         }"
         [cardDetailsDate]="broker?.createdAt | formatDateP"
         [tooltipNext]="
@@ -89,7 +89,7 @@
                     [isCardOpen]="true"
                     [animationMarginParams]="{
                         marginTop: '0px',
-                        marginBottom: '10px'
+                        marginBottom: '10px',
                     }"
                     [customClass]="'detailsPadding'"
                 >
@@ -116,7 +116,7 @@
                 [isCardOpen]="true"
                 [animationMarginParams]="{
                     marginTop: '0px',
-                    marginBottom: '10px'
+                    marginBottom: '10px',
                 }"
                 [customClass]="'detailsPadding'"
             >
@@ -133,7 +133,10 @@
                         <app-ta-chart-legend
                             [data]="invoiceChartLegend"
                         ></app-ta-chart-legend>
-                        <app-ca-chart [chartConfig]="invoiceChartConfig">
+                        <app-ca-chart
+                            [chartConfig]="invoiceChartConfig"
+                            (hoveredIndex)="setInvoiceLegendOnHover($event)"
+                        >
                         </app-ca-chart>
                     </ng-container>
                 </div>
@@ -147,7 +150,7 @@
                 [hasHeaderSvg]="brokerDetailsSvgRoutes.rightArrowIcon"
                 [animationMarginParams]="{
                     marginTop: '0px',
-                    marginBottom: '10px'
+                    marginBottom: '10px',
                 }"
                 [customClass]="'detailsPadding'"
             >
@@ -165,7 +168,10 @@
                         <app-ta-chart-legend
                             [data]="mileageChartLegendData"
                         ></app-ta-chart-legend>
-                        <app-ca-chart [chartConfig]="mileageChartConfig">
+                        <app-ca-chart
+                            [chartConfig]="mileageChartConfig"
+                            (hoveredIndex)="setMileageLegendOnHover($event)"
+                        >
                         </app-ca-chart>
                     </ng-container>
                 </div>
@@ -177,7 +183,7 @@
                 [isCardOpen]="true"
                 [animationMarginParams]="{
                     marginTop: '0px',
-                    marginBottom: '10px'
+                    marginBottom: '10px',
                 }"
                 [customClass]="'detailsPadding'"
             >
@@ -202,16 +208,16 @@
                     <div
                         class="table-progress-bar-container my-2"
                         [ngClass]="
-                            getPercentageOfPaid | progressBarColors : false
+                            getPercentageOfPaid | progressBarColors: false
                         "
                     >
                         <div
                             class="table-progress-bar"
                             [ngClass]="
-                                getPercentageOfPaid | progressBarColors : true
+                                getPercentageOfPaid | progressBarColors: true
                             "
                             [ngStyle]="{
-                                width: getPercentageOfPaid + '%'
+                                width: getPercentageOfPaid + '%',
                             }"
                         ></div>
                     </div>
@@ -247,7 +253,7 @@
                 [isCardOpen]="true"
                 [animationMarginParams]="{
                     marginTop: '0px',
-                    marginBottom: '10px'
+                    marginBottom: '10px',
                 }"
                 [customClass]="'detailsPadding'"
             >
@@ -427,7 +433,7 @@
                 [hasHeaderSvg]="brokerDetailsSvgRoutes.rightArrowIcon"
                 [animationMarginParams]="{
                     marginTop: '0px',
-                    marginBottom: '10px'
+                    marginBottom: '10px',
                 }"
                 [customClass]="'detailsPadding'"
             >
@@ -444,7 +450,12 @@
                         <app-ta-chart-legend
                             [data]="paymentChartLegendData"
                         ></app-ta-chart-legend>
-                        <app-ca-chart [chartConfig]="paymentChartConfig">
+                        <app-ca-chart
+                            [chartConfig]="paymentChartConfig"
+                            (hoveredIndex)="
+                                setPaymentHistoryLegendOnHover($event)
+                            "
+                        >
                         </app-ca-chart>
                     </ng-container>
                 </div>
