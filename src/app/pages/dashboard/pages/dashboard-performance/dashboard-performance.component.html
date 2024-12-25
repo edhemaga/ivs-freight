@@ -446,13 +446,47 @@
             ></app-dashboard-loading-placeholder>
         </ng-container>
         <ng-container *ngIf="!isLoading">
+            <div
+                class="w-100 d-flex justify-content-between align-items-center chart-header"
+            >
+                <div class="chart-header-title">
+                    <p>{{ lineChartTitle }}</p>
+                </div>
+                <div class="d-flex justify-content-between chart-header-legend">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <svg-icon
+                            class="circle-icon circle-icon-price"
+                            [src]="
+                                'assets/svg/common/load/ic_circle-default-load.svg'
+                            "
+                            [svgStyle]="{
+                                'width.px': 10,
+                                'height.px': 10
+                            }"
+                        ></svg-icon>
+                        <p>Price per Galon</p>
+                    </div>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <svg-icon
+                            class="circle-icon circle-icon-rate"
+                            [src]="
+                                'assets/svg/common/load/ic_circle-default-load.svg'
+                            "
+                            [svgStyle]="{
+                                'width.px': 10,
+                                'height.px': 10
+                            }"
+                        ></svg-icon>
+                        <p>Load Rate per Mile</p>
+                    </div>
+                </div>
+            </div>
             <app-ca-chart
+                #performanceChart
                 [chartConfig]="linePerformanceChartConfig"
             >
             </app-ca-chart>
-            <app-ca-chart
-                [chartConfig]="barPerformanceChartConfig"
-            >
+            <app-ca-chart [chartConfig]="barPerformanceChartConfig">
             </app-ca-chart>
         </ng-container>
     </div>

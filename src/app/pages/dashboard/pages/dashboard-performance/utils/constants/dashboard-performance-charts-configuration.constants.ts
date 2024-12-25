@@ -16,7 +16,8 @@ export class DashboardPerformanceChartsConfiguration {
         noDataImage: ChartImagesStringEnum.CHART_NO_DATA_PAY,
         chartOptions: {},
         showXAxisLabels: false,
-        showTooltipBackground: true
+        showTooltipBackground: true,
+        showHighlightPointOnHover: true
     };
 
     static BAR_CHART_PERFORMANCE_CONFIG = {
@@ -30,6 +31,7 @@ export class DashboardPerformanceChartsConfiguration {
         noDataImage: ChartImagesStringEnum.CHART_NO_DATA_PAY,
         chartOptions: {},
         showXAxisLabels: true, 
-        showTooltipBackground: true
+        showTooltipBackground: true,
+        verticalyAlignBarChartWithLineCart: true,
     };
 }
