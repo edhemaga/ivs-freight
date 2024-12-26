@@ -25,7 +25,7 @@ import { MethodsGlobalHelper } from '@shared/utils/helpers/methods-global.helper
 import { getToolsContactsColumnDefinition } from '@shared/utils/settings/table-settings/contacts-columns';
 import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calculations.helper';
 import { AvatarColorsHelper } from '@shared/utils/helpers/avatar-colors.helper';
-import { DropdownContentHelper } from '@shared/utils/helpers';
+import { DropdownMenuContentHelper } from '@shared/utils/helpers';
 
 // enums
 import { ContactsStringEnum } from '@pages/contacts/enums/contacts-string.enum';
@@ -523,12 +523,12 @@ export class ContactsTableComponent
             ),
             tableDropdownContent: {
                 hasContent: true,
-                content: this.getDropdownContactContent(),
+                content: this.getContactDropdownContent(),
             },
         };
     }
-    public getDropdownContactContent(): DropdownItem[] {
-        return DropdownContentHelper.getDropdownContactContent();
+    public getContactDropdownContent(): DropdownItem[] {
+        return DropdownMenuContentHelper.getContactDropdownContent();
     }
 
     // Contact Back Filter

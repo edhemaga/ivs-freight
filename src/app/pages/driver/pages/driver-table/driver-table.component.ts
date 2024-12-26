@@ -49,7 +49,7 @@ import { MethodsGlobalHelper } from '@shared/utils/helpers/methods-global.helper
 import { AvatarColorsHelper } from '@shared/utils/helpers/avatar-colors.helper';
 import { DataFilterHelper } from '@shared/utils/helpers/data-filter.helper';
 import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calculations.helper';
-import { DropdownContentHelper } from '@shared/utils/helpers';
+import { DropdownMenuContentHelper } from '@shared/utils/helpers';
 
 // enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
@@ -1020,7 +1020,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
             fileCount: fileCount,
             tableDropdownContent: {
                 hasContent: true,
-                content: this.getDropdownDriverContent(),
+                content: this.getDriverDropdownContent(),
             },
         };
     }
@@ -1113,7 +1113,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
             isFavorite: false,
             tableDropdownContent: {
                 hasContent: true,
-                content: this.getDropdownApplicantContent(
+                content: this.getApplicantDropdownContent(
                     archivedDate,
                     applicationStatus,
                     review
@@ -1122,16 +1122,18 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
         };
     }
 
-    private getDropdownDriverContent(): DropdownItem[] {
-        return DropdownContentHelper.getDropdownDriverContent(this.selectedTab);
+    private getDriverDropdownContent(): DropdownItem[] {
+        return DropdownMenuContentHelper.getDriverDropdownContent(
+            this.selectedTab
+        );
     }
 
-    private getDropdownApplicantContent(
+    private getApplicantDropdownContent(
         archivedDate: string,
         applicationStatus: string,
         review: string
     ): DropdownItem[] {
-        return DropdownContentHelper.getDropdownApplicantContent(
+        return DropdownMenuContentHelper.getApplicantDropdownContent(
             archivedDate,
             applicationStatus,
             review

@@ -21,7 +21,7 @@ import { getUsersColumnDefinition } from '@shared/utils/settings/table-settings/
 import { MethodsGlobalHelper } from '@shared/utils/helpers/methods-global.helper';
 import { DataFilterHelper } from '@shared/utils/helpers/data-filter.helper';
 import { AvatarColorsHelper } from '@shared/utils/helpers/avatar-colors.helper';
-import { DropdownContentHelper } from '@shared/utils/helpers';
+import { DropdownMenuContentHelper } from '@shared/utils/helpers';
 
 // store
 import { UserActiveQuery } from '@pages/user/state/user-active-state/user-active.query';
@@ -624,7 +624,7 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
             // User Dropdown Action Set Up
             tableDropdownContent: {
                 hasContent: true,
-                content: this.getDropdownUserContent(
+                content: this.getUserDropdownContent(
                     data.userStatus,
                     isInvitationSent
                 ),
@@ -632,11 +632,11 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
         };
     }
 
-    public getDropdownUserContent(
+    public getUserDropdownContent(
         userStatus: string,
         isInvitationSent: boolean
     ): DropdownItem[] {
-        return DropdownContentHelper.getDropdownUserContent(
+        return DropdownMenuContentHelper.getUserDropdownContent(
             this.selectedTab,
             userStatus,
             isInvitationSent

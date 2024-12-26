@@ -1,13 +1,18 @@
 // enums
-import { TableStringEnum } from '@shared/enums/table-string.enum';
+import { DropdownMenuStringEnum, TableStringEnum } from '@shared/enums';
+
+// helpers
+import { DropdownMenuConditionalItemsHelper } from '@shared/utils/helpers/dropdown-menu-helpers';
 
 // models
 import { DropdownItem } from '@shared/models/card-models/card-table-data.model';
 import { RepairDropdownTableModel } from '@pages/repair/pages/repair-table/models';
+import { DropdownMenuItem } from '@ca-shared/components/ca-dropdown-menu/models';
+import { OptionsPopupContent } from '@shared/components/ta-table/ta-table-toolbar/models/options-popup-content.model';
 
-export class DropdownContentHelper {
+export class DropdownMenuContentHelper {
     // account
-    static getDropdownAccountContent(url: string): DropdownItem[] {
+    static getAccountDropdownContent(url: string): DropdownItem[] {
         return [
             {
                 title: TableStringEnum.EDIT_2,
@@ -101,7 +106,7 @@ export class DropdownContentHelper {
     }
 
     // driver
-    static getDropdownDriverContent(selectedTab: string): DropdownItem[] {
+    static getDriverDropdownContent(selectedTab: string): DropdownItem[] {
         return [
             {
                 title: TableStringEnum.EDIT_2,
@@ -263,7 +268,7 @@ export class DropdownContentHelper {
     }
 
     // driver applicant
-    static getDropdownApplicantContent(
+    static getApplicantDropdownContent(
         archivedDate: string,
         applicationStatus: string,
         review: string
@@ -407,7 +412,7 @@ export class DropdownContentHelper {
     }
 
     // repair
-    static getRepairTableDropdownContent(
+    static getRepairDropdownContent(
         tabSelected: string,
         repairType: string
     ): RepairDropdownTableModel[] {
@@ -501,7 +506,7 @@ export class DropdownContentHelper {
     }
 
     // repair shop
-    static getRepairShopTableDropdownContent(
+    static getRepairShopDropdownContent(
         status: number,
         isPinned: boolean,
         isCompanyOwned: boolean
@@ -628,7 +633,7 @@ export class DropdownContentHelper {
     }
 
     // trailer
-    static getDropdownTrailerContent(
+    static getTrailerDropdownContent(
         status: number,
         selectedTab: string
     ): DropdownItem[] {
@@ -723,7 +728,7 @@ export class DropdownContentHelper {
     }
 
     // truck
-    static getDropdownTruckContent(
+    static getTruckDropdownContent(
         status: number,
         selectedTab: string
     ): DropdownItem[] {
@@ -816,7 +821,7 @@ export class DropdownContentHelper {
     }
 
     // fuel transaction
-    static getDropdownFuelTransactionContent(
+    static getFuelTransactionDropdownContent(
         isAutomaticTransaction: boolean
     ): DropdownItem[] {
         return [
@@ -894,12 +899,12 @@ export class DropdownContentHelper {
     }
 
     // fuel stop
-    static getDropdownFuelStopContent(): DropdownItem[] {
+    static getFuelStopDropdownContent(): DropdownItem[] {
         return [];
     }
 
     // contacts
-    static getDropdownContactContent(): DropdownItem[] {
+    static getContactDropdownContent(): DropdownItem[] {
         return [
             {
                 title: 'Edit',
@@ -1030,7 +1035,7 @@ export class DropdownContentHelper {
     }
 
     // owner
-    static getDropdownOwnerContent(selectedTab: string): DropdownItem[] {
+    static getOwnerDropdownContent(selectedTab: string): DropdownItem[] {
         return [
             {
                 title: TableStringEnum.EDIT_2,
@@ -1082,7 +1087,7 @@ export class DropdownContentHelper {
     }
 
     // broker
-    static getDropdownBrokerContent(
+    static getBrokerDropdownContent(
         status: number,
         ban?: boolean,
         dnu?: boolean
@@ -1245,7 +1250,7 @@ export class DropdownContentHelper {
     }
 
     // shipper
-    static getDropdownShipperContent(status: number): DropdownItem[] {
+    static getShipperDropdownContent(status: number): DropdownItem[] {
         return [
             {
                 title: TableStringEnum.EDIT_2,
@@ -1331,7 +1336,7 @@ export class DropdownContentHelper {
     }
 
     // load
-    static getDropdownLoadContent(selectedTab: string): DropdownItem[] {
+    static getLoadDropdownContent(selectedTab: string): DropdownItem[] {
         return [
             {
                 title: 'Edit',
@@ -1421,7 +1426,7 @@ export class DropdownContentHelper {
     }
 
     // user
-    static getDropdownUserContent(
+    static getUserDropdownContent(
         selectedTab: string,
         userStatus: string,
         isInvitationSent: boolean
@@ -1514,6 +1519,104 @@ export class DropdownContentHelper {
                 isDisabled: userStatus === TableStringEnum.OWNER,
                 svgClass: TableStringEnum.DELETE,
             },
+        ];
+    }
+
+    // payroll
+    static getPayrollDropdownContent(
+        isOpenPayroll: boolean = false
+    ): DropdownMenuItem[] {
+        const conditionalItems = isOpenPayroll
+            ? [
+                  DropdownMenuStringEnum.EDIT_LOAD,
+                  DropdownMenuStringEnum.EDIT_PAYROLL,
+              ]
+            : [DropdownMenuStringEnum.RESEND_REPORT];
+
+        const sharedItems = [
+            DropdownMenuStringEnum.SHARE,
+            DropdownMenuStringEnum.PRINT,
+        ];
+
+        const additionalItems = !isOpenPayroll
+            ? [
+                  DropdownMenuStringEnum.PREVIEW_REPORT,
+                  DropdownMenuStringEnum.DOWNLOAD,
+              ]
+            : [];
+
+        return [
+            ...DropdownMenuConditionalItemsHelper.getConditionalItems(
+                conditionalItems,
+                false
+            ),
+            ...DropdownMenuConditionalItemsHelper.getConditionalItems(
+                sharedItems,
+                true
+            ),
+            ...DropdownMenuConditionalItemsHelper.getConditionalItems(
+                additionalItems,
+                false
+            ),
+        ];
+    }
+
+    // payroll select load
+    static getPayrollSelectLoadDropdownContent(
+        loadList: { id: number; title: string }[]
+    ): DropdownMenuItem[] {
+        return [
+            {
+                title: DropdownMenuStringEnum.EDIT_LOAD,
+                type: DropdownMenuStringEnum.EDIT_LOAD_TYPE,
+                titleOptionalClass: 'ca-font-extra-bold',
+                svgUrl: 'assets/ca-components/svg/applicant/close-x.svg',
+                svgClass: DropdownMenuStringEnum.REGULAR,
+                hasBorder: true,
+            },
+            ...loadList,
+        ];
+    }
+
+    // table toolbar - hamburger - table options
+    static getTableToolbarDropdownContent(): OptionsPopupContent[] {
+        return [
+            {
+                text: TableStringEnum.COLUMNS,
+                svgPath: 'assets/svg/truckassist-table/columns-new.svg',
+                active: false,
+                hide: false,
+                showBackToList: false,
+                hasOwnSubOpions: true,
+                backToListIcon:
+                    'assets/svg/truckassist-table/arrow-back-to-list.svg',
+            },
+            {
+                text: TableStringEnum.UNLOCK_TABLE,
+                svgPath: 'assets/svg/truckassist-table/lock-new.svg',
+                active: false,
+                hide: false,
+            },
+            {
+                text: TableStringEnum.RESET_TABLE,
+                svgPath: 'assets/svg/truckassist-table/reset-icon.svg',
+                isInactive: true,
+                active: false,
+                hide: false,
+            } /* ,
+            {
+                text: TableStringEnum.IMPORT,
+                svgPath: 'assets/svg/truckassist-table/import-new.svg',
+                active: false,
+                hide: false,
+                hasTopBorder: true,
+            },
+            {
+                text: TableStringEnum.EXPORT,
+                svgPath: 'assets/svg/truckassist-table/export-new.svg',
+                active: false,
+                hide: false,
+            }, */,
         ];
     }
 }

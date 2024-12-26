@@ -81,7 +81,7 @@ import { FuelCardsModalService } from '@pages/fuel/pages/fuel-card-modal/service
 
 // helpers
 import { AvatarColorsHelper } from '@shared/utils/helpers/avatar-colors.helper';
-import { DropdownContentHelper } from '@shared/utils/helpers';
+import { DropdownMenuContentHelper } from '@shared/utils/helpers';
 
 @Component({
     selector: 'app-fuel-table',
@@ -689,7 +689,7 @@ export class FuelTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 fuelTransactionTypeId !== eFuelTransactionType.Manual,
             tableDropdownContent: {
                 hasContent: true,
-                content: this.getDropdownFuelTransactionContent(false),
+                content: this.getFuelTransactionDropdownContent(false),
             },
         };
     }
@@ -786,22 +786,22 @@ export class FuelTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 : null,
             tableDropdownContent: {
                 hasContent: true,
-                content: this.getDropdownFuelStopContent(),
+                content: this.getFuelStopDropdownContent(),
             },
         };
     }
 
-    private getDropdownFuelTransactionContent(
+    private getFuelTransactionDropdownContent(
         isAutomaticTransaction: boolean
     ): DropdownItem[] {
-        return DropdownContentHelper.getDropdownFuelTransactionContent(
+        return DropdownMenuContentHelper.getFuelTransactionDropdownContent(
             isAutomaticTransaction
         );
     }
 
-    private getDropdownFuelStopContent(): DropdownItem[] {
+    private getFuelStopDropdownContent(): DropdownItem[] {
         // TODO
-        return DropdownContentHelper.getDropdownFuelStopContent();
+        return DropdownMenuContentHelper.getFuelStopDropdownContent();
     }
 
     onToolBarAction(event: any) {

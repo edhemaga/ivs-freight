@@ -27,20 +27,19 @@
                             <div class="report-tickets d-f-aic-jcc">
                                 EMPTY
                                 <span>{{
-                                    payroll_report?.emptyMile | currency : 'USD'
+                                    payroll_report?.emptyMile | currency: 'USD'
                                 }}</span>
                             </div>
                             <div class="report-tickets d-f-aic-jcc">
                                 LOADED
                                 <span>{{
-                                    payroll_report?.loadedMile
-                                        | currency : 'USD'
+                                    payroll_report?.loadedMile | currency: 'USD'
                                 }}</span>
                             </div>
                             <div class="report-tickets d-f-aic-jcc">
                                 EXTRA STOP
                                 <span>{{
-                                    payroll_report?.perStop | currency : 'USD'
+                                    payroll_report?.perStop | currency: 'USD'
                                 }}</span>
                             </div>
                             <div
@@ -54,10 +53,12 @@
                                 ></svg-icon>
                             </div>
                             <div class="edit d-f-aic-jcc burger_menu">
-                                <ca-burger-menu
-                                    [optionsPopupContent]="optionsPopupContent"
-                                    (onClick)="openMenu($event)"
-                                ></ca-burger-menu>
+                                <ca-dropdown-menu
+                                    [type]="'select-menu-type'"
+                                    [options]="dropdownMenuOptions"
+                                    (dropdownOptionEmitter)="openMenu($event)"
+                                >
+                                </ca-dropdown-menu>
                             </div>
                         </div>
                     </div>
@@ -92,7 +93,7 @@
                         Period
                         {{
                             (payrollReport$ | async).periodStart
-                                | date : 'MM/dd/yy'
+                                | date: 'MM/dd/yy'
                         }}
                     </div>
                 </div>
@@ -120,7 +121,7 @@
 <ng-template #customFeeTemplate let-data let-index="index">
     <ng-container *ngIf="data">
         <div class="custom-fee-template">
-            +{{ data | currency : 'USD' : 'symbol' : '1.0-0' }}
+            +{{ data | currency: 'USD' : 'symbol' : '1.0-0' }}
         </div>
     </ng-container>
 </ng-template>
@@ -138,10 +139,12 @@
         </ng-container>
 
         <div class="load-description-name">
-            <div class="load-description-address">{{ data.address }}
+            <div class="load-description-address">
+                {{ data.address }}
                 <ng-container *ngIf="data.isTonu"
                     ><span class="load-description-tonu">T</span></ng-container
-                ></div>
+                >
+            </div>
             <div class="load-description-stop-type">
                 {{ data.stopType.name }}
             </div>

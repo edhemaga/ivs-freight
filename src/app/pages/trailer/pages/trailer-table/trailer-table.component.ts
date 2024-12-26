@@ -41,7 +41,7 @@ import { ThousandSeparatorPipe } from '@shared/pipes/thousand-separator.pipe';
 
 // helpers
 import { DataFilterHelper } from '@shared/utils/helpers/data-filter.helper';
-import { DropdownContentHelper } from '@shared/utils/helpers';
+import { DropdownMenuContentHelper } from '@shared/utils/helpers';
 
 // animations
 import { MethodsGlobalHelper } from '@shared/utils/helpers/methods-global.helper';
@@ -703,15 +703,15 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
             fileCount: fileCount,
             tableDropdownContent: {
                 hasContent: true,
-                content: this.getDropdownTrailerContent(status),
+                content: this.getTrailerDropdownContent(status),
             },
             createdAt,
             updatedAt,
         };
     }
 
-    public getDropdownTrailerContent(status: number): DropdownItem[] {
-        return DropdownContentHelper.getDropdownTrailerContent(
+    public getTrailerDropdownContent(status: number): DropdownItem[] {
+        return DropdownMenuContentHelper.getTrailerDropdownContent(
             status,
             this.selectedTab
         );
