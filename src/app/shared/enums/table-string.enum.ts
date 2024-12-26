@@ -237,7 +237,7 @@ export enum TableStringEnum {
 
     MEDICAL_EXAM = 'medical-exam',
     MEDICAL_EXAM_2 = 'Medical-exam',
-    MEDICAL_EXAM_3 = 'Medical-Exam',
+    MEDICAL_EXAM_3 = 'Medical Exam',
 
     BACKGROUND_CHECK = 'background-check',
     BACKGROUND_CHECK_2 = 'Background-check',
