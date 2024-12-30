@@ -188,9 +188,6 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
         this.deleteSelectedRow();
 
         this.driverActions();
-
-        console.log(this.tableData);
-
     }
 
     ngAfterViewInit(): void {
