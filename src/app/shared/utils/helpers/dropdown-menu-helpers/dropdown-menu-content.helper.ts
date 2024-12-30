@@ -1573,6 +1573,7 @@ export class DropdownMenuContentHelper {
                 svgUrl: 'assets/ca-components/svg/applicant/close-x.svg',
                 svgClass: DropdownMenuStringEnum.REGULAR,
                 hasBorder: true,
+                isSelectMenuTypeActionItem: true,
             },
             ...loadList,
         ];
