@@ -33,7 +33,13 @@ import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-cust
 import { TaInputNoteComponent } from '@shared/components/ta-input-note/ta-input-note.component';
 import { DriverCdlModalComponent } from '@pages/driver/pages/driver-modals/driver-cdl-modal/driver-cdl-modal.component';
 import { ConfirmationModalComponent } from '@shared/components/ta-shared-modals/confirmation-modal/confirmation-modal.component';
-
+import {
+    CaInputDropdownComponent,
+    CaInputComponent,
+    CaUploadFilesComponent,
+    CaInputNoteComponent,
+    CaNoteComponent
+} from 'ca-components';
 // enums
 import { DriverMVrModalStringEnum } from '@pages/driver/pages/driver-modals/driver-mvr-modal/enums/driver-mvrl-modal-string.enum';
 
@@ -63,6 +69,12 @@ import { MvrResponse } from 'appcoretruckassist';
         TaInputComponent,
         TaCustomCardComponent,
         TaInputNoteComponent,
+
+        CaInputDropdownComponent,
+        CaInputComponent,
+        CaUploadFilesComponent,
+        CaInputNoteComponent,
+        CaNoteComponent,
     ],
 })
 export class DriverMvrModalComponent implements OnInit, OnDestroy {
@@ -103,7 +115,7 @@ export class DriverMvrModalComponent implements OnInit, OnDestroy {
 
         // bootstrap
         private ngbActiveModal: NgbActiveModal
-    ) {}
+    ) { }
 
     ngOnInit(): void {
         this.createForm();
