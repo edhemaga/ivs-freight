@@ -87,6 +87,12 @@ import { TaTabSwitchComponent } from '@shared/components/ta-tab-switch/ta-tab-sw
 import { ApplicantTruckDetailsComponent } from '@pages/applicant/pages/applicant-owner-info/components/applicant-truck-details/applicant-truck-details.component';
 import { ApplicantTrailerDetailsComponent } from '@pages/applicant/pages/applicant-owner-info/components/applicant-trailer-details/applicant-trailer-details.component';
 import { ApplicantNextBackBtnComponent } from '@pages/applicant/components/applicant-buttons/applicant-next-back-btn/applicant-next-back-btn.component';
+import {
+    CaInputComponent,
+    CaInputDropdownComponent,
+    CaInputAddressDropdownComponent,
+    CaUploadFilesComponent
+} from 'ca-components';
 
 // modules
 import { ApplicantModule } from '@pages/applicant/applicant.module';
@@ -119,7 +125,12 @@ import { BusinessDetailsConfig } from '@pages/applicant/pages/applicant-owner-in
         TaUploadFilesComponent,
         ApplicantTruckDetailsComponent,
         ApplicantTrailerDetailsComponent,
-        ApplicantNextBackBtnComponent
+        ApplicantNextBackBtnComponent,
+
+        CaInputComponent,
+        CaInputDropdownComponent,
+        CaInputAddressDropdownComponent,
+        CaUploadFilesComponent,
     ],
 })
 export class ApplicantOwnerInfoComponent implements OnInit, OnDestroy {
@@ -229,98 +240,98 @@ export class ApplicantOwnerInfoComponent implements OnInit, OnDestroy {
         displayAnnotationButton?: boolean;
         displayAnnotationTextArea?: boolean;
     }[] = [
-        {
-            lineIndex: 0,
-            lineInputs: [false, false],
-            displayAnnotationButton: false,
-            displayAnnotationTextArea: false,
-        },
-        {
-            lineIndex: 1,
-            lineInputs: [false, false],
-            displayAnnotationButton: false,
-            displayAnnotationTextArea: false,
-        },
-        {
-            lineIndex: 2,
-            lineInputs: [false, false],
-            displayAnnotationButton: false,
-            displayAnnotationTextArea: false,
-        },
-        {
-            lineIndex: 3,
-            lineInputs: [false],
-            displayAnnotationButton: false,
-            displayAnnotationTextArea: false,
-        },
-        {
-            lineIndex: 4,
-            lineInputs: [false, false],
-            displayAnnotationButton: false,
-            displayAnnotationTextArea: false,
-        },
-        {
-            lineIndex: 5,
-            lineInputs: [false],
-            displayAnnotationButton: false,
-            displayAnnotationTextArea: false,
-        },
-        {
-            lineIndex: 6,
-            lineInputs: [false],
-            displayAnnotationButton: false,
-            displayAnnotationTextArea: false,
-        },
-        {
-            lineIndex: 7,
-            lineInputs: [false],
-            displayAnnotationButton: false,
-            displayAnnotationTextArea: false,
-        },
-        {
-            lineIndex: 8,
-            lineInputs: [false],
-            displayAnnotationButton: false,
-            displayAnnotationTextArea: false,
-        },
-    ];
+            {
+                lineIndex: 0,
+                lineInputs: [false, false],
+                displayAnnotationButton: false,
+                displayAnnotationTextArea: false,
+            },
+            {
+                lineIndex: 1,
+                lineInputs: [false, false],
+                displayAnnotationButton: false,
+                displayAnnotationTextArea: false,
+            },
+            {
+                lineIndex: 2,
+                lineInputs: [false, false],
+                displayAnnotationButton: false,
+                displayAnnotationTextArea: false,
+            },
+            {
+                lineIndex: 3,
+                lineInputs: [false],
+                displayAnnotationButton: false,
+                displayAnnotationTextArea: false,
+            },
+            {
+                lineIndex: 4,
+                lineInputs: [false, false],
+                displayAnnotationButton: false,
+                displayAnnotationTextArea: false,
+            },
+            {
+                lineIndex: 5,
+                lineInputs: [false],
+                displayAnnotationButton: false,
+                displayAnnotationTextArea: false,
+            },
+            {
+                lineIndex: 6,
+                lineInputs: [false],
+                displayAnnotationButton: false,
+                displayAnnotationTextArea: false,
+            },
+            {
+                lineIndex: 7,
+                lineInputs: [false],
+                displayAnnotationButton: false,
+                displayAnnotationTextArea: false,
+            },
+            {
+                lineIndex: 8,
+                lineInputs: [false],
+                displayAnnotationButton: false,
+                displayAnnotationTextArea: false,
+            },
+        ];
     public openSoleAnnotationArray: {
         lineIndex?: number;
         lineInputs?: boolean[];
         displayAnnotationButton?: boolean;
         displayAnnotationTextArea?: boolean;
     }[] = [
-        {
-            lineIndex: 0,
-            lineInputs: [false],
-            displayAnnotationButton: false,
-            displayAnnotationTextArea: false,
-        },
-        {
-            lineIndex: 1,
-            lineInputs: [false, false],
-            displayAnnotationButton: false,
-            displayAnnotationTextArea: false,
-        },
-        {
-            lineIndex: 2,
-            lineInputs: [false],
-            displayAnnotationButton: false,
-            displayAnnotationTextArea: false,
-        },
-        {
-            lineIndex: 3,
-            lineInputs: [false],
-            displayAnnotationButton: false,
-            displayAnnotationTextArea: false,
-        },
-        {
-            lineIndex: 4,
-            lineInputs: [false],
-            displayAnnotationButton: false,
-            displayAnnotationTextArea: false,
-        },
-    ];
+            {
+                lineIndex: 0,
+                lineInputs: [false],
+                displayAnnotationButton: false,
+                displayAnnotationTextArea: false,
+            },
+            {
+                lineIndex: 1,
+                lineInputs: [false, false],
+                displayAnnotationButton: false,
+                displayAnnotationTextArea: false,
+            },
+            {
+                lineIndex: 2,
+                lineInputs: [false],
+                displayAnnotationButton: false,
+                displayAnnotationTextArea: false,
+            },
+            {
+                lineIndex: 3,
+                lineInputs: [false],
+                displayAnnotationButton: false,
+                displayAnnotationTextArea: false,
+            },
+            {
+                lineIndex: 4,
+                lineInputs: [false],
+                displayAnnotationButton: false,
+                displayAnnotationTextArea: false,
+            },
+        ];
     public hasIncorrectFields: boolean = false;
 
     public stepFeedbackValues!: any;
@@ -340,7 +351,7 @@ export class ApplicantOwnerInfoComponent implements OnInit, OnDestroy {
         private applicantQuery: ApplicantQuery,
         private router: Router,
         private route: ActivatedRoute
-    ) {}
+    ) { }
 
     get businessNameInputConfig(): ITaInput {
         return BusinessDetailsConfig.getBusinessNameInputConfig({
@@ -607,7 +618,7 @@ export class ApplicantOwnerInfoComponent implements OnInit, OnDestroy {
                     lineInputs: [!isBusinessNameValid, !isEinValid],
                     displayAnnotationButton:
                         (!isBusinessNameValid || !isEinValid) &&
-                        !businessNameEinMessage
+                            !businessNameEinMessage
                             ? true
                             : false,
                     displayAnnotationTextArea: businessNameEinMessage
@@ -628,7 +639,7 @@ export class ApplicantOwnerInfoComponent implements OnInit, OnDestroy {
                     lineInputs: [!isAddressValid, !isAddressUnitValid],
                     displayAnnotationButton:
                         (!isAddressValid || !isAddressUnitValid) &&
-                        !addressMessage
+                            !addressMessage
                             ? true
                             : false,
                     displayAnnotationTextArea: addressMessage ? true : false,
@@ -652,7 +663,7 @@ export class ApplicantOwnerInfoComponent implements OnInit, OnDestroy {
                     lineInputs: [!isTruckModelValid, !isTruckYearValid],
                     displayAnnotationButton:
                         (!isTruckModelValid || !isTruckYearValid) &&
-                        !truckModelYearMessage
+                            !truckModelYearMessage
                             ? true
                             : false,
                     displayAnnotationTextArea: truckModelYearMessage
@@ -1346,11 +1357,11 @@ export class ApplicantOwnerInfoComponent implements OnInit, OnDestroy {
         const selectedInputsLine =
             this.selectedTab === OwnerInfoTabEnum.COMPANY
                 ? this.openAnnotationArray.find(
-                      (item) => item.lineIndex === lineIndex
-                  )
+                    (item) => item.lineIndex === lineIndex
+                )
                 : this.openSoleAnnotationArray.find(
-                      (item) => item.lineIndex === lineIndex
-                  );
+                    (item) => item.lineIndex === lineIndex
+                );
 
         if (event) {
             selectedInputsLine.lineInputs[inputIndex] = true;
@@ -1486,15 +1497,15 @@ export class ApplicantOwnerInfoComponent implements OnInit, OnDestroy {
         const inputFieldsArray =
             this.selectedTab === OwnerInfoTabEnum.COMPANY
                 ? JSON.stringify(
-                      this.openAnnotationArray
-                          .filter((item) => Object.keys(item).length !== 0)
-                          .map((item) => item.lineInputs)
-                  )
+                    this.openAnnotationArray
+                        .filter((item) => Object.keys(item).length !== 0)
+                        .map((item) => item.lineInputs)
+                )
                 : JSON.stringify(
-                      this.openSoleAnnotationArray
-                          .filter((item) => Object.keys(item).length !== 0)
-                          .map((item) => item.lineInputs)
-                  );
+                    this.openSoleAnnotationArray
+                        .filter((item) => Object.keys(item).length !== 0)
+                        .map((item) => item.lineInputs)
+                );
 
         if (inputFieldsArray.includes('true')) {
             this.hasIncorrectFields = true;
@@ -1782,13 +1793,13 @@ export class ApplicantOwnerInfoComponent implements OnInit, OnDestroy {
                 : null,
             trailerLengthId: this.isAddTrailerSelected
                 ? this.trailerLengthType.find(
-                      (item) => item.name === trailerLength
-                  ).id
+                    (item) => item.name === trailerLength
+                ).id
                 : null,
             trailerVin: this.isAddTrailerSelected ? trailerVin : null,
             trailerMakeId: this.isAddTrailerSelected
                 ? this.trailerMakeType.find((item) => item.name === trailerMake)
-                      .id
+                    .id
                 : null,
             trailerModel: this.isAddTrailerSelected ? trailerModel : null,
             trailerYear: this.isAddTrailerSelected ? +trailerYear : null,

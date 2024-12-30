@@ -164,7 +164,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
         // pipes
         private thousandSeparator: ThousandSeparatorPipe,
         private nameInitialsPipe: NameInitialsPipe
-    ) {}
+    ) { }
 
     ngOnInit(): void {
         this.sendDriverData();
@@ -338,7 +338,6 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
                         if (col.field === response.column.field) {
                             col.hidden = response.column.hidden;
                         }
-
                         return col;
                     });
                 }
@@ -660,7 +659,6 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     TableStringEnum.APPLICANT,
                     applicantsData as DriverResponse[]
                 ),
-                inactive: true,
             },
             {
                 title: TableStringEnum.ACTIVE,
@@ -931,8 +929,8 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
             tableEmergContactPhone: emergencyContact?.phone,
             tableTwicExp: twicExpirationDate
                 ? MethodsCalculationsHelper.convertDateFromBackend(
-                      twicExpirationDate
-                  )
+                    twicExpirationDate
+                )
                 : null,
             tableFuelCardDetailNumber: fuelCardNumber,
             tableCdlDetailNumber: cdl?.number,
@@ -981,32 +979,26 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     : null,
                 percentage: mvr?.percentage ? 100 - mvr?.percentage : null,
             },
-            tabelNotificationGeneral: `${
-                general?.mail
-                    ? TableStringEnum.EMAIL
-                    : TableStringEnum.EMPTY_STRING_PLACEHOLDER
-            }${
-                general?.push
+            tabelNotificationGeneral: `${general?.mail
+                ? TableStringEnum.EMAIL
+                : TableStringEnum.EMPTY_STRING_PLACEHOLDER
+                }${general?.push
                     ? TableStringEnum.PUSH
                     : TableStringEnum.EMPTY_STRING_PLACEHOLDER
-            }${
-                general?.sms
+                }${general?.sms
                     ? TableStringEnum.SMS
                     : TableStringEnum.EMPTY_STRING_PLACEHOLDER
-            }`,
-            tabelNotificationPayroll: `${
-                payroll?.mail
-                    ? TableStringEnum.EMAIL
-                    : TableStringEnum.EMPTY_STRING_PLACEHOLDER
-            }${
-                payroll?.push
+                }`,
+            tabelNotificationPayroll: `${payroll?.mail
+                ? TableStringEnum.EMAIL
+                : TableStringEnum.EMPTY_STRING_PLACEHOLDER
+                }${payroll?.push
                     ? TableStringEnum.PUSH
                     : TableStringEnum.EMPTY_STRING_PLACEHOLDER
-            }${
-                payroll?.sms
+                }${payroll?.sms
                     ? TableStringEnum.SMS
                     : TableStringEnum.EMPTY_STRING_PLACEHOLDER
-            }`,
+                }`,
             tabelHired:
                 MethodsCalculationsHelper.convertDateFromBackend(hiredAt),
             tableTerminated:

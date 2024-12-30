@@ -29,6 +29,10 @@ import { FormService } from '@shared/services/form.service';
 import { TaModalComponent } from '@shared/components/ta-modal/ta-modal.component';
 import { TaInputComponent } from '@shared/components/ta-input/ta-input.component';
 import { TaInputNoteComponent } from '@shared/components/ta-input-note/ta-input-note.component';
+import {
+    CaInputComponent,
+    CaInputNoteComponent
+} from 'ca-components';
 
 @Component({
     selector: 'app-applicant-modal',
@@ -46,6 +50,9 @@ import { TaInputNoteComponent } from '@shared/components/ta-input-note/ta-input-
         TaModalComponent,
         TaInputComponent,
         TaInputNoteComponent,
+
+        CaInputComponent,
+        CaInputNoteComponent,
     ],
 })
 export class ApplicantModalComponent implements OnInit, OnDestroy {
@@ -66,7 +73,7 @@ export class ApplicantModalComponent implements OnInit, OnDestroy {
         private modalService: ModalService,
         private applicantService: ApplicantService,
         private formService: FormService
-    ) {}
+    ) { }
 
     ngOnInit() {
         this.createForm();
@@ -239,7 +246,7 @@ export class ApplicantModalComponent implements OnInit, OnDestroy {
                         res.lastName
                     );
                 },
-                error: () => {},
+                error: () => { },
             });
     }
 
