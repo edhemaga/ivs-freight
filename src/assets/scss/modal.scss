@@ -641,6 +641,10 @@ ngb-modal-window[aria-hidden='true'] {
                 .modal-save-btn-add-new {
                     min-width: 181px !important;
 
+                    &.btn-min-w-auto {
+                        min-width: auto !important;
+                    }
+
                     &.valid {
                         cursor: pointer;
                         pointer-events: all;
