@@ -5,4 +5,4 @@ export * from './table-dropdown-component.constants';
 export * from './charts/chart-configuration.constants';
 export * from './charts/chart-legend-configuration.constants';
 export * from './charts/chart.constants';
-export * from './dropdown-menu.constants';
+export * from './dropdown-menu-content.constants';

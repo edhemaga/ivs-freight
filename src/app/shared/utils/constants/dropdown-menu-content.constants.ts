@@ -3,7 +3,7 @@ import { DropdownMenuStringEnum } from '@shared/enums';
 // models
 import { DropdownMenuItem } from '@ca-shared/components/ca-dropdown-menu/models';
 
-export class DropdownMenuConstants {
+export class DropdownMenuContentConstants {
     // shared items
     static DROPDOWN_MENU_SHARED_ITEMS: Record<string, DropdownMenuItem> = {
         [DropdownMenuStringEnum.SHARE]: {

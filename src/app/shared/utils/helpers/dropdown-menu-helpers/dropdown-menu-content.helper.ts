@@ -2,7 +2,7 @@
 import { DropdownMenuStringEnum, TableStringEnum } from '@shared/enums';
 
 // helpers
-import { DropdownMenuConditionalItemsHelper } from '@shared/utils/helpers/dropdown-menu-helpers';
+import { DropdownMenuContentConditionalItemsHelper } from '@shared/utils/helpers/dropdown-menu-helpers';
 
 // models
 import { DropdownItem } from '@shared/models/card-models/card-table-data.model';
@@ -1546,15 +1546,15 @@ export class DropdownMenuContentHelper {
             : [];
 
         return [
-            ...DropdownMenuConditionalItemsHelper.getConditionalItems(
+            ...DropdownMenuContentConditionalItemsHelper.getConditionalItems(
                 conditionalItems,
                 false
             ),
-            ...DropdownMenuConditionalItemsHelper.getConditionalItems(
+            ...DropdownMenuContentConditionalItemsHelper.getConditionalItems(
                 sharedItems,
                 true
             ),
-            ...DropdownMenuConditionalItemsHelper.getConditionalItems(
+            ...DropdownMenuContentConditionalItemsHelper.getConditionalItems(
                 additionalItems,
                 false
             ),

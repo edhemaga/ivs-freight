@@ -178,7 +178,7 @@ export abstract class PayrollReportBaseComponent<
             ? this.openedPayroll.owner?.name
             : this.openedPayroll.driver.fullName;
 
-        if (item.$event.type === TableStringEnum.EDIT_2) {
+        if (item.$event.type === TableStringEnum.EDIT) {
             switch (item.title) {
                 case PayrollAdditionalTypes.CREDIT:
                     this.modalService
@@ -260,7 +260,7 @@ export abstract class PayrollReportBaseComponent<
                         });
                     break;
             }
-        } else if (item.$event.type === TableStringEnum.DELETE_2) {
+        } else if (item.$event.type === TableStringEnum.DELETE) {
             switch (item.title) {
                 case PayrollAdditionalTypes.CREDIT:
                     this.payrollService
