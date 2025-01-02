@@ -21,31 +21,17 @@
 
         <div class="row">
             <div class="col-6">
-                <app-ta-input
+                <app-ca-input
                     formControlName="name"
-                    [inputConfig]="{
-                        name: 'Name',
-                        type: 'text',
-                        label: 'Name',
-                        isRequired: true,
-                        minLength: 2,
-                        maxLength: 32,
-                        textTransform: 'capitalize',
-                        autoFocus: editData?.type !== 'edit'
-                    }"
-                ></app-ta-input>
+                    [inputConfig]="contactModalConfig.NAME_INPUT_CONFIG(editData?.type === 'edit')"
+                ></app-ca-input>
             </div>
 
             <div class="col-6">
-                <app-ta-input
+                <app-ca-input
                     formControlName="companyName"
-                    [inputConfig]="{
-                        name: 'Company name',
-                        type: 'text',
-                        label: 'Company',
-                        textTransform: 'uppercase'
-                    }"
-                ></app-ta-input>
+                    [inputConfig]="contactModalConfig.COMPANY_NAME_INPUT_CONFIG"
+                ></app-ca-input>
             </div>
         </div>
 
@@ -55,38 +41,7 @@
             <div class="col-12">
                 <app-ta-input-dropdown-label
                     formControlName="companyContactLabelId"
-                    [inputConfig]="{
-                        name: 'Input Dropdown Label',
-                        type: 'text',
-                        label: 'Label',
-                        placeholderIcon: 'ic_dynamic_label',
-                        dropdownLabel: true,
-                        dropdownWidthClass: 'w-col-456',
-                        textTransform: 'lowercase',
-                        minLength: 1,
-                        maxLength: 32,
-                        blackInput: true,
-                        commands: {
-                            active: false,
-                            type: 'confirm-cancel',
-                            firstCommand: {
-                                popup: {
-                                    name: 'Confirm',
-                                    backgroundColor: '#3074d3'
-                                },
-                                name: 'confirm',
-                                svg: 'assets/svg/ic_spec-confirm.svg'
-                            },
-                            secondCommand: {
-                                popup: {
-                                    name: 'Cancel',
-                                    backgroundColor: '#2f2f2f'
-                                },
-                                name: 'cancel',
-                                svg: 'assets/svg/ic_x.svg'
-                            }
-                        }
-                    }"
+                    [inputConfig]="contactModalConfig.COMPANY_LABEL_INPUT_CONFIG"
                     [colors]="colors"
                     [options]="contactLabels"
                     [selectedLabel]="selectedContactLabel"
@@ -104,36 +59,20 @@
 
         <div class="row last-row">
             <div class="col-10">
-                <app-ta-input-address-dropdown
+                <app-ca-input-address-dropdown
                     formControlName="address"
-                    [inputConfig]="{
-                        name: 'Address',
-                        type: 'text',
-                        label: 'Address, City, State Zip',
-                        placeholderIcon: 'address',
-                        textTransform: 'capitalize',
-                        dropdownWidthClass: 'w-col-376',
-                        minLength: 6,
-                        maxLength: 256
-                    }"
+                    [inputConfig]="contactModalConfig.ADDRESS_INPUT_CONFIG"
                     [placeholderType]="'longAddress'"
                     [activeAddress]="selectedAddress"
                     (selectedAddress)="onHandleAddress($event)"
-                ></app-ta-input-address-dropdown>
+                ></app-ca-input-address-dropdown>
             </div>
 
             <div class="col-2">
-                <app-ta-input
+                <app-ca-input
                     formControlName="addressUnit"
-                    [inputConfig]="{
-                        name: 'address-unit',
-                        type: 'text',
-                        label: 'Unit #',
-                        textTransform: 'uppercase',
-                        minLength: 1,
-                        maxLength: 10
-                    }"
-                ></app-ta-input>
+                    [inputConfig]="contactModalConfig.ADDRESS_UNIT_INPUT_CONFIG"
+                ></app-ca-input>
             </div>
         </div>
 
@@ -201,45 +140,36 @@
             formControlName="shared"
             [label]="'Share Contact'"
             [name]="'share-contact'"
+            [hasArrow]="false"
+            [clearHorizontalPadding]="true"
             [isCardOpen]="contactForm.get('shared').value"
             [animationMarginParams]="{
-                marginTop: '12px',
-                marginBottom: '18px'
+                marginTop: contactForm.get('shared').value ? '12px' : '0',
+                marginBottom: contactForm.get('shared').value ? '18px' : '0',
             }"
         >
             <div body class="row row-no-m">
                 <div class="col-12">
-                    <app-ta-input-dropdown
+                    <app-ca-input-dropdown
                         formControlName="sharedLabelId"
                         [template]="'multiselect'"
                         [multiselectTemplate]="'multiselect-2-columns'"
-                        [inputConfig]="{
-                            name: 'Input Dropdown',
-                            minLength: 2,
-                            maxLength: 36,
-                            type: 'text',
-                            label: 'Department',
-                            isRequired: true,
-                            isDropdown: true,
-                            textTransform: 'capitalize',
-                            multiselectDropdown: true,
-                            dropdownWidthClass: 'w-col-456'
-                        }"
+                        [inputConfig]="contactModalConfig.SHARED_LABEL_INPUT_CONFIG"
                         [options]="sharedDepartments"
                         [preloadMultiselectItems]="selectedSharedDepartment"
                         (selectedItems)="onSelectDropdown($event)"
-                    ></app-ta-input-dropdown>
+                    ></app-ca-input-dropdown>
                 </div>
             </div>
         </app-ta-checkbox-card>
 
-        <!-- Contact Image -->
+        <!-- Profile Picture -->
 
         <div class="ta-card-body-overflow-none">
             <app-ta-custom-card
-                [cardName]="'Contact Image'"
+                [cardName]="'Profile Picture'"
                 [disableAnimation]="isCardAnimationDisabled"
-                [isCardOpen]="true"
+                [isCardOpen]="contactForm.get('avatar')?.value ?? false"
             >
                 <app-ca-upload-files
                     [isVisibleCropAndDrop]="
@@ -266,10 +196,9 @@
                 ></app-ca-upload-files>
             </app-ta-custom-card>
         </div>
-
+        <div class="divider"></div>
         <!-- Note -->
-
-        <app-ta-input-note
+        <app-ca-input-note
             formControlName="note"
             [isVisibleNote]="
                 contactForm.get('note').value &&
@@ -283,6 +212,6 @@
                     ? contactForm.get('note').value
                     : ''
             "
-        ></app-ta-input-note>
+        ></app-ca-input-note>
     </form>
 </app-ta-modal>
