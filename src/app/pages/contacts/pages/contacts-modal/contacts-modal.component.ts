@@ -18,10 +18,9 @@ import { Subject, switchMap, takeUntil } from 'rxjs';
 
 // modules
 import { AngularSvgIconModule } from 'angular-svg-icon';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbActiveModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 // components
-import { TaModalComponent } from '@shared/components/ta-modal/ta-modal.component';
 import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-custom-card.component';
 import { TaCheckboxCardComponent } from '@shared/components/ta-checkbox-card/ta-checkbox-card.component';
 import { TaInputDropdownLabelComponent } from '@shared/components/ta-input-dropdown-label/ta-input-dropdown-label.component';
@@ -31,8 +30,10 @@ import {
     CaInputComponent,
     CaInputDropdownComponent,
     CaInputNoteComponent,
+    CaModalComponent,
     CaUploadFilesComponent,
 } from 'ca-components';
+import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
 
 // validations
 import {
@@ -89,7 +90,7 @@ import { MethodsGlobalHelper } from '@shared/utils/helpers/methods-global.helper
         NgbModule,
 
         // components
-        TaModalComponent,
+        CaModalComponent,
         TaCustomCardComponent,
         TaCheckboxCardComponent,
         CaInputNoteComponent,
@@ -99,6 +100,7 @@ import { MethodsGlobalHelper } from '@shared/utils/helpers/methods-global.helper
         CaUploadFilesComponent,
         CaInputComponent,
         CaInputDropdownComponent,
+        TaAppTooltipV2Component,
     ],
 })
 export class ContactsModalComponent implements OnInit, OnDestroy {
@@ -138,6 +140,7 @@ export class ContactsModalComponent implements OnInit, OnDestroy {
     public modalTableTypeEnum = ModalTableTypeEnum;
 
     private isUploadInProgress: boolean;
+    public taModalActionEnums = ContactsModalStringEnum;
 
     constructor(
         private formBuilder: UntypedFormBuilder,
@@ -145,7 +148,9 @@ export class ContactsModalComponent implements OnInit, OnDestroy {
         private inputService: TaInputService,
         private modalService: ModalService,
         private contactService: ContactsService,
-        private formService: FormService
+        private formService: FormService,
+        private ngbActiveModal: NgbActiveModal,
+        
     ) {}
 
     ngOnInit() {
@@ -177,11 +182,12 @@ export class ContactsModalComponent implements OnInit, OnDestroy {
         });
     }
 
-    public onModalAction(data: { action: string; bool: boolean }): void {
+    public onModalAction(action: string): void {
         if (this.isUploadInProgress) return;
 
-        switch (data.action) {
+        switch (action) {
             case ContactsModalStringEnum.CLOSE:
+                this.setModalSpinner(null, true, true, false);
                 break;
             case ContactsModalStringEnum.SAVE_AND_ADD_NEW:
                 if (this.contactForm.invalid || !this.isFormDirty) {
@@ -662,6 +668,8 @@ export class ContactsModalComponent implements OnInit, OnDestroy {
         });
 
         if (enableSaving) this.enableSaving();
+
+        if(close) this.ngbActiveModal.close();
     }
 
     ngOnDestroy(): void {
