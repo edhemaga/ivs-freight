@@ -15,15 +15,11 @@
             <div class="col-12">
                 <app-ca-input
                     formControlName="name"
-                    [inputConfig]="{
-                        name: 'Account Name',
-                        type: 'text',
-                        label: 'Account Name',
-                        isRequired: true,
-                        maxLength: 23,
-                        textTransform: 'capitalize',
-                        autoFocus: editData?.type !== 'edit'
-                    }"
+                    [inputConfig]="
+                        accountModalConfig.NAME_INPUT_CONFIG(
+                            editData?.type === 'edit'
+                        )
+                    "
                 ></app-ca-input>
             </div>
         </div>
@@ -31,38 +27,9 @@
             <div class="col-12">
                 <app-ta-input-dropdown-label
                     formControlName="companyAccountLabelId"
-                    [inputConfig]="{
-                        name: 'Input Dropdown Label',
-                        type: 'text',
-                        label: 'Label',
-                        placeholderIcon: 'ic_dynamic_label',
-                        dropdownLabel: true,
-                        dropdownWidthClass: 'w-col-456',
-                        textTransform: 'lowercase',
-                        blackInput: true,
-                        minLength: 1,
-                        maxLength: 32,
-                        commands: {
-                            active: false,
-                            type: 'confirm-cancel',
-                            firstCommand: {
-                                popup: {
-                                    name: 'Confirm',
-                                    backgroundColor: '#3074d3'
-                                },
-                                name: 'confirm',
-                                svg: 'assets/svg/ic_spec-confirm.svg'
-                            },
-                            secondCommand: {
-                                popup: {
-                                    name: 'Cancel',
-                                    backgroundColor: '#2f2f2f'
-                                },
-                                name: 'cancel',
-                                svg: 'assets/svg/ic_x.svg'
-                            }
-                        }
-                    }"
+                    [inputConfig]="
+                        accountModalConfig.COMPANY_LABEL_INPUT_CONFIG
+                    "
                     [colors]="colors"
                     [options]="accountLabels"
                     [selectedLabel]="selectedAccountLabel"
@@ -79,28 +46,13 @@
             <div class="col-6">
                 <app-ca-input
                     formControlName="username"
-                    [inputConfig]="{
-                        name: 'Username',
-                        type: 'text',
-                        label: 'Username',
-                        placeholderIcon: 'user_icon',
-                        isRequired: true,
-                        minLength: 2,
-                        maxLength: 30
-                    }"
+                    [inputConfig]="accountModalConfig.USERNAME_INPUT_CONFIG"
                 ></app-ca-input>
             </div>
             <div class="col-6">
                 <app-ca-input
                     formControlName="password"
-                    [inputConfig]="{
-                        name: 'Password',
-                        type: 'password',
-                        label: 'Password',
-                        placeholderIcon: 'password',
-                        isRequired: true,
-                        maxLength: 64
-                    }"
+                    [inputConfig]="accountModalConfig.PASSWORD_INPUT_CONFIG"
                 ></app-ca-input>
             </div>
         </div>
@@ -108,14 +60,7 @@
             <div class="col-12">
                 <app-ca-input
                     formControlName="url"
-                    [inputConfig]="{
-                        name: 'Url',
-                        type: 'text',
-                        label: 'URL',
-                        placeholderIcon: 'ic_web',
-                        minLength: 4,
-                        maxLength: 255
-                    }"
+                    [inputConfig]="accountModalConfig.URL_INPUT_CONFIG"
                 ></app-ca-input>
             </div>
         </div>

@@ -44,6 +44,7 @@ import {
     CreateResponse,
     UpdateCompanyAccountCommand,
 } from 'appcoretruckassist';
+import { AccountModalConfig } from '@pages/account/utils/account-modal.config';
 
 @Component({
     selector: 'app-account-modal',
@@ -83,6 +84,7 @@ export class AccountModalComponent implements OnInit, OnDestroy {
     public disabledFormValidation: boolean = false;
 
     private destroy$ = new Subject<void>();
+    public accountModalConfig = AccountModalConfig;
 
     constructor(
         private formBuilder: UntypedFormBuilder,
