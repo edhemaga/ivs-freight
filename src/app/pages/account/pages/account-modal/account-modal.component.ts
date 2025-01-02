@@ -32,9 +32,8 @@ import {
 
 // components
 import { TaModalComponent } from '@shared/components/ta-modal/ta-modal.component';
-import { TaInputComponent } from '@shared/components/ta-input/ta-input.component';
 import { TaInputDropdownLabelComponent } from '@shared/components/ta-input-dropdown-label/ta-input-dropdown-label.component';
-import { TaInputNoteComponent } from '@shared/components/ta-input-note/ta-input-note.component';
+import { CaInputComponent, CaInputNoteComponent } from 'ca-components';
 
 // models
 import {
@@ -61,9 +60,9 @@ import {
 
         // components
         TaModalComponent,
-        TaInputComponent,
+        CaInputComponent,
         TaInputDropdownLabelComponent,
-        TaInputNoteComponent,
+        CaInputNoteComponent,
     ],
 })
 export class AccountModalComponent implements OnInit, OnDestroy {

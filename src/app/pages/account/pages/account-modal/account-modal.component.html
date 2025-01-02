@@ -13,7 +13,7 @@
     >
         <div class="row">
             <div class="col-12">
-                <app-ta-input
+                <app-ca-input
                     formControlName="name"
                     [inputConfig]="{
                         name: 'Account Name',
@@ -24,7 +24,7 @@
                         textTransform: 'capitalize',
                         autoFocus: editData?.type !== 'edit'
                     }"
-                ></app-ta-input>
+                ></app-ca-input>
             </div>
         </div>
         <div class="row">
@@ -77,7 +77,7 @@
         </div>
         <div class="row">
             <div class="col-6">
-                <app-ta-input
+                <app-ca-input
                     formControlName="username"
                     [inputConfig]="{
                         name: 'Username',
@@ -88,10 +88,10 @@
                         minLength: 2,
                         maxLength: 30
                     }"
-                ></app-ta-input>
+                ></app-ca-input>
             </div>
             <div class="col-6">
-                <app-ta-input
+                <app-ca-input
                     formControlName="password"
                     [inputConfig]="{
                         name: 'Password',
@@ -101,12 +101,12 @@
                         isRequired: true,
                         maxLength: 64
                     }"
-                ></app-ta-input>
+                ></app-ca-input>
             </div>
         </div>
         <div class="row last-row">
             <div class="col-12">
-                <app-ta-input
+                <app-ca-input
                     formControlName="url"
                     [inputConfig]="{
                         name: 'Url',
@@ -116,10 +116,10 @@
                         minLength: 4,
                         maxLength: 255
                     }"
-                ></app-ta-input>
+                ></app-ca-input>
             </div>
         </div>
-        <app-ta-input-note
+        <app-ca-input-note
             formControlName="note"
             [isVisibleNote]="
                 accountForm.get('note').value &&
@@ -133,6 +133,6 @@
                     ? accountForm.get('note').value
                     : ''
             "
-        ></app-ta-input-note>
+        ></app-ca-input-note>
     </form>
 </app-ta-modal>
