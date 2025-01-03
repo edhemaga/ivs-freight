@@ -64,6 +64,7 @@
                     ></app-ca-input>
                 </div>
             </div>
+            <div class="divider"></div>
             <app-ca-input-note
                 formControlName="note"
                 [isVisibleNote]="
@@ -93,17 +94,12 @@
 
 <ng-template #footerTemplate>
     <div class="modal-footer modal-footer-payroll">
-        <div class="divider divider--dark divider--small"></div>
+        <div class="divider"></div>
         <ng-container *ngIf="editData?.data?.name; else showCreateButtons">
             <button
                 class="modal-save-btn ta-font-bold"
                 (click)="onModalAction(taModalActionEnums.SAVE)"
-                [class.valid]="
-                    accountForm.valid &&
-                    isFormDirty &&
-                    isEachPhoneRowValid &&
-                    isEachEmailRowValid
-                "
+                [class.valid]="accountForm.valid && isFormDirty"
             >
                 Save Changes
             </button>
@@ -112,12 +108,7 @@
         <ng-template #showCreateButtons>
             <button
                 class="ta-font-bold modal-save-btn modal-save-btn-add-new mr-12"
-                [class.valid]="
-                    accountForm.valid &&
-                    isFormDirty &&
-                    isEachPhoneRowValid &&
-                    isEachEmailRowValid
-                "
+                [class.valid]="accountForm.valid && isFormDirty"
                 (click)="onModalAction(taModalActionEnums.SAVE_AND_ADD_NEW)"
             >
                 Save and Add New
@@ -125,12 +116,7 @@
             <button
                 class="modal-save-btn ta-font-bold"
                 (click)="onModalAction(taModalActionEnums.SAVE)"
-                [class.valid]="
-                    accountForm.valid &&
-                    isFormDirty &&
-                    isEachPhoneRowValid &&
-                    isEachEmailRowValid
-                "
+                [class.valid]="accountForm.valid && isFormDirty"
             >
                 Save
             </button>
@@ -139,6 +125,23 @@
 </ng-template>
 
 <ng-template #rightModalContent>
+    <ng-container *ngIf="editData?.type === 'edit'">
+        <div
+            ngbTooltip
+            mainTooltip="Added    {{
+                editData?.data?.createdAt | formatDateP
+            }} <br> Edited    {{ editData?.data?.updatedAt | formatDateP }}"
+            tooltipBackground="#424242"
+            position="bottom"
+            class="modal-date-logo"
+        >
+            <svg-icon
+                src="assets/svg/common/date.svg"
+                class="modal-buttons"
+            ></svg-icon>
+        </div>
+        <div class="modal-date-border"></div>
+    </ng-container>
     <div
         class="d-flex justify-content-center align-items-center modal-close-container"
         ngbTooltip

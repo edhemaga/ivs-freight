@@ -16,6 +16,9 @@ import {
 
 import { Subject, switchMap, takeUntil } from 'rxjs';
 
+// Modules
+import { NgbActiveModal, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
+
 // services
 import { TaInputService } from '@shared/services/ta-input.service';
 import { AccountService } from '@pages/account/services/account.service';
@@ -53,6 +56,13 @@ import {
 import { AccountModalConfig } from '@pages/account/utils/account-modal.config';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 
+// Pipes
+import { FormatDatePipe } from '@shared/pipes';
+import { ContactsModalStringEnum } from '@pages/contacts/pages/contacts-modal/enums/contacts-modal-string.enum';
+
+// Model
+import { TaModalActionEnums } from '@shared/components/ta-modal/enums';
+
 @Component({
     selector: 'app-account-modal',
     templateUrl: './account-modal.component.html',
@@ -66,6 +76,7 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
         FormsModule,
         ReactiveFormsModule,
         AngularSvgIconModule,
+        NgbTooltipModule,
 
         // components
         CaModalComponent,
@@ -73,6 +84,9 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
         TaInputDropdownLabelComponent,
         CaInputNoteComponent,
         TaAppTooltipV2Component,
+
+        // Pipes
+        FormatDatePipe,
     ],
 })
 export class AccountModalComponent implements OnInit, OnDestroy {
@@ -94,13 +108,15 @@ export class AccountModalComponent implements OnInit, OnDestroy {
 
     private destroy$ = new Subject<void>();
     public accountModalConfig = AccountModalConfig;
+    public taModalActionEnums = ContactsModalStringEnum;
 
     constructor(
         private formBuilder: UntypedFormBuilder,
         private inputService: TaInputService,
         private modalService: ModalService,
         private accountService: AccountService,
-        private formService: FormService
+        private formService: FormService,
+        private ngbActiveModal: NgbActiveModal
     ) {}
 
     ngOnInit() {
@@ -131,10 +147,11 @@ export class AccountModalComponent implements OnInit, OnDestroy {
 
     public onModalAction(action: string): void {
         switch (action) {
-            case 'close': {
+            case TaModalActionEnums.CLOSE: {
+                this.ngbActiveModal.close();
                 break;
             }
-            case 'save and add new': {
+            case TaModalActionEnums.SAVE_AND_ADD_NEW: {
                 if (this.accountForm.invalid || !this.isFormDirty) {
                     this.inputService.markInvalid(this.accountForm);
                     return;
@@ -144,7 +161,7 @@ export class AccountModalComponent implements OnInit, OnDestroy {
                 this.addNewAfterSave = true;
                 break;
             }
-            case 'save': {
+            case TaModalActionEnums.SAVE: {
                 // If Form not valid
                 if (this.accountForm.invalid || !this.isFormDirty) {
                     this.inputService.markInvalid(this.accountForm);
@@ -159,7 +176,7 @@ export class AccountModalComponent implements OnInit, OnDestroy {
                 }
                 break;
             }
-            case 'delete': {
+            case TaModalActionEnums.DELETE: {
                 if (this.editData) {
                     this.deleteCompanyAccountById(this.editData.id);
                     this.setModalSpinner('delete', true, false);
@@ -241,10 +258,10 @@ export class AccountModalComponent implements OnInit, OnDestroy {
             .subscribe({
                 next: () => {
                     if (this.addNewAfterSave) {
-                        this.formService.resetForm(this.accountForm);
-
-                        this.selectedAccountColor = null;
-                        this.selectedAccountLabel = null;
+                        this.ngbActiveModal.close();
+                        this.modalService.openModal(AccountModalComponent, {
+                            size: ContactsModalStringEnum.SMALL,
+                        });
 
                         this.addNewAfterSave = false;
 
