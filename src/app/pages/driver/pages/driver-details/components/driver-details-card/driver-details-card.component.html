@@ -86,7 +86,6 @@
                     }"
                 >
                     <div class="charts-template perfomance">
-                        <!-- <ng-container *ngIf="!payrollChart.hoveringStatus"> -->
                         <div>
                             <app-ta-tab-switch
                                 [tabs]="barChartTabs"
@@ -97,9 +96,12 @@
                         </div>
                         <ng-container *ngIf="payrollChartConfig?.chartData">
                             <app-ta-chart-legend
-                                [data]="chartLegendData"
+                                [data]="driverLegendConfig"
                             ></app-ta-chart-legend>
-                            <app-ca-chart [chartConfig]="payrollChartConfig">
+                            <app-ca-chart
+                                [chartConfig]="payrollChartConfig"
+                                (hoveredIndex)="setDriverLegendOnHover($event)"
+                            >
                             </app-ca-chart>
                         </ng-container>
                     </div>

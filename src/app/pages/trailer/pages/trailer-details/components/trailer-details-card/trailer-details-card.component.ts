@@ -94,6 +94,7 @@ export class TrailerDetailsCardComponent
     public ownerCardOpened: boolean = true;
 
     // Chart
+    public fuelConsumptionChartData!: TrailerFuelConsumptionResponse;
     public fuelConsumptionChartConfig!: IChartConfiguration;
     public fuelConsumptionChartLegend!: ChartLegendConfiguration[];
     public fuelConsumptionTabs: Tabs[] = ChartHelper.generateTimeTabs();
@@ -287,16 +288,24 @@ export class TrailerDetailsCardComponent
             .subscribe((response: TrailerFuelConsumptionResponse) => {
                 if (timeFilter && this.fuelConsumptionTabs[timeFilter - 1])
                     this.fuelConsumptionTabs[timeFilter - 1].checked = true;
+
+                this.fuelConsumptionChartData = response;
                 this.fuelConsumptionChartConfig = {
                     ...TrailerDetailsChartsConfiguration.PAYROLL_CHART_CONFIG,
                     chartData: ChartHelper.generateDataByDateTime<TrailerFuelConsumptionChartResponse>(
-                        response.trailerFuelConsumptionCharts,
+                        this.fuelConsumptionChartData.trailerFuelConsumptionCharts,
                         ChartConfiguration.trailerFuelExpensesConfiguration,
                         timeFilter
                     ),
                 };
-                this.fuelConsumptionChartLegend = ChartLegendConfiguration.trailerFuelConsumptionConfiguration(response)
+                this.fuelConsumptionChartLegend = ChartLegendConfiguration.trailerFuelConsumptionConfiguration(this.fuelConsumptionChartData)
             })
+    }
+
+    public setFuelConsumptionLegendOnHover(index: number): void {
+        this.fuelConsumptionChartLegend = ChartLegendConfiguration
+            .trailerFuelConsumptionConfiguration(this.fuelConsumptionChartData.
+                trailerFuelConsumptionCharts[index]);
     }
 
     public changeFuelConsumptionTab(event: TabOptions): void {
