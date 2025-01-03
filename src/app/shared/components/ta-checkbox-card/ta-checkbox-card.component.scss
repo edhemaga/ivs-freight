@@ -7,6 +7,10 @@
         padding: 7px 4px;
         line-height: 18px;
 
+        &.clear-horizontal-padding {
+            padding: 7px 0;
+        }
+
         &.pointer {
             cursor: pointer;
 

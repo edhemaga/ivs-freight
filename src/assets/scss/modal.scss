@@ -1085,3 +1085,21 @@ ngb-modal-window.modal {
         }
     }
 }
+
+.new-modal {
+    .form-container {
+        .row {
+            & > * {
+                &:nth-child(odd) {
+                    padding-left: 12px;
+                    padding-right: 12px;
+                }
+
+                &:nth-child(even) {
+                    padding-left: 0px;
+                    padding-right: 12px;
+                }
+            }
+        }
+    }
+}
