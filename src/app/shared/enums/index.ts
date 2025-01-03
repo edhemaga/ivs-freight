@@ -9,6 +9,7 @@ export * from './tooltip-colors-string.enum';
 export * from './trailer-name-string.enum';
 export * from './truck-name-string.enum';
 export * from './truck-trailer-icon.enum';
+export * from './dropdown-menu-content-string.enum';
 
 // Charts
 export * from './chart/chart-value-label.enum';

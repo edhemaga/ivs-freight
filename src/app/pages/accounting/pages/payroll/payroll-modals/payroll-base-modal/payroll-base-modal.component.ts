@@ -259,7 +259,7 @@ export class PayrollBaseModalComponent implements OnInit {
                     logoName: avatarFile?.url,
                     name: firstName + ' ' + lastName,
                     avatarFile: avatarFile?.url,
-                    suffix: payType ? ` • ${payType.name}` : '',
+                    suffix: payType ? ` ${payType.name}` : '',
                 };
             }
         );
@@ -270,7 +270,7 @@ export class PayrollBaseModalComponent implements OnInit {
         this.baseForm
             .get(PayrollStringEnum.SELECTED_DRIVER_ID)
             .patchValue(driver?.id ?? null);
-        this.creditTitle = driver?.name + driver?.suffix;
+        this.creditTitle = `${driver?.name} • ${driver?.suffix}`;
         this.driverConfig = {
             ...this.driverConfig,
             multipleInputValues: {
@@ -314,7 +314,7 @@ export class PayrollBaseModalComponent implements OnInit {
         this.baseForm
             .get(PayrollStringEnum.SELECTED_TRUCK_ID)
             .patchValue(truck?.id ?? null);
-        this.creditTitle = truck ? truck?.name + truck.suffix : null;
+        this.creditTitle = truck ? `${truck?.name} • ${truck?.suffix}` : null;
         
         this.truckConfig = {
             ...this.truckConfig,
