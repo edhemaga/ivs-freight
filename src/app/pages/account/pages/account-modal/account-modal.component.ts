@@ -41,6 +41,7 @@ import {
     CaModalComponent,
 } from 'ca-components';
 import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
+import { ConfirmationModalComponent } from '@shared/components/ta-shared-modals/confirmation-modal/confirmation-modal.component';
 
 // models
 import {
@@ -60,8 +61,12 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
 import { FormatDatePipe } from '@shared/pipes';
 import { ContactsModalStringEnum } from '@pages/contacts/pages/contacts-modal/enums/contacts-modal-string.enum';
 
-// Model
+// Enums
 import { TaModalActionEnums } from '@shared/components/ta-modal/enums';
+import { TableStringEnum } from '@shared/enums';
+
+// Services
+import { ConfirmationService } from '@shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
 
 @Component({
     selector: 'app-account-modal',
@@ -116,13 +121,24 @@ export class AccountModalComponent implements OnInit, OnDestroy {
         private modalService: ModalService,
         private accountService: AccountService,
         private formService: FormService,
-        private ngbActiveModal: NgbActiveModal
+        private ngbActiveModal: NgbActiveModal,
+        private confirmationService: ConfirmationService
     ) {}
 
     ngOnInit() {
         this.createForm();
         this.companyAccountModal();
         this.companyAccountColorLabels();
+        this.confirmationActivationSubscribe();
+    }
+
+    private confirmationActivationSubscribe(): void {
+        this.confirmationService.confirmationData$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((res) => {
+                if (res.action !== TableStringEnum.CLOSE)
+                    this.ngbActiveModal?.close();
+            });
     }
 
     private createForm(): void {
@@ -178,8 +194,16 @@ export class AccountModalComponent implements OnInit, OnDestroy {
             }
             case TaModalActionEnums.DELETE: {
                 if (this.editData) {
-                    this.deleteCompanyAccountById(this.editData.id);
-                    this.setModalSpinner('delete', true, false);
+                    this.modalService.openModal(
+                        ConfirmationModalComponent,
+                        { size: TableStringEnum.SMALL },
+                        {
+                            ...this.editData,
+                            template: TableStringEnum.USER_1,
+                            type: TableStringEnum.DELETE,
+                            svg: true,
+                        }
+                    );
                 }
                 break;
             }

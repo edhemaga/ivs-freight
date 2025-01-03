@@ -96,6 +96,13 @@
     <div class="modal-footer modal-footer-payroll">
         <div class="divider"></div>
         <ng-container *ngIf="editData?.data?.name; else showCreateButtons">
+            <div class="d-flex justify-content-between w-full">
+                <button
+                class="modal-delete-btn ta-font-bold mr-12 valid"
+                (click)="onModalAction(taModalActionEnums.DELETE)" 
+            >
+                Delete
+            </button>
             <button
                 class="modal-save-btn ta-font-bold"
                 (click)="onModalAction(taModalActionEnums.SAVE)"
@@ -103,6 +110,7 @@
             >
                 Save Changes
             </button>
+            </div>
         </ng-container>
 
         <ng-template #showCreateButtons>
