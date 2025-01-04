@@ -85,35 +85,33 @@
 </app-ca-modal>
 
 <ng-template #leftModalContent>
-    <ng-container *ngIf="editData?.data?.name">
+    @if (editData?.data?.name) {
         <div class="payroll-number text-color-white text-size-14 ta-font-bold">
             {{ editData?.data?.name }}
         </div>
-    </ng-container>
+    }
 </ng-template>
 
 <ng-template #footerTemplate>
     <div class="modal-footer modal-footer-payroll">
         <div class="divider"></div>
-        <ng-container *ngIf="editData?.data?.name; else showCreateButtons">
+        @if (editData?.data?.name) {
             <div class="d-flex justify-content-between w-full">
                 <button
-                class="modal-delete-btn ta-font-bold mr-12 valid"
-                (click)="onModalAction(taModalActionEnums.DELETE)" 
-            >
-                Delete
-            </button>
-            <button
-                class="modal-save-btn ta-font-bold"
-                (click)="onModalAction(taModalActionEnums.SAVE)"
-                [class.valid]="accountForm.valid && isFormDirty"
-            >
-                Save Changes
-            </button>
+                    class="modal-delete-btn ta-font-bold mr-12 valid"
+                    (click)="onModalAction(taModalActionEnums.DELETE)"
+                >
+                    Delete
+                </button>
+                <button
+                    class="modal-save-btn ta-font-bold"
+                    (click)="onModalAction(taModalActionEnums.SAVE)"
+                    [class.valid]="accountForm.valid && isFormDirty"
+                >
+                    Save Changes
+                </button>
             </div>
-        </ng-container>
-
-        <ng-template #showCreateButtons>
+        } @else {
             <button
                 class="ta-font-bold modal-save-btn modal-save-btn-add-new mr-12"
                 [class.valid]="accountForm.valid && isFormDirty"
@@ -128,12 +126,12 @@
             >
                 Save
             </button>
-        </ng-template>
+        }
     </div>
 </ng-template>
 
 <ng-template #rightModalContent>
-    <ng-container *ngIf="editData?.type === 'edit'">
+    @if (editData?.type === 'edit') {
         <div
             ngbTooltip
             mainTooltip="Added    {{
@@ -144,12 +142,12 @@
             class="modal-date-logo"
         >
             <svg-icon
-                src="assets/svg/common/date.svg"
+                [src]="svgRoutes.DATE_ICON"
                 class="modal-buttons"
             ></svg-icon>
         </div>
         <div class="modal-date-border"></div>
-    </ng-container>
+    }
     <div
         class="d-flex justify-content-center align-items-center modal-close-container"
         ngbTooltip
@@ -160,7 +158,7 @@
     >
         <svg-icon
             class="modal-close svg-size-14 svg-fill-muted modal-buttons"
-            [src]="'assets/svg/applicant/invalid-review-x.svg'"
+            [src]="svgRoutes.CLOSE_ICON"
         ></svg-icon>
     </div>
 </ng-template>

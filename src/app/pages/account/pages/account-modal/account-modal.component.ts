@@ -59,14 +59,17 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
 
 // Pipes
 import { FormatDatePipe } from '@shared/pipes';
-import { ContactsModalStringEnum } from '@pages/contacts/pages/contacts-modal/enums/contacts-modal-string.enum';
 
 // Enums
 import { TaModalActionEnums } from '@shared/components/ta-modal/enums';
 import { TableStringEnum } from '@shared/enums';
+import { ContactsModalStringEnum } from '@pages/contacts/pages/contacts-modal/enums';
 
 // Services
 import { ConfirmationService } from '@shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
+
+// Svg routes
+import { SharedSvgRoutes } from '@shared/utils/svg-routes';
 
 @Component({
     selector: 'app-account-modal',
@@ -114,6 +117,7 @@ export class AccountModalComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
     public accountModalConfig = AccountModalConfig;
     public taModalActionEnums = ContactsModalStringEnum;
+    public svgRoutes = SharedSvgRoutes;
 
     constructor(
         private formBuilder: UntypedFormBuilder,
@@ -163,11 +167,11 @@ export class AccountModalComponent implements OnInit, OnDestroy {
 
     public onModalAction(action: string): void {
         switch (action) {
-            case TaModalActionEnums.CLOSE: {
+            case TaModalActionEnums.CLOSE:
                 this.ngbActiveModal.close();
                 break;
-            }
-            case TaModalActionEnums.SAVE_AND_ADD_NEW: {
+
+            case TaModalActionEnums.SAVE_AND_ADD_NEW:
                 if (this.accountForm.invalid || !this.isFormDirty) {
                     this.inputService.markInvalid(this.accountForm);
                     return;
@@ -176,9 +180,8 @@ export class AccountModalComponent implements OnInit, OnDestroy {
                 this.setModalSpinner('save and add new', true, false);
                 this.addNewAfterSave = true;
                 break;
-            }
-            case TaModalActionEnums.SAVE: {
-                // If Form not valid
+
+            case TaModalActionEnums.SAVE:
                 if (this.accountForm.invalid || !this.isFormDirty) {
                     this.inputService.markInvalid(this.accountForm);
                     return;
@@ -191,8 +194,8 @@ export class AccountModalComponent implements OnInit, OnDestroy {
                     this.setModalSpinner(null, true, false);
                 }
                 break;
-            }
-            case TaModalActionEnums.DELETE: {
+
+            case TaModalActionEnums.DELETE:
                 if (this.editData) {
                     this.modalService.openModal(
                         ConfirmationModalComponent,
@@ -206,10 +209,9 @@ export class AccountModalComponent implements OnInit, OnDestroy {
                     );
                 }
                 break;
-            }
-            default: {
+
+            default:
                 break;
-            }
         }
     }
 
