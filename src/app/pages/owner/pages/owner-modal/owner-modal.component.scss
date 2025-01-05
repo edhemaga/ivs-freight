@@ -1,0 +1,11 @@
+.d-grid {
+    &-bussines {
+        grid-template-columns: 300px 144px;
+    }
+    &-details {
+        grid-template-columns: 170px 274px;
+    }
+    &-address {
+        grid-template-columns: 364px 80px;
+    }
+}

@@ -14,6 +14,8 @@ import {
 } from '@angular/core';
 import { merge, Subject, takeUntil } from 'rxjs';
 import { CommonModule } from '@angular/common';
+import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
+import { AngularSvgIconModule } from 'angular-svg-icon';
 
 //Validations
 import {
@@ -32,7 +34,6 @@ import {
 //Components
 import { TruckModalComponent } from '@pages/truck/pages/truck-modal/truck-modal.component';
 import { TrailerModalComponent } from '@pages/trailer/pages/trailer-modal/trailer-modal.component';
-import { TaModalComponent } from '@shared/components/ta-modal/ta-modal.component';
 import { TaTabSwitchComponent } from '@shared/components/ta-tab-switch/ta-tab-switch.component';
 import { TaInputAddressDropdownComponent } from '@shared/components/ta-input-address-dropdown/ta-input-address-dropdown.component';
 import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-custom-card.component';
@@ -41,6 +42,7 @@ import {
     CaInputDropdownComponent,
     CaInputNoteComponent,
     CaUploadFilesComponent,
+    CaModalComponent,
 } from 'ca-components';
 
 //Models
@@ -58,6 +60,13 @@ import { OwnerService } from '@pages/owner/services/owner.service';
 import { BankVerificationService } from '@shared/services/bank-verification.service';
 import { FormService } from '@shared/services/form.service';
 
+// Pipes
+import { FormatDatePipe } from '@shared/pipes';
+import { TaModalActionEnums } from '@shared/components/ta-modal/enums';
+
+// Svg routes
+// import { SharedSvgRoutes } from '@shared/utils/svg-routes';
+
 @Component({
     selector: 'app-owner-modal',
     templateUrl: './owner-modal.component.html',
@@ -70,9 +79,11 @@ import { FormService } from '@shared/services/form.service';
         CommonModule,
         FormsModule,
         ReactiveFormsModule,
+        AngularSvgIconModule,
+        NgbTooltipModule,
 
         // Component
-        TaModalComponent,
+        CaModalComponent,
         TaTabSwitchComponent,
         CaInputComponent,
         CaInputDropdownComponent,
@@ -80,6 +91,9 @@ import { FormService } from '@shared/services/form.service';
         TaCustomCardComponent,
         CaInputNoteComponent,
         CaUploadFilesComponent,
+
+        // Pipes
+        FormatDatePipe,
     ],
 })
 export class OwnerModalComponent implements OnInit, OnDestroy {
@@ -118,6 +132,7 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
 
     public isFormDirty: boolean;
+    public svgRoutes = {};
 
     constructor(
         private formBuilder: UntypedFormBuilder,
@@ -175,8 +190,8 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
         this.manipulateWithOwnerInputs();
     }
 
-    public onModalAction(data: { action: string; bool: boolean }) {
-        switch (data.action) {
+    public onModalAction(action: any): void {
+        switch (action) {
             case 'close': {
                 if (this.editData?.canOpenModal) {
                     switch (this.editData?.key) {
@@ -213,7 +228,7 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
                 }
                 break;
             }
-            case 'save and add new': {
+            case TaModalActionEnums.SAVE_AND_ADD_NEW: {
                 if (this.ownerForm.invalid || !this.isFormDirty) {
                     this.inputService.markInvalid(this.ownerForm);
                     return;
@@ -227,7 +242,7 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
                 this.addNewAfterSave = true;
                 break;
             }
-            case 'save': {
+            case TaModalActionEnums.SAVE: {
                 if (this.ownerForm.invalid || !this.isFormDirty) {
                     this.inputService.markInvalid(this.ownerForm);
                     return;
@@ -248,15 +263,6 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
                     });
                 }
 
-                break;
-            }
-            case 'delete': {
-                this.deleteOwnerById(this.editData.id);
-                this.modalService.setModalSpinner({
-                    action: 'delete',
-                    status: true,
-                    close: false,
-                });
                 break;
             }
             default: {
