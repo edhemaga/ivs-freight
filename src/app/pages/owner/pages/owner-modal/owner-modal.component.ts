@@ -34,12 +34,14 @@ import { TruckModalComponent } from '@pages/truck/pages/truck-modal/truck-modal.
 import { TrailerModalComponent } from '@pages/trailer/pages/trailer-modal/trailer-modal.component';
 import { TaModalComponent } from '@shared/components/ta-modal/ta-modal.component';
 import { TaTabSwitchComponent } from '@shared/components/ta-tab-switch/ta-tab-switch.component';
-import { TaInputComponent } from '@shared/components/ta-input/ta-input.component';
-import { TaInputDropdownComponent } from '@shared/components/ta-input-dropdown/ta-input-dropdown.component';
 import { TaInputAddressDropdownComponent } from '@shared/components/ta-input-address-dropdown/ta-input-address-dropdown.component';
 import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-custom-card.component';
-import { TaInputNoteComponent } from '@shared/components/ta-input-note/ta-input-note.component';
-import { TaUploadFilesComponent } from '@shared/components/ta-upload-files/ta-upload-files.component';
+import {
+    CaInputComponent,
+    CaInputDropdownComponent,
+    CaInputNoteComponent,
+    CaUploadFilesComponent,
+} from 'ca-components';
 
 //Models
 import {
@@ -72,12 +74,12 @@ import { FormService } from '@shared/services/form.service';
         // Component
         TaModalComponent,
         TaTabSwitchComponent,
-        TaInputComponent,
-        TaInputDropdownComponent,
+        CaInputComponent,
+        CaInputDropdownComponent,
         TaInputAddressDropdownComponent,
         TaCustomCardComponent,
-        TaInputNoteComponent,
-        TaUploadFilesComponent,
+        CaInputNoteComponent,
+        CaUploadFilesComponent,
     ],
 })
 export class OwnerModalComponent implements OnInit, OnDestroy {

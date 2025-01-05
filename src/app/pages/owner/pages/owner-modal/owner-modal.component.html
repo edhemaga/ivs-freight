@@ -20,7 +20,7 @@
         >
             <div class="row" *ngIf="selectedTab === 1">
                 <div class="col-8">
-                    <app-ta-input
+                    <app-ca-input
                         formControlName="bussinesName"
                         [inputConfig]="{
                             name: 'Business Name',
@@ -30,12 +30,12 @@
                             textTransform: 'uppercase',
                             autoFocus: editData?.type !== 'edit',
                             minLength: 2,
-                            maxLength: 64
+                            maxLength: 64,
                         }"
-                    ></app-ta-input>
+                    ></app-ca-input>
                 </div>
                 <div class="col-4">
-                    <app-ta-input
+                    <app-ca-input
                         formControlName="ein"
                         [inputConfig]="{
                             name: 'EIN',
@@ -43,14 +43,14 @@
                             label: 'EIN #',
                             isRequired: true,
                             mask: '00-0000000',
-                            maxLength: 10
+                            maxLength: 10,
                         }"
-                    ></app-ta-input>
+                    ></app-ca-input>
                 </div>
             </div>
             <div class="row" *ngIf="selectedTab === 2">
                 <div class="col-4">
-                    <app-ta-input
+                    <app-ca-input
                         formControlName="firstName"
                         [inputConfig]="{
                             name: 'First name',
@@ -62,12 +62,12 @@
                             textTransform: 'capitalize',
                             autoFocus:
                                 selectedTab === 2 &&
-                                !ownerForm.get('firstName').value
+                                !ownerForm.get('firstName').value,
                         }"
-                    ></app-ta-input>
+                    ></app-ca-input>
                 </div>
                 <div class="col-4 no-p-right">
-                    <app-ta-input
+                    <app-ca-input
                         formControlName="lastName"
                         [inputConfig]="{
                             name: 'Last name',
@@ -76,12 +76,12 @@
                             minLength: 2,
                             maxLength: 26,
                             isRequired: true,
-                            textTransform: 'capitalize'
+                            textTransform: 'capitalize',
                         }"
-                    ></app-ta-input>
+                    ></app-ca-input>
                 </div>
                 <div class="col-4">
-                    <app-ta-input
+                    <app-ca-input
                         formControlName="ssn"
                         [inputConfig]="{
                             name: 'SSN',
@@ -89,14 +89,14 @@
                             label: 'SSN',
                             isRequired: true,
                             mask: '000-00-0000',
-                            maxLength: 11
+                            maxLength: 11,
                         }"
-                    ></app-ta-input>
+                    ></app-ca-input>
                 </div>
             </div>
             <div class="row">
                 <div class="col-5">
-                    <app-ta-input
+                    <app-ca-input
                         formControlName="phone"
                         [inputConfig]="{
                             name: 'Phone',
@@ -104,12 +104,12 @@
                             label: 'Phone',
                             isRequired: true,
                             placeholderIcon: 'phone',
-                            mask: '(000) 000-0000'
+                            mask: '(000) 000-0000',
                         }"
-                    ></app-ta-input>
+                    ></app-ca-input>
                 </div>
                 <div class="col-7">
-                    <app-ta-input
+                    <app-ca-input
                         formControlName="email"
                         [inputConfig]="{
                             name: 'Email',
@@ -119,9 +119,9 @@
                             placeholderIcon: 'email',
                             minLength: 5,
                             maxLength: 64,
-                            textTransform: 'lowercase'
+                            textTransform: 'lowercase',
                         }"
-                    ></app-ta-input>
+                    ></app-ca-input>
                 </div>
             </div>
             <div class="row">
@@ -137,7 +137,7 @@
                             textTransform: 'capitalize',
                             dropdownWidthClass: 'w-col-376',
                             minLength: 6,
-                            maxLength: 256
+                            maxLength: 256,
                         }"
                         [placeholderType]="'longAddress'"
                         [activeAddress]="selectedAddress"
@@ -145,7 +145,7 @@
                     ></app-ta-input-address-dropdown>
                 </div>
                 <div class="col-2">
-                    <app-ta-input
+                    <app-ca-input
                         formControlName="addressUnit"
                         [inputConfig]="{
                             name: 'address-unit',
@@ -153,14 +153,14 @@
                             label: 'Unit #',
                             textTransform: 'uppercase',
                             minLength: 1,
-                            maxLength: 10
+                            maxLength: 10,
                         }"
-                    ></app-ta-input>
+                    ></app-ca-input>
                 </div>
             </div>
             <div class="custom-bank-row last-row">
                 <div class="bank-field">
-                    <app-ta-input-dropdown
+                    <app-ca-input-dropdown
                         formControlName="bankId"
                         [template]="'svg-template'"
                         [inputConfig]="{
@@ -171,17 +171,17 @@
                             maxLength: 64,
                             textTransform: 'uppercase',
                             isDropdown: true,
-                            dropdownWidthClass: 'w-col-164'
+                            dropdownWidthClass: 'w-col-164',
                         }"
                         [canAddNew]="true"
                         [options]="labelsBank"
                         [activeItem]="selectedBank"
                         (selectedItem)="onSelectBank($event)"
                         (saveItem)="onSaveNewBank($event)"
-                    ></app-ta-input-dropdown>
+                    ></app-ca-input-dropdown>
                 </div>
                 <div class="bank-field">
-                    <app-ta-input
+                    <app-ca-input
                         formControlName="routingNumber"
                         [inputConfig]="{
                             name: 'routing-bank',
@@ -190,12 +190,12 @@
                             isDisabled: !isBankSelected,
                             isRequired: isBankSelected,
                             minLength: 9,
-                            maxLength: 9
+                            maxLength: 9,
                         }"
-                    ></app-ta-input>
+                    ></app-ca-input>
                 </div>
                 <div class="bank-field">
-                    <app-ta-input
+                    <app-ca-input
                         formControlName="accountNumber"
                         [inputConfig]="{
                             name: 'account-bank',
@@ -204,9 +204,9 @@
                             isDisabled: !isBankSelected,
                             isRequired: isBankSelected,
                             maxLength: 17,
-                            minLength: 5
+                            minLength: 5,
                         }"
-                    ></app-ta-input>
+                    ></app-ca-input>
                 </div>
             </div>
             <div class="ta-card-body-overflow-none">
@@ -215,16 +215,11 @@
                     [cardName]="'Document'"
                     [isCardOpen]="!!documents.length"
                 >
-                    <app-ta-upload-files
-                        [files]="documents"
-                        [size]="'small'"
-                        (onFileEvent)="onFilesEvent($event)"
-                        [customClassName]="'modals'"
-                        [showDropzone]="true"
-                    ></app-ta-upload-files>
+                    <!-- TODO:  -->
                 </app-ta-custom-card>
             </div>
-            <app-ta-input-note
+            <div class="divider"></div>
+            <app-ca-input-note
                 formControlName="note"
                 [isVisibleNote]="
                     ownerForm.get('note').value &&
@@ -238,7 +233,7 @@
                         ? ownerForm.get('note').value
                         : ''
                 "
-            ></app-ta-input-note>
+            ></app-ca-input-note>
         </form>
     </div>
 </app-ta-modal>
