@@ -47,8 +47,8 @@
                 </div>
             }
 
-            <div class="row" *ngIf="selectedTab === 2">
-                <div class="col-4">
+            @if (selectedTab === 2) {
+                <div class="d-grid gap-12 d-grid-name mb-32">
                     <app-ca-input
                         formControlName="firstName"
                         [inputConfig]="{
@@ -64,8 +64,6 @@
                                 !ownerForm.get('firstName').value,
                         }"
                     ></app-ca-input>
-                </div>
-                <div class="col-4 no-p-right">
                     <app-ca-input
                         formControlName="lastName"
                         [inputConfig]="{
@@ -78,8 +76,6 @@
                             textTransform: 'capitalize',
                         }"
                     ></app-ca-input>
-                </div>
-                <div class="col-4">
                     <app-ca-input
                         formControlName="ssn"
                         [inputConfig]="{
@@ -92,7 +88,7 @@
                         }"
                     ></app-ca-input>
                 </div>
-            </div>
+            }
 
             <div class="d-grid gap-12 d-grid-details mb-32">
                 <app-ca-input
