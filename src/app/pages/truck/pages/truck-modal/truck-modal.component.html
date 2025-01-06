@@ -1,6 +1,8 @@
 <app-ca-modal
     [modalTitle]="editData?.type !== 'edit' ? 'Add Truck' : 'Edit Truck'"
     [rightHeaderTemplate]="rightModalContent"
+    [leftHeaderTemplate]="leftModalContent"
+    [footerTemplate]="footerTemplate"
 >
     <div class="new-modal" origin>
         <div class="divider divider--dark divider--small"></div>
@@ -768,5 +770,57 @@
             class="modal-close svg-size-14 svg-fill-muted modal-buttons"
             [src]="svgRoutes.CLOSE_ICON"
         ></svg-icon>
+    </div>
+</ng-template>
+
+<ng-template #leftModalContent>
+    @if (editData?.data?.truckNumber) {
+        <div class="payroll-number text-color-white text-size-14 ta-font-bold">
+            {{ editData?.data?.truckNumber }}
+        </div>
+    }
+</ng-template>
+
+<ng-template #footerTemplate>
+    <div class="modal-footer modal-footer-payroll">
+        <div class="divider"></div>
+        @if (editData?.type === 'edit') {
+            <div class="d-flex justify-content-between w-full">
+                <div>
+                    <button
+                        class="modal-delete-btn ta-font-bold mr-12 valid"
+                        (click)="onModalAction(taModalActionEnums.DELETE)"
+                    >
+                        Delete
+                    </button>
+                    <button class="modal-convert-to-template-btn ta-font-bold">
+                        <!-- TODO: -->
+                        Deactivate
+                    </button>
+                </div>
+                <button
+                    class="modal-save-btn ta-font-bold"
+                    (click)="onModalAction(taModalActionEnums.SAVE)"
+                    [class.valid]="truckForm.valid && isFormDirty"
+                >
+                    Save Changes
+                </button>
+            </div>
+        } @else {
+            <button
+                class="ta-font-bold modal-save-btn modal-save-btn-add-new mr-12"
+                [class.valid]="truckForm.valid && isFormDirty"
+                (click)="onModalAction(taModalActionEnums.SAVE_AND_ADD_NEW)"
+            >
+                Save and Add New
+            </button>
+            <button
+                class="modal-save-btn ta-font-bold"
+                (click)="onModalAction(taModalActionEnums.SAVE)"
+                [class.valid]="truckForm.valid && isFormDirty"
+            >
+                Save
+            </button>
+        }
     </div>
 </ng-template>
