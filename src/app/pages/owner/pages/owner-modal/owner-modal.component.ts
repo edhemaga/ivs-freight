@@ -72,10 +72,12 @@ import { SharedSvgRoutes } from '@shared/utils/svg-routes';
 // Enums
 import { ContactsModalStringEnum } from '@pages/contacts/pages/contacts-modal/enums';
 import { ConfirmationModalComponent } from '@shared/components/ta-shared-modals/confirmation-modal/confirmation-modal.component';
-import { TableStringEnum } from '@shared/enums'; 
+import { TableStringEnum } from '@shared/enums';
 
 // Config
 import { OwnerModalConfig } from '@pages/owner/pages/owner-modal/utils/consts';
+import { ContactsModalConstants } from '@pages/contacts/pages/contacts-modal/utils/constants/contacts-modal.constants';
+import { MethodsGlobalHelper } from '@shared/utils/helpers';
 
 @Component({
     selector: 'app-owner-modal',
@@ -146,6 +148,8 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
     public svgRoutes = SharedSvgRoutes;
     public taModalActionEnums = TaModalActionEnums;
     public ownerModalConfig = OwnerModalConfig;
+
+    public uploadOptionsConstants = ContactsModalConstants.UPLOAD_OPTIONS;
     constructor(
         private formBuilder: UntypedFormBuilder,
         private inputService: TaInputService,
@@ -351,31 +355,10 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
     }
 
     public onFilesEvent(event: any) {
-        this.documents = event.files;
-        switch (event.action) {
-            case 'add': {
-                this.ownerForm
-                    .get('files')
-                    .patchValue(JSON.stringify(event.files));
-                break;
-            }
-            case 'delete': {
-                this.ownerForm
-                    .get('files')
-                    .patchValue(
-                        event.files.length ? JSON.stringify(event.files) : null
-                    );
-                if (event.deleteId) {
-                    this.filesForDelete.push(event.deleteId);
-                }
-
-                this.fileModified = true;
-                break;
-            }
-            default: {
-                break;
-            }
-        }
+        const base64Data = MethodsGlobalHelper.getBase64DataFromEvent(event);
+        this.ownerForm
+            .get("files")
+            .patchValue(base64Data);
     }
 
     private manipulateWithOwnerInputs() {
@@ -468,13 +451,6 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
             ...form
         } = this.ownerForm.value;
 
-        let documents = [];
-        this.documents.map((item) => {
-            if (item.realFile) {
-                documents.push(item.realFile);
-            }
-        });
-
         const newData: any = {
             id: id,
             ...form,
@@ -486,7 +462,7 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
             ssnEin: this.selectedTab === 1 ? ein : ssn,
             address: { ...this.selectedAddress, addressUnit: addressUnit },
             bankId: this.selectedBank ? this.selectedBank.id : null,
-            files: documents ? documents : this.ownerForm.value.files,
+            files:  this.ownerForm.value.files,
             filesForDeleteIds: this.filesForDelete,
             longitude: this.longitude,
             latitude: this.latitude,
@@ -524,13 +500,6 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
             ...form
         } = this.ownerForm.value;
 
-        let documents = [];
-        this.documents.map((item) => {
-            if (item.realFile) {
-                documents.push(item.realFile);
-            }
-        });
-
         const newData: any = {
             ...form,
             ownerType: this.selectedTab,
@@ -541,7 +510,7 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
             ssnEin: this.selectedTab === 1 ? ein : ssn,
             address: { ...this.selectedAddress, addressUnit: addressUnit },
             bankId: this.selectedBank ? this.selectedBank.id : null,
-            files: documents,
+            files:  this.ownerForm.value.files,
             longitude: this.longitude,
             latitude: this.latitude,
         };

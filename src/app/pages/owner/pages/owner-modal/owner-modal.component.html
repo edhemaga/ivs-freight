@@ -40,7 +40,12 @@
                 <div class="d-grid gap-12 d-grid-name mb-32">
                     <app-ca-input
                         formControlName="firstName"
-                        [inputConfig]="ownerModalConfig.FIRST_NAME_INPUT_CONFIG(selectedTab, ownerForm.get('firstName').value)"
+                        [inputConfig]="
+                            ownerModalConfig.FIRST_NAME_INPUT_CONFIG(
+                                selectedTab,
+                                ownerForm.get('firstName').value
+                            )
+                        "
                     ></app-ca-input>
                     <app-ca-input
                         formControlName="lastName"
@@ -116,7 +121,29 @@
                     [cardName]="'Document'"
                     [isCardOpen]="!!documents.length"
                 >
-                    <!-- TODO:  -->
+                    <app-ca-upload-files
+                        [isVisibleCropAndDrop]="
+                            uploadOptionsConstants.isVisibleCropAndDrop
+                        "
+                        [files]="uploadOptionsConstants.files"
+                        [slider]="uploadOptionsConstants.slider"
+                        [carouselConfig]="uploadOptionsConstants.carouselConfig"
+                        [hasCrop]="uploadOptionsConstants.hasCrop"
+                        [isRoundCrop]="uploadOptionsConstants.isRoundCrop"
+                        [containWithinAspectRatio]="
+                            uploadOptionsConstants.containWithinAspectRatio
+                        "
+                        [aspectRatio]="uploadOptionsConstants.aspectRatio"
+                        [initialCropperPosition]="
+                            uploadOptionsConstants.initialCropperPosition
+                        "
+                        [dropzoneConf]="uploadOptionsConstants.dropzoneConf"
+                        [review]="uploadOptionsConstants.review"
+                        [configFile]="uploadOptionsConstants.configFile"
+                        [size]="uploadOptionsConstants.size"
+                        [slideWidth]="uploadOptionsConstants.slideWidth"
+                        (onFileEvent)="onFilesEvent($event)"
+                    ></app-ca-upload-files>
                 </app-ta-custom-card>
             </div>
             <div class="divider"></div>
