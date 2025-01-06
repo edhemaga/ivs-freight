@@ -14,7 +14,7 @@ import {
 } from '@angular/core';
 import { merge, Subject, takeUntil } from 'rxjs';
 import { CommonModule } from '@angular/common';
-import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbActiveModal, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 
 //Validations
@@ -44,6 +44,7 @@ import {
     CaUploadFilesComponent,
     CaModalComponent,
 } from 'ca-components';
+import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
 
 //Models
 import {
@@ -65,7 +66,7 @@ import { FormatDatePipe } from '@shared/pipes';
 import { TaModalActionEnums } from '@shared/components/ta-modal/enums';
 
 // Svg routes
-// import { SharedSvgRoutes } from '@shared/utils/svg-routes';
+import { SharedSvgRoutes } from '@shared/utils/svg-routes';
 
 @Component({
     selector: 'app-owner-modal',
@@ -91,6 +92,7 @@ import { TaModalActionEnums } from '@shared/components/ta-modal/enums';
         TaCustomCardComponent,
         CaInputNoteComponent,
         CaUploadFilesComponent,
+        TaAppTooltipV2Component,
 
         // Pipes
         FormatDatePipe,
@@ -132,7 +134,8 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
 
     public isFormDirty: boolean;
-    public svgRoutes = {};
+    public svgRoutes = SharedSvgRoutes;
+    public taModalActionEnums = TaModalActionEnums;
 
     constructor(
         private formBuilder: UntypedFormBuilder,
@@ -140,7 +143,8 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
         private modalService: ModalService,
         private ownerModalService: OwnerService,
         private bankVerificationService: BankVerificationService,
-        private formService: FormService
+        private formService: FormService,
+        private ngbActiveModal: NgbActiveModal
     ) {}
 
     ngOnInit() {
@@ -175,6 +179,8 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
             'email',
             this.destroy$
         );
+
+        console.log(this.editData);
     }
 
     public tabChange(event: any): void {
@@ -226,6 +232,7 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
                         }
                     }
                 }
+                this.ngbActiveModal.close();
                 break;
             }
             case TaModalActionEnums.SAVE_AND_ADD_NEW: {
@@ -465,28 +472,6 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
                 error: () => {
                     this.modalService.setModalSpinner({
                         action: null,
-                        status: false,
-                        close: false,
-                    });
-                },
-            });
-    }
-
-    private deleteOwnerById(id: number) {
-        this.ownerModalService
-            .deleteOwnerById(id, this.editData.selectedTab)
-            .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: () => {
-                    this.modalService.setModalSpinner({
-                        action: 'delete',
-                        status: true,
-                        close: true,
-                    });
-                },
-                error: () => {
-                    this.modalService.setModalSpinner({
-                        action: 'delete',
                         status: false,
                         close: false,
                     });
