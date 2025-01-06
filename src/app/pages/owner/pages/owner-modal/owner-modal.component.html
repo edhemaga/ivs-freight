@@ -21,28 +21,17 @@
                 <div class="d-grid gap-12 d-grid-bussines mb-32">
                     <app-ca-input
                         formControlName="bussinesName"
-                        [inputConfig]="{
-                            name: 'Business Name',
-                            type: 'text',
-                            label: 'Business Name',
-                            isRequired: true,
-                            textTransform: 'uppercase',
-                            autoFocus: editData?.type !== 'edit',
-                            minLength: 2,
-                            maxLength: 64,
-                        }"
+                        ownerModalConfig
+                        [inputConfig]="
+                            ownerModalConfig.BUSINESS_NAME_INPUT_CONFIG(
+                                editData?.type === 'edit'
+                            )
+                        "
                     ></app-ca-input>
 
                     <app-ca-input
                         formControlName="ein"
-                        [inputConfig]="{
-                            name: 'EIN',
-                            type: 'text',
-                            label: 'EIN #',
-                            isRequired: true,
-                            mask: '00-0000000',
-                            maxLength: 10,
-                        }"
+                        [inputConfig]="ownerModalConfig.EIN_INPUT_CONFIG"
                     ></app-ca-input>
                 </div>
             }
@@ -51,42 +40,15 @@
                 <div class="d-grid gap-12 d-grid-name mb-32">
                     <app-ca-input
                         formControlName="firstName"
-                        [inputConfig]="{
-                            name: 'First name',
-                            type: 'text',
-                            label: 'First Name',
-                            minLength: 2,
-                            maxLength: 26,
-                            isRequired: true,
-                            textTransform: 'capitalize',
-                            autoFocus:
-                                selectedTab === 2 &&
-                                !ownerForm.get('firstName').value,
-                        }"
+                        [inputConfig]="ownerModalConfig.FIRST_NAME_INPUT_CONFIG(selectedTab, ownerForm.get('firstName').value)"
                     ></app-ca-input>
                     <app-ca-input
                         formControlName="lastName"
-                        [inputConfig]="{
-                            name: 'Last name',
-                            type: 'text',
-                            label: 'Last Name',
-                            minLength: 2,
-                            maxLength: 26,
-                            isRequired: true,
-                            textTransform: 'capitalize',
-                        }"
+                        [inputConfig]="ownerModalConfig.LAST_NAME_INPUT_CONFIG"
                     ></app-ca-input>
                     <app-ca-input
                         formControlName="ssn"
-                        [inputConfig]="{
-                            name: 'SSN',
-                            type: 'text',
-                            label: 'SSN',
-                            isRequired: true,
-                            placeholderIcon: 'password',
-                            mask: '000-00-0000',
-                            maxLength: 11,
-                        }"
+                        [inputConfig]="ownerModalConfig.SSN_INPUT_CONFIG"
                     ></app-ca-input>
                 </div>
             }
@@ -94,57 +56,24 @@
             <div class="d-grid gap-12 d-grid-details mb-32">
                 <app-ca-input
                     formControlName="phone"
-                    [inputConfig]="{
-                        name: 'Phone',
-                        type: 'text',
-                        label: 'Phone',
-                        isRequired: true,
-                        placeholderIcon: 'phone',
-                        mask: '(000) 000-0000',
-                    }"
+                    [inputConfig]="ownerModalConfig.PHONE_INPUT_CONFIG"
                 ></app-ca-input>
                 <app-ca-input
                     formControlName="email"
-                    [inputConfig]="{
-                        name: 'Email',
-                        type: 'text',
-                        label: 'Email',
-                        isRequired: true,
-                        placeholderIcon: 'email',
-                        minLength: 5,
-                        maxLength: 64,
-                        textTransform: 'lowercase',
-                    }"
+                    [inputConfig]="ownerModalConfig.EMAIL_INPUT_CONFIG"
                 ></app-ca-input>
             </div>
             <div class="d-grid gap-12 d-grid-address mb-32">
                 <app-ta-input-address-dropdown
                     formControlName="address"
-                    [inputConfig]="{
-                        name: 'Address',
-                        type: 'text',
-                        label: 'Address, City, State Zip',
-                        isRequired: true,
-                        placeholderIcon: 'address',
-                        textTransform: 'capitalize',
-                        dropdownWidthClass: 'w-col-376',
-                        minLength: 6,
-                        maxLength: 256,
-                    }"
+                    [inputConfig]="ownerModalConfig.ADDRESS_INPUT_CONFIG"
                     [placeholderType]="'longAddress'"
                     [activeAddress]="selectedAddress"
                     (selectedAddress)="onHandleAddress($event)"
                 ></app-ta-input-address-dropdown>
                 <app-ca-input
                     formControlName="addressUnit"
-                    [inputConfig]="{
-                        name: 'address-unit',
-                        type: 'text',
-                        label: 'Unit #',
-                        textTransform: 'uppercase',
-                        minLength: 1,
-                        maxLength: 10,
-                    }"
+                    [inputConfig]="ownerModalConfig.ADDRESS_UNIT_INPUT_CONFIG"
                 ></app-ca-input>
             </div>
             <div class="custom-bank-row last-row">
@@ -152,16 +81,7 @@
                     <app-ca-input-dropdown
                         formControlName="bankId"
                         [template]="'svg-template'"
-                        [inputConfig]="{
-                            name: 'Input Dropdown Bank Name',
-                            type: 'text',
-                            label: 'Bank Name',
-                            minLength: 2,
-                            maxLength: 64,
-                            textTransform: 'uppercase',
-                            isDropdown: true,
-                            dropdownWidthClass: 'w-col-164',
-                        }"
+                        [inputConfig]="ownerModalConfig.BANK_INPUT_CONFIG"
                         [canAddNew]="true"
                         [options]="labelsBank"
                         [activeItem]="selectedBank"
@@ -172,30 +92,21 @@
                 <div class="bank-field">
                     <app-ca-input
                         formControlName="routingNumber"
-                        [inputConfig]="{
-                            name: 'routing-bank',
-                            type: 'text',
-                            label: 'Routing',
-                            isDisabled: !isBankSelected,
-                            isRequired: isBankSelected,
-                            minLength: 9,
-                            maxLength: 9,
-                        }"
+                        [inputConfig]="
+                            ownerModalConfig.ROUTING_NUMBER_INPUT_CONFIG(
+                                isBankSelected
+                            )
+                        "
                     ></app-ca-input>
                 </div>
                 <div class="bank-field">
                     <app-ca-input
                         formControlName="accountNumber"
-                        [inputConfig]="{
-                            name: 'account-bank',
-                            type: 'text',
-                            label: 'Account',
-                            placeholderIcon: 'password',
-                            isDisabled: !isBankSelected,
-                            isRequired: isBankSelected,
-                            maxLength: 17,
-                            minLength: 5,
-                        }"
+                        [inputConfig]="
+                            ownerModalConfig.ACCOUNT_INPUT_CONFIG(
+                                isBankSelected
+                            )
+                        "
                     ></app-ca-input>
                 </div>
             </div>

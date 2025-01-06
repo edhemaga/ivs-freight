@@ -72,7 +72,10 @@ import { SharedSvgRoutes } from '@shared/utils/svg-routes';
 // Enums
 import { ContactsModalStringEnum } from '@pages/contacts/pages/contacts-modal/enums';
 import { ConfirmationModalComponent } from '@shared/components/ta-shared-modals/confirmation-modal/confirmation-modal.component';
-import { TableStringEnum } from '@shared/enums';
+import { TableStringEnum } from '@shared/enums'; 
+
+// Config
+import { OwnerModalConfig } from '@pages/owner/pages/owner-modal/utils/consts';
 
 @Component({
     selector: 'app-owner-modal',
@@ -142,7 +145,7 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
     public isFormDirty: boolean;
     public svgRoutes = SharedSvgRoutes;
     public taModalActionEnums = TaModalActionEnums;
-
+    public ownerModalConfig = OwnerModalConfig;
     constructor(
         private formBuilder: UntypedFormBuilder,
         private inputService: TaInputService,
