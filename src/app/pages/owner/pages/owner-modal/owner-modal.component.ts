@@ -60,6 +60,7 @@ import { ModalService } from '@shared/services/modal.service';
 import { OwnerService } from '@pages/owner/services/owner.service';
 import { BankVerificationService } from '@shared/services/bank-verification.service';
 import { FormService } from '@shared/services/form.service';
+import { ConfirmationService } from '@shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
 
 // Pipes
 import { FormatDatePipe } from '@shared/pipes';
@@ -67,6 +68,11 @@ import { TaModalActionEnums } from '@shared/components/ta-modal/enums';
 
 // Svg routes
 import { SharedSvgRoutes } from '@shared/utils/svg-routes';
+
+// Enums
+import { ContactsModalStringEnum } from '@pages/contacts/pages/contacts-modal/enums';
+import { ConfirmationModalComponent } from '@shared/components/ta-shared-modals/confirmation-modal/confirmation-modal.component';
+import { TableStringEnum } from '@shared/enums';
 
 @Component({
     selector: 'app-owner-modal',
@@ -144,13 +150,24 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
         private ownerModalService: OwnerService,
         private bankVerificationService: BankVerificationService,
         private formService: FormService,
-        private ngbActiveModal: NgbActiveModal
+        private ngbActiveModal: NgbActiveModal,
+        private confirmationService: ConfirmationService
     ) {}
 
     ngOnInit() {
         this.createForm();
         this.getOwnerDropdowns();
         this.onBankSelected();
+        this.confirmationActivationSubscribe();
+    }
+
+    private confirmationActivationSubscribe(): void {
+        this.confirmationService.confirmationData$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((res) => {
+                if (res.action !== TableStringEnum.CLOSE)
+                    this.ngbActiveModal?.close();
+            });
     }
 
     private createForm() {
@@ -198,7 +215,7 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
 
     public onModalAction(action: any): void {
         switch (action) {
-            case 'close': {
+            case TaModalActionEnums.CLOSE: {
                 if (this.editData?.canOpenModal) {
                     switch (this.editData?.key) {
                         case 'truck-modal': {
@@ -240,13 +257,13 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
                     this.inputService.markInvalid(this.ownerForm);
                     return;
                 }
+                this.addNewAfterSave = true;
                 this.addOwner();
                 this.modalService.setModalSpinner({
                     action: 'save and add new',
                     status: true,
                     close: false,
                 });
-                this.addNewAfterSave = true;
                 break;
             }
             case TaModalActionEnums.SAVE: {
@@ -272,6 +289,20 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
 
                 break;
             }
+            case TaModalActionEnums.DELETE:
+                if (this.editData) {
+                    this.modalService.openModal(
+                        ConfirmationModalComponent,
+                        { size: TableStringEnum.SMALL },
+                        {
+                            ...this.editData,
+                            template: TableStringEnum.OWNER_3,
+                            type: TableStringEnum.DELETE,
+                            svg: true,
+                        }
+                    );
+                }
+                break;
             default: {
                 break;
             }
@@ -557,29 +588,9 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
                     }
 
                     if (this.addNewAfterSave) {
-                        this.modalService.setModalSpinner({
-                            action: 'save and add new',
-                            status: false,
-                            close: false,
-                        });
-                        this.formService.resetForm(this.ownerForm);
-
-                        this.selectedAddress = null;
-                        this.selectedBank = null;
-                        this.selectedTab = 1;
-
-                        this.documents = [];
-                        this.fileModified = false;
-                        this.filesForDelete = [];
-
-                        this.tabChange({ id: 1 });
-
-                        this.addNewAfterSave = false;
-
-                        this.modalService.setModalSpinner({
-                            action: 'save and add new',
-                            status: false,
-                            close: false,
+                        this.ngbActiveModal.close();
+                        this.modalService.openModal(OwnerModalComponent, {
+                            size: ContactsModalStringEnum.SMALL,
                         });
                     } else {
                         this.modalService.setModalSpinner({
