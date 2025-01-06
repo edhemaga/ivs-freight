@@ -77,7 +77,6 @@ import { TableStringEnum } from '@shared/enums';
 // Config
 import { OwnerModalConfig } from '@pages/owner/pages/owner-modal/utils/consts';
 import { ContactsModalConstants } from '@pages/contacts/pages/contacts-modal/utils/constants/contacts-modal.constants';
-import { MethodsGlobalHelper } from '@shared/utils/helpers';
 
 @Component({
     selector: 'app-owner-modal',
@@ -266,11 +265,6 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
                 }
                 this.addNewAfterSave = true;
                 this.addOwner();
-                this.modalService.setModalSpinner({
-                    action: 'save and add new',
-                    status: true,
-                    close: false,
-                });
                 break;
             }
             case TaModalActionEnums.SAVE: {
@@ -280,18 +274,8 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
                 }
                 if (this.editData?.id) {
                     this.updateOwner(this.editData.id);
-                    this.modalService.setModalSpinner({
-                        action: null,
-                        status: true,
-                        close: false,
-                    });
                 } else {
                     this.addOwner();
-                    this.modalService.setModalSpinner({
-                        action: null,
-                        status: true,
-                        close: false,
-                    });
                 }
 
                 break;
@@ -354,12 +338,7 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
             });
     }
 
-    public onFilesEvent(event: any) {
-        const base64Data = MethodsGlobalHelper.getBase64DataFromEvent(event);
-        this.ownerForm
-            .get("files")
-            .patchValue(base64Data);
-    }
+    public onUploadImage(event: any) {}
 
     private manipulateWithOwnerInputs() {
         if (this.selectedTab === 1) {
@@ -462,7 +441,7 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
             ssnEin: this.selectedTab === 1 ? ein : ssn,
             address: { ...this.selectedAddress, addressUnit: addressUnit },
             bankId: this.selectedBank ? this.selectedBank.id : null,
-            files:  this.ownerForm.value.files,
+            files: this.ownerForm.value.files,
             filesForDeleteIds: this.filesForDelete,
             longitude: this.longitude,
             latitude: this.latitude,
@@ -510,7 +489,7 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
             ssnEin: this.selectedTab === 1 ? ein : ssn,
             address: { ...this.selectedAddress, addressUnit: addressUnit },
             bankId: this.selectedBank ? this.selectedBank.id : null,
-            files:  this.ownerForm.value.files,
+            files: this.ownerForm.value.files,
             longitude: this.longitude,
             latitude: this.latitude,
         };
