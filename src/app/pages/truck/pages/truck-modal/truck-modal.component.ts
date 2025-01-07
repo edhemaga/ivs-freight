@@ -33,6 +33,7 @@ import { TruckService } from '@shared/services/truck.service';
 import { VinDecoderService } from '@shared/services/vin-decoder.service';
 import { FormService } from '@shared/services/form.service';
 import { EditTagsService } from '@shared/services/edit-tags.service';
+import { ConfirmationService } from '@shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
 
 // animations
 import { tabsModalAnimation } from '@shared/animations/tabs-modal.animation';
@@ -72,6 +73,7 @@ import { GetTruckModalResponse, VinDecodeResponse } from 'appcoretruckassist';
 
 // Enums
 import { TruckModalForm } from '@pages/truck/pages/truck-modal/enums';
+import { ContactsModalStringEnum } from '@pages/contacts/pages/contacts-modal/enums';
 
 // Const
 import { TruckModalConstants } from '@pages/truck/pages/truck-modal/const';
@@ -79,6 +81,11 @@ import { TruckModalConstants } from '@pages/truck/pages/truck-modal/const';
 // Pipes
 import { FormatDatePipe } from '@shared/pipes';
 import { SharedSvgRoutes } from '@shared/utils/svg-routes';
+import { TaModalActionEnums } from '@shared/components/ta-modal/enums';
+import { ConfirmationModalComponent } from '@shared/components/ta-shared-modals/confirmation-modal/confirmation-modal.component';
+import { TableStringEnum } from '@shared/enums';
+import { ConfirmationActivationModalComponent } from '@shared/components/ta-shared-modals/confirmation-activation-modal/confirmation-activation-modal.component';
+import { ConfirmationActivationService } from '@shared/components/ta-shared-modals/confirmation-activation-modal/services/confirmation-activation.service';
 
 @Component({
     selector: 'app-truck-modal',
@@ -196,6 +203,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
 
     public svgRoutes = SharedSvgRoutes;
     private destroy$ = new Subject<void>();
+    public taModalActionEnums = TaModalActionEnums;
 
     constructor(
         private formBuilder: UntypedFormBuilder,
@@ -205,7 +213,9 @@ export class TruckModalComponent implements OnInit, OnDestroy {
         private ngbActiveModal: NgbActiveModal,
         private vinDecoderService: VinDecoderService,
         private formService: FormService,
-        private tagsService: EditTagsService
+        private tagsService: EditTagsService,
+        private confirmationService: ConfirmationService,
+        private confirmationActivationService: ConfirmationActivationService
     ) {}
 
     ngOnInit() {
@@ -220,6 +230,25 @@ export class TruckModalComponent implements OnInit, OnDestroy {
         }
 
         this.vinDecoder();
+        this.confirmationActivationSubscribe();
+        this.confirmationDeactivationSubscribe();
+    }
+
+    private confirmationDeactivationSubscribe(): void {
+        this.confirmationActivationService.getConfirmationActivationData$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe(() => {
+                this.ngbActiveModal?.close();
+            });
+    }
+
+    private confirmationActivationSubscribe(): void {
+        this.confirmationService.confirmationData$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((res) => {
+                if (res.action !== TableStringEnum.CLOSE)
+                    this.ngbActiveModal?.close();
+            });
     }
 
     private createForm(): void {
@@ -300,93 +329,98 @@ export class TruckModalComponent implements OnInit, OnDestroy {
     }
 
     public onModalAction(action: string): void {
-        if (action === 'close') {
-            if (this.editData?.canOpenModal) {
-                switch (this.editData?.key) {
-                    case 'repair-modal': {
-                        this.modalService.setProjectionModal({
-                            action: 'close',
-                            payload: { key: this.editData?.key, value: null },
-                            component: RepairOrderModalComponent,
-                            size: 'large',
-                            type: 'Truck',
-                            closing: 'fastest',
-                        });
-                        break;
+        switch (action) {
+            case TaModalActionEnums.CLOSE:
+                if (this.editData?.canOpenModal) {
+                    switch (this.editData?.key) {
+                        case 'repair-modal':
+                            this.modalService.setProjectionModal({
+                                action: 'close',
+                                payload: {
+                                    key: this.editData?.key,
+                                    value: null,
+                                },
+                                component: RepairOrderModalComponent,
+                                size: 'large',
+                                type: 'Truck',
+                                closing: 'fastest',
+                            });
+                            break;
+                        default:
+                            break;
                     }
-                    default: {
-                        break;
-                    }
+                } else {
+                    this.ngbActiveModal.close();
                 }
-            }
-            return;
-        } else {
-            // if (data.action === 'deactivate' && this.editData) {
-            //     this.truckModalService
-            //         .changeTruckStatus(
-            //             this.editData.id,
-            //             this.editData.tabSelected
-            //         )
-            //         .pipe(takeUntil(this.destroy$))
-            //         .subscribe({
-            //             next: (res: HttpResponseBase) => {
-            //                 if (res.status === 200 || res.status === 204) {
-            //                     this.truckStatus = !this.truckStatus;
-            //                     this.modalService.changeModalStatus({
-            //                         name: 'deactivate',
-            //                         status: this.truckStatus,
-            //                     });
-            //                 }
-            //             },
-            //             error: () => {},
-            //         });
-            // }
-            // // Save And Add New
-            // else if (data.action === 'save and add new') {
-            //     if (this.truckForm.invalid || !this.isFormDirty) {
-            //         this.inputService.markInvalid(this.truckForm);
-            //         return;
-            //     }
-            //     this.addTruck();
-            //     this.modalService.setModalSpinner({
-            //         action: 'save and add new',
-            //         status: true,
-            //         close: false,
-            //     });
-            //     this.addNewAfterSave = true;
-            // } else {
-            //     // Save & Update
-            //     if (data.action === 'save') {
-            //         if (this.truckForm.invalid || !this.isFormDirty) {
-            //             this.inputService.markInvalid(this.truckForm);
-            //             return;
-            //         }
-            //         if (this.editData?.id) {
-            //             this.updateTruck(this.editData.id);
-            //             this.modalService.setModalSpinner({
-            //                 action: null,
-            //                 status: true,
-            //                 close: false,
-            //             });
-            //         } else {
-            //             this.addTruck();
-            //             this.modalService.setModalSpinner({
-            //                 action: null,
-            //                 status: true,
-            //                 close: false,
-            //             });
-            //         }
-            //     }
-            //     // Delete
-            //     if (data.action === 'delete' && this.editData) {
-            //         this.deleteTruckById(this.editData.id);
-            //         this.modalService.setModalSpinner({
-            //             action: 'delete',
-            //             status: true,
-            //             close: false,
-            //         });
-            //     }
-            // }
+                break;
+
+            case TaModalActionEnums.DEACTIVATE:
+                this.modalService.openModal(
+                    ConfirmationActivationModalComponent,
+                    { size: TableStringEnum.SMALL },
+                    {
+                        ...this.truckForm.value,
+                        array: [
+                            {
+                                ...this.editData.data,
+                                data: {
+                                    ...this.truckForm.value.value,
+                                    number: this.truckForm.value.truckNumber,
+                                    avatar: `assets/svg/common/trucks/${this.editData.data?.truckType?.logoName}`,
+                                },
+                                modalTitle: this.truckForm.value.truckNumber,
+                                modalSecondTitle: this.truckForm.value.vin,
+                            },
+                        ],
+                        template: TableStringEnum.TRUCK,
+                        subType: TableStringEnum.TRUCK,
+                        type: TableStringEnum.DEACTIVATE,
+                        tableType: TableStringEnum.TRUCK,
+                        modalTitle: ' Unit ' + this.truckForm.value.truckNumber,
+                        modalSecondTitle: this.truckForm.value.vin,
+                        svg: true,
+                    }
+                );
+                break;
+
+            case TaModalActionEnums.SAVE_AND_ADD_NEW:
+                if (this.truckForm.invalid || !this.isFormDirty) {
+                    this.inputService.markInvalid(this.truckForm);
+                    return;
+                }
+                this.addTruck();
+                this.addNewAfterSave = true;
+                break;
+
+            case TaModalActionEnums.SAVE:
+                if (this.truckForm.invalid || !this.isFormDirty) {
+                    this.inputService.markInvalid(this.truckForm);
+                    return;
+                }
+                if (this.editData?.id) {
+                    this.updateTruck(this.editData.id);
+                } else {
+                    this.addTruck();
+                }
+                break;
+
+            case TaModalActionEnums.DELETE:
+                if (this.editData) {
+                    this.modalService.openModal(
+                        ConfirmationModalComponent,
+                        { size: TableStringEnum.SMALL },
+                        {
+                            ...this.editData,
+                            template: TableStringEnum.TRUCK_2,
+                            type: TableStringEnum.DELETE,
+                            svg: true,
+                        }
+                    );
+                }
+                break;
+
+            default:
+                break;
         }
     }
 
@@ -1045,11 +1079,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
                                     type: 'Truck',
                                     closing: 'slowlest',
                                 });
-                                this.modalService.setModalSpinner({
-                                    action: null,
-                                    status: true,
-                                    close: true,
-                                });
+                                this.ngbActiveModal.close();
                                 break;
                             }
                             default: {
@@ -1058,82 +1088,14 @@ export class TruckModalComponent implements OnInit, OnDestroy {
                         }
                     }
 
+                    this.ngbActiveModal.close();
                     if (this.addNewAfterSave) {
-                        this.formService.resetForm(this.truckForm);
-
-                        this.selectedBrakes = null;
-                        this.selectedShifter = null;
-                        this.selectedTruckType = null;
-                        this.selectedTruckMake = null;
-                        this.selectedColor = null;
-                        this.selectedOwner = null;
-                        this.selectedTruckGrossWeight = null;
-                        this.selectedTireSize = null;
-                        this.selectedtruckEngineModelId = null;
-                        this.selectedEngineOilType = null;
-                        this.selectedAPUnit = null;
-                        this.selectedGearRatio = null;
-                        this.selectedTollTransponders = null;
-                        this.selectedTruckLengthId = null;
-                        this.selectedFrontWheels = null;
-                        this.selectedRearWheels = null;
-                        this.selectedFuelType = null;
-
-                        this.commissionOptions = {
-                            floor: 2,
-                            ceil: 25,
-                            step: 0.5,
-                            showSelectionBar: true,
-                            hideLimitLabels: true,
-                        };
-
-                        this.truckStatus = true;
-                        this.loadingVinDecoder = false;
-                        this.isFormDirty;
-                        this.skipVinDecocerEdit = false;
-
-                        this.documents = [];
-                        this.filesForDelete = [];
-                        this.fileModified = false;
-                        this.tags = [];
-
-                        this.tabChange({ id: 1 });
-
-                        this.truckForm.get('commission').patchValue(14.5);
-                        this.truckForm
-                            .get('fhwaExp')
-                            .patchValue(this.storedfhwaExpValue);
-
-                        this.truckForm
-                            .get(TruckModalForm.COMPANY_OWNED)
-                            .patchValue(true);
-
-                        this.inputService.changeValidators(
-                            this.truckForm.get('ownerId'),
-                            false
-                        );
-
-                        this.modalService.setModalSpinner({
-                            action: 'save and add new',
-                            status: false,
-                            close: false,
-                        });
-                        this.addNewAfterSave = false;
-                    } else {
-                        this.modalService.setModalSpinner({
-                            action: null,
-                            status: true,
-                            close: true,
+                        this.modalService.openModal(TruckModalComponent, {
+                            size: ContactsModalStringEnum.SMALL,
                         });
                     }
                 },
-                error: () => {
-                    this.modalService.setModalSpinner({
-                        action: null,
-                        status: false,
-                        close: false,
-                    });
-                },
+                error: () => {},
             });
     }
 
@@ -1266,20 +1228,10 @@ export class TruckModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
-                    this.modalService.setModalSpinner({
-                        action: null,
-                        status: true,
-                        close: true,
-                    });
+                    this.ngbActiveModal.close();
                     this.updateTags();
                 },
-                error: () => {
-                    this.modalService.setModalSpinner({
-                        action: null,
-                        status: false,
-                        close: false,
-                    });
-                },
+                error: () => {},
             });
     }
 
@@ -1289,19 +1241,9 @@ export class TruckModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
-                    this.modalService.setModalSpinner({
-                        action: 'delete',
-                        status: true,
-                        close: true,
-                    });
+                    this.ngbActiveModal.close();
                 },
-                error: () => {
-                    this.modalService.setModalSpinner({
-                        action: 'delete',
-                        status: false,
-                        close: false,
-                    });
-                },
+                error: () => {},
             });
     }
 
