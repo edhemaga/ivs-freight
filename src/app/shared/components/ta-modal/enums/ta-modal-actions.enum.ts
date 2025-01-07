@@ -7,4 +7,5 @@ export enum TaModalActionEnums {
     CONVERT_TO_LOAD = 'convert-to-load',
     MOVE_TO_THIS_PERIOD = 'move_to_this_period',
     UPDATE = 'update',
+    DEACTIVATE ='deactivate',
 }
