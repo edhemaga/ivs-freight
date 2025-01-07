@@ -202,8 +202,6 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
             'email',
             this.destroy$
         );
-
-        console.log(this.editData);
     }
 
     public tabChange(event: any): void {
@@ -219,7 +217,7 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
         this.manipulateWithOwnerInputs();
     }
 
-    public onModalAction(action: any): void {
+    public onModalAction(action: string): void {
         switch (action) {
             case TaModalActionEnums.CLOSE: {
                 if (this.editData?.canOpenModal) {
