@@ -1,5 +1,4 @@
 import { CommonModule } from '@angular/common';
-import { HttpResponseBase } from '@angular/common/http';
 import { Options } from '@angular-slider/ngx-slider';
 import {
     Component,
@@ -160,8 +159,6 @@ export class TruckModalComponent implements OnInit, OnDestroy {
     public selectedFrontWheels: any = null;
     public selectedRearWheels: any = null;
     public selectedFuelType: any = null;
-
-    private storedfhwaExpValue: any = null;
 
     public selectedTab: number = 1;
     public tabs: any[] = [
@@ -677,7 +674,6 @@ export class TruckModalComponent implements OnInit, OnDestroy {
                     this.rearWheels = this.frontWheels = res.wheelsTypes;
                     this.fuelTypes = res.fuelTypes;
                     this.truckForm.get('fhwaExp').patchValue(res.fhwaExp);
-                    this.storedfhwaExpValue = res.fhwaExp;
 
                     // Edit part
                     if (this.editData?.id) {
