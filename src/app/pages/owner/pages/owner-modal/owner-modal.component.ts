@@ -41,10 +41,10 @@ import {
     CaInputComponent,
     CaInputDropdownComponent,
     CaInputNoteComponent,
-    CaUploadFilesComponent,
     CaModalComponent,
 } from 'ca-components';
 import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
+import { TaUploadFilesComponent } from '@shared/components/ta-upload-files/ta-upload-files.component';
 
 //Models
 import {
@@ -101,7 +101,7 @@ import { ContactsModalConstants } from '@pages/contacts/pages/contacts-modal/uti
         TaInputAddressDropdownComponent,
         TaCustomCardComponent,
         CaInputNoteComponent,
-        CaUploadFilesComponent,
+        TaUploadFilesComponent,
         TaAppTooltipV2Component,
 
         // Pipes
@@ -338,7 +338,32 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
             });
     }
 
-    public onUploadImage(event: any) {}
+    public onFilesEvent(event: any) {
+        this.documents = event.files;
+        switch (event.action) {
+            case 'add': {
+                this.ownerForm
+                    .get('files')
+                    .patchValue(JSON.stringify(event.files));
+                break;
+            }
+            case 'delete': {
+                this.ownerForm
+                    .get('files')
+                    .patchValue(
+                        event.files.length ? JSON.stringify(event.files) : null
+                    );
+                if (event.deleteId) {
+                    this.filesForDelete.push(event.deleteId);
+                }
+                this.fileModified = true;
+                break;
+            }
+            default: {
+                break;
+            }
+        }
+    }
 
     private manipulateWithOwnerInputs() {
         if (this.selectedTab === 1) {
@@ -452,11 +477,7 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
-                    this.modalService.setModalSpinner({
-                        action: null,
-                        status: true,
-                        close: true,
-                    });
+                    this.ngbActiveModal.close();
                 },
                 error: () => {
                     this.modalService.setModalSpinner({
@@ -544,11 +565,7 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
                             size: ContactsModalStringEnum.SMALL,
                         });
                     } else {
-                        this.modalService.setModalSpinner({
-                            action: null,
-                            status: true,
-                            close: true,
-                        });
+                        this.ngbActiveModal.close();
                     }
                 },
                 error: () => {
