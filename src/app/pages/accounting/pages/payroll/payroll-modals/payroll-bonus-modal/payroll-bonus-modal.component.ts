@@ -24,8 +24,8 @@ import {
 } from 'appcoretruckassist';
 
 // Services
-import { PayrollBonusService } from './services/payroll-bonus.service';
-import { PayrollService } from '../../services/payroll.service';
+import { PayrollBonusService } from '@pages/accounting/pages/payroll/payroll-modals/payroll-bonus-modal/services/payroll-bonus.service';
+import { PayrollService } from '@pages/accounting/pages/payroll/services/payroll.service';
 import { ModalService } from '@shared/services/modal.service';
 
 // Enums
