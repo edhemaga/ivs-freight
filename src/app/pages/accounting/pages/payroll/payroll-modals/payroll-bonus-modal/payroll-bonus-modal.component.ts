@@ -20,18 +20,15 @@ import {
 } from '@pages/accounting/pages/payroll/state/models';
 import {
     CreatePayrollBonusCommand,
-    PayrollCreditType,
 } from 'appcoretruckassist';
 
 // Services
 import { PayrollBonusService } from '@pages/accounting/pages/payroll/payroll-modals/payroll-bonus-modal/services/payroll-bonus.service';
 import { PayrollService } from '@pages/accounting/pages/payroll/services/payroll.service';
-import { ModalService } from '@shared/services/modal.service';
 
 // Enums
 import { PayrollStringEnum } from '@pages/accounting/pages/payroll/state/enums';
 import { TaModalActionEnums } from '@shared/components/ta-modal/enums';
-import { ContactsModalStringEnum } from '@pages/contacts/pages/contacts-modal/enums';
 import { ConfirmationModalStringEnum } from '@shared/components/ta-shared-modals/confirmation-modal/enums/confirmation-modal-string.enum';
 import { TableStringEnum } from '@shared/enums/table-string.enum';
 
@@ -65,8 +62,7 @@ export class PayrollBonusModalComponent implements OnInit {
         private fb: FormBuilder,
         private payrollBonusService: PayrollBonusService,
         private ngbActiveModal: NgbActiveModal,
-        private payrollService: PayrollService,
-        private modalService: ModalService
+        private payrollService: PayrollService
     ) {}
 
     ngOnInit(): void {
@@ -145,21 +141,7 @@ export class PayrollBonusModalComponent implements OnInit {
         if (addNew) {
             this.payrollBonusService.addPayrollBonus(data).subscribe(() => {
                 if (action === TaModalActionEnums.SAVE_AND_ADD_NEW) {
-                    this.ngbActiveModal.close();
-                    this.modalService.openModal(
-                        PayrollBonusModalComponent,
-                        {
-                            size: ContactsModalStringEnum.SMALL,
-                        },
-                        {
-                            data: {
-                                driverId: this.preselectedDriver
-                                    ? data.driverId
-                                    : null,
-                            },
-                            creditType: this.preselectedDriver? PayrollCreditType.Driver : PayrollCreditType.Truck,
-                        }
-                    );
+                    this.payrollService.saveAndAddNew(PayrollBonusModalComponent, this.preselectedDriver, data.driverId, this.ngbActiveModal);
                 } else {
                     this.onCloseModal();
                 }
