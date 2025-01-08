@@ -335,9 +335,9 @@
 </app-ca-modal>
 
 <ng-template #leftModalContent>
-    @if (editData?.data?.truckNumber) {
+    @if (fuelTransactionName) {
         <div class="payroll-number text-color-white text-size-14 ta-font-bold">
-            {{ editData?.data?.truckNumber }}
+            {{ fuelTransactionName }}
         </div>
     }
 </ng-template>
@@ -380,20 +380,12 @@
         <div class="divider"></div>
         @if (editData?.type === 'edit') {
             <div class="d-flex justify-content-between w-full">
-                <div>
-                    <button
-                        class="modal-delete-btn ta-font-bold mr-12 valid"
-                        (click)="onModalAction(taModalActionEnums.DELETE)"
-                    >
-                        Delete
-                    </button>
-                    <button
-                        class="modal-convert-to-template-btn ta-font-bold"
-                        (click)="onModalAction(taModalActionEnums.DEACTIVATE)"
-                    >
-                        Deactivate
-                    </button>
-                </div>
+                <button
+                    class="modal-delete-btn ta-font-bold mr-12 valid"
+                    (click)="onModalAction(taModalActionEnums.DELETE)"
+                >
+                    Delete
+                </button>
                 <button
                     class="modal-save-btn ta-font-bold"
                     (click)="onModalAction(taModalActionEnums.SAVE)"

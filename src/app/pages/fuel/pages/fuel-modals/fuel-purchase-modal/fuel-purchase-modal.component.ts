@@ -59,6 +59,7 @@ import { RepairSubtotal } from '@pages/repair/pages/repair-modals/repair-order-m
 
 //Pipes
 import { SumArraysPipe } from '@shared/pipes/sum-arrays.pipe';
+import { FormatDatePipe } from '@shared/pipes';
 
 //Enums
 import { FuelDataOptionsStringEnum } from '@pages/fuel/enums/fuel-data-options-string.enum';
@@ -101,6 +102,9 @@ import moment from 'moment';
         TaModalTableComponent,
         TaCopyComponent,
         TaInputDropdownComponent,
+
+        // Pipes
+        FormatDatePipe
     ],
 })
 export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
@@ -148,7 +152,6 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
         private modalService: ModalService,
         private formService: FormService,
         private fuelService: FuelService,
-        private sumArrays: SumArraysPipe,
         private truckService: TruckService
     ) {}
 
