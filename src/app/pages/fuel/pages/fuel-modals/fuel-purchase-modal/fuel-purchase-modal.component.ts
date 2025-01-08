@@ -23,12 +23,15 @@ import { TruckService } from '@shared/services/truck.service';
 
 //Components
 import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
-import { TaModalComponent } from '@shared/components/ta-modal/ta-modal.component';
 import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-custom-card.component';
 import { TaUploadFilesComponent } from '@shared/components/ta-upload-files/ta-upload-files.component';
 import { TaModalTableComponent } from '@shared/components/ta-modal-table/ta-modal-table.component';
 import { TaCopyComponent } from '@shared/components/ta-copy/ta-copy.component';
-import { CaInputComponent, CaInputDropdownComponent } from 'ca-components';
+import {
+    CaInputComponent,
+    CaInputDropdownComponent,
+    CaModalComponent,
+} from 'ca-components';
 import { TaInputDropdownComponent } from '@shared/components/ta-input-dropdown/ta-input-dropdown.component';
 
 //Modules
@@ -37,7 +40,7 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
 import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 
 // Svg routes
-import { FuelTableSvgRoutes } from '@pages/fuel/pages/fuel-table/utils/svg-routes/fuel-table-svg-routes';
+import { SharedSvgRoutes } from '@shared/utils/svg-routes';
 
 //Models
 import {
@@ -87,10 +90,10 @@ import moment from 'moment';
         ReactiveFormsModule,
         AngularSvgIconModule,
         NgbTooltipModule,
-        
+
         // Component
         TaAppTooltipV2Component,
-        TaModalComponent,
+        CaModalComponent,
         CaInputComponent,
         TaCustomCardComponent,
         CaInputDropdownComponent,
@@ -102,7 +105,6 @@ import moment from 'moment';
 })
 export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
     @Input() editData: FuelData;
-    public svgRoutes = FuelTableSvgRoutes;
     public modalTableTypeEnum = ModalTableTypeEnum;
 
     public fuelForm: UntypedFormGroup;
@@ -138,6 +140,7 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
 
     private destroy$ = new Subject<void>();
     public trailerId: number;
+    public svgRoutes = SharedSvgRoutes;
 
     constructor(
         private formBuilder: UntypedFormBuilder,
