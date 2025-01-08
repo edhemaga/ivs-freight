@@ -34,7 +34,8 @@ import { TaInputDropdownComponent } from '@shared/components/ta-input-dropdown/t
 //Modules
 import { CommonModule } from '@angular/common';
 import { AngularSvgIconModule } from 'angular-svg-icon';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
+
 // Svg routes
 import { FuelTableSvgRoutes } from '@pages/fuel/pages/fuel-table/utils/svg-routes/fuel-table-svg-routes';
 
@@ -85,8 +86,8 @@ import moment from 'moment';
         FormsModule,
         ReactiveFormsModule,
         AngularSvgIconModule,
-        NgbModule,
-
+        NgbTooltipModule,
+        
         // Component
         TaAppTooltipV2Component,
         TaModalComponent,
