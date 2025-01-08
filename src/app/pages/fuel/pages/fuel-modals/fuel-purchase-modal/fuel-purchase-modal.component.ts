@@ -33,11 +33,12 @@ import {
     CaModalComponent,
 } from 'ca-components';
 import { TaInputDropdownComponent } from '@shared/components/ta-input-dropdown/ta-input-dropdown.component';
+import { ConfirmationModalComponent } from '@shared/components/ta-shared-modals/confirmation-modal/confirmation-modal.component';
 
 //Modules
 import { CommonModule } from '@angular/common';
 import { AngularSvgIconModule } from 'angular-svg-icon';
-import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbActiveModal, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 
 // Svg routes
 import { SharedSvgRoutes } from '@shared/utils/svg-routes';
@@ -65,8 +66,9 @@ import { FormatDatePipe } from '@shared/pipes';
 import { FuelDataOptionsStringEnum } from '@pages/fuel/enums/fuel-data-options-string.enum';
 import { FuelDropdownOptionsStringEnum } from '@pages/fuel/pages/fuel-modals/fuel-purchase-modal/enums/fuel-dropdown-optioins-string.enum';
 import { FuelValuesStringEnum } from '@pages/fuel/pages/fuel-modals/fuel-purchase-modal/enums/fuel-values-string.enum';
-import { FuelModalActionsStringEnum } from '@pages/fuel/pages/fuel-modals/fuel-purchase-modal/enums/fuel-modal-actions-string.enum';
+import { TaModalActionEnums } from '@shared/components/ta-modal/enums';
 import { ModalTableTypeEnum } from '@shared/enums/modal-table-type.enum';
+import { TableStringEnum } from '@shared/enums';
 
 //Validations
 import { fullNameValidation } from '@shared/components/ta-input/validators/ta-input.regex-validations';
@@ -76,6 +78,7 @@ import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calcula
 
 // Moment
 import moment from 'moment';
+import { ContactsModalStringEnum } from '@pages/contacts/pages/contacts-modal/enums';
 
 @Component({
     selector: 'app-fuel-purchase-modal',
@@ -104,7 +107,7 @@ import moment from 'moment';
         TaInputDropdownComponent,
 
         // Pipes
-        FormatDatePipe
+        FormatDatePipe,
     ],
 })
 export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
@@ -145,6 +148,7 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
     public trailerId: number;
     public svgRoutes = SharedSvgRoutes;
+    public taModalActionEnums = TaModalActionEnums;
 
     constructor(
         private formBuilder: UntypedFormBuilder,
@@ -152,7 +156,8 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
         private modalService: ModalService,
         private formService: FormService,
         private fuelService: FuelService,
-        private truckService: TruckService
+        private truckService: TruckService,
+        private ngbActiveModal: NgbActiveModal
     ) {}
 
     ngOnInit() {
@@ -180,12 +185,14 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
         });
     }
 
-    public onModalAction(data: { action: string; bool: boolean }): void {
-        switch (data.action) {
-            case FuelModalActionsStringEnum.CLOSE:
+    public onModalAction(action: string): void {
+        switch (action) {
+            case TaModalActionEnums.CLOSE:
+                this.ngbActiveModal.close();
                 break;
 
-            case FuelModalActionsStringEnum.SAVE:
+            case TaModalActionEnums.SAVE_AND_ADD_NEW:
+            case TaModalActionEnums.SAVE:
                 if (this.fuelForm.invalid || !this.isFormDirty) {
                     this.inputService.markInvalid(this.fuelForm);
                     return;
@@ -199,22 +206,41 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
                     FuelValuesStringEnum.MANUAL
                         ? this.updateFuelEFS(this.editData.id)
                         : this.updateFuel(this.editData.id);
-
-                    this.modalService.setModalSpinner({
-                        action: null,
-                        status: true,
-                        close: false,
-                    });
                 } else {
-                    this.addFuel();
-                    this.modalService.setModalSpinner({
-                        action: null,
-                        status: true,
-                        close: false,
-                    });
+                    this.addFuel(
+                        action === TaModalActionEnums.SAVE_AND_ADD_NEW
+                    );
                 }
                 break;
 
+            case TaModalActionEnums.DELETE:
+                this.modalService.openModal(
+                    ConfirmationModalComponent,
+                    { size: TableStringEnum.SMALL },
+                    {
+                        array: [
+                            {
+                                id: (this.editData.data as any).id,
+                                data: {
+                                    ...this.editData.data,
+                                    date: MethodsCalculationsHelper.convertDateFromBackend(
+                                        (this.editData.data as any)
+                                            .transactionDate
+                                    ),
+                                    time: MethodsCalculationsHelper.convertDateToTimeFromBackend(
+                                        (this.editData.data as any)
+                                            .transactionDate,
+                                        true
+                                    ),
+                                },
+                            },
+                        ],
+                        template: TableStringEnum.FUEL_TRANSACTION_TEXT,
+                        type: TableStringEnum.DELETE,
+                        svg: true,
+                    }
+                );
+                break;
             default:
                 break;
         }
@@ -324,7 +350,7 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
             });
     }
 
-    private addFuel(): void {
+    private addFuel(addNew: boolean): void {
         const { ...form } = this.fuelForm.value;
 
         const newData: any = {
@@ -358,11 +384,15 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
-                    this.modalService.setModalSpinner({
-                        action: null,
-                        status: true,
-                        close: true,
-                    });
+                    this.ngbActiveModal.close();
+                    if (addNew) {
+                        this.modalService.openModal(
+                            FuelPurchaseModalComponent,
+                            {
+                                size: ContactsModalStringEnum.SMALL,
+                            }
+                        );
+                    }
                 },
                 error: () => {
                     this.modalService.setModalSpinner({
