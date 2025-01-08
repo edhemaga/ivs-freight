@@ -1,4 +1,4 @@
-<ng-container *ngIf="formLoaded">
+@if (formLoaded) {
     <app-payroll-base-modal
         [modalTitle]="!isEditMode ? 'Create Deduction' : 'Edit Deduction'"
         [baseForm]="payrollCreditForm"
@@ -18,7 +18,7 @@
             ></ng-container>
 
             <div class="divider divider--dark divider--small"></div>
-            <ng-container *ngIf="isEditMode; else showCreateButtons">
+            @if (isEditMode) {
                 <div class="mt-1 d-flex justify-content-between full-w">
                     <div>
                         <button
@@ -47,9 +47,7 @@
                         Save Changes
                     </button>
                 </div>
-            </ng-container>
-
-            <ng-template #showCreateButtons>
+            } @else {
                 <button
                     class="ta-font-bold modal-save-btn modal-save-btn-add-new mr-12"
                     [class.valid]="payrollCreditForm?.valid"
@@ -64,14 +62,12 @@
                 >
                     Save
                 </button>
-            </ng-template>
+            }
         </div>
     </ng-template>
 
     <ng-template #paymentHistoryTemplate>
-        <ng-container
-            *ngIf="isEditMode && deduction?.childPayrollDeductions?.length"
-        >
+        @if (isEditMode && deduction?.childPayrollDeductions?.length) {
             <div class="divider divider--dark divider--small mb-0"></div>
             <app-ta-custom-card
                 [cardName]="'Payment History'"
@@ -125,7 +121,8 @@
                         "
                     >
                         {{ formatDate(payments.date) }}
-                        <ng-container *ngIf="payments.isNext">
+
+                        @if (payments.isNext) {
                             <span
                                 [ngClass]="
                                     payments.isLast
@@ -139,7 +136,7 @@
                                         : '- Next Payment'
                                 }}
                             </span>
-                        </ng-container>
+                        }
                     </div>
                     <div
                         class="ta-font-regular text-size-14 text-right"
@@ -163,6 +160,6 @@
                     </div>
                 </div>
             </app-ta-custom-card>
-        </ng-container>
+        }
     </ng-template>
-</ng-container>
+}
