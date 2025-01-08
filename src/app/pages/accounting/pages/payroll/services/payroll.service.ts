@@ -595,14 +595,14 @@ export class PayrollService {
             {
                 size: ContactsModalStringEnum.SMALL,
             },
-            {
+            preselectedDriver ? {
                 data: {
                     driverId: preselectedDriver ? driverId : null,
                 },
                 creditType: preselectedDriver
                     ? PayrollCreditType.Driver
-                    : PayrollCreditType.Truck,
-            }
+                    : null,
+            } : undefined
         );
     }
 }
