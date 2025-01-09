@@ -14,37 +14,36 @@
             [formGroup]="fuelForm"
             class="form-container form-container-without-mb"
         >
-            <div
-                *ngIf="
-                    editData?.type === 'edit' &&
-                    fuelTransactionType?.name !== 'Manual'
-                "
-                class="row"
-            >
-                <div class="col-6">
-                    <app-ca-input
-                        formControlName="efsAccount"
-                        [inputConfig]="{
-                            name: 'EFS Account',
-                            type: 'text',
-                            label: 'EFS Account',
-                            isDisabled: true,
-                        }"
-                    ></app-ca-input>
+            @if (
+                editData?.type === 'edit' &&
+                fuelTransactionType?.name !== 'Manual'
+            ) {
+                <div class="row">
+                    <div class="col-6">
+                        <app-ca-input
+                            formControlName="efsAccount"
+                            [inputConfig]="{
+                                name: 'EFS Account',
+                                type: 'text',
+                                label: 'EFS Account',
+                                isDisabled: true,
+                            }"
+                        ></app-ca-input>
+                    </div>
+                    <div class="col-6">
+                        <app-ca-input
+                            formControlName="fuelCard"
+                            [inputConfig]="{
+                                name: 'Fuel Card',
+                                type: 'text',
+                                label: 'Fuel Card',
+                                isDisabled: true,
+                                placeholderIcon: 'fuel-card',
+                            }"
+                        ></app-ca-input>
+                    </div>
                 </div>
-                <div class="col-6">
-                    <app-ca-input
-                        formControlName="fuelCard"
-                        [inputConfig]="{
-                            name: 'Fuel Card',
-                            type: 'text',
-                            label: 'Fuel Card',
-                            isDisabled: true,
-                            placeholderIcon: 'fuel-card',
-                        }"
-                    ></app-ca-input>
-                </div>
-            </div>
+            }
             <div class="d-grid row-columns row-columns-3">
                 <app-ca-input
                     formControlName="invoice"
@@ -128,7 +127,7 @@
                     (selectedItem)="onSelectDropDown($event, 'truck')"
                 ></app-ca-input-dropdown>
 
-                <div *ngIf="fuelForm.get('trailerId').value">
+                @if (fuelForm.get('trailerId').value) {
                     <app-ca-input-dropdown
                         formControlName="trailerId"
                         [template]="'svgtext-template'"
@@ -151,7 +150,7 @@
                             isDisabled: true,
                         }"
                     ></app-ca-input-dropdown>
-                </div>
+                }
 
                 <app-ca-input
                     formControlName="driverFullName"
@@ -168,103 +167,113 @@
             </div>
             <div class="row last-row">
                 <div class="col-12">
-                    <div
-                        *ngIf="selectedFuelStop"
-                        class="d-flex flex-column selected-item-container selected-item-container-small"
-                        [ngClass]="{
-                            'non-editable':
-                                editData?.type === 'edit' &&
-                                fuelTransactionType?.name !== 'Manual',
-                        }"
-                    >
-                        <div class="selected-item-label">
-                            Fuel Stop <span>*</span>
-                        </div>
-                        <p
-                            class="m-0 ta-font-bold text-size-14 text-color-black mb-1 d-flex align-items-center"
-                        >
-                            <span>{{ selectedFuelStop?.businessName }}</span>
-
-                            <ng-container *ngIf="selectedFuelStop.favorite">
-                                <svg-icon
-                                    class="svg-fill-blue-13 svg-size-14 ml-1 d-flex"
-                                    [src]="svgRoutes.STAR"
-                                ></svg-icon>
-                            </ng-container>
-                        </p>
-                        <div class="d-flex align-items-center">
-                            <div
-                                *ngIf="selectedFuelStop?.address"
-                                class="d-flex align-items-center selected-item-info"
-                            >
-                                <ng-container *ngIf="selectedFuelStop.phone">
-                                    <svg-icon
-                                        class="mr-3 svg-fill-muted svg-size-18"
-                                        [src]="svgRoutes.phone"
-                                    ></svg-icon>
-                                    <app-ta-copy
-                                        [arrayText]="true"
-                                        [textColor]="'#2f2f2f'"
-                                        [copyValue]="[selectedFuelStop.phone]"
-                                        type="Contacts"
-                                    >
-                                    </app-ta-copy>
-                                </ng-container>
-                                <div class="d-flex">
-                                    <svg-icon
-                                        class="svg-fill-blue-13 svg-size-14 d-flex"
-                                        [src]="svgRoutes.ADDRESS"
-                                    ></svg-icon>
-                                    <p
-                                        class="ml-1 text-size-11 ta-font-medium text-color-black-2"
-                                    >
-                                        {{ selectedFuelStop?.fullAddress }}
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
+                    @if (selectedFuelStop) {
                         <div
-                            *ngIf="
+                            class="d-flex flex-column selected-item-container selected-item-container-small"
+                            [ngClass]="{
+                                'non-editable':
+                                    editData?.type === 'edit' &&
+                                    fuelTransactionType?.name !== 'Manual',
+                            }"
+                        >
+                            <div class="selected-item-label">
+                                Fuel Stop <span>*</span>
+                            </div>
+                            <p
+                                class="m-0 ta-font-bold text-size-14 text-color-black mb-1 d-flex align-items-center"
+                            >
+                                <span>{{
+                                    selectedFuelStop?.businessName
+                                }}</span>
+
+                                @if (selectedFuelStop.favorite) {
+                                    <svg-icon
+                                        class="svg-fill-blue-13 svg-size-14 ml-1 d-flex"
+                                        [src]="svgRoutes.STAR"
+                                    ></svg-icon>
+                                }
+                            </p>
+                            <div class="d-flex align-items-center">
+                                @if (selectedFuelStop.address) {
+                                    <div
+                                        class="d-flex align-items-center selected-item-info"
+                                    >
+                                        @if (selectedFuelStop.phone) {
+                                            <svg-icon
+                                                class="mr-3 svg-fill-muted svg-size-18"
+                                                [src]="svgRoutes.phone"
+                                            ></svg-icon>
+                                            <app-ta-copy
+                                                [arrayText]="true"
+                                                [textColor]="'#2f2f2f'"
+                                                [copyValue]="[
+                                                    selectedFuelStop.phone,
+                                                ]"
+                                                type="Contacts"
+                                            >
+                                            </app-ta-copy>
+                                        }
+                                        <div class="d-flex">
+                                            <svg-icon
+                                                class="svg-fill-blue-13 svg-size-14 d-flex"
+                                                [src]="svgRoutes.ADDRESS"
+                                            ></svg-icon>
+                                            <p
+                                                class="ml-1 text-size-11 ta-font-medium text-color-black-2"
+                                            >
+                                                {{
+                                                    selectedFuelStop?.fullAddress
+                                                }}
+                                            </p>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                            @if (
                                 editData?.type !== 'edit' ||
                                 fuelTransactionType?.name === 'Manual'
-                            "
-                            class="clear-selected-item"
-                        >
-                            <div
-                                ngbTooltip
-                                mainTooltip="Clear"
-                                tooltipBackground="#6c6c6c"
-                                position="top"
-                                class="clear-x"
-                                (click)="
-                                    selectedFuelStop = null;
-                                    fuelForm
-                                        .get('fuelStopStoreId')
-                                        .patchValue(null)
-                                "
-                            >
-                                <svg-icon src="assets/svg/ic_x.svg"></svg-icon>
-                            </div>
+                            ) {
+                                <div class="clear-selected-item">
+                                    <div
+                                        ngbTooltip
+                                        mainTooltip="Clear"
+                                        tooltipBackground="#6c6c6c"
+                                        position="top"
+                                        class="clear-x"
+                                        (click)="
+                                            selectedFuelStop = null;
+                                            fuelForm
+                                                .get('fuelStopStoreId')
+                                                .patchValue(null)
+                                        "
+                                    >
+                                        <svg-icon
+                                            src="assets/svg/ic_x.svg"
+                                        ></svg-icon>
+                                    </div>
+                                </div>
+                            }
                         </div>
-                    </div>
-                    <app-ta-input-dropdown
-                        *ngIf="!selectedFuelStop"
-                        formControlName="fuelStopStoreId"
-                        [template]="'fuel-franchise'"
-                        [inputConfig]="{
-                            name: 'Input Dropdown',
-                            type: 'text',
-                            label: 'Fuel Stop',
-                            isRequired: true,
-                            isDropdown: true,
-                            dropdownWidthClass: 'w-col-456',
-                        }"
-                        [options]="fuelStops"
-                        [activeItem]="selectedFuelStop"
-                        (pagination)="paginationFuelStopPage($event)"
-                        (activeGroup)="getFuelStoresByFranchiseId($event)"
-                        (selectedItem)="onSelectDropDown($event, 'fuel')"
-                    ></app-ta-input-dropdown>
+                    }
+                    @if (!selectedFuelStop) {
+                        <app-ta-input-dropdown
+                            formControlName="fuelStopStoreId"
+                            [template]="'fuel-franchise'"
+                            [inputConfig]="{
+                                name: 'Input Dropdown',
+                                type: 'text',
+                                label: 'Fuel Stop',
+                                isRequired: true,
+                                isDropdown: true,
+                                dropdownWidthClass: 'w-col-456',
+                            }"
+                            [options]="fuelStops"
+                            [activeItem]="selectedFuelStop"
+                            (pagination)="paginationFuelStopPage($event)"
+                            (activeGroup)="getFuelStoresByFranchiseId($event)"
+                            (selectedItem)="onSelectDropDown($event, 'fuel')"
+                        ></app-ta-input-dropdown>
+                    }
                 </div>
             </div>
 
