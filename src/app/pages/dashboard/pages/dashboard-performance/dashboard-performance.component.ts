@@ -1,35 +1,35 @@
-import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 
 import { Subject, takeUntil, tap } from 'rxjs';
 
-// services
+// Services
 import { DashboardPerformanceService } from '@pages/dashboard/pages/dashboard-performance/services/dashboard-performance.service';
 import { DashboardService } from '@pages/dashboard/services/dashboard.service';
 
-// constants
-import { DashboardPerformanceConstants } from '@pages/dashboard/pages/dashboard-performance/utils/constants/dashboard-performance.constants';
-import { DashboardSubperiodConstants } from '@pages/dashboard/utils/constants/dashboard-subperiod.constants';
-import { DashboardColors } from '@pages/dashboard/utils/constants/dashboard-colors.constants';
+// Constants
 import { DashboardTopRatedConstants } from '@pages/dashboard/pages/dashboard-top-rated/utils/constants/dashboard-top-rated.constants';
-import { DashboardPerformanceChartsConfiguration } from '@pages/dashboard/pages/dashboard-performance/utils/constants';
+import { DashboardPerformanceChartsConfiguration, DashboardPerformanceConstants } from '@pages/dashboard/pages/dashboard-performance/utils/constants';
+import { DashboardConstants, DashboardColors, DashboardSubperiodConstants } from '@pages/dashboard/utils/constants';
 
-// helpers
+// Helpers
 import { DashboardHelper } from '@pages/dashboard/utils/helpers/dashboard.helper';
+import { DashboardArrayHelper } from '@pages/dashboard/utils/helpers/dashboard-array-helper';
 
-// enums
-import { DashboardStringEnum } from '@pages/dashboard/enums/dashboard-string.enum';
-import { DashboardChartStringEnum } from '@pages/dashboard/enums/dashboard-chart-string.enum';
-import { CaChartComponent, ChartTypesStringEnum } from 'ca-components';
+// Enums
+import {
+    DashboardChartStringEnum,
+    DashboardStringEnum,
+} from '@pages/dashboard/enums';
+import { ChartTypesStringEnum } from 'ca-components';
 
-// models
+// Models
 import { DashboardTab } from '@pages/dashboard/models/dashboard-tab.model';
 import { DropdownListItem } from '@pages/dashboard/models/dropdown-list-item.model';
 import { PerformanceDataItem } from '@pages/dashboard/pages/dashboard-performance/models/performance-data-item.model';
 import { LinePerformanceColorsPallete } from '@pages/dashboard/models/colors-pallete.model';
 import { CustomPeriodRange } from '@shared/models/custom-period-range.model';
 import { PerformanceApiArguments } from '@pages/dashboard/pages/dashboard-performance/models/performance-api-arguments.model';
-import { DashboardArrayHelper } from '@pages/dashboard/utils/helpers/dashboard-array-helper';
 import {
     IntervalLabelResponse,
     PerformanceGraphResponse,
@@ -48,8 +48,6 @@ import {
     styleUrls: ['./dashboard-performance.component.scss'],
 })
 export class DashboardPerformanceComponent implements OnInit, OnDestroy {
-    @ViewChild('performanceChart') performanceChart: CaChartComponent;
-
     private destroy$: Subject<void> = new Subject<void>();
 
     public isLoading: boolean = false;
@@ -76,7 +74,7 @@ export class DashboardPerformanceComponent implements OnInit, OnDestroy {
     private overallCompanyDuration: number;
 
     // colors
-    public LinePerformanceDataColors: LinePerformanceColorsPallete[] = [];
+    public linePerformanceDataColors: LinePerformanceColorsPallete[] = [];
 
     // charts
     public linePerformanceChartConfig: IChartConfiguration =
@@ -84,7 +82,8 @@ export class DashboardPerformanceComponent implements OnInit, OnDestroy {
     public barPerformanceChartConfig: IChartConfiguration =
         DashboardPerformanceChartsConfiguration.BAR_CHART_PERFORMANCE_CONFIG;
     public chartDatasetHover: IChartDatasetHover;
-    public lineChartTitle: string = '';
+    public lineChartTitle: string = DashboardConstants.STRING_EMPTY;
+    public intervalTooltipLabel: string[] = [];
 
     private originalLinePerformanceChartConfig: IChartConfiguration;
 
@@ -124,7 +123,7 @@ export class DashboardPerformanceComponent implements OnInit, OnDestroy {
             }
         );
 
-        this.LinePerformanceDataColors = this.LinePerformanceDataColors.map(
+        this.linePerformanceDataColors = this.linePerformanceDataColors.map(
             (color) => {
                 return {
                     ...color,
@@ -209,6 +208,10 @@ export class DashboardPerformanceComponent implements OnInit, OnDestroy {
         }
     }
 
+    public isCurrency(title: string): boolean {
+        return DashboardHelper.isCurrency(title);
+    }
+
     public handleSetCustomPeriodRangeClick(
         customPeriodRange: CustomPeriodRange
     ): void {
@@ -256,7 +259,7 @@ export class DashboardPerformanceComponent implements OnInit, OnDestroy {
 
         if (performanceDataItem.isSelected) {
             // data boxes
-            const firstAvailableColor = this.LinePerformanceDataColors.find(
+            const firstAvailableColor = this.linePerformanceDataColors.find(
                 (color) => !color.isSelected
             );
 
@@ -310,7 +313,7 @@ export class DashboardPerformanceComponent implements OnInit, OnDestroy {
                         return dataset;
                     }
                 );
-            this.LinePerformanceDataColors.find(
+            this.linePerformanceDataColors.find(
                 (color) => color.code === selectedColor
             ).isSelected = false;
 
@@ -346,22 +349,16 @@ export class DashboardPerformanceComponent implements OnInit, OnDestroy {
                     color: selectedPerformanceDataItem.selectedHoverColor,
                     isHoverd: selectedPerformanceDataItem.isHovered,
                 };
-                this.performanceChart?.updateDatasetBackgroundOnHover(
-                    this.chartDatasetHover
-                );
             }
         } else {
             selectedPerformanceDataItem.isHovered = false;
 
             this.chartDatasetHover = {
-                label: '',
+                label: DashboardConstants.STRING_EMPTY,
                 color: selectedPerformanceDataItem.selectedColor,
                 isHoverd: selectedPerformanceDataItem.isHovered,
             };
 
-            this.performanceChart?.updateDatasetBackgroundOnHover(
-                this.chartDatasetHover
-            );
             this.linePerformanceChartConfig = JSON.parse(
                 JSON.stringify(this.originalLinePerformanceChartConfig)
             );
@@ -379,7 +376,7 @@ export class DashboardPerformanceComponent implements OnInit, OnDestroy {
 
         this.selectedSubPeriodLabel = DashboardStringEnum.DAILY;
 
-        this.LinePerformanceDataColors = JSON.parse(
+        this.linePerformanceDataColors = JSON.parse(
             JSON.stringify(DashboardColors.LINE_PERFORMANCE_COLORS_PALLETE)
         );
     }
@@ -446,7 +443,6 @@ export class DashboardPerformanceComponent implements OnInit, OnDestroy {
                     }
                 );
                 // charts
-
                 this.setLineChartDateTitle(
                     performanceData.intervalLabels[0].tooltipLabel,
                     performanceData.intervalLabels[
@@ -454,45 +450,46 @@ export class DashboardPerformanceComponent implements OnInit, OnDestroy {
                     ].tooltipLabel
                 );
 
-                const { linePerformanceChartData, barPerformanceChartData } =
+                this.setToolTipLables(performanceData.intervalLabels);
+
+                let { linePerformanceChartData, barPerformanceChartData } =
                     this.groupPerformanceDataByChartType(
                         performanceData.performanceGraph.performanceGraphs
                     );
 
                 this.linePerformanceChartConfig.chartData.labels =
                     performanceData.intervalLabels.map(
-                        (item) => item.label || ''
+                        (item) => item.label || DashboardConstants.STRING_EMPTY
                     );
-                this.linePerformanceChartConfig.chartData.datasets =
-                    linePerformanceChartData;
-
-                this.linePerformanceChartConfig.chartData.datasets =
-                    linePerformanceChartData.map((dataset) => {
-                        this.isLoading = false;
-                        return {
-                            ...dataset,
-                            spanGaps: true,
-                        };
-                    });
+                this.linePerformanceChartConfig.chartData.datasets = [
+                    ...linePerformanceChartData,
+                ];
 
                 this.barPerformanceChartConfig.chartData.labels =
                     performanceData.intervalLabels.map(
-                        (item) => item.label || ''
+                        (item) => item.label || DashboardConstants.STRING_EMPTY
                     );
-                this.barPerformanceChartConfig.chartData.datasets =
-                    barPerformanceChartData;
+                this.barPerformanceChartConfig.chartData.datasets = [
+                    ...barPerformanceChartData,
+                ];
 
                 this.setPerformanceDefaultStateData();
             });
     }
 
+    private setToolTipLables(intervalLabels: IntervalLabelResponse[]): void {
+        this.intervalTooltipLabel = intervalLabels.map(
+            (intervalLabel) => intervalLabel.tooltipLabel
+        );
+    }
+    
     private groupPerformanceDataByChartType(
         performanceGraphs: PerformanceGraphResponse[]
     ): {
         linePerformanceChartData: IBaseDataset[];
         barPerformanceChartData: IBaseDataset[];
     } {
-        const performanceDataMap = new Map<string, number[]>();
+        let performanceDataMap = new Map<string, number[]>();
 
         performanceGraphs.forEach((graph) => {
             graph.performanceGraphMetrics.forEach(
@@ -503,7 +500,10 @@ export class DashboardPerformanceComponent implements OnInit, OnDestroy {
                         performanceDataMap.set(performanceType, []);
                     }
 
-                    performanceDataMap.get(performanceType).push(value ?? 0);
+                    performanceDataMap.set(performanceType, [
+                        ...(performanceDataMap.get(performanceType) || []),
+                        value ?? 0,
+                    ]);
                 }
             );
         });
@@ -513,11 +513,11 @@ export class DashboardPerformanceComponent implements OnInit, OnDestroy {
             DashboardChartStringEnum.BAR_LABEL_LOAD_PER_MILE,
         ];
 
-        const barPerformanceChartData = Array.from(performanceDataMap.entries())
+        let barPerformanceChartData = Array.from(performanceDataMap.entries())
             .filter(([key]) => barPerformanceTypes.includes(key))
             .map(([key, values]) => ({
                 label: key,
-                data: values,
+                data: [...values],
                 type: ChartTypesStringEnum.BAR,
                 barPercentage: 0.9,
                 categoryPercentage: 0.5,
@@ -531,23 +531,30 @@ export class DashboardPerformanceComponent implements OnInit, OnDestroy {
                               .color
                         : DashboardColors.BAR_PERFORMANCE_COLORS_PALLETE[1]
                               .color,
+                borderColor:
+                    key === DashboardChartStringEnum.BAR_LABEL_PER_GALLON
+                        ? DashboardColors.BAR_PERFORMANCE_COLORS_PALLETE[0]
+                              .color
+                        : DashboardColors.BAR_PERFORMANCE_COLORS_PALLETE[1]
+                              .color,
                 borderRadius: {
                     topLeft: 2,
                     topRight: 2,
                     bottomLeft: 0,
                     bottomRight: 0,
                 },
-            }));
+                isCurrency: DashboardHelper.isCurrency(key),
+            }))
+            .sort((a, b) => a.order - b.order);
 
-        const linePerformanceChartData = Array.from(
-            performanceDataMap.entries()
-        )
+        let linePerformanceChartData = Array.from(performanceDataMap.entries())
             .filter(([key]) => !barPerformanceTypes.includes(key))
             .map(([key, values]) => ({
                 label: key,
-                data: values,
+                data: [...values],
                 type: ChartTypesStringEnum.LINE,
                 hidden: true,
+                isCurrency: DashboardHelper.isCurrency(key),
             }));
 
         return { linePerformanceChartData, barPerformanceChartData };
@@ -579,7 +586,7 @@ export class DashboardPerformanceComponent implements OnInit, OnDestroy {
         const selectedPerformanceDataItem =
             this.performanceData[performanceDataItemIndex];
         const selectedPerformanceDataColor =
-            this.LinePerformanceDataColors[performanceDataItemIndex];
+            this.linePerformanceDataColors[performanceDataItemIndex];
 
         this.performanceData = this.performanceData.map(
             (performanceDataItem, index) => {
@@ -594,7 +601,7 @@ export class DashboardPerformanceComponent implements OnInit, OnDestroy {
             }
         );
 
-        this.LinePerformanceDataColors = this.LinePerformanceDataColors.map(
+        this.linePerformanceDataColors = this.linePerformanceDataColors.map(
             (color, index) => {
                 if (index !== performanceDataItemIndex) {
                     return {
