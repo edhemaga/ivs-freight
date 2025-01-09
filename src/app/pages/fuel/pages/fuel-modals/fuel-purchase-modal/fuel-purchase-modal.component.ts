@@ -82,6 +82,9 @@ import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calcula
 // Moment
 import moment from 'moment';
 
+//Configs
+import { FuelPurchaseConfig } from '@pages/fuel/pages/fuel-modals/fuel-purchase-modal/utils';
+
 @Component({
     selector: 'app-fuel-purchase-modal',
     templateUrl: './fuel-purchase-modal.component.html',
@@ -151,7 +154,7 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
     public trailerId: number;
     public svgRoutes = SharedSvgRoutes;
     public taModalActionEnums = TaModalActionEnums;
-
+    public fuelFormConfig = FuelPurchaseConfig;
     constructor(
         private formBuilder: UntypedFormBuilder,
         private inputService: TaInputService,
