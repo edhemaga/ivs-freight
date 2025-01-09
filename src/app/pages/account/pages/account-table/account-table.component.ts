@@ -54,6 +54,9 @@ import { AccountResponse } from '@pages/account/pages/account-table/models/accou
 import { TableBodyColumns } from '@shared/components/ta-table/ta-table-body/models/table-body-columns.model';
 import { AccountFilter } from '@pages/account/pages/account-table/models/account-filter.model';
 
+// helpers
+import { DropdownMenuContentHelper } from '@shared/utils/helpers';
+
 // constants
 import { AccountFilterConstants } from '@pages/account/pages/account-table/utils/constants/account-filter.constants';
 
@@ -455,102 +458,13 @@ export class AccountTableComponent implements OnInit, AfterViewInit, OnDestroy {
             },
             tableDropdownContent: {
                 hasContent: true,
-                content: this.getDropdownAccountContent(data),
+                content: this.getAccountDropdownContent(data?.url),
             },
         };
     }
 
-    private getDropdownAccountContent(data: AccountResponse): DropdownItem[] {
-        return [
-            {
-                title: TableStringEnum.EDIT_2,
-                name: TableStringEnum.EDIT_ACCOUNT,
-                svgUrl: TableStringEnum.EDIT_IMAGE,
-                svgStyle: {
-                    width: 18,
-                    height: 18,
-                },
-                hasBorder: true,
-                svgClass: TableStringEnum.REGULAR,
-            },
-            {
-                title: data.url
-                    ? TableStringEnum.GO_TO_LINK
-                    : TableStringEnum.NO_LINK,
-                name: data.url
-                    ? TableStringEnum.GO_TO_LINK_2
-                    : TableStringEnum.NO_LINK_2,
-                svgUrl: TableStringEnum.WEB_IMAGE,
-                mutedStyle: data.url ? false : true,
-                svgStyle: {
-                    width: 18,
-                    height: 18,
-                },
-                svgClass: TableStringEnum.REGULAR,
-                tableListDropdownContentStyle: {
-                    'margin-bottom.px': 4,
-                },
-            },
-            {
-                title: TableStringEnum.COPY_USERNAME,
-                name: TableStringEnum.COPY_USERNAME_2,
-                svgUrl: TableStringEnum.USER_IMAGE,
-                svgStyle: {
-                    width: 18,
-                    height: 18,
-                },
-                svgClass: TableStringEnum.REGULAR,
-                tableListDropdownContentStyle: {
-                    'margin-bottom.px': 4,
-                },
-            },
-            {
-                title: TableStringEnum.COPY_PASSWORD,
-                name: TableStringEnum.COPY_PASSWORD_2,
-                svgUrl: TableStringEnum.PASSWORD_IMAGE,
-                svgStyle: {
-                    width: 18,
-                    height: 18,
-                },
-                svgClass: TableStringEnum.REGULAR,
-                hasBorder: true,
-            },
-            // {
-            //     title: 'Share',
-            //     name: 'share',
-            //     svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Share.svg',
-            //     svgStyle: {
-            //         width: 18,
-            //         height: 18,
-            //     },
-            //     svgClass: TableStringEnum.REGULAR,
-            //     tableListDropdownContentStyle: {
-            //         'margin-bottom.px': 4,
-            //     },
-            // },
-            // {
-            //     title: 'Print',
-            //     name: 'print',
-            //     svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Print.svg',
-            //     svgStyle: {
-            //         width: 18,
-            //         height: 18,
-            //     },
-
-            //     svgClass: TableStringEnum.REGULAR,
-            //     hasBorder: true,
-            // }, leave this commented for now
-            {
-                title: TableStringEnum.DELETE_2,
-                name: TableStringEnum.DELETE_ACCOUNT,
-                svgUrl: TableStringEnum.DELETE_IMAGE,
-                svgStyle: {
-                    width: 18,
-                    height: 18,
-                },
-                svgClass: TableStringEnum.DELETE,
-            },
-        ];
+    private getAccountDropdownContent(url: string): DropdownItem[] {
+        return DropdownMenuContentHelper.getAccountDropdownContent(url);
     }
 
     public getHidenCharacters(data: AccountResponse): string {

@@ -4,7 +4,7 @@
             [scrollBarOptions]="{
                 showVerticalScrollBar: false,
                 showHorizontalScrollBar: true,
-                dataLength: viewData.length
+                dataLength: viewData.length,
             }"
             [horizontalScrollHeight]="
                 activeAttachment !== -1 ||
@@ -52,7 +52,7 @@
                         'multiple-delete-animation':
                             row.actionAnimation === 'delete-multiple',
                         'fuel-integrated-transaction':
-                            row.isIntegratedFuelTransaction
+                            row.isIntegratedFuelTransaction,
                     }"
                 >
                     <!-- Table Row -->
@@ -73,7 +73,7 @@
                                             column.ngTemplate !== '' &&
                                             column.ngTemplate !== 'checkbox' &&
                                             column.ngTemplate !==
-                                                'user-checkbox'
+                                                'user-checkbox',
                                     }"
                                     [ngStyle]="{
                                         'margin-right':
@@ -83,8 +83,8 @@
                                             column.ngTemplate === 'ppg'
                                                 ? 0
                                                 : column.ngTemplate === 'total'
-                                                ? '7px'
-                                                : ''
+                                                  ? '7px'
+                                                  : '',
                                     }"
                                 >
                                     <!-- NO TEMPLATE -->
@@ -95,7 +95,7 @@
                                             width: column.width + 'px',
                                             'min-width': column?.minWidth
                                                 ? column.minWidth
-                                                : 'unset'
+                                                : 'unset',
                                         }"
                                         class="td-content"
                                     >
@@ -113,7 +113,7 @@
                                             width: column.width + 'px',
                                             'min-width.px': column?.minWidth
                                                 ? column.minWidth
-                                                : 'unset'
+                                                : 'unset',
                                         }"
                                     >
                                         <div class="vin-container">
@@ -132,7 +132,7 @@
                                             width: column.width + 'px',
                                             'min-width.px': column?.minWidth
                                                 ? column.minWidth
-                                                : 'unset'
+                                                : 'unset',
                                         }"
                                         class="td-content set-center"
                                         ngbTooltip
@@ -177,7 +177,7 @@
                                             width: column.width + 'px',
                                             'min-width.px': column?.minWidth
                                                 ? column.minWidth
-                                                : 'unset'
+                                                : 'unset',
                                         }"
                                     >
                                         <div class="halfPercentage">
@@ -201,7 +201,7 @@
                                             width: column.width + 'px',
                                             'min-width.px': column?.minWidth
                                                 ? column.minWidth
-                                                : 'unset'
+                                                : 'unset',
                                         }"
                                         #ngbStatus="ngbPopover"
                                         [autoClose]="true"
@@ -214,7 +214,7 @@
                                         <div
                                             class="status-container"
                                             [ngStyle]="{
-                                                width: column.width - 20 + 'px'
+                                                width: column.width - 20 + 'px',
                                             }"
                                             (click)="
                                                 toggleStatusDropdown(
@@ -231,7 +231,7 @@
                                                         valueForRequest:
                                                             row.status
                                                                 .statusValue
-                                                                .name
+                                                                .name,
                                                     }"
                                                     [justifyStart]="true"
                                                 ></app-load-status-string>
@@ -255,7 +255,7 @@
                                                 width: column.width + 'px',
                                                 'min-width.px': column?.minWidth
                                                     ? column.minWidth
-                                                    : 'unset'
+                                                    : 'unset',
                                             }"
                                         >
                                             <div
@@ -273,7 +273,7 @@
                                                             .count !== 'S',
                                                     'special-count':
                                                         row[column.field]
-                                                            .count === 'S'
+                                                            .count === 'S',
                                                 }"
                                             >
                                                 {{ row[column.field].count }}
@@ -288,7 +288,7 @@
                                                         width:
                                                             column.width -
                                                             28 +
-                                                            'px'
+                                                            'px',
                                                     }"
                                                 >
                                                     {{
@@ -302,7 +302,7 @@
                                                         width:
                                                             column.width -
                                                             30 +
-                                                            'px'
+                                                            'px',
                                                     }"
                                                 >
                                                     <div class="date">
@@ -333,7 +333,7 @@
                                             width: column.width + 'px',
                                             'min-width.px': column?.minWidth
                                                 ? column.minWidth
-                                                : 'unset'
+                                                : 'unset',
                                         }"
                                     >
                                         <div
@@ -343,7 +343,7 @@
                                                 'margin-left':
                                                     column.margin + 'px',
                                                 'padding-left':
-                                                    column.padding + 'px'
+                                                    column.padding + 'px',
                                             }"
                                         >
                                             {{ row[column.field].number }}
@@ -361,7 +361,7 @@
                                             width: column.width + 'px',
                                             'min-width.px': column?.minWidth
                                                 ? column.minWidth
-                                                : 'unset'
+                                                : 'unset',
                                         }"
                                         class="td-content set-center"
                                         ngbTooltip
@@ -375,7 +375,7 @@
                                             "
                                             [svgStyle]="{
                                                 'width.px': '14',
-                                                'height.px': '14'
+                                                'height.px': '14',
                                             }"
                                         ></svg-icon>
 
@@ -431,7 +431,7 @@
                                             width: column.width + 'px',
                                             'min-width.px': column?.minWidth
                                                 ? column.minWidth
-                                                : 'unset'
+                                                : 'unset',
                                         }"
                                     >
                                         <ng-container
@@ -451,7 +451,7 @@
                                                         'min-width.px':
                                                             column?.minWidth
                                                                 ? column.minWidth
-                                                                : 'unset'
+                                                                : 'unset',
                                                     }"
                                                 >
                                                     <svg-icon
@@ -465,15 +465,15 @@
                                                                 .isDnu
                                                                 ? 'assets/svg/truckassist-table/dnu-icon.svg'
                                                                 : !row[
-                                                                      column
-                                                                          .field
-                                                                  ].isClosed
-                                                                ? 'assets/svg/truckassist-table/ban-icon.svg'
-                                                                : 'assets/svg/common/ic_closed_broker.svg'
+                                                                        column
+                                                                            .field
+                                                                    ].isClosed
+                                                                  ? 'assets/svg/truckassist-table/ban-icon.svg'
+                                                                  : 'assets/svg/common/ic_closed_broker.svg'
                                                         "
                                                         [svgStyle]="{
                                                             'width.px': '18',
-                                                            'height.px': '18'
+                                                            'height.px': '18',
                                                         }"
                                                     ></svg-icon>
                                                     <ng-container
@@ -490,7 +490,7 @@
                                                                 'min-width.px':
                                                                     column?.minWidth
                                                                         ? column.minWidth
-                                                                        : 'unset'
+                                                                        : 'unset',
                                                             }"
                                                             ngbTooltip
                                                         >
@@ -498,14 +498,14 @@
                                                                 [ngStyle]="{
                                                                     width:
                                                                         column.width +
-                                                                        'px'
+                                                                        'px',
                                                                 }"
                                                                 class="table-name-link"
                                                                 [ngClass]="{
                                                                     'has-details-page':
                                                                         !column
                                                                             .link
-                                                                            ?.doesNotHaveRout
+                                                                            ?.doesNotHaveRout,
                                                                 }"
                                                                 (click)="
                                                                     goToDetails(
@@ -563,7 +563,7 @@
                                                                       22 +
                                                                       'px'
                                                                     : column.width +
-                                                                      'px'
+                                                                      'px',
                                                             }"
                                                             [ngClass]="{
                                                                 'customer-name-ban':
@@ -574,7 +574,7 @@
                                                                     row[
                                                                         column
                                                                             .field
-                                                                    ].hasBanDnu
+                                                                    ].hasBanDnu,
                                                             }"
                                                         >
                                                             {{
@@ -598,7 +598,7 @@
                                                     'min-width.px':
                                                         column?.minWidth
                                                             ? column.minWidth
-                                                            : 'unset'
+                                                            : 'unset',
                                                 }"
                                                 ngbTooltip
                                             >
@@ -612,13 +612,13 @@
                                                         [ngStyle]="{
                                                             width:
                                                                 column.width +
-                                                                'px'
+                                                                'px',
                                                         }"
                                                         class="table-name-link"
                                                         [ngClass]="{
                                                             'has-details-page':
                                                                 !column.link
-                                                                    ?.doesNotHaveRout
+                                                                    ?.doesNotHaveRout,
                                                         }"
                                                         (click)="
                                                             goToDetails(
@@ -660,13 +660,13 @@
                                                         [ngStyle]="{
                                                             width:
                                                                 column.width +
-                                                                'px'
+                                                                'px',
                                                         }"
                                                         class="table-name-link"
                                                         [ngClass]="{
                                                             'has-details-page':
                                                                 !column.link
-                                                                    ?.doesNotHaveRout
+                                                                    ?.doesNotHaveRout,
                                                         }"
                                                         (click)="
                                                             goToDetails(
@@ -693,14 +693,14 @@
                                             width: column.width + 'px',
                                             'min-width.px': column?.minWidth
                                                 ? column.minWidth
-                                                : 'unset'
+                                                : 'unset',
                                         }"
                                     >
                                         <div class="load-totla-container">
                                             <div
                                                 class="main-total"
                                                 [ngStyle]="{
-                                                    width: column.width + 'px'
+                                                    width: column.width + 'px',
                                                 }"
                                             >
                                                 {{ row[column.field].total }}
@@ -711,7 +711,7 @@
                                                     row[column.field].subTotal
                                                 "
                                                 [ngStyle]="{
-                                                    width: column.width + 'px'
+                                                    width: column.width + 'px',
                                                 }"
                                                 class="sub-total"
                                             >
@@ -732,7 +732,7 @@
                                             width: column.width + 'px',
                                             'min-width.px': column?.minWidth
                                                 ? column.minWidth
-                                                : 'unset'
+                                                : 'unset',
                                         }"
                                     >
                                         <ng-container
@@ -753,7 +753,9 @@
                                                 class="dispatcher-name"
                                                 [ngStyle]="{
                                                     width:
-                                                        column.width - 24 + 'px'
+                                                        column.width -
+                                                        24 +
+                                                        'px',
                                                 }"
                                             >
                                                 {{ row[column.field].name }}
@@ -768,7 +770,7 @@
                                             width: column.width + 'px',
                                             'min-width.px': column?.minWidth
                                                 ? column.minWidth
-                                                : 'unset'
+                                                : 'unset',
                                         }"
                                         class="td-content"
                                         ngbTooltip
@@ -776,7 +778,7 @@
                                         <div
                                             class="avatar-container"
                                             [ngClass]="{
-                                                'avatar-is-owner': row.isOwner
+                                                'avatar-is-owner': row.isOwner,
                                             }"
                                         >
                                             <ng-container
@@ -785,7 +787,7 @@
                                                 "
                                                 [ngTemplateOutletContext]="{
                                                     row: row,
-                                                    column: column
+                                                    column: column,
                                                 }"
                                             ></ng-container>
 
@@ -802,7 +804,7 @@
                                             [ngClass]="{
                                                 'has-details-page':
                                                     !column.link
-                                                        ?.doesNotHaveRout
+                                                        ?.doesNotHaveRout,
                                             }"
                                             class="table-avatar-name"
                                             [innerHtml]="
@@ -840,7 +842,7 @@
                                             [ngStyle]="{
                                                 width: column.width + 'px',
                                                 'min-width.px':
-                                                    column?.minWidth ?? 'unset'
+                                                    column?.minWidth ?? 'unset',
                                             }"
                                             class="td-content"
                                         >
@@ -863,7 +865,7 @@
                                                         "
                                                         [svgStyle]="{
                                                             'width.px': '17',
-                                                            'height.px': '17'
+                                                            'height.px': '17',
                                                         }"
                                                     ></svg-icon>
                                                 </div>
@@ -905,7 +907,7 @@
                                                             ? row[column.field]
                                                                   .avatarColor
                                                                   .color
-                                                            : 'unset'
+                                                            : 'unset',
                                                     }"
                                                 >
                                                     {{
@@ -920,7 +922,7 @@
                                                 [ngClass]="{
                                                     'has-details-page':
                                                         !column.link
-                                                            ?.doesNotHaveRout
+                                                            ?.doesNotHaveRout,
                                                 }"
                                                 *ngIf="row[column.field]?.name"
                                                 >{{
@@ -941,7 +943,7 @@
                                             width: column.width + 'px',
                                             'min-width.px': column?.minWidth
                                                 ? column.minWidth
-                                                : 'unset'
+                                                : 'unset',
                                         }"
                                     >
                                         <div
@@ -952,13 +954,14 @@
                                                     'Owner'
                                                         ? '#259F94'
                                                         : row[column.field]
-                                                              .status ===
-                                                          'Admin'
-                                                        ? '#3B73ED'
-                                                        : row[column.field]
-                                                              .status === 'User'
-                                                        ? '#6C6C6C'
-                                                        : '#AAAAAA'
+                                                                .status ===
+                                                            'Admin'
+                                                          ? '#3B73ED'
+                                                          : row[column.field]
+                                                                  .status ===
+                                                              'User'
+                                                            ? '#6C6C6C'
+                                                            : '#AAAAAA',
                                             }"
                                         >
                                             {{ row[column.field].status }}
@@ -979,7 +982,7 @@
                                                 width: column.width + 'px',
                                                 'min-width.px': column?.minWidth
                                                     ? column.minWidth
-                                                    : 'unset'
+                                                    : 'unset',
                                             }"
                                         >
                                             <div
@@ -1013,14 +1016,14 @@
                                             width: column.width + 'px',
                                             'min-width.px': column?.minWidth
                                                 ? column.minWidth
-                                                : 'unset'
+                                                : 'unset',
                                         }"
                                         ngbTooltip
                                     >
                                         <div
                                             class="invoice-text"
                                             [ngStyle]="{
-                                                width: column.width - 21 + 'px'
+                                                width: column.width - 21 + 'px',
                                             }"
                                             (click)="goToDetails(column, row)"
                                             #op="ngbPopover"
@@ -1063,7 +1066,7 @@
                                             [ngStyle]="{
                                                 width: column.width + 'px',
                                                 'min-width.px':
-                                                    column?.minWidth ?? 'unset'
+                                                    column?.minWidth ?? 'unset',
                                             }"
                                             ngbTooltip
                                         >
@@ -1076,13 +1079,13 @@
                                                 <div
                                                     [ngStyle]="{
                                                         width:
-                                                            column.width + 'px'
+                                                            column.width + 'px',
                                                     }"
                                                     class="table-name-link"
                                                     [ngClass]="{
                                                         'has-details-page':
                                                             !column.link
-                                                                ?.doesNotHaveRout
+                                                                ?.doesNotHaveRout,
                                                     }"
                                                     (click)="
                                                         goToDetails(column, row)
@@ -1132,13 +1135,13 @@
                                                 <div
                                                     [ngStyle]="{
                                                         width:
-                                                            column.width + 'px'
+                                                            column.width + 'px',
                                                     }"
                                                     class="table-name-link"
                                                     [ngClass]="{
                                                         'has-details-page':
                                                             !column.link
-                                                                ?.doesNotHaveRout
+                                                                ?.doesNotHaveRout,
                                                     }"
                                                     (click)="
                                                         goToDetails(column, row)
@@ -1171,7 +1174,7 @@
                                                             "
                                                             [svgStyle]="{
                                                                 'width.px': 10,
-                                                                'height.px': 10
+                                                                'height.px': 10,
                                                             }"
                                                         ></svg-icon>
                                                     </ng-container>
@@ -1189,14 +1192,14 @@
                                             width: column.width + 'px',
                                             'min-width.px': column?.minWidth
                                                 ? column.minWidth
-                                                : 'unset'
+                                                : 'unset',
                                         }"
                                     >
                                         <div class="oos-container">
                                             <div
                                                 [ngClass]="{
                                                     'oos-active':
-                                                        row.oos[0].active
+                                                        row.oos[0].active,
                                                 }"
                                             >
                                                 {{ row.oos[0].value }}
@@ -1205,7 +1208,7 @@
                                             <div
                                                 [ngClass]="{
                                                     'oos-active':
-                                                        row.oos[1].active
+                                                        row.oos[1].active,
                                                 }"
                                             >
                                                 {{ row.oos[1].value }}
@@ -1214,7 +1217,7 @@
                                             <div
                                                 [ngClass]="{
                                                     'oos-active':
-                                                        row.oos[2].active
+                                                        row.oos[2].active,
                                                 }"
                                             >
                                                 {{ row.oos[2].value }}
@@ -1231,7 +1234,7 @@
                                             'violation-state'
                                         "
                                         [ngStyle]="{
-                                            width: column.width + 'px'
+                                            width: column.width + 'px',
                                         }"
                                     >
                                         <div class="violation-state-container">
@@ -1249,7 +1252,7 @@
                                         <div
                                             class="td-content"
                                             [ngStyle]="{
-                                                width: column.width + 'px'
+                                                width: column.width + 'px',
                                             }"
                                             #invoicePopover="ngbPopover"
                                             [ngbPopover]="invoiceAgingPopover"
@@ -1291,7 +1294,7 @@
                                                         !row[column.field]
                                                             ?.tablePayTerm ||
                                                         !row[column.field]
-                                                            ?.invoiceAgeingGroupOne
+                                                            ?.invoiceAgeingGroupOne,
                                                 }"
                                                 ngbTooltip
                                                 [mainTooltip]="
@@ -1349,8 +1352,7 @@
                                                                   ]
                                                                       ?.invoiceAgeingGroupOne
                                                                       ?.percentage ??
-                                                                      0) +
-                                                                  '%'
+                                                                      0) + '%'
                                                         }}
                                                     </div>
 
@@ -1373,8 +1375,7 @@
                                                                   ]
                                                                       ?.invoiceAgeingGroupTwo
                                                                       ?.percentage ??
-                                                                      0) +
-                                                                  '%'
+                                                                      0) + '%'
                                                         }}
                                                     </div>
 
@@ -1397,8 +1398,7 @@
                                                                   ]
                                                                       ?.invoiceAgeingGroupThree
                                                                       ?.percentage ??
-                                                                      0) +
-                                                                  '%'
+                                                                      0) + '%'
                                                         }}
                                                     </div>
 
@@ -1421,8 +1421,7 @@
                                                                   ]
                                                                       ?.invoiceAgeingGroupFour
                                                                       ?.percentage ??
-                                                                      0) +
-                                                                  '%'
+                                                                      0) + '%'
                                                         }}
                                                     </div>
                                                 </ng-container>
@@ -1466,7 +1465,7 @@
                                                                 column.field,
                                                         'text-color-black-2':
                                                             invoiceDropdownActive ===
-                                                            -1
+                                                            -1,
                                                     }"
                                                     [ngStyle]="{
                                                         'margin-left':
@@ -1475,7 +1474,7 @@
                                                             invoiceDropdownType ===
                                                                 column.field
                                                                 ? '4px'
-                                                                : ''
+                                                                : '',
                                                     }"
                                                 >
                                                     {{
@@ -1485,12 +1484,13 @@
                                                                   .totalPaid
                                                               | formatCurrency)
                                                             : row[column.field]
-                                                                  ?.totalDebt
-                                                            ? (row[column.field]
-                                                                  .totalDebt
-                                                              | formatCurrency)
-                                                            : (0
-                                                              | formatCurrency)
+                                                                    ?.totalDebt
+                                                              ? (row[
+                                                                    column.field
+                                                                ].totalDebt
+                                                                | formatCurrency)
+                                                              : (0
+                                                                | formatCurrency)
                                                     }}
                                                 </div>
                                             </div>
@@ -1505,7 +1505,7 @@
                                         <div
                                             class="td-content"
                                             [ngStyle]="{
-                                                width: column.width + 'px'
+                                                width: column.width + 'px',
                                             }"
                                         >
                                             <ng-container
@@ -1541,7 +1541,7 @@
                                         <div
                                             class="td-content"
                                             [ngStyle]="{
-                                                width: column.width + 'px'
+                                                width: column.width + 'px',
                                             }"
                                         >
                                             <ng-container
@@ -1572,14 +1572,14 @@
                                                                     column?.title ===
                                                                     'Shipping'
                                                                         ? row?.shippingAppointment
-                                                                        : row.receivingAppointment
+                                                                        : row.receivingAppointment,
                                                             }"
                                                             [src]="
                                                                 tableBodySvgRoutes.workHourRoute
                                                             "
                                                             [svgStyle]="{
                                                                 'width.px': 14,
-                                                                'height.px': 14
+                                                                'height.px': 14,
                                                             }"
                                                         ></svg-icon>
                                                     </div>
@@ -1600,7 +1600,7 @@
                                                 'description',
                                                 'total',
                                                 'gallon',
-                                                'ppg'
+                                                'ppg',
                                             ].includes(column.ngTemplate)
                                         "
                                     >
@@ -1620,7 +1620,7 @@
                                                     !row?.isRepairOrder,
                                                 'd-flex justify-content-end':
                                                     column.ngTemplate ===
-                                                    'gallon'
+                                                    'gallon',
                                             }"
                                             [ngStyle]="{
                                                 width:
@@ -1631,7 +1631,7 @@
                                                         ? column.width + 6
                                                         : column.width) + 'px',
                                                 'min-width.px':
-                                                    column?.minWidth ?? 'unset'
+                                                    column?.minWidth ?? 'unset',
                                             }"
                                             #t1="ngbPopover"
                                             container="body"
@@ -1789,7 +1789,7 @@
                                                                 class="ppg-status-icon"
                                                                 [svgStyle]="{
                                                                     'width.px': 10,
-                                                                    'height.px': 10
+                                                                    'height.px': 10,
                                                                 }"
                                                                 [src]="
                                                                     tableBodySvgRoutes.circleRoute
@@ -1801,7 +1801,7 @@
                                                                 class="table-text"
                                                                 [ngClass]="{
                                                                     'align-end':
-                                                                        column.isJustifyEnd
+                                                                        column.isJustifyEnd,
                                                                 }"
                                                                 >{{
                                                                     '$' +
@@ -1831,11 +1831,11 @@
                                             [ngStyle]="{
                                                 width: column.width + 'px',
                                                 'min-width.px':
-                                                    column?.minWidth ?? 'unset'
+                                                    column?.minWidth ?? 'unset',
                                             }"
                                             [ngClass]="{
                                                 'has-value':
-                                                    row[column.field]?.length
+                                                    row[column.field]?.length,
                                             }"
                                             #t3="ngbPopover"
                                             container="body"
@@ -1863,9 +1863,9 @@
                                                     column.name.includes('Duty')
                                                         ? 'View Off Duty locations'
                                                         : column.name ===
-                                                          'Restriction'
-                                                        ? 'View Restrictions'
-                                                        : 'View Endorsements'
+                                                            'Restriction'
+                                                          ? 'View Restrictions'
+                                                          : 'View Endorsements'
                                                 "
                                                 [appDescriptionItemsTextCount]="
                                                     row[column.field]
@@ -1881,7 +1881,7 @@
                                         class="td-content"
                                         *ngIf="column.ngTemplate === 'shared'"
                                         [ngStyle]="{
-                                            width: column.width + 'px'
+                                            width: column.width + 'px',
                                         }"
                                     >
                                         <div
@@ -1913,7 +1913,7 @@
                                         class="td-content set-center"
                                         *ngIf="column.ngTemplate === 'lvl'"
                                         [ngStyle]="{
-                                            width: column.width + 'px'
+                                            width: column.width + 'px',
                                         }"
                                     >
                                         <div class="lvl-container">
@@ -1930,7 +1930,7 @@
                                             'violation-count'
                                         "
                                         [ngStyle]="{
-                                            width: column.width + 'px'
+                                            width: column.width + 'px',
                                         }"
                                     >
                                         <div
@@ -1938,7 +1938,7 @@
                                                 'active-vl-count':
                                                     row[column.field] > 0,
                                                 'zero-vl-count':
-                                                    !row[column.field]
+                                                    !row[column.field],
                                             }"
                                         >
                                             {{
@@ -1957,7 +1957,7 @@
                                             column.ngTemplate === 'compact-text'
                                         "
                                         [ngStyle]="{
-                                            width: column.width + 'px'
+                                            width: column.width + 'px',
                                         }"
                                     >
                                         <div
@@ -2052,7 +2052,7 @@
                                             [ngStyle]="{
                                                 width: column.width + 'px',
                                                 'min-width.px':
-                                                    column?.minWidth ?? 'unset'
+                                                    column?.minWidth ?? 'unset',
                                             }"
                                         >
                                             <div
@@ -2069,7 +2069,7 @@
                                                     <svg-icon
                                                         class="service-icon"
                                                         [ngClass]="{
-                                                            active: service?.active
+                                                            active: service?.active,
                                                         }"
                                                         [src]="
                                                             tableBodySvgRoutes.repairServicesRoute +
@@ -2077,7 +2077,7 @@
                                                         "
                                                         [svgStyle]="{
                                                             'width.px': 18,
-                                                            'height.px': 18
+                                                            'height.px': 18,
                                                         }"
                                                     ></svg-icon>
                                                 </ng-container>
@@ -2093,7 +2093,7 @@
                                             [ngStyle]="{
                                                 width: column.width + 'px',
                                                 'min-width.px':
-                                                    column?.minWidth ?? 'unset'
+                                                    column?.minWidth ?? 'unset',
                                             }"
                                         >
                                             <ng-container
@@ -2106,7 +2106,7 @@
                                                         class="ppg-status-icon"
                                                         [svgStyle]="{
                                                             'width.px': 10,
-                                                            'height.px': 10
+                                                            'height.px': 10,
                                                         }"
                                                         [src]="
                                                             tableBodySvgRoutes.circleRoute
@@ -2118,7 +2118,7 @@
                                                         class="table-text"
                                                         [ngClass]="{
                                                             'align-end':
-                                                                column.isJustifyEnd
+                                                                column.isJustifyEnd,
                                                         }"
                                                         >{{
                                                             '$' +
@@ -2141,7 +2141,7 @@
                                             width: column.width + 'px',
                                             'min-width.px': column?.minWidth
                                                 ? column.minWidth
-                                                : 'unset'
+                                                : 'unset',
                                         }"
                                     >
                                         <a
@@ -2165,7 +2165,7 @@
                                             width: column.width + 'px',
                                             'min-width.px': column?.minWidth
                                                 ? column.minWidth
-                                                : 'unset'
+                                                : 'unset',
                                         }"
                                         ngbTooltip
                                     >
@@ -2182,7 +2182,7 @@
                                                 'password-hidden':
                                                     row[column.field].hiden,
                                                 'password-showing':
-                                                    !row[column.field].hiden
+                                                    !row[column.field].hiden,
                                             }"
                                             #op="ngbPopover"
                                             [ngbPopover]="optionsPopover"
@@ -2212,7 +2212,7 @@
                                         <div
                                             class="password-text-crypted"
                                             [ngStyle]="{
-                                                width: column.width - 22 + 'px'
+                                                width: column.width - 22 + 'px',
                                             }"
                                             *ngIf="
                                                 row[column.field].hiden &&
@@ -2228,7 +2228,7 @@
                                         <div
                                             class="password-text-showing"
                                             [ngStyle]="{
-                                                width: column.width - 22 + 'px'
+                                                width: column.width - 22 + 'px',
                                             }"
                                             *ngIf="
                                                 !row[column.field].hiden &&
@@ -2246,7 +2246,7 @@
                                         class="td-content"
                                         *ngIf="column.ngTemplate === 'rating'"
                                         [ngStyle]="{
-                                            width: column.width + 'px'
+                                            width: column.width + 'px',
                                         }"
                                     >
                                         <div class="raiting-container">
@@ -2261,7 +2261,7 @@
                                                             ?.hasLiked,
                                                     'like-icon':
                                                         !row[column.field]
-                                                            ?.hasLiked
+                                                            ?.hasLiked,
                                                 }"
                                             ></div>
                                             <!-- Raiting Count -->
@@ -2299,7 +2299,7 @@
                                                             ?.hasDislike,
                                                     'dislike-icon':
                                                         !row[column.field]
-                                                            ?.hasDislike
+                                                            ?.hasDislike,
                                                 }"
                                             ></div>
                                         </div>
@@ -2314,7 +2314,7 @@
                                             width: column.width + 'px',
                                             'min-width.px': column?.minWidth
                                                 ? column.minWidth
-                                                : 'unset'
+                                                : 'unset',
                                         }"
                                     >
                                         <ng-container *ngIf="row[column.field]">
@@ -2347,21 +2347,21 @@
                                                             popup: {
                                                                 name: 'Confirm',
                                                                 backgroundColor:
-                                                                    '#3074d3'
+                                                                    '#3074d3',
                                                             },
                                                             name: 'confirm',
-                                                            svg: 'assets/svg/ic_spec-confirm.svg'
+                                                            svg: 'assets/svg/ic_spec-confirm.svg',
                                                         },
                                                         secondCommand: {
                                                             popup: {
                                                                 name: 'Cancel',
                                                                 backgroundColor:
-                                                                    '#2f2f2f'
+                                                                    '#2f2f2f',
                                                             },
                                                             name: 'cancel',
-                                                            svg: 'assets/svg/ic_x.svg'
-                                                        }
-                                                    }
+                                                            svg: 'assets/svg/ic_x.svg',
+                                                        },
+                                                    },
                                                 }"
                                                 [colors]="row['colorRes']"
                                                 [options]="row['colorLabels']"
@@ -2397,7 +2397,7 @@
                                             width: column.width + 'px',
                                             'min-width.px': column?.minWidth
                                                 ? column.minWidth
-                                                : 'unset'
+                                                : 'unset',
                                         }"
                                     >
                                         <ng-container
@@ -2409,7 +2409,7 @@
                                             <svg-icon
                                                 class="d-flex align-items-center"
                                                 [ngStyle]="{
-                                                    'margin-right': '4px'
+                                                    'margin-right': '4px',
                                                 }"
                                                 src="assets/svg/common/ic_hazardous.svg"
                                             >
@@ -2430,7 +2430,7 @@
                                             "
                                             [svgStyle]="{
                                                 'width.px': 18,
-                                                'height.px': 18
+                                                'height.px': 18,
                                             }"
                                         ></svg-icon>
 
@@ -2441,7 +2441,8 @@
                                                     column.isTextBold ||
                                                     row[column.field] ===
                                                         'Unlimited',
-                                                'align-end': column.isJustifyEnd
+                                                'align-end':
+                                                    column.isJustifyEnd,
                                             }"
                                             [innerHtml]="
                                                 row[column.field]
@@ -2466,7 +2467,7 @@
                                             width: column.width + 'px',
                                             'min-width.px': column?.minWidth
                                                 ? column.minWidth
-                                                : 'unset'
+                                                : 'unset',
                                         }"
                                     >
                                         <span class="semi-bold-table-text">{{
@@ -2485,7 +2486,7 @@
                                             width: column.width + 'px',
                                             'min-width.px': column?.minWidth
                                                 ? column.minWidth
-                                                : 'unset'
+                                                : 'unset',
                                         }"
                                         ngbTooltip
                                     >
@@ -2520,7 +2521,7 @@
                                             width: column.width + 'px',
                                             'min-width.px': column?.minWidth
                                                 ? column.minWidth
-                                                : 'unset'
+                                                : 'unset',
                                         }"
                                     >
                                         <div
@@ -2549,7 +2550,7 @@
                                                             .width,
                                                     'height.px':
                                                         column.svgDimensions
-                                                            .height
+                                                            .height,
                                                 }"
                                             ></svg-icon>
                                         </div>
@@ -2567,7 +2568,7 @@
                                                 width: column.width + 'px',
                                                 'min-width.px': column?.minWidth
                                                     ? column.minWidth
-                                                    : 'unset'
+                                                    : 'unset',
                                             }"
                                         >
                                             <div
@@ -2603,7 +2604,7 @@
                                                             .hover
                                                             ? row[column.field]
                                                                   .color
-                                                            : '#2f2f2f'
+                                                            : '#2f2f2f',
                                                     }"
                                                 >
                                                     {{ row[column.field].text }}
@@ -2621,7 +2622,7 @@
                                                 width: column.width + 'px',
                                                 'min-width.px': column?.minWidth
                                                     ? column.minWidth
-                                                    : 'unset'
+                                                    : 'unset',
                                             }"
                                         >
                                             <ng-container
@@ -2662,7 +2663,7 @@
                                                             'height.px':
                                                                 column
                                                                     .svgDimensions
-                                                                    .height
+                                                                    .height,
                                                         }"
                                                     ></svg-icon>
                                                 </div>
@@ -2680,7 +2681,7 @@
                                             width: column.width + 'px',
                                             'min-width.px': column?.minWidth
                                                 ? column.minWidth
-                                                : 'unset'
+                                                : 'unset',
                                         }"
                                         class="td-content"
                                     >
@@ -2702,7 +2703,7 @@
                                             width: column.width + 'px',
                                             'min-width.px': column?.minWidth
                                                 ? column.minWidth
-                                                : 'unset'
+                                                : 'unset',
                                         }"
                                         *ngIf="column.ngTemplate === 'progress'"
                                     >
@@ -2740,7 +2741,7 @@
                                                             .percentage < 20,
                                                     'bg-inactive-container':
                                                         row[column.field]
-                                                            .percentage === 100
+                                                            .percentage === 100,
                                                 }"
                                             >
                                                 <div
@@ -2764,7 +2765,8 @@
                                                                 .percentage >
                                                                 0 &&
                                                             row[column.field]
-                                                                .percentage < 20
+                                                                .percentage <
+                                                                20,
                                                     }"
                                                     class="table-progress-bar"
                                                     *ngIf="
@@ -2782,7 +2784,9 @@
                                                 class="table-progress-text"
                                                 [ngStyle]="{
                                                     width:
-                                                        column.width - 30 + 'px'
+                                                        column.width -
+                                                        30 +
+                                                        'px',
                                                 }"
                                                 *ngIf="
                                                     row[column.field]
@@ -2811,7 +2815,9 @@
                                                 class="table-progress-text"
                                                 [ngStyle]="{
                                                     width:
-                                                        column.width - 30 + 'px'
+                                                        column.width -
+                                                        30 +
+                                                        'px',
                                                 }"
                                                 *ngIf="
                                                     !row[column.field]
@@ -2846,7 +2852,7 @@
                                             [ngStyle]="{
                                                 width: column?.width + 'px',
                                                 'min-width.px':
-                                                    column?.minWidth ?? 'unset'
+                                                    column?.minWidth ?? 'unset',
                                             }"
                                         >
                                             <ng-container
@@ -2899,7 +2905,7 @@
                                             [ngStyle]="{
                                                 width: column.width + 'px',
                                                 'min-width.px':
-                                                    column?.minWidth ?? 'unset'
+                                                    column?.minWidth ?? 'unset',
                                             }"
                                         >
                                             <ng-container
@@ -2932,7 +2938,7 @@
                                             'applicant-review'
                                         "
                                         [ngStyle]="{
-                                            width: column.width + 'px'
+                                            width: column.width + 'px',
                                         }"
                                     >
                                         <div class="applicant-review-container">
@@ -2953,7 +2959,7 @@
                                                         'Incomplete',
                                                     ready:
                                                         row[column.field]
-                                                            .title === 'Ready'
+                                                            .title === 'Ready',
                                                 }"
                                             >
                                                 <svg-icon
@@ -2963,7 +2969,7 @@
                                                     "
                                                     [svgStyle]="{
                                                         'width.px': '16',
-                                                        'height.px': '16'
+                                                        'height.px': '16',
                                                     }"
                                                 ></svg-icon>
                                             </div>
@@ -2971,7 +2977,9 @@
                                                 class="review-title"
                                                 [ngStyle]="{
                                                     width:
-                                                        column.width - 26 + 'px'
+                                                        column.width -
+                                                        26 +
+                                                        'px',
                                                 }"
                                             >
                                                 {{ row[column.field].title }}
@@ -2987,7 +2995,7 @@
                                             column.ngTemplate === 'sw-tw-total'
                                         "
                                         [ngStyle]="{
-                                            width: column.width + 'px'
+                                            width: column.width + 'px',
                                         }"
                                     >
                                         <div class="sw-tw-total-container">
@@ -3007,7 +3015,7 @@
                                         class="td-content set-center"
                                         *ngIf="column.ngTemplate === 'citation'"
                                         [ngStyle]="{
-                                            width: column.width + 'px'
+                                            width: column.width + 'px',
                                         }"
                                     >
                                         <div class="citation-container">
@@ -3034,7 +3042,7 @@
                                             'accident-citation'
                                         "
                                         [ngStyle]="{
-                                            width: column.width + 'px'
+                                            width: column.width + 'px',
                                         }"
                                     >
                                         <div
@@ -3082,7 +3090,7 @@
                                                 width: column.width + 'px',
                                                 'min-width.px': column?.minWidth
                                                     ? column.minWidth
-                                                    : 'unset'
+                                                    : 'unset',
                                             }"
                                         >
                                             <app-ta-password-account-hidden-characters
@@ -3106,7 +3114,7 @@
                                                 width: column.width + 'px',
                                                 'min-width.px': column?.minWidth
                                                     ? column.minWidth
-                                                    : 'unset'
+                                                    : 'unset',
                                             }"
                                         >
                                             <div
@@ -3122,7 +3130,7 @@
                                                         "
                                                         [svgStyle]="{
                                                             'width.px': '18',
-                                                            'height.px': '18'
+                                                            'height.px': '18',
                                                         }"
                                                     ></svg-icon>
 
@@ -3146,7 +3154,7 @@
                                                         "
                                                         [svgStyle]="{
                                                             'width.px': '18',
-                                                            'height.px': '18'
+                                                            'height.px': '18',
                                                         }"
                                                     ></svg-icon>
 
@@ -3170,7 +3178,7 @@
                                                         "
                                                         [svgStyle]="{
                                                             'width.px': '18',
-                                                            'height.px': '18'
+                                                            'height.px': '18',
                                                         }"
                                                     ></svg-icon>
 
@@ -3200,7 +3208,7 @@
                                             [ngStyle]="{
                                                 width: column.width + 'px',
                                                 'min-width.px':
-                                                    column?.minWidth ?? 'unset'
+                                                    column?.minWidth ?? 'unset',
                                             }"
                                         >
                                             <app-ca-progress-range
@@ -3217,7 +3225,7 @@
                                                         ?.unit,
                                                     lastUsed:
                                                         row[column.field]
-                                                            ?.lastUsed
+                                                            ?.lastUsed,
                                                 }"
                                             ></app-ca-progress-range>
                                         </div>
@@ -3234,7 +3242,7 @@
                                 [ngClass]="{
                                     'table-border-left-show':
                                         showScrollSectionBorder,
-                                    hidden: !isLeftScrollLineShown
+                                    hidden: !isLeftScrollLineShown,
                                 }"
                             ></div>
                         </div>
@@ -3256,7 +3264,7 @@
                                 <td
                                     class="not-pined-td"
                                     [ngClass]="{
-                                        'space-left': notPinedColumnIndex === 0
+                                        'space-left': notPinedColumnIndex === 0,
                                     }"
                                     [ngStyle]="{
                                         'margin-right':
@@ -3266,8 +3274,8 @@
                                             column.ngTemplate === 'ppg'
                                                 ? 0
                                                 : column.ngTemplate === 'total'
-                                                ? '7px'
-                                                : ''
+                                                  ? '7px'
+                                                  : '',
                                     }"
                                 >
                                     <!-- NO TEMPLATE -->
@@ -3278,7 +3286,7 @@
                                             width: column.width + 'px',
                                             'min-width.px': column?.minWidth
                                                 ? column.minWidth
-                                                : 'unset'
+                                                : 'unset',
                                         }"
                                         class="td-content"
                                     >
@@ -3296,7 +3304,7 @@
                                             width: column.width + 'px',
                                             'min-width.px': column?.minWidth
                                                 ? column.minWidth
-                                                : 'unset'
+                                                : 'unset',
                                         }"
                                     >
                                         <div class="vin-container">
@@ -3319,7 +3327,7 @@
                                             width: column.width + 'px',
                                             'min-width.px': column?.minWidth
                                                 ? column.minWidth
-                                                : 'unset'
+                                                : 'unset',
                                         }"
                                     >
                                         <div class="halfPercentage">
@@ -3346,7 +3354,7 @@
                                             width: column.width + 'px',
                                             'min-width.px': column?.minWidth
                                                 ? column.minWidth
-                                                : 'unset'
+                                                : 'unset',
                                         }"
                                     >
                                         <ng-container
@@ -3367,7 +3375,9 @@
                                                 class="dispatcher-name"
                                                 [ngStyle]="{
                                                     width:
-                                                        column.width - 24 + 'px'
+                                                        column.width -
+                                                        24 +
+                                                        'px',
                                                 }"
                                             >
                                                 {{ row[column.field].name }}
@@ -3384,7 +3394,7 @@
                                             width: column.width + 'px',
                                             'min-width.px': column?.minWidth
                                                 ? column.minWidth
-                                                : 'unset'
+                                                : 'unset',
                                         }"
                                         #ngbStatus="ngbPopover"
                                         [autoClose]="true"
@@ -3405,7 +3415,7 @@
                                             [ngStyle]="{
                                                 width: column.width + 'px',
                                                 'min-width.px':
-                                                    column?.minWidth ?? 'unset'
+                                                    column?.minWidth ?? 'unset',
                                             }"
                                             class="status-containers"
                                             (click)="
@@ -3423,7 +3433,7 @@
                                                         valueForRequest:
                                                             row.status
                                                                 .statusValue
-                                                                .name
+                                                                .name,
                                                     }"
                                                     [justifyStart]="true"
                                                 ></app-load-status-string>
@@ -3447,7 +3457,7 @@
                                                 width: column.width + 'px',
                                                 'min-width.px':
                                                     column?.minWidth ?? 'unset',
-                                                margin: '0px 4px 0px -4px'
+                                                margin: '0px 4px 0px -4px',
                                             }"
                                         >
                                             <app-ta-input-dropdown-table
@@ -3468,7 +3478,7 @@
                                             width: column.width + 'px',
                                             'min-width.px': column?.minWidth
                                                 ? column.minWidth
-                                                : 'unset'
+                                                : 'unset',
                                         }"
                                     >
                                         <div
@@ -3478,7 +3488,7 @@
                                                 'margin-left':
                                                     column.margin + 'px',
                                                 'padding-left':
-                                                    column.padding + 'px'
+                                                    column.padding + 'px',
                                             }"
                                         >
                                             {{ row[column.field].number }}
@@ -3496,7 +3506,7 @@
                                                 width: column.width * 2 + 'px',
                                                 'min-width.px': column?.minWidth
                                                     ? column.minWidth * 2
-                                                    : 'unset'
+                                                    : 'unset',
                                             }"
                                             #ngbStatus="ngbPopover"
                                             [autoClose]="true"
@@ -3533,7 +3543,7 @@
                                                         [ngStyle]="{
                                                             'margin-right': !i
                                                                 ? '10px'
-                                                                : '0'
+                                                                : '0',
                                                         }"
                                                     >
                                                         <div
@@ -3549,7 +3559,7 @@
                                                                         'S',
                                                                 'special-count':
                                                                     rowField.count ===
-                                                                    'S'
+                                                                    'S',
                                                             }"
                                                         >
                                                             {{ rowField.count }}
@@ -3564,7 +3574,7 @@
                                                                     width:
                                                                         column.width -
                                                                         28 +
-                                                                        'px'
+                                                                        'px',
                                                                 }"
                                                             >
                                                                 {{
@@ -3583,7 +3593,7 @@
                                                                         width:
                                                                             column.width -
                                                                             30 +
-                                                                            'px'
+                                                                            'px',
                                                                     }"
                                                                 >
                                                                     <div
@@ -3620,14 +3630,14 @@
                                             width: column.width + 'px',
                                             'min-width.px': column?.minWidth
                                                 ? column.minWidth
-                                                : 'unset'
+                                                : 'unset',
                                         }"
                                     >
                                         <div class="load-totla-container">
                                             <div
                                                 class="main-total"
                                                 [ngStyle]="{
-                                                    width: column.width + 'px'
+                                                    width: column.width + 'px',
                                                 }"
                                             >
                                                 {{ row[column.field].total }}
@@ -3637,7 +3647,7 @@
                                                     row[column.field].subTotal
                                                 "
                                                 [ngStyle]="{
-                                                    width: column.width + 'px'
+                                                    width: column.width + 'px',
                                                 }"
                                                 class="sub-total"
                                             >
@@ -3658,7 +3668,7 @@
                                             width: column.width + 'px',
                                             'min-width.px': column?.minWidth
                                                 ? column.minWidth
-                                                : 'unset'
+                                                : 'unset',
                                         }"
                                     >
                                         <svg-icon
@@ -3671,7 +3681,7 @@
                                             "
                                             [svgStyle]="{
                                                 'width.px': '18',
-                                                'height.px': '18'
+                                                'height.px': '18',
                                             }"
                                         ></svg-icon>
 
@@ -3681,12 +3691,12 @@
                                                 width: row[column.field]
                                                     .hasBanDnu
                                                     ? column.width - 22 + 'px'
-                                                    : column.width + 'px'
+                                                    : column.width + 'px',
                                             }"
                                             [ngClass]="{
                                                 'customer-name-ban':
                                                     !row[column.field].isDnu &&
-                                                    row[column.field].hasBanDnu
+                                                    row[column.field].hasBanDnu,
                                             }"
                                         >
                                             {{ row[column.field].name }}
@@ -3700,14 +3710,14 @@
                                         [ngStyle]="{
                                             width: column.width + 'px',
                                             'min-width.px':
-                                                column?.minWidth ?? 'unset'
+                                                column?.minWidth ?? 'unset',
                                         }"
                                         class="td-content"
                                     >
                                         <div
                                             class="avatar-container"
                                             [ngClass]="{
-                                                'avatar-is-owner': row.isOwner
+                                                'avatar-is-owner': row.isOwner,
                                             }"
                                         >
                                             <ng-container
@@ -3716,7 +3726,7 @@
                                                 "
                                                 [ngTemplateOutletContext]="{
                                                     row: row,
-                                                    column: column
+                                                    column: column,
                                                 }"
                                             ></ng-container>
 
@@ -3732,7 +3742,7 @@
                                             [ngClass]="{
                                                 'has-details-page':
                                                     !column.link
-                                                        ?.doesNotHaveRout
+                                                        ?.doesNotHaveRout,
                                             }"
                                             class="table-avatar-name"
                                             [innerHtml]="
@@ -3754,7 +3764,7 @@
                                         [ngStyle]="{
                                             width: column.width + 'px',
                                             'min-width.px':
-                                                column?.minWidth ?? 'unset'
+                                                column?.minWidth ?? 'unset',
                                         }"
                                         class="td-content"
                                     >
@@ -3779,7 +3789,7 @@
                                                         'unset',
                                                     color:
                                                         row?.avatarColor
-                                                            ?.color ?? 'unset'
+                                                            ?.color ?? 'unset',
                                                 }"
                                             >
                                                 {{ row.tableDriver }}
@@ -3798,7 +3808,7 @@
                                             width: column.width + 'px',
                                             'min-width.px': column?.minWidth
                                                 ? column.minWidth
-                                                : 'unset'
+                                                : 'unset',
                                         }"
                                     >
                                         <div
@@ -3809,13 +3819,14 @@
                                                     'Owner'
                                                         ? '#259F94'
                                                         : row[column.field]
-                                                              .status ===
-                                                          'Admin'
-                                                        ? '#3B73ED'
-                                                        : row[column.field]
-                                                              .status === 'User'
-                                                        ? '#6C6C6C'
-                                                        : '#AAAAAA'
+                                                                .status ===
+                                                            'Admin'
+                                                          ? '#3B73ED'
+                                                          : row[column.field]
+                                                                  .status ===
+                                                              'User'
+                                                            ? '#6C6C6C'
+                                                            : '#AAAAAA',
                                             }"
                                         >
                                             {{ row[column.field].status }}
@@ -3836,7 +3847,7 @@
                                                 width: column.width + 'px',
                                                 'min-width.px': column?.minWidth
                                                     ? column.minWidth
-                                                    : 'unset'
+                                                    : 'unset',
                                             }"
                                         >
                                             <div
@@ -3870,7 +3881,7 @@
                                             width: column.width + 'px',
                                             'min-width.px': column?.minWidth
                                                 ? column.minWidth
-                                                : 'unset'
+                                                : 'unset',
                                         }"
                                         ngbTooltip
                                     >
@@ -3881,13 +3892,13 @@
                                         >
                                             <div
                                                 [ngStyle]="{
-                                                    width: column.width + 'px'
+                                                    width: column.width + 'px',
                                                 }"
                                                 class="table-name-link"
                                                 [ngClass]="{
                                                     'has-details-page':
                                                         !column.link
-                                                            ?.doesNotHaveRout
+                                                            ?.doesNotHaveRout,
                                                 }"
                                                 (click)="
                                                     goToDetails(column, row)
@@ -3925,13 +3936,13 @@
                                         >
                                             <div
                                                 [ngStyle]="{
-                                                    width: column.width + 'px'
+                                                    width: column.width + 'px',
                                                 }"
                                                 class="table-name-link"
                                                 [ngClass]="{
                                                     'has-details-page':
                                                         !column.link
-                                                            ?.doesNotHaveRout
+                                                            ?.doesNotHaveRout,
                                                 }"
                                                 (click)="
                                                     goToDetails(column, row)
@@ -3962,14 +3973,14 @@
                                             width: column.width + 'px',
                                             'min-width.px': column?.minWidth
                                                 ? column.minWidth
-                                                : 'unset'
+                                                : 'unset',
                                         }"
                                     >
                                         <div class="oos-container">
                                             <div
                                                 [ngClass]="{
                                                     'oos-active':
-                                                        row.oos[0].active
+                                                        row.oos[0].active,
                                                 }"
                                             >
                                                 {{ row.oos[0].value }}
@@ -3977,7 +3988,7 @@
                                             <div
                                                 [ngClass]="{
                                                     'oos-active':
-                                                        row.oos[1].active
+                                                        row.oos[1].active,
                                                 }"
                                             >
                                                 {{ row.oos[1].value }}
@@ -3985,7 +3996,7 @@
                                             <div
                                                 [ngClass]="{
                                                     'oos-active':
-                                                        row.oos[2].active
+                                                        row.oos[2].active,
                                                 }"
                                             >
                                                 {{ row.oos[2].value }}
@@ -4002,7 +4013,7 @@
                                             'violation-state'
                                         "
                                         [ngStyle]="{
-                                            width: column.width + 'px'
+                                            width: column.width + 'px',
                                         }"
                                     >
                                         <div class="violation-state-container">
@@ -4020,7 +4031,7 @@
                                         <div
                                             class="td-content"
                                             [ngStyle]="{
-                                                width: column.width + 'px'
+                                                width: column.width + 'px',
                                             }"
                                             #invoicePopover="ngbPopover"
                                             [ngbPopover]="invoiceAgingPopover"
@@ -4062,7 +4073,7 @@
                                                         !row[column.field]
                                                             ?.tablePayTerm ||
                                                         !row[column.field]
-                                                            ?.invoiceAgeingGroupOne
+                                                            ?.invoiceAgeingGroupOne,
                                                 }"
                                                 ngbTooltip
                                                 [mainTooltip]="
@@ -4120,8 +4131,7 @@
                                                                   ]
                                                                       ?.invoiceAgeingGroupOne
                                                                       ?.percentage ??
-                                                                      0) +
-                                                                  '%'
+                                                                      0) + '%'
                                                         }}
                                                     </div>
 
@@ -4144,8 +4154,7 @@
                                                                   ]
                                                                       ?.invoiceAgeingGroupTwo
                                                                       ?.percentage ??
-                                                                      0) +
-                                                                  '%'
+                                                                      0) + '%'
                                                         }}
                                                     </div>
 
@@ -4168,8 +4177,7 @@
                                                                   ]
                                                                       ?.invoiceAgeingGroupThree
                                                                       ?.percentage ??
-                                                                      0) +
-                                                                  '%'
+                                                                      0) + '%'
                                                         }}
                                                     </div>
 
@@ -4192,8 +4200,7 @@
                                                                   ]
                                                                       ?.invoiceAgeingGroupFour
                                                                       ?.percentage ??
-                                                                      0) +
-                                                                  '%'
+                                                                      0) + '%'
                                                         }}
                                                     </div>
                                                 </ng-container>
@@ -4237,7 +4244,7 @@
                                                                 column.field,
                                                         'text-color-black-2':
                                                             invoiceDropdownActive ===
-                                                            -1
+                                                            -1,
                                                     }"
                                                     [ngStyle]="{
                                                         'margin-left':
@@ -4246,7 +4253,7 @@
                                                             invoiceDropdownType ===
                                                                 column.field
                                                                 ? '4px'
-                                                                : ''
+                                                                : '',
                                                     }"
                                                 >
                                                     {{
@@ -4256,12 +4263,13 @@
                                                                   .totalPaid
                                                               | formatCurrency)
                                                             : row[column.field]
-                                                                  ?.totalDebt
-                                                            ? (row[column.field]
-                                                                  .totalDebt
-                                                              | formatCurrency)
-                                                            : (0
-                                                              | formatCurrency)
+                                                                    ?.totalDebt
+                                                              ? (row[
+                                                                    column.field
+                                                                ].totalDebt
+                                                                | formatCurrency)
+                                                              : (0
+                                                                | formatCurrency)
                                                     }}
                                                 </div>
                                             </div>
@@ -4276,7 +4284,7 @@
                                         <div
                                             class="td-content"
                                             [ngStyle]="{
-                                                width: column.width + 'px'
+                                                width: column.width + 'px',
                                             }"
                                         >
                                             <ng-container
@@ -4312,7 +4320,7 @@
                                         <div
                                             class="td-content"
                                             [ngStyle]="{
-                                                width: column.width + 'px'
+                                                width: column.width + 'px',
                                             }"
                                         >
                                             <ng-container
@@ -4343,14 +4351,14 @@
                                                                     column?.title ===
                                                                     'Shipping'
                                                                         ? row?.shippingAppointment
-                                                                        : row.receivingAppointment
+                                                                        : row.receivingAppointment,
                                                             }"
                                                             [src]="
                                                                 tableBodySvgRoutes.workHourRoute
                                                             "
                                                             [svgStyle]="{
                                                                 'width.px': 14,
-                                                                'height.px': 14
+                                                                'height.px': 14,
                                                             }"
                                                         ></svg-icon>
                                                     </div>
@@ -4371,7 +4379,7 @@
                                                 'description',
                                                 'total',
                                                 'gallon',
-                                                'ppg'
+                                                'ppg',
                                             ].includes(column.ngTemplate)
                                         "
                                     >
@@ -4391,7 +4399,7 @@
                                                     !row?.isRepairOrder,
                                                 'd-flex justify-content-end':
                                                     column.ngTemplate ===
-                                                    'gallon'
+                                                    'gallon',
                                             }"
                                             [ngStyle]="{
                                                 width:
@@ -4402,7 +4410,7 @@
                                                         ? column.width + 6
                                                         : column.width) + 'px',
                                                 'min-width.px':
-                                                    column?.minWidth ?? 'unset'
+                                                    column?.minWidth ?? 'unset',
                                             }"
                                             #t1="ngbPopover"
                                             container="body"
@@ -4560,7 +4568,7 @@
                                                                 class="ppg-status-icon"
                                                                 [svgStyle]="{
                                                                     'width.px': 10,
-                                                                    'height.px': 10
+                                                                    'height.px': 10,
                                                                 }"
                                                                 [src]="
                                                                     tableBodySvgRoutes.circleRoute
@@ -4572,7 +4580,7 @@
                                                                 class="table-text"
                                                                 [ngClass]="{
                                                                     'align-end':
-                                                                        column.isJustifyEnd
+                                                                        column.isJustifyEnd,
                                                                 }"
                                                                 >{{
                                                                     '$' +
@@ -4602,11 +4610,11 @@
                                             [ngStyle]="{
                                                 width: column.width + 'px',
                                                 'min-width.px':
-                                                    column?.minWidth ?? 'unset'
+                                                    column?.minWidth ?? 'unset',
                                             }"
                                             [ngClass]="{
                                                 'has-value':
-                                                    row[column.field]?.length
+                                                    row[column.field]?.length,
                                             }"
                                             #t3="ngbPopover"
                                             container="body"
@@ -4634,9 +4642,9 @@
                                                     column.name.includes('Duty')
                                                         ? 'View Off Duty locations'
                                                         : column.name ===
-                                                          'Restriction'
-                                                        ? 'View Restrictions'
-                                                        : 'View Endorsements'
+                                                            'Restriction'
+                                                          ? 'View Restrictions'
+                                                          : 'View Endorsements'
                                                 "
                                                 [appDescriptionItemsTextCount]="
                                                     row[column.field]
@@ -4652,7 +4660,7 @@
                                         class="td-content"
                                         *ngIf="column.ngTemplate === 'shared'"
                                         [ngStyle]="{
-                                            width: column.width + 'px'
+                                            width: column.width + 'px',
                                         }"
                                     >
                                         <div
@@ -4684,7 +4692,7 @@
                                         class="td-content"
                                         *ngIf="column.ngTemplate === 'rating'"
                                         [ngStyle]="{
-                                            width: column.width + 'px'
+                                            width: column.width + 'px',
                                         }"
                                     >
                                         <div
@@ -4700,7 +4708,7 @@
                                                             ?.hasLiked,
                                                     'like-icon':
                                                         !row[column.field]
-                                                            ?.hasLiked
+                                                            ?.hasLiked,
                                                 }"
                                             ></div>
                                             <!-- Raiting Count -->
@@ -4735,7 +4743,7 @@
                                                             ?.hasDislike,
                                                     'dislike-icon':
                                                         !row[column.field]
-                                                            ?.hasDislike
+                                                            ?.hasDislike,
                                                 }"
                                             ></div>
                                         </div>
@@ -4747,7 +4755,7 @@
                                         class="td-content set-center"
                                         *ngIf="column.ngTemplate === 'lvl'"
                                         [ngStyle]="{
-                                            width: column.width + 'px'
+                                            width: column.width + 'px',
                                         }"
                                     >
                                         <div class="lvl-container">
@@ -4763,7 +4771,7 @@
                                             column.ngTemplate === 'compact-text'
                                         "
                                         [ngStyle]="{
-                                            width: column.width + 'px'
+                                            width: column.width + 'px',
                                         }"
                                     >
                                         <div
@@ -4854,7 +4862,7 @@
                                             'violation-count'
                                         "
                                         [ngStyle]="{
-                                            width: column.width + 'px'
+                                            width: column.width + 'px',
                                         }"
                                     >
                                         <div
@@ -4862,7 +4870,7 @@
                                                 'active-vl-count':
                                                     row[column.field] > 0,
                                                 'zero-vl-count':
-                                                    !row[column.field]
+                                                    !row[column.field],
                                             }"
                                         >
                                             {{
@@ -4883,7 +4891,7 @@
                                             [ngStyle]="{
                                                 width: column.width + 'px',
                                                 'min-width.px':
-                                                    column?.minWidth ?? 'unset'
+                                                    column?.minWidth ?? 'unset',
                                             }"
                                         >
                                             <div
@@ -4900,7 +4908,7 @@
                                                     <svg-icon
                                                         class="service-icon"
                                                         [ngClass]="{
-                                                            active: service?.active
+                                                            active: service?.active,
                                                         }"
                                                         [src]="
                                                             tableBodySvgRoutes.repairServicesRoute +
@@ -4908,7 +4916,7 @@
                                                         "
                                                         [svgStyle]="{
                                                             'width.px': 18,
-                                                            'height.px': 18
+                                                            'height.px': 18,
                                                         }"
                                                     ></svg-icon>
                                                 </ng-container>
@@ -4925,7 +4933,7 @@
                                             width: column.width + 'px',
                                             'min-width.px': column?.minWidth
                                                 ? column.minWidth
-                                                : 'unset'
+                                                : 'unset',
                                         }"
                                     >
                                         <a
@@ -4949,7 +4957,7 @@
                                             width: column.width + 'px',
                                             'min-width.px': column?.minWidth
                                                 ? column.minWidth
-                                                : 'unset'
+                                                : 'unset',
                                         }"
                                     >
                                         <div
@@ -4965,7 +4973,7 @@
                                                 'password-hidden':
                                                     row[column.field].hiden,
                                                 'password-showing':
-                                                    !row[column.field].hiden
+                                                    !row[column.field].hiden,
                                             }"
                                             ngbTooltip
                                         >
@@ -5001,7 +5009,7 @@
                                         <div
                                             class="password-text-crypted"
                                             [ngStyle]="{
-                                                width: column.width - 22 + 'px'
+                                                width: column.width - 22 + 'px',
                                             }"
                                             *ngIf="
                                                 row[column.field].hiden &&
@@ -5017,7 +5025,7 @@
                                         <div
                                             class="password-text-showing"
                                             [ngStyle]="{
-                                                width: column.width - 22 + 'px'
+                                                width: column.width - 22 + 'px',
                                             }"
                                             *ngIf="
                                                 !row[column.field].hiden &&
@@ -5038,7 +5046,7 @@
                                             width: column.width + 'px',
                                             'min-width.px': column?.minWidth
                                                 ? column.minWidth
-                                                : 'unset'
+                                                : 'unset',
                                         }"
                                     >
                                         <div
@@ -5082,21 +5090,21 @@
                                                                 popup: {
                                                                     name: 'Confirm',
                                                                     backgroundColor:
-                                                                        '#3074d3'
+                                                                        '#3074d3',
                                                                 },
                                                                 name: 'confirm',
-                                                                svg: 'assets/svg/ic_spec-confirm.svg'
+                                                                svg: 'assets/svg/ic_spec-confirm.svg',
                                                             },
                                                             secondCommand: {
                                                                 popup: {
                                                                     name: 'Cancel',
                                                                     backgroundColor:
-                                                                        '#2f2f2f'
+                                                                        '#2f2f2f',
                                                                 },
                                                                 name: 'cancel',
-                                                                svg: 'assets/svg/ic_x.svg'
-                                                            }
-                                                        }
+                                                                svg: 'assets/svg/ic_x.svg',
+                                                            },
+                                                        },
                                                     }"
                                                     [colors]="row['colorRes']"
                                                     [options]="
@@ -5143,7 +5151,7 @@
                                             [ngStyle]="{
                                                 width: column.width + 'px',
                                                 'min-width.px':
-                                                    column?.minWidth ?? 'unset'
+                                                    column?.minWidth ?? 'unset',
                                             }"
                                         >
                                             <ng-container
@@ -5155,7 +5163,7 @@
                                                 <svg-icon
                                                     class="d-flex align-items-center"
                                                     [ngStyle]="{
-                                                        'margin-right': '4px'
+                                                        'margin-right': '4px',
                                                     }"
                                                     src="assets/svg/common/ic_hazardous.svg"
                                                 >
@@ -5176,7 +5184,7 @@
                                                 "
                                                 [svgStyle]="{
                                                     'width.px': 18,
-                                                    'height.px': 18
+                                                    'height.px': 18,
                                                 }"
                                             ></svg-icon>
 
@@ -5188,7 +5196,7 @@
                                                         row[column.field] ===
                                                             'Unlimited',
                                                     'align-end':
-                                                        column.isJustifyEnd
+                                                        column.isJustifyEnd,
                                                 }"
                                                 [innerHtml]="
                                                     row[column.field]
@@ -5212,7 +5220,7 @@
                                             width: column.width + 'px',
                                             'min-width.px': column?.minWidth
                                                 ? column.minWidth
-                                                : 'unset'
+                                                : 'unset',
                                         }"
                                     >
                                         <span
@@ -5225,7 +5233,7 @@
                                                 color:
                                                     row[column.field].status
                                                     | tableLoadStatusPipe
-                                                        : 'title'
+                                                        : 'title',
                                             }"
                                             [innerHtml]="
                                                 row[column.field].paid
@@ -5255,7 +5263,7 @@
                                                     'text-decoration':
                                                         row[column.field].status
                                                         | tableLoadStatusPipe
-                                                            : 'decoration'
+                                                            : 'decoration',
                                                 }"
                                                 [innerHtml]="
                                                     row[column.field].paidDue
@@ -5282,7 +5290,7 @@
                                             width: column.width + 'px',
                                             'min-width.px': column?.minWidth
                                                 ? column.minWidth
-                                                : 'unset'
+                                                : 'unset',
                                         }"
                                     >
                                         <span class="semi-bold-table-text">{{
@@ -5301,7 +5309,7 @@
                                             width: column.width + 'px',
                                             'min-width.px': column?.minWidth
                                                 ? column.minWidth
-                                                : 'unset'
+                                                : 'unset',
                                         }"
                                         ngbTooltip
                                     >
@@ -5336,7 +5344,7 @@
                                             width: column.width + 'px',
                                             'min-width.px': column?.minWidth
                                                 ? column.minWidth
-                                                : 'unset'
+                                                : 'unset',
                                         }"
                                     >
                                         <ng-container *ngIf="row[column.field]">
@@ -5368,7 +5376,7 @@
                                                                 .width,
                                                         'height.px':
                                                             column.svgDimensions
-                                                                .height
+                                                                .height,
                                                     }"
                                                 ></svg-icon>
                                             </div>
@@ -5387,7 +5395,7 @@
                                                 width: column.width + 'px',
                                                 'min-width.px': column?.minWidth
                                                     ? column.minWidth
-                                                    : 'unset'
+                                                    : 'unset',
                                             }"
                                         >
                                             <div
@@ -5424,7 +5432,7 @@
                                                             ? row[column.field]
                                                                   .color
                                                             : '#2f2f2f',
-                                                        cursor: 'default'
+                                                        cursor: 'default',
                                                     }"
                                                 >
                                                     {{ row[column.field].text }}
@@ -5444,7 +5452,7 @@
                                                 width: column.width + 'px',
                                                 'min-width.px': column?.minWidth
                                                     ? column.minWidth
-                                                    : 'unset'
+                                                    : 'unset',
                                             }"
                                         >
                                             <ng-container
@@ -5484,7 +5492,7 @@
                                                             'height.px':
                                                                 column
                                                                     .svgDimensions
-                                                                    .height
+                                                                    .height,
                                                         }"
                                                     ></svg-icon>
                                                 </div>
@@ -5502,7 +5510,7 @@
                                             width: column.width + 'px',
                                             'min-width.px': column?.minWidth
                                                 ? column.minWidth
-                                                : 'unset'
+                                                : 'unset',
                                         }"
                                         class="td-content"
                                     >
@@ -5527,7 +5535,7 @@
                                                 width: column.width + 'px',
                                                 'min-width.px': column?.minWidth
                                                     ? column.minWidth
-                                                    : 'unset'
+                                                    : 'unset',
                                             }"
                                         >
                                             <ng-container
@@ -5595,7 +5603,7 @@
                                                     "
                                                     [ngTemplateOutlet]="addPm"
                                                     [ngTemplateOutletContext]="{
-                                                        row: row
+                                                        row: row,
                                                     }"
                                                 ></ng-container>
                                             </ng-container>
@@ -5616,7 +5624,7 @@
                                                 width: column.width + 'px',
                                                 'min-width.px': column?.minWidth
                                                     ? column.minWidth
-                                                    : 'unset'
+                                                    : 'unset',
                                             }"
                                         >
                                             <ng-container
@@ -5660,7 +5668,7 @@
                                                 "
                                                 [ngTemplateOutlet]="addPm"
                                                 [ngTemplateOutletContext]="{
-                                                    row: row
+                                                    row: row,
                                                 }"
                                             ></ng-container>
                                         </div>
@@ -5679,7 +5687,7 @@
                                             [ngStyle]="{
                                                 width: column?.width + 'px',
                                                 'min-width.px':
-                                                    column?.minWidth ?? 'unset'
+                                                    column?.minWidth ?? 'unset',
                                             }"
                                         >
                                             <ng-container
@@ -5732,7 +5740,7 @@
                                             [ngStyle]="{
                                                 width: column.width + 'px',
                                                 'min-width.px':
-                                                    column?.minWidth ?? 'unset'
+                                                    column?.minWidth ?? 'unset',
                                             }"
                                         >
                                             <ng-container
@@ -5765,7 +5773,7 @@
                                             'applicant-review'
                                         "
                                         [ngStyle]="{
-                                            width: column.width + 'px'
+                                            width: column.width + 'px',
                                         }"
                                     >
                                         <div class="applicant-review-container">
@@ -5786,7 +5794,7 @@
                                                         'Incomplete',
                                                     ready:
                                                         row[column.field]
-                                                            .title === 'Ready'
+                                                            .title === 'Ready',
                                                 }"
                                             >
                                                 <svg-icon
@@ -5796,7 +5804,7 @@
                                                     "
                                                     [svgStyle]="{
                                                         'width.px': '16',
-                                                        'height.px': '16'
+                                                        'height.px': '16',
                                                     }"
                                                 ></svg-icon>
                                             </div>
@@ -5804,7 +5812,9 @@
                                                 class="review-title"
                                                 [ngStyle]="{
                                                     width:
-                                                        column.width - 26 + 'px'
+                                                        column.width -
+                                                        26 +
+                                                        'px',
                                                 }"
                                             >
                                                 {{ row[column.field].title }}
@@ -5820,7 +5830,7 @@
                                             column.ngTemplate === 'sw-tw-total'
                                         "
                                         [ngStyle]="{
-                                            width: column.width + 'px'
+                                            width: column.width + 'px',
                                         }"
                                     >
                                         <div class="sw-tw-total-container">
@@ -5840,7 +5850,7 @@
                                         class="td-content set-center"
                                         *ngIf="column.ngTemplate === 'citation'"
                                         [ngStyle]="{
-                                            width: column.width + 'px'
+                                            width: column.width + 'px',
                                         }"
                                     >
                                         <div class="citation-container">
@@ -5867,7 +5877,7 @@
                                             'accident-citation'
                                         "
                                         [ngStyle]="{
-                                            width: column.width + 'px'
+                                            width: column.width + 'px',
                                         }"
                                     >
                                         <div
@@ -5915,7 +5925,7 @@
                                                 width: column.width + 'px',
                                                 'min-width.px': column?.minWidth
                                                     ? column.minWidth
-                                                    : 'unset'
+                                                    : 'unset',
                                             }"
                                         >
                                             <app-ta-password-account-hidden-characters
@@ -5939,7 +5949,7 @@
                                                 width: column.width + 'px',
                                                 'min-width.px': column?.minWidth
                                                     ? column.minWidth
-                                                    : 'unset'
+                                                    : 'unset',
                                             }"
                                         >
                                             <div
@@ -5955,7 +5965,7 @@
                                                         "
                                                         [svgStyle]="{
                                                             'width.px': '18',
-                                                            'height.px': '18'
+                                                            'height.px': '18',
                                                         }"
                                                     ></svg-icon>
 
@@ -5979,7 +5989,7 @@
                                                         "
                                                         [svgStyle]="{
                                                             'width.px': '18',
-                                                            'height.px': '18'
+                                                            'height.px': '18',
                                                         }"
                                                     ></svg-icon>
 
@@ -6003,7 +6013,7 @@
                                                         "
                                                         [svgStyle]="{
                                                             'width.px': '18',
-                                                            'height.px': '18'
+                                                            'height.px': '18',
                                                         }"
                                                     ></svg-icon>
 
@@ -6032,7 +6042,7 @@
                                             [ngStyle]="{
                                                 width: column.width + 'px',
                                                 'min-width.px':
-                                                    column?.minWidth ?? 'unset'
+                                                    column?.minWidth ?? 'unset',
                                             }"
                                         >
                                             <app-ta-open-hours-dropdown
@@ -6044,7 +6054,7 @@
                                                             ?.openHours,
                                                     openHoursToday:
                                                         row[column.field]
-                                                            ?.openHoursToday
+                                                            ?.openHoursToday,
                                                 }"
                                             ></app-ta-open-hours-dropdown>
                                         </div>
@@ -6063,7 +6073,7 @@
                                             [ngStyle]="{
                                                 width: column.width + 'px',
                                                 'min-width.px':
-                                                    column?.minWidth ?? 'unset'
+                                                    column?.minWidth ?? 'unset',
                                             }"
                                         >
                                             <app-ca-progress-range
@@ -6080,7 +6090,7 @@
                                                         ?.unit,
                                                     lastUsed:
                                                         row[column.field]
-                                                            ?.lastUsed
+                                                            ?.lastUsed,
                                                 }"
                                             ></app-ca-progress-range>
                                         </div>
@@ -6099,7 +6109,7 @@
                                 [ngClass]="{
                                     'table-border-right-show':
                                         showScrollSectionBorder,
-                                    hidden: !isRightScrollLineShown
+                                    hidden: !isRightScrollLineShown,
                                 }"
                             ></div>
                         </div>
@@ -6127,7 +6137,7 @@
                                             width: column.width + 'px',
                                             'min-width.px': column?.minWidth
                                                 ? column.minWidth
-                                                : 'unset'
+                                                : 'unset',
                                         }"
                                     >
                                         <div
@@ -6137,7 +6147,8 @@
                                                 'action-active':
                                                     activeAttachment ===
                                                         row.id &&
-                                                    row.tableAttachments?.length
+                                                    row.tableAttachments
+                                                        ?.length,
                                             }"
                                             class="attachments-icon-container"
                                         >
@@ -6147,7 +6158,7 @@
                                                 "
                                                 [svgStyle]="{
                                                     'width.px': '18',
-                                                    'height.px': '18'
+                                                    'height.px': '18',
                                                 }"
                                             ></svg-icon>
                                             <div class="file_count">
@@ -6164,7 +6175,7 @@
                                             width: column.width + 'px',
                                             'min-width.px': column?.minWidth
                                                 ? column.minWidth
-                                                : 'unset'
+                                                : 'unset',
                                         }"
                                     >
                                         <div
@@ -6172,7 +6183,7 @@
                                             (click)="onShowMedia(row)"
                                             [ngClass]="{
                                                 'action-active':
-                                                    activeMedia === row.id
+                                                    activeMedia === row.id,
                                             }"
                                         >
                                             <svg-icon
@@ -6181,7 +6192,7 @@
                                                 "
                                                 [svgStyle]="{
                                                     'width.px': '18',
-                                                    'height.px': '18'
+                                                    'height.px': '18',
                                                 }"
                                             ></svg-icon>
                                         </div>
@@ -6197,7 +6208,7 @@
                                             width: column.width + 'px',
                                             'min-width.px': column?.minWidth
                                                 ? column.minWidth
-                                                : 'unset'
+                                                : 'unset',
                                         }"
                                     >
                                         <div
@@ -6205,7 +6216,7 @@
                                             (click)="onShowInsurance(row)"
                                             [ngClass]="{
                                                 'action-active':
-                                                    activeInsurance === row.id
+                                                    activeInsurance === row.id,
                                             }"
                                         >
                                             <svg-icon
@@ -6214,7 +6225,7 @@
                                                 "
                                                 [svgStyle]="{
                                                     'width.px': '18',
-                                                    'height.px': '18'
+                                                    'height.px': '18',
                                                 }"
                                             ></svg-icon>
                                         </div>
@@ -6230,7 +6241,7 @@
                                             [ngStyle]="{
                                                 width: column.width + 'px',
                                                 'min-width.px':
-                                                    column?.minWidth ?? 'unset'
+                                                    column?.minWidth ?? 'unset',
                                             }"
                                         >
                                             <div class="comment-container">
@@ -6256,7 +6267,7 @@
                                             width: column.width + 'px',
                                             'min-width.px': column?.minWidth
                                                 ? column.minWidth
-                                                : 'unset'
+                                                : 'unset',
                                         }"
                                     >
                                         <div
@@ -6276,7 +6287,7 @@
                                             [ngStyle]="{
                                                 width: column.width + 'px',
                                                 'min-width.px':
-                                                    column?.minWidth ?? 'unset'
+                                                    column?.minWidth ?? 'unset',
                                             }"
                                             ngbTooltip
                                         >
@@ -6302,14 +6313,14 @@
                                                         'is-favorite':
                                                             row[column.field],
                                                         disabled:
-                                                            row['companyOwned']
+                                                            row['companyOwned'],
                                                     }"
                                                     [src]="
                                                         tableBodySvgRoutes.favoriteRoute
                                                     "
                                                     [svgStyle]="{
                                                         'width.px': 18,
-                                                        'height.px': 18
+                                                        'height.px': 18,
                                                     }"
                                                 ></svg-icon>
                                             </div>
@@ -6326,7 +6337,7 @@
                                             [ngStyle]="{
                                                 width: column.width + 'px',
                                                 'min-width.px':
-                                                    column?.minWidth ?? 'unset'
+                                                    column?.minWidth ?? 'unset',
                                             }"
                                         >
                                             <app-ta-note
@@ -6344,36 +6355,36 @@
                                                     selectedTab === 'template'
                                                         ? 'LoadTemplate'
                                                         : activeTableData?.gridNameTitle ===
-                                                              'Customer' &&
-                                                          selectedTab ===
-                                                              'inactive'
-                                                        ? 'Shipper'
-                                                        : activeTableData?.gridNameTitle ===
-                                                              'PM' &&
-                                                          selectedTab ===
-                                                              'active'
-                                                        ? 'PmTruckUnit'
-                                                        : activeTableData?.gridNameTitle ===
-                                                              'PM' &&
-                                                          selectedTab ===
-                                                              'inactive'
-                                                        ? 'PmTrailerUnit'
-                                                        : activeTableData?.gridNameTitle !==
-                                                          'Repair'
-                                                        ? activeTableData?.gridNameTitle
-                                                        : activeTableData?.gridNameTitle ===
-                                                              'Repair' &&
-                                                          selectedTab ===
-                                                              'repair-shop'
-                                                        ? 'RepairShop'
-                                                        : 'Repair'
+                                                                'Customer' &&
+                                                            selectedTab ===
+                                                                'inactive'
+                                                          ? 'Shipper'
+                                                          : activeTableData?.gridNameTitle ===
+                                                                  'PM' &&
+                                                              selectedTab ===
+                                                                  'active'
+                                                            ? 'PmTruckUnit'
+                                                            : activeTableData?.gridNameTitle ===
+                                                                    'PM' &&
+                                                                selectedTab ===
+                                                                    'inactive'
+                                                              ? 'PmTrailerUnit'
+                                                              : activeTableData?.gridNameTitle !==
+                                                                  'Repair'
+                                                                ? activeTableData?.gridNameTitle
+                                                                : activeTableData?.gridNameTitle ===
+                                                                        'Repair' &&
+                                                                    selectedTab ===
+                                                                        'repair-shop'
+                                                                  ? 'RepairShop'
+                                                                  : 'Repair'
                                                 "
                                                 [openedAll]="false"
                                                 [parking]="false"
                                                 (saveNoteValue)="
                                                     saveValueNote.emit({
                                                         value: $event,
-                                                        id: row.id
+                                                        id: row.id,
                                                     })
                                                 "
                                             >
@@ -6391,7 +6402,7 @@
                                             [ngStyle]="{
                                                 width: column.width + 'px',
                                                 'min-width.px':
-                                                    column?.minWidth ?? 'unset'
+                                                    column?.minWidth ?? 'unset',
                                             }"
                                             ngbTooltip
                                             mainTooltip="More"
@@ -6416,7 +6427,7 @@
                                                     'active-drop':
                                                         dropDownActive ===
                                                             row.id &&
-                                                        t2.isOpen()
+                                                        t2.isOpen(),
                                                 }"
                                                 container="body"
                                                 popoverClass="table-dropdown-popover"
@@ -6431,7 +6442,7 @@
                                                     "
                                                     [svgStyle]="{
                                                         'width.px': '18',
-                                                        'height.px': '18'
+                                                        'height.px': '18',
                                                     }"
                                                 ></svg-icon>
                                             </div>
@@ -6447,7 +6458,7 @@
                         class="attachemnt-dropdown"
                         [ngClass]="{
                             'attachemnt-dropdown-active':
-                                activeAttachment === row.id
+                                activeAttachment === row.id,
                         }"
                     >
                         <div class="attachemnt-dropdown-content">
@@ -6483,7 +6494,7 @@
                                         "
                                         [svgStyle]="{
                                             'width.px': '18',
-                                            'height.px': '18'
+                                            'height.px': '18',
                                         }"
                                     ></svg-icon>
 
@@ -6497,7 +6508,7 @@
                                         "
                                         [svgStyle]="{
                                             'width.px': '18',
-                                            'height.px': '18'
+                                            'height.px': '18',
                                         }"
                                     ></svg-icon>
 
@@ -6542,7 +6553,7 @@
                                         "
                                         [svgStyle]="{
                                             'width.px': '18',
-                                            'height.px': '18'
+                                            'height.px': '18',
                                         }"
                                     ></svg-icon>
                                 </div>
@@ -6625,7 +6636,7 @@
                                                     'bg-inactive-container':
                                                         row[
                                                             'tableDropdownProgress'
-                                                        ].percentage === 100
+                                                        ].percentage === 100,
                                                 }"
                                             >
                                                 <div
@@ -6652,7 +6663,7 @@
                                                             ].percentage > 0 &&
                                                             row[
                                                                 'tableDropdownProgress'
-                                                            ].percentage < 20
+                                                            ].percentage < 20,
                                                     }"
                                                     class="table-progress-bar"
                                                     *ngIf="
@@ -6670,7 +6681,7 @@
                                             <div
                                                 class="table-progress-text"
                                                 [ngStyle]="{
-                                                    width: 172 - 30 + 'px'
+                                                    width: 172 - 30 + 'px',
                                                 }"
                                                 *ngIf="
                                                     row['tableDropdownProgress']
@@ -6692,7 +6703,9 @@
                                                 class="table-progress-text"
                                                 [ngStyle]="{
                                                     width:
-                                                        column.width - 30 + 'px'
+                                                        column.width -
+                                                        30 +
+                                                        'px',
                                                 }"
                                                 *ngIf="
                                                     !row[
@@ -6717,7 +6730,7 @@
                                             "
                                             [svgStyle]="{
                                                 'width.px': '18',
-                                                'height.px': '18'
+                                                'height.px': '18',
                                             }"
                                         ></svg-icon>
                                     </div>
@@ -6732,7 +6745,7 @@
                                             "
                                             [svgStyle]="{
                                                 'width.px': '18',
-                                                'height.px': '18'
+                                                'height.px': '18',
                                             }"
                                         ></svg-icon>
 
@@ -6763,7 +6776,7 @@
                                             "
                                             [svgStyle]="{
                                                 'width.px': '18',
-                                                'height.px': '18'
+                                                'height.px': '18',
                                             }"
                                         ></svg-icon>
                                     </div>
@@ -6787,7 +6800,7 @@
                                             "
                                             [svgStyle]="{
                                                 'width.px': '18',
-                                                'height.px': '18'
+                                                'height.px': '18',
                                             }"
                                         ></svg-icon>
 
@@ -6825,7 +6838,7 @@
                     <div
                         class="media-dropdown"
                         [ngClass]="{
-                            'media-dropdown-active': activeMedia === row.id
+                            'media-dropdown-active': activeMedia === row.id,
                         }"
                     >
                         <div class="media-dropdown-content">
@@ -6848,7 +6861,7 @@
                                         "
                                         [svgStyle]="{
                                             'width.px': '18',
-                                            'height.px': '18'
+                                            'height.px': '18',
                                         }"
                                     ></svg-icon>
                                 </div>
@@ -6864,7 +6877,7 @@
                         class="insurance-dropdown"
                         [ngClass]="{
                             'insurance-dropdown-active':
-                                activeInsurance === row.id
+                                activeInsurance === row.id,
                         }"
                     >
                         <div class="insurance-dropdown-content">
@@ -6941,7 +6954,7 @@
             class="table-list-dropdown-content-container"
             [ngClass]="{
                 'table-list-dropdown-inner-dropdown-active':
-                    action?.isInnerDropActive
+                    action?.isInnerDropActive,
             }"
             *ngFor="let action of data.data"
         >
@@ -6960,10 +6973,10 @@
                     'table-list-dropdown-content-dropdown-active':
                         action?.isInnerDropActive,
                     'table-list-dropdown-content-dropdown-disabled':
-                        action.mutedStyle ||
+                        action.isDisabled ||
                         (action.title === 'Delete' &&
                             tableData[0].title === 'Contacts' &&
-                            companyUser.companyUserId !== data.companyUserId)
+                            companyUser.companyUserId !== data.companyUserId),
                 }"
                 [ngStyle]="action.tableListDropdownContentStyle"
             >
@@ -6976,12 +6989,12 @@
                     [class]="action.svgClass"
                     class="table-list-dropdown-content-icon"
                     [ngClass]="{
-                        'inner-dropdown-open': action?.isInnerDropActive
+                        'inner-dropdown-open': action?.isInnerDropActive,
                     }"
                     [src]="action.svgUrl"
                     [svgStyle]="{
                         'width.px': action.svgStyle.width,
-                        'height.px': action.svgStyle.height
+                        'height.px': action.svgStyle.height,
                     }"
                 ></svg-icon>
             </div>
@@ -6991,7 +7004,7 @@
                 class="table-list-inner-dropdown"
                 [ngClass]="{
                     'table-list-inner-dropdown-active':
-                        action?.isInnerDropActive
+                        action?.isInnerDropActive,
                 }"
                 [innerHtml]="
                     action?.innerDropElement ? action.innerDropElement : null
@@ -7018,13 +7031,13 @@
             data.isFuelDescription
                 ? 'description-item-fuel'
                 : data.isDriverDescription
-                ? 'description-item-driver'
-                : data.isRepairOrder
-                ? 'description-item-repair-order'
-                : 'description-item-repair-bill'
+                  ? 'description-item-driver'
+                  : data.isRepairOrder
+                    ? 'description-item-repair-order'
+                    : 'description-item-repair-bill'
         "
         [ngStyle]="{
-            width: widthPopover + 'px'
+            width: widthPopover + 'px',
         }"
     >
         <!-- Header -->
@@ -7051,8 +7064,8 @@
                         data.isOffDutyLocations
                             ? 'NAME • ADDRESS, CITY, STATE'
                             : data.isRestrictions
-                            ? 'RESTRICTION'
-                            : 'ENDORSEMENT'
+                              ? 'RESTRICTION'
+                              : 'ENDORSEMENT'
                     }}
                 </p>
             </ng-container>
@@ -7061,7 +7074,7 @@
                 <ng-container
                     *ngFor="
                         let descriptionPopoverHeaderItem of data.isRepairOrder
-                            ? (descriptionPopoverHeaderItems | slice : 0 : 3)
+                            ? (descriptionPopoverHeaderItems | slice: 0 : 3)
                             : descriptionPopoverHeaderItems;
                         let descriptionPopoverHeaderItemIndex = index;
                         trackBy: trackByDescriptionIdentity
@@ -7072,7 +7085,7 @@
                         [ngStyle]="{
                             'margin-left':
                                 descriptionPopoverHeaderItemIndex === 1 &&
-                                '-4px'
+                                '-4px',
                         }"
                         [ngClass]="{
                             'justify-content-center':
@@ -7081,7 +7094,7 @@
                                     descriptionPopoverHeaderItemIndex === 2),
                             'justify-content-end':
                                 descriptionPopoverHeaderItemIndex === 2 ||
-                                descriptionPopoverHeaderItemIndex === 3
+                                descriptionPopoverHeaderItemIndex === 3,
                         }"
                     >
                         <p
@@ -7107,14 +7120,14 @@
         <div
             class="d-flex flex-column description-items"
             [ngClass]="{
-                'dropdown-scroll': data.descriptionItems.length >= 8
+                'dropdown-scroll': data.descriptionItems.length >= 8,
             }"
             [ngStyle]="{
                 width: data.isDriverDescription
                     ? data.isOffDutyLocations
                         ? '320px'
                         : '233px'
-                    : '100%'
+                    : '100%',
             }"
         >
             <ng-container
@@ -7129,7 +7142,7 @@
                     [ngClass]="{
                         'pm-item':
                             descriptionPopoverItem?.pmTruck ||
-                            descriptionPopoverItem?.pmTrailer
+                            descriptionPopoverItem?.pmTrailer,
                     }"
                 >
                     <!-- # -->
@@ -7145,7 +7158,7 @@
                                     data.isOffDutyLocations,
                                 'text-color-white ta-font-semi-bold':
                                     data.isDriverDescription &&
-                                    !data.isOffDutyLocations
+                                    !data.isOffDutyLocations,
                             }"
                         >
                             {{
@@ -7219,7 +7232,7 @@
                                 "
                                 [svgStyle]="{
                                     'width.px': 14,
-                                    'height.px': 14
+                                    'height.px': 14,
                                 }"
                             ></svg-icon>
                         </div>
@@ -7299,7 +7312,7 @@
     <div
         class="stops-titles"
         [ngStyle]="{
-            width: widthPopover + 'px'
+            width: widthPopover + 'px',
         }"
     >
         <div class="number-container">#</div>
@@ -7309,7 +7322,7 @@
     <div
         class="stops-container"
         [ngStyle]="{
-            width: widthPopover + 'px'
+            width: widthPopover + 'px',
         }"
     >
         <ng-container *ngIf="isLoading; else stopsList">
@@ -7369,7 +7382,7 @@
                             </ng-container>
                             <ng-template #noDeadhead>
                                 <div class="time">
-                                    {{ stop.dateFrom | date : 'dd/MM/yy' }} |
+                                    {{ stop.dateFrom | date: 'dd/MM/yy' }} |
                                     {{ stop.timeFrom }} -
                                     {{ stop.timeTo || 'Open' }}
                                 </div>
@@ -7418,7 +7431,7 @@
                 <div
                     class="invoice-aging-dropdown-content-item d-flex flex-column"
                     [ngClass]="{
-                        'has-value': !!iinvoiceAgingGroup?.totalSum
+                        'has-value': !!iinvoiceAgingGroup?.totalSum,
                     }"
                 >
                     <div
@@ -7430,7 +7443,7 @@
                                 'text-color-muted':
                                     !invoiceAgingGroup?.totalSum,
                                 'text-color-white':
-                                    !!invoiceAgingGroup?.totalSum
+                                    !!invoiceAgingGroup?.totalSum,
                             }"
                         >
                             {{ invoiceAgingGroup?.periodOfDays }}
@@ -7452,7 +7465,7 @@
                                 'text-color-muted':
                                     !invoiceAgingGroup?.totalSum,
                                 'text-color-white':
-                                    !!invoiceAgingGroup?.totalSum
+                                    !!invoiceAgingGroup?.totalSum,
                             }"
                         >
                             {{ invoiceAgingGroup?.totalSum | formatCurrency }}
@@ -7464,7 +7477,7 @@
                             class="progress-bar"
                             [ngClass]="'group-' + (i + 1)"
                             [ngStyle]="{
-                                width: invoiceAgingGroup?.percentage + '%'
+                                width: invoiceAgingGroup?.percentage + '%',
                             }"
                         ></div>
                     </div>

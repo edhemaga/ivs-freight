@@ -112,7 +112,7 @@ import {
 // Utils
 import { AvatarColorsHelper } from '@shared/utils/helpers/avatar-colors.helper';
 import { RepairTableDateFormaterHelper } from '@pages/repair/pages/repair-table/utils/helpers/repair-table-date-formater.helper';
-import { DropdownContentHelper } from '@shared/utils/helpers/dropdown-content.helper';
+import { DropdownMenuContentHelper } from '@shared/utils/helpers';
 
 // Router
 import { Router } from '@angular/router';
@@ -217,7 +217,7 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
         this.upadateStatus();
 
         this.onLoadChange();
-        
+
         this.dispatchHubService.connect();
 
         this.manageDispatchHubListeners();
@@ -254,14 +254,15 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     LoadStatusEnum[16],
                 ].includes(status.dataBack);
 
-                const isTonuFromCancelled = [
-                    LoadStatusEnum[25],
-                ].includes(status.dataBack) && foundObject?.loadStatus.status === LoadStatusEnum[55];
+                const isTonuFromCancelled =
+                    [LoadStatusEnum[25]].includes(status.dataBack) &&
+                    foundObject?.loadStatus.status === LoadStatusEnum[55];
 
                 if (
                     (isAssignedStatusSelected &&
                         !isTruckTrailerDriverSelected) ||
-                    isPaidOrShortPaid || isTonuFromCancelled
+                    isPaidOrShortPaid ||
+                    isTonuFromCancelled
                 ) {
                     this.onTableBodyActions({
                         type: TableStringEnum.EDIT,
@@ -568,10 +569,10 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
                         this.selectedTab === TableStringEnum.TEMPLATE
                             ? undefined
                             : this.selectedTab === TableStringEnum.ACTIVE
-                            ? 2
-                            : this.selectedTab === TableStringEnum.CLOSED
-                            ? 3
-                            : 1;
+                              ? 2
+                              : this.selectedTab === TableStringEnum.CLOSED
+                                ? 3
+                                : 1;
                     this.backLoadFilterQuery.pageIndex = 1;
 
                     const searchEvent = MethodsGlobalHelper.tableSearch(
@@ -605,10 +606,10 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
                         this.selectedTab === TableStringEnum.TEMPLATE
                             ? TableStringEnum.TEMPLATE_2
                             : this.selectedTab === TableStringEnum.ACTIVE
-                            ? TableStringEnum.ACTIVE_2
-                            : this.selectedTab === TableStringEnum.CLOSED
-                            ? TableStringEnum.CLOSED_2
-                            : TableStringEnum.PENDING_2;
+                              ? TableStringEnum.ACTIVE_2
+                              : this.selectedTab === TableStringEnum.CLOSED
+                                ? TableStringEnum.CLOSED_2
+                                : TableStringEnum.PENDING_2;
 
                     const modalTitle =
                         TableStringEnum.DELETE_2 +
@@ -957,6 +958,7 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 return;
         }
     }
+
     private mapTemplateData(data: LoadModel): LoadTemplate {
         const {
             id,
@@ -1131,7 +1133,7 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 : null,
             tableDropdownContent: {
                 hasContent: true,
-                content: this.getDropdownLoadContent(data),
+                content: this.getLoadDropdownContent(),
             },
         };
     }
@@ -1410,14 +1412,13 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
             fileCount: fileCount,
             tableDropdownContent: {
                 hasContent: true,
-                content: this.getDropdownLoadContent(data),
+                content: this.getLoadDropdownContent(),
             },
         };
     }
 
-    private getDropdownLoadContent(data: LoadModel): DropdownItem[] {
-        return DropdownContentHelper.getDropdownLoadContent(
-            data,
+    private getLoadDropdownContent(): DropdownItem[] {
+        return DropdownMenuContentHelper.getLoadDropdownContent(
             this.selectedTab
         );
     }
@@ -1555,10 +1556,10 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 this.selectedTab === TableStringEnum.TEMPLATE
                     ? undefined
                     : this.selectedTab === TableStringEnum.ACTIVE
-                    ? 2
-                    : this.selectedTab === TableStringEnum.CLOSED
-                    ? 3
-                    : 1;
+                      ? 2
+                      : this.selectedTab === TableStringEnum.CLOSED
+                        ? 3
+                        : 1;
             this.backLoadFilterQuery.pageIndex = 1;
 
             this.sendLoadData();
@@ -1577,10 +1578,10 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     this.selectedTab === TableStringEnum.TEMPLATE
                         ? undefined
                         : this.selectedTab === TableStringEnum.ACTIVE
-                        ? 2
-                        : this.selectedTab === TableStringEnum.CLOSED
-                        ? 3
-                        : 1;
+                          ? 2
+                          : this.selectedTab === TableStringEnum.CLOSED
+                            ? 3
+                            : 1;
                 this.backLoadFilterQuery.pageIndex = 1;
                 this.backLoadFilterQuery.sort = event.direction;
                 if (this.selectedTab === TableStringEnum.TEMPLATE) {
@@ -1612,10 +1613,10 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 this.selectedTab === TableStringEnum.TEMPLATE
                     ? undefined
                     : this.selectedTab === TableStringEnum.ACTIVE
-                    ? 2
-                    : this.selectedTab === TableStringEnum.CLOSED
-                    ? 3
-                    : 1;
+                      ? 2
+                      : this.selectedTab === TableStringEnum.CLOSED
+                        ? 3
+                        : 1;
 
             this.backLoadFilterQuery.pageIndex++;
 
@@ -1625,10 +1626,10 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 this.selectedTab === TableStringEnum.TEMPLATE
                     ? TableStringEnum.TEMPLATE_2
                     : this.selectedTab === TableStringEnum.ACTIVE
-                    ? TableStringEnum.ACTIVE_2
-                    : this.selectedTab === TableStringEnum.CLOSED
-                    ? TableStringEnum.CLOSED_2
-                    : TableStringEnum.PENDING_2;
+                      ? TableStringEnum.ACTIVE_2
+                      : this.selectedTab === TableStringEnum.CLOSED
+                        ? TableStringEnum.CLOSED_2
+                        : TableStringEnum.PENDING_2;
 
             const modalTitle =
                 TableStringEnum.DELETE_2 +
@@ -1767,10 +1768,10 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
             this.selectedTab === TableStringEnum.TEMPLATE
                 ? null
                 : this.selectedTab === TableStringEnum.ACTIVE
-                ? TableStringEnum.ACTIVE_2
-                : this.selectedTab === TableStringEnum.CLOSED
-                ? TableStringEnum.CLOSED_2
-                : TableStringEnum.PENDING_2;
+                  ? TableStringEnum.ACTIVE_2
+                  : this.selectedTab === TableStringEnum.CLOSED
+                    ? TableStringEnum.CLOSED_2
+                    : TableStringEnum.PENDING_2;
 
         if (loadTab) {
             this.loadServices
@@ -1796,10 +1797,10 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
             this.selectedTab === TableStringEnum.TEMPLATE
                 ? null
                 : this.selectedTab === TableStringEnum.ACTIVE
-                ? TableStringEnum.ACTIVE_2
-                : this.selectedTab === TableStringEnum.CLOSED
-                ? TableStringEnum.CLOSED_2
-                : TableStringEnum.PENDING_2;
+                  ? TableStringEnum.ACTIVE_2
+                  : this.selectedTab === TableStringEnum.CLOSED
+                    ? TableStringEnum.CLOSED_2
+                    : TableStringEnum.PENDING_2;
 
         if (loadTab) {
             this.loadServices
@@ -1906,24 +1907,20 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
         this.dispatchHubService
             .onLoadChanged()
             .pipe(takeUntil(this.destroy$))
-            .subscribe(response => {
+            .subscribe((response) => {
                 const loadChanged: LoadListDto = response[0];
-                
+
                 this.refreshLoad(loadChanged);
             });
     }
 
     private refreshLoad(loadChanged: LoadListDto): void {
-        const loadOld = this.viewData.find(_ => _.id === loadChanged.id);
-        const index = this.viewData.findIndex(_ => _.id === loadOld?.id);
-        const { 
-            status: loadChangedStatus,
-            statusType: loadChangedStatusType
-        } = loadChanged || {};
-        const { 
-            id: loadChangedStatusTypeId,
-            name: loadChangedStatusName
-        } = loadChangedStatusType || {};
+        const loadOld = this.viewData.find((_) => _.id === loadChanged.id);
+        const index = this.viewData.findIndex((_) => _.id === loadOld?.id);
+        const { status: loadChangedStatus, statusType: loadChangedStatusType } =
+            loadChanged || {};
+        const { id: loadChangedStatusTypeId, name: loadChangedStatusName } =
+            loadChangedStatusType || {};
         const {
             isSelected,
             loadInvoice,
@@ -1977,7 +1974,7 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
             tableAttachments,
             fileCount,
             tableDropdownContent,
-            statusType: LoadOldStatusType
+            statusType: LoadOldStatusType,
         } = loadOld || {};
         const { id: loadOldStatusTypeId } = LoadOldStatusType || {};
         const updatingItem = {
@@ -2034,11 +2031,16 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
             tableEdited,
             tableAttachments,
             fileCount,
-            tableDropdownContent
+            tableDropdownContent,
         };
 
-        if (loadChangedStatusTypeId !== loadOldStatusTypeId && loadChangedStatusName?.toLowerCase() === this.selectedTab) this.viewData.push(updatingItem);
-        else if (loadChangedStatusTypeId !== loadOldStatusTypeId) this.viewData.splice(index, 1);
+        if (
+            loadChangedStatusTypeId !== loadOldStatusTypeId &&
+            loadChangedStatusName?.toLowerCase() === this.selectedTab
+        )
+            this.viewData.push(updatingItem);
+        else if (loadChangedStatusTypeId !== loadOldStatusTypeId)
+            this.viewData.splice(index, 1);
         else if (index >= 0) this.viewData.splice(index, 1, updatingItem);
         else this.viewData.push(updatingItem);
 

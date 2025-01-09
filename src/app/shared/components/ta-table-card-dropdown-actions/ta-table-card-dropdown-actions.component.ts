@@ -75,7 +75,7 @@ export class TaTableCardDropdownActionsComponent {
     }
 
     public onDropAction(action: DropdownItem): void {
-        if (!action?.mutedStyle) {
+        if (!action?.isDisabled) {
             // Send Drop Action
             this.tableDropdownService.openDropdown({
                 id: this.dropDownActive,

@@ -1,12 +1,11 @@
-<app-ta-modal
+<app-ca-modal
     [modalTitle]="editData?.type !== 'edit' ? 'Add Owner' : 'Edit Owner'"
-    [editData]="editData"
-    [editName]="editData?.data?.name"
-    [isModalValid]="ownerForm.valid && isFormDirty"
-    [saveAndAddNew]="editData?.type !== 'edit'"
-    (action)="onModalAction($event)"
+    [leftHeaderTemplate]="leftModalContent"
+    [footerTemplate]="footerTemplate"
+    [rightHeaderTemplate]="rightModalContent"
 >
-    <div origin>
+    <div class="new-modal" origin>
+        <div class="divider divider--dark divider--small"></div>
         <app-ta-tab-switch
             [tabs]="tabs"
             (switchClicked)="tabChange($event)"
@@ -18,195 +17,102 @@
             [formGroup]="ownerForm"
             class="form-container form-container-without-mb"
         >
-            <div class="row" *ngIf="selectedTab === 1">
-                <div class="col-8">
-                    <app-ta-input
+            @if (selectedTab === 1) {
+                <div class="d-grid gap-12 d-grid-bussines mb-32">
+                    <app-ca-input
                         formControlName="bussinesName"
-                        [inputConfig]="{
-                            name: 'Business Name',
-                            type: 'text',
-                            label: 'Business Name',
-                            isRequired: true,
-                            textTransform: 'uppercase',
-                            autoFocus: editData?.type !== 'edit',
-                            minLength: 2,
-                            maxLength: 64
-                        }"
-                    ></app-ta-input>
-                </div>
-                <div class="col-4">
-                    <app-ta-input
+                        ownerModalConfig
+                        [inputConfig]="
+                            ownerModalConfig.BUSINESS_NAME_INPUT_CONFIG(
+                                editData?.type === 'edit'
+                            )
+                        "
+                    ></app-ca-input>
+
+                    <app-ca-input
                         formControlName="ein"
-                        [inputConfig]="{
-                            name: 'EIN',
-                            type: 'text',
-                            label: 'EIN #',
-                            isRequired: true,
-                            mask: '00-0000000',
-                            maxLength: 10
-                        }"
-                    ></app-ta-input>
+                        [inputConfig]="ownerModalConfig.EIN_INPUT_CONFIG"
+                    ></app-ca-input>
                 </div>
-            </div>
-            <div class="row" *ngIf="selectedTab === 2">
-                <div class="col-4">
-                    <app-ta-input
+            }
+
+            @if (selectedTab === 2) {
+                <div class="d-grid gap-12 d-grid-name mb-32">
+                    <app-ca-input
                         formControlName="firstName"
-                        [inputConfig]="{
-                            name: 'First name',
-                            type: 'text',
-                            label: 'First Name',
-                            minLength: 2,
-                            maxLength: 26,
-                            isRequired: true,
-                            textTransform: 'capitalize',
-                            autoFocus:
-                                selectedTab === 2 &&
-                                !ownerForm.get('firstName').value
-                        }"
-                    ></app-ta-input>
-                </div>
-                <div class="col-4 no-p-right">
-                    <app-ta-input
+                        [inputConfig]="
+                            ownerModalConfig.FIRST_NAME_INPUT_CONFIG(
+                                selectedTab,
+                                ownerForm.get('firstName').value
+                            )
+                        "
+                    ></app-ca-input>
+                    <app-ca-input
                         formControlName="lastName"
-                        [inputConfig]="{
-                            name: 'Last name',
-                            type: 'text',
-                            label: 'Last Name',
-                            minLength: 2,
-                            maxLength: 26,
-                            isRequired: true,
-                            textTransform: 'capitalize'
-                        }"
-                    ></app-ta-input>
-                </div>
-                <div class="col-4">
-                    <app-ta-input
+                        [inputConfig]="ownerModalConfig.LAST_NAME_INPUT_CONFIG"
+                    ></app-ca-input>
+                    <app-ca-input
                         formControlName="ssn"
-                        [inputConfig]="{
-                            name: 'SSN',
-                            type: 'text',
-                            label: 'SSN',
-                            isRequired: true,
-                            mask: '000-00-0000',
-                            maxLength: 11
-                        }"
-                    ></app-ta-input>
+                        [inputConfig]="ownerModalConfig.SSN_INPUT_CONFIG"
+                    ></app-ca-input>
                 </div>
+            }
+
+            <div class="d-grid gap-12 d-grid-details mb-32">
+                <app-ca-input
+                    formControlName="phone"
+                    [inputConfig]="ownerModalConfig.PHONE_INPUT_CONFIG"
+                ></app-ca-input>
+                <app-ca-input
+                    formControlName="email"
+                    [inputConfig]="ownerModalConfig.EMAIL_INPUT_CONFIG"
+                ></app-ca-input>
             </div>
-            <div class="row">
-                <div class="col-5">
-                    <app-ta-input
-                        formControlName="phone"
-                        [inputConfig]="{
-                            name: 'Phone',
-                            type: 'text',
-                            label: 'Phone',
-                            isRequired: true,
-                            placeholderIcon: 'phone',
-                            mask: '(000) 000-0000'
-                        }"
-                    ></app-ta-input>
-                </div>
-                <div class="col-7">
-                    <app-ta-input
-                        formControlName="email"
-                        [inputConfig]="{
-                            name: 'Email',
-                            type: 'text',
-                            label: 'Email',
-                            isRequired: true,
-                            placeholderIcon: 'email',
-                            minLength: 5,
-                            maxLength: 64,
-                            textTransform: 'lowercase'
-                        }"
-                    ></app-ta-input>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-10">
-                    <app-ta-input-address-dropdown
-                        formControlName="address"
-                        [inputConfig]="{
-                            name: 'Address',
-                            type: 'text',
-                            label: 'Address, City, State Zip',
-                            isRequired: true,
-                            placeholderIcon: 'address',
-                            textTransform: 'capitalize',
-                            dropdownWidthClass: 'w-col-376',
-                            minLength: 6,
-                            maxLength: 256
-                        }"
-                        [placeholderType]="'longAddress'"
-                        [activeAddress]="selectedAddress"
-                        (selectedAddress)="onHandleAddress($event)"
-                    ></app-ta-input-address-dropdown>
-                </div>
-                <div class="col-2">
-                    <app-ta-input
-                        formControlName="addressUnit"
-                        [inputConfig]="{
-                            name: 'address-unit',
-                            type: 'text',
-                            label: 'Unit #',
-                            textTransform: 'uppercase',
-                            minLength: 1,
-                            maxLength: 10
-                        }"
-                    ></app-ta-input>
-                </div>
+            <div class="d-grid gap-12 d-grid-address mb-32">
+                <app-ta-input-address-dropdown
+                    formControlName="address"
+                    [inputConfig]="ownerModalConfig.ADDRESS_INPUT_CONFIG"
+                    [placeholderType]="'longAddress'"
+                    [activeAddress]="selectedAddress"
+                    (selectedAddress)="onHandleAddress($event)"
+                ></app-ta-input-address-dropdown>
+                <app-ca-input
+                    formControlName="addressUnit"
+                    [inputConfig]="ownerModalConfig.ADDRESS_UNIT_INPUT_CONFIG"
+                ></app-ca-input>
             </div>
             <div class="custom-bank-row last-row">
                 <div class="bank-field">
-                    <app-ta-input-dropdown
+                    <app-ca-input-dropdown
                         formControlName="bankId"
                         [template]="'svg-template'"
-                        [inputConfig]="{
-                            name: 'Input Dropdown Bank Name',
-                            type: 'text',
-                            label: 'Bank Name',
-                            minLength: 2,
-                            maxLength: 64,
-                            textTransform: 'uppercase',
-                            isDropdown: true,
-                            dropdownWidthClass: 'w-col-164'
-                        }"
+                        [inputConfig]="ownerModalConfig.BANK_INPUT_CONFIG"
                         [canAddNew]="true"
                         [options]="labelsBank"
                         [activeItem]="selectedBank"
                         (selectedItem)="onSelectBank($event)"
                         (saveItem)="onSaveNewBank($event)"
-                    ></app-ta-input-dropdown>
+                    ></app-ca-input-dropdown>
                 </div>
                 <div class="bank-field">
-                    <app-ta-input
+                    <app-ca-input
                         formControlName="routingNumber"
-                        [inputConfig]="{
-                            name: 'routing-bank',
-                            type: 'text',
-                            label: 'Routing #',
-                            isDisabled: !isBankSelected,
-                            isRequired: isBankSelected,
-                            minLength: 9,
-                            maxLength: 9
-                        }"
-                    ></app-ta-input>
+                        [inputConfig]="
+                            ownerModalConfig.ROUTING_NUMBER_INPUT_CONFIG(
+                                isBankSelected
+                            )
+                        "
+                    ></app-ca-input>
                 </div>
                 <div class="bank-field">
-                    <app-ta-input
+                    <app-ca-input
                         formControlName="accountNumber"
-                        [inputConfig]="{
-                            name: 'account-bank',
-                            type: 'text',
-                            label: 'Account #',
-                            isDisabled: !isBankSelected,
-                            isRequired: isBankSelected,
-                            maxLength: 17,
-                            minLength: 5
-                        }"
-                    ></app-ta-input>
+                        [inputConfig]="
+                            ownerModalConfig.ACCOUNT_INPUT_CONFIG(
+                                isBankSelected
+                            )
+                        "
+                    ></app-ca-input>
                 </div>
             </div>
             <div class="ta-card-body-overflow-none">
@@ -215,16 +121,17 @@
                     [cardName]="'Document'"
                     [isCardOpen]="!!documents.length"
                 >
-                    <app-ta-upload-files
-                        [files]="documents"
-                        [size]="'small'"
-                        (onFileEvent)="onFilesEvent($event)"
-                        [customClassName]="'modals'"
-                        [showDropzone]="true"
-                    ></app-ta-upload-files>
+                <app-ta-upload-files
+                [files]="documents"
+                [size]="'small'"
+                (onFileEvent)="onFilesEvent($event)"
+                [customClassName]="'modals'"
+                [showDropzone]="true"
+            ></app-ta-upload-files>
                 </app-ta-custom-card>
             </div>
-            <app-ta-input-note
+            <div class="divider"></div>
+            <app-ca-input-note
                 formControlName="note"
                 [isVisibleNote]="
                     ownerForm.get('note').value &&
@@ -238,7 +145,88 @@
                         ? ownerForm.get('note').value
                         : ''
                 "
-            ></app-ta-input-note>
+            ></app-ca-input-note>
         </form>
     </div>
-</app-ta-modal>
+</app-ca-modal>
+
+<ng-template #leftModalContent>
+    @if (editData?.data?.name) {
+        <div class="payroll-number text-color-white text-size-14 ta-font-bold">
+            {{ editData?.data?.name }}
+        </div>
+    }
+</ng-template>
+
+<ng-template #footerTemplate>
+    <div class="modal-footer modal-footer-payroll">
+        <div class="divider"></div>
+        @if (editData?.type === 'edit') {
+            <div class="d-flex justify-content-between w-full">
+                <div>
+                    <button
+                        class="modal-delete-btn ta-font-bold mr-12 valid"
+                        (click)="onModalAction(taModalActionEnums.DELETE)"
+                    >
+                        Delete
+                    </button>
+                </div>
+                <button
+                    class="modal-save-btn ta-font-bold"
+                    (click)="onModalAction(taModalActionEnums.SAVE)"
+                    [class.valid]="ownerForm.valid && isFormDirty"
+                >
+                    Save Changes
+                </button>
+            </div>
+        } @else {
+            <button
+                class="ta-font-bold modal-save-btn modal-save-btn-add-new mr-12"
+                [class.valid]="ownerForm.valid && isFormDirty"
+                (click)="onModalAction(taModalActionEnums.SAVE_AND_ADD_NEW)"
+            >
+                Save and Add New
+            </button>
+            <button
+                class="modal-save-btn ta-font-bold"
+                (click)="onModalAction(taModalActionEnums.SAVE)"
+                [class.valid]="ownerForm.valid && isFormDirty"
+            >
+                Save
+            </button>
+        }
+    </div>
+</ng-template>
+
+<ng-template #rightModalContent>
+    @if (editData?.type === 'edit') {
+        <div
+            ngbTooltip
+            mainTooltip="Added    {{
+                editData?.data?.createdAt | formatDateP
+            }} <br> Edited    {{ editData?.data?.updatedAt | formatDateP }}"
+            tooltipBackground="#424242"
+            position="bottom"
+            class="modal-date-logo"
+        >
+            <svg-icon
+                [src]="svgRoutes.DATE_ICON"
+                class="modal-buttons"
+            ></svg-icon>
+        </div>
+        <div class="modal-date-border"></div>
+    }
+    <div
+        class="d-flex justify-content-center align-items-center modal-close-container"
+        ngbTooltip
+        mainTooltip="Cancel"
+        tooltipBackground="#424242"
+        position="bottom"
+        (click)="onModalAction(taModalActionEnums.CLOSE)"
+    >
+        <svg-icon
+            class="modal-close svg-size-14 svg-fill-muted modal-buttons"
+            [src]="svgRoutes.CLOSE_ICON"
+        ></svg-icon>
+    </div>
+</ng-template>

@@ -641,6 +641,10 @@ ngb-modal-window[aria-hidden='true'] {
                 .modal-save-btn-add-new {
                     min-width: 181px !important;
 
+                    &.btn-min-w-auto {
+                        min-width: auto !important;
+                    }
+
                     &.valid {
                         cursor: pointer;
                         pointer-events: all;
@@ -1077,6 +1081,24 @@ ngb-modal-window.modal {
 
             .modal-container {
                 margin: 60px auto;
+            }
+        }
+    }
+}
+
+.new-modal {
+    .form-container {
+        .row {
+            & > * {
+                &:nth-child(odd) {
+                    padding-left: 12px;
+                    padding-right: 12px;
+                }
+
+                &:nth-child(even) {
+                    padding-left: 0px;
+                    padding-right: 12px;
+                }
             }
         }
     }

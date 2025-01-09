@@ -21,6 +21,7 @@ import { getUsersColumnDefinition } from '@shared/utils/settings/table-settings/
 import { MethodsGlobalHelper } from '@shared/utils/helpers/methods-global.helper';
 import { DataFilterHelper } from '@shared/utils/helpers/data-filter.helper';
 import { AvatarColorsHelper } from '@shared/utils/helpers/avatar-colors.helper';
+import { DropdownMenuContentHelper } from '@shared/utils/helpers';
 
 // store
 import { UserActiveQuery } from '@pages/user/state/user-active-state/user-active.query';
@@ -43,7 +44,6 @@ import { NameInitialsPipe } from '@shared/pipes/name-initials.pipe';
 import { ActivityTimePipe } from '@shared/pipes/activity-time.pipe';
 
 // constants
-import { UserConstants } from '@pages/user/utils/constants/user.constants';
 import { UserTableConfig } from '@pages/user/pages/user-table/utils/constants/user-table-config.constants';
 import { UserTableConfiguration } from '@pages/user/pages/user-table/utils/constants';
 import { DisplayUserConfiguration } from '@pages/user/utils/constants/user-card-data.constants';
@@ -568,13 +568,13 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
             tableTableDept: data?.department?.name
                 ? data.department.name
                 : data?.department
-                ? data?.department
-                : '',
+                  ? data?.department
+                  : '',
             tableTableOffice: data?.companyOffice?.name
                 ? data.companyOffice.name
                 : data?.companyOffice
-                ? data?.companyOffice
-                : '',
+                  ? data?.companyOffice
+                  : '',
             tableTablePhone: data?.phone
                 ? this.phoneFormater.transform(data.phone)
                 : '',
@@ -624,21 +624,23 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
             // User Dropdown Action Set Up
             tableDropdownContent: {
                 hasContent: true,
-                content: this.getDropdownContent(data, isInvitationSent),
+                content: this.getUserDropdownContent(
+                    data.userStatus,
+                    isInvitationSent
+                ),
             },
         };
     }
 
-    public getDropdownContent(
-        data: CompanyUserResponse,
-        isInvitationSent?: boolean
+    public getUserDropdownContent(
+        userStatus: string,
+        isInvitationSent: boolean
     ): DropdownItem[] {
-        const dropdownContent = UserConstants.getUserTableDropdown(
-            data,
+        return DropdownMenuContentHelper.getUserDropdownContent(
             this.selectedTab,
+            userStatus,
             isInvitationSent
         );
-        return dropdownContent;
     }
 
     // User Back Filter Query
