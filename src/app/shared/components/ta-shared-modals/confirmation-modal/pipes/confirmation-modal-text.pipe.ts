@@ -101,6 +101,8 @@ export class ConfirmationModalTextPipe implements PipeTransform {
             textEnd = DropActionsStringEnum.OFFICE;
         } else if (template === DropActionsStringEnum.COMPANY_REPAIR_SHOP) {
             textEnd = DropActionsStringEnum.REPAIR_SHOP;
+        } else if (template === DropActionsStringEnum.FUEL) {
+            textEnd = DropActionsStringEnum.FUEL_TEXT;
         } else {
             textEnd = template;
         }

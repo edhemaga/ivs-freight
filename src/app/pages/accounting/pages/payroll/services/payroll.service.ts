@@ -564,16 +564,18 @@ export class PayrollService {
             | ConfirmationModalStringEnum.DELETE_FUEL
             | ConfirmationModalStringEnum.DELETE_BONUS,
         id: number,
-        data: PayrollDeleteModal
+        data: PayrollDeleteModal,
+        subType?: string
     ) {
-        return this.showDeductionModal(modalType, action, id, data);
+        return this.showDeductionModal(modalType, action, id, data, subType);
     }
 
     public showDeductionModal(
         template: string,
         modalHeaderTitle: string,
         id: number,
-        extras: PayrollDeleteModal
+        extras: PayrollDeleteModal,
+        subType?: string
     ): Promise<any> {
         return this.modalService.openModal(
             ConfirmationModalComponent,
@@ -585,6 +587,7 @@ export class PayrollService {
                 svg: true,
                 modalHeaderTitle,
                 extras,
+                subType
             }
         );
     }

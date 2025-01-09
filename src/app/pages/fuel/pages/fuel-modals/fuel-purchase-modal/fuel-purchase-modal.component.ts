@@ -20,6 +20,9 @@ import { ModalService } from '@shared/services/modal.service';
 import { FormService } from '@shared/services/form.service';
 import { FuelService } from '@shared/services/fuel.service';
 import { TruckService } from '@shared/services/truck.service';
+import { PayrollService } from '@pages/accounting/pages/payroll/services/payroll.service';
+import { ConfirmationService } from '@shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
+import { ConfirmationActivationService } from '@shared/components/ta-shared-modals/confirmation-activation-modal/services/confirmation-activation.service';
 
 //Components
 import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
@@ -33,7 +36,6 @@ import {
     CaModalComponent,
 } from 'ca-components';
 import { TaInputDropdownComponent } from '@shared/components/ta-input-dropdown/ta-input-dropdown.component';
-import { ConfirmationModalComponent } from '@shared/components/ta-shared-modals/confirmation-modal/confirmation-modal.component';
 
 //Modules
 import { CommonModule } from '@angular/common';
@@ -54,7 +56,6 @@ import {
     EnumValue,
     RepairItemResponse,
 } from 'appcoretruckassist';
-import { FuelData } from '@pages/fuel/pages/fuel-modals/fuel-purchase-modal/models/fuel-data.model';
 import { FuelTruckType } from '@pages/fuel/pages/fuel-modals/fuel-purchase-modal/models/fuel-truck-type.model';
 import { RepairSubtotal } from '@pages/repair/pages/repair-modals/repair-order-modal/models';
 
@@ -69,6 +70,8 @@ import { FuelValuesStringEnum } from '@pages/fuel/pages/fuel-modals/fuel-purchas
 import { TaModalActionEnums } from '@shared/components/ta-modal/enums';
 import { ModalTableTypeEnum } from '@shared/enums/modal-table-type.enum';
 import { TableStringEnum } from '@shared/enums';
+import { ContactsModalStringEnum } from '@pages/contacts/pages/contacts-modal/enums';
+import { ConfirmationModalStringEnum } from '@shared/components/ta-shared-modals/confirmation-modal/enums/confirmation-modal-string.enum';
 
 //Validations
 import { fullNameValidation } from '@shared/components/ta-input/validators/ta-input.regex-validations';
@@ -78,7 +81,6 @@ import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calcula
 
 // Moment
 import moment from 'moment';
-import { ContactsModalStringEnum } from '@pages/contacts/pages/contacts-modal/enums';
 
 @Component({
     selector: 'app-fuel-purchase-modal',
@@ -111,7 +113,7 @@ import { ContactsModalStringEnum } from '@pages/contacts/pages/contacts-modal/en
     ],
 })
 export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
-    @Input() editData: FuelData;
+    @Input() editData: any;
     public modalTableTypeEnum = ModalTableTypeEnum;
 
     public fuelForm: UntypedFormGroup;
@@ -157,7 +159,10 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
         private formService: FormService,
         private fuelService: FuelService,
         private truckService: TruckService,
-        private ngbActiveModal: NgbActiveModal
+        private ngbActiveModal: NgbActiveModal,
+        private payrollService: PayrollService,
+        private confirmationService: ConfirmationService,
+        private confirmationActivationService: ConfirmationActivationService
     ) {}
 
     ngOnInit() {
@@ -166,6 +171,25 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
         this.getFuelTransactionFranchises();
         this.getTruckList();
         this.getDriverTrailerBySelectedTruck();
+        this.confirmationActivationSubscribe();
+        this.confirmationDeactivationSubscribe();
+    }
+
+    private confirmationDeactivationSubscribe(): void {
+        this.confirmationActivationService.getConfirmationActivationData$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe(() => {
+                this.ngbActiveModal?.close();
+            });
+    }
+
+    private confirmationActivationSubscribe(): void {
+        this.confirmationService.confirmationData$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((res) => {
+                if (res.action !== TableStringEnum.CLOSE)
+                    this.ngbActiveModal?.close();
+            });
     }
 
     private createForm(): void {
@@ -214,31 +238,18 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
                 break;
 
             case TaModalActionEnums.DELETE:
-                this.modalService.openModal(
-                    ConfirmationModalComponent,
-                    { size: TableStringEnum.SMALL },
+                this.payrollService.raiseDeleteModal(
+                    TableStringEnum.FUEL_1,
+                    ConfirmationModalStringEnum.DELETE_FUEL,
+                    this.editData.data.id,
                     {
-                        array: [
-                            {
-                                id: (this.editData.data as any).id,
-                                data: {
-                                    ...this.editData.data,
-                                    date: MethodsCalculationsHelper.convertDateFromBackend(
-                                        (this.editData.data as any)
-                                            .transactionDate
-                                    ),
-                                    time: MethodsCalculationsHelper.convertDateToTimeFromBackend(
-                                        (this.editData.data as any)
-                                            .transactionDate,
-                                        true
-                                    ),
-                                },
-                            },
-                        ],
-                        template: TableStringEnum.FUEL_TRANSACTION_TEXT,
-                        type: TableStringEnum.DELETE,
-                        svg: true,
-                    }
+                        title: this.editData.data.loadInvoice.invoice,
+                        subtitle: this.editData.data.total,
+                        date: this.editData.data.transactionDate,
+                        label: this.editData.data.truck?.truckNumber,
+                        id: this.editData.id,
+                    },
+                    TableStringEnum.FUEL_1
                 );
                 break;
             default:
