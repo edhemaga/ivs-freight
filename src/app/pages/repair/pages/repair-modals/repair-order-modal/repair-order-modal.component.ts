@@ -23,8 +23,8 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
 // bootstrap
 import {
     NgbActiveModal,
-    NgbModule,
     NgbPopover,
+    NgbTooltipModule,
 } from '@ng-bootstrap/ng-bootstrap';
 
 // moment
@@ -63,13 +63,15 @@ import { ModalTableTypeEnum } from '@shared/enums/modal-table-type.enum';
 // components
 import { RepairShopModalComponent } from '@pages/repair/pages/repair-modals/repair-shop-modal/repair-shop-modal.component';
 import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
-import { TaModalComponent } from '@shared/components/ta-modal/ta-modal.component';
+import {
+    CaModalComponent,
+    CaInputComponent,
+    CaInputDropdownComponent,
+    CaInputNoteComponent,
+} from 'ca-components';
 import { TaTabSwitchComponent } from '@shared/components/ta-tab-switch/ta-tab-switch.component';
-import { TaInputDropdownComponent } from '@shared/components/ta-input-dropdown/ta-input-dropdown.component';
-import { TaInputComponent } from '@shared/components/ta-input/ta-input.component';
 import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-custom-card.component';
 import { TaUploadFilesComponent } from '@shared/components/ta-upload-files/ta-upload-files.component';
-import { TaInputNoteComponent } from '@shared/components/ta-input-note/ta-input-note.component';
 import { TaCopyComponent } from '@shared/components/ta-copy/ta-copy.component';
 import { TaModalTableComponent } from '@shared/components/ta-modal-table/ta-modal-table.component';
 import { ConfirmationModalComponent } from '@shared/components/ta-shared-modals/confirmation-modal/confirmation-modal.component';
@@ -103,6 +105,7 @@ import {
 
 // svg routes
 import { RepairOrderModalSvgRoutes } from '@pages/repair/pages/repair-modals/repair-order-modal/utils/svg-routes';
+import { SharedSvgRoutes } from '@shared/utils/svg-routes';
 
 @Component({
     selector: 'app-repair-order-modal',
@@ -115,21 +118,21 @@ import { RepairOrderModalSvgRoutes } from '@pages/repair/pages/repair-modals/rep
         CommonModule,
         FormsModule,
         ReactiveFormsModule,
-        NgbModule,
+        NgbTooltipModule,
         AngularSvgIconModule,
 
         // components
         TaAppTooltipV2Component,
-        TaModalComponent,
+        CaModalComponent,
         TaTabSwitchComponent,
-        TaInputDropdownComponent,
-        TaInputComponent,
+        CaInputDropdownComponent,
+        CaInputComponent,
         TaCustomCardComponent,
         TaUploadFilesComponent,
-        TaInputNoteComponent,
+        CaInputNoteComponent,
         TaCopyComponent,
         TaModalTableComponent,
-
+        TaAppTooltipV2Component,
         // Pipe
         ActiveItemsPipe,
         FormatPhonePipe,
@@ -207,6 +210,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
 
     // enums
     public modalTableTypeEnum = ModalTableTypeEnum;
+    public svgRoutes = SharedSvgRoutes;
 
     constructor(
         private formBuilder: UntypedFormBuilder,

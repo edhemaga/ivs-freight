@@ -1,23 +1,14 @@
-<app-ta-modal
+<app-ca-modal
     [customClass]="'modal-container-M'"
-    [editData]="editData"
-    [editName]="editData?.data?.invoice || editData?.data?.orderNumber"
-    [isModalValid]="
-        repairOrderForm.valid && isFormDirty && isEachRepairRowValid
-    "
     [modalTitle]="
         !editData?.type?.includes('edit')
             ? 'Add Repair'
             : isFinishOrder
-            ? 'Finish Order'
-            : 'Edit Repair ' + editData?.data?.repairType?.name
+              ? 'Finish Order'
+              : 'Edit Repair ' + editData?.data?.repairType?.name
     "
-    [saveAndAddNew]="!editData?.data"
-    [tabChangePosition]="'right'"
-    [tabChange]="editData?.type?.includes('edit') ? null : headerTabs"
-    [isFinishOrder]="isFinishOrder"
-    (action)="onModalAction($event)"
-    (onTabHeaderChange)="onModalHeaderTabChange($event)"
+    [rightHeaderTemplate]="rightModalContent"
+    [leftHeaderTemplate]="leftModalContent"
 >
     <form
         [formGroup]="repairOrderForm"
@@ -28,7 +19,7 @@
             <!-- Invoice, Date, Pay Type, Date Paid -->
 
             <div class="repair-modal-bill-first-row">
-                <app-ta-input
+                <app-ca-input
                     formControlName="invoice"
                     [inputConfig]="{
                         name: 'Invoice',
@@ -37,11 +28,11 @@
                         textTransform: 'uppercase',
                         isRequired: true,
                         minLength: 1,
-                        maxLength: 22
+                        maxLength: 22,
                     }"
-                ></app-ta-input>
+                ></app-ca-input>
 
-                <app-ta-input
+                <app-ca-input
                     formControlName="date"
                     [inputConfig]="{
                         name: 'datepicker',
@@ -50,11 +41,11 @@
                         label: 'Date',
                         placeholderIcon: 'date',
                         isRequired: true,
-                        customClass: 'datetimeclass'
+                        customClass: 'datetimeclass',
                     }"
-                ></app-ta-input>
+                ></app-ca-input>
 
-                <app-ta-input-dropdown
+                <app-ca-input-dropdown
                     formControlName="payType"
                     [inputConfig]="{
                         name: 'payType',
@@ -64,15 +55,15 @@
                         textTransform: 'uppercase',
                         minLength: 1,
                         maxLength: 8,
-                        dropdownWidthClass: 'w-col-145'
+                        dropdownWidthClass: 'w-col-145',
                     }"
                     [canOpenModal]="true"
                     [options]="payTypeDropdownList"
                     [activeItem]="selectedPayType"
                     (selectedItem)="onSelectDropDown($event, 'pay-type')"
-                ></app-ta-input-dropdown>
+                ></app-ca-input-dropdown>
 
-                <app-ta-input
+                <app-ca-input
                     formControlName="datePaid"
                     [inputConfig]="{
                         name: 'datepicker',
@@ -82,9 +73,9 @@
                         placeholderIcon: 'date',
                         isDisabled: !selectedPayType,
                         isRequired: selectedPayType,
-                        customClass: 'datetimeclass'
+                        customClass: 'datetimeclass',
                     }"
-                ></app-ta-input>
+                ></app-ca-input>
             </div>
         </ng-container>
 
@@ -92,7 +83,7 @@
             <!-- Order No, Date -->
 
             <ng-container *ngIf="selectedHeaderTab === 2">
-                <app-ta-input
+                <app-ca-input
                     formControlName="orderNumber"
                     [inputConfig]="{
                         name: 'Order No.',
@@ -101,11 +92,11 @@
                         textTransform: 'uppercase',
                         isRequired: true,
                         minLength: 1,
-                        maxLength: 9
+                        maxLength: 9,
                     }"
-                ></app-ta-input>
+                ></app-ca-input>
 
-                <app-ta-input
+                <app-ca-input
                     formControlName="date"
                     [inputConfig]="{
                         name: 'datepicker',
@@ -114,9 +105,9 @@
                         label: 'Date',
                         placeholderIcon: 'date',
                         isRequired: false,
-                        customClass: 'datetimeclass'
+                        customClass: 'datetimeclass',
                     }"
-                ></app-ta-input>
+                ></app-ca-input>
             </ng-container>
 
             <!-- Tabs -->
@@ -129,7 +120,7 @@
 
             <!-- Unit -->
 
-            <app-ta-input-dropdown
+            <app-ca-input-dropdown
                 formControlName="unit"
                 [template]="'svgtext-template'"
                 [inputConfig]="{
@@ -139,17 +130,17 @@
                     isDropdown: true,
                     isRequired: true,
                     dropdownWidthClass: 'w-col-145 truck-trailer-dropdown',
-                    customClass: 'truck-trailer-dropdown'
+                    customClass: 'truck-trailer-dropdown',
                 }"
                 [options]="unitDropdownList"
                 [activeItem]="selectedUnit"
                 (selectedItem)="onSelectDropDown($event, 'repair-unit')"
-            ></app-ta-input-dropdown>
+            ></app-ca-input-dropdown>
 
             <!-- Driver -->
 
             <ng-container *ngIf="selectedHeaderTab === 1">
-                <app-ta-input-dropdown
+                <app-ca-input-dropdown
                     formControlName="driver"
                     [inputConfig]="{
                         name: 'driver',
@@ -161,18 +152,18 @@
                         minLength: 1,
                         maxLength: 8,
                         dropdownWidthClass: 'w-col-145',
-                        hideClear: true
+                        hideClear: true,
                     }"
                     [activeItem]="selectedDriver"
                     [options]="driversDropdownList"
                     (selectedItem)="onSelectDropDown($event, 'driver')"
-                ></app-ta-input-dropdown>
+                ></app-ca-input-dropdown>
             </ng-container>
 
             <!-- Odometar -->
 
             <ng-container *ngIf="selectedHeaderTab === 1">
-                <app-ta-input
+                <app-ca-input
                     formControlName="odometer"
                     [inputConfig]="{
                         name: 'repair-odometer',
@@ -182,9 +173,9 @@
                         isRequired: isAnyRepairItemHasPmSelected,
                         thousandSeparator: true,
                         minLength: 1,
-                        maxLength: 9
+                        maxLength: 9,
                     }"
-                ></app-ta-input>
+                ></app-ca-input>
             </ng-container>
         </div>
 
@@ -214,7 +205,7 @@
                                 src="assets/svg/common/ic_star.svg"
                                 [svgStyle]="{
                                     'width.px': '14',
-                                    'height.px': '14'
+                                    'height.px': '14',
                                 }"
                             ></svg-icon>
                         </p>
@@ -307,7 +298,7 @@
                                     src="assets/svg/ic_spec_input_pen.svg"
                                     [svgStyle]="{
                                         'width.px': '18',
-                                        'height.px': '18'
+                                        'height.px': '18',
                                     }"
                                 ></svg-icon>
                             </div>
@@ -330,7 +321,7 @@
                                     src="assets/svg/ic_x.svg"
                                     [svgStyle]="{
                                         'width.px': '18',
-                                        'height.px': '18'
+                                        'height.px': '18',
                                     }"
                                 ></svg-icon>
                             </div>
@@ -342,7 +333,7 @@
 
                 <ng-template #notSelectedRepairShop>
                     <ng-container *ngIf="!selectedRepairShop">
-                        <app-ta-input-dropdown
+                        <app-ca-input-dropdown
                             formControlName="repairShopId"
                             [template]="'double-text-template'"
                             [inputConfig]="{
@@ -351,7 +342,7 @@
                                 label: 'Repair Shop',
                                 isDropdown: true,
                                 isRequired: selectedHeaderTab === 1,
-                                dropdownWidthClass: 'w-col-616'
+                                dropdownWidthClass: 'w-col-616',
                             }"
                             [canOpenModal]="true"
                             [activeItem]="selectedRepairShop"
@@ -360,7 +351,7 @@
                             (selectedItem)="
                                 onSelectDropDown($event, 'repair-shop')
                             "
-                        ></app-ta-input-dropdown>
+                        ></app-ca-input-dropdown>
                     </ng-container>
                 </ng-template>
             </div>
@@ -444,7 +435,7 @@
                 <ng-container
                     *ngFor="
                         let repair of services?.length > 10
-                            ? (services | slice : 2)
+                            ? (services | slice: 2)
                             : services;
                         trackBy: trackByIdentity
                     "
@@ -454,7 +445,8 @@
                         [ngClass]="{
                             active: repair.active && repair.isSelected,
                             inactive: repair.active && !repair.isSelected,
-                            disabled: !repair.active || !this.selectedRepairShop
+                            disabled:
+                                !repair.active || !this.selectedRepairShop,
                         }"
                         (click)="handleServiceActiveClick(repair)"
                     >
@@ -493,7 +485,7 @@
 
         <!-- Note -->
 
-        <app-ta-input-note
+        <app-ca-input-note
             formControlName="note"
             [isVisibleNote]="
                 repairOrderForm.get('note').value &&
@@ -507,6 +499,47 @@
                     ? repairOrderForm.get('note').value
                     : ''
             "
-        ></app-ta-input-note>
+        ></app-ca-input-note>
     </form>
-</app-ta-modal>
+</app-ca-modal>
+
+<ng-template #rightModalContent>
+    @if (editData?.type === 'edit') {
+        <div
+            ngbTooltip
+            mainTooltip="Added    {{
+                editData?.data?.createdAt | formatDateP
+            }} <br> Edited    {{ editData?.data?.updatedAt | formatDateP }}"
+            tooltipBackground="#424242"
+            position="bottom"
+            class="modal-date-logo"
+        >
+            <svg-icon
+                [src]="svgRoutes.DATE_ICON"
+                class="modal-buttons"
+            ></svg-icon>
+        </div>
+        <div class="modal-date-border"></div>
+    }
+    <div
+        class="d-flex justify-content-center align-items-center modal-close-container"
+        ngbTooltip
+        mainTooltip="Cancel"
+        tooltipBackground="#424242"
+        position="bottom"
+        (click)="onModalAction(taModalActionEnums.CLOSE)"
+    >
+        <svg-icon
+            class="modal-close svg-size-14 svg-fill-muted modal-buttons"
+            [src]="svgRoutes.CLOSE_ICON"
+        ></svg-icon>
+    </div>
+</ng-template>
+
+<ng-template #leftModalContent>
+    @if (editData?.data?.invoice || editData?.data?.orderNumber) {
+        <div class="payroll-number text-color-white text-size-14 ta-font-bold">
+            {{ editData?.data?.invoice || editData?.data?.orderNumber }}
+        </div>
+    }
+</ng-template>
