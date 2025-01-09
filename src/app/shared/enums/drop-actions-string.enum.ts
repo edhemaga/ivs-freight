@@ -99,4 +99,7 @@ export enum DropActionsStringEnum {
     // Size
     SMALL = 'small',
     LARGE = 'large',
+
+    FUEL = 'fuel',
+    FUEL_TEXT = 'fuel transaction'
 }
