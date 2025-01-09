@@ -271,7 +271,9 @@ export abstract class PayrollReportBaseComponent<
                                 subtitle: item.data.subtotal,
                                 date: item.data.date,
                                 label: `${label}`,
-                                id: item.data.id,
+                                id:
+                                    item.data.parentPayrollDeductionId ||
+                                    item.data.id,
                             }
                         )
                         .then(() => {

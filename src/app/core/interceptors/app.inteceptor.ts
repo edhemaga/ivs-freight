@@ -1,9 +1,5 @@
 import { Injectable } from '@angular/core';
-import {
-    HttpInterceptor,
-    HttpRequest,
-    HttpHandler,
-} from '@angular/common/http';
+import { HttpInterceptor, HttpRequest, HttpHandler } from '@angular/common/http';
 import { catchError, Observable, tap } from 'rxjs';
 
 // services

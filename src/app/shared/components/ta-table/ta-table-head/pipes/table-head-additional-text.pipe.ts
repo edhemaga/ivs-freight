@@ -14,11 +14,17 @@ export class TableHeadAdditionalTextPipe implements PipeTransform {
         const daysCondition =
             gridNameTitle === 'Customer' && tableHeadTitle === 'TERM';
 
+        // mi
+        const milesCondition =
+            gridNameTitle === 'Repair' && tableHeadTitle === 'ODO';
+
         switch (true) {
             case monthsCondition:
                 return 'mo.';
             case daysCondition:
                 return 'd.';
+            case milesCondition:
+                return 'mi';
             default:
                 return '';
         }

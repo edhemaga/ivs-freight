@@ -507,6 +507,7 @@ export class LoadModalConfig {
             hideErrorMessage: true,
             hideRequiredCheck: true,
             hideDangerMark: true,
+            errorInsideInput: true,
         };
     }
 
@@ -527,6 +528,7 @@ export class LoadModalConfig {
             hideErrorMessage: true,
             hideRequiredCheck: true,
             hideDangerMark: true,
+            errorInsideInput: true,
         };
     }
 

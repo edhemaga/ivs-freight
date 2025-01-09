@@ -37,8 +37,6 @@
                         'regular-row': !row.isSelected,
                         'selected-row':
                             row.isSelected || dropDownActive === row.id,
-                        'row-repair-order':
-                            row.isRepairOrder && !row.actionAnimation,
                         'user-archived': row.userStatus === 0,
                         'add-animation': row.actionAnimation === 'add',
                         'update-animation': row.actionAnimation === 'update',
@@ -76,6 +74,17 @@
                                             column.ngTemplate !== 'checkbox' &&
                                             column.ngTemplate !==
                                                 'user-checkbox'
+                                    }"
+                                    [ngStyle]="{
+                                        'margin-right':
+                                            column.ngTemplate ===
+                                                'description' ||
+                                            column.ngTemplate === 'gallon' ||
+                                            column.ngTemplate === 'ppg'
+                                                ? 0
+                                                : column.ngTemplate === 'total'
+                                                ? '7px'
+                                                : ''
                                     }"
                                 >
                                     <!-- NO TEMPLATE -->
@@ -237,68 +246,81 @@
 
                                     <!-- PICKUP AND DELIVERY COLUMN -->
 
-                                    <div
-                                        class="td-content"
-                                        *ngIf="
-                                            column.ngTemplate ===
-                                            'pickup-delivery'
-                                        "
-                                        [ngStyle]="{
-                                            width: column.width + 'px',
-                                            'min-width.px': column?.minWidth
-                                                ? column.minWidth
-                                                : 'unset'
-                                        }"
+                                    <ng-container
+                                        *ngIf="column.ngTemplate === 'pickup'"
                                     >
                                         <div
-                                            class="pickup-delivery-counter"
-                                            [ngClass]="{
-                                                'pickup-count':
-                                                    column.pickupDeliveryType ===
-                                                        'pickup' &&
-                                                    row[column.field].count !==
-                                                        'S',
-                                                'delivery-count':
-                                                    column.pickupDeliveryType ===
-                                                        'delivery' &&
-                                                    row[column.field].count !==
-                                                        'S',
-                                                'special-count':
-                                                    row[column.field].count ===
-                                                    'S'
+                                            class="td-content"
+                                            [ngStyle]="{
+                                                width: column.width + 'px',
+                                                'min-width.px': column?.minWidth
+                                                    ? column.minWidth
+                                                    : 'unset'
                                             }"
                                         >
-                                            {{ row[column.field].count }}
-                                        </div>
+                                            <div
+                                                class="pickup-delivery-counter"
+                                                [ngClass]="{
+                                                    'pickup-count':
+                                                        column.pickupDeliveryType ===
+                                                            'pickup' &&
+                                                        row[column.field]
+                                                            .count !== 'S',
+                                                    'delivery-count':
+                                                        column.pickupDeliveryType ===
+                                                            'delivery' &&
+                                                        row[column.field]
+                                                            .count !== 'S',
+                                                    'special-count':
+                                                        row[column.field]
+                                                            .count === 'S'
+                                                }"
+                                            >
+                                                {{ row[column.field].count }}
+                                            </div>
 
-                                        <div
-                                            class="pickup-delivery-location-container"
-                                        >
                                             <div
-                                                class="location"
-                                                [ngStyle]="{
-                                                    width:
-                                                        column.width - 28 + 'px'
-                                                }"
+                                                class="pickup-delivery-location-container"
                                             >
-                                                {{ row[column.field].location }}
-                                            </div>
-                                            <div
-                                                class="date-time-container"
-                                                [ngStyle]="{
-                                                    width:
-                                                        column.width - 30 + 'px'
-                                                }"
-                                            >
-                                                <div class="date">
-                                                    {{ row[column.field].date }}
+                                                <div
+                                                    class="location"
+                                                    [ngStyle]="{
+                                                        width:
+                                                            column.width -
+                                                            28 +
+                                                            'px'
+                                                    }"
+                                                >
+                                                    {{
+                                                        row[column.field]
+                                                            .location
+                                                    }}
                                                 </div>
-                                                <div class="time">
-                                                    {{ row[column.field].time }}
+                                                <div
+                                                    class="date-time-container"
+                                                    [ngStyle]="{
+                                                        width:
+                                                            column.width -
+                                                            30 +
+                                                            'px'
+                                                    }"
+                                                >
+                                                    <div class="date">
+                                                        {{
+                                                            row[column.field]
+                                                                .date
+                                                        }}
+                                                    </div>
+                                                    <div class="time">
+                                                        {{
+                                                            row[column.field]
+                                                                .time
+                                                        }}
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
+                                    </ng-container>
 
                                     <!-- TEXT COLOR COLUMN -->
 
@@ -1090,7 +1112,7 @@
                                                     >
                                                         <svg-icon
                                                             [src]="
-                                                                tableBodySvgRoutes.BROKER_CLOSED_SVG_ROUTE
+                                                                tableBodySvgRoutes.brokerClosedRoute
                                                             "
                                                         ></svg-icon>
                                                     </ng-container>
@@ -1129,11 +1151,30 @@
                                                     >
                                                         <svg-icon
                                                             [src]="
-                                                                tableBodySvgRoutes.BROKER_CLOSED_SVG_ROUTE
+                                                                tableBodySvgRoutes.brokerClosedRoute
                                                             "
                                                         ></svg-icon>
                                                     </ng-container>
+
                                                     {{ row[column.field] }}
+
+                                                    <ng-container
+                                                        *ngIf="
+                                                            row.isRepairOrder &&
+                                                            !row.actionAnimation
+                                                        "
+                                                    >
+                                                        <svg-icon
+                                                            class="repair-order-icon"
+                                                            [src]="
+                                                                tableBodySvgRoutes.circleRoute
+                                                            "
+                                                            [svgStyle]="{
+                                                                'width.px': 10,
+                                                                'height.px': 10
+                                                            }"
+                                                        ></svg-icon>
+                                                    </ng-container>
                                                 </div>
                                             </ng-container>
                                         </div>
@@ -1551,57 +1592,288 @@
                                         </div>
                                     </ng-container>
 
-                                    <!-- DESCRIPTION COLUMN -->
+                                    <!-- DESCRIPTION COLUMN (GALLON, PPG, TOTAL)-->
 
-                                    <div
-                                        class="td-content"
+                                    <ng-container
                                         *ngIf="
-                                            column.ngTemplate === 'description'
+                                            [
+                                                'description',
+                                                'total',
+                                                'gallon',
+                                                'ppg'
+                                            ].includes(column.ngTemplate)
                                         "
-                                        [ngStyle]="{
-                                            width: column.width + 'px'
-                                        }"
                                     >
                                         <div
-                                            #t1="ngbPopover"
-                                            *ngIf="row[column.field]"
-                                            [ngStyle]="{
-                                                width: column.width - 5 + 'px'
+                                            class="td-content description-items-container"
+                                            [ngClass]="{
+                                                'order-cost-container':
+                                                    column.ngTemplate ===
+                                                        'total' &&
+                                                    row?.isRepairOrder,
+                                                'order-items-active':
+                                                    descriptionOrderActiveIndex ===
+                                                    i,
+                                                hovered:
+                                                    descriptionCostHoverIndex ===
+                                                        i &&
+                                                    !row?.isRepairOrder,
+                                                'd-flex justify-content-end':
+                                                    column.ngTemplate ===
+                                                    'gallon'
                                             }"
-                                            class="description-container"
-                                            [innerHtml]="
-                                                row[column.field]
-                                                    | tableDescriptionTextPipe
-                                                        : column.width
-                                            "
-                                            (click)="
-                                                onShowDescriptionDropdown(
-                                                    t1,
-                                                    row,
-                                                    column.width,
-                                                    row[column.field],
-                                                    column.field
-                                                )
-                                            "
-                                            [ngbPopover]="descriptionPopover"
+                                            [ngStyle]="{
+                                                width:
+                                                    (column.ngTemplate ===
+                                                        'ppg' ||
+                                                    column.ngTemplate ===
+                                                        'total'
+                                                        ? column.width + 6
+                                                        : column.width) + 'px',
+                                                'min-width.px':
+                                                    column?.minWidth ?? 'unset'
+                                            }"
+                                            #t1="ngbPopover"
                                             container="body"
-                                            [placement]="'bottom-left'"
-                                            popoverClass="table-description-popover"
+                                            placement="bottom-left"
                                             triggers="manual"
-                                            (hidden)="
-                                                descriptionPopoverOpen = -1
+                                            popoverClass="table-description-popover"
+                                            [ngbPopover]="descriptionPopover"
+                                            (click)="
+                                                column.ngTemplate ===
+                                                    'description' &&
+                                                    onShowDescriptionDropdown(
+                                                        t1,
+                                                        tableData[0]
+                                                            ?.gridNameTitle,
+                                                        column?.width,
+                                                        row
+                                                    )
+                                            "
+                                            (mouseenter)="
+                                                descriptionCostHoverIndex = i
+                                            "
+                                            (mouseleave)="
+                                                descriptionCostHoverIndex = -1
                                             "
                                             (shown)="
-                                                descriptionPopoverOpen = row.id
+                                                descriptionOrderActiveIndex = i
                                             "
-                                        ></div>
+                                            (hidden)="
+                                                descriptionOrderActiveIndex = -1
+                                            "
+                                        >
+                                            <ng-container
+                                                [ngSwitch]="column.ngTemplate"
+                                            >
+                                                <!-- DESCRIPTION COLUMN -->
+
+                                                <ng-container
+                                                    *ngSwitchCase="
+                                                        'description'
+                                                    "
+                                                >
+                                                    <div
+                                                        class="w-100"
+                                                        ngbTooltip
+                                                        tooltipBackground="#424242"
+                                                        position="bottom"
+                                                        [mainTooltip]="
+                                                            column.field ===
+                                                            'tableDescription'
+                                                                ? 'Show Items'
+                                                                : ''
+                                                        "
+                                                        [appDescriptionItemsTextCount]="
+                                                            row[column.field]
+                                                        "
+                                                        [itemSpecialStylesIndexArray]="
+                                                            row.tableDescriptionSpecialStylesIndexArray
+                                                        "
+                                                        [containerWidth]="
+                                                            column.width
+                                                        "
+                                                    ></div>
+                                                </ng-container>
+
+                                                <!-- TOTAL COLUMN -->
+
+                                                <ng-container
+                                                    *ngSwitchCase="'total'"
+                                                >
+                                                    <div
+                                                        class="d-flex align-items-center justify-content-end w-100"
+                                                    >
+                                                        <ng-container
+                                                            *ngIf="
+                                                                !row.isRepairOrder;
+                                                                else repairOrder
+                                                            "
+                                                        >
+                                                            <span
+                                                                class="ta-font-semi-bold text-size-14 text-color-black"
+                                                                [innerHtml]="
+                                                                    row[
+                                                                        column
+                                                                            .field
+                                                                    ]
+                                                                        ? row[
+                                                                              column
+                                                                                  .field
+                                                                          ]
+                                                                        : ''
+                                                                "
+                                                            ></span>
+                                                        </ng-container>
+
+                                                        <ng-template
+                                                            #repairOrder
+                                                        >
+                                                            <div
+                                                                class="d-flex justify-content-center align-items-center ta-font-bold text-size-11 text-color-blue-18 finish-order-action"
+                                                                (click)="
+                                                                    onFinishOrder(
+                                                                        row.id
+                                                                    )
+                                                                "
+                                                            >
+                                                                FINISH ORDER
+                                                            </div>
+                                                        </ng-template>
+                                                    </div>
+                                                </ng-container>
+
+                                                <!-- GALLON COLUMN -->
+
+                                                <ng-container
+                                                    *ngIf="
+                                                        column.ngTemplate ===
+                                                        'gallon'
+                                                    "
+                                                >
+                                                    <div
+                                                        class="d-flex justify-content-end gallon-container"
+                                                    >
+                                                        <span
+                                                            class="table-text"
+                                                            [innerHtml]="
+                                                                row[
+                                                                    column.field
+                                                                ]
+                                                                    ? (row[
+                                                                          column
+                                                                              .field
+                                                                      ]
+                                                                      | tableHighlightSearchText
+                                                                          : chipsForHighlight)
+                                                                    : ''
+                                                            "
+                                                        ></span>
+                                                    </div>
+                                                </ng-container>
+
+                                                <!-- PPG COLUMN -->
+
+                                                <ng-container
+                                                    *ngSwitchCase="'ppg'"
+                                                >
+                                                    <ng-container
+                                                        *ngIf="
+                                                            row[column.field]
+                                                        "
+                                                    >
+                                                        <div
+                                                            class="d-flex align-items-center justify-content-end w-100 ppg-container"
+                                                        >
+                                                            <svg-icon
+                                                                class="ppg-status-icon"
+                                                                [svgStyle]="{
+                                                                    'width.px': 10,
+                                                                    'height.px': 10
+                                                                }"
+                                                                [src]="
+                                                                    tableBodySvgRoutes.circleRoute
+                                                                "
+                                                            >
+                                                            </svg-icon>
+
+                                                            <span
+                                                                class="table-text"
+                                                                [ngClass]="{
+                                                                    'align-end':
+                                                                        column.isJustifyEnd
+                                                                }"
+                                                                >{{
+                                                                    '$' +
+                                                                        row[
+                                                                            column
+                                                                                .field
+                                                                        ]
+                                                                }}</span
+                                                            >
+                                                        </div>
+                                                    </ng-container>
+                                                </ng-container>
+                                            </ng-container>
+                                        </div>
+                                    </ng-container>
+
+                                    <!-- DESCRIPTION COLUMN DRIVER (OFFDUTY LOCATION, RESTRICTION, ENDORSEMENT) -->
+
+                                    <ng-container
+                                        *ngIf="
+                                            column.ngTemplate ===
+                                            'description-driver'
+                                        "
+                                    >
                                         <div
-                                            [appDescriptionItemsTextCount]="
-                                                row[column.field]
+                                            class="td-content description-items-driver-container"
+                                            [ngStyle]="{
+                                                width: column.width + 'px',
+                                                'min-width.px':
+                                                    column?.minWidth ?? 'unset'
+                                            }"
+                                            [ngClass]="{
+                                                'has-value':
+                                                    row[column.field]?.length
+                                            }"
+                                            #t3="ngbPopover"
+                                            container="body"
+                                            placement="bottom-left"
+                                            triggers="manual"
+                                            popoverClass="table-description-popover"
+                                            [ngbPopover]="descriptionPopover"
+                                            (click)="
+                                                row[column.field]?.length &&
+                                                    onShowDescriptionDropdown(
+                                                        t3,
+                                                        tableData[0]
+                                                            ?.gridNameTitle,
+                                                        column?.width,
+                                                        row,
+                                                        column.field
+                                                    )
                                             "
-                                            [containerWidth]="column.width"
-                                        ></div>
-                                    </div>
+                                        >
+                                            <div
+                                                ngbTooltip
+                                                tooltipBackground="#424242"
+                                                position="bottom"
+                                                [mainTooltip]="
+                                                    column.name.includes('Duty')
+                                                        ? 'View Off Duty locations'
+                                                        : column.name ===
+                                                          'Restriction'
+                                                        ? 'View Restrictions'
+                                                        : 'View Endorsements'
+                                                "
+                                                [appDescriptionItemsTextCount]="
+                                                    row[column.field]
+                                                "
+                                                [containerWidth]="column.width"
+                                            ></div>
+                                        </div>
+                                    </ng-container>
 
                                     <!-- SHARED COLUMN-->
 
@@ -1674,41 +1946,6 @@
                                                     ? row[column.field]
                                                     : '0'
                                             }}
-                                        </div>
-                                    </div>
-
-                                    <!-- TOTAL  COLUMN-->
-
-                                    <div
-                                        class="td-content"
-                                        *ngIf="column.ngTemplate === 'total'"
-                                        [ngStyle]="{
-                                            width: column.width + 'px',
-                                            'min-width.px': column?.minWidth
-                                                ? column.minWidth
-                                                : 'unset'
-                                        }"
-                                    >
-                                        <span
-                                            *ngIf="
-                                                !row.isRepairOrder &&
-                                                descriptionPopoverOpen !==
-                                                    row.id
-                                            "
-                                            class="table-total"
-                                            [innerHtml]="
-                                                row[column.field]
-                                                    ? row[column.field]
-                                                    : ''
-                                            "
-                                        ></span>
-
-                                        <div
-                                            class="finish-order-action d-flex justify-content-center"
-                                            (click)="onFinishOrder(row.id)"
-                                            *ngIf="row.isRepairOrder"
-                                        >
-                                            Finish Order
                                         </div>
                                     </div>
 
@@ -1848,24 +2085,52 @@
                                         </div>
                                     </ng-container>
 
-                                    <!-- PPG COLUMN-->
-
-                                    <div
-                                        class="td-content"
+                                    <ng-container
                                         *ngIf="column.ngTemplate === 'ppg'"
-                                        [ngStyle]="{
-                                            width: column.width + 'px',
-                                            'min-width.px': column?.minWidth
-                                                ? column.minWidth
-                                                : 'unset'
-                                        }"
                                     >
-                                        <ng-container *ngIf="row[column.field]">
-                                            <span class="table-text">{{
-                                                '$' + row[column.field]
-                                            }}</span>
-                                        </ng-container>
-                                    </div>
+                                        <div
+                                            class="td-content"
+                                            [ngStyle]="{
+                                                width: column.width + 'px',
+                                                'min-width.px':
+                                                    column?.minWidth ?? 'unset'
+                                            }"
+                                        >
+                                            <ng-container
+                                                *ngIf="row[column.field]"
+                                            >
+                                                <div
+                                                    class="d-flex align-items-center justify-content-end w-100 ppg-container"
+                                                >
+                                                    <svg-icon
+                                                        class="ppg-status-icon"
+                                                        [svgStyle]="{
+                                                            'width.px': 10,
+                                                            'height.px': 10
+                                                        }"
+                                                        [src]="
+                                                            tableBodySvgRoutes.circleRoute
+                                                        "
+                                                    >
+                                                    </svg-icon>
+
+                                                    <span
+                                                        class="table-text"
+                                                        [ngClass]="{
+                                                            'align-end':
+                                                                column.isJustifyEnd
+                                                        }"
+                                                        >{{
+                                                            '$' +
+                                                                row[
+                                                                    column.field
+                                                                ]
+                                                        }}</span
+                                                    >
+                                                </div>
+                                            </ng-container>
+                                        </div>
+                                    </ng-container>
 
                                     <!-- URL COLUMN -->
 
@@ -2171,6 +2436,13 @@
 
                                         <span
                                             class="table-text"
+                                            [ngClass]="{
+                                                'ta-font-semi-bold':
+                                                    column.isTextBold ||
+                                                    row[column.field] ===
+                                                        'Unlimited',
+                                                'align-end': column.isJustifyEnd
+                                            }"
                                             [innerHtml]="
                                                 row[column.field]
                                                     ? (row[column.field]
@@ -2977,14 +3249,25 @@
                             <ng-container
                                 *ngFor="
                                     let column of notPinedColumns;
-                                    let c = index;
+                                    let notPinedColumnIndex = index;
                                     trackBy: trackTableNotPinedColumns
                                 "
                             >
                                 <td
                                     class="not-pined-td"
                                     [ngClass]="{
-                                        'space-left': c === 0
+                                        'space-left': notPinedColumnIndex === 0
+                                    }"
+                                    [ngStyle]="{
+                                        'margin-right':
+                                            column.ngTemplate ===
+                                                'description' ||
+                                            column.ngTemplate === 'gallon' ||
+                                            column.ngTemplate === 'ppg'
+                                                ? 0
+                                                : column.ngTemplate === 'total'
+                                                ? '7px'
+                                                : ''
                                     }"
                                 >
                                     <!-- NO TEMPLATE -->
@@ -3204,112 +3487,127 @@
 
                                     <!-- PICKUP AND DELIVERY COLUMN -->
 
-                                    <div
-                                        class="td-content"
-                                        *ngIf="
-                                            column.ngTemplate ===
-                                            'pickup-delivery'
-                                        "
-                                        [ngStyle]="{
-                                            width: column.width + 'px',
-                                            'min-width.px': column?.minWidth
-                                                ? column.minWidth
-                                                : 'unset'
-                                        }"
-                                        #ngbStatus="ngbPopover"
-                                        [autoClose]="true"
-                                        [ngbPopover]="stopsPopover"
-                                        [placement]="'bottom-left'"
-                                        container="body"
-                                        popoverClass="table-stops-popover"
-                                        triggers="manual"
-                                        (click)="
-                                            toggleStopsDropdown(
-                                                ngbStatus,
-                                                column.width,
-                                                row
-                                            )
-                                        "
+                                    <ng-container
+                                        *ngIf="column.ngTemplate === 'pickup'"
                                     >
                                         <div
-                                            ngbTooltip
-                                            [mainTooltip]="'Show Stops'"
-                                            tooltipBackground="#424242"
-                                            position="bottom"
-                                            class="d-flex align-items-center"
+                                            class="td-content"
+                                            [ngStyle]="{
+                                                width: column.width * 2 + 'px',
+                                                'min-width.px': column?.minWidth
+                                                    ? column.minWidth * 2
+                                                    : 'unset'
+                                            }"
+                                            #ngbStatus="ngbPopover"
+                                            [autoClose]="true"
+                                            [ngbPopover]="stopsPopover"
+                                            [placement]="'bottom-left'"
+                                            container="body"
+                                            popoverClass="table-stops-popover"
+                                            triggers="manual"
+                                            (click)="
+                                                toggleStopsDropdown(
+                                                    ngbStatus,
+                                                    column.width * 2,
+                                                    row
+                                                )
+                                            "
                                         >
-                                            <ng-container
-                                                *ngFor="
-                                                    let rowField of row[
-                                                        column.field
-                                                    ]
-                                                "
+                                            <div
+                                                ngbTooltip
+                                                [mainTooltip]="'Show Stops'"
+                                                tooltipBackground="#424242"
+                                                position="bottom"
+                                                class="d-flex align-items-center"
                                             >
-                                                <div
-                                                    class="pickup-delivery-counter"
-                                                    [ngClass]="{
-                                                        'pickup-count':
-                                                            !rowField.delivery &&
-                                                            row.count !== 'S',
-                                                        'delivery-count':
-                                                            rowField.delivery &&
-                                                            rowField.count !==
-                                                                'S',
-                                                        'special-count':
-                                                            rowField.count ===
-                                                            'S'
-                                                    }"
-                                                >
-                                                    {{ rowField.count }}
-                                                </div>
-
-                                                <div
-                                                    class="pickup-delivery-location-container"
+                                                <ng-container
+                                                    *ngFor="
+                                                        let rowField of row[
+                                                            column.field
+                                                        ];
+                                                        let i = index
+                                                    "
                                                 >
                                                     <div
-                                                        class="location"
+                                                        class="d-flex align-items-center"
                                                         [ngStyle]="{
-                                                            width:
-                                                                column.width /
-                                                                    2 -
-                                                                28 +
-                                                                'px'
+                                                            'margin-right': !i
+                                                                ? '10px'
+                                                                : '0'
                                                         }"
                                                     >
-                                                        {{ rowField.location }}
-                                                    </div>
-                                                    <ng-container
-                                                        *ngIf="
-                                                            rowField.date ||
-                                                            rowField.time
-                                                        "
-                                                    >
                                                         <div
-                                                            class="date-time-container"
-                                                            [ngStyle]="{
-                                                                width:
-                                                                    column.width /
-                                                                        2 -
-                                                                    30 +
-                                                                    'px'
+                                                            class="pickup-delivery-counter"
+                                                            [ngClass]="{
+                                                                'pickup-count':
+                                                                    !rowField.delivery &&
+                                                                    row.count !==
+                                                                        'S',
+                                                                'delivery-count':
+                                                                    rowField.delivery &&
+                                                                    rowField.count !==
+                                                                        'S',
+                                                                'special-count':
+                                                                    rowField.count ===
+                                                                    'S'
                                                             }"
                                                         >
-                                                            <div class="date">
-                                                                {{
-                                                                    rowField.date
-                                                                }}
-                                                            </div>
-                                                            <div class="time">
-                                                                {{
-                                                                    rowField.time
-                                                                }}
-                                                            </div>
+                                                            {{ rowField.count }}
                                                         </div>
-                                                    </ng-container>
-                                                </div>
-                                            </ng-container>
+
+                                                        <div
+                                                            class="pickup-delivery-location-container"
+                                                        >
+                                                            <div
+                                                                class="location"
+                                                                [ngStyle]="{
+                                                                    width:
+                                                                        column.width -
+                                                                        28 +
+                                                                        'px'
+                                                                }"
+                                                            >
+                                                                {{
+                                                                    rowField.location
+                                                                }}
+                                                            </div>
+                                                            <ng-container
+                                                                *ngIf="
+                                                                    rowField.date ||
+                                                                    rowField.time
+                                                                "
+                                                            >
+                                                                <div
+                                                                    class="date-time-container"
+                                                                    [ngStyle]="{
+                                                                        width:
+                                                                            column.width -
+                                                                            30 +
+                                                                            'px'
+                                                                    }"
+                                                                >
+                                                                    <div
+                                                                        class="date"
+                                                                    >
+                                                                        {{
+                                                                            rowField.date
+                                                                        }}
+                                                                    </div>
+                                                                    <div
+                                                                        class="time"
+                                                                    >
+                                                                        {{
+                                                                            rowField.time
+                                                                        }}
+                                                                    </div>
+                                                                </div>
+                                                            </ng-container>
+                                                        </div>
+                                                    </div>
+                                                </ng-container>
+                                            </div>
                                         </div>
-                                    </div>
+                                    </ng-container>
 
                                     <!-- LOAD TOTAL COLUMN -->
 
@@ -3615,7 +3913,7 @@
                                                 >
                                                     <svg-icon
                                                         [src]="
-                                                            tableBodySvgRoutes.BROKER_CLOSED_SVG_ROUTE
+                                                            tableBodySvgRoutes.brokerClosedRoute
                                                         "
                                                     ></svg-icon>
                                                 </ng-container>
@@ -3646,7 +3944,7 @@
                                                 >
                                                     <svg-icon
                                                         [src]="
-                                                            tableBodySvgRoutes.BROKER_CLOSED_SVG_ROUTE
+                                                            tableBodySvgRoutes.brokerClosedRoute
                                                         "
                                                     ></svg-icon>
                                                 </ng-container>
@@ -4065,89 +4363,288 @@
                                         </div>
                                     </ng-container>
 
-                                    <!-- DESCRIPTION COLUMN -->
+                                    <!-- DESCRIPTION COLUMN (GALLON, PPG, TOTAL)-->
 
-                                    <div
-                                        class="td-content"
+                                    <ng-container
                                         *ngIf="
-                                            column.ngTemplate === 'description'
+                                            [
+                                                'description',
+                                                'total',
+                                                'gallon',
+                                                'ppg'
+                                            ].includes(column.ngTemplate)
                                         "
-                                        [ngStyle]="{
-                                            width: column.width + 'px'
-                                        }"
                                     >
-                                        <ng-container
-                                            *ngIf="
-                                                row[column.field] &&
-                                                row[column.field]?.length
+                                        <div
+                                            class="td-content description-items-container"
+                                            [ngClass]="{
+                                                'order-cost-container':
+                                                    column.ngTemplate ===
+                                                        'total' &&
+                                                    row?.isRepairOrder,
+                                                'order-items-active':
+                                                    descriptionOrderActiveIndex ===
+                                                    i,
+                                                hovered:
+                                                    descriptionCostHoverIndex ===
+                                                        i &&
+                                                    !row?.isRepairOrder,
+                                                'd-flex justify-content-end':
+                                                    column.ngTemplate ===
+                                                    'gallon'
+                                            }"
+                                            [ngStyle]="{
+                                                width:
+                                                    (column.ngTemplate ===
+                                                        'ppg' ||
+                                                    column.ngTemplate ===
+                                                        'total'
+                                                        ? column.width + 6
+                                                        : column.width) + 'px',
+                                                'min-width.px':
+                                                    column?.minWidth ?? 'unset'
+                                            }"
+                                            #t1="ngbPopover"
+                                            container="body"
+                                            placement="bottom-left"
+                                            triggers="manual"
+                                            popoverClass="table-description-popover"
+                                            [ngbPopover]="descriptionPopover"
+                                            (click)="
+                                                column.ngTemplate ===
+                                                    'description' &&
+                                                    onShowDescriptionDropdown(
+                                                        t1,
+                                                        tableData[0]
+                                                            ?.gridNameTitle,
+                                                        column?.width,
+                                                        row
+                                                    )
+                                            "
+                                            (mouseenter)="
+                                                descriptionCostHoverIndex = i
+                                            "
+                                            (mouseleave)="
+                                                descriptionCostHoverIndex = -1
+                                            "
+                                            (shown)="
+                                                descriptionOrderActiveIndex = i
+                                            "
+                                            (hidden)="
+                                                descriptionOrderActiveIndex = -1
+                                            "
+                                        >
+                                            <ng-container
+                                                [ngSwitch]="column.ngTemplate"
+                                            >
+                                                <!-- DESCRIPTION COLUMN -->
+
+                                                <ng-container
+                                                    *ngSwitchCase="
+                                                        'description'
+                                                    "
+                                                >
+                                                    <div
+                                                        class="w-100"
+                                                        ngbTooltip
+                                                        tooltipBackground="#424242"
+                                                        position="bottom"
+                                                        [mainTooltip]="
+                                                            column.field ===
+                                                            'tableDescription'
+                                                                ? 'Show Items'
+                                                                : ''
+                                                        "
+                                                        [appDescriptionItemsTextCount]="
+                                                            row[column.field]
+                                                        "
+                                                        [itemSpecialStylesIndexArray]="
+                                                            row.tableDescriptionSpecialStylesIndexArray
+                                                        "
+                                                        [containerWidth]="
+                                                            column.width
+                                                        "
+                                                    ></div>
+                                                </ng-container>
+
+                                                <!-- TOTAL COLUMN -->
+
+                                                <ng-container
+                                                    *ngSwitchCase="'total'"
+                                                >
+                                                    <div
+                                                        class="d-flex align-items-center justify-content-end w-100"
+                                                    >
+                                                        <ng-container
+                                                            *ngIf="
+                                                                !row.isRepairOrder;
+                                                                else repairOrder
+                                                            "
+                                                        >
+                                                            <span
+                                                                class="ta-font-semi-bold text-size-14 text-color-black"
+                                                                [innerHtml]="
+                                                                    row[
+                                                                        column
+                                                                            .field
+                                                                    ]
+                                                                        ? row[
+                                                                              column
+                                                                                  .field
+                                                                          ]
+                                                                        : ''
+                                                                "
+                                                            ></span>
+                                                        </ng-container>
+
+                                                        <ng-template
+                                                            #repairOrder
+                                                        >
+                                                            <div
+                                                                class="d-flex justify-content-center align-items-center ta-font-bold text-size-11 text-color-blue-18 finish-order-action"
+                                                                (click)="
+                                                                    onFinishOrder(
+                                                                        row.id
+                                                                    )
+                                                                "
+                                                            >
+                                                                FINISH ORDER
+                                                            </div>
+                                                        </ng-template>
+                                                    </div>
+                                                </ng-container>
+
+                                                <!-- GALLON COLUMN -->
+
+                                                <ng-container
+                                                    *ngIf="
+                                                        column.ngTemplate ===
+                                                        'gallon'
+                                                    "
+                                                >
+                                                    <div
+                                                        class="d-flex justify-content-end gallon-container"
+                                                    >
+                                                        <span
+                                                            class="table-text"
+                                                            [innerHtml]="
+                                                                row[
+                                                                    column.field
+                                                                ]
+                                                                    ? (row[
+                                                                          column
+                                                                              .field
+                                                                      ]
+                                                                      | tableHighlightSearchText
+                                                                          : chipsForHighlight)
+                                                                    : ''
+                                                            "
+                                                        ></span>
+                                                    </div>
+                                                </ng-container>
+
+                                                <!-- PPG COLUMN -->
+
+                                                <ng-container
+                                                    *ngSwitchCase="'ppg'"
+                                                >
+                                                    <ng-container
+                                                        *ngIf="
+                                                            row[column.field]
+                                                        "
+                                                    >
+                                                        <div
+                                                            class="d-flex align-items-center justify-content-end w-100 ppg-container"
+                                                        >
+                                                            <svg-icon
+                                                                class="ppg-status-icon"
+                                                                [svgStyle]="{
+                                                                    'width.px': 10,
+                                                                    'height.px': 10
+                                                                }"
+                                                                [src]="
+                                                                    tableBodySvgRoutes.circleRoute
+                                                                "
+                                                            >
+                                                            </svg-icon>
+
+                                                            <span
+                                                                class="table-text"
+                                                                [ngClass]="{
+                                                                    'align-end':
+                                                                        column.isJustifyEnd
+                                                                }"
+                                                                >{{
+                                                                    '$' +
+                                                                        row[
+                                                                            column
+                                                                                .field
+                                                                        ]
+                                                                }}</span
+                                                            >
+                                                        </div>
+                                                    </ng-container>
+                                                </ng-container>
+                                            </ng-container>
+                                        </div>
+                                    </ng-container>
+
+                                    <!-- DESCRIPTION COLUMN DRIVER (OFFDUTY LOCATION, RESTRICTION, ENDORSEMENT) -->
+
+                                    <ng-container
+                                        *ngIf="
+                                            column.ngTemplate ===
+                                            'description-driver'
+                                        "
+                                    >
+                                        <div
+                                            class="td-content description-items-driver-container"
+                                            [ngStyle]="{
+                                                width: column.width + 'px',
+                                                'min-width.px':
+                                                    column?.minWidth ?? 'unset'
+                                            }"
+                                            [ngClass]="{
+                                                'has-value':
+                                                    row[column.field]?.length
+                                            }"
+                                            #t3="ngbPopover"
+                                            container="body"
+                                            placement="bottom-left"
+                                            triggers="manual"
+                                            popoverClass="table-description-popover"
+                                            [ngbPopover]="descriptionPopover"
+                                            (click)="
+                                                row[column.field]?.length &&
+                                                    onShowDescriptionDropdown(
+                                                        t3,
+                                                        tableData[0]
+                                                            ?.gridNameTitle,
+                                                        column?.width,
+                                                        row,
+                                                        column.field
+                                                    )
                                             "
                                         >
                                             <div
                                                 ngbTooltip
-                                                [mainTooltip]="
-                                                    column.field !==
-                                                    'tableOffDutyLocation'
-                                                        ? column.field !==
-                                                          'tableCdlDetailRestriction'
-                                                            ? 'View Endorsements'
-                                                            : 'View Restrictions'
-                                                        : 'View Off Duty Locations'
-                                                "
                                                 tooltipBackground="#424242"
                                                 position="bottom"
-                                            >
-                                                <div
-                                                    #t1="ngbPopover"
-                                                    [ngStyle]="{
-                                                        width:
-                                                            column.width -
-                                                            5 +
-                                                            'px'
-                                                    }"
-                                                    class="description-container"
-                                                    [innerHtml]="
-                                                        row[column.field]
-                                                            | tableDescriptionTextPipe
-                                                                : column.width
-                                                    "
-                                                    (click)="
-                                                        onShowDescriptionDropdown(
-                                                            t1,
-                                                            row,
-                                                            column.width,
-                                                            row[column.field],
-                                                            column.field
-                                                        )
-                                                    "
-                                                    [ngbPopover]="
-                                                        row.tableOffDutyLocation
-                                                            ? driverDescriptionPopover
-                                                            : descriptionPopover
-                                                    "
-                                                    container="body"
-                                                    [placement]="'bottom-left'"
-                                                    popoverClass="table-description-popover"
-                                                    triggers="manual"
-                                                    (hidden)="
-                                                        descriptionPopoverOpen =
-                                                            -1
-                                                    "
-                                                    (shown)="
-                                                        descriptionPopoverOpen =
-                                                            row.id
-                                                    "
-                                                ></div>
-                                                <div
-                                                    [appDescriptionItemsTextCount]="
-                                                        row[column.field]
-                                                    "
-                                                    [containerWidth]="
-                                                        column.width
-                                                    "
-                                                ></div>
-                                            </div>
-                                        </ng-container>
-                                    </div>
+                                                [mainTooltip]="
+                                                    column.name.includes('Duty')
+                                                        ? 'View Off Duty locations'
+                                                        : column.name ===
+                                                          'Restriction'
+                                                        ? 'View Restrictions'
+                                                        : 'View Endorsements'
+                                                "
+                                                [appDescriptionItemsTextCount]="
+                                                    row[column.field]
+                                                "
+                                                [containerWidth]="column.width"
+                                            ></div>
+                                        </div>
+                                    </ng-container>
 
                                     <!-- SHARED COLUMN-->
 
@@ -4376,41 +4873,6 @@
                                         </div>
                                     </div>
 
-                                    <!-- TOTAL  COLUMN-->
-
-                                    <div
-                                        class="td-content"
-                                        *ngIf="column.ngTemplate === 'total'"
-                                        [ngStyle]="{
-                                            width: column.width + 'px',
-                                            'min-width.px': column?.minWidth
-                                                ? column.minWidth
-                                                : 'unset'
-                                        }"
-                                    >
-                                        <span
-                                            *ngIf="
-                                                !row.isRepairOrder &&
-                                                descriptionPopoverOpen !==
-                                                    row.id
-                                            "
-                                            class="table-total"
-                                            [innerHtml]="
-                                                row[column.field]
-                                                    ? row[column.field]
-                                                    : ''
-                                            "
-                                        ></span>
-
-                                        <div
-                                            class="finish-order-action"
-                                            (click)="onFinishOrder(row.id)"
-                                            *ngIf="row.isRepairOrder"
-                                        >
-                                            Finish Order
-                                        </div>
-                                    </div>
-
                                     <!-- SERVICE COLUMN-->
 
                                     <ng-container
@@ -4453,25 +4915,6 @@
                                             </div>
                                         </div>
                                     </ng-container>
-
-                                    <!-- PPG COLUMN-->
-
-                                    <div
-                                        class="td-content"
-                                        *ngIf="column.ngTemplate === 'ppg'"
-                                        [ngStyle]="{
-                                            width: column.width + 'px',
-                                            'min-width.px': column?.minWidth
-                                                ? column.minWidth
-                                                : 'unset'
-                                        }"
-                                    >
-                                        <ng-container *ngIf="row[column.field]">
-                                            <span class="table-text">{{
-                                                '$' + row[column.field]
-                                            }}</span>
-                                        </ng-container>
-                                    </div>
 
                                     <!-- URL COLUMN -->
 
@@ -4743,7 +5186,9 @@
                                                     'ta-font-semi-bold':
                                                         column.isTextBold ||
                                                         row[column.field] ===
-                                                            'Unlimited'
+                                                            'Unlimited',
+                                                    'align-end':
+                                                        column.isJustifyEnd
                                                 }"
                                                 [innerHtml]="
                                                     row[column.field]
@@ -6569,71 +7014,263 @@
 <ng-template #descriptionPopover let-data="data">
     <div
         class="description-dropdown-container"
+        [ngClass]="
+            data.isFuelDescription
+                ? 'description-item-fuel'
+                : data.isDriverDescription
+                ? 'description-item-driver'
+                : data.isRepairOrder
+                ? 'description-item-repair-order'
+                : 'description-item-repair-bill'
+        "
         [ngStyle]="{
-            width: widthPopover + 100 + 'px'
+            width: widthPopover + 'px'
         }"
     >
-        <div class="description-titles">
-            <div
-                *ngFor="
-                    let popoverDescriptionItem of popoverDescriptionItems;
-                    trackBy: trackByDescriptionIdentity
+        <!-- Header -->
+
+        <div class="align-items-center description-titles">
+            <ng-container
+                *ngIf="
+                    data.isDriverDescription;
+                    else notDriverDescriptionHeader
                 "
-                [ngClass]="popoverDescriptionItem.className"
             >
-                {{ popoverDescriptionItem.title }}
-            </div>
-            <div class="price-total-title">
-                {{ data.tabelDescriptionDropTotal }}
-            </div>
+                <div class="d-flex align-items-center justify-content-center">
+                    <p
+                        class="m-0 ta-font-bold text-size-11 text-color-light-grey-6"
+                    >
+                        #
+                    </p>
+                </div>
+
+                <p
+                    class="m-0 ta-font-bold text-size-11 text-color-light-grey-6"
+                >
+                    {{
+                        data.isOffDutyLocations
+                            ? 'NAME • ADDRESS, CITY, STATE'
+                            : data.isRestrictions
+                            ? 'RESTRICTION'
+                            : 'ENDORSEMENT'
+                    }}
+                </p>
+            </ng-container>
+
+            <ng-template #notDriverDescriptionHeader>
+                <ng-container
+                    *ngFor="
+                        let descriptionPopoverHeaderItem of data.isRepairOrder
+                            ? (descriptionPopoverHeaderItems | slice : 0 : 3)
+                            : descriptionPopoverHeaderItems;
+                        let descriptionPopoverHeaderItemIndex = index;
+                        trackBy: trackByDescriptionIdentity
+                    "
+                >
+                    <div
+                        class="d-flex align-items-center"
+                        [ngStyle]="{
+                            'margin-left':
+                                descriptionPopoverHeaderItemIndex === 1 &&
+                                '-4px'
+                        }"
+                        [ngClass]="{
+                            'justify-content-center':
+                                descriptionPopoverHeaderItemIndex === 0 ||
+                                (data.isRepairOrder &&
+                                    descriptionPopoverHeaderItemIndex === 2),
+                            'justify-content-end':
+                                descriptionPopoverHeaderItemIndex === 2 ||
+                                descriptionPopoverHeaderItemIndex === 3
+                        }"
+                    >
+                        <p
+                            class="m-0 ta-font-bold text-size-11 text-color-light-grey-6"
+                        >
+                            {{ descriptionPopoverHeaderItem.title }}
+                        </p>
+                    </div>
+                </ng-container>
+
+                <div class="d-flex align-items-center justify-content-end">
+                    <p
+                        class="m-0 ta-font-semi-bold text-size-14 text-color-white"
+                    >
+                        {{ data.totalCost }}
+                    </p>
+                </div>
+            </ng-template>
         </div>
+
+        <!-- Dropdown -->
+
         <div
-            class="description-items"
+            class="d-flex flex-column description-items"
+            [ngClass]="{
+                'dropdown-scroll': data.descriptionItems.length >= 8
+            }"
             [ngStyle]="{
-                width: widthPopover + 100 + 'px'
+                width: data.isDriverDescription
+                    ? data.isOffDutyLocations
+                        ? '320px'
+                        : '233px'
+                    : '100%'
             }"
         >
-            <div
-                class="description-item"
-                [ngClass]="{ 'description-item-margin': i !== 0 }"
-                *ngFor="let item of data.descriptionItems; let i = index"
+            <ng-container
+                *ngFor="
+                    let descriptionPopoverItem of data.descriptionItems;
+                    let descriptionPopoverItemIndex = index;
+                    trackBy: trackByIdentity
+                "
             >
-                <div class="item-index">{{ i + 1 }}</div>
-                <div class="pm-item" *ngIf="item.pmDescription">
-                    <svg-icon
-                        [src]="
-                            'assets/svg/common/repair-pm/' +
-                            item.pmDescription.logoName
+                <div
+                    class="align-items-center description-items-item"
+                    [ngClass]="{
+                        'pm-item':
+                            descriptionPopoverItem?.pmTruck ||
+                            descriptionPopoverItem?.pmTrailer
+                    }"
+                >
+                    <!-- # -->
+
+                    <div
+                        class="d-flex align-items-center justify-content-center"
+                    >
+                        <span
+                            class="m-0 text-size-14"
+                            [ngClass]="{
+                                'text-color-grey':
+                                    !data.isDriverDescription ||
+                                    data.isOffDutyLocations,
+                                'text-color-white ta-font-semi-bold':
+                                    data.isDriverDescription &&
+                                    !data.isOffDutyLocations
+                            }"
+                        >
+                            {{
+                                !data.isDriverDescription ||
+                                data.isOffDutyLocations
+                                    ? descriptionPopoverItemIndex + 1
+                                    : descriptionPopoverItem.code
+                            }}
+                        </span>
+                    </div>
+
+                    <!-- Description -->
+
+                    <ng-container
+                        *ngIf="
+                            data.isDriverDescription;
+                            else notDriverDescription
                         "
-                        [svgStyle]="{ 'width.px': '20', 'height.px': '20' }"
-                    ></svg-icon>
+                    >
+                        <ng-container
+                            *ngIf="
+                                data.isOffDutyLocations;
+                                else restrictionEndorsement
+                            "
+                        >
+                            <div class="d-flex flex-column">
+                                <p
+                                    class="m-0 ta-font-medium text-size-11 text-color-white"
+                                >
+                                    {{ descriptionPopoverItem?.nickname }}
+                                </p>
+
+                                <p class="m-0 text-size-11 text-color-grey">
+                                    {{
+                                        descriptionPopoverItem?.address.address
+                                    }}
+                                </p>
+                            </div>
+                        </ng-container>
+
+                        <ng-template #restrictionEndorsement>
+                            <div class="d-flex align-items-center">
+                                <p class="m-0 text-size-11 text-color-white">
+                                    -
+                                </p>
+
+                                <p
+                                    class="m-0 text-size-11 text-color-white description-text"
+                                >
+                                    {{ descriptionPopoverItem?.description }}
+                                </p>
+                            </div>
+                        </ng-template>
+                    </ng-container>
+
+                    <ng-template #notDriverDescription>
+                        <div class="d-flex align-items-center description-box">
+                            <p class="m-0 text-size-14 text-color-white">
+                                {{ descriptionPopoverItem?.description }}
+                            </p>
+
+                            <svg-icon
+                                *ngIf="
+                                    descriptionPopoverItem?.pmTruck ||
+                                    descriptionPopoverItem?.pmTrailer
+                                "
+                                class="pm-icon"
+                                [src]="
+                                    descriptionPopoverItem?.pmTruck?.logoName ||
+                                    descriptionPopoverItem?.pmTrailer.logoName
+                                "
+                                [svgStyle]="{
+                                    'width.px': 14,
+                                    'height.px': 14
+                                }"
+                            ></svg-icon>
+                        </div>
+                    </ng-template>
+
+                    <ng-container *ngIf="!data.isDriverDescription">
+                        <!-- Quantity -->
+
+                        <div
+                            class="d-flex align-items-center"
+                            [ngClass]="
+                                data.isRepairOrder
+                                    ? 'justify-content-center'
+                                    : 'justify-content-end'
+                            "
+                        >
+                            <p class="m-0 text-size-14 text-color-white">
+                                {{ descriptionPopoverItem?.quantity }}
+                            </p>
+                        </div>
+
+                        <ng-container *ngIf="!data.isRepairOrder">
+                            <!-- Price -->
+
+                            <div
+                                class="d-flex align-items-center justify-content-end"
+                            >
+                                <p class="m-0 text-size-14 text-color-white">
+                                    {{
+                                        descriptionPopoverItem?.descriptionPrice
+                                    }}
+                                </p>
+                            </div>
+
+                            <!-- Cost -->
+
+                            <div
+                                class="d-flex align-items-center justify-content-end"
+                            >
+                                <p
+                                    class="m-0 ta-font-medium text-size-14 text-color-white"
+                                >
+                                    {{
+                                        descriptionPopoverItem?.descriptionTotalPrice
+                                    }}
+                                </p>
+                            </div>
+                        </ng-container>
+                    </ng-container>
                 </div>
-                <div
-                    class="item-title"
-                    [ngClass]="{ 'pm-style': item.pmDescription }"
-                >
-                    {{ item.description }}
-                </div>
-                <div
-                    class="number-of-items"
-                    [ngClass]="{ 'pm-style': item.pmDescription }"
-                >
-                    {{ item.quantity }}
-                </div>
-                <div
-                    class="item-cost"
-                    [ngClass]="{ 'pm-style': item.pmDescription }"
-                >
-                    {{ item.descriptionPrice }}
-                </div>
-                <div
-                    class="item-total-cost"
-                    [ngClass]="{ 'pm-style': item.pmDescription }"
-                >
-                    {{ item.descriptionTotalPrice }}
-                </div>
-            </div>
-            <div class="right-background"></div>
+            </ng-container>
         </div>
     </div>
 </ng-template>
@@ -6647,75 +7284,6 @@
     >
         <div class="add-pm-icon"></div>
         <div class="add-pm-text text-color-black text-size-14">Add PM Item</div>
-    </div>
-</ng-template>
-
-<!-- DRIVER DESCRIPTION POPOVER -->
-
-<ng-template #driverDescriptionPopover let-data="data">
-    <div class="description-dropdown-container">
-        <ng-container *ngIf="endorsement; else tableOffDutyLocation">
-            <div
-                class="description-titles"
-                [ngStyle]="{
-                    width: widthPopover + 'px'
-                }"
-            >
-                <div class="item-title">
-                    {{ restriction ? '# RESTRICTION' : '# ENDORSEMENT' }}
-                </div>
-            </div>
-            <div
-                class="description-popover-items"
-                [ngStyle]="{
-                    'min-width': '233px'
-                }"
-            >
-                <div
-                    class="description-popover-item d-flex align-items-center"
-                    *ngFor="let item of data; let i = index"
-                >
-                    <div
-                        class="title-endorsment d-flex justify-content-center align-items-center"
-                    >
-                        {{ item.code }}
-                    </div>
-                    <div class="white-line">-</div>
-                    <div class="subtitle-endorsment">
-                        {{ item.description }}
-                    </div>
-                </div>
-                <div class="right-background"></div>
-            </div>
-        </ng-container>
-        <ng-template #tableOffDutyLocation>
-            <div
-                class="description-titles"
-                [ngStyle]="{
-                    width: widthPopover + 'px'
-                }"
-            >
-                <div class="item-title"># NAME • ADDRESS, CITY, STATE</div>
-            </div>
-            <div
-                class="description-popover-items"
-                [ngStyle]="{
-                    'min-width': '320px'
-                }"
-            >
-                <div
-                    class="description-popover-item"
-                    *ngFor="let item of data; let i = index"
-                >
-                    <div class="number">{{ i + 1 }}</div>
-                    <div class="content">
-                        <div class="title">{{ item.nickname }}</div>
-                        <div class="address">{{ item.address.address }}</div>
-                    </div>
-                </div>
-                <div class="right-background"></div>
-            </div>
-        </ng-template>
     </div>
 </ng-template>
 

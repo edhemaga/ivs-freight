@@ -12,6 +12,6 @@ export enum ChartValueLabelEnum {
     COST = 'cost',
     GALLON = 'gallon',
     REPAIR_COST = 'repairCost',
-    AVERAGE_PAY_PERIOD_DAYS = 'averagePayPeriod.days',
+    AVERAGE_PAY_PERIOD_DAYS = 'averagePayPeriod',
     PAY_TERM = 'payTerm'
 }

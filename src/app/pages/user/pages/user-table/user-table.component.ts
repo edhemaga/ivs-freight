@@ -20,11 +20,12 @@ import { ConfirmationActivationModalComponent } from '@shared/components/ta-shar
 import { getUsersColumnDefinition } from '@shared/utils/settings/table-settings/users-columns';
 import { MethodsGlobalHelper } from '@shared/utils/helpers/methods-global.helper';
 import { DataFilterHelper } from '@shared/utils/helpers/data-filter.helper';
+import { AvatarColorsHelper } from '@shared/utils/helpers/avatar-colors.helper';
 
 // store
 import { UserActiveQuery } from '@pages/user/state/user-active-state/user-active.query';
-import { UserActiveState } from '@pages/user/state/user-active-state/user-active.store';
 import { UserInactiveQuery } from '@pages/user/state/user-inactive-state/user-inactive.query';
+import { UserActiveState } from '@pages/user/state/user-active-state/user-active.store';
 import {
     UserInactiveState,
     UserInactiveStore,
@@ -45,19 +46,16 @@ import { ActivityTimePipe } from '@shared/pipes/activity-time.pipe';
 import { UserConstants } from '@pages/user/utils/constants/user.constants';
 import { UserTableConfig } from '@pages/user/pages/user-table/utils/constants/user-table-config.constants';
 import { UserTableConfiguration } from '@pages/user/pages/user-table/utils/constants';
+import { DisplayUserConfiguration } from '@pages/user/utils/constants/user-card-data.constants';
 
 // enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
-import { DisplayUserConfiguration } from '@pages/user/utils/constants/user-card-data.constants';
 
 // models
 import { DropdownItem } from '@shared/models/card-models/card-table-data.model';
 import { CardRows } from '@shared/models/card-models/card-rows.model';
 import { CompanyUserResponse } from 'appcoretruckassist';
 import { UserTableData } from '@pages/user/pages/user-table/models';
-
-// helpers
-import { AvatarColorsHelper } from '@shared/utils/helpers/avatar-colors.helper';
 
 @Component({
     selector: 'app-user-table',
@@ -388,7 +386,7 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     // Responsive Observer
-    observTableContainer() {
+    private observTableContainer(): void {
         this.resizeObserver = new ResizeObserver((entries) => {
             entries.forEach((entry) => {
                 this.tableService.sendCurrentSetTableWidth(
@@ -401,7 +399,7 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     // Table Options
-    initTableOptions(): void {
+    private initTableOptions(): void {
         this.tableOptions = {
             toolbarActions: {
                 hideDataCount: true,
@@ -424,7 +422,7 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     // Get Columns Definition
-    getGridColumns(configType: string) {
+    private getGridColumns(configType: string) {
         const tableColumnsConfig = JSON.parse(
             localStorage.getItem(`table-${configType}-Configuration`)
         );
@@ -435,7 +433,7 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     // Send User Data
-    sendUserData() {
+    private sendUserData(): void {
         const tableView = JSON.parse(localStorage.getItem(`User-table-view`));
 
         if (tableView) {
@@ -518,7 +516,7 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     // Set User Data
-    setUserData(td: any) {
+    private setUserData(td: any) {
         this.columns = td.gridColumns;
 
         if (td.data.length) {
@@ -539,7 +537,11 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     // Map User Data
-    public mapUserData(data: CompanyUserResponse, dontMapIndex?: boolean, isInvitationSent?: boolean): any {
+    public mapUserData(
+        data: CompanyUserResponse,
+        dontMapIndex?: boolean,
+        isInvitationSent?: boolean
+    ): any {
         //leave this any for now
         if (!data.avatarFile?.url && !dontMapIndex) this.mapingIndex++;
 
@@ -627,17 +629,20 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
         };
     }
 
-    public getDropdownContent(data: CompanyUserResponse, isInvitationSent?: boolean): DropdownItem[] {
+    public getDropdownContent(
+        data: CompanyUserResponse,
+        isInvitationSent?: boolean
+    ): DropdownItem[] {
         const dropdownContent = UserConstants.getUserTableDropdown(
             data,
             this.selectedTab,
-            isInvitationSent,
+            isInvitationSent
         );
         return dropdownContent;
     }
 
     // User Back Filter Query
-    userBackFilter(
+    private userBackFilter(
         filter: {
             active: number;
             pageIndex: number;
@@ -649,7 +654,7 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
             searchThree: string | undefined;
         },
         isShowMore?: boolean
-    ) {
+    ): void {
         this.userService
             .getUsers(
                 filter.active,
@@ -712,7 +717,7 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
             });
     }
 
-    deleteUserById(id: number) {
+    private deleteUserById(id: number): void {
         this.userService
             .deleteUserById(id, this.selectedTab)
             .pipe(takeUntil(this.destroy$))
@@ -742,7 +747,7 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
             });
     }
 
-    updateDataCount() {
+    private updateDataCount(): void {
         const userCount = JSON.parse(
             localStorage.getItem(TableStringEnum.USER_TABLE_COUNT)
         );
@@ -759,7 +764,7 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     // Get Avatar Color
-    getAvatarColors() {
+    private getAvatarColors(): { background: string; color: string } {
         let textColors: string[] = [
             '#6D82C7',
             '#4DB6A2',
@@ -799,7 +804,7 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     // On ToolBar Actions
-    onToolBarAction(event: any) {
+    public onToolBarAction(event: any): void {
         if (event.action === TableStringEnum.OPEN_MODAL) {
             this.modalService.openModal(UserModalComponent, {
                 size: TableStringEnum.SMALL,
@@ -867,7 +872,7 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     // On Head Actions
-    onTableHeadActions(event: any) {
+    public onTableHeadActions(event: any): void {
         if (event.action === TableStringEnum.SORT) {
             if (event.direction) {
                 this.mapingIndex = 0;
@@ -884,7 +889,7 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     // On Body Actions
-    onTableBodyActions(event: any) {
+    public onTableBodyActions(event: any): void {
         const confirmationModalData = {
             ...event,
             data: {
@@ -948,9 +953,15 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 .userResendIvitation(event.data.id)
                 .pipe(takeUntil(this.destroy$))
                 .subscribe(() => {
-                    this.viewData = this.viewData.map((data: CompanyUserResponse) => {
-                        return this.mapUserData(data, true, event.data.id === data.id ? true : false);
-                    });
+                    this.viewData = this.viewData.map(
+                        (data: CompanyUserResponse) => {
+                            return this.mapUserData(
+                                data,
+                                true,
+                                event.data.id === data.id ? true : false
+                            );
+                        }
+                    );
                 });
         }
         // User Delete
@@ -969,7 +980,7 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     // Delete Multiple Users
-    multipleDeleteUsers(users: any) {
+    private multipleDeleteUsers(users: any): void {
         this.userService
             .deleteUserList(users, this.selectedTab)
             .pipe(takeUntil(this.destroy$))

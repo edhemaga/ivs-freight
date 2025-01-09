@@ -17,5 +17,6 @@ export interface StateResponse {
     countryType?: EnumValue;
     stateShortName?: string | null;
     stateName?: string | null;
+    counter?: number;
 }
 

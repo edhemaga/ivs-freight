@@ -35,8 +35,8 @@ export interface Load {
     };
     stops: LoadStopCommand[];
     baseRate: number;
-    adjustedRate: number;
-    driverRate: number;
+    adjustedRate?: number;
+    driverRate?: number;
     advancePay?: number;
     additionalBillingRates: LoadBillingAdditionalCommand[];
     files: Blob[];

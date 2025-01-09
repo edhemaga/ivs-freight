@@ -44,7 +44,7 @@ export class FuelCardsModalConfig {
         },
         {
             title: 'Card Detail • Number',
-            key: 'TableDropdownComponentConstantsCardNumber',
+            key: 'tableDropdownComponentConstantsCardNumber',
         },
         null,
         null,

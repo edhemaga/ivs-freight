@@ -51,7 +51,9 @@ export class LoadModalFinancialComponent implements OnChanges {
     @Input() paymentCount: number;
     @Input() thirdHeaderTitle: string;
     @Input() billing: string;
-    @Input() adjusted: number;
+    @Input() set adjusted (value: number) {
+        this._adjusted = value;
+    };
     @Input() payment: string;
     @Input() tonu: number;
     @Input() baseRate: number;
@@ -78,6 +80,7 @@ export class LoadModalFinancialComponent implements OnChanges {
     public _isCardOpen: any = 'null';
     public noActive: string;
     public zoneTriger: boolean = false;
+    public _adjusted: number;
 
     public paymentDifference: number = 0;
     public revisedDifference: number = 0;

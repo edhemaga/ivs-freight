@@ -8,7 +8,7 @@
         'not-pined-columns-container': tableHeadRowsData?.notPinedColumns,
         'tr-height-2':
             tableHeadRowsData?.tableData[0]?.gridNameTitle
-            | tableDoubleHeadHeight
+            | tableDoubleHeadHeight,
     }"
     [ngStyle]="{ 'max-width.px': tableHeadRowsData?.notPinedMaxWidth }"
     (cdkDropListDropped)="handleTableHeadRowsActionClick($event, 'reorder')"
@@ -40,7 +40,7 @@
             [ngStyle]="{
                 width: column.width + 'px',
                 'min-width.px': column?.width ?? 'unset',
-                'margin-left': column.moveRight ? 'auto' : 'unset'
+                'margin-left': column.moveRight ? 'auto' : 'unset',
             }"
             [ngClass]="{
                 'justify-content-center':
@@ -63,7 +63,7 @@
                     column.ngTemplate !== '' &&
                     column.ngTemplate !== 'checkbox' &&
                     column.ngTemplate !== 'user-checkbox',
-                'space-left': tableHeadRowsData?.notPinedColumns && i === 0
+                'space-left': tableHeadRowsData?.notPinedColumns && i === 0,
             }"
             (cdkDragStarted)="
                 tableHeadRowsData?.notPinedColumns &&
@@ -82,7 +82,7 @@
                     column.ngTemplate
                         | tableHeadConditions
                             : {
-                                  conditionType: 'selected-row-count'
+                                  conditionType: 'selected-row-count',
                               };
                     else doubleHeading
                 "
@@ -101,7 +101,7 @@
                     triggers="manual"
                     [ngClass]="{
                         'has-selected ta-font-bold d-flex align-items-center justify-content-center':
-                            tableHeadRowsData?.mySelection?.length
+                            tableHeadRowsData?.mySelection?.length,
                     }"
                     (click)="
                         handleTableHeadRowsActionClick(op, 'selected-options')
@@ -121,7 +121,7 @@
                                 : {
                                       conditionType: 'double-heading',
                                       name: column.name,
-                                      title: column.title
+                                      title: column.title,
                                   };
                         else headingIcon
                     "
@@ -141,14 +141,15 @@
                                     column.sortDirection !== '' &&
                                     column.sortDirection,
                                 'th-title-locked-cursor':
-                                    tableHeadRowsData?.locked
+                                    tableHeadRowsData?.locked,
+                                'justify-content-end': column?.isJustifyEnd,
                             }"
                             [ngStyle]="{
                                 'width.px':
                                     column.resizable &&
                                     !tableHeadRowsData?.locked
                                         ? column.width - 55
-                                        : column.width - 20
+                                        : column.width - 20,
                             }"
                             (click)="
                                 handleTableHeadRowsActionClick(column, 'sort')
@@ -200,7 +201,11 @@
                                     column.resizable &&
                                     !tableHeadRowsData?.locked
                                         ? column.width - 55
-                                        : column.width - 20
+                                        : column.width - 20,
+                                display:
+                                    column.headIconStyle || column?.isJustifyEnd
+                                        ? 'flex'
+                                        : 'block',
                             }"
                             [ngClass]="{
                                 'sort-active':
@@ -215,12 +220,22 @@
                                     column.tableHeadTitle === 'STATUS' &&
                                     tableHeadRowsData?.tableData[0]
                                         .gridNameTitle !== 'User',
-                                'd-flex gap-1 align-items-center': column.headIconStyle,
+                                'd-flex gap-1 align-items-center':
+                                    column.headIconStyle,
+                                'd-flex justify-content-end':
+                                    column?.isJustifyEnd,
+                                'border-right':
+                                    column.tableHeadTitle
+                                    | tableHeadRightBorder
+                                        : tableHeadRowsData?.tableData[0]
+                                              .gridNameTitle,
                             }"
                         >
                             <ng-container *ngIf="column.headIconStyle">
                                 <div
-                                    class="icons"
+                                    class="icons {{
+                                        column.headIconStyle.customClass
+                                    }}"
                                     (click)="
                                         handleTableHeadRowsActionClick(
                                             column,
@@ -233,7 +248,7 @@
                                             'width.px':
                                                 column.headIconStyle.width,
                                             'height.px':
-                                                column.headIconStyle.height
+                                                column.headIconStyle.height,
                                         }"
                                         [src]="
                                             column.headIconStyle.imgPath ?? ''
@@ -266,7 +281,7 @@
                                 : {
                                       conditionType: 'heading-icon',
                                       headIconStyle: column.headIconStyle,
-                                      title: column.title
+                                      title: column.title,
                                   };
                         else heading
                     "
@@ -277,14 +292,14 @@
                             'width.px':
                                 column.resizable && !tableHeadRowsData?.locked
                                     ? column.width - 55
-                                    : column.width - 20
+                                    : column.width - 20,
                         }"
                         (click)="handleTableHeadRowsActionClick(column, 'sort')"
                     >
                         <svg-icon
                             [svgStyle]="{
                                 'width.px': column.headIconStyle.width,
-                                'height.px': column.headIconStyle.height
+                                'height.px': column.headIconStyle.height,
                             }"
                             [src]="column.headIconStyle.imgPath ?? ''"
                         ></svg-icon>
@@ -301,7 +316,7 @@
                             | tableHeadConditions
                                 : {
                                       conditionType: 'heading',
-                                      title: column.title
+                                      title: column.title,
                                   };
                         else swTwHeading
                     "
@@ -312,14 +327,15 @@
                             'width.px':
                                 column.resizable && !tableHeadRowsData?.locked
                                     ? column.width - 55
-                                    : column.width - 20
+                                    : column.width - 20,
                         }"
                         [ngClass]="{
                             'sort-active':
                                 column.sortDirection !== '' &&
                                 column.sortDirection,
                             'th-title-locked-cursor': tableHeadRowsData?.locked,
-                            'set-center-th-title': column.setCenter
+                            'set-center-th-title': column.setCenter,
+                            'd-flex justify-content-end': column?.isJustifyEnd,
                         }"
                         (click)="handleTableHeadRowsActionClick(column, 'sort')"
                     >
@@ -336,7 +352,7 @@
                         column.ngTemplate
                             | tableHeadConditions
                                 : {
-                                      conditionType: 'sw-tw-heading'
+                                      conditionType: 'sw-tw-heading',
                                   };
                         else citation
                     "
@@ -347,7 +363,7 @@
                             'sort-active':
                                 column.sortDirection !== '' &&
                                 column.sortDirection,
-                            'th-title-locked-cursor': tableHeadRowsData?.locked
+                            'th-title-locked-cursor': tableHeadRowsData?.locked,
                         }"
                         ž
                         (click)="handleTableHeadRowsActionClick(column, 'sort')"
@@ -379,7 +395,7 @@
                         column.ngTemplate
                             | tableHeadConditions
                                 : {
-                                      conditionType: 'citation'
+                                      conditionType: 'citation',
                                   };
                         else accidentCitationIcons
                     "
@@ -392,7 +408,7 @@
                             'sort-active':
                                 column.sortDirection !== '' &&
                                 column.sortDirection,
-                            'th-title-locked-cursor': tableHeadRowsData?.locked
+                            'th-title-locked-cursor': tableHeadRowsData?.locked,
                         }"
                         (click)="handleTableHeadRowsActionClick(column, 'sort')"
                     >
@@ -403,7 +419,7 @@
                                 <svg-icon
                                     [svgStyle]="{
                                         'width.px': 18,
-                                        'height.px': 18
+                                        'height.px': 18,
                                     }"
                                     [src]="
                                         'assets/svg/truckassist-table/cop-head-icon.svg'
@@ -417,7 +433,7 @@
                                 <svg-icon
                                     [svgStyle]="{
                                         'width.px': 18,
-                                        'height.px': 18
+                                        'height.px': 18,
                                     }"
                                     [src]="
                                         'assets/svg/truckassist-table/oss-head-icon.svg'
@@ -432,7 +448,7 @@
                                     class="d-flex justify-content-center align-items-center"
                                     [svgStyle]="{
                                         'width.px': 18,
-                                        'height.px': 18
+                                        'height.px': 18,
                                     }"
                                     [src]="
                                         'assets/svg/truckassist-table/money-head-icon.svg'
@@ -452,7 +468,7 @@
                         column.ngTemplate
                             | tableHeadConditions
                                 : {
-                                      conditionType: 'citation-icons'
+                                      conditionType: 'citation-icons',
                                   };
                         else icons
                     "
@@ -463,7 +479,7 @@
                             'sort-active':
                                 column.sortDirection !== '' &&
                                 column.sortDirection,
-                            'th-title-locked-cursor': tableHeadRowsData?.locked
+                            'th-title-locked-cursor': tableHeadRowsData?.locked,
                         }"
                         (click)="handleTableHeadRowsActionClick(column, 'sort')"
                     >
@@ -475,7 +491,7 @@
                                     class="d-flex justify-content-center align-items-center"
                                     [svgStyle]="{
                                         'width.px': 18,
-                                        'height.px': 18
+                                        'height.px': 18,
                                     }"
                                     [src]="
                                         'assets/svg/truckassist-table/accident-crash-vehicles-icon.svg'
@@ -490,7 +506,7 @@
                                     class="d-flex justify-content-center align-items-center"
                                     [svgStyle]="{
                                         'width.px': 18,
-                                        'height.px': 18
+                                        'height.px': 18,
                                     }"
                                     [src]="
                                         'assets/svg/truckassist-table/accident-injured-icon.svg'
@@ -505,7 +521,7 @@
                                     class="d-flex justify-content-center align-items-center"
                                     [svgStyle]="{
                                         'width.px': 18,
-                                        'height.px': 18
+                                        'height.px': 18,
                                     }"
                                     [src]="
                                         'assets/svg/truckassist-table/accident-rip-icon.svg'
@@ -520,7 +536,7 @@
                                     class="d-flex justify-content-center align-items-center"
                                     [svgStyle]="{
                                         'width.px': 18,
-                                        'height.px': 18
+                                        'height.px': 18,
                                     }"
                                     [src]="
                                         'assets/svg/truckassist-table/accident-hook-icon.svg'
@@ -534,7 +550,7 @@
                                 <svg-icon
                                     [svgStyle]="{
                                         'width.px': 18,
-                                        'height.px': 18
+                                        'height.px': 18,
                                     }"
                                     [src]="
                                         'assets/svg/truckassist-table/accident-hazmat-icon.svg'
@@ -556,21 +572,21 @@
                                 : {
                                       conditionType: 'icons',
                                       headIconStyle: column.headIconStyle,
-                                      title: column.title
+                                      title: column.title,
                                   }
                     "
                 >
                     <div
                         class="icons"
                         [ngClass]="{
-                            'icon-hover': column.ngTemplate !== 'hire'
+                            'icon-hover': column.ngTemplate !== 'hire',
                         }"
                         (click)="handleTableHeadRowsActionClick(column, 'sort')"
                     >
                         <svg-icon
                             [svgStyle]="{
                                 'width.px': column.headIconStyle.width,
-                                'height.px': column.headIconStyle.height
+                                'height.px': column.headIconStyle.height,
                             }"
                             [src]="column.headIconStyle.imgPath ?? ''"
                         ></svg-icon>
@@ -590,7 +606,7 @@
                                   sortDirection: column.sortDirection,
                                   locked: tableHeadRowsData?.locked,
                                   viewDataLength:
-                                      tableHeadRowsData?.viewDataLength
+                                      tableHeadRowsData?.viewDataLength,
                               }
                 "
             >
@@ -600,7 +616,7 @@
                     <svg-icon
                         [svgStyle]="{
                             'width.px': 12,
-                            'height.px': 12
+                            'height.px': 12,
                         }"
                         [src]="
                             column.sortDirection === 'asc'
@@ -634,7 +650,7 @@
                             class="x-icon"
                             [svgStyle]="{
                                 'width.px': 10,
-                                'height.px': 10
+                                'height.px': 10,
                             }"
                             [src]="'assets/svg/truckassist-table/x.svg'"
                             (click)="
@@ -651,11 +667,12 @@
                         [ngClass]="{
                             pined: column.isPined,
                             hide:
-                                !column.isPined && tableHeadRowsData?.reordering
+                                !column.isPined &&
+                                tableHeadRowsData?.reordering,
                         }"
                         [svgStyle]="{
                             'width.px': 9,
-                            'height.px': 12
+                            'height.px': 12,
                         }"
                         [src]="'assets/svg/truckassist-table/pin.svg'"
                         (click)="
@@ -674,7 +691,7 @@
     <app-table-head-rows-popover
         [tableHeadRowsPopoverData]="{
             mySelection: tableHeadRowsData?.mySelection,
-            selectableRow: tableHeadRowsData?.selectableRow
+            selectableRow: tableHeadRowsData?.selectableRow,
         }"
         (tableHeadRowsPopoverActionsEmitter)="
             handleTableHeadRowsActionClick($event, 'selection')

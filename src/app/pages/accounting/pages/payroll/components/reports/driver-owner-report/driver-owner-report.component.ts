@@ -235,6 +235,8 @@ export class DriverOwnerReportComponent
         ];
     }
 
+
+
     public customSortPredicate = (
         index: number,
         data: CdkDrag<any>

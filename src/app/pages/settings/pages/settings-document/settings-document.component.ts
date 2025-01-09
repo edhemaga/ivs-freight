@@ -81,7 +81,7 @@ export class SettingsDocumentComponent
     public onToolBarAction(event) {
         if (event.action === 'open-modal') {
             this.showDropzone = true;
-            this.tableOptions.toolbarActions.hideOpenModalButton = true;
+            this.tableOptions.toolbarActions.disableOpenModalButton = true;
         }
     }
 
@@ -97,7 +97,7 @@ export class SettingsDocumentComponent
     }
 
     public hideDropzone() {
-        this.tableOptions.toolbarActions.hideOpenModalButton = false;
+        this.tableOptions.toolbarActions.disableOpenModalButton = false;
         this.showDropzone = false;
     }
 

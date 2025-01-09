@@ -23,7 +23,10 @@ import { DetailsDataService } from '@shared/services/details-data.service';
 // store
 import { TruckActiveQuery } from '@pages/truck/state/truck-active-state/truck-active.query';
 import { TruckInactiveQuery } from '@pages/truck/state/truck-inactive-state/truck-inactive.query';
-import { TruckActiveState, TruckActiveStore } from '@pages/truck/state/truck-active-state/truck-active.store';
+import {
+    TruckActiveState,
+    TruckActiveStore,
+} from '@pages/truck/state/truck-active-state/truck-active.store';
 import { TruckInactiveState } from '@pages/truck/state/truck-inactive-state/truck-inactive.store';
 import { TruckInactiveStore } from '@pages/truck/state/truck-inactive-state/truck-inactive.store';
 import { select, Store } from '@ngrx/store';
@@ -132,7 +135,7 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
         // Pipes
         private thousandSeparator: ThousandSeparatorPipe,
-        public datePipe: DatePipe,
+        public datePipe: DatePipe
     ) {}
 
     ngOnInit(): void {
@@ -451,7 +454,9 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
             this.backFilterQuery.active =
                 this.selectedTab === TableStringEnum.ACTIVE ? 1 : 0;
             this.activeViewMode = tableView.viewMode;
-            this.detailsDataService.setActivation(!(!!this.backFilterQuery.active));
+            this.detailsDataService.setActivation(
+                !!!this.backFilterQuery.active
+            );
         }
 
         this.initTableOptions();
@@ -769,7 +774,7 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 content: this.getDropdownTruckContent(),
             },
             createdAt,
-            updatedAt
+            updatedAt,
         };
     }
 
@@ -932,7 +937,7 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 this.tableService.sendSelectOrDeselect(
                     TableStringEnum.DESELECT
                 );
-                
+
                 if (updateTruckTable) this.sendTruckData();
             });
     }
@@ -954,12 +959,12 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
             this.backFilterQuery.active =
                 this.selectedTab === TableStringEnum.ACTIVE ? 1 : 0;
 
-                this.caSearchMultipleStatesService.deleteAllChips();
+            this.caSearchMultipleStatesService.deleteAllChips();
             if (
                 this.selectedTab === TableStringEnum.INACTIVE &&
                 !this.inactiveTabClicked
             ) {
-                this.truckBackFilter(this.backFilterQuery, false, true)
+                this.truckBackFilter(this.backFilterQuery, false, true);
             } else {
                 this.sendTruckData();
             }

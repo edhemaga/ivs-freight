@@ -20,6 +20,8 @@ import { TaTableCardDropdownActionsComponent } from '@shared/components/ta-table
 import { CaMapComponent } from 'ca-components';
 import { TaInputDropdownContactsComponent } from '@shared/components/ta-input-dropdown-contacts/ta-input-dropdown-contacts.component';
 import { TaOpenHoursDropdownComponent } from '@shared/components/ta-open-hours-dropdown/ta-open-hours-dropdown.component';
+import { RepairShopDetailsComponent } from '@pages/repair/pages/repair-shop-details/repair-shop-details.component';
+import { TaTableEmptyComponent } from '@shared/components/ta-table/ta-table-empty/ta-table-empty.component';
 
 // pipes
 import { FormatDatePipe } from '@shared/pipes/format-date.pipe';
@@ -28,9 +30,8 @@ import { NFormatterPipe } from '@shared/pipes/n-formatter.pipe';
 import { NgForLengthFilterPipe } from '@shared/pipes/ng-for-length-filter.pipe';
 import { CardValuePipe } from '@shared/pipes/card-value.pipe';
 
-// components
-import { RepairShopDetailsComponent } from '@pages/repair/pages/repair-shop-details/repair-shop-details.component';
-import { TaTableEmptyComponent } from '@shared/components/ta-table/ta-table-empty/ta-table-empty.component';
+// directives
+import { DescriptionItemsTextCountDirective } from '@shared/directives';
 
 // store
 import { StoreModule } from '@ngrx/store';
@@ -60,12 +61,15 @@ import { repairCardModalReducer } from '@pages/repair/pages/repair-card-modal/st
         TaOpenHoursDropdownComponent,
         TaTableEmptyComponent,
 
-        // Pipes
+        // pipes
         FormatDatePipe,
         FlipCardsPipe,
         NFormatterPipe,
         NgForLengthFilterPipe,
         CardValuePipe,
+
+        // directives
+        DescriptionItemsTextCountDirective,
 
         // store
         StoreModule.forFeature('repairCardData', repairCardModalReducer),

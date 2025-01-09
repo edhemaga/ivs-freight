@@ -45,7 +45,7 @@ export class ChartHelper {
 
             // Since there are unique use cases for the usage that are not applicable to other types of graphs, special checks were performed
             // For example line can accept list of numbers as values, but bar chart can accept array of numbers that contain upper and lower values
-            // See data property assignement
+            // See data property assignment
             switch (property.type) {
                 case ChartTypesStringEnum.LINE:
                     datasets = [
@@ -69,8 +69,8 @@ export class ChartHelper {
                             borderWidth: 0, // Adjust if needed, for the time being no borders were used for bar charts
                             data: [...rawData.map((item: T): [number, number] => {
                                 return [
-                                    item[property.minValue] ?? 0, // For mock purposes replace '|| 0' with '|| Math.random() * 10'; use bigger values for random if needed
-                                    item[property.maxValue] ?? 0 // For mock purposes replace '|| 0' with '|| Math.random() * 10'; use bigger values for random if needed
+                                    item[property.minValue] || 0, // For mock purposes replace '|| 0' with '|| Math.random() * 10'; use bigger values for random if needed
+                                    item[property.maxValue] || 0 // For mock purposes replace '|| 0' with '|| Math.random() * 10'; use bigger values for random if needed
                                 ]
                             })],
                         },
