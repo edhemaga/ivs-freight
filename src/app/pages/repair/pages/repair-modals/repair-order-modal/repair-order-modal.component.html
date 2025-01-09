@@ -15,9 +15,8 @@
         class="form-container form-container-without-mb"
         origin
     >
-        <ng-container *ngIf="selectedHeaderTab === 1">
+        @if (selectedHeaderTab === 1) {
             <!-- Invoice, Date, Pay Type, Date Paid -->
-
             <div class="repair-modal-bill-first-row">
                 <app-ca-input
                     formControlName="invoice"
@@ -77,12 +76,10 @@
                     }"
                 ></app-ca-input>
             </div>
-        </ng-container>
-
+        }
         <div class="repair-modal-bill-first-row">
             <!-- Order No, Date -->
-
-            <ng-container *ngIf="selectedHeaderTab === 2">
+            @if (selectedHeaderTab === 2) {
                 <app-ca-input
                     formControlName="orderNumber"
                     [inputConfig]="{
@@ -108,8 +105,7 @@
                         customClass: 'datetimeclass',
                     }"
                 ></app-ca-input>
-            </ng-container>
-
+            }
             <!-- Tabs -->
 
             <app-ta-tab-switch
@@ -139,7 +135,7 @@
 
             <!-- Driver -->
 
-            <ng-container *ngIf="selectedHeaderTab === 1">
+            @if (selectedHeaderTab === 1) {
                 <app-ca-input-dropdown
                     formControlName="driver"
                     [inputConfig]="{
@@ -158,11 +154,8 @@
                     [options]="driversDropdownList"
                     (selectedItem)="onSelectDropDown($event, 'driver')"
                 ></app-ca-input-dropdown>
-            </ng-container>
 
-            <!-- Odometar -->
-
-            <ng-container *ngIf="selectedHeaderTab === 1">
+                <!-- Odometar -->
                 <app-ca-input
                     formControlName="odometer"
                     [inputConfig]="{
@@ -176,7 +169,7 @@
                         maxLength: 9,
                     }"
                 ></app-ca-input>
-            </ng-container>
+            }
         </div>
 
         <!-- Repair Shop -->
@@ -185,15 +178,14 @@
             <div class="col-12 repair-shop-input">
                 <!-- Repair Shop Card -->
 
-                <ng-container
-                    *ngIf="selectedRepairShop; else notSelectedRepairShop"
-                >
+                @if (selectedRepairShop) {
                     <div class="d-flex flex-column selected-item-container">
                         <div class="selected-item-label">
                             Repair Shop
 
-                            <ng-container *ngIf="selectedHeaderTab === 1"
-                                ><span>*</span></ng-container
+                            @if (selectedHeaderTab === 1) {
+                                <span>*</span>
+                            }
                             >
                         </div>
 
@@ -213,7 +205,7 @@
                         <div
                             class="d-flex align-items-center selected-item-additional"
                         >
-                            <ng-container *ngIf="selectedRepairShop?.phone">
+                            @if (selectedRepairShop?.phone) {
                                 <div
                                     class="d-flex align-items-center selected-item-info"
                                 >
@@ -236,9 +228,9 @@
                                         [leftSideIcon]="true"
                                     ></app-ta-copy>
                                 </div>
-                            </ng-container>
+                            }
 
-                            <ng-container *ngIf="selectedRepairShop?.email">
+                            @if (selectedRepairShop?.email) {
                                 <div
                                     class="d-flex align-items-center selected-item-info"
                                 >
@@ -258,9 +250,9 @@
                                         [leftSideIcon]="true"
                                     ></app-ta-copy>
                                 </div>
-                            </ng-container>
+                            }
 
-                            <ng-container *ngIf="selectedRepairShop?.address">
+                            @if (selectedRepairShop?.address) {
                                 <div
                                     class="d-flex align-items-center selected-item-info"
                                 >
@@ -282,7 +274,7 @@
                                         [leftSideIcon]="true"
                                     ></app-ta-copy>
                                 </div>
-                            </ng-container>
+                            }
                         </div>
 
                         <div class="clear-selected-item">
@@ -327,12 +319,9 @@
                             </div>
                         </div>
                     </div>
-                </ng-container>
-
-                <!-- Repair Shop Dropdown -->
-
-                <ng-template #notSelectedRepairShop>
-                    <ng-container *ngIf="!selectedRepairShop">
+                } @else {
+                    <!-- Repair Shop Dropdown -->
+                    @if (!selectedRepairShop) {
                         <app-ca-input-dropdown
                             formControlName="repairShopId"
                             [template]="'double-text-template'"
@@ -352,8 +341,8 @@
                                 onSelectDropDown($event, 'repair-shop')
                             "
                         ></app-ca-input-dropdown>
-                    </ng-container>
-                </ng-template>
+                    }
+                }
             </div>
         </div>
 
@@ -403,7 +392,7 @@
             >
             </app-ta-modal-table>
 
-            <ng-container *ngIf="selectedHeaderTab === 1">
+            @if (selectedHeaderTab === 1) {
                 <div class="item-total d-flex justify-content-between">
                     <span class="item-total-title ta-font-semi-bold"
                         >Total Cost
@@ -413,7 +402,7 @@
                         {{ total | currency }}
                     </span>
                 </div>
-            </ng-container>
+            }
         </app-ta-custom-card>
 
         <!-- Services -->
