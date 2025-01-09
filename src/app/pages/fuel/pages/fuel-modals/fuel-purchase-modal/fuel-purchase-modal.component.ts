@@ -301,11 +301,7 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
-                    this.modalService.setModalSpinner({
-                        action: null,
-                        status: true,
-                        close: true,
-                    });
+                    this.ngbActiveModal.close();
                 },
                 error: () => {
                     this.modalService.setModalSpinner({
@@ -334,11 +330,7 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
-                    this.modalService.setModalSpinner({
-                        action: null,
-                        status: true,
-                        close: true,
-                    });
+                    this.ngbActiveModal.close();
                 },
                 error: () => {
                     this.modalService.setModalSpinner({
