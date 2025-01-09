@@ -59,6 +59,7 @@ import { RepairOrderConstants } from '@pages/repair/pages/repair-modals/repair-o
 import { RepairOrderModalStringEnum } from '@pages/repair/pages/repair-modals/repair-order-modal/enums';
 import { TableStringEnum } from '@shared/enums/table-string.enum';
 import { ModalTableTypeEnum } from '@shared/enums/modal-table-type.enum';
+import { TaModalActionEnums } from '@shared/components/ta-modal/enums';
 
 // components
 import { RepairShopModalComponent } from '@pages/repair/pages/repair-modals/repair-shop-modal/repair-shop-modal.component';
@@ -211,6 +212,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
     // enums
     public modalTableTypeEnum = ModalTableTypeEnum;
     public svgRoutes = SharedSvgRoutes;
+    public taModalActionEnums = TaModalActionEnums;
 
     constructor(
         private formBuilder: UntypedFormBuilder,
@@ -350,11 +352,12 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
         this.getDrivers();
     }
 
-    public onModalAction(data: { action: string; bool: boolean }): void {
-        switch (data.action) {
-            case RepairOrderModalStringEnum.CLOSE:
+    public onModalAction(action: string): void {
+        switch (action) {
+            case TaModalActionEnums.CLOSE:
+                this.ngbActiveModal.close();
                 break;
-            case RepairOrderModalStringEnum.SVE_AND_ADD_NEW:
+            case TaModalActionEnums.SAVE_AND_ADD_NEW:
                 if (this.repairOrderForm.invalid || !this.isFormDirty) {
                     this.inputService.markInvalid(this.repairOrderForm);
 
@@ -372,7 +375,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
                 this.isAddNewAfterSave = true;
 
                 break;
-            case RepairOrderModalStringEnum.SAVE:
+            case TaModalActionEnums.SAVE:
                 if (this.repairOrderForm.invalid || !this.isFormDirty) {
                     this.inputService.markInvalid(this.repairOrderForm);
 
@@ -394,12 +397,12 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
                 });
 
                 break;
-            case RepairOrderModalStringEnum.DELETE:
+            case TaModalActionEnums.DELETE:
                 if (this.editData.data)
                     this.deleteRepair(this.editData.data.id);
 
                 break;
-            case RepairOrderModalStringEnum.FINISH_ORDER:
+            case TaModalActionEnums.FINISH_ORDER:
                 this.setIsFinishOrderData();
 
                 break;
