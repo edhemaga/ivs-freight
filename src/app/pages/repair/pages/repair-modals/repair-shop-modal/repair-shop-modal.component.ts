@@ -81,17 +81,19 @@ import { RepairShopConfig } from '@pages/repair/pages/repair-modals/repair-shop-
 import { tabsModalAnimation } from '@shared/animations/tabs-modal.animation';
 
 // Components
-import { TaModalComponent } from '@shared/components/ta-modal/ta-modal.component';
 import { TaTabSwitchComponent } from '@shared/components/ta-tab-switch/ta-tab-switch.component';
-import { TaInputComponent } from '@shared/components/ta-input/ta-input.component';
 import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
 import { TaInputAddressDropdownComponent } from '@shared/components/ta-input-address-dropdown/ta-input-address-dropdown.component';
 import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-custom-card.component';
-import { TaInputDropdownComponent } from '@shared/components/ta-input-dropdown/ta-input-dropdown.component';
-import { TaInputNoteComponent } from '@shared/components/ta-input-note/ta-input-note.component';
 import { TaModalTableComponent } from '@shared/components/ta-modal-table/ta-modal-table.component';
 import { TaCheckboxComponent } from '@shared/components/ta-checkbox/ta-checkbox.component';
-import { CaUploadFilesComponent } from 'ca-components';
+import {
+    CaInputComponent,
+    CaInputDropdownComponent,
+    CaInputNoteComponent,
+    CaModalComponent,
+    CaUploadFilesComponent,
+} from 'ca-components';
 import { TaUserReviewComponent } from '@shared/components/ta-user-review/ta-user-review.component';
 import { ConfirmationActivationModalComponent } from '@shared/components/ta-shared-modals/confirmation-activation-modal/confirmation-activation-modal.component';
 import { TaCheckboxCardComponent } from '@shared/components/ta-checkbox-card/ta-checkbox-card.component';
@@ -99,7 +101,7 @@ import { ConfirmationModalComponent } from '@shared/components/ta-shared-modals/
 
 // Modules
 import { AngularSvgIconModule } from 'angular-svg-icon';
-import { NgbActiveModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbActiveModal, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 
 // Enums
 import { ModalTableTypeEnum } from '@shared/enums/modal-table-type.enum';
@@ -117,11 +119,15 @@ import { RepairShopConstants } from '@pages/repair/pages/repair-modals/repair-sh
 
 // SVG Routes
 import { RepairShopModalSvgRoutes } from '@pages/repair/pages/repair-modals/repair-shop-modal/utils/svg-routes';
+import { SharedSvgRoutes } from '@shared/utils/svg-routes';
 
 // Types
 import { OpenedTab } from '@pages/repair/pages/repair-modals/repair-shop-modal/types';
 import { ITaInput } from '@shared/components/ta-input/config/ta-input.config';
 import { ContactsModalConstants } from '@pages/contacts/pages/contacts-modal/utils/constants/contacts-modal.constants';
+
+// Pipes
+import { FormatDatePipe } from '@shared/pipes';
 
 @Component({
     selector: 'app-repair-shop-modal',
@@ -138,22 +144,26 @@ import { ContactsModalConstants } from '@pages/contacts/pages/contacts-modal/uti
         FormsModule,
         ReactiveFormsModule,
         AngularSvgIconModule,
-        NgbModule,
+        NgbTooltipModule,
 
         // Component
         TaAppTooltipV2Component,
-        TaModalComponent,
+        CaModalComponent,
         TaTabSwitchComponent,
-        TaInputComponent,
+        CaInputComponent,
         TaCustomCardComponent,
-        TaInputDropdownComponent,
+        CaInputDropdownComponent,
         TaInputAddressDropdownComponent,
-        TaInputNoteComponent,
+        CaInputNoteComponent,
         TaCheckboxComponent,
         CaUploadFilesComponent,
         TaModalTableComponent,
         TaUserReviewComponent,
         TaCheckboxCardComponent,
+        TaAppTooltipV2Component,
+
+        // Pipes
+        FormatDatePipe,
     ],
 })
 export class RepairShopModalComponent implements OnInit, OnDestroy {
@@ -240,6 +250,11 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
     private repairShop: RepairShopResponse;
     public isCompanyRelated: boolean = false;
     public isFormDirty: boolean = false;
+
+    public actionTypesEnum = ActionTypesEnum;
+
+    public svgRoutes = SharedSvgRoutes;
+
     constructor(
         private formBuilder: UntypedFormBuilder,
 
@@ -961,11 +976,16 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
         }
     }
 
-    public onModalAction(data: RepairShopModalAction): void {
-        if (data.action === ActionTypesEnum.DELETE) {
+    public onModalAction(data: string): void {
+        if (data === ActionTypesEnum.CLOSE) {
+            this.ngbActiveModal.close();
+        }
+
+        if (data === ActionTypesEnum.DELETE) {
             this.showDeleteBusinessModal();
         }
-        if (data.action === ActionTypesEnum.CLOSE_BUSINESS) {
+
+        if (data === ActionTypesEnum.CLOSE_BUSINESS) {
             this.showCloseBusinessModal();
         }
 
@@ -975,12 +995,12 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
         }
 
         this.isRequestInProgress = true;
-        if (data.action === ActionTypesEnum.SAVE_AND_ADD_NEW) {
+        if (data === ActionTypesEnum.SAVE_AND_ADD_NEW) {
             this.addNewRepairShop(true);
             return;
         }
 
-        if (data.action === ActionTypesEnum.SAVE) {
+        if (data === ActionTypesEnum.SAVE) {
             if (this.isEditMode) {
                 this.updateRepairShop(this.editData.id);
             } else {
