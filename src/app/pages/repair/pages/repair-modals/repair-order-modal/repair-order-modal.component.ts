@@ -957,7 +957,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
 
                         this.selectedDriver = null;
 
-                        this.isDriverSelected = true;
+                        this.isDriverSelected = false;
                     }
                 });
     }

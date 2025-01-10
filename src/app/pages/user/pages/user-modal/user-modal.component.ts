@@ -65,15 +65,17 @@ import { SettingsOfficeModalComponent } from '@pages/settings/pages/settings-mod
 import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
 import { TaModalComponent } from '@shared/components/ta-modal/ta-modal.component';
 import { TaTabSwitchComponent } from '@shared/components/ta-tab-switch/ta-tab-switch.component';
-import { TaInputComponent } from '@shared/components/ta-input/ta-input.component';
-import { TaInputAddressDropdownComponent } from '@shared/components/ta-input-address-dropdown/ta-input-address-dropdown.component';
 import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-custom-card.component';
 import { TaCheckboxCardComponent } from '@shared/components/ta-checkbox-card/ta-checkbox-card.component';
 import { TaNgxSliderComponent } from '@shared/components/ta-ngx-slider/ta-ngx-slider.component';
 import { TaInputNoteComponent } from '@shared/components/ta-input-note/ta-input-note.component';
-import { TaInputDropdownComponent } from '@shared/components/ta-input-dropdown/ta-input-dropdown.component';
 import { ConfirmationModalComponent } from '@shared/components/ta-shared-modals/confirmation-modal/confirmation-modal.component';
 import { ConfirmationActivationModalComponent } from '@shared/components/ta-shared-modals/confirmation-activation-modal/confirmation-activation-modal.component';
+import {
+    CaInputComponent,
+    CaInputDropdownComponent,
+    CaInputAddressDropdownComponent,
+} from 'ca-components';
 
 // enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
@@ -104,13 +106,13 @@ import { UserModalConfig } from '@pages/user/pages/user-modal/utils/constants';
         TaAppTooltipV2Component,
         TaModalComponent,
         TaTabSwitchComponent,
-        TaInputComponent,
-        TaInputAddressDropdownComponent,
         TaCustomCardComponent,
         TaCheckboxCardComponent,
         TaNgxSliderComponent,
         TaInputNoteComponent,
-        TaInputDropdownComponent,
+        CaInputComponent,
+        CaInputDropdownComponent,
+        CaInputAddressDropdownComponent,
     ],
 })
 export class UserModalComponent implements OnInit, OnDestroy {
@@ -209,7 +211,7 @@ export class UserModalComponent implements OnInit, OnDestroy {
         };
 
         switch (data.action) {
-            case TableStringEnum.SAVE: {
+            case TableStringEnum.SAVE:
                 if (this.userForm.invalid || !this.isFormDirty) {
                     this.inputService.markInvalid(this.userForm);
                     return;
@@ -230,7 +232,6 @@ export class UserModalComponent implements OnInit, OnDestroy {
                     });
                 }
                 break;
-            }
             case TableStringEnum.DEACTIVATE:
                 this.modalService.openModal(
                     ConfirmationActivationModalComponent,
