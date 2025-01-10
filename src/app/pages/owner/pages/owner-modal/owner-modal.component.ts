@@ -14,6 +14,8 @@ import {
 } from '@angular/core';
 import { merge, Subject, takeUntil } from 'rxjs';
 import { CommonModule } from '@angular/common';
+import { NgbActiveModal, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
+import { AngularSvgIconModule } from 'angular-svg-icon';
 
 //Validations
 import {
@@ -32,13 +34,16 @@ import {
 //Components
 import { TruckModalComponent } from '@pages/truck/pages/truck-modal/truck-modal.component';
 import { TrailerModalComponent } from '@pages/trailer/pages/trailer-modal/trailer-modal.component';
-import { TaModalComponent } from '@shared/components/ta-modal/ta-modal.component';
 import { TaTabSwitchComponent } from '@shared/components/ta-tab-switch/ta-tab-switch.component';
-import { TaInputComponent } from '@shared/components/ta-input/ta-input.component';
-import { TaInputDropdownComponent } from '@shared/components/ta-input-dropdown/ta-input-dropdown.component';
 import { TaInputAddressDropdownComponent } from '@shared/components/ta-input-address-dropdown/ta-input-address-dropdown.component';
 import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-custom-card.component';
-import { TaInputNoteComponent } from '@shared/components/ta-input-note/ta-input-note.component';
+import {
+    CaInputComponent,
+    CaInputDropdownComponent,
+    CaInputNoteComponent,
+    CaModalComponent,
+} from 'ca-components';
+import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
 import { TaUploadFilesComponent } from '@shared/components/ta-upload-files/ta-upload-files.component';
 
 //Models
@@ -55,6 +60,23 @@ import { ModalService } from '@shared/services/modal.service';
 import { OwnerService } from '@pages/owner/services/owner.service';
 import { BankVerificationService } from '@shared/services/bank-verification.service';
 import { FormService } from '@shared/services/form.service';
+import { ConfirmationService } from '@shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
+
+// Pipes
+import { FormatDatePipe } from '@shared/pipes';
+import { TaModalActionEnums } from '@shared/components/ta-modal/enums';
+
+// Svg routes
+import { SharedSvgRoutes } from '@shared/utils/svg-routes';
+
+// Enums
+import { ContactsModalStringEnum } from '@pages/contacts/pages/contacts-modal/enums';
+import { ConfirmationModalComponent } from '@shared/components/ta-shared-modals/confirmation-modal/confirmation-modal.component';
+import { TableStringEnum } from '@shared/enums';
+
+// Config
+import { OwnerModalConfig } from '@pages/owner/pages/owner-modal/utils/consts';
+import { ContactsModalConstants } from '@pages/contacts/pages/contacts-modal/utils/constants/contacts-modal.constants';
 
 @Component({
     selector: 'app-owner-modal',
@@ -68,16 +90,22 @@ import { FormService } from '@shared/services/form.service';
         CommonModule,
         FormsModule,
         ReactiveFormsModule,
+        AngularSvgIconModule,
+        NgbTooltipModule,
 
         // Component
-        TaModalComponent,
+        CaModalComponent,
         TaTabSwitchComponent,
-        TaInputComponent,
-        TaInputDropdownComponent,
+        CaInputComponent,
+        CaInputDropdownComponent,
         TaInputAddressDropdownComponent,
         TaCustomCardComponent,
-        TaInputNoteComponent,
+        CaInputNoteComponent,
         TaUploadFilesComponent,
+        TaAppTooltipV2Component,
+
+        // Pipes
+        FormatDatePipe,
     ],
 })
 export class OwnerModalComponent implements OnInit, OnDestroy {
@@ -116,20 +144,36 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
 
     public isFormDirty: boolean;
+    public svgRoutes = SharedSvgRoutes;
+    public taModalActionEnums = TaModalActionEnums;
+    public ownerModalConfig = OwnerModalConfig;
 
+    public uploadOptionsConstants = ContactsModalConstants.UPLOAD_OPTIONS;
     constructor(
         private formBuilder: UntypedFormBuilder,
         private inputService: TaInputService,
         private modalService: ModalService,
         private ownerModalService: OwnerService,
         private bankVerificationService: BankVerificationService,
-        private formService: FormService
+        private formService: FormService,
+        private ngbActiveModal: NgbActiveModal,
+        private confirmationService: ConfirmationService
     ) {}
 
     ngOnInit() {
         this.createForm();
         this.getOwnerDropdowns();
         this.onBankSelected();
+        this.confirmationActivationSubscribe();
+    }
+
+    private confirmationActivationSubscribe(): void {
+        this.confirmationService.confirmationData$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((res) => {
+                if (res.action !== TableStringEnum.CLOSE)
+                    this.ngbActiveModal?.close();
+            });
     }
 
     private createForm() {
@@ -173,9 +217,9 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
         this.manipulateWithOwnerInputs();
     }
 
-    public onModalAction(data: { action: string; bool: boolean }) {
-        switch (data.action) {
-            case 'close': {
+    public onModalAction(action: string): void {
+        switch (action) {
+            case TaModalActionEnums.CLOSE: {
                 if (this.editData?.canOpenModal) {
                     switch (this.editData?.key) {
                         case 'truck-modal': {
@@ -209,54 +253,45 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
                         }
                     }
                 }
+                this.ngbActiveModal.close();
                 break;
             }
-            case 'save and add new': {
+            case TaModalActionEnums.SAVE_AND_ADD_NEW: {
                 if (this.ownerForm.invalid || !this.isFormDirty) {
                     this.inputService.markInvalid(this.ownerForm);
                     return;
                 }
-                this.addOwner();
-                this.modalService.setModalSpinner({
-                    action: 'save and add new',
-                    status: true,
-                    close: false,
-                });
                 this.addNewAfterSave = true;
+                this.addOwner();
                 break;
             }
-            case 'save': {
+            case TaModalActionEnums.SAVE: {
                 if (this.ownerForm.invalid || !this.isFormDirty) {
                     this.inputService.markInvalid(this.ownerForm);
                     return;
                 }
                 if (this.editData?.id) {
                     this.updateOwner(this.editData.id);
-                    this.modalService.setModalSpinner({
-                        action: null,
-                        status: true,
-                        close: false,
-                    });
                 } else {
                     this.addOwner();
-                    this.modalService.setModalSpinner({
-                        action: null,
-                        status: true,
-                        close: false,
-                    });
                 }
 
                 break;
             }
-            case 'delete': {
-                this.deleteOwnerById(this.editData.id);
-                this.modalService.setModalSpinner({
-                    action: 'delete',
-                    status: true,
-                    close: false,
-                });
+            case TaModalActionEnums.DELETE:
+                if (this.editData) {
+                    this.modalService.openModal(
+                        ConfirmationModalComponent,
+                        { size: TableStringEnum.SMALL },
+                        {
+                            ...this.editData,
+                            template: TableStringEnum.OWNER_3,
+                            type: TableStringEnum.DELETE,
+                            svg: true,
+                        }
+                    );
+                }
                 break;
-            }
             default: {
                 break;
             }
@@ -319,7 +354,6 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
                 if (event.deleteId) {
                     this.filesForDelete.push(event.deleteId);
                 }
-
                 this.fileModified = true;
                 break;
             }
@@ -419,13 +453,6 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
             ...form
         } = this.ownerForm.value;
 
-        let documents = [];
-        this.documents.map((item) => {
-            if (item.realFile) {
-                documents.push(item.realFile);
-            }
-        });
-
         const newData: any = {
             id: id,
             ...form,
@@ -437,7 +464,7 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
             ssnEin: this.selectedTab === 1 ? ein : ssn,
             address: { ...this.selectedAddress, addressUnit: addressUnit },
             bankId: this.selectedBank ? this.selectedBank.id : null,
-            files: documents ? documents : this.ownerForm.value.files,
+            files: this.ownerForm.value.files,
             filesForDeleteIds: this.filesForDelete,
             longitude: this.longitude,
             latitude: this.latitude,
@@ -448,37 +475,11 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
-                    this.modalService.setModalSpinner({
-                        action: null,
-                        status: true,
-                        close: true,
-                    });
+                    this.ngbActiveModal.close();
                 },
                 error: () => {
                     this.modalService.setModalSpinner({
                         action: null,
-                        status: false,
-                        close: false,
-                    });
-                },
-            });
-    }
-
-    private deleteOwnerById(id: number) {
-        this.ownerModalService
-            .deleteOwnerById(id, this.editData.selectedTab)
-            .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: () => {
-                    this.modalService.setModalSpinner({
-                        action: 'delete',
-                        status: true,
-                        close: true,
-                    });
-                },
-                error: () => {
-                    this.modalService.setModalSpinner({
-                        action: 'delete',
                         status: false,
                         close: false,
                     });
@@ -497,13 +498,6 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
             ...form
         } = this.ownerForm.value;
 
-        let documents = [];
-        this.documents.map((item) => {
-            if (item.realFile) {
-                documents.push(item.realFile);
-            }
-        });
-
         const newData: any = {
             ...form,
             ownerType: this.selectedTab,
@@ -514,7 +508,7 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
             ssnEin: this.selectedTab === 1 ? ein : ssn,
             address: { ...this.selectedAddress, addressUnit: addressUnit },
             bankId: this.selectedBank ? this.selectedBank.id : null,
-            files: documents,
+            files: this.ownerForm.value.files,
             longitude: this.longitude,
             latitude: this.latitude,
         };
@@ -564,36 +558,12 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
                     }
 
                     if (this.addNewAfterSave) {
-                        this.modalService.setModalSpinner({
-                            action: 'save and add new',
-                            status: false,
-                            close: false,
-                        });
-                        this.formService.resetForm(this.ownerForm);
-
-                        this.selectedAddress = null;
-                        this.selectedBank = null;
-                        this.selectedTab = 1;
-
-                        this.documents = [];
-                        this.fileModified = false;
-                        this.filesForDelete = [];
-
-                        this.tabChange({ id: 1 });
-
-                        this.addNewAfterSave = false;
-
-                        this.modalService.setModalSpinner({
-                            action: 'save and add new',
-                            status: false,
-                            close: false,
+                        this.ngbActiveModal.close();
+                        this.modalService.openModal(OwnerModalComponent, {
+                            size: ContactsModalStringEnum.SMALL,
                         });
                     } else {
-                        this.modalService.setModalSpinner({
-                            action: null,
-                            status: true,
-                            close: true,
-                        });
+                        this.ngbActiveModal.close();
                     }
                 },
                 error: () => {

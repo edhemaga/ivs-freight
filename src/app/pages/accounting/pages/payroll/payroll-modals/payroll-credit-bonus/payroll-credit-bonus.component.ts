@@ -13,8 +13,7 @@ import { Subject, takeUntil } from 'rxjs';
 
 // Services
 import { PayrollCreditService } from '@pages/accounting/pages/payroll/payroll-modals/payroll-credit-bonus/services/payroll-credit.service';
-import { PayrollFacadeService } from '@pages/accounting/pages/payroll/state/services';
-import { PayrollService as PayrollInternalService } from '../../services/payroll.service';
+import { PayrollService as PayrollInternalService } from '@pages/accounting/pages/payroll/services/payroll.service';
 
 // Models
 import {
@@ -69,14 +68,14 @@ export class PayrollCreditBonusComponent implements OnInit {
     public payrollCreditForm: UntypedFormGroup;
     public formLoaded: boolean;
     private credit: PayrollCreditResponse;
+    private preselectedDriver: boolean;
 
     constructor(
         private payrolCreditService: PayrollCreditService,
         private payrollService: PayrollService,
         private payrollInternalService: PayrollInternalService,
         private ngbActiveModal: NgbActiveModal,
-        private formBuilder: UntypedFormBuilder,
-        private payrollFacadeService: PayrollFacadeService
+        private formBuilder: UntypedFormBuilder
     ) {}
 
     ngOnInit() {
@@ -110,6 +109,7 @@ export class PayrollCreditBonusComponent implements OnInit {
             [PayrollStringEnum.SELECTED_TYPE_ID]: [creditType],
         });
         this.formLoaded = true;
+        if (data.driverId) this.preselectedDriver = true;
     }
 
     public getCredit(): void {
@@ -150,12 +150,8 @@ export class PayrollCreditBonusComponent implements OnInit {
 
             this.payrolCreditService.addPayrollCredit(data).subscribe(() => {
                 if (action === TaModalActionEnums.SAVE_AND_ADD_NEW) {
-                    if (this.isDropdownEnabled) {
-                        // TODO: CHECK THIS, validators stays here all the time
-                        this.createForm();
-                        this.payrollFacadeService.resetForm();
-                        // this.selectDriver('');
-                        // this.selectTruck('');
+                    if (this.isDropdownEnabled) {                    
+                        this.payrollInternalService.saveAndAddNew(PayrollCreditBonusComponent, this.preselectedDriver, data.driverId, this.ngbActiveModal);
                     } else {
                         this.payrollCreditForm
                             .get(PayrollStringEnum.DATE)

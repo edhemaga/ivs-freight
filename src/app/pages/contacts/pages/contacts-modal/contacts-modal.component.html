@@ -1,288 +1,292 @@
-<app-ta-modal
+<app-ca-modal
     [modalTitle]="editData?.type !== 'edit' ? 'Add Contact' : 'Edit Contact'"
-    [editData]="editData"
-    [editName]="editData?.data?.name"
-    [isModalValid]="
-        contactForm.valid &&
-        isFormDirty &&
-        isEachPhoneRowValid &&
-        isEachEmailRowValid
-    "
-    [saveAndAddNew]="editData?.type !== 'edit'"
-    [disableDelete]="true"
-    (action)="onModalAction($event)"
+    [leftHeaderTemplate]="leftModalContent"
+    [footerTemplate]="footerTemplate"
+    [rightHeaderTemplate]="rightModalContent"
 >
-    <form
-        origin
-        [formGroup]="contactForm"
-        class="form-container form-container-without-mb"
-    >
-        <!-- Name, Company -->
-
-        <div class="row">
-            <div class="col-6">
-                <app-ta-input
-                    formControlName="name"
-                    [inputConfig]="{
-                        name: 'Name',
-                        type: 'text',
-                        label: 'Name',
-                        isRequired: true,
-                        minLength: 2,
-                        maxLength: 32,
-                        textTransform: 'capitalize',
-                        autoFocus: editData?.type !== 'edit'
-                    }"
-                ></app-ta-input>
-            </div>
-
-            <div class="col-6">
-                <app-ta-input
-                    formControlName="companyName"
-                    [inputConfig]="{
-                        name: 'Company name',
-                        type: 'text',
-                        label: 'Company',
-                        textTransform: 'uppercase'
-                    }"
-                ></app-ta-input>
-            </div>
-        </div>
-
-        <!-- Label -->
-
-        <div class="row">
-            <div class="col-12">
-                <app-ta-input-dropdown-label
-                    formControlName="companyContactLabelId"
-                    [inputConfig]="{
-                        name: 'Input Dropdown Label',
-                        type: 'text',
-                        label: 'Label',
-                        placeholderIcon: 'ic_dynamic_label',
-                        dropdownLabel: true,
-                        dropdownWidthClass: 'w-col-456',
-                        textTransform: 'lowercase',
-                        minLength: 1,
-                        maxLength: 32,
-                        blackInput: true,
-                        commands: {
-                            active: false,
-                            type: 'confirm-cancel',
-                            firstCommand: {
-                                popup: {
-                                    name: 'Confirm',
-                                    backgroundColor: '#3074d3'
-                                },
-                                name: 'confirm',
-                                svg: 'assets/svg/ic_spec-confirm.svg'
-                            },
-                            secondCommand: {
-                                popup: {
-                                    name: 'Cancel',
-                                    backgroundColor: '#2f2f2f'
-                                },
-                                name: 'cancel',
-                                svg: 'assets/svg/ic_x.svg'
-                            }
-                        }
-                    }"
-                    [colors]="colors"
-                    [options]="contactLabels"
-                    [selectedLabel]="selectedContactLabel"
-                    [selectedLabelColor]="selectedContactColor"
-                    (pickExistLabel)="onPickExistLabel($event)"
-                    (pickColorLabel)="onSelectColorLabel($event)"
-                    (editModeLabel)="companyContactLabelMode($event)"
-                    (saveLabel)="onSaveLabel($event)"
-                >
-                </app-ta-input-dropdown-label>
-            </div>
-        </div>
-
-        <!-- Address -->
-
-        <div class="row last-row">
-            <div class="col-10">
-                <app-ta-input-address-dropdown
-                    formControlName="address"
-                    [inputConfig]="{
-                        name: 'Address',
-                        type: 'text',
-                        label: 'Address, City, State Zip',
-                        placeholderIcon: 'address',
-                        textTransform: 'capitalize',
-                        dropdownWidthClass: 'w-col-376',
-                        minLength: 6,
-                        maxLength: 256
-                    }"
-                    [placeholderType]="'longAddress'"
-                    [activeAddress]="selectedAddress"
-                    (selectedAddress)="onHandleAddress($event)"
-                ></app-ta-input-address-dropdown>
-            </div>
-
-            <div class="col-2">
-                <app-ta-input
-                    formControlName="addressUnit"
-                    [inputConfig]="{
-                        name: 'address-unit',
-                        type: 'text',
-                        label: 'Unit #',
-                        textTransform: 'uppercase',
-                        minLength: 1,
-                        maxLength: 10
-                    }"
-                ></app-ta-input>
-            </div>
-        </div>
-
-        <!-- Contact Phones -->
-
-        <app-ta-custom-card
-            [hasCounter]="contactPhones?.length"
-            [cardName]="'Phone'"
-            [headerSvgEnabled]="true"
-            [hasActionSvg]="true"
-            [subText]="
-                contactPhones?.length &&
-                'You can add up to 3 max. First one is primary.'
-            "
-            [isCardOpen]="contactPhones.length"
-            [disabledCard]="!contactPhones.length"
-            [disableAnimation]="isCardAnimationDisabled"
-            (onActionEvent)="addContactPhoneOrEmail('phone')"
+    <div class="new-modal" origin>
+        <div class="divider divider--dark divider--small"></div>
+        <form
+            [formGroup]="contactForm"
+            class="form-container form-container-without-mb"
         >
-            <app-ta-modal-table
-                [tableType]="modalTableTypeEnum.PHONE"
-                [isNewRowCreated]="isPhoneRowCreated"
-                [modalTableData]="updatedContactPhones"
-                (modalTableValueEmitter)="
-                    handleModalTableValueEmit($event, 'phone')
-                "
-                (modalTableValidStatusEmitter)="
-                    handleModalTableValidStatusEmit($event, 'phone')
-                "
-            ></app-ta-modal-table>
-        </app-ta-custom-card>
+            <!-- Name, Company -->
+            <div class="row">
+                <div class="col-6">
+                    <app-ca-input
+                        formControlName="name"
+                        [inputConfig]="
+                            contactModalConfig.NAME_INPUT_CONFIG(
+                                editData?.type === 'edit'
+                            )
+                        "
+                    ></app-ca-input>
+                </div>
 
-        <!-- Contact Emails -->
-
-        <app-ta-custom-card
-            [hasCounter]="contactEmails.length"
-            [cardName]="'Email'"
-            [headerSvgEnabled]="true"
-            [hasActionSvg]="true"
-            [subText]="
-                contactEmails?.length &&
-                'You can add up to 2 max. First one is primary.'
-            "
-            [isCardOpen]="contactEmails.length"
-            [disabledCard]="!contactEmails.length"
-            [disableAnimation]="isCardAnimationDisabled"
-            (onActionEvent)="addContactPhoneOrEmail('email')"
-        >
-            <app-ta-modal-table
-                [tableType]="modalTableTypeEnum.EMAIL"
-                [isNewRowCreated]="isEmailRowCreated"
-                [modalTableData]="updatedContactEmails"
-                (modalTableValueEmitter)="
-                    handleModalTableValueEmit($event, 'email')
-                "
-                (modalTableValidStatusEmitter)="
-                    handleModalTableValidStatusEmit($event, 'email')
-                "
-            ></app-ta-modal-table>
-        </app-ta-custom-card>
-
-        <!-- Shared Contact -->
-
-        <app-ta-checkbox-card
-            formControlName="shared"
-            [label]="'Share Contact'"
-            [name]="'share-contact'"
-            [isCardOpen]="contactForm.get('shared').value"
-            [animationMarginParams]="{
-                marginTop: '12px',
-                marginBottom: '18px'
-            }"
-        >
-            <div body class="row row-no-m">
-                <div class="col-12">
-                    <app-ta-input-dropdown
-                        formControlName="sharedLabelId"
-                        [template]="'multiselect'"
-                        [multiselectTemplate]="'multiselect-2-columns'"
-                        [inputConfig]="{
-                            name: 'Input Dropdown',
-                            minLength: 2,
-                            maxLength: 36,
-                            type: 'text',
-                            label: 'Department',
-                            isRequired: true,
-                            isDropdown: true,
-                            textTransform: 'capitalize',
-                            multiselectDropdown: true,
-                            dropdownWidthClass: 'w-col-456'
-                        }"
-                        [options]="sharedDepartments"
-                        [preloadMultiselectItems]="selectedSharedDepartment"
-                        (selectedItems)="onSelectDropdown($event)"
-                    ></app-ta-input-dropdown>
+                <div class="col-6">
+                    <app-ca-input
+                        formControlName="companyName"
+                        [inputConfig]="
+                            contactModalConfig.COMPANY_NAME_INPUT_CONFIG
+                        "
+                    ></app-ca-input>
                 </div>
             </div>
-        </app-ta-checkbox-card>
 
-        <!-- Contact Image -->
+            <!-- Label -->
+            <div class="row">
+                <div class="col-12">
+                    <app-ta-input-dropdown-label
+                        formControlName="companyContactLabelId"
+                        [inputConfig]="
+                            contactModalConfig.COMPANY_LABEL_INPUT_CONFIG
+                        "
+                        [colors]="colors"
+                        [options]="contactLabels"
+                        [selectedLabel]="selectedContactLabel"
+                        [selectedLabelColor]="selectedContactColor"
+                        (pickExistLabel)="onPickExistLabel($event)"
+                        (pickColorLabel)="onSelectColorLabel($event)"
+                        (editModeLabel)="companyContactLabelMode($event)"
+                        (saveLabel)="onSaveLabel($event)"
+                    >
+                    </app-ta-input-dropdown-label>
+                </div>
+            </div>
 
-        <div class="ta-card-body-overflow-none">
+            <!-- Address -->
+            <div class="row last-row">
+                <div class="col-10">
+                    <app-ca-input-address-dropdown
+                        formControlName="address"
+                        [inputConfig]="contactModalConfig.ADDRESS_INPUT_CONFIG"
+                        [placeholderType]="'longAddress'"
+                        [activeAddress]="selectedAddress"
+                        (selectedAddress)="onHandleAddress($event)"
+                    ></app-ca-input-address-dropdown>
+                </div>
+
+                <div class="col-2">
+                    <app-ca-input
+                        formControlName="addressUnit"
+                        [inputConfig]="
+                            contactModalConfig.ADDRESS_UNIT_INPUT_CONFIG
+                        "
+                    ></app-ca-input>
+                </div>
+            </div>
+
+            <!-- Contact Phones -->
             <app-ta-custom-card
-                [cardName]="'Contact Image'"
+                [hasCounter]="contactPhones?.length"
+                [cardName]="'Phone'"
+                [headerSvgEnabled]="true"
+                [hasActionSvg]="true"
+                [subText]="
+                    contactPhones?.length &&
+                    'You can add up to 3 max. First one is primary.'
+                "
+                [isCardOpen]="contactPhones.length"
+                [disabledCard]="!contactPhones.length"
                 [disableAnimation]="isCardAnimationDisabled"
-                [isCardOpen]="true"
+                (onActionEvent)="addContactPhoneOrEmail('phone')"
             >
-                <app-ca-upload-files
-                    [isVisibleCropAndDrop]="
-                        uploadOptionsConstants.isVisibleCropAndDrop
+                <app-ta-modal-table
+                    [tableType]="modalTableTypeEnum.PHONE"
+                    [isNewRowCreated]="isPhoneRowCreated"
+                    [modalTableData]="updatedContactPhones"
+                    (modalTableValueEmitter)="
+                        handleModalTableValueEmit($event, 'phone')
                     "
-                    [files]="uploadOptionsConstants.files"
-                    [slider]="uploadOptionsConstants.slider"
-                    [carouselConfig]="uploadOptionsConstants.carouselConfig"
-                    [hasCrop]="uploadOptionsConstants.hasCrop"
-                    [isRoundCrop]="uploadOptionsConstants.isRoundCrop"
-                    [containWithinAspectRatio]="
-                        uploadOptionsConstants.containWithinAspectRatio
+                    (modalTableValidStatusEmitter)="
+                        handleModalTableValidStatusEmit($event, 'phone')
                     "
-                    [aspectRatio]="uploadOptionsConstants.aspectRatio"
-                    [initialCropperPosition]="
-                        uploadOptionsConstants.initialCropperPosition
-                    "
-                    [dropzoneConf]="uploadOptionsConstants.dropzoneConf"
-                    [review]="uploadOptionsConstants.review"
-                    [configFile]="uploadOptionsConstants.configFile"
-                    [size]="uploadOptionsConstants.size"
-                    [slideWidth]="uploadOptionsConstants.slideWidth"
-                    (onFileEvent)="onUploadImage($event)"
-                ></app-ca-upload-files>
+                ></app-ta-modal-table>
             </app-ta-custom-card>
+
+            <!-- Contact Emails -->
+
+            <app-ta-custom-card
+                [hasCounter]="contactEmails.length"
+                [cardName]="'Email'"
+                [headerSvgEnabled]="true"
+                [hasActionSvg]="true"
+                [subText]="
+                    contactEmails?.length &&
+                    'You can add up to 2 max. First one is primary.'
+                "
+                [isCardOpen]="contactEmails.length"
+                [disabledCard]="!contactEmails.length"
+                [disableAnimation]="isCardAnimationDisabled"
+                (onActionEvent)="addContactPhoneOrEmail('email')"
+            >
+                <app-ta-modal-table
+                    [tableType]="modalTableTypeEnum.EMAIL"
+                    [isNewRowCreated]="isEmailRowCreated"
+                    [modalTableData]="updatedContactEmails"
+                    (modalTableValueEmitter)="
+                        handleModalTableValueEmit($event, 'email')
+                    "
+                    (modalTableValidStatusEmitter)="
+                        handleModalTableValidStatusEmit($event, 'email')
+                    "
+                ></app-ta-modal-table>
+            </app-ta-custom-card>
+
+            <!-- Shared Contact -->
+
+            <app-ta-checkbox-card
+                formControlName="shared"
+                [label]="'Share Contact'"
+                [name]="'share-contact'"
+                [hasArrow]="false"
+                [clearHorizontalPadding]="true"
+                [isCardOpen]="contactForm.get('shared').value"
+                [animationMarginParams]="{
+                    marginTop: contactForm.get('shared').value ? '12px' : '0',
+                    marginBottom: contactForm.get('shared').value
+                        ? '18px'
+                        : '0',
+                }"
+            >
+                <div body class="row row-no-m mb-0">
+                    <div class="col-12">
+                        <app-ca-input-dropdown
+                            formControlName="sharedLabelId"
+                            [template]="'multiselect'"
+                            [multiselectTemplate]="'multiselect-2-columns'"
+                            [inputConfig]="
+                                contactModalConfig.SHARED_LABEL_INPUT_CONFIG
+                            "
+                            [options]="sharedDepartments"
+                            [preloadMultiselectItems]="selectedSharedDepartment"
+                            (selectedItems)="onSelectDropdown($event)"
+                        ></app-ca-input-dropdown>
+                    </div>
+                </div>
+            </app-ta-checkbox-card>
+
+            <!-- Profile Picture -->
+
+            <div class="ta-card-body-overflow-none">
+                <app-ta-custom-card
+                    [cardName]="'Profile Picture'"
+                    [disableAnimation]="isCardAnimationDisabled"
+                    [isCardOpen]="contactForm.get('avatar')?.value ?? false"
+                >
+                    <app-ca-upload-files
+                        [isVisibleCropAndDrop]="
+                            uploadOptionsConstants.isVisibleCropAndDrop
+                        "
+                        [files]="uploadOptionsConstants.files"
+                        [slider]="uploadOptionsConstants.slider"
+                        [carouselConfig]="uploadOptionsConstants.carouselConfig"
+                        [hasCrop]="uploadOptionsConstants.hasCrop"
+                        [isRoundCrop]="uploadOptionsConstants.isRoundCrop"
+                        [containWithinAspectRatio]="
+                            uploadOptionsConstants.containWithinAspectRatio
+                        "
+                        [aspectRatio]="uploadOptionsConstants.aspectRatio"
+                        [initialCropperPosition]="
+                            uploadOptionsConstants.initialCropperPosition
+                        "
+                        [dropzoneConf]="uploadOptionsConstants.dropzoneConf"
+                        [review]="uploadOptionsConstants.review"
+                        [configFile]="uploadOptionsConstants.configFile"
+                        [size]="uploadOptionsConstants.size"
+                        [slideWidth]="uploadOptionsConstants.slideWidth"
+                        (onFileEvent)="onUploadImage($event)"
+                    ></app-ca-upload-files>
+                </app-ta-custom-card>
+            </div>
+            <div class="divider"></div>
+            <!-- Note -->
+            <app-ca-input-note
+                formControlName="note"
+                [isVisibleNote]="
+                    contactForm.get('note').value &&
+                    contactForm.get('note').value != 'null'
+                        ? contactForm.get('note').value
+                        : false
+                "
+                [note]="
+                    contactForm.get('note').value &&
+                    contactForm.get('note').value != 'null'
+                        ? contactForm.get('note').value
+                        : ''
+                "
+            ></app-ca-input-note>
+        </form>
+    </div>
+</app-ca-modal>
+
+<ng-template #leftModalContent>
+    <ng-container *ngIf="editData?.data?.name">
+        <div class="payroll-number text-color-white text-size-14 ta-font-bold">
+            {{ editData?.data?.name }}
         </div>
+    </ng-container>
+</ng-template>
 
-        <!-- Note -->
+<ng-template #footerTemplate>
+    <div class="modal-footer modal-footer-payroll">
+        <div class="divider divider--dark divider--small"></div>
+        <ng-container *ngIf="editData?.data?.name; else showCreateButtons">
+            <button
+                class="modal-save-btn ta-font-bold"
+                (click)="onModalAction(taModalActionEnums.SAVE)"
+                [class.valid]="
+                    contactForm.valid &&
+                    isFormDirty &&
+                    isEachPhoneRowValid &&
+                    isEachEmailRowValid
+                "
+            >
+                Save Changes
+            </button>
+        </ng-container>
 
-        <app-ta-input-note
-            formControlName="note"
-            [isVisibleNote]="
-                contactForm.get('note').value &&
-                contactForm.get('note').value != 'null'
-                    ? contactForm.get('note').value
-                    : false
-            "
-            [note]="
-                contactForm.get('note').value &&
-                contactForm.get('note').value != 'null'
-                    ? contactForm.get('note').value
-                    : ''
-            "
-        ></app-ta-input-note>
-    </form>
-</app-ta-modal>
+        <ng-template #showCreateButtons>
+            <button
+                class="ta-font-bold modal-save-btn modal-save-btn-add-new mr-12"
+                [class.valid]="
+                    contactForm.valid &&
+                    isFormDirty &&
+                    isEachPhoneRowValid &&
+                    isEachEmailRowValid
+                "
+                (click)="onModalAction(taModalActionEnums.SAVE_AND_ADD_NEW)"
+            >
+                Save and Add New
+            </button>
+            <button
+                class="modal-save-btn ta-font-bold"
+                (click)="onModalAction(taModalActionEnums.SAVE)"
+                [class.valid]="
+                    contactForm.valid &&
+                    isFormDirty &&
+                    isEachPhoneRowValid &&
+                    isEachEmailRowValid
+                "
+            >
+                Save
+            </button>
+        </ng-template>
+    </div>
+</ng-template>
+
+<ng-template #rightModalContent>
+    <div
+        class="d-flex justify-content-center align-items-center modal-close-container"
+        ngbTooltip
+        mainTooltip="Cancel"
+        tooltipBackground="#424242"
+        position="bottom"
+        (click)="onModalAction(taModalActionEnums.CLOSE)"
+    >
+        <svg-icon
+            class="modal-close svg-size-14 svg-fill-muted modal-buttons"
+            [src]="'assets/svg/applicant/invalid-review-x.svg'"
+        ></svg-icon>
+    </div>
+</ng-template>
