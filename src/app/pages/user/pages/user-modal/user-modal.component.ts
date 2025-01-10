@@ -160,6 +160,7 @@ export class UserModalComponent implements OnInit, OnDestroy {
     public isEmailCheckCompleted: boolean;
     public currentUserStatus: string;
     public userModalSvgRoutes: UserModalSvgRoutes = UserModalSvgRoutes;
+    public userModalConfig: UserModalConfig = UserModalConfig;
 
     constructor(
         private formBuilder: UntypedFormBuilder,

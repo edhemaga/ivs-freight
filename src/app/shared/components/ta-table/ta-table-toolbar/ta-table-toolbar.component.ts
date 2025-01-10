@@ -161,7 +161,9 @@ export class TaTableToolbarComponent implements OnInit, OnChanges, OnDestroy {
 
         this.getSelectedTabTableData();
 
-        this.getToolbarWidth();
+        setTimeout(() => {
+            this.getToolbarWidth();
+        });
 
         this.getActiveTableData();
 
