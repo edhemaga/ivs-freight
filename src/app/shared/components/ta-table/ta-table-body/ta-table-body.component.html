@@ -6397,7 +6397,18 @@
                                     <ng-container
                                         *ngIf="column.ngTemplate === 'actions'"
                                     >
-                                        <div
+                                        <ca-dropdown-menu
+                                            [type]="'dots-menu-type'"
+                                            [placement]="'right-top'"
+                                            [options]="
+                                                row.tableDropdownContent.content
+                                            "
+                                        >
+                                        </ca-dropdown-menu>
+                                        <!--  (dropdownOptionEmitter)="
+                                        handleMenuOpen({ $event , data, title })
+                                    " -->
+                                        <!-- <div
                                             class="td-content set-right"
                                             [ngStyle]="{
                                                 width: column.width + 'px',
@@ -6446,7 +6457,7 @@
                                                     }"
                                                 ></svg-icon>
                                             </div>
-                                        </div>
+                                        </div> -->
                                     </ng-container>
                                 </td>
                             </ng-container>
@@ -6758,7 +6769,7 @@
                                             </app-ta-note>
                                         </div>
 
-                                        <svg-icon
+                                        <!-- <svg-icon
                                             #t2="ngbPopover"
                                             (click)="toggleDropdown(t2, row)"
                                             [autoClose]="true"
@@ -6778,7 +6789,7 @@
                                                 'width.px': '18',
                                                 'height.px': '18',
                                             }"
-                                        ></svg-icon>
+                                        ></svg-icon> -->
                                     </div>
                                 </div>
                             </div>

@@ -56,6 +56,7 @@ import { LoadStatusStringComponent } from '@pages/load/components/load-status-st
 import { TaStatusComponentComponent } from '@shared/components/ta-status-component/ta-status-component.component';
 import { TaOpenHoursDropdownComponent } from '@shared/components/ta-open-hours-dropdown/ta-open-hours-dropdown.component';
 import {
+    CaDropdownMenuComponent,
     CaProfileImageComponent,
     CaProgressRangeComponent,
     CaSearchMultipleStatesService,
@@ -140,6 +141,7 @@ import { TableBodySvgRoutes } from '@shared/components/ta-table/ta-table-body/ut
         TaOpenHoursDropdownComponent,
         CaProfileImageComponent,
         CaProgressRangeComponent,
+        CaDropdownMenuComponent,
 
         // pipes
         TableHighlightSearchTextPipe,

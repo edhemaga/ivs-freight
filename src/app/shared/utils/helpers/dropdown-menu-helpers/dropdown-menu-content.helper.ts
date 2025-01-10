@@ -13,7 +13,36 @@ import { OptionsPopupContent } from '@shared/components/ta-table/ta-table-toolba
 export class DropdownMenuContentHelper {
     // account
     static getAccountDropdownContent(url: string): DropdownItem[] {
-        return [
+        // requested items
+        const requestedConditionalItems = [
+            url
+                ? DropdownMenuStringEnum.GO_TO_LINK
+                : DropdownMenuStringEnum.NO_LINK,
+            DropdownMenuStringEnum.COPY_USERNAME,
+            DropdownMenuStringEnum.COPY_PASSWORD,
+        ];
+
+        const requestedSharedItems = [
+            DropdownMenuStringEnum.EDIT,
+            DropdownMenuStringEnum.DELETE,
+        ];
+
+        // items
+        const conditionalItems =
+            DropdownMenuContentConditionalItemsHelper.getConditionalItems(
+                requestedConditionalItems,
+                false
+            );
+
+        const sharedItems =
+            DropdownMenuContentConditionalItemsHelper.getConditionalItems(
+                requestedSharedItems,
+                true
+            );
+
+        return [sharedItems[0], ...conditionalItems, sharedItems[1]];
+
+        /*  return [
             {
                 title: TableStringEnum.EDIT_2,
                 name: TableStringEnum.EDIT_ACCOUNT,
@@ -67,31 +96,6 @@ export class DropdownMenuContentHelper {
                 svgClass: TableStringEnum.REGULAR,
                 hasBorder: true,
             },
-            // {
-            //     title: 'Share',
-            //     name: 'share',
-            //     svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Share.svg',
-            //     svgStyle: {
-            //         width: 18,
-            //         height: 18,
-            //     },
-            //     svgClass: TableStringEnum.REGULAR,
-            //     tableListDropdownContentStyle: {
-            //         'margin-bottom.px': 4,
-            //     },
-            // },
-            // {
-            //     title: 'Print',
-            //     name: 'print',
-            //     svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Print.svg',
-            //     svgStyle: {
-            //         width: 18,
-            //         height: 18,
-            //     },
-
-            //     svgClass: TableStringEnum.REGULAR,
-            //     hasBorder: true,
-            // }, leave this commented for now
             {
                 title: TableStringEnum.DELETE_2,
                 name: TableStringEnum.DELETE_ACCOUNT,
@@ -102,12 +106,59 @@ export class DropdownMenuContentHelper {
                 },
                 svgClass: TableStringEnum.DELETE,
             },
-        ];
+        ]; */
     }
 
     // driver
     static getDriverDropdownContent(selectedTab: string): DropdownItem[] {
+        const isActiveDriver = selectedTab === DropdownMenuStringEnum.ACTIVE;
+
+        // modifier items
+        const modifierItems =
+            DropdownMenuContentConditionalItemsHelper.getDriverModifierItems(
+                isActiveDriver
+            );
+
+        // requested items
+        const requestedConditionalItems = [
+            DropdownMenuStringEnum.SEND_MESSAGE,
+            DropdownMenuStringEnum.ADD_NEW_DRIVER,
+            DropdownMenuStringEnum.REQUEST,
+        ];
+
+        const requestedSharedItems = [
+            DropdownMenuStringEnum.EDIT,
+            DropdownMenuStringEnum.VIEW_DETAILS,
+            DropdownMenuStringEnum.SHARE,
+            DropdownMenuStringEnum.PRINT,
+            isActiveDriver
+                ? DropdownMenuStringEnum.DEACTIVATE
+                : DropdownMenuStringEnum.ACTIVATE,
+            DropdownMenuStringEnum.DELETE,
+        ];
+
+        // items
+        const conditionalItems =
+            DropdownMenuContentConditionalItemsHelper.getConditionalItems(
+                requestedConditionalItems,
+                false,
+                modifierItems
+            );
+
+        const sharedItems =
+            DropdownMenuContentConditionalItemsHelper.getConditionalItems(
+                requestedSharedItems,
+                true,
+                modifierItems
+            );
+
         return [
+            ...sharedItems.slice(0, 2),
+            ...conditionalItems,
+            ...sharedItems.slice(-4),
+        ];
+
+        /* return [
             {
                 title: TableStringEnum.EDIT_2,
                 name: TableStringEnum.EDIT,
@@ -264,7 +315,7 @@ export class DropdownMenuContentHelper {
                 },
                 svgClass: TableStringEnum.DELETE,
             },
-        ];
+        ]; */
     }
 
     // driver applicant
@@ -633,11 +684,51 @@ export class DropdownMenuContentHelper {
     }
 
     // trailer
-    static getTrailerDropdownContent(
-        status: number,
-        selectedTab: string
-    ): DropdownItem[] {
+    static getTrailerDropdownContent(selectedTab: string): DropdownItem[] {
+        const isActiveTrailer = selectedTab === DropdownMenuStringEnum.ACTIVE;
+
+        // modifier items
+        const modifierItems =
+            DropdownMenuContentConditionalItemsHelper.getTruckTrailerModifierItems(
+                isActiveTrailer
+            );
+
+        // requested items
+        const requestedConditionalItems = [
+            DropdownMenuStringEnum.ADD_NEW_TRUCK_TRAILER,
+        ];
+
+        const requestedSharedItems = [
+            DropdownMenuStringEnum.EDIT,
+            DropdownMenuStringEnum.VIEW_DETAILS,
+            isActiveTrailer
+                ? DropdownMenuStringEnum.DEACTIVATE
+                : DropdownMenuStringEnum.ACTIVATE,
+            DropdownMenuStringEnum.DELETE,
+        ];
+
+        // items
+        const conditionalItems =
+            DropdownMenuContentConditionalItemsHelper.getConditionalItems(
+                requestedConditionalItems,
+                false,
+                modifierItems
+            );
+
+        const sharedItems =
+            DropdownMenuContentConditionalItemsHelper.getConditionalItems(
+                requestedSharedItems,
+                true,
+                modifierItems
+            );
+
         return [
+            ...sharedItems.slice(0, 2),
+            ...conditionalItems,
+            ...sharedItems.slice(-2),
+        ];
+
+        /*  return [
             {
                 title: TableStringEnum.EDIT_2,
                 name: TableStringEnum.EDIT_TRAILER,
@@ -724,7 +815,7 @@ export class DropdownMenuContentHelper {
                 },
                 svgClass: TableStringEnum.DELETE,
             },
-        ];
+        ]; */
     }
 
     // truck
@@ -1526,38 +1617,42 @@ export class DropdownMenuContentHelper {
     static getPayrollDropdownContent(
         isOpenPayroll: boolean = false
     ): DropdownMenuItem[] {
-        const conditionalItems = isOpenPayroll
+        // requested items
+        const requestedConditionalItems = isOpenPayroll
             ? [
                   DropdownMenuStringEnum.EDIT_LOAD,
                   DropdownMenuStringEnum.EDIT_PAYROLL,
+                  DropdownMenuStringEnum.PREVIEW_REPORT,
+                  DropdownMenuStringEnum.DOWNLOAD,
               ]
-            : [DropdownMenuStringEnum.RESEND_REPORT];
+            : [
+                  DropdownMenuStringEnum.RESEND_REPORT,
+                  DropdownMenuStringEnum.PREVIEW_REPORT,
+                  DropdownMenuStringEnum.DOWNLOAD,
+              ];
 
-        const sharedItems = [
+        const requestedSharedItems = [
             DropdownMenuStringEnum.SHARE,
             DropdownMenuStringEnum.PRINT,
         ];
 
-        const additionalItems = !isOpenPayroll
-            ? [
-                  DropdownMenuStringEnum.PREVIEW_REPORT,
-                  DropdownMenuStringEnum.DOWNLOAD,
-              ]
-            : [];
+        // items
+        const conditionalItems =
+            DropdownMenuContentConditionalItemsHelper.getConditionalItems(
+                requestedConditionalItems,
+                false
+            );
+
+        const sharedItems =
+            DropdownMenuContentConditionalItemsHelper.getConditionalItems(
+                requestedSharedItems,
+                true
+            );
 
         return [
-            ...DropdownMenuContentConditionalItemsHelper.getConditionalItems(
-                conditionalItems,
-                false
-            ),
-            ...DropdownMenuContentConditionalItemsHelper.getConditionalItems(
-                sharedItems,
-                true
-            ),
-            ...DropdownMenuContentConditionalItemsHelper.getConditionalItems(
-                additionalItems,
-                false
-            ),
+            ...conditionalItems.slice(0, isOpenPayroll ? 2 : 1),
+            ...sharedItems,
+            ...conditionalItems.slice(-2),
         ];
     }
 
