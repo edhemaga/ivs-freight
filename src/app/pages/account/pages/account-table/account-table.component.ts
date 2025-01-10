@@ -55,7 +55,7 @@ import { TableBodyColumns } from '@shared/components/ta-table/ta-table-body/mode
 import { AccountFilter } from '@pages/account/pages/account-table/models/account-filter.model';
 
 // helpers
-import { DropdownContentHelper } from '@shared/utils/helpers';
+import { DropdownMenuContentHelper } from '@shared/utils/helpers';
 
 // constants
 import { AccountFilterConstants } from '@pages/account/pages/account-table/utils/constants/account-filter.constants';
@@ -458,13 +458,13 @@ export class AccountTableComponent implements OnInit, AfterViewInit, OnDestroy {
             },
             tableDropdownContent: {
                 hasContent: true,
-                content: this.getDropdownAccountContent(data?.url),
+                content: this.getAccountDropdownContent(data?.url),
             },
         };
     }
 
-    private getDropdownAccountContent(url: string): DropdownItem[] {
-        return DropdownContentHelper.getDropdownAccountContent(url);
+    private getAccountDropdownContent(url: string): DropdownItem[] {
+        return DropdownMenuContentHelper.getAccountDropdownContent(url);
     }
 
     public getHidenCharacters(data: AccountResponse): string {

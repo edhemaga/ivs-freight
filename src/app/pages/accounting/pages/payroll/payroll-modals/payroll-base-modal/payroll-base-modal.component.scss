@@ -16,28 +16,11 @@
     }
 }
 
-.modal-date-border {
-    height: 18px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-right: 1px solid $ta-light-grey-6;
-}
-
 .payroll-number {
     max-width: 230px;
     text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap;
-}
-
-.modal-buttons {
-    width: 30px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 30px;
-    cursor: pointer;
 }
 
 .modal-date-logo {

@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, Self } from '@angular/core';
+import { Component, EventEmitter, Input, Output, Self } from '@angular/core';
 import {
     ControlValueAccessor,
     FormsModule,
@@ -52,7 +52,9 @@ export class TaCheckboxCardComponent implements ControlValueAccessor {
     @Input() hasPricingButton: boolean = false;
     @Input() subText?: string;
     @Input() isCheckboxDisabled?: boolean = false;
-
+    @Input() clearHorizontalPadding?: boolean = false;
+    @Output() onCheckboxChange = new EventEmitter<boolean>();
+    
     public _isCardOpen: any = 'null';
     public noActive: string;
 

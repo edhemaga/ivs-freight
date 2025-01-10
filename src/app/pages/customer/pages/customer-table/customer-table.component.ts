@@ -95,7 +95,7 @@ import { BrokerModalStringEnum } from '@pages/customer/pages/broker-modal/enums/
 import { CustomerTableStringEnum } from '@pages/customer/pages/customer-table/enums';
 
 // helpers
-import { DropdownContentHelper } from '@shared/utils/helpers/dropdown-content.helper';
+import { DropdownMenuContentHelper } from '@shared/utils/helpers';
 import { DataFilterHelper } from '@shared/utils/helpers/data-filter.helper';
 import {
     getBrokerColumnDefinition,
@@ -1583,7 +1583,7 @@ export class CustomerTableComponent
                 : null,
             tableDropdownContent: {
                 hasContent: true,
-                content: this.getDropdownBrokerContent(
+                content: this.getBrokerDropdownContent(
                     data.status,
                     data.ban,
                     data.dnu
@@ -1657,21 +1657,25 @@ export class CustomerTableComponent
                 : null,
             tableDropdownContent: {
                 hasContent: true,
-                content: this.getDropdownShipperContent(data?.status),
+                content: this.getShipperDropdownContent(data?.status),
             },
         };
     }
 
-    private getDropdownBrokerContent(
+    private getBrokerDropdownContent(
         status: number,
         ban: boolean,
         dnu: boolean
     ): DropdownItem[] {
-        return DropdownContentHelper.getDropdownBrokerContent(status, ban, dnu);
+        return DropdownMenuContentHelper.getBrokerDropdownContent(
+            status,
+            ban,
+            dnu
+        );
     }
 
-    private getDropdownShipperContent(status: number): DropdownItem[] {
-        return DropdownContentHelper.getDropdownShipperContent(status);
+    private getShipperDropdownContent(status: number): DropdownItem[] {
+        return DropdownMenuContentHelper.getShipperDropdownContent(status);
     }
 
     private updateDataCount(): void {

@@ -54,7 +54,7 @@ import { DataFilterHelper } from '@shared/utils/helpers/data-filter.helper';
 import { MethodsGlobalHelper } from '@shared/utils/helpers/methods-global.helper';
 import { getTruckColumnDefinition } from '@shared/utils/settings/table-settings/truck-columns';
 import { TruckFeaturesDataHelper } from '@pages/truck/pages/truck-table/utils/helpers/truck-features-data.helper';
-import { DropdownContentHelper } from '@shared/utils/helpers';
+import { DropdownMenuContentHelper } from '@shared/utils/helpers';
 
 // models
 import { CardRows } from '@shared/models/card-models/card-rows.model';
@@ -771,15 +771,15 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
             fileCount: fileCount,
             tableDropdownContent: {
                 hasContent: true,
-                content: this.getDropdownTruckContent(status),
+                content: this.getTruckDropdownContent(status),
             },
             createdAt,
             updatedAt,
         };
     }
 
-    private getDropdownTruckContent(status: number): DropdownItem[] {
-        return DropdownContentHelper.getDropdownTruckContent(
+    private getTruckDropdownContent(status: number): DropdownItem[] {
+        return DropdownMenuContentHelper.getTruckDropdownContent(
             status,
             this.selectedTab
         );

@@ -19,9 +19,11 @@
                             color:
                                 selectedMode === selectedModeEnum.FEEDBACK
                                     ? '#919191'
-                                    : '#6C6C6C'
+                                    : '#6C6C6C',
                         }"
-                    >   Please select owner type and fill in all required fields.
+                    >
+                        Please select owner type and fill in all required
+                        fields.
                     </h2>
 
                     <!-- TABS -->
@@ -38,7 +40,9 @@
                     <!-- FORM SECTION -->
 
                     <div class="d-flex form-section">
-                        <ng-container *ngIf="selectedTab === ownerInfoTabEnum.COMPANY">
+                        <ng-container
+                            *ngIf="selectedTab === ownerInfoTabEnum.COMPANY"
+                        >
                             <form [formGroup]="ownerInfoForm">
                                 <div
                                     class="d-flex flex-column align-items-center"
@@ -47,9 +51,11 @@
 
                                     <div class="d-flex line-container">
                                         <div class="group business-name-group">
-                                            <app-ta-input
+                                            <app-ca-input
                                                 formControlName="businessName"
-                                                [inputConfig]="businessNameInputConfig"
+                                                [inputConfig]="
+                                                    businessNameInputConfig
+                                                "
                                                 [incorrectValue]="
                                                     openAnnotationArray[0]
                                                         .lineInputs[0]
@@ -57,11 +63,11 @@
                                                 (incorrectEvent)="
                                                     incorrectInput($event, 0, 0)
                                                 "
-                                            ></app-ta-input>
+                                            ></app-ca-input>
                                         </div>
 
                                         <div class="group ein-group">
-                                            <app-ta-input
+                                            <app-ca-input
                                                 formControlName="ein"
                                                 [inputConfig]="einInputConfig"
                                                 [incorrectValue]="
@@ -71,7 +77,7 @@
                                                 (incorrectEvent)="
                                                     incorrectInput($event, 1, 0)
                                                 "
-                                            ></app-ta-input>
+                                            ></app-ca-input>
                                         </div>
 
                                         <!-- REVIEW AND FEEDBACK -->
@@ -125,7 +131,7 @@
 
                                     <div class="d-flex line-container">
                                         <div class="group phone-group">
-                                            <app-ta-input
+                                            <app-ca-input
                                                 formControlName="phone"
                                                 [inputConfig]="phoneInputConfig"
                                                 [incorrectValue]="
@@ -135,11 +141,11 @@
                                                 (incorrectEvent)="
                                                     incorrectInput($event, 0, 1)
                                                 "
-                                            ></app-ta-input>
+                                            ></app-ca-input>
                                         </div>
 
                                         <div class="group email-group">
-                                            <app-ta-input
+                                            <app-ca-input
                                                 formControlName="email"
                                                 [inputConfig]="emailInputConfig"
                                                 [incorrectValue]="
@@ -149,7 +155,7 @@
                                                 (incorrectEvent)="
                                                     incorrectInput($event, 1, 1)
                                                 "
-                                            ></app-ta-input>
+                                            ></app-ca-input>
                                         </div>
 
                                         <!-- REVIEW AND FEEDBACK -->
@@ -203,9 +209,11 @@
 
                                     <div class="d-flex line-container">
                                         <div class="group address-group">
-                                            <app-ta-input-address-dropdown
+                                            <app-ca-input-address-dropdown
                                                 formControlName="address"
-                                                [inputConfig]="addressInputConfig"
+                                                [inputConfig]="
+                                                    addressInputConfig
+                                                "
                                                 [incorrectValue]="
                                                     openAnnotationArray[2]
                                                         .lineInputs[0]
@@ -222,13 +230,15 @@
                                                         'ADDRESS'
                                                     )
                                                 "
-                                            ></app-ta-input-address-dropdown>
+                                            ></app-ca-input-address-dropdown>
                                         </div>
 
                                         <div class="group address-unit-group">
-                                            <app-ta-input
+                                            <app-ca-input
                                                 formControlName="addressUnit"
-                                                [inputConfig]="addressUnitInputConfig"
+                                                [inputConfig]="
+                                                    addressUnitInputConfig
+                                                "
                                                 [incorrectValue]="
                                                     openAnnotationArray[2]
                                                         .lineInputs[1]
@@ -236,7 +246,7 @@
                                                 (incorrectEvent)="
                                                     incorrectInput($event, 1, 2)
                                                 "
-                                            ></app-ta-input>
+                                            ></app-ca-input>
                                         </div>
 
                                         <!-- REVIEW AND FEEDBACK -->
@@ -290,7 +300,7 @@
 
                                     <div class="d-flex line-container">
                                         <div class="group bank-group">
-                                            <app-ta-input-dropdown
+                                            <app-ca-input-dropdown
                                                 formControlName="bank"
                                                 [template]="'svg-template'"
                                                 [inputConfig]="bankInputConfig"
@@ -306,13 +316,15 @@
                                                         'BANK'
                                                     )
                                                 "
-                                            ></app-ta-input-dropdown>
+                                            ></app-ca-input-dropdown>
                                         </div>
 
                                         <div class="group account-group">
-                                            <app-ta-input
+                                            <app-ca-input
                                                 formControlName="accountNumber"
-                                                [inputConfig]="accountNumberInputConfig"
+                                                [inputConfig]="
+                                                    accountNumberInputConfig
+                                                "
                                                 [incorrectValue]="
                                                     openAnnotationArray[3]
                                                         .lineInputs[0]
@@ -320,14 +332,16 @@
                                                 (incorrectEvent)="
                                                     incorrectInput($event, 0, 3)
                                                 "
-                                            ></app-ta-input>
+                                            ></app-ca-input>
                                         </div>
 
                                         <div class="group routing-group">
-                                            <app-ta-input
+                                            <app-ca-input
                                                 formControlName="routingNumber"
-                                                [inputConfig]="routingNumberInputConfig"
-                                            ></app-ta-input>
+                                                [inputConfig]="
+                                                    routingNumberInputConfig
+                                                "
+                                            ></app-ca-input>
                                         </div>
 
                                         <!-- REVIEW AND FEEDBACK -->
@@ -386,30 +400,52 @@
                                         [selectedMode]="selectedMode"
                                         [selectedTruckType]="selectedTruckType"
                                         [selectedTruckMake]="selectedTruckMake"
-                                        [selectedTruckColor]="selectedTruckColor"
-                                        [stepFeedbackValues]="stepFeedbackValues"
+                                        [selectedTruckColor]="
+                                            selectedTruckColor
+                                        "
+                                        [stepFeedbackValues]="
+                                            stepFeedbackValues
+                                        "
                                         [dropdownOptions]="dropdownOptions"
-                                        [truckFHWADocuments]="truckFHWADocuments"
-                                        [truckFHWADisplayDocumentsRequiredNote]="truckFHWADisplayDocumentsRequiredNote"
-                                        [truckLicenceDocuments]="truckLicenceDocuments"
-                                        [truckLicenceDisplayDocumentsRequiredNote]="truckLicenceDisplayDocumentsRequiredNote"
+                                        [truckFHWADocuments]="
+                                            truckFHWADocuments
+                                        "
+                                        [truckFHWADisplayDocumentsRequiredNote]="
+                                            truckFHWADisplayDocumentsRequiredNote
+                                        "
+                                        [truckLicenceDocuments]="
+                                            truckLicenceDocuments
+                                        "
+                                        [truckLicenceDisplayDocumentsRequiredNote]="
+                                            truckLicenceDisplayDocumentsRequiredNote
+                                        "
                                         (onFilesAction)="onFilesAction($event)"
-                                        (onInputSelect)="handleInputSelectTruckTrailer($event)"
+                                        (onInputSelect)="
+                                            handleInputSelectTruckTrailer(
+                                                $event
+                                            )
+                                        "
                                     >
                                     </app-applicant-truck-details>
-
 
                                     <!-- ADD TRAILER / TRAILER DETAIL -->
 
                                     <div
                                         class="d-flex w-100 justify-content-between add-trailer-row"
-                                        [ngClass]="{'flex-column': isAddTrailerSelected}"
+                                        [ngClass]="{
+                                            'flex-column': isAddTrailerSelected,
+                                        }"
                                     >
-                                        <ng-container *ngIf="!isAddTrailerSelected else trailerDetail">
+                                        <ng-container
+                                            *ngIf="
+                                                !isAddTrailerSelected;
+                                                else trailerDetail
+                                            "
+                                        >
                                             <p class="m-0 ta-font-extra-bold">
                                                 Have trailer in your possession?
                                             </p>
-    
+
                                             <button
                                                 type="button"
                                                 (click)="toggleAddTrailer()"
@@ -424,15 +460,19 @@
                                         <ng-template #trailerDetail>
                                             <div class="divider"></div>
 
-                                            <div class="d-flex justify-content-between">
+                                            <div
+                                                class="d-flex justify-content-between"
+                                            >
                                                 <div
                                                     class="d-flex align-self-start add-truck-container"
                                                 >
-                                                    <p class="m-0 ta-font-extra-bold">
+                                                    <p
+                                                        class="m-0 ta-font-extra-bold"
+                                                    >
                                                         Trailer Detail
                                                     </p>
                                                 </div>
-        
+
                                                 <div
                                                     class="d-flex justify-content-center align-items-center delete-btn-container"
                                                 >
@@ -441,7 +481,9 @@
                                                         mainTooltip="Clear"
                                                         tooltipBackground="#2F2F2F"
                                                         position="top"
-                                                        (click)="toggleAddTrailer()"
+                                                        (click)="
+                                                            toggleAddTrailer()
+                                                        "
                                                     >
                                                         <svg-icon
                                                             class="delete-icon"
@@ -450,7 +492,6 @@
                                                     </div>
                                                 </div>
                                             </div>
-
                                         </ng-template>
                                     </div>
 
@@ -458,20 +499,48 @@
                                         <app-applicant-trailer-details
                                             [formGroup]="ownerInfoForm"
                                             [selectedMode]="selectedMode"
-                                            [selectedTrailerType]="selectedTrailerType"
-                                            [selectedTrailerMake]="selectedTrailerMake"
-                                            [selectedTrailerLength]="selectedTrailerLength"
-                                            [selectedTrailerColor]="selectedTrailerColor"
-                                            [stepFeedbackValues]="stepFeedbackValues"
-                                            [loadingTrailerVinDecoder]="loadingTrailerVinDecoder"
+                                            [selectedTrailerType]="
+                                                selectedTrailerType
+                                            "
+                                            [selectedTrailerMake]="
+                                                selectedTrailerMake
+                                            "
+                                            [selectedTrailerLength]="
+                                                selectedTrailerLength
+                                            "
+                                            [selectedTrailerColor]="
+                                                selectedTrailerColor
+                                            "
+                                            [stepFeedbackValues]="
+                                                stepFeedbackValues
+                                            "
+                                            [loadingTrailerVinDecoder]="
+                                                loadingTrailerVinDecoder
+                                            "
                                             [dropdownOptions]="dropdownOptions"
-                                            [trailerLicenceDocuments]="trailerLicenceDocuments"
-                                            [trailerLicenceDisplayDocumentsRequiredNote]="trailerLicenceDisplayDocumentsRequiredNote"
-                                            [trailerFHWADocuments]="trailerFHWADocuments"
-                                            [trailerFHWADisplayDocumentsRequiredNote]="trailerFHWADisplayDocumentsRequiredNote"
-                                            [isAddTrailerSelected]="isAddTrailerSelected"
-                                            (onFilesAction)="onFilesAction($event)"
-                                            (onInputSelect)="handleInputSelectTruckTrailer($event)"
+                                            [trailerLicenceDocuments]="
+                                                trailerLicenceDocuments
+                                            "
+                                            [trailerLicenceDisplayDocumentsRequiredNote]="
+                                                trailerLicenceDisplayDocumentsRequiredNote
+                                            "
+                                            [trailerFHWADocuments]="
+                                                trailerFHWADocuments
+                                            "
+                                            [trailerFHWADisplayDocumentsRequiredNote]="
+                                                trailerFHWADisplayDocumentsRequiredNote
+                                            "
+                                            [isAddTrailerSelected]="
+                                                isAddTrailerSelected
+                                            "
+                                            (onFilesAction)="
+                                                onFilesAction($event)
+                                            "
+                                            (onInputSelect)="
+                                                handleInputSelectTruckTrailer(
+                                                    $event
+                                                )
+                                            "
                                         >
                                         </app-applicant-trailer-details>
                                     </ng-container>
@@ -479,10 +548,12 @@
                             </form>
                         </ng-container>
 
-                        <ng-container *ngIf="selectedTab === ownerInfoTabEnum.SOLE_PROPRIETOR">
-                            <div
-                                class="d-flex flex-column align-items-center"
-                            >
+                        <ng-container
+                            *ngIf="
+                                selectedTab === ownerInfoTabEnum.SOLE_PROPRIETOR
+                            "
+                        >
+                            <div class="d-flex flex-column align-items-center">
                                 <!-- DIVIDER -->
 
                                 <div class="divider"></div>
@@ -498,22 +569,36 @@
                                     [stepFeedbackValues]="stepFeedbackValues"
                                     [dropdownOptions]="dropdownOptions"
                                     [truckFHWADocuments]="truckFHWADocuments"
-                                    [truckFHWADisplayDocumentsRequiredNote]="truckFHWADisplayDocumentsRequiredNote"
-                                    [truckLicenceDocuments]="truckLicenceDocuments"
-                                    [truckLicenceDisplayDocumentsRequiredNote]="truckLicenceDisplayDocumentsRequiredNote"
+                                    [truckFHWADisplayDocumentsRequiredNote]="
+                                        truckFHWADisplayDocumentsRequiredNote
+                                    "
+                                    [truckLicenceDocuments]="
+                                        truckLicenceDocuments
+                                    "
+                                    [truckLicenceDisplayDocumentsRequiredNote]="
+                                        truckLicenceDisplayDocumentsRequiredNote
+                                    "
                                     (onFilesAction)="onFilesAction($event)"
-                                    (onInputSelect)="handleInputSelectTruckTrailer($event)"
+                                    (onInputSelect)="
+                                        handleInputSelectTruckTrailer($event)
+                                    "
                                 >
                                 </app-applicant-truck-details>
-
 
                                 <!-- ADD TRAILER / TRAILER DETAIL -->
 
                                 <div
                                     class="d-flex w-100 justify-content-between add-trailer-row"
-                                    [ngClass]="{'flex-column': isAddTrailerSelected}"
+                                    [ngClass]="{
+                                        'flex-column': isAddTrailerSelected,
+                                    }"
                                 >
-                                    <ng-container *ngIf="!isAddTrailerSelected else trailerDetail">
+                                    <ng-container
+                                        *ngIf="
+                                            !isAddTrailerSelected;
+                                            else trailerDetail
+                                        "
+                                    >
                                         <p class="m-0 ta-font-extra-bold">
                                             Have trailer in your possession?
                                         </p>
@@ -532,15 +617,19 @@
                                     <ng-template #trailerDetail>
                                         <div class="divider"></div>
 
-                                        <div class="d-flex justify-content-between">
+                                        <div
+                                            class="d-flex justify-content-between"
+                                        >
                                             <div
                                                 class="d-flex align-self-start add-truck-container"
                                             >
-                                                <p class="m-0 ta-font-extra-bold">
+                                                <p
+                                                    class="m-0 ta-font-extra-bold"
+                                                >
                                                     Trailer Detail
                                                 </p>
                                             </div>
-    
+
                                             <div
                                                 class="d-flex justify-content-center align-items-center delete-btn-container"
                                             >
@@ -558,7 +647,6 @@
                                                 </div>
                                             </div>
                                         </div>
-
                                     </ng-template>
                                 </div>
 
@@ -567,20 +655,46 @@
                                     <app-applicant-trailer-details
                                         [formGroup]="ownerInfoForm"
                                         [selectedMode]="selectedMode"
-                                        [selectedTrailerType]="selectedTrailerType"
-                                        [selectedTrailerMake]="selectedTrailerMake"
-                                        [selectedTrailerLength]="selectedTrailerLength"
-                                        [selectedTrailerColor]="selectedTrailerColor"
-                                        [stepFeedbackValues]="stepFeedbackValues"
-                                        [loadingTrailerVinDecoder]="loadingTrailerVinDecoder"
+                                        [selectedTrailerType]="
+                                            selectedTrailerType
+                                        "
+                                        [selectedTrailerMake]="
+                                            selectedTrailerMake
+                                        "
+                                        [selectedTrailerLength]="
+                                            selectedTrailerLength
+                                        "
+                                        [selectedTrailerColor]="
+                                            selectedTrailerColor
+                                        "
+                                        [stepFeedbackValues]="
+                                            stepFeedbackValues
+                                        "
+                                        [loadingTrailerVinDecoder]="
+                                            loadingTrailerVinDecoder
+                                        "
                                         [dropdownOptions]="dropdownOptions"
-                                        [trailerLicenceDocuments]="trailerLicenceDocuments"
-                                        [trailerLicenceDisplayDocumentsRequiredNote]="trailerLicenceDisplayDocumentsRequiredNote"
-                                        [trailerFHWADocuments]="trailerFHWADocuments"
-                                        [trailerFHWADisplayDocumentsRequiredNote]="trailerFHWADisplayDocumentsRequiredNote"
-                                        [isAddTrailerSelected]="isAddTrailerSelected"
+                                        [trailerLicenceDocuments]="
+                                            trailerLicenceDocuments
+                                        "
+                                        [trailerLicenceDisplayDocumentsRequiredNote]="
+                                            trailerLicenceDisplayDocumentsRequiredNote
+                                        "
+                                        [trailerFHWADocuments]="
+                                            trailerFHWADocuments
+                                        "
+                                        [trailerFHWADisplayDocumentsRequiredNote]="
+                                            trailerFHWADisplayDocumentsRequiredNote
+                                        "
+                                        [isAddTrailerSelected]="
+                                            isAddTrailerSelected
+                                        "
                                         (onFilesAction)="onFilesAction($event)"
-                                        (onInputSelect)="handleInputSelectTruckTrailer($event)"
+                                        (onInputSelect)="
+                                            handleInputSelectTruckTrailer(
+                                                $event
+                                            )
+                                        "
                                     >
                                     </app-applicant-trailer-details>
                                 </ng-container>
@@ -623,7 +737,7 @@
 
     <div
         class="d-flex justify-content-center align-items-center back-btn-container"
-        >
+    >
         <app-applicant-next-back-btn
             [backStep]="true"
             (stepEvent)="onStepAction($event)"

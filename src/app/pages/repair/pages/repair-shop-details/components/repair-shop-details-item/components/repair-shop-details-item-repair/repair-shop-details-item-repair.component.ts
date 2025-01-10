@@ -27,7 +27,7 @@ import { RepairShopDetailsSvgRoutes } from '@pages/repair/pages/repair-shop-deta
 
 // helpers
 import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calculations.helper';
-import { DropdownContentHelper } from '@shared/utils/helpers';
+import { DropdownMenuContentHelper } from '@shared/utils/helpers';
 
 // enums
 import { RepairShopDetailsStringEnum } from '@pages/repair/pages/repair-shop-details/enums';
@@ -161,7 +161,7 @@ export class RepairShopDetailsItemRepairComponent implements OnInit {
         const repairType = repair?.repairType?.name;
 
         this.repairItemOptions =
-            DropdownContentHelper.getRepairTableDropdownContent(
+            DropdownMenuContentHelper.getRepairDropdownContent(
                 unitType,
                 repairType
             );

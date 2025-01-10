@@ -28,6 +28,13 @@ import { TaInputComponent } from '@shared/components/ta-input/ta-input.component
 import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-custom-card.component';
 import { TaInputNoteComponent } from '@shared/components/ta-input-note/ta-input-note.component';
 import { ConfirmationModalComponent } from '@shared/components/ta-shared-modals/confirmation-modal/confirmation-modal.component';
+import {
+    CaInputDropdownComponent,
+    CaInputComponent,
+    CaUploadFilesComponent,
+    CaInputNoteComponent,
+    CaNoteComponent
+} from 'ca-components';
 
 // helpers
 import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calculations.helper';
@@ -59,6 +66,12 @@ import { MedicalResponse } from 'appcoretruckassist';
         TaInputComponent,
         TaCustomCardComponent,
         TaInputNoteComponent,
+
+        CaInputDropdownComponent,
+        CaInputComponent,
+        CaUploadFilesComponent,
+        CaInputNoteComponent,
+        CaNoteComponent,
     ],
 })
 export class DriverMedicalModalComponent implements OnInit, OnDestroy {
@@ -93,7 +106,7 @@ export class DriverMedicalModalComponent implements OnInit, OnDestroy {
 
         // bootstrap
         private ngbActiveModal: NgbActiveModal
-    ) {}
+    ) { }
 
     ngOnInit(): void {
         this.createForm();

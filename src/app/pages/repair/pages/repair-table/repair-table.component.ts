@@ -70,7 +70,7 @@ import {
     RepairTableBackFilterDataHelper,
     RepairTableDateFormaterHelper,
 } from '@pages/repair/pages/repair-table/utils/helpers';
-import { DropdownContentHelper } from '@shared/utils/helpers';
+import { DropdownMenuContentHelper } from '@shared/utils/helpers';
 
 // components
 import { ConfirmationModalComponent } from '@shared/components/ta-shared-modals/confirmation-modal/confirmation-modal.component';
@@ -464,12 +464,11 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                               actionAnimation: TableStringEnum.UPDATE,
                               tableDropdownContent: {
                                   ...repairShop.tableDropdownContent,
-                                  content:
-                                      this.getRepairShopTableDropdownContent(
-                                          status,
-                                          !isFavorite,
-                                          companyOwned
-                                      ),
+                                  content: this.getRepairShopDropdownContent(
+                                      status,
+                                      !isFavorite,
+                                      companyOwned
+                                  ),
                               },
                           }
                         : repairShop;
@@ -1690,7 +1689,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
             fileCount: fileCount,
             tableDropdownContent: {
                 hasContent: true,
-                content: this.getRepairTableDropdownContent(repairType?.name),
+                content: this.getRepairDropdownContent(repairType?.name),
             },
         };
     }
@@ -1777,7 +1776,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
             isFavorite: pinned,
             tableDropdownContent: {
                 hasContent: true,
-                content: this.getRepairShopTableDropdownContent(
+                content: this.getRepairShopDropdownContent(
                     status,
                     pinned,
                     companyOwned
@@ -1786,19 +1785,19 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
         };
     }
 
-    private getRepairTableDropdownContent(repairType: string): DropdownItem[] {
-        return DropdownContentHelper.getRepairTableDropdownContent(
+    private getRepairDropdownContent(repairType: string): DropdownItem[] {
+        return DropdownMenuContentHelper.getRepairDropdownContent(
             this.selectedTab,
             repairType
         );
     }
 
-    private getRepairShopTableDropdownContent(
+    private getRepairShopDropdownContent(
         status: number,
         isPinned: boolean,
         isCompanyOwned: boolean
     ): DropdownItem[] {
-        return DropdownContentHelper.getRepairShopTableDropdownContent(
+        return DropdownMenuContentHelper.getRepairShopDropdownContent(
             status,
             isPinned,
             isCompanyOwned

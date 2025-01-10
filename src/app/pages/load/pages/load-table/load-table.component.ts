@@ -112,7 +112,7 @@ import {
 // Utils
 import { AvatarColorsHelper } from '@shared/utils/helpers/avatar-colors.helper';
 import { RepairTableDateFormaterHelper } from '@pages/repair/pages/repair-table/utils/helpers/repair-table-date-formater.helper';
-import { DropdownContentHelper } from '@shared/utils/helpers/dropdown-content.helper';
+import { DropdownMenuContentHelper } from '@shared/utils/helpers';
 
 // Router
 import { Router } from '@angular/router';
@@ -1133,7 +1133,7 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 : null,
             tableDropdownContent: {
                 hasContent: true,
-                content: this.getDropdownLoadContent(),
+                content: this.getLoadDropdownContent(),
             },
         };
     }
@@ -1412,13 +1412,15 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
             fileCount: fileCount,
             tableDropdownContent: {
                 hasContent: true,
-                content: this.getDropdownLoadContent(),
+                content: this.getLoadDropdownContent(),
             },
         };
     }
 
-    private getDropdownLoadContent(): DropdownItem[] {
-        return DropdownContentHelper.getDropdownLoadContent(this.selectedTab);
+    private getLoadDropdownContent(): DropdownItem[] {
+        return DropdownMenuContentHelper.getLoadDropdownContent(
+            this.selectedTab
+        );
     }
 
     private getTabData(dataType: string): LoadActiveState {

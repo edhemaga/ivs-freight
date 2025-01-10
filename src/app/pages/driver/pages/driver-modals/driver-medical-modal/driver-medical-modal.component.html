@@ -17,7 +17,7 @@
 
         <div class="row last-row">
             <div class="col-6">
-                <app-ta-input
+                <app-ca-input
                     formControlName="issueDate"
                     [inputConfig]="{
                         name: 'datepicker',
@@ -27,13 +27,14 @@
                         placeholderIcon: 'date',
                         isRequired: true,
                         customClass: 'datetimeclass',
-                        autoFocus: editData && editData?.type !== 'edit-medical'
+                        autoFocus:
+                            editData && editData?.type !== 'edit-medical',
                     }"
-                ></app-ta-input>
+                ></app-ca-input>
             </div>
 
             <div class="col-6">
-                <app-ta-input
+                <app-ca-input
                     formControlName="expDate"
                     [inputConfig]="{
                         name: 'datepicker',
@@ -42,9 +43,9 @@
                         isDropdown: true,
                         placeholderIcon: 'date',
                         isRequired: true,
-                        customClass: 'datetimeclass'
+                        customClass: 'datetimeclass',
                     }"
-                ></app-ta-input>
+                ></app-ca-input>
             </div>
         </div>
 
@@ -57,18 +58,78 @@
                 [disableAnimation]="isCardAnimationDisabled"
                 [isCardOpen]="!!documents.length"
             >
-                <app-ta-upload-files
+                <app-ca-upload-files
                     [files]="documents"
-                    [showDropzone]="true"
-                    [customClassName]="'modals'"
+                    [slider]="{
+                        dontUseSlider: false,
+                        hasCarouselBottomTabs: true,
+                    }"
+                    [carouselConfig]="{
+                        files: documents,
+                        customClass: 'medium',
+                        customDetailsPageClass: 'modals',
+                        hasCarouselBottomTabs: true,
+                    }"
+                    [hasCrop]="false"
+                    [dropzoneConf]="[
+                        {
+                            template: 'documentsTemplate',
+                            config: {
+                                dropzone: {
+                                    dropZoneType: 'files',
+                                    multiple: true,
+                                    globalDropZone: false,
+                                    dropZonePages: 'tools_todo',
+                                },
+                                dropzoneOption: {
+                                    customClassName: 'documents-dropzone',
+                                    size: 'medium',
+                                    modalSize: 'lg',
+                                    showDropzone: true,
+                                    filesLength: 2,
+                                    isRequired: true,
+                                    dropzoneClose: false,
+                                },
+                            },
+                        },
+                    ]"
+                    [isVisibleCropAndDrop]="true"
+                    [review]="{
+                        isReview: false,
+                        reviewMode: 'FEEDBACK_MODE',
+                        feedbackText: 'Sample feedback text',
+                        categoryTag: 'General',
+                    }"
+                    [configFile]="{
+                        id: 111,
+                        customClassName: 'modals',
+                        file: {
+                            url: '',
+                            incorrect: false,
+                            lastHovered: false,
+                            fileSize: 1200,
+                            fileName: '',
+                        },
+                        hasTagsDropdown: true,
+                        hasNumberOfPages: true,
+                        activePage: 1,
+                        type: 'modal',
+                        hasLandscapeOption: false,
+                        tagsOptions: [
+                            { tagName: 'HOS Agreement', checked: false },
+                            { tagName: 'Unsafe Driving AGT', checked: false },
+                        ],
+                    }"
+                    [size]="'medium'"
+                    [slideWidth]="180"
                     (onFileEvent)="onFilesEvent($event)"
-                ></app-ta-upload-files>
+                ></app-ca-upload-files>
             </app-ta-custom-card>
         </div>
 
         <!-- Note -->
 
-        <app-ta-input-note
+        <app-ca-input-note
             formControlName="note"
             [isVisibleNote]="
                 medicalForm.get('note').value &&
@@ -82,6 +143,6 @@
                     ? medicalForm.get('note').value
                     : ''
             "
-        ></app-ta-input-note>
+        ></app-ca-input-note>
     </form>
 </app-ta-modal>

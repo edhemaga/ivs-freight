@@ -8,7 +8,7 @@ import {
     getTrailerPMColumnDefinition,
 } from '@shared/utils/settings/table-settings/pm-columns';
 import { MethodsGlobalHelper } from '@shared/utils/helpers/methods-global.helper';
-import { DropdownContentHelper } from '@shared/utils/helpers';
+import { DropdownMenuContentHelper } from '@shared/utils/helpers';
 
 // Components
 import { PmModalComponent } from '@pages/pm-truck-trailer/pages/pm-modal/pm-modal.component';
@@ -526,7 +526,7 @@ export class PmTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
     // Get PM Dropdown Content
     private getPMDropdownContent(): DropdownItem[] {
-        return DropdownContentHelper.getPMDropdownContent();
+        return DropdownMenuContentHelper.getPMDropdownContent();
     }
 
     private actionAnimationSubscribe(): void {
