@@ -948,17 +948,6 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
 
     public onFilesEvent(event): void {
         this.files = event;
-
-        // switch (event.action) {
-        //     case FileActionEvent.ADD:
-        //         this.updateFilesField(event.files);
-        //         break;
-        //     case FileActionEvent.DELETE:
-        //         this.handleDeleteEvent(event);
-        //         break;
-        //     default:
-        //         console.warn(`Unhandled file event action: ${event.action}`);
-        // }
     }
 
     private updateFilesField(files: any[]): void {
@@ -1107,7 +1096,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
             if (openHour.isWorkingDay) {
                 openHour.shifts.forEach((shift: any) => {
                     formattedOpenHours.push({
-                        // isWorkingDay: openHour.isWorkingDay,
+                        isWorking: openHour.isWorkingDay,
                         dayOfWeek: openHour.dayOfWeek,
                         startTime: shift.startTime,
                         endTime: shift.endTime,
@@ -1208,6 +1197,8 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
             status,
             close,
         });
+
+        if (close) this.ngbActiveModal.close();
 
         if (addNew) {
             this.modalService.openModal(RepairShopModalComponent, {});
