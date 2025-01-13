@@ -22,42 +22,17 @@
                 <div class="repair-modal-bill-first-row">
                     <app-ca-input
                         formControlName="invoice"
-                        [inputConfig]="{
-                            name: 'Invoice',
-                            type: 'text',
-                            label: 'Invoice',
-                            textTransform: 'uppercase',
-                            isRequired: true,
-                            minLength: 1,
-                            maxLength: 22,
-                        }"
+                        [inputConfig]="RepairOrderConfig.INVOICE"
                     ></app-ca-input>
 
                     <app-ca-input
                         formControlName="date"
-                        [inputConfig]="{
-                            name: 'datepicker',
-                            type: 'text',
-                            isDropdown: true,
-                            label: 'Date',
-                            placeholderIcon: 'date',
-                            isRequired: true,
-                            customClass: 'datetimeclass',
-                        }"
+                        [inputConfig]="RepairOrderConfig.DATE"
                     ></app-ca-input>
 
                     <app-ca-input-dropdown
                         formControlName="payType"
-                        [inputConfig]="{
-                            name: 'payType',
-                            type: 'text',
-                            label: 'Pay Type',
-                            isDropdown: true,
-                            textTransform: 'uppercase',
-                            minLength: 1,
-                            maxLength: 8,
-                            dropdownWidthClass: 'w-col-145',
-                        }"
+                        [inputConfig]="RepairOrderConfig.PAY_TYPE"
                         [canOpenModal]="true"
                         [options]="payTypeDropdownList"
                         [activeItem]="selectedPayType"
@@ -66,16 +41,7 @@
 
                     <app-ca-input
                         formControlName="datePaid"
-                        [inputConfig]="{
-                            name: 'datepicker',
-                            type: 'text',
-                            isDropdown: true,
-                            label: 'Date Paid',
-                            placeholderIcon: 'date',
-                            isDisabled: !selectedPayType,
-                            isRequired: selectedPayType,
-                            customClass: 'datetimeclass',
-                        }"
+                        [inputConfig]="RepairOrderConfig.DATE_PAID(selectedPayType)"
                     ></app-ca-input>
                 </div>
             }
@@ -84,28 +50,12 @@
                 @if (selectedHeaderTab === 2) {
                     <app-ca-input
                         formControlName="orderNumber"
-                        [inputConfig]="{
-                            name: 'Order No.',
-                            type: 'text',
-                            label: 'Order No.',
-                            textTransform: 'uppercase',
-                            isRequired: true,
-                            minLength: 1,
-                            maxLength: 9,
-                        }"
+                        [inputConfig]="RepairOrderConfig.ORDER_NUMBER"
                     ></app-ca-input>
 
                     <app-ca-input
                         formControlName="date"
-                        [inputConfig]="{
-                            name: 'datepicker',
-                            type: 'text',
-                            isDropdown: true,
-                            label: 'Date',
-                            placeholderIcon: 'date',
-                            isRequired: false,
-                            customClass: 'datetimeclass',
-                        }"
+                        [inputConfig]="RepairOrderConfig.DATE"
                     ></app-ca-input>
                 }
                 <!-- Tabs -->
@@ -121,15 +71,7 @@
                 <app-ca-input-dropdown
                     formControlName="unit"
                     [template]="'svgtext-template'"
-                    [inputConfig]="{
-                        name: 'Input Dropdown',
-                        type: 'text',
-                        label: 'Unit',
-                        isDropdown: true,
-                        isRequired: true,
-                        dropdownWidthClass: 'w-col-145 truck-trailer-dropdown',
-                        customClass: 'truck-trailer-dropdown',
-                    }"
+                    [inputConfig]="RepairOrderConfig.UNIT"
                     [options]="unitDropdownList"
                     [activeItem]="selectedUnit"
                     (selectedItem)="onSelectDropDown($event, 'repair-unit')"
@@ -140,18 +82,7 @@
                 @if (selectedHeaderTab === 1) {
                     <app-ca-input-dropdown
                         formControlName="driver"
-                        [inputConfig]="{
-                            name: 'driver',
-                            type: 'text',
-                            label: 'Driver',
-                            isDropdown: true,
-                            isDisabled: !isDriverSelected,
-                            textTransform: 'capitalize',
-                            minLength: 1,
-                            maxLength: 8,
-                            dropdownWidthClass: 'w-col-145',
-                            hideClear: true,
-                        }"
+                        [inputConfig]="RepairOrderConfig.DRIVER(isDriverSelected)"
                         [activeItem]="selectedDriver"
                         [options]="driversDropdownList"
                         (selectedItem)="onSelectDropDown($event, 'driver')"
@@ -160,16 +91,7 @@
                     <!-- Odometar -->
                     <app-ca-input
                         formControlName="odometer"
-                        [inputConfig]="{
-                            name: 'repair-odometer',
-                            type: 'text',
-                            label: 'Odometer',
-                            isDisabled: selectedHeaderTab !== 1,
-                            isRequired: isAnyRepairItemHasPmSelected,
-                            thousandSeparator: true,
-                            minLength: 1,
-                            maxLength: 9,
-                        }"
+                        [inputConfig]="RepairOrderConfig.ODOMETER(selectedHeaderTab, isAnyRepairItemHasPmSelected)"
                     ></app-ca-input>
                 }
             </div>
@@ -329,14 +251,7 @@
                             <app-ca-input-dropdown
                                 formControlName="repairShopId"
                                 [template]="'double-text-template'"
-                                [inputConfig]="{
-                                    name: 'Input Dropdown',
-                                    type: 'text',
-                                    label: 'Repair Shop',
-                                    isDropdown: true,
-                                    isRequired: selectedHeaderTab === 1,
-                                    dropdownWidthClass: 'w-col-616',
-                                }"
+                                [inputConfig]="RepairOrderConfig.REPAIR_SHOP(selectedHeaderTab)"
                                 [canOpenModal]="true"
                                 [activeItem]="selectedRepairShop"
                                 [canAddNew]="true"
@@ -479,6 +394,7 @@
             </div>
 
             <!-- Note -->
+            <div class="divider"></div>
 
             <app-ca-input-note
                 formControlName="note"
@@ -500,7 +416,7 @@
 </app-ca-modal>
 
 <ng-template #rightModalContent>
-    @if (editData?.type === 'edit') {
+    @if (editData?.type?.includes('edit')) {
         <div
             ngbTooltip
             mainTooltip="Added    {{

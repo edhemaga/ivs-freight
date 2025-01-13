@@ -36,6 +36,7 @@ import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calcula
 // pipes
 import { ActiveItemsPipe } from '@shared/pipes/active-Items.pipe';
 import { FormatPhonePipe } from '@shared/pipes/format-phone.pipe';
+import { FormatDatePipe } from '@shared/pipes';
 
 // services
 import { TaInputService } from '@shared/services/ta-input.service';
@@ -54,7 +55,7 @@ import {
 } from '@shared/components/ta-input/validators/ta-input.regex-validations';
 
 // constants
-import { RepairOrderConstants } from '@pages/repair/pages/repair-modals/repair-order-modal/utils/constants';
+import { RepairOrderConfig, RepairOrderConstants } from '@pages/repair/pages/repair-modals/repair-order-modal/utils/constants';
 
 // enums
 import { RepairOrderModalStringEnum } from '@pages/repair/pages/repair-modals/repair-order-modal/enums';
@@ -135,9 +136,11 @@ import { SharedSvgRoutes } from '@shared/utils/svg-routes';
         TaCopyComponent,
         TaModalTableComponent,
         TaAppTooltipV2Component,
+
         // Pipe
         ActiveItemsPipe,
         FormatPhonePipe,
+        FormatDatePipe
     ],
 })
 export class RepairOrderModalComponent implements OnInit, OnDestroy {
@@ -215,6 +218,9 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
     public svgRoutes = SharedSvgRoutes;
     public taModalActionEnums = TaModalActionEnums;
 
+    // Const 
+    public RepairOrderConfig = RepairOrderConfig;
+
     constructor(
         private formBuilder: UntypedFormBuilder,
 
@@ -247,6 +253,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
         this.addRepairItemOnInit();
 
         this.checkIsFinishOrder();
+
         this.confirmationActivationSubscribe();
     }
 
