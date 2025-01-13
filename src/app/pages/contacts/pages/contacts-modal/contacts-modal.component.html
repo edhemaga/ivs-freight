@@ -57,13 +57,13 @@
             <!-- Address -->
             <div class="row last-row">
                 <div class="col-10">
-                    <app-ca-input-address-dropdown
+                    <app-ta-input-address-dropdown
                         formControlName="address"
                         [inputConfig]="contactModalConfig.ADDRESS_INPUT_CONFIG"
                         [placeholderType]="'longAddress'"
                         [activeAddress]="selectedAddress"
                         (selectedAddress)="onHandleAddress($event)"
-                    ></app-ca-input-address-dropdown>
+                    ></app-ta-input-address-dropdown>
                 </div>
 
                 <div class="col-2">
