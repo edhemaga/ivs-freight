@@ -76,6 +76,7 @@ import {
     CaInputDropdownComponent,
     CaInputAddressDropdownComponent,
 } from 'ca-components';
+import { TaInputAddressDropdownComponent } from '@shared/components/ta-input-address-dropdown/ta-input-address-dropdown.component';
 
 // enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
@@ -113,6 +114,7 @@ import { UserModalConfig } from '@pages/user/pages/user-modal/utils/constants';
         CaInputComponent,
         CaInputDropdownComponent,
         CaInputAddressDropdownComponent,
+        TaInputAddressDropdownComponent,
     ],
 })
 export class UserModalComponent implements OnInit, OnDestroy {
