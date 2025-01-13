@@ -375,8 +375,13 @@
             <!-- Doughnut Chart -->
             <div class="dashboard-top-rated-body-up-doughnut-chart-container">
                 <!-- Chart implementation -->
-                <app-ca-chart [chartConfig]="doughnutChartConfig">
-                </app-ca-chart>
+                <ng-container *ngIf="doughnutChartConfig?.chartData">
+                    <app-ca-chart
+                        [chartConfig]="doughnutChartConfig"
+                        (hoveredIndex)="setDoughnutHoveredIndex($event)"
+                    >
+                    </app-ca-chart>
+                </ng-container>
 
                 <ng-container *ngIf="isDisplayingCustomPeriodRange">
                     <div class="custom-period-range-container">

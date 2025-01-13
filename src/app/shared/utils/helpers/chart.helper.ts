@@ -61,6 +61,30 @@ export class ChartHelper {
                         },
                     ];
                     break;
+                case ChartTypesStringEnum.DOUGHNUT:
+                    const datasetColors: string[] = [
+                        'rgb(102, 146, 241)',
+                        'rgb(250, 177, 92)',
+                        'rgb(230, 103, 103)',
+                        'rgb(86, 180, 172)',
+                        'rgb(179, 112, 240)',
+                        'rgb(87, 85, 223)',
+                        'rgb(255, 144, 109)',
+                        'rgb(119, 191, 86)',
+                        'rgb(230, 104, 160)',
+                        'rgb(160, 130, 102)'
+                    ];
+                    datasets = [
+                        ...datasets,
+                        {
+                            ...properties,
+                            data: [...rawData.map((item: T) => {
+                                return item[property.value] || 0; // For mock purposes replace '|| 0' with '|| Math.random() * 10'; use bigger values for random if needed
+                            })],
+                            backgroundColor: [...datasetColors.slice(0, rawData.length), '#CCCCCC']
+                        },
+                    ];
+                    break;
                 case ChartTypesStringEnum.BAR:
                     datasets = [
                         ...datasets,

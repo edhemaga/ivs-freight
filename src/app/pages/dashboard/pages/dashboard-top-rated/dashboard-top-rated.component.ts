@@ -17,10 +17,12 @@ import { DashboardTopRatedConstants } from '@pages/dashboard/pages/dashboard-top
 import { DashboardColors } from '@pages/dashboard/utils/constants/dashboard-colors.constants';
 import { DashboardSubperiodConstants } from '@pages/dashboard/utils/constants/dashboard-subperiod.constants';
 import { DashboardTopRatedChartsConfiguration } from '@pages/dashboard/pages/dashboard-top-rated/utils/constants';
+import { ChartConfiguration } from '@shared/utils/constants';
 
 // Helpers
 import { DashboardArrayHelper } from '@pages/dashboard/utils/helpers/dashboard-array-helper';
 import { DashboardHelper } from '@pages/dashboard/utils/helpers/dashboard.helper';
+import { ChartHelper } from '@shared/utils/helpers';
 
 // Enums
 import { DashboardStringEnum } from '@pages/dashboard/enums/dashboard-string.enum';
@@ -46,7 +48,12 @@ import {
 } from 'appcoretruckassist';
 import { TopRatedApiArguments } from '@pages/dashboard/pages/dashboard-top-rated/models/top-rated-api-arguments.model';
 import { TopRatedWithoutTabApiArguments } from '@pages/dashboard/pages/dashboard-top-rated/models/top-rated-without-tab-api-arguments.model';
-import { IChartConfiguration } from 'ca-components/lib/components/ca-chart/models';
+import {
+    IChartCenterLabel,
+    IChartConfiguration,
+    IChartData,
+    IBaseDataset
+} from 'ca-components/lib/components/ca-chart/models';
 
 @Component({
     selector: 'app-dashboard-top-rated',
@@ -105,6 +112,8 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
     // Charts
     public doughnutChartConfig: IChartConfiguration =
         DashboardTopRatedChartsConfiguration.DOUGHNUT_CHART_CONFIG;
+    public doughnutCenterLabels!: IChartCenterLabel[];
+
     public barChartConfig: IChartConfiguration =
         DashboardTopRatedChartsConfiguration.BAR_CHART_CONFIG;
 
@@ -603,7 +612,87 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                 tap(() => (this.isLoading = false))
             )
             .subscribe((driverData: TopDriverListResponse) => {
-                console.log(driverData);
+                const totalMileagePercentage: number = driverData
+                    .pagination
+                    .data
+                    .reduce((accumulator, item) => {
+                        return (accumulator += item.mileagePercentage);
+                    }, 0);
+
+                const allOtherMileagePercentage = 1 - totalMileagePercentage;
+
+                const totalMileage: number = driverData
+                    .pagination
+                    .data
+                    .reduce((accumulator, item) => {
+                        return (accumulator += item.mileage);
+                    }, 0);
+
+                const allOtherMiles: number = driverData
+                    .allOthers
+                    .reduce((accumulator, item) => {
+                        return (accumulator += item.driverMileage);
+                    }, 0);
+
+                this.doughnutCenterLabels =
+                    [
+                        {
+                            value: `${totalMileagePercentage}%`,
+                            position: {
+                                top: -14
+                            }
+                        },
+                        {
+                            value: `${totalMileage.toFixed(2)}`,
+                            fontSize: 14,
+                            position: {
+                                top: -14
+                            }
+                        },
+                        {
+                            value: `Top ${driverData.pagination.count}`,
+                            fontSize: 11,
+                            color: '#AAAAAA',
+                            position: {
+                                top: -14
+                            }
+                        },
+                        {
+                            value: `${(100 - totalMileagePercentage).toFixed(2)}%`,
+                            position: {
+                                top: 14
+                            }
+                        },
+                        {
+                            value: `${allOtherMiles}`,
+                            fontSize: 14,
+                            position: {
+                                top: 14
+                            }
+                        },
+                        {
+                            value: `All others`,
+                            fontSize: 11,
+                            color: '#AAAAAA',
+                            position: {
+                                top: 14
+                            }
+                        },
+                    ];
+
+                let chartData: IChartData<IBaseDataset> = ChartHelper.generateDataByDateTime(
+                    driverData.pagination.data,
+                    ChartConfiguration.topDriverConfiguration);
+
+                // if (allOtherMileagePercentage)
+                //     chartData.datasets[0].data = [...[...chartData.datasets[0].data], allOtherMileagePercentage];
+
+                this.doughnutChartConfig = {
+                    ...this.doughnutChartConfig,
+                    chartData,
+                    centerLabels: this.doughnutCenterLabels
+                }
+
                 // top rated list and single selection data
                 this.topRatedList = driverData.pagination.data.map((driver) => {
                     let filteredIntervalValues: number[] = [];
@@ -645,6 +734,39 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
 
                 // intervals
             });
+    }
+
+    public setDoughnutHoveredIndex(event: number | null): void {
+        if (event === null) {
+            this.doughnutChartConfig.centerLabels = this.doughnutCenterLabels;
+            return;
+        }
+
+        const topRatedListItem: TopRatedListItem = this.topRatedList[event];
+
+        this.doughnutChartConfig.centerLabels = [
+            {
+                value: `${topRatedListItem.percent}%`,
+                position: {
+                    top: 24
+                }
+            },
+            {
+                value: `$${topRatedListItem.value}`,
+                fontSize: 14,
+                position: {
+                    top: 24
+                }
+            },
+            {
+                value: `${topRatedListItem.name}`,
+                fontSize: 11,
+                color: '#AAAAAA',
+                position: {
+                    top: 24
+                }
+            },
+        ];
     }
 
     private getTopRatedTruckListData(

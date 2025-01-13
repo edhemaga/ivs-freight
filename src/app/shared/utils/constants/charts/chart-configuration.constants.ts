@@ -128,5 +128,12 @@ export class ChartConfiguration {
             type: ChartTypesStringEnum.LINE,
             color: '#6692F1',
         },
+    ];
+
+    public static topDriverConfiguration: ChartTypeProperty[] = [
+        {
+            type: ChartTypesStringEnum.DOUGHNUT,
+            value: 'mileagePercentage'
+        }
     ]
 }
