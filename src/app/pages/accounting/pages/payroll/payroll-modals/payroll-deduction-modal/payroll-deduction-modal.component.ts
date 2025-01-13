@@ -23,8 +23,8 @@ import {
 } from '@pages/accounting/pages/payroll/state/models';
 
 // Services
-import { PayrollDeductionService } from './services/payroll-deduction.service';
-import { PayrollService } from '../../services/payroll.service';
+import { PayrollDeductionService } from '@pages/accounting/pages/payroll/payroll-modals/payroll-deduction-modal/services/payroll-deduction.service';
+import { PayrollService } from '@pages/accounting/pages/payroll/services/payroll.service';
 
 // Enums
 import { PayrollStringEnum } from '@pages/accounting/pages/payroll/state/enums';
@@ -62,6 +62,7 @@ export class PayrollDeductionModalComponent implements OnInit {
     public deduction: PayrollDeductionResponse;
     public formLoaded: boolean = false;
     public isLimited: boolean = false;
+    private preselectedDriver: boolean;
 
     constructor(
         private fb: FormBuilder,
@@ -137,6 +138,7 @@ export class PayrollDeductionModalComponent implements OnInit {
 
         this.setRequiredFields();
         this.formLoaded = true;
+        if (data.driverId) this.preselectedDriver = true;
     }
 
     private setRequiredFields(): void {
@@ -232,7 +234,7 @@ export class PayrollDeductionModalComponent implements OnInit {
                 .pipe(takeUntil(this.destroy$))
                 .subscribe(() => {
                     if (action === TaModalActionEnums.SAVE_AND_ADD_NEW) {
-                        this.createForm();
+                        this.payrollService.saveAndAddNew(PayrollDeductionModalComponent, this.preselectedDriver, data.driverId, this.ngbActiveModal);
                     } else {
                         this.onCloseModal();
                     }

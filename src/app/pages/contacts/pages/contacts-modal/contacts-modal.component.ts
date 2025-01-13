@@ -18,7 +18,7 @@ import { Subject, switchMap, takeUntil } from 'rxjs';
 
 // modules
 import { AngularSvgIconModule } from 'angular-svg-icon';
-import { NgbActiveModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbActiveModal, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 
 // components
 import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-custom-card.component';
@@ -87,7 +87,7 @@ import { MethodsGlobalHelper } from '@shared/utils/helpers/methods-global.helper
         FormsModule,
         ReactiveFormsModule,
         AngularSvgIconModule,
-        NgbModule,
+        NgbTooltipModule,
 
         // components
         CaModalComponent,

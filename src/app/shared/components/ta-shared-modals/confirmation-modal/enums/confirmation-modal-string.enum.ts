@@ -20,5 +20,5 @@ export enum ConfirmationModalStringEnum {
     DELETE_DEDUCTION = 'Delete Deduction',
     DELETE_CREDIT = 'Delete Credit',
     DELETE_BONUS = 'Delete Bonus',
-    DELETE_FUEL = 'Delete Fuel'
+    DELETE_FUEL = 'Delete Transaction'
 }

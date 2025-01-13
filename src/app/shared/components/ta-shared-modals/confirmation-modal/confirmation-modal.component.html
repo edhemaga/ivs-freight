@@ -1539,7 +1539,7 @@
             <div class="confirmation-header">
                 <p class="m-0 ta-font-medium">
                     Are you sure you want to {{ editData?.type }} selected
-                    {{ editData?.subType }}?
+                    {{ editData?.subType === 'fuel' ? "#s"  : editData?.subType }}?
                 </p>
             </div>
         </ng-container>

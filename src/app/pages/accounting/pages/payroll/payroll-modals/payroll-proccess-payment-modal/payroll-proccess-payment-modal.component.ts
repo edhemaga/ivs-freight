@@ -16,7 +16,7 @@ import {
     Validators,
 } from '@angular/forms';
 import { skip, Subject, takeUntil } from 'rxjs';
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbActiveModal, NgbTooltip } from '@ng-bootstrap/ng-bootstrap';
 
 // Modules
 import { AngularSvgIconModule } from 'angular-svg-icon';
@@ -32,6 +32,7 @@ import {
     CaInputDropdownComponent,
     CaModalComponent,
 } from 'ca-components';
+import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
 
 // Models
 import { EditData } from '@shared/models/edit-data.model';
@@ -72,6 +73,7 @@ import { PayrollSvgRoutes } from '@pages/accounting/pages/payroll/state/utils';
         FormsModule,
         ReactiveFormsModule,
         AngularSvgIconModule,
+        NgbTooltip,
 
         // Component
         TaTabSwitchComponent,
@@ -79,6 +81,7 @@ import { PayrollSvgRoutes } from '@pages/accounting/pages/payroll/state/utils';
         CaModalComponent,
         CaInputDropdownComponent,
         TaSpinnerComponent,
+        TaAppTooltipV2Component
     ],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
