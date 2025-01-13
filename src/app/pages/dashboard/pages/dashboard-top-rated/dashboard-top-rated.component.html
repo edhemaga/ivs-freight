@@ -203,6 +203,8 @@
                                     'not-selected':
                                         selectedTopRatedList.length &&
                                         !topRatedListItem.isSelected,
+                                    'hovered-from-chart':
+                                        i === doughnutChartDataHoveredIndex,
                                 }"
                                 (click)="
                                     handleAddSelectedClick(topRatedListItem, i)

@@ -113,6 +113,7 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
     public doughnutChartConfig: IChartConfiguration =
         DashboardTopRatedChartsConfiguration.DOUGHNUT_CHART_CONFIG;
     public doughnutCenterLabels!: IChartCenterLabel[];
+    public doughnutChartDataHoveredIndex!: number | null;
 
     public barChartConfig: IChartConfiguration =
         DashboardTopRatedChartsConfiguration.BAR_CHART_CONFIG;
@@ -737,6 +738,8 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
     }
 
     public setDoughnutHoveredIndex(event: number | null): void {
+        this.doughnutChartDataHoveredIndex = event;
+
         if (event === null) {
             this.doughnutChartConfig.centerLabels = this.doughnutCenterLabels;
             return;
