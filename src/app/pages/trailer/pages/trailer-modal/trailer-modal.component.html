@@ -32,11 +32,11 @@
                 <!-------------------------------- Basic Tab -------------------------------->
                 <div class="m-tab" *ngIf="selectedTab === 1">
                     <div class="trailer-modal-first-row">
-                        <app-ta-input
+                        <app-ca-input
                             formControlName="trailerNumber"
                             [inputConfig]="TrailerNumberConfig"
-                        ></app-ta-input>
-                        <app-ta-input-dropdown
+                        ></app-ca-input>
+                        <app-ca-input-dropdown
                             formControlName="trailerTypeId"
                             [template]="'svgtext-template'"
                             [inputConfig]="TrailerTypeIdConfig"
@@ -45,8 +45,8 @@
                             (selectedItem)="
                                 onSelectDropdown($event, 'trailer-type')
                             "
-                        ></app-ta-input-dropdown>
-                        <app-ta-input-dropdown
+                        ></app-ca-input-dropdown>
+                        <app-ca-input-dropdown
                             formControlName="trailerLengthId"
                             [inputConfig]="TrailerLengthConfig"
                             [options]="trailerLengthType"
@@ -54,18 +54,18 @@
                             (selectedItem)="
                                 onSelectDropdown($event, 'trailer-length')
                             "
-                        ></app-ta-input-dropdown>
+                        ></app-ca-input-dropdown>
                     </div>
                     <div class="trailer-modal-second-row d-grid">
-                        <app-ta-input
+                        <app-ca-input
                             formControlName="year"
                             [inputConfig]="TrailerYearConfig"
-                        ></app-ta-input>
-                        <app-ta-input
+                        ></app-ca-input>
+                        <app-ca-input
                             formControlName="vin"
                             [inputConfig]="TrailerVinConfig"
-                        ></app-ta-input>
-                        <app-ta-input-dropdown
+                        ></app-ca-input>
+                        <app-ca-input-dropdown
                             formControlName="trailerMakeId"
                             [template]="'svg-template'"
                             [inputConfig]="TrailerMakeConfig"
@@ -74,23 +74,23 @@
                             (selectedItem)="
                                 onSelectDropdown($event, 'trailer-make')
                             "
-                        ></app-ta-input-dropdown>
+                        ></app-ca-input-dropdown>
                     </div>
                     <div class="custom-model-color-year-length last-row">
-                        <app-ta-input
+                        <app-ca-input
                             formControlName="model"
                             [inputConfig]="TrailerModelConfig"
                             (blurInput)="onBlurTrailerModel()"
-                        ></app-ta-input>
+                        ></app-ca-input>
 
-                        <app-ta-input-dropdown
+                        <app-ca-input-dropdown
                             formControlName="colorId"
                             [template]="'svgtext-template'"
                             [inputConfig]="TrailerColorConfig"
                             [options]="colorType"
                             [activeItem]="selectedColor"
                             (selectedItem)="onSelectDropdown($event, 'color')"
-                        ></app-ta-input-dropdown>
+                        ></app-ca-input-dropdown>
                     </div>
                     <!-- Company Owned -->
                     <app-ta-checkbox-card
@@ -106,7 +106,7 @@
                     >
                         <div bodyFalse class="row row-no-m">
                             <div class="col-12">
-                                <app-ta-input-dropdown
+                                <app-ca-input-dropdown
                                     formControlName="ownerId"
                                     [inputConfig]="TrailerOwnerConfig"
                                     [canAddNew]="true"
@@ -116,7 +116,7 @@
                                     (selectedItem)="
                                         onSelectDropdown($event, 'owner')
                                     "
-                                ></app-ta-input-dropdown>
+                                ></app-ca-input-dropdown>
                             </div>
                         </div>
                     </app-ta-checkbox-card>
@@ -177,7 +177,7 @@
                                 'Reefer'
                             "
                         >
-                            <app-ta-input-dropdown
+                            <app-ca-input-dropdown
                                 formControlName="reeferUnit"
                                 [inputConfig]="TrailerReferConfig"
                                 [options]="reeferUnitType"
@@ -185,7 +185,7 @@
                                 (selectedItem)="
                                     onSelectDropdown($event, 'reefer-unit')
                                 "
-                            ></app-ta-input-dropdown>
+                            ></app-ca-input-dropdown>
                         </ng-container>
 
                         <ng-container
@@ -195,18 +195,18 @@
                                 )
                             "
                         >
-                            <app-ta-input
+                            <app-ca-input
                                 formControlName="volume"
                                 [inputConfig]="TrailerVolumeConfig"
-                            ></app-ta-input>
+                            ></app-ca-input>
                         </ng-container>
 
-                        <app-ta-input
+                        <app-ca-input
                             formControlName="emptyWeight"
                             [inputConfig]="TrailerWeightConfig"
-                        ></app-ta-input>
+                        ></app-ca-input>
 
-                        <app-ta-input-dropdown
+                        <app-ca-input-dropdown
                             formControlName="tireSizeId"
                             [inputConfig]="TrailerTireSizeConfig"
                             [options]="tireSize"
@@ -214,7 +214,7 @@
                             (selectedItem)="
                                 onSelectDropdown($event, 'tire-size')
                             "
-                        ></app-ta-input-dropdown>
+                        ></app-ca-input-dropdown>
                     </div>
 
                     <!-------------------------------- SECOND ROW -------------------------------->
@@ -228,12 +228,12 @@
                                 : 'trailer-second-grid-2-cols'
                         "
                     >
-                        <app-ta-input
+                        <app-ca-input
                             formControlName="axles"
                             [inputConfig]="TrailerAxlesConfig"
-                        ></app-ta-input>
+                        ></app-ca-input>
 
-                        <app-ta-input-dropdown
+                        <app-ca-input-dropdown
                             formControlName="suspension"
                             [inputConfig]="TrailerSuspensionConfig"
                             [options]="suspensionType"
@@ -241,7 +241,7 @@
                             (selectedItem)="
                                 onSelectDropdown($event, 'suspension')
                             "
-                        ></app-ta-input-dropdown>
+                        ></app-ca-input-dropdown>
 
                         <ng-container
                             *ngIf="
@@ -250,7 +250,7 @@
                                 )
                             "
                         >
-                            <app-ta-input-dropdown
+                            <app-ca-input-dropdown
                                 formControlName="doorType"
                                 [inputConfig]="TrailerDoorTypeConfig"
                                 [options]="doorType"
@@ -258,7 +258,7 @@
                                 (selectedItem)="
                                     onSelectDropdown($event, 'door-type')
                                 "
-                            ></app-ta-input-dropdown>
+                            ></app-ca-input-dropdown>
                         </ng-container>
 
                         <ng-container
@@ -278,32 +278,32 @@
                     </div>
                     <!-------------------------------- THIRD ROW -------------------------------->
                     <div class="trailer-modal-insurance-fhwa">
-                        <app-ta-input
+                        <app-ca-input
                             formControlName="insurancePolicy"
                             [inputConfig]="TrailerInsurancePolicyConfig"
-                        ></app-ta-input>
-                        <app-ta-input
+                        ></app-ca-input>
+                        <app-ca-input
                             formControlName="mileage"
                             [inputConfig]="TrailerMileageConfig"
-                        ></app-ta-input>
-                        <app-ta-input
+                        ></app-ca-input>
+                        <app-ca-input
                             formControlName="fhwaExp"
                             [inputConfig]="TrailerFhwaExpConfig"
-                        ></app-ta-input>
+                        ></app-ca-input>
                     </div>
                     <ng-container *ngIf="trailerForm.get('companyOwned').value">
                         <div class="row row-no-mb">
                             <div class="col-6">
-                                <app-ta-input
+                                <app-ca-input
                                     formControlName="purchaseDate"
                                     [inputConfig]="TrailerPurchaseDateConfig"
-                                ></app-ta-input>
+                                ></app-ca-input>
                             </div>
                             <div class="col-6">
-                                <app-ta-input
+                                <app-ca-input
                                     formControlName="purchasePrice"
                                     [inputConfig]="TrailerPurchasePriceConfig"
-                                ></app-ta-input>
+                                ></app-ca-input>
                             </div>
                         </div>
                     </ng-container>

@@ -21,7 +21,7 @@
     >
         <div class="row">
             <div class="col-6">
-                <app-ta-input
+                <app-ca-input
                     [inputConfig]="{
                         name: 'License Plate',
                         type: 'text',
@@ -33,10 +33,10 @@
                         textTransform: 'uppercase'
                     }"
                     formControlName="licensePlate"
-                ></app-ta-input>
+                ></app-ca-input>
             </div>
             <div class="col-6">
-                <app-ta-input-dropdown
+                <app-ca-input-dropdown
                     (selectedItem)="onSelectDropdown($event, 'state')"
                     [activeItem]="selectedStateType"
                     [template]="'svgtext-template'"
@@ -62,12 +62,12 @@
                     }"
                     [options]="stateTypes"
                     formControlName="stateId"
-                ></app-ta-input-dropdown>
+                ></app-ca-input-dropdown>
             </div>
         </div>
         <div class="row last-row">
             <div class="col-6">
-                <app-ta-input
+                <app-ca-input
                     [inputConfig]="{
                         name: 'datepicker',
                         type: 'text',
@@ -79,7 +79,7 @@
                         isFutureDateDisabled: true
                     }"
                     formControlName="issueDate"
-                ></app-ta-input>
+                ></app-ca-input>
             </div>
             <div class="col-6">
                 <!-- <div
@@ -96,7 +96,7 @@
                         Add expiration date
                     </p>
                 </div> -->
-                <app-ta-input
+                <app-ca-input
                     [inputConfig]="{
                         name: 'datepicker',
                         type: 'text',
@@ -108,7 +108,7 @@
                         expiredDateInvalid: true
                     }"
                     formControlName="expDate"
-                ></app-ta-input>
+                ></app-ca-input>
             </div>
         </div>
         <div class="ta-card-body-overflow-none">
