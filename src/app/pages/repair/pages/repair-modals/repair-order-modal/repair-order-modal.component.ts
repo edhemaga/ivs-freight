@@ -23,8 +23,8 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
 // bootstrap
 import {
     NgbActiveModal,
-    NgbModule,
     NgbPopover,
+    NgbTooltipModule,
 } from '@ng-bootstrap/ng-bootstrap';
 
 // moment
@@ -36,6 +36,7 @@ import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calcula
 // pipes
 import { ActiveItemsPipe } from '@shared/pipes/active-Items.pipe';
 import { FormatPhonePipe } from '@shared/pipes/format-phone.pipe';
+import { FormatDatePipe } from '@shared/pipes';
 
 // services
 import { TaInputService } from '@shared/services/ta-input.service';
@@ -44,6 +45,7 @@ import { DetailsDataService } from '@shared/services/details-data.service';
 import { FormService } from '@shared/services/form.service';
 import { EditTagsService } from '@shared/services/edit-tags.service';
 import { RepairService } from '@shared/services/repair.service';
+import { ConfirmationService } from '@shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
 
 // validators
 import {
@@ -53,23 +55,26 @@ import {
 } from '@shared/components/ta-input/validators/ta-input.regex-validations';
 
 // constants
-import { RepairOrderConstants } from '@pages/repair/pages/repair-modals/repair-order-modal/utils/constants';
+import { RepairOrderConfig, RepairOrderConstants } from '@pages/repair/pages/repair-modals/repair-order-modal/utils/constants';
 
 // enums
 import { RepairOrderModalStringEnum } from '@pages/repair/pages/repair-modals/repair-order-modal/enums';
 import { TableStringEnum } from '@shared/enums/table-string.enum';
 import { ModalTableTypeEnum } from '@shared/enums/modal-table-type.enum';
+import { TaModalActionEnums } from '@shared/components/ta-modal/enums';
 
 // components
 import { RepairShopModalComponent } from '@pages/repair/pages/repair-modals/repair-shop-modal/repair-shop-modal.component';
 import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
-import { TaModalComponent } from '@shared/components/ta-modal/ta-modal.component';
+import {
+    CaModalComponent,
+    CaInputComponent,
+    CaInputDropdownComponent,
+    CaInputNoteComponent,
+} from 'ca-components';
 import { TaTabSwitchComponent } from '@shared/components/ta-tab-switch/ta-tab-switch.component';
-import { TaInputDropdownComponent } from '@shared/components/ta-input-dropdown/ta-input-dropdown.component';
-import { TaInputComponent } from '@shared/components/ta-input/ta-input.component';
 import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-custom-card.component';
 import { TaUploadFilesComponent } from '@shared/components/ta-upload-files/ta-upload-files.component';
-import { TaInputNoteComponent } from '@shared/components/ta-input-note/ta-input-note.component';
 import { TaCopyComponent } from '@shared/components/ta-copy/ta-copy.component';
 import { TaModalTableComponent } from '@shared/components/ta-modal-table/ta-modal-table.component';
 import { ConfirmationModalComponent } from '@shared/components/ta-shared-modals/confirmation-modal/confirmation-modal.component';
@@ -103,6 +108,7 @@ import {
 
 // svg routes
 import { RepairOrderModalSvgRoutes } from '@pages/repair/pages/repair-modals/repair-order-modal/utils/svg-routes';
+import { SharedSvgRoutes } from '@shared/utils/svg-routes';
 
 @Component({
     selector: 'app-repair-order-modal',
@@ -115,24 +121,26 @@ import { RepairOrderModalSvgRoutes } from '@pages/repair/pages/repair-modals/rep
         CommonModule,
         FormsModule,
         ReactiveFormsModule,
-        NgbModule,
+        NgbTooltipModule,
         AngularSvgIconModule,
 
         // components
         TaAppTooltipV2Component,
-        TaModalComponent,
+        CaModalComponent,
         TaTabSwitchComponent,
-        TaInputDropdownComponent,
-        TaInputComponent,
+        CaInputDropdownComponent,
+        CaInputComponent,
         TaCustomCardComponent,
         TaUploadFilesComponent,
-        TaInputNoteComponent,
+        CaInputNoteComponent,
         TaCopyComponent,
         TaModalTableComponent,
+        TaAppTooltipV2Component,
 
         // Pipe
         ActiveItemsPipe,
         FormatPhonePipe,
+        FormatDatePipe
     ],
 })
 export class RepairOrderModalComponent implements OnInit, OnDestroy {
@@ -207,6 +215,11 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
 
     // enums
     public modalTableTypeEnum = ModalTableTypeEnum;
+    public svgRoutes = SharedSvgRoutes;
+    public taModalActionEnums = TaModalActionEnums;
+
+    // Const 
+    public RepairOrderConfig = RepairOrderConfig;
 
     constructor(
         private formBuilder: UntypedFormBuilder,
@@ -224,7 +237,8 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
         private modalService: ModalService,
         private formService: FormService,
         private detailsDataService: DetailsDataService,
-        private tagsService: EditTagsService
+        private tagsService: EditTagsService,
+        private confirmationService: ConfirmationService
     ) {}
 
     ngOnInit() {
@@ -239,6 +253,17 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
         this.addRepairItemOnInit();
 
         this.checkIsFinishOrder();
+
+        this.confirmationActivationSubscribe();
+    }
+
+    private confirmationActivationSubscribe(): void {
+        this.confirmationService.confirmationData$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((res) => {
+                if (res.action !== TableStringEnum.CLOSE)
+                    this.ngbActiveModal?.close();
+            });
     }
 
     public trackByIdentity(
@@ -346,11 +371,12 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
         this.getDrivers();
     }
 
-    public onModalAction(data: { action: string; bool: boolean }): void {
-        switch (data.action) {
-            case RepairOrderModalStringEnum.CLOSE:
+    public onModalAction(action: string): void {
+        switch (action) {
+            case TaModalActionEnums.CLOSE:
+                this.ngbActiveModal.close();
                 break;
-            case RepairOrderModalStringEnum.SVE_AND_ADD_NEW:
+            case TaModalActionEnums.SAVE_AND_ADD_NEW:
                 if (this.repairOrderForm.invalid || !this.isFormDirty) {
                     this.inputService.markInvalid(this.repairOrderForm);
 
@@ -368,7 +394,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
                 this.isAddNewAfterSave = true;
 
                 break;
-            case RepairOrderModalStringEnum.SAVE:
+            case TaModalActionEnums.SAVE:
                 if (this.repairOrderForm.invalid || !this.isFormDirty) {
                     this.inputService.markInvalid(this.repairOrderForm);
 
@@ -390,12 +416,12 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
                 });
 
                 break;
-            case RepairOrderModalStringEnum.DELETE:
+            case TaModalActionEnums.DELETE:
                 if (this.editData.data)
                     this.deleteRepair(this.editData.data.id);
 
                 break;
-            case RepairOrderModalStringEnum.FINISH_ORDER:
+            case TaModalActionEnums.FINISH_ORDER:
                 this.setIsFinishOrderData();
 
                 break;
@@ -1514,8 +1540,6 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
     }
 
     private deleteRepair(id: number): void {
-        this.ngbActiveModal.close();
-
         const data = {
             data: {
                 tableUnit: this.repairOrderForm.get(
