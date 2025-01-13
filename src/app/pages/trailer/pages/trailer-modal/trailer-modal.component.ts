@@ -47,13 +47,12 @@ import { OwnerModalComponent } from '@pages/owner/pages/owner-modal/owner-modal.
 import { RepairOrderModalComponent } from '@pages/repair/pages/repair-modals/repair-order-modal/repair-order-modal.component';
 import { TaModalComponent } from '@shared/components/ta-modal/ta-modal.component';
 import { TaTabSwitchComponent } from '@shared/components/ta-tab-switch/ta-tab-switch.component';
-import { TaInputComponent } from '@shared/components/ta-input/ta-input.component';
-import { TaInputDropdownComponent } from '@shared/components/ta-input-dropdown/ta-input-dropdown.component';
 import { TaCheckboxCardComponent } from '@shared/components/ta-checkbox-card/ta-checkbox-card.component';
 import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-custom-card.component';
 import { TaUploadFilesComponent } from '@shared/components/ta-upload-files/ta-upload-files.component';
 import { TaInputNoteComponent } from '@shared/components/ta-input-note/ta-input-note.component';
 import { TaCheckboxComponent } from '@shared/components/ta-checkbox/ta-checkbox.component';
+import { CaInputComponent, CaInputDropdownComponent } from 'ca-components';
 
 // helpers
 import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calculations.helper';
@@ -69,10 +68,6 @@ import { TrailerModalConfig } from '@pages/trailer/pages/trailer-modal/utils/con
 // Enums
 import { TrailerFormFieldEnum } from '@pages/trailer/pages/trailer-modal/enums';
 import { TableStringEnum } from '@shared/enums/table-string.enum';
-
-import {
-    CaInputComponent,
-} from 'ca-components';
 
 @Component({
     selector: 'app-trailer-modal',
@@ -91,14 +86,13 @@ import {
         // components
         TaModalComponent,
         TaTabSwitchComponent,
-        TaInputComponent,
-        TaInputDropdownComponent,
         TaCheckboxCardComponent,
         TaCustomCardComponent,
         TaUploadFilesComponent,
         TaInputNoteComponent,
         TaCheckboxComponent,
-        CaInputComponent
+        CaInputComponent,
+        CaInputDropdownComponent,
     ],
 })
 export class TrailerModalComponent implements OnInit, OnDestroy {
@@ -320,23 +314,35 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
     }
 
     private isCompanyOwned(): void {
-        const ownerIdControl = this.trailerForm.get(TrailerFormFieldEnum.OWNER_ID);
-    
+        const ownerIdControl = this.trailerForm.get(
+            TrailerFormFieldEnum.OWNER_ID
+        );
+
         this.trailerForm
             .get(TrailerFormFieldEnum.COMPANY_OWNED)
             .valueChanges.pipe(takeUntil(this.destroy$))
             .subscribe((isCompanyOwned: boolean) => {
                 this.updateOwnerIdValidators(isCompanyOwned, ownerIdControl);
                 if (!isCompanyOwned) {
-                     // Clear the owner ID when not company-owned
-                    ownerIdControl.patchValue(TableStringEnum.EMPTY_STRING_PLACEHOLDER); 
+                    // Clear the owner ID when not company-owned
+                    ownerIdControl.patchValue(
+                        TableStringEnum.EMPTY_STRING_PLACEHOLDER
+                    );
                 }
             });
     }
 
-    private updateOwnerIdValidators(isCompanyOwned: boolean, control: AbstractControl): void {
+    private updateOwnerIdValidators(
+        isCompanyOwned: boolean,
+        control: AbstractControl
+    ): void {
         const shouldBeRequired = !isCompanyOwned;
-        this.inputService.changeValidators(control, shouldBeRequired, [], false);
+        this.inputService.changeValidators(
+            control,
+            shouldBeRequired,
+            [],
+            false
+        );
     }
 
     public onModalAction(data: { action: string; bool: boolean }): void {
@@ -510,16 +516,16 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
 
         const newData: any = {
             ...this.trailerForm.value,
-            trailerTypeId: this.selectedTrailerType?.id ?? null ,
-            trailerMakeId: this.selectedTrailerMake?.id  ?? null,
+            trailerTypeId: this.selectedTrailerType?.id ?? null,
+            trailerMakeId: this.selectedTrailerMake?.id ?? null,
             colorId: this.selectedColor?.id ?? null,
             year: parseInt(this.trailerForm.get('year').value),
             trailerLengthId: this.selectedTrailerLength.id,
             ownerId: this.trailerForm.get('companyOwned').value
                 ? null
                 : this.selectedOwner
-                ? this.selectedOwner.id
-                : null,
+                  ? this.selectedOwner.id
+                  : null,
             axles: this.trailerForm.get('axles').value
                 ? parseInt(this.trailerForm.get('axles').value)
                 : null,
@@ -690,8 +696,8 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
             ownerId: this.trailerForm.get('companyOwned').value
                 ? null
                 : this.selectedOwner
-                ? this.selectedOwner.id
-                : null,
+                  ? this.selectedOwner.id
+                  : null,
             axles: this.trailerForm.get('axles').value
                 ? parseInt(this.trailerForm.get('axles').value)
                 : null,
@@ -852,8 +858,8 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
                         ownerId: res.companyOwned
                             ? null
                             : res.owner
-                            ? res.owner.name
-                            : null,
+                              ? res.owner.name
+                              : null,
                         note: res.note,
                         axles: res.axles,
                         suspension: res.suspension ? res.suspension.name : null,
