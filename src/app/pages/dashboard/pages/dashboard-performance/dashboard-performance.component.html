@@ -61,7 +61,7 @@
                     'dropdown-right-w-8': selectedSubPeriod?.name === 'Monthly',
                     'dropdown-right-w-9':
                         selectedSubPeriod?.name === 'Quarterly',
-                    'dropdown-right-w-10': selectedSubPeriod?.name === 'Yearly'
+                    'dropdown-right-w-10': selectedSubPeriod?.name === 'Yearly',
                 }"
             >
                 <app-ta-input-dropdown
@@ -74,7 +74,7 @@
                         hideClear: true,
                         hideColorValidations: true,
                         isInputBackgroundRemoved: true,
-                        dropdownWidthClass: 'w-col-157'
+                        dropdownWidthClass: 'w-col-157',
                     }"
                     [options]="subPeriodDropdownList"
                     [activeItem]="selectedSubPeriod"
@@ -101,8 +101,8 @@
                     background: performanceData[0].isHovered
                         ? performanceData[0].selectedHoverColor
                         : performanceData[0].isSelected
-                        ? performanceData[0].selectedColor
-                        : '#f7f7f780'
+                          ? performanceData[0].selectedColor
+                          : '#f7f7f780',
                 }"
                 [ngClass]="{ selected: performanceData[0].isSelected }"
                 (mouseenter)="handlePerformanceDataHover(0)"
@@ -133,11 +133,11 @@
                                 <svg-icon
                                     class="circle-icon"
                                     [src]="
-                                        'assets/svg/common/load/ic_circle-default-load.svg'
+                                        DashboardPerformanceIconRoutes.icCircleDefaultLoad
                                     "
                                     [svgStyle]="{
                                         'width.px': 10,
-                                        'height.px': 10
+                                        'height.px': 10,
                                     }"
                                 ></svg-icon>
 
@@ -221,7 +221,7 @@
                                             "
                                             [svgStyle]="{
                                                 'width.px': 14,
-                                                'height.px': 14
+                                                'height.px': 14,
                                             }"
                                         ></svg-icon>
                                     </div>
@@ -264,7 +264,7 @@
             <div class="boxes-single-box-container">
                 <ng-container
                     *ngFor="
-                        let performanceDataItem of performanceData | slice : 1;
+                        let performanceDataItem of performanceData | slice: 1;
                         let i = index;
                         trackBy: trackByIdentity
                     "
@@ -276,12 +276,12 @@
                             background: performanceDataItem.isHovered
                                 ? performanceDataItem.selectedHoverColor
                                 : performanceDataItem.isSelected
-                                ? performanceDataItem.selectedColor
-                                : '#f7f7f780',
-                            'padding-top': isLoading ? '5px' : '12px'
+                                  ? performanceDataItem.selectedColor
+                                  : '#f7f7f780',
+                            'padding-top': isLoading ? '5px' : '12px',
                         }"
                         [ngClass]="{
-                            selected: performanceDataItem.isSelected
+                            selected: performanceDataItem.isSelected,
                         }"
                         (mouseenter)="handlePerformanceDataHover(i + 1)"
                         (mouseleave)="handlePerformanceDataHover(i + 1, true)"
@@ -303,11 +303,11 @@
                                 <svg-icon
                                     class="circle-icon"
                                     [src]="
-                                        'assets/svg/common/load/ic_circle-default-load.svg'
+                                        DashboardPerformanceIconRoutes.icCircleDefaultLoad
                                     "
                                     [svgStyle]="{
                                         'width.px': 10,
-                                        'height.px': 10
+                                        'height.px': 10,
                                     }"
                                 ></svg-icon>
 
@@ -380,7 +380,7 @@
                                             class="d-flex align-items-center justify-content-center trend-icon-box"
                                             [ngClass]="{
                                                 'hide-trend-icon-box':
-                                                    performanceDataItem.isHovered
+                                                    performanceDataItem.isHovered,
                                             }"
                                         >
                                             <svg-icon
@@ -392,7 +392,7 @@
                                                 "
                                                 [svgStyle]="{
                                                     'width.px': 14,
-                                                    'height.px': 14
+                                                    'height.px': 14,
                                                 }"
                                             ></svg-icon>
                                         </div>
@@ -439,11 +439,11 @@
                         <svg-icon
                             class="circle-icon circle-icon-price"
                             [src]="
-                                'assets/svg/common/load/ic_circle-default-load.svg'
+                                DashboardPerformanceIconRoutes.icCircleDefaultLoad
                             "
                             [svgStyle]="{
                                 'width.px': 10,
-                                'height.px': 10
+                                'height.px': 10,
                             }"
                         ></svg-icon>
                         <p>Price per Galon</p>
@@ -454,11 +454,11 @@
                         <svg-icon
                             class="circle-icon circle-icon-rate"
                             [src]="
-                                'assets/svg/common/load/ic_circle-default-load.svg'
+                                DashboardPerformanceIconRoutes.icCircleDefaultLoad
                             "
                             [svgStyle]="{
                                 'width.px': 10,
-                                'height.px': 10
+                                'height.px': 10,
                             }"
                         ></svg-icon>
                         <p>Load Rate per Mile</p>
@@ -468,7 +468,7 @@
             <app-ca-chart-manager
                 [chartConfigs]="[
                     linePerformanceChartConfig,
-                    barPerformanceChartConfig
+                    barPerformanceChartConfig,
                 ]"
                 [chartDatasetHover]="chartDatasetHover"
                 [tooltipLables]="intervalTooltipLabel"
