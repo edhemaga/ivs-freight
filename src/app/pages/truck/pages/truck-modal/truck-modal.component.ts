@@ -773,6 +773,10 @@ export class TruckModalComponent implements OnInit, OnDestroy {
                         dashCam: res.dashCam,
                         blower: res.blower,
                         pto: res.pto,
+                        fhwaExp: res.fhwaExp ? res.fhwaExp : 12,
+                        volume: res.volume ?? null,
+                        excludeFromIftaFuelTaxReport:
+                            res.excludeFromIftaFuelTaxReport,
                     });
 
                     this.selectedAPUnit = res.apUnit ? res.apUnit : null;

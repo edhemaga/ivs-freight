@@ -118,7 +118,7 @@
 
                                 <svg-icon
                                     class="selected-item-star"
-                                    src="assets/svg/common/ic_star.svg"
+                                    [src]="svgRoutes.STAR_ICON"
                                     [svgStyle]="{
                                         'width.px': '14',
                                         'height.px': '14',
@@ -137,7 +137,7 @@
                                             [class.hide-svg-on-copy]="
                                                 hideIconIndex == 1
                                             "
-                                            src="assets/svg/common/ic_phone.svg"
+                                    [src]="svgRoutes.PHONE_ICON"
                                         ></svg-icon>
 
                                         <app-ta-copy
@@ -162,7 +162,7 @@
                                             [class.hide-svg-on-copy]="
                                                 hideIconIndex == 2
                                             "
-                                            src="assets/svg/common/ic_email.svg"
+                                            [src]="svgRoutes.EMAIL_ICON"
                                         ></svg-icon>
 
                                         <app-ta-copy
@@ -186,7 +186,7 @@
                                             [class.hide-svg-on-copy]="
                                                 hideIconIndex == 3
                                             "
-                                            src="assets/svg/common/ic_address.svg"
+                                            [src]="svgRoutes.ADDRESS_ICON"
                                         ></svg-icon>
 
                                         <app-ta-copy
@@ -213,7 +213,7 @@
                                     tooltipBackground="#424242"
                                 >
                                     <svg-icon
-                                        src="assets/svg/ic_spec_input_pen.svg"
+                                    [src]="svgRoutes.PEN_ICON"
                                         [svgStyle]="{
                                             'width.px': '18',
                                             'height.px': '18',
@@ -236,7 +236,7 @@
                                     tooltipBackground="#424242"
                                 >
                                     <svg-icon
-                                        src="assets/svg/ic_x.svg"
+                                    [src]="svgRoutes.X_ICON"
                                         [svgStyle]="{
                                             'width.px': '18',
                                             'height.px': '18',
