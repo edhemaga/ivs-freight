@@ -162,7 +162,9 @@ export class TaTableToolbarComponent implements OnInit, OnChanges, OnDestroy {
 
         this.getSelectedTabTableData();
 
-        this.getToolbarWidth();
+        setTimeout(() => {
+            this.getToolbarWidth();
+        });
 
         this.getActiveTableData();
 
@@ -355,9 +357,11 @@ export class TaTableToolbarComponent implements OnInit, OnChanges, OnDestroy {
             localStorage.getItem(`table-${td.tableConfiguration}-Configuration`)
         );
 
-        this.optionsPopupContent[2].isInactive = tableColumnsConfig
-            ? false
-            : true;
+        if (this.optionsPopupContent.length) {
+            this.optionsPopupContent[2].isInactive = tableColumnsConfig
+                ? false
+                : true;
+        }
 
         this.tableConfigurationType = td.tableConfiguration;
 

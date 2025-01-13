@@ -24,56 +24,37 @@
                     <div class="m-tab">
                         <div class="row">
                             <div class="email-field">
-                                <app-ta-input
+                                <app-ca-input
                                     formControlName="email"
-                                    [inputConfig]="{
-                                        name: 'Email',
-                                        type: 'text',
-                                        label: 'Email',
-                                        placeholderIcon: 'email',
-                                        isRequired: true,
-                                        minLength: 5,
-                                        maxLength: 64,
-                                        isDisabled:
-                                            selectedUserType?.name === 'Owner',
-                                        textTransform: 'lowercase',
-                                        autoFocus: editData?.type !== 'edit'
-                                    }"
-                                ></app-ta-input>
+                                    [inputConfig]="
+                                        userModalConfig.emailInputConfig(
+                                            selectedUserType?.name,
+                                            editData?.type
+                                        )
+                                    "
+                                ></app-ca-input>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-6">
-                                <app-ta-input
+                                <app-ca-input
                                     formControlName="firstName"
-                                    [inputConfig]="{
-                                        name: 'First name',
-                                        type: 'text',
-                                        label: 'First Name',
-                                        isRequired: true,
-                                        minLength: 2,
-                                        maxLength: 26,
-                                        isDisabled:
-                                            selectedUserType?.name === 'Owner',
-                                        textTransform: 'capitalize',
-                                    }"
-                                ></app-ta-input>
+                                    [inputConfig]="
+                                        userModalConfig.firstNameInputConfig(
+                                            selectedUserType?.name
+                                        )
+                                    "
+                                ></app-ca-input>
                             </div>
                             <div class="col-6">
-                                <app-ta-input
+                                <app-ca-input
                                     formControlName="lastName"
-                                    [inputConfig]="{
-                                        name: 'Last name',
-                                        type: 'text',
-                                        label: 'Last Name',
-                                        minLength: 2,
-                                        maxLength: 26,
-                                        isRequired: true,
-                                        isDisabled:
-                                            selectedUserType?.name === 'Owner',
-                                        textTransform: 'capitalize'
-                                    }"
-                                ></app-ta-input>
+                                    [inputConfig]="
+                                        userModalConfig.lastNameInputConfig(
+                                            selectedUserType?.name
+                                        )
+                                    "
+                                ></app-ca-input>
                             </div>
                         </div>
                         <div class="row">
@@ -97,46 +78,32 @@
                                     selectedUserType?.name === 'Owner'
                                 "
                             >
-                                <app-ta-input-dropdown
+                                <app-ca-input-dropdown
                                     formControlName="departmentId"
-                                    [inputConfig]="{
-                                        name: 'Input Dropdown Department',
-                                        minLength: 2,
-                                        maxLength: 36,
-                                        type: 'text',
-                                        label: 'Department',
-                                        textTransform: 'capitalize',
-                                        isRequired: true,
-                                        isDropdown: true,
-                                        isDisabled:
-                                            selectedUserType?.name === 'Owner',
-                                        dropdownWidthClass: 'w-col-308'
-                                    }"
+                                    [inputConfig]="
+                                        userModalConfig.departmentInputConfig(
+                                            selectedUserType?.name
+                                        )
+                                    "
                                     [options]="departments"
                                     [activeItem]="selectedDepartment"
                                     (selectedItem)="
                                         onSelectDropdown($event, 'department')
                                     "
-                                ></app-ta-input-dropdown>
+                                ></app-ca-input-dropdown>
                             </div>
                         </div>
 
                         <div
                             class="row"
                             [ngStyle]="{
-                                height: '26px'
+                                height: '26px',
                             }"
                         >
                             <div class="col-5" [class.col-7]="!isPhoneExtExist">
-                                <app-ta-input-dropdown
+                                <app-ca-input-dropdown
                                     formControlName="companyOfficeId"
-                                    [inputConfig]="{
-                                        name: 'Input Dropdown',
-                                        type: 'text',
-                                        label: 'Office',
-                                        isDropdown: true,
-                                        dropdownWidthClass: 'w-col-258'
-                                    }"
+                                    [inputConfig]="userModalConfig.companyOfficeInputConfig"
                                     [canAddNew]="true"
                                     [canOpenModal]="true"
                                     [options]="offices"
@@ -144,18 +111,18 @@
                                     (selectedItem)="
                                         onSelectDropdown($event, 'office')
                                     "
-                                ></app-ta-input-dropdown>
+                                ></app-ca-input-dropdown>
                             </div>
                             <div
                                 class="phone-ext-email-small-modal col-5"
                                 [class.col-7]="isPhoneExtExist"
                                 [ngClass]="{
-                                    'active-phone-ext': isPhoneExtExist
+                                    'active-phone-ext': isPhoneExtExist,
                                 }"
                             >
                                 <div class="phone-extension">
                                     <div class="phone-field">
-                                        <app-ta-input
+                                        <app-ca-input
                                             formControlName="phone"
                                             [inputConfig]="{
                                                 name: 'Phone',
@@ -165,7 +132,7 @@
                                                 mask: '(000) 000-0000',
                                                 maxLength: 14,
                                             }"
-                                        ></app-ta-input>
+                                        ></app-ca-input>
                                     </div>
                                     <ng-container
                                         *ngIf="
@@ -192,7 +159,7 @@
                                         </div>
                                     </ng-container>
                                     <ng-template #phoneExtension>
-                                        <app-ta-input
+                                        <app-ca-input
                                             formControlName="extensionPhone"
                                             [inputConfig]="{
                                                 name: 'phone-extension',
@@ -201,9 +168,9 @@
                                                 minLength: 1,
                                                 maxLength: 8,
                                                 placeholderIcon:
-                                                    'phone-extension'
+                                                    'phone-extension',
                                             }"
-                                        ></app-ta-input>
+                                        ></app-ca-input>
                                     </ng-template>
                                 </div>
                             </div>
@@ -232,7 +199,7 @@
                                 [hasArrow]="false"
                                 [animationMarginParams]="{
                                     marginTop: '18px',
-                                    marginBottom: '22px'
+                                    marginBottom: '22px',
                                 }"
                             ></app-ta-checkbox-card>
                         </ng-container>
@@ -242,12 +209,12 @@
                             [disableAnimation]="disableCardAnimation"
                             [animationMarginParams]="{
                                 marginTop: '18px',
-                                marginBottom: '22px'
+                                marginBottom: '22px',
                             }"
                         >
                             <div class="row">
                                 <div class="col-5">
-                                    <app-ta-input
+                                    <app-ca-input
                                         formControlName="personalPhone"
                                         [inputConfig]="{
                                             name: 'Phone',
@@ -255,12 +222,12 @@
                                             label: 'Personal Phone',
                                             placeholderIcon: 'phone',
                                             mask: '(000) 000-0000',
-                                            maxLength: 14
+                                            maxLength: 14,
                                         }"
-                                    ></app-ta-input>
+                                    ></app-ca-input>
                                 </div>
                                 <div class="col-7">
-                                    <app-ta-input
+                                    <app-ca-input
                                         formControlName="personalEmail"
                                         [inputConfig]="{
                                             name: 'Email',
@@ -269,9 +236,9 @@
                                             placeholderIcon: 'email',
                                             minLength: 5,
                                             maxLength: 64,
-                                            textTransform: 'lowercase'
+                                            textTransform: 'lowercase',
                                         }"
-                                    ></app-ta-input>
+                                    ></app-ca-input>
                                 </div>
                             </div>
                             <div class="row remove-bottom-margin">
@@ -296,7 +263,7 @@
                                     ></app-ta-input-address-dropdown>
                                 </div>
                                 <div class="col-2">
-                                    <app-ta-input
+                                    <app-ca-input
                                         formControlName="addressUnit"
                                         [inputConfig]="{
                                             name: 'address-unit',
@@ -306,7 +273,7 @@
                                             minLength: 1,
                                             maxLength: 10,
                                         }"
-                                    ></app-ta-input>
+                                    ></app-ca-input>
                                 </div>
                             </div>
                         </app-ta-custom-card>
@@ -325,7 +292,7 @@
                                 marginBottom: userForm.get('includeInPayroll')
                                     .value
                                     ? '22px'
-                                    : '0px'
+                                    : '0px',
                             }"
                         >
                             <ng-container body>
@@ -341,7 +308,7 @@
                                         "
                                     >
                                         <div class="col-5">
-                                            <app-ta-input-dropdown
+                                            <app-ca-input-dropdown
                                                 formControlName="paymentType"
                                                 [inputConfig]="{
                                                     name: 'Input Dropdown',
@@ -358,7 +325,7 @@
                                                         selectedUserType?.name !==
                                                             'Owner',
                                                     dropdownWidthClass:
-                                                        'w-col-177'
+                                                        'w-col-177',
                                                 }"
                                                 [options]="paymentOptions"
                                                 [activeItem]="selectedPayment"
@@ -368,12 +335,12 @@
                                                         'payment'
                                                     )
                                                 "
-                                            ></app-ta-input-dropdown>
+                                            ></app-ca-input-dropdown>
                                         </div>
                                     </ng-container>
                                     <ng-template #salary>
                                         <div class="col-5">
-                                            <app-ta-input
+                                            <app-ca-input
                                                 formControlName="salary"
                                                 [inputConfig]="{
                                                     name: 'Salary',
@@ -383,13 +350,13 @@
                                                     placeholderIcon: 'dollar',
                                                     thousandSeparator: true,
                                                     minLength: 4,
-                                                    maxLength: 8
+                                                    maxLength: 8,
                                                 }"
-                                            ></app-ta-input>
+                                            ></app-ca-input>
                                         </div>
                                     </ng-template>
                                     <div class="col-4">
-                                        <app-ta-input
+                                        <app-ca-input
                                             formControlName="startDate"
                                             [inputConfig]="{
                                                 name: 'datepicker',
@@ -398,9 +365,9 @@
                                                 isDropdown: true,
                                                 placeholderIcon: 'date',
                                                 isRequired: true,
-                                                customClass: 'datetimeclass'
+                                                customClass: 'datetimeclass',
                                             }"
-                                        ></app-ta-input>
+                                        ></app-ca-input>
                                     </div>
                                     <div class="col-3 no-p-left">
                                         <app-ta-tab-switch
@@ -427,7 +394,7 @@
                                             *ngIf="allowPairCommissionBase"
                                         >
                                             <div class="col-6">
-                                                <app-ta-input
+                                                <app-ca-input
                                                     formControlName="base"
                                                     [inputConfig]="{
                                                         name: 'Salary',
@@ -440,7 +407,7 @@
                                                         minLength: 4,
                                                         maxLength: 8,
                                                     }"
-                                                ></app-ta-input>
+                                                ></app-ca-input>
                                             </div>
                                         </ng-container>
                                         <div
@@ -457,7 +424,7 @@
                                                     else commissionSlider
                                                 "
                                             >
-                                                <app-ta-input
+                                                <app-ca-input
                                                     formControlName="salary"
                                                     [inputConfig]="{
                                                         name: 'Salary',
@@ -472,9 +439,9 @@
                                                         isDisabled:
                                                             !selectedPayment?.name,
                                                         isRequired:
-                                                            !selectedPayment?.name
+                                                            !selectedPayment?.name,
                                                     }"
-                                                ></app-ta-input>
+                                                ></app-ca-input>
                                             </ng-container>
 
                                             <ng-template #commissionSlider>
@@ -506,11 +473,11 @@
                                     [ngClass]="{
                                         'no-m-bottom':
                                             !userForm.get('includeInPayroll')
-                                                .value
+                                                .value,
                                     }"
                                 >
                                     <div class="bank-field">
-                                        <app-ta-input-dropdown
+                                        <app-ca-input-dropdown
                                             formControlName="bankId"
                                             [template]="'svg-template'"
                                             [inputConfig]="{
@@ -522,7 +489,7 @@
                                                 textTransform: 'uppercase',
                                                 isDropdown: true,
                                                 isRequired: true,
-                                                dropdownWidthClass: 'w-col-164'
+                                                dropdownWidthClass: 'w-col-164',
                                             }"
                                             [canAddNew]="true"
                                             [options]="labelsBank"
@@ -531,10 +498,10 @@
                                                 onSelectDropdown($event, 'bank')
                                             "
                                             (saveItem)="onSaveNewBank($event)"
-                                        ></app-ta-input-dropdown>
+                                        ></app-ca-input-dropdown>
                                     </div>
                                     <div class="bank-field">
-                                        <app-ta-input
+                                        <app-ca-input
                                             formControlName="routingNumber"
                                             [inputConfig]="{
                                                 name: 'routing-bank',
@@ -543,12 +510,12 @@
                                                 isDisabled: !isBankSelected,
                                                 isRequired: isBankSelected,
                                                 minLength: 9,
-                                                maxLength: 9
+                                                maxLength: 9,
                                             }"
-                                        ></app-ta-input>
+                                        ></app-ca-input>
                                     </div>
                                     <div class="bank-field">
-                                        <app-ta-input
+                                        <app-ca-input
                                             formControlName="accountNumber"
                                             [inputConfig]="{
                                                 name: 'account-bank',
@@ -557,9 +524,9 @@
                                                 isDisabled: !isBankSelected,
                                                 isRequired: isBankSelected,
                                                 minLength: 5,
-                                                maxLength: 17
+                                                maxLength: 17,
                                             }"
-                                        ></app-ta-input>
+                                        ></app-ca-input>
                                     </div>
                                 </div>
                             </ng-container>
