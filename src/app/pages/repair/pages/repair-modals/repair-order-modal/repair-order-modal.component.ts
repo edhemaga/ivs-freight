@@ -44,6 +44,7 @@ import { DetailsDataService } from '@shared/services/details-data.service';
 import { FormService } from '@shared/services/form.service';
 import { EditTagsService } from '@shared/services/edit-tags.service';
 import { RepairService } from '@shared/services/repair.service';
+import { ConfirmationService } from '@shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
 
 // validators
 import {
@@ -230,7 +231,8 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
         private modalService: ModalService,
         private formService: FormService,
         private detailsDataService: DetailsDataService,
-        private tagsService: EditTagsService
+        private tagsService: EditTagsService,
+        private confirmationService: ConfirmationService
     ) {}
 
     ngOnInit() {
@@ -245,6 +247,16 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
         this.addRepairItemOnInit();
 
         this.checkIsFinishOrder();
+        this.confirmationActivationSubscribe();
+    }
+
+    private confirmationActivationSubscribe(): void {
+        this.confirmationService.confirmationData$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((res) => {
+                if (res.action !== TableStringEnum.CLOSE)
+                    this.ngbActiveModal?.close();
+            });
     }
 
     public trackByIdentity(
@@ -1521,8 +1533,6 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
     }
 
     private deleteRepair(id: number): void {
-        this.ngbActiveModal.close();
-
         const data = {
             data: {
                 tableUnit: this.repairOrderForm.get(

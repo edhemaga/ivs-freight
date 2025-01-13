@@ -538,6 +538,14 @@
             {{ editData?.data?.invoice || editData?.data?.orderNumber }}
         </div>
     }
+
+    @if (!editData?.type?.includes('edit')) {
+        <app-ta-tab-switch
+            (switchClicked)="onModalHeaderTabChange($event)"
+            [tabs]="headerTabs"
+            [type]="'type2-modal-popup'"
+        ></app-ta-tab-switch>
+    }
 </ng-template>
 
 <ng-template #footerTemplate>
@@ -573,7 +581,7 @@
             <div>
                 <button
                     class="modal-delete-btn ta-font-bold mr-12"
-                    (click)="saveCredit(taModalActionEnums.DELETE)"
+                    (click)="onModalAction(taModalActionEnums.DELETE)"
                     [class.valid]="
                         repairOrderForm.valid &&
                         isFormDirty &&
@@ -584,14 +592,14 @@
                 </button>
                 <button
                     class="modal-convert-to-template-btn ta-font-bold"
-                    (click)="saveCredit(taModalActionEnums.FINISH_ORDER)"
+                    (click)="onModalAction(taModalActionEnums.FINISH_ORDER)"
                 >
                     Finish Order
                 </button>
             </div>
             <button
                 class="modal-save-btn ta-font-bold"
-                (click)="saveCredit(taModalActionEnums.SAVE)"
+                (click)="onModalAction(taModalActionEnums.SAVE)"
                 [class.valid]="
                     repairOrderForm.valid && isFormDirty && isEachRepairRowValid
                 "
