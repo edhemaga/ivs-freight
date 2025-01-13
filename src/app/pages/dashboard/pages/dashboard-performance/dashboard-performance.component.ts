@@ -9,8 +9,15 @@ import { DashboardService } from '@pages/dashboard/services/dashboard.service';
 
 // Constants
 import { DashboardTopRatedConstants } from '@pages/dashboard/pages/dashboard-top-rated/utils/constants/dashboard-top-rated.constants';
-import { DashboardPerformanceChartsConfiguration, DashboardPerformanceConstants } from '@pages/dashboard/pages/dashboard-performance/utils/constants';
-import { DashboardConstants, DashboardColors, DashboardSubperiodConstants } from '@pages/dashboard/utils/constants';
+import {
+    DashboardPerformanceChartsConfiguration,
+    DashboardPerformanceConstants,
+} from '@pages/dashboard/pages/dashboard-performance/utils/constants';
+import {
+    DashboardConstants,
+    DashboardColors,
+    DashboardSubperiodConstants,
+} from '@pages/dashboard/utils/constants';
 
 // Helpers
 import { DashboardHelper } from '@pages/dashboard/utils/helpers/dashboard.helper';
@@ -482,7 +489,7 @@ export class DashboardPerformanceComponent implements OnInit, OnDestroy {
             (intervalLabel) => intervalLabel.tooltipLabel
         );
     }
-    
+
     private groupPerformanceDataByChartType(
         performanceGraphs: PerformanceGraphResponse[]
     ): {
@@ -521,11 +528,24 @@ export class DashboardPerformanceComponent implements OnInit, OnDestroy {
                 type: ChartTypesStringEnum.BAR,
                 barPercentage: 0.9,
                 categoryPercentage: 0.5,
+                minBarLength: 0.5,
                 order:
                     key === DashboardChartStringEnum.BAR_LABEL_PER_GALLON
                         ? 1
                         : 2,
-                color:
+                backgroundColor:
+                    key === DashboardChartStringEnum.BAR_LABEL_PER_GALLON
+                        ? DashboardColors.BAR_PERFORMANCE_COLORS_PALLETE[0]
+                              .color
+                        : DashboardColors.BAR_PERFORMANCE_COLORS_PALLETE[1]
+                              .color,
+                hoverBackgroundColor:
+                    key === DashboardChartStringEnum.BAR_LABEL_PER_GALLON
+                        ? DashboardColors.BAR_PERFORMANCE_COLORS_PALLETE[0]
+                              .color
+                        : DashboardColors.BAR_PERFORMANCE_COLORS_PALLETE[1]
+                              .color,
+                hoverBorderColor:
                     key === DashboardChartStringEnum.BAR_LABEL_PER_GALLON
                         ? DashboardColors.BAR_PERFORMANCE_COLORS_PALLETE[0]
                               .color
@@ -544,8 +564,7 @@ export class DashboardPerformanceComponent implements OnInit, OnDestroy {
                     bottomRight: 0,
                 },
                 isCurrency: DashboardHelper.isCurrency(key),
-            }))
-            .sort((a, b) => a.order - b.order);
+            }));
 
         let linePerformanceChartData = Array.from(performanceDataMap.entries())
             .filter(([key]) => !barPerformanceTypes.includes(key))

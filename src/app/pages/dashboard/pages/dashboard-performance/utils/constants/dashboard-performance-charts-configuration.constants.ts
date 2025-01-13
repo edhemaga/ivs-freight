@@ -24,7 +24,8 @@ export class DashboardPerformanceChartsConfiguration {
         showHighlightPointOnHover: true,
         isDatasetHoverEnabled: true,
         isTooltipItemInSelectedItems: true,
-        showBottomLineOnLineChart: true
+        showBottomLineOnLineChart: true,
+        isDashboardChart: true
     };
     public static BAR_CHART_PERFORMANCE_CONFIG: IChartConfiguration = {
         chartType: ChartTypesStringEnum.BAR,
@@ -39,5 +40,6 @@ export class DashboardPerformanceChartsConfiguration {
         showXAxisLabels: true, 
         showTooltipBackground: true,
         verticalyAlignBarChartWithLineCart: true,
+        isDashboardChart: true
     };
 }
