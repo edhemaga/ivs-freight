@@ -3,61 +3,67 @@
         editData?.modalHeaderTitle
             ? editData.modalHeaderTitle
             : editData.cdlStatus
-            ? editData.cdlStatus.concat(' ', 'CDL')
-            : editData?.type === 'info'
-            ? editData?.subType === 'archive'
-                ? editData?.subType?.substring(0, 1).toUpperCase() +
-                  editData?.subType?.substring(1)
-                : 'Move'
-            : editData?.type === 'multiple delete' &&
-              editData?.template !== 'repair' &&
-              editData?.template !== 'repair_shop' &&
-              editData?.template !== 'truck' &&
-              editData?.template !== 'driver' &&
-              editData?.template !== 'user'
-            ? 'Delete'
-            : editData?.template === 'void'
-            ? editData.type === 'activate'
-                ? 'Activate Registration'
-                : ' Void Registration '
-            : editData?.type?.substring(0, 1).toUpperCase() +
-                  editData?.type?.substring(1) +
-                  editData?.template ===
-              'fuel stop'
-            ? ' Fuel Stop'
-            : editData?.template === ' contact'
-            ? 'Contact'
-            : editData?.template === 'repair'
-            ? 'Delete Repair / Order'
-            : editData?.template === 'repair_shop'
-            ? 'Delete Repair Shop'
-            : editData?.template === 'registration'
-            ? 'Delete Registration'
-            : editData?.template === 'inspection'
-            ? 'Delete FHWA Inspection'
-            : editData?.template === 'title'
-            ? 'Delete Title'
-            : editData?.template === 'truck'
-            ? 'Delete Truck'
-            : editData?.template === 'trailer'
-            ? 'Delete Trailer'
-            : editData?.template === 'driver'
-            ? 'Delete Driver'
-            : editData?.template === 'comment'
-            ? 'Delete Comment'
-            : editData?.template === 'Company Terminal'
-            ? 'Delete Terminal'
-            : editData?.template === 'Company Parking'
-            ? 'Delete Parking'
-            : editData?.template === 'Company Office'
-            ? 'Delete Office'
-            : editData?.template === 'Company Repair Shop'
-            ? 'Delete Repair Shop'
-            : editData?.template === 'delete-review'
-            ? 'Delete Review'
-            : editData?.template === 'user'
-            ? 'Delete User'
-            : 'Confirmation'
+              ? editData.cdlStatus.concat(' ', 'CDL')
+              : editData?.type === 'info'
+                ? editData?.subType === 'archive'
+                    ? editData?.subType?.substring(0, 1).toUpperCase() +
+                      editData?.subType?.substring(1)
+                    : 'Move'
+                : editData?.type === 'multiple delete' &&
+                    editData?.template !== 'repair' &&
+                    editData?.template !== 'repair_shop' &&
+                    editData?.template !== 'truck' &&
+                    editData?.template !== 'driver' &&
+                    editData?.template !== 'user'
+                  ? 'Delete'
+                  : editData?.template === 'void'
+                    ? editData.type === 'activate'
+                        ? 'Activate Registration'
+                        : ' Void Registration '
+                    : editData?.type?.substring(0, 1).toUpperCase() +
+                            editData?.type?.substring(1) +
+                            editData?.template ===
+                        'fuel stop'
+                      ? ' Fuel Stop'
+                      : editData?.template === ' contact'
+                        ? 'Contact'
+                        : editData?.template === 'repair'
+                          ? 'Delete Repair / Order'
+                          : editData?.template === 'repair_shop'
+                            ? 'Delete Repair Shop'
+                            : editData?.template === 'registration'
+                              ? 'Delete Registration'
+                              : editData?.template === 'inspection'
+                                ? 'Delete FHWA Inspection'
+                                : editData?.template === 'title'
+                                  ? 'Delete Title'
+                                  : editData?.template === 'truck'
+                                    ? 'Delete Truck'
+                                    : editData?.template === 'trailer'
+                                      ? 'Delete Trailer'
+                                      : editData?.template === 'driver'
+                                        ? 'Delete Driver'
+                                        : editData?.template === 'comment'
+                                          ? 'Delete Comment'
+                                          : editData?.template ===
+                                              'Company Terminal'
+                                            ? 'Delete Terminal'
+                                            : editData?.template ===
+                                                'Company Parking'
+                                              ? 'Delete Parking'
+                                              : editData?.template ===
+                                                  'Company Office'
+                                                ? 'Delete Office'
+                                                : editData?.template ===
+                                                    'Company Repair Shop'
+                                                  ? 'Delete Repair Shop'
+                                                  : editData?.template ===
+                                                      'delete-review'
+                                                    ? 'Delete Review'
+                                                    : editData?.template ===
+                                                        'user'
+                                                      ? 'Delete User'
+                                                      : 'Confirmation'
     "
     [specificCaseModalName]="editData.modalHeader"
     [customClass]="'modal-container-XS'"
@@ -75,12 +81,12 @@
         editData?.type === 'multiple delete'
             ? 'delete'
             : editData?.template === 'void' ||
-              (editData?.template === 'cdl' && editData?.type === 'activate')
-            ? 'hire'
-            : editData?.subType === 'void cdl' ||
-              editData?.subType === 'cdl void'
-            ? 'close'
-            : editData?.type
+                (editData?.template === 'cdl' && editData?.type === 'activate')
+              ? 'hire'
+              : editData?.subType === 'void cdl' ||
+                  editData?.subType === 'cdl void'
+                ? 'close'
+                : editData?.type
     "
     [confirmationData]="editData"
     [isCloseIconRemoved]="true"
@@ -194,7 +200,7 @@
                                                     editData.data.avatarColor
                                                         .background,
                                                 color: editData.data.avatarColor
-                                                    .color
+                                                    .color,
                                             }"
                                         >
                                             {{
@@ -279,7 +285,10 @@
                                     {{ editData?.data?.name }}
                                 </p>
                                 <p class="m-0 confirmation-text-2 large-text-2">
-                                    {{ editData?.data?.tableTableDept }}
+                                    {{
+                                        editData?.data?.tableTableDept ||
+                                            editData?.data?.username
+                                    }}
                                 </p>
                             </div>
                         </ng-container>
@@ -340,7 +349,7 @@
                                     'Company Parking',
                                     'Company Office',
                                     'Company Repair Shop',
-                                    'Company Terminal'
+                                    'Company Terminal',
                                 ].includes(editData?.template)
                                     ? editData.template
                                     : ''
@@ -545,7 +554,7 @@
                                                 label: 'New Active Registration',
                                                 isRequired: true,
                                                 isDropdown: true,
-                                                dropdownWidthClass: 'w-col-264'
+                                                dropdownWidthClass: 'w-col-264',
                                             }"
                                             [options]="editData?.array"
                                             (selectedItem)="
@@ -571,7 +580,9 @@
                                             class="pdf-file-image d-flex align-items-center justify-content-center"
                                         >
                                             <app-ta-upload-file
-                                                [file]="editData?.data?.files?.[0]"
+                                                [file]="
+                                                    editData?.data?.files?.[0]
+                                                "
                                                 [type]="'details'"
                                                 [isFooterHidden]="true"
                                                 [isActionsHidden]="true"
@@ -625,7 +636,7 @@
                                                     isDisabled:
                                                         cdls?.length === 1,
                                                     dropdownWidthClass:
-                                                        'w-col-228'
+                                                        'w-col-228',
                                                 }"
                                                 [options]="editData?.cdlsArray"
                                                 [activeItem]="selectedCdl"
@@ -672,7 +683,9 @@
                                             class="pdf-file-image d-flex align-items-center justify-content-center"
                                         >
                                             <app-ta-upload-file
-                                                [file]="editData?.data?.files?.[0]"
+                                                [file]="
+                                                    editData?.data?.files?.[0]
+                                                "
                                                 [type]="'details'"
                                                 [isFooterHidden]="true"
                                                 [isActionsHidden]="true"
@@ -902,9 +915,10 @@
                                         editData?.data?.invoice
                                             ? editData.data.invoice
                                             : editData?.data?.date
-                                            ? (editData.data.date | formatDateP)
-                                            : (editData?.data?.createdAt
-                                              | formatDateP)
+                                              ? (editData.data.date
+                                                | formatDateP)
+                                              : (editData?.data?.createdAt
+                                                | formatDateP)
                                     }}
                                 </p>
 
@@ -935,7 +949,7 @@
                                         "
                                         [svgStyle]="{
                                             'width.px': 18,
-                                            'height.px': 18
+                                            'height.px': 18,
                                         }"
                                     ></svg-icon>
                                 </div>
@@ -943,7 +957,7 @@
                                 <p class="m-0 text-2">
                                     {{
                                         editData?.data?.updatedAt
-                                            | formatDateP : 'date-time'
+                                            | formatDateP: 'date-time'
                                     }}
                                 </p>
 
@@ -992,7 +1006,7 @@
                                             "
                                             [svgStyle]="{
                                                 'width.px': '18',
-                                                'height.px': '18'
+                                                'height.px': '18',
                                             }"
                                         ></svg-icon>
                                     </ng-container>
@@ -1017,7 +1031,7 @@
                                 <p class="m-0 confirmation-text-2 large-text-2">
                                     {{
                                         editData?.data?.createdAt
-                                            | formatDateP : 'date-time'
+                                            | formatDateP: 'date-time'
                                     }}
                                 </p>
 
@@ -1042,7 +1056,7 @@
                                 [
                                     'broker contact',
                                     'shipper contact',
-                                    'repair shop contact'
+                                    'repair shop contact',
                                 ].includes(editData?.template)
                                     ? editData?.template
                                     : ''
@@ -1138,7 +1152,7 @@
                             <div
                                 class="d-flex align-items-center"
                                 [ngClass]="{
-                                    'mb-2': i !== editData.array.length - 1
+                                    'mb-2': i !== editData.array.length - 1,
                                 }"
                             >
                                 <ng-container *ngIf="item.data.avatarImg">
@@ -1156,7 +1170,7 @@
                                             background:
                                                 item.data.avatarColor
                                                     .background,
-                                            color: item.data.avatarColor.color
+                                            color: item.data.avatarColor.color,
                                         }"
                                     >
                                         {{
@@ -1243,7 +1257,10 @@
                                     <p
                                         class="m-0 confirmation-text-2 large-text-2"
                                     >
-                                        {{ item?.data?.tableTableDept }}
+                                        {{
+                                            item?.data?.tableTableDept ||
+                                                item?.data?.username
+                                        }}
                                     </p>
                                 </ng-container>
                             </div>
@@ -1331,7 +1348,7 @@
                             <div
                                 class="confirmation-body-content"
                                 [ngClass]="{
-                                    'mb-2': i !== editData.array.length - 1
+                                    'mb-2': i !== editData.array.length - 1,
                                 }"
                             >
                                 <p class="m-0 text-1 ta-font-bold">
@@ -1369,7 +1386,7 @@
                             <div
                                 class="confirmation-body-content"
                                 [ngClass]="{
-                                    'mb-2': i !== editData.array.length - 1
+                                    'mb-2': i !== editData.array.length - 1,
                                 }"
                             >
                                 <div class="d-flex align-items-center">
@@ -1445,7 +1462,7 @@
                                             "
                                             [svgStyle]="{
                                                 'width.px': '18',
-                                                'height.px': '18'
+                                                'height.px': '18',
                                             }"
                                         ></svg-icon>
                                     </ng-container>
@@ -1484,7 +1501,7 @@
                         <p class="m-0 confirmation-text-2 large-text-2">
                             {{
                                 editData?.extras?.date
-                                    | date : 'MM/dd/yy hh:mm a'
+                                    | date: 'MM/dd/yy hh:mm a'
                             }}
                         </p>
                         <div class="unit-container px-1">
@@ -1522,10 +1539,10 @@
                         editData?.subType === 'archive'
                             ? 'archive'
                             : editData?.subType === 'dnu'
-                            ? 'do not use list'
-                            : editData?.subType === 'favorite'
-                            ? 'favorite list'
-                            : 'ban list'
+                              ? 'do not use list'
+                              : editData?.subType === 'favorite'
+                                ? 'favorite list'
+                                : 'ban list'
                     }}?
                 </p>
             </div>
@@ -1539,7 +1556,9 @@
             <div class="confirmation-header">
                 <p class="m-0 ta-font-medium">
                     Are you sure you want to {{ editData?.type }} selected
-                    {{ editData?.subType === 'fuel' ? "#s"  : editData?.subType }}?
+                    {{
+                        editData?.subType === 'fuel' ? '#s' : editData?.subType
+                    }}?
                 </p>
             </div>
         </ng-container>
@@ -1587,7 +1606,7 @@
                     [src]="confirmationImageRoutes.confirmationPrintSvg"
                     [svgStyle]="{
                         'width.px': '90',
-                        'height.px': '90'
+                        'height.px': '90',
                     }"
                 ></svg-icon>
             </ng-container>
@@ -1611,7 +1630,7 @@
                         [src]="confirmationImageRoutes.confirmationActiveButton"
                         [svgStyle]="{
                             'width.px': '90',
-                            'height.px': '90'
+                            'height.px': '90',
                         }"
                     ></svg-icon>
                 </ng-container>
@@ -1620,7 +1639,7 @@
                         [src]="confirmationImageRoutes.confirmationTrashSvg"
                         [svgStyle]="{
                             'width.px': '90',
-                            'height.px': '90'
+                            'height.px': '90',
                         }"
                     ></svg-icon>
                 </ng-template>

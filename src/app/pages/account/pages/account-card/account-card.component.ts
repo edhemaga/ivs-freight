@@ -18,7 +18,6 @@ import { CardRows } from '@shared/models/card-models/card-rows.model';
 import { CompanyAccountLabelResponse } from 'appcoretruckassist';
 import { CardDataResult } from '@shared/models/card-models/card-data-result.model';
 import { TableBodyColorLabel } from '@shared/models/table-models/table-body-color-label.model';
-import { AccountData } from '@pages/account/pages/account-card/models/account-data.model';
 
 // helpers
 import { CardHelper } from '@shared/utils/helpers/card-helper';
@@ -32,9 +31,9 @@ import { AccountModalComponent } from '@pages/account/pages/account-modal/accoun
 import { ConfirmationModalComponent } from '@shared/components/ta-shared-modals/confirmation-modal/confirmation-modal.component';
 
 // enums
-import { TableActionsStringEnum } from '@shared/enums/table-actions-string.enum';
 import { TableStringEnum } from '@shared/enums/table-string.enum';
 import { AccountStringEnum } from '@pages/account/enums/account-string.enum';
+import { DropdownMenuStringEnum } from '@shared/enums';
 
 @Component({
     selector: 'app-account-card',
@@ -81,7 +80,7 @@ export class AccountCardComponent implements OnInit, OnDestroy {
 
     ngOnInit(): void {
         this.flipAllCards();
-        
+
         this._viewData.length && this.labelDropdown();
     }
 
@@ -131,19 +130,19 @@ export class AccountCardComponent implements OnInit, OnDestroy {
         return item;
     }
 
-    public onCardActions(event: AccountData): void {
+    public onCardActions(event: any): void {
         switch (event.type) {
             case AccountStringEnum.EDIT_ACCOUNT:
                 this.modalService.openModal(
                     AccountModalComponent,
-                    { size: TableActionsStringEnum.SMALL },
+                    { size: TableStringEnum.SMALL },
                     {
                         ...event,
-                        type: TableActionsStringEnum.EDIT,
+                        type: DropdownMenuStringEnum.EDIT_TYPE,
                     }
                 );
                 break;
-            case TableActionsStringEnum.GO_TO_LINK:
+            case DropdownMenuStringEnum.GO_TO_LINK_TYPE:
                 if (event.data?.url) {
                     const url = !event.data.url.startsWith('https://')
                         ? 'https://' + event.data.url
@@ -152,13 +151,13 @@ export class AccountCardComponent implements OnInit, OnDestroy {
                     this.documentRef.defaultView.open(url, '_blank');
                 }
                 break;
-            case TableActionsStringEnum.COPY_PASSWORD:
+            case DropdownMenuStringEnum.COPY_PASSWORD_TYPE:
                 this.clipboard.copy(event.data.password);
                 break;
-            case TableActionsStringEnum.COPY_USERNAME:
+            case DropdownMenuStringEnum.COPY_USERNAME_TYPE:
                 this.clipboard.copy(event.data.username);
                 break;
-            case AccountStringEnum.DELETE_ACCOUNT:
+            case DropdownMenuStringEnum.DELETE_TYPE:
                 this.modalService.openModal(
                     ConfirmationModalComponent,
                     { size: TableStringEnum.SMALL },

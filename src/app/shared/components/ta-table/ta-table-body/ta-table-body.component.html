@@ -6400,14 +6400,16 @@
                                         <ca-dropdown-menu
                                             [type]="'dots-menu-type'"
                                             [placement]="'right-top'"
-                                            [options]="
-                                                row.tableDropdownContent.content
+                                            [options]="row.tableDropdownContent"
+                                            (dropdownOptionEmitter)="
+                                                handleToggleActionsDropdown(
+                                                    $event,
+                                                    row
+                                                )
                                             "
                                         >
                                         </ca-dropdown-menu>
-                                        <!--  (dropdownOptionEmitter)="
-                                        handleMenuOpen({ $event , data, title })
-                                    " -->
+
                                         <!-- <div
                                             class="td-content set-right"
                                             [ngStyle]="{
@@ -6944,7 +6946,7 @@
                 </div>
                 <div
                     class="show-more"
-                    (click)="onShowMore()"
+                    (click)="handleShowMoreClick()"
                     *ngIf="viewData.length < activeTableData.length"
                 >
                     SHOW MORE

@@ -67,4 +67,10 @@ export enum DropdownMenuStringEnum {
     ADD_NEW_DRIVER = 'add-new-driver',
     ADD_NEW_TRUCK_TRAILER = 'add-new-truck-trailer',
     DRIVER = 'driver',
+
+    // additional
+    BLANK = '_blank',
+    SHOW_MORE = 'show-more',
+    CREATE_LABEL = 'create-label',
+    UPDATE_LABEL = 'update-label',
 }

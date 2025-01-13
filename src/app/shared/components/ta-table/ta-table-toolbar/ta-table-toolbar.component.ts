@@ -129,7 +129,8 @@ export class TaTableToolbarComponent implements OnInit, OnChanges, OnDestroy {
     public selectedDispatcher: any;
 
     public tableLocked: boolean = true;
-    public optionsPopupContent: OptionsPopupContent[] = [];
+    public optionsPopupContent: OptionsPopupContent[] =
+        DropdownMenuContentHelper.getTableToolbarDropdownContent();
     public tableRowsSelected: any[] = [];
     public activeTableData: any = {};
     public toolbarWidth: string = '';
@@ -172,8 +173,6 @@ export class TaTableToolbarComponent implements OnInit, OnChanges, OnDestroy {
         this.rowsSelected();
 
         this.confirmationData();
-
-        this.getTableToolbarDropdownContent();
     }
 
     ngOnChanges(changes: SimpleChanges) {
@@ -208,11 +207,6 @@ export class TaTableToolbarComponent implements OnInit, OnChanges, OnDestroy {
             if (td.isUpperCaseTitle) this.isUpperCaseTitle = true;
             else this.isUpperCaseTitle = false;
         }
-    }
-
-    private getTableToolbarDropdownContent(): void {
-        this.optionsPopupContent =
-            DropdownMenuContentHelper.getTableToolbarDropdownContent();
     }
 
     public openCards(): void {

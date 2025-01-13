@@ -83,6 +83,7 @@ import { TableLoadStatusPipe } from '@shared/pipes/table-load-status.pipe';
 
 // enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
+import { DropdownMenuStringEnum } from '@shared/enums';
 
 // models
 import {
@@ -94,6 +95,8 @@ import {
 import { TableBodyColorLabel } from '@shared/models/table-models/table-body-color-label.model';
 import { TableBodyOptionActions } from '@shared/components/ta-table/ta-table-body/models/table-body-option-actions.model';
 import { TableBodyColumns } from '@shared/components/ta-table/ta-table-body/models/table-body-columns.model';
+import { DropdownOptionEmit } from '@ca-shared/components/ca-dropdown-menu/models';
+import { TableBodyActions } from '@shared/components/ta-table/ta-table-body/models/table-body-actions.model';
 
 // constants
 import { TaStateImageTextComponent } from '@shared/components/ta-state-image-text/ta-state-image-text.component';
@@ -161,7 +164,9 @@ import { TableBodySvgRoutes } from '@shared/components/ta-table/ta-table-body/ut
         },
     ],
 })
-export class TaTableBodyComponent
+export class TaTableBodyComponent<
+        T extends { id: number } & TableBodyColorLabel,
+    >
     implements OnInit, OnChanges, AfterViewInit, OnDestroy
 {
     private destroy$ = new Subject<void>();
@@ -172,6 +177,9 @@ export class TaTableBodyComponent
     @ViewChild('tableFiles', { static: false }) public tableFiles: any;
 
     @Output() bodyActions: EventEmitter<any> = new EventEmitter();
+    @Output() tableBodyActions: EventEmitter<TableBodyActions<T>> =
+        new EventEmitter<TableBodyActions<T>>();
+
     @Output() saveValueNote: EventEmitter<{ value: string; id: number }> =
         new EventEmitter<{ value: string; id: number }>();
     public dropdownSelectionArray = new FormArray([]);
@@ -181,6 +189,7 @@ export class TaTableBodyComponent
     @Input() options: TableBodyOptionActions;
     @Input() tableData: any[];
     @Input() selectedTab: string;
+
     public selectedContactLabel: TableBodyColorLabel[] = [];
     pinedColumns: any = [];
     pinedWidth: number = 0;
@@ -743,6 +752,13 @@ export class TaTableBodyComponent
 
     // --------------------------------DROPDOWN---------------------------------
 
+    // Show More Data
+    public handleShowMoreClick(): void {
+        this.tableBodyActions.emit({
+            type: TableStringEnum.SHOW_MORE,
+        });
+    }
+
     // Set Dropdown Content
     setDropContent() {
         this.dropContent = [];
@@ -755,6 +771,18 @@ export class TaTableBodyComponent
     }
 
     // Toggle Dropdown
+    public handleToggleActionsDropdown(
+        event: DropdownOptionEmit,
+        rowData: T
+    ): void {
+        const emitEvent = {
+            data: rowData,
+            type: event.type,
+        };
+
+        this.tableBodyActions.emit(emitEvent);
+    }
+
     toggleDropdown(tooltip: NgbTooltip, row: any) {
         this.tooltip = tooltip;
 
@@ -789,6 +817,73 @@ export class TaTableBodyComponent
         this.dropDownActive = tooltip.isOpen() ? row.id : -1;
         this.rowData = row;
         this.detailsDataService.setNewData(row);
+    }
+
+    // Dropdown Actions
+    onDropAction(action: any) {
+        // To Unselect All Selected Rows
+        if (action.name === 'activate-item') {
+            this.mySelection = [];
+
+            this.tableService.sendRowsSelected(this.mySelection);
+
+            const viewData = this.viewData;
+
+            viewData.map((v) => {
+                v.isSelected = false;
+            });
+
+            this.viewData = [...viewData];
+        }
+
+        // Only If Action Is Not Muted
+        if (!action?.isDisabled) {
+            // Send Drop Action
+            this.bodyActions.emit({
+                id: this.dropDownActive,
+                data: this.rowData,
+                type: action.name,
+            });
+        }
+
+        this.tooltip.close();
+    }
+
+    // On Show Inner Dropdown
+    onShowInnerDropdown(action) {
+        this.onRemoveClickEventListener();
+
+        let innerContent = '';
+
+        let newDropdownActions = [...this.dropdownActions];
+
+        newDropdownActions.map((actions) => {
+            if (
+                actions.isDropdown &&
+                actions.isInnerDropActive &&
+                actions.title !== action.title
+            ) {
+                actions.isInnerDropActive = false;
+                actions.innerDropElement = null;
+            }
+        });
+
+        this.dropdownActions = [...newDropdownActions];
+
+        if (action?.isDropdown && !action.isInnerDropActive) {
+            action.insideDropdownContent.map((content: any) => {
+                innerContent += `<div id="${content.title}" class="inner-dropdown-action-title">${content.title}</div>`;
+            });
+
+            action.innerDropElement =
+                this.sanitizer.bypassSecurityTrustHtml(innerContent);
+        }
+
+        action.isInnerDropActive = !action.isInnerDropActive;
+
+        if (action.isInnerDropActive) {
+            this.setInnerDropdownClickEvent();
+        }
     }
 
     // Set Click Event On Inner Dropdown
@@ -995,73 +1090,6 @@ export class TaTableBodyComponent
         };
     }
 
-    // Dropdown Actions
-    onDropAction(action: any) {
-        // To Unselect All Selected Rows
-        if (action.name === 'activate-item') {
-            this.mySelection = [];
-
-            this.tableService.sendRowsSelected(this.mySelection);
-
-            const viewData = this.viewData;
-
-            viewData.map((v) => {
-                v.isSelected = false;
-            });
-
-            this.viewData = [...viewData];
-        }
-
-        // Only If Action Is Not Muted
-        if (!action?.isDisabled) {
-            // Send Drop Action
-            this.bodyActions.emit({
-                id: this.dropDownActive,
-                data: this.rowData,
-                type: action.name,
-            });
-        }
-
-        this.tooltip.close();
-    }
-
-    // On Show Inner Dropdown
-    onShowInnerDropdown(action) {
-        this.onRemoveClickEventListener();
-
-        let innerContent = '';
-
-        let newDropdownActions = [...this.dropdownActions];
-
-        newDropdownActions.map((actions) => {
-            if (
-                actions.isDropdown &&
-                actions.isInnerDropActive &&
-                actions.title !== action.title
-            ) {
-                actions.isInnerDropActive = false;
-                actions.innerDropElement = null;
-            }
-        });
-
-        this.dropdownActions = [...newDropdownActions];
-
-        if (action?.isDropdown && !action.isInnerDropActive) {
-            action.insideDropdownContent.map((content: any) => {
-                innerContent += `<div id="${content.title}" class="inner-dropdown-action-title">${content.title}</div>`;
-            });
-
-            action.innerDropElement =
-                this.sanitizer.bypassSecurityTrustHtml(innerContent);
-        }
-
-        action.isInnerDropActive = !action.isInnerDropActive;
-
-        if (action.isInnerDropActive) {
-            this.setInnerDropdownClickEvent();
-        }
-    }
-
     // Only For User Table To Activate User
     onActivateUser(row: any) {
         this.bodyActions.emit({
@@ -1124,13 +1152,6 @@ export class TaTableBodyComponent
         });
     }
 
-    // Show More Data
-    onShowMore() {
-        this.bodyActions.emit({
-            type: 'show-more',
-        });
-    }
-
     // Contacts dropdown actions
     public onAddContact(row: any): void {
         this.bodyActions.emit({
@@ -1166,13 +1187,10 @@ export class TaTableBodyComponent
             name: data.data.name,
         };
 
-        this.bodyActions.emit({
-            data: this.selectedContactLabel[index],
+        this.tableBodyActions.emit({
+            data: this.selectedContactLabel[index] as T,
             id: this.viewData[index].id,
-            type:
-                data.data?.action == 'update-label'
-                    ? 'update-label'
-                    : 'label-change',
+            type: data.data?.action || DropdownMenuStringEnum.CREATE_LABEL,
         });
     }
 
@@ -1186,7 +1204,7 @@ export class TaTableBodyComponent
             {
                 data: {
                     name: this.selectedContactLabel[index].name,
-                    action: 'update-label',
+                    action: DropdownMenuStringEnum.UPDATE_LABEL,
                 },
             },
             index

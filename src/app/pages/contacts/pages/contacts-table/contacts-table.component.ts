@@ -30,6 +30,7 @@ import { DropdownMenuContentHelper } from '@shared/utils/helpers';
 // enums
 import { ContactsStringEnum } from '@pages/contacts/enums/contacts-string.enum';
 import { TableStringEnum } from '@shared/enums/table-string.enum';
+import { DropdownMenuStringEnum } from '@shared/enums';
 
 // data for cards
 import { ContactsCardData } from '@pages/contacts/utils/constants/contacts-card-data.constants';
@@ -694,9 +695,9 @@ export class ContactsTableComponent
                     svg: true,
                 }
             );
-        } else if (event.type === TableStringEnum.UPDATE_LABEL) {
+        } else if (event.type === DropdownMenuStringEnum.UPDATE_LABEL) {
             this.saveContactLabel(event.data);
-        } else if (event.type === TableStringEnum.UPDATE_LABEL) {
+        } else if (event.type === DropdownMenuStringEnum.UPDATE_LABEL) {
             this.updateCompanyContactLabel(event);
         }
     }

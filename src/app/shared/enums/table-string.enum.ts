@@ -445,8 +445,6 @@ export enum TableStringEnum {
     NO_ENDPOINT = 'no-endpoint',
     NO_ENDPOINT_2 = 'No Endpoint',
     SLASH = '/',
-    UPDATE_LABEL = 'update-label',
-    LABEL_CHANGE = 'label-change',
 
     //Toolbar
     EXPORT = 'Export',
