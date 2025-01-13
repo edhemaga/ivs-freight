@@ -3,8 +3,12 @@ import {
     ChartTypesStringEnum,
 } from 'ca-components/lib/components/ca-chart/enums';
 
+import {
+    IChartConfiguration,
+} from 'ca-components/lib/components/ca-chart/models';
+
 export class DashboardPerformanceChartsConfiguration {
-    static LINE_CHART_PERFORMANCE_CONFIG = {
+    public static LINE_CHART_PERFORMANCE_CONFIG: IChartConfiguration = {
         chartType: ChartTypesStringEnum.LINE,
         chartData: {
             labels: [],
@@ -17,10 +21,13 @@ export class DashboardPerformanceChartsConfiguration {
         chartOptions: {},
         showXAxisLabels: false,
         showTooltipBackground: true,
-        showHighlightPointOnHover: true
+        showHighlightPointOnHover: true,
+        isDatasetHoverEnabled: true,
+        isTooltipItemInSelectedItems: true,
+        showBottomLineOnLineChart: true,
+        isDashboardChart: true
     };
-
-    static BAR_CHART_PERFORMANCE_CONFIG = {
+    public static BAR_CHART_PERFORMANCE_CONFIG: IChartConfiguration = {
         chartType: ChartTypesStringEnum.BAR,
         chartData: {
             labels: [],
@@ -33,5 +40,6 @@ export class DashboardPerformanceChartsConfiguration {
         showXAxisLabels: true, 
         showTooltipBackground: true,
         verticalyAlignBarChartWithLineCart: true,
+        isDashboardChart: true
     };
 }

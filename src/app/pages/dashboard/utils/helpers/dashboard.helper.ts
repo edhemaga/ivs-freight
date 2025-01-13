@@ -8,11 +8,11 @@ import { DashboardStringHelper } from '@pages/dashboard/utils/helpers/dashboard-
 
 // enums
 import { DashboardStringEnum } from '@pages/dashboard/enums/dashboard-string.enum';
+import { CurrencyValuesEnum } from '@pages/dashboard/enums';
 
 // models
 import { DropdownListItem } from '@pages/dashboard/models/dropdown-list-item.model';
 import { FilteredSubperiod } from '@pages/dashboard/models/filtered-subperiod.model';
-import { IntervalLabelResponse } from 'appcoretruckassist';
 import { ByStateListItem } from '@pages/dashboard/pages/dashboard-by-state/models/by-state-list-item.model';
 
 export class DashboardHelper {
@@ -192,5 +192,9 @@ export class DashboardHelper {
                 byStateList[i].selectedColor = colors[colors.length - 1].code;
             }
         }
+    }
+
+    static isCurrency(key: string): boolean {
+        return Object.values(CurrencyValuesEnum).includes(key.toUpperCase() as CurrencyValuesEnum);
     }
 }
