@@ -180,7 +180,7 @@
 </ng-template>
 <ng-template #leftModalContent>
     <div class="payroll-number text-color-white text-size-14 ta-font-bold">
-        {{ 'Load | ' + tabSelected | titlecase }}
+   <span> {{   tabSelected === 'inactive'  ? 'Truck | Inactive'  : 'Truck | Active'}}</span>
     </div>
 </ng-template>
 <ng-template #footerTemplate>
