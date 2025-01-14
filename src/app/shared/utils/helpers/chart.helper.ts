@@ -45,7 +45,7 @@ export class ChartHelper {
 
             // Since there are unique use cases for the usage that are not applicable to other types of graphs, special checks were performed
             // For example line can accept list of numbers as values, but bar chart can accept array of numbers that contain upper and lower values
-            // See data property assignement
+            // See data property assignment
             switch (property.type) {
                 case ChartTypesStringEnum.LINE:
                     datasets = [
@@ -61,6 +61,30 @@ export class ChartHelper {
                         },
                     ];
                     break;
+                case ChartTypesStringEnum.DOUGHNUT:
+                    const datasetColors: string[] = [
+                        'rgb(102, 146, 241)',
+                        'rgb(250, 177, 92)',
+                        'rgb(230, 103, 103)',
+                        'rgb(86, 180, 172)',
+                        'rgb(179, 112, 240)',
+                        'rgb(87, 85, 223)',
+                        'rgb(255, 144, 109)',
+                        'rgb(119, 191, 86)',
+                        'rgb(230, 104, 160)',
+                        'rgb(160, 130, 102)'
+                    ];
+                    datasets = [
+                        ...datasets,
+                        {
+                            ...properties,
+                            data: [...rawData.map((item: T) => {
+                                return item[property.value] || 0; // For mock purposes replace '|| 0' with '|| Math.random() * 10'; use bigger values for random if needed
+                            })],
+                            backgroundColor: [...datasetColors.slice(0, rawData.length), '#CCCCCC']
+                        },
+                    ];
+                    break;
                 case ChartTypesStringEnum.BAR:
                     datasets = [
                         ...datasets,
@@ -69,8 +93,8 @@ export class ChartHelper {
                             borderWidth: 0, // Adjust if needed, for the time being no borders were used for bar charts
                             data: [...rawData.map((item: T): [number, number] => {
                                 return [
-                                    item[property.minValue] ?? 0, // For mock purposes replace '|| 0' with '|| Math.random() * 10'; use bigger values for random if needed
-                                    item[property.maxValue] ?? 0 // For mock purposes replace '|| 0' with '|| Math.random() * 10'; use bigger values for random if needed
+                                    item[property.minValue] || 0, // For mock purposes replace '|| 0' with '|| Math.random() * 10'; use bigger values for random if needed
+                                    item[property.maxValue] || 0 // For mock purposes replace '|| 0' with '|| Math.random() * 10'; use bigger values for random if needed
                                 ]
                             })],
                         },

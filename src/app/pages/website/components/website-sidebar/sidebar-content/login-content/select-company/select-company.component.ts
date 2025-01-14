@@ -30,8 +30,7 @@ import { SelectCompanyResponse, SignInResponse } from 'appcoretruckassist';
     styleUrls: ['./select-company.component.scss'],
 })
 export class SelectCompanyComponent
-    implements OnInit, OnDestroy, AfterViewInit
-{
+    implements OnInit, OnDestroy, AfterViewInit {
     private destroy$ = new Subject<void>();
 
     public saveCompany: UntypedFormGroup;
@@ -49,7 +48,7 @@ export class SelectCompanyComponent
         private router: Router,
         private websiteAuthService: WebsiteAuthService,
         private formBuilder: UntypedFormBuilder
-    ) {}
+    ) { }
 
     ngOnInit() {
         this.setUserData(JSON.parse(localStorage.getItem('user')));
@@ -76,9 +75,9 @@ export class SelectCompanyComponent
             return {
                 ...company,
                 lastLogin: moment
-                            .utc(company.lastLogin)
-                            .local()
-                            .format('MM/DD/YY HH:mm:ss'),
+                    .utc(company.lastLogin)
+                    .local()
+                    .format('MM/DD/YY HH:mm:ss'),
             }
         });
 
@@ -88,7 +87,7 @@ export class SelectCompanyComponent
         };
 
         this.newUser.companies.forEach((item, index) => {
-            if ( item.lastLogin === this.getNewerDate(this.dates) ) {
+            if (item.lastLogin === this.getNewerDate(this.dates)) {
                 this.lastActiveCompanyId = item.id;
                 this.selectedCompanyId = item.id;
                 this.selectedCompanyIndex = index;
@@ -129,7 +128,7 @@ export class SelectCompanyComponent
                     dateSent.getMonth(),
                     dateSent.getDate()
                 )) /
-                (1000 * 60 * 60 * 24)
+            (1000 * 60 * 60 * 24)
         );
     }
 

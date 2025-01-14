@@ -6,9 +6,7 @@ export const inputConfig = {
     priceSeparator: true,
     priceSeparatorLimitation: 6,
     placeholderIcon: 'dollar',
-    placeholderIconColor: 'blue',
-    hideErrorMessage: true,
-    hideRequiredCheck: true,
+    placeholderIconColor: 'blue'
 };
 
 export const dropDownInputConfig = {

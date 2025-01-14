@@ -1,34 +1,33 @@
 import {
-    ChangeDetectorRef,
     Component,
     OnDestroy,
     OnInit,
-    ViewChild,
     ViewEncapsulation,
 } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 
 import { Subject, takeUntil, tap } from 'rxjs';
 
-// services
+// Services
 import { DashboardTopRatedService } from '@pages/dashboard/pages/dashboard-top-rated/services/dashboard-top-rated.service';
 import { DashboardService } from '@pages/dashboard/services/dashboard.service';
 
-// constants
+// Constants
 import { DashboardTopRatedConstants } from '@pages/dashboard/pages/dashboard-top-rated/utils/constants/dashboard-top-rated.constants';
 import { DashboardColors } from '@pages/dashboard/utils/constants/dashboard-colors.constants';
 import { DashboardSubperiodConstants } from '@pages/dashboard/utils/constants/dashboard-subperiod.constants';
-import { DashboardByStateConstants } from '@pages/dashboard/pages/dashboard-by-state/utils/constants/dashboard-by-state.constants';
 import { DashboardTopRatedChartsConfiguration } from '@pages/dashboard/pages/dashboard-top-rated/utils/constants';
+import { ChartConfiguration } from '@shared/utils/constants';
 
-// helpers
+// Helpers
 import { DashboardArrayHelper } from '@pages/dashboard/utils/helpers/dashboard-array-helper';
 import { DashboardHelper } from '@pages/dashboard/utils/helpers/dashboard.helper';
+import { ChartHelper } from '@shared/utils/helpers';
 
-// enums
+// Enums
 import { DashboardStringEnum } from '@pages/dashboard/enums/dashboard-string.enum';
 
-// models
+// Models
 import { DropdownItem } from '@shared/models/dropdown-item.model';
 import { DashboardTab } from '@pages/dashboard/models/dashboard-tab.model';
 import { DropdownListItem } from '@pages/dashboard/models/dropdown-list-item.model';
@@ -40,13 +39,21 @@ import {
 } from '@pages/dashboard/models/colors-pallete.model';
 import {
     DashboardTopReportType,
-    IntervalLabelResponse,
     SubintervalType,
     TimeInterval,
+    TopDriverListResponse,
+    TopFuelStopListResponse,
+    TopRepairShopResponse,
+    TopTruckListResponse,
 } from 'appcoretruckassist';
 import { TopRatedApiArguments } from '@pages/dashboard/pages/dashboard-top-rated/models/top-rated-api-arguments.model';
 import { TopRatedWithoutTabApiArguments } from '@pages/dashboard/pages/dashboard-top-rated/models/top-rated-without-tab-api-arguments.model';
-import { IChartConfiguration } from 'ca-components/lib/components/ca-chart/models';
+import {
+    IChartCenterLabel,
+    IChartConfiguration,
+    IChartData,
+    IBaseDataset
+} from 'ca-components/lib/components/ca-chart/models';
 
 @Component({
     selector: 'app-dashboard-top-rated',
@@ -63,11 +70,11 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
     public isDisplayingPlaceholder: boolean = false;
     public isLoading: boolean = false;
 
-    // search
+    // Search
     public searchValue: string;
     public clearSearchValue: boolean = false;
 
-    // list
+    // List
     public topRatedList: TopRatedListItem[] = [];
     public selectedTopRatedList: TopRatedListItem[] = [];
     private topRatedListBeforeSearch: TopRatedListItem[] = [];
@@ -75,14 +82,14 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
 
     public topRatedListLength: number = 0;
 
-    // show more
+    // Show more
     public isShowingMore: boolean = false;
 
-    // tabs
+    // Tabs
     public topRatedTabs: DashboardTab[] = [];
     private currentActiveTab: DashboardTab;
 
-    // dropdowns
+    // Dropdowns
     public topRatedDropdownList: DropdownItem[] = [];
 
     public mainPeriodDropdownList: DropdownListItem[] = [];
@@ -98,19 +105,21 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
 
     public selectedDropdownWidthSubPeriod: DropdownListItem;
 
-    // colors
+    // Colors
     public mainColorsPallete: TopRatedMainColorsPallete[] = [];
     public secondaryColorsPallete: TopRatedSecondaryColorsPallete[] = [];
 
-    // charts
+    // Charts
     public doughnutChartConfig: IChartConfiguration =
         DashboardTopRatedChartsConfiguration.DOUGHNUT_CHART_CONFIG;
+    public doughnutCenterLabels!: IChartCenterLabel[];
+    public doughnutChartDataHoveredIndex!: number | null;
+
     public barChartConfig: IChartConfiguration =
         DashboardTopRatedChartsConfiguration.BAR_CHART_CONFIG;
 
     constructor(
         private formBuilder: UntypedFormBuilder,
-        private changeDetectorRef: ChangeDetectorRef,
         private dashboardTopRatedService: DashboardTopRatedService,
         private dashboardService: DashboardService
     ) { }
@@ -136,28 +145,7 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
         item.name;
 
     public resetSelectedValues(): void {
-        // for (let i = 0; i < this.selectedTopRatedList.length; i++) {
-        //     this.barChart?.removeMultiBarData(
-        //         this.selectedTopRatedList[i],
-        //         true
-        //     );
-        // }
-
         this.selectedTopRatedList = [];
-
-        // this.barChartValues = {
-        //     defaultBarValues: {
-        //         topRatedBarValues: [],
-        //         otherBarValues: [],
-        //     },
-        //     defaultBarPercentages: {
-        //         topRatedBarPercentage: [],
-        //         otherBarPercentage: [],
-        //     },
-        //     selectedBarValues: [],
-        //     selectedBarPercentages: [],
-        // };
-
         this.clearSearchValue = true;
     }
 
@@ -202,12 +190,6 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
             this.clearSearchValue = false;
 
             this.isDisplayingPlaceholder = false;
-
-            // if (this.selectedTopRatedList.length) {
-            //     this.setDoughnutChartData(this.selectedTopRatedList, true);
-            // } else {
-            //     this.setDoughnutChartData(this.topRatedList);
-            // }
         }
     }
 
@@ -289,11 +271,11 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
 
             this.selectedSubPeriod = dropdownListItem;
 
-            if (this.selectedMainPeriod.name === DashboardStringEnum.CUSTOM) {
+            if (this.selectedMainPeriod.name === DashboardStringEnum.CUSTOM)
                 this.getTopRatedListData(this.selectedCustomPeriodRange);
-            } else {
+            else
                 this.getTopRatedListData();
-            }
+
         }
     }
 
@@ -351,11 +333,11 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
     public handleShowMoreClick(): void {
         this.isShowingMore = !this.isShowingMore;
 
-        if (this.selectedMainPeriod.name === DashboardStringEnum.CUSTOM) {
+        if (this.selectedMainPeriod.name === DashboardStringEnum.CUSTOM)
             this.getTopRatedListData(this.selectedCustomPeriodRange);
-        } else {
+        else
             this.getTopRatedListData();
-        }
+
     }
 
     public handleCustomPeriodRangeSubperiodEmit(
@@ -419,9 +401,6 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
         this.topRatedListSelectedPercentage = +(
             100 / this.selectedTopRatedList.length
         ).toFixed(2);
-
-        // this.setDoughnutChartData(this.selectedTopRatedList, true);
-        // this.setBarChartData(this.selectedTopRatedList, topRatedListItemIndex);
     }
 
     public handleRemoveSelectedClick(
@@ -447,36 +426,12 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
         this.topRatedListSelectedPercentage = +(
             100 / this.selectedTopRatedList.length
         ).toFixed(2);
-
-        // if (this.selectedTopRatedList.length) {
-        //     this.setDoughnutChartData(this.selectedTopRatedList, true);
-        // } else {
-        //     this.setDoughnutChartData(this.topRatedList);
-        // }
-
-        // this.setBarChartData(
-        //     this.selectedTopRatedList,
-        //     topRatedListItemIndex,
-        //     true,
-        //     topRatedListItem
-        // );
     }
 
     public handleHoverSelected(
         index: number,
         removeHover: boolean = false
-    ): void {
-        // if (!removeHover) {
-        //     this.doughnutChart?.hoverDoughnut(
-        //         index,
-        //         DashboardChartStringEnum.NUMBER
-        //     );
-        //     this.barChart?.hoverBarChart(this.selectedTopRatedList[index]);
-        // } else {
-        //     this.doughnutChart?.hoverDoughnut(null);
-        //     this.barChart?.hoverBarChart(null);
-        // }
-    }
+    ): void { }
 
     private getConstantData(): void {
         this.topRatedList = [DashboardTopRatedConstants.TOP_RATED_LIST_ITEM];
@@ -657,7 +612,88 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                 takeUntil(this.destroy$),
                 tap(() => (this.isLoading = false))
             )
-            .subscribe((driverData) => {
+            .subscribe((driverData: TopDriverListResponse) => {
+                const totalMileagePercentage: number = driverData
+                    .pagination
+                    .data
+                    .reduce((accumulator, item) => {
+                        return (accumulator += item.mileagePercentage);
+                    }, 0);
+
+                const allOtherMileagePercentage = 1 - totalMileagePercentage;
+
+                const totalMileage: number = driverData
+                    .pagination
+                    .data
+                    .reduce((accumulator, item) => {
+                        return (accumulator += item.mileage);
+                    }, 0);
+
+                const allOtherMiles: number = driverData
+                    .allOthers
+                    .reduce((accumulator, item) => {
+                        return (accumulator += item.driverMileage);
+                    }, 0);
+
+                this.doughnutCenterLabels =
+                    [
+                        {
+                            value: `${totalMileagePercentage}%`,
+                            position: {
+                                top: -14
+                            }
+                        },
+                        {
+                            value: `${totalMileage.toFixed(2)}`,
+                            fontSize: 14,
+                            position: {
+                                top: -14
+                            }
+                        },
+                        {
+                            value: `Top ${driverData.pagination.count}`,
+                            fontSize: 11,
+                            color: '#AAAAAA',
+                            position: {
+                                top: -14
+                            }
+                        },
+                        {
+                            value: `${(100 - totalMileagePercentage).toFixed(2)}%`,
+                            position: {
+                                top: 14
+                            }
+                        },
+                        {
+                            value: `${allOtherMiles}`,
+                            fontSize: 14,
+                            position: {
+                                top: 14
+                            }
+                        },
+                        {
+                            value: `All others`,
+                            fontSize: 11,
+                            color: '#AAAAAA',
+                            position: {
+                                top: 14
+                            }
+                        },
+                    ];
+
+                let chartData: IChartData<IBaseDataset> = ChartHelper.generateDataByDateTime(
+                    driverData.pagination.data,
+                    ChartConfiguration.topDriverConfiguration);
+
+                // if (allOtherMileagePercentage)
+                //     chartData.datasets[0].data = [...[...chartData.datasets[0].data], allOtherMileagePercentage];
+
+                this.doughnutChartConfig = {
+                    ...this.doughnutChartConfig,
+                    chartData,
+                    centerLabels: this.doughnutCenterLabels
+                }
+
                 // top rated list and single selection data
                 this.topRatedList = driverData.pagination.data.map((driver) => {
                     let filteredIntervalValues: number[] = [];
@@ -701,6 +737,41 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
             });
     }
 
+    public setDoughnutHoveredIndex(event: number | null): void {
+        this.doughnutChartDataHoveredIndex = event;
+
+        if (event === null) {
+            this.doughnutChartConfig.centerLabels = this.doughnutCenterLabels;
+            return;
+        }
+
+        const topRatedListItem: TopRatedListItem = this.topRatedList[event];
+
+        this.doughnutChartConfig.centerLabels = [
+            {
+                value: `${topRatedListItem.percent}%`,
+                position: {
+                    top: 24
+                }
+            },
+            {
+                value: `$${topRatedListItem.value}`,
+                fontSize: 14,
+                position: {
+                    top: 24
+                }
+            },
+            {
+                value: `${topRatedListItem.name}`,
+                fontSize: 11,
+                color: '#AAAAAA',
+                position: {
+                    top: 24
+                }
+            },
+        ];
+    }
+
     private getTopRatedTruckListData(
         selectedTab: DashboardTopReportType,
         topRatedArgumentsData: TopRatedApiArguments
@@ -711,7 +782,7 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                 takeUntil(this.destroy$),
                 tap(() => (this.isLoading = false))
             )
-            .subscribe((truckData) => {
+            .subscribe((truckData: TopTruckListResponse) => {
                 // top rated list and single selection data
                 this.topRatedList = truckData.pagination.data.map((truck) => {
                     let filteredIntervalValues: number[] = [];
@@ -925,7 +996,7 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
             .subscribe((repairShopData) => {
                 // top rated list and single selection data
                 this.topRatedList = repairShopData.pagination.data.map(
-                    (repairShop) => {
+                    (repairShop: TopRepairShopResponse) => {
                         let filteredIntervalValues: number[] = [];
                         let filteredIntervalPercentages: number[] = [];
 
@@ -978,7 +1049,7 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                 takeUntil(this.destroy$),
                 tap(() => (this.isLoading = false))
             )
-            .subscribe((fuelStopData) => {
+            .subscribe((fuelStopData: TopFuelStopListResponse) => {
                 // top rated list and single selection data
                 this.topRatedList = fuelStopData.pagination.data.map(
                     (fuelStop) => {
