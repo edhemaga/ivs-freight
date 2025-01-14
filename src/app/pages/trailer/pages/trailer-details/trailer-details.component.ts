@@ -109,6 +109,7 @@ export class TrailerDetailsComponent implements OnInit, OnDestroy {
                     ? data.registrations.length
                     : 0,
                 status: data?.status == 0 ? true : false,
+                businessOpen: true,
             },
             {
                 id: 2,
@@ -117,6 +118,7 @@ export class TrailerDetailsComponent implements OnInit, OnDestroy {
                 data: data.inspections,
                 length: data?.inspections?.length ? data.inspections.length : 0,
                 status: data?.status == 0 ? true : false,
+                businessOpen: true,
             },
             {
                 id: 3,
@@ -125,6 +127,7 @@ export class TrailerDetailsComponent implements OnInit, OnDestroy {
                 data: data.titles,
                 length: data?.titles?.length ? data.titles.length : 0,
                 status: data?.status == 0 ? true : false,
+                businessOpen: true,
             },
         ];
 

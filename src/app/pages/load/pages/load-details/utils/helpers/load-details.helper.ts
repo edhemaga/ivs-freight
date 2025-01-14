@@ -118,6 +118,7 @@ export class LoadDetailsHelper {
                     this.getMultipleSelectDetailsDropdown(load, dropdownItemId),
                 isSearchBtn: !!load?.comments?.length,
                 data: load,
+                businessOpen: true,
                 length:
                     dropdownItemId === 1
                         ? load?.comments?.length
