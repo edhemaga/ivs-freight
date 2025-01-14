@@ -16,4 +16,5 @@ export interface TrailerDetailsConfig {
     registrations?: RegistrationResponse[];
     inspections?: InspectionResponse[];
     titles?: TitleResponse[];
+    businessOpen?: boolean;
 }
