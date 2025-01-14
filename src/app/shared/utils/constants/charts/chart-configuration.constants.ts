@@ -4,7 +4,7 @@ import { ChartTypesStringEnum } from "ca-components";
 
 // Models
 import { ChartTypeProperty } from "@shared/models";
-import { BrokerPaymentHistoryResponse } from "appcoretruckassist";
+import { IBrokerPaymentHistory } from "@pages/customer/pages/broker-details/models";
 
 export class ChartConfiguration {
     public static mileageRateConfiguration: ChartTypeProperty[] = [
@@ -22,7 +22,7 @@ export class ChartConfiguration {
             minValue: ChartValueLabelEnum.LOWEST_RARE
         }
     ];
-    public static paymentHistoryConfiguration = (data: BrokerPaymentHistoryResponse): ChartTypeProperty[] => [
+    public static paymentHistoryConfiguration = (data: IBrokerPaymentHistory): ChartTypeProperty[] => [
         {
             value: ChartValueLabelEnum.AVERAGE_PAY_PERIOD_DAYS,
             type: ChartTypesStringEnum.LINE,
@@ -128,5 +128,12 @@ export class ChartConfiguration {
             type: ChartTypesStringEnum.LINE,
             color: '#6692F1',
         },
+    ];
+
+    public static topDriverConfiguration: ChartTypeProperty[] = [
+        {
+            type: ChartTypesStringEnum.DOUGHNUT,
+            value: 'mileagePercentage'
+        }
     ]
 }
