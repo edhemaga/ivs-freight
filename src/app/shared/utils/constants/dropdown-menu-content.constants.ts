@@ -146,6 +146,15 @@ export class DropdownMenuContentConstants {
             hasBorder: true,
         },
 
+        // contact
+        [DropdownMenuStringEnum.SEND_SMS]: {
+            title: DropdownMenuStringEnum.SEND_SMS,
+            type: DropdownMenuStringEnum.SEND_SMS_TYPE,
+            svgUrl: 'assets/svg/chat/direct-message-icon.svg',
+            svgClass: DropdownMenuStringEnum.REGULAR,
+            hasBorder: true,
+        },
+
         // driver
         [DropdownMenuStringEnum.SEND_MESSAGE]: {
             title: DropdownMenuStringEnum.SEND_MESSAGE,

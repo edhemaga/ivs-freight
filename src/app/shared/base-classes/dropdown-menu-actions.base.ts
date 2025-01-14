@@ -16,7 +16,7 @@ import { TableCardBodyActions } from '@shared/models';
 export abstract class DropdownMenuActionsBase {
     constructor(protected modalService: ModalService) {}
 
-    protected handleDropdowMenuActions<T>(
+    protected handleDropdownMenuActions<T>(
         event: TableCardBodyActions<T>,
         tableType: string
     ): void {
@@ -33,6 +33,14 @@ export abstract class DropdownMenuActionsBase {
                 break;
             case DropdownMenuStringEnum.SHOW_MORE:
                 this.handleShowMoreAction();
+
+                break;
+            case DropdownMenuStringEnum.SHARE_TYPE:
+                this.handleShareAction();
+
+                break;
+            case DropdownMenuStringEnum.PRINT_TYPE:
+                this.handlePrintAction();
 
                 break;
             default:
@@ -69,6 +77,10 @@ export abstract class DropdownMenuActionsBase {
             }
         );
     }
+
+    private handleShareAction(): void {}
+
+    private handlePrintAction(): void {}
 
     // protected abstract - dependency
     protected abstract handleShowMoreAction(): void;

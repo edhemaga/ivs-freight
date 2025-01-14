@@ -23,6 +23,7 @@ import { DropdownMenuActionsHelper } from '@shared/utils/helpers/dropdown-menu-h
 // services
 import { TruckassistTableService } from '@shared/services/truckassist-table.service';
 import { ModalService } from '@shared/services/modal.service';
+import { AccountService } from '@pages/account/services/account.service';
 
 // enums
 import { DropdownMenuStringEnum } from '@shared/enums';
@@ -77,6 +78,10 @@ export class AccountCardComponent
     public cardsFront: CardDataResult[][][] = [];
     public cardsBack: CardDataResult[][][] = [];
 
+    get viewData() {
+        return this._viewData;
+    }
+
     constructor(
         @Inject(DOCUMENT) protected readonly documentRef: Document,
 
@@ -84,19 +89,25 @@ export class AccountCardComponent
         protected clipboard: Clipboard,
 
         // services
-        private tableService: TruckassistTableService,
         protected modalService: ModalService,
+        protected accountService: AccountService,
+
+        private tableService: TruckassistTableService,
 
         // helpers
         private cardHelper: CardHelper
     ) {
-        super(documentRef, clipboard, modalService);
+        super(documentRef, clipboard, modalService, accountService);
     }
 
     ngOnInit(): void {
         this.flipAllCards();
 
         this._viewData.length && this.labelDropdown();
+    }
+
+    public trackCard(item: number): number {
+        return item;
     }
 
     public flipCard(index: number): void {
@@ -114,7 +125,6 @@ export class AccountCardComponent
             });
     }
 
-    // When checkbox is selected
     public onCheckboxSelect(index: number, card: CardDetails): void {
         this._viewData[index].isSelected = !this._viewData[index].isSelected;
 
@@ -141,10 +151,6 @@ export class AccountCardComponent
         });
     }
 
-    public trackCard(item: number): number {
-        return item;
-    }
-
     public handleToggleDropdownMenuActions(
         event: DropdownMenuOptionEmit,
         cardData: AccountResponse
@@ -157,7 +163,7 @@ export class AccountCardComponent
                 cardData
             );
 
-        this.handleDropdowMenuActions(
+        this.handleDropdownMenuActions(
             emitEvent,
             DropdownMenuStringEnum.ACCOUNT
         );

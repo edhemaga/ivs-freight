@@ -2,6 +2,7 @@ import { Type } from '@angular/core';
 
 // components
 import { AccountModalComponent } from '@pages/account/pages/account-modal/account-modal.component';
+import { ContactsModalComponent } from '@pages/contacts/pages/contacts-modal/contacts-modal.component';
 
 // enums
 import { DropdownMenuStringEnum } from '@shared/enums';
@@ -34,6 +35,8 @@ export class DropdownMenuActionsHelper {
         switch (tableType) {
             case DropdownMenuStringEnum.ACCOUNT:
                 return AccountModalComponent;
+            case DropdownMenuStringEnum.CONTACT:
+                return ContactsModalComponent;
             default:
                 return;
         }

@@ -35,7 +35,6 @@ export enum TableStringEnum {
     RESEND_INVITATION = 'resend-invitation',
     RESET = 'reset',
     RESET_MODAL = 'reset modal',
-    EDIT_IMAGE = 'assets/svg/truckassist-table/new-list-dropdown/Edit.svg',
 
     // List or card
     LIST = 'List',
@@ -514,20 +513,6 @@ export enum TableStringEnum {
     RESET_MODAL_CONTACTS_TABLE_TYPE = 'contacts',
 
     //Account
-    DELETE_ACCOUNT = 'delete-account',
-    COPY_PASSWORD = 'Copy Password',
-    COPY_PASSWORD_2 = 'copy-password',
-    COPY_USERNAME = 'Copy Username',
-    COPY_USERNAME_2 = 'copy-username',
-    EDIT_ACCOUNT = 'edit-account',
-    GO_TO_LINK = 'Go to Link',
-    NO_LINK = 'No Link',
-    GO_TO_LINK_2 = 'go-to-link',
-    NO_LINK_2 = 'no-link',
-    USER_IMAGE = 'assets/svg/applicant/user.svg',
-    WEB_IMAGE = 'assets/svg/common/ic_web.svg',
-    PASSWORD_IMAGE = 'assets/svg/common/ic_password.svg',
-    DELETE_IMAGE = 'assets/svg/truckassist-table/new-list-dropdown/Delete.svg',
     ACCOUNT = 'Account',
 
     // Actions

@@ -37,14 +37,12 @@ export abstract class AccountDropdownMenuActionsBase extends DropdownMenuActions
 
         // services
         protected modalService: ModalService,
-
-        // optional injections
-        @Optional() @SkipSelf() protected accountService?: AccountService
+        protected accountService: AccountService
     ) {
         super(modalService);
     }
 
-    protected handleDropdowMenuActions<T extends AccountResponse>(
+    protected handleDropdownMenuActions<T extends AccountResponse>(
         event: TableCardBodyActions<T>,
         tableType: string
     ): void {
@@ -81,7 +79,7 @@ export abstract class AccountDropdownMenuActionsBase extends DropdownMenuActions
                 break;
             default:
                 // call the parent class method to handle shared cases
-                super.handleDropdowMenuActions(event, tableType);
+                super.handleDropdownMenuActions(event, tableType);
 
                 break;
         }

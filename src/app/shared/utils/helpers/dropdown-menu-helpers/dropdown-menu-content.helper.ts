@@ -12,7 +12,7 @@ import { OptionsPopupContent } from '@shared/components/ta-table/ta-table-toolba
 
 export class DropdownMenuContentHelper {
     // account
-    static getAccountDropdownContent(url: string): DropdownItem[] {
+    static getAccountDropdownContent(url: string): DropdownMenuItem[] {
         // requested items
         const requestedConditionalItems = [
             url
@@ -41,76 +41,38 @@ export class DropdownMenuContentHelper {
             );
 
         return [sharedItems[0], ...conditionalItems, sharedItems[1]];
+    }
 
-        /*  return [
-            {
-                title: TableStringEnum.EDIT_2,
-                name: TableStringEnum.EDIT_ACCOUNT,
-                svgUrl: TableStringEnum.EDIT_IMAGE,
-                svgStyle: {
-                    width: 18,
-                    height: 18,
-                },
-                hasBorder: true,
-                svgClass: TableStringEnum.REGULAR,
-            },
-            {
-                title: url
-                    ? TableStringEnum.GO_TO_LINK
-                    : TableStringEnum.NO_LINK,
-                name: url
-                    ? TableStringEnum.GO_TO_LINK_2
-                    : TableStringEnum.NO_LINK_2,
-                svgUrl: TableStringEnum.WEB_IMAGE,
-                isDisabled: url ? false : true,
-                svgStyle: {
-                    width: 18,
-                    height: 18,
-                },
-                svgClass: TableStringEnum.REGULAR,
-                tableListDropdownContentStyle: {
-                    'margin-bottom.px': 4,
-                },
-            },
-            {
-                title: TableStringEnum.COPY_USERNAME,
-                name: TableStringEnum.COPY_USERNAME_2,
-                svgUrl: TableStringEnum.USER_IMAGE,
-                svgStyle: {
-                    width: 18,
-                    height: 18,
-                },
-                svgClass: TableStringEnum.REGULAR,
-                tableListDropdownContentStyle: {
-                    'margin-bottom.px': 4,
-                },
-            },
-            {
-                title: TableStringEnum.COPY_PASSWORD,
-                name: TableStringEnum.COPY_PASSWORD_2,
-                svgUrl: TableStringEnum.PASSWORD_IMAGE,
-                svgStyle: {
-                    width: 18,
-                    height: 18,
-                },
-                svgClass: TableStringEnum.REGULAR,
-                hasBorder: true,
-            },
-            {
-                title: TableStringEnum.DELETE_2,
-                name: TableStringEnum.DELETE_ACCOUNT,
-                svgUrl: TableStringEnum.DELETE_IMAGE,
-                svgStyle: {
-                    width: 18,
-                    height: 18,
-                },
-                svgClass: TableStringEnum.DELETE,
-            },
-        ]; */
+    // contact
+    static getContactDropdownContent(): DropdownMenuItem[] {
+        // requested items
+        const requestedConditionalItems = [DropdownMenuStringEnum.SEND_SMS];
+
+        const requestedSharedItems = [
+            DropdownMenuStringEnum.EDIT,
+            DropdownMenuStringEnum.SHARE,
+            DropdownMenuStringEnum.PRINT,
+            DropdownMenuStringEnum.DELETE,
+        ];
+
+        // items
+        const conditionalItems =
+            DropdownMenuContentConditionalItemsHelper.getConditionalItems(
+                requestedConditionalItems,
+                false
+            );
+
+        const sharedItems =
+            DropdownMenuContentConditionalItemsHelper.getConditionalItems(
+                requestedSharedItems,
+                true
+            );
+
+        return [sharedItems[0], ...conditionalItems, ...sharedItems.slice(1)];
     }
 
     // driver
-    static getDriverDropdownContent(selectedTab: string): DropdownItem[] {
+    static getDriverDropdownContent(selectedTab: string): DropdownMenuItem[] {
         const isActiveDriver = selectedTab === DropdownMenuStringEnum.ACTIVE;
 
         // modifier items
@@ -155,7 +117,7 @@ export class DropdownMenuContentHelper {
         return [
             ...sharedItems.slice(0, 2),
             ...conditionalItems,
-            ...sharedItems.slice(-4),
+            ...sharedItems.slice(2),
         ];
 
         /* return [
@@ -725,7 +687,7 @@ export class DropdownMenuContentHelper {
         return [
             ...sharedItems.slice(0, 2),
             ...conditionalItems,
-            ...sharedItems.slice(-2),
+            ...sharedItems.slice(2),
         ];
 
         /*  return [
@@ -992,81 +954,6 @@ export class DropdownMenuContentHelper {
     // fuel stop
     static getFuelStopDropdownContent(): DropdownItem[] {
         return [];
-    }
-
-    // contacts
-    static getContactDropdownContent(): DropdownItem[] {
-        return [
-            {
-                title: 'Edit',
-                name: 'edit-contact',
-                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Edit.svg',
-                svgStyle: {
-                    width: 18,
-                    height: 18,
-                },
-                hasBorder: true,
-                svgClass: TableStringEnum.REGULAR,
-            },
-            {
-                title: 'View Details',
-                name: 'view-details',
-                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Information.svg',
-                svgStyle: {
-                    width: 18,
-                    height: 18,
-                },
-                tableListDropdownContentStyle: {
-                    'margin-bottom.px': 4,
-                },
-                svgClass: TableStringEnum.REGULAR,
-            },
-            {
-                title: 'Send SMS',
-                name: 'send-sms',
-                svgUrl: '',
-                svgStyle: {
-                    width: 18,
-                    height: 18,
-                },
-                svgClass: TableStringEnum.REGULAR,
-                hasBorder: true,
-            },
-            {
-                title: 'Share',
-                name: 'share',
-                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Share.svg',
-                svgStyle: {
-                    width: 18,
-                    height: 18,
-                },
-                tableListDropdownContentStyle: {
-                    'margin-bottom.px': 4,
-                },
-                svgClass: TableStringEnum.REGULAR,
-            },
-            {
-                title: 'Print',
-                name: 'print',
-                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Print.svg',
-                svgStyle: {
-                    width: 18,
-                    height: 18,
-                },
-                svgClass: TableStringEnum.REGULAR,
-                hasBorder: true,
-            },
-            {
-                title: 'Delete',
-                name: 'delete-contact',
-                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Delete.svg',
-                svgStyle: {
-                    width: 18,
-                    height: 18,
-                },
-                svgClass: TableStringEnum.DELETE,
-            },
-        ];
     }
 
     // pm

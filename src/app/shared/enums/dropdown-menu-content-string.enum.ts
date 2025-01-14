@@ -28,6 +28,7 @@ export enum DropdownMenuStringEnum {
     FHWA_INSPECTION = 'FHWA Inspection',
     TITLE = 'Title',
     LEASE_RENT = 'Lease / Rent',
+    SEND_SMS = 'Send SMS',
 
     // types
     EDIT_LOAD_TYPE = 'edit-load',
@@ -58,9 +59,11 @@ export enum DropdownMenuStringEnum {
     FHWA_INSPECTION_TYPE = 'fhwa-inspection',
     TITLE_TYPE = 'title',
     LEASE_RENT_TYPE = 'lease-rent',
+    SEND_SMS_TYPE = 'send-sms',
 
     // table types
     ACCOUNT = 'account',
+    CONTACT = 'contact',
 
     // svg classes
     REGULAR = 'regular',

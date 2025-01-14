@@ -39,25 +39,23 @@ import { AccountStringEnum } from '@pages/account/enums/account-string.enum';
 import { TableActionsStringEnum } from '@shared/enums/table-actions-string.enum';
 import { DropdownMenuStringEnum } from '@shared/enums';
 
+// helpers
+import { DropdownMenuContentHelper } from '@shared/utils/helpers';
+
+// constants
+import { AccountFilterConstants } from '@pages/account/pages/account-table/utils/constants/account-filter.constants';
+
 // models
 import { GetCompanyAccountListResponse } from 'appcoretruckassist';
 import { AccountTableToolbarAction } from '@pages/account/pages/account-table/models/account-table-toolbard-action.model';
 import { AccountTableHeadAction } from '@pages/account/pages/account-table/models/account-table-head-action.model';
 import { AccountCardData } from '@pages/account/utils/constants/account-card-data.constants';
 import { CardRows } from '@shared/models/card-models/card-rows.model';
-import {
-    CardDetails,
-    DropdownItem,
-} from '@shared/models/card-models/card-table-data.model';
+import { CardDetails } from '@shared/models/card-models/card-table-data.model';
 import { AccountResponse } from '@pages/account/pages/account-table/models/account-response.model';
 import { TableBodyColumns } from '@shared/components/ta-table/ta-table-body/models/table-body-columns.model';
 import { AccountFilter } from '@pages/account/pages/account-table/models/account-filter.model';
-
-// helpers
-import { DropdownMenuContentHelper } from '@shared/utils/helpers';
-
-// constants
-import { AccountFilterConstants } from '@pages/account/pages/account-table/utils/constants/account-filter.constants';
+import { DropdownMenuItem } from '@ca-shared/components/ca-dropdown-menu/models';
 
 @Component({
     selector: 'app-account-table',
@@ -71,7 +69,6 @@ export class AccountTableComponent
     public destroy$ = new Subject<void>();
 
     public resizeObserver: ResizeObserver;
-
     public activeViewMode: string = TableActionsStringEnum.LIST;
 
     public selectedTab: string = TableActionsStringEnum.ACTIVE;
@@ -469,7 +466,7 @@ export class AccountTableComponent
         };
     }
 
-    private getAccountDropdownContent(url: string): DropdownItem[] {
+    private getAccountDropdownContent(url: string): DropdownMenuItem[] {
         return DropdownMenuContentHelper.getAccountDropdownContent(url);
     }
 

@@ -26,8 +26,8 @@
                             editData?.template ===
                         'fuel stop'
                       ? ' Fuel Stop'
-                      : editData?.template === ' contact'
-                        ? 'Contact'
+                      : editData?.template === 'contact'
+                        ? 'Delete Contact'
                         : editData?.template === 'repair'
                           ? 'Delete Repair / Order'
                           : editData?.template === 'repair_shop'
@@ -216,7 +216,7 @@
                                     </ng-container>
 
                                     <div
-                                        class="d-flex flex-column justify-content-center"
+                                        class="d-flex flex-column justify-content-center w-100"
                                     >
                                         <p class="m-0 ta-font-bold text-1">
                                             {{ editData.data.name }}
@@ -1160,7 +1160,7 @@
 
                         <ng-container *ngSwitchCase="'contact'">
                             <div
-                                class="d-flex align-items-center"
+                                class="d-flex align-items-center w-100"
                                 [ngClass]="{
                                     'mb-2': i !== editData.array.length - 1,
                                 }"
@@ -1192,7 +1192,7 @@
                                 </ng-container>
 
                                 <div
-                                    class="d-flex flex-column justify-content-center"
+                                    class="d-flex flex-column justify-content-center w-100"
                                 >
                                     <p class="m-0 ta-font-bold text-1">
                                         {{ item.data.name }}
