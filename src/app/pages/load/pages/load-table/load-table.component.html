@@ -2,72 +2,74 @@
     <app-ta-table-toolbar
         #toolbarComponent
         (toolBarAction)="onToolBarAction($event)"
-        [options]="tableOptions"
-        [tableData]="tableData"
+        [options]="loadStoreService.tableOptions$ | async"
+        [tableData]="loadStoreService.tableData$ | async"
         [selectedTab]="selectedTab"
-        [columns]="columns"
-        [activeViewMode]="activeViewMode"
+        [columns]="loadStoreService.columns$ | async"
+        [activeViewMode]="loadStoreService.activeViewMode$ | async"
         listName="Load"
     ></app-ta-table-toolbar>
-    <ng-container *ngIf="activeViewMode === 'List'">
-        <app-ta-table-head
-            [options]="tableOptions"
-            [viewData]="viewData"
-            [columns]="columns"
-            [tableData]="tableData"
-            (headActions)="onTableHeadActions($event)"
-        ></app-ta-table-head>
+    <ng-container *ngIf="loadStoreService.activeViewMode$ | async as activeViewMode">
+        <ng-container *ngIf="activeViewMode === 'List'">
+            <app-ta-table-head
+                [options]="loadStoreService.tableOptions$ | async"
+                [viewData]="loadStoreService.viewData$ | async"
+                [columns]="loadStoreService.columns$ | async"
+                [tableData]="loadStoreService.tableData$ | async"
+                (headActions)="onTableHeadActions($event)"
+            ></app-ta-table-head>
 
-        <app-ta-table-body
-            [viewData]="viewData"
-            [columns]="columns"
-            [options]="tableOptions"
-            [selectedTab]="selectedTab"
-            (bodyActions)="onTableBodyActions($event)"
-            [tableData]="tableData"
-            (saveValueNote)="saveValueNote($event)"
-        ></app-ta-table-body>
-    </ng-container>
-    <!-- Cards -->
-
-    <ng-container *ngIf="activeViewMode === 'Card'">
-        <div class="elements">
-            <app-load-card
-                (bodyActions)="onTableBodyActions($event)"
-                [viewData]="viewData"
-                [rows]="rows"
-                [cardTitle]="cardTitle"
-                [cardTitleLink]="cardTitleLink"
-                [displayRowsFront]="(displayRows$ | async).displayRowsFront"
-                [displayRowsBack]="(displayRows$ | async).displayRowsBack"
-                [page]="page"
+            <app-ta-table-body
+                [viewData]="loadStoreService.viewData$ | async"
+                [columns]="loadStoreService.columns$ | async"
+                [options]="loadStoreService.tableOptions$ | async"
                 [selectedTab]="selectedTab"
+                (bodyActions)="onTableBodyActions($event)"
+                [tableData]="loadStoreService.tableData$ | async"
                 (saveValueNote)="saveValueNote($event)"
-            ></app-load-card>
+            ></app-ta-table-body>
+        </ng-container>
+        <!-- Cards -->
 
-            <!-- Show More -->
+        <ng-container *ngIf="activeViewMode === 'Card'">
+            <div class="elements">
+                <app-load-card
+                    (bodyActions)="onTableBodyActions($event)"
+                    [viewData]="loadStoreService.viewData$ | async"
+                    [rows]="rows"
+                    [cardTitle]="cardTitle"
+                    [cardTitleLink]="cardTitleLink"
+                    [displayRowsFront]="(displayRows$ | async)?.displayRowsFront"
+                    [displayRowsBack]="(displayRows$ | async)?.displayRowsBack"
+                    [page]="page"
+                    [selectedTab]="selectedTab"
+                    (saveValueNote)="saveValueNote($event)"
+                ></app-load-card>
 
-            <ng-container *ngIf="viewData.length">
-                <div
-                    class="show-more-container d-flex align-items-center justify-content-between"
-                    [ngStyle]="{ 'width.px': tableWidth }"
-                >
-                    <div class="showing ta-font-semi-bold">
-                        {{ viewData?.length }} OF
-                        {{ activeTableData?.length }}
-                    </div>
-                    <ng-container
-                        *ngIf="viewData?.length < activeTableData?.length"
+                <!-- Show More -->
+
+                <ng-container *ngIf="{ viewData: loadStoreService.viewData$ | async, activeTableData: loadStoreService.activeTableData$ | async } as cardData">
+                    <div
+                        class="show-more-container d-flex align-items-center justify-content-between"
+                        [ngStyle]="{ 'width.px': tableWidth }"
                     >
-                        <div
-                            class="show-more ta-font-bold w-fit-content align-items-center d-flex justify-content-between"
-                            (click)="onShowMore()"
-                        >
-                            SHOW MORE
+                        <div class="showing ta-font-semi-bold">
+                            {{ cardData?.viewData?.length }} OF
+                            {{ cardData?.activeTableData?.data?.length }}
                         </div>
-                    </ng-container>
-                </div>
-            </ng-container>
-        </div>
+                        <ng-container
+                            *ngIf="cardData?.viewData?.length < cardData?.activeTableData?.data?.length"
+                        >
+                            <div
+                                class="show-more ta-font-bold w-fit-content align-items-center d-flex justify-content-between"
+                                (click)="onShowMore()"
+                            >
+                                SHOW MORE
+                            </div>
+                        </ng-container>
+                    </div>
+                </ng-container>
+            </div>
+        </ng-container>
     </ng-container>
 </div>

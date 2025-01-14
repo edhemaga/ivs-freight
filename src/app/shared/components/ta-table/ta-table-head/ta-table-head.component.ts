@@ -33,6 +33,7 @@ import { TruckassistTableService } from '@shared/services/truckassist-table.serv
 // enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
 import { TableHeadStringEnum } from '@shared/components/ta-table/ta-table-head/enums/table-head-string.enum';
+import { SortOrder } from 'appcoretruckassist';
 
 // models
 import { TableHeadRowsActionEmit } from '@shared/components/ta-table/ta-table-head/models/table-head-rows-action-emit.model';
@@ -438,12 +439,10 @@ export class TaTableHeadComponent implements OnInit, OnChanges, OnDestroy {
             }, 1000);
         }
 
-        if (!event.isResizeing) {
-            localStorage.setItem(
-                `table-${this.tableConfigurationType}-Configuration`,
-                JSON.stringify(this.columns)
-            );
-        }
+        localStorage.setItem(
+            `table-${this.tableConfigurationType}-Configuration`,
+            JSON.stringify(this.columns)
+        );
     }
 
     private sortHeaderClick(column: any): void {
@@ -473,9 +472,13 @@ export class TaTableHeadComponent implements OnInit, OnChanges, OnDestroy {
                       column.sortDirection?.substr(1).toLowerCase())
                 : '';
 
+            const sortOrder = this.sortDirection === 'asc' ? SortOrder.Ascending : SortOrder.Descending;
+
             this.headActions.emit({
                 action: TableHeadStringEnum.SORT,
                 direction: directionSort,
+                sortOrder: sortOrder,
+                sortBy: column.sortName
             });
 
             this.changeDetectorRef.detectChanges();

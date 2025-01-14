@@ -8,12 +8,13 @@ import { FilterOptionApplicant } from '@pages/driver/pages/driver-table/models/f
 import { DropdownItem } from '@shared/models/card-models/card-table-data.model';
 import { FilterOptionsLoad } from '@pages/load/pages/load-table/models/filter-options-load.model';
 import { SortTypes } from '@shared/models/sort-types.model';
+import { IGetLoadListParam } from '@pages/load/pages/load-table/models';
 
 // enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
 
 export class TableDropdownComponentConstants {
-    static LOAD_BACK_FILTER: FilterOptionsLoad = {
+    static FILTER: IGetLoadListParam = {
         loadType: null,
         statusType: 2,
         status: null,
@@ -40,9 +41,9 @@ export class TableDropdownComponentConstants {
         pickup: null,
         delivery: null,
         sort: null,
-        searchOne: null,
-        searchTwo: null,
-        searchThree: null,
+        search: null,
+        search1: null,
+        search2: null,
     };
 
     static SHIPPER_LOADS_BACK_FILTER: FilterOptionsLoad = {

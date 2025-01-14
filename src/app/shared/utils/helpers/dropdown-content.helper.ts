@@ -1,5 +1,6 @@
 // models
 import { DropdownItem } from '@shared/models/card-models/card-table-data.model';
+import { LoadListDto } from 'appcoretruckassist';
 
 // enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
@@ -263,7 +264,7 @@ export class DropdownContentHelper {
     }
 
     static getDropdownLoadContent(
-        data: LoadModel,
+        data: LoadModel | LoadListDto,
         tab: string
     ): DropdownItem[] {
         return [

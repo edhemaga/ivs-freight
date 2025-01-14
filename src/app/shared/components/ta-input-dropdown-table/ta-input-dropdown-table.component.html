@@ -535,11 +535,11 @@
             <!-- Display comments -->
             <div class="comments-holder">
                 <ng-container
-                    *ngIf="commmentsData.comments.length; else noComments"
+                    *ngIf="_data?.comments?.length; else noComments"
                 >
                     <ng-container
                         *ngFor="
-                            let comment of commmentsData.comments;
+                            let comment of _data?.comments;
                             let i = id;
                             trackBy: trackByIdentity
                         "

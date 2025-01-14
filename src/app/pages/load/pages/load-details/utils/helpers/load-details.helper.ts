@@ -161,8 +161,8 @@ export class LoadDetailsHelper {
 
     static enableDeleteButton(loadTypeName: string): boolean {
         return !(
-            loadTypeName.toLowerCase() === TableStringEnum.TEMPLATE ||
-            loadTypeName.toLowerCase() === TableStringEnum.PENDING
+            loadTypeName?.toLowerCase() === TableStringEnum.TEMPLATE ||
+            loadTypeName?.toLowerCase() === TableStringEnum.PENDING
         );
     }
 }
