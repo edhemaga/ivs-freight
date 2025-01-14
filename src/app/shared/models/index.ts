@@ -62,5 +62,6 @@ export * from './stop-routes.model';
 export * from './tabs.model';
 export * from './tags.model';
 export * from './truck-trailer-pm-dropdown-lists.model';
+export * from './table-card-body-actions.model';
 export * from './user.model';
 export * from './work.model';

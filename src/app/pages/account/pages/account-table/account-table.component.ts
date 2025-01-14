@@ -14,6 +14,9 @@ import { Subject, takeUntil } from 'rxjs';
 import { AccountModalComponent } from '@pages/account/pages/account-modal/account-modal.component';
 import { ConfirmationModalComponent } from '@shared/components/ta-shared-modals/confirmation-modal/confirmation-modal.component';
 
+// base classes
+import { AccountDropdownMenuActionsBase } from '@pages/account/base-classes';
+
 // services
 import { ModalService } from '@shared/services/modal.service';
 import { TruckassistTableService } from '@shared/services/truckassist-table.service';
@@ -29,7 +32,6 @@ import { accountCardModalQuery } from '@pages/account/pages/account-card-modal/s
 // utils
 import { getToolsAccountsColumnDefinition } from '@shared/utils/settings/table-settings/tools-accounts-columns';
 import { MethodsGlobalHelper } from '@shared/utils/helpers/methods-global.helper';
-import { AccountHelper } from '@pages/account/utils/helpers';
 
 // enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
@@ -38,11 +40,7 @@ import { TableActionsStringEnum } from '@shared/enums/table-actions-string.enum'
 import { DropdownMenuStringEnum } from '@shared/enums';
 
 // models
-import {
-    CompanyAccountLabelResponse,
-    GetCompanyAccountListResponse,
-    UpdateCompanyAccountCommand,
-} from 'appcoretruckassist';
+import { GetCompanyAccountListResponse } from 'appcoretruckassist';
 import { AccountTableToolbarAction } from '@pages/account/pages/account-table/models/account-table-toolbard-action.model';
 import { AccountTableHeadAction } from '@pages/account/pages/account-table/models/account-table-head-action.model';
 import { AccountCardData } from '@pages/account/utils/constants/account-card-data.constants';
@@ -54,14 +52,12 @@ import {
 import { AccountResponse } from '@pages/account/pages/account-table/models/account-response.model';
 import { TableBodyColumns } from '@shared/components/ta-table/ta-table-body/models/table-body-columns.model';
 import { AccountFilter } from '@pages/account/pages/account-table/models/account-filter.model';
-import { TableBodyActions } from '@shared/components/ta-table/ta-table-body/models/table-body-actions.model';
 
 // helpers
 import { DropdownMenuContentHelper } from '@shared/utils/helpers';
 
 // constants
 import { AccountFilterConstants } from '@pages/account/pages/account-table/utils/constants/account-filter.constants';
-import { DropdownMenuActionsBase } from '@shared/base-classes';
 
 @Component({
     selector: 'app-account-table',
@@ -69,53 +65,59 @@ import { DropdownMenuActionsBase } from '@shared/base-classes';
     styleUrls: ['./account-table.component.scss'],
 })
 export class AccountTableComponent
-    extends DropdownMenuActionsBase
+    extends AccountDropdownMenuActionsBase
     implements OnInit, AfterViewInit, OnDestroy
 {
-    private destroy$ = new Subject<void>();
+    public destroy$ = new Subject<void>();
 
-    //Table config
-    public tableOptions: any = {};
-    public tableData: any[] = [];
-    //leave this two any for now
-    public viewData: AccountResponse[] = [];
-    public columns: TableBodyColumns[] = [];
-    public selectedTab: string = TableActionsStringEnum.ACTIVE;
-    public activeViewMode: string = TableActionsStringEnum.LIST;
     public resizeObserver: ResizeObserver;
 
-    //Accounts
+    public activeViewMode: string = TableActionsStringEnum.LIST;
+
+    public selectedTab: string = TableActionsStringEnum.ACTIVE;
+
     public accounts: AccountState[];
 
-    //Filter
-    public backFilterQuery: AccountFilter = {
-        ...AccountFilterConstants.accountFilterQuery,
-    };
+    // table
+    public tableOptions: any = {};
+    public tableData: any[] = [];
+    public viewData: AccountResponse[] = [];
+    public columns: TableBodyColumns[] = [];
 
-    // Data to display from model Broker
-    public displayRowsFront: CardRows[] =
-        AccountCardData.DISPLAY_ROWS_FRONT_ACTIVE;
-
-    public displayRowsBack: CardRows[] =
-        AccountCardData.DISPLAY_ROWS_FRONT_ACTIVE;
-
-    //Card config
+    // cards
     public cardTitle: string = AccountCardData.CARD_TITLE;
     public page: string = AccountCardData.PAGE;
     public rows: number = AccountCardData.ROWS;
 
+    public displayRowsFront: CardRows[] =
+        AccountCardData.DISPLAY_ROWS_FRONT_ACTIVE;
+    public displayRowsBack: CardRows[] =
+        AccountCardData.DISPLAY_ROWS_FRONT_ACTIVE;
+
+    // filters
+    public backFilterQuery: AccountFilter = {
+        ...AccountFilterConstants.accountFilterQuery,
+    };
+
     constructor(
-        private modalService: ModalService,
+        @Inject(DOCUMENT) protected documentRef: Document,
+
+        // clipboard
+        protected clipboard: Clipboard,
+
+        // services
+        protected modalService: ModalService,
+        protected accountService: AccountService,
+
         private tableService: TruckassistTableService,
-        private accountQuery: AccountQuery,
-        private accountService: AccountService,
-        private clipboard: Clipboard,
         private confiramtionService: ConfirmationService,
-        private accountCardModalQuery: accountCardModalQuery,
         private caSearchMultipleStatesService: CaSearchMultipleStatesService,
-        @Inject(DOCUMENT) private readonly documentRef: Document
+
+        // store
+        private accountCardModalQuery: accountCardModalQuery,
+        private accountQuery: AccountQuery
     ) {
-        super();
+        super(documentRef, clipboard, modalService, accountService);
     }
 
     ngOnInit(): void {
@@ -311,9 +313,8 @@ export class AccountTableComponent
                         {
                             data: null,
                             array: mappedRes,
-                            template: TableStringEnum.USER_1,
+                            template: DropdownMenuStringEnum.ACCOUNT,
                             type: TableStringEnum.MULTIPLE_DELETE,
-                            svg: true,
                         }
                     );
                 }
@@ -556,144 +557,6 @@ export class AccountTableComponent
         }
     }
 
-    // body actions
-    public onTableBodyActions<T extends AccountResponse>(
-        event: TableBodyActions<T>
-    ): void {
-        const { id, data, type } = event;
-
-        switch (type) {
-            case DropdownMenuStringEnum.EDIT_TYPE:
-                this.handleTableBodyEditAction(data);
-
-                break;
-            case DropdownMenuStringEnum.GO_TO_LINK_TYPE:
-                const { url } = data;
-
-                this.handleTableBodyGoToLinkAction(url);
-
-                break;
-            case DropdownMenuStringEnum.COPY_USERNAME_TYPE:
-                const { username } = data;
-
-                this.handleTableBodyCopyAction(username);
-
-                break;
-            case DropdownMenuStringEnum.COPY_PASSWORD_TYPE:
-                const { password } = data;
-
-                this.handleTableBodyCopyAction(password);
-
-                break;
-            case DropdownMenuStringEnum.DELETE_TYPE:
-                this.handleTableBodyDeleteAction(data);
-
-                break;
-            case DropdownMenuStringEnum.CREATE_LABEL:
-                this.handleTableBodyCreateLabelAction(data);
-
-                break;
-            case DropdownMenuStringEnum.UPDATE_LABEL:
-                const { id: labelId } = data;
-
-                this.handleTableBodyUpdateLabelAction(id, labelId);
-
-                break;
-            case DropdownMenuStringEnum.SHOW_MORE:
-                this.handleTableBodyShowMoreAction();
-
-                break;
-            default:
-                break;
-        }
-    }
-
-    private handleTableBodyEditAction(data: AccountResponse): void {
-        this.modalService.openModal(
-            AccountModalComponent,
-            { size: TableStringEnum.SMALL },
-            {
-                ...data,
-                type: DropdownMenuStringEnum.EDIT_TYPE,
-            }
-        );
-    }
-
-    private handleTableBodyGoToLinkAction(url: string): void {
-        const linkUrl = AccountHelper.generateUrlLink(url);
-
-        this.documentRef.defaultView.open(
-            linkUrl,
-            DropdownMenuStringEnum.BLANK
-        );
-    }
-
-    private handleTableBodyCopyAction(usernameOrPassword: string): void {
-        this.clipboard.copy(usernameOrPassword);
-    }
-
-    private handleTableBodyDeleteAction(data: AccountResponse): void {
-        this.modalService.openModal(
-            ConfirmationModalComponent,
-            { size: TableStringEnum.SMALL },
-            {
-                data,
-                template: TableStringEnum.USER_1,
-                type: DropdownMenuStringEnum.DELETE_TYPE,
-                svg: true,
-            }
-        );
-    }
-
-    private handleTableBodyCreateLabelAction(
-        data: CompanyAccountLabelResponse
-    ): void {
-        const { id, name, colorId } = data;
-
-        const label = {
-            id,
-            name,
-            colorId,
-        };
-
-        this.accountService
-            .updateCompanyAccountLabel(label)
-            .pipe(takeUntil(this.destroy$))
-            .subscribe();
-    }
-
-    private handleTableBodyUpdateLabelAction(
-        id: number,
-        labelId: number
-    ): void {
-        const companyAccountData = this.viewData.find(
-            (account) => account.id === id
-        );
-
-        const { name, username, password, url, note } = companyAccountData;
-
-        const newdata: UpdateCompanyAccountCommand = {
-            id,
-            name,
-            username,
-            password,
-            url,
-            companyAccountLabelId: labelId,
-            note,
-        };
-
-        this.accountService
-            .updateCompanyAccount(newdata)
-            .pipe(takeUntil(this.destroy$))
-            .subscribe();
-    }
-
-    private handleTableBodyShowMoreAction(): void {
-        this.backFilterQuery.pageIndex++;
-
-        this.accountBackFilter(this.backFilterQuery, true);
-    }
-
     public saveValueNote(event: { value: string; id: number }): void {
         this.viewData.map((item: CardDetails) => {
             if (item.id === event.id) {
@@ -717,7 +580,7 @@ export class AccountTableComponent
                 next: (res) => {
                     switch (res.type) {
                         case TableStringEnum.DELETE:
-                            this.deleteAccountList([res.data.id]);
+                            this.deleteAccountList([res.id]);
 
                             break;
                         case TableStringEnum.MULTIPLE_DELETE:
@@ -781,6 +644,12 @@ export class AccountTableComponent
                     this.displayRowsBack = filteredCardRowsBack;
                 }
             });
+    }
+
+    public handleShowMoreAction(): void {
+        this.backFilterQuery.pageIndex++;
+
+        this.accountBackFilter(this.backFilterQuery, true);
     }
 
     ngOnDestroy(): void {

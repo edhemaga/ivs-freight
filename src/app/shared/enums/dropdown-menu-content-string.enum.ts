@@ -59,6 +59,9 @@ export enum DropdownMenuStringEnum {
     TITLE_TYPE = 'title',
     LEASE_RENT_TYPE = 'lease-rent',
 
+    // table types
+    ACCOUNT = 'account',
+
     // svg classes
     REGULAR = 'regular',
 

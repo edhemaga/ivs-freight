@@ -19,9 +19,9 @@ import { TaTableBodyComponent } from '@shared/components/ta-table/ta-table-body/
 import { TaTableHeadComponent } from '@shared/components/ta-table/ta-table-head/ta-table-head.component';
 import { AccountCardComponent } from '@pages/account/pages/account-card/account-card.component';
 import { TaInputDropdownLabelComponent } from '@shared/components/ta-input-dropdown-label/ta-input-dropdown-label.component';
-import { TaTableCardDropdownActionsComponent } from '@shared/components/ta-table-card-dropdown-actions/ta-table-card-dropdown-actions.component';
 import { TaNoteComponent } from '@shared/components/ta-note/ta-note.component';
 import { TaAppTooltipComponent } from '@shared/components/ta-app-tooltip/ta-app-tooltip.component';
+import { CaDropdownMenuComponent } from 'ca-components';
 
 // pipes
 import { FlipCardsPipe } from '@shared/pipes/flip-cards.pipe';
@@ -47,8 +47,8 @@ import { FlipCardsPipe } from '@shared/pipes/flip-cards.pipe';
         TaTableBodyComponent,
         TaTableHeadComponent,
         TaInputDropdownLabelComponent,
-        TaTableCardDropdownActionsComponent,
         TaNoteComponent,
+        CaDropdownMenuComponent,
 
         // pipes
         FlipCardsPipe,

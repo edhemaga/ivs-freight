@@ -95,12 +95,15 @@ import {
 import { TableBodyColorLabel } from '@shared/models/table-models/table-body-color-label.model';
 import { TableBodyOptionActions } from '@shared/components/ta-table/ta-table-body/models/table-body-option-actions.model';
 import { TableBodyColumns } from '@shared/components/ta-table/ta-table-body/models/table-body-columns.model';
-import { DropdownOptionEmit } from '@ca-shared/components/ca-dropdown-menu/models';
-import { TableBodyActions } from '@shared/components/ta-table/ta-table-body/models/table-body-actions.model';
+import { DropdownMenuOptionEmit } from '@ca-shared/components/ca-dropdown-menu/models';
+import { TableCardBodyActions } from '@shared/models';
 
 // constants
 import { TaStateImageTextComponent } from '@shared/components/ta-state-image-text/ta-state-image-text.component';
 import { TaTableBodyConstants } from '@shared/components/ta-table/ta-table-body/utils/constants/ta-table-body.constants';
+
+// helpers
+import { DropdownMenuActionsHelper } from '@shared/utils/helpers/dropdown-menu-helpers';
 
 // directive
 import {
@@ -177,8 +180,8 @@ export class TaTableBodyComponent<
     @ViewChild('tableFiles', { static: false }) public tableFiles: any;
 
     @Output() bodyActions: EventEmitter<any> = new EventEmitter();
-    @Output() tableBodyActions: EventEmitter<TableBodyActions<T>> =
-        new EventEmitter<TableBodyActions<T>>();
+    @Output() tableBodyActions: EventEmitter<TableCardBodyActions<T>> =
+        new EventEmitter<TableCardBodyActions<T>>();
 
     @Output() saveValueNote: EventEmitter<{ value: string; id: number }> =
         new EventEmitter<{ value: string; id: number }>();
@@ -771,14 +774,17 @@ export class TaTableBodyComponent<
     }
 
     // Toggle Dropdown
-    public handleToggleActionsDropdown(
-        event: DropdownOptionEmit,
+    public handleToggleDropdownMenuActions(
+        event: DropdownMenuOptionEmit,
         rowData: T
     ): void {
-        const emitEvent = {
-            data: rowData,
-            type: event.type,
-        };
+        const { type } = event;
+
+        const emitEvent =
+            DropdownMenuActionsHelper.createDropdownMenuActionsEmitEvent(
+                type,
+                rowData
+            );
 
         this.tableBodyActions.emit(emitEvent);
     }

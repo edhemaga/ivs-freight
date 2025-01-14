@@ -14,7 +14,8 @@
                     editData?.template !== 'repair_shop' &&
                     editData?.template !== 'truck' &&
                     editData?.template !== 'driver' &&
-                    editData?.template !== 'user'
+                    editData?.template !== 'user' &&
+                    editData?.template !== 'account'
                   ? 'Delete'
                   : editData?.template === 'void'
                     ? editData.type === 'activate'
@@ -63,7 +64,10 @@
                                                     : editData?.template ===
                                                         'user'
                                                       ? 'Delete User'
-                                                      : 'Confirmation'
+                                                      : editData?.template ===
+                                                          'account'
+                                                        ? 'Delete Account'
+                                                        : 'Confirmation'
     "
     [specificCaseModalName]="editData.modalHeader"
     [customClass]="'modal-container-XS'"
@@ -279,7 +283,13 @@
 
                         <!-- Account/User -->
 
-                        <ng-container *ngSwitchCase="'user'">
+                        <ng-container
+                            *ngSwitchCase="
+                                ['user', 'account'].includes(editData?.template)
+                                    ? editData.template
+                                    : ''
+                            "
+                        >
                             <div class="confirmation-info">
                                 <p class="m-0 confirmation-text-1 large-text-1">
                                     {{ editData?.data?.name }}
@@ -1248,7 +1258,13 @@
 
                         <!-- Account/User -->
 
-                        <ng-container *ngSwitchCase="'user'">
+                        <ng-container
+                            *ngSwitchCase="
+                                ['user', 'account'].includes(editData?.template)
+                                    ? editData.template
+                                    : ''
+                            "
+                        >
                             <div class="confirmation-info">
                                 <p class="m-0 confirmation-text-1 large-text-1">
                                     {{ item?.data?.name }}
