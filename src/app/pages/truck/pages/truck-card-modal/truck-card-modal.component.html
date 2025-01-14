@@ -1,16 +1,11 @@
-<app-ta-modal
+<app-ca-modal
     [modalTitle]="'Columns'"
-    [cardsSecTitle]="
-        tabSelected === 'inactive'
-            ? 'Trailer | Inactive'
-            : 'Trailer | Active'
-    "
-    isCardsModal="true"
-    (action)="onActionModal($event)"
-    [isModalValid]="hasFormChanged"
-    [isResetFormCards]="resetForm"
+    [rightHeaderTemplate]="rightModalContent"
+    [leftHeaderTemplate]="leftModalContent"
+    [footerTemplate]="footerTemplate"
 >
-    <div origin>
+<div class="new-modal" origin>
+    <div class="divider divider--dark divider--small"></div>
         <!-- Number of rows -->
         <form [formGroup]="cardsForm">
             <div
@@ -42,7 +37,7 @@
             <!-- Front Side -->
             <div class="modal-cards">
                 <!-- For Front side of cards -->
-                <div class="front-side-body">
+                <div class="front-side-body mb-4">
                     <div
                         class="ta-font-extra-bold title-card-modal title-margin"
                     >
@@ -103,7 +98,7 @@
                     class="back-side-body"
                     [ngStyle]="{
                         'margin-bottom': cardsForm.get('checked').value
-                            ? '21px'
+                            ? '24px'
                             : '8px'
                     }"
                 >
@@ -166,4 +161,46 @@
             </div>
         </form>
     </div>
-</app-ta-modal>
+</app-ca-modal>
+
+<ng-template #rightModalContent>
+    <div
+        class="d-flex justify-content-center align-items-center modal-close-container"
+        ngbTooltip
+        mainTooltip="Cancel"
+        tooltipBackground="#424242"
+        position="bottom"
+        (click)="onActionModal(cardsModalStringEnum.CLOSE)"
+    >
+        <svg-icon
+            class="modal-close svg-size-14 svg-fill-muted modal-buttons"
+            [src]="svgRoutes.CLOSE_ICON"
+        ></svg-icon>
+    </div>
+</ng-template>
+<ng-template #leftModalContent>
+    <div class="payroll-number text-color-white text-size-14 ta-font-bold">
+        {{ 'Load | ' + tabSelected | titlecase }}
+    </div>
+</ng-template>
+<ng-template #footerTemplate>
+    <div class="modal-footer modal-footer-payroll">
+        <div class="divider"></div>
+        <div class="d-flex justify-content-between w-full">
+            <button
+                [class.modal-convert-to-template-btn]="hasFormChanged"
+                class="modal-save-btn ta-font-bold ta-font-bold pe-auto"
+                (click)="onActionModal(cardsModalStringEnum.RESET_TO_DEFAULT)"
+            >
+                Reset to Default
+            </button>
+            <button
+                [class.valid]="hasFormChanged"
+                class="modal-save-btn ta-font-bold"
+                (click)="onActionModal(cardsModalStringEnum.CARDS_MODAL)"
+            >
+                Save Changes
+            </button>
+        </div>
+    </div>
+</ng-template>
