@@ -329,7 +329,7 @@ export class LoadCardModalComponent implements OnInit, OnDestroy {
         };
 
         this.createForm(cardsData);
-        this.hasFormChanged = false;
+        
         this.resetForm = false;
     }
 
