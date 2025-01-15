@@ -155,6 +155,21 @@ export class DropdownMenuContentConstants {
             hasBorder: true,
         },
 
+        // owner
+        [DropdownMenuStringEnum.ADD_TRUCK]: {
+            title: DropdownMenuStringEnum.ADD_TRUCK,
+            type: DropdownMenuStringEnum.ADD_TRUCK_TYPE,
+            svgUrl: 'assets/svg/common/ic_plus.svg',
+            svgClass: DropdownMenuStringEnum.ACTIVATE_TYPE,
+        },
+        [DropdownMenuStringEnum.ADD_TRAILER]: {
+            title: DropdownMenuStringEnum.ADD_TRAILER,
+            type: DropdownMenuStringEnum.ADD_TRAILER_TYPE,
+            svgUrl: 'assets/svg/common/ic_plus.svg',
+            svgClass: DropdownMenuStringEnum.ACTIVATE_TYPE,
+            hasBorder: true,
+        },
+
         // driver
         [DropdownMenuStringEnum.SEND_MESSAGE]: {
             title: DropdownMenuStringEnum.SEND_MESSAGE,

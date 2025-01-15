@@ -20,6 +20,9 @@ export abstract class DropdownMenuActionsBase {
         event: TableCardBodyActions<T>,
         tableType: string
     ): void {
+        console.log('event', event);
+        console.log('tableType', tableType);
+
         const { type } = event;
 
         switch (type) {
@@ -52,11 +55,11 @@ export abstract class DropdownMenuActionsBase {
         event: TableCardBodyActions<T>,
         tableType: string
     ): void {
-        const editActionModal =
-            DropdownMenuActionsHelper.getEditActionModal(tableType);
+        const editActionModalComponent =
+            DropdownMenuActionsHelper.getEditActionModalComponent(tableType);
 
         this.modalService.openModal(
-            editActionModal,
+            editActionModalComponent,
             { size: TableStringEnum.SMALL },
             {
                 ...event,

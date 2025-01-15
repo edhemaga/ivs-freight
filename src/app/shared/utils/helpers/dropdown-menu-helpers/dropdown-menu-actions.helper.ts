@@ -3,6 +3,7 @@ import { Type } from '@angular/core';
 // components
 import { AccountModalComponent } from '@pages/account/pages/account-modal/account-modal.component';
 import { ContactsModalComponent } from '@pages/contacts/pages/contacts-modal/contacts-modal.component';
+import { OwnerModalComponent } from '@pages/owner/pages/owner-modal/owner-modal.component';
 
 // enums
 import { DropdownMenuStringEnum } from '@shared/enums';
@@ -29,16 +30,18 @@ export class DropdownMenuActionsHelper {
         return emitEvent;
     }
 
-    static getEditActionModal(
+    static getEditActionModalComponent(
         tableType: string
     ): Type<DropdownEditActionModal> {
-        switch (tableType) {
-            case DropdownMenuStringEnum.ACCOUNT:
-                return AccountModalComponent;
-            case DropdownMenuStringEnum.CONTACT:
-                return ContactsModalComponent;
-            default:
-                return;
-        }
+        const modalComponentMap: Record<
+            string,
+            Type<DropdownEditActionModal>
+        > = {
+            [DropdownMenuStringEnum.ACCOUNT]: AccountModalComponent,
+            [DropdownMenuStringEnum.CONTACT]: ContactsModalComponent,
+            [DropdownMenuStringEnum.OWNER]: OwnerModalComponent,
+        };
+
+        return modalComponentMap[tableType];
     }
 }

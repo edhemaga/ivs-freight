@@ -135,6 +135,12 @@ export class AccountTableComponent
         this.accountCurrentDeleteSelectedRows();
     }
 
+    ngAfterViewInit(): void {
+        setTimeout(() => {
+            this.observTableContainer();
+        }, 10);
+    }
+
     private accountResetColumns(): void {
         this.tableService.currentResetColumns
             .pipe(takeUntil(this.destroy$))
@@ -318,12 +324,6 @@ export class AccountTableComponent
             });
     }
 
-    ngAfterViewInit(): void {
-        setTimeout(() => {
-            this.observTableContainer();
-        }, 10);
-    }
-
     private observTableContainer(): void {
         this.resizeObserver = new ResizeObserver((entries) => {
             entries.forEach((entry) => {
@@ -480,7 +480,6 @@ export class AccountTableComponent
         return caracters;
     }
 
-    // Account Back Filter
     private accountBackFilter(
         filter: {
             labelId: number | undefined;
@@ -653,6 +652,7 @@ export class AccountTableComponent
         this.tableService.sendActionAnimation({});
 
         this.resizeObserver.disconnect();
+
         this.destroy$.next();
         this.destroy$.complete();
     }

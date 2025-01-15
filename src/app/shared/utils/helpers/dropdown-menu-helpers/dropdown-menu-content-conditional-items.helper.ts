@@ -39,6 +39,26 @@ export class DropdownMenuContentConditionalItemsHelper {
 
     // modifier items
 
+    // owner
+    static getOwnerModifierItems(
+        isActiveOwner: boolean
+    ): Partial<DropdownMenuItem>[] {
+        return [
+            {
+                title: DropdownMenuStringEnum.EDIT,
+                isDisabled: !isActiveOwner,
+            },
+            {
+                title: DropdownMenuStringEnum.ADD_TRUCK,
+                isDisabled: !isActiveOwner,
+            },
+            {
+                title: DropdownMenuStringEnum.ADD_TRAILER,
+                isDisabled: !isActiveOwner,
+            },
+        ];
+    }
+
     // driver
     static getDriverModifierItems(
         isActiveDriver: boolean

@@ -29,6 +29,8 @@ export enum DropdownMenuStringEnum {
     TITLE = 'Title',
     LEASE_RENT = 'Lease / Rent',
     SEND_SMS = 'Send SMS',
+    ADD_TRUCK = 'Add Truck',
+    ADD_TRAILER = 'Add Trailer',
 
     // types
     EDIT_LOAD_TYPE = 'edit-load',
@@ -60,10 +62,15 @@ export enum DropdownMenuStringEnum {
     TITLE_TYPE = 'title',
     LEASE_RENT_TYPE = 'lease-rent',
     SEND_SMS_TYPE = 'send-sms',
+    ADD_TRUCK_TYPE = 'add-truck',
+    ADD_TRAILER_TYPE = 'add-trailer',
 
     // table types
     ACCOUNT = 'account',
     CONTACT = 'contact',
+    OWNER = 'owner',
+
+    DRIVER = 'driver',
 
     // svg classes
     REGULAR = 'regular',
@@ -72,7 +79,6 @@ export enum DropdownMenuStringEnum {
     ACTIVE = 'active',
     ADD_NEW_DRIVER = 'add-new-driver',
     ADD_NEW_TRUCK_TRAILER = 'add-new-truck-trailer',
-    DRIVER = 'driver',
 
     // additional
     BLANK = '_blank',

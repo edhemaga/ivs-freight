@@ -386,8 +386,7 @@ export class ContactsTableComponent
             });
     }
 
-    // Responsive Observer
-    observTableContainer() {
+    public observTableContainer(): void {
         this.resizeObserver = new ResizeObserver((entries) => {
             entries.forEach((entry) => {
                 this.tableService.sendCurrentSetTableWidth(
@@ -401,7 +400,6 @@ export class ContactsTableComponent
         );
     }
 
-    // Table Options
     public initTableOptions(): void {
         this.tableOptions = {
             toolbarActions: {
@@ -421,7 +419,6 @@ export class ContactsTableComponent
         };
     }
 
-    // Send Contact Data
     private sendContactData(): void {
         const tableView = JSON.parse(
             localStorage.getItem(ContactsStringEnum.CONTACT_TABLE_VIEW)
@@ -458,17 +455,16 @@ export class ContactsTableComponent
         ];
 
         const td = this.tableData.find((t) => t.field === this.selectedTab);
+
         this.setContactData(td);
     }
 
-    // Get Contact Data From Store Or Via Api Call
-    getTabData() {
+    public getTabData() {
         this.contacts = this.contactQuery.getAll();
         return this.contacts?.length ? this.contacts : [];
     }
 
-    // Update Contact Count
-    updateDataCount() {
+    public updateDataCount() {
         const contactCount = JSON.parse(
             localStorage.getItem(ContactsStringEnum.CONTACT_TABLE_COUNT)
         );
@@ -480,8 +476,7 @@ export class ContactsTableComponent
         this.tableData = [...updatedTableData];
     }
 
-    // Get Columns Definition
-    getGridColumns(configType: string) {
+    public getGridColumns(configType: string) {
         const tableColumnsConfig = JSON.parse(
             localStorage.getItem(`table-${configType}-Configuration`)
         );
@@ -491,8 +486,7 @@ export class ContactsTableComponent
             : getToolsContactsColumnDefinition();
     }
 
-    // Set Countact Data
-    setContactData(tdata: CardTableData): void {
+    public setContactData(tdata: CardTableData): void {
         this.columns = tdata.gridColumns;
 
         if (tdata.data.length) {
@@ -507,7 +501,6 @@ export class ContactsTableComponent
         }
     }
 
-    // Map Contact Data
     public mapContactData(data: any, dontMapIndex?: boolean): void {
         if (!data?.avatarFile?.url && !dontMapIndex) {
             this.mapingIndex++;
@@ -541,11 +534,11 @@ export class ContactsTableComponent
             tableDropdownContent: this.getContactDropdownContent(),
         };
     }
+
     public getContactDropdownContent(): DropdownMenuItem[] {
         return DropdownMenuContentHelper.getContactDropdownContent();
     }
 
-    // Contact Back Filter
     public contactBackFilter(
         filter: ContactsBackFilter,
         isShowMore?: boolean
@@ -603,8 +596,8 @@ export class ContactsTableComponent
             },
         ];
     }
-    // On Toolbar Actions
-    onToolBarAction(event: ContactsTableToolbarAction) {
+
+    public onToolBarAction(event: ContactsTableToolbarAction) {
         if (event.action === TableStringEnum.OPEN_MODAL) {
             this.modalService.openModal(ContactsModalComponent, {
                 size: TableStringEnum.SMALL,
@@ -624,7 +617,6 @@ export class ContactsTableComponent
         }
     }
 
-    // On Head Actions
     public onTableHeadActions(event: ContactsTableHeadAction) {
         if (event.action === TableStringEnum.SORT) {
             if (event.direction) {

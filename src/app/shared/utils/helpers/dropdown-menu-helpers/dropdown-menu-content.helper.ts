@@ -5,12 +5,39 @@ import { DropdownMenuStringEnum, TableStringEnum } from '@shared/enums';
 import { DropdownMenuContentConditionalItemsHelper } from '@shared/utils/helpers/dropdown-menu-helpers';
 
 // models
-import { DropdownItem } from '@shared/models/card-models/card-table-data.model';
 import { RepairDropdownTableModel } from '@pages/repair/pages/repair-table/models';
 import { DropdownMenuItem } from '@ca-shared/components/ca-dropdown-menu/models';
 import { OptionsPopupContent } from '@shared/components/ta-table/ta-table-toolbar/models/options-popup-content.model';
 
 export class DropdownMenuContentHelper {
+    // contact
+    static getContactDropdownContent(): DropdownMenuItem[] {
+        // requested items
+        const requestedConditionalItems = [DropdownMenuStringEnum.SEND_SMS];
+
+        const requestedSharedItems = [
+            DropdownMenuStringEnum.EDIT,
+            DropdownMenuStringEnum.SHARE,
+            DropdownMenuStringEnum.PRINT,
+            DropdownMenuStringEnum.DELETE,
+        ];
+
+        // items
+        const conditionalItems =
+            DropdownMenuContentConditionalItemsHelper.getConditionalItems(
+                requestedConditionalItems,
+                false
+            );
+
+        const sharedItems =
+            DropdownMenuContentConditionalItemsHelper.getConditionalItems(
+                requestedSharedItems,
+                true
+            );
+
+        return [sharedItems[0], ...conditionalItems, ...sharedItems.slice(1)];
+    }
+
     // account
     static getAccountDropdownContent(url: string): DropdownMenuItem[] {
         // requested items
@@ -43,15 +70,24 @@ export class DropdownMenuContentHelper {
         return [sharedItems[0], ...conditionalItems, sharedItems[1]];
     }
 
-    // contact
-    static getContactDropdownContent(): DropdownMenuItem[] {
+    // owner
+    static getOwnerDropdownContent(selectedTab: string): DropdownMenuItem[] {
+        const isActiveOwner = selectedTab === DropdownMenuStringEnum.ACTIVE;
+
+        // modifier items
+        const modifierItems =
+            DropdownMenuContentConditionalItemsHelper.getOwnerModifierItems(
+                isActiveOwner
+            );
+
         // requested items
-        const requestedConditionalItems = [DropdownMenuStringEnum.SEND_SMS];
+        const requestedConditionalItems = [
+            DropdownMenuStringEnum.ADD_TRUCK,
+            DropdownMenuStringEnum.ADD_TRAILER,
+        ];
 
         const requestedSharedItems = [
             DropdownMenuStringEnum.EDIT,
-            DropdownMenuStringEnum.SHARE,
-            DropdownMenuStringEnum.PRINT,
             DropdownMenuStringEnum.DELETE,
         ];
 
@@ -59,17 +95,21 @@ export class DropdownMenuContentHelper {
         const conditionalItems =
             DropdownMenuContentConditionalItemsHelper.getConditionalItems(
                 requestedConditionalItems,
-                false
+                false,
+                modifierItems
             );
 
         const sharedItems =
             DropdownMenuContentConditionalItemsHelper.getConditionalItems(
                 requestedSharedItems,
-                true
+                true,
+                modifierItems
             );
 
-        return [sharedItems[0], ...conditionalItems, ...sharedItems.slice(1)];
+        return [sharedItems[0], ...conditionalItems, sharedItems[1]];
     }
+
+    /////////////////////////////////////////////////////////////////////////////////
 
     // driver
     static getDriverDropdownContent(selectedTab: string): DropdownMenuItem[] {
@@ -285,7 +325,7 @@ export class DropdownMenuContentHelper {
         archivedDate: string,
         applicationStatus: string,
         review: string
-    ): DropdownItem[] {
+    ): any[] {
         return [
             {
                 title: 'Edit',
@@ -646,7 +686,7 @@ export class DropdownMenuContentHelper {
     }
 
     // trailer
-    static getTrailerDropdownContent(selectedTab: string): DropdownItem[] {
+    static getTrailerDropdownContent(selectedTab: string): any[] {
         const isActiveTrailer = selectedTab === DropdownMenuStringEnum.ACTIVE;
 
         // modifier items
@@ -781,10 +821,7 @@ export class DropdownMenuContentHelper {
     }
 
     // truck
-    static getTruckDropdownContent(
-        status: number,
-        selectedTab: string
-    ): DropdownItem[] {
+    static getTruckDropdownContent(status: number, selectedTab: string): any[] {
         return [
             {
                 title: TableStringEnum.EDIT_2,
@@ -876,7 +913,7 @@ export class DropdownMenuContentHelper {
     // fuel transaction
     static getFuelTransactionDropdownContent(
         isAutomaticTransaction: boolean
-    ): DropdownItem[] {
+    ): any[] {
         return [
             {
                 title: TableStringEnum.EDIT_2,
@@ -952,12 +989,12 @@ export class DropdownMenuContentHelper {
     }
 
     // fuel stop
-    static getFuelStopDropdownContent(): DropdownItem[] {
+    static getFuelStopDropdownContent(): any[] {
         return [];
     }
 
     // pm
-    static getPMDropdownContent(): DropdownItem[] {
+    static getPMDropdownContent(): any[] {
         return [
             {
                 title: 'Configure',
@@ -1012,64 +1049,12 @@ export class DropdownMenuContentHelper {
         ];
     }
 
-    // owner
-    static getOwnerDropdownContent(selectedTab: string): DropdownItem[] {
-        return [
-            {
-                title: TableStringEnum.EDIT_2,
-                name: TableStringEnum.EDIT,
-                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Edit.svg',
-                svgStyle: {
-                    width: 18,
-                    height: 18,
-                },
-                hasBorder: true,
-                svgClass: TableStringEnum.REGULAR,
-                isDisabled: selectedTab === TableStringEnum.INACTIVE,
-            },
-            {
-                title: 'Add Truck',
-                name: 'add-truck',
-                svgUrl: '/assets/svg/common/ic_plus.svg',
-                svgStyle: {
-                    width: 18,
-                    height: 18,
-                },
-                tableListDropdownContentStyle: {
-                    'margin-bottom.px': 4,
-                },
-                svgClass: TableStringEnum.ACTIVATE,
-            },
-            {
-                title: 'Add Trailer',
-                name: 'add-trailer',
-                svgUrl: '/assets/svg/common/ic_plus.svg',
-                svgStyle: {
-                    width: 18,
-                    height: 18,
-                },
-                svgClass: TableStringEnum.ACTIVATE,
-                hasBorder: true,
-            },
-            {
-                title: TableStringEnum.DELETE_2,
-                name: TableStringEnum.DELETE_ITEM,
-                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Delete.svg',
-                svgStyle: {
-                    width: 18,
-                    height: 18,
-                },
-                svgClass: TableStringEnum.DELETE,
-            },
-        ];
-    }
-
     // broker
     static getBrokerDropdownContent(
         status: number,
         ban?: boolean,
         dnu?: boolean
-    ): DropdownItem[] {
+    ): any[] {
         return [
             {
                 title: TableStringEnum.EDIT_2,
@@ -1228,7 +1213,7 @@ export class DropdownMenuContentHelper {
     }
 
     // shipper
-    static getShipperDropdownContent(status: number): DropdownItem[] {
+    static getShipperDropdownContent(status: number): any[] {
         return [
             {
                 title: TableStringEnum.EDIT_2,
@@ -1314,7 +1299,7 @@ export class DropdownMenuContentHelper {
     }
 
     // load
-    static getLoadDropdownContent(selectedTab: string): DropdownItem[] {
+    static getLoadDropdownContent(selectedTab: string): any[] {
         return [
             {
                 title: 'Edit',
@@ -1408,7 +1393,7 @@ export class DropdownMenuContentHelper {
         selectedTab: string,
         userStatus: string,
         isInvitationSent: boolean
-    ): DropdownItem[] {
+    ): any[] {
         return [
             {
                 title: TableStringEnum.EDIT_2,

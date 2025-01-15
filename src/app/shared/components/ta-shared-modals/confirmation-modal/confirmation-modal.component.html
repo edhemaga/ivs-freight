@@ -15,7 +15,8 @@
                     editData?.template !== 'truck' &&
                     editData?.template !== 'driver' &&
                     editData?.template !== 'user' &&
-                    editData?.template !== 'account'
+                    editData?.template !== 'account' &&
+                    editData?.template !== 'owner'
                   ? 'Delete'
                   : editData?.template === 'void'
                     ? editData.type === 'activate'
@@ -67,7 +68,10 @@
                                                       : editData?.template ===
                                                           'account'
                                                         ? 'Delete Account'
-                                                        : 'Confirmation'
+                                                        : editData?.template ===
+                                                            'owner'
+                                                          ? 'Delete Owner'
+                                                          : 'Confirmation'
     "
     [specificCaseModalName]="editData.modalHeader"
     [customClass]="'modal-container-XS'"

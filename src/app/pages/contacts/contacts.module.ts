@@ -12,9 +12,9 @@ import { TaTableBodyComponent } from '@shared/components/ta-table/ta-table-body/
 import { TaTableHeadComponent } from '@shared/components/ta-table/ta-table-head/ta-table-head.component';
 import { ContactsCardComponent } from '@pages/contacts/pages/contacts-card/contacts-card.component';
 import { TaNoteComponent } from '@shared/components/ta-note/ta-note.component';
-import { CaDropdownMenuComponent } from 'ca-components';
 import { TaInputDropdownTableComponent } from '@shared/components/ta-input-dropdown-table/ta-input-dropdown-table.component';
 import { TaInputDropdownLabelComponent } from '@shared/components/ta-input-dropdown-label/ta-input-dropdown-label.component';
+import { CaDropdownMenuComponent } from 'ca-components';
 
 @NgModule({
     declarations: [ContactsTableComponent, ContactsCardComponent],
@@ -29,9 +29,9 @@ import { TaInputDropdownLabelComponent } from '@shared/components/ta-input-dropd
         TaTableBodyComponent,
         TaTableHeadComponent,
         TaNoteComponent,
-        CaDropdownMenuComponent,
         TaInputDropdownTableComponent,
         TaInputDropdownLabelComponent,
+        CaDropdownMenuComponent,
     ],
 })
 export class ContactsModule {}

@@ -32,7 +32,6 @@ import { DropdownMenuStringEnum } from '@shared/enums';
 import { CardDetails } from '@shared/models/card-models/card-table-data.model';
 import { CardRows } from '@shared/models/card-models/card-rows.model';
 import { CompanyAccountLabelResponse } from 'appcoretruckassist';
-import { CardDataResult } from '@shared/models/card-models/card-data-result.model';
 import { TableBodyColorLabel } from '@shared/models/table-models/table-body-color-label.model';
 import { AccountResponse } from '@pages/account/pages/account-table/models/account-response.model';
 import { DropdownMenuOptionEmit } from '@ca-shared/components/ca-dropdown-menu/models';
@@ -68,15 +67,10 @@ export class AccountCardComponent
 
     public _viewData: CardDetails[];
 
-    public cardData: CardDetails;
-
     public isCardFlippedCheckInCards: number[] = [];
     public isAllCardsFlipp: boolean = false;
 
     public selectedContactLabel: CompanyAccountLabelResponse[] = [];
-
-    public cardsFront: CardDataResult[][][] = [];
-    public cardsBack: CardDataResult[][][] = [];
 
     get viewData() {
         return this._viewData;
