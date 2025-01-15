@@ -432,6 +432,7 @@ export class SettingsParkingModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => this.ngbActiveModal.close(),
+                error: () => (this.activeAction = null),
             });
     }
 
@@ -504,6 +505,7 @@ export class SettingsParkingModalComponent implements OnInit, OnDestroy {
                     }
                     this.dispatcherService.updateModalList();
                 },
+                error: () => (this.activeAction = null),
             });
     }
 
@@ -515,6 +517,7 @@ export class SettingsParkingModalComponent implements OnInit, OnDestroy {
                 next: () => {
                     this.ngbActiveModal.close();
                 },
+                error: () => (this.activeAction = null),
             });
     }
 
@@ -589,7 +592,7 @@ export class SettingsParkingModalComponent implements OnInit, OnDestroy {
                         this.disableCardAnimation = false;
                     }, 1000);
                 },
-                error: () => {},
+                error: () => (this.activeAction = null),
             });
     }
 
@@ -610,7 +613,7 @@ export class SettingsParkingModalComponent implements OnInit, OnDestroy {
                         this.startFormChanges();
                     }
                 },
-                error: () => {},
+                error: () => (this.activeAction = null),
             });
     }
 
