@@ -9,8 +9,8 @@
         [activeViewMode]="loadStoreService.activeViewMode$ | async"
         listName="Load"
     ></app-ta-table-toolbar>
-    <ng-container *ngIf="loadStoreService.activeViewMode$ | async as activeViewMode">
-        <ng-container *ngIf="activeViewMode === 'List'">
+    @if (loadStoreService.activeViewMode$ | async; as activeViewMode) {
+        @if (activeViewMode === 'List') {
             <app-ta-table-head
                 [options]="loadStoreService.tableOptions$ | async"
                 [viewData]="loadStoreService.viewData$ | async"
@@ -28,10 +28,10 @@
                 [tableData]="loadStoreService.tableData$ | async"
                 (saveValueNote)="saveValueNote($event)"
             ></app-ta-table-body>
-        </ng-container>
+        }
         <!-- Cards -->
 
-        <ng-container *ngIf="activeViewMode === 'Card'">
+        @if (activeViewMode === 'Card') {
             <div class="elements">
                 <app-load-card
                     (bodyActions)="onTableBodyActions($event)"
@@ -48,7 +48,7 @@
 
                 <!-- Show More -->
 
-                <ng-container *ngIf="{ viewData: loadStoreService.viewData$ | async, activeTableData: loadStoreService.activeTableData$ | async } as cardData">
+                @if ({ viewData: loadStoreService.viewData$ | async, activeTableData: loadStoreService.activeTableData$ | async }; as cardData) {
                     <div
                         class="show-more-container d-flex align-items-center justify-content-between"
                         [ngStyle]="{ 'width.px': tableWidth }"
@@ -57,19 +57,17 @@
                             {{ cardData?.viewData?.length }} OF
                             {{ cardData?.activeTableData?.data?.length }}
                         </div>
-                        <ng-container
-                            *ngIf="cardData?.viewData?.length < cardData?.activeTableData?.data?.length"
-                        >
+                        @if (cardData?.viewData?.length < cardData?.activeTableData?.data?.length) {
                             <div
                                 class="show-more ta-font-bold w-fit-content align-items-center d-flex justify-content-between"
                                 (click)="onShowMore()"
                             >
                                 SHOW MORE
                             </div>
-                        </ng-container>
+                        }
                     </div>
-                </ng-container>
+                }
             </div>
-        </ng-container>
-    </ng-container>
+        }
+    }
 </div>
