@@ -272,6 +272,7 @@ export class PMCardModalComponent implements OnInit, OnDestroy {
                 this.resetToDefault();
                 break;
             default:
+                this.activeModal.close();
                 break;
         }
     }
