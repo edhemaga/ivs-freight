@@ -1,71 +1,149 @@
-<app-ta-modal
+<app-ca-modal
     [modalTitle]="
         editData?.type !== 'edit-inspection'
             ? 'Add FHWA Inspection'
             : 'Edit FHWA Inspection'
     "
-    [editData]="editData"
-    [editName]="
-        editData?.modal === 'trailer'
-            ? 'Trailer ' + editData?.payload?.trailerNumber
-            : 'Truck ' + editData?.payload?.truckNumber
-    "
-    [specificCaseModalName]="true"
-    [isModalValid]="fhwaInspectionForm.valid && isFormDirty"
-    (action)="onModalAction($event)"
+    [leftHeaderTemplate]="leftModalContent"
+    [footerTemplate]="footerTemplate"
+    [rightHeaderTemplate]="rightModalContent"
 >
-    <form
-        origin
-        [formGroup]="fhwaInspectionForm"
-        class="form-container form-container-without-mb"
-    >
-        <div class="row last-row">
-            <div class="col-12">
-                <app-ca-input
-                    formControlName="issueDate"
-                    [inputConfig]="{
-                        name: 'datepicker',
-                        type: 'text',
-                        label: 'Issue Date',
-                        placeholderIcon: 'date',
-                        isRequired: true,
-                        isDropdown: true,
-                        customClass: 'datetimeclass',
-                        autoFocus: editData?.type !== 'edit-inspection'
-                    }"
-                ></app-ca-input>
+    <div class="new-modal" origin>
+        <div class="divider divider--dark divider--small"></div>
+        <form
+            [formGroup]="fhwaInspectionForm"
+            class="form-container form-container-without-mb"
+        >
+            <div class="row last-row">
+                <div class="col-12">
+                    <app-ca-input
+                        formControlName="issueDate"
+                        [inputConfig]="{
+                            name: 'datepicker',
+                            type: 'text',
+                            label: 'Issue Date',
+                            placeholderIcon: 'date',
+                            isRequired: true,
+                            isDropdown: true,
+                            customClass: 'datetimeclass',
+                            autoFocus: editData?.type !== 'edit-inspection',
+                        }"
+                    ></app-ca-input>
+                </div>
             </div>
-        </div>
-        <div class="ta-card-body-overflow-none">
-            <app-ta-custom-card
-                [hasCounter]="documents.length ? documents.length : 0"
-                [cardName]="'Document'"
-                [disableAnimation]="disableCardAnimation"
-                [isCardOpen]="!!documents.length"
-            >
-                <app-ta-upload-files
-                    [files]="documents"
-                    [showDropzone]="true"
-                    (onFileEvent)="onFilesEvent($event)"
-                    [customClassName]="'modals'"
-                ></app-ta-upload-files>
-            </app-ta-custom-card>
-        </div>
+            <div class="ta-card-body-overflow-none">
+                <app-ta-custom-card
+                    [hasCounter]="documents.length ? documents.length : 0"
+                    [cardName]="'Document'"
+                    [disableAnimation]="disableCardAnimation"
+                    [isCardOpen]="!!documents.length"
+                >
+                    <app-ta-upload-files
+                        [files]="documents"
+                        [showDropzone]="true"
+                        (onFileEvent)="onFilesEvent($event)"
+                        [customClassName]="'modals'"
+                    ></app-ta-upload-files>
+                </app-ta-custom-card>
+            </div>
 
-        <app-ta-input-note
-            formControlName="note"
-            [isVisibleNote]="
-                fhwaInspectionForm.get('note').value &&
-                fhwaInspectionForm.get('note').value != 'null'
-                    ? fhwaInspectionForm.get('note').value
-                    : false
-            "
-            [note]="
-                fhwaInspectionForm.get('note').value &&
-                fhwaInspectionForm.get('note').value != 'null'
-                    ? fhwaInspectionForm.get('note').value
-                    : ''
-            "
-        ></app-ta-input-note>
-    </form>
-</app-ta-modal>
+            <div class="divider divider--dark divider--small"></div>
+
+            <app-ca-input-note
+                formControlName="note"
+                [isVisibleNote]="
+                    fhwaInspectionForm.get('note').value &&
+                    fhwaInspectionForm.get('note').value != 'null'
+                        ? fhwaInspectionForm.get('note').value
+                        : false
+                "
+                [note]="
+                    fhwaInspectionForm.get('note').value &&
+                    fhwaInspectionForm.get('note').value != 'null'
+                        ? fhwaInspectionForm.get('note').value
+                        : ''
+                "
+            ></app-ca-input-note>
+        </form>
+    </div>
+</app-ca-modal>
+
+<ng-template #rightModalContent>
+    @if (editData?.type === 'edit-inspection') {
+        <div
+            ngbTooltip
+            mainTooltip="Added    {{
+                editData?.payload?.createdAt | formatDateP
+            }} <br> Edited    {{ editData?.payload?.updatedAt | formatDateP }}"
+            tooltipBackground="#424242"
+            position="bottom"
+            class="modal-date-logo"
+        >
+            <svg-icon
+                [src]="svgRoutes.DATE_ICON"
+                class="modal-buttons"
+            ></svg-icon>
+        </div>
+        <div class="modal-date-border"></div>
+    }
+    <div
+        class="d-flex justify-content-center align-items-center modal-close-container"
+        ngbTooltip
+        mainTooltip="Cancel"
+        tooltipBackground="#424242"
+        position="bottom"
+        (click)="onModalAction(actionTypesEnum.CLOSE)"
+    >
+        <svg-icon
+            class="modal-close svg-size-14 svg-fill-muted modal-buttons"
+            [src]="svgRoutes.CLOSE_ICON"
+        ></svg-icon>
+    </div>
+</ng-template>
+
+<ng-template #leftModalContent>
+    <div class="payroll-number text-color-white text-size-14 ta-font-bold">
+        {{
+            editData?.modal === 'trailer'
+                ? 'Trailer ' + editData?.payload?.trailerNumber
+                : 'Truck ' + editData?.payload?.truckNumber
+        }}
+    </div>
+</ng-template>
+
+<ng-template #footerTemplate>
+    <div
+        class="modal-footer modal-footer-payroll"
+        [class.justify-content-between]="editData?.type === 'edit-inspection'"
+    >
+        <div class="divider divider--dark divider--small"></div>
+        @if (editData?.type === 'edit-inspection') {
+            <div class="d-flex justify-content-between w-full">
+                <div>
+                    <button
+                        class="modal-delete-btn ta-font-bold mr-12"
+                        (click)="onModalAction(actionTypesEnum.DELETE)"
+                        [class.valid]="fhwaInspectionForm.valid && isFormDirty"
+                    >
+                        Delete
+                    </button>
+                </div>
+                <button
+                    class="modal-save-btn ta-font-bold"
+                    (click)="onModalAction(actionTypesEnum.SAVE)"
+                    [class.valid]="fhwaInspectionForm.valid && isFormDirty"
+                >
+                    Save Changes
+                </button>
+            </div>
+        } @else {
+            <button
+                class="modal-save-btn ta-font-bold"
+                (click)="onModalAction(actionTypesEnum.SAVE)"
+                [class.valid]="fhwaInspectionForm.valid && isFormDirty"
+            >
+                Save
+            </button>
+        }
+    </div>
+</ng-template>
