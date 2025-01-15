@@ -1,4 +1,6 @@
 import { CommonModule } from '@angular/common';
+import { AngularSvgIconModule } from 'angular-svg-icon';
+import { NgbActiveModal, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import {
     Component,
     OnInit,
@@ -25,7 +27,8 @@ import { OwnerCardsModalService } from '@pages/owner/pages/owner-card-modal/serv
 // Components
 import { ModalInputFormComponent } from '@shared/components/ta-shared-modals/cards-modal/components/modal-input-form.component';
 import { TaCheckboxComponent } from '@shared/components/ta-checkbox/ta-checkbox.component';
-import { TaModalComponent } from '@shared/components/ta-modal/ta-modal.component';
+import { CaModalComponent } from 'ca-components';
+import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
 
 // Helpers
 import { CompareObjectsModal } from '@shared/components/ta-shared-modals/cards-modal/utils/helpers/cards-modal.helper';
@@ -42,6 +45,9 @@ import { OwnerCardModalQuery } from '@pages/owner/pages/owner-card-modal/state/o
 import { OwnerCardsModalData } from '@pages/owner/pages/owner-card-modal/constants/owner-cards-modal.constants';
 import { CardsModalConstants } from '@shared/utils/constants/cards-modal-config.constants';
 
+// SVG ROUTES
+import { SharedSvgRoutes } from '@shared/utils/svg-routes';
+
 @Component({
     selector: 'app-owner-card-modal',
     templateUrl: './owner-card-modal.component.html',
@@ -54,11 +60,14 @@ import { CardsModalConstants } from '@shared/utils/constants/cards-modal-config.
         CommonModule,
         ReactiveFormsModule,
         FormsModule,
+        AngularSvgIconModule,
+        NgbTooltipModule,
 
         // components
-        TaModalComponent,
+        CaModalComponent,
         ModalInputFormComponent,
         TaCheckboxComponent,
+        TaAppTooltipV2Component,
     ],
 })
 export class OwnerCardModalComponent implements OnInit, OnDestroy {
@@ -84,11 +93,16 @@ export class OwnerCardModalComponent implements OnInit, OnDestroy {
     public titlesInForm: string[] = [];
     private destroy$ = new Subject<void>();
 
+    public svgRoutes = SharedSvgRoutes;
+    public cardsModalStringEnum = CardsModalStringEnum;
+
     constructor(
         private formBuilder: UntypedFormBuilder,
         private ownerCardModalQuery: OwnerCardModalQuery,
         private cdr: ChangeDetectorRef,
-        private modalService: OwnerCardsModalService
+        private modalService: OwnerCardsModalService,
+        
+        private activeModal: NgbActiveModal
     ) {}
 
     ngOnInit(): void {
@@ -181,8 +195,8 @@ export class OwnerCardModalComponent implements OnInit, OnDestroy {
         this.defaultCardsValues.back_side = data.back_side;
     }
 
-    public onActionModal(event): void {
-        switch (event.action) {
+    public onActionModal(action: string): void {
+        switch (action) {
             case CardsModalStringEnum.CARDS_MODAL:
                 this.updateStore();
                 break;
@@ -190,6 +204,7 @@ export class OwnerCardModalComponent implements OnInit, OnDestroy {
                 this.setTodefaultCards();
                 break;
             default:
+                this.activeModal.close();
                 break;
         }
     }
@@ -287,6 +302,7 @@ export class OwnerCardModalComponent implements OnInit, OnDestroy {
         });
 
         this.modalService.updateStore(this.cardsForm.value, this.tabSelected);
+        this.activeModal.close();
     }
 
     private setTodefaultCards(): void {
