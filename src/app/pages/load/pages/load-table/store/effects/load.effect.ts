@@ -17,7 +17,7 @@ import * as LoadActions from '@pages/load/pages/load-table/store/actions/load.ac
 // enums
 import { eLoadStatusType } from '@pages/load/pages/load-table/enums/index';
 
-// components
+// helpers
 import { LoadStoreEffectsHelper } from '@pages/load/pages/load-table/utils/helpers/load-store-effects.helper';
 
 @Injectable()
@@ -292,7 +292,9 @@ export class LoadEffect {
 
                 return this.loadService.apiCreateLoad(apiParam).pipe(
                     exhaustMap((createResponse) => {
-                        const { id } = createResponse || {};
+                        // TODO: cast to any type because response type and data are not redudant
+                        const { data } = <any>createResponse || {};
+                        const { id } = data || {};
 
                         return this.loadService.apiGetLoadById(id).pipe(
                             map((getResponse) => LoadActions.createLoadSuccess({ load: getResponse })),

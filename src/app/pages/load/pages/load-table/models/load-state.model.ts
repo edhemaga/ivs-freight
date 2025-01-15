@@ -1,9 +1,9 @@
 // models
 import { ILoadGridItem, ILoadTemplateGridItem } from "@pages/load/pages/load-table/models/index"
+import { LoadModalResponse } from "appcoretruckassist";
 
 // enums
 import { eActiveViewMode, eLoadStatusType } from "@pages/load/pages/load-table/enums/index"
-import { LoadModalResponse, LoadResponse, LoadTemplateResponse } from "appcoretruckassist";
 
 export interface ILoadState {
     data: ILoadGridItem[] | ILoadTemplateGridItem[], // list entity data

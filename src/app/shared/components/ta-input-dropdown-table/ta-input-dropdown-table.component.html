@@ -534,29 +534,20 @@
 
             <!-- Display comments -->
             <div class="comments-holder">
-                <ng-container
-                    *ngIf="_data?.comments?.length; else noComments"
-                >
-                    <ng-container
-                        *ngFor="
-                            let comment of _data?.comments;
-                            let i = id;
-                            trackBy: trackByIdentity
-                        "
-                    >
+                @if (_data?.comments?.length) {
+                    @for (comment of _data?.comments; track comment.id) {
                         <app-ta-comment
                             [commentCardsDataDropdown]="comment"
                             [commentHighlight]="lattersToHighlight"
                             [commentsCardId]="commmentsData.id"
                             (closeDropdown)="closeDropdownFromComment($event)"
                         ></app-ta-comment>
-                    </ng-container>
-                </ng-container>
-                <ng-template #noComments>
+                    }
+                } @else {
                     <div class="no-comments-container">
                         <p>Subtle Illustration Empty State</p>
                     </div>
-                </ng-template>
+                }
             </div>
         </div>
     </div>

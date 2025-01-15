@@ -3,7 +3,7 @@ import { createAction, props } from "@ngrx/store";
 // models
 import { ICreateCommentMetadata, IGetLoadListParam, IGetLoadTemplateParam, ILoadTemplateGridItem } from "@pages/load/pages/load-table/models/index";
 import { CommentResponse, CreateCommentCommand, CreateLoadTemplateCommand, DispatcherFilterResponse, LoadListDto, LoadListResponse, LoadModalResponse, LoadResponse, LoadStatusResponse, LoadStatusType, LoadTemplateResponse, RevertLoadStatusCommand, UpdateLoadStatusCommand } from "appcoretruckassist";
-import { Load } from "@pages/load/models/load.model";
+import { Load } from "@pages/load/models";
 import { Column, ICurrentSearchTableData, ITableColummn } from "@shared/models";
 
 // constants

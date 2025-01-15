@@ -2,7 +2,7 @@ import { DatePipe } from "@angular/common";
 
 // enums
 import { TableStringEnum, TooltipColorsStringEnum, TrailerNameStringEnum, TruckNameStringEnum } from "@shared/enums";
-import { LoadModalStopItemsStringEnum } from "@pages/load/enums/load-modal-stop-items-string.enum";
+import { LoadModalStopItemsStringEnum } from "@pages/load/enums";
 import { LoadModalStringEnum } from "@pages/load/pages/load-modal/enums";
 
 // helpers

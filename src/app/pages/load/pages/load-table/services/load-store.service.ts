@@ -15,8 +15,8 @@ import {
 } from '@pages/load/pages/load-table/models/index';
 import { ITableData } from '@shared/models/table-data.model';
 import { Column, ICurrentSearchTableData, ITableColummn, ITableOptions } from '@shared/models';
-import { CreateCommentCommand, CreateLoadTemplateCommand, LoadListResponse, LoadStatusResponse, LoadStatusType, RevertLoadStatusCommand, UpdateLoadStatusCommand } from 'appcoretruckassist';
-import { Load } from '@pages/load/models/load.model';
+import { CreateCommentCommand, CreateLoadTemplateCommand, LoadListResponse, LoadStatusType, RevertLoadStatusCommand, UpdateLoadStatusCommand } from 'appcoretruckassist';
+import { Load } from '@pages/load/models';
 
 // selectors
 import {

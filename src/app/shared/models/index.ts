@@ -71,3 +71,4 @@ export * from './table-data.model';
 export * from './table-column.model';
 export * from './table-models/current-search-table-data.model';
 export * from './table-models/current-search-table-data-chip.model';
+export * from './avatar-colors.model';

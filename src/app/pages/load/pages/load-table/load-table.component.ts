@@ -47,10 +47,8 @@ import { NameInitialsPipe } from '@shared/pipes/name-initials.pipe';
 import { TableDropdownComponentConstants } from '@shared/utils/constants/table-dropdown-component.constants';
 
 // Enums
-import { TableStringEnum } from '@shared/enums/table-string.enum';
-import { LoadFilterStringEnum } from '@pages/load/pages/load-table/enums/load-filter-string.enum';
-import { LoadStatusEnum } from '@shared/enums/load-status.enum';
-import { eLoadStatusType } from '@pages/load/pages/load-table/enums/load-status-type.enum';
+import { TableStringEnum, LoadStatusEnum } from '@shared/enums/index';
+import { eActiveViewMode, eLoadStatusType, LoadFilterStringEnum } from '@pages/load/pages/load-table/enums/index';
 
 // Components
 import { ConfirmationModalComponent } from '@shared/components/ta-shared-modals/confirmation-modal/confirmation-modal.component';
@@ -71,7 +69,6 @@ import { RepairTableDateFormaterHelper } from '@pages/repair/pages/repair-table/
 
 // Router
 import { Router } from '@angular/router';
-import { eActiveViewMode } from './enums';
 
 @Component({
     selector: 'app-load-table',
