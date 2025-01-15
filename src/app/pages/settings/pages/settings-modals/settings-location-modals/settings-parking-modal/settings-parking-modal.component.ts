@@ -34,19 +34,25 @@ import { FormService } from '@shared/services/form.service';
 import { DispatcherService } from '@pages/dispatch/services/dispatcher.service';
 
 // components
-import { TaInputComponent } from '@shared/components/ta-input/ta-input.component';
-import { TaInputDropdownComponent } from '@shared/components/ta-input-dropdown/ta-input-dropdown.component';
-import { TaModalComponent } from '@shared/components/ta-modal/ta-modal.component';
+import {
+    CaInputComponent,
+    CaInputDropdownComponent,
+    CaModalComponent,
+    CaInputAddressDropdownComponent,
+    CaModalButtonComponent,
+} from 'ca-components';
 import { TaTabSwitchComponent } from '@shared/components/ta-tab-switch/ta-tab-switch.component';
 import { TaCheckboxCardComponent } from '@shared/components/ta-checkbox-card/ta-checkbox-card.component';
-import { TaInputAddressDropdownComponent } from '@shared/components/ta-input-address-dropdown/ta-input-address-dropdown.component';
 import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-custom-card.component';
+import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
 
 // pipes
 import { SumArraysPipe } from '@shared/pipes/sum-arrays.pipe';
+import { FormatDatePipe } from '@shared/pipes';
 
 // Enums
 import { TaModalActionEnums } from '@shared/components/ta-modal/enums';
+import { ModalButtonType, TableStringEnum } from '@shared/enums';
 
 // validators
 import {
@@ -62,14 +68,15 @@ import {
 // utils
 import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calculations.helper';
 
-// Svg routes
-import { SettingsLocationSvgRoutes } from '@pages/settings/pages/settings-location/utils';
-
 // Config
 import { SettingsParkingConfig } from '@pages/settings/pages/settings-modals/settings-location-modals/settings-parking-modal/config';
 
 // Enums
 import { SettingsFormEnum } from '@pages/settings/pages/settings-modals/enums';
+
+// Svg routes
+import { SharedSvgRoutes } from '@shared/utils/svg-routes';
+import { NgbActiveModal, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
     selector: 'app-settings-parking-modal',
@@ -84,18 +91,24 @@ import { SettingsFormEnum } from '@pages/settings/pages/settings-modals/enums';
         FormsModule,
         ReactiveFormsModule,
         AngularSvgIconModule,
+        NgbTooltipModule,
 
         // Component
-        TaInputComponent,
-        TaInputDropdownComponent,
-        TaModalComponent,
+        CaInputComponent,
+        CaInputDropdownComponent,
+        CaModalComponent,
         TaTabSwitchComponent,
         TaCheckboxCardComponent,
-        TaInputAddressDropdownComponent,
+        CaInputAddressDropdownComponent,
         TaCustomCardComponent,
+        TaAppTooltipV2Component,
+        CaModalButtonComponent,
 
         // Pipe
         SumArraysPipe,
+
+        // Pipes
+        FormatDatePipe,
     ],
 })
 export class SettingsParkingModalComponent implements OnInit, OnDestroy {
@@ -162,8 +175,6 @@ export class SettingsParkingModalComponent implements OnInit, OnDestroy {
 
     private destroy$ = new Subject<void>();
 
-    public svgRoutes = SettingsLocationSvgRoutes;
-
     public formConfig = SettingsParkingConfig;
 
     public phoneConfig: ITaInput = SettingsParkingConfig.getPhoneInputConfig();
@@ -182,13 +193,20 @@ export class SettingsParkingModalComponent implements OnInit, OnDestroy {
     public fullParkingSlotConfig: ITaInput =
         SettingsParkingConfig.getFullParkingSlotConfig();
 
+    public taModalActionEnums = TaModalActionEnums;
+    public svgRoutes = SharedSvgRoutes;
+    public modalButtonType = ModalButtonType;
+    public activeAction!: string;
+
     constructor(
         private formBuilder: UntypedFormBuilder,
         private inputService: TaInputService,
         private modalService: ModalService,
         private settingsLocationService: SettingsLocationService,
         private formService: FormService,
-        private dispatcherService: DispatcherService
+        private dispatcherService: DispatcherService,
+
+        private ngbActiveModal: NgbActiveModal
     ) {}
 
     ngOnInit() {
@@ -266,9 +284,12 @@ export class SettingsParkingModalComponent implements OnInit, OnDestroy {
         }
     }
 
-    public onModalAction(data: { action: string; bool: boolean }): void {
-        switch (data.action) {
+    public onModalAction(action: string): void {
+        this.activeAction = action;
+
+        switch (action) {
             case TaModalActionEnums.CLOSE: {
+                this.ngbActiveModal.close();
                 break;
             }
             case TaModalActionEnums.SAVE: {
@@ -278,18 +299,8 @@ export class SettingsParkingModalComponent implements OnInit, OnDestroy {
                 }
                 if (this.editData?.type === 'edit') {
                     this.updateParking(this.editData.id);
-                    this.modalService.setModalSpinner({
-                        action: null,
-                        status: true,
-                        close: false,
-                    });
                 } else {
                     this.addParking();
-                    this.modalService.setModalSpinner({
-                        action: null,
-                        status: true,
-                        close: false,
-                    });
                 }
                 break;
             }
@@ -304,11 +315,6 @@ export class SettingsParkingModalComponent implements OnInit, OnDestroy {
             }
             case TaModalActionEnums.DELETE: {
                 this.deleteParkingById(this.editData.id);
-                this.modalService.setModalSpinner({
-                    action: 'delete',
-                    status: true,
-                    close: false,
-                });
 
                 break;
             }
@@ -410,8 +416,8 @@ export class SettingsParkingModalComponent implements OnInit, OnDestroy {
                 ? this.parkingSlots[0].value
                     ? this.parkingSlots[0].value
                     : 0 + this.parkingSlots[1].value
-                    ? this.parkingSlots[1].value
-                    : 0
+                      ? this.parkingSlots[1].value
+                      : 0
                 : 0,
             parkingSlotCount: this.parkingSlots.length
                 ? this.parkingSlots[0].value
@@ -425,20 +431,7 @@ export class SettingsParkingModalComponent implements OnInit, OnDestroy {
             .updateCompanyParking(newData)
             .pipe(takeUntil(this.destroy$))
             .subscribe({
-                next: () => {
-                    this.modalService.setModalSpinner({
-                        action: null,
-                        status: true,
-                        close: true,
-                    });
-                },
-                error: () => {
-                    this.modalService.setModalSpinner({
-                        action: null,
-                        status: false,
-                        close: false,
-                    });
-                },
+                next: () => this.ngbActiveModal.close(),
             });
     }
 
@@ -484,8 +477,8 @@ export class SettingsParkingModalComponent implements OnInit, OnDestroy {
                 ? this.parkingSlots[0].value
                     ? this.parkingSlots[0].value
                     : 0 + this.parkingSlots[1].value
-                    ? this.parkingSlots[1].value
-                    : 0
+                      ? this.parkingSlots[1].value
+                      : 0
                 : 0,
             parkingSlotCount: this.parkingSlots.length
                 ? this.parkingSlots[0].value
@@ -500,33 +493,16 @@ export class SettingsParkingModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
+                    this.ngbActiveModal.close();
                     if (addNew) {
-                        this.parkingForm.reset();
-                        this.parkingForm
-                            .get(SettingsFormEnum.IS_OWNER)
-                            .patchValue(true);
-                        this.parkingForm
-                            .get(SettingsFormEnum.SECURITY_CAMERA)
-                            .patchValue(true);
-                        this.parkingForm
-                            .get(SettingsFormEnum.GATE)
-                            .patchValue(false);
-                        this.selectedAddress = null;
-                    } else {
-                        this.modalService.setModalSpinner({
-                            action: null,
-                            status: true,
-                            close: true,
-                        });
+                        this.modalService.openModal(
+                            SettingsParkingModalComponent,
+                            {
+                                size: TableStringEnum.SMALL,
+                            }
+                        );
                     }
                     this.dispatcherService.updateModalList();
-                },
-                error: () => {
-                    this.modalService.setModalSpinner({
-                        action: null,
-                        status: false,
-                        close: false,
-                    });
                 },
             });
     }
@@ -537,18 +513,7 @@ export class SettingsParkingModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
-                    this.modalService.setModalSpinner({
-                        action: 'delete',
-                        status: true,
-                        close: true,
-                    });
-                },
-                error: () => {
-                    this.modalService.setModalSpinner({
-                        action: 'delete',
-                        status: false,
-                        close: false,
-                    });
+                    this.ngbActiveModal.close();
                 },
             });
     }
