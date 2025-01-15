@@ -46,6 +46,7 @@ export class TaTabSwitchComponent implements AfterViewChecked, OnChanges {
     }
 
     @Input() type: string = '';
+    @Input() customClass: string = '';
     @Input() dashboardHeight?: boolean = false;
     @Input() subPeriodDropdownList?: DropdownListItem[] = [];
     @Input() selectedSubPeriod?: DropdownListItem;
