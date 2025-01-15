@@ -6,7 +6,8 @@ import { LoadModalStopItemsStringEnum } from "@pages/load/enums/load-modal-stop-
 import { LoadModalStringEnum } from "@pages/load/pages/load-modal/enums";
 
 // helpers
-import { AvatarColorsHelper, DataFilterHelper, DropdownContentHelper, LoadStatusHelper } from "@shared/utils/helpers";
+import { AvatarColorsHelper, DataFilterHelper, DropdownMenuContentHelper, LoadStatusHelper } from "@shared/utils/helpers";
+
 
 // models
 import { ILoadGridItem, IViewModelData, LoadModel } from "@pages/load/pages/load-table/models/index";
@@ -284,8 +285,7 @@ export class LoadStoreHelper {
             fileCount: fileCount,
             tableDropdownContent: {
                 hasContent: true,
-                content: DropdownContentHelper.getDropdownLoadContent(
-                    data,
+                content: DropdownMenuContentHelper.getLoadDropdownContent(
                     selectedTab
                 )
             },
@@ -470,7 +470,9 @@ export class LoadStoreHelper {
                 : null,
             tableDropdownContent: {
                 hasContent: true,
-                content: DropdownContentHelper.getDropdownLoadContent(data, selectedTab)
+                content: DropdownMenuContentHelper.getLoadDropdownContent(
+                    selectedTab
+                )
             },
         };
     }

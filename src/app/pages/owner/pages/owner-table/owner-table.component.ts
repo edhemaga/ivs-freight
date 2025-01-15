@@ -51,7 +51,7 @@ import { TableDropdownComponentConstants } from '@shared/utils/constants/table-d
 import { OwnerConfiguration } from '@pages/owner/pages/owner-table/utils/constants/owner-configuration.constants';
 
 // helpers
-import { DropdownContentHelper } from '@shared/utils/helpers/dropdown-content.helper';
+import { DropdownMenuContentHelper } from '@shared/utils/helpers';
 import { MethodsGlobalHelper } from '@shared/utils/helpers/methods-global.helper';
 
 @Component({
@@ -706,13 +706,15 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
             fileCount: data?.fileCount,
             tableDropdownContent: {
                 hasContent: true,
-                content: this.getDropdownOwnerContent(),
+                content: this.getOwnerDropdownContent(),
             },
         };
     }
 
-    private getDropdownOwnerContent(): DropdownItem[] {
-        return DropdownContentHelper.getDropdownOwnerContent();
+    private getOwnerDropdownContent(): DropdownItem[] {
+        return DropdownMenuContentHelper.getOwnerDropdownContent(
+            this.selectedTab
+        );
     }
 
     private getTabData(dataType: string) {

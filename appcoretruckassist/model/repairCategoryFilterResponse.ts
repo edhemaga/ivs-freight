@@ -15,5 +15,6 @@ export interface RepairCategoryFilterResponse {
     id?: number;
     name?: string | null;
     logo?: string | null;
+    count?: number;
 }
 

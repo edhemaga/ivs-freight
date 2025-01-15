@@ -1,43 +1,48 @@
 <div class="load-details-container">
-    <ng-container
-        *ngFor="
-            let item of loadDetailsConfig;
-            let i = index;
-            trackBy: trackByIdentity
-        "
-    >
-        <app-ta-details-header
-            [options]="detailsDropdownOptions"
-            [optionsId]="loadId"
-            [route]="'/list/load'"
-            [tooltipHeaderName]="'Back to List'"
-            [headerText]="item.name"
-            [counterData]="item.length"
-            [statusInactive]="item.hide"
-            [danger]="item.hasDanger"
-            [subText]="detailsDropdownOptions.actions[i].subText"
-            [capsulaText]="item.capsulaText"
-            [isMapBtn]="item.isMapBtn"
-            [isMapDisplayed]="isMapDisplayed"
-            [hasMultipleDetailsSelectDropdown]="
-                item.hasMultipleDetailsSelectDropdown
-            "
-            [multipleDetailsSelectDropdown]="item.multipleDetailsSelectDropdown"
-            [isSearchBtn]="item.isSearchBtn"
-            (openModalAction)="onAddNewClick($event)"
-            (dropActions)="onLoadActions($event)"
-            (mapBtnEmitter)="onMapBtnClick($event)"
-            (searchBtnEmitter)="onSearchBtnClick($event)"
-            (multipleDetailsSelectDropdownEmitter)="
-                onDetailsSelectClick($event)
+    <div class="load-details-header-container">
+        <ng-container
+            *ngFor="
+                let item of loadDetailsConfig;
+                let i = index;
+                trackBy: trackByIdentity
             "
         >
-        </app-ta-details-header>
-    </ng-container>
-</div>
+            <app-ta-details-header
+                [options]="detailsDropdownOptions"
+                [optionsId]="loadId"
+                [route]="'/list/load'"
+                [tooltipHeaderName]="'Back to List'"
+                [headerText]="item.name"
+                [counterData]="item.length"
+                [statusInactive]="item.hide"
+                [danger]="item.hasDanger"
+                [subText]="detailsDropdownOptions.actions[i].subText"
+                [capsulaText]="item.capsulaText"
+                [isMapBtn]="item.isMapBtn"
+                [isMapDisplayed]="isMapDisplayed"
+                [hasMultipleDetailsSelectDropdown]="
+                    item.hasMultipleDetailsSelectDropdown
+                "
+                [multipleDetailsSelectDropdown]="
+                    item.multipleDetailsSelectDropdown
+                "
+                [isSearchBtn]="item.isSearchBtn"
+                [businessOpen]="item.businessOpen"
+                (openModalAction)="onAddNewClick($event)"
+                (dropActions)="onLoadActions($event)"
+                (mapBtnEmitter)="onMapBtnClick($event)"
+                (searchBtnEmitter)="onSearchBtnClick($event)"
+                (multipleDetailsSelectDropdownEmitter)="
+                    onDetailsSelectClick($event)
+                "
+            >
+            </app-ta-details-header>
+        </ng-container>
+    </div>
 
-<app-load-details-item
-    [detailsConfig]="loadDetailsConfig"
-    [isAddNewComment]="isAddNewComment"
-    [isSearchComment]="isSearchComment"
-></app-load-details-item>
+    <app-load-details-item
+        [detailsConfig]="loadDetailsConfig"
+        [isAddNewComment]="isAddNewComment"
+        [isSearchComment]="isSearchComment"
+    ></app-load-details-item>
+</div>

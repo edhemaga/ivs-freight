@@ -49,6 +49,7 @@ import { MethodsGlobalHelper } from '@shared/utils/helpers/methods-global.helper
 import { AvatarColorsHelper } from '@shared/utils/helpers/avatar-colors.helper';
 import { DataFilterHelper } from '@shared/utils/helpers/data-filter.helper';
 import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calculations.helper';
+import { DropdownMenuContentHelper } from '@shared/utils/helpers';
 
 // enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
@@ -163,7 +164,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
         // pipes
         private thousandSeparator: ThousandSeparatorPipe,
         private nameInitialsPipe: NameInitialsPipe
-    ) {}
+    ) { }
 
     ngOnInit(): void {
         this.sendDriverData();
@@ -337,7 +338,6 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
                         if (col.field === response.column.field) {
                             col.hidden = response.column.hidden;
                         }
-
                         return col;
                     });
                 }
@@ -659,7 +659,6 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     TableStringEnum.APPLICANT,
                     applicantsData as DriverResponse[]
                 ),
-                inactive: true,
             },
             {
                 title: TableStringEnum.ACTIVE,
@@ -930,8 +929,8 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
             tableEmergContactPhone: emergencyContact?.phone,
             tableTwicExp: twicExpirationDate
                 ? MethodsCalculationsHelper.convertDateFromBackend(
-                      twicExpirationDate
-                  )
+                    twicExpirationDate
+                )
                 : null,
             tableFuelCardDetailNumber: fuelCardNumber,
             tableCdlDetailNumber: cdl?.number,
@@ -980,32 +979,26 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     : null,
                 percentage: mvr?.percentage ? 100 - mvr?.percentage : null,
             },
-            tabelNotificationGeneral: `${
-                general?.mail
-                    ? TableStringEnum.EMAIL
-                    : TableStringEnum.EMPTY_STRING_PLACEHOLDER
-            }${
-                general?.push
+            tabelNotificationGeneral: `${general?.mail
+                ? TableStringEnum.EMAIL
+                : TableStringEnum.EMPTY_STRING_PLACEHOLDER
+                }${general?.push
                     ? TableStringEnum.PUSH
                     : TableStringEnum.EMPTY_STRING_PLACEHOLDER
-            }${
-                general?.sms
+                }${general?.sms
                     ? TableStringEnum.SMS
                     : TableStringEnum.EMPTY_STRING_PLACEHOLDER
-            }`,
-            tabelNotificationPayroll: `${
-                payroll?.mail
-                    ? TableStringEnum.EMAIL
-                    : TableStringEnum.EMPTY_STRING_PLACEHOLDER
-            }${
-                payroll?.push
+                }`,
+            tabelNotificationPayroll: `${payroll?.mail
+                ? TableStringEnum.EMAIL
+                : TableStringEnum.EMPTY_STRING_PLACEHOLDER
+                }${payroll?.push
                     ? TableStringEnum.PUSH
                     : TableStringEnum.EMPTY_STRING_PLACEHOLDER
-            }${
-                payroll?.sms
+                }${payroll?.sms
                     ? TableStringEnum.SMS
                     : TableStringEnum.EMPTY_STRING_PLACEHOLDER
-            }`,
+                }`,
             tabelHired:
                 MethodsCalculationsHelper.convertDateFromBackend(hiredAt),
             tableTerminated:
@@ -1019,7 +1012,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
             fileCount: fileCount,
             tableDropdownContent: {
                 hasContent: true,
-                content: this.getDropdownDriverContent(),
+                content: this.getDriverDropdownContent(),
             },
         };
     }
@@ -1041,6 +1034,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
             invitedDate,
             acceptedDate,
             archivedDate,
+            review,
         } = data;
 
         return {
@@ -1111,175 +1105,31 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
             isFavorite: false,
             tableDropdownContent: {
                 hasContent: true,
-                content: this.getDropdownApplicantContent(),
+                content: this.getApplicantDropdownContent(
+                    archivedDate,
+                    applicationStatus,
+                    review
+                ),
             },
         };
     }
 
-    private getDropdownDriverContent(): DropdownItem[] {
-        return [
-            {
-                title: TableStringEnum.EDIT_2,
-                name: TableStringEnum.EDIT,
-                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Edit.svg',
-                svgStyle: {
-                    width: 18,
-                    height: 18,
-                },
-                hasBorder: true,
-                svgClass: TableStringEnum.REGULAR,
-                mutedStyle: this.selectedTab === TableStringEnum.INACTIVE,
-            },
-
-            {
-                title: TableStringEnum.VIEW_DETAILS_2,
-                name: TableStringEnum.VIEW_DETAILS,
-                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Information.svg',
-                svgStyle: {
-                    width: 18,
-                    height: 18,
-                },
-                svgClass: TableStringEnum.REGULAR,
-                tableListDropdownContentStyle: {
-                    'margin-bottom.px': 4,
-                },
-            },
-            {
-                title: TableStringEnum.SEND_MESSAGE_2,
-                name: TableStringEnum.SEND_MESSAGE,
-                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Send Message.svg',
-                svgStyle: {
-                    width: 18,
-                    height: 18,
-                },
-                tableListDropdownContentStyle: {
-                    'margin-bottom.px': 4,
-                },
-                svgClass: TableStringEnum.REGULAR,
-                mutedStyle: this.selectedTab === TableStringEnum.INACTIVE,
-            },
-            {
-                title: TableStringEnum.ADD_NEW_2,
-                name: TableStringEnum.ADD_NEW,
-                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Show More.svg',
-                svgStyle: {
-                    width: 15,
-                    height: 15,
-                },
-                svgClass: TableStringEnum.REGULAR,
-                tableListDropdownContentStyle: {
-                    'margin-bottom.px': 4,
-                },
-                isDropdown: true,
-                insideDropdownContent: [
-                    {
-                        title: TableStringEnum.CDL,
-                        name: TableStringEnum.NEW_LICENCE,
-                    },
-                    {
-                        title: TableStringEnum.TEST_DRUG_ALCOHOL,
-                        name: TableStringEnum.NEW_DRUG,
-                    },
-                    {
-                        title: TableStringEnum.MEDICAL_EXAM_3,
-                        name: TableStringEnum.NEW_MEDICAL,
-                    },
-                    {
-                        title: TableStringEnum.MVR,
-                        name: TableStringEnum.NEW_MVR,
-                    },
-                ],
-                mutedStyle: this.selectedTab === TableStringEnum.INACTIVE,
-            },
-            {
-                title: TableStringEnum.REQUEST,
-                name: TableStringEnum.ADD_TO_FAVORITES,
-                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Show More.svg',
-                svgStyle: {
-                    width: 15,
-                    height: 15,
-                },
-                svgClass: TableStringEnum.REGULAR,
-                isDropdown: true,
-                insideDropdownContent: [
-                    {
-                        title: TableStringEnum.BACKGROUND_CHECK_2,
-                        name: TableStringEnum.BACKGROUND_CHECK,
-                    },
-                    {
-                        title: TableStringEnum.TEST_DRUG_ALCOHOL,
-                        name: TableStringEnum.TEST_DRUG,
-                    },
-                    {
-                        title: TableStringEnum.MEDICAL_EXAM_2,
-                        name: TableStringEnum.MEDICAL_EXAM,
-                    },
-                    {
-                        title: TableStringEnum.MVR,
-                        name: TableStringEnum.TEST_MVR,
-                    },
-                ],
-                hasBorder: true,
-                mutedStyle: this.selectedTab === TableStringEnum.INACTIVE,
-            },
-            {
-                title: TableStringEnum.SHARE_2,
-                name: TableStringEnum.SHARE,
-                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Share.svg',
-                svgStyle: {
-                    width: 18,
-                    height: 18,
-                },
-                svgClass: TableStringEnum.REGULAR,
-                tableListDropdownContentStyle: {
-                    'margin-bottom.px': 4,
-                },
-            },
-            {
-                title: TableStringEnum.PRINT_2,
-                name: TableStringEnum.PRINT,
-                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Print.svg',
-                svgStyle: {
-                    width: 18,
-                    height: 18,
-                },
-                svgClass: TableStringEnum.REGULAR,
-                hasBorder: true,
-            },
-            {
-                title:
-                    this.selectedTab === TableStringEnum.ACTIVE
-                        ? TableStringEnum.DEACTIVATE_2
-                        : TableStringEnum.ACTIVATE_2,
-                name: TableStringEnum.ACTIVATE_ITEM,
-                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Deactivate.svg',
-                svgStyle: {
-                    width: 18,
-                    height: 18,
-                },
-                svgClass:
-                    this.selectedTab === TableStringEnum.ACTIVE
-                        ? TableStringEnum.DEACTIVATE
-                        : TableStringEnum.ACTIVATE,
-                tableListDropdownContentStyle: {
-                    'margin-bottom.px': 4,
-                },
-            },
-            {
-                title: TableStringEnum.DELETE_2,
-                name: TableStringEnum.DELETE_ITEM,
-                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Delete.svg',
-                svgStyle: {
-                    width: 18,
-                    height: 18,
-                },
-                svgClass: TableStringEnum.DELETE,
-            },
-        ];
+    private getDriverDropdownContent(): DropdownItem[] {
+        return DropdownMenuContentHelper.getDriverDropdownContent(
+            this.selectedTab
+        );
     }
 
-    private getDropdownApplicantContent(): DropdownItem[] {
-        return TableDropdownComponentConstants.DROPDOWN_APPLICANT;
+    private getApplicantDropdownContent(
+        archivedDate: string,
+        applicationStatus: string,
+        review: string
+    ): DropdownItem[] {
+        return DropdownMenuContentHelper.getApplicantDropdownContent(
+            archivedDate,
+            applicationStatus,
+            review
+        );
     }
 
     private updateDataCount(): void {

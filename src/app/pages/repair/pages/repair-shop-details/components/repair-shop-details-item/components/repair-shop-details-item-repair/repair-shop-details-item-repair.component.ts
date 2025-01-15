@@ -22,9 +22,12 @@ import { RepairShopDetailsService } from '@pages/repair/pages/repair-shop-detail
 // constants
 import { RepairShopDetailsItemConstants } from '@pages/repair/pages/repair-shop-details/components/repair-shop-details-item/utils/constants';
 
+// svg routes
+import { RepairShopDetailsSvgRoutes } from '@pages/repair/pages/repair-shop-details/utils/svg-routes';
+
 // helpers
-import { RepairTableHelper } from '@pages/repair/pages/repair-table/utils/helpers';
 import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calculations.helper';
+import { DropdownMenuContentHelper } from '@shared/utils/helpers';
 
 // enums
 import { RepairShopDetailsStringEnum } from '@pages/repair/pages/repair-shop-details/enums';
@@ -74,7 +77,7 @@ export class RepairShopDetailsItemRepairComponent implements OnInit {
 
     public _repairList: RepairResponse[] = [];
 
-    public repairShopDetailsSvgRoutes = RepairShopDetailsStringEnum;
+    public repairShopDetailsSvgRoutes = RepairShopDetailsSvgRoutes;
     public repairShopDetailsStringEnum = RepairShopDetailsStringEnum;
 
     public repairHeaderItems: string[] = [];
@@ -158,7 +161,7 @@ export class RepairShopDetailsItemRepairComponent implements OnInit {
         const repairType = repair?.repairType?.name;
 
         this.repairItemOptions =
-            RepairTableHelper.getRepairTableDropdownContent(
+            DropdownMenuContentHelper.getRepairDropdownContent(
                 unitType,
                 repairType
             );

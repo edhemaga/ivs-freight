@@ -29,6 +29,13 @@ import { TaInputComponent } from '@shared/components/ta-input/ta-input.component
 import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-custom-card.component';
 import { TaInputNoteComponent } from '@shared/components/ta-input-note/ta-input-note.component';
 import { ConfirmationModalComponent } from '@shared/components/ta-shared-modals/confirmation-modal/confirmation-modal.component';
+import {
+    CaInputComponent,
+    CaInputDropdownComponent,
+    CaInputNoteComponent,
+    CaNoteComponent,
+    CaUploadFilesComponent,
+} from 'ca-components';
 
 // helpers
 import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calculations.helper';
@@ -53,6 +60,8 @@ import {
 } from 'appcoretruckassist';
 import { ExtendedStateResponse } from '@pages/driver/pages/driver-modals/driver-cdl-modal/models/extended-state-response.model';
 import { EditData } from '@shared/models/edit-data.model';
+import { FileEvent } from '@shared/models';
+import { ContactsModalConstants } from '@pages/contacts/pages/contacts-modal/utils/constants/contacts-modal.constants';
 
 @Component({
     selector: 'app-driver-cdl-modal',
@@ -75,6 +84,12 @@ import { EditData } from '@shared/models/edit-data.model';
         TaInputComponent,
         TaCustomCardComponent,
         TaInputNoteComponent,
+
+        CaInputDropdownComponent,
+        CaInputComponent,
+        CaUploadFilesComponent,
+        CaInputNoteComponent,
+        CaNoteComponent,
     ],
 })
 export class DriverCdlModalComponent implements OnInit, OnDestroy {
@@ -91,6 +106,7 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
     public modalName: string;
 
     private driverStatus: number;
+    public uploadOptionsConstants = ContactsModalConstants.UPLOAD_OPTIONS;
 
     // dropdowns
     public stateDropdownList: StateResponse[] = [];
@@ -121,7 +137,7 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
 
         // bootstrap
         private ngbActiveModal: NgbActiveModal
-    ) {}
+    ) { }
 
     ngOnInit(): void {
         this.createForm();
@@ -278,7 +294,7 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
         }
     }
 
-    public onFilesEvent(event: any): void {
+    public onFilesEvent(event: FileEvent): void {
         this.documents = event.files;
 
         switch (event.action) {
@@ -454,13 +470,13 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
                         cdlNumber,
                         issueDate: issueDate
                             ? MethodsCalculationsHelper.convertDateFromBackend(
-                                  issueDate
-                              )
+                                issueDate
+                            )
                             : null,
                         expDate: expDate
                             ? MethodsCalculationsHelper.convertDateFromBackend(
-                                  expDate
-                              )
+                                expDate
+                            )
                             : expDate,
                         classType: classType?.name,
                         stateId: state?.stateShortName,
@@ -480,7 +496,7 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
                         this.startFormChanges();
                     }, 1000);
                 },
-                error: () => {},
+                error: () => { },
             });
     }
 
@@ -690,7 +706,7 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
                         this.startFormChanges();
                     }, 1000);
                 },
-                error: () => {},
+                error: () => { },
             });
     }
 

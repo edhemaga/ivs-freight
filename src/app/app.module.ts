@@ -1,6 +1,14 @@
-import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
+import {
+    ApplicationConfig,
+    CUSTOM_ELEMENTS_SCHEMA,
+    NgModule,
+} from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import {
+    HTTP_INTERCEPTORS,
+    provideHttpClient,
+    withInterceptorsFromDi,
+} from '@angular/common/http';
 import { CommonModule, DatePipe, CurrencyPipe } from '@angular/common';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
@@ -8,7 +16,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { SharedModule } from '@shared/shared.module';
 import { ApiModule, Configuration } from 'appcoretruckassist';
 import { ToastrModule } from 'ngx-toastr';
-import { LottieModule } from 'ngx-lottie';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 
@@ -43,20 +50,28 @@ import { StaticInjectorService } from '@core/decorators/titles.decorator';
 import player from 'lottie-web';
 import { ReactiveFormsModule } from '@angular/forms';
 import { NgIdleModule } from '@ng-idle/core';
-function playerFactory() {
-    return player;
-}
+
+import { provideLottieOptions } from 'ngx-lottie';
+import { AngularSvgIconPreloaderModule } from 'angular-svg-icon-preloader';
+
+export const appConfig: ApplicationConfig = {
+    providers: [
+        provideLottieOptions({
+            player: () => player,
+        }),
+    ],
+};
 
 @NgModule({
     declarations: [AppComponent, ChangeLogoPipe],
+    schemas: [CUSTOM_ELEMENTS_SCHEMA],
+    bootstrap: [AppComponent],
     imports: [
         BrowserModule,
         CommonModule,
         //BrowserTransferStateModule,
         BrowserAnimationsModule,
-        HttpClientModule,
         SharedModule,
-        LottieModule.forRoot({ player: playerFactory }),
         // AgmCoreModule.forRoot({
         //     apiKey: 'AIzaSyCw4WQw1T4N6TjFWdS731mM09x88SGW81I',
         //     libraries: ['geometry', 'places'],
@@ -68,6 +83,9 @@ function playerFactory() {
             toastComponent: TaCustomToastMessagesComponent, // added custom toast!
         }),
         NgIdleModule.forRoot(),
+        AngularSvgIconPreloaderModule.forRoot({
+            configUrl: 'assets/preload-svg/preload-svg.json',
+        }),
         ApiModule,
         BlockedContentPipe,
         NavigationComponent,
@@ -75,11 +93,10 @@ function playerFactory() {
         RightSidePanelComponent,
         ReactiveFormsModule.withConfig({
             warnOnNgModelWithFormControl: 'never',
-        }),
+        }), 
         StoreModule.forRoot([]),
         EffectsModule.forRoot([]),
-
-        //components 
+        //components
         ReusableTemplatesComponent,
         // routing
         AppRoutingModule,
@@ -92,7 +109,6 @@ function playerFactory() {
             deps: [WebsiteUserLoggedService],
             multi: false,
         },
-
         [
             {
                 provide: HTTP_INTERCEPTORS,
@@ -111,8 +127,7 @@ function playerFactory() {
         DatePipe,
         CurrencyPipe,
         BlockedContentPipe,
+        provideHttpClient(withInterceptorsFromDi()),
     ],
-    schemas: [CUSTOM_ELEMENTS_SCHEMA],
-    bootstrap: [AppComponent],
 })
 export class AppModule {}

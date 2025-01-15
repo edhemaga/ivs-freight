@@ -20,12 +20,12 @@ import { PayrollPdfReportComponent } from '@pages/accounting/pages/payroll/payro
 // Enums
 import {
     PayrollAdditionalTypes,
-    PayrollStringEnum,
     PayrollTablesStatus,
 } from '@pages/accounting/pages/payroll/state/enums';
 import { TableStringEnum } from '@shared/enums/table-string.enum';
 import { ConfirmationModalStringEnum } from '@shared/components/ta-shared-modals/confirmation-modal/enums/confirmation-modal-string.enum';
 import { DriverMVrModalStringEnum } from '@pages/driver/pages/driver-modals/driver-mvr-modal/enums/driver-mvrl-modal-string.enum';
+import { DropdownMenuStringEnum } from '@shared/enums';
 import { PayrollTypeEnum } from 'ca-components';
 
 export abstract class PayrollReportBaseComponent<
@@ -34,13 +34,23 @@ export abstract class PayrollReportBaseComponent<
         truck?: { id?: number };
         id?: number;
         owner?: { name?: string | null };
-    }
+    },
 > {
     public openedPayroll: T;
     abstract creditType: PayrollCreditType;
     abstract payrollType: PayrollTypeEnum;
 
     protected _reportId: string;
+
+    public isEditLoadDropdownActionActive: boolean = false;
+
+    public get reportId(): string {
+        return this._reportId;
+    }
+
+    public set reportId(value: string) {
+        this._reportId = value;
+    }
 
     constructor(
         protected modalService: ModalService,
@@ -51,26 +61,36 @@ export abstract class PayrollReportBaseComponent<
         getData?: IGetPayrollByIdAndOptions
     ): void;
 
-    public get reportId(): string {
-        return this._reportId;
-    }
+    protected abstract getIsEditLoadDropdownActionActive(): void;
 
-    public set reportId(value: string) {
-        this._reportId = value;
-    }
+    public openMenu(event: { type: string; isActive?: boolean }): void {
+        const { type, isActive } = event;
 
-    public openMenu(data: { type: string }) {
-        if (data.type === PayrollStringEnum.REPORT) {
-            this.modalService.openModal(
-                PayrollPdfReportComponent,
-                {},
-                {
-                    data: {
-                        id: this.openedPayroll.id,
-                        type: this.payrollType,
-                    },
-                }
-            );
+        switch (type) {
+            case DropdownMenuStringEnum.EDIT_LOAD_TYPE:
+                this.isEditLoadDropdownActionActive = isActive;
+
+                this.getIsEditLoadDropdownActionActive();
+
+                break;
+            case DropdownMenuStringEnum.EDIT_PAYROLL_TYPE:
+                break;
+            case DropdownMenuStringEnum.PREVIEW_REPORT_TYPE:
+                this.modalService.openModal(
+                    PayrollPdfReportComponent,
+                    {},
+                    {
+                        data: {
+                            id: this.openedPayroll.id,
+                            type: this.payrollType,
+                        },
+                    }
+                );
+                break;
+            case DropdownMenuStringEnum.DOWNLOAD_TYPE:
+                break;
+            default:
+                break;
         }
     }
 
@@ -158,7 +178,7 @@ export abstract class PayrollReportBaseComponent<
             ? this.openedPayroll.owner?.name
             : this.openedPayroll.driver.fullName;
 
-        if (item.$event.type === TableStringEnum.EDIT_2) {
+        if (item.$event.type === TableStringEnum.EDIT) {
             switch (item.title) {
                 case PayrollAdditionalTypes.CREDIT:
                     this.modalService
@@ -223,24 +243,24 @@ export abstract class PayrollReportBaseComponent<
                             this.getReportDataResults();
                         });
                     break;
-                    case PayrollAdditionalTypes.FUEL:
-                        this.modalService
-                            .openModal(
-                                FuelPurchaseModalComponent,
-                                {
-                                    size: DriverMVrModalStringEnum.SMALL,
-                                },
-                                {
-                                    id: item.data.id,
-                                    type: TableStringEnum.EDIT
-                                }
-                            )
-                            .then(() => {
-                                this.getReportDataResults();
-                            });
-                        break;
+                case PayrollAdditionalTypes.FUEL:
+                    this.modalService
+                        .openModal(
+                            FuelPurchaseModalComponent,
+                            {
+                                size: DriverMVrModalStringEnum.SMALL,
+                            },
+                            {
+                                id: item.data.id,
+                                type: TableStringEnum.EDIT,
+                            }
+                        )
+                        .then(() => {
+                            this.getReportDataResults();
+                        });
+                    break;
             }
-        } else if (item.$event.type === TableStringEnum.DELETE_2) {
+        } else if (item.$event.type === TableStringEnum.DELETE) {
             switch (item.title) {
                 case PayrollAdditionalTypes.CREDIT:
                     this.payrollService
@@ -271,7 +291,9 @@ export abstract class PayrollReportBaseComponent<
                                 subtitle: item.data.subtotal,
                                 date: item.data.date,
                                 label: `${label}`,
-                                id: item.data.id,
+                                id:
+                                    item.data.parentPayrollDeductionId ||
+                                    item.data.id,
                             }
                         )
                         .then(() => {
@@ -296,24 +318,24 @@ export abstract class PayrollReportBaseComponent<
                             this.getReportDataResults();
                         });
                     break;
-                    case PayrollAdditionalTypes.FUEL:
-                        this.payrollService
-                            .raiseDeleteModal(
-                                TableStringEnum.FUEL_1,
-                                ConfirmationModalStringEnum.DELETE_FUEL,
-                                item.data.id,
-                                {
-                                    title: item.data.description,
-                                    subtitle: item.data.subtotal,
-                                    date: item.data.date,
-                                    label: `${label}`,
-                                    id: item.data.id,
-                                }
-                            )
-                            .then(() => {
-                                this.getReportDataResults();
-                            });
-                        break;
+                case PayrollAdditionalTypes.FUEL:
+                    this.payrollService
+                        .raiseDeleteModal(
+                            TableStringEnum.FUEL_1,
+                            ConfirmationModalStringEnum.DELETE_FUEL,
+                            item.data.id,
+                            {
+                                title: item.data.description,
+                                subtitle: item.data.subtotal,
+                                date: item.data.date,
+                                label: `${label}`,
+                                id: item.data.id,
+                            }
+                        )
+                        .then(() => {
+                            this.getReportDataResults();
+                        });
+                    break;
             }
         }
     }

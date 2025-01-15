@@ -47,7 +47,6 @@ import { SettingsCompanyAdditionalInfoHasDataPipe } from './pipes';
         ReactiveFormsModule,
         SharedModule,
         SettingsCompanyRoutingModule,
-        SharedModule,
         TaAppTooltipV2Component,
         TaCustomCardComponent,
         TaCopyComponent,

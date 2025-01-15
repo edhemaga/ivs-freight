@@ -8,6 +8,7 @@ import {
     getTrailerPMColumnDefinition,
 } from '@shared/utils/settings/table-settings/pm-columns';
 import { MethodsGlobalHelper } from '@shared/utils/helpers/methods-global.helper';
+import { DropdownMenuContentHelper } from '@shared/utils/helpers';
 
 // Components
 import { PmModalComponent } from '@pages/pm-truck-trailer/pages/pm-modal/pm-modal.component';
@@ -39,7 +40,6 @@ import { PMCardsModalService } from '@pages/pm-truck-trailer/pages/pm-card-modal
 import { CaSearchMultipleStatesService } from 'ca-components';
 
 // Constants
-import { TableDropdownComponentConstants } from '@shared/utils/constants/table-dropdown-component.constants';
 import { PmCardDataConfigConstants } from '@pages/pm-truck-trailer/pages/pm-table/utils/constants/pm-card-data-config.constants';
 import { PMTruckFilterConstants } from '@pages/pm-truck-trailer/pages/pm-table/utils/constants/pm-truck-filter.constants';
 import { PMTrailerFilterConstants } from '@pages/pm-truck-trailer/pages/pm-table/utils/constants/pm-trailer-filter.constants';
@@ -205,7 +205,6 @@ export class PmTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     },
                 ],
             },
-            actions: TableDropdownComponentConstants.ACTIONS_DROPDOWN,
         };
     }
 
@@ -527,7 +526,7 @@ export class PmTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
     // Get PM Dropdown Content
     private getPMDropdownContent(): DropdownItem[] {
-        return TableDropdownComponentConstants.DROPDOWN_PM_CONTENT;
+        return DropdownMenuContentHelper.getPMDropdownContent();
     }
 
     private actionAnimationSubscribe(): void {
@@ -607,7 +606,7 @@ export class PmTableComponent implements OnInit, AfterViewInit, OnDestroy {
             },
             truck: truckUnit.truck,
             pmId: truckUnit.id,
-            id: truckUnit.id
+            id: truckUnit.id,
         };
 
         const defaultPMData = {

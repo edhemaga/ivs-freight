@@ -63,7 +63,6 @@ export enum TableStringEnum {
     LOADS = 'loads',
     VIEW_MODE = 'view-mode',
     REGULAR = 'regular',
-    CHECK = 'check',
 
     ADD_NEW = 'add-new',
     ADD_NEW_2 = 'Add New',
@@ -111,6 +110,8 @@ export enum TableStringEnum {
     DOT_1 = '.',
     PERCENTS = '%',
     SVG = '.svg',
+
+    LETTER_M_MILES = 'M',
 
     // Local storage get for tables
     LOAD_TABLE_COUNT = 'loadTableCount',
@@ -236,7 +237,7 @@ export enum TableStringEnum {
 
     MEDICAL_EXAM = 'medical-exam',
     MEDICAL_EXAM_2 = 'Medical-exam',
-    MEDICAL_EXAM_3 = 'Medical-Exam',
+    MEDICAL_EXAM_3 = 'Medical Exam',
 
     BACKGROUND_CHECK = 'background-check',
     BACKGROUND_CHECK_2 = 'Background-check',
@@ -294,7 +295,6 @@ export enum TableStringEnum {
     // Repair
     SHOP = 'Shop',
     FAVORITE = 'favorite',
-    FAVOURITE = 'favourite',
     FINISH_ORDER = 'finish-order',
     FINISH_ORDER_2 = 'finish order',
     FINISH_ORDER_3 = 'Finish Order',
@@ -311,7 +311,6 @@ export enum TableStringEnum {
     REPAIR_TRUCK_TRAILER_TABLE_COUNT = 'repairTruckTrailerTableCount',
     ORDER = 'Order',
     ORDER_2 = 'order',
-    DIV_ELEMENT_DESCRIPTION_DOT_CONTAINER = '<div class="description-dot-container"><span class="description-dot"></span></div>',
     REPAIR_TRUCK = 'REPAIR_TRUCK',
     REPAIR_TRAILER = 'REPAIR_TRAILER',
     REPAIR_TABLE_VIEW = 'Repair-table-view',
@@ -561,6 +560,11 @@ export enum TableStringEnum {
     REPAIR_SHOP_CONTACT = 'repair shop contact',
     VOIDED = 'VOIDED',
 
+    // Columns
+    TABLE_UNPAID_INV_AGING = 'tableUnpaidInvAging',
+    TABLE_OFF_DUTY_LOCATIONS = 'tableOffDutyLocation',
+    TABLE_CDL_DETAIL_RESTRICTION = 'tableCdlDetailRestriction',
+
     // Card States
     CUSTOMER_CARD_STATE = 'customerCardState',
     DRIVER_CARD_STATE = 'driverCardState',
@@ -579,6 +583,6 @@ export enum TableStringEnum {
     ACTIVITY = 'activity',
     NULL = 'null',
     ADD_PM_ITEM = 'ADD_PM_ITEM',
-    TRUCK_PM_SETTINGS = "Truck PM Settings",
-    TRAILER_PM_SETTINGS = "Trailer PM Settings",
+    TRUCK_PM_SETTINGS = 'Truck PM Settings',
+    TRAILER_PM_SETTINGS = 'Trailer PM Settings',
 }

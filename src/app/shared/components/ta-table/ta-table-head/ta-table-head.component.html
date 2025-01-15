@@ -17,8 +17,8 @@
                     mySelection,
                     selectableRow,
                     viewDataLength: viewData?.length,
-                    reordering
-                    }"
+                    reordering,
+                }"
                 (tableHeadRowsActionEmitter)="tableHeadRowsActionEmit($event)"
             >
             </app-table-head-rows>
@@ -40,8 +40,9 @@
                     resizing,
                     resizeHitLimit,
                     resizeIsPined,
-                    viewDataLength: viewData?.length
-                    }"
+                    viewDataLength: viewData?.length,
+                }"
+                [id]="notPinedColumns ? 'parent-scroll' : null"
                 (tableHeadRowsActionEmitter)="tableHeadRowsActionEmit($event)"
             >
             </app-table-head-rows>
@@ -59,7 +60,8 @@
             <app-table-head-actions
                 [tableHeadActionsData]="{
                     tableData,
-                    actionColumns}"
+                    actionColumns,
+                }"
                 [isDisplayBorder]="showBorder"
             >
             </app-table-head-actions>

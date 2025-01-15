@@ -19,7 +19,7 @@ import {
     CaProfileImageComponent,
     CaSearchMultipleStatesComponent,
     CaFilterComponent,
-    CaBurgerMenuComponent,
+    CaDropdownMenuComponent,
 } from 'ca-components';
 
 import { PayrollComponent } from '@pages/accounting/pages/payroll/payroll.component';
@@ -90,15 +90,15 @@ import { PayrollTableCommissionTotalPipe } from '@pages/accounting/pages/payroll
         AccountingRoutingModule,
         SharedModule,
         AngularSvgIconModule,
-        //AgmCoreModule,
 
         // Pipes
         ListNameCasePipe,
+
         // Components
         TaAppTooltipComponent,
         TaTableToolbarComponent,
         CaSearchMultipleStatesComponent,
-        CaBurgerMenuComponent,
+        CaDropdownMenuComponent,
         TaInputComponent,
         TaProfileImagesComponent,
         TaCustomCardComponent,

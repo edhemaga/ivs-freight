@@ -29,8 +29,7 @@ import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calcula
  
 // components
 import { TaModalComponent } from '@shared/components/ta-modal/ta-modal.component';
-import { TaInputComponent } from '@shared/components/ta-input/ta-input.component';
-import { TaInputDropdownComponent } from '@shared/components/ta-input-dropdown/ta-input-dropdown.component';
+import { CaInputComponent, CaInputDropdownComponent } from 'ca-components';
 import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-custom-card.component';
 import { TaInputNoteComponent } from '@shared/components/ta-input-note/ta-input-note.component';
 import { TaUploadFilesComponent } from '@shared/components/ta-upload-files/ta-upload-files.component';
@@ -55,8 +54,8 @@ import { LoadModalStringEnum } from '@pages/load/pages/load-modal/enums';
 
         // Component
         TaModalComponent,
-        TaInputComponent,
-        TaInputDropdownComponent,
+        CaInputComponent,
+        CaInputDropdownComponent,
         TaCustomCardComponent,
         TaInputNoteComponent,
         TaUploadFilesComponent,

@@ -33,7 +33,7 @@ import { TaInputDropdownComponent } from '@shared/components/ta-input-dropdown/t
 import { TaCustomPeriodRangeComponent } from '@shared/components/ta-custom-period-range/ta-custom-period-range.component';
 import { TaSearchV2Component } from '@shared/components/ta-search-v2/ta-search-v2.component';
 import { TaSpinnerComponent } from '@shared/components/ta-spinner/ta-spinner.component';
-import { CaChartComponent, CaMapComponent } from 'ca-components';
+import { CaChartComponent, CaMapComponent, CaChartManagerComponent } from 'ca-components';
 
 @NgModule({
     declarations: [
@@ -73,7 +73,8 @@ import { CaChartComponent, CaMapComponent } from 'ca-components';
         TaSearchV2Component,
         TaSpinnerComponent,
         CaMapComponent,
-        CaChartComponent
+        CaChartComponent, 
+        CaChartManagerComponent
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })

@@ -136,6 +136,7 @@ export class DriverDetailsHelper {
                 status: driverStatus,
                 hasDanger: hasDangerCdl,
                 length: driverData?.cdls?.length,
+                businessOpen: true,
                 data: driverData?.cdls,
             },
             {
@@ -146,6 +147,7 @@ export class DriverDetailsHelper {
                 status: driverStatus,
                 hasDanger: false,
                 length: driverData?.tests?.length,
+                businessOpen: true,
                 data: driverData?.tests,
             },
             {
@@ -156,6 +158,7 @@ export class DriverDetailsHelper {
                 status: driverStatus,
                 hasDanger: hasDangerMedical,
                 length: driverData?.medicals?.length,
+                businessOpen: true,
                 data: driverData?.medicals,
             },
             {
@@ -166,6 +169,7 @@ export class DriverDetailsHelper {
                 status: driverStatus,
                 hasDanger: hasDangerMvr,
                 length: driverData?.mvrs?.length,
+                businessOpen: true,
                 data: driverData?.mvrs,
             },
         ];

@@ -17,7 +17,7 @@
     >
         <div class="row">
             <div class="col-6">
-                <app-ta-input
+                <app-ca-input
                     [inputConfig]="{
                         name: 'Title Number',
                         type: 'text',
@@ -27,10 +27,10 @@
                         autoFocus: editData?.type !== 'edit-title'
                     }"
                     formControlName="number"
-                ></app-ta-input>
+                ></app-ca-input>
             </div>
             <div class="col-6">
-                <app-ta-input-dropdown
+                <app-ca-input-dropdown
                     (selectedItem)="onSelectDropdown($event, 'state')"
                     [activeItem]="selectedStateType"
                     [template]="'svgtext-template'"
@@ -56,12 +56,12 @@
                     }"
                     [options]="stateTypes"
                     formControlName="stateId"
-                ></app-ta-input-dropdown>
+                ></app-ca-input-dropdown>
             </div>
         </div>
         <div class="row last-row">
             <div class="col-6">
-                <app-ta-input
+                <app-ca-input
                     [inputConfig]="{
                         name: 'datepicker',
                         type: 'text',
@@ -72,10 +72,10 @@
                         customClass: 'datetimeclass'
                     }"
                     formControlName="purchaseDate"
-                ></app-ta-input>
+                ></app-ca-input>
             </div>
             <div class="col-6">
-                <app-ta-input
+                <app-ca-input
                     [inputConfig]="{
                         name: 'datepicker',
                         type: 'text',
@@ -86,7 +86,7 @@
                         customClass: 'datetimeclass'
                     }"
                     formControlName="issueDate"
-                ></app-ta-input>
+                ></app-ca-input>
             </div>
         </div>
         <div class="ta-card-body-overflow-none">

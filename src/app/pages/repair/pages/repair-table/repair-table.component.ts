@@ -48,6 +48,7 @@ import {
 
 // pipes
 import { ThousandSeparatorPipe } from '@shared/pipes/thousand-separator.pipe';
+import { DispatchColorFinderPipe } from '@shared/pipes';
 
 // enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
@@ -68,8 +69,8 @@ import {
     RepairShopMapDropdownHelper,
     RepairTableBackFilterDataHelper,
     RepairTableDateFormaterHelper,
-    RepairTableHelper,
 } from '@pages/repair/pages/repair-table/utils/helpers';
+import { DropdownMenuContentHelper } from '@shared/utils/helpers';
 
 // components
 import { ConfirmationModalComponent } from '@shared/components/ta-shared-modals/confirmation-modal/confirmation-modal.component';
@@ -86,7 +87,7 @@ import {
 // models
 import {
     MapList,
-    MappedTruckTrailer,
+    MappedRepair,
     ShopBackFilter,
     ShopBackFilterQuery,
     RepairBackFilter,
@@ -111,7 +112,7 @@ import { TableColumnConfig } from '@shared/models/table-models/table-column-conf
         './repair-table.component.scss',
         '../../../../../assets/scss/maps.scss',
     ],
-    providers: [ThousandSeparatorPipe],
+    providers: [ThousandSeparatorPipe, DispatchColorFinderPipe],
 })
 export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
     @ViewChild('mapsComponent', { static: false })
@@ -211,6 +212,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
         // pipes
         public datePipe: DatePipe,
         private thousandSeparator: ThousandSeparatorPipe,
+        private dispatchColorFinderPipe: DispatchColorFinderPipe,
 
         // services
         private modalService: ModalService,
@@ -462,12 +464,11 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                               actionAnimation: TableStringEnum.UPDATE,
                               tableDropdownContent: {
                                   ...repairShop.tableDropdownContent,
-                                  content:
-                                      this.getRepairShopTableDropdownContent(
-                                          status,
-                                          !isFavorite,
-                                          companyOwned
-                                      ),
+                                  content: this.getRepairShopDropdownContent(
+                                      status,
+                                      !isFavorite,
+                                      companyOwned
+                                  ),
                               },
                           }
                         : repairShop;
@@ -543,7 +544,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                 ) {
                     this.viewData.push(
                         res.tab !== TableStringEnum.REPAIR_SHOP
-                            ? this.mapTruckAndTrailerData(res.data)
+                            ? this.mapRepairData(res.data)
                             : this.mapShopData(res.data)
                     );
 
@@ -570,7 +571,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                 ) {
                     const updatedRepair =
                         res.tab !== TableStringEnum.REPAIR_SHOP
-                            ? this.mapTruckAndTrailerData(res.data)
+                            ? this.mapRepairData(res.data)
                             : this.mapShopData(res.data);
 
                     this.viewData = this.viewData.map((repair) => {
@@ -745,7 +746,8 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                     this.selectedTab !== TableStringEnum.REPAIR_SHOP,
                 showMoveToOpenList:
                     this.selectedTab === TableStringEnum.REPAIR_SHOP,
-                showMoveToClosedList: true,
+                showMoveToClosedList:
+                    this.selectedTab === TableStringEnum.REPAIR_SHOP,
                 hideSearch: this.activeViewMode === TableStringEnum.MAP,
                 viewModeOptions: this.getViewModeOptions(),
             },
@@ -857,7 +859,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
             this.viewData = this.viewData.map(
                 (data: RepairResponse | RepairShopListDto) => {
                     return this.selectedTab !== TableStringEnum.REPAIR_SHOP
-                        ? this.mapTruckAndTrailerData(data)
+                        ? this.mapRepairData(data)
                         : this.mapShopData(data);
                 }
             );
@@ -874,11 +876,12 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                 ? ((this.sendDataToCardsFront = this.displayRowsFrontTruck),
                   (this.sendDataToCardsBack = this.displayRowsBackTruck))
                 : this.selectedTab === TableStringEnum.INACTIVE
-                ? ((this.sendDataToCardsFront = this.displayRowsFrontTrailer),
-                  (this.sendDataToCardsBack = this.displayRowsBackTrailer))
-                : ((this.sendDataToCardsFront =
-                      this.displayRowsFrontRepairShop),
-                  (this.sendDataToCardsBack = this.displayRowsBackRepairShop));
+                  ? ((this.sendDataToCardsFront = this.displayRowsFrontTrailer),
+                    (this.sendDataToCardsBack = this.displayRowsBackTrailer))
+                  : ((this.sendDataToCardsFront =
+                        this.displayRowsFrontRepairShop),
+                    (this.sendDataToCardsBack =
+                        this.displayRowsBackRepairShop));
 
             // get Tab Table Data For Selected Tab
             this.getSelectedTabTableData();
@@ -1012,7 +1015,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
         }, 900);
     }
 
-    public resetFilter() : void{
+    public resetFilter(): void {
         this.tableService.sendCurrentSetTableFilter({});
     }
 
@@ -1178,13 +1181,13 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                     this.viewData = repair.pagination.data;
 
                     this.viewData = this.viewData.map((data) => {
-                        return this.mapTruckAndTrailerData(data);
+                        return this.mapRepairData(data);
                     });
                 } else {
                     const newData = [...this.viewData];
 
                     repair.pagination.data.map((data) => {
-                        newData.push(this.mapTruckAndTrailerData(data));
+                        newData.push(this.mapRepairData(data));
                     });
 
                     this.viewData = [...newData];
@@ -1367,8 +1370,6 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
         action: string;
         direction: string;
     }): void {
-        console.log('TABLE SORT EVENT', event);
-
         if (event.action === TableStringEnum.SORT) {
             if (event.direction) {
                 this.backFilterQuery.sort = event.direction;
@@ -1414,8 +1415,8 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                     event.type === TableStringEnum.ADD_CONTRACT
                         ? TableStringEnum.CONTRACT
                         : event.type === TableStringEnum.WRITE_REVIEW
-                        ? TableStringEnum.REVIEW
-                        : TableStringEnum.DETAILS;
+                          ? TableStringEnum.REVIEW
+                          : TableStringEnum.DETAILS;
 
                 this.modalService.openModal(
                     RepairShopModalComponent,
@@ -1573,100 +1574,122 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
         this.tableData = [...updatedTableData];
     }
 
-    private mapTruckAndTrailerData(data: RepairResponse): MappedTruckTrailer {
+    private mapRepairData(repair: RepairResponse): MappedRepair {
+        const {
+            repairType,
+            date,
+            datePaid,
+            payType,
+            truck,
+            trailer,
+            invoice,
+            orderNumber,
+            unitType,
+            odometer,
+            driver,
+            repairShop,
+            serviceTypes,
+            shopServiceType,
+            items,
+            total,
+            createdAt,
+            updatedAt,
+            files,
+            fileCount,
+        } = repair;
+
+        // description items special styles index array
+        const pmItemsIndexArray = [];
+
+        items.forEach(
+            (item, index) =>
+                (item?.pmTruck || item?.pmTrailer) &&
+                pmItemsIndexArray.push(index)
+        );
+
         return {
-            ...data,
+            ...repair,
             isSelected: false,
-            isRepairOrder: data?.repairType?.name === TableStringEnum.ORDER,
-            tableUnit: data?.invoice,
-            tableNumber:
-                data?.truck?.truckNumber ||
-                data?.trailer?.trailerNumber ||
-                TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-            invoice: data?.invoice,
-            payType: data.payType?.name,
-            driver: data.driver?.firstName
-                ? `${data.driver.firstName} ${data.driver.lastName || ''}`
-                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-            tableType:
-                data?.truck?.truckType?.logoName ||
-                data?.trailer?.trailerType?.logoName ||
-                TableStringEnum.NA,
-            tableMake:
-                data?.truck?.truckMakeName ||
-                data?.trailer?.trailerMakeName ||
-                TableStringEnum.NA,
-            tableModel:
-                data?.truck?.truckType?.name ||
-                data?.trailer?.trailerType?.name ||
-                TableStringEnum.NA,
-            tableYear:
-                (data.truck?.year || data.trailer?.year || TableStringEnum.NA) +
-                '',
-            tableOdometer: data.odometer
-                ? this.thousandSeparator.transform(data.odometer)
-                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-            tableIssued: data?.date
-                ? this.datePipe.transform(
-                      data.date,
-                      TableStringEnum.DATE_FORMAT
-                  )
-                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-            tableShopName:
-                data?.repairShop?.name ||
-                TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-            tableShopAdress:
-                data?.repairShop?.address?.address ||
-                TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-            tableServices: data?.serviceTypes ?? null,
-            tableDescription: data?.items ?? null,
-            descriptionItems: data?.items
-                ? data.items.map((item) => {
+            isRepairOrder: repairType?.name === TableStringEnum.ORDER,
+            tableIssued: this.datePipe.transform(
+                date,
+                TableStringEnum.DATE_FORMAT
+            ),
+            tablePaid: datePaid
+                ? this.datePipe.transform(datePaid, TableStringEnum.DATE_FORMAT)
+                : null,
+            tablePayType: payType?.name,
+            tableNumber: truck?.truckNumber || trailer?.trailerNumber,
+            tableUnit: invoice || orderNumber,
+            tableVehicleType: truck
+                ? `${TableStringEnum.TRUCKS}/${truck?.truckType.logoName}`
+                : `${TableStringEnum.TRAILERS}/${trailer?.trailerType.logoName}`,
+            vehicleTypeClass: (
+                truck?.truckType.name || trailer?.trailerType.name
+            )
+                .replace(' ', TableStringEnum.EMPTY_STRING_PLACEHOLDER)
+                .toLowerCase(),
+            vehicleTooltipTitle:
+                truck?.truckType.name || trailer?.trailerType.name,
+            vehicleTooltipColor: this.dispatchColorFinderPipe.transform(
+                truck?.truckType.id || trailer?.trailerType.id,
+                unitType?.name?.toLowerCase(),
+                true
+            ),
+            tableMake: truck?.truckMakeName || trailer?.trailerMakeName,
+            tableModel: truck?.model || trailer?.model,
+            tableYear: truck?.year || trailer?.year,
+            tableOdometer: odometer
+                ? this.thousandSeparator.transform(odometer) +
+                  TableStringEnum.LETTER_M_MILES
+                : null,
+            avatarImg: driver?.avatarFile?.url,
+            tableDriver: driver
+                ? `${driver?.firstName} ${driver?.lastName}`
+                : null,
+            tableShopName: repairShop?.name,
+            tableShopAdress: repairShop?.address?.address,
+            tableServiceType: shopServiceType?.name,
+            tableServices: serviceTypes,
+            tableDescription: items
+                ? items.map((item) => {
                       return {
                           ...item,
                           descriptionPrice: item?.price
                               ? TableStringEnum.DOLLAR_SIGN +
                                 this.thousandSeparator.transform(item.price)
-                              : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
+                              : null,
                           descriptionTotalPrice: item?.subtotal
                               ? TableStringEnum.DOLLAR_SIGN +
                                 this.thousandSeparator.transform(item.subtotal)
-                              : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-                          pmDescription: item?.pmTruck
-                              ? item.pmTruck
-                              : item?.pmTrailer
-                              ? item.pmTrailer
-                              : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
+                              : null,
+                          pmDescription:
+                              item?.pmTruck || item?.pmTrailer || null,
                       };
                   })
                 : null,
-            tabelDescriptionDropTotal: data?.total
+            tableDescriptionSpecialStylesIndexArray: pmItemsIndexArray,
+            tableDescriptionDropTotal: total
                 ? TableStringEnum.DOLLAR_SIGN +
-                  this.thousandSeparator.transform(data.total)
-                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-            tableCost: data?.total
+                  this.thousandSeparator.transform(total)
+                : null,
+            tableCost: total
                 ? TableStringEnum.DOLLAR_SIGN +
-                  this.thousandSeparator.transform(data.total)
-                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-            tableAdded: data.createdAt
-                ? this.datePipe.transform(
-                      data.createdAt,
-                      TableStringEnum.DATE_FORMAT
-                  )
-                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-            tableEdited: data.updatedAt
-                ? this.datePipe.transform(
-                      data.updatedAt,
-                      TableStringEnum.DATE_FORMAT
-                  )
-                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-            tableAttachments: data?.files ?? [],
-            fileCount: data?.fileCount,
+                  this.thousandSeparator.transform(total)
+                : null,
+            tableAdded: this.datePipe.transform(
+                createdAt,
+                TableStringEnum.DATE_FORMAT
+            ),
+            tableEdited: this.datePipe.transform(
+                updatedAt,
+                TableStringEnum.DATE_FORMAT
+            ),
+            tableAttachments: files,
+            fileCount: fileCount,
             tableDropdownContent: {
                 hasContent: true,
-                content: this.getRepairTableDropdownContent(
-                    data?.repairType?.name
-                ),
+                content: this.getRepairDropdownContent(repairType?.name),
             },
         };
     }
@@ -1753,7 +1776,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
             isFavorite: pinned,
             tableDropdownContent: {
                 hasContent: true,
-                content: this.getRepairShopTableDropdownContent(
+                content: this.getRepairShopDropdownContent(
                     status,
                     pinned,
                     companyOwned
@@ -1762,19 +1785,19 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
         };
     }
 
-    private getRepairTableDropdownContent(repairType: string): DropdownItem[] {
-        return RepairTableHelper.getRepairTableDropdownContent(
+    private getRepairDropdownContent(repairType: string): DropdownItem[] {
+        return DropdownMenuContentHelper.getRepairDropdownContent(
             this.selectedTab,
             repairType
         );
     }
 
-    private getRepairShopTableDropdownContent(
+    private getRepairShopDropdownContent(
         status: number,
         isPinned: boolean,
         isCompanyOwned: boolean
     ): DropdownItem[] {
-        return RepairTableHelper.getRepairShopTableDropdownContent(
+        return DropdownMenuContentHelper.getRepairShopDropdownContent(
             status,
             isPinned,
             isCompanyOwned

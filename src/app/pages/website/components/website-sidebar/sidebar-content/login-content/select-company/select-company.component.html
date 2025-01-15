@@ -1,19 +1,18 @@
 <div class="select_company_main">
     <div>
         <div class="row">
-            <!--  <img
-                class="user-img"
-                *ngIf="userData?.avatar != null"
-                src="{{ 'data:image/jpg;base64,' + userData?.avatar }}"
-                draggable="false"
-            /> -->
-            <!--  <img
-                class="user-img"
-                *ngIf="userData?.avatar == null"
-                src="/assets/svg/user-in-color.svg"
-                alt=""
-                draggable="false"
-            /> -->
+            <div class="user-avatar-container">
+                <app-ca-profile-image
+                    [avatarImg]="
+                        userData?.avatarFile?.url ??
+                        'assets/svg/website/profile-pic.svg'
+                    "
+                    [indx]="0"
+                    [size]="74"
+                    [isRound]="true"
+                    [isHoverEffect]="false"
+                ></app-ca-profile-image>
+            </div>
         </div>
         <div class="row">
             <h1 class="user-name">Hi {{ userData?.firstName }}</h1>
@@ -22,47 +21,89 @@
             <p class="sub-text">Please choose your company</p>
         </div>
         <div class="row">
-            <ngx-slick-carousel
-                #slickModal="slick-carousel"
-                class="carousel"
-                [config]="slideConfig"
-            >
-                <div
-                    ngxSlickItem
-                    *ngFor="let item of newUser?.companies"
-                    class="slide"
-                    [ngClass]="{ 'slick-center': item.LastActiveCompany }"
-                >
-                    <div class="slide-inner" [id]="item.id">
-                        <span class="company-name" *ngIf="!item.logo">{{
-                            item.companyName
-                        }}</span>
-                        <!-- prettier-ignore -->
-                        <img
-                            class="logo"
-                            *ngIf="item.logo"
-                            src="{{ 'data:image/jpg;base64,' + item.logo }}"
-                        />
-                        <div *ngIf="item?.LastActiveCompany" class="last-login">
-                            <span class="text"> Last login </span>
-                            <span class="time" *ngIf="lastLoginInCompany == 0">
-                                Today
-                            </span>
-                            <span class="time" *ngIf="lastLoginInCompany == 1">
-                                Yesterday
-                            </span>
-                            <span class="time" *ngIf="lastLoginInCompany > 1">
-                                {{ lastLoginInCompany }}
-                            </span>
-                        </div>
+            <div id="myCarousel" class="carousel" data-bs-wrap="false">
+                <div class="carousel-inner">
+                    <div class="carousel-items-container">
+                        <div class="carousel-company-item empty"></div>
+                        <div class="carousel-company-item empty"></div>
+
+                        @for (
+                            company of newUser?.companies;
+                            let i = $index;
+                            track company.id
+                        ) {
+                            <div
+                                class="carousel-item"
+                                [class.active]="company?.isLastActiveCompany"
+                                [id]="company.id"
+                                (click)="scrollToCompanyIndex(i)"
+                            >
+                                <div
+                                    class="company-container d-flex align-items-center flex-column w-100"
+                                >
+                                    @if (company.logoFile) {
+                                        <img
+                                            class="logo"
+                                            [src]="company.logoFile.url"
+                                        />
+                                    } @else {
+                                        <span class="company-name"
+                                            >{{ company.companyName }}
+                                        </span>
+                                    }
+
+                                    @if (lastActiveCompanyId === company.id) {
+                                        <div class="last-login">
+                                            <span class="text">
+                                                Last login
+                                            </span>
+
+                                            @if (!lastLoginInCompany) {
+                                                <span class="time">
+                                                    Today
+                                                </span>
+                                            } @else if (
+                                                lastLoginInCompany === 1
+                                            ) {
+                                                <span class="time">
+                                                    Yesterday
+                                                </span>
+                                            } @else {
+                                                <span class="time">
+                                                    {{ lastLoginInCompany }}
+                                                </span>
+                                            }
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                        }
+
+                        <div class="carousel-company-item empty"></div>
+                        <div class="carousel-company-item empty"></div>
                     </div>
                 </div>
-            </ngx-slick-carousel>
-            <form
-                [formGroup]="saveCompany"
-                class="save-company"
-                [ngClass]="{ 'dots-active': dotsTrue }"
-            >
+                <button
+                    class="carousel-control-prev carousel-arrow arrow-prev"
+                    [class.disabled]="selectedCompanyIndex === 0"
+                    type="button"
+                    data-bs-target="#myCarousel"
+                    data-bs-slide="prev"
+                ></button>
+                <button
+                    class="carousel-control-next carousel-arrow arrow-next"
+                    [class.disabled]="
+                        selectedCompanyIndex === newUser?.companies.length - 1
+                    "
+                    type="button"
+                    data-bs-target="#myCarousel"
+                    data-bs-slide="next"
+                ></button>
+            </div>
+        </div>
+
+        <div class="row">
+            <form [formGroup]="saveCompany" class="save-company">
                 <div class="d-flex checkbox-container">
                     <app-ta-checkbox
                         formControlName="savedCompany"
@@ -73,7 +114,23 @@
                 </div>
             </form>
         </div>
-        <div class="row bottons">
+        @if (hasCarouselDots) {
+            <div class="row">
+                <div class="carousel-dots">
+                    @for (
+                        company of newUser?.companies;
+                        let i = $index;
+                        track company.id
+                    ) {
+                        <div
+                            [class.active]="selectedCompanyIndex === i"
+                            (click)="scrollToCompanyIndex(i)"
+                        ></div>
+                    }
+                </div>
+            </div>
+        }
+        <div class="row buttons">
             <div (click)="onCompanySelect()" class="select_company_main_button">
                 SELECT
             </div>

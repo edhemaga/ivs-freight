@@ -38,7 +38,7 @@ const routes: Routes = [
                 data: { title: 'Support' },
             },
 
-            { path: '**', redirectTo: '/website', pathMatch: 'full' },
+            // { path: '**', redirectTo: '/website', pathMatch: 'full' },
         ],
     },
 ];

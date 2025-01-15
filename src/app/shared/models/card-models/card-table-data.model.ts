@@ -139,7 +139,7 @@ export interface CardDetails {
         price?: number;
         quantity?: number;
         subtotal?: number;
-    };
+    }[];
     rating?: Rating[];
     textCommodity?: string;
     textMiles?: string;
@@ -214,7 +214,6 @@ export interface DropdownItem {
     name?: string;
     svgUrl?: string;
     class?: string;
-    mutedStyle?: boolean;
     contentType?: string;
     text?: string;
     svgStyle?: { width: number; height: number };

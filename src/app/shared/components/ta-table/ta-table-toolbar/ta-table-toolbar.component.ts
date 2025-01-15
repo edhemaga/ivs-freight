@@ -69,11 +69,11 @@ import {
 // directives
 import { PreventMultipleclicksDirective } from '@shared/directives/';
 
+// helpers
+import { DropdownMenuContentHelper } from '@shared/utils/helpers';
+
 // constants
-import {
-    TableToolbarRoutes,
-    TableToolbarConstants,
-} from '@shared/components/ta-table/ta-table-toolbar/utils/constants';
+import { TableToolbarRoutes } from '@shared/components/ta-table/ta-table-toolbar/utils/constants';
 
 @Titles()
 @Component({
@@ -129,8 +129,7 @@ export class TaTableToolbarComponent implements OnInit, OnChanges, OnDestroy {
     public selectedDispatcher: any;
 
     public tableLocked: boolean = true;
-    public optionsPopupContent: OptionsPopupContent[] =
-        TableToolbarConstants.optionsPopupContent;
+    public optionsPopupContent: OptionsPopupContent[] = [];
     public tableRowsSelected: any[] = [];
     public activeTableData: any = {};
     public toolbarWidth: string = '';
@@ -162,7 +161,9 @@ export class TaTableToolbarComponent implements OnInit, OnChanges, OnDestroy {
 
         this.getSelectedTabTableData();
 
-        this.getToolbarWidth();
+        setTimeout(() => {
+            this.getToolbarWidth();
+        });
 
         this.getActiveTableData();
 
@@ -173,6 +174,8 @@ export class TaTableToolbarComponent implements OnInit, OnChanges, OnDestroy {
         this.rowsSelected();
 
         this.confirmationData();
+
+        this.getTableToolbarDropdownContent();
     }
 
     ngOnChanges(changes: SimpleChanges) {
@@ -207,6 +210,11 @@ export class TaTableToolbarComponent implements OnInit, OnChanges, OnDestroy {
             if (td.isUpperCaseTitle) this.isUpperCaseTitle = true;
             else this.isUpperCaseTitle = false;
         }
+    }
+
+    private getTableToolbarDropdownContent(): void {
+        this.optionsPopupContent =
+            DropdownMenuContentHelper.getTableToolbarDropdownContent();
     }
 
     public openCards(): void {
@@ -355,9 +363,11 @@ export class TaTableToolbarComponent implements OnInit, OnChanges, OnDestroy {
             localStorage.getItem(`table-${td.tableConfiguration}-Configuration`)
         );
 
-        this.optionsPopupContent[2].isInactive = tableColumnsConfig
-            ? false
-            : true;
+        if (this.optionsPopupContent.length) {
+            this.optionsPopupContent[2].isInactive = tableColumnsConfig
+                ? false
+                : true;
+        }
 
         this.tableConfigurationType = td.tableConfiguration;
 
@@ -449,8 +459,8 @@ export class TaTableToolbarComponent implements OnInit, OnChanges, OnDestroy {
                 this.activeViewMode === TableStringEnum.DISPATCH
                     ? TableStringEnum.NUMBER_100
                     : hasMinWidth
-                    ? columnsSumWidth + 26 + TableStringEnum.PX
-                    : 100 + '%';
+                      ? columnsSumWidth + 26 + TableStringEnum.PX
+                      : 100 + '%';
         }
     }
 
@@ -831,6 +841,8 @@ export class TaTableToolbarComponent implements OnInit, OnChanges, OnDestroy {
 
     // Toaggle Group Column
     public onToaggleGroupColumn(columnGroup: any, index: number): void {
+        if (columnGroup.isGroupItemDisabled) return;
+
         clearTimeout(this.timeOutToaggleGroupColumn);
 
         this.timeOutToaggleGroupColumn = setTimeout(() => {

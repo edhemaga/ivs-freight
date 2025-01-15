@@ -1,0 +1,60 @@
+pipeline {
+    agent any
+	
+	tools {
+        nodejs 'nodejs'
+    }
+
+    stages {
+        stage('Install Dependencies') {
+            steps {
+                echo 'Installing dependencies for development...'
+                sh 'npm install'
+            }
+        }
+
+        stage('Build') {
+            steps {
+                echo 'Building project...'
+                sh 'npm run build:beta'
+            }
+        }
+
+        stage('Deploy to server') {
+            steps {
+                sshagent (credentials: ['deploy-ssh-key']) {
+                    script {
+                        echo 'Deploying to development server...'
+                        sh 'ssh -p ${BETA_SSH_PORT} -o StrictHostKeyChecking=no ${BETA_SSH_F_USER}@${BETA_SSH_HOST} rm -rf /home/${BETA_SSH_F_USER}/www-tmp'
+                        sh 'ssh -p ${BETA_SSH_PORT} -o StrictHostKeyChecking=no ${BETA_SSH_F_USER}@${BETA_SSH_HOST} mkdir /home/${BETA_SSH_F_USER}/www-tmp'
+                        sh 'scp -P${BETA_SSH_PORT} -o StrictHostKeyChecking=no -r ./dist/carrierassist-fe/* ${BETA_SSH_F_USER}@${BETA_SSH_HOST}:/home/${BETA_SSH_F_USER}/www-tmp'
+                        sh 'ssh -p ${BETA_SSH_PORT} -o StrictHostKeyChecking=no ${BETA_SSH_F_USER}@${BETA_SSH_HOST} rm -rf /home/${BETA_SSH_F_USER}/www-old'
+                        sh 'ssh -p ${BETA_SSH_PORT} -o StrictHostKeyChecking=no ${BETA_SSH_F_USER}@${BETA_SSH_HOST} mv /home/${BETA_SSH_F_USER}/www /home/${BETA_SSH_F_USER}/www-old'
+                        sh 'ssh -p ${BETA_SSH_PORT} -o StrictHostKeyChecking=no ${BETA_SSH_F_USER}@${BETA_SSH_HOST} mv /home/${BETA_SSH_F_USER}/www-tmp /home/${BETA_SSH_F_USER}/www'
+                        sh 'ssh -p ${BETA_SSH_PORT} -o StrictHostKeyChecking=no ${BETA_SSH_F_USER}@${BETA_SSH_HOST} chown ${BETA_SSH_F_USER}:${BETA_SSH_F_USER} /home/${BETA_SSH_F_USER}/www -R'
+                    }
+                }
+            }
+        }
+    }
+
+    post {
+        success {
+            slackSend (
+                channel: '#deploy',
+                message: "Deploy completed for ${env.JOB_NAME} - ${env.BUILD_NUMBER}",
+                color: 'good'
+            )
+        }
+        failure {
+            slackSend (
+                channel: '#deploy',
+                message: "Deploy failed for ${env.JOB_NAME} - ${env.BUILD_NUMBER}",
+                color: 'danger'
+            )
+        }
+        always {
+            cleanWs()
+        }
+    }
+}

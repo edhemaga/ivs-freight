@@ -865,7 +865,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                 );
             }
 
-            if (this.editData?.type === 'edit') {
+            if (this.editData?.type === 'edit' || this.editData?.isEditMode) {
                 this.isFormDirty = true;
             } else {
                 this.formService.formValueChange$
@@ -2532,6 +2532,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                 this.isActivePickupStop = event;
 
                 this.isActivePickupStop = !this.isActivePickupStop;
+                this.isActiveDeliveryStop = false;
 
                 this.loadExtraStops().controls.filter((item) => {
                     item.get(LoadModalStringEnum.OPEN_CLOSE).patchValue(false);
@@ -2600,7 +2601,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         return this.formBuilder.group({
             id: [data.id ?? null],
             name: [data.name],
-            pay: [data.pay ?? null],
+            pay: [data.pay ?? null, [Validators.required]],
             advancePay: [null],
             payType: [null],
             payDate: [data?.payDate ? data.payDate : null],
@@ -5459,7 +5460,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     private startFormChanges(): void {
         this.formService.checkFormChange(this.loadForm);
 
-        if (this.editData?.type === 'edit') {
+        if (this.editData?.type === 'edit' || this.editData?.isEditMode) {
             this.isFormDirty = true;
         } else {
             this.formService.formValueChange$
