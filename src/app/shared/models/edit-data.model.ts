@@ -4,6 +4,8 @@ import {
     CompanyContactResponse,
     CompanyResponse,
     DriverResponse,
+    LoadModalResponse,
+    LoadPossibleStatusesResponse,
     LoadResponse,
     RepairResponse,
 } from 'appcoretruckassist';
@@ -30,4 +32,6 @@ export interface EditData<T = undefined> {
     isEditMode?: boolean;
     previousStatus?: SelectedStatus;
     preSelectedUnit?: number;
+    statusDropdownData?: LoadPossibleStatusesResponse;
+    loadModalData?: LoadModalResponse;
 }

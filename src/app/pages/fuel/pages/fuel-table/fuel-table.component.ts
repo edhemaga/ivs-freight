@@ -59,7 +59,7 @@ import { FuelTransactionListResponse } from 'appcoretruckassist';
 import { TableColumnConfig } from '@shared/models/table-models/table-column-config.model';
 import { DropdownItem } from '@shared/models/card-models/card-table-data.model';
 import { IFuelTableData } from '@pages/fuel/pages/fuel-table/models/fuel-table-data.model';
-import { AvatarColors } from '@pages/driver/pages/driver-table/models/avatar-colors.model';
+import { AvatarColors } from '@shared/models';
 import { SortTypes } from '@shared/models/sort-types.model';
 
 // store
