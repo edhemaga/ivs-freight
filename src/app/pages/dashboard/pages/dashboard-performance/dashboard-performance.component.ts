@@ -95,7 +95,7 @@ export class DashboardPerformanceComponent implements OnInit, OnDestroy {
     private originalLinePerformanceChartConfig: IChartConfiguration;
 
     // Assets
-    public DashboardPerformanceIconRoutes = DashboardPerformanceIconRoutes;
+    public dashboardPerformanceIconRoutes = DashboardPerformanceIconRoutes;
 
     constructor(
         private formBuilder: UntypedFormBuilder,
