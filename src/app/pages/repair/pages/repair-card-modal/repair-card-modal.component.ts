@@ -1,4 +1,6 @@
 import { CommonModule } from '@angular/common';
+import { AngularSvgIconModule } from 'angular-svg-icon';
+import { NgbActiveModal, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import {
     Component,
     OnInit,
@@ -27,7 +29,8 @@ import { RepairCardsModalService } from '@pages/repair/pages/repair-card-modal/s
 // Components
 import { ModalInputFormComponent } from '@shared/components/ta-shared-modals/cards-modal/components/modal-input-form.component';
 import { TaCheckboxComponent } from '@shared/components/ta-checkbox/ta-checkbox.component';
-import { TaModalComponent } from '@shared/components/ta-modal/ta-modal.component';
+import { CaModalComponent } from 'ca-components';
+import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
 
 // Helpers
 import { CompareObjectsModal } from '@shared/components/ta-shared-modals/cards-modal/utils/helpers/cards-modal.helper';
@@ -50,6 +53,9 @@ import { selectActiveModalTabs } from '@pages/repair/pages/repair-card-modal/sta
 import { NgForLengthFilterPipe } from '@shared/pipes/ng-for-length-filter.pipe';
 import { NumberOrdinalPipe } from '@shared/pipes/number-ordinal.pipe';
 
+// SVG ROUTES
+import { SharedSvgRoutes } from '@shared/utils/svg-routes';
+
 @Component({
     selector: 'app-repair-card-modal',
     templateUrl: './repair-card-modal.component.html',
@@ -62,11 +68,14 @@ import { NumberOrdinalPipe } from '@shared/pipes/number-ordinal.pipe';
         CommonModule,
         ReactiveFormsModule,
         FormsModule,
+        AngularSvgIconModule,
+        NgbTooltipModule,
 
         // components
-        TaModalComponent,
+        CaModalComponent,
         ModalInputFormComponent,
         TaCheckboxComponent,
+        TaAppTooltipV2Component,
 
         // pipes
         NgForLengthFilterPipe,
@@ -99,12 +108,17 @@ export class RepairCardModalComponent implements OnInit, OnDestroy {
     public rowValues: number[] = [3, 4, 5, 6];
     private destroy$ = new Subject<void>();
 
+    public svgRoutes = SharedSvgRoutes;
+    public cardsModalStringEnum = CardsModalStringEnum;
+
     constructor(
         private formBuilder: UntypedFormBuilder,
         private cdr: ChangeDetectorRef,
         private modalService: RepairCardsModalService,
         //Store
-        private store: Store
+        private store: Store,
+
+        private activeModal: NgbActiveModal
     ) {}
 
     ngOnInit(): void {
@@ -259,8 +273,8 @@ export class RepairCardModalComponent implements OnInit, OnDestroy {
             );
     }
 
-    public onActionModal(event): void {
-        switch (event.action) {
+    public onActionModal(action: string): void {
+        switch (action) {
             case CardsModalStringEnum.CARDS_MODAL:
                 this.updateStore();
                 break;
@@ -268,6 +282,7 @@ export class RepairCardModalComponent implements OnInit, OnDestroy {
                 this.resetToDefault();
                 break;
             default:
+                this.activeModal.close();
                 break;
         }
     }
@@ -282,6 +297,7 @@ export class RepairCardModalComponent implements OnInit, OnDestroy {
 
     private updateStore(): void {
         this.modalService.updateStore(this.cardsForm.value, this.tabSelected);
+        this.activeModal.close();
     }
 
     private resetToDefault(): void {
@@ -292,14 +308,14 @@ export class RepairCardModalComponent implements OnInit, OnDestroy {
                 this.tabSelected === TableStringEnum.ACTIVE
                     ? RepairCardsModalConfig.displayRowsFrontActive
                     : this.tabSelected === TableStringEnum.REPAIR_SHOP
-                    ? RepairCardsModalConfig.displayRowsFrontShop
-                    : RepairCardsModalConfig.displayRowsFrontInactive,
+                      ? RepairCardsModalConfig.displayRowsFrontShop
+                      : RepairCardsModalConfig.displayRowsFrontInactive,
             back_side:
                 this.tabSelected === TableStringEnum.ACTIVE
                     ? RepairCardsModalConfig.displayRowsBackActive
                     : this.tabSelected === TableStringEnum.REPAIR_SHOP
-                    ? RepairCardsModalConfig.displayRowsBackShop
-                    : RepairCardsModalConfig.displayRowsBackInactive,
+                      ? RepairCardsModalConfig.displayRowsBackShop
+                      : RepairCardsModalConfig.displayRowsBackInactive,
         };
 
         this.createForm(cardsData);
@@ -350,8 +366,8 @@ export class RepairCardModalComponent implements OnInit, OnDestroy {
             this.tabSelected === TableStringEnum.ACTIVE
                 ? RepairCardsModalConfig.displayRowsFrontActive
                 : this.tabSelected === TableStringEnum.REPAIR_SHOP
-                ? RepairCardsModalConfig.displayRowsFrontShop
-                : RepairCardsModalConfig.displayRowsFrontInactive,
+                  ? RepairCardsModalConfig.displayRowsFrontShop
+                  : RepairCardsModalConfig.displayRowsFrontInactive,
             this.setDefaultDataFront
         );
 
@@ -359,8 +375,8 @@ export class RepairCardModalComponent implements OnInit, OnDestroy {
             this.tabSelected === TableStringEnum.ACTIVE
                 ? RepairCardsModalConfig.displayRowsBackActive
                 : this.tabSelected === TableStringEnum.REPAIR_SHOP
-                ? RepairCardsModalConfig.displayRowsBackShop
-                : RepairCardsModalConfig.displayRowsBackInactive,
+                  ? RepairCardsModalConfig.displayRowsBackShop
+                  : RepairCardsModalConfig.displayRowsBackInactive,
             this.setDefaultDataBack
         );
 
