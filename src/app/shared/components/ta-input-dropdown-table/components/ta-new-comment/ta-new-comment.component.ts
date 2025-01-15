@@ -16,6 +16,8 @@ import { takeUntil } from 'rxjs/operators';
 // models
 import { AngularSvgIconModule } from 'angular-svg-icon';
 import { User } from '@shared/models/user.model';
+import { CreateCommentCommand } from 'appcoretruckassist';
+import { ICreateCommentMetadata } from '@pages/load/pages/load-table/models';
 
 // moment
 import moment from 'moment';
@@ -28,6 +30,7 @@ import { CommentStringEnum } from '@shared/components/ta-comment/enums/comment-s
 import { CommentsService } from '@shared/services/comments.service';
 import { TaInputDropdownTableService } from '@shared/components/ta-input-dropdown-table/services/ta-input-dropdown-table.service';
 import { LoadService } from '@shared/services/load.service';
+import { LoadStoreService } from '@pages/load/pages/load-table/services/load-store.service';
 
 // Svg routes
 import { NewCommentSvgRoutes } from '@shared/components/ta-input-dropdown-table/components/ta-new-comment/utils/svg-routes';
@@ -61,6 +64,7 @@ export class TaNewCommentComponent implements OnDestroy, OnInit {
 
     constructor(
         private loadService: LoadService,
+        private loadStoreService: LoadStoreService,
         private commentService: CommentsService,
         private taInputDropdownTableService: TaInputDropdownTableService,
         private cdr: ChangeDetectorRef
@@ -96,37 +100,30 @@ export class TaNewCommentComponent implements OnDestroy, OnInit {
                 break;
 
             case TaInputDropdownTableStringEnum.ADD_NEW_COMMENT:
-                const comment = {
+                const { nativeElement } = this.newCommentEl || {};
+                const { textContent } = nativeElement || {};
+                const comment: CreateCommentCommand = {
                     entityTypeCommentId: 2,
                     entityTypeId: loadId,
-                    commentContent: this.newCommentEl.nativeElement.textContent,
+                    commentContent: textContent,
                 };
-                this.commentService
-                    .createComment(comment)
-                    .pipe(takeUntil(this.destroy$))
-                    .subscribe({
-                        next: (res) => {
-                            const dateNow = moment().format(
-                                CommentStringEnum.COMMENT_DATE_FORMAT
-                            );
+                const dateNow = moment().format(
+                    CommentStringEnum.COMMENT_DATE_FORMAT
+                );
+                const { avatarFile, firstName, lastName, companyUserId } = this.user || {};
+                const { url } = avatarFile || {};
+                const commentMetadata: ICreateCommentMetadata = {
+                    cardId: loadId,
+                    date: dateNow,
+                    createdAt: dateNow,
+                    companyUser: {
+                        avatar: url,
+                        fullName: `${ firstName } ${ lastName }`,
+                        id: companyUserId,
+                    }
+                }
 
-                            this.loadService.addData({
-                                ...comment,
-                                cardId: loadId,
-                                date: dateNow,
-                                createdAt: dateNow,
-                                companyUser: {
-                                    avatar: this.user.avatarFile?.url,
-                                    fullName:
-                                        this.user.firstName +
-                                        ' ' +
-                                        this.user.lastName,
-                                    id: this.user.companyUserId,
-                                },
-                                id: res.id,
-                            });
-                        },
-                    });
+                this.loadStoreService.dispatchCreateComment(comment, commentMetadata);
 
                 this.openNewComment = false;
 

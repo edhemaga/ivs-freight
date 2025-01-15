@@ -8,9 +8,10 @@ import {
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Subject, takeUntil } from 'rxjs';
 import { CommonModule } from '@angular/common';
+import { AngularSvgIconModule } from 'angular-svg-icon';
 
 // Bootstrap
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbActiveModal, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 
 // models
 import { TitleModalResponse, TitleResponse } from 'appcoretruckassist';
@@ -26,17 +27,27 @@ import { ConfirmationService } from '@shared/components/ta-shared-modals/confirm
 import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calculations.helper';
 
 // components
-import { TaModalComponent } from '@shared/components/ta-modal/ta-modal.component';
-import { CaInputComponent, CaInputDropdownComponent } from 'ca-components';
+import {
+    CaInputComponent,
+    CaInputDropdownComponent,
+    CaInputNoteComponent,
+    CaModalComponent,
+} from 'ca-components';
 import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-custom-card.component';
-import { TaInputNoteComponent } from '@shared/components/ta-input-note/ta-input-note.component';
 import { TaUploadFilesComponent } from '@shared/components/ta-upload-files/ta-upload-files.component';
 import { ConfirmationModalComponent } from '@shared/components/ta-shared-modals/confirmation-modal/confirmation-modal.component';
+import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
 
 //enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
 import { LoadModalStringEnum } from '@pages/load/pages/load-modal/enums';
 import { ActionTypesEnum } from '@pages/repair/pages/repair-modals/repair-shop-modal/enums';
+
+// Pipes
+import { FormatDatePipe } from '@shared/pipes';
+
+// Svg routes
+import { SharedSvgRoutes } from '@shared/utils/svg-routes';
 
 @Component({
     selector: 'app-tt-title-modal',
@@ -49,14 +60,20 @@ import { ActionTypesEnum } from '@pages/repair/pages/repair-modals/repair-shop-m
         CommonModule,
         FormsModule,
         ReactiveFormsModule,
+        AngularSvgIconModule,
+        NgbTooltipModule,
 
         // Component
-        TaModalComponent,
+        CaModalComponent,
         CaInputComponent,
         CaInputDropdownComponent,
         TaCustomCardComponent,
-        TaInputNoteComponent,
+        CaInputNoteComponent,
         TaUploadFilesComponent,
+        TaAppTooltipV2Component,
+
+        // Pipes
+        FormatDatePipe,
     ],
 })
 export class TtTitleModalComponent implements OnInit, OnDestroy {
@@ -78,6 +95,8 @@ export class TtTitleModalComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
 
     public logoStateRoutes: string = TableStringEnum.ASSETS_SVG_COMMON_STATES;
+    public svgRoutes = SharedSvgRoutes;
+    public actionTypesEnum = ActionTypesEnum;
 
     constructor(
         private formBuilder: UntypedFormBuilder,
@@ -115,9 +134,10 @@ export class TtTitleModalComponent implements OnInit, OnDestroy {
         });
     }
 
-    public onModalAction(data: { action: string; bool: boolean }) {
-        switch (data.action) {
+    public onModalAction(action: string) {
+        switch (action) {
             case ActionTypesEnum.CLOSE:
+                this.ngbActiveModal.close();
                 break;
             case ActionTypesEnum.SAVE:
                 // If Form not valid
@@ -127,18 +147,8 @@ export class TtTitleModalComponent implements OnInit, OnDestroy {
                 }
                 if (this.editData.type === 'edit-title') {
                     this.updateTitle();
-                    this.modalService.setModalSpinner({
-                        action: null,
-                        status: true,
-                        close: false,
-                    });
                 } else {
                     this.addTitle();
-                    this.modalService.setModalSpinner({
-                        action: null,
-                        status: true,
-                        close: false,
-                    });
                 }
                 break;
             case ActionTypesEnum.DELETE:
@@ -229,20 +239,7 @@ export class TtTitleModalComponent implements OnInit, OnDestroy {
         this.TruckTrailerService.addTitle(newData)
             .pipe(takeUntil(this.destroy$))
             .subscribe({
-                next: () => {
-                    this.modalService.setModalSpinner({
-                        action: null,
-                        status: true,
-                        close: true,
-                    });
-                },
-                error: () => {
-                    this.modalService.setModalSpinner({
-                        action: null,
-                        status: false,
-                        close: false,
-                    });
-                },
+                next: () => this.ngbActiveModal.close(),
             });
     }
 
@@ -271,20 +268,7 @@ export class TtTitleModalComponent implements OnInit, OnDestroy {
         this.TruckTrailerService.updateTitle(newData)
             .pipe(takeUntil(this.destroy$))
             .subscribe({
-                next: () => {
-                    this.modalService.setModalSpinner({
-                        action: null,
-                        status: true,
-                        close: true,
-                    });
-                },
-                error: () => {
-                    this.modalService.setModalSpinner({
-                        action: null,
-                        status: false,
-                        close: false,
-                    });
-                },
+                next: () => this.ngbActiveModal.close(),
             });
     }
 

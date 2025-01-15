@@ -317,7 +317,7 @@ export class LoadDetailsComponent implements OnInit, OnDestroy {
         }
 
         this.loadService
-            .deleteLoadById(id, loadStatus)
+            .deleteLoadById(id)
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
