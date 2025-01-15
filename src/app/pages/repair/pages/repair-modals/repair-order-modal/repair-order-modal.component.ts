@@ -55,7 +55,10 @@ import {
 } from '@shared/components/ta-input/validators/ta-input.regex-validations';
 
 // constants
-import { RepairOrderConfig, RepairOrderConstants } from '@pages/repair/pages/repair-modals/repair-order-modal/utils/constants';
+import {
+    RepairOrderConfig,
+    RepairOrderConstants,
+} from '@pages/repair/pages/repair-modals/repair-order-modal/utils/constants';
 
 // enums
 import { RepairOrderModalStringEnum } from '@pages/repair/pages/repair-modals/repair-order-modal/enums';
@@ -140,7 +143,7 @@ import { SharedSvgRoutes } from '@shared/utils/svg-routes';
         // Pipe
         ActiveItemsPipe,
         FormatPhonePipe,
-        FormatDatePipe
+        FormatDatePipe,
     ],
 })
 export class RepairOrderModalComponent implements OnInit, OnDestroy {
@@ -218,7 +221,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
     public svgRoutes = SharedSvgRoutes;
     public taModalActionEnums = TaModalActionEnums;
 
-    // Const 
+    // Const
     public RepairOrderConfig = RepairOrderConfig;
 
     constructor(
@@ -349,7 +352,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
         if (this.editData?.preSelectedUnit)
             setTimeout(() => {
                 this.loadPreSelected();
-            }, 2000);
+            }, 1000);
     }
 
     private checkIsFinishOrder(): void {
@@ -1580,10 +1583,9 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
             selectedUnit,
             RepairOrderModalStringEnum.REPAIR_UNIT
         );
+
         this.repairOrderForm.patchValue({
-            unit: selectedUnit?.truckNumber
-                ? selectedUnit.truckNumber
-                : selectedUnit?.trailerNumber,
+            unit: selectedUnit?.truckNumber ?? selectedUnit?.trailerNumber,
         });
     }
 

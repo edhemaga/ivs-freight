@@ -1,5 +1,6 @@
 // components
 import { ConfirmationModalComponent } from '@shared/components/ta-shared-modals/confirmation-modal/confirmation-modal.component';
+import { RepairOrderModalComponent } from '@pages/repair/pages/repair-modals/repair-order-modal/repair-order-modal.component';
 
 // enums
 import { DropdownMenuStringEnum, TableStringEnum } from '@shared/enums';
@@ -12,6 +13,7 @@ import { ModalService } from '@shared/services/modal.service';
 
 // models
 import { TableCardBodyActions } from '@shared/models';
+import { PMTrailerUnitResponse, PMTruckUnitResponse } from 'appcoretruckassist';
 
 export abstract class DropdownMenuActionsBase {
     constructor(protected modalService: ModalService) {}
@@ -23,7 +25,7 @@ export abstract class DropdownMenuActionsBase {
         console.log('event', event);
         console.log('tableType', tableType);
 
-        const { type } = event;
+        const { data, type } = event;
 
         switch (type) {
             case DropdownMenuStringEnum.EDIT_TYPE:
@@ -44,6 +46,10 @@ export abstract class DropdownMenuActionsBase {
                 break;
             case DropdownMenuStringEnum.PRINT_TYPE:
                 this.handlePrintAction();
+
+                break;
+            case DropdownMenuStringEnum.ADD_REPAIR_BILL_TYPE:
+                this.handleAddRepairBillAction(data);
 
                 break;
             default:
@@ -84,6 +90,28 @@ export abstract class DropdownMenuActionsBase {
     private handleShareAction(): void {}
 
     private handlePrintAction(): void {}
+
+    private handleAddRepairBillAction(
+        data: PMTruckUnitResponse | PMTrailerUnitResponse
+    ): void {
+        const { id, isTruckUnit } =
+            DropdownMenuActionsHelper.getPmRepairUnitId(data);
+
+        const type = isTruckUnit
+            ? DropdownMenuStringEnum.ADD_REPAIR_BILL_TRUCK
+            : DropdownMenuStringEnum.ADD_REPAIR_BILL_TRAILER;
+
+        this.modalService.openModal(
+            RepairOrderModalComponent,
+            {
+                size: TableStringEnum.LARGE,
+            },
+            {
+                type,
+                preSelectedUnit: id,
+            }
+        );
+    }
 
     // protected abstract - dependency
     protected abstract handleShowMoreAction(): void;

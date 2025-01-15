@@ -6,13 +6,14 @@ import { ContactsModalComponent } from '@pages/contacts/pages/contacts-modal/con
 import { OwnerModalComponent } from '@pages/owner/pages/owner-modal/owner-modal.component';
 
 // enums
-import { DropdownMenuStringEnum } from '@shared/enums';
+import { DropdownMenuStringEnum, TableStringEnum } from '@shared/enums';
 
 // types
 import { DropdownEditActionModal } from '@shared/types';
 
 // models
 import { TableCardBodyActions } from '@shared/models';
+import { PMTrailerUnitResponse, PMTruckUnitResponse } from 'appcoretruckassist';
 
 export class DropdownMenuActionsHelper {
     static createDropdownMenuActionsEmitEvent<T extends { id?: number }>(
@@ -43,5 +44,21 @@ export class DropdownMenuActionsHelper {
         };
 
         return modalComponentMap[tableType];
+    }
+
+    static getPmRepairUnitId(
+        data: PMTruckUnitResponse | PMTrailerUnitResponse
+    ): { id: number; isTruckUnit: boolean } {
+        const checkIsTruckOrTrailerUnit = (
+            data: PMTruckUnitResponse | PMTrailerUnitResponse
+        ): data is PMTruckUnitResponse => {
+            return TableStringEnum.TRUCK in data;
+        };
+
+        const isTruckUnit = checkIsTruckOrTrailerUnit(data);
+
+        const { id } = isTruckUnit ? data.truck : data.trailer;
+
+        return { id, isTruckUnit };
     }
 }

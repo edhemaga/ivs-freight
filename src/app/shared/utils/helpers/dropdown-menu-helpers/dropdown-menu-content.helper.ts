@@ -109,6 +109,35 @@ export class DropdownMenuContentHelper {
         return [sharedItems[0], ...conditionalItems, sharedItems[1]];
     }
 
+    // pm
+    static getPMDropdownContent(): DropdownMenuItem[] {
+        // requested items
+        const requestedConditionalItems = [
+            DropdownMenuStringEnum.CONFIGURE,
+            DropdownMenuStringEnum.ADD_REPAIR_BILL,
+        ];
+
+        const requestedSharedItems = [
+            DropdownMenuStringEnum.SHARE,
+            DropdownMenuStringEnum.PRINT,
+        ];
+
+        // items
+        const conditionalItems =
+            DropdownMenuContentConditionalItemsHelper.getConditionalItems(
+                requestedConditionalItems,
+                false
+            );
+
+        const sharedItems =
+            DropdownMenuContentConditionalItemsHelper.getConditionalItems(
+                requestedSharedItems,
+                true
+            );
+
+        return [...conditionalItems, ...sharedItems];
+    }
+
     /////////////////////////////////////////////////////////////////////////////////
 
     // driver
@@ -991,62 +1020,6 @@ export class DropdownMenuContentHelper {
     // fuel stop
     static getFuelStopDropdownContent(): any[] {
         return [];
-    }
-
-    // pm
-    static getPMDropdownContent(): any[] {
-        return [
-            {
-                title: 'Configure',
-                name: 'configure',
-                svgUrl: 'assets/svg/common/ic_settings.svg',
-                svgStyle: {
-                    width: 18,
-                    height: 18,
-                },
-                tableListDropdownContentStyle: {
-                    'margin-bottom.px': 4,
-                },
-                svgClass: TableStringEnum.REGULAR,
-            },
-            {
-                title: 'Add Repair Bill',
-                name: 'add-repair-bill',
-                svgUrl: 'assets/svg/truckassist-table/dropdown/content/add.svg',
-                svgStyle: {
-                    width: 18,
-                    height: 18,
-                },
-                tableListDropdownContentStyle: {
-                    'margin-bottom.px': 4,
-                },
-                svgClass: TableStringEnum.ACTIVATE,
-            },
-            // {
-            //     title: 'Share',
-            //     name: 'share',
-            //     svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Share.svg',
-            //     svgStyle: {
-            //         width: 18,
-            //         height: 18,
-            //     },
-            //     tableListDropdownContentStyle: {
-            //         'margin-bottom.px': 4,
-            //     },
-            //     svgClass: TableStringEnum.REGULAR,
-            // },
-
-            // {
-            //     title: 'Print',
-            //     name: 'print',
-            //     svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Print.svg',
-            //     svgStyle: {
-            //         width: 18,
-            //         height: 18,
-            //     },
-            //     svgClass: TableStringEnum.REGULAR,
-            // },
-        ];
     }
 
     // broker

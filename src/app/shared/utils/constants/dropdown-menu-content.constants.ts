@@ -170,11 +170,26 @@ export class DropdownMenuContentConstants {
             hasBorder: true,
         },
 
+        // pm
+        [DropdownMenuStringEnum.CONFIGURE]: {
+            title: DropdownMenuStringEnum.CONFIGURE,
+            type: DropdownMenuStringEnum.CONFIGURE_TYPE,
+            svgUrl: 'assets/svg/common/ic_settings.svg',
+            svgClass: DropdownMenuStringEnum.REGULAR,
+        },
+        [DropdownMenuStringEnum.ADD_REPAIR_BILL]: {
+            title: DropdownMenuStringEnum.ADD_REPAIR_BILL,
+            type: DropdownMenuStringEnum.ADD_REPAIR_BILL_TYPE,
+            svgUrl: 'assets/svg/common/ic_plus.svg',
+            svgClass: DropdownMenuStringEnum.ACTIVATE_TYPE,
+            hasBorder: true,
+        },
+
         // driver
         [DropdownMenuStringEnum.SEND_MESSAGE]: {
             title: DropdownMenuStringEnum.SEND_MESSAGE,
             type: DropdownMenuStringEnum.SEND_MESSAGE_TYPE,
-            svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Send Message.svg',
+            svgUrl: 'assets/svg/chat/direct-message-icon.svg',
             svgClass: DropdownMenuStringEnum.REGULAR,
         },
         [DropdownMenuStringEnum.ADD_NEW_DRIVER]: {

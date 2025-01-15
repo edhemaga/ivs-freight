@@ -31,6 +31,8 @@ export enum DropdownMenuStringEnum {
     SEND_SMS = 'Send SMS',
     ADD_TRUCK = 'Add Truck',
     ADD_TRAILER = 'Add Trailer',
+    CONFIGURE = 'Configure',
+    ADD_REPAIR_BILL = 'Add Repair Bill',
 
     // types
     EDIT_LOAD_TYPE = 'edit-load',
@@ -64,11 +66,14 @@ export enum DropdownMenuStringEnum {
     SEND_SMS_TYPE = 'send-sms',
     ADD_TRUCK_TYPE = 'add-truck',
     ADD_TRAILER_TYPE = 'add-trailer',
+    CONFIGURE_TYPE = 'configure',
+    ADD_REPAIR_BILL_TYPE = 'add-repair-bill',
 
     // table types
     ACCOUNT = 'account',
     CONTACT = 'contact',
     OWNER = 'owner',
+    PM = 'pm',
 
     DRIVER = 'driver',
 
@@ -79,6 +84,8 @@ export enum DropdownMenuStringEnum {
     ACTIVE = 'active',
     ADD_NEW_DRIVER = 'add-new-driver',
     ADD_NEW_TRUCK_TRAILER = 'add-new-truck-trailer',
+    ADD_REPAIR_BILL_TRUCK = 'add-repair-bill-truck',
+    ADD_REPAIR_BILL_TRAILER = 'add-repair-bill-trailer',
 
     // additional
     BLANK = '_blank',
