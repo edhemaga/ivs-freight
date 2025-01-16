@@ -193,7 +193,12 @@
                                 <app-ta-chart-legend
                                     [data]="fuelChartLegend"
                                 ></app-ta-chart-legend>
-                                <app-ca-chart [chartConfig]="fuelChartConfig">
+                                <app-ca-chart
+                                    [chartConfig]="fuelChartConfig"
+                                    (hoveredIndex)="
+                                        setFuelLegendOnHover($event)
+                                    "
+                                >
                                 </app-ca-chart>
                             </ng-container>
                         </app-ta-tab-switch>

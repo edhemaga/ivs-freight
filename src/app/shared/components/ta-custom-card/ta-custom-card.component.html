@@ -7,7 +7,7 @@
     </div>
 
     <ng-container *ngIf="hasDivider">
-        <div class="divider"></div>
+        <div class="divider" [class.divider--dark]="hasDarkDivider" [class.divider--small]="hasSmallDivider"></div>
     </ng-container>
 
     <div

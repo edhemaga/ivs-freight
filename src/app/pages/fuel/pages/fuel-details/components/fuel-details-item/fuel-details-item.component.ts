@@ -38,6 +38,7 @@ export class FuelDetailsItemComponent implements OnInit {
     public storeDropdown: any;
 
     // Charts 
+    public fuelChartData!: FuelStopExpensesResponse;
     public fuelChartConfig!: IChartConfiguration;
     public fuelChartLegend!: ChartLegendProperty[];
 
@@ -752,15 +753,26 @@ export class FuelDetailsItemComponent implements OnInit {
     private getFuelExpenses(timeFilter?: number): void {
         this.fuelService.getFuelExpensesGet(this.fuelData.id, timeFilter || 1).pipe(takeUntil(this.destroy$))
             .subscribe((response: FuelStopExpensesResponse) => {
+                this.fuelChartData = response;
                 this.fuelChartConfig = {
                     ...FuelDetailsChartsConfiguration.FUEL_CHART_CONFIG,
-                    chartData: ChartHelper.generateDataByDateTime(response.fuelStopExpensesChartResponse,
+                    chartData: ChartHelper.generateDataByDateTime(this.
+                        fuelChartData.
+                        fuelStopExpensesChartResponse,
                         ChartConfiguration.fuelExpensesConfiguration
                     )
                 }
-                this.fuelChartLegend = ChartLegendConfiguration.fuelExpensesLegend(response);
+                this.fuelChartLegend = ChartLegendConfiguration.
+                    fuelExpensesLegend(this.fuelChartData);
             })
     }
+
+    public setFuelLegendOnHover(index: number): void {
+        this.fuelChartLegend = ChartLegendConfiguration
+            .fuelExpensesLegend(this.fuelChartData.
+                fuelStopExpensesChartResponse[index]);
+    }
+
 
     ngOnDestroy(): void {
         this.destroy$.next();

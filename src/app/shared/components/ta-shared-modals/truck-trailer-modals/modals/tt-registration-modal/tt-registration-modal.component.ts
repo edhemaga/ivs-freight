@@ -2,11 +2,12 @@ import { FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { AngularSvgIconModule } from 'angular-svg-icon';
 
 import { Subject, takeUntil } from 'rxjs';
 
 // Bootstrap
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbActiveModal, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 
 // models
 import {
@@ -28,18 +29,20 @@ import { licensePlateValidation } from '@shared/components/ta-input/validators/t
 import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calculations.helper';
  
 // components
-import { TaModalComponent } from '@shared/components/ta-modal/ta-modal.component';
-import { TaInputComponent } from '@shared/components/ta-input/ta-input.component';
-import { TaInputDropdownComponent } from '@shared/components/ta-input-dropdown/ta-input-dropdown.component';
-import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-custom-card.component';
-import { TaInputNoteComponent } from '@shared/components/ta-input-note/ta-input-note.component';
+import { CaInputComponent, CaInputDropdownComponent, CaInputNoteComponent, CaModalComponent } from 'ca-components';
+import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-custom-card.component'; 
 import { TaUploadFilesComponent } from '@shared/components/ta-upload-files/ta-upload-files.component';
 import { ConfirmationModalComponent } from '@shared/components/ta-shared-modals/confirmation-modal/confirmation-modal.component';
+import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
 
 //enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
 import { ActionTypesEnum } from '@pages/repair/pages/repair-modals/repair-shop-modal/enums';
 import { LoadModalStringEnum } from '@pages/load/pages/load-modal/enums';
+
+// Pipes
+import { FormatDatePipe } from '@shared/pipes';
+import { SharedSvgRoutes } from '@shared/utils/svg-routes';
 
 @Component({
     selector: 'app-tt-registration-modal',
@@ -52,14 +55,20 @@ import { LoadModalStringEnum } from '@pages/load/pages/load-modal/enums';
         CommonModule,
         FormsModule,
         ReactiveFormsModule,
+        AngularSvgIconModule,
+        NgbTooltipModule,
 
         // Component
-        TaModalComponent,
-        TaInputComponent,
-        TaInputDropdownComponent,
+        CaModalComponent,
+        CaInputComponent,
+        CaInputDropdownComponent,
         TaCustomCardComponent,
-        TaInputNoteComponent,
+        CaInputNoteComponent,
         TaUploadFilesComponent,
+        TaAppTooltipV2Component,
+
+        // Pipes
+        FormatDatePipe
     ],
 })
 export class TtRegistrationModalComponent implements OnInit, OnDestroy {
@@ -83,6 +92,8 @@ export class TtRegistrationModalComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
 
     public logoStateRoutes: string = TableStringEnum.ASSETS_SVG_COMMON_STATES;
+    public svgRoutes = SharedSvgRoutes;
+    public actionTypesEnum = ActionTypesEnum;
 
     constructor(
         private formBuilder: UntypedFormBuilder,
@@ -123,9 +134,10 @@ export class TtRegistrationModalComponent implements OnInit, OnDestroy {
         });
     }
 
-    public onModalAction(data: { action: string }) {
-        switch (data.action) {
+    public onModalAction( action: string ) {
+        switch (action) {
             case ActionTypesEnum.CLOSE:
+                this.ngbActiveModal.close();
                 break;
             case ActionTypesEnum.SAVE:
                 // If Form not valid
@@ -134,19 +146,9 @@ export class TtRegistrationModalComponent implements OnInit, OnDestroy {
                     return;
                 }
                 if (this.editData.type === 'edit-registration') {
-                    this.updateRegistration();
-                    this.modalService.setModalSpinner({
-                        action: null,
-                        status: true,
-                        close: false,
-                    });
+                    this.updateRegistration(); 
                 } else {
-                    this.addRegistration();
-                    this.modalService.setModalSpinner({
-                        action: null,
-                        status: true,
-                        close: false,
-                    });
+                    this.addRegistration(); 
                 }
                 break;
             case ActionTypesEnum.DELETE:
@@ -233,20 +235,7 @@ export class TtRegistrationModalComponent implements OnInit, OnDestroy {
         this.TruckTrailerService.updateRegistration(newData)
             .pipe(takeUntil(this.destroy$))
             .subscribe({
-                next: () => {
-                    this.modalService.setModalSpinner({
-                        action: null,
-                        status: true,
-                        close: true,
-                    });
-                },
-                error: () => {
-                    this.modalService.setModalSpinner({
-                        action: null,
-                        status: false,
-                        close: false,
-                    });
-                },
+                next: () => this.ngbActiveModal.close()
             });
     }
 
@@ -281,20 +270,7 @@ export class TtRegistrationModalComponent implements OnInit, OnDestroy {
         this.TruckTrailerService.addRegistration(newData)
             .pipe(takeUntil(this.destroy$))
             .subscribe({
-                next: () => {
-                    this.modalService.setModalSpinner({
-                        action: null,
-                        status: true,
-                        close: true,
-                    });
-                },
-                error: () => {
-                    this.modalService.setModalSpinner({
-                        action: null,
-                        status: false,
-                        close: false,
-                    });
-                },
+                next: () => this.ngbActiveModal.close()
             });
     }
 
@@ -309,9 +285,9 @@ export class TtRegistrationModalComponent implements OnInit, OnDestroy {
                                 res.issueDate
                             ),
                         expDate:
-                            MethodsCalculationsHelper.convertDateFromBackend(
+                        res.expDate ? MethodsCalculationsHelper.convertDateFromBackend(
                                 res.expDate
-                            ),
+                            ) : null,
                         licensePlate: res.licensePlate,
                         stateId: res.state ? res.state.stateShortName : null,
                         note: res.note,
@@ -381,7 +357,7 @@ export class TtRegistrationModalComponent implements OnInit, OnDestroy {
                             );
                         }
                     }
-                    this.startFormChanges();
+                    setTimeout(() => this.startFormChanges(), 500);
                 },
                 error: () => {},
             });
