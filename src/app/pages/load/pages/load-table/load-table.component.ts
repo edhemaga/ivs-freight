@@ -70,6 +70,9 @@ import { RepairTableDateFormaterHelper } from '@pages/repair/pages/repair-table/
 // Router
 import { Router } from '@angular/router';
 
+// Helpers
+import { LoadTableHelper } from 'src/app/pages/load/pages/load-table/utils/helpers/load-table.helper';
+
 @Component({
     selector: 'app-load-table',
     templateUrl: './load-table.component.html',
@@ -140,7 +143,7 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
         this.tableService.currentSetTableFilter
             .pipe(takeUntil(this.destroy$))
             .subscribe((res) => {
-                const selectedTabCapitalized = this.capitalizeFirstLetter(
+                const selectedTabCapitalized = LoadTableHelper.capitalizeFirstLetter(
                     this.selectedTab
                 );
                 const selectedtab: eLoadStatusType =
@@ -228,7 +231,7 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
             const { ...params } = this.filter || {};
             const { tabData } = event || {};
             const { field } = tabData || {};
-            const selectedTab = this.capitalizeFirstLetter(field);
+            const selectedTab = LoadTableHelper.capitalizeFirstLetter(field);
 
             this.selectedTab = field;
             this.toolbarComponent?.flipCards(false);
@@ -263,7 +266,7 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
         if (action === TableStringEnum.SORT) {
             const { ...params } = this.filter || {};
             const { direction, sortOrder, sortBy } = event || {};
-            const selectedTab: string = this.capitalizeFirstLetter(
+            const selectedTab: string = LoadTableHelper.capitalizeFirstLetter(
                 this.selectedTab
             );
 
@@ -557,7 +560,7 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     private getLoadStatusFilter(): void {
-        const selectedTab: string = this.capitalizeFirstLetter(
+        const selectedTab: string = LoadTableHelper.capitalizeFirstLetter(
             this.selectedTab
         );
 
@@ -605,7 +608,7 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
                         search: eventSearch,
                     } = event || {};
                     const { search, search1, search2 } = this.filter || {};
-                    const selectedTabKey = this.capitalizeFirstLetter(
+                    const selectedTabKey = LoadTableHelper.capitalizeFirstLetter(
                         this.selectedTab
                     );
                     const selectedTab = eLoadStatusType[selectedTabKey];
@@ -705,7 +708,7 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
         const { ...params } = this.filter || {};
         const { type } = event || {};
         const { id } = event || {};
-        const selectedTabCapitalized: string = this.capitalizeFirstLetter(
+        const selectedTabCapitalized: string = LoadTableHelper.capitalizeFirstLetter(
             this.selectedTab
         );
         const selectedTab: eLoadStatusType =
@@ -803,12 +806,8 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
             });
     }
 
-    private capitalizeFirstLetter(val): string {
-        return String(val).charAt(0).toUpperCase() + String(val).slice(1);
-    }
-
     private composeDeleteModalTitle(): string {
-        const selectedTab = this.capitalizeFirstLetter(this.selectedTab);
+        const selectedTab = LoadTableHelper.capitalizeFirstLetter(this.selectedTab);
         let result = `Delete ${selectedTab}`;
 
         if (eLoadStatusType[selectedTab] !== eLoadStatusType.Template)
