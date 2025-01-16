@@ -7,4 +7,5 @@ export class SharedSvgRoutes {
     static PEN_ICON = 'assets/svg/common/ic_spec_input_pen.svg';
     static ADDRESS_ICON = 'assets/svg/common/ic_address.svg';
     static EMAIL_ICON = 'assets/svg/common/ic_email.svg';
+    static PLUS_ICON = 'assets/svg/common/ic_plus.svg';
 }
