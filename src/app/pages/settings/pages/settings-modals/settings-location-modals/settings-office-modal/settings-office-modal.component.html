@@ -1,14 +1,13 @@
-<app-ta-modal
+<app-ca-modal
     [modalTitle]="editData?.type !== 'edit' ? 'Add Office' : 'Edit Office'"
-    [editData]="editData"
-    [editName]="officeName"
-    [isModalValid]="officeForm.valid && isFormDirty && isEachContactRowValid"
-    [saveAndAddNew]="editData?.type !== 'edit'"
-    (action)="onModalAction($event)"
+    [rightHeaderTemplate]="rightModalContent"
+    [leftHeaderTemplate]="leftModalContent"
+    [footerTemplate]="footerTemplate"
 >
-    <div origin>
+<div class="new-modal" origin>
         <app-ta-tab-switch
             [tabs]="tabs"
+            customClass="mt-0"
             (switchClicked)="tabChange($event)"
             [type]="'type1-modal-popup'"
         >
@@ -31,28 +30,29 @@
                 <div class="m-tab" [hidden]="selectedTab !== 1">
                     <div class="row">
                         <div class="col-12">
-                            <app-ta-input
+                            <app-ca-input
                                 formControlName="name"
                                 [inputConfig]="
                                     formConfig.getNameInputConfig(
                                         editData?.type
                                     )
                                 "
-                            ></app-ta-input>
+                            ></app-ca-input>
                         </div>
                     </div>
+
                     <div
-                        class="phone-ext-email-small-modal"
+                        class="phone-ext-email-small-modal mb-32"
                         [ngClass]="{
                             'active-phone-ext': isPhoneExtExist
                         }"
                     >
                         <div class="phone-extension">
                             <div class="phone-field">
-                                <app-ta-input
+                                <app-ca-input
                                     formControlName="phone"
                                     [inputConfig]="phoneConfig"
-                                ></app-ta-input>
+                                ></app-ca-input>
                             </div>
                             <ng-container
                                 *ngIf="!isPhoneExtExist; else phoneExtension"
@@ -65,22 +65,22 @@
                                     position="top"
                                     tooltipBackground="#6c6c6c"
                                 >
-                                    <svg-icon [src]="svgRoutes.plus"></svg-icon>
+                                    <svg-icon [src]="svgRoutes.PLUS_ICON"></svg-icon>
                                 </div>
                             </ng-container>
                             <ng-template #phoneExtension>
-                                <app-ta-input
+                                <app-ca-input
                                     *ngIf="isPhoneExtExist"
                                     formControlName="extensionPhone"
                                     [inputConfig]="phoneExtConfig"
-                                ></app-ta-input>
+                                ></app-ca-input>
                             </ng-template>
                         </div>
                         <div class="email-field">
-                            <app-ta-input
+                            <app-ca-input
                                 formControlName="email"
                                 [inputConfig]="emailConfig"
-                            ></app-ta-input>
+                            ></app-ca-input>
                         </div>
                     </div>
 
@@ -95,10 +95,10 @@
                             ></app-ta-input-address-dropdown>
                         </div>
                         <div class="col-2">
-                            <app-ta-input
+                            <app-ca-input
                                 formControlName="addressUnit"
                                 [inputConfig]="addressUnitConfig"
-                            ></app-ta-input>
+                            ></app-ca-input>
                         </div>
                     </div>
 
@@ -118,7 +118,7 @@
                         <ng-container body>
                             <div class="mt-3 mb-3">
                                 <div class="location-parking-financial-card">
-                                    <app-ta-input-dropdown
+                                    <app-ca-input-dropdown
                                         formControlName="payPeriod"
                                         [inputConfig]="payPeriodConfig"
                                         [options]="payPeriods"
@@ -129,8 +129,8 @@
                                                 'pay-period'
                                             )
                                         "
-                                    ></app-ta-input-dropdown>
-                                    <app-ta-input-dropdown
+                                    ></app-ca-input-dropdown>
+                                    <app-ca-input-dropdown
                                         formControlName="monthlyDay"
                                         [inputConfig]="
                                             formConfig.getMonthlyDayConfig(
@@ -147,12 +147,12 @@
                                         (selectedItem)="
                                             onSelectDropdown($event, 'day')
                                         "
-                                    ></app-ta-input-dropdown>
+                                    ></app-ca-input-dropdown>
 
-                                    <app-ta-input
+                                    <app-ca-input
                                         formControlName="rent"
                                         [inputConfig]="rentConfig"
-                                    ></app-ta-input>
+                                    ></app-ca-input>
                                 </div>
                             </div>
                         </ng-container>
@@ -201,4 +201,87 @@
             </div>
         </form>
     </div>
-</app-ta-modal>
+
+</app-ca-modal>
+<ng-template #rightModalContent>
+    @if (editData?.type === 'edit') {
+        <div
+            ngbTooltip
+            mainTooltip="Added    {{
+                editData?.data?.createdAt | formatDateP
+            }} <br> Edited    {{ editData?.data?.updatedAt | formatDateP }}"
+            tooltipBackground="#424242"
+            position="bottom"
+            class="modal-date-logo"
+        >
+            <svg-icon
+                [src]="svgRoutes.DATE_ICON"
+                class="modal-buttons"
+            ></svg-icon>
+        </div>
+        <div class="modal-date-border"></div>
+    }
+    <div
+        class="d-flex justify-content-center align-items-center modal-close-container"
+        ngbTooltip
+        mainTooltip="Cancel"
+        tooltipBackground="#424242"
+        position="bottom"
+        (click)="onModalAction(taModalActionEnums.CLOSE)"
+    >
+        <svg-icon
+            class="modal-close svg-size-14 svg-fill-muted modal-buttons"
+            [src]="svgRoutes.CLOSE_ICON"
+        ></svg-icon>
+    </div>
+</ng-template>
+<ng-template #leftModalContent>
+    @if (parkingName) {
+        <div class="payroll-number text-color-white text-size-14 ta-font-bold">
+            {{ parkingName }}
+        </div>
+    }
+</ng-template>
+<ng-template #footerTemplate>
+    <div class="modal-footer modal-footer-payroll">
+        <div class="divider"></div>
+        @if (editData?.type === 'edit') {
+            <div class="d-flex justify-content-between w-full">
+                <app-ca-modal-button
+                    text="Delete"
+                    size="Small"
+                    (click)="onModalAction(taModalActionEnums.DELETE)"
+                    [type]="modalButtonType.SECONDARY_NEGATIVE"
+                >
+                </app-ca-modal-button>
+                <app-ca-modal-button
+                    text="Save Changes"
+                    [isValid]="officeForm.valid && isFormDirty"
+                    [type]="modalButtonType.PRIMARY_POSITIVE"
+                    [showSpinner]="activeAction === taModalActionEnums.SAVE"
+                    (click)="onModalAction(taModalActionEnums.SAVE)"
+                >
+                </app-ca-modal-button>
+            </div>
+        } @else {
+            <app-ca-modal-button
+                text=" Save and Add New"
+                [isValid]="officeForm.valid && isFormDirty"
+                (click)="onModalAction(taModalActionEnums.SAVE_AND_ADD_NEW)"
+                [showSpinner]="
+                    activeAction === taModalActionEnums.SAVE_AND_ADD_NEW
+                "
+                [type]="modalButtonType.SECONDARY_POSITIVE"
+            >
+            </app-ca-modal-button>
+            <app-ca-modal-button
+                text="Save"
+                [isValid]="officeForm.valid && isFormDirty"
+                (click)="onModalAction(taModalActionEnums.SAVE)"
+                [showSpinner]="activeAction === taModalActionEnums.SAVE"
+                [type]="modalButtonType.PRIMARY_POSITIVE"
+            >
+            </app-ca-modal-button>
+        }
+    </div>
+</ng-template>
