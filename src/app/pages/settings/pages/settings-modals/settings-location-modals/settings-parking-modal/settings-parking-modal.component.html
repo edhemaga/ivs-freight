@@ -5,6 +5,9 @@
     [footerTemplate]="footerTemplate"
 >
     <div class="new-modal" origin>
+
+        <div class="divider divider--small divider--dark"></div>
+
         <form
             [formGroup]="parkingForm"
             class="form-container form-container-mt-22"
@@ -75,13 +78,13 @@
 
                     <div class="row row-address">
                         <div class="col-10">
-                            <app-ca-input-address-dropdown
+                            <app-ta-input-address-dropdown
                                 formControlName="address"
                                 [inputConfig]="addressConfig"
                                 [placeholderType]="'longAddress'"
                                 [activeAddress]="selectedAddress"
                                 (selectedAddress)="onHandleAddress($event)"
-                            ></app-ca-input-address-dropdown>
+                            ></app-ta-input-address-dropdown>
                         </div>
                         <div class="col-2">
                             <app-ca-input

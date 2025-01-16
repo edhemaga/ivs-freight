@@ -6,6 +6,7 @@ import {
 } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { NgbActiveModal, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { debounceTime, Subject, takeUntil } from 'rxjs';
 
@@ -38,13 +39,13 @@ import {
     CaInputComponent,
     CaInputDropdownComponent,
     CaModalComponent,
-    CaInputAddressDropdownComponent,
     CaModalButtonComponent,
 } from 'ca-components';
 import { TaTabSwitchComponent } from '@shared/components/ta-tab-switch/ta-tab-switch.component';
 import { TaCheckboxCardComponent } from '@shared/components/ta-checkbox-card/ta-checkbox-card.component';
 import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-custom-card.component';
 import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
+import { TaInputAddressDropdownComponent } from '@shared/components/ta-input-address-dropdown/ta-input-address-dropdown.component';
 
 // pipes
 import { SumArraysPipe } from '@shared/pipes/sum-arrays.pipe';
@@ -76,7 +77,6 @@ import { SettingsFormEnum } from '@pages/settings/pages/settings-modals/enums';
 
 // Svg routes
 import { SharedSvgRoutes } from '@shared/utils/svg-routes';
-import { NgbActiveModal, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
     selector: 'app-settings-parking-modal',
@@ -99,7 +99,7 @@ import { NgbActiveModal, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
         CaModalComponent,
         TaTabSwitchComponent,
         TaCheckboxCardComponent,
-        CaInputAddressDropdownComponent,
+        TaInputAddressDropdownComponent,
         TaCustomCardComponent,
         TaAppTooltipV2Component,
         CaModalButtonComponent,
