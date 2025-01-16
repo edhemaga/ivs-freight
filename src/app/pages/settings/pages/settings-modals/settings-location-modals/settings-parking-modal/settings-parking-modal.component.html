@@ -289,7 +289,7 @@
                     text="Save Changes"
                     [isValid]="parkingForm.valid && isFormDirty"
                     [type]="modalButtonType.PRIMARY_POSITIVE"
-                    [showSpinner]="activeAction === taModalActionEnums.SAVE"
+                    [isSpinnerShown]="activeAction === taModalActionEnums.SAVE"
                     (click)="onModalAction(taModalActionEnums.SAVE)"
                 >
                 </app-ca-modal-button>
@@ -299,7 +299,7 @@
                 text=" Save and Add New"
                 [isValid]="parkingForm.valid && isFormDirty"
                 (click)="onModalAction(taModalActionEnums.SAVE_AND_ADD_NEW)"
-                [showSpinner]="
+                [isSpinnerShown]="
                     activeAction === taModalActionEnums.SAVE_AND_ADD_NEW
                 "
                 [type]="modalButtonType.SECONDARY_POSITIVE"
@@ -309,7 +309,7 @@
                 text="Save"
                 [isValid]="parkingForm.valid && isFormDirty"
                 (click)="onModalAction(taModalActionEnums.SAVE)"
-                [showSpinner]="activeAction === taModalActionEnums.SAVE"
+                [isSpinnerShown]="activeAction === taModalActionEnums.SAVE"
                 [type]="modalButtonType.PRIMARY_POSITIVE"
             >
             </app-ca-modal-button>

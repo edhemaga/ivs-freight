@@ -91,6 +91,7 @@ import {
     CaInputComponent,
     CaInputDropdownComponent,
     CaInputNoteComponent,
+    CaModalButtonComponent,
     CaModalComponent,
     CaUploadFilesComponent,
 } from 'ca-components';
@@ -105,7 +106,7 @@ import { NgbActiveModal, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 
 // Enums
 import { ModalTableTypeEnum } from '@shared/enums/modal-table-type.enum';
-import { TableStringEnum } from '@shared/enums/table-string.enum';
+import { ModalButtonSize, ModalButtonType, TableStringEnum } from '@shared/enums';
 import { ConfirmationActivationStringEnum } from '@shared/components/ta-shared-modals/confirmation-activation-modal/enums/confirmation-activation-string.enum';
 import {
     ActionTypesEnum,
@@ -149,6 +150,7 @@ import { FormatDatePipe } from '@shared/pipes';
         // Component
         TaAppTooltipV2Component,
         CaModalComponent,
+        CaModalButtonComponent,
         TaTabSwitchComponent,
         CaInputComponent,
         TaCustomCardComponent,
@@ -254,7 +256,11 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
     public actionTypesEnum = ActionTypesEnum;
 
     public svgRoutes = SharedSvgRoutes;
+    public activeAction: string;
 
+    public modalButtonType = ModalButtonType;
+    public modalButtonSize = ModalButtonSize;
+    
     constructor(
         private formBuilder: UntypedFormBuilder,
 
@@ -966,6 +972,8 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
     }
 
     public onModalAction(data: string): void {
+        this.activeAction = data;
+
         if (data === ActionTypesEnum.CLOSE) {
             this.ngbActiveModal.close();
         }
@@ -1157,14 +1165,10 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
-                    if (addNewShop) {
-                        this.setModalSpinner(null, true, true, true);
-                    }
-
-                    this.setModalSpinner(null, false, !addNewShop);
+                   this.setModalSpinner(true, addNewShop);
                 },
                 error: () => {
-                    this.setModalSpinner(null, false, false);
+                    this.setModalSpinner(false, false);
                 },
             });
     }
@@ -1175,37 +1179,26 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
-                    this.setModalSpinner(null, true, true);
+                    this.setModalSpinner(true, true);
                 },
                 error: () => {
-                    this.setModalSpinner(null, false, false);
+                    this.setModalSpinner(false, false);
                 },
             });
     }
 
     private setModalSpinner(
-        action:
-            | null
-            | ActionTypesEnum.SAVE_AND_ADD_NEW
-            | ActionTypesEnum.DELETE,
-        status: boolean,
         close: boolean,
         addNew?: boolean
     ): void {
-        this.modalService.setModalSpinner({
-            action,
-            status,
-            close,
-        });
-
         if (close) this.ngbActiveModal.close();
 
-        if (addNew) {
-            this.modalService.openModal(RepairShopModalComponent, {});
-        }
+        if (addNew) this.modalService.openModal(RepairShopModalComponent, {});
 
         // Wait for modal to close to prevent click while closing it
         setTimeout(() => (this.isRequestInProgress = false), 400);
+
+        this.activeAction = null;
     }
 
     private showDeleteBusinessModal(): void {
