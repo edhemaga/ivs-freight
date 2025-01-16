@@ -28,8 +28,6 @@ import { LoadStatusColorPipe } from '@shared/pipes/load-status-color.pipe';
 
 // store
 import { StoreModule } from '@ngrx/store';
-import { EffectsModule } from '@ngrx/effects';
-import { LoadEffect } from '@pages/load/pages/load-table/store/effects/load.effect';
 import { loadReducer } from '@pages/load/pages/load-table/store/reducers/load.reducer';
 import { loadCardModalReducer } from '@pages/load/pages/load-card-modal/state/load-card-modal.reducer';
 
@@ -62,7 +60,6 @@ import { loadCardModalReducer } from '@pages/load/pages/load-card-modal/state/lo
 
         // store
         StoreModule.forFeature('loadCardData', loadCardModalReducer),
-        EffectsModule.forFeature([LoadEffect]),
         StoreModule.forFeature('load', loadReducer),
     ],
 })

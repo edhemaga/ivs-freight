@@ -45,6 +45,7 @@ import { configFactory } from '@core/configs/app.config';
 import { WebsiteUserLoggedService } from '@pages/website/services/website-user-logged.service';
 import { EncryptionDecryptionService } from '@shared/services/encryption-decryption.service';
 import { StaticInjectorService } from '@core/decorators/titles.decorator';
+import { LoadEffect } from '@pages/load/pages/load-table/store/effects/load.effect';
 
 // Lottie
 import player from 'lottie-web';
@@ -95,7 +96,7 @@ export const appConfig: ApplicationConfig = {
             warnOnNgModelWithFormControl: 'never',
         }), 
         StoreModule.forRoot([]),
-        EffectsModule.forRoot([]),
+        EffectsModule.forRoot([LoadEffect]),
         //components
         ReusableTemplatesComponent,
         // routing
