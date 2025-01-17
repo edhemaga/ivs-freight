@@ -1147,15 +1147,15 @@ export class TaTableBodyComponent<
         }
     }
 
-    // Save Inspectin Description
-    onSaveInspectinDescription() {}
-
     // Finish Order
-    onFinishOrder(id: number) {
-        this.bodyActions.emit({
-            type: 'finish-order',
-            id,
-        });
+    public onFinishOrder(rowData: T): void {
+        const emitEvent =
+            DropdownMenuActionsHelper.createDropdownMenuActionsEmitEvent(
+                DropdownMenuStringEnum.FINISH_ORDER_TYPE,
+                rowData
+            );
+
+        this.tableBodyActions.emit(emitEvent);
     }
 
     // Contacts dropdown actions
@@ -1194,9 +1194,9 @@ export class TaTableBodyComponent<
         };
 
         this.tableBodyActions.emit({
+            type: data.data?.action || DropdownMenuStringEnum.CREATE_LABEL,
             data: this.selectedContactLabel[index] as T,
             id: this.viewData[index].id,
-            type: data.data?.action || DropdownMenuStringEnum.CREATE_LABEL,
         });
     }
 

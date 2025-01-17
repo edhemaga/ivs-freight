@@ -1733,7 +1733,7 @@
                                                                 class="d-flex justify-content-center align-items-center ta-font-bold text-size-11 text-color-blue-18 finish-order-action"
                                                                 (click)="
                                                                     onFinishOrder(
-                                                                        row.id
+                                                                        row
                                                                     )
                                                                 "
                                                             >
@@ -4512,7 +4512,7 @@
                                                                 class="d-flex justify-content-center align-items-center ta-font-bold text-size-11 text-color-blue-18 finish-order-action"
                                                                 (click)="
                                                                     onFinishOrder(
-                                                                        row.id
+                                                                        row
                                                                     )
                                                                 "
                                                             >
@@ -6540,9 +6540,6 @@
                                         <input
                                             id="inspectin-description-input"
                                             type="text"
-                                            (keyup.enter)="
-                                                onSaveInspectinDescription()
-                                            "
                                             autofocus
                                             [(ngModel)]="
                                                 editInspectinDescriptionText

@@ -1,3 +1,6 @@
+import { Optional, SkipSelf } from '@angular/core';
+import { Router } from '@angular/router';
+
 // components
 import { ConfirmationModalComponent } from '@shared/components/ta-shared-modals/confirmation-modal/confirmation-modal.component';
 import { RepairOrderModalComponent } from '@pages/repair/pages/repair-modals/repair-order-modal/repair-order-modal.component';
@@ -16,7 +19,10 @@ import { TableCardBodyActions } from '@shared/models';
 import { PMTrailerUnitResponse, PMTruckUnitResponse } from 'appcoretruckassist';
 
 export abstract class DropdownMenuActionsBase {
-    constructor(protected modalService: ModalService) {}
+    constructor(
+        protected modalService: ModalService,
+        @Optional() @SkipSelf() protected router?: Router
+    ) {}
 
     protected handleDropdownMenuActions<T>(
         event: TableCardBodyActions<T>,
@@ -25,7 +31,7 @@ export abstract class DropdownMenuActionsBase {
         console.log('event', event);
         console.log('tableType', tableType);
 
-        const { data, type } = event;
+        const { id, data, type } = event;
 
         switch (type) {
             case DropdownMenuStringEnum.EDIT_TYPE:
@@ -34,6 +40,10 @@ export abstract class DropdownMenuActionsBase {
                 break;
             case DropdownMenuStringEnum.DELETE_TYPE:
                 this.handleDeleteAction(event, tableType);
+
+                break;
+            case DropdownMenuStringEnum.VIEW_DETAILS_TYPE:
+                this.handleViewDetailsAction(id, tableType);
 
                 break;
             case DropdownMenuStringEnum.SHOW_MORE:
@@ -85,6 +95,15 @@ export abstract class DropdownMenuActionsBase {
                 template: tableType,
             }
         );
+    }
+
+    private handleViewDetailsAction(id: number, tableType: string): void {
+        const link = DropdownMenuActionsHelper.createViewDetailsActionLink(
+            id,
+            tableType
+        );
+
+        this.router.navigate([link]);
     }
 
     private handleShareAction(): void {}

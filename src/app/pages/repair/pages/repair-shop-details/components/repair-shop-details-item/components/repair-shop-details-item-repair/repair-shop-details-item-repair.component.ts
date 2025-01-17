@@ -180,7 +180,6 @@ export class RepairShopDetailsItemRepairComponent implements OnInit {
 
                 break;
             default:
-                // show more
                 break;
         }
     }
@@ -222,7 +221,6 @@ export class RepairShopDetailsItemRepairComponent implements OnInit {
                 repair?.unitType?.id === 1
                     ? TableStringEnum.EDIT_TRUCK
                     : TableStringEnum.EDIT_TRAILER,
-            finishOrderBtn: repair?.repairType?.id === 2,
             isFinishOrder: true,
         };
 

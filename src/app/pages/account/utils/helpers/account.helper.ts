@@ -1,5 +1,5 @@
 export class AccountHelper {
-    static generateUrlLink(url: string): string {
+    static generateLinkUrl(url: string): string {
         const linkUrl = `https://${url.replace(/^https?:\/\//, '')}`;
 
         return linkUrl;

@@ -1,5 +1,5 @@
 import { DOCUMENT } from '@angular/common';
-import { Inject, Optional, SkipSelf } from '@angular/core';
+import { Inject } from '@angular/core';
 import { Clipboard } from '@angular/cdk/clipboard';
 
 import { Subject, takeUntil } from 'rxjs';
@@ -86,7 +86,7 @@ export abstract class AccountDropdownMenuActionsBase extends DropdownMenuActions
     }
 
     private handleGoToLinkAction(url: string): void {
-        const linkUrl = AccountHelper.generateUrlLink(url);
+        const linkUrl = AccountHelper.generateLinkUrl(url);
 
         this.documentRef.defaultView.open(
             linkUrl,

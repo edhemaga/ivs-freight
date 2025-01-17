@@ -1,6 +1,7 @@
 export enum DropdownMenuStringEnum {
     // titles
     EDIT_LOAD = 'Edit Load',
+    EDIT_LOAD_SELECT = 'Edit Load Select',
     EDIT_PAYROLL = 'Edit Payroll',
     SHARE = 'Share',
     PRINT = 'Print',
@@ -33,6 +34,14 @@ export enum DropdownMenuStringEnum {
     ADD_TRAILER = 'Add Trailer',
     CONFIGURE = 'Configure',
     ADD_REPAIR_BILL = 'Add Repair Bill',
+    ALL_BILLS = 'All Bills',
+    ALL_ORDERS = 'All Orders',
+    FINISH_ORDER = 'Finish Order',
+    MARK_AS_FAVORITE = 'Mark as Favorite',
+    UNMARK_FAVORITE = 'Unmark Favorite',
+    WRITE_REVIEW = 'Write Review',
+    CLOSE_BUSINESS = 'Close Business',
+    OPEN_BUSINESS = 'Open Business',
 
     // types
     EDIT_LOAD_TYPE = 'edit-load',
@@ -68,17 +77,29 @@ export enum DropdownMenuStringEnum {
     ADD_TRAILER_TYPE = 'add-trailer',
     CONFIGURE_TYPE = 'configure',
     ADD_REPAIR_BILL_TYPE = 'add-repair-bill',
+    ALL_BILLS_TYPE = 'all-bills',
+    ALL_ORDERS_TYPE = 'all-orders',
+    FINISH_ORDER_TYPE = 'finish-order',
+    MARK_AS_FAVORITE_TYPE = 'mark-as-favorite',
+    UNMARK_FAVORITE_TYPE = 'unmark-favorite',
+    WRITE_REVIEW_TYPE = 'write-review',
+    CLOSE_BUSINESS_TYPE = 'close-business',
+    OPEN_BUSINESS_TYPE = 'open-business',
 
     // table types
     ACCOUNT = 'account',
     CONTACT = 'contact',
     OWNER = 'owner',
     PM = 'pm',
-
+    REPAIR = 'repair',
+    REPAIR_SHOP = 'repair-shop',
     DRIVER = 'driver',
 
     // svg classes
-    REGULAR = 'regular',
+    REGULAR_SVG_CLASS = 'regular',
+    ACTIVATE_SVG_CLASS = 'activate',
+    DELETE_SVG_CLASS = 'delete',
+    OPEN_BUSINESS_SVG_CLASS = 'open-business',
 
     // conditions
     ACTIVE = 'active',
@@ -92,4 +113,5 @@ export enum DropdownMenuStringEnum {
     SHOW_MORE = 'show-more',
     CREATE_LABEL = 'create-label',
     UPDATE_LABEL = 'update-label',
+    ORDER = 'Order',
 }

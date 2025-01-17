@@ -27,7 +27,7 @@ export class DropdownMenuContentConditionalItemsHelper {
         const mapDropdownMenuItems = () => {
             return requestedItems.map((item) => {
                 const modifier = modifiers?.find(
-                    (modifier) => modifier.title === item.title
+                    (modifier) => modifier.title === item?.title
                 );
 
                 return modifier ? { ...item, ...modifier } : item;
@@ -59,6 +59,68 @@ export class DropdownMenuContentConditionalItemsHelper {
         ];
     }
 
+    // repair
+    static getRepairModifierItems(
+        isTruckRepair: boolean
+    ): Partial<DropdownMenuItem>[] {
+        const svgUrl = isTruckRepair
+            ? 'assets/svg/common/ic_truck.svg'
+            : 'assets/svg/common/ic_trailer.svg';
+
+        return [
+            {
+                title: DropdownMenuStringEnum.ALL_ORDERS,
+                svgUrl,
+            },
+            {
+                title: DropdownMenuStringEnum.ALL_BILLS,
+                svgUrl,
+            },
+        ];
+    }
+
+    // repair shop
+    static getRepairShopModifierItems(
+        isOpenBusiness: boolean,
+        isCompanyOwned: boolean
+    ): Partial<DropdownMenuItem>[] {
+        return [
+            {
+                title: DropdownMenuStringEnum.EDIT,
+                isDisabled: !isOpenBusiness,
+            },
+            {
+                title: DropdownMenuStringEnum.ADD_REPAIR_BILL,
+                isDisabled: !isOpenBusiness,
+                hasBorder: false,
+            },
+            {
+                title: DropdownMenuStringEnum.MARK_AS_FAVORITE,
+                isDisabled: !isOpenBusiness || isCompanyOwned,
+            },
+            {
+                title: DropdownMenuStringEnum.UNMARK_FAVORITE,
+                isDisabled: !isOpenBusiness,
+            },
+        ];
+    }
+
+    // truck - trailer
+    static getTruckTrailerModifierItems(
+        isActiveVehicle: boolean
+    ): Partial<DropdownMenuItem>[] {
+        return [
+            {
+                title: DropdownMenuStringEnum.EDIT,
+                isDisabled: !isActiveVehicle,
+            },
+            {
+                title: DropdownMenuStringEnum.ADD_NEW,
+                isDisabled: !isActiveVehicle,
+            },
+        ];
+    }
+
     // driver
     static getDriverModifierItems(
         isActiveDriver: boolean
@@ -79,22 +141,6 @@ export class DropdownMenuContentConditionalItemsHelper {
             {
                 title: DropdownMenuStringEnum.REQUEST,
                 isDisabled: !isActiveDriver,
-            },
-        ];
-    }
-
-    // truck - trailer
-    static getTruckTrailerModifierItems(
-        isActiveVehicle: boolean
-    ): Partial<DropdownMenuItem>[] {
-        return [
-            {
-                title: DropdownMenuStringEnum.EDIT,
-                isDisabled: !isActiveVehicle,
-            },
-            {
-                title: DropdownMenuStringEnum.ADD_NEW,
-                isDisabled: !isActiveVehicle,
             },
         ];
     }
