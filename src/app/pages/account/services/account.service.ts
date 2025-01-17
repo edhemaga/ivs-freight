@@ -76,7 +76,7 @@ export class AccountService {
 
     // Update Account
     public updateCompanyAccount(
-        data: UpdateCompanyAccountCommand,
+        data: UpdateCompanyAccountCommand
     ): Observable<any> {
         return this.accountService.apiCompanyaccountPut(data).pipe(
             tap(() => {
@@ -138,32 +138,30 @@ export class AccountService {
 
     // Delete Account List
     public deleteAccountList(ids: number[]): Observable<any> {
-        return this.accountService
-            .apiCompanyaccountListDelete(ids)
-            .pipe(
-                tap(() => {
-                    let storeAccounts = this.accountQuery.getAll();
-                    let countDeleted = 0;
+        return this.accountService.apiCompanyaccountListDelete(ids).pipe(
+            tap(() => {
+                let storeAccounts = this.accountQuery.getAll();
+                let countDeleted = 0;
 
-                    storeAccounts.map((account: any) => {
-                        ids.map((id) => {
-                            if (id === account.id) {
-                                this.accountStore.remove(
-                                    ({ id }) => id === account.id
-                                );
-                                countDeleted++;
-                            }
-                        });
+                storeAccounts.map((account: any) => {
+                    ids.map((id) => {
+                        if (id === account.id) {
+                            this.accountStore.remove(
+                                ({ id }) => id === account.id
+                            );
+                            countDeleted++;
+                        }
                     });
+                });
 
-                    localStorage.setItem(
-                        'accountTableCount',
-                        JSON.stringify({
-                            account: storeAccounts.length - countDeleted,
-                        })
-                    );
-                })
-            );
+                localStorage.setItem(
+                    'accountTableCount',
+                    JSON.stringify({
+                        account: storeAccounts.length - countDeleted,
+                    })
+                );
+            })
+        );
     }
 
     // Delete Account By Id

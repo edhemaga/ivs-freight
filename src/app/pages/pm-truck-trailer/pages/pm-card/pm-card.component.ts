@@ -1,28 +1,26 @@
-import {
-    Component,
-    Input,
-    OnDestroy,
-    OnInit,
-} from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+
 import { Subject, takeUntil } from 'rxjs';
 
-// Models
-import { CardDetails } from '@shared/models/card-models/card-table-data.model';
-import { CardRows } from '@shared/models/card-models/card-rows.model';
-import { CardDataResult } from '@shared/models/card-models/card-data-result.model';
+// base classes
+import { PmDropdownMenuActionsBase } from '@pages/pm-truck-trailer/base-classes';
 
-// Helpers
+// enums
+import { DropdownMenuStringEnum } from '@shared/enums';
+
+// helpers
 import { CardHelper } from '@shared/utils/helpers/card-helper';
+import { DropdownMenuActionsHelper } from '@shared/utils/helpers/dropdown-menu-helpers';
 
-// Services
+// services
 import { TruckassistTableService } from '@shared/services/truckassist-table.service';
 import { ModalService } from '@shared/services/modal.service';
 
-// Enums
-import { TableStringEnum } from '@shared/enums/table-string.enum';
-
-// Components
-import { PmModalComponent } from '@pages/pm-truck-trailer/pages/pm-modal/pm-modal.component';
+// models
+import { CardDetails } from '@shared/models/card-models/card-table-data.model';
+import { CardRows } from '@shared/models/card-models/card-rows.model';
+import { DropdownMenuOptionEmit } from '@ca-shared/components/ca-dropdown-menu/models';
+import { PMTrailerUnitResponse, PMTruckUnitResponse } from 'appcoretruckassist';
 
 @Component({
     selector: 'app-pm-card',
@@ -30,47 +28,54 @@ import { PmModalComponent } from '@pages/pm-truck-trailer/pages/pm-modal/pm-moda
     styleUrls: ['./pm-card.component.scss'],
     providers: [CardHelper],
 })
-export class PmCardComponent implements OnInit, OnDestroy {
-    // All data
+export class PmCardComponent
+    extends PmDropdownMenuActionsBase
+    implements OnInit, OnDestroy
+{
     @Input() set viewData(value: CardDetails[]) {
         this._viewData = value;
     }
 
-    // Page
-    @Input() selectedTab: string;
-
-    // Card body endpoints
+    // card body endpoints
     @Input() cardTitle: string;
     @Input() rows: number[];
     @Input() displayRowsFront: CardRows[];
     @Input() displayRowsBack: CardRows[];
     @Input() cardTitleLink: string;
 
-    public cardData: CardDetails;
+    private destroy$ = new Subject<void>();
+
     public _viewData: CardDetails[];
 
     public isCardFlippedCheckInCards: number[] = [];
-
-    private destroy$ = new Subject<void>();
     public isAllCardsFlipp: boolean = false;
 
-    public cardsFront: CardDataResult[][][] = [];
-    public cardsBack: CardDataResult[][][] = [];
-    public titleArray: string[][] = [];
-    public valueByStringPathInstance = new CardHelper();
-
+    get viewData() {
+        return this._viewData;
+    }
 
     constructor(
-        // Services
-        private tableService: TruckassistTableService,
-        private modalService: ModalService,
+        // services
+        protected modalService: ModalService,
 
-        // Helpers
+        private tableService: TruckassistTableService,
+
+        // helpers
         private cardHelper: CardHelper
-    ) {}
+    ) {
+        super(modalService);
+    }
 
     ngOnInit() {
         this.flipAllCards();
+    }
+
+    public trackCard(item: number): number {
+        return item;
+    }
+
+    public flipCard(index: number): void {
+        this.isCardFlippedCheckInCards = this.cardHelper.flipCard(index);
     }
 
     public flipAllCards(): void {
@@ -84,7 +89,6 @@ export class PmCardComponent implements OnInit, OnDestroy {
             });
     }
 
-    // When checkbox is selected
     public onCheckboxSelect(index: number, card: CardDetails): void {
         this._viewData[index].isSelected = !this._viewData[index].isSelected;
 
@@ -93,48 +97,25 @@ export class PmCardComponent implements OnInit, OnDestroy {
         this.tableService.sendRowsSelected(checkedCard);
     }
 
-    // Flip card based on card index
-    public flipCard(index: number): void {
-        this.isCardFlippedCheckInCards = this.cardHelper.flipCard(index);
+    public handleToggleDropdownMenuActions(
+        event: DropdownMenuOptionEmit,
+        cardData: PMTruckUnitResponse | PMTrailerUnitResponse
+    ): void {
+        const { type } = event;
+
+        const emitEvent =
+            DropdownMenuActionsHelper.createDropdownMenuActionsEmitEvent(
+                type,
+                cardData
+            );
+
+        this.handleDropdownMenuActions(emitEvent, DropdownMenuStringEnum.PM);
     }
 
-    public onCardActions(event): void {
-        switch (event.type) {
-            case TableStringEnum.CONFIGURE:
-                if (this.selectedTab === TableStringEnum.ACTIVE) {
-                    this.modalService.openModal(
-                        PmModalComponent,
-                        { size: TableStringEnum.SMALL },
-                        {
-                            type: TableStringEnum.EDIT,
-                            header: TableStringEnum.EDIT_TRUCK_PM_HEADER,
-                            action: TableStringEnum.UNIT_PM,
-                            id: event.data.truck.id,
-                            data: event.data,
-                        }
-                    );
-                } else {
-                    this.modalService.openModal(
-                        PmModalComponent,
-                        { size: TableStringEnum.SMALL },
-                        {
-                            type: TableStringEnum.EDIT,
-                            header: TableStringEnum.EDIT_TRAILER_PM_HEADER,
-                            action: TableStringEnum.UNIT_PM,
-                            id: event.data.trailer.id,
-                            data: event.data,
-                        }
-                    );
-                }
-
-            default: {
-                break;
-            }
-        }
-    }
-
-    public trackCard(item: number): number {
-        return item;
+    public handleShowMoreAction(): void {
+        /*    this.backFilterQuery.pageIndex++;
+           
+                   this.accountBackFilter(this.backFilterQuery, true); */
     }
 
     ngOnDestroy() {

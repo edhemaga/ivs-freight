@@ -1,5 +1,8 @@
 import { TableStringEnum } from '@shared/enums/table-string.enum';
-import { LoadDataResponse, SelectedStatus } from '@pages/load/pages/load-modal/models';
+import {
+    LoadDataResponse,
+    SelectedStatus,
+} from '@pages/load/pages/load-modal/models';
 import {
     CompanyContactResponse,
     CompanyResponse,

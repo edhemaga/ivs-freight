@@ -20,20 +20,21 @@ import { Subject, takeUntil } from 'rxjs';
 // modules
 import { NgbPopover } from '@ng-bootstrap/ng-bootstrap';
 
-// Models
+// models
 import { CardDetails } from '@shared/models/card-models/card-table-data.model';
 import { SendDataCard } from '@shared/models/card-models/send-data-card.model';
 import { CardRows } from '@shared/models/card-models/card-rows.model';
 import { CardDataResult } from '@shared/models/card-models/card-data-result.model';
 import { MappedRepair } from '@pages/repair/pages/repair-table/models';
 
-// Services
+// services
 import { TruckassistTableService } from '@shared/services/truckassist-table.service';
 
-// Enums
+// enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
+import { DropdownMenuStringEnum } from '@shared/enums';
 
-// Helpers
+// helpers
 import { CardHelper } from '@shared/utils/helpers/card-helper';
 
 @Component({
@@ -206,7 +207,7 @@ export class RepairCardComponent implements OnInit, AfterViewInit, OnDestroy {
     public onFinishOrder(card: CardDetails): void {
         this.bodyActions.emit({
             data: card,
-            type: TableStringEnum.FINISH_ORDER,
+            type: DropdownMenuStringEnum.FINISH_ORDER,
         });
     }
 

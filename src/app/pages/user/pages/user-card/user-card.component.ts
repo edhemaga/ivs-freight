@@ -5,7 +5,6 @@ import { Subject, takeUntil } from 'rxjs';
 import { CardRows } from '@shared/models/card-models/card-rows.model';
 import { CardDetails } from '@shared/models/card-models/card-table-data.model';
 import { CardDataResult } from '@shared/models/card-models/card-data-result.model';
-import { TableBodyActions } from '@pages/driver/pages/driver-table/models/table-body-actions.model';
 
 // helpers
 import { CardHelper } from '@shared/utils/helpers/card-helper';
@@ -92,7 +91,7 @@ export class UserCardComponent implements OnInit, OnDestroy {
         return item;
     }
 
-    public onCardActions(event: TableBodyActions): void {
+    public onCardActions(event: any): void {
         const confirmationModalData = {
             ...event,
             data: {
