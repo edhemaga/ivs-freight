@@ -39,7 +39,7 @@
                 <div class="m-tab" [hidden]="selectedTab !== 1">
                     <div class="row">
                         <div class="col-12">
-                            <app-ta-input
+                            <app-ca-input
                                 formControlName="businessName"
                                 [inputConfig]="{
                                     name: 'Business Name',
@@ -51,7 +51,7 @@
                                     minLength: 2,
                                     maxLength: 64
                                 }"
-                            ></app-ta-input>
+                            ></app-ca-input>
                         </div>
                     </div>
                     <div class="phone-extension-medium-modal">
@@ -59,7 +59,7 @@
                             [ngClass]="{ 'active-phone-ext': isPhoneExtExist }"
                         >
                             <div class="phone-field">
-                                <app-ta-input
+                                <app-ca-input
                                     formControlName="phone"
                                     [inputConfig]="{
                                         name: 'Phone',
@@ -69,11 +69,11 @@
                                         mask: '(000) 000-0000',
                                         maxLength: 14
                                     }"
-                                ></app-ta-input>
+                                ></app-ca-input>
                             </div>
                         </div>
                         <div class="email-field">
-                            <app-ta-input
+                            <app-ca-input
                                 formControlName="email"
                                 [inputConfig]="{
                                     name: 'Email',
@@ -84,7 +84,7 @@
                                     maxLength: 64,
                                     textTransform: 'lowercase'
                                 }"
-                            ></app-ta-input>
+                            ></app-ca-input>
                         </div>
                     </div>
 
@@ -111,32 +111,32 @@
                                 ></app-ta-input-address-dropdown>
                             </div>
                             <div class="col-2">
-                                <app-ta-input
+                                <app-ca-input
                                     formControlName="addressUnit"
                                     [inputConfig]="getAddressUnitInputConfig"
-                                ></app-ta-input>
+                                ></app-ca-input>
                             </div>
                         </ng-container>
 
                         <ng-template #coordinatesContainer>
                             <div class="col-3">
-                                <app-ta-input
+                                <app-ca-input
                                     formControlName="latitude"
                                     [inputConfig]="getLatitudeInputConfig"
-                                ></app-ta-input>
+                                ></app-ca-input>
                             </div>
                             <div class="col-3">
-                                <app-ta-input
+                                <app-ca-input
                                     formControlName="longitude"
                                     [inputConfig]="getLongitudeInputConfig"
-                                ></app-ta-input>
+                                ></app-ca-input>
                             </div>
                             <div class="col-6">
-                                <app-ta-input
+                                <app-ca-input
                                     formControlName="countryStateAddress"
                                     [inputConfig]="getCountryStateInputConfig"
                                     [placeholderType]="'shortAddress'"
-                                ></app-ta-input>
+                                ></app-ca-input>
                             </div>
                         </ng-template>
                     </div>
@@ -168,7 +168,7 @@
                             </div>
                             <div class="shipper-work-hours-field">
                                 <!-- Time Picker -->
-                                <app-ta-input
+                                <app-ca-input
                                     formControlName="receivingFrom"
                                     [inputConfig]="{
                                         name: 'timepicker',
@@ -188,11 +188,11 @@
                                             ).value,
                                         customClass: 'datetimeclass'
                                     }"
-                                ></app-ta-input>
+                                ></app-ca-input>
                             </div>
                             <div class="shipper-work-hours-field">
                                 <!-- Time Picker -->
-                                <app-ta-input
+                                <app-ca-input
                                     formControlName="receivingTo"
                                     [inputConfig]="{
                                         name: 'timepicker',
@@ -212,7 +212,7 @@
                                             ).value,
                                         customClass: 'datetimeclass'
                                     }"
-                                ></app-ta-input>
+                                ></app-ca-input>
                             </div>
                         </div>
                     </app-ta-custom-card>
@@ -256,7 +256,7 @@
                             </div>
                             <div class="shipper-work-hours-field">
                                 <!-- Time Picker -->
-                                <app-ta-input
+                                <app-ca-input
                                     formControlName="shippingFrom"
                                     [inputConfig]="{
                                         name: 'timepicker',
@@ -276,11 +276,11 @@
                                             ).value,
                                         customClass: 'datetimeclass'
                                     }"
-                                ></app-ta-input>
+                                ></app-ca-input>
                             </div>
                             <div class="shipper-work-hours-field">
                                 <!-- Time Picker -->
-                                <app-ta-input
+                                <app-ca-input
                                     formControlName="shippingTo"
                                     [inputConfig]="{
                                         name: 'timepicker',
@@ -300,7 +300,7 @@
                                             ).value,
                                         customClass: 'datetimeclass'
                                     }"
-                                ></app-ta-input>
+                                ></app-ca-input>
                             </div>
                         </div>
                     </app-ta-custom-card>
