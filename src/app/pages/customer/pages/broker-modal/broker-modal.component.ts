@@ -59,12 +59,10 @@ import { TaSpinnerComponent } from '@shared/components/ta-spinner/ta-spinner.com
 import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
 import { TaModalComponent } from '@shared/components/ta-modal/ta-modal.component';
 import { TaTabSwitchComponent } from '@shared/components/ta-tab-switch/ta-tab-switch.component';
-import { TaInputComponent } from '@shared/components/ta-input/ta-input.component';
 import { TaInputAddressDropdownComponent } from '@shared/components/ta-input-address-dropdown/ta-input-address-dropdown.component';
 import { TaCheckboxComponent } from '@shared/components/ta-checkbox/ta-checkbox.component';
 import { TaCurrencyProgressBarComponent } from '@shared/components/ta-currency-progress-bar/ta-currency-progress-bar.component';
 import { TaUploadFilesComponent } from '@shared/components/ta-upload-files/ta-upload-files.component';
-import { TaInputDropdownComponent } from '@shared/components/ta-input-dropdown/ta-input-dropdown.component';
 import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-custom-card.component';
 import { TaInputNoteComponent } from '@shared/components/ta-input-note/ta-input-note.component';
 import { LoadModalComponent } from '@pages/load/pages/load-modal/load-modal.component';
@@ -72,6 +70,7 @@ import { TaUserReviewComponent } from '@shared/components/ta-user-review/ta-user
 import { ConfirmationModalComponent } from '@shared/components/ta-shared-modals/confirmation-modal/confirmation-modal.component';
 import { ConfirmationMoveModalComponent } from '@shared/components/ta-shared-modals/confirmation-move-modal/confirmation-move-modal.component';
 import { TaModalTableComponent } from '@shared/components/ta-modal-table/ta-modal-table.component';
+import { CaInputComponent, CaInputDropdownComponent } from 'ca-components';
 
 // enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
@@ -123,17 +122,17 @@ import { BrokerContactExtended } from '@pages/customer/pages/broker-modal/models
         TaAppTooltipV2Component,
         TaModalComponent,
         TaTabSwitchComponent,
-        TaInputComponent,
         TaInputAddressDropdownComponent,
         TaCheckboxComponent,
         TaCurrencyProgressBarComponent,
         TaUploadFilesComponent,
-        TaInputDropdownComponent,
         TaCustomCardComponent,
         TaUserReviewComponent,
         TaInputNoteComponent,
         TaSpinnerComponent,
         TaModalTableComponent,
+        CaInputComponent,
+        CaInputDropdownComponent,
     ],
 })
 export class BrokerModalComponent implements OnInit, OnDestroy {

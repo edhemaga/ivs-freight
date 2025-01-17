@@ -43,7 +43,7 @@
                 <div class="m-tab" [hidden]="selectedTab !== 1">
                     <div class="row">
                         <div class="col-12">
-                            <app-ta-input
+                            <app-ca-input
                                 formControlName="businessName"
                                 [inputConfig]="{
                                     name: 'Business Name',
@@ -55,13 +55,13 @@
                                     minLength: 2,
                                     maxLength: 64
                                 }"
-                            ></app-ta-input>
+                            ></app-ca-input>
                         </div>
                     </div>
 
                     <div class="row">
                         <div class="col-6">
-                            <app-ta-input
+                            <app-ca-input
                                 formControlName="dbaName"
                                 [inputConfig]="{
                                     name: 'Name',
@@ -71,10 +71,10 @@
                                     minLength: 2,
                                     maxLength: 24
                                 }"
-                            ></app-ta-input>
+                            ></app-ca-input>
                         </div>
                         <div class="col-3">
-                            <app-ta-input
+                            <app-ca-input
                                 formControlName="ein"
                                 [inputConfig]="{
                                     name: 'EIN',
@@ -83,10 +83,10 @@
                                     mask: '00-0000000',
                                     maxLength: 10
                                 }"
-                            ></app-ta-input>
+                            ></app-ca-input>
                         </div>
                         <div class="col-3">
-                            <app-ta-input
+                            <app-ca-input
                                 formControlName="mcNumber"
                                 [inputConfig]="{
                                     name: 'MC/FF',
@@ -96,13 +96,13 @@
                                     minLength: 6,
                                     maxLength: 7
                                 }"
-                            ></app-ta-input>
+                            ></app-ca-input>
                         </div>
                     </div>
 
                     <div class="row last-row">
                         <div class="col-6">
-                            <app-ta-input
+                            <app-ca-input
                                 formControlName="phone"
                                 [inputConfig]="{
                                     name: 'Phone',
@@ -113,10 +113,10 @@
                                     mask: '(000) 000-0000',
                                     maxLength: 14
                                 }"
-                            ></app-ta-input>
+                            ></app-ca-input>
                         </div>
                         <div class="col-6">
-                            <app-ta-input
+                            <app-ca-input
                                 formControlName="email"
                                 [inputConfig]="{
                                     name: 'Email',
@@ -127,7 +127,7 @@
                                     maxLength: 64,
                                     textTransform: 'lowercase'
                                 }"
-                            ></app-ta-input>
+                            ></app-ca-input>
                         </div>
                     </div>
 
@@ -175,7 +175,7 @@
                                 ></app-ta-input-address-dropdown>
                             </div>
                             <div class="col-2">
-                                <app-ta-input
+                                <app-ca-input
                                     formControlName="physicalAddressUnit"
                                     [inputConfig]="{
                                         name: 'address-unit',
@@ -185,7 +185,7 @@
                                         minLength: 1,
                                         maxLength: 10
                                     }"
-                                ></app-ta-input>
+                                ></app-ca-input>
                             </div>
                         </div>
                     </div>
@@ -202,7 +202,7 @@
                     >
                         <div class="row first-row last-row">
                             <div class="col-4">
-                                <app-ta-input
+                                <app-ca-input
                                     formControlName="physicalPoBox"
                                     [inputConfig]="{
                                         name: 'PO Box',
@@ -212,7 +212,7 @@
                                         minLength: 1,
                                         maxLength: 6
                                     }"
-                                ></app-ta-input>
+                                ></app-ca-input>
                             </div>
                             <div class="col-8">
                                 <app-ta-input-address-dropdown
@@ -297,7 +297,7 @@
                                     ></app-ta-input-address-dropdown>
                                 </div>
                                 <div class="col-2">
-                                    <app-ta-input
+                                    <app-ca-input
                                         formControlName="billingAddressUnit"
                                         [inputConfig]="{
                                             name: 'address-unit',
@@ -307,7 +307,7 @@
                                             minLength: 1,
                                             maxLength: 10
                                         }"
-                                    ></app-ta-input>
+                                    ></app-ca-input>
                                 </div>
                             </div>
                         </div>
@@ -322,7 +322,7 @@
                         >
                             <div class="row first-row last-row">
                                 <div class="col-4">
-                                    <app-ta-input
+                                    <app-ca-input
                                         formControlName="billingPoBox"
                                         [inputConfig]="{
                                             name: 'PO Box',
@@ -332,7 +332,7 @@
                                             minLength: 1,
                                             maxLength: 6
                                         }"
-                                    ></app-ta-input>
+                                    ></app-ca-input>
                                 </div>
                                 <div class="col-8">
                                     <app-ta-input-address-dropdown
@@ -395,7 +395,7 @@
                             </div>
 
                             <div class="broker-billing-field">
-                                <app-ta-input
+                                <app-ca-input
                                     formControlName="creditLimit"
                                     [inputConfig]="{
                                         name: 'Credit Limit',
@@ -415,11 +415,11 @@
                                     (blurInput)="
                                         editData && onBlurCreditLimit()
                                     "
-                                ></app-ta-input>
+                                ></app-ca-input>
                             </div>
 
                             <div class="broker-billing-field">
-                                <app-ta-input-dropdown
+                                <app-ca-input-dropdown
                                     formControlName="payTerm"
                                     [inputConfig]="{
                                         name: 'Input Dropdown',
@@ -431,7 +431,7 @@
                                     [options]="payTermOptions"
                                     [activeItem]="selectedPayTerm"
                                     (selectedItem)="onSelectDropDown($event)"
-                                ></app-ta-input-dropdown>
+                                ></app-ca-input-dropdown>
                             </div>
 
                             <ng-container

@@ -13,6 +13,7 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
 import { CardDetails } from '@shared/models/card-models/card-table-data.model';
 import { DropdownItem } from '@shared/models/card-models/card-table-data.model';
 import { SendDataCard } from '@shared/models/card-models/send-data-card.model';
+
 @Component({
     selector: 'app-ta-table-card-dropdown-actions',
     templateUrl: './ta-table-card-dropdown-actions.component.html',

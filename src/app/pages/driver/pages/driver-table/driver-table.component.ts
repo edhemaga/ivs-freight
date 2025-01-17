@@ -73,7 +73,6 @@ import {
 } from 'appcoretruckassist';
 import { FilterOptionApplicant } from '@pages/driver/pages/driver-table/models/filter-option-applicant.model';
 import { TableHeadActions } from '@pages/driver/pages/driver-table/models/table-head-actions.model';
-import { TableBodyActions } from '@pages/driver/pages/driver-table/models/table-body-actions.model';
 import { FilterOptionDriver } from '@pages/driver/pages/driver-table/models/filter-option-driver.model';
 import { CardTableData } from '@shared/models/table-models/card-table-data.model';
 import { CardRows } from '@shared/models/card-models/card-rows.model';
@@ -164,7 +163,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
         // pipes
         private thousandSeparator: ThousandSeparatorPipe,
         private nameInitialsPipe: NameInitialsPipe
-    ) { }
+    ) {}
 
     ngOnInit(): void {
         this.sendDriverData();
@@ -929,8 +928,8 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
             tableEmergContactPhone: emergencyContact?.phone,
             tableTwicExp: twicExpirationDate
                 ? MethodsCalculationsHelper.convertDateFromBackend(
-                    twicExpirationDate
-                )
+                      twicExpirationDate
+                  )
                 : null,
             tableFuelCardDetailNumber: fuelCardNumber,
             tableCdlDetailNumber: cdl?.number,
@@ -979,26 +978,32 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     : null,
                 percentage: mvr?.percentage ? 100 - mvr?.percentage : null,
             },
-            tabelNotificationGeneral: `${general?.mail
-                ? TableStringEnum.EMAIL
-                : TableStringEnum.EMPTY_STRING_PLACEHOLDER
-                }${general?.push
+            tabelNotificationGeneral: `${
+                general?.mail
+                    ? TableStringEnum.EMAIL
+                    : TableStringEnum.EMPTY_STRING_PLACEHOLDER
+            }${
+                general?.push
                     ? TableStringEnum.PUSH
                     : TableStringEnum.EMPTY_STRING_PLACEHOLDER
-                }${general?.sms
+            }${
+                general?.sms
                     ? TableStringEnum.SMS
                     : TableStringEnum.EMPTY_STRING_PLACEHOLDER
-                }`,
-            tabelNotificationPayroll: `${payroll?.mail
-                ? TableStringEnum.EMAIL
-                : TableStringEnum.EMPTY_STRING_PLACEHOLDER
-                }${payroll?.push
+            }`,
+            tabelNotificationPayroll: `${
+                payroll?.mail
+                    ? TableStringEnum.EMAIL
+                    : TableStringEnum.EMPTY_STRING_PLACEHOLDER
+            }${
+                payroll?.push
                     ? TableStringEnum.PUSH
                     : TableStringEnum.EMPTY_STRING_PLACEHOLDER
-                }${payroll?.sms
+            }${
+                payroll?.sms
                     ? TableStringEnum.SMS
                     : TableStringEnum.EMPTY_STRING_PLACEHOLDER
-                }`,
+            }`,
             tabelHired:
                 MethodsCalculationsHelper.convertDateFromBackend(hiredAt),
             tableTerminated:
@@ -1374,7 +1379,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
         }
     }
 
-    public onTableBodyActions(event: TableBodyActions): void {
+    public onTableBodyActions(event: any): void {
         const mappedEvent = {
             ...event,
             data: {
