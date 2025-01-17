@@ -55,9 +55,7 @@ import {
 } from '@shared/components/ta-input/validators/ta-input.regex-validations';
 
 // Components
-import { TaSpinnerComponent } from '@shared/components/ta-spinner/ta-spinner.component';
 import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
-import { TaModalComponent } from '@shared/components/ta-modal/ta-modal.component';
 import { TaTabSwitchComponent } from '@shared/components/ta-tab-switch/ta-tab-switch.component';
 import { TaInputAddressDropdownComponent } from '@shared/components/ta-input-address-dropdown/ta-input-address-dropdown.component';
 import { TaCheckboxComponent } from '@shared/components/ta-checkbox/ta-checkbox.component';
@@ -70,22 +68,28 @@ import { TaUserReviewComponent } from '@shared/components/ta-user-review/ta-user
 import { ConfirmationModalComponent } from '@shared/components/ta-shared-modals/confirmation-modal/confirmation-modal.component';
 import { ConfirmationMoveModalComponent } from '@shared/components/ta-shared-modals/confirmation-move-modal/confirmation-move-modal.component';
 import { TaModalTableComponent } from '@shared/components/ta-modal-table/ta-modal-table.component';
-import { CaInputComponent, CaInputDropdownComponent } from 'ca-components';
+import { CaInputComponent, CaInputDropdownComponent, CaModalButtonComponent, CaModalComponent } from 'ca-components';
 
 // enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
 import { ConfirmationModalStringEnum } from '@shared/components/ta-shared-modals/confirmation-modal/enums/confirmation-modal-string.enum';
 import { BrokerModalStringEnum } from '@pages/customer/pages/broker-modal/enums/';
 import { ModalTableTypeEnum } from '@shared/enums/modal-table-type.enum';
+import { ModalButtonSize, ModalButtonType } from '@shared/enums';
+import { TaModalActionEnums } from '@shared/components/ta-modal/enums';
 
 // constants
 import { BrokerModalConstants } from '@pages/customer/pages/broker-modal/utils/constants/';
 
 // svg routes
-import { BrokerModalSvgRoutes } from '@pages/customer/pages/broker-modal/utils/svg-routes/';
+import { SharedSvgRoutes } from '@shared/utils/svg-routes';
 
 // models
 import { ReviewComment } from '@shared/models/review-comment.model';
+
+// Pipes
+import { FormatDatePipe } from '@shared/pipes';
+
 import {
     BrokerAvailableCreditResponse,
     BrokerResponse,
@@ -120,7 +124,7 @@ import { BrokerContactExtended } from '@pages/customer/pages/broker-modal/models
 
         // Component
         TaAppTooltipV2Component,
-        TaModalComponent,
+        CaModalComponent,
         TaTabSwitchComponent,
         TaInputAddressDropdownComponent,
         TaCheckboxComponent,
@@ -129,10 +133,13 @@ import { BrokerContactExtended } from '@pages/customer/pages/broker-modal/models
         TaCustomCardComponent,
         TaUserReviewComponent,
         TaInputNoteComponent,
-        TaSpinnerComponent,
         TaModalTableComponent,
         CaInputComponent,
         CaInputDropdownComponent,
+        CaModalButtonComponent,
+
+        // Pipes
+        FormatDatePipe
     ],
 })
 export class BrokerModalComponent implements OnInit, OnDestroy {
@@ -145,8 +152,6 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
     public companyUser: SignInResponse;
 
     public brokerName: string;
-
-    public brokerModalSvgRoutes = BrokerModalSvgRoutes;
 
     public modalTableTypeEnum = ModalTableTypeEnum;
 
@@ -204,6 +209,14 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
     public isNewContactAdded: boolean = false;
     public isEachContactRowValid: boolean = true;
 
+    public taModalActionEnums = TaModalActionEnums;
+    
+    public svgRoutes = SharedSvgRoutes;
+    public activeAction: string;
+
+    public modalButtonType = ModalButtonType;
+    public modalButtonSize = ModalButtonSize;
+    
     constructor(
         // modal
         private ngbActiveModal: NgbActiveModal,
@@ -553,17 +566,19 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
         });
     }
 
-    public onModalAction(data: { action: string; bool: boolean }): void {
+    public onModalAction(action: string): void {
         if (this.isUploadInProgress) return;
 
+        this.activeAction = action;
+
         if (
-            data.action === BrokerModalStringEnum.BFB ||
-            data.action === BrokerModalStringEnum.DNU
+            action === TaModalActionEnums.MOVE_TO_BFB ||
+            action === TaModalActionEnums.MOVE_TO_DNU
         ) {
-            this.selectedDnuOrBfb = data.action;
+            this.selectedDnuOrBfb = action;
 
             // DNU
-            if (data.action === BrokerModalStringEnum.DNU && this.editData) {
+            if (action === TaModalActionEnums.MOVE_TO_DNU && this.editData) {
                 const mappedEvent = {
                     id: this.editData?.id,
                     data: this?.editData?.data,
@@ -589,7 +604,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
                 );
             }
             // BFB
-            if (data.action === BrokerModalStringEnum.BFB && this.editData) {
+            if (action === TaModalActionEnums.MOVE_TO_BFB && this.editData) {
                 const mappedEvent = {
                     id: this.editData?.id,
                     data: this?.editData?.data,
@@ -615,7 +630,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
                 );
             }
         } else {
-            if (data.action === 'close') {
+            if (action === TaModalActionEnums.CLOSE) {
                 if (this.editData?.canOpenModal) {
                     if (this.editData?.key === 'load-modal')
                         this.modalService.setProjectionModal({
@@ -628,12 +643,14 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
                             size: 'small',
                             closing: 'fastest',
                         });
+                } else {
+                    this.ngbActiveModal.close();
                 }
 
                 return;
             }
             // Save And Add New
-            else if (data.action === 'save and add new') {
+            else if (action === TaModalActionEnums.SAVE_AND_ADD_NEW) {
                 if (this.brokerForm.invalid || !this.isFormDirty) {
                     this.inputService.markInvalid(this.brokerForm);
 
@@ -643,12 +660,10 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
 
                 this.addBroker(true);
 
-                this.setModalSpinner('save and add new', true, false);
-
                 this.isAddNewAfterSave = true;
             } else {
                 // Save & Update
-                if (data.action === 'save') {
+                if (action === TaModalActionEnums.SAVE) {
                     if (this.brokerForm.invalid || !this.isFormDirty) {
                         this.inputService.markInvalid(this.brokerForm);
 
@@ -659,22 +674,12 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
 
                     if (this.editData?.type.includes('edit')) {
                         this.updateBroker(this.editData.id);
-
-                        this.setModalSpinner(null, true, false);
                     } else {
                         this.addBroker();
-
-                        this.setModalSpinner(null, true, false);
                     }
                 }
                 // Delete
-                if (data.action === 'delete' && this.editData) {
-                    this.modalService.setModalSpinner({
-                        action: null,
-                        status: false,
-                        close: false,
-                    });
-
+                if (action === TaModalActionEnums.DELETE && this.editData) {
                     this.modalService.openModal(
                         ConfirmationModalComponent,
                         { size: TableStringEnum.DELETE },
@@ -1579,72 +1584,12 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
                             });
                     }
 
+                    this.ngbActiveModal.close();
                     if (this.isAddNewAfterSave) {
-                        this.formService.resetForm(this.brokerForm);
-
-                        this.selectedBillingAddress = null;
-                        this.selectedBillingPoBox = null;
-                        this.selectedPayTerm = null;
-                        this.selectedPhysicalAddress = null;
-                        this.selectedPhysicalPoBox = null;
-
-                        this.brokerForm
-                            .get('isCheckedBillingAddress')
-                            .patchValue(true);
-
-                        this.documents = [];
-                        this.fileModified = false;
-                        this.filesForDelete = [];
-
-                        this.selectedTab = 1;
-
-                        this.tabs = this.tabs.map((item, index) => {
-                            return {
-                                ...item,
-                                checked: index === 0,
-                            };
-                        });
-
-                        this.selectedBillingAddressTab = 5;
-                        this.billingAddressTabs = this.billingAddressTabs.map(
-                            (item, index) => {
-                                return {
-                                    ...item,
-                                    checked: index === 0,
-                                };
-                            }
-                        );
-
-                        this.selectedPhysicalAddressTab = 3;
-                        this.physicalAddressTabs = this.physicalAddressTabs.map(
-                            (item, index) => {
-                                return {
-                                    ...item,
-                                    checked: index === 0,
-                                };
-                            }
-                        );
-
-                        this.brokerForm
-                            .get('creditType')
-                            .patchValue('Unlimited');
-                        this.billingCredit = this.billingCredit.map(
-                            (item, index) => {
-                                return {
-                                    ...item,
-                                    checked: index === 0,
-                                };
-                            }
-                        );
-
-                        this.isAddNewAfterSave = false;
-
-                        this.setModalSpinner('save and add new', false, false);
-
-                        this.isUploadInProgress = false;
-                    } else this.setModalSpinner(null, true, true);
+                        this.modalService.openModal(BrokerModalComponent, {})
+                    } 
                 },
-                error: () => this.setModalSpinner(null, false, false),
+                error: () => this.activeAction = null
             });
     }
 
@@ -1703,9 +1648,9 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
                                 break;
                             }
                         }
-                    } else this.setModalSpinner(null, true, true);
+                    } else   this.ngbActiveModal.close();
                 },
-                error: () => this.setModalSpinner(null, false, false),
+                error: () => this.activeAction = null,
             });
     }
 

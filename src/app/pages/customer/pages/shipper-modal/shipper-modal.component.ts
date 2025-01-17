@@ -83,7 +83,7 @@ import { ConfirmationModalStringEnum } from '@shared/components/ta-shared-modals
 import { ModalTableTypeEnum } from '@shared/enums/modal-table-type.enum';
 
 // svg routes
-import { BrokerModalSvgRoutes } from '@pages/customer/pages/broker-modal/utils/svg-routes/';
+import { SharedSvgRoutes } from '@shared/utils/svg-routes';
 
 // Models
 import {
@@ -142,7 +142,7 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
     public companyUser: SignInResponse;
 
     public modalTableTypeEnum = ModalTableTypeEnum;
-    public brokerModalSvgRoutes = BrokerModalSvgRoutes;
+    public svgRoutes = SharedSvgRoutes;
 
     public selectedTab: number = 1;
     public tabs: Tabs[] = JSON.parse(

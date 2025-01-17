@@ -9,4 +9,6 @@ export enum TaModalActionEnums {
     UPDATE = 'update',
     DEACTIVATE = 'deactivate',
     FINISH_ORDER = 'finish-order',
+    MOVE_TO_DNU = 'move-to-dnu',
+    MOVE_TO_BFB = 'move-to-bfb',
 }
