@@ -1,72 +1,86 @@
 <div class="table-container">
-    <app-ta-table-toolbar
-        #toolbarComponent
-        (toolBarAction)="onToolBarAction($event)"
-        [options]="loadStoreService.tableOptions$ | async"
-        [tableData]="loadStoreService.tableData$ | async"
-        [selectedTab]="selectedTab"
-        [columns]="loadStoreService.columns$ | async"
-        [activeViewMode]="loadStoreService.activeViewMode$ | async"
-        listName="Load"
-    ></app-ta-table-toolbar>
-    @if (loadStoreService.activeViewMode$ | async; as activeViewMode) {
-        @if (activeViewMode === 'List') {
+    @if (
+        {
+            tableOptions: loadStoreService.tableOptions$ | async,
+            tableData: loadStoreService.tableData$ | async,
+            columns: loadStoreService.columns$ | async,
+            viewData: loadStoreService.viewData$ | async,
+            activeTableData: loadStoreService.activeTableData$ | async,
+            activeViewMode: loadStoreService.activeViewMode$ | async,
+        };
+        as store
+    ) {
+        <app-ta-table-toolbar
+            #toolbarComponent
+            (toolBarAction)="onToolBarAction($event)"
+            [options]="store?.tableOptions"
+            [tableData]="store?.tableData"
+            [selectedTab]="selectedTab | lowercase"
+            [columns]="store?.columns"
+            [activeViewMode]="store?.activeViewMode"
+            listName="Load"
+        ></app-ta-table-toolbar>
+
+        @if (store?.activeViewMode === 'List') {
             <app-ta-table-head
-                [options]="loadStoreService.tableOptions$ | async"
-                [viewData]="loadStoreService.viewData$ | async"
-                [columns]="loadStoreService.columns$ | async"
-                [tableData]="loadStoreService.tableData$ | async"
+                [options]="store?.tableOptions"
+                [viewData]="store?.viewData"
+                [columns]="store?.columns"
+                [tableData]="store?.tableData"
                 (headActions)="onTableHeadActions($event)"
             ></app-ta-table-head>
 
             <app-ta-table-body
-                [viewData]="loadStoreService.viewData$ | async"
-                [columns]="loadStoreService.columns$ | async"
-                [options]="loadStoreService.tableOptions$ | async"
-                [selectedTab]="selectedTab"
+                [viewData]="store?.viewData"
+                [columns]="store?.columns"
+                [options]="store?.tableOptions"
+                [selectedTab]="selectedTab | lowercase"
                 (bodyActions)="onTableBodyActions($event)"
-                [tableData]="loadStoreService.tableData$ | async"
+                [tableData]="store?.tableData"
                 (saveValueNote)="saveValueNote($event)"
             ></app-ta-table-body>
         }
         <!-- Cards -->
 
-        @if (activeViewMode === 'Card') {
+        @if (store?.activeViewMode === 'Card') {
             <div class="elements">
                 <app-load-card
                     (bodyActions)="onTableBodyActions($event)"
-                    [viewData]="loadStoreService.viewData$ | async"
+                    [viewData]="store?.viewData"
                     [rows]="rows"
                     [cardTitle]="cardTitle"
                     [cardTitleLink]="cardTitleLink"
-                    [displayRowsFront]="(displayRows$ | async)?.displayRowsFront"
+                    [displayRowsFront]="
+                        (displayRows$ | async)?.displayRowsFront
+                    "
                     [displayRowsBack]="(displayRows$ | async)?.displayRowsBack"
                     [page]="page"
-                    [selectedTab]="selectedTab"
+                    [selectedTab]="selectedTab | lowercase"
                     (saveValueNote)="saveValueNote($event)"
                 ></app-load-card>
 
                 <!-- Show More -->
 
-                @if ({ viewData: loadStoreService.viewData$ | async, activeTableData: loadStoreService.activeTableData$ | async }; as cardData) {
-                    <div
-                        class="show-more-container d-flex align-items-center justify-content-between"
-                        [ngStyle]="{ 'width.px': tableWidth }"
-                    >
-                        <div class="showing ta-font-semi-bold">
-                            {{ cardData?.viewData?.length }} OF
-                            {{ cardData?.activeTableData?.data?.length }}
-                        </div>
-                        @if (cardData?.viewData?.length < cardData?.activeTableData?.data?.length) {
-                            <div
-                                class="show-more ta-font-bold w-fit-content align-items-center d-flex justify-content-between"
-                                (click)="onShowMore()"
-                            >
-                                SHOW MORE
-                            </div>
-                        }
+                <div
+                    class="show-more-container d-flex align-items-center justify-content-between"
+                    [ngStyle]="{ 'width.px': tableWidth }"
+                >
+                    <div class="showing ta-font-semi-bold">
+                        {{ store?.viewData?.length }} OF
+                        {{ store?.activeTableData?.data?.length }}
                     </div>
-                }
+                    @if (
+                        store?.viewData?.length <
+                        store?.activeTableData?.data?.length
+                    ) {
+                        <div
+                            class="show-more ta-font-bold w-fit-content align-items-center d-flex justify-content-between"
+                            (click)="onShowMore()"
+                        >
+                            SHOW MORE
+                        </div>
+                    }
+                </div>
             </div>
         }
     }

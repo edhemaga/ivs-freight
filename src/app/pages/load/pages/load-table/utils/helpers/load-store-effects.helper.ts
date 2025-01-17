@@ -16,7 +16,9 @@ import {
     LoadPossibleStatusesResponse,
     LoadResponse,
     LoadTemplateResponse,
+    UpdateLoadStatusCommand,
 } from 'appcoretruckassist';
+import { ConfirmationActivation } from '@shared/components/ta-shared-modals/confirmation-activation-modal/models';
 
 export class LoadStoreEffectsHelper {
     public static getCreateLoadModalData(
@@ -115,5 +117,22 @@ export class LoadStoreEffectsHelper {
         tableService.sendLoadStatusFilter(
             filterOptionsData
         );
+    }
+
+    public static composeUpdateLoadStatusCommand(param: ConfirmationActivation): UpdateLoadStatusCommand {
+        const { data, newLocation, id } = (param as any) || {};
+        const { nameBack } = data || {};
+        const { address, longLat } = newLocation || {};
+        const { longitude, latitude } = longLat || {};
+
+        const result: UpdateLoadStatusCommand = {
+            id,
+            status: nameBack,
+            repairLocation: address,
+            longitude,
+            latitude,
+        };
+
+        return result;
     }
 }
