@@ -1,11 +1,8 @@
+// store
 import { createReducer, on } from '@ngrx/store';
-
-// appcoretruckassist
-import { CommentResponse, LoadListDto, LoadListResponse, LoadModalResponse, LoadResponse, LoadStatus, LoadStatusResponse, LoadTemplateResponse, TableType } from 'appcoretruckassist';
 
 // models
 import { ILoadState } from '@pages/load/pages/load-table/models/load-state.model';
-import { ILoadGridItem, ILoadTemplateGridItem } from '@pages/load/pages/load-table/models/index';
 
 // actions
 import * as LoadActions from '@pages/load/pages/load-table/store/actions/load.action';
@@ -16,6 +13,7 @@ import { eActiveViewMode, eLoadStatusType } from '@pages/load/pages/load-table/e
 // functions
 import * as Functions from '@pages/load/pages/load-table/utils/functions/load-reducer.functions';
 
+// #region initialState
 export const initialState: ILoadState = {
     data: [],
 
@@ -30,58 +28,18 @@ export const initialState: ILoadState = {
     selectedTab: eLoadStatusType.Active,
     activeViewMode: eActiveViewMode.List
 };
+// #endregion
 
 export const loadReducer = createReducer(
     initialState,
 
 // #region GET
-    on(LoadActions.getLoadsPayload, (state) => {
-        const { data } = state || {};
-        const _data: ILoadGridItem[] = Functions.initializeLoadGridItems(data);
-
-        const result: ILoadState = {
-            ...state,
-            data: _data
-        };
-
-        return result;
-    }),
-    on(LoadActions.getLoadsPayloadSuccess, (state, { data, templateCount, pendingCount, activeCount, closedCount, selectedTab, showMore }) => {
-        const { data: stateData } = state || {};
-        let _data: ILoadGridItem[] = Functions.initializeLoadGridItems(data);
-
-        if (showMore) _data = [...stateData, ..._data];
-
-        const result: ILoadState = { 
-            ...state, 
-            data: _data, 
-            templateCount, 
-            pendingCount, 
-            activeCount, 
-            closedCount, 
-            selectedTab 
-        };
-        
-        return result;
-    }),
+    on(LoadActions.getLoadsPayload, (state) => ({ ...state })),
+    on(LoadActions.getLoadsPayloadSuccess, (state, { data, templateCount, pendingCount, activeCount, closedCount, selectedTab, showMore }) => Functions.getLoadsOrTemplatesPayloadSuccessResult(state, data, templateCount, pendingCount, activeCount, closedCount, selectedTab, showMore)),
     on(LoadActions.getLoadsPayloadError, (state) => ({ ...state })),
 
     on(LoadActions.getTemplatesPayload, (state) => ({ ...state })),
-    on(LoadActions.getTemplatesPayloadSuccess, (state, { data, templateCount, pendingCount, activeCount, closedCount, selectedTab }) => {
-        const _data: ILoadTemplateGridItem[] = Functions.initializeLoadGridItems(data);
-
-        const result: ILoadState = { 
-            ...state, 
-            data: _data, 
-            templateCount, 
-            pendingCount, 
-            activeCount, 
-            closedCount, 
-            selectedTab 
-        };
-        
-        return result;
-    }),
+    on(LoadActions.getTemplatesPayloadSuccess, (state, { data, templateCount, pendingCount, activeCount, closedCount, selectedTab, showMore }) => Functions.getLoadsOrTemplatesPayloadSuccessResult(state, data, templateCount, pendingCount, activeCount, closedCount, selectedTab, showMore)),
     on(LoadActions.getTemplatesPayloadError, (state) => ({ ...state })),
 
     on(LoadActions.getLoadById, (state) => ({ ...state })),
