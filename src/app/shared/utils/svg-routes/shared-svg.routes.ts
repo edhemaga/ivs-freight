@@ -8,4 +8,6 @@ export class SharedSvgRoutes {
     static ADDRESS_ICON = 'assets/svg/common/ic_address.svg';
     static EMAIL_ICON = 'assets/svg/common/ic_email.svg';
     static PLUS_ICON = 'assets/svg/common/ic_plus.svg';
+    static NO_CONTACT_ICON: string = 'assets/svg/common/ic_no_contacts.svg';
+    static NO_REVIEW_ICON: string = 'assets/svg/common/ic_no_review.svg';
 }
