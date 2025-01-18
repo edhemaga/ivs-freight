@@ -4,7 +4,7 @@
     [leftHeaderTemplate]="leftModalContent"
     [footerTemplate]="footerTemplate"
 >
-<div class="new-modal" origin>
+    <div class="new-modal" origin>
         <app-ta-tab-switch
             [tabs]="tabs"
             customClass="mt-0"
@@ -19,7 +19,7 @@
             [ngClass]="{
                 'form-container-mt-12': selectedTab === 1,
                 'form-container-with-card-2': selectedTab === 2,
-                'row-settings-location-additional': selectedTab === 2
+                'row-settings-location-additional': selectedTab === 2,
             }"
         >
             <div
@@ -44,7 +44,7 @@
                     <div
                         class="phone-ext-email-small-modal mb-32"
                         [ngClass]="{
-                            'active-phone-ext': isPhoneExtExist
+                            'active-phone-ext': isPhoneExtExist,
                         }"
                     >
                         <div class="phone-extension">
@@ -65,7 +65,9 @@
                                     position="top"
                                     tooltipBackground="#6c6c6c"
                                 >
-                                    <svg-icon [src]="svgRoutes.PLUS_ICON"></svg-icon>
+                                    <svg-icon
+                                        [src]="svgRoutes.PLUS_ICON"
+                                    ></svg-icon>
                                 </div>
                             </ng-container>
                             <ng-template #phoneExtension>
@@ -111,7 +113,7 @@
                         [withoutToggle]="true"
                         [animationMarginParams]="{
                             marginTop: '0',
-                            marginBottom: '0'
+                            marginBottom: '0',
                         }"
                         [isCardOpen]="!officeForm.get('isOwner').value"
                     >
@@ -201,7 +203,6 @@
             </div>
         </form>
     </div>
-
 </app-ca-modal>
 <ng-template #rightModalContent>
     @if (editData?.type === 'edit') {
@@ -258,7 +259,7 @@
                     text="Save Changes"
                     [isValid]="officeForm.valid && isFormDirty"
                     [type]="modalButtonType.PRIMARY_POSITIVE"
-                    [showSpinner]="activeAction === taModalActionEnums.SAVE"
+                    [isSpinnerShown]="activeAction === taModalActionEnums.SAVE"
                     (click)="onModalAction(taModalActionEnums.SAVE)"
                 >
                 </app-ca-modal-button>
@@ -268,7 +269,7 @@
                 text=" Save and Add New"
                 [isValid]="officeForm.valid && isFormDirty"
                 (click)="onModalAction(taModalActionEnums.SAVE_AND_ADD_NEW)"
-                [showSpinner]="
+                [isSpinnerShown]="
                     activeAction === taModalActionEnums.SAVE_AND_ADD_NEW
                 "
                 [type]="modalButtonType.SECONDARY_POSITIVE"
@@ -278,7 +279,7 @@
                 text="Save"
                 [isValid]="officeForm.valid && isFormDirty"
                 (click)="onModalAction(taModalActionEnums.SAVE)"
-                [showSpinner]="activeAction === taModalActionEnums.SAVE"
+                [isSpinnerShown]="activeAction === taModalActionEnums.SAVE"
                 [type]="modalButtonType.PRIMARY_POSITIVE"
             >
             </app-ca-modal-button>
