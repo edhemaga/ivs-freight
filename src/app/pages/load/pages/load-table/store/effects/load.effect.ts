@@ -6,7 +6,7 @@ import { catchError, exhaustMap, map, of } from 'rxjs';
 
 // services
 import { LoadService as LoadLocalService } from '@shared/services/load.service';
-import { LoadService } from 'appcoretruckassist';
+import { LoadService, UpdateLoadStatusCommand } from 'appcoretruckassist';
 import { CommentsService } from '@shared/services/comments.service';
 import { ModalService } from '@shared/services/modal.service';
 import { TruckassistTableService } from '@shared/services/truckassist-table.service';
@@ -74,7 +74,7 @@ export class LoadEffect {
         this.actions$.pipe(
             ofType(LoadActions.getTemplatesPayload),
             exhaustMap((action) => {
-                const { apiParam } = action || {};
+                const { apiParam, showMore } = action || {};
 
                 return this.loadService.getLoadTemplateList(apiParam).pipe(
                     map((response) => {
@@ -94,6 +94,7 @@ export class LoadEffect {
                             activeCount,
                             closedCount,
                             selectedTab: eLoadStatusType.Template,
+                            showMore
                         });
                     }),
                     catchError((error) =>
@@ -251,13 +252,19 @@ export class LoadEffect {
         this.actions$.pipe(
             ofType(LoadActions.updateLoadStatus),
             exhaustMap((action) => {
-                const { apiParam } = action;
+                const { apiParam, confirmation } = action || {};
+                let _apiParam: UpdateLoadStatusCommand;
 
-                return this.apiLoadService.apiLoadStatusPut(apiParam).pipe(
+                if (confirmation)
+                    _apiParam = LoadStoreEffectsHelper.composeUpdateLoadStatusCommand(confirmation);
+                else
+                    _apiParam = apiParam;
+
+                return this.apiLoadService.apiLoadStatusPut(_apiParam).pipe(
                     map((response) => {
-                        const { id } = apiParam || {};
+                        const { id: loadId } = _apiParam || {};
 
-                        return LoadActions.updateLoadStatusSuccess({ loadId: id, status: response })
+                        return LoadActions.updateLoadStatusSuccess({ loadId, status: response })
                     }),
                     catchError((error) => of(LoadActions.updateLoadStatusError({ error })))
                 )

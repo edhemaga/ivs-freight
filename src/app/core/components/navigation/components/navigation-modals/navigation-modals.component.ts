@@ -18,6 +18,7 @@ import { NavigationDataConstants } from '@core/components/navigation/utils/const
 // services
 import { NavigationService } from '@core/components/navigation/services/navigation.service';
 import { ModalService } from '@shared/services/modal.service';
+import { LoadStoreService } from '@pages/load/pages/load-table/services/load-store.service';
 
 // components
 import { DriverModalComponent } from '@pages/driver/pages/driver-modals/driver-modal/driver-modal.component';
@@ -42,7 +43,6 @@ import { DriverDrugAlcoholTestModalComponent } from '@pages/driver/pages/driver-
 import { PayrollDeductionModalComponent } from '@pages/accounting/pages/payroll/payroll-modals/payroll-deduction-modal/payroll-deduction-modal.component';
 import { PayrollBonusModalComponent } from '@pages/accounting/pages/payroll/payroll-modals/payroll-bonus-modal/payroll-bonus-modal.component';
 import { PayrollCreditBonusComponent } from '@pages/accounting/pages/payroll/payroll-modals/payroll-credit-bonus/payroll-credit-bonus.component';
-import { LoadModalComponent } from '@pages/load/pages/load-modal/load-modal.component';
 import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
 
 @Component({
@@ -93,7 +93,8 @@ export class NavigationModalsComponent {
 
     constructor(
         private modalService: ModalService,
-        private navigationService: NavigationService
+        private navigationService: NavigationService,
+        private loadStoreService: LoadStoreService
     ) {}
     public OpenMainModal(openClose: boolean) {
         this.navigationService.onDropdownActivation({
@@ -113,9 +114,7 @@ export class NavigationModalsComponent {
     private openModal(navItem: NavigationModal) {
         switch (navItem.path) {
             case 'load': {
-                this.modalService.openModal(LoadModalComponent, {
-                    size: 'load',
-                });
+                this.loadStoreService.dispatchGetCreateLoadModalData();
                 break;
             }
             case 'driver': {

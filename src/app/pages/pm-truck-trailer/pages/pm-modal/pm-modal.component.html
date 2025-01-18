@@ -31,8 +31,7 @@
         >
             <app-ta-modal-table
                 [tableType]="
-                    editData?.header === 'Truck' ||
-                    editData?.header === 'Edit Truck PM' 
+                    !!editData?.data?.truck
                         ? modalTableTypeEnum.PM_TRUCK
                         : modalTableTypeEnum.PM_TRAILER
                 "

@@ -1,9 +1,10 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
-// Enums
+// enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
 import { ConfirmationModalStringEnum } from '@shared/components/ta-shared-modals/confirmation-modal/enums/confirmation-modal-string.enum';
 import { DropActionsStringEnum } from '@shared/enums/drop-actions-string.enum';
+import { DropdownMenuStringEnum } from '@shared/enums';
 
 @Pipe({
     name: 'confirmationModalText',
@@ -57,7 +58,7 @@ export class ConfirmationModalTextPipe implements PipeTransform {
             textEnd = repairText;
         } else if (template === TableStringEnum.REPAIR_DETAIL) {
             const repairText =
-                subType === TableStringEnum.ORDER
+                subType === DropdownMenuStringEnum.ORDER
                     ? TableStringEnum.REPAIR_ORDER
                     : TableStringEnum.REPAIR_2;
             textEnd = repairText;

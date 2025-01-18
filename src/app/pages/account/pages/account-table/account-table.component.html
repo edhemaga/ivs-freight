@@ -22,7 +22,7 @@
             [columns]="columns"
             [options]="tableOptions"
             [selectedTab]="selectedTab"
-            (bodyActions)="onTableBodyActions($event)"
+            (tableBodyActions)="handleDropdownMenuActions($event, 'account')"
             [tableData]="tableData"
             (saveValueNote)="saveValueNote($event)"
         ></app-ta-table-body>

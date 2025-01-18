@@ -11,7 +11,7 @@
                     'body-active':
                         isCardFlippedCheckInCards.includes(i) ||
                         isAllCardsFlipp,
-                    'body-checked': card.isSelected
+                    'body-checked': card.isSelected,
                 }"
             >
                 <!-- Left side of the card -->
@@ -140,7 +140,7 @@
                                             </div>
                                         </ng-container>
                                         <ng-template #regularText>
-                                            {{ card | cardValue : cardRow }}
+                                            {{ card | cardValue: cardRow }}
                                         </ng-template>
                                     </div>
                                 </div>
@@ -153,12 +153,17 @@
 
                 <div class="card-body-right">
                     <div class="top-side">
-                        <!-- Open dropdown element-->
+                        <!-- Dropdown Menu-->
 
-                        <app-ta-table-card-dropdown-actions
-                            [card]="card"
-                            (bodyActions)="onCardActions($event)"
-                        ></app-ta-table-card-dropdown-actions>
+                        <ca-dropdown-menu
+                            [type]="'dots-menu-type'"
+                            [placement]="'right-top'"
+                            [options]="card.tableDropdownContent"
+                            (dropdownOptionEmitter)="
+                                handleToggleDropdownMenuActions($event, card)
+                            "
+                        >
+                        </ca-dropdown-menu>
 
                         <!-- Note element -->
 
@@ -198,7 +203,7 @@
                                         isCardFlippedCheckInCards.includes(i) ||
                                         isAllCardsFlipp,
                                     'svg-position':
-                                        !isCardFlippedCheckInCards.includes(i)
+                                        !isCardFlippedCheckInCards.includes(i),
                                 }"
                                 customClass="mt-2"
                             >

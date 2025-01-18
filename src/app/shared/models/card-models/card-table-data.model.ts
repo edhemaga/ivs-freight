@@ -203,12 +203,6 @@ export interface TableDropdownContent {
     hasContent: boolean;
 }
 
-export interface dropdownOpen {
-    id: number;
-    data: CardDetails;
-    type: string;
-}
-
 export interface DropdownItem {
     title?: string;
     name?: string;
