@@ -22,6 +22,7 @@ import { NgbActiveModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 // Enums
 import { ShipperModalString } from '@pages/customer/pages/shipper-modal/enums';
+import { ConfirmationActivationStringEnum } from '@shared/components/ta-shared-modals/confirmation-activation-modal/enums/confirmation-activation-string.enum';
 
 // Validators
 import {
@@ -48,6 +49,7 @@ import { ReviewsRatingService } from '@shared/services/reviews-rating.service';
 import { FormService } from '@shared/services/form.service';
 import { AddressService } from '@shared/services/address.service';
 import { ConfirmationService } from '@shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
+import { ConfirmationActivationService } from '@shared/components/ta-shared-modals/confirmation-activation-modal/services/confirmation-activation.service';
 
 // Animations
 import { tabsModalAnimation } from '@shared/animations/tabs-modal.animation';
@@ -56,7 +58,6 @@ import { tabsModalAnimation } from '@shared/animations/tabs-modal.animation';
 import { TaUserReviewComponent } from '@shared/components/ta-user-review/ta-user-review.component';
 import { LoadModalComponent } from '@pages/load/pages/load-modal/load-modal.component';
 import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
-import { TaModalComponent } from '@shared/components/ta-modal/ta-modal.component';
 import { TaTabSwitchComponent } from '@shared/components/ta-tab-switch/ta-tab-switch.component';
 import { TaInputAddressDropdownComponent } from '@shared/components/ta-input-address-dropdown/ta-input-address-dropdown.component';
 import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-custom-card.component';
@@ -70,6 +71,7 @@ import {
     CaModalButtonComponent,
     CaModalComponent,
 } from 'ca-components';
+import { ConfirmationActivationModalComponent } from '@shared/components/ta-shared-modals/confirmation-activation-modal/confirmation-activation-modal.component';
 
 // Helpers
 import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calculations.helper';
@@ -226,6 +228,7 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
         private formService: FormService,
         private addressService: AddressService,
         private confirmationService: ConfirmationService,
+        private confirmationActivationService: ConfirmationActivationService,
         private ngbActiveModal: NgbActiveModal
     ) {}
 
@@ -239,6 +242,8 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
         this.monitorLatAndLong();
 
         this.confirmationSubscribe();
+
+        this.confirmationDeactivationSubscribe();
     }
 
     get isModalValidToSubmit(): boolean {
@@ -282,6 +287,14 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
             'email',
             this.destroy$
         );
+    }
+
+    private confirmationDeactivationSubscribe(): void {
+        this.confirmationActivationService.getConfirmationActivationData$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe(() => {
+                this.ngbActiveModal?.close();
+            });
     }
 
     private confirmationSubscribe(): void {
@@ -358,6 +371,29 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
             this.addShipper(true);
             this.addNewAfterSave = true;
         } else if (action === TaModalActionEnums.CLOSE_BUSINESS) {
+            const mappedEvent = {
+                type: this.editData.data.status
+                    ? TableStringEnum.CLOSE
+                    : TableStringEnum.OPEN,
+            };
+
+            this.modalService.openModal(
+                ConfirmationActivationModalComponent,
+                { size: TableStringEnum.SMALL },
+                {
+                    ...mappedEvent,
+                    data: {
+                        id: this.editData.id,
+                    },
+                    id: this.editData.id,
+                    template: TableStringEnum.INFO,
+                    subType: TableStringEnum.SHIPPER_3,
+                    subTypeStatus: TableStringEnum.BUSINESS,
+                    tableType: ConfirmationActivationStringEnum.SHIPPER_TEXT,
+                    modalTitle: this.editData.data.businessName,
+                    modalSecondTitle: this.editData.data.address?.address,
+                }
+            );
         } else {
             // Save & Update
             if (action === TaModalActionEnums.SAVE) {
