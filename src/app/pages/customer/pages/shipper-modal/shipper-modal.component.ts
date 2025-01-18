@@ -18,7 +18,7 @@ import { Subject, takeUntil, switchMap } from 'rxjs';
 
 // Modules
 import { AngularSvgIconModule } from 'angular-svg-icon';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbActiveModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 // Enums
 import { ShipperModalString } from '@pages/customer/pages/shipper-modal/enums';
@@ -65,7 +65,11 @@ import { TaUploadFilesComponent } from '@shared/components/ta-upload-files/ta-up
 import { TaInputNoteComponent } from '@shared/components/ta-input-note/ta-input-note.component';
 import { ConfirmationModalComponent } from '@shared/components/ta-shared-modals/confirmation-modal/confirmation-modal.component';
 import { TaModalTableComponent } from '@shared/components/ta-modal-table/ta-modal-table.component';
-import { CaInputComponent } from 'ca-components';
+import {
+    CaInputComponent,
+    CaModalButtonComponent,
+    CaModalComponent,
+} from 'ca-components';
 
 // Helpers
 import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calculations.helper';
@@ -81,9 +85,14 @@ import { ShipperModalConfig } from '@pages/customer/pages/shipper-modal/utils/co
 import { TableStringEnum } from '@shared/enums/table-string.enum';
 import { ConfirmationModalStringEnum } from '@shared/components/ta-shared-modals/confirmation-modal/enums/confirmation-modal-string.enum';
 import { ModalTableTypeEnum } from '@shared/enums/modal-table-type.enum';
+import { ModalButtonSize, ModalButtonType } from '@shared/enums';
+import { TaModalActionEnums } from '@shared/components/ta-modal/enums';
 
 // svg routes
 import { SharedSvgRoutes } from '@shared/utils/svg-routes';
+
+// Pipes
+import { FormatDatePipe } from '@shared/pipes';
 
 // Models
 import {
@@ -119,7 +128,7 @@ import { ShipperContactExtended } from '@pages/customer/pages/shipper-modal/mode
 
         // Component
         TaAppTooltipV2Component,
-        TaModalComponent,
+        CaModalComponent,
         TaTabSwitchComponent,
         TaInputAddressDropdownComponent,
         TaCustomCardComponent,
@@ -129,6 +138,10 @@ import { ShipperContactExtended } from '@pages/customer/pages/shipper-modal/mode
         TaUserReviewComponent,
         TaModalTableComponent,
         CaInputComponent,
+        CaModalButtonComponent,
+
+        // Pipes
+        FormatDatePipe,
     ],
 })
 export class ShipperModalComponent implements OnInit, OnDestroy {
@@ -192,6 +205,12 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
     public reviews: any[] = [];
     public previousReviews: any[] = [];
 
+    public taModalActionEnums = TaModalActionEnums;
+
+    public activeAction: string;
+    public modalButtonType = ModalButtonType;
+    public modalButtonSize = ModalButtonSize;
+
     constructor(
         private formBuilder: UntypedFormBuilder,
 
@@ -206,7 +225,8 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
         private reviewRatingService: ReviewsRatingService,
         private formService: FormService,
         private addressService: AddressService,
-        private confirmationService: ConfirmationService
+        private confirmationService: ConfirmationService,
+        private ngbActiveModal: NgbActiveModal
     ) {}
 
     ngOnInit() {
@@ -303,8 +323,10 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
         this.companyUser = JSON.parse(localStorage.getItem('user'));
     }
 
-    public onModalAction(data: { action: string; bool: boolean }) {
-        if (data.action === 'close') {
+    public onModalAction(action: string): void {
+        this.activeAction = action;
+
+        if (action === TaModalActionEnums.CLOSE) {
             switch (this.editData?.key) {
                 case 'load-modal': {
                     this.modalService.setProjectionModal({
@@ -321,52 +343,36 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
                 }
 
                 default: {
+                    this.ngbActiveModal.close();
                     break;
                 }
             }
             return;
         }
         // Save And Add New
-        else if (data.action === 'save and add new') {
+        else if (action === TaModalActionEnums.SAVE_AND_ADD_NEW) {
             if (this.shipperForm.invalid || !this.isFormDirty) {
                 this.inputService.markInvalid(this.shipperForm);
                 return;
             }
-
             this.addShipper(true);
-
-            this.modalService.setModalSpinner({
-                action: 'save and add new',
-                status: true,
-                close: false,
-            });
-
             this.addNewAfterSave = true;
+        } else if (action === TaModalActionEnums.CLOSE_BUSINESS) {
         } else {
             // Save & Update
-            if (data.action === 'save') {
+            if (action === TaModalActionEnums.SAVE) {
                 if (this.shipperForm.invalid || !this.isFormDirty) {
                     this.inputService.markInvalid(this.shipperForm);
                     return;
                 }
                 if (this.editData?.type.includes('edit')) {
                     this.updateShipper(this.editData.id);
-                    this.modalService.setModalSpinner({
-                        action: null,
-                        status: true,
-                        close: false,
-                    });
                 } else {
                     this.addShipper();
-                    this.modalService.setModalSpinner({
-                        action: null,
-                        status: true,
-                        close: false,
-                    });
                 }
             }
             // Delete
-            if (data.action === 'delete' && this.editData) {
+            if (action === TaModalActionEnums.DELETE && this.editData) {
                 this.modalService.openModal(
                     ConfirmationModalComponent,
                     { size: TableStringEnum.DELETE },
@@ -380,12 +386,6 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
                             ConfirmationModalStringEnum.DELETE_SHIPPER,
                     }
                 );
-
-                this.modalService.setModalSpinner({
-                    action: null,
-                    status: true,
-                    close: true,
-                });
             }
         }
     }
@@ -724,8 +724,8 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
                                     this.editData?.openedTab === 'Additional'
                                         ? 2
                                         : this.editData?.openedTab === 'Review'
-                                        ? 3
-                                        : 1,
+                                          ? 3
+                                          : 1,
                             });
 
                             this.isCardAnimationDisabled = true;
@@ -802,56 +802,14 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
                             }
                         }
                     }
+                    this.ngbActiveModal.close();
+
                     if (this.addNewAfterSave) {
-                        this.modalService.setModalSpinner({
-                            action: 'save and add new',
-                            status: false,
-                            close: false,
-                        });
-
-                        this.formService.resetForm(this.shipperForm);
-
-                        this.selectedAddress = null;
-
-                        this.isPhoneExtExist = false;
-
-                        this.shipperForm
-                            .get(
-                                ShipperModalString.SHIPPING_HOURS_SAME_RECEIVING
-                            )
-                            .patchValue(true);
-
-                        this.selectedTab = 1;
-
-                        this.tabs = this.tabs.map((item, index) => {
-                            return {
-                                ...item,
-                                checked: index === 0,
-                            };
-                        });
-
-                        this.isAppointmentShipping = false;
-                        this.isAppointmentReceiving = false;
-
-                        this.documents = [];
-                        this.fileModified = false;
-                        this.filesForDelete = [];
-
-                        this.addNewAfterSave = false;
-                    } else {
-                        this.modalService.setModalSpinner({
-                            action: null,
-                            status: true,
-                            close: true,
-                        });
+                        this.modalService.openModal(ShipperModalComponent, {});
                     }
                 },
                 error: () => {
-                    this.modalService.setModalSpinner({
-                        action: null,
-                        status: false,
-                        close: false,
-                    });
+                    this.activeAction = null;
                 },
             });
     }
@@ -929,21 +887,9 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
                                 break;
                             }
                         }
-                    } else {
-                        this.modalService.setModalSpinner({
-                            action: null,
-                            status: true,
-                            close: true,
-                        });
-                    }
+                    } else this.ngbActiveModal.close();
                 },
-                error: () => {
-                    this.modalService.setModalSpinner({
-                        action: null,
-                        status: false,
-                        close: false,
-                    });
-                },
+                error: () => (this.activeAction = null),
             });
     }
 
@@ -968,19 +914,19 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
                             res.receivingOpenTwentyFourHours
                                 ? null
                                 : res.receivingFrom
-                                ? MethodsCalculationsHelper.convertTimeFromBackend(
-                                      res.receivingFrom
-                                  )
-                                : null,
+                                  ? MethodsCalculationsHelper.convertTimeFromBackend(
+                                        res.receivingFrom
+                                    )
+                                  : null,
                         receivingTo:
                             res.receivingAppointment &&
                             res.receivingOpenTwentyFourHours
                                 ? null
                                 : res.receivingTo
-                                ? MethodsCalculationsHelper.convertTimeFromBackend(
-                                      res.receivingTo
-                                  )
-                                : null,
+                                  ? MethodsCalculationsHelper.convertTimeFromBackend(
+                                        res.receivingTo
+                                    )
+                                  : null,
                         shippingHoursSameReceiving:
                             res.shippingHoursSameReceiving,
                         shippingAppointment: res.shippingAppointment,
@@ -991,19 +937,19 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
                             res.shippingAppointment
                                 ? null
                                 : res.shippingFrom
-                                ? MethodsCalculationsHelper.convertTimeFromBackend(
-                                      res.shippingFrom
-                                  )
-                                : null,
+                                  ? MethodsCalculationsHelper.convertTimeFromBackend(
+                                        res.shippingFrom
+                                    )
+                                  : null,
                         shippingTo:
                             res.shippingHoursSameReceiving &&
                             res.shippingAppointment
                                 ? null
                                 : res.shippingTo
-                                ? MethodsCalculationsHelper.convertTimeFromBackend(
-                                      res.shippingTo
-                                  )
-                                : null,
+                                  ? MethodsCalculationsHelper.convertTimeFromBackend(
+                                        res.shippingTo
+                                    )
+                                  : null,
                         note: res.note,
                         contacts: this.mapContacts(res.shipperContacts, true),
                     });

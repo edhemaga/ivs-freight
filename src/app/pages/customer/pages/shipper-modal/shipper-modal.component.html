@@ -1,17 +1,13 @@
-<app-ta-modal
+<app-ca-modal
     [modalTitle]="
         !editData?.type?.includes('edit') ? 'Add Shipper' : 'Edit Shipper'
     "
-    [editData]="editData"
-    [editName]="shipperName"
-    [isModalValid]="isModalValidToSubmit"
-    [saveAndAddNew]="editData?.type !== 'edit'"
-    [customClass]="'modal-container-M'"
-    [isClickEnabledWhileFormInvalid]="true"
-    [topDivider]="false"
-    (action)="onModalAction($event)"
+    customClass="modal-container-M"
+    [rightHeaderTemplate]="rightModalContent"
+    [leftHeaderTemplate]="leftModalContent"
+    [footerTemplate]="footerTemplate"
 >
-    <div origin>
+    <div class="new-modal" origin>
         <app-ta-tab-switch
             [tabs]="tabs"
             [type]="'type1-modal-popup'"
@@ -25,7 +21,7 @@
             class="form-container"
             [ngClass]="{
                 'tab-2': selectedTab !== 1,
-                'form-container-with-card-2': selectedTab === 2
+                'form-container-with-card-2': selectedTab === 2,
             }"
         >
             <div
@@ -49,7 +45,7 @@
                                     textTransform: 'uppercase',
                                     autoFocus: editData?.type !== 'edit',
                                     minLength: 2,
-                                    maxLength: 64
+                                    maxLength: 64,
                                 }"
                             ></app-ca-input>
                         </div>
@@ -67,7 +63,7 @@
                                         label: 'Phone',
                                         placeholderIcon: 'phone',
                                         mask: '(000) 000-0000',
-                                        maxLength: 14
+                                        maxLength: 14,
                                     }"
                                 ></app-ca-input>
                             </div>
@@ -82,7 +78,7 @@
                                     placeholderIcon: 'email',
                                     minLength: 5,
                                     maxLength: 64,
-                                    textTransform: 'lowercase'
+                                    textTransform: 'lowercase',
                                 }"
                             ></app-ca-input>
                         </div>
@@ -146,7 +142,7 @@
                         [disableAnimation]="isCardAnimationDisabled"
                         [animationMarginParams]="{
                             marginTop: '22px',
-                            marginBottom: '22px'
+                            marginBottom: '22px',
                         }"
                     >
                         <div class="shipper-work-hours">
@@ -186,7 +182,7 @@
                                             shipperForm.get(
                                                 'receivingOpenTwentyFourHours'
                                             ).value,
-                                        customClass: 'datetimeclass'
+                                        customClass: 'datetimeclass',
                                     }"
                                 ></app-ca-input>
                             </div>
@@ -210,7 +206,7 @@
                                             shipperForm.get(
                                                 'receivingOpenTwentyFourHours'
                                             ).value,
-                                        customClass: 'datetimeclass'
+                                        customClass: 'datetimeclass',
                                     }"
                                 ></app-ca-input>
                             </div>
@@ -234,7 +230,7 @@
                         [disableAnimation]="isCardAnimationDisabled"
                         [animationMarginParams]="{
                             marginTop: '18px',
-                            marginBottom: '22px'
+                            marginBottom: '22px',
                         }"
                     >
                         <div class="shipper-work-hours">
@@ -274,7 +270,7 @@
                                             shipperForm.get(
                                                 'shippingOpenTwentyFourHours'
                                             ).value,
-                                        customClass: 'datetimeclass'
+                                        customClass: 'datetimeclass',
                                     }"
                                 ></app-ca-input>
                             </div>
@@ -298,7 +294,7 @@
                                             shipperForm.get(
                                                 'shippingOpenTwentyFourHours'
                                             ).value,
-                                        customClass: 'datetimeclass'
+                                        customClass: 'datetimeclass',
                                     }"
                                 ></app-ca-input>
                             </div>
@@ -352,7 +348,7 @@
                         [hasScrollBodyXAxis]="true"
                         [animationMarginParams]="{
                             marginTop: '10px',
-                            marginBottom: '5px'
+                            marginBottom: '5px',
                         }"
                         (onActionEvent)="addContact()"
                     >
@@ -416,4 +412,103 @@
             </div>
         </form>
     </div>
-</app-ta-modal>
+</app-ca-modal>
+
+<ng-template #rightModalContent>
+    @if (editData?.type === 'edit') {
+        <div
+            ngbTooltip
+            mainTooltip="Added    {{
+                editData?.data?.createdAt | formatDateP
+            }} <br> Edited    {{ editData?.data?.updatedAt | formatDateP }}"
+            tooltipBackground="#424242"
+            position="bottom"
+            class="modal-date-logo"
+        >
+            <svg-icon
+                [src]="svgRoutes.DATE_ICON"
+                class="modal-buttons"
+            ></svg-icon>
+        </div>
+        <div class="modal-date-border"></div>
+    }
+    <div
+        class="d-flex justify-content-center align-items-center modal-close-container"
+        ngbTooltip
+        mainTooltip="Cancel"
+        tooltipBackground="#424242"
+        position="bottom"
+        (click)="onModalAction(taModalActionEnums.CLOSE)"
+    >
+        <svg-icon
+            class="modal-close svg-size-14 svg-fill-muted modal-buttons"
+            [src]="svgRoutes.CLOSE_ICON"
+        ></svg-icon>
+    </div>
+</ng-template>
+
+<ng-template #leftModalContent>
+    @if (shipperName) {
+        <div class="payroll-number text-color-white text-size-14 ta-font-bold">
+            {{ shipperName }}
+        </div>
+    }
+</ng-template>
+
+<ng-template #footerTemplate>
+    <div class="modal-footer modal-footer-payroll">
+        <div class="divider"></div>
+        @if (editData?.type === 'edit') {
+            <div class="d-flex justify-content-between w-full">
+                <div class="d-flex">
+                    <app-ca-modal-button
+                        class="mr-12"
+                        text="Delete"
+                        [size]="modalButtonSize.SMALL"
+                        (click)="onModalAction(taModalActionEnums.DELETE)"
+                        [type]="modalButtonType.SECONDARY_NEGATIVE"
+                    >
+                    </app-ca-modal-button>
+                    <app-ca-modal-button
+                        [type]="modalButtonType.SECONDARY_NEUTRAL"
+                        [size]="modalButtonSize.SMALL"
+                        class="mr-12"
+                        text="Close Business"
+                        (click)="
+                            onModalAction(taModalActionEnums.CLOSE_BUSINESS)
+                        "
+                    >
+                    </app-ca-modal-button>
+                </div>
+                <app-ca-modal-button
+                    [isValid]="isModalValidToSubmit"
+                    [isSpinnerShown]="activeAction === taModalActionEnums.SAVE"
+                    [text]="'Save Changes'"
+                    (click)="onModalAction(taModalActionEnums.SAVE)"
+                    [type]="modalButtonType.PRIMARY_POSITIVE"
+                >
+                </app-ca-modal-button>
+            </div>
+        } @else {
+            <app-ca-modal-button
+                class="mr-12"
+                [isValid]="isModalValidToSubmit"
+                [text]="'Save and Add New'"
+                [isSpinnerShown]="
+                    activeAction === taModalActionEnums.SAVE_AND_ADD_NEW
+                "
+                [type]="modalButtonType.SECONDARY_POSITIVE"
+                (click)="onModalAction(taModalActionEnums.SAVE_AND_ADD_NEW)"
+            >
+            </app-ca-modal-button>
+            <app-ca-modal-button
+                [isValid]="isModalValidToSubmit"
+                [text]="'Save'"
+                [isSpinnerShown]="activeAction === taModalActionEnums.SAVE"
+                [type]="modalButtonType.PRIMARY_POSITIVE"
+                (click)="onModalAction(taModalActionEnums.SAVE)"
+            >
+            </app-ca-modal-button>
+        }
+    </div>
+</ng-template>
