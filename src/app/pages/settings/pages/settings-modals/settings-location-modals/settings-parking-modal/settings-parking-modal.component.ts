@@ -206,7 +206,7 @@ export class SettingsParkingModalComponent implements OnInit, OnDestroy {
     public svgRoutes = SharedSvgRoutes;
     public modalButtonType = ModalButtonType;
     public activeAction!: string;
-    private data: ParkingResponse;
+    public data: ParkingResponse;
 
     constructor(
         private formBuilder: UntypedFormBuilder,
