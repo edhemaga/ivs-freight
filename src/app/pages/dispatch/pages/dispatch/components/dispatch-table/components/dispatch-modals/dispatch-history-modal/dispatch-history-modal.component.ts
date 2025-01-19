@@ -33,7 +33,7 @@ import {
 import { ITaInput } from '@shared/components/ta-input/config/ta-input.config';
 import { CustomPeriodRange } from '@shared/models/custom-period-range.model';
 
-// Svf routes
+// Svg routes
 import { SharedSvgRoutes } from '@shared/utils/svg-routes';
 
 @Component({
