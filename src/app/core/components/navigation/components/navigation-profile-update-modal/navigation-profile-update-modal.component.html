@@ -1,31 +1,20 @@
-<app-ta-modal
+<app-ca-modal
     [modalTitle]="'Profile Update'"
-    [isModalValid]="profileUserForm.valid && isFormDirty"
-    [profileUpdateText]="true"
-    (action)="onModalAction($event)"
+    [rightHeaderTemplate]="rightModalContent"
+    [leftHeaderTemplate]="leftModalContent"
+    [footerTemplate]="footerTemplate"
 >
-    <div origin>
-        <app-ta-tab-switch
-            [tabs]="tabs"
-            (switchClicked)="tabChange($event)"
-            [type]="'type1-modal-popup'"
-        >
-        </app-ta-tab-switch>
-
+    <div origin class="new-modal">
+        <div class="divider divider--dark divider--small"></div>
         <form
             [formGroup]="profileUserForm"
             class="form-container form-container-without-mb"
-            [ngClass]="{ 'tab-2': selectedTab === 2 }"
         >
-            <div
-                class="animation-two-tabs"
-                [@animationTabsModal]="animationObject"
-            >
-                <!-------------------------------- Basic Tab -------------------------------->
-                <div class="m-tab" *ngIf="selectedTab === 1">
+            <div class="animation-two-tabs">
+                <div class="m-tab">
                     <div class="row">
                         <div class="col-6">
-                            <app-ta-input
+                            <app-ca-input
                                 formControlName="firstName"
                                 [inputConfig]="{
                                     name: 'First name',
@@ -34,12 +23,12 @@
                                     isRequired: true,
                                     minLength: 2,
                                     maxLength: 26,
-                                    textTransform: 'capitalize'
+                                    textTransform: 'capitalize',
                                 }"
-                            ></app-ta-input>
+                            ></app-ca-input>
                         </div>
                         <div class="col-6">
-                            <app-ta-input
+                            <app-ca-input
                                 formControlName="lastName"
                                 [inputConfig]="{
                                     name: 'Last name',
@@ -48,14 +37,14 @@
                                     isRequired: true,
                                     minLength: 2,
                                     maxLength: 26,
-                                    textTransform: 'capitalize'
+                                    textTransform: 'capitalize',
                                 }"
-                            ></app-ta-input>
+                            ></app-ca-input>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-5">
-                            <app-ta-input
+                            <app-ca-input
                                 formControlName="phone"
                                 [inputConfig]="{
                                     name: 'Phone',
@@ -63,12 +52,12 @@
                                     label: 'Phone',
                                     placeholderIcon: 'phone',
                                     mask: '(000) 000-0000',
-                                    maxLength: 14
+                                    maxLength: 14,
                                 }"
-                            ></app-ta-input>
+                            ></app-ca-input>
                         </div>
                         <div class="col-7">
-                            <app-ta-input
+                            <app-ca-input
                                 formControlName="email"
                                 [inputConfig]="{
                                     name: 'Email',
@@ -78,9 +67,9 @@
                                     placeholderIcon: 'email',
                                     minLength: 5,
                                     maxLength: 64,
-                                    textTransform: 'lowercase'
+                                    textTransform: 'lowercase',
                                 }"
-                            ></app-ta-input>
+                            ></app-ca-input>
                         </div>
                     </div>
                     <div class="row last-row">
@@ -97,7 +86,7 @@
                                     textTransform: 'capitalize',
                                     dropdownWidthClass: 'w-col-376',
                                     minLength: 6,
-                                    maxLength: 256
+                                    maxLength: 256,
                                 }"
                                 [placeholderType]="'longAddress'"
                                 [activeAddress]="selectedAddress"
@@ -105,7 +94,7 @@
                             ></app-ta-input-address-dropdown>
                         </div>
                         <div class="col-2">
-                            <app-ta-input
+                            <app-ca-input
                                 formControlName="addressUnit"
                                 [inputConfig]="{
                                     name: 'address-unit',
@@ -113,9 +102,9 @@
                                     label: 'Unit #',
                                     textTransform: 'uppercase',
                                     minLength: 1,
-                                    maxLength: 10
+                                    maxLength: 10,
                                 }"
-                            ></app-ta-input>
+                            ></app-ca-input>
                         </div>
                     </div>
 
@@ -129,7 +118,11 @@
                         "
                         [animationMarginParams]="{
                             marginTop: '12px',
-                            marginBottom: '18px'
+                            marginBottom: profileUserForm.get(
+                                'createNewPassword'
+                            ).value
+                                ? '18px'
+                                : '0',
                         }"
                     >
                         <ng-container body>
@@ -137,7 +130,7 @@
                                 *ngIf="!setNewPassword"
                                 class="profile-update-old-password-row"
                             >
-                                <app-ta-input
+                                <app-ca-input
                                     formControlName="oldPassword"
                                     [inputConfig]="{
                                         name: 'Password',
@@ -151,10 +144,10 @@
                                         loadingSpinner: {
                                             size: 'small',
                                             color: 'white',
-                                            isLoading: loadingOldPassword
-                                        }
+                                            isLoading: loadingOldPassword,
+                                        },
                                     }"
-                                ></app-ta-input>
+                                ></app-ca-input>
                                 <p
                                     *ngIf="!userPasswordTyping"
                                     class="old-password-message"
@@ -165,7 +158,7 @@
                                 <div
                                     class="old-password-checkmark"
                                     [ngClass]="{
-                                        valid: correctPassword
+                                        valid: correctPassword,
                                     }"
                                     (click)="onSetNewPassword()"
                                 >
@@ -175,7 +168,7 @@
                             <div *ngIf="setNewPassword">
                                 <div class="row row-no-m">
                                     <div class="col-6">
-                                        <app-ta-input
+                                        <app-ca-input
                                             formControlName="newPassword"
                                             [inputConfig]="{
                                                 name: 'Password',
@@ -185,12 +178,12 @@
                                                 isRequired: true,
                                                 autocomplete: 'off',
                                                 minLength: 8,
-                                                maxLength: 64
+                                                maxLength: 64,
                                             }"
-                                        ></app-ta-input>
+                                        ></app-ca-input>
                                     </div>
                                     <div class="col-6">
-                                        <app-ta-input
+                                        <app-ca-input
                                             formControlName="password"
                                             [inputConfig]="{
                                                 name: 'Password',
@@ -200,24 +193,22 @@
                                                 isRequired: true,
                                                 autocomplete: 'off',
                                                 minLength: 8,
-                                                maxLength: 64
+                                                maxLength: 64,
                                             }"
-                                        ></app-ta-input>
+                                        ></app-ca-input>
                                     </div>
                                 </div>
                             </div>
                         </ng-container>
                     </app-ta-checkbox-card>
-                </div>
-                <!-------------------------------- Additional Tab -------------------------------->
-                <div class="m-tab" *ngIf="selectedTab === 2">
+
                     <app-ta-custom-card
                         [cardName]="'Profile Picture'"
                         [disableAnimation]="disableCardAnimation"
-                        [isCardOpen]="true"
+                        [isCardOpen]="false"
                         [animationMarginParams]="{
                             marginTop: '0px',
-                            marginBottom: '18px'
+                            marginBottom: '0px',
                         }"
                     >
                         <app-ca-upload-files
@@ -250,4 +241,42 @@
             </div>
         </form>
     </div>
-</app-ta-modal>
+</app-ca-modal>
+
+<ng-template #rightModalContent>
+    <div
+        class="d-flex justify-content-center align-items-center modal-close-container"
+        ngbTooltip
+        mainTooltip="Cancel"
+        tooltipBackground="#424242"
+        position="bottom"
+        (click)="onModalAction(taModalActionEnums.CLOSE)"
+    >
+        <svg-icon
+            class="modal-close svg-size-14 svg-fill-muted modal-buttons"
+            [src]="svgRoutes.CLOSE_ICON"
+        ></svg-icon>
+    </div>
+</ng-template>
+
+<ng-template #leftModalContent>
+    @if (displayName) {
+        <div class="payroll-number text-color-white text-size-14 ta-font-bold">
+            {{ displayName }}
+        </div>
+    }
+</ng-template>
+
+<ng-template #footerTemplate>
+    <div class="modal-footer modal-footer-payroll">
+        <div class="divider"></div>
+        <app-ca-modal-button
+            text="Save Changes"
+            [isValid]="profileUserForm.valid && isFormDirty"
+            (click)="onModalAction(taModalActionEnums.SAVE)"
+            [isSpinnerShown]="activeAction === taModalActionEnums.SAVE"
+            [type]="modalButtonType.PRIMARY_POSITIVE"
+        >
+        </app-ca-modal-button>
+    </div>
+</ng-template>
