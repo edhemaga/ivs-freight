@@ -5,7 +5,6 @@
     [footerTemplate]="footerTemplate"
 >
     <div class="new-modal" origin>
-
         <div class="divider divider--small divider--dark"></div>
 
         <form
@@ -44,9 +43,7 @@
                                     [inputConfig]="phoneConfig"
                                 ></app-ca-input>
                             </div>
-                            <ng-container
-                                *ngIf="!isPhoneExtExist; else phoneExtension"
-                            >
+                            @if (!isPhoneExtExist) {
                                 <div
                                     class="extension-field"
                                     (click)="isPhoneExtExist = !isPhoneExtExist"
@@ -59,14 +56,12 @@
                                         [src]="svgRoutes.PLUS_ICON"
                                     ></svg-icon>
                                 </div>
-                            </ng-container>
-                            <ng-template #phoneExtension>
+                            } @else {
                                 <app-ca-input
-                                    *ngIf="isPhoneExtExist"
                                     formControlName="extensionPhone"
                                     [inputConfig]="phoneExtConfig"
                                 ></app-ca-input>
-                            </ng-template>
+                            }
                         </div>
                         <div class="email-field">
                             <app-ca-input
@@ -289,7 +284,7 @@
                     text="Save Changes"
                     [isValid]="parkingForm.valid && isFormDirty"
                     [type]="modalButtonType.PRIMARY_POSITIVE"
-                    [showSpinner]="activeAction === taModalActionEnums.SAVE"
+                    [isSpinnerShown]="activeAction === taModalActionEnums.SAVE"
                     (click)="onModalAction(taModalActionEnums.SAVE)"
                 >
                 </app-ca-modal-button>
@@ -299,7 +294,7 @@
                 text=" Save and Add New"
                 [isValid]="parkingForm.valid && isFormDirty"
                 (click)="onModalAction(taModalActionEnums.SAVE_AND_ADD_NEW)"
-                [showSpinner]="
+                [isSpinnerShown]="
                     activeAction === taModalActionEnums.SAVE_AND_ADD_NEW
                 "
                 [type]="modalButtonType.SECONDARY_POSITIVE"
@@ -309,7 +304,7 @@
                 text="Save"
                 [isValid]="parkingForm.valid && isFormDirty"
                 (click)="onModalAction(taModalActionEnums.SAVE)"
-                [showSpinner]="activeAction === taModalActionEnums.SAVE"
+                [isSpinnerShown]="activeAction === taModalActionEnums.SAVE"
                 [type]="modalButtonType.PRIMARY_POSITIVE"
             >
             </app-ca-modal-button>
