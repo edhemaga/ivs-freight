@@ -205,7 +205,7 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
     public svgRoutes = SharedSvgRoutes;
     public modalButtonType = ModalButtonType;
     public activeAction!: string;
-    data: CompanyOfficeResponse;
+    public data: CompanyOfficeResponse;
 
     constructor(
         private formBuilder: UntypedFormBuilder,
