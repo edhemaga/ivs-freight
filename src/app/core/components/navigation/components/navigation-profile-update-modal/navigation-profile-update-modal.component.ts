@@ -129,8 +129,6 @@ export class NavigationProfileUpdateModalComponent
         this.getUserById();
         this.changeCheckboxDetection();
         this.disableCardAnimation = true;
-
-        console.log(this.svgRoutes);
     }
 
     private createForm() {
