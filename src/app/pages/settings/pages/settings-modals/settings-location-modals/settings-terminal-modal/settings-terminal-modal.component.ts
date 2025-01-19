@@ -6,6 +6,7 @@ import {
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { NgbActiveModal, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { debounceTime, Subject, takeUntil } from 'rxjs';
 
@@ -44,6 +45,8 @@ import { SettingsLocationService } from '@pages/settings/pages/settings-location
 import { ModalService } from '@shared/services/modal.service';
 import { TaInputService } from '@shared/services/ta-input.service';
 import { FormService } from '@shared/services/form.service';
+import { ConfirmationService } from '@shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
+import { DropDownService } from '@shared/services/drop-down.service';
 
 // components
 import { TaTabSwitchComponent } from '@shared/components/ta-tab-switch/ta-tab-switch.component';
@@ -55,6 +58,7 @@ import {
     CaModalButtonComponent,
     CaModalComponent,
 } from 'ca-components';
+import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
 
 // utils
 import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calculations.helper';
@@ -77,12 +81,9 @@ import { SharedSvgRoutes } from '@shared/utils/svg-routes';
 
 // Pipes
 import { FormatDatePipe } from '@shared/pipes';
+
 // Helpers
 import { DropActionNameHelper } from '@shared/utils/helpers';
-import { NgbActiveModal, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
-import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
-import { ConfirmationService } from '@shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
-import { DropDownService } from '@shared/services/drop-down.service';
 
 @Component({
     selector: 'app-settings-terminal-modal',

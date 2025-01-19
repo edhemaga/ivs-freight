@@ -342,19 +342,12 @@
                                         [inputConfig]="phoneConfig"
                                     ></app-ca-input>
                                 </div>
-                                <ng-container
-                                    *ngIf="
-                                        isWarehousePhoneExtExist;
-                                        else showWarehouseAddExtension
-                                    "
-                                >
+                                @if (isWarehousePhoneExtExist) {
                                     <app-ca-input
                                         formControlName="warehouseExtPhone"
                                         [inputConfig]="phoneExtConfig"
                                     ></app-ca-input>
-                                </ng-container>
-
-                                <ng-template #showWarehouseAddExtension>
+                                } @else {
                                     <div
                                         class="extension-field"
                                         (click)="
@@ -369,7 +362,7 @@
                                             [src]="svgRoutes.plus"
                                         ></svg-icon>
                                     </div>
-                                </ng-template>
+                                }
                             </div>
                             <div class="email-field">
                                 <app-ca-input
