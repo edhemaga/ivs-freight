@@ -228,6 +228,7 @@ export class SettingsParkingModalComponent implements OnInit, OnDestroy {
         this.getModalDropdowns();
         this.confirmationActivationSubscribe();
     }
+
     private confirmationActivationSubscribe(): void {
         this.confirmationService.confirmationData$
             .pipe(takeUntil(this.destroy$))

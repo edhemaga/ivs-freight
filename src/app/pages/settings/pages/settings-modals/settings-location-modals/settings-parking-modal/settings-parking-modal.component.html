@@ -43,9 +43,7 @@
                                     [inputConfig]="phoneConfig"
                                 ></app-ca-input>
                             </div>
-                            <ng-container
-                                *ngIf="!isPhoneExtExist; else phoneExtension"
-                            >
+                            @if (!isPhoneExtExist) {
                                 <div
                                     class="extension-field"
                                     (click)="isPhoneExtExist = !isPhoneExtExist"
@@ -58,14 +56,12 @@
                                         [src]="svgRoutes.PLUS_ICON"
                                     ></svg-icon>
                                 </div>
-                            </ng-container>
-                            <ng-template #phoneExtension>
+                            } @else {
                                 <app-ca-input
-                                    *ngIf="isPhoneExtExist"
                                     formControlName="extensionPhone"
                                     [inputConfig]="phoneExtConfig"
                                 ></app-ca-input>
-                            </ng-template>
+                            }
                         </div>
                         <div class="email-field">
                             <app-ca-input
