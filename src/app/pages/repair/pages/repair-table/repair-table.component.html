@@ -24,7 +24,12 @@
             [selectedTab]="selectedTab"
             [tableData]="tableData"
             [actionTemplate]="actionTemplate"
-            (bodyActions)="onTableBodyActions($event)"
+            (tableBodyActions)="
+                handleDropdownMenuActions(
+                    $event,
+                    selectedTab !== 'repair_shop' ? 'repair' : 'repair-shop'
+                )
+            "
         ></app-ta-table-body>
     </ng-container>
 
@@ -59,7 +64,7 @@
                     >
                         <div
                             class="show-more ta-font-bold w-fit-content align-items-center d-flex justify-content-between"
-                            (click)="onShowMore()"
+                            (click)="handleShowMoreAction()"
                         >
                             SHOW MORE
                         </div>
@@ -104,7 +109,7 @@
                             display:
                                 locationFilterOn && latlong?.isShown == false
                                     ? 'none'
-                                    : 'block'
+                                    : 'block',
                         }"
                     ></app-ta-map-list-card>
                 </ng-container>

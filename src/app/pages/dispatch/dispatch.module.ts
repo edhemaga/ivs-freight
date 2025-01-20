@@ -45,6 +45,7 @@ import { DispatchTableStatusComponent } from '@pages/dispatch/pages/dispatch/com
 import {
     CaInputComponent,
     CaInputDropdownComponent,
+    CaModalComponent,
     PickupDeliveryBlockComponent,
     ProgressBarComponent,
 } from 'ca-components';
@@ -138,6 +139,7 @@ import { ResizableDirective } from '@pages/dispatch/pages/dispatch/components/di
 
         CaInputComponent,
         CaInputDropdownComponent,
+        CaModalComponent,
 
         LoadDetailsItemStopsMainComponent,
         LoadStatusStringComponent,

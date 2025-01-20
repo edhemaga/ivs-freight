@@ -8,6 +8,23 @@ import { ITableColummn } from "@shared/models";
 // enums
 import { eLoadStatusType } from "@pages/load/pages/load-table/enums/index";
 
+export const getLoadsOrTemplatesPayloadSuccessResult = function(state: ILoadState, data: ILoadGridItem[] | ILoadTemplateGridItem[], templateCount: number, pendingCount: number, activeCount: number, closedCount: number, selectedTab: eLoadStatusType, showMore?: boolean): ILoadState {
+    const { data: stateData } = state || {};
+    const _data: ILoadGridItem[] | ILoadTemplateGridItem[] = showMore ? [...stateData, ...data] : [...data];
+
+    const result: ILoadState = { 
+        ...state, 
+        data: _data, 
+        templateCount, 
+        pendingCount, 
+        activeCount, 
+        closedCount, 
+        selectedTab 
+    };
+    
+    return result;
+}
+
 export const getLoadByIdSuccessResult = function(state: ILoadState, load: LoadListDto): ILoadState {
     const { data } = state || {};
 

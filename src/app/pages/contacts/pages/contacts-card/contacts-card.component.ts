@@ -1,42 +1,83 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+
 import { Subject, takeUntil } from 'rxjs';
+
+// base classes
+import { ContactsDropdownMenuActionsBase } from '@pages/contacts/base-classes';
+
+// helpers
+import { CardHelper } from '@shared/utils/helpers/card-helper';
+import { DropdownMenuActionsHelper } from '@shared/utils/helpers/dropdown-menu-helpers';
+
+// services
+import { TruckassistTableService } from '@shared/services/truckassist-table.service';
+import { ModalService } from '@shared/services/modal.service';
+import { ContactsService } from '@shared/services/contacts.service';
+
+// enums
+import { DropdownMenuStringEnum } from '@shared/enums';
 
 // models
 import { CardDetails } from '@shared/models/card-models/card-table-data.model';
 import { CardRows } from '@shared/models/card-models/card-rows.model';
-
-// helpers
-import { CardHelper } from '@shared/utils/helpers/card-helper';
-
-// services
-import { TruckassistTableService } from '@shared/services/truckassist-table.service';
+import { DropdownMenuOptionEmit } from '@ca-shared/components/ca-dropdown-menu/models';
+import { CompanyContactResponse } from 'appcoretruckassist';
 
 @Component({
     selector: 'app-contacts-card',
     templateUrl: './contacts-card.component.html',
     styleUrls: ['./contacts-card.component.scss'],
+    providers: [CardHelper],
 })
-export class ContactsCardComponent implements OnInit, OnDestroy {
-    @Input() viewData: CardDetails[];
+export class ContactsCardComponent
+    extends ContactsDropdownMenuActionsBase
+    implements OnInit, OnDestroy
+{
+    @Input() set viewData(value: CardDetails[]) {
+        this._viewData = value;
+    }
 
-    // Card body endpoints
+    // card body endpoints
     @Input() cardTitle: string;
     @Input() rows: number[];
-    @Input() displayRowsFront: CardRows;
-    @Input() displayRowsBack: CardRows;
+    @Input() displayRowsFront: CardRows[];
+    @Input() displayRowsBack: CardRows[];
     @Input() cardTitleLink: string;
 
-    public valueByStringPathInstance = new CardHelper();
+    public destroy$ = new Subject<void>();
+
+    public _viewData: CardDetails[];
 
     public isCardFlippedCheckInCards: number[] = [];
-
-    private destroy$ = new Subject<void>();
     public isAllCardsFlipp: boolean = false;
 
-    constructor(private tableService: TruckassistTableService) {}
+    get viewData() {
+        return this._viewData;
+    }
+
+    constructor(
+        // services
+        protected modalService: ModalService,
+        protected contactsService: ContactsService,
+
+        private tableService: TruckassistTableService,
+
+        // helpers
+        private cardHelper: CardHelper
+    ) {
+        super(modalService, contactsService);
+    }
 
     ngOnInit() {
         this.flipAllCards();
+    }
+
+    public trackCard(item: number): number {
+        return item;
+    }
+
+    public flipCard(index: number): void {
+        this.isCardFlippedCheckInCards = this.cardHelper.flipCard(index);
     }
 
     public flipAllCards(): void {
@@ -47,26 +88,36 @@ export class ContactsCardComponent implements OnInit, OnDestroy {
             });
     }
 
-    // When checkbox is selected
     public onCheckboxSelect(index: number, card: CardDetails): void {
-        this.viewData[index].isSelected = !this.viewData[index].isSelected;
+        this._viewData[index].isSelected = !this._viewData[index].isSelected;
 
-        const checkedCard = this.valueByStringPathInstance.onCheckboxSelect(
-            index,
-            card
-        );
+        const checkedCard = this.cardHelper.onCheckboxSelect(index, card);
 
         this.tableService.sendRowsSelected(checkedCard);
     }
 
-    // Flip card based on card index
-    public flipCard(index: number): void {
-        this.isCardFlippedCheckInCards =
-            this.valueByStringPathInstance.flipCard(index);
+    public handleToggleDropdownMenuActions(
+        event: DropdownMenuOptionEmit,
+        cardData: CompanyContactResponse
+    ): void {
+        const { type } = event;
+
+        const emitEvent =
+            DropdownMenuActionsHelper.createDropdownMenuActionsEmitEvent(
+                type,
+                cardData
+            );
+
+        this.handleDropdownMenuActions(
+            emitEvent,
+            DropdownMenuStringEnum.CONTACT
+        );
     }
 
-    public trackCard(item: number): number {
-        return item;
+    public handleShowMoreAction(): void {
+        /*    this.backFilterQuery.pageIndex++;
+   
+           this.accountBackFilter(this.backFilterQuery, true); */
     }
 
     ngOnDestroy() {
