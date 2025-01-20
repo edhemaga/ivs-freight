@@ -6,7 +6,6 @@
 >
     @if (repairShopForm) {
         <div class="new-modal" origin>
-            <div class="divider divider--dark divider--small"></div>
             <app-ta-tab-switch
                 (switchClicked)="tabChange($event)"
                 [tabs]="tabs"
@@ -80,29 +79,30 @@
                                         "
                                     ></app-ca-input>
                                 </div>
-                                <div
-                                    (click)="showPhoneExt = !showPhoneExt"
-                                    *ngIf="!showPhoneExt"
-                                    class="extension-field"
-                                    mainTooltip="Add Extension"
-                                    ngbTooltip
-                                    position="top"
-                                    tooltipBackground="#6c6c6c"
-                                >
-                                    <svg-icon
-                                        [src]="
-                                            repairShopModalSvgRoutes.plusIcon
+                                @if (!showPhoneExt) {
+                                    <div
+                                        (click)="showPhoneExt = !showPhoneExt"
+                                        class="extension-field"
+                                        mainTooltip="Add Extension"
+                                        ngbTooltip
+                                        position="top"
+                                        tooltipBackground="#6c6c6c"
+                                    >
+                                        <svg-icon
+                                            [src]="
+                                                repairShopModalSvgRoutes.plusIcon
+                                            "
+                                            class="svg-size-16 svg-fill-muted"
+                                        ></svg-icon>
+                                    </div>
+                                } @else {
+                                    <app-ca-input
+                                        [inputConfig]="phoneExtInputConfig"
+                                        [formControlName]="
+                                            RepairShopModalStringEnum.PHONE_EXT
                                         "
-                                        class="svg-size-16 svg-fill-muted"
-                                    ></svg-icon>
-                                </div>
-                                <app-ca-input
-                                    *ngIf="showPhoneExt"
-                                    [inputConfig]="phoneExtInputConfig"
-                                    [formControlName]="
-                                        RepairShopModalStringEnum.PHONE_EXT
-                                    "
-                                ></app-ca-input>
+                                    ></app-ca-input>
+                                }
                             </div>
                             <div class="email-field">
                                 <app-ca-input
@@ -136,7 +136,7 @@
                             </div>
                         </div>
 
-                        <ng-container *ngIf="isCompanyRelated">
+                        @if (isCompanyRelated) {
                             <app-ta-checkbox-card
                                 formControlName="companyOwned"
                                 [label]="'Company Owned'"
@@ -172,12 +172,7 @@
                                             ></app-ca-input-dropdown>
                                         </div>
                                         <div class="col-4">
-                                            <ng-container
-                                                *ngIf="
-                                                    isMonthlyPeriodSeleced;
-                                                    else dayPeriod
-                                                "
-                                            >
+                                            @if (isMonthlyPeriodSeleced) {
                                                 <app-ca-input-dropdown
                                                     [canAddNew]="false"
                                                     [inputConfig]="
@@ -200,8 +195,7 @@
                                                         )
                                                     "
                                                 ></app-ca-input-dropdown>
-                                            </ng-container>
-                                            <ng-template #dayPeriod>
+                                            } @else {
                                                 <app-ca-input-dropdown
                                                     [canAddNew]="false"
                                                     [inputConfig]="payDayConfig"
@@ -221,7 +215,7 @@
                                                         )
                                                     "
                                                 ></app-ca-input-dropdown>
-                                            </ng-template>
+                                            }
                                         </div>
                                         <div class="col-4">
                                             <app-ca-input
@@ -234,7 +228,7 @@
                                     </div>
                                 </ng-container>
                             </app-ta-checkbox-card>
-                        </ng-container>
+                        }
 
                         <!-- Repair Shop Services -->
                         <app-ta-custom-card
@@ -244,13 +238,11 @@
                             [disabledCard]="true"
                         >
                             <div class="col-12 service-types">
-                                <ng-container
-                                    *ngIf="
-                                        !!repairShopForm.get(
-                                            RepairShopModalStringEnum.SHOP_SERVICE_TYPE
-                                        ).value
-                                    "
-                                >
+                                @if (
+                                    !!repairShopForm.get(
+                                        RepairShopModalStringEnum.SHOP_SERVICE_TYPE
+                                    ).value
+                                ) {
                                     <app-ta-tab-switch
                                         (switchClicked)="
                                             repairTypeTabChange($event)
@@ -259,7 +251,7 @@
                                         [type]="'type2-modal-popup'"
                                     >
                                     </app-ta-tab-switch>
-                                </ng-container>
+                                }
                             </div>
 
                             <div class="repair-shop-services">
@@ -272,14 +264,12 @@
                                     [ngClass]="{ active: repair.active }"
                                     class="repair-shop-service d-flex align-items-center"
                                 >
-                                    <ng-container
-                                        *ngIf="repair.svg.includes('.svg')"
-                                    >
+                                    @if (repair.svg.includes('.svg')) {
                                         <svg-icon
                                             src="{{ repair.svg }}"
                                             class="d-flex svg-size-14"
                                         ></svg-icon>
-                                    </ng-container>
+                                    }
 
                                     <p class="ta-font-bold text-uppercase">
                                         {{ repair.serviceType }}
@@ -308,9 +298,7 @@
                                         let ind = index
                                     "
                                 >
-                                    <ng-container
-                                        *ngIf="openHour.get('id').value !== 7"
-                                    >
+                                    @if (openHour.get('id').value !== 7) {
                                         <div
                                             (click)="toggleWorkingDay(ind)"
                                             [ngClass]="{
@@ -332,9 +320,10 @@
                                                 }}
                                             </p>
                                         </div>
-                                    </ng-container>
+                                    }
                                 </ng-container>
                             </div>
+
                             <div class="timeline__card">
                                 <div
                                     class="timeline__card-range text-uppercase ta-font-bold"
@@ -378,23 +367,16 @@
                                     "
                                     [formGroupName]="ind"
                                 >
-                                    <ng-container
-                                        *ngIf="
-                                            !!openHour.get('isWorkingDay')
-                                                .value ||
-                                            openHour.get('id').value === 7
-                                        "
-                                    >
+                                    @if (
+                                        !!openHour.get('isWorkingDay').value ||
+                                        openHour.get('id').value === 7
+                                    ) {
                                         <div
                                             class="timeline__card timeline__card-inputs align-items-start"
                                         >
-                                            <ng-container
-                                                *ngIf="
-                                                    openHour.get('id').value !==
-                                                        7;
-                                                    else isHolidayRow
-                                                "
-                                            >
+                                            @if (
+                                                openHour.get('id').value !== 7
+                                            ) {
                                                 <div
                                                     class="ta-font-medium text-color-black text-size-14 timeline__card-day-label d-flex align-items-center"
                                                 >
@@ -404,24 +386,19 @@
                                                         ).value
                                                     }}
                                                 </div>
-                                            </ng-container>
-
-                                            <ng-template #isHolidayRow>
+                                            } @else {
                                                 <app-ta-checkbox
                                                     [formControlName]="
                                                         RepairShopModalStringEnum.IS_WORKING_DAY
                                                     "
                                                     [label]="'Holiday'"
                                                 ></app-ta-checkbox>
-                                            </ng-template>
-
+                                            }
                                             <!-- Iterate over shifts array -->
-                                            <ng-container
-                                                *ngIf="
-                                                    openHour.get('isWorkingDay')
-                                                        .value
-                                                "
-                                            >
+                                            @if (
+                                                openHour.get('isWorkingDay')
+                                                    .value
+                                            ) {
                                                 <div formArrayName="shifts">
                                                     <div
                                                         *ngFor="
@@ -461,13 +438,10 @@
                                                 <div
                                                     class="d-flex align-items-end flex-column timeline__card-icon-plus c-pointer"
                                                 >
-                                                    <ng-container
-                                                        *ngIf="
-                                                            openHour.get(
-                                                                'shifts'
-                                                            ).value.length === 1
-                                                        "
-                                                    >
+                                                    @if (
+                                                        openHour.get('shifts')
+                                                            .value.length === 1
+                                                    ) {
                                                         <div
                                                             mainTooltip="Split Shift"
                                                             tooltipMarginTop="5px"
@@ -496,15 +470,12 @@
                                                                 class="svg-size-14"
                                                             ></svg-icon>
                                                         </div>
-                                                    </ng-container>
+                                                    }
 
-                                                    <ng-container
-                                                        *ngIf="
-                                                            openHour.get(
-                                                                'shifts'
-                                                            ).value.length > 1
-                                                        "
-                                                    >
+                                                    @if (
+                                                        openHour.get('shifts')
+                                                            .value.length > 1
+                                                    ) {
                                                         <div
                                                             mainTooltip="Remove Shift"
                                                             tooltipMarginTop="5px"
@@ -525,11 +496,11 @@
                                                                 class="svg-size-14"
                                                             ></svg-icon>
                                                         </div>
-                                                    </ng-container>
+                                                    }
                                                 </div>
-                                            </ng-container>
+                                            }
                                         </div>
-                                    </ng-container>
+                                    }
                                 </div>
                             </div>
                         </app-ta-custom-card>
@@ -804,7 +775,7 @@
                             </app-ca-upload-files>
                         </app-ta-custom-card>
 
-                        <ng-container *ngIf="!repairShopContacts?.length">
+                        @if (!repairShopContacts?.length) {
                             <div class="no-review-repair-shop">
                                 <svg-icon
                                     class="no-review-svg"
@@ -813,7 +784,7 @@
                                     "
                                 ></svg-icon>
                             </div>
-                        </ng-container>
+                        }
                     </div>
 
                     <div
@@ -843,7 +814,7 @@
                             ></app-ta-user-review>
                         </app-ta-custom-card>
 
-                        <ng-container *ngIf="!reviews.length">
+                        @if (!reviews.length) {
                             <div class="no-review-repair-shop">
                                 <svg-icon
                                     class="no-review-svg"
@@ -852,7 +823,7 @@
                                     "
                                 ></svg-icon>
                             </div>
-                        </ng-container>
+                        }
                     </div>
                 </div>
             </form>
@@ -914,16 +885,16 @@
                         (click)="onModalAction(actionTypesEnum.DELETE)"
                         [type]="modalButtonType.SECONDARY_NEGATIVE"
                     >
-                        
                     </app-ca-modal-button>
                     <app-ca-modal-button
                         [type]="modalButtonType.SECONDARY_NEUTRAL"
-                        [text]="businessStatus === 1
-                        ? 'Close Business'
-                        : 'Open Business'
-               "
+                        [text]="
+                            businessStatus === 1
+                                ? 'Close Business'
+                                : 'Open Business'
+                        "
                         (click)="onModalAction(actionTypesEnum.CLOSE_BUSINESS)"
-                    > 
+                    >
                     </app-ca-modal-button>
                 </div>
                 <app-ca-modal-button
@@ -933,7 +904,6 @@
                     (click)="onModalAction(actionTypesEnum.SAVE)"
                     [type]="modalButtonType.PRIMARY_POSITIVE"
                 >
-                    
                 </app-ca-modal-button>
             </div>
         } @else {
@@ -947,7 +917,6 @@
                 [type]="modalButtonType.SECONDARY_POSITIVE"
                 (click)="onModalAction(actionTypesEnum.SAVE_AND_ADD_NEW)"
             >
-                
             </app-ca-modal-button>
             <app-ca-modal-button
                 [isValid]="isModalValidToSubmit"
