@@ -5,6 +5,7 @@ import { ICreateCommentMetadata, IGetLoadListParam, IGetLoadTemplateParam, ILoad
 import { CommentResponse, CreateCommentCommand, CreateLoadTemplateCommand, DispatcherFilterResponse, LoadListDto, LoadListResponse, LoadModalResponse, LoadResponse, LoadStatusResponse, LoadStatusType, LoadTemplateResponse, RevertLoadStatusCommand, UpdateLoadStatusCommand } from "appcoretruckassist";
 import { Load } from "@pages/load/models";
 import { Column, ICurrentSearchTableData, ITableColummn } from "@shared/models";
+import { ConfirmationActivation } from "@shared/components/ta-shared-modals/confirmation-activation-modal/models";
 
 // constants
 import { LoadStoreConstants } from "@pages/load/pages/load-table/utils/constants/index";
@@ -40,7 +41,7 @@ export const getLoadsPayloadError = createAction(
 // #region loadTemplates
 export const getTemplatesPayload = createAction(
     LoadStoreConstants.ACTION_LOAD_TABLE_COMPONENT_LOAD_TEMPLATES,
-    props<{ apiParam: IGetLoadTemplateParam }>()
+    props<{ apiParam: IGetLoadTemplateParam, showMore?: boolean, onSearch?: ICurrentSearchTableData }>()
 );
 
 export const getTemplatesPayloadSuccess = createAction(
@@ -51,7 +52,8 @@ export const getTemplatesPayloadSuccess = createAction(
         pendingCount: number,
         activeCount: number,
         closedCount: number,
-        selectedTab: eLoadStatusType
+        selectedTab: eLoadStatusType,
+        showMore?: boolean
     }>()
 );
 
@@ -328,7 +330,7 @@ export const saveNote = createAction(
 // #region updateLoadStatus
 export const updateLoadStatus = createAction(
     LoadStoreConstants.ACTION_UPDATE_LOAD_STATUS,
-    props<{ apiParam: UpdateLoadStatusCommand }>()
+    props<{ apiParam: UpdateLoadStatusCommand, confirmation: ConfirmationActivation }>()
 );
 
 export const updateLoadStatusSuccess = createAction(

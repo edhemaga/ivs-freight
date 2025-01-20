@@ -22,7 +22,7 @@
             [columns]="columns"
             [options]="tableOptions"
             [selectedTab]="selectedTab"
-            (bodyActions)="onTableBodyActions($event)"
+            (tableBodyActions)="handleDropdownMenuActions($event, 'contact')"
             [tableData]="tableData"
         ></app-ta-table-body>
     </ng-container>

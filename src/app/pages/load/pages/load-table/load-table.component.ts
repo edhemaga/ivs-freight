@@ -84,17 +84,14 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
     private destroy$ = new Subject<void>();
     private filter: IGetLoadListParam = TableDropdownComponentConstants.FILTER;
-    public selectedTab: string = TableStringEnum.ACTIVE;
+
+    public selectedTab: string = TableStringEnum.ACTIVE_2;
     public resizeObserver: ResizeObserver;
-
     public loadingPage: boolean = false;
-
     public cardTitleLink: string = TableStringEnum.LOAD_DETAILS;
-
     public cardTitle: string;
     public sendDataToCardsFront: CardRows[];
     public sendDataToCardsBack: CardRows[];
-
     public displayRows$: Observable<any>; //leave this as any for now
 
     constructor(
@@ -143,11 +140,8 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
         this.tableService.currentSetTableFilter
             .pipe(takeUntil(this.destroy$))
             .subscribe((res) => {
-                const selectedTabCapitalized = LoadTableHelper.capitalizeFirstLetter(
-                    this.selectedTab
-                );
                 const selectedtab: eLoadStatusType =
-                    eLoadStatusType[selectedTabCapitalized];
+                    eLoadStatusType[this.selectedTab];
                 const { ...params } = filter || {};
 
                 switch (res?.filterType) {
@@ -233,12 +227,12 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
             const { field } = tabData || {};
             const selectedTab = LoadTableHelper.capitalizeFirstLetter(field);
 
-            this.selectedTab = field;
+            this.selectedTab = selectedTab;
             this.toolbarComponent?.flipCards(false);
 
             this.filter = {
                 ...params,
-                statusType: eLoadStatusType[selectedTab],
+                statusType: eLoadStatusType[this.selectedTab],
                 pageIndex: 1,
                 pageSize: 25,
             };
@@ -266,15 +260,12 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
         if (action === TableStringEnum.SORT) {
             const { ...params } = this.filter || {};
             const { direction, sortOrder, sortBy } = event || {};
-            const selectedTab: string = LoadTableHelper.capitalizeFirstLetter(
-                this.selectedTab
-            );
 
             if (direction) {
                 const statusType: number | null =
-                    eLoadStatusType[selectedTab] === eLoadStatusType.Template
+                    eLoadStatusType[this.selectedTab] === eLoadStatusType.Template
                         ? null
-                        : eLoadStatusType[selectedTab];
+                        : eLoadStatusType[this.selectedTab];
 
                 this.filter = {
                     ...params,
@@ -293,7 +284,7 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
             this.loadStoreService.dispatchGetList(
                 this.filter,
-                eLoadStatusType[selectedTab]
+                eLoadStatusType[this.selectedTab]
             );
         }
     }
@@ -315,23 +306,23 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
     //TODO: move cards to load store
     public updateCardView(): void {
         switch (this.selectedTab) {
-            case TableStringEnum.ACTIVE:
+            case TableStringEnum.ACTIVE_2:
                 this.displayRows$ = this.store.pipe(
                     select(selectActiveTabCards)
                 );
                 break;
 
-            case TableStringEnum.PENDING:
+            case TableStringEnum.PENDING_2:
                 this.displayRows$ = this.store.pipe(
                     select(selectPendingTabCards)
                 );
                 break;
-            case TableStringEnum.TEMPLATE:
+            case TableStringEnum.TEMPLATE_2:
                 this.displayRows$ = this.store.pipe(
                     select(selectTemplateTabCards)
                 );
                 break;
-            case TableStringEnum.CLOSED:
+            case TableStringEnum.CLOSED_2:
                 this.displayRows$ = this.store.pipe(
                     select(selectClosedTabCards)
                 );
@@ -339,7 +330,7 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
             default:
                 break;
         }
-        this.loadCardsModalService.updateTab(this.selectedTab);
+        this.loadCardsModalService.updateTab(this.selectedTab?.toLowerCase());
     }
 
     public saveValueNote(event: { value: string; id: number }): void {
@@ -495,6 +486,7 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
             .subscribe((confirmationData) => {
                 const { type, template } = confirmationData || {};
 
+                // TODO: move to helper
                 if (type === TableStringEnum.DELETE) {
                     if (template === TableStringEnum.COMMENT) {
                         const { data } = confirmationData || {};
@@ -507,66 +499,28 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     } else {
                         const { id } = confirmationData || {};
 
-                        if (this.selectedTab === TableStringEnum.TEMPLATE)
-                            this.loadStoreService.dispatchDeleteLoadTemplateById(
-                                id
-                            );
-                        else this.loadStoreService.dispatchDeleteLoadById(id);
+                        this.loadStoreService.dispatchDeleteLoadOrTemplateById(id, eLoadStatusType[this.selectedTab]);
                     }
                 } else if (type === TableStringEnum.MULTIPLE_DELETE) {
                     const { array } = confirmationData || {};
 
-                    if (this.selectedTab === TableStringEnum.TEMPLATE)
-                        this.loadStoreService.dispatchDeleteBulkLoadTemplates(
-                            array
-                        );
-                    else this.loadStoreService.dispatchDeleteBulkLoads(array);
+                    this.loadStoreService.dispatchBulkDeleteBulkLoadsOrTemplates(array, eLoadStatusType[this.selectedTab])
                 }
             });
 
         this.confirmationActivationService.getConfirmationActivationData$
             .pipe(
                 takeUntil(this.destroy$),
-                switchMap((confirmationResponse) => {
-                    return this.loadStoreService.viewData$.pipe(
-                        take(1),
-                        map((viewData) => {
-                            return { confirmationResponse, viewData };
-                        })
-                    );
-                })
             )
-            .subscribe((response) => {
-                const { confirmationResponse, viewData } = response || {};
-                const { data, newLocation } = confirmationResponse || {};
-                const { nameBack } = data || {};
-                const { address, longLat } = newLocation || {};
-                const { longitude, latitude } = longLat || {};
-                const updatingItem = viewData.find(
-                    (item) => item.id === confirmationResponse.id
-                );
-                const { id } = updatingItem || {};
-
-                if (!updatingItem) return;
-
-                this.loadStoreService.dispatchUpdateLoadStatus({
-                    id,
-                    status: nameBack,
-                    repairLocation: address,
-                    longitude,
-                    latitude,
-                });
+            .subscribe((confirmationResponse) => {
+                this.loadStoreService.dispatchUpdateloadStatusConfirmation(confirmationResponse);
             });
     }
 
     private getLoadStatusFilter(): void {
-        const selectedTab: string = LoadTableHelper.capitalizeFirstLetter(
-            this.selectedTab
-        );
-
-        if (selectedTab !== TableStringEnum.TEMPLATE_2)
+        if (this.selectedTab !== TableStringEnum.TEMPLATE_2)
             this.loadStoreService.dispatchGetLoadStatusFilter(
-                <LoadStatusType>selectedTab
+                <LoadStatusType>this.selectedTab
             );
     }
 
@@ -608,10 +562,7 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
                         search: eventSearch,
                     } = event || {};
                     const { search, search1, search2 } = this.filter || {};
-                    const selectedTabKey = LoadTableHelper.capitalizeFirstLetter(
-                        this.selectedTab
-                    );
-                    const selectedTab = eLoadStatusType[selectedTabKey];
+                    const selectedTab = eLoadStatusType[this.selectedTab];
                     let _search: string = search;
                     let _search1: string = search1;
                     let _search2: string = search2;
@@ -654,7 +605,7 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe((response) => {
                 if (response.length && !this.loadingPage) {
-                    const modalTitle = this.composeDeleteModalTitle();
+                    const modalTitle = LoadTableHelper.composeDeleteModalTitle(this.selectedTab);
 
                     const mappedRes = response.map((item) => {
                         return {
@@ -663,7 +614,7 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
                                 ...item.tableData,
                                 name:
                                     this.selectedTab ===
-                                    TableStringEnum.TEMPLATE
+                                    TableStringEnum.TEMPLATE_2
                                         ? item.tableData.name
                                         : item.tableData?.fullName,
                             },
@@ -678,7 +629,7 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
                             array: mappedRes,
                             template: TableStringEnum.LOAD,
                             type: TableStringEnum.MULTIPLE_DELETE,
-                            subType: this.selectedTab,
+                            subType: this.selectedTab?.toLowerCase(),
                             modalHeaderTitle: modalTitle,
                         }
                     );
@@ -708,11 +659,8 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
         const { ...params } = this.filter || {};
         const { type } = event || {};
         const { id } = event || {};
-        const selectedTabCapitalized: string = LoadTableHelper.capitalizeFirstLetter(
-            this.selectedTab
-        );
         const selectedTab: eLoadStatusType =
-            eLoadStatusType[selectedTabCapitalized];
+            eLoadStatusType[this.selectedTab];
 
         if (type === TableStringEnum.SHOW_MORE) {
             this.filter = {
@@ -728,7 +676,7 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 true
             );
         } else if (type === TableStringEnum.DELETE) {
-            const modalTitle = this.composeDeleteModalTitle();
+            const modalTitle = LoadTableHelper.composeDeleteModalTitle(this.selectedTab);
 
             this.modalService.openModal(
                 ConfirmationModalComponent,
@@ -737,7 +685,7 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     ...event,
                     type: TableStringEnum.DELETE,
                     template: TableStringEnum.LOAD,
-                    subType: this.selectedTab,
+                    subType: this.selectedTab?.toLowerCase(),
                     modalHeaderTitle: modalTitle,
                 }
             );
@@ -776,8 +724,8 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
                         const { name } = statusValue || {};
 
                         if (
-                            this.selectedTab === TableStringEnum.ACTIVE ||
-                            this.selectedTab === TableStringEnum.CLOSED ||
+                            this.selectedTab === TableStringEnum.ACTIVE_2 ||
+                            this.selectedTab === TableStringEnum.CLOSED_2 ||
                             (name !== TableStringEnum.UNASSIGNED &&
                                 name !== TableStringEnum.BOOKED)
                         ) {
@@ -804,16 +752,6 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     response as LoadListResponse
                 );
             });
-    }
-
-    private composeDeleteModalTitle(): string {
-        const selectedTab = LoadTableHelper.capitalizeFirstLetter(this.selectedTab);
-        let result = `Delete ${selectedTab}`;
-
-        if (eLoadStatusType[selectedTab] !== eLoadStatusType.Template)
-            result = result.concat(` ${TableStringEnum.LOAD_2}`);
-
-        return result;
     }
 
     public ngOnDestroy(): void {

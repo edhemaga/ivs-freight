@@ -1733,7 +1733,7 @@
                                                                 class="d-flex justify-content-center align-items-center ta-font-bold text-size-11 text-color-blue-18 finish-order-action"
                                                                 (click)="
                                                                     onFinishOrder(
-                                                                        row.id
+                                                                        row
                                                                     )
                                                                 "
                                                             >
@@ -4512,7 +4512,7 @@
                                                                 class="d-flex justify-content-center align-items-center ta-font-bold text-size-11 text-color-blue-18 finish-order-action"
                                                                 (click)="
                                                                     onFinishOrder(
-                                                                        row.id
+                                                                        row
                                                                     )
                                                                 "
                                                             >
@@ -6397,7 +6397,20 @@
                                     <ng-container
                                         *ngIf="column.ngTemplate === 'actions'"
                                     >
-                                        <div
+                                        <ca-dropdown-menu
+                                            [type]="'dots-menu-type'"
+                                            [placement]="'right-top'"
+                                            [options]="row.tableDropdownContent"
+                                            (dropdownOptionEmitter)="
+                                                handleToggleDropdownMenuActions(
+                                                    $event,
+                                                    row
+                                                )
+                                            "
+                                        >
+                                        </ca-dropdown-menu>
+
+                                        <!-- <div
                                             class="td-content set-right"
                                             [ngStyle]="{
                                                 width: column.width + 'px',
@@ -6446,7 +6459,7 @@
                                                     }"
                                                 ></svg-icon>
                                             </div>
-                                        </div>
+                                        </div> -->
                                     </ng-container>
                                 </td>
                             </ng-container>
@@ -6527,9 +6540,6 @@
                                         <input
                                             id="inspectin-description-input"
                                             type="text"
-                                            (keyup.enter)="
-                                                onSaveInspectinDescription()
-                                            "
                                             autofocus
                                             [(ngModel)]="
                                                 editInspectinDescriptionText
@@ -6758,7 +6768,7 @@
                                             </app-ta-note>
                                         </div>
 
-                                        <svg-icon
+                                        <!-- <svg-icon
                                             #t2="ngbPopover"
                                             (click)="toggleDropdown(t2, row)"
                                             [autoClose]="true"
@@ -6778,7 +6788,7 @@
                                                 'width.px': '18',
                                                 'height.px': '18',
                                             }"
-                                        ></svg-icon>
+                                        ></svg-icon> -->
                                     </div>
                                 </div>
                             </div>
@@ -6933,7 +6943,7 @@
                 </div>
                 <div
                     class="show-more"
-                    (click)="onShowMore()"
+                    (click)="handleShowMoreClick()"
                     *ngIf="viewData.length < activeTableData.length"
                 >
                     SHOW MORE

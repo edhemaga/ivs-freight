@@ -72,7 +72,7 @@ import { ConfirmationService } from '@shared/components/ta-shared-modals/confirm
 import { SharedSvgRoutes } from '@shared/utils/svg-routes';
 
 // Types
-import { ModalActionType } from '@shared/utils/types';
+import { ModalActionType } from '@shared/types';
 
 @Component({
     selector: 'app-account-modal',
