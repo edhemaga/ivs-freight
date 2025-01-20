@@ -24,9 +24,14 @@ import {
 // Components
 import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
 
-// Const
+// Constants
 import { NavigationDataConstants } from '@core/components/navigation/utils/constants/navigation-data.constants';
-import { NavigationSubRoute, NavigationSubRoutes, Navigation } from '@core/components/navigation/models';
+
+// models
+import {
+    NavigationSubRoutes,
+    Navigation,
+} from '@core/components/navigation/models';
 
 @Component({
     selector: 'app-navigation-subroute',
@@ -39,7 +44,14 @@ import { NavigationSubRoute, NavigationSubRoutes, Navigation } from '@core/compo
         test('test'),
     ],
     standalone: true,
-    imports: [CommonModule, FormsModule, RouterModule, AngularSvgIconModule, NgbModule, TaAppTooltipV2Component],
+    imports: [
+        CommonModule,
+        FormsModule,
+        RouterModule,
+        AngularSvgIconModule,
+        NgbModule,
+        TaAppTooltipV2Component,
+    ],
 })
 export class NavigationSubrouteComponent implements OnChanges {
     @Input() subroute: Navigation;
@@ -83,7 +95,7 @@ export class NavigationSubrouteComponent implements OnChanges {
     }
     public openLinkInNewWindow(route) {
         event.stopPropagation();
-        if( route.constuction ) return;
+        if (route.constuction) return;
         window.open(route, '_blank');
     }
     public isActiveRouteOnReload(route: string): boolean {
@@ -91,9 +103,5 @@ export class NavigationSubrouteComponent implements OnChanges {
             this.isMagicLineActive = true;
         }
         return this.router.url.includes(route);
-    }
-
-    public identity(index: number, item: NavigationSubRoute): string {
-        return item.name;
     }
 }
