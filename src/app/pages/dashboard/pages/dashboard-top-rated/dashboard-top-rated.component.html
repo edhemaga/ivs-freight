@@ -175,14 +175,12 @@
 
                     <!-- List -->
 
-                    <ng-container *ngIf="!isDisplayingPlaceholder">
-                        <ng-container
-                            *ngFor="
-                                let topRatedListItem of topRatedList;
-                                let i = index;
-                                trackBy: trackByIdentity
-                            "
-                        >
+                    @if (!isDisplayingPlaceholder) {
+                        @for (
+                            topRatedListItem of topRatedList;
+                            let i = $index;
+                            track topRatedListItem.id
+                        ) {
                             <div
                                 class="d-flex align-items-center justify-content-between top-rated-item"
                                 placement="bottom"
@@ -210,17 +208,11 @@
                                     handleAddSelectedClick(topRatedListItem, i)
                                 "
                                 (mouseenter)="
-                                    (topRatedListItem.isSelected ||
-                                        (!topRatedListItem.isSelected &&
-                                            !selectedTopRatedList.length &&
-                                            searchValue)) &&
+                                    !topRatedListItem.isSelected &&
                                         handleHoverSelected(i)
                                 "
                                 (mouseleave)="
-                                    (topRatedListItem.isSelected ||
-                                        (!topRatedListItem.isSelected &&
-                                            !selectedTopRatedList.length &&
-                                            searchValue)) &&
+                                    !topRatedListItem.isSelected &&
                                         handleHoverSelected(i, true)
                                 "
                             >
@@ -325,9 +317,8 @@
                                     </div>
                                 </div>
                             </div>
-                        </ng-container>
-                    </ng-container>
-
+                        }
+                    }
                     <!-- Show More -->
 
                     <ng-container *ngIf="!isDisplayingPlaceholder">
@@ -380,6 +371,7 @@
                 <ng-container *ngIf="doughnutChartConfig?.chartData">
                     <app-ca-chart
                         [chartConfig]="doughnutChartConfig"
+                        [selectedIndex]="doughnutChartDataHoveredIndex"
                         (hoveredIndex)="setDoughnutHoveredIndex($event)"
                     >
                     </app-ca-chart>

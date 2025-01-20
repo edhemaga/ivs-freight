@@ -144,6 +144,10 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
     public trackByIdentity = (_: number, item: DropdownItem): string =>
         item.name;
 
+    public trackById(item: TopRatedListItem): number {
+        return item?.id;
+    };
+
     public resetSelectedValues(): void {
         this.selectedTopRatedList = [];
         this.clearSearchValue = true;
@@ -323,11 +327,11 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
 
         this.isShowingMore = false;
 
-        if (this.selectedMainPeriod.name === DashboardStringEnum.CUSTOM) {
+        if (this.selectedMainPeriod.name === DashboardStringEnum.CUSTOM)
             this.getTopRatedListData(this.selectedCustomPeriodRange);
-        } else {
+        else
             this.getTopRatedListData();
-        }
+
     }
 
     public handleShowMoreClick(): void {
@@ -431,7 +435,10 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
     public handleHoverSelected(
         index: number,
         removeHover: boolean = false
-    ): void { }
+    ): void {
+        this.doughnutChartDataHoveredIndex = removeHover ? null : index;
+        // this.doughnutChartConfig.selectedIndex = this.doughnutChartDataHoveredIndex;
+    }
 
     private getConstantData(): void {
         this.topRatedList = [DashboardTopRatedConstants.TOP_RATED_LIST_ITEM];
@@ -638,7 +645,7 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                 this.doughnutCenterLabels =
                     [
                         {
-                            value: `${totalMileagePercentage}%`,
+                            value: `${totalMileagePercentage.toFixed(2)}%`,
                             position: {
                                 top: -14
                             }
@@ -659,13 +666,13 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                             }
                         },
                         {
-                            value: `${(100 - totalMileagePercentage).toFixed(2)}%`,
+                            value: `${((100 - totalMileagePercentage)).toFixed(2)}%`,
                             position: {
                                 top: 14
                             }
                         },
                         {
-                            value: `${allOtherMiles}`,
+                            value: `${allOtherMiles.toFixed(2)}`,
                             fontSize: 14,
                             position: {
                                 top: 14
