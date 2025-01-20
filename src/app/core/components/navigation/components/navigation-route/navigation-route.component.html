@@ -113,9 +113,9 @@
             {{ route.name }}
 
             @if (
-                route.id == activeRouteIdFromLocalStorage &&
+                route.id === activeRouteIdFromLocalStorage &&
                 !activeLinkHighlight &&
-                activeRouteName != 'notifications'
+                activeRouteName !== 'notifications'
             ) {
                 <span
                     class="subroute"
