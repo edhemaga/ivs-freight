@@ -42,6 +42,7 @@ import {
     SubintervalType,
     TimeInterval,
     TopDriverListResponse,
+    TopDriverResponse,
     TopFuelStopListResponse,
     TopRepairShopResponse,
     TopTruckListResponse,
@@ -437,7 +438,6 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
         removeHover: boolean = false
     ): void {
         this.doughnutChartDataHoveredIndex = removeHover ? null : index;
-        // this.doughnutChartConfig.selectedIndex = this.doughnutChartDataHoveredIndex;
     }
 
     private getConstantData(): void {
@@ -688,12 +688,42 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                         },
                     ];
 
-                let chartData: IChartData<IBaseDataset> = ChartHelper.generateDataByDateTime(
-                    driverData.pagination.data,
-                    ChartConfiguration.topDriverConfiguration);
 
-                // if (allOtherMileagePercentage)
-                //     chartData.datasets[0].data = [...[...chartData.datasets[0].data], allOtherMileagePercentage];
+                const takeNumber: number = ChartHelper.takeDoughnutData(driverData.pagination.count);
+
+                let topDrivers: TopDriverResponse[] = [];
+                let others: TopDriverResponse = {
+                    mileagePercentage: 0,
+                    revenuePercentage: 0
+                };
+
+                driverData.pagination.data.forEach((item, index: number) => {
+                    if (index < takeNumber) topDrivers = [...topDrivers, item];
+                    else {
+                        others.mileagePercentage += item.mileagePercentage;
+                        others.revenuePercentage += item.revenuePercentage;
+                    }
+                    if (index === driverData.pagination.data.length - 1) {
+                        others.mileagePercentage += Number(
+                            (
+                                (100 - totalMileagePercentage)
+                            ).toFixed(2));
+                        topDrivers = [
+                            ...topDrivers,
+                            others,
+                        ];
+                    }
+                });
+
+                const chartData: IChartData<IBaseDataset> = ChartHelper.generateDataByDateTime(
+                    topDrivers,
+                    ChartConfiguration.topDriverConfiguration,
+                    null,
+                    this.mainColorsPallete?.
+                        map((color: TopRatedMainColorsPallete, index: number) => {
+                            if (index < takeNumber) return color.code;
+                        })
+                );
 
                 this.doughnutChartConfig = {
                     ...this.doughnutChartConfig,
@@ -745,6 +775,7 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
     }
 
     public setDoughnutHoveredIndex(event: number | null): void {
+        if (event >= ChartHelper.takeDoughnutData(this.topRatedList.length)) return;
         this.doughnutChartDataHoveredIndex = event;
 
         if (event === null) {

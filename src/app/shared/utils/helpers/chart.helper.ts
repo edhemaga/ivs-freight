@@ -18,7 +18,8 @@ export class ChartHelper {
     public static generateDataByDateTime<T>(
         rawData: T[],
         chartTypeProperties: ChartTypeProperty[],
-        timeFilter?: number
+        timeFilter?: number,
+        colors?: string[]
     ): IChartData<IBaseDataset> {
         // If data or configuration is not passed properly do not procede further
         if (!rawData?.length || !chartTypeProperties?.length) return;
@@ -62,18 +63,12 @@ export class ChartHelper {
                     ];
                     break;
                 case ChartTypesStringEnum.DOUGHNUT:
-                    const datasetColors: string[] = [
-                        'rgb(102, 146, 241)',
-                        'rgb(250, 177, 92)',
-                        'rgb(230, 103, 103)',
-                        'rgb(86, 180, 172)',
-                        'rgb(179, 112, 240)',
-                        'rgb(87, 85, 223)',
-                        'rgb(255, 144, 109)',
-                        'rgb(119, 191, 86)',
-                        'rgb(230, 104, 160)',
-                        'rgb(160, 130, 102)'
-                    ];
+                    let datasetColors: string[] = [];
+                    if (colors?.length) {
+                        colors.forEach((color: string) => {
+                            if (color) datasetColors = [...datasetColors, this.hexToRgba(color)]
+                        });
+                    }
                     datasets = [
                         ...datasets,
                         {
@@ -81,7 +76,7 @@ export class ChartHelper {
                             data: [...rawData.map((item: T) => {
                                 return item[property.value] || 0; // For mock purposes replace '|| 0' with '|| Math.random() * 10'; use bigger values for random if needed
                             })],
-                            backgroundColor: [...datasetColors.slice(0, rawData.length), '#CCCCCC']
+                            backgroundColor: [...datasetColors, this.hexToRgba('#cccccc')]
                         },
                     ];
                     break;
@@ -177,5 +172,36 @@ export class ChartHelper {
 
     private static lowerCaseFirstLetter(val: string): string {
         return String(val).charAt(0).toLowerCase() + String(val).slice(1);
+    }
+
+    public static takeDoughnutData(dataLength: number): number {
+        switch (true) {
+            case dataLength <= 10:
+                return 3;
+            case dataLength > 10 && dataLength <= 30:
+                return 5;
+            case dataLength >= 30:
+                return 9;
+            default:
+                return 0;
+        }
+    }
+
+    private static hexToRgba(colorHex: string, opacity: number = 1): string {
+        colorHex = colorHex.replace(/^#/, '');
+
+        if (colorHex.length === 3) {
+            colorHex
+                .split('')
+                .map((char) => char + char)
+                .join('');
+        }
+
+        const bigint = parseInt(colorHex, 16);
+        const red = (bigint >> 16) & 255;
+        const green = (bigint >> 8) & 255;
+        const blue = bigint & 255;
+
+        return `rgba(${red}, ${green}, ${blue}, ${opacity})`;
     }
 }
