@@ -124,17 +124,22 @@ export class BrokerDetailsCardComponent
     public invoiceChartConfig!: IChartConfiguration;
     public invoiceChartLegend!: ChartLegendProperty[];
     public invoiceChartTabs: Tabs[] = ChartHelper.generateTimeTabs();
+    public invoiceLegendTitle!: string;
+    public invoiceLegendHighlightedBackground!: boolean;
 
     public mileageChartData!: BrokerMileageRateResponse;
     public mileageChartConfig!: IChartConfiguration;
     public mileageChartLegendData!: ChartLegendProperty[];
     public mileageChartTabs: Tabs[] = ChartHelper.generateTimeTabs();
+    public mileageLegendTitle!: string;
+    public mileageLegendHighlightedBackground!: boolean;
 
     public paymentChartData!: IBrokerPaymentHistory;
     public paymentChartConfig!: IChartConfiguration;
     public paymentChartLegendData!: ChartLegendProperty[];
     public paymentChartTabs: Tabs[] = ChartHelper.generateTimeTabs();
-
+    public paymentLegendTitle!: string;
+    public paymentLegendHighlightedBackground!: boolean;
     constructor(
         // Store
         private brokerQuery: BrokerQuery,
@@ -272,15 +277,41 @@ export class BrokerDetailsCardComponent
     }
 
     public setMileageLegendOnHover(index: number): void {
+        if (index === null) {
+            this.mileageLegendHighlightedBackground = false;
+            this.mileageLegendTitle = '';
+        }
+        else {
+            this.mileageLegendHighlightedBackground = true;
+            this.mileageLegendTitle = this.mileageChartConfig.chartData.labels[index];
+        }
+
+
         this.mileageChartLegendData =
             ChartLegendConfiguration.mileageLegendConfiguration(this.mileageChartData.brokerMileageRateChartResponse[index]);
     }
 
     public setInvoiceLegendOnHover(index: number): void {
+        if (index === null) {
+            this.invoiceLegendHighlightedBackground = false;
+            this.invoiceLegendTitle = '';
+        }
+        else {
+            this.invoiceLegendHighlightedBackground = true;
+            this.invoiceLegendTitle = this.invoiceChartConfig.chartData.labels[index];
+        }
         this.invoiceChartLegend = ChartLegendConfiguration.invoiceChartLegendConfiguration(this.invoiceChartData.brokerPaidInvoiceChartResponse[index])
     }
 
     public setPaymentHistoryLegendOnHover(index: number): void {
+        if (index === null) {
+            this.paymentLegendHighlightedBackground = false;
+            this.paymentLegendTitle = '';
+        }
+        else {
+            this.paymentLegendHighlightedBackground = true;
+            this.paymentLegendTitle = this.paymentChartConfig.chartData.labels[index];
+        }
         this.paymentChartLegendData = ChartLegendConfiguration.brokerPaymentHistory(this.paymentChartData.brokerPaymentHistoryChartResponse[index]);
     }
 

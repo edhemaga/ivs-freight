@@ -41,6 +41,8 @@ export class FuelDetailsItemComponent implements OnInit {
     public fuelChartData!: FuelStopExpensesResponse;
     public fuelChartConfig!: IChartConfiguration;
     public fuelChartLegend!: ChartLegendProperty[];
+    public fuelLegendTitle!: string;
+    public fuelLegendHighlightedBackground!: boolean;
 
     public fuelPriceColors: any[] = [
         '#4DB6A2',
@@ -186,6 +188,7 @@ export class FuelDetailsItemComponent implements OnInit {
         this.selectedTab = ev.id;
         this.getFuelExpenses(this.selectedTab);
     }
+
     public dummyDataRep() {
         this.dummyDataFuel = [
             {
@@ -751,7 +754,9 @@ export class FuelDetailsItemComponent implements OnInit {
     }
 
     private getFuelExpenses(timeFilter?: number): void {
-        this.fuelService.getFuelExpensesGet(this.fuelData.id, timeFilter || 1).pipe(takeUntil(this.destroy$))
+        this.fuelService.
+            getFuelExpensesGet(this.fuelData.id, timeFilter || 1).
+            pipe(takeUntil(this.destroy$))
             .subscribe((response: FuelStopExpensesResponse) => {
                 this.fuelChartData = response;
                 this.fuelChartConfig = {
@@ -768,6 +773,14 @@ export class FuelDetailsItemComponent implements OnInit {
     }
 
     public setFuelLegendOnHover(index: number): void {
+        if (index === null) {
+            this.fuelLegendHighlightedBackground = false;
+            this.fuelLegendTitle = '';
+        }
+        else {
+            this.fuelLegendHighlightedBackground = true;
+            this.fuelLegendTitle = this.fuelChartConfig.chartData.labels[index];
+        }
         this.fuelChartLegend = ChartLegendConfiguration
             .fuelExpensesLegend(this.fuelChartData.
                 fuelStopExpensesChartResponse[index]);

@@ -2,7 +2,7 @@
     <app-ta-details-header-card
         [ngClass]="{
             disabedPreviousArrow: truckIndex == 0,
-            disableNextArrow: truckIndex == truck_list.length - 1
+            disableNextArrow: truckIndex == truck_list.length - 1,
         }"
         [cardDetailsDate]="truck.createdAt | formatDateP"
         [tooltipNext]="truckIndex == truck_list.length - 1 ? '' : 'Next Truck'"
@@ -110,7 +110,7 @@
                         </p>
                         <svg-icon
                             [ngClass]="{
-                                'date-details-svg': truck?.color?.code
+                                'date-details-svg': truck?.color?.code,
                             }"
                             src="assets/svg/common/year-truck.svg"
                         ></svg-icon>
@@ -152,7 +152,7 @@
                 [customClass]="'detailsPadding'"
                 [animationMarginParams]="{
                     marginTop: '0px',
-                    marginBottom: '10px'
+                    marginBottom: '10px',
                 }"
             >
                 <div class="assign-to">
@@ -227,7 +227,7 @@
                 [customClass]="'detailsPadding'"
                 [animationMarginParams]="{
                     marginTop: '0px',
-                    marginBottom: '10px'
+                    marginBottom: '10px',
                 }"
             >
                 <div class="common-template">
@@ -549,7 +549,7 @@
                 [customClass]="'detailsPadding'"
                 [animationMarginParams]="{
                     marginTop: '0px',
-                    marginBottom: '10px'
+                    marginBottom: '10px',
                 }"
             >
                 <div class="feature">
@@ -558,13 +558,13 @@
                             <svg-icon
                                 class="icons-details"
                                 [ngClass]="{
-                                    'hide-feature': !truck.doubleBunk
+                                    'hide-feature': !truck.doubleBunk,
                                 }"
                                 src="assets/svg/common/double-bunk.svg"
                             ></svg-icon>
                             <p
                                 [ngClass]="{
-                                    'hide-feature': !truck.doubleBunk
+                                    'hide-feature': !truck.doubleBunk,
                                 }"
                             >
                                 Double Bunk
@@ -575,13 +575,13 @@
                             <svg-icon
                                 class="icons-details"
                                 [ngClass]="{
-                                    'hide-feature': !truck.refrigerator
+                                    'hide-feature': !truck.refrigerator,
                                 }"
                                 src="assets/svg/common/refrigerator.svg"
                             ></svg-icon>
                             <p
                                 [ngClass]="{
-                                    'hide-feature': !truck.refrigerator
+                                    'hide-feature': !truck.refrigerator,
                                 }"
                             >
                                 Refrigerator
@@ -592,13 +592,13 @@
                             <svg-icon
                                 class="icons-details"
                                 [ngClass]="{
-                                    'hide-feature': !truck.blower
+                                    'hide-feature': !truck.blower,
                                 }"
                                 src="assets/svg/common/blower.svg"
                             ></svg-icon>
                             <p
                                 [ngClass]="{
-                                    'hide-feature': !truck.blower
+                                    'hide-feature': !truck.blower,
                                 }"
                             >
                                 Blower
@@ -609,13 +609,13 @@
                             <svg-icon
                                 class="icons-details"
                                 [ngClass]="{
-                                    'hide-feature': !truck.pto
+                                    'hide-feature': !truck.pto,
                                 }"
                                 src="assets/svg/common/pto.svg"
                             ></svg-icon>
                             <p
                                 [ngClass]="{
-                                    'hide-feature': !truck.pto
+                                    'hide-feature': !truck.pto,
                                 }"
                             >
                                 Pto
@@ -628,13 +628,13 @@
                             <svg-icon
                                 class="icons-details"
                                 [ngClass]="{
-                                    'hide-feature': !truck.dashCam
+                                    'hide-feature': !truck.dashCam,
                                 }"
                                 src="assets/svg/common/dash-cam.svg"
                             ></svg-icon>
                             <p
                                 [ngClass]="{
-                                    'hide-feature': !truck.dashCam
+                                    'hide-feature': !truck.dashCam,
                                 }"
                             >
                                 DashCam
@@ -645,13 +645,13 @@
                             <svg-icon
                                 class="icons-details"
                                 [ngClass]="{
-                                    'hide-feature': !truck.headacheRack
+                                    'hide-feature': !truck.headacheRack,
                                 }"
                                 src="assets/svg/common/headache-rack.svg"
                             ></svg-icon>
                             <p
                                 [ngClass]="{
-                                    'hide-feature': !truck.headacheRack
+                                    'hide-feature': !truck.headacheRack,
                                 }"
                             >
                                 Headache Rack
@@ -662,13 +662,13 @@
                             <svg-icon
                                 class="icons-details"
                                 [ngClass]="{
-                                    'hide-feature': !truck.dcInverter
+                                    'hide-feature': !truck.dcInverter,
                                 }"
                                 src="assets/svg/common/dc-Inverter.svg"
                             ></svg-icon>
                             <p
                                 [ngClass]="{
-                                    'hide-feature': !truck.dcInverter
+                                    'hide-feature': !truck.dcInverter,
                                 }"
                             >
                                 DC Inverter
@@ -687,7 +687,7 @@
                 [customClass]="'detailsPadding'"
                 [animationMarginParams]="{
                     marginTop: '0px',
-                    marginBottom: '10px'
+                    marginBottom: '10px',
                 }"
                 (onOpenCard)="onOpenCloseCard($event)"
             >
@@ -751,7 +751,7 @@
                 [customClass]="'detailsPadding'"
                 [animationMarginParams]="{
                     marginTop: '0px',
-                    marginBottom: '10px'
+                    marginBottom: '10px',
                 }"
             >
                 <ng-container *ngIf="isWideScreen; else narrowScreenContent">
@@ -770,7 +770,7 @@
                             <ng-container
                                 *ngFor="
                                     let owHist of truck.ownerHistories
-                                        | keyvalue : sortKeys;
+                                        | keyvalue: sortKeys;
                                     trackBy: identity
                                 "
                             >
@@ -833,7 +833,7 @@
                             <ng-container
                                 *ngFor="
                                     let owHist of truck.ownerHistories
-                                        | keyvalue : sortKeys;
+                                        | keyvalue: sortKeys;
                                     trackBy: identity
                                 "
                             >
@@ -945,9 +945,16 @@
                     <ng-container *ngIf="fuelConsumptionChartConfig?.chartData">
                         <app-ta-chart-legend
                             [data]="fuelConsumptionChartLegend"
+                            [hasHighlightedBackground]="
+                                fuelConsumptionLegendHighlightedBackground
+                            "
+                            [title]="fuelConsumptionLegendTitle"
                         ></app-ta-chart-legend>
                         <app-ca-chart
                             [chartConfig]="fuelConsumptionChartConfig"
+                            (hoveredIndex)="
+                                setFuelConsumptionLegendOnHover($event)
+                            "
                         >
                         </app-ca-chart>
                     </ng-container>
@@ -964,17 +971,26 @@
                 [customClass]="'detailsPadding'"
             >
                 <div class="charts-template perfomance">
-                    <app-ta-tab-switch
-                        [type]="'type2-modal-popup'"
-                        (switchClicked)="changeTabRevenue($event)"
-                        [tabs]="revenueChartTabs"
-                    >
-                    </app-ta-tab-switch>
+                    @if (!revenueLegendHighlightedBackground) {
+                        <app-ta-tab-switch
+                            [type]="'type2-modal-popup'"
+                            (switchClicked)="changeTabRevenue($event)"
+                            [tabs]="revenueChartTabs"
+                        >
+                        </app-ta-tab-switch>
+                    }
                     <ng-container *ngIf="revenueChartConfig?.chartData">
                         <app-ta-chart-legend
                             [data]="revenueChartLegend"
+                            [hasHighlightedBackground]="
+                                revenueLegendHighlightedBackground
+                            "
+                            [title]="revenueLegendTitle"
                         ></app-ta-chart-legend>
-                        <app-ca-chart [chartConfig]="revenueChartConfig">
+                        <app-ca-chart
+                            [chartConfig]="revenueChartConfig"
+                            (hoveredIndex)="setRevenueLegendOnHover($event)"
+                        >
                         </app-ca-chart>
                     </ng-container>
                 </div>
@@ -986,17 +1002,29 @@
                 [isCardOpen]="true"
             >
                 <div class="charts-template perfomance">
-                    <app-ta-tab-switch
-                        [type]="'type2-modal-popup'"
-                        (switchClicked)="changeTabExpenses($event)"
-                        [tabs]="expensesChartChartTabs"
-                    >
-                    </app-ta-tab-switch>
+                    @if (!expensesLegendHighlightedBackground) {
+                        <app-ta-tab-switch
+                            [type]="'type2-modal-popup'"
+                            (switchClicked)="changeTabExpenses($event)"
+                            [tabs]="expensesChartChartTabs"
+                        >
+                        </app-ta-tab-switch>
+                    }
                     <ng-container *ngIf="expensesChartConfig?.chartData">
                         <app-ta-chart-legend
                             [data]="expensesChartChartLegend"
+                            [hasHighlightedBackground]="
+                                expensesLegendHighlightedBackground
+                            "
+                            [title]="expensesLegendTitle"
                         ></app-ta-chart-legend>
-                        <app-ca-chart [chartConfig]="expensesChartConfig">
+                        <app-ca-chart
+                            [chartConfig]="expensesChartConfig"
+                            (hoveredIndex)="
+                                setExpensesRevenueLegendOnHover($event)
+                            "
+                        >
+                            >
                         </app-ca-chart>
                     </ng-container>
                 </div>
@@ -1102,7 +1130,7 @@
                                         class="card-row-progress"
                                         [ngClass]="{
                                             'second-progress':
-                                                toggler[i + 'registration']
+                                                toggler[i + 'registration'],
                                         }"
                                     >
                                         <div
@@ -1178,7 +1206,7 @@
                                         class="card-row-progress"
                                         [ngClass]="{
                                             'second-progress':
-                                                toggler[i + 'inspection']
+                                                toggler[i + 'inspection'],
                                         }"
                                     >
                                         <div
@@ -1274,7 +1302,7 @@
                                         class="card-row-progress"
                                         [ngClass]="{
                                             'second-progress':
-                                                toggler[i + 'title']
+                                                toggler[i + 'title'],
                                         }"
                                     >
                                         <div

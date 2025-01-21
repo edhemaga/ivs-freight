@@ -121,17 +121,23 @@
                 [customClass]="'detailsPadding'"
             >
                 <div class="charts-template perfomance">
-                    <div>
-                        <app-ta-tab-switch
-                            [type]="'type2-modal-popup'"
-                            (switchClicked)="changeInvoiceTab($event)"
-                            [tabs]="invoiceChartTabs"
-                        >
-                        </app-ta-tab-switch>
-                    </div>
+                    @if (!invoiceLegendHighlightedBackground) {
+                        <div>
+                            <app-ta-tab-switch
+                                [type]="'type2-modal-popup'"
+                                (switchClicked)="changeInvoiceTab($event)"
+                                [tabs]="invoiceChartTabs"
+                            >
+                            </app-ta-tab-switch>
+                        </div>
+                    }
                     <ng-container *ngIf="invoiceChartConfig?.chartData">
                         <app-ta-chart-legend
                             [data]="invoiceChartLegend"
+                            [hasHighlightedBackground]="
+                                invoiceLegendHighlightedBackground
+                            "
+                            [title]="invoiceLegendTitle"
                         ></app-ta-chart-legend>
                         <app-ca-chart
                             [chartConfig]="invoiceChartConfig"
@@ -155,18 +161,23 @@
                 [customClass]="'detailsPadding'"
             >
                 <div class="charts-template perfomance">
-                    <div>
-                        <app-ta-tab-switch
-                            [type]="'type2-modal-popup'"
-                            [tabs]="mileageChartTabs"
-                            (switchClicked)="changeMileageTab($event)"
-                        >
-                        </app-ta-tab-switch>
-                    </div>
-
+                    @if (!mileageLegendHighlightedBackground) {
+                        <div>
+                            <app-ta-tab-switch
+                                [type]="'type2-modal-popup'"
+                                [tabs]="mileageChartTabs"
+                                (switchClicked)="changeMileageTab($event)"
+                            >
+                            </app-ta-tab-switch>
+                        </div>
+                    }
                     <ng-container *ngIf="mileageChartConfig?.chartData">
                         <app-ta-chart-legend
                             [data]="mileageChartLegendData"
+                            [hasHighlightedBackground]="
+                                mileageLegendHighlightedBackground
+                            "
+                            [title]="mileageLegendTitle"
                         ></app-ta-chart-legend>
                         <app-ca-chart
                             [chartConfig]="mileageChartConfig"
@@ -438,17 +449,23 @@
                 [customClass]="'detailsPadding'"
             >
                 <div class="charts-template perfomance">
-                    <div>
-                        <app-ta-tab-switch
-                            [type]="'type2-modal-popup'"
-                            [tabs]="paymentChartTabs"
-                            (switchClicked)="changePaymentTab($event)"
-                        >
-                        </app-ta-tab-switch>
-                    </div>
+                    @if (!paymentLegendHighlightedBackground) {
+                        <div>
+                            <app-ta-tab-switch
+                                [type]="'type2-modal-popup'"
+                                [tabs]="paymentChartTabs"
+                                (switchClicked)="changePaymentTab($event)"
+                            >
+                            </app-ta-tab-switch>
+                        </div>
+                    }
                     <ng-container *ngIf="paymentChartConfig?.chartData">
                         <app-ta-chart-legend
                             [data]="paymentChartLegendData"
+                            [hasHighlightedBackground]="
+                                paymentLegendHighlightedBackground
+                            "
+                            [title]="paymentLegendTitle"
                         ></app-ta-chart-legend>
                         <app-ca-chart
                             [chartConfig]="paymentChartConfig"

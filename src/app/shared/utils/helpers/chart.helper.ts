@@ -2,6 +2,7 @@
 import { ChartTypeProperty, Tabs } from '@shared/models';
 import {
     IBaseDataset,
+    IChartCenterLabel,
     IChartData,
 } from 'ca-components/lib/components/ca-chart/models';
 
@@ -180,7 +181,7 @@ export class ChartHelper {
                 return 3;
             case dataLength > 10 && dataLength <= 30:
                 return 5;
-            case dataLength >= 30:
+            case dataLength > 30:
                 return 9;
             default:
                 return 0;
@@ -203,5 +204,57 @@ export class ChartHelper {
         const blue = bigint & 255;
 
         return `rgba(${red}, ${green}, ${blue}, ${opacity})`;
+    }
+
+    public static generateDoughnutCenterLabelData(
+        totalPercentage: number,
+        total: number,
+        count: number,
+        otherCount: number
+    ): IChartCenterLabel[] {
+        return [
+            {
+                value: `${totalPercentage.toFixed(2)}%`,
+                position: {
+                    top: -14
+                }
+            },
+            {
+                value: `${total.toFixed(2)}`,
+                fontSize: 14,
+                position: {
+                    top: -14
+                }
+            },
+            {
+                value: `Top ${count}`,
+                fontSize: 11,
+                color: '#AAAAAA',
+                position: {
+                    top: -14
+                }
+            },
+            {
+                value: `${((100 - totalPercentage)).toFixed(2)}%`,
+                position: {
+                    top: 14
+                }
+            },
+            {
+                value: `${otherCount.toFixed(2)}`,
+                fontSize: 14,
+                position: {
+                    top: 14
+                }
+            },
+            {
+                value: `All others`,
+                fontSize: 11,
+                color: '#AAAAAA',
+                position: {
+                    top: 14
+                }
+            },
+        ];
     }
 }

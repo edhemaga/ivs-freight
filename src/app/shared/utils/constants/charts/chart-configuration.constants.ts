@@ -130,10 +130,49 @@ export class ChartConfiguration {
         },
     ];
 
-    public static topDriverConfiguration: ChartTypeProperty[] = [
+    public static topMileageConfiguration: ChartTypeProperty[] = [
         {
             type: ChartTypesStringEnum.DOUGHNUT,
-            value: 'mileagePercentage'
+            value: ChartValueLabelEnum.MILEAGE_PERCENTAGE
+        }
+    ];
+
+    public static topRevenueConfiguration: ChartTypeProperty[] = [
+        {
+            type: ChartTypesStringEnum.DOUGHNUT,
+            value: ChartValueLabelEnum.REVENUE_PERCENTAGE
+        }
+    ];
+
+    public static topCostConfiguration: ChartTypeProperty[] = [
+        {
+            type: ChartTypesStringEnum.DOUGHNUT,
+            value: ChartValueLabelEnum.COST_PERCENTAGE
         }
     ]
+
+    public static topVisitConfiguration: ChartTypeProperty[] = [
+        {
+            type: ChartTypesStringEnum.DOUGHNUT,
+            value: ChartValueLabelEnum.VISIT_PERCENTAGE
+        }
+    ];
+
+    public static topLoadConfiguration: ChartTypeProperty[] = [
+        {
+            type: ChartTypesStringEnum.DOUGHNUT,
+            value: ChartValueLabelEnum.LOAD_PERCENTAGE
+        }
+    ];
+
+    public static shipperAverageWaitingTimeConfiguration: ChartTypeProperty[] = [
+        {
+            type: ChartTypesStringEnum.BAR,
+            value: ChartValueLabelEnum.AVERAGE_PICKUP_TIME
+        },
+        {
+            type: ChartTypesStringEnum.BAR,
+            value: ChartValueLabelEnum.AVERAGE_DELIVERY_TIME
+        }
+    ];
 }
