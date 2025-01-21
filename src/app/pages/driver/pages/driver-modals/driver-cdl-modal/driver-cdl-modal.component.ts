@@ -61,6 +61,9 @@ import { ContactsModalConstants } from '@pages/contacts/pages/contacts-modal/uti
 import { SharedSvgRoutes } from '@shared/utils/svg-routes';
 import { ModalButtonSize, ModalButtonType } from '@shared/enums';
 
+// Pipes
+import { FormatDatePipe } from '@shared/pipes';
+
 @Component({
     selector: 'app-driver-cdl-modal',
     templateUrl: './driver-cdl-modal.component.html',
@@ -85,6 +88,8 @@ import { ModalButtonSize, ModalButtonType } from '@shared/enums';
         CaUploadFilesComponent,
         CaInputNoteComponent,
         CaModalButtonComponent,
+
+        FormatDatePipe
     ],
 })
 export class DriverCdlModalComponent implements OnInit, OnDestroy {
@@ -125,6 +130,7 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
     public modalButtonType = ModalButtonType;
     public modalButtonSize = ModalButtonSize;
     public activeAction!: string;
+    public data: CdlResponse;
 
     constructor(
         private formBuilder: UntypedFormBuilder,
@@ -481,6 +487,8 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
                         files: files?.length ? JSON.stringify(files) : null,
                         note,
                     });
+
+                    this.data = cdl;
 
                     setTimeout(() => {
                         this.isCardAnimationDisabled = false;
