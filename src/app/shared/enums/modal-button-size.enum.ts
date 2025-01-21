@@ -1,4 +1,4 @@
 export enum ModalButtonSize {
-    SMALL = 'Small',
-    NORMAL = 'Normal',
+    SMALL = 'modal-small',
+    NORMAL = 'modal-normal',
 }
