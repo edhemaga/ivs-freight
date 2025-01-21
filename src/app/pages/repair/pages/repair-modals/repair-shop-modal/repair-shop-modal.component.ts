@@ -1179,7 +1179,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
-                    this.setModalSpinner(true, true);
+                    this.setModalSpinner(true, false);
                 },
                 error: () => {
                     this.setModalSpinner(false, false);

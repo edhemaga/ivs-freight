@@ -255,26 +255,27 @@
                             </div>
 
                             <div class="repair-shop-services">
-                                <div
-                                    *ngFor="
-                                        let repair of services;
-                                        trackBy: identity
-                                    "
-                                    (click)="activeRepairService(repair)"
-                                    [ngClass]="{ active: repair.active }"
-                                    class="repair-shop-service d-flex align-items-center"
-                                >
-                                    @if (repair.svg.includes('.svg')) {
-                                        <svg-icon
-                                            src="{{ repair.svg }}"
-                                            class="d-flex svg-size-14"
-                                        ></svg-icon>
-                                    }
+                                @for (
+                                    repair of services;
+                                    track repair.serviceType
+                                ) {
+                                    <div
+                                        (click)="activeRepairService(repair)"
+                                        [ngClass]="{ active: repair.active }"
+                                        class="repair-shop-service d-flex align-items-center"
+                                    >
+                                        @if (repair.svg.includes('.svg')) {
+                                            <svg-icon
+                                                src="{{ repair.svg }}"
+                                                class="d-flex svg-size-14"
+                                            ></svg-icon>
+                                        }
 
-                                    <p class="ta-font-bold text-uppercase">
-                                        {{ repair.serviceType }}
-                                    </p>
-                                </div>
+                                        <p class="ta-font-bold text-uppercase">
+                                            {{ repair.serviceType }}
+                                        </p>
+                                    </div>
+                                }
                             </div>
                         </app-ta-custom-card>
 
@@ -292,12 +293,13 @@
                             <div
                                 class="repair-shop-services repair-shop-services-large"
                             >
-                                <ng-container
-                                    *ngFor="
-                                        let openHour of openHours.controls;
-                                        let ind = index
-                                    "
-                                >
+                                @for (
+                                    openHour of openHours.controls;
+                                    let ind = $index;
+                                    track openHour.get(
+                                        RepairShopModalStringEnum.DAY_OF_WEEK
+                                    ).value
+                                ) {
                                     @if (openHour.get('id').value !== 7) {
                                         <div
                                             (click)="toggleWorkingDay(ind)"
@@ -321,7 +323,7 @@
                                             </p>
                                         </div>
                                     }
-                                </ng-container>
+                                }
                             </div>
 
                             <div class="timeline__card">
@@ -360,148 +362,156 @@
                                     RepairShopModalStringEnum.OPEN_HOURS
                                 "
                             >
-                                <div
-                                    *ngFor="
-                                        let openHour of openHours.controls;
-                                        let ind = index
-                                    "
-                                    [formGroupName]="ind"
-                                >
-                                    @if (
-                                        !!openHour.get('isWorkingDay').value ||
-                                        openHour.get('id').value === 7
-                                    ) {
-                                        <div
-                                            class="timeline__card timeline__card-inputs align-items-start"
-                                        >
-                                            @if (
-                                                openHour.get('id').value !== 7
-                                            ) {
-                                                <div
-                                                    class="ta-font-medium text-color-black text-size-14 timeline__card-day-label d-flex align-items-center"
-                                                >
-                                                    {{
-                                                        openHour.get(
-                                                            RepairShopModalStringEnum.DAY_OF_WEEK
-                                                        ).value
-                                                    }}
-                                                </div>
-                                            } @else {
-                                                <app-ta-checkbox
-                                                    [formControlName]="
-                                                        RepairShopModalStringEnum.IS_WORKING_DAY
-                                                    "
-                                                    [label]="'Holiday'"
-                                                ></app-ta-checkbox>
-                                            }
-                                            <!-- Iterate over shifts array -->
-                                            @if (
-                                                openHour.get('isWorkingDay')
-                                                    .value
-                                            ) {
-                                                <div formArrayName="shifts">
+                                @for (
+                                    openHour of openHours.controls;
+                                    let ind = $index;
+                                    track openHour.get(
+                                        RepairShopModalStringEnum.DAY_OF_WEEK
+                                    ).value
+                                ) {
+                                    <div [formGroupName]="ind">
+                                        @if (
+                                            !!openHour.get('isWorkingDay')
+                                                .value ||
+                                            openHour.get('id').value === 7
+                                        ) {
+                                            <div
+                                                class="timeline__card timeline__card-inputs align-items-start"
+                                            >
+                                                @if (
+                                                    openHour.get('id').value !==
+                                                    7
+                                                ) {
                                                     <div
-                                                        *ngFor="
-                                                            let shift of openHour.get(
+                                                        class="ta-font-medium text-color-black text-size-14 timeline__card-day-label d-flex align-items-center"
+                                                    >
+                                                        {{
+                                                            openHour.get(
+                                                                RepairShopModalStringEnum.DAY_OF_WEEK
+                                                            ).value
+                                                        }}
+                                                    </div>
+                                                } @else {
+                                                    <app-ta-checkbox
+                                                        [formControlName]="
+                                                            RepairShopModalStringEnum.IS_WORKING_DAY
+                                                        "
+                                                        [label]="'Holiday'"
+                                                    ></app-ta-checkbox>
+                                                }
+                                                <!-- Iterate over shifts array -->
+                                                @if (
+                                                    openHour.get('isWorkingDay')
+                                                        .value
+                                                ) {
+                                                    <div formArrayName="shifts">
+                                                        @for (
+                                                            shift of openHour.get(
                                                                 'shifts'
                                                             ).controls;
-                                                            let shiftInd = index
-                                                        "
-                                                        [formGroupName]="
-                                                            shiftInd
-                                                        "
-                                                        class="timeline__card-shift-grid"
-                                                    >
-                                                        <div
-                                                            class="d-flex flex-column"
-                                                        >
-                                                            <app-ca-input
-                                                                [inputConfig]="
-                                                                    openHoursFormField
+                                                            let shiftInd = $index;
+                                                            track shift
+                                                        ) {
+                                                            <div
+                                                                [formGroupName]="
+                                                                    shiftInd
                                                                 "
-                                                                formControlName="startTime"
-                                                            ></app-ca-input>
-                                                        </div>
-                                                        <div
-                                                            class="d-flex flex-column"
-                                                        >
-                                                            <app-ca-input
-                                                                [inputConfig]="
-                                                                    openHoursFormField
-                                                                "
-                                                                formControlName="endTime"
-                                                            ></app-ca-input>
-                                                        </div>
+                                                                class="timeline__card-shift-grid"
+                                                            >
+                                                                <div
+                                                                    class="d-flex flex-column"
+                                                                >
+                                                                    <app-ca-input
+                                                                        [inputConfig]="
+                                                                            openHoursFormField
+                                                                        "
+                                                                        formControlName="startTime"
+                                                                    ></app-ca-input>
+                                                                </div>
+                                                                <div
+                                                                    class="d-flex flex-column"
+                                                                >
+                                                                    <app-ca-input
+                                                                        [inputConfig]="
+                                                                            openHoursFormField
+                                                                        "
+                                                                        formControlName="endTime"
+                                                                    ></app-ca-input>
+                                                                </div>
+                                                            </div>
+                                                        }
                                                     </div>
-                                                </div>
 
-                                                <div
-                                                    class="d-flex align-items-end flex-column timeline__card-icon-plus c-pointer"
-                                                >
-                                                    @if (
-                                                        openHour.get('shifts')
-                                                            .value.length === 1
-                                                    ) {
-                                                        <div
-                                                            mainTooltip="Split Shift"
-                                                            tooltipMarginTop="5px"
-                                                            ngbTooltip
-                                                            position="bottom"
-                                                            tooltipBackground="#424242"
-                                                        >
-                                                            <svg-icon
-                                                                [src]="
-                                                                    repairShopModalSvgRoutes.plusIcon
-                                                                "
-                                                                [ngClass]="
-                                                                    openHour.get(
-                                                                        'shifts'
-                                                                    ).value
-                                                                        .length >
-                                                                    1
-                                                                        ? 'svg-fill-light-grey-6'
-                                                                        : 'svg-fill-muted svg-hover-black'
-                                                                "
-                                                                (click)="
-                                                                    toggleDoubleWorkingTime(
-                                                                        ind
-                                                                    )
-                                                                "
-                                                                class="svg-size-14"
-                                                            ></svg-icon>
-                                                        </div>
-                                                    }
+                                                    <div
+                                                        class="d-flex align-items-end flex-column timeline__card-icon-plus c-pointer"
+                                                    >
+                                                        @if (
+                                                            openHour.get(
+                                                                'shifts'
+                                                            ).value.length === 1
+                                                        ) {
+                                                            <div
+                                                                mainTooltip="Split Shift"
+                                                                tooltipMarginTop="5px"
+                                                                ngbTooltip
+                                                                position="bottom"
+                                                                tooltipBackground="#424242"
+                                                            >
+                                                                <svg-icon
+                                                                    [src]="
+                                                                        repairShopModalSvgRoutes.plusIcon
+                                                                    "
+                                                                    [ngClass]="
+                                                                        openHour.get(
+                                                                            'shifts'
+                                                                        ).value
+                                                                            .length >
+                                                                        1
+                                                                            ? 'svg-fill-light-grey-6'
+                                                                            : 'svg-fill-muted svg-hover-black'
+                                                                    "
+                                                                    (click)="
+                                                                        toggleDoubleWorkingTime(
+                                                                            ind
+                                                                        )
+                                                                    "
+                                                                    class="svg-size-14"
+                                                                ></svg-icon>
+                                                            </div>
+                                                        }
 
-                                                    @if (
-                                                        openHour.get('shifts')
-                                                            .value.length > 1
-                                                    ) {
-                                                        <div
-                                                            mainTooltip="Remove Shift"
-                                                            tooltipMarginTop="5px"
-                                                            ngbTooltip
-                                                            position="bottom"
-                                                            tooltipBackground="#424242"
-                                                            class="svg-fill-muted svg-hover-black"
-                                                        >
-                                                            <svg-icon
-                                                                [src]="
-                                                                    repairShopModalSvgRoutes.minusIcon
-                                                                "
-                                                                (click)="
-                                                                    toggleDoubleWorkingTime(
-                                                                        ind
-                                                                    )
-                                                                "
-                                                                class="svg-size-14"
-                                                            ></svg-icon>
-                                                        </div>
-                                                    }
-                                                </div>
-                                            }
-                                        </div>
-                                    }
-                                </div>
+                                                        @if (
+                                                            openHour.get(
+                                                                'shifts'
+                                                            ).value.length > 1
+                                                        ) {
+                                                            <div
+                                                                mainTooltip="Remove Shift"
+                                                                tooltipMarginTop="5px"
+                                                                ngbTooltip
+                                                                position="bottom"
+                                                                tooltipBackground="#424242"
+                                                                class="svg-fill-muted svg-hover-black"
+                                                            >
+                                                                <svg-icon
+                                                                    [src]="
+                                                                        repairShopModalSvgRoutes.minusIcon
+                                                                    "
+                                                                    (click)="
+                                                                        toggleDoubleWorkingTime(
+                                                                            ind
+                                                                        )
+                                                                    "
+                                                                    class="svg-size-14"
+                                                                ></svg-icon>
+                                                            </div>
+                                                        }
+                                                    </div>
+                                                }
+                                            </div>
+                                        }
+                                    </div>
+                                }
                             </div>
                         </app-ta-custom-card>
 
