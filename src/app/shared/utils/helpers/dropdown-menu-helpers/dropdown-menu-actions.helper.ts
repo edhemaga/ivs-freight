@@ -14,7 +14,10 @@ import { DropdownMenuStringEnum, TableStringEnum } from '@shared/enums';
 import { DropdownEditActionModal } from '@shared/types';
 
 // models
-import { TableCardBodyActions } from '@shared/models';
+import {
+    DropdownMenuEditActionAdditional,
+    TableCardBodyActions,
+} from '@shared/models';
 import { PMTrailerUnitResponse, PMTruckUnitResponse } from 'appcoretruckassist';
 
 export class DropdownMenuActionsHelper {
@@ -50,6 +53,17 @@ export class DropdownMenuActionsHelper {
         return modalComponentMap[tableType];
     }
 
+    static createEditActionModalAdditionalProperties(
+        type: string
+    ): DropdownMenuEditActionAdditional {
+        const additionalProperty =
+            type === DropdownMenuStringEnum.FINISH_ORDER_TYPE
+                ? { isFinishOrder: true }
+                : { openedTab: TableStringEnum.REVIEW };
+
+        return additionalProperty;
+    }
+
     static createViewDetailsActionLink(id: number, tableType: string): string {
         const adjustedTableType =
             tableType === DropdownMenuStringEnum.REPAIR_SHOP
@@ -62,8 +76,12 @@ export class DropdownMenuActionsHelper {
     }
 
     static getPmRepairUnitId(
-        data: PMTruckUnitResponse | PMTrailerUnitResponse
+        data: PMTruckUnitResponse | PMTrailerUnitResponse,
+        tableType?: string
     ): { id: number; isTruckUnit: boolean } {
+        if (tableType === DropdownMenuStringEnum.REPAIR_SHOP)
+            return { id: null, isTruckUnit: null };
+
         const checkIsTruckOrTrailerUnit = (
             data: PMTruckUnitResponse | PMTrailerUnitResponse
         ): data is PMTruckUnitResponse => {

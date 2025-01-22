@@ -79,7 +79,7 @@ export abstract class AccountDropdownMenuActionsBase extends DropdownMenuActions
                 break;
             default:
                 // call the parent class method to handle shared cases
-                super.handleDropdownMenuActions(event, tableType);
+                super.handleSharedDropdownMenuActions(event, tableType);
 
                 break;
         }

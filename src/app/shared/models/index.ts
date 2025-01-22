@@ -71,5 +71,6 @@ export * from './table-options.model';
 export * from './table-data.model';
 export * from './table-column.model';
 export * from './table-models/current-search-table-data.model';
+export * from './dropdown-menu-edit-action-additonal.model';
 export * from './table-models/current-search-table-data-chip.model';
 export * from './avatar-colors.model';

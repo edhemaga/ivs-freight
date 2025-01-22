@@ -36,14 +36,12 @@
     <ng-container *ngIf="activeViewMode === 'Card'">
         <div class="elements">
             <app-repair-card
-                (bodyActions)="onTableBodyActions($event)"
                 [viewData]="viewData"
                 [rows]="rows"
                 [cardTitle]="cardTitle"
                 [displayRowsFront]="(displayRows$ | async).displayRowsFront"
                 [displayRowsBack]="(displayRows$ | async).displayRowsBack"
                 [page]="page"
-                [selectedTab]="selectedTab"
             >
             </app-repair-card>
 
