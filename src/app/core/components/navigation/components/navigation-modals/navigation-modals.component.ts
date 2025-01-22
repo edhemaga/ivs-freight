@@ -102,11 +102,10 @@ export class NavigationModalsComponent {
             name: 'Modal Panel',
             type: openClose,
         });
-        if (openClose && this.isExpandButtonHovered) {
-            this.title = NavigationDataConstants.close;
-        } else {
-            this.title = NavigationDataConstants.title;
-        }
+        this.title =
+            openClose && this.isExpandButtonHovered
+                ? NavigationDataConstants.close
+                : NavigationDataConstants.title;
     }
 
     public changeText(text: string, expandBUttonHovered: boolean): void {
