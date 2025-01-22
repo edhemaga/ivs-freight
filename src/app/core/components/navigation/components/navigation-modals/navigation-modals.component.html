@@ -10,16 +10,14 @@
             !isNavigationHoveredAndPanelOpen &&
             isNavigationHovered,
         'modal-media-query-height':
-            isNavigationHoveredAndPanelOpen && isNavigationHovered
+            isNavigationHoveredAndPanelOpen && isNavigationHovered,
     }"
-    (mouseenter)="hoveredArrow(true)"
-    (mouseleave)="hoveredArrow(false)"
     [@showHideDetails]="isNavigationHoveredAndPanelOpen ? true : false"
     ngbTooltip
     mainContent
     position="right"
     tooltipBackground="#424242"
-    [mainTooltip]="!isNavigationHovered? addNew : ''"
+    [mainTooltip]="!isNavigationHovered ? addNew : ''"
     tooltipColor="#ffff"
     tooltipMarginTop="-2px"
     tooltipMarginLeft="12px"
@@ -27,27 +25,21 @@
 >
     <div class="modal-inner">
         <div
-            (mouseenter)="
-                changeTextHoverOnCloseModal = true; 
-            "
-            (mouseleave)="
-                changeTextHoverOnCloseModal = false; 
-            "
+            (mouseenter)="changeText(navigationDataConstants.close, true)"
+            (mouseleave)="changeText(navigationDataConstants.title, false)"
             (click)="OpenMainModal(!isModalPanelOpen)"
             class="modal-nav-close"
             [ngClass]="{
                 'closed-modal': !isModalPanelOpen,
-                'modal-is-open': isModalPanelOpen
+                'modal-is-open': isModalPanelOpen,
             }"
         >
             <p class="modal-nav-close-text">
                 <svg-icon
                     class="modal-nav-close-svg"
-                    (mouseenter)="changeText(true)"
-                    (mouseleave)="changeText(false)"
                     [ngClass]="{
                         'closed-modal': !isModalPanelOpen,
-                        'opened-modal': isModalPanelOpen
+                        'opened-modal': isModalPanelOpen,
                     }"
                     [src]="icons.plus"
                 ></svg-icon>
@@ -55,165 +47,112 @@
             </p>
         </div>
 
-        <div
-            class="modal-nav-content"
-            *ngIf="isNavigationHovered && isModalPanelOpen"
-        >
-            <p class="modal-nav-header ta-font-extra-bold top-header">
-                GENERAL <span></span>
-            </p>
-            <div class="modal-nav-routes first-modal">
-                <p
-                    class="ta-font-medium modal-item"
-                    *ngFor="
-                        let item of generalNavigationData;
-                        let ind = index;
-                        let odd = odd;
-                        trackBy: identity
-                    "
-                    (click)="onAction(item)"
-                >
-                    <span *ngIf="!odd">
-                        {{ item.name }}
-                    </span>
-                    <span *ngIf="odd">
-                        {{ item.name }}
-                    </span>
+        @if (isNavigationHovered && isModalPanelOpen) {
+            <div class="modal-nav-content">
+                <p class="modal-nav-header ta-font-extra-bold top-header">
+                    GENERAL <span></span>
                 </p>
+                <div class="modal-nav-routes first-modal">
+                    @for (
+                        item of generalNavigationData;
+                        track item.id;
+                        let odd = $odd
+                    ) {
+                        <p
+                            class="ta-font-medium modal-item"
+                            (click)="onAction(item)"
+                        >
+                            @if (odd) {
+                                <span>
+                                    {{ item.name }}
+                                </span>
+                            } @else {
+                                <span>
+                                    {{ item.name }}
+                                </span>
+                            }
+                        </p>
+                    }
+                </div>
             </div>
-        </div>
 
-        <div
-            class="modal-nav-content"
-            *ngIf="isNavigationHovered && isModalPanelOpen"
-        >
-            <p class="modal-nav-header ta-font-extra-bold">
-                TOOLS <span></span>
-            </p>
-            <div class="modal-nav-routes">
-                <p
-                    class="ta-font-regular"
-                    *ngFor="
-                        let item of toolsNavigationData;
-                        let ind = index;
-                        let odd = odd;
-                        trackBy: identity
-                    "
-                    (click)="onAction(item)"
-                >
-                    {{ item.name }}
+            <div class="modal-nav-content">
+                <p class="modal-nav-header ta-font-extra-bold">
+                    TOOLS <span></span>
                 </p>
+                <div class="modal-nav-routes">
+                    @for (item of toolsNavigationData; track item.id) {
+                        <p class="ta-font-regular" (click)="onAction(item)">
+                            {{ item.name }}
+                        </p>
+                    }
+                </div>
             </div>
-        </div>
 
-        <div
-            class="modal-nav-content"
-            *ngIf="isNavigationHovered && isModalPanelOpen"
-        >
-            <p class="modal-nav-header ta-font-extra-bold">
-                REPAIR <span></span>
-            </p>
-            <div class="modal-nav-routes">
-                <p
-                    class="ta-font-regular"
-                    *ngFor="
-                        let item of repairNavigationData;
-                        let ind = index;
-                        trackBy: identity
-                    "
-                    (click)="onAction(item)"
-                >
-                    {{ item.name }}
+            <div class="modal-nav-content">
+                <p class="modal-nav-header ta-font-extra-bold">
+                    REPAIR <span></span>
                 </p>
+                <div class="modal-nav-routes">
+                    @for (item of repairNavigationData; track item.id) {
+                        <p class="ta-font-regular" (click)="onAction(item)">
+                            {{ item.name }}
+                        </p>
+                    }
+                </div>
             </div>
-        </div>
 
-        <div
-            class="modal-nav-content"
-            *ngIf="isNavigationHovered && isModalPanelOpen"
-        >
-            <p class="modal-nav-header ta-font-extra-bold">
-                FUEL <span></span>
-            </p>
-            <div class="modal-nav-routes">
-                <p
-                    class="ta-font-regular"
-                    *ngFor="
-                        let item of fuelNavigationData;
-                        let ind = index;
-                        trackBy: identity
-                    "
-                    (click)="onAction(item)"
-                >
-                    {{ item.name }}
+            <div class="modal-nav-content">
+                <p class="modal-nav-header ta-font-extra-bold">
+                    FUEL <span></span>
                 </p>
+                <div class="modal-nav-routes">
+                    @for (item of fuelNavigationData; track item.id) {
+                        <p class="ta-font-regular" (click)="onAction(item)">
+                            {{ item.name }}
+                        </p>
+                    }
+                </div>
             </div>
-        </div>
 
-        <div
-            class="modal-nav-content"
-            *ngIf="isNavigationHovered && isModalPanelOpen"
-        >
-            <p class="modal-nav-header ta-font-extra-bold">
-                SAFETY <span></span>
-            </p>
-            <div class="modal-nav-routes">
-                <p
-                    class="ta-font-regular"
-                    *ngFor="
-                        let item of safetyNavigationData;
-                        let ind = index;
-                        trackBy: identity
-                    "
-                    (click)="onAction(item)"
-                >
-                    {{ item.name }}
+            <div class="modal-nav-content">
+                <p class="modal-nav-header ta-font-extra-bold">
+                    SAFETY <span></span>
                 </p>
+                <div class="modal-nav-routes">
+                    @for (item of safetyNavigationData; track item.id) {
+                        <p class="ta-font-regular" (click)="onAction(item)">
+                            {{ item.name }}
+                        </p>
+                    }
+                </div>
             </div>
-        </div>
 
-        <div
-            class="modal-nav-content"
-            *ngIf="isNavigationHovered && isModalPanelOpen"
-        >
-            <p class="modal-nav-header ta-font-extra-bold">
-                ACCOUNTING <span></span>
-            </p>
-            <div class="modal-nav-routes">
-                <p
-                    class="ta-font-regular"
-                    *ngFor="
-                        let item of accountingNavigationData;
-                        let ind = index;
-                        trackBy: identity
-                    "
-                    (click)="onAction(item)"
-                >
-                    {{ item.name }}
+            <div class="modal-nav-content">
+                <p class="modal-nav-header ta-font-extra-bold">
+                    ACCOUNTING <span></span>
                 </p>
+                <div class="modal-nav-routes">
+                    @for (item of accountingNavigationData; track item.id) {
+                        <p class="ta-font-regular" (click)="onAction(item)">
+                            {{ item.name }}
+                        </p>
+                    }
+                </div>
             </div>
-        </div>
 
-        <div
-            class="modal-nav-content"
-            *ngIf="isNavigationHovered && isModalPanelOpen"
-        >
-            <p class="modal-nav-header ta-font-extra-bold">
-                REQUEST <span></span>
-            </p>
-            <div class="modal-nav-routes">
-                <p
-                    class="ta-font-regular"
-                    *ngFor="
-                        let item of requestNavigationData;
-                        let ind = index;
-                        trackBy: identity
-                    "
-                    (click)="onAction(item)"
-                >
-                    {{ item.name }}
+            <div class="modal-nav-content">
+                <p class="modal-nav-header ta-font-extra-bold">
+                    REQUEST <span></span>
                 </p>
+                <div class="modal-nav-routes">
+                    @for (item of requestNavigationData; track item.id) {
+                        <p class="ta-font-regular" (click)="onAction(item)">
+                            {{ item.name }}
+                        </p>
+                    }
+                </div>
             </div>
-        </div>
+        }
     </div>
 </div>
