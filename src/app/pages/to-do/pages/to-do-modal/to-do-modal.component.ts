@@ -1,7 +1,15 @@
-import { FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
-import { TaInputService } from '@shared/services/ta-input.service';
+import { NgbActiveModal, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
+import { AngularSvgIconModule } from 'angular-svg-icon';
+
+// RXJS
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+
+// Models
 import {
     CommentResponse,
     CreateCommentCommand,
@@ -11,36 +19,44 @@ import {
     TodoResponse,
     UpdateCommentCommand,
 } from 'appcoretruckassist';
-import { ModalService } from '@shared/services/modal.service';
-import { TodoService } from '@pages/to-do/services/to-do.service';
-import { TaUserReviewComponent } from '@shared/components/ta-user-review/ta-user-review.component';
 import { ReviewComment } from '@shared/models/review-comment.model';
 
-import {
-    departmentValidation,
-    descriptionValidation,
-    titleValidation,
-    urlValidation,
-} from '@shared/components/ta-input/validators/ta-input.regex-validations';
-import { Subject, takeUntil } from 'rxjs';
-import { CommentsService } from '@shared/services/comments.service';
-import { FormService } from '@shared/services/form.service';
-import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calculations.helper';
-import { CommonModule } from '@angular/common';
+// Components
+import { TaUserReviewComponent } from '@shared/components/ta-user-review/ta-user-review.component';
 import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-custom-card.component';
 import { TaUploadFilesComponent } from '@shared/components/ta-upload-files/ta-upload-files.component';
+import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
 import {
     CaInputComponent,
     CaInputDropdownComponent,
     CaModalButtonComponent,
     CaModalComponent,
 } from 'ca-components';
-import { NgbActiveModal, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
-import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
+
+// Services
+import { TaInputService } from '@shared/services/ta-input.service';
+import { ModalService } from '@shared/services/modal.service';
+import { TodoService } from '@pages/to-do/services/to-do.service';
+import { CommentsService } from '@shared/services/comments.service';
+import { FormService } from '@shared/services/form.service';
+
+//  Enums
 import { ModalButtonType, ModalButtonSize } from '@shared/enums';
 import { TaModalActionEnums } from '@shared/components/ta-modal/enums';
+
+// Svg routes
 import { SharedSvgRoutes } from '@shared/utils/svg-routes';
-import { AngularSvgIconModule } from 'angular-svg-icon';
+
+// Validators
+import {
+    departmentValidation,
+    descriptionValidation,
+    titleValidation,
+    urlValidation,
+} from '@shared/components/ta-input/validators/ta-input.regex-validations';
+
+// Helpers
+import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calculations.helper';
 
 // Pipes
 import { FormatDatePipe } from '@shared/pipes';
