@@ -22,7 +22,8 @@ import { ShipperService } from '@pages/customer/services';
 import { ModalService } from '@shared/services/modal.service';
 
 // Constants
-import { ShipperDetailsChartsConfiguration } from '../shipper-details-item/utils/constants';
+import { ShipperDetailsChartsConfiguration } from '@pages/customer/pages/shipper-details/components/shipper-details-item/utils/constants';
+import { ChartConfiguration, ChartLegendConfiguration } from '@shared/utils/constants';
 
 // Components
 import { ShipperModalComponent } from '@pages/customer/pages/shipper-modal/shipper-modal.component';
@@ -30,14 +31,13 @@ import { ShipperModalComponent } from '@pages/customer/pages/shipper-modal/shipp
 // Models
 import { IChartConfiguration } from 'ca-components/lib/components/ca-chart/models';
 import { ChartLegendProperty, Tabs } from '@shared/models';
+import { ShipperAverageWaitingTimeResponse } from 'appcoretruckassist';
 
 // Enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
 
 // Helpers
 import { ChartHelper, TimespanConvertHelper } from '@shared/utils/helpers';
-import { ChartConfiguration, ChartLegendConfiguration } from '@shared/utils/constants';
-import { ShipperAverageWaitingTimeResponse } from 'appcoretruckassist';
 
 @Component({
     selector: 'app-shipper-details-card',
