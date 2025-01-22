@@ -132,15 +132,14 @@
                         </div>
                     }
                     <ng-container *ngIf="invoiceChartConfig?.chartData">
-                        <app-ta-chart-legend
-                            [data]="invoiceChartLegend"
-                            [hasHighlightedBackground]="
-                                invoiceLegendHighlightedBackground
-                            "
-                            [title]="invoiceLegendTitle"
-                        ></app-ta-chart-legend>
                         <app-ca-chart
                             [chartConfig]="invoiceChartConfig"
+                            [legendData]="{
+                                data: invoiceChartLegend,
+                                hasHighlightedBackground:
+                                    invoiceLegendHighlightedBackground,
+                                title: invoiceLegendTitle,
+                            }"
                             (hoveredIndex)="setInvoiceLegendOnHover($event)"
                         >
                         </app-ca-chart>
@@ -172,15 +171,14 @@
                         </div>
                     }
                     <ng-container *ngIf="mileageChartConfig?.chartData">
-                        <app-ta-chart-legend
-                            [data]="mileageChartLegendData"
-                            [hasHighlightedBackground]="
-                                mileageLegendHighlightedBackground
-                            "
-                            [title]="mileageLegendTitle"
-                        ></app-ta-chart-legend>
                         <app-ca-chart
                             [chartConfig]="mileageChartConfig"
+                            [legendData]="{
+                                data: mileageChartLegendData,
+                                hasHighlightedBackground:
+                                    mileageLegendHighlightedBackground,
+                                title: mileageLegendTitle,
+                            }"
                             (hoveredIndex)="setMileageLegendOnHover($event)"
                         >
                         </app-ca-chart>
@@ -460,15 +458,14 @@
                         </div>
                     }
                     <ng-container *ngIf="paymentChartConfig?.chartData">
-                        <app-ta-chart-legend
-                            [data]="paymentChartLegendData"
-                            [hasHighlightedBackground]="
-                                paymentLegendHighlightedBackground
-                            "
-                            [title]="paymentLegendTitle"
-                        ></app-ta-chart-legend>
                         <app-ca-chart
                             [chartConfig]="paymentChartConfig"
+                            [legendData]="{
+                                data: paymentChartLegendData,
+                                hasHighlightedBackground:
+                                    paymentLegendHighlightedBackground,
+                                title: paymentLegendTitle,
+                            }"
                             (hoveredIndex)="
                                 setPaymentHistoryLegendOnHover($event)
                             "

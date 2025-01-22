@@ -943,15 +943,14 @@
                     >
                     </app-ta-tab-switch>
                     <ng-container *ngIf="fuelConsumptionChartConfig?.chartData">
-                        <app-ta-chart-legend
-                            [data]="fuelConsumptionChartLegend"
-                            [hasHighlightedBackground]="
-                                fuelConsumptionLegendHighlightedBackground
-                            "
-                            [title]="fuelConsumptionLegendTitle"
-                        ></app-ta-chart-legend>
                         <app-ca-chart
                             [chartConfig]="fuelConsumptionChartConfig"
+                            [legendData]="{
+                                data: fuelConsumptionChartLegend,
+                                hasHighlightedBackground:
+                                    fuelConsumptionLegendHighlightedBackground,
+                                title: fuelConsumptionLegendTitle,
+                            }"
                             (hoveredIndex)="
                                 setFuelConsumptionLegendOnHover($event)
                             "
@@ -980,15 +979,14 @@
                         </app-ta-tab-switch>
                     }
                     <ng-container *ngIf="revenueChartConfig?.chartData">
-                        <app-ta-chart-legend
-                            [data]="revenueChartLegend"
-                            [hasHighlightedBackground]="
-                                revenueLegendHighlightedBackground
-                            "
-                            [title]="revenueLegendTitle"
-                        ></app-ta-chart-legend>
                         <app-ca-chart
                             [chartConfig]="revenueChartConfig"
+                            [legendData]="{
+                                data: revenueChartLegend,
+                                hasHighlightedBackground:
+                                    revenueLegendHighlightedBackground,
+                                title: revenueLegendTitle,
+                            }"
                             (hoveredIndex)="setRevenueLegendOnHover($event)"
                         >
                         </app-ca-chart>
@@ -1011,15 +1009,14 @@
                         </app-ta-tab-switch>
                     }
                     <ng-container *ngIf="expensesChartConfig?.chartData">
-                        <app-ta-chart-legend
-                            [data]="expensesChartChartLegend"
-                            [hasHighlightedBackground]="
-                                expensesLegendHighlightedBackground
-                            "
-                            [title]="expensesLegendTitle"
-                        ></app-ta-chart-legend>
                         <app-ca-chart
                             [chartConfig]="expensesChartConfig"
+                            [legendData]="{
+                                data: expensesChartChartLegend,
+                                hasHighlightedBackground:
+                                    expensesLegendHighlightedBackground,
+                                title: expensesLegendTitle,
+                            }"
                             (hoveredIndex)="
                                 setExpensesRevenueLegendOnHover($event)
                             "

@@ -484,15 +484,14 @@
                         <ng-container
                             *ngIf="fuelConsumptionChartConfig?.chartData"
                         >
-                            <app-ta-chart-legend
-                                [data]="fuelConsumptionChartLegend"
-                                [hasHighlightedBackground]="
-                                    fuelConsumptionLegendHighlightedBackground
-                                "
-                                [title]="fuelConsumptionLegendTitle"
-                            ></app-ta-chart-legend>
                             <app-ca-chart
                                 [chartConfig]="fuelConsumptionChartConfig"
+                                [legendData]="{
+                                    data: fuelConsumptionChartLegend,
+                                    hasHighlightedBackground:
+                                        fuelConsumptionLegendHighlightedBackground,
+                                    title: fuelConsumptionLegendTitle,
+                                }"
                                 (hoveredIndex)="
                                     setFuelConsumptionLegendOnHover($event)
                                 "

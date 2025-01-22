@@ -30,20 +30,19 @@
             <div
                 class="d-flex align-items-center dashboard-top-rated-header-tabs"
             >
-                <ng-container *ngIf="topRatedTitle !== 'Shipper'">
+                @if (topRatedTitle !== 'Shipper') {
                     <app-ta-tab-switch
                         [tabs]="topRatedTabs"
                         [dashboardHeight]="true"
                         (switchClicked)="handleSwitchTabClick($event)"
                     >
-                    </app-ta-tab-switch
-                ></ng-container>
-
-                <ng-container *ngIf="topRatedTitle === 'Shipper'">
+                    </app-ta-tab-switch>
+                }
+                @if (topRatedTitle === 'Shipper') {
                     <div class="shipper-tab-container">
                         <p class="m-0 ta-font-extra-bold">Load</p>
                     </div>
-                </ng-container>
+                }
             </div>
         </div>
 
@@ -54,7 +53,6 @@
             [formGroup]="topRatedForm"
         >
             <!-- Dropdowns -->
-
             <div
                 class="d-flex align-items-center dashboard-top-rated-header-dropdown"
             >
@@ -146,16 +144,13 @@
                     'show-more': isShowingMore,
                 }"
             >
-                <ng-container *ngIf="isLoading">
+                @if (isLoading) {
                     <app-dashboard-loading-placeholder
                         [listPlaceholder]="true"
                     ></app-dashboard-loading-placeholder>
-                </ng-container>
-
-                <ng-container *ngIf="!isLoading">
-                    <!-- Search -->
-
-                    <ng-container *ngIf="isShowingMore">
+                }
+                @if (!isLoading) {
+                    @if (isShowingMore) {
                         <div class="dashboard-top-rated-body-up-list-search">
                             <app-ta-search-v2
                                 [placeHolderText]="topRatedTitle"
@@ -163,18 +158,12 @@
                                 (searchValueEmitter)="handleSearchValue($event)"
                             ></app-ta-search-v2>
                         </div>
-                    </ng-container>
-
-                    <!-- Placeholder -->
-
-                    <ng-container *ngIf="isDisplayingPlaceholder">
+                    }
+                    @if (isDisplayingPlaceholder) {
                         <app-dashboard-data-placeholder
                             [searchPlaceholder]="true"
                         ></app-dashboard-data-placeholder>
-                    </ng-container>
-
-                    <!-- List -->
-
+                    }
                     @if (!isDisplayingPlaceholder) {
                         @for (
                             topRatedListItem of topRatedList;
@@ -318,10 +307,6 @@
                                 </div>
                             </div>
                         }
-                    }
-                    <!-- Show More -->
-
-                    <ng-container *ngIf="!isDisplayingPlaceholder">
                         <div
                             class="d-flex align-items-center justify-content-between show-more-container"
                         >
@@ -339,7 +324,7 @@
                                 </p>
                             </div>
 
-                            <ng-container *ngIf="topRatedListLength > 10">
+                            @if (topRatedListLength > 10) {
                                 <div
                                     class="d-flex align-items-center show-more-container-right"
                                 >
@@ -355,10 +340,10 @@
                                         }}
                                     </button>
                                 </div>
-                            </ng-container>
+                            }
                         </div>
-                    </ng-container>
-                </ng-container>
+                    }
+                }
             </div>
 
             <!-- Border -->
@@ -368,16 +353,16 @@
             <!-- Doughnut Chart -->
             <div class="dashboard-top-rated-body-up-doughnut-chart-container">
                 <!-- Chart implementation -->
-                <ng-container *ngIf="doughnutChartConfig?.chartData">
+                @if (doughnutChartConfig?.chartData) {
                     <app-ca-chart
                         [chartConfig]="doughnutChartConfig"
                         [selectedIndex]="doughnutChartDataHoveredIndex"
                         (hoveredIndex)="setDoughnutHoveredIndex($event)"
                     >
                     </app-ca-chart>
-                </ng-container>
+                }
 
-                <ng-container *ngIf="isDisplayingCustomPeriodRange">
+                @if (isDisplayingCustomPeriodRange) {
                     <div class="custom-period-range-container">
                         <app-ta-custom-period-range
                             [subPeriodDropdownList]="subPeriodDropdownList"
@@ -390,7 +375,7 @@
                             "
                         ></app-ta-custom-period-range>
                     </div>
-                </ng-container>
+                }
             </div>
         </div>
 
@@ -408,7 +393,7 @@
                     class="d-flex align-items-center dashboard-top-rated-body-down-header-left"
                 ></div>
 
-                <ng-container *ngIf="!selectedTopRatedList.length">
+                @if (!selectedTopRatedList.length) {
                     <div
                         class="d-flex align-items-center dashboard-top-rated-body-down-header-right"
                     >
@@ -447,7 +432,7 @@
                             <p class="m-0 ta-font-semi-bold">All Others</p>
                         </div>
                     </div>
-                </ng-container>
+                }
             </div>
 
             <!-- Bar Chart -->

@@ -277,41 +277,43 @@ export class BrokerDetailsCardComponent
     }
 
     public setMileageLegendOnHover(index: number): void {
-        if (index === null) {
-            this.mileageLegendHighlightedBackground = false;
-            this.mileageLegendTitle = '';
-        }
-        else {
-            this.mileageLegendHighlightedBackground = true;
-            this.mileageLegendTitle = this.mileageChartConfig.chartData.labels[index];
-        }
+        const {
+            hasHighlightedBackground,
+            title
+        } =
+            ChartHelper.setChartLegend(index, this.mileageChartConfig.chartData.labels);
 
+        this.mileageLegendHighlightedBackground = hasHighlightedBackground;
+        this.mileageLegendTitle = title;
 
         this.mileageChartLegendData =
             ChartLegendConfiguration.mileageLegendConfiguration(this.mileageChartData.brokerMileageRateChartResponse[index]);
     }
 
     public setInvoiceLegendOnHover(index: number): void {
-        if (index === null) {
-            this.invoiceLegendHighlightedBackground = false;
-            this.invoiceLegendTitle = '';
-        }
-        else {
-            this.invoiceLegendHighlightedBackground = true;
-            this.invoiceLegendTitle = this.invoiceChartConfig.chartData.labels[index];
-        }
+
+        const {
+            hasHighlightedBackground,
+            title
+        } =
+            ChartHelper.setChartLegend(index, this.invoiceChartConfig.chartData.labels);
+
+        this.invoiceLegendHighlightedBackground = hasHighlightedBackground;
+        this.invoiceLegendTitle = title;
+
         this.invoiceChartLegend = ChartLegendConfiguration.invoiceChartLegendConfiguration(this.invoiceChartData.brokerPaidInvoiceChartResponse[index])
     }
 
     public setPaymentHistoryLegendOnHover(index: number): void {
-        if (index === null) {
-            this.paymentLegendHighlightedBackground = false;
-            this.paymentLegendTitle = '';
-        }
-        else {
-            this.paymentLegendHighlightedBackground = true;
-            this.paymentLegendTitle = this.paymentChartConfig.chartData.labels[index];
-        }
+        const {
+            hasHighlightedBackground,
+            title
+        } =
+            ChartHelper.setChartLegend(index, this.paymentChartConfig.chartData.labels);
+
+        this.paymentLegendHighlightedBackground = hasHighlightedBackground;
+        this.paymentLegendTitle = title;
+
         this.paymentChartLegendData = ChartLegendConfiguration.brokerPaymentHistory(this.paymentChartData.brokerPaymentHistoryChartResponse[index]);
     }
 

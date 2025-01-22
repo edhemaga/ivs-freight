@@ -26,6 +26,7 @@ import { ChartHelper } from '@shared/utils/helpers';
 
 // Enums
 import { DashboardStringEnum } from '@pages/dashboard/enums/dashboard-string.enum';
+import { DashboardChartStringEnum } from '@pages/dashboard/enums';
 
 // Models
 import { DropdownItem } from '@shared/models/dropdown-item.model';
@@ -43,23 +44,17 @@ import {
     TimeInterval,
     TopBrokersListResponse,
     TopBrokersResponse,
-    TopBrokersResponsePagination,
     TopDriverListResponse,
     TopDriverResponse,
-    TopDriverResponsePagination,
     TopFuelStopListResponse,
     TopFuelStopResponse,
-    TopFuelStopResponsePagination,
     TopOwnerListResponse,
     TopOwnerResponse,
-    TopOwnerResponsePagination,
     TopRepairShopListResponse,
     TopRepairShopResponse,
-    TopRepairShopResponsePagination,
     TopShipperListResponse,
     TopShipperResponse,
     TopTruckListResponse,
-    TopShipperResponsePagination
 } from 'appcoretruckassist';
 import { TopRatedApiArguments } from '@pages/dashboard/pages/dashboard-top-rated/models/top-rated-api-arguments.model';
 import { TopRatedWithoutTabApiArguments } from '@pages/dashboard/pages/dashboard-top-rated/models/top-rated-without-tab-api-arguments.model';
@@ -637,8 +632,16 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                 const takeNumber: number =
                     ChartHelper.takeDoughnutData(driverData.pagination.count);
 
-                const mileageProperties = ['mileagePercentage', 'mileage', 'driverMileage'];
-                const revenueProperties = ['revenuePercentage', 'revenue', 'driverRevenue'];
+                const mileageProperties = [
+                    DashboardChartStringEnum.MILEAGE_PERCENTAGE,
+                    DashboardChartStringEnum.MILEAGE,
+                    DashboardChartStringEnum.DRIVER_MILEAGE
+                ];
+                const revenueProperties = [
+                    DashboardChartStringEnum.REVENUE_PERCENTAGE,
+                    DashboardChartStringEnum.REVENUE,
+                    DashboardChartStringEnum.DRIVER_REVENUE
+                ];
 
                 let properties = [];
                 let chartConfiguration;
@@ -813,8 +816,16 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                 const takeNumber: number =
                     ChartHelper.takeDoughnutData(truckData.pagination.count);
 
-                const mileageProperties = ['mileagePercentage', 'mileage', 'truckMileage'];
-                const revenueProperties = ['revenuePercentage', 'revenue', 'truckRevenue'];
+                const mileageProperties = [
+                    DashboardChartStringEnum.MILEAGE_PERCENTAGE,
+                    DashboardChartStringEnum.MILEAGE,
+                    DashboardChartStringEnum.TRUCK_MILEAGE
+                ];
+                const revenueProperties = [
+                    DashboardChartStringEnum.REVENUE_PERCENTAGE,
+                    DashboardChartStringEnum.REVENUE,
+                    DashboardChartStringEnum.TRUCK_REVENUE
+                ];
 
                 let properties = [];
                 let chartConfiguration;
@@ -953,8 +964,16 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                 const takeNumber: number =
                     ChartHelper.takeDoughnutData(brokerData.pagination.count);
 
-                const mileageProperties = ['loadPercentage', 'loadsCount', 'brokerLoadCount'];
-                const revenueProperties = ['revenuePercentage', 'revenue', 'brokerRevenue'];
+                const mileageProperties = [
+                    DashboardChartStringEnum.LOAD_PERCENTAGE,
+                    DashboardChartStringEnum.LOADS_COUNT,
+                    DashboardChartStringEnum.BROKER_LOAD_COUNT
+                ];
+                const revenueProperties = [
+                    DashboardChartStringEnum.REVENUE_PERCENTAGE,
+                    DashboardChartStringEnum.REVENUE,
+                    DashboardChartStringEnum.BROKER_REVENUE
+                ];
 
                 let properties = [];
                 let chartConfiguration;
@@ -1205,8 +1224,16 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                 const takeNumber: number =
                     ChartHelper.takeDoughnutData(ownerData.pagination.count);
 
-                const loadProperties = ['loadPercentage', 'load', 'ownerLoadPercentage'];
-                const revenueProperties = ['revenuePercentage', 'revenue', 'ownerRevenuePercentage'];
+                const loadProperties = [
+                    DashboardChartStringEnum.LOAD_PERCENTAGE,
+                    DashboardChartStringEnum.LOAD,
+                    DashboardChartStringEnum.OWNER_LOAD_PERCENTAGE
+                ];
+                const revenueProperties = [
+                    DashboardChartStringEnum.REVENUE_PERCENTAGE,
+                    DashboardChartStringEnum.REVENUE,
+                    DashboardChartStringEnum.OWNER_LOAD_PERCENTAGE
+                ];
 
                 let properties = [];
                 let chartConfiguration;
@@ -1340,8 +1367,16 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                 const takeNumber: number =
                     ChartHelper.takeDoughnutData(repairShopData.pagination.count);
 
-                const costProperties = ['costPercentage', 'cost', 'costPercentage'];
-                const visitProperties = ['visitPercentage', 'revenue', 'countPercentage'];
+                const costProperties = [
+                    DashboardChartStringEnum.COST_PERCENTAGE,
+                    DashboardChartStringEnum.COST,
+                    DashboardChartStringEnum.COST_PERCENTAGE
+                ];
+                const visitProperties = [
+                    DashboardChartStringEnum.VISIT_PERCENTAGE,
+                    DashboardChartStringEnum.REVENUE,
+                    DashboardChartStringEnum.COUNT_PERCENTAGE
+                ];
 
                 let properties = [];
                 let chartConfiguration;
@@ -1478,8 +1513,16 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                 const takeNumber: number =
                     ChartHelper.takeDoughnutData(fuelStopData.pagination.count);
 
-                const costProperties = ['costPercentage', 'cost', 'costPercentage'];
-                const visitProperties = ['visitPercentage', 'visitCount', 'visitPercentage'];
+                const costProperties = [
+                    DashboardChartStringEnum.COST_PERCENTAGE,
+                    DashboardChartStringEnum.COST,
+                    DashboardChartStringEnum.COST_PERCENTAGE
+                ];
+                const visitProperties = [
+                    DashboardChartStringEnum.VISIT_PERCENTAGE,
+                    DashboardChartStringEnum.VISIT_COUNT,
+                    DashboardChartStringEnum.VISIT_PERCENTAGE
+                ];
 
                 let properties = [];
                 let chartConfiguration;

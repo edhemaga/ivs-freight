@@ -23,12 +23,11 @@ import { TaTabSwitchComponent } from '@shared/components/ta-tab-switch/ta-tab-sw
 import { TaContactsCardComponent } from '@shared/components/ta-contacts-card/ta-contacts-card.component';
 import { ShipperDetailsMapCoverCardComponent } from '@pages/customer/pages/shipper-details/components/shipper-details-card/components/shipper-details-map-cover-card/shipper-details-map-cover-card.component';
 import { CaChartComponent } from 'ca-components';
-import { FormatPhonePipe } from '@shared/pipes/format-phone.pipe';
 
 // Pipes
 import { FormatDatePipe } from '@shared/pipes/format-date.pipe';
 import { FormatTimePipe } from '@shared/pipes/format-time.pipe';
-import { TaChartLegendComponent } from '@shared/components/ta-chart-legend/ta-chart-legend.component';
+import { FormatPhonePipe } from '@shared/pipes/format-phone.pipe';
 
 @NgModule({
     declarations: [
@@ -58,7 +57,6 @@ import { TaChartLegendComponent } from '@shared/components/ta-chart-legend/ta-ch
         TaContactsCardComponent,
         ShipperDetailsMapCoverCardComponent,
         CaChartComponent,
-        TaChartLegendComponent,
 
         // Pipes
         FormatDatePipe,

@@ -193,15 +193,14 @@
                             </app-ta-tab-switch>
                         }
                         <ng-container *ngIf="fuelChartConfig?.chartData">
-                            <app-ta-chart-legend
-                                [data]="fuelChartLegend"
-                                [hasHighlightedBackground]="
-                                    fuelLegendHighlightedBackground
-                                "
-                                [title]="fuelLegendTitle"
-                            ></app-ta-chart-legend>
                             <app-ca-chart
                                 [chartConfig]="fuelChartConfig"
+                                [legendData]="{
+                                    data: fuelChartLegend,
+                                    hasHighlightedBackground:
+                                        fuelLegendHighlightedBackground,
+                                    title: fuelLegendTitle,
+                                }"
                                 (hoveredIndex)="setFuelLegendOnHover($event)"
                             >
                             </app-ca-chart>

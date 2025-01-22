@@ -11,3 +11,4 @@ export * from './dropdown-menu-helpers/dropdown-menu-content.helper';
 export * from './load-status.helper';
 export * from './methods-calculations.helper';
 export * from './methods-global.helper';
+export * from './timespan-convert.helper';

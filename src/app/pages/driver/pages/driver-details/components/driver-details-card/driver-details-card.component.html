@@ -97,15 +97,14 @@
                             </div>
                         }
                         <ng-container *ngIf="payrollChartConfig?.chartData">
-                            <app-ta-chart-legend
-                                [data]="driverLegendConfig"
-                                [hasHighlightedBackground]="
-                                    driverLegendHighlightedBackground
-                                "
-                                [title]="driverLegendTitle"
-                            ></app-ta-chart-legend>
                             <app-ca-chart
                                 [chartConfig]="payrollChartConfig"
+                                [legendData]="{
+                                    data: driverLegendConfig,
+                                    hasHighlightedBackground:
+                                        driverLegendHighlightedBackground,
+                                    title: driverLegendTitle,
+                                }"
                                 (hoveredIndex)="setDriverLegendOnHover($event)"
                             >
                             </app-ca-chart>

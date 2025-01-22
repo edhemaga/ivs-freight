@@ -35,7 +35,7 @@ import { ChartLegendProperty, Tabs } from '@shared/models';
 import { TableStringEnum } from '@shared/enums/table-string.enum';
 
 // Helpers
-import { ChartHelper } from '@shared/utils/helpers';
+import { ChartHelper, TimespanConvertHelper } from '@shared/utils/helpers';
 import { ChartConfiguration, ChartLegendConfiguration } from '@shared/utils/constants';
 import { ShipperAverageWaitingTimeResponse } from 'appcoretruckassist';
 
@@ -219,10 +219,10 @@ export class ShipperDetailsCardComponent
             .getShipperChart(id, chartType)
             .pipe(takeUntil(this.destroy$))
             .subscribe((item: ShipperAverageWaitingTimeResponse) => {
-                let avgPickupTime = this.convertTimeSpanToMinutes(
+                let avgPickupTime = TimespanConvertHelper.convertTimeSpanToMinutes(
                     item.avgPickupTime
                 ),
-                    avgDeliveryTime = this.convertTimeSpanToMinutes(
+                    avgDeliveryTime = TimespanConvertHelper.convertTimeSpanToMinutes(
                         item.avgDeliveryTime
                     );
 
@@ -232,10 +232,10 @@ export class ShipperDetailsCardComponent
                     maxValue = 0;
 
                 item.shipperAverageWaitingTimeChartResponse.map((data) => {
-                    let pickup = this.convertTimeSpanToMinutes(
+                    let pickup = TimespanConvertHelper.convertTimeSpanToMinutes(
                         data.avgPickupTime
                     );
-                    let delivery = this.convertTimeSpanToMinutes(
+                    let delivery = TimespanConvertHelper.convertTimeSpanToMinutes(
                         data.avgDeliveryTime
                     );
 
@@ -263,49 +263,25 @@ export class ShipperDetailsCardComponent
                         ChartConfiguration.shipperAverageWaitingTimeConfiguration
                     )
                 }
-                // this.payrollChartLegend = ChartLegendConfiguration.
-                //     fuelExpensesLegend(this.payrollChartData);
-
             });
     }
 
-    convertTimeSpanToMinutes(timespan): number {
-        let totalMinutes = 0;
-
-        if (!timespan) return totalMinutes;
-
-        let timeArr = JSON.stringify(timespan);
-
-        timeArr = JSON.parse(timeArr).split('.');
-
-        if (timeArr.length > 1) {
-            const days = Number(timeArr[0]);
-            let hoursAndMinutes = timeArr[1].split(':');
-            const hours = Number(hoursAndMinutes[0]) + days * 24;
-            const minutes = Number([hoursAndMinutes[1]]);
-
-            totalMinutes = hours * 60 + minutes;
-        } else {
-            let hoursAndMinutes = timeArr[0].split(':');
-            const hours = Number(hoursAndMinutes[0]);
-            const minutes = Number([hoursAndMinutes[1]]);
-            totalMinutes = hours * 60 + minutes;
-        }
-
-        return totalMinutes;
-    }
-
     public setPayrollLegendOnHover(index: number): void {
-        if (index === null) {
-            this.payrollLegendHighlightedBackground = false;
-            this.payrollLegendTitle = '';
-        }
-        else {
-            this.payrollLegendHighlightedBackground = true;
-            this.payrollLegendTitle = this.payrollChartConfig.chartData.labels[index];
-        }
+
+        const {
+            hasHighlightedBackground,
+            title
+        } =
+            ChartHelper.setChartLegend(index, this.payrollChartConfig.chartData.labels);
+
+        this.payrollLegendHighlightedBackground = hasHighlightedBackground;
+        this.payrollLegendTitle = title;
+
         this.payrollChartLegend = ChartLegendConfiguration
-            .truckRevenueConfiguration(this.payrollChartData.shipperAverageWaitingTimeChartResponse[index]);
+            .truckRevenueConfiguration(
+                this.payrollChartData
+                    .shipperAverageWaitingTimeChartResponse[index]
+            );
     }
 
     ngOnDestroy(): void {

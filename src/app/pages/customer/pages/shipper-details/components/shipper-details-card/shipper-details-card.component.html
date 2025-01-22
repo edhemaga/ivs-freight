@@ -146,15 +146,14 @@
                         >
                         </app-ta-tab-switch>
                     }
-                    <app-ta-chart-legend
-                        [data]="payrollChartLegend"
-                        [hasHighlightedBackground]="
-                            payrollLegendHighlightedBackground
-                        "
-                        [title]="payrollLegendTitle"
-                    ></app-ta-chart-legend>
                     <app-ca-chart
                         [chartConfig]="payrollChartConfig"
+                        [legendData]="{
+                            data: payrollChartLegend,
+                            hasHighlightedBackground:
+                                payrollLegendHighlightedBackground,
+                            title: payrollLegendTitle,
+                        }"
                         (hoveredIndex)="setPayrollLegendOnHover($event)"
                     >
                     </app-ca-chart>

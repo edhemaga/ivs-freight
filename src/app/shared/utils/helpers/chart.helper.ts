@@ -257,4 +257,24 @@ export class ChartHelper {
             },
         ];
     }
+
+    public static setChartLegend(index: number, labels: string[]): {
+        hasHighlightedBackground: boolean,
+        title: string
+    } {
+
+        let hasHighlightedBackground: boolean = false;
+        let title: string;
+
+        if (index === null) {
+            hasHighlightedBackground = false;
+            title = '';
+        }
+        else {
+            hasHighlightedBackground = true;
+            title = labels[index];
+        }
+
+        return { hasHighlightedBackground, title };
+    }
 }

@@ -179,14 +179,17 @@ export class DriverDetailsCardComponent
     }
 
     public setDriverLegendOnHover(index: number | null): void {
-        if (index === null) {
-            this.driverLegendHighlightedBackground = false;
-            this.driverLegendTitle = '';
-        }
-        else {
-            this.driverLegendHighlightedBackground = true;
-            this.driverLegendTitle = this.payrollChartConfig.chartData.labels[index];
-        }
+        const {
+            hasHighlightedBackground,
+            title
+        } =
+            ChartHelper.setChartLegend(index,
+                this.payrollChartConfig
+                    .chartData
+                    .labels);
+
+        this.driverLegendHighlightedBackground = hasHighlightedBackground;
+        this.driverLegendTitle = title;
 
 
         this.driverLegendConfig = ChartLegendConfiguration
