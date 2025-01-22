@@ -711,7 +711,7 @@ export class TaTableBodyComponent<
     // RAITING
     onLike(row: any) {
         this.detailsDataService.setNewData(row);
-        this.bodyActions.emit({
+        this.tableBodyActions.emit({
             data: row,
             type: 'raiting',
             subType: 'like',
@@ -721,7 +721,7 @@ export class TaTableBodyComponent<
     onDislike(row: any) {
         this.detailsDataService.setNewData(row);
 
-        this.bodyActions.emit({
+        this.tableBodyActions.emit({
             data: row,
             type: 'raiting',
             subType: 'dislike',
@@ -744,12 +744,20 @@ export class TaTableBodyComponent<
     }
 
     // FAVORITE
-    onFavorite(row: any, isDisabled: boolean) {
+    public onFavorite(
+        id: number,
+        isFavorite: boolean,
+        isDisabled: boolean
+    ): void {
         if (isDisabled) return;
 
-        this.bodyActions.emit({
-            data: row,
-            type: 'favorite',
+        const type = isFavorite
+            ? DropdownMenuStringEnum.UNMARK_FAVORITE_TYPE
+            : DropdownMenuStringEnum.MARK_AS_FAVORITE_TYPE;
+
+        this.tableBodyActions.emit({
+            id,
+            type,
         });
     }
 

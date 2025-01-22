@@ -6293,17 +6293,20 @@
                                         >
                                             <div
                                                 [mainTooltip]="
-                                                    !row[column.field]
-                                                        ? 'Mark Favorite'
-                                                        : 'Unmark'
+                                                    row.isFavoriteDisabled
+                                                        ? ''
+                                                        : !row[column.field]
+                                                          ? 'Mark as Favorite'
+                                                          : 'Unmark Favorite'
                                                 "
                                                 tooltipBackground="#424242"
                                                 tooltipColor="#FFFFFF"
                                                 position="bottom"
                                                 (click)="
                                                     onFavorite(
-                                                        row,
-                                                        row['companyOwned']
+                                                        row.id,
+                                                        row[column.field],
+                                                        row.isFavoriteDisabled
                                                     )
                                                 "
                                             >
@@ -6313,7 +6316,7 @@
                                                         'is-favorite':
                                                             row[column.field],
                                                         disabled:
-                                                            row['companyOwned'],
+                                                            row.isFavoriteDisabled,
                                                     }"
                                                     [src]="
                                                         tableBodySvgRoutes.favoriteRoute

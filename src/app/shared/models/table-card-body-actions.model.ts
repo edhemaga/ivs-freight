@@ -3,4 +3,5 @@ export interface TableCardBodyActions<T> {
     id?: number;
     data?: T;
     isFinishOrder?: boolean;
+    subType?: string;
 }

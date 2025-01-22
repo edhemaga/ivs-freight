@@ -1,23 +1,35 @@
 import { Router } from '@angular/router';
 
+import { Subject, takeUntil } from 'rxjs';
+
 // base classes
 import { DropdownMenuActionsBase } from '@shared/base-classes';
 
 // services
 import { ModalService } from '@shared/services/modal.service';
+import { RepairService } from '@shared/services/repair.service';
 
 // enums
 import { DropdownMenuStringEnum } from '@shared/enums';
 
+// helpers
+import { DropdownMenuActionsHelper } from '@shared/utils/helpers/dropdown-menu-helpers';
+
 // models
-import { TableCardBodyActions } from '@shared/models';
+import { CardDetails, TableCardBodyActions } from '@shared/models';
 import { RepairResponse } from 'appcoretruckassist';
+import { MappedRepairShop } from '@pages/repair/pages/repair-table/models';
 
 export abstract class RepairDropdownMenuActionsBase extends DropdownMenuActionsBase {
+    protected abstract destroy$: Subject<void>;
+    protected abstract viewData: MappedRepairShop[];
+
     constructor(
+        protected router: Router,
+
         // services
         protected modalService: ModalService,
-        protected router: Router
+        protected repairService: RepairService
     ) {
         super(modalService, router);
     }
@@ -26,7 +38,7 @@ export abstract class RepairDropdownMenuActionsBase extends DropdownMenuActionsB
         event: TableCardBodyActions<T>,
         tableType: string
     ): void {
-        const { type } = event;
+        const { id, type } = event;
 
         switch (type) {
             case DropdownMenuStringEnum.ALL_BILLS_TYPE:
@@ -34,16 +46,22 @@ export abstract class RepairDropdownMenuActionsBase extends DropdownMenuActionsB
 
                 break;
             case DropdownMenuStringEnum.FINISH_ORDER_TYPE:
-                this.handleFinishOrderAction(event, tableType);
+            case DropdownMenuStringEnum.WRITE_REVIEW_TYPE:
+                this.handleConvertedToEditTypeAction(event, tableType);
 
                 break;
             case DropdownMenuStringEnum.ALL_ORDERS_TYPE:
                 this.handleAllOrdersAction();
 
                 break;
+            case DropdownMenuStringEnum.MARK_AS_FAVORITE_TYPE:
+            case DropdownMenuStringEnum.UNMARK_FAVORITE_TYPE:
+                this.handleFavoriteAction(id);
+
+                break;
             default:
                 // call the parent class method to handle shared cases
-                super.handleDropdownMenuActions(event, tableType);
+                super.handleSharedDropdownMenuActions(event, tableType);
 
                 break;
         }
@@ -51,18 +69,45 @@ export abstract class RepairDropdownMenuActionsBase extends DropdownMenuActionsB
 
     private handleAllBillsAction(): void {}
 
-    private handleFinishOrderAction<T>(
+    private handleAllOrdersAction(): void {}
+
+    private handleFavoriteAction(repairShopId: number): void {
+        this.repairService
+            .updateRepairShopFavorite(repairShopId)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe(() => {
+                this.viewData.sort(
+                    (a, b) => Number(b.isFavorite) - Number(a.isFavorite)
+                );
+
+                const favoritedRepairShop = this.viewData.find(
+                    (item) => item.id === repairShopId
+                );
+
+                this.updateMapItem(favoritedRepairShop);
+            });
+    }
+
+    private handleConvertedToEditTypeAction<T>(
         event: TableCardBodyActions<T>,
         tableType: string
     ): void {
+        const { type } = event;
+
+        const additionalProperties =
+            DropdownMenuActionsHelper.createEditActionModalAdditionalProperties(
+                type
+            );
+
         const adjustedEvent = {
             ...event,
             type: DropdownMenuStringEnum.EDIT_TYPE,
-            isFinishOrder: true,
+            ...additionalProperties,
         };
 
-        super.handleDropdownMenuActions(adjustedEvent, tableType);
+        super.handleSharedDropdownMenuActions(adjustedEvent, tableType);
     }
 
-    private handleAllOrdersAction(): void {}
+    // protected abstract - dependency
+    protected abstract updateMapItem<T>(repairShop?: T): void;
 }

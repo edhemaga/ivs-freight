@@ -1216,7 +1216,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
             { size: TableStringEnum.SMALL },
             {
                 ...mappedEvent,
-                template: TableStringEnum.REPAIR_SHOP,
+                template: TableStringEnum.REPAIR_SHOP_3,
                 type: TableStringEnum.DELETE,
             }
         );

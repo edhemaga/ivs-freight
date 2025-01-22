@@ -50,10 +50,6 @@ export class PmCardComponent
     public isCardFlippedCheckInCards: number[] = [];
     public isAllCardsFlipp: boolean = false;
 
-    get viewData() {
-        return this._viewData;
-    }
-
     constructor(
         // services
         protected modalService: ModalService,

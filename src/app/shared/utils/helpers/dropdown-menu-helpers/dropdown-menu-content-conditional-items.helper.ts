@@ -23,7 +23,7 @@ export class DropdownMenuContentConditionalItemsHelper {
                 ? Object.values(dropdownMenuItems)
                 : requestedItemTitles.map((title) => dropdownMenuItems[title]);
 
-        // map requested item - optional modifiers
+        // map requested items - optional modifiers
         const mapDropdownMenuItems = () => {
             return requestedItems.map((item) => {
                 const modifier = modifiers?.find(
@@ -100,6 +100,10 @@ export class DropdownMenuContentConditionalItemsHelper {
             },
             {
                 title: DropdownMenuStringEnum.UNMARK_FAVORITE,
+                isDisabled: !isOpenBusiness || isCompanyOwned,
+            },
+            {
+                title: DropdownMenuStringEnum.WRITE_REVIEW,
                 isDisabled: !isOpenBusiness,
             },
         ];

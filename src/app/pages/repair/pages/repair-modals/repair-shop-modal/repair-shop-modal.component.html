@@ -23,7 +23,8 @@
         <form
             [formGroup]="repairShopForm"
             [ngClass]="{
-                'tab-2 form-container-with-card-2': selectedTab === TableStringEnum.CONTACT,
+                'tab-2 form-container-with-card-2':
+                    selectedTab === TableStringEnum.CONTACT,
             }"
             class="form-container"
         >
@@ -57,7 +58,11 @@
                             >
                                 <svg-icon
                                     (click)="addShopToFavorite()"
-                                    [ngClass]="isFavorite ? 'svg-fill-blue-13 svg-hover-blue-15' : 'svg-fill-muted svg-hover-black'"
+                                    [ngClass]="
+                                        isFavorite
+                                            ? 'svg-fill-blue-13 svg-hover-blue-15'
+                                            : 'svg-fill-muted svg-hover-black'
+                                    "
                                     class="repair-shop__favorite c-pointer"
                                     [src]="repairShopModalSvgRoutes.starIcon"
                                 ></svg-icon>
@@ -133,90 +138,92 @@
                     </div>
 
                     <ng-container *ngIf="isCompanyRelated">
-                    <app-ta-checkbox-card
-                        formControlName="companyOwned"
-                        [label]="'Company Owned'"
-                        [name]="'company-owned'"
-                        [hasArrow]="false"
-                        [withoutToggle]="true"
-                        [animationMarginParams]="{
-                            marginTop: '0px',
-                            marginBottom: '0px'
-                        }"
-                        [isCardOpen]="
-                            !repairShopForm.get(
-                                RepairShopModalStringEnum.COMPANY_OWNED
-                            ).value
-                        "
-                    >
-                        <ng-container body>
-                            <div class="row">
-                                <div class="col-4">
-                                    <app-ta-input-dropdown
-                                        [canAddNew]="true"
-                                        [inputConfig]="payPeriodConfig"
-                                        [options]="payPeriodsDropdown"
-                                        [template]="'svg-template'"
-                                        [formControlName]="
-                                            RepairShopModalStringEnum.PAY_PERIOD
-                                        "
-                                        [canAddNew]="false"
-                                        [activeItem]="selectedPayPeriod"
-                                        (selectedItem)="
-                                            onPayPeriodSelect($event)
-                                        "
-                                    ></app-ta-input-dropdown>
-                                </div>
-                                <div class="col-4">
-                                    <ng-container
-                                        *ngIf="
-                                            isMonthlyPeriodSeleced;
-                                            else dayPeriod
-                                        "
-                                    >
+                        <app-ta-checkbox-card
+                            formControlName="companyOwned"
+                            [label]="'Company Owned'"
+                            [name]="'company-owned'"
+                            [hasArrow]="false"
+                            [withoutToggle]="true"
+                            [animationMarginParams]="{
+                                marginTop: '0px',
+                                marginBottom: '0px',
+                            }"
+                            [isCardOpen]="
+                                !repairShopForm.get(
+                                    RepairShopModalStringEnum.COMPANY_OWNED
+                                ).value
+                            "
+                        >
+                            <ng-container body>
+                                <div class="row">
+                                    <div class="col-4">
                                         <app-ta-input-dropdown
-                                            [canAddNew]="false"
-                                            [inputConfig]="payMonthlyConfig"
-                                            [options]="daysOfMonthDropdown"
+                                            [canAddNew]="true"
+                                            [inputConfig]="payPeriodConfig"
+                                            [options]="payPeriodsDropdown"
                                             [template]="'svg-template'"
                                             [formControlName]="
-                                                RepairShopModalStringEnum.MONTHLY_DAYS
+                                                RepairShopModalStringEnum.PAY_PERIOD
                                             "
                                             [canAddNew]="false"
-                                            [activeItem]="selectedMonthlyDays"
+                                            [activeItem]="selectedPayPeriod"
                                             (selectedItem)="
-                                                onMonthlyDaySelected($event)
+                                                onPayPeriodSelect($event)
                                             "
                                         ></app-ta-input-dropdown>
-                                    </ng-container>
-                                    <ng-template #dayPeriod>
-                                        <app-ta-input-dropdown
-                                            [canAddNew]="false"
-                                            [inputConfig]="payDayConfig"
-                                            [options]="daysOfWeekDropdown"
-                                            [template]="'svg-template'"
+                                    </div>
+                                    <div class="col-4">
+                                        <ng-container
+                                            *ngIf="
+                                                isMonthlyPeriodSeleced;
+                                                else dayPeriod
+                                            "
+                                        >
+                                            <app-ta-input-dropdown
+                                                [canAddNew]="false"
+                                                [inputConfig]="payMonthlyConfig"
+                                                [options]="daysOfMonthDropdown"
+                                                [template]="'svg-template'"
+                                                [formControlName]="
+                                                    RepairShopModalStringEnum.MONTHLY_DAYS
+                                                "
+                                                [canAddNew]="false"
+                                                [activeItem]="
+                                                    selectedMonthlyDays
+                                                "
+                                                (selectedItem)="
+                                                    onMonthlyDaySelected($event)
+                                                "
+                                            ></app-ta-input-dropdown>
+                                        </ng-container>
+                                        <ng-template #dayPeriod>
+                                            <app-ta-input-dropdown
+                                                [canAddNew]="false"
+                                                [inputConfig]="payDayConfig"
+                                                [options]="daysOfWeekDropdown"
+                                                [template]="'svg-template'"
+                                                [formControlName]="
+                                                    RepairShopModalStringEnum.WEEKLY_DAY
+                                                "
+                                                [activeItem]="selectedWeeklyDay"
+                                                (selectedItem)="
+                                                    onWeeklyDaySelected($event)
+                                                "
+                                            ></app-ta-input-dropdown>
+                                        </ng-template>
+                                    </div>
+                                    <div class="col-4">
+                                        <app-ta-input
                                             [formControlName]="
-                                                RepairShopModalStringEnum.WEEKLY_DAY
+                                                RepairShopModalStringEnum.RENT
                                             "
-                                            [activeItem]="selectedWeeklyDay"
-                                            (selectedItem)="
-                                                onWeeklyDaySelected($event)
-                                            "
-                                        ></app-ta-input-dropdown>
-                                    </ng-template>
+                                            [inputConfig]="rentInputConfig"
+                                        ></app-ta-input>
+                                    </div>
                                 </div>
-                                <div class="col-4">
-                                    <app-ta-input
-                                        [formControlName]="
-                                            RepairShopModalStringEnum.RENT
-                                        "
-                                        [inputConfig]="rentInputConfig"
-                                    ></app-ta-input>
-                                </div>
-                            </div>
-                        </ng-container>
-                    </app-ta-checkbox-card>
-                </ng-container>
+                            </ng-container>
+                        </app-ta-checkbox-card>
+                    </ng-container>
 
                     <!-- Repair Shop Services -->
                     <app-ta-custom-card
@@ -298,7 +305,7 @@
                                         [ngClass]="{
                                             active: openHour.get(
                                                 RepairShopModalStringEnum.IS_WORKING_DAY
-                                            ).value
+                                            ).value,
                                         }"
                                         class="repair-shop-service d-flex align-items-center justify-content-center pl-0"
                                     >
@@ -511,7 +518,7 @@
                     <app-ta-custom-card
                         [animationMarginParams]="{
                             marginTop: '18px',
-                            marginBottom: '22px'
+                            marginBottom: '22px',
                         }"
                         [cardName]="'Bank Account'"
                         [disableAnimation]="disableCardAnimation"
@@ -561,22 +568,82 @@
                             [hasCounter]="files?.length"
                             [animationMarginParams]="{
                                 marginTop: '0',
-                                marginBottom: '0'
+                                marginBottom: '0',
                             }"
                         >
-                        <!-- TODO: -->
+                            <!-- TODO: -->
                             <app-ca-upload-files
-                            [files]="[]"
-                            [isVisibleCropAndDrop]="true"
-                            [slider]="{dontUseSlider: false, hasCarouselBottomTabs: true}"
-                            [carouselConfig]="{files: [], customClass: 'medium', customDetailsPageClass: 'modals', hasCarouselBottomTabs: true}"
-                            [hasCrop]="false"
-                            [dropzoneConf]="[{template: 'documentsTemplate', config: {dropzone: {dropZoneType: 'files', multiple: true, globalDropZone: false, dropZonePages: 'tools_todo'}, dropzoneOption: {customClassName: 'documents-dropzone', size: 'medium', modalSize: 'lg', showDropzone: true, filesLength: 2, isRequired: true, dropzoneClose: false}}}]"
-                            [review]="{isReview: false, reviewMode: 'FEEDBACK_MODE', feedbackText: 'Sample feedback text', categoryTag: 'General'}"
-                            [configFile]="{id: 111, customClassName: 'modals', file: {url: '', incorrect: false, lastHovered: false, fileSize: 1200, fileName: ''}, hasTagsDropdown: true, hasNumberOfPages: true, activePage: 1, type: 'modal', hasLandscapeOption: false, tagsOptions: [{tagName: 'HOS Agreement', checked: false}, {tagName: 'Unsafe Driving AGT', checked: false}]}"
-                            [size]="'medium'"
-                            [slideWidth]="180"
-                            (fileAdded)="fileAdded($event)"
+                                [files]="[]"
+                                [isVisibleCropAndDrop]="true"
+                                [slider]="{
+                                    dontUseSlider: false,
+                                    hasCarouselBottomTabs: true,
+                                }"
+                                [carouselConfig]="{
+                                    files: [],
+                                    customClass: 'medium',
+                                    customDetailsPageClass: 'modals',
+                                    hasCarouselBottomTabs: true,
+                                }"
+                                [hasCrop]="false"
+                                [dropzoneConf]="[
+                                    {
+                                        template: 'documentsTemplate',
+                                        config: {
+                                            dropzone: {
+                                                dropZoneType: 'files',
+                                                multiple: true,
+                                                globalDropZone: false,
+                                                dropZonePages: 'tools_todo',
+                                            },
+                                            dropzoneOption: {
+                                                customClassName:
+                                                    'documents-dropzone',
+                                                size: 'medium',
+                                                modalSize: 'lg',
+                                                showDropzone: true,
+                                                filesLength: 2,
+                                                isRequired: true,
+                                                dropzoneClose: false,
+                                            },
+                                        },
+                                    },
+                                ]"
+                                [review]="{
+                                    isReview: false,
+                                    reviewMode: 'FEEDBACK_MODE',
+                                    feedbackText: 'Sample feedback text',
+                                    categoryTag: 'General',
+                                }"
+                                [configFile]="{
+                                    id: 111,
+                                    customClassName: 'modals',
+                                    file: {
+                                        url: '',
+                                        incorrect: false,
+                                        lastHovered: false,
+                                        fileSize: 1200,
+                                        fileName: '',
+                                    },
+                                    hasTagsDropdown: true,
+                                    hasNumberOfPages: true,
+                                    activePage: 1,
+                                    type: 'modal',
+                                    hasLandscapeOption: false,
+                                    tagsOptions: [
+                                        {
+                                            tagName: 'HOS Agreement',
+                                            checked: false,
+                                        },
+                                        {
+                                            tagName: 'Unsafe Driving AGT',
+                                            checked: false,
+                                        },
+                                    ],
+                                }"
+                                [size]="'medium'"
+                                [slideWidth]="180"
+                                (fileAdded)="fileAdded($event)"
                             ></app-ca-upload-files>
                         </app-ta-custom-card>
                     </div>
@@ -610,7 +677,7 @@
                         [hasScrollBodyXAxis]="true"
                         [animationMarginParams]="{
                             marginTop: '10px',
-                            marginBottom: '5px'
+                            marginBottom: '5px',
                         }"
                         (onActionEvent)="addContact()"
                     >
@@ -630,93 +697,90 @@
                     </app-ta-custom-card>
 
                     <app-ta-custom-card
-                    [animationMarginParams]="{
-                        marginTop: '0',
-                        marginBottom: '0'
-                    }"
-                    [cardName]="'Cover Photo'"
-                    [isCardOpen]="true"
-                    [hasArrow]="false"
-                >
-                    <app-ca-upload-files
-                        [isVisibleCropAndDrop]="true"
-                        [hasBlobUrl]="true"
-                        [files]="[
-                            { url: coverPhoto?.url }
-                        ]"
-                        [slider]="{
-                            dontUseSlider: false,
-                            hasCarouselBottomTabs: false
+                        [animationMarginParams]="{
+                            marginTop: '0',
+                            marginBottom: '0',
                         }"
-                        [carouselConfig]="{
-                            files: [],
-                            customClass: 'medium',
-                            customDetailsPageClass: 'modals',
-                            hasCarouselBottomTabs: true
-                        }"
-                        [hasCrop]="true"
-                        [isRoundCrop]="false"
-                        [dropzoneConf]="[
-                            {
-                                template: 'imageCropTemplate',
-                                config: {
-                                    dropzone: {
-                                        dropZoneType: 'image',
-                                        multiple: true,
-                                        globalDropZone: false,
-                                        dropZonePages: 'cdl'
-                                    },
-                                    dropzoneOption: {
-                                        customClassName:
-                                            'documents-dropzone',
-                                        size: 'medium',
-                                        modalSize: 'lg',
-                                        showDropzone: true,
-                                        dropzoneClose: false
-                                    }
-                                }
-                            }
-                        ]"
-                        [review]="{
-                            isReview: true,
-                            reviewMode: 'REVIEW_MODE',
-                            feedbackText: 'Sample feedback text',
-                            categoryTag: 'General'
-                        }"
-                        [configFile]="{
-                            id: 111,
-                            customClassName: 'modals',
-                            file: {
-                                url: '',
-                                incorrect: false,
-                                lastHovered: false,
-                                fileSize: 1200,
-                                fileName: ''
-                            },
-                            hasTagsDropdown: false,
-                            hasNumberOfPages: true,
-                            activePage: 1,
-                            tags: ['Example'],
-                            type: 'modal',
-                            hasLandscapeOption: false,
-                            tagsOptions: [
-                                {
-                                    tagName: 'HOS Agreement',
-                                    checked: false
-                                },
-                                {
-                                    tagName: 'Unsafe Driving AGT',
-                                    checked: false
-                                }
-                            ]
-                        }"
-                        [size]="'medium'"
-                        [slideWidth]="180"
-                        (onFileEvent)="onUploadCoverPhoto($event)"
+                        [cardName]="'Cover Photo'"
+                        [isCardOpen]="true"
+                        [hasArrow]="false"
                     >
-                    </app-ca-upload-files>
-                </app-ta-custom-card>
-
+                        <app-ca-upload-files
+                            [isVisibleCropAndDrop]="true"
+                            [hasBlobUrl]="true"
+                            [files]="[{ url: coverPhoto?.url }]"
+                            [slider]="{
+                                dontUseSlider: false,
+                                hasCarouselBottomTabs: false,
+                            }"
+                            [carouselConfig]="{
+                                files: [],
+                                customClass: 'medium',
+                                customDetailsPageClass: 'modals',
+                                hasCarouselBottomTabs: true,
+                            }"
+                            [hasCrop]="true"
+                            [isRoundCrop]="false"
+                            [dropzoneConf]="[
+                                {
+                                    template: 'imageCropTemplate',
+                                    config: {
+                                        dropzone: {
+                                            dropZoneType: 'image',
+                                            multiple: true,
+                                            globalDropZone: false,
+                                            dropZonePages: 'cdl',
+                                        },
+                                        dropzoneOption: {
+                                            customClassName:
+                                                'documents-dropzone',
+                                            size: 'medium',
+                                            modalSize: 'lg',
+                                            showDropzone: true,
+                                            dropzoneClose: false,
+                                        },
+                                    },
+                                },
+                            ]"
+                            [review]="{
+                                isReview: true,
+                                reviewMode: 'REVIEW_MODE',
+                                feedbackText: 'Sample feedback text',
+                                categoryTag: 'General',
+                            }"
+                            [configFile]="{
+                                id: 111,
+                                customClassName: 'modals',
+                                file: {
+                                    url: '',
+                                    incorrect: false,
+                                    lastHovered: false,
+                                    fileSize: 1200,
+                                    fileName: '',
+                                },
+                                hasTagsDropdown: false,
+                                hasNumberOfPages: true,
+                                activePage: 1,
+                                tags: ['Example'],
+                                type: 'modal',
+                                hasLandscapeOption: false,
+                                tagsOptions: [
+                                    {
+                                        tagName: 'HOS Agreement',
+                                        checked: false,
+                                    },
+                                    {
+                                        tagName: 'Unsafe Driving AGT',
+                                        checked: false,
+                                    },
+                                ],
+                            }"
+                            [size]="'medium'"
+                            [slideWidth]="180"
+                            (onFileEvent)="onUploadCoverPhoto($event)"
+                        >
+                        </app-ca-upload-files>
+                    </app-ta-custom-card>
 
                     <ng-container *ngIf="!repairShopContacts?.length">
                         <div class="no-review-repair-shop">
@@ -741,7 +805,7 @@
                         [hasArrow]="false"
                         [hasBodyData]="reviews.length"
                         [hasCounter]="reviews.length"
-                        [hasLikeDislike]="true"
+                        [hasLikeDislike]="false"
                         [hasScrollBody]="reviews.length > 6"
                         [isCardOpen]="true"
                         (onActionEvent)="createReview()"

@@ -49,7 +49,6 @@ export class AccountCardComponent
     @Input() set viewData(value: CardDetails[]) {
         this._viewData = value;
     }
-    @Input() selectedTab: string;
 
     // card body endpoints
     @Input() cardTitle: string;

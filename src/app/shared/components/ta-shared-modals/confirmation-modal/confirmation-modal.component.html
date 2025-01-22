@@ -11,7 +11,7 @@
                     : 'Move'
                 : editData?.type === 'multiple delete' &&
                     editData?.template !== 'repair' &&
-                    editData?.template !== 'repair_shop' &&
+                    editData?.template !== 'repair-shop' &&
                     editData?.template !== 'truck' &&
                     editData?.template !== 'driver' &&
                     editData?.template !== 'user' &&
@@ -31,7 +31,7 @@
                         ? 'Delete Contact'
                         : editData?.template === 'repair'
                           ? 'Delete Repair / Order'
-                          : editData?.template === 'repair_shop'
+                          : editData?.template === 'repair-shop'
                             ? 'Delete Repair Shop'
                             : editData?.template === 'registration'
                               ? 'Delete Registration'
@@ -851,7 +851,7 @@
 
                         <!-- Repair Shop -->
 
-                        <ng-container *ngSwitchCase="'repair_shop'">
+                        <ng-container *ngSwitchCase="'repair-shop'">
                             <div class="confirmation-body-content">
                                 <div class="d-flex align-items-center">
                                     <p
@@ -1402,7 +1402,7 @@
 
                         <!-- Repair Shop -->
 
-                        <ng-container *ngSwitchCase="'repair_shop'">
+                        <ng-container *ngSwitchCase="'repair-shop'">
                             <div
                                 class="confirmation-body-content"
                                 [ngClass]="{
