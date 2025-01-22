@@ -27,12 +27,23 @@ import { CommentsService } from '@shared/services/comments.service';
 import { FormService } from '@shared/services/form.service';
 import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calculations.helper';
 import { CommonModule } from '@angular/common';
-import { TaModalComponent } from '@shared/components/ta-modal/ta-modal.component';
-import { TaTabSwitchComponent } from '@shared/components/ta-tab-switch/ta-tab-switch.component';
-import { TaInputComponent } from '@shared/components/ta-input/ta-input.component';
-import { TaInputDropdownComponent } from '@shared/components/ta-input-dropdown/ta-input-dropdown.component';
 import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-custom-card.component';
 import { TaUploadFilesComponent } from '@shared/components/ta-upload-files/ta-upload-files.component';
+import {
+    CaInputComponent,
+    CaInputDropdownComponent,
+    CaModalButtonComponent,
+    CaModalComponent,
+} from 'ca-components';
+import { NgbActiveModal, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
+import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
+import { ModalButtonType, ModalButtonSize } from '@shared/enums';
+import { TaModalActionEnums } from '@shared/components/ta-modal/enums';
+import { SharedSvgRoutes } from '@shared/utils/svg-routes';
+import { AngularSvgIconModule } from 'angular-svg-icon';
+
+// Pipes
+import { FormatDatePipe } from '@shared/pipes';
 
 @Component({
     selector: 'app-to-do-modal',
@@ -45,15 +56,20 @@ import { TaUploadFilesComponent } from '@shared/components/ta-upload-files/ta-up
         CommonModule,
         FormsModule,
         ReactiveFormsModule,
+        AngularSvgIconModule,
+        NgbTooltipModule,
 
         // Component
-        TaModalComponent,
-        TaTabSwitchComponent,
-        TaInputComponent,
-        TaInputDropdownComponent,
+        TaAppTooltipV2Component,
+        CaModalComponent,
+        CaModalButtonComponent,
+        CaInputComponent,
+        CaInputDropdownComponent,
         TaCustomCardComponent,
         TaUploadFilesComponent,
         TaUserReviewComponent,
+        // Pipes
+        FormatDatePipe,
     ],
 })
 export class TodoModalComponent implements OnInit, OnDestroy {
@@ -85,6 +101,13 @@ export class TodoModalComponent implements OnInit, OnDestroy {
     public disableCardAnimation: boolean = false;
 
     private destroy$ = new Subject<void>();
+    public svgRoutes = SharedSvgRoutes;
+    public activeAction: string;
+
+    public modalButtonType = ModalButtonType;
+    public modalButtonSize = ModalButtonSize;
+    public taModalActionEnums = TaModalActionEnums;
+    public data: TodoResponse;
 
     constructor(
         private formBuilder: UntypedFormBuilder,
@@ -92,7 +115,8 @@ export class TodoModalComponent implements OnInit, OnDestroy {
         private modalService: ModalService,
         private todoService: TodoService,
         private commentsService: CommentsService,
-        private formService: FormService
+        private formService: FormService,
+        private ngbActiveModal: NgbActiveModal
     ) {}
 
     ngOnInit() {
@@ -123,48 +147,35 @@ export class TodoModalComponent implements OnInit, OnDestroy {
         );
     }
 
-    public onModalAction(data: { action: string; bool: boolean }) {
-        switch (data.action) {
-            case 'close': {
+    public onModalAction(action: string) {
+        this.activeAction = action;
+        switch (action) {
+            case TaModalActionEnums.CLOSE: {
+                this.ngbActiveModal.close();
                 break;
             }
-            case 'save and add new': {
+            case TaModalActionEnums.SAVE_AND_ADD_NEW: {
                 if (this.taskForm.invalid || !this.isFormDirty) {
                     this.inputService.markInvalid(this.taskForm);
                     return;
                 }
                 this.addTask();
-                this.modalService.setModalSpinner({
-                    action: 'save and add new',
-                    status: true,
-                    close: false,
-                });
                 this.addNewAfterSave = true;
                 break;
             }
-            case 'save': {
+            case TaModalActionEnums.SAVE: {
                 if (this.taskForm.invalid || !this.isFormDirty) {
                     this.inputService.markInvalid(this.taskForm);
                     return;
                 }
                 if (this.editData?.type === 'edit') {
                     this.updateTaskById(this.editData.id);
-                    this.modalService.setModalSpinner({
-                        action: null,
-                        status: true,
-                        close: false,
-                    });
                 } else {
                     this.addTask();
-                    this.modalService.setModalSpinner({
-                        action: null,
-                        status: true,
-                        close: false,
-                    });
                 }
                 break;
             }
-            case 'delete': {
+            case TaModalActionEnums.DELETE: {
                 this.deleteTaskById(this.editData.id);
                 this.modalService.setModalSpinner({
                     action: 'delete',
@@ -322,20 +333,8 @@ export class TodoModalComponent implements OnInit, OnDestroy {
         };
 
         this.todoService.updateTodo(newData).subscribe({
-            next: () => {
-                this.modalService.setModalSpinner({
-                    action: null,
-                    status: true,
-                    close: true,
-                });
-            },
-            error: () => {
-                this.modalService.setModalSpinner({
-                    action: null,
-                    status: false,
-                    close: false,
-                });
-            },
+            next: () => this.ngbActiveModal.close(),
+            error: () => (this.activeAction = null),
         });
     }
 
@@ -365,37 +364,11 @@ export class TodoModalComponent implements OnInit, OnDestroy {
 
         this.todoService.addTodo(newData).subscribe({
             next: () => {
+                this.ngbActiveModal.close();
                 if (this.addNewAfterSave) {
-                    this.modalService.setModalSpinner({
-                        action: 'save and add new',
-                        status: false,
-                        close: false,
-                    });
-
-                    this.formService.resetForm(this.taskForm);
-
-                    this.selectedCompanyUsers = [];
-                    this.selectedDepartments = [];
-                    this.documents = [];
-                    this.fileModified = false;
-                    this.filesForDelete = [];
-
-                    this.addNewAfterSave = false;
-                } else {
-                    this.modalService.setModalSpinner({
-                        action: null,
-                        status: true,
-                        close: true,
-                    });
                 }
             },
-            error: () => {
-                this.modalService.setModalSpinner({
-                    action: null,
-                    status: false,
-                    close: false,
-                });
-            },
+            error: () => (this.activeAction = null),
         });
     }
 
@@ -405,19 +378,9 @@ export class TodoModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
-                    this.modalService.setModalSpinner({
-                        action: 'delete',
-                        status: true,
-                        close: true,
-                    });
+                    this.ngbActiveModal.close();
                 },
-                error: () => {
-                    this.modalService.setModalSpinner({
-                        action: 'delete',
-                        status: false,
-                        close: false,
-                    });
-                },
+                error: () => (this.activeAction = null),
             });
     }
 
@@ -448,6 +411,7 @@ export class TodoModalComponent implements OnInit, OnDestroy {
                     });
                     this.taskName = res.title;
                     this.selectedDepartments = res.departments;
+                    this.data = res;
 
                     this.selectedCompanyUsers = res.todoUsers.map((item) => {
                         return {
