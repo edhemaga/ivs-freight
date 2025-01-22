@@ -161,6 +161,8 @@
                     [hasCounter]="documents?.length"
                     [cardName]="'Document'"
                     [disableAnimation]="isCardAnimationDisabled"
+                    [hasDarkDivider]="true"
+                    [hasSmallDivider]="true"
                     [isCardOpen]="!!documents.length"
                 >
                     <app-ca-upload-files
@@ -235,7 +237,7 @@
                 </app-ta-custom-card>
             </div>
 
-            <div class="divider"></div>
+            <div class="divider divider--dark divider--small"></div>
 
             <!-- Note -->
             <app-ca-input-note
@@ -299,7 +301,7 @@
 
 <ng-template #footerTemplate>
     <div class="modal-footer modal-footer-payroll">
-        <div class="divider"></div>
+        <div class="divider divider--dark divider--small m-0"></div>
         @if (editData?.type === 'edit-licence') {
             <div class="d-flex justify-content-between w-full">
                 <div class="d-flex">

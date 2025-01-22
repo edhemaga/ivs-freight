@@ -11,7 +11,7 @@ import { Subject, takeUntil } from 'rxjs';
 
 // modules
 import { AngularSvgIconModule } from 'angular-svg-icon';
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbActiveModal, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 
 // services
 import { DriverService } from '@pages/driver/services/driver.service';
@@ -22,19 +22,15 @@ import { FormService } from '@shared/services/form.service';
 
 // components
 import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
-import { TaModalComponent } from '@shared/components/ta-modal/ta-modal.component';
-import { TaInputDropdownComponent } from '@shared/components/ta-input-dropdown/ta-input-dropdown.component';
-import { TaUploadFilesComponent } from '@shared/components/ta-upload-files/ta-upload-files.component';
-import { TaInputComponent } from '@shared/components/ta-input/ta-input.component';
 import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-custom-card.component';
-import { TaInputNoteComponent } from '@shared/components/ta-input-note/ta-input-note.component';
 import { ConfirmationModalComponent } from '@shared/components/ta-shared-modals/confirmation-modal/confirmation-modal.component';
 import {
     CaInputDropdownComponent,
     CaInputComponent,
     CaUploadFilesComponent,
     CaInputNoteComponent,
-    CaNoteComponent
+    CaModalComponent,
+    CaModalButtonComponent,
 } from 'ca-components';
 
 // helpers
@@ -46,6 +42,15 @@ import { DriverDrugAlcoholTestModalStringEnum } from '@pages/driver/pages/driver
 // models
 import { EnumValue, TestResponse } from 'appcoretruckassist';
 import { EditData } from '@shared/models/edit-data.model';
+
+// Svg routes
+import { SharedSvgRoutes } from '@shared/utils/svg-routes';
+
+// Pipes
+import { FormatDatePipe } from '@shared/pipes';
+
+// Enums
+import { ModalButtonType, ModalButtonSize } from '@shared/enums';
 
 @Component({
     selector: 'app-driver-drug-alcohol-test-modal',
@@ -59,21 +64,21 @@ import { EditData } from '@shared/models/edit-data.model';
         FormsModule,
         ReactiveFormsModule,
         AngularSvgIconModule,
+        NgbTooltipModule,
 
         // components
         TaAppTooltipV2Component,
-        TaModalComponent,
-        TaInputDropdownComponent,
-        TaUploadFilesComponent,
-        TaInputComponent,
+        CaModalComponent,
+        CaModalButtonComponent,
         TaCustomCardComponent,
-        TaInputNoteComponent,
 
         CaInputDropdownComponent,
         CaInputComponent,
         CaUploadFilesComponent,
         CaInputNoteComponent,
-        CaNoteComponent,
+
+        // Pipes
+        FormatDatePipe,
     ],
 })
 export class DriverDrugAlcoholTestModalComponent implements OnInit, OnDestroy {
@@ -106,6 +111,11 @@ export class DriverDrugAlcoholTestModalComponent implements OnInit, OnDestroy {
     public documents: any[] = [];
     public filesForDelete: any[] = [];
     public isFileModified: boolean = false;
+    public svgRoutes = SharedSvgRoutes;
+    public modalButtonType = ModalButtonType;
+    public modalButtonSize = ModalButtonSize;
+    public activeAction!: string;
+    public taModalActionEnums = DriverDrugAlcoholTestModalStringEnum;
 
     constructor(
         private formBuilder: UntypedFormBuilder,
@@ -119,7 +129,7 @@ export class DriverDrugAlcoholTestModalComponent implements OnInit, OnDestroy {
 
         // bootstrap
         private ngbActiveModal: NgbActiveModal
-    ) { }
+    ) {}
 
     ngOnInit(): void {
         this.createForm();
@@ -148,9 +158,11 @@ export class DriverDrugAlcoholTestModalComponent implements OnInit, OnDestroy {
             });
     }
 
-    public onModalAction(data: { action: string; bool: boolean }): void {
-        switch (data.action) {
+    public onModalAction(action: string): void {
+        this.activeAction = action;
+        switch (action) {
             case DriverDrugAlcoholTestModalStringEnum.CLOSE:
+                this.ngbActiveModal.close();
                 break;
             case DriverDrugAlcoholTestModalStringEnum.SAVE:
                 if (this.drugForm.invalid || !this.isFormDirty) {
@@ -164,20 +176,8 @@ export class DriverDrugAlcoholTestModalComponent implements OnInit, OnDestroy {
                     DriverDrugAlcoholTestModalStringEnum.EDIT_DRUG
                 ) {
                     this.updateTest();
-
-                    this.modalService.setModalSpinner({
-                        action: null,
-                        status: true,
-                        close: false,
-                    });
                 } else {
                     this.addTest();
-
-                    this.modalService.setModalSpinner({
-                        action: null,
-                        status: true,
-                        close: false,
-                    });
                 }
 
                 break;
@@ -400,19 +400,9 @@ export class DriverDrugAlcoholTestModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
-                    this.modalService.setModalSpinner({
-                        action: null,
-                        status: true,
-                        close: true,
-                    });
+                    this.ngbActiveModal.close();
                 },
-                error: () => {
-                    this.modalService.setModalSpinner({
-                        action: null,
-                        status: false,
-                        close: false,
-                    });
-                },
+                error: () => (this.activeAction = null),
             });
     }
 
@@ -445,19 +435,9 @@ export class DriverDrugAlcoholTestModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
-                    this.modalService.setModalSpinner({
-                        action: null,
-                        status: true,
-                        close: true,
-                    });
+                    this.ngbActiveModal.close();
                 },
-                error: () => {
-                    this.modalService.setModalSpinner({
-                        action: null,
-                        status: false,
-                        close: false,
-                    });
-                },
+                error: () => (this.activeAction = null),
             });
     }
 
