@@ -121,20 +121,25 @@
                 [customClass]="'detailsPadding'"
             >
                 <div class="charts-template perfomance">
-                    <div>
-                        <app-ta-tab-switch
-                            [type]="'type2-modal-popup'"
-                            (switchClicked)="changeInvoiceTab($event)"
-                            [tabs]="invoiceChartTabs"
-                        >
-                        </app-ta-tab-switch>
-                    </div>
+                    @if (!invoiceLegendHighlightedBackground) {
+                        <div>
+                            <app-ta-tab-switch
+                                [type]="'type2-modal-popup'"
+                                (switchClicked)="changeInvoiceTab($event)"
+                                [tabs]="invoiceChartTabs"
+                            >
+                            </app-ta-tab-switch>
+                        </div>
+                    }
                     <ng-container *ngIf="invoiceChartConfig?.chartData">
-                        <app-ta-chart-legend
-                            [data]="invoiceChartLegend"
-                        ></app-ta-chart-legend>
                         <app-ca-chart
                             [chartConfig]="invoiceChartConfig"
+                            [legendData]="{
+                                data: invoiceChartLegend,
+                                hasHighlightedBackground:
+                                    invoiceLegendHighlightedBackground,
+                                title: invoiceLegendTitle,
+                            }"
                             (hoveredIndex)="setInvoiceLegendOnHover($event)"
                         >
                         </app-ca-chart>
@@ -155,21 +160,25 @@
                 [customClass]="'detailsPadding'"
             >
                 <div class="charts-template perfomance">
-                    <div>
-                        <app-ta-tab-switch
-                            [type]="'type2-modal-popup'"
-                            [tabs]="mileageChartTabs"
-                            (switchClicked)="changeMileageTab($event)"
-                        >
-                        </app-ta-tab-switch>
-                    </div>
-
+                    @if (!mileageLegendHighlightedBackground) {
+                        <div>
+                            <app-ta-tab-switch
+                                [type]="'type2-modal-popup'"
+                                [tabs]="mileageChartTabs"
+                                (switchClicked)="changeMileageTab($event)"
+                            >
+                            </app-ta-tab-switch>
+                        </div>
+                    }
                     <ng-container *ngIf="mileageChartConfig?.chartData">
-                        <app-ta-chart-legend
-                            [data]="mileageChartLegendData"
-                        ></app-ta-chart-legend>
                         <app-ca-chart
                             [chartConfig]="mileageChartConfig"
+                            [legendData]="{
+                                data: mileageChartLegendData,
+                                hasHighlightedBackground:
+                                    mileageLegendHighlightedBackground,
+                                title: mileageLegendTitle,
+                            }"
                             (hoveredIndex)="setMileageLegendOnHover($event)"
                         >
                         </app-ca-chart>
@@ -438,20 +447,25 @@
                 [customClass]="'detailsPadding'"
             >
                 <div class="charts-template perfomance">
-                    <div>
-                        <app-ta-tab-switch
-                            [type]="'type2-modal-popup'"
-                            [tabs]="paymentChartTabs"
-                            (switchClicked)="changePaymentTab($event)"
-                        >
-                        </app-ta-tab-switch>
-                    </div>
+                    @if (!paymentLegendHighlightedBackground) {
+                        <div>
+                            <app-ta-tab-switch
+                                [type]="'type2-modal-popup'"
+                                [tabs]="paymentChartTabs"
+                                (switchClicked)="changePaymentTab($event)"
+                            >
+                            </app-ta-tab-switch>
+                        </div>
+                    }
                     <ng-container *ngIf="paymentChartConfig?.chartData">
-                        <app-ta-chart-legend
-                            [data]="paymentChartLegendData"
-                        ></app-ta-chart-legend>
                         <app-ca-chart
                             [chartConfig]="paymentChartConfig"
+                            [legendData]="{
+                                data: paymentChartLegendData,
+                                hasHighlightedBackground:
+                                    paymentLegendHighlightedBackground,
+                                title: paymentLegendTitle,
+                            }"
                             (hoveredIndex)="
                                 setPaymentHistoryLegendOnHover($event)
                             "

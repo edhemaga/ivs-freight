@@ -6,6 +6,7 @@ import {
     BrokerPaidInvoiceChartResponse,
     DriverPayrollResponse,
     FuelStopExpensesResponse,
+    ShipperAverageWaitingTimeResponse,
     TrailerFuelConsumptionChartResponse,
     TruckExpensesChartResponse,
     TruckFuelConsumptionChartResponse,
@@ -165,5 +166,23 @@ export class ChartLegendConfiguration {
             unit: 'days',
         },
     ];
+
+    public static shipperAverageWaitingTimeConfiguration = (data: ShipperAverageWaitingTimeResponse): ChartLegendProperty[] => [
+        // {
+        //     name: 'Avg. Pickup Time',
+        //     value: data.avgPickupTime || 0,
+        //     // Since 'background' property is set with color, linear gradient can be used as well
+        //     color: '#86C9C3',
+        //     unit: 'days',
+        // },
+        // {
+        //     name: 'Avg. Delivery Time',
+        //     value: data.avgDeliveryTime || 0,
+        //     color: '#ED9292',
+        //     isLineIndicator: true,
+        //     unit: 'days',
+        // },
+    ];
+
 
 }
