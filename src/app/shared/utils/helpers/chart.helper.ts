@@ -262,6 +262,11 @@ export class ChartHelper {
         hasHighlightedBackground: boolean,
         title: string
     } {
+        if (index < 0)
+            return {
+                hasHighlightedBackground: false,
+                title: ''
+            }
 
         let hasHighlightedBackground: boolean = false;
         let title: string;
