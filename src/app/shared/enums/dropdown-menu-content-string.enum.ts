@@ -107,6 +107,7 @@ export enum DropdownMenuStringEnum {
     ADD_NEW_TRUCK_TRAILER = 'add-new-truck-trailer',
     ADD_REPAIR_BILL_TRUCK = 'add-repair-bill-truck',
     ADD_REPAIR_BILL_TRAILER = 'add-repair-bill-trailer',
+    ADD_REPAIR_BILL_SHOP = 'add-repair-bill-shop',
 
     // additional
     BLANK = '_blank',

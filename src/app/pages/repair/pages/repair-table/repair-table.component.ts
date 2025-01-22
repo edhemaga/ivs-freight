@@ -9,7 +9,7 @@ import {
 import { Router } from '@angular/router';
 import { DatePipe } from '@angular/common';
 
-import { Observable, Subject, takeUntil, tap } from 'rxjs';
+import { Observable, Subject, takeUntil } from 'rxjs';
 
 // settings
 import {
@@ -122,7 +122,7 @@ export class RepairTableComponent
     @ViewChild('mapsComponent')
     public mapsComponent: CaMapComponent;
 
-    private destroy$ = new Subject<void>();
+    public destroy$ = new Subject<void>();
 
     public resizeObserver: ResizeObserver;
     public activeViewMode: string = TableStringEnum.LIST;
@@ -217,9 +217,9 @@ export class RepairTableComponent
 
         // services
         protected modalService: ModalService,
+        protected repairService: RepairService,
 
         private tableService: TruckassistTableService,
-        private repairService: RepairService,
         private reviewRatingService: ReviewsRatingService,
         private mapsService: MapsService,
         private confirmationService: ConfirmationService,
@@ -242,7 +242,7 @@ export class RepairTableComponent
         private thousandSeparator: ThousandSeparatorPipe,
         private dispatchColorFinderPipe: DispatchColorFinderPipe
     ) {
-        super(modalService, router);
+        super(router, modalService, repairService);
     }
 
     ngOnInit(): void {
@@ -460,43 +460,6 @@ export class RepairTableComponent
                 this.sendRepairData();
 
                 this.handleAfterActions();
-            });
-    }
-
-    private updateRepairShopFavorite(repairShopId: number): void {
-        this.repairService
-            .updateRepairShopFavorite(repairShopId)
-            .pipe(takeUntil(this.destroy$))
-            .subscribe(() => {
-                const newViewData = this.viewData.map((repairShop) => {
-                    const { id, isFavorite, status, companyOwned } = repairShop;
-
-                    return id === repairShopId
-                        ? {
-                              ...repairShop,
-                              isFavorite: !isFavorite,
-                              actionAnimation: TableStringEnum.UPDATE,
-                              tableDropdownContent:
-                                  this.getRepairShopDropdownContent(
-                                      !!status,
-                                      !isFavorite,
-                                      companyOwned
-                                  ),
-                          }
-                        : repairShop;
-                });
-
-                const sortedByFavorite = newViewData.sort(
-                    (a, b) => b.isFavorite - a.isFavorite
-                );
-
-                this.viewData = [...sortedByFavorite];
-
-                this.handleCloseAnimationAction(false);
-
-                this.updateMapItem(
-                    this.viewData.find((item) => item.id === repairShopId)
-                );
             });
     }
 
@@ -1342,7 +1305,7 @@ export class RepairTableComponent
                         size: TableStringEnum.LARGE,
                     },
                     {
-                        type: TableStringEnum.NEW_TRUCK,
+                        type: DropdownMenuStringEnum.ADD_REPAIR_BILL_TRUCK,
                     }
                 );
             } else if (this.selectedTab === TableStringEnum.INACTIVE) {
@@ -1352,7 +1315,7 @@ export class RepairTableComponent
                         size: TableStringEnum.LARGE,
                     },
                     {
-                        type: TableStringEnum.NEW_TRAILER,
+                        type: DropdownMenuStringEnum.ADD_REPAIR_BILL_TRAILER,
                     }
                 );
             } else {
@@ -1610,6 +1573,7 @@ export class RepairTableComponent
                 : null,
             fileCount,
             isFavorite: pinned,
+            isFavoriteDisabled: !status || companyOwned,
             tableDropdownContent: this.getRepairShopDropdownContent(
                 !!status,
                 pinned,
@@ -1637,36 +1601,6 @@ export class RepairTableComponent
         );
     }
 
-    private getRepairById(id: number, isFinishOrder: boolean = false): void {
-        this.repairService
-            .getRepairById(id)
-            .pipe(
-                takeUntil(this.destroy$),
-                tap((repair) => {
-                    const editData = {
-                        data: {
-                            ...repair,
-                        },
-                        type:
-                            this.selectedTab === TableStringEnum.ACTIVE
-                                ? TableStringEnum.EDIT_TRUCK
-                                : TableStringEnum.EDIT_TRAILER,
-                        finishOrderBtn: repair?.repairType?.id === 2,
-                        isFinishOrder,
-                    };
-
-                    this.modalService.openModal(
-                        RepairOrderModalComponent,
-                        { size: TableStringEnum.LARGE },
-                        {
-                            ...editData,
-                        }
-                    );
-                })
-            )
-            .subscribe();
-    }
-
     private deleteSelectedRows(): void {
         this.tableService.currentDeleteSelectedRows
             .pipe(takeUntil(this.destroy$))
@@ -1690,7 +1624,7 @@ export class RepairTableComponent
                             template:
                                 this.selectedTab !== TableStringEnum.REPAIR_SHOP
                                     ? TableStringEnum.REPAIR_2
-                                    : TableStringEnum.REPAIR_SHOP,
+                                    : TableStringEnum.REPAIR_SHOP_3,
                             type:
                                 mappedRes?.length > 1
                                     ? TableStringEnum.MULTIPLE_DELETE
@@ -2101,13 +2035,13 @@ export class RepairTableComponent
         this.getRepairShopMapList();
     }
 
-    public updateMapItem(item?): void {
+    public updateMapItem<T>(repairShop?: T): void {
         if (this.activeViewMode === TableStringEnum.MAP) {
             this.isAddedNewRepairShop = true;
 
             this.getMapData();
 
-            if (item) this.mapsService.markerUpdate(item);
+            if (repairShop) this.mapsService.markerUpdate(repairShop);
         }
     }
 
@@ -2139,166 +2073,6 @@ export class RepairTableComponent
 
         if (this.mapsService.selectedMarkerId && !isAlreadySelectedMarker)
             this.isSelectedFromDetails = true;
-    }
-
-    public onTableBodyActions(event): void {
-        // Show More
-        if (event.type === TableStringEnum.SHOW_MORE) {
-        }
-
-        // Edit & Write Review
-        else if (
-            event.type === TableStringEnum.EDIT ||
-            event.type === TableStringEnum.WRITE_REVIEW
-        ) {
-            /*  if (this.selectedTab !== TableStringEnum.REPAIR_SHOP) {
-                this.getRepairById(event.id);
-            } else {
-                const openedTab =
-                    event.type === TableStringEnum.ADD_CONTRACT
-                        ? TableStringEnum.CONTRACT
-                        : event.type === TableStringEnum.WRITE_REVIEW
-                          ? TableStringEnum.REVIEW
-                          : TableStringEnum.DETAILS;
-
-                this.modalService.openModal(
-                    RepairShopModalComponent,
-                    { size: TableStringEnum.SMALL },
-                    { ...event, openedTab }
-                );
-            } */
-        }
-
-        // View Details
-        else if (event.type === TableStringEnum.VIEW_DETAILS) {
-            /* if (this.selectedTab === TableStringEnum.REPAIR_SHOP)
-                this.router.navigate([`/list/repair/${event.id}/details`]); */
-        }
-
-        // Delete
-        else if (
-            event.type === TableStringEnum.DELETE_REPAIR ||
-            event.type === TableStringEnum.DELETE
-        ) {
-            /*    const template =
-                this.selectedTab === TableStringEnum.REPAIR_SHOP
-                    ? TableStringEnum.REPAIR_SHOP
-                    : TableStringEnum.REPAIR_2;
-
-            const subType =
-                this.selectedTab === TableStringEnum.ACTIVE
-                    ? TableStringEnum.TRUCK
-                    : TableStringEnum.TRAILER_2;
-
-            this.modalService.openModal(
-                ConfirmationModalComponent,
-                { size: TableStringEnum.DELETE },
-                {
-                    ...event,
-                    template,
-                    type: TableStringEnum.DELETE,
-                    ...(this.selectedTab !== TableStringEnum.REPAIR_SHOP && {
-                        subType,
-                    }),
-                }
-            ); */
-        }
-
-        // Close Business
-        else if (event.type === TableStringEnum.CLOSE_BUSINESS) {
-            const mappedEvent = {
-                ...event,
-                type: event.data?.status
-                    ? TableStringEnum.CLOSE
-                    : TableStringEnum.OPEN,
-            };
-
-            this.modalService.openModal(
-                ConfirmationActivationModalComponent,
-                { size: TableStringEnum.SMALL },
-                {
-                    ...mappedEvent,
-                    template: TableStringEnum.INFO,
-                    subType: TableStringEnum.REPAIR_SHOP,
-                    subTypeStatus: TableStringEnum.BUSINESS,
-                    tableType:
-                        ConfirmationActivationStringEnum.REPAIR_SHOP_TEXT,
-                    modalTitle: event.data?.name,
-                    modalSecondTitle: event.data?.address?.address,
-                }
-            );
-        }
-
-        // Add Bill
-        else if (event.type === TableStringEnum.ADD_BILL) {
-            const editData = {
-                data: {
-                    id: event.id,
-                },
-                type: event.type,
-            };
-
-            this.modalService.openModal(
-                RepairOrderModalComponent,
-                { size: TableStringEnum.LARGE },
-                {
-                    ...editData,
-                }
-            );
-        }
-
-        // Finish Order
-        else if (event.type === DropdownMenuStringEnum.FINISH_ORDER) {
-            /*   if (this.selectedTab !== TableStringEnum.REPAIR_SHOP)
-                this.getRepairById(event.id, true); */
-        }
-
-        // Rating
-        else if (event.type === TableStringEnum.RATING) {
-            const raitingData = {
-                entityTypeRatingId: 2,
-                entityTypeId: event.data.id,
-                thumb: event.subType === TableStringEnum.LIKE ? 1 : -1,
-                tableData: event.data,
-            };
-
-            this.reviewRatingService
-                .addRating(raitingData)
-                .pipe(takeUntil(this.destroy$))
-                .subscribe((res) => {
-                    const newViewData = this.viewData.map((data) =>
-                        data.id === event.data.id
-                            ? {
-                                  ...data,
-                                  actionAnimation: TableStringEnum.UPDATE,
-                                  tableShopRaiting: {
-                                      hasLiked:
-                                          res.currentCompanyUserRating === 1,
-                                      hasDislike:
-                                          res.currentCompanyUserRating === -1,
-                                      likeCount: res.upCount,
-                                      dislikeCount: res.downCount,
-                                  },
-                              }
-                            : data
-                    );
-
-                    this.viewData = [...newViewData];
-
-                    this.handleCloseAnimationAction(false);
-
-                    this.mapsService.addRating(res);
-
-                    this.updateMapItem(
-                        this.viewData.find((item) => item.id === event.data.id)
-                    );
-                });
-        }
-
-        // Favorite
-        else if (event.type === TableStringEnum.FAVORITE) {
-            this.updateRepairShopFavorite(event.data.id);
-        }
     }
 
     public handleShowMoreAction(): void {

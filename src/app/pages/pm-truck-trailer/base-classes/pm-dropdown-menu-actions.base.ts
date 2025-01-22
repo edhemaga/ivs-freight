@@ -33,7 +33,7 @@ export abstract class PmDropdownMenuActionsBase extends DropdownMenuActionsBase 
         type === DropdownMenuStringEnum.CONFIGURE_TYPE
             ? this.handleConfigureAction(data)
             : // call the parent class method to handle shared cases
-              super.handleDropdownMenuActions(event, tableType);
+              super.handleSharedDropdownMenuActions(event, tableType);
     }
 
     private handleConfigureAction(

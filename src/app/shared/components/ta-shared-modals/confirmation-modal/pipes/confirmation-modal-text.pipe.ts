@@ -50,7 +50,10 @@ export class ConfirmationModalTextPipe implements PipeTransform {
                     : ConfirmationModalStringEnum.REPAIR_ORDER;
             textEnd =
                 subType + DropActionsStringEnum.EMPTY_SPACE_STRING + repairText;
-        } else if (template === TableStringEnum.REPAIR_SHOP) {
+        } else if (
+            template === TableStringEnum.REPAIR_SHOP ||
+            template === TableStringEnum.REPAIR_SHOP_3
+        ) {
             const repairText =
                 type === TableStringEnum.MULTIPLE_DELETE
                     ? ConfirmationModalStringEnum.REPAIR_SHOPS
