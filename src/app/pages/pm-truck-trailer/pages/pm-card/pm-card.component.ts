@@ -36,6 +36,8 @@ export class PmCardComponent
         this._viewData = value;
     }
 
+    @Input() selectedTab: string;
+
     // card body endpoints
     @Input() cardTitle: string;
     @Input() rows: number[];

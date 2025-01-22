@@ -129,6 +129,7 @@ export class AccountCardComponent
     public labelDropdown(): TableBodyColorLabel {
         for (let card of this._viewData) {
             this.dropdownSelectionArray.push(new FormControl());
+
             if (card.companyContactLabel) {
                 return card.companyContactLabel;
             } else if (card.companyAccountLabel) {

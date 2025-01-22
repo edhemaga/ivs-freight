@@ -317,7 +317,7 @@ export class DropdownMenuContentHelper {
     }
 
     // trailer
-    static getTrailerDropdownContent(selectedTab: string): any[] {
+    static getTrailerDropdownContent(selectedTab: string): DropdownMenuItem[] {
         const isActiveTrailer = selectedTab === DropdownMenuStringEnum.ACTIVE;
 
         // modifier items
