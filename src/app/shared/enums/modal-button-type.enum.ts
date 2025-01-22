@@ -1,8 +1,8 @@
 export enum ModalButtonType {
-  PRIMARY_POSITIVE = 'Primary Positive',
-  PRIMARY_NEUTRAL = 'Primary Neutral',
-  PRIMARY_NEGATIVE = 'Primary Negative',
-  SECONDARY_POSITIVE = 'Secondary Positive',
-  SECONDARY_NEUTRAL = 'Secondary Neutral',
-  SECONDARY_NEGATIVE = 'Secondary Negative'
+  PRIMARY_POSITIVE = 'primary-positive',
+  PRIMARY_NEUTRAL = 'primary-neutral',
+  PRIMARY_NEGATIVE = 'primary-negative',
+  SECONDARY_POSITIVE = 'secondary-positive',
+  SECONDARY_NEUTRAL = 'secondary-neutral',
+  SECONDARY_NEGATIVE = 'secondary-negative',
 }
