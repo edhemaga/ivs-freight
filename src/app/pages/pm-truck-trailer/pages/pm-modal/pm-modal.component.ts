@@ -13,6 +13,8 @@ import {
     UntypedFormBuilder,
     UntypedFormGroup,
 } from '@angular/forms';
+import { NgbActiveModal, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
+import { AngularSvgIconModule } from 'angular-svg-icon';
 
 import { Subject, takeUntil } from 'rxjs';
 
@@ -33,13 +35,18 @@ import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calcula
 
 // components
 import { RepairOrderModalComponent } from '@pages/repair/pages/repair-modals/repair-order-modal/repair-order-modal.component';
-import { TaModalComponent } from '@shared/components/ta-modal/ta-modal.component';
 import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-custom-card.component';
 import { TaModalTableComponent } from '@shared/components/ta-modal-table/ta-modal-table.component';
+import { CaModalComponent, CaModalButtonComponent } from 'ca-components';
+import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
 
 // enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
 import { ModalTableTypeEnum } from '@shared/enums/modal-table-type.enum';
+import { ModalButtonType } from '@shared/enums';
+
+// Svg routes
+import { SharedSvgRoutes } from '@shared/utils/svg-routes';
 
 // models
 import {
@@ -52,6 +59,7 @@ import {
 } from 'appcoretruckassist';
 import { PmUpdateTruckUnitListCommand } from '@pages/pm-truck-trailer/models/pm-update-truck-unit-list-command.model';
 import { PMTableData } from '@pages/pm-truck-trailer/pages/pm-table/models/pm-table-data.model';
+import { TaModalActionEnums } from '@shared/components/ta-modal/enums';
 
 @Component({
     selector: 'app-pm-modal',
@@ -65,11 +73,15 @@ import { PMTableData } from '@pages/pm-truck-trailer/pages/pm-table/models/pm-ta
         FormsModule,
         ReactiveFormsModule,
         NgbModule,
+        AngularSvgIconModule,
+        NgbTooltipModule,
 
         // components
-        TaModalComponent,
+        CaModalComponent,
+        CaModalButtonComponent,
         TaCustomCardComponent,
         TaModalTableComponent,
+        TaAppTooltipV2Component,
     ],
 })
 export class PmModalComponent implements OnInit, OnDestroy {
@@ -95,6 +107,12 @@ export class PmModalComponent implements OnInit, OnDestroy {
 
     // enums
     public modalTableTypeEnum = ModalTableTypeEnum;
+    public modalButtonType = ModalButtonType;
+    public taModalActionEnums = TaModalActionEnums;
+    public TableStringEnum = TableStringEnum;
+    public activeAction: string;
+
+    public svgRoutes = SharedSvgRoutes;
 
     constructor(
         // form
@@ -107,7 +125,8 @@ export class PmModalComponent implements OnInit, OnDestroy {
         private formService: FormService,
 
         // change detector
-        private changeDetector: ChangeDetectorRef
+        private changeDetector: ChangeDetectorRef,
+        private ngbActiveModal: NgbActiveModal
     ) {}
 
     ngOnInit() {
@@ -253,6 +272,8 @@ export class PmModalComponent implements OnInit, OnDestroy {
     }
 
     public onModalAction(data: { action: string; bool: boolean }) {
+        this.activeAction = data.action;
+
         switch (data.action) {
             case TableStringEnum.CLOSE:
                 if (this.editData?.canOpenModal) {
@@ -265,6 +286,8 @@ export class PmModalComponent implements OnInit, OnDestroy {
                         default:
                             break;
                     }
+                } else {
+                    this.ngbActiveModal.close();
                 }
                 break;
 
@@ -285,11 +308,6 @@ export class PmModalComponent implements OnInit, OnDestroy {
                                 }
 
                                 this.addPMTruckList();
-                                this.modalService.setModalSpinner({
-                                    action: null,
-                                    status: true,
-                                    close: false,
-                                });
                                 break;
 
                             case TableStringEnum.TRAILER_PM_SETTINGS:
@@ -300,11 +318,6 @@ export class PmModalComponent implements OnInit, OnDestroy {
                                 }
 
                                 this.addPMTrailerList();
-                                this.modalService.setModalSpinner({
-                                    action: null,
-                                    status: true,
-                                    close: false,
-                                });
                                 break;
 
                             default:
@@ -316,23 +329,9 @@ export class PmModalComponent implements OnInit, OnDestroy {
                         switch (this.editData.header) {
                             case TableStringEnum.CONFIGURE_TRUCK_PM_HEADER:
                                 this.addUpdatePMTruckUnit();
-
-                                this.modalService.setModalSpinner({
-                                    action: null,
-                                    status: true,
-                                    close: false,
-                                });
-
                                 break;
                             case TableStringEnum.CONFIGURE_TRAILER_PM_HEADER:
                                 this.addUpdatePMTrailerUnit();
-
-                                this.modalService.setModalSpinner({
-                                    action: null,
-                                    status: true,
-                                    close: false,
-                                });
-
                                 break;
                             default:
                                 break;
@@ -582,20 +581,10 @@ export class PmModalComponent implements OnInit, OnDestroy {
                                 break;
                         }
                     } else {
-                        this.modalService.setModalSpinner({
-                            action: null,
-                            status: true,
-                            close: true,
-                        });
+                        this.ngbActiveModal.close();
                     }
                 },
-                error: () => {
-                    this.modalService.setModalSpinner({
-                        action: null,
-                        status: false,
-                        close: false,
-                    });
-                },
+                error: () => (this.activeAction = null),
             });
     }
 
@@ -637,20 +626,10 @@ export class PmModalComponent implements OnInit, OnDestroy {
                             }
                         }
                     } else {
-                        this.modalService.setModalSpinner({
-                            action: null,
-                            status: true,
-                            close: true,
-                        });
+                        this.ngbActiveModal.close();
                     }
                 },
-                error: () => {
-                    this.modalService.setModalSpinner({
-                        action: null,
-                        status: false,
-                        close: false,
-                    });
-                },
+                error: () => (this.activeAction = null),
             });
     }
 
@@ -708,20 +687,10 @@ export class PmModalComponent implements OnInit, OnDestroy {
                                 break;
                         }
                     } else {
-                        this.modalService.setModalSpinner({
-                            action: null,
-                            status: true,
-                            close: true,
-                        });
+                        this.ngbActiveModal.close();
                     }
                 },
-                error: () => {
-                    this.modalService.setModalSpinner({
-                        action: null,
-                        status: false,
-                        close: false,
-                    });
-                },
+                error: () => (this.activeAction = null),
             });
     }
 
@@ -776,20 +745,10 @@ export class PmModalComponent implements OnInit, OnDestroy {
                                 break;
                         }
                     } else {
-                        this.modalService.setModalSpinner({
-                            action: null,
-                            status: true,
-                            close: true,
-                        });
+                        this.ngbActiveModal.close();
                     }
                 },
-                error: () => {
-                    this.modalService.setModalSpinner({
-                        action: null,
-                        status: false,
-                        close: false,
-                    });
-                },
+                error: () => (this.activeAction = null),
             });
     }
 

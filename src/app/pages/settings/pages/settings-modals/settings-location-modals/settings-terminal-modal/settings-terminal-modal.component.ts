@@ -6,6 +6,7 @@ import {
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { NgbActiveModal, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { debounceTime, Subject, takeUntil } from 'rxjs';
 
@@ -44,14 +45,20 @@ import { SettingsLocationService } from '@pages/settings/pages/settings-location
 import { ModalService } from '@shared/services/modal.service';
 import { TaInputService } from '@shared/services/ta-input.service';
 import { FormService } from '@shared/services/form.service';
+import { ConfirmationService } from '@shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
+import { DropDownService } from '@shared/services/drop-down.service';
 
 // components
-import { TaInputComponent } from '@shared/components/ta-input/ta-input.component';
-import { TaInputDropdownComponent } from '@shared/components/ta-input-dropdown/ta-input-dropdown.component';
-import { TaModalComponent } from '@shared/components/ta-modal/ta-modal.component';
 import { TaTabSwitchComponent } from '@shared/components/ta-tab-switch/ta-tab-switch.component';
 import { TaCheckboxCardComponent } from '@shared/components/ta-checkbox-card/ta-checkbox-card.component';
 import { TaInputAddressDropdownComponent } from '@shared/components/ta-input-address-dropdown/ta-input-address-dropdown.component';
+import {
+    CaInputComponent,
+    CaInputDropdownComponent,
+    CaModalButtonComponent,
+    CaModalComponent,
+} from 'ca-components';
+import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
 
 // utils
 import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calculations.helper';
@@ -59,12 +66,24 @@ import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calcula
 // Enums
 import { TaModalActionEnums } from '@shared/components/ta-modal/enums';
 import { SettingsFormEnum } from '@pages/settings/pages/settings-modals/enums';
+import {
+    DropActionsStringEnum,
+    ModalButtonType,
+    TableStringEnum,
+} from '@shared/enums';
 
 // Config
 import { SettingsTerminalConfig } from './config';
 
 // Svg routes
 import { SettingsLocationSvgRoutes } from '@pages/settings/pages/settings-location/utils';
+import { SharedSvgRoutes } from '@shared/utils/svg-routes';
+
+// Pipes
+import { FormatDatePipe } from '@shared/pipes';
+
+// Helpers
+import { DropActionNameHelper } from '@shared/utils/helpers';
 
 @Component({
     selector: 'app-settings-terminal-modal',
@@ -79,14 +98,19 @@ import { SettingsLocationSvgRoutes } from '@pages/settings/pages/settings-locati
         FormsModule,
         ReactiveFormsModule,
         AngularSvgIconModule,
+        NgbTooltipModule,
 
         // Component
-        TaInputComponent,
-        TaInputDropdownComponent,
-        TaModalComponent,
+        CaInputComponent,
+        CaInputDropdownComponent,
+        CaModalComponent,
         TaTabSwitchComponent,
         TaCheckboxCardComponent,
         TaInputAddressDropdownComponent,
+        TaAppTooltipV2Component,
+        CaModalButtonComponent,
+        // Pipes
+        FormatDatePipe,
     ],
 })
 export class SettingsTerminalModalComponent implements OnInit, OnDestroy {
@@ -169,12 +193,21 @@ export class SettingsTerminalModalComponent implements OnInit, OnDestroy {
         SettingsTerminalConfig.getFullParkingSlotConfig();
 
     public svgRoutes = SettingsLocationSvgRoutes;
+    public taModalActionEnums = TaModalActionEnums;
+    public svgRoutesCommon = SharedSvgRoutes;
+    public modalButtonType = ModalButtonType;
+    public activeAction!: string;
+    public data: TerminalResponse;
+
     constructor(
         private formBuilder: UntypedFormBuilder,
         private inputService: TaInputService,
         private modalService: ModalService,
         private settingsLocationService: SettingsLocationService,
-        private formService: FormService
+        private formService: FormService,
+        private ngbActiveModal: NgbActiveModal,
+        public dropDownService: DropDownService,
+        private confirmationService: ConfirmationService
     ) {}
 
     ngOnInit() {
@@ -183,6 +216,16 @@ export class SettingsTerminalModalComponent implements OnInit, OnDestroy {
         this.fullParkingSlot();
         this.openCloseCheckboxCard();
         this.getModalDropdowns();
+        this.confirmationActivationSubscribe();
+    }
+
+    private confirmationActivationSubscribe(): void {
+        this.confirmationService.confirmationData$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((res) => {
+                if (res.action !== TableStringEnum.CLOSE)
+                    this.ngbActiveModal?.close();
+            });
     }
 
     private createForm() {
@@ -253,9 +296,11 @@ export class SettingsTerminalModalComponent implements OnInit, OnDestroy {
         );
     }
 
-    public onModalAction(data: { action: string; bool: boolean }): void {
-        switch (data.action) {
+    public onModalAction(action: string): void {
+        this.activeAction = action;
+        switch (action) {
             case TaModalActionEnums.CLOSE: {
+                this.ngbActiveModal.close();
                 break;
             }
             case TaModalActionEnums.SAVE: {
@@ -265,18 +310,8 @@ export class SettingsTerminalModalComponent implements OnInit, OnDestroy {
                 }
                 if (this.editData?.type === 'edit') {
                     this.updateTerminal(this.editData.id);
-                    this.modalService.setModalSpinner({
-                        action: null,
-                        status: true,
-                        close: false,
-                    });
                 } else {
                     this.addTerminal();
-                    this.modalService.setModalSpinner({
-                        action: null,
-                        status: true,
-                        close: false,
-                    });
                 }
                 break;
             }
@@ -290,12 +325,7 @@ export class SettingsTerminalModalComponent implements OnInit, OnDestroy {
                 break;
             }
             case TaModalActionEnums.DELETE: {
-                this.deleteTerminalById(this.editData.id);
-                this.modalService.setModalSpinner({
-                    action: 'delete',
-                    status: true,
-                    close: false,
-                });
+                this.deleteTerminalById();
                 break;
             }
             default: {
@@ -460,8 +490,8 @@ export class SettingsTerminalModalComponent implements OnInit, OnDestroy {
                 ? this.parkingSlots[0].value
                     ? this.parkingSlots[0].value
                     : 0 + this.parkingSlots[1].value
-                    ? this.parkingSlots[1].value
-                    : 0
+                      ? this.parkingSlots[1].value
+                      : 0
                 : 0,
             terminalParkingSlotCount: this.parkingSlots.length
                 ? this.parkingSlots[0].value
@@ -476,18 +506,10 @@ export class SettingsTerminalModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
-                    this.modalService.setModalSpinner({
-                        action: null,
-                        status: true,
-                        close: true,
-                    });
+                    this.ngbActiveModal.close();
                 },
                 error: () => {
-                    this.modalService.setModalSpinner({
-                        action: null,
-                        status: false,
-                        close: false,
-                    });
+                    this.activeAction = null;
                 },
             });
     }
@@ -520,8 +542,8 @@ export class SettingsTerminalModalComponent implements OnInit, OnDestroy {
                 ? this.parkingSlots[0].value
                     ? this.parkingSlots[0].value
                     : 0 + this.parkingSlots[1].value
-                    ? this.parkingSlots[1].value
-                    : 0
+                      ? this.parkingSlots[1].value
+                      : 0
                 : 0,
             terminalParkingSlotCount: this.parkingSlots.length
                 ? this.parkingSlots[0].value
@@ -536,69 +558,35 @@ export class SettingsTerminalModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
-                    if (addNew) {
-                        this.terminalForm.reset();
+                    this.ngbActiveModal.close();
 
-                        // Reset form values, if we don't set it, they will take null and endpoint will return error
-                        this.terminalForm
-                            .get(SettingsFormEnum.IS_OWNER)
-                            .patchValue(true);
-                        this.terminalForm
-                            .get(SettingsFormEnum.OFFICE_CHECKED)
-                            .patchValue(false);
-                        this.terminalForm
-                            .get(SettingsFormEnum.PARKING_CHECKED)
-                            .patchValue(false);
-                        this.terminalForm
-                            .get(SettingsFormEnum.GATE)
-                            .patchValue(false);
-                        this.terminalForm
-                            .get(SettingsFormEnum.SECURITY_CAMERA)
-                            .patchValue(false);
-                        this.terminalForm
-                            .get(SettingsFormEnum.WAREHOUSE_CHECKED)
-                            .patchValue(false);
-                        this.terminalForm
-                            .get(SettingsFormEnum.FUEL_STATION_CHECKED)
-                            .patchValue(false);
-                    } else {
-                        this.modalService.setModalSpinner({
-                            action: null,
-                            status: true,
-                            close: true,
-                        });
+                    if (addNew) {
+                        this.modalService.openModal(
+                            SettingsTerminalModalComponent,
+                            {}
+                        );
                     }
                 },
                 error: () => {
-                    this.modalService.setModalSpinner({
-                        action: null,
-                        status: false,
-                        close: false,
-                    });
+                    this.activeAction = null;
                 },
             });
     }
 
-    private deleteTerminalById(id: number) {
-        this.settingsLocationService
-            .deleteCompanyTerminalById(id)
-            .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: () => {
-                    this.modalService.setModalSpinner({
-                        action: 'delete',
-                        status: true,
-                        close: true,
-                    });
-                },
-                error: () => {
-                    this.modalService.setModalSpinner({
-                        action: 'delete',
-                        status: false,
-                        close: false,
-                    });
-                },
-            });
+    private deleteTerminalById() {
+        const eventData = {
+            id: this.editData.id,
+            type: DropActionsStringEnum.DELETE_ITEM,
+        };
+        const name = DropActionNameHelper.dropActionNameDriver(
+            eventData,
+            DropActionsStringEnum.TERMINAL
+        );
+        this.dropDownService.dropActionCompanyLocation(
+            eventData,
+            name,
+            this.data
+        );
     }
 
     private editTerminalById(id: number) {
@@ -700,6 +688,8 @@ export class SettingsTerminalModalComponent implements OnInit, OnDestroy {
                     if (res.warehouseExtPhone) {
                         this.isWarehousePhoneExtExist = true;
                     }
+
+                    this.data = res;
 
                     setTimeout(() => {
                         this.startFormChanges();

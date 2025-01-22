@@ -1,48 +1,52 @@
-<div
-    *ngIf="isNavItemHovered && isActiveSubroute && !route.isRouteActive"
-    class="nav-item-hover"
-    [ngClass]="{
-        'route-hover': navigationIsOpened
-    }"
-></div>
+@if (isNavItemHovered && isActiveSubroute && !route.isRouteActive) {
+    <div
+        class="nav-item-hover"
+        [ngClass]="{
+            'route-hover': navigationIsOpened,
+        }"
+    ></div>
+}
+
 <div
     class="{{ class }}"
     class="nav-item"
     [ngClass]="{
         'nav-width': navigationIsOpened,
         'nav-item-parent-active':
-            selectedRoute == route.name || (selectedRoute === 'Dispatch' && route.name === 'Dispatch Board'),
+            selectedRoute == route.name ||
+            (selectedRoute === 'Dispatch' && route.name === 'Dispatch Board'),
         'disable-cursor':
             selectedRoute == route.name &&
             !subrouteContainerOpened &&
             !route.arrow,
-            'nav-item-active-box':
-                (route.isRouteActive ||
-                    footerRouteActive ||
-                    route.isSubrouteActive) &&
-                footerRouteActive &&
-                !navigationIsOpened &&
-                !isSettingsPanelOpen &&
-                !isUserPanelOpen &&
-                (selectedRoute == route.name || (selectedRoute === 'Dispatch' && route.name === 'Dispatch Board')) &&
-                !middleIsHovered &&
-                !footerHovered, 
-    }" 
+        'nav-item-active-box':
+            (route.isRouteActive ||
+                footerRouteActive ||
+                route.isSubrouteActive) &&
+            footerRouteActive &&
+            !navigationIsOpened &&
+            !isSettingsPanelOpen &&
+            !isUserPanelOpen &&
+            (selectedRoute == route.name ||
+                (selectedRoute === 'Dispatch' &&
+                    route.name === 'Dispatch Board')) &&
+            !middleIsHovered &&
+            !footerHovered,
+    }"
     (click)="
         onRouteAction(route.id, route.construction);
         routeWithSubRoutesClick(route.arrow)
     "
-            ngbTooltip
-            mainContent
-            position="right"
-            tooltipBackground="#424242"
-            [mainTooltip]="navigationIsOpened ? '' : route.name"
-            tooltipColor="#ffff"
-            tooltipMarginTop="-2px"
-            tooltipMarginLeft="12px"
-            tooltipTextAlign="right"
+    ngbTooltip
+    mainContent
+    position="right"
+    tooltipBackground="#424242"
+    [mainTooltip]="navigationIsOpened ? '' : route.name"
+    tooltipColor="#ffff"
+    tooltipMarginTop="-2px"
+    tooltipMarginLeft="4px"
+    tooltipTextAlign="right"
 >
- 
     <svg-icon
         class="{{ class }}"
         class="nav-item-img-active"
@@ -55,24 +59,29 @@
                 closeDropdownOnNavClose &&
                 !isSettingsPanelOpen &&
                 !isUserPanelOpen,
-            'nav-item-svg-active': selectedRoute === route.name || (selectedRoute === 'Dispatch' && route.name === 'Dispatch Board'),
+            'nav-item-svg-active':
+                selectedRoute === route.name ||
+                (selectedRoute === 'Dispatch' &&
+                    route.name === 'Dispatch Board'),
             'route-not-active-svg': route.construction && navigationIsOpened,
             'route-closed-nav-svg-not-active':
-                route.construction && !navigationIsOpened
+                route.construction && !navigationIsOpened,
         }"
     ></svg-icon>
 
-    <div *ngIf="message > 0" class="message-container">
-        <svg-icon
-            class="{{ class }}"
-            [ngClass]="{
-                'notification-light': !navigationIsOpened,
-                'notification-dark': navigationIsOpened
-            }"
-            class="notification-img"
-            src="assets/svg/applicant/notification-light.svg"
-        ></svg-icon>
-    </div>
+    @if (message > 0) {
+        <div class="message-container">
+            <svg-icon
+                class="{{ class }}"
+                [ngClass]="{
+                    'notification-light': !navigationIsOpened,
+                    'notification-dark': navigationIsOpened,
+                }"
+                class="notification-img"
+                src="assets/svg/applicant/notification-light.svg"
+            ></svg-icon>
+        </div>
+    }
 
     <div
         class="{{ class }}"
@@ -82,7 +91,10 @@
         <p
             class="nav-item-name"
             [ngClass]="{
-                'nav-item-name-active': selectedRoute == route.name || (selectedRoute === 'Dispatch' && route.name === 'Dispatch Board'),
+                'nav-item-name-active':
+                    selectedRoute == route.name ||
+                    (selectedRoute === 'Dispatch' &&
+                        route.name === 'Dispatch Board'),
 
                 'active-text':
                     route.isRouteActive &&
@@ -94,79 +106,91 @@
 
                 'route-not-active': route.construction == true,
                 'route-name-files': files,
-                'route-name-message': message
+                'route-name-message': message,
             }"
             [@showHideDetails]="navigationIsOpened ? 'true' : 'false'"
         >
             {{ route.name }}
-            <span
-                class="subroute"
-                *ngIf="
-                    route.id == activeRouteIdFromLocalStorage &&
-                    !activeLinkHighlight &&
-                    activeRouteName != 'notifications'
-                "
-                [ngClass]="{ 'animation-text': navigationIsOpened }"
-            >
-                &nbsp;[{{ activeRouteName | titlecase }}]
-            </span>
-        </p>
-        <div
-            class="message"
-            *ngIf="message"
-            [@showHideDetails]="navigationIsOpened ? 'true' : 'false'"
-        >
-            <span>
-                {{ message }}
-            </span>
-        </div>
-        <div
-            *ngIf="files"
-            class="files"
-            [@showHideDetails]="navigationIsOpened ? 'true' : 'false'"
-        >
-            <span>{{ files }}% full</span>
-            <svg-icon src="assets/svg/common/ic_questionmark.svg"></svg-icon>
-        </div>
-        <svg-icon
-            class="nav-item-arrow nav-item-arrow-active"
-            [ngClass]="{
-                'nav-item-arrow-rotate':
-                    route.isRouteActive &&
-                    !route.isSubrouteActive &&
-                    closeDropdownOnNavClose &&
-                    !isSettingsPanelOpen &&
-                    !isUserPanelOpen,
 
-                'nav-item-arrow-first': route.id === 3,
-                'nav-openend-svg': navigationIsOpened
-            }"
-            *ngIf="route.arrow"
-            src="{{ route.arrow }}"
-        ></svg-icon>
-        
-        <ng-container 
-        *ngIf="navigationIsOpened && !route.arrow && !message && !files">
-        <div
-            ngbTooltip
-            mainContent
-            position="right"
-            tooltipBackground="#424242"
-            [mainTooltip]="'New Tab'"
-            tooltipColor="#ffff"
-            tooltipMarginTop="-6px"
-            tooltipMarginLeft="16px"
-            tooltipTextAlign="right"
-        >
-        <svg-icon
-            class="nav-item-arrow_top"
-            [src]="icons.newTab"
-            (click)="openLinkInNewWindow(route.route); $event.stopPropagation()"
-            (mouseenter)="hoveredArrow(true)"
-            (mouseleave)="hoveredArrow(false)"
-            [ngClass]="{ 'hovered-arrow': arrowHovered }"
-        ></svg-icon>
-        </div>
-    </ng-container>
+            @if (
+                route.id === activeRouteIdFromLocalStorage &&
+                !activeLinkHighlight &&
+                activeRouteName !== 'notifications'
+            ) {
+                <span
+                    class="subroute"
+                    [ngClass]="{ 'animation-text': navigationIsOpened }"
+                >
+                    &nbsp;[{{ activeRouteName | titlecase }}]
+                </span>
+            }
+        </p>
+
+        @if (message) {
+            <div
+                class="message"
+                [@showHideDetails]="navigationIsOpened ? 'true' : 'false'"
+            >
+                <span>
+                    {{ message }}
+                </span>
+            </div>
+        }
+
+        @if (files) {
+            <div
+                class="files"
+                [@showHideDetails]="navigationIsOpened ? 'true' : 'false'"
+            >
+                <span>{{ files }}% full</span>
+                <svg-icon
+                    src="assets/svg/common/ic_questionmark.svg"
+                ></svg-icon>
+            </div>
+        }
+
+        @if (route.arrow) {
+            <svg-icon
+                class="nav-item-arrow nav-item-arrow-active"
+                [ngClass]="{
+                    'nav-item-arrow-rotate':
+                        route.isRouteActive &&
+                        !route.isSubrouteActive &&
+                        closeDropdownOnNavClose &&
+                        !isSettingsPanelOpen &&
+                        !isUserPanelOpen,
+
+                    'nav-item-arrow-first': route.id === 3,
+                    'nav-openend-svg': navigationIsOpened,
+                }"
+                src="{{ route.arrow }}"
+            ></svg-icon>
+        }
+
+        @if (navigationIsOpened && !route.arrow && !message && !files) {
+            <div
+                ngbTooltip
+                mainContent
+                position="right"
+                tooltipBackground="#424242"
+                [mainTooltip]="'New Tab'"
+                tooltipColor="#ffff"
+                tooltipMarginTop="-6px"
+                tooltipMarginLeft="2px"
+                tooltipTextAlign="right"
+            >
+                <svg-icon
+                    class="nav-item-arrow_top"
+                    [src]="icons.newTab"
+                    (click)="
+                        openLinkInNewWindow(route.route);
+                        $event.stopPropagation()
+                    "
+                    (mouseenter)="hoveredArrow(true)"
+                    (mouseleave)="hoveredArrow(false)"
+                    [ngClass]="{ 'hovered-arrow': arrowHovered }"
+                ></svg-icon>
+            </div>
+        }
     </div>
 </div>
