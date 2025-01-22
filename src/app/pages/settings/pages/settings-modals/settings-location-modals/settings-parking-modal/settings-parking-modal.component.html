@@ -1,48 +1,49 @@
-<app-ta-modal
+<app-ca-modal
     [modalTitle]="editData?.type !== 'edit' ? 'Add Parking' : 'Edit Parking'"
-    [editData]="editData"
-    [editName]="parkingName"
-    [isModalValid]="parkingForm.valid && isFormDirty"
-    [saveAndAddNew]="editData?.type !== 'edit'"
-    [isDisableButtonHidden]="true"
-    (action)="onModalAction($event)"
+    [rightHeaderTemplate]="rightModalContent"
+    [leftHeaderTemplate]="leftModalContent"
+    [footerTemplate]="footerTemplate"
 >
-    <div origin>
+    <div class="new-modal" origin>
+        <div class="divider divider--small divider--dark"></div>
+
         <form
             [formGroup]="parkingForm"
             class="form-container form-container-mt-22"
             [ngClass]="{
                 'form-container-without-mb': !isParkingCardOpen,
-                'form-container-with-card': isParkingCardOpen
+                'form-container-with-card': isParkingCardOpen,
             }"
         >
             <div class="animation-two-tabs">
                 <div class="m-tab">
                     <div class="row">
                         <div class="col-12">
-                            <app-ta-input
+                            <app-ca-input
                                 formControlName="name"
-                                [inputConfig]="formConfig.getNameInputConfig(editData?.type)"
-                            ></app-ta-input>
+                                [inputConfig]="
+                                    formConfig.getNameInputConfig(
+                                        editData?.type
+                                    )
+                                "
+                            ></app-ca-input>
                         </div>
                     </div>
 
                     <div
                         class="phone-ext-email-small-modal"
                         [ngClass]="{
-                            'active-phone-ext': isPhoneExtExist
+                            'active-phone-ext': isPhoneExtExist,
                         }"
                     >
                         <div class="phone-extension">
                             <div class="phone-field">
-                                <app-ta-input
+                                <app-ca-input
                                     formControlName="phone"
                                     [inputConfig]="phoneConfig"
-                                ></app-ta-input>
+                                ></app-ca-input>
                             </div>
-                            <ng-container
-                                *ngIf="!isPhoneExtExist; else phoneExtension"
-                            >
+                            @if (!isPhoneExtExist) {
                                 <div
                                     class="extension-field"
                                     (click)="isPhoneExtExist = !isPhoneExtExist"
@@ -51,22 +52,22 @@
                                     position="top"
                                     tooltipBackground="#6c6c6c"
                                 >
-                                    <svg-icon [src]="svgRoutes.plus"></svg-icon>
+                                    <svg-icon
+                                        [src]="svgRoutes.PLUS_ICON"
+                                    ></svg-icon>
                                 </div>
-                            </ng-container>
-                            <ng-template #phoneExtension>
-                                <app-ta-input
-                                    *ngIf="isPhoneExtExist"
+                            } @else {
+                                <app-ca-input
                                     formControlName="extensionPhone"
                                     [inputConfig]="phoneExtConfig"
-                                ></app-ta-input>
-                            </ng-template>
+                                ></app-ca-input>
+                            }
                         </div>
                         <div class="email-field">
-                            <app-ta-input
+                            <app-ca-input
                                 formControlName="email"
                                 [inputConfig]="emailConfig"
-                            ></app-ta-input>
+                            ></app-ca-input>
                         </div>
                     </div>
 
@@ -81,10 +82,10 @@
                             ></app-ta-input-address-dropdown>
                         </div>
                         <div class="col-2">
-                            <app-ta-input
+                            <app-ca-input
                                 formControlName="addressUnit"
                                 [inputConfig]="addressUnitConfig"
-                            ></app-ta-input>
+                            ></app-ca-input>
                         </div>
                     </div>
 
@@ -135,14 +136,14 @@
                         [withoutToggle]="true"
                         [animationMarginParams]="{
                             marginTop: '0',
-                            marginBottom: '0'
+                            marginBottom: '0',
                         }"
                         [isCardOpen]="!parkingForm.get('isOwner').value"
                     >
                         <ng-container body>
                             <div class="mt-3 mb-3">
                                 <div class="location-parking-financial-card">
-                                    <app-ta-input-dropdown
+                                    <app-ca-input-dropdown
                                         formControlName="payPeriod"
                                         [inputConfig]="payPeriodConfig"
                                         [options]="payPeriods"
@@ -153,8 +154,8 @@
                                                 'pay-period'
                                             )
                                         "
-                                    ></app-ta-input-dropdown>
-                                    <app-ta-input-dropdown
+                                    ></app-ca-input-dropdown>
+                                    <app-ca-input-dropdown
                                         formControlName="monthlyDay"
                                         [inputConfig]="
                                             formConfig.getMonthlyDayConfig(
@@ -171,12 +172,12 @@
                                         (selectedItem)="
                                             onSelectDropdown($event, 'day')
                                         "
-                                    ></app-ta-input-dropdown>
+                                    ></app-ca-input-dropdown>
 
-                                    <app-ta-input
+                                    <app-ca-input
                                         formControlName="rent"
                                         [inputConfig]="rentConfig"
-                                    ></app-ta-input>
+                                    ></app-ca-input>
                                 </div>
                             </div>
                         </ng-container>
@@ -196,25 +197,25 @@
                         [disableAnimation]="disableCardAnimation"
                         [animationMarginParams]="{
                             marginTop: '18px',
-                            marginBottom: '12px'
+                            marginBottom: '12px',
                         }"
                         (onOpenCard)="isParkingCardOpen = $event"
                     >
                         <div class="checkbox-card-body">
                             <div class="row">
                                 <div class="col-12">
-                                    <app-ta-input
+                                    <app-ca-input
                                         formControlName="parkingSlot"
                                         [inputConfig]="parkingSlotConfig"
-                                    ></app-ta-input>
+                                    ></app-ca-input>
                                 </div>
                             </div>
                             <div class="row row-no-mb">
                                 <div class="col-12">
-                                    <app-ta-input
+                                    <app-ca-input
                                         formControlName="fullParkingSlot"
                                         [inputConfig]="fullParkingSlotConfig"
-                                    ></app-ta-input>
+                                    ></app-ca-input>
                                 </div>
                             </div>
                         </div>
@@ -223,4 +224,90 @@
             </div>
         </form>
     </div>
-</app-ta-modal>
+</app-ca-modal>
+
+<ng-template #rightModalContent>
+    @if (editData?.type === 'edit') {
+        <div
+            ngbTooltip
+            mainTooltip="Added    {{
+                data?.createdAt | formatDateP
+            }} <br> Edited    {{ data?.updatedAt | formatDateP }}"
+            tooltipBackground="#424242"
+            position="bottom"
+            class="modal-date-logo"
+        >
+            <svg-icon
+                [src]="svgRoutes.DATE_ICON"
+                class="modal-buttons"
+            ></svg-icon>
+        </div>
+        <div class="modal-date-border"></div>
+    }
+    <div
+        class="d-flex justify-content-center align-items-center modal-close-container"
+        ngbTooltip
+        mainTooltip="Cancel"
+        tooltipBackground="#424242"
+        position="bottom"
+        (click)="onModalAction(taModalActionEnums.CLOSE)"
+    >
+        <svg-icon
+            class="modal-close svg-size-14 svg-fill-muted modal-buttons"
+            [src]="svgRoutes.CLOSE_ICON"
+        ></svg-icon>
+    </div>
+</ng-template>
+
+<ng-template #leftModalContent>
+    @if (parkingName) {
+        <div class="payroll-number text-color-white text-size-14 ta-font-bold">
+            {{ parkingName }}
+        </div>
+    }
+</ng-template>
+
+<ng-template #footerTemplate>
+    <div class="modal-footer modal-footer-payroll">
+        <div class="divider"></div>
+        @if (editData?.type === 'edit') {
+            <div class="d-flex justify-content-between w-full">
+                <app-ca-modal-button
+                    text="Delete"
+                    size="Small"
+                    (click)="onModalAction(taModalActionEnums.DELETE)"
+                    [type]="modalButtonType.SECONDARY_NEGATIVE"
+                >
+                </app-ca-modal-button>
+
+                <app-ca-modal-button
+                    text="Save Changes"
+                    [isValid]="parkingForm.valid && isFormDirty"
+                    [type]="modalButtonType.PRIMARY_POSITIVE"
+                    [isSpinnerShown]="activeAction === taModalActionEnums.SAVE"
+                    (click)="onModalAction(taModalActionEnums.SAVE)"
+                >
+                </app-ca-modal-button>
+            </div>
+        } @else {
+            <app-ca-modal-button
+                text=" Save and Add New"
+                [isValid]="parkingForm.valid && isFormDirty"
+                (click)="onModalAction(taModalActionEnums.SAVE_AND_ADD_NEW)"
+                [isSpinnerShown]="
+                    activeAction === taModalActionEnums.SAVE_AND_ADD_NEW
+                "
+                [type]="modalButtonType.SECONDARY_POSITIVE"
+            >
+            </app-ca-modal-button>
+            <app-ca-modal-button
+                text="Save"
+                [isValid]="parkingForm.valid && isFormDirty"
+                (click)="onModalAction(taModalActionEnums.SAVE)"
+                [isSpinnerShown]="activeAction === taModalActionEnums.SAVE"
+                [type]="modalButtonType.PRIMARY_POSITIVE"
+            >
+            </app-ca-modal-button>
+        }
+    </div>
+</ng-template>

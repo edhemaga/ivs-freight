@@ -67,6 +67,7 @@ import { TaInputService } from '@shared/services/ta-input.service';
 import { ModalService } from '@shared/services/modal.service';
 import { FormService } from '@shared/services/form.service';
 import { LoadService } from '@shared/services/load.service';
+import { LoadStoreService } from '@pages/load/pages/load-table/services/load-store.service';
 
 // animations
 import { fadeInAnimation } from '@pages/load/pages/load-modal/utils/animations/fade-in.animation';
@@ -127,6 +128,7 @@ import {
     LoadStatusResponse,
     LoadBillingAdditionalResponse,
     ShipperShortResponse,
+    UpdateLoadStatusCommand,
 } from 'appcoretruckassist';
 import { LoadStopItemCommand } from 'appcoretruckassist/model/loadStopItemCommand';
 import { ITaInput } from '@shared/components/ta-input/config/ta-input.config';
@@ -461,7 +463,8 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         private modalService: ModalService,
         private ngbActiveModal: NgbActiveModal,
         public financialCalculationPipe: FinancialCalculationPipe,
-        private cdRef: ChangeDetectorRef
+        private cdRef: ChangeDetectorRef,
+        private loadStoreService: LoadStoreService
     ) {}
 
     ngOnInit(): void {
@@ -1314,11 +1317,11 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                 ) {
                     this.updateLoadTemplate(addNew);
                 } else if (this.isConvertedToTemplate) {
-                    this.saveLoadTemplate(addNew);
+                    this.saveLoadTemplate();
                 } else {
                     this.isActiveLoad
                         ? this.updateLoad(addNew)
-                        : this.createNewLoad(addNew);
+                        : this.createNewLoad();
                 }
                 break;
             case TaModalActionEnums.CONVERT_TO_TEMPLATE:
@@ -4126,382 +4129,383 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     }
 
     private getLoadDropdowns(): void {
+        const { data, loadModalData, selectedTab, previousStatus } = this.editData || {};
+        const { statusType } = (data as LoadResponse) || {};
+        const { name } = statusType || {};
+        const { id: loadId } = data || {};
+
         if (
             this.isLoadActive(
-                (this.editData?.data as LoadResponse)?.statusType?.name ||
-                    ((this.editData?.data as LoadResponse)
-                        ?.statusType as string)
+                (name || (statusType as string))
             ) &&
-            this.editData?.selectedTab !== TableStringEnum.TEMPLATE
+            selectedTab !== TableStringEnum.TEMPLATE
         ) {
-            this.loadService
-                .getLoadStatusDropdownOptions(this.editData?.data.id)
-                .pipe(takeUntil(this.destroy$))
-                .subscribe((res) => {
-                    const status = (this.editData?.data as LoadResponse).status;
-                    this.originalLoadStatus = status;
+            const { statusDropdownData } = this.editData || {};
+            const status = (data as LoadResponse)?.status;
+            const { statusString, statusValue } = status || {};
+            const { id: statusId, name } = statusValue || {};
 
-                    if (status) {
-                        if (this.editData.previousStatus) {
-                            this.selectedStatus = this.editData.previousStatus;
-                        } else {
-                            this.selectedStatus = {
-                                name: status.statusString,
-                                id: status.statusValue.id,
-                                valueForRequest: status.statusValue.name,
+            this.originalLoadStatus = status;
+
+            if (status) {
+                if (previousStatus) {
+                    this.selectedStatus = previousStatus;
+                } else {
+                    this.selectedStatus = {
+                        name: statusString,
+                        id: statusId,
+                        valueForRequest: name,
+                    };
+                }
+
+                this.statusDropDownList = [this.selectedStatus];
+
+                if (statusDropdownData?.possibleStatuses)
+                    this.statusDropDownList = [
+                        this.selectedStatus,
+                        ...statusDropdownData?.possibleStatuses.map((status) => {
+                            return {
+                                name: status?.statusString,
+                                id: status?.statusValue?.id,
+                                valueForRequest: status?.statusValue?.name,
                             };
+                        }),
+                    ];
+                else 
+                    this.statusDropDownList = [this.selectedStatus];
+                
+                this.previousStatus = statusDropdownData?.previousStatus
+                    ? {
+                            name: statusDropdownData?.previousStatus?.statusString,
+                            id: statusDropdownData?.previousStatus?.statusValue?.id,
+                            valueForRequest:
+                                statusDropdownData?.previousStatus?.statusValue?.name,
                         }
-                        this.statusDropDownList = [
-                            this.selectedStatus,
-                            ...res.possibleStatuses.map((status) => {
-                                return {
-                                    name: status.statusString,
-                                    id: status.statusValue.id,
-                                    valueForRequest: status.statusValue.name,
-                                };
-                            }),
-                        ];
-                        this.previousStatus = res.previousStatus
-                            ? {
-                                  name: res.previousStatus.statusString,
-                                  id: res.previousStatus.statusValue.id,
-                                  valueForRequest:
-                                      res.previousStatus.statusValue.name,
-                              }
-                            : null;
-                    }
+                    : null;
+            }
 
-                    this.originalStatus = (
-                        this.editData?.data as LoadResponse
-                    )?.status.statusValue.name;
+            this.originalStatus = name;
 
-                    this.handleTonuRateVisiblity();
+            this.handleTonuRateVisiblity();
 
-                    setTimeout(() => {
-                        this.startFormChanges();
-                    }, 2000);
-                });
+            setTimeout(() => {
+                this.startFormChanges();
+            }, 2000);
         }
         const id =
-            this.editData?.selectedTab !== TableStringEnum.TEMPLATE &&
+            selectedTab !== TableStringEnum.TEMPLATE &&
             this.isActiveLoad
-                ? this.editData?.data?.id
+                ? loadId
                 : null;
-        this.loadService
-            .getLoadDropdowns(id)
-            .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: (res: LoadModalResponse) => {
-                    this.tags = res.tags;
 
-                    // dispatcher
-                    this.labelsDispatcher = res.dispatchers.map((item) => {
+        const { ...modalData } = loadModalData || {};
+
+        this.tags = modalData.tags;
+
+        // dispatcher
+        this.labelsDispatcher = modalData.dispatchers.map((item) => {
+            return {
+                ...item,
+                name: item?.fullName,
+                logoName: item?.avatarFile?.url,
+            };
+        });
+
+        this.paymentMethodsDropdownList = modalData.paymentMethods;
+
+        // If we are creating new load only enable advace pay
+        if (!loadId)
+            this.editData.loadModalData.paymentTypes = modalData.paymentTypes.filter(
+                (payment) => payment.id === 3
+            );
+
+        this.orginalPaymentTypesDropdownList = modalData.paymentTypes;
+        this.paymentTypesDropdownList = modalData.paymentTypes;
+
+        let initialDispatcher = this.labelsDispatcher.find(
+            (item) =>
+                item?.name ===
+                this.companyUser?.firstName?.concat(
+                    LoadModalStringEnum.EMPTY_SPACE_STRING,
+                    this.companyUser?.lastName
+                )
+        );
+
+        // OVO TREBA PROVERITI, JA SAM USER KOJI JE POZVAN U OVU KOMPANIJU I JA SE NE NALAZIM UNUTAR DISPATCHER LISTE A OVDE SE TRAZI UNUTAR DISPATCHER LISTE KO JE COMPANY OWNER PA PUCA
+        if (!initialDispatcher)
+            initialDispatcher = this.labelsDispatcher[0];
+
+        this.loadForm
+            .get(LoadModalStringEnum.DISPATCHER_ID)
+            .patchValue(initialDispatcher.name);
+
+        this.selectedDispatcher = initialDispatcher;
+
+        // division companies
+        this.labelsCompanies = modalData.companies.map((item) => {
+            return {
+                ...item,
+                name: item?.companyName,
+            };
+        });
+
+        if (this.labelsCompanies.length > 1)
+            this.selectedCompany = this.labelsCompanies.find(
+                (item) => item.name === this.companyUser.companyName
+            );
+
+        // dispatches
+        this.labelsDispatches = modalData.dispatches.map(
+            (item, index) => {
+                return {
+                    ...item,
+                    driver: {
+                        ...item.driver,
+                        name: item.driver?.firstName?.concat(
+                            LoadModalStringEnum.EMPTY_SPACE_STRING,
+                            item.driver?.lastName
+                        ),
+                        logoName: item.driver?.avatarFile?.url,
+                        owner: !!item.driver?.owner,
+                    },
+                    coDriver: {
+                        ...item.coDriver,
+                        name: item.coDriver?.firstName?.concat(
+                            LoadModalStringEnum.EMPTY_SPACE_STRING,
+                            item.coDriver?.lastName
+                        ),
+                        /* logoName: item.coDriver?.avatar, */
+                    },
+                    truck: {
+                        ...item.truck,
+                        name: item.truck?.truckNumber,
+                        logoType: item.truck?.truckType?.name,
+                        logoName: item.truck?.truckType?.logoName,
+                        folder: LoadModalStringEnum.COMMON,
+                        subFolder: LoadModalStringEnum.TRUCKS,
+                    },
+                    trailer: {
+                        ...item.trailer,
+                        name: item.trailer?.trailerNumber,
+                        logoType: item.trailer?.trailerType?.name,
+                        logoName:
+                            item.trailer?.trailerType?.logoName,
+                        folder: LoadModalStringEnum.COMMON,
+                        subFolder: LoadModalStringEnum.TRAILERS,
+                    },
+                    itemIndex: index,
+                    fullName: item.truck?.truckNumber
+                        .concat(
+                            LoadModalStringEnum.EMPTY_SPACE_STRING,
+                            item.trailer?.trailerNumber
+                        )
+                        .concat(
+                            LoadModalStringEnum.EMPTY_SPACE_STRING,
+                            item.driver?.firstName.concat(
+                                LoadModalStringEnum.EMPTY_SPACE_STRING,
+                                item.driver?.lastName
+                            )
+                        ),
+                };
+            }
+        );
+
+        this.originLabelsDispatches = this.labelsDispatches;
+
+        // brokers
+        this.labelsBroker = modalData.brokers.map((item) => {
+            return {
+                ...item,
+                name: item?.businessName,
+                creditLimit: item?.creditLimit,
+                second_value: item?.creditLimit,
+                status: item.availableCreditType?.name,
+                logoName:
+                    item?.dnu || item?.ban
+                        ? LoadModalStringEnum.BROKER_OPEN_SVG
+                        : item?.status === 0
+                        ? LoadModalStringEnum.BROKER_CLOSED_SVG
+                        : null,
+            };
+        });
+
+        // broker contacts
+        this.labelsBrokerContacts = this.originBrokerContacts =
+            modalData.brokerContacts.map((item) => {
+                return {
+                    ...item,
+                    contacts: item.contacts.map((item) => {
+                        return {
+                            ...item,
+                            name: item?.contactName,
+                            phone: item?.phone?.concat(
+                                LoadModalStringEnum.EMPTY_SPACE_STRING,
+                                item?.extensionPhone
+                                    ? `x${item.extensionPhone}`
+                                    : LoadModalStringEnum.EMPTY_STRING
+                            ),
+                            originalPhone: item.phone,
+                            phoneExtension: item.extensionPhone,
+                            fullName: item?.contactName?.concat(
+                                LoadModalStringEnum.EMPTY_SPACE_STRING,
+                                item?.phone?.concat(
+                                    LoadModalStringEnum.EMPTY_SPACE_STRING,
+                                    item?.extensionPhone
+                                        ? `x${item.extensionPhone}`
+                                        : LoadModalStringEnum.EMPTY_STRING
+                                )
+                            ),
+                        };
+                    }),
+                };
+            });
+
+        // door type
+        this.labelsDoorType = modalData.doorTypes;
+
+        // general commmodity
+        this.labelsGeneralCommodity = modalData.generalCommodities.map(
+            (item) => {
+                if (
+                    item.name.toLowerCase() ===
+                    LoadModalStringEnum.HAZARDOUS
+                ) {
+                    return {
+                        ...item,
+                        logoName: LoadModalStringEnum.HAZARDOUS_SVG,
+                        folder: LoadModalStringEnum.COMMON,
+                    };
+                }
+                return { ...item };
+            }
+        );
+
+        // labels suspension
+        this.labelsSuspension = modalData.suspensions;
+
+        // labels template
+        this.labelsTemplate = modalData.templates;
+
+        // trailer length
+        this.labelsTrailerLength = modalData.trailerLengths;
+
+        // trailer req
+        this.labelsTrailerReq = modalData.trailerTypes.map((item) => {
+            return {
+                ...item,
+                folder: LoadModalStringEnum.COMMON,
+                subFolder: LoadModalStringEnum.TRAILERS,
+            };
+        });
+
+        // truck req
+        this.labelsTruckReq = modalData.truckTypes.map((item) => {
+            return {
+                ...item,
+                folder: LoadModalStringEnum.COMMON,
+                subFolder: LoadModalStringEnum.TRUCKS,
+            };
+        });
+
+        // years
+        this.labelsYear = modalData.years.map((item, index) => {
+            return {
+                id: index + 1,
+                name: `${item.toString()}+`,
+            };
+        });
+
+        // shipper
+        this.labelsShippers = modalData.shippers.map((item) => {
+            return {
+                ...item,
+                name: item?.businessName,
+                address: item.address?.city
+                    ?.concat(', ', item.address?.stateShortName)
+                    ?.concat(
+                        LoadModalStringEnum.EMPTY_SPACE_STRING,
+                        item.address?.zipCode
+                    ),
+                logoName:
+                    item.status === 0
+                        ? LoadModalStringEnum.BROKER_CLOSED_SVG
+                        : null,
+            };
+        });
+        this.originalShippers = modalData.shippers;
+
+        // shipper contacts
+        this.labelsShipperContacts = this.originShipperContacts =
+            this.editData.loadModalData.shipperContacts.map((item) => {
+                return {
+                    ...item,
+                    contacts: item.contacts.map((item) => {
                         return {
                             ...item,
                             name: item?.fullName,
-                            logoName: item?.avatarFile?.url,
-                        };
-                    });
-
-                    this.paymentMethodsDropdownList = res.paymentMethods;
-
-                    // If we are creating new load only enable advace pay
-                    if (!this.editData?.data.id)
-                        res.paymentTypes = res.paymentTypes.filter(
-                            (payment) => payment.id === 3
-                        );
-
-                    this.orginalPaymentTypesDropdownList = res.paymentTypes;
-                    this.paymentTypesDropdownList = res.paymentTypes;
-
-                    let initialDispatcher = this.labelsDispatcher.find(
-                        (item) =>
-                            item?.name ===
-                            this.companyUser?.firstName?.concat(
+                            phone: item?.phone?.concat(
                                 LoadModalStringEnum.EMPTY_SPACE_STRING,
-                                this.companyUser?.lastName
-                            )
-                    );
-
-                    // OVO TREBA PROVERITI, JA SAM USER KOJI JE POZVAN U OVU KOMPANIJU I JA SE NE NALAZIM UNUTAR DISPATCHER LISTE A OVDE SE TRAZI UNUTAR DISPATCHER LISTE KO JE COMPANY OWNER PA PUCA
-                    if (!initialDispatcher)
-                        initialDispatcher = this.labelsDispatcher[0];
-
-                    this.loadForm
-                        .get(LoadModalStringEnum.DISPATCHER_ID)
-                        .patchValue(initialDispatcher.name);
-
-                    this.selectedDispatcher = initialDispatcher;
-
-                    // division companies
-                    this.labelsCompanies = res.companies.map((item) => {
-                        return {
-                            ...item,
-                            name: item?.companyName,
-                        };
-                    });
-
-                    if (this.labelsCompanies.length > 1)
-                        this.selectedCompany = this.labelsCompanies.find(
-                            (item) => item.name === this.companyUser.companyName
-                        );
-
-                    // dispatches
-                    this.labelsDispatches = res.dispatches.map(
-                        (item, index) => {
-                            return {
-                                ...item,
-                                driver: {
-                                    ...item.driver,
-                                    name: item.driver?.firstName?.concat(
-                                        LoadModalStringEnum.EMPTY_SPACE_STRING,
-                                        item.driver?.lastName
-                                    ),
-                                    logoName: item.driver?.avatarFile?.url,
-                                    owner: !!item.driver?.owner,
-                                },
-                                coDriver: {
-                                    ...item.coDriver,
-                                    name: item.coDriver?.firstName?.concat(
-                                        LoadModalStringEnum.EMPTY_SPACE_STRING,
-                                        item.coDriver?.lastName
-                                    ),
-                                    /* logoName: item.coDriver?.avatar, */
-                                },
-                                truck: {
-                                    ...item.truck,
-                                    name: item.truck?.truckNumber,
-                                    logoType: item.truck?.truckType?.name,
-                                    logoName: item.truck?.truckType?.logoName,
-                                    folder: LoadModalStringEnum.COMMON,
-                                    subFolder: LoadModalStringEnum.TRUCKS,
-                                },
-                                trailer: {
-                                    ...item.trailer,
-                                    name: item.trailer?.trailerNumber,
-                                    logoType: item.trailer?.trailerType?.name,
-                                    logoName:
-                                        item.trailer?.trailerType?.logoName,
-                                    folder: LoadModalStringEnum.COMMON,
-                                    subFolder: LoadModalStringEnum.TRAILERS,
-                                },
-                                itemIndex: index,
-                                fullName: item.truck?.truckNumber
-                                    .concat(
-                                        LoadModalStringEnum.EMPTY_SPACE_STRING,
-                                        item.trailer?.trailerNumber
-                                    )
-                                    .concat(
-                                        LoadModalStringEnum.EMPTY_SPACE_STRING,
-                                        item.driver?.firstName.concat(
-                                            LoadModalStringEnum.EMPTY_SPACE_STRING,
-                                            item.driver?.lastName
-                                        )
-                                    ),
-                            };
-                        }
-                    );
-
-                    this.originLabelsDispatches = this.labelsDispatches;
-
-                    // brokers
-                    this.labelsBroker = res.brokers.map((item) => {
-                        return {
-                            ...item,
-                            name: item?.businessName,
-                            creditLimit: item?.creditLimit,
-                            second_value: item?.creditLimit,
-                            status: item.availableCreditType?.name,
-                            logoName:
-                                item?.dnu || item?.ban
-                                    ? LoadModalStringEnum.BROKER_OPEN_SVG
-                                    : item?.status === 0
-                                    ? LoadModalStringEnum.BROKER_CLOSED_SVG
-                                    : null,
-                        };
-                    });
-
-                    // broker contacts
-                    this.labelsBrokerContacts = this.originBrokerContacts =
-                        res.brokerContacts.map((item) => {
-                            return {
-                                ...item,
-                                contacts: item.contacts.map((item) => {
-                                    return {
-                                        ...item,
-                                        name: item?.contactName,
-                                        phone: item?.phone?.concat(
-                                            LoadModalStringEnum.EMPTY_SPACE_STRING,
-                                            item?.extensionPhone
-                                                ? `x${item.extensionPhone}`
-                                                : LoadModalStringEnum.EMPTY_STRING
-                                        ),
-                                        originalPhone: item.phone,
-                                        phoneExtension: item.extensionPhone,
-                                        fullName: item?.contactName?.concat(
-                                            LoadModalStringEnum.EMPTY_SPACE_STRING,
-                                            item?.phone?.concat(
-                                                LoadModalStringEnum.EMPTY_SPACE_STRING,
-                                                item?.extensionPhone
-                                                    ? `x${item.extensionPhone}`
-                                                    : LoadModalStringEnum.EMPTY_STRING
-                                            )
-                                        ),
-                                    };
-                                }),
-                            };
-                        });
-
-                    // door type
-                    this.labelsDoorType = res.doorTypes;
-
-                    // general commmodity
-                    this.labelsGeneralCommodity = res.generalCommodities.map(
-                        (item) => {
-                            if (
-                                item.name.toLowerCase() ===
-                                LoadModalStringEnum.HAZARDOUS
-                            ) {
-                                return {
-                                    ...item,
-                                    logoName: LoadModalStringEnum.HAZARDOUS_SVG,
-                                    folder: LoadModalStringEnum.COMMON,
-                                };
-                            }
-                            return { ...item };
-                        }
-                    );
-
-                    // labels suspension
-                    this.labelsSuspension = res.suspensions;
-
-                    // labels template
-                    this.labelsTemplate = res.templates;
-
-                    // trailer length
-                    this.labelsTrailerLength = res.trailerLengths;
-
-                    // trailer req
-                    this.labelsTrailerReq = res.trailerTypes.map((item) => {
-                        return {
-                            ...item,
-                            folder: LoadModalStringEnum.COMMON,
-                            subFolder: LoadModalStringEnum.TRAILERS,
-                        };
-                    });
-
-                    // truck req
-                    this.labelsTruckReq = res.truckTypes.map((item) => {
-                        return {
-                            ...item,
-                            folder: LoadModalStringEnum.COMMON,
-                            subFolder: LoadModalStringEnum.TRUCKS,
-                        };
-                    });
-
-                    // years
-                    this.labelsYear = res.years.map((item, index) => {
-                        return {
-                            id: index + 1,
-                            name: `${item.toString()}+`,
-                        };
-                    });
-
-                    // shipper
-                    this.labelsShippers = res.shippers.map((item) => {
-                        return {
-                            ...item,
-                            name: item?.businessName,
-                            address: item.address?.city
-                                ?.concat(', ', item.address?.stateShortName)
-                                ?.concat(
+                                item?.phoneExt
+                                    ? `x${item.phoneExt}`
+                                    : LoadModalStringEnum.EMPTY_STRING
+                            ),
+                            originalPhone: item.phone,
+                            phoneExtension: item.phoneExt,
+                            fullName: item?.fullName?.concat(
+                                LoadModalStringEnum.EMPTY_SPACE_STRING,
+                                item?.phone?.concat(
                                     LoadModalStringEnum.EMPTY_SPACE_STRING,
-                                    item.address?.zipCode
-                                ),
-                            logoName:
-                                item.status === 0
-                                    ? LoadModalStringEnum.BROKER_CLOSED_SVG
-                                    : null,
+                                    item?.phoneExt
+                                        ? `x${item.phoneExt}`
+                                        : LoadModalStringEnum.EMPTY_STRING
+                                )
+                            ),
                         };
-                    });
-                    this.originalShippers = res.shippers;
-
-                    // shipper contacts
-                    this.labelsShipperContacts = this.originShipperContacts =
-                        res.shipperContacts.map((item) => {
-                            return {
-                                ...item,
-                                contacts: item.contacts.map((item) => {
-                                    return {
-                                        ...item,
-                                        name: item?.fullName,
-                                        phone: item?.phone?.concat(
-                                            LoadModalStringEnum.EMPTY_SPACE_STRING,
-                                            item?.phoneExt
-                                                ? `x${item.phoneExt}`
-                                                : LoadModalStringEnum.EMPTY_STRING
-                                        ),
-                                        originalPhone: item.phone,
-                                        phoneExtension: item.phoneExt,
-                                        fullName: item?.fullName?.concat(
-                                            LoadModalStringEnum.EMPTY_SPACE_STRING,
-                                            item?.phone?.concat(
-                                                LoadModalStringEnum.EMPTY_SPACE_STRING,
-                                                item?.phoneExt
-                                                    ? `x${item.phoneExt}`
-                                                    : LoadModalStringEnum.EMPTY_STRING
-                                            )
-                                        ),
-                                    };
-                                }),
-                            };
-                        });
-
-                    // additional billing types
-                    this.additionalBillingTypes = [
-                        ...res.additionalBillingTypes.map((item) => {
-                            return { ...item, checked: false };
-                        }),
-                    ];
-                    this.originalAdditionalBillingTypes =
-                        this.additionalBillingTypes;
-
-                    if (this.editData) {
-                        this.isConvertedToTemplate =
-                            this.editData.selectedTab ===
-                            TableStringEnum.TEMPLATE;
-                        this.populateLoadModalData(
-                            (this.editData.data ??
-                                this.editData) as LoadResponse
-                        );
-                    } else {
-                        this.watchFormChanges();
-                    }
-
-                    this.generateModalText();
-                    this.isActiveLoad = this.checkIfLoadIsActive();
-
-                    // stop items
-                    this.stopItemDropdownLists = {
-                        quantityDropdownList: res.loadItemUnits,
-                        stackDropdownList: res.stackable,
-                        secureDropdownList: res.secures,
-                        tarpDropdownList: res.tarps,
-                        hazardousDropdownList: res.hazardousMaterials.map(
-                            (item) => {
-                                return {
-                                    ...item,
-                                    name: item.description,
-                                    folder: LoadModalStringEnum.COMMON,
-                                    subFolder: LoadModalStringEnum.LOAD,
-                                };
-                            }
-                        ),
-                    };
-                },
-
-                error: () => {},
+                    }),
+                };
             });
+
+        // additional billing types
+        this.additionalBillingTypes = [
+            ...this.editData.loadModalData.additionalBillingTypes.map((item) => {
+                return { ...item, checked: false };
+            }),
+        ];
+        this.originalAdditionalBillingTypes =
+            this.additionalBillingTypes;
+
+        if (this.editData) {
+            this.isConvertedToTemplate =
+                this.editData.selectedTab ===
+                TableStringEnum.TEMPLATE;
+            this.populateLoadModalData(
+                (this.editData.data ??
+                    this.editData) as LoadResponse
+            );
+        } else {
+            this.watchFormChanges();
+        }
+
+        this.generateModalText();
+        this.isActiveLoad = this.checkIfLoadIsActive();
+
+        // stop items
+        this.stopItemDropdownLists = {
+            quantityDropdownList: modalData.loadItemUnits,
+            stackDropdownList: modalData.stackable,
+            secureDropdownList: modalData.secures,
+            tarpDropdownList: modalData.tarps,
+            hazardousDropdownList: modalData.hazardousMaterials.map(
+                (item) => {
+                    return {
+                        ...item,
+                        name: item.description,
+                        folder: LoadModalStringEnum.COMMON,
+                        subFolder: LoadModalStringEnum.LOAD,
+                    };
+                }
+            ),
+        };
     }
 
     private mapDocumentsAndTags() {
@@ -4682,28 +4686,17 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         };
     }
 
-    public createNewLoad(addNew: boolean): void {
+    public createNewLoad(): void {
         const isTemplate =
             this.editData?.selectedTab === TableStringEnum.TEMPLATE;
 
-        this.loadService
-            .createLoad(this.generateLoadModel(true))
-            .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: (data) => {
-                    const loadServiceObservable = !isTemplate
-                        ? this.loadService.getLoadInsideListById(data.id)
-                        : this.loadService.getLoadTemplateInsideListById(
-                              data.id
-                          );
+        if (isTemplate) {
+            this.loadStoreService.dispatchCreateLoadTemplate(this.generateTemplateModel());
+        } else {
+            this.loadStoreService.dispatchCreateLoad(this.generateLoadModel(true));
+        }
 
-                    loadServiceObservable.subscribe(() => {
-                        this.loadService.addNewLoad();
-                        this.setModalSpinner(null, true, true, addNew);
-                    });
-                },
-                error: () => this.setModalSpinner(null, false, false),
-            });
+        this.setModalSpinner(null, true, true, false);
     }
 
     public addNewLoadModal(): void {
@@ -4717,106 +4710,40 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             ...this.generateLoadModel(false),
             name: this.loadForm.get(LoadModalStringEnum.TEMPLATE_NAME).value,
         };
-        this.loadService
-            .updateLoadTemplate(newData)
-            .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: () => {
-                    this.loadService
-                        .getLoadTemplateInsideListById(newData.id)
-                        .subscribe((res) => {
-                            this.loadService.updateLoadTemplatePartily();
-                        });
-                    this.setModalSpinner(null, true, true, addNew);
-                },
-                error: () => this.setModalSpinner(null, false, false),
-            });
+
+        this.loadStoreService.dispatchUpdateLoadTemplate(newData);
+
+        this.setModalSpinner(null, true, true, addNew);
     }
+
     private updateLoad(addNew: boolean): void {
+        const { valueForRequest } = this.selectedStatus || {};
+        const { data } = this.editData || {};
+        const { id } = data || {};
         const newData = this.generateLoadModel(false);
+
         if (this.originalStatus !== this.selectedStatus.valueForRequest) {
-            this.loadService
-                .updateLoadStatus(
-                    this.editData.data.id,
-                    this.selectedStatus.valueForRequest as LoadStatus,
-                    this.isPreviousStatus
-                )
-                .pipe(takeUntil(this.destroy$))
-                .subscribe(() => this.handleLoadUpdate(newData, addNew));
-        } else {
+            const apiParamStatus = {
+                id,
+                status: valueForRequest,
+
+            } as UpdateLoadStatusCommand;
+
+            this.loadStoreService.dispatchUpdateOrRevertStatusAndUpdateLoad(apiParamStatus, newData, this.isPreviousStatus);
+            
+            this.setModalSpinner(null, true, true, addNew);
+        } else 
             this.handleLoadUpdate(newData, addNew);
-        }
     }
 
     private handleLoadUpdate(newData: Load, addNew: boolean) {
-        this.loadService
-            .getLoadById(this.editData.data.id)
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((response) => {
-                // After status change we get times for stops that need to be sent to the backend
-                // together with status history
-                newData.stops.forEach((stop) => {
-                    const _stop = response.stops.find(
-                        (initialStop) => initialStop.id === stop.id
-                    );
-                    if (_stop) {
-                        stop.arrive = _stop.arrive;
-                        stop.depart = _stop.depart;
-                    }
-                });
-
-                const isUserReversingFromInvoicedStatus =
-                    this.originalStatus === LoadStatusEnum[8] &&
-                    this.isPreviousStatus;
-
-                if (isUserReversingFromInvoicedStatus)
-                    newData.invoicedDate = null;
-
-                if (this.isLoadClosed)
-                    newData.statusHistory = response.statusHistory;
-
-                this.loadService
-                    .updateLoad(newData)
-                    .pipe(takeUntil(this.destroy$))
-                    .subscribe({
-                        next: () => {
-                            this.loadService
-                                .getLoadInsideListById(newData.id)
-                                .subscribe(() => {
-                                    this.loadService.updateLoadPartily();
-                                });
-                            this.setModalSpinner(null, true, true, addNew);
-                        },
-                        error: () => this.setModalSpinner(null, false, false),
-                    });
-            });
+        this.loadStoreService.dispatchUpdateLoad(newData);
+        this.setModalSpinner(null, true, true, addNew);
+        // TODO: Do we need to check/get before update?
     }
 
-    private saveLoadTemplate(addNew: boolean): void {
-        this.loadService
-            .createLoadTemplate(this.generateTemplateModel())
-            .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: (data) => {
-                    this.loadService
-                        .getLoadTemplateInsideListById(data.id)
-                        .subscribe((newLoad) => {
-                            this.loadService.addNewLoad();
-                            this.setModalSpinner(
-                                LoadModalStringEnum.LOAD_TEMPLATE,
-                                true,
-                                true,
-                                addNew
-                            );
-                        });
-                },
-                error: () =>
-                    this.setModalSpinner(
-                        LoadModalStringEnum.LOAD_TEMPLATE,
-                        false,
-                        false
-                    ),
-            });
+    private saveLoadTemplate(): void {
+        this.loadStoreService.dispatchCreateLoadTemplate(this.generateTemplateModel());
     }
     private convertNumbers(value: string): number {
         return value
@@ -4963,7 +4890,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
 
         // Ensure dispatcher exists before attempting to spread
         const selectedDispatcher = this.labelsDispatcher.find(
-            (dispatch) => dispatch.id === dispatcher.id
+            (dispatch) => dispatch.id === dispatcher?.id
         );
         const editedDispatcher = selectedDispatcher
             ? {
@@ -5267,17 +5194,18 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
 
     private formatStop(stops: LoadStopResponse[]): LoadStopResponse[] {
         const _stops = stops?.filter((stop) => stop.id !== 0) || [];
+        let result = JSON.parse(JSON.stringify(_stops));
 
         if (!this.isConvertedToTemplate) return _stops;
 
         // Clear stop values
-        _stops.forEach((stop) => {
+        result.forEach((stop) => {
             stop.arrive = null;
             stop.depart = null;
             stop.statusHistory = [];
         });
 
-        return _stops;
+        return result;
     }
 
     public pickupStatusHistoryChange(

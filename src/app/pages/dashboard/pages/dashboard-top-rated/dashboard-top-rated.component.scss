@@ -176,6 +176,10 @@
                         background: $bw2;
                     }
 
+                    &.hovered-from-chart {
+                        background: $bw2;
+                    }
+
                     &.selected {
                         &:hover {
                             .top-rated-item-number-box {

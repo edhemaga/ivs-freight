@@ -112,8 +112,9 @@ export class DriverDetailsCardComponent
     public driversDropdownList: DriverMinimalResponse[];
 
     // Payroll chart card
+    public driverChartData!: DriverPayrollResponse;
+    public driverLegendConfig!: ChartLegendProperty[];
     public barChartTabs: Tabs[] = ChartHelper.generateTimeTabs();
-    public chartLegendData: ChartLegendProperty[];
 
     // Note card
     public noteForm: UntypedFormGroup;
@@ -156,19 +157,29 @@ export class DriverDetailsCardComponent
             .subscribe((response: DriverPayrollResponse) => {
                 if (timeFilter && this.barChartTabs[timeFilter - 1])
                     this.barChartTabs[timeFilter - 1].checked = true;
+
+                this.driverChartData = response;
+
                 this.payrollChartConfig = {
                     ...DriverDetailsChartsConfiguration.PAYROLL_CHART_CONFIG,
                     chartData: ChartHelper
                         .generateDataByDateTime<DriverPayrollChartResponse>(
-                            response.getDriverPayrollChartResponse,
+                            this.driverChartData.getDriverPayrollChartResponse,
                             ChartConfiguration.driverConfiguration,
                             timeFilter
                         )
                 };
 
-                this.chartLegendData =
-                    ChartLegendConfiguration.driverLegendConfiguration(response);
+                this.driverLegendConfig =
+                    ChartLegendConfiguration.
+                        driverLegendConfiguration(this.driverChartData);
             })
+    }
+
+    public setDriverLegendOnHover(index: number): void {
+        this.driverLegendConfig = ChartLegendConfiguration
+            .driverLegendConfiguration(this.driverChartData.
+                getDriverPayrollChartResponse[index]);
     }
 
     private createForm(): void {

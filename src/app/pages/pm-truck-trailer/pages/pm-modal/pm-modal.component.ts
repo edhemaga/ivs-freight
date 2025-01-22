@@ -13,16 +13,42 @@ import {
     UntypedFormBuilder,
     UntypedFormGroup,
 } from '@angular/forms';
+import { NgbActiveModal, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
+import { AngularSvgIconModule } from 'angular-svg-icon';
+
 import { Subject, takeUntil } from 'rxjs';
+
+// modules
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
-// Services
+// services
 import { PmService } from '@pages/pm-truck-trailer/services/pm.service';
 import { TaInputService } from '@shared/services/ta-input.service';
 import { ModalService } from '@shared/services/modal.service';
 import { FormService } from '@shared/services/form.service';
 
-// Models
+// validators
+import { descriptionValidation } from '@shared/components/ta-input/validators/ta-input.regex-validations';
+
+// helpers
+import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calculations.helper';
+
+// components
+import { RepairOrderModalComponent } from '@pages/repair/pages/repair-modals/repair-order-modal/repair-order-modal.component';
+import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-custom-card.component';
+import { TaModalTableComponent } from '@shared/components/ta-modal-table/ta-modal-table.component';
+import { CaModalComponent, CaModalButtonComponent } from 'ca-components';
+import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
+
+// enums
+import { TableStringEnum } from '@shared/enums/table-string.enum';
+import { ModalTableTypeEnum } from '@shared/enums/modal-table-type.enum';
+import { ModalButtonType } from '@shared/enums';
+
+// Svg routes
+import { SharedSvgRoutes } from '@shared/utils/svg-routes';
+
+// models
 import {
     PMStatus,
     PMTrailerResponse,
@@ -33,27 +59,7 @@ import {
 } from 'appcoretruckassist';
 import { PmUpdateTruckUnitListCommand } from '@pages/pm-truck-trailer/models/pm-update-truck-unit-list-command.model';
 import { PMTableData } from '@pages/pm-truck-trailer/pages/pm-table/models/pm-table-data.model';
-
-// Validators
-import { descriptionValidation } from '@shared/components/ta-input/validators/ta-input.regex-validations';
-
-// Helpers
-import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calculations.helper';
-
-// Components
-import { RepairOrderModalComponent } from '@pages/repair/pages/repair-modals/repair-order-modal/repair-order-modal.component';
-import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
-import { TaModalComponent } from '@shared/components/ta-modal/ta-modal.component';
-import { TaTabSwitchComponent } from '@shared/components/ta-tab-switch/ta-tab-switch.component';
-import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-custom-card.component';
-import { TaCheckboxComponent } from '@shared/components/ta-checkbox/ta-checkbox.component';
-import { TaInputComponent } from '@shared/components/ta-input/ta-input.component';
-import { TaInputDropdownComponent } from '@shared/components/ta-input-dropdown/ta-input-dropdown.component';
-import { TaModalTableComponent } from '@shared/components/ta-modal-table/ta-modal-table.component';
-
-// Enums
-import { TableStringEnum } from '@shared/enums/table-string.enum';
-import { ModalTableTypeEnum } from '@shared/enums/modal-table-type.enum';
+import { TaModalActionEnums } from '@shared/components/ta-modal/enums';
 
 @Component({
     selector: 'app-pm-modal',
@@ -62,21 +68,20 @@ import { ModalTableTypeEnum } from '@shared/enums/modal-table-type.enum';
     providers: [ModalService, FormService],
     standalone: true,
     imports: [
-        // Modules
+        // modules
         CommonModule,
         FormsModule,
         ReactiveFormsModule,
         NgbModule,
+        AngularSvgIconModule,
+        NgbTooltipModule,
 
-        // Components
-        TaAppTooltipV2Component,
-        TaModalComponent,
-        TaTabSwitchComponent,
+        // components
+        CaModalComponent,
+        CaModalButtonComponent,
         TaCustomCardComponent,
-        TaCheckboxComponent,
-        TaInputComponent,
-        TaInputDropdownComponent,
         TaModalTableComponent,
+        TaAppTooltipV2Component,
     ],
 })
 export class PmModalComponent implements OnInit, OnDestroy {
@@ -102,19 +107,26 @@ export class PmModalComponent implements OnInit, OnDestroy {
 
     // enums
     public modalTableTypeEnum = ModalTableTypeEnum;
+    public modalButtonType = ModalButtonType;
+    public taModalActionEnums = TaModalActionEnums;
+    public TableStringEnum = TableStringEnum;
+    public activeAction: string;
+
+    public svgRoutes = SharedSvgRoutes;
 
     constructor(
-        // Form
+        // form
         private formBuilder: UntypedFormBuilder,
 
-        // Services
+        // services
         private pmService: PmService,
         private inputService: TaInputService,
         private modalService: ModalService,
         private formService: FormService,
 
-        // Change detector
-        private changeDetector: ChangeDetectorRef
+        // change detector
+        private changeDetector: ChangeDetectorRef,
+        private ngbActiveModal: NgbActiveModal
     ) {}
 
     ngOnInit() {
@@ -260,6 +272,8 @@ export class PmModalComponent implements OnInit, OnDestroy {
     }
 
     public onModalAction(data: { action: string; bool: boolean }) {
+        this.activeAction = data.action;
+
         switch (data.action) {
             case TableStringEnum.CLOSE:
                 if (this.editData?.canOpenModal) {
@@ -272,6 +286,8 @@ export class PmModalComponent implements OnInit, OnDestroy {
                         default:
                             break;
                     }
+                } else {
+                    this.ngbActiveModal.close();
                 }
                 break;
 
@@ -292,11 +308,6 @@ export class PmModalComponent implements OnInit, OnDestroy {
                                 }
 
                                 this.addPMTruckList();
-                                this.modalService.setModalSpinner({
-                                    action: null,
-                                    status: true,
-                                    close: false,
-                                });
                                 break;
 
                             case TableStringEnum.TRAILER_PM_SETTINGS:
@@ -307,11 +318,6 @@ export class PmModalComponent implements OnInit, OnDestroy {
                                 }
 
                                 this.addPMTrailerList();
-                                this.modalService.setModalSpinner({
-                                    action: null,
-                                    status: true,
-                                    close: false,
-                                });
                                 break;
 
                             default:
@@ -321,27 +327,14 @@ export class PmModalComponent implements OnInit, OnDestroy {
 
                     case TableStringEnum.EDIT:
                         switch (this.editData.header) {
-                            case TableStringEnum.EDIT_TRUCK_PM_HEADER: {
+                            case TableStringEnum.CONFIGURE_TRUCK_PM_HEADER:
                                 this.addUpdatePMTruckUnit();
-                                this.modalService.setModalSpinner({
-                                    action: null,
-                                    status: true,
-                                    close: false,
-                                });
                                 break;
-                            }
-                            case TableStringEnum.EDIT_TRAILER_PM_HEADER: {
+                            case TableStringEnum.CONFIGURE_TRAILER_PM_HEADER:
                                 this.addUpdatePMTrailerUnit();
-                                this.modalService.setModalSpinner({
-                                    action: null,
-                                    status: true,
-                                    close: false,
-                                });
                                 break;
-                            }
-                            default: {
+                            default:
                                 break;
-                            }
                         }
 
                         break;
@@ -565,8 +558,8 @@ export class PmModalComponent implements OnInit, OnDestroy {
                             index < 4
                                 ? PMStatus.Default
                                 : item.get(TableStringEnum.IS_CHECKED).value
-                                ? PMStatus.Active
-                                : PMStatus.Inactive,
+                                  ? PMStatus.Active
+                                  : PMStatus.Inactive,
                     };
                 }),
             ],
@@ -588,20 +581,10 @@ export class PmModalComponent implements OnInit, OnDestroy {
                                 break;
                         }
                     } else {
-                        this.modalService.setModalSpinner({
-                            action: null,
-                            status: true,
-                            close: true,
-                        });
+                        this.ngbActiveModal.close();
                     }
                 },
-                error: () => {
-                    this.modalService.setModalSpinner({
-                        action: null,
-                        status: false,
-                        close: false,
-                    });
-                },
+                error: () => (this.activeAction = null),
             });
     }
 
@@ -619,8 +602,8 @@ export class PmModalComponent implements OnInit, OnDestroy {
                             index < 1
                                 ? PMStatus.Default
                                 : item.get(TableStringEnum.IS_CHECKED).value
-                                ? PMStatus.Active
-                                : PMStatus.Inactive,
+                                  ? PMStatus.Active
+                                  : PMStatus.Inactive,
                     };
                 }),
             ],
@@ -643,20 +626,10 @@ export class PmModalComponent implements OnInit, OnDestroy {
                             }
                         }
                     } else {
-                        this.modalService.setModalSpinner({
-                            action: null,
-                            status: true,
-                            close: true,
-                        });
+                        this.ngbActiveModal.close();
                     }
                 },
-                error: () => {
-                    this.modalService.setModalSpinner({
-                        action: null,
-                        status: false,
-                        close: false,
-                    });
-                },
+                error: () => (this.activeAction = null),
             });
     }
 
@@ -676,8 +649,8 @@ export class PmModalComponent implements OnInit, OnDestroy {
                             index < 4
                                 ? PMStatus.Default
                                 : item.get(TableStringEnum.IS_CHECKED).value
-                                ? PMStatus.Active
-                                : PMStatus.Inactive,
+                                  ? PMStatus.Active
+                                  : PMStatus.Inactive,
                     };
                 }),
                 ...this.newPMs.controls.map((item, index) => {
@@ -691,8 +664,8 @@ export class PmModalComponent implements OnInit, OnDestroy {
                             index < 4
                                 ? PMStatus.Default
                                 : item.get(TableStringEnum.IS_CHECKED).value
-                                ? PMStatus.Active
-                                : PMStatus.Inactive,
+                                  ? PMStatus.Active
+                                  : PMStatus.Inactive,
                     };
                 }),
             ],
@@ -714,20 +687,10 @@ export class PmModalComponent implements OnInit, OnDestroy {
                                 break;
                         }
                     } else {
-                        this.modalService.setModalSpinner({
-                            action: null,
-                            status: true,
-                            close: true,
-                        });
+                        this.ngbActiveModal.close();
                     }
                 },
-                error: () => {
-                    this.modalService.setModalSpinner({
-                        action: null,
-                        status: false,
-                        close: false,
-                    });
-                },
+                error: () => (this.activeAction = null),
             });
     }
 
@@ -745,8 +708,8 @@ export class PmModalComponent implements OnInit, OnDestroy {
                             index < 1
                                 ? PMStatus.Default
                                 : item.get(TableStringEnum.IS_CHECKED).value
-                                ? PMStatus.Active
-                                : PMStatus.Inactive,
+                                  ? PMStatus.Active
+                                  : PMStatus.Inactive,
                     };
                 }),
                 ...this.newPMs.controls.map((item, index) => {
@@ -759,8 +722,8 @@ export class PmModalComponent implements OnInit, OnDestroy {
                             index < 1
                                 ? PMStatus.Default
                                 : item.get(TableStringEnum.IS_CHECKED).value
-                                ? PMStatus.Active
-                                : PMStatus.Inactive,
+                                  ? PMStatus.Active
+                                  : PMStatus.Inactive,
                     };
                 }),
             ],
@@ -782,20 +745,10 @@ export class PmModalComponent implements OnInit, OnDestroy {
                                 break;
                         }
                     } else {
-                        this.modalService.setModalSpinner({
-                            action: null,
-                            status: true,
-                            close: true,
-                        });
+                        this.ngbActiveModal.close();
                     }
                 },
-                error: () => {
-                    this.modalService.setModalSpinner({
-                        action: null,
-                        status: false,
-                        close: false,
-                    });
-                },
+                error: () => (this.activeAction = null),
             });
     }
 
@@ -818,9 +771,10 @@ export class PmModalComponent implements OnInit, OnDestroy {
         // Per Unit list
         else {
             if (
-                [TableStringEnum.TRUCK_PM_SETTINGS, TableStringEnum.TRAILER_PM_SETTINGS].includes(
-                    this.editData?.type
-                )
+                [
+                    TableStringEnum.TRUCK_PM_SETTINGS,
+                    TableStringEnum.TRAILER_PM_SETTINGS,
+                ].includes(this.editData?.type)
             ) {
                 const data = JSON.parse(
                     sessionStorage.getItem(this.editData.key)
@@ -835,12 +789,14 @@ export class PmModalComponent implements OnInit, OnDestroy {
                         },
                         type2: this.editData.type,
                         type: TableStringEnum.EDIT,
-                        header: TableStringEnum.EDIT_TRUCK_PM_HEADER,
+                        header: TableStringEnum.CONFIGURE_TRUCK_PM_HEADER,
                         action: TableStringEnum.UNIT_PM,
                     };
                 }
 
-                if (this.editData.type === TableStringEnum.TRAILER_PM_SETTINGS) {
+                if (
+                    this.editData.type === TableStringEnum.TRAILER_PM_SETTINGS
+                ) {
                     this.editData = {
                         ...this.editData,
                         id: data.id,
@@ -849,14 +805,14 @@ export class PmModalComponent implements OnInit, OnDestroy {
                         },
                         type2: this.editData.type,
                         type: TableStringEnum.EDIT,
-                        header: TableStringEnum.EDIT_TRAILER_PM_HEADER,
+                        header: TableStringEnum.CONFIGURE_TRAILER_PM_HEADER,
                         action: TableStringEnum.UNIT_PM,
                     };
                 }
             }
             if (
                 [this.editData?.header].includes(
-                    TableStringEnum.EDIT_TRUCK_PM_HEADER
+                    TableStringEnum.CONFIGURE_TRUCK_PM_HEADER
                 )
             ) {
                 this.getPMTruckUnit(this.editData.id);
@@ -910,9 +866,10 @@ export class PmModalComponent implements OnInit, OnDestroy {
                 );
             } else if (existingPmIndex > -1) {
                 const defaultPmsIndex =
-                    this.editData.header === TableStringEnum.TRUCK_PM_SETTINGS ||
                     this.editData.header ===
-                        TableStringEnum.EDIT_TRUCK_PM_HEADER
+                        TableStringEnum.TRUCK_PM_SETTINGS ||
+                    this.editData.header ===
+                        TableStringEnum.CONFIGURE_TRUCK_PM_HEADER
                         ? 4
                         : 1;
 
@@ -926,8 +883,8 @@ export class PmModalComponent implements OnInit, OnDestroy {
                         existingPmIndex < defaultPmsIndex
                             ? PMStatus.Default
                             : pmItem.isChecked
-                            ? PMStatus.Active
-                            : PMStatus.Inactive,
+                              ? PMStatus.Active
+                              : PMStatus.Inactive,
                 });
             }
 

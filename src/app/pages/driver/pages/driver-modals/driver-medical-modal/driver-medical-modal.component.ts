@@ -11,7 +11,7 @@ import { Subject, takeUntil } from 'rxjs';
 
 // modules
 import { AngularSvgIconModule } from 'angular-svg-icon';
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbActiveModal, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 
 // services
 import { DriverService } from '@pages/driver/services/driver.service';
@@ -23,17 +23,14 @@ import { FormService } from '@shared/services/form.service';
 // components
 import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
 import { TaModalComponent } from '@shared/components/ta-modal/ta-modal.component';
-import { TaUploadFilesComponent } from '@shared/components/ta-upload-files/ta-upload-files.component';
-import { TaInputComponent } from '@shared/components/ta-input/ta-input.component';
 import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-custom-card.component';
-import { TaInputNoteComponent } from '@shared/components/ta-input-note/ta-input-note.component';
 import { ConfirmationModalComponent } from '@shared/components/ta-shared-modals/confirmation-modal/confirmation-modal.component';
 import {
-    CaInputDropdownComponent,
     CaInputComponent,
     CaUploadFilesComponent,
     CaInputNoteComponent,
-    CaNoteComponent
+    CaModalButtonComponent,
+    CaModalComponent,
 } from 'ca-components';
 
 // helpers
@@ -41,10 +38,17 @@ import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calcula
 
 // enums
 import { DriverMedicalModalStringEnum } from '@pages/driver/pages/driver-modals/driver-medical-modal/enums/driver-medical-modal-string.enum';
+import { ModalButtonType, ModalButtonSize } from '@shared/enums';
 
 // models
 import { EditData } from '@shared/models/edit-data.model';
 import { MedicalResponse } from 'appcoretruckassist';
+
+// Svg routes
+import { SharedSvgRoutes } from '@shared/utils/svg-routes';
+
+// Pipes
+import { FormatDatePipe } from '@shared/pipes';
 
 @Component({
     selector: 'app-driver-medical-modal',
@@ -58,20 +62,19 @@ import { MedicalResponse } from 'appcoretruckassist';
         FormsModule,
         ReactiveFormsModule,
         AngularSvgIconModule,
+        NgbTooltipModule,
 
         // components
         TaAppTooltipV2Component,
-        TaModalComponent,
-        TaUploadFilesComponent,
-        TaInputComponent,
+        CaModalButtonComponent,
+        CaModalComponent,
         TaCustomCardComponent,
-        TaInputNoteComponent,
 
-        CaInputDropdownComponent,
         CaInputComponent,
         CaUploadFilesComponent,
         CaInputNoteComponent,
-        CaNoteComponent,
+
+        FormatDatePipe,
     ],
 })
 export class DriverMedicalModalComponent implements OnInit, OnDestroy {
@@ -93,6 +96,11 @@ export class DriverMedicalModalComponent implements OnInit, OnDestroy {
     public documents: any[] = [];
     public filesForDelete: any[] = [];
     public isFileModified: boolean = false;
+    public svgRoutes = SharedSvgRoutes;
+    public modalButtonType = ModalButtonType;
+    public modalButtonSize = ModalButtonSize;
+    public activeAction!: string;
+    public taModalActionEnums = DriverMedicalModalStringEnum;
 
     constructor(
         private formBuilder: UntypedFormBuilder,
@@ -106,7 +114,7 @@ export class DriverMedicalModalComponent implements OnInit, OnDestroy {
 
         // bootstrap
         private ngbActiveModal: NgbActiveModal
-    ) { }
+    ) {}
 
     ngOnInit(): void {
         this.createForm();
@@ -149,9 +157,11 @@ export class DriverMedicalModalComponent implements OnInit, OnDestroy {
         }
     }
 
-    public onModalAction(data: { action: string; bool: boolean }): void {
-        switch (data.action) {
+    public onModalAction(action: string): void {
+        this.activeAction = action;
+        switch (action) {
             case DriverMedicalModalStringEnum.CLOSE:
+                this.ngbActiveModal.close();
                 break;
             case DriverMedicalModalStringEnum.SAVE:
                 if (this.medicalForm.invalid || !this.isFormDirty) {
@@ -165,20 +175,8 @@ export class DriverMedicalModalComponent implements OnInit, OnDestroy {
                     DriverMedicalModalStringEnum.EDIT_MEDICAL
                 ) {
                     this.updateMedical();
-
-                    this.modalService.setModalSpinner({
-                        action: null,
-                        status: true,
-                        close: false,
-                    });
                 } else {
                     this.addMedical();
-
-                    this.modalService.setModalSpinner({
-                        action: null,
-                        status: true,
-                        close: false,
-                    });
                 }
 
                 break;
@@ -310,20 +308,8 @@ export class DriverMedicalModalComponent implements OnInit, OnDestroy {
             .addMedical(newData)
             .pipe(takeUntil(this.destroy$))
             .subscribe({
-                next: () => {
-                    this.modalService.setModalSpinner({
-                        action: null,
-                        status: true,
-                        close: true,
-                    });
-                },
-                error: () => {
-                    this.modalService.setModalSpinner({
-                        action: null,
-                        status: false,
-                        close: false,
-                    });
-                },
+                next: () => this.ngbActiveModal.close(),
+                error: () => (this.activeAction = null),
             });
     }
 
@@ -353,20 +339,8 @@ export class DriverMedicalModalComponent implements OnInit, OnDestroy {
             .updateMedical(newData)
             .pipe(takeUntil(this.destroy$))
             .subscribe({
-                next: () => {
-                    this.modalService.setModalSpinner({
-                        action: null,
-                        status: true,
-                        close: true,
-                    });
-                },
-                error: () => {
-                    this.modalService.setModalSpinner({
-                        action: null,
-                        status: false,
-                        close: false,
-                    });
-                },
+                next: () => this.ngbActiveModal.close(),
+                error: () => (this.activeAction = null),
             });
     }
 

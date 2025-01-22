@@ -129,7 +129,8 @@ export class TaTableToolbarComponent implements OnInit, OnChanges, OnDestroy {
     public selectedDispatcher: any;
 
     public tableLocked: boolean = true;
-    public optionsPopupContent: OptionsPopupContent[] = [];
+    public optionsPopupContent: OptionsPopupContent[] =
+        DropdownMenuContentHelper.getTableToolbarDropdownContent();
     public tableRowsSelected: any[] = [];
     public activeTableData: any = {};
     public toolbarWidth: string = '';
@@ -174,8 +175,6 @@ export class TaTableToolbarComponent implements OnInit, OnChanges, OnDestroy {
         this.rowsSelected();
 
         this.confirmationData();
-
-        this.getTableToolbarDropdownContent();
     }
 
     ngOnChanges(changes: SimpleChanges) {
@@ -210,11 +209,6 @@ export class TaTableToolbarComponent implements OnInit, OnChanges, OnDestroy {
             if (td.isUpperCaseTitle) this.isUpperCaseTitle = true;
             else this.isUpperCaseTitle = false;
         }
-    }
-
-    private getTableToolbarDropdownContent(): void {
-        this.optionsPopupContent =
-            DropdownMenuContentHelper.getTableToolbarDropdownContent();
     }
 
     public openCards(): void {
@@ -772,9 +766,13 @@ export class TaTableToolbarComponent implements OnInit, OnChanges, OnDestroy {
 
         this.timeOutToaggleColumn = setTimeout(() => {
             if (!column.isPined) {
-                column.hidden = !column.hidden;
+                this.columns.filter((item) => {
+                    if (column.title === item.title) {
+                        item.hidden = !item.hidden;
 
-                this.setTableConfig(column, index);
+                        this.setTableConfig(item, index);
+                    }
+                });
             }
         }, 10);
     }

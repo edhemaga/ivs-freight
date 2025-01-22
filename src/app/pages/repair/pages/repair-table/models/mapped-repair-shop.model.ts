@@ -1,4 +1,4 @@
-import { TableDropdownContent } from '@shared/models/card-models/card-table-data.model';
+import { DropdownMenuItem } from '@ca-shared/components/ca-dropdown-menu/models';
 import {
     RepairShopContactListResponse,
     RepairShopListDto,
@@ -33,5 +33,5 @@ export interface MappedRepairShop extends RepairShopListDto {
     tableAdded: string;
     tableEdited: string;
     isFavorite: boolean;
-    tableDropdownContent: TableDropdownContent;
+    tableDropdownContent: DropdownMenuItem[];
 }

@@ -703,16 +703,15 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
             fileCount: fileCount,
             tableDropdownContent: {
                 hasContent: true,
-                content: this.getTrailerDropdownContent(status),
+                content: this.getTrailerDropdownContent(),
             },
             createdAt,
             updatedAt,
         };
     }
 
-    public getTrailerDropdownContent(status: number): DropdownItem[] {
+    public getTrailerDropdownContent(): DropdownItem[] {
         return DropdownMenuContentHelper.getTrailerDropdownContent(
-            status,
             this.selectedTab
         );
     }

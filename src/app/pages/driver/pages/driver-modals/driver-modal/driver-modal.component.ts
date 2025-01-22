@@ -61,19 +61,12 @@ import {
 
 // components
 import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
-import { TaModalComponent } from '@shared/components/ta-modal/ta-modal.component';
-import { TaInputDropdownComponent } from '@shared/components/ta-input-dropdown/ta-input-dropdown.component';
-import { TaUploadFilesComponent } from '@shared/components/ta-upload-files/ta-upload-files.component';
-import { TaInputComponent } from '@shared/components/ta-input/ta-input.component';
 import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-custom-card.component';
-import { TaInputNoteComponent } from '@shared/components/ta-input-note/ta-input-note.component';
 import { TaTabSwitchComponent } from '@shared/components/ta-tab-switch/ta-tab-switch.component';
 import { ConfirmationModalComponent } from '@shared/components/ta-shared-modals/confirmation-modal/confirmation-modal.component';
-import { TaInputAddressDropdownComponent } from '@shared/components/ta-input-address-dropdown/ta-input-address-dropdown.component';
 import { TaCheckboxComponent } from '@shared/components/ta-checkbox/ta-checkbox.component';
 import { TaNgxSliderComponent } from '@shared/components/ta-ngx-slider/ta-ngx-slider.component';
 import { TaCheckboxCardComponent } from '@shared/components/ta-checkbox-card/ta-checkbox-card.component';
-import { TaLogoChangeComponent } from '@shared/components/ta-logo-change/ta-logo-change.component';
 import { TaModalTableComponent } from '@shared/components/ta-modal-table/ta-modal-table.component';
 import { OwnerModalComponent } from '@pages/owner/pages/owner-modal/owner-modal.component';
 import { ConfirmationActivationModalComponent } from '@shared/components/ta-shared-modals/confirmation-activation-modal/confirmation-activation-modal.component';
@@ -82,7 +75,7 @@ import {
     CaInputComponent,
     CaInputDropdownComponent,
     CaInputNoteComponent,
-    CaNoteComponent,
+    CaModalComponent,
     CaUploadFilesComponent,
 } from 'ca-components';
 
@@ -90,6 +83,7 @@ import {
 import { TableStringEnum } from '@shared/enums/table-string.enum';
 import { DriverModalStringEnum } from '@pages/driver/pages/driver-modals/driver-modal/enums/driver-modal-string.enum';
 import { ModalTableTypeEnum } from '@shared/enums/modal-table-type.enum';
+import { TaModalActionEnums } from '@shared/components/ta-modal/enums';
 
 // constants
 import { DriverModalConstants } from '@pages/driver/pages/driver-modals/driver-modal/utils/constants/driver-modal.constants';
@@ -121,6 +115,12 @@ import { DriverModalEditData } from '@pages/driver/pages/driver-modals/driver-mo
 import { NameInitialsPipe } from '@shared/pipes/name-initials.pipe';
 import { AddressService } from '@shared/services/address.service';
 
+// Svg routes
+import { SharedSvgRoutes } from '@shared/utils/svg-routes';
+
+// Pipes
+import { FormatDatePipe } from '@shared/pipes';
+
 @Component({
     selector: 'app-driver-modal',
     templateUrl: './driver-modal.component.html',
@@ -146,18 +146,13 @@ import { AddressService } from '@shared/services/address.service';
 
         // components
         TaAppTooltipV2Component,
-        TaModalComponent,
+        CaModalComponent,
         TaTabSwitchComponent,
-        TaInputComponent,
-        TaInputAddressDropdownComponent,
+        CaInputAddressDropdownComponent,
         TaCustomCardComponent,
         TaCheckboxComponent,
         TaNgxSliderComponent,
-        TaUploadFilesComponent,
-        TaInputNoteComponent,
         TaCheckboxCardComponent,
-        TaInputDropdownComponent,
-        TaLogoChangeComponent,
         TaModalTableComponent,
         CaUploadFilesComponent,
 
@@ -165,8 +160,9 @@ import { AddressService } from '@shared/services/address.service';
         CaInputComponent,
         CaUploadFilesComponent,
         CaInputNoteComponent,
-        CaNoteComponent,
-        CaInputAddressDropdownComponent,
+
+        // Pipes
+        FormatDatePipe,
     ],
 })
 export class DriverModalComponent implements OnInit, OnDestroy {
@@ -250,6 +246,8 @@ export class DriverModalComponent implements OnInit, OnDestroy {
     public modalTableTypeEnum = ModalTableTypeEnum;
     public addressList;
     public addressData;
+    public taModalActionEnums = TaModalActionEnums;
+    public svgRoutes = SharedSvgRoutes;
 
     constructor(
         private formBuilder: UntypedFormBuilder,
@@ -511,10 +509,13 @@ export class DriverModalComponent implements OnInit, OnDestroy {
             });
     }
 
-    public onModalAction(data: { action: string; bool: boolean }): void {
-        if (data.action === TableStringEnum.CLOSE) return;
+    public onModalAction(action: string): void {
+        if (action === TaModalActionEnums.CLOSE) {
+            this.ngbActiveModal.close();
+            return;
+        }
 
-        if (data.action === TableStringEnum.DEACTIVATE) {
+        if (action === TaModalActionEnums.DEACTIVATE) {
             const mappedEvent = {
                 ...this.editData,
                 data: {
@@ -536,14 +537,14 @@ export class DriverModalComponent implements OnInit, OnDestroy {
                 {
                     ...mappedEvent,
                     subType: TableStringEnum.DRIVER_1,
-                    type: data.action,
+                    type: TableStringEnum.DEACTIVATE,
                     template: TableStringEnum.DRIVER_1,
                     tableType: TableStringEnum.DRIVER,
                 }
             );
         }
         // save and add new
-        else if (data.action === DriverModalStringEnum.SAVE_AND_ADD_NEW) {
+        else if (action === TaModalActionEnums.SAVE_AND_ADD_NEW) {
             if (this.driverForm.invalid || !this.isFormDirty) {
                 this.inputService.markInvalid(this.driverForm);
 
@@ -551,17 +552,10 @@ export class DriverModalComponent implements OnInit, OnDestroy {
             }
 
             this.addDriver();
-
-            this.modalService.setModalSpinner({
-                action: DriverModalStringEnum.SAVE_AND_ADD_NEW,
-                status: true,
-                close: false,
-            });
-
             this.isAddNewAfterSave = true;
         }
         // save or update and close
-        else if (data.action === TableStringEnum.SAVE) {
+        else if (action === TaModalActionEnums.SAVE) {
             if (this.driverForm.invalid || !this.isFormDirty) {
                 this.inputService.markInvalid(this.driverForm);
 
@@ -569,29 +563,11 @@ export class DriverModalComponent implements OnInit, OnDestroy {
             }
 
             // update
-            if (this.editData?.id) {
-                this.updateDriverById(this.editData.id);
-
-                this.modalService.setModalSpinner({
-                    action: null,
-                    status: true,
-                    close: false,
-                });
-            }
-
-            // save
-            else {
-                this.addDriver();
-
-                this.modalService.setModalSpinner({
-                    action: null,
-                    status: true,
-                    close: false,
-                });
-            }
+            if (this.editData?.id) this.updateDriverById(this.editData.id);
+            else this.addDriver();
         }
         // delete
-        else if (data.action === TableStringEnum.DELETE && this.editData?.id) {
+        else if (action === TaModalActionEnums.DELETE && this.editData?.id) {
             const mappedEvent = {
                 ...this.editData,
                 data: {
@@ -1987,19 +1963,8 @@ export class DriverModalComponent implements OnInit, OnDestroy {
 
                         this.isAddNewAfterSave = false;
                     } else {
-                        this.modalService.setModalSpinner({
-                            action: null,
-                            status: true,
-                            close: true,
-                        });
+                        this.ngbActiveModal.close();
                     }
-                },
-                error: () => {
-                    this.modalService.setModalSpinner({
-                        action: null,
-                        status: false,
-                        close: false,
-                    });
                 },
             });
     }
@@ -2371,20 +2336,8 @@ export class DriverModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
-                    this.modalService.setModalSpinner({
-                        action: null,
-                        status: true,
-                        close: true,
-                    });
-
+                    this.ngbActiveModal.close();
                     this.updateTags();
-                },
-                error: () => {
-                    this.modalService.setModalSpinner({
-                        action: null,
-                        status: false,
-                        close: false,
-                    });
                 },
             });
     }

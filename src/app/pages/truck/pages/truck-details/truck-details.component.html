@@ -10,6 +10,7 @@
             [isInactive]="item.status"
             [optionsId]="truckId"
             [danger]="item.isExpired || item.voidedDate"
+            [businessOpen]="item.businessOpen"
             (dropActions)="optionsDrop($event)"
             (openModalAction)="onModalAction($event)"
         >

@@ -74,6 +74,8 @@ export class TaCustomCardComponent implements OnInit {
     @Input() subText: string = null;
     @Input() subTextClass: string = null;
     @Input() hasDivider: boolean = true;
+    @Input() hasDarkDivider: boolean = false;
+    @Input() hasSmallDivider: boolean = false;
     @Input() hasLikeDislike: boolean = false;
     @Input() hasScrollBody: boolean = false;
     @Input() hasScrollBodyXAxis: boolean = false;

@@ -6,7 +6,6 @@ import { Router } from '@angular/router';
 import { CardDetails } from '@shared/models/card-models/card-table-data.model';
 import { CardRows } from '@shared/models/card-models/card-rows.model';
 import { CardDataResult } from '@shared/models/card-models/card-data-result.model';
-import { TableBodyActions } from '@pages/driver/pages/driver-table/models/table-body-actions.model';
 
 // services
 import { TruckassistTableService } from '@shared/services/truckassist-table.service';
@@ -105,7 +104,7 @@ export class DriverCardComponent implements OnInit, OnDestroy {
         return id;
     }
 
-    public onCardActions(event: TableBodyActions): void {
+    public onCardActions(event: any): void {
         const mappedEvent = {
             ...event,
             data: {

@@ -85,6 +85,8 @@ export class LoadDetailsItemCommentsComponent implements OnChanges, OnDestroy {
     private createCommentsData(load: LoadResponse): void {
         const { comments } = load;
 
+        if (!comments) return;
+
         this.comments = comments.map((comment) => {
             const { companyUser, id, commentContent, createdAt, isEdited } =
                 comment;

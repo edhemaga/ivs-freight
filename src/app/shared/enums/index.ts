@@ -10,6 +10,8 @@ export * from './trailer-name-string.enum';
 export * from './truck-name-string.enum';
 export * from './truck-trailer-icon.enum';
 export * from './dropdown-menu-content-string.enum';
+export * from './modal-button-type.enum';
+export * from './modal-button-size.enum';
 
 // Charts
 export * from './chart/chart-value-label.enum';

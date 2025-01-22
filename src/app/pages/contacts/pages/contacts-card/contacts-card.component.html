@@ -1,6 +1,6 @@
 <div class="cards-container">
     <ng-container
-        *ngFor="let card of viewData; let i = index; trackBy: trackCard"
+        *ngFor="let card of _viewData; let i = index; trackBy: trackCard"
     >
         <div class="custom-card">
             <!-- Card splited on left and right side -->
@@ -11,7 +11,7 @@
                     'body-active':
                         isCardFlippedCheckInCards.includes(i) ||
                         isAllCardsFlipp,
-                    'body-checked': card.isSelected
+                    'body-checked': card.isSelected,
                 }"
             >
                 <!-- Left side of the card -->
@@ -73,12 +73,7 @@
                                     position="bottom"
                                     customClass="mt-1"
                                 >
-                                    {{
-                                        valueByStringPathInstance.getValueByStringPath(
-                                            card,
-                                            cardTitle
-                                        )
-                                    }}
+                                    {{ card.name }}
                                 </span>
                             </span>
                         </div>
@@ -90,7 +85,7 @@
                         [ngClass]="{
                             'card-body-content':
                                 !isCardFlippedCheckInCards.includes(i) &&
-                                !isAllCardsFlipp
+                                !isAllCardsFlipp,
                         }"
                     >
                         <ng-container
@@ -159,7 +154,10 @@
                                                 ></svg-icon>
                                             </ng-container>
 
-                                            {{ card.contactPhones[0]?.phone ?? '/' }}
+                                            {{
+                                                card.contactPhones[0]?.phone ??
+                                                    '/'
+                                            }}
                                         </ng-container>
 
                                         <!-- If primary mail -->
@@ -198,7 +196,10 @@
                                                 ></svg-icon>
                                             </ng-container>
 
-                                            {{ card.contactEmails[0]?.email ?? '/' }}
+                                            {{
+                                                card.contactEmails[0]?.email ??
+                                                    '/'
+                                            }}
                                         </ng-container>
 
                                         <!-- rest of elements -->
@@ -210,12 +211,8 @@
                                                     'contactEmails'
                                             "
                                         >
-                                            {{
-                                                valueByStringPathInstance.getValueByStringPath(
-                                                    card,
-                                                    rowsFront.endpoint
-                                                )
-                                            }}
+                                            <!-- label -->
+                                            /
                                         </ng-container>
                                     </div>
                                 </div>
@@ -230,7 +227,7 @@
                         [ngClass]="{
                             'card-body-content':
                                 isCardFlippedCheckInCards.includes(i) ||
-                                isAllCardsFlipp
+                                isAllCardsFlipp,
                         }"
                     >
                         <!-- First item in back of the card -->
@@ -481,11 +478,17 @@
 
                 <div class="card-body-right">
                     <div class="top-side">
-                        <!-- Open dropdown element-->
+                        <!-- Dropdown Menu-->
 
-                        <app-ta-table-card-dropdown-actions
-                            [card]="card"
-                        ></app-ta-table-card-dropdown-actions>
+                        <ca-dropdown-menu
+                            [type]="'dots-menu-type'"
+                            [placement]="'right-top'"
+                            [options]="card.tableDropdownContent"
+                            (dropdownOptionEmitter)="
+                                handleToggleDropdownMenuActions($event, card)
+                            "
+                        >
+                        </ca-dropdown-menu>
 
                         <!-- Note element -->
 
@@ -520,7 +523,7 @@
                                         isCardFlippedCheckInCards.includes(i) ||
                                         isAllCardsFlipp,
                                     'svg-position':
-                                        !isCardFlippedCheckInCards.includes(i)
+                                        !isCardFlippedCheckInCards.includes(i),
                                 }"
                                 customClass="mt-1"
                             >

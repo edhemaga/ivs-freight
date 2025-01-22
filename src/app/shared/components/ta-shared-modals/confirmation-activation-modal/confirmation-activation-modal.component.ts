@@ -73,6 +73,7 @@ export class ConfirmationActivationModalComponent implements OnInit {
         ) {
             this.locationFormBuild();
         }
+        console.log(this.editData);
     }
 
     public locationFormBuild(): void {

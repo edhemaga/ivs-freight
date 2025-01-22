@@ -1,5 +1,4 @@
 export enum ContactsStringEnum {
-    EDIT_CONTACT = 'edit-contact',
     DELETE_CONTACT = 'delete-contact',
     CONTACT_TABLE_VIEW = 'Contact-table-view',
     CONTACT_TABLE_COUNT = 'contactTableCount',

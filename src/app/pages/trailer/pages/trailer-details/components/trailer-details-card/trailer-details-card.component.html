@@ -485,6 +485,9 @@
                             ></app-ta-chart-legend>
                             <app-ca-chart
                                 [chartConfig]="fuelConsumptionChartConfig"
+                                (hoveredIndex)="
+                                    setFuelConsumptionLegendOnHover($event)
+                                "
                             >
                             </app-ca-chart>
                         </ng-container>

@@ -1,8 +1,10 @@
-import { RepairShopPMResponse, TruckShortResponse, TruckTypeResponse } from 'appcoretruckassist';
 import {
-    DropdownItem,
-    PmTruckProgressData,
-} from '@shared/models/card-models/card-table-data.model';
+    RepairShopPMResponse,
+    TruckShortResponse,
+    TruckTypeResponse,
+} from 'appcoretruckassist';
+import { PmTruckProgressData } from '@shared/models/card-models/card-table-data.model';
+import { DropdownMenuItem } from '@ca-shared/components/ca-dropdown-menu/models';
 
 export interface PmTruck {
     textUnit: string;
@@ -36,10 +38,7 @@ export interface PmTruck {
     truckType: TruckTypeResponse;
     tableTruckColor: string;
     note?: string;
-    tableDropdownContent: {
-        hasContent: boolean;
-        content: DropdownItem[];
-    };
+    tableDropdownContent: DropdownMenuItem[];
     truck: TruckShortResponse;
     pmId: number;
     id: number;
