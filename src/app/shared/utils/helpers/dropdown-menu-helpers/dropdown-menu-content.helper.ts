@@ -207,7 +207,9 @@ export class DropdownMenuContentHelper {
             DropdownMenuStringEnum.WRITE_REVIEW,
             DropdownMenuStringEnum.SHARE,
             DropdownMenuStringEnum.PRINT,
-            DropdownMenuStringEnum.CLOSE_BUSINESS,
+            isOpenBusiness
+                ? DropdownMenuStringEnum.CLOSE_BUSINESS
+                : DropdownMenuStringEnum.OPEN_BUSINESS,
             DropdownMenuStringEnum.DELETE,
         ];
 

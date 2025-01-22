@@ -1,5 +1,5 @@
 <app-ta-modal
-    [modalTitle]="editData?.type | confirmationModalTitle : editData?.subType"
+    [modalTitle]="editData?.type | confirmationModalTitle: editData?.subType"
     [customClass]="'modal-container-XS'"
     [bottomDivider]="true"
     [headerSvg]="
@@ -7,8 +7,8 @@
         editData?.type.includes('status')
             ? 'info2'
             : editData?.type.includes('activate')
-            ? 'hire'
-            : editData?.type
+              ? 'hire'
+              : editData?.type
     "
     [isCloseIconRemoved]="true"
     [isModalValid]="
@@ -36,10 +36,10 @@
                           editData?.type +
                           '.svg'
                         : editData?.type.includes('status')
-                        ? 'assets/svg/common/confirmation/ic_confirmation_info2.svg'
-                        : 'assets/svg/common/confirmation/ic_confirmation_modal_' +
-                          editData?.type +
-                          '.svg'
+                          ? 'assets/svg/common/confirmation/ic_confirmation_info2.svg'
+                          : 'assets/svg/common/confirmation/ic_confirmation_modal_' +
+                            editData?.type +
+                            '.svg'
                 "
             ></svg-icon>
         </div>
@@ -56,7 +56,7 @@
                     class="d-flex flex-column justify-content-center confirmation-activation-body-title mb-2 gap-2"
                     [ngClass]="{
                         'status-gap': editData?.template === 'Status',
-                        'gap-2': editData?.template !== 'Status'
+                        'gap-2': editData?.template !== 'Status',
                     }"
                 >
                     <ng-container *ngIf="!editData?.array; else arrayTemplate">
@@ -83,14 +83,14 @@
                                             [ngStyle]="{
                                                 background:
                                                     editData?.data?.avatarColor
-                                                        ?.background
+                                                        ?.background,
                                             }"
                                         >
                                             <p
                                                 class="m-0 ta-font-extra-bold"
                                                 [ngStyle]="{
                                                     color: editData?.data
-                                                        ?.avatarColor?.color
+                                                        ?.avatarColor?.color,
                                                 }"
                                             >
                                                 {{
@@ -176,7 +176,7 @@
                                         [status]="{
                                             name: editData.data.nameFront,
                                             valueForRequest:
-                                                editData.data.nameBack
+                                                editData.data.nameBack,
                                         }"
                                         [isDetailsLayout]="true"
                                     ></app-load-status-string>
@@ -203,7 +203,7 @@
                                                 placeholder: 'Truck location',
                                                 dropdownWidthClass: 'w-col-264',
                                                 minLength: 6,
-                                                maxLength: 256
+                                                maxLength: 256,
                                             }"
                                             [placeholderType]="'city'"
                                             (selectedAddress)="
@@ -236,14 +236,14 @@
                                             [ngStyle]="{
                                                 background:
                                                     editData?.data?.avatarColor
-                                                        ?.background
+                                                        ?.background,
                                             }"
                                         >
                                             <p
                                                 class="m-0 ta-font-extra-bold"
                                                 [ngStyle]="{
                                                     color: editData?.data
-                                                        ?.avatarColor?.color
+                                                        ?.avatarColor?.color,
                                                 }"
                                             >
                                                 {{
@@ -369,7 +369,10 @@
                                 >
                                     <img
                                         class="avatar"
-                                        [src]="item.avatarImg?.url ?? item.avatarImg"
+                                        [src]="
+                                            item.avatarImg?.url ??
+                                            item.avatarImg
+                                        "
                                     />
                                 </ng-container>
 
@@ -378,13 +381,13 @@
                                         class="d-flex align-items-center justify-content-center no-avatar"
                                         [ngStyle]="{
                                             background:
-                                                item?.avatarColor?.background
+                                                item?.avatarColor?.background,
                                         }"
                                     >
                                         <p
                                             class="m-0 ta-font-extra-bold"
                                             [ngStyle]="{
-                                                color: item?.avatarColor?.color
+                                                color: item?.avatarColor?.color,
                                             }"
                                         >
                                             {{ item?.textShortName }}
@@ -506,9 +509,9 @@
                             editData?.type === 'deactivate-multiple'
                                 ? 'deactivate'
                                 : editData?.type === 'activate' ||
-                                  editData?.type === 'activate-multiple'
-                                ? 'activate'
-                                : editData?.type
+                                    editData?.type === 'activate-multiple'
+                                  ? 'activate'
+                                  : editData?.type
                         }}
                         selected {{ editData.tableType }}?
                     </p>

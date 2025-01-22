@@ -33,5 +33,6 @@ export interface MappedRepairShop extends RepairShopListDto {
     tableAdded: string;
     tableEdited: string;
     isFavorite: boolean;
+    isFavoriteDisabled: boolean;
     tableDropdownContent: DropdownMenuItem[];
 }

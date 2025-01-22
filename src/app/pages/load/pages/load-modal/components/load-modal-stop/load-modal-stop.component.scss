@@ -24,13 +24,11 @@
 }
 
 .load-stop-container {
-    max-width: 616px;
-    width: 100%;
-    padding: 0;
+    width: 628px;
+    padding: 0 6px;
     border-radius: 2px;
     overflow: hidden;
-    margin-left: 1px;
-    transition: padding 0.3s ease-in-out;
+    margin-left: -6px;
 
     // Stop Header
     .load-stop-header-bar {
@@ -377,7 +375,7 @@
 
     &.active {
         margin-bottom: 4px;
-        padding: 4px;
+        padding: 4px 6px;
         box-shadow: 0 0 4px rgba(0, 0, 0, 0.16);
 
         
