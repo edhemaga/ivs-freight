@@ -35,7 +35,7 @@ import { DropdownListItem } from '@pages/dashboard/models/dropdown-list-item.mod
 import { TopRatedListItem } from '@pages/dashboard/pages/dashboard-top-rated/models/top-rated-list-item.model';
 import { CustomPeriodRange } from '@shared/models/custom-period-range.model';
 import {
-    TopRatedMainColorsPallete,
+    TopRatedMainColorsPalette,
     TopRatedSecondaryColorsPallete,
 } from '@pages/dashboard/models/colors-pallete.model';
 import {
@@ -116,7 +116,7 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
     public selectedDropdownWidthSubPeriod: DropdownListItem;
 
     // Colors
-    public mainColorsPallete: TopRatedMainColorsPallete[] = [];
+    public mainColorsPalette: TopRatedMainColorsPalette[] = [];
     public secondaryColorsPallete: TopRatedSecondaryColorsPallete[] = [];
 
     // Charts
@@ -465,7 +465,7 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
         this.selectedMainPeriod =
             DashboardTopRatedConstants.MAIN_PERIOD_DROPDOWN_DATA[5];
 
-        this.mainColorsPallete = DashboardColors.TOP_RATED_MAIN_COLORS_PALLETE;
+        this.mainColorsPalette = DashboardColors.TOP_RATED_MAIN_COLORS_PALLETE;
         this.secondaryColorsPallete =
             DashboardColors.TOP_RATED_SECONDARY_COLORS_PALLETE;
     }
@@ -655,23 +655,17 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                     chartConfiguration = ChartConfiguration.topMileageConfiguration;
                 }
 
-                const totalPercentage: number = driverData
-                    .pagination
-                    .data
-                    .reduce((accumulator, item, indx) => {
-                        if (indx < takeNumber)
-                            return (accumulator += item[properties[0]]);
-                        return accumulator;
-                    }, 0);
-
-                const total: number = driverData
-                    .pagination
-                    .data
-                    .reduce((accumulator, item, indx) => {
-                        if (indx < takeNumber)
-                            return (accumulator += item[properties[1]]);
-                        return accumulator;
-                    }, 0);
+                const { totalPercentage, total } =
+                    driverData.pagination.data.reduce(
+                        (accumulator, item, indx) => {
+                            if (indx < takeNumber) {
+                                accumulator.totalPercentage += item[properties[0]];
+                                accumulator.total += item[properties[1]];
+                            }
+                            return accumulator;
+                        },
+                        { totalPercentage: 0, total: 0 }
+                    );
 
                 const allOther: number = driverData
                     .allOthers
@@ -710,8 +704,8 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                     topDrivers,
                     chartConfiguration,
                     null,
-                    this.mainColorsPallete?.
-                        map((color: TopRatedMainColorsPallete, index: number) => {
+                    this.mainColorsPalette?.
+                        map((color: TopRatedMainColorsPalette, index: number) => {
                             if (index < takeNumber) return color.code;
                         })
                 );
@@ -839,23 +833,17 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                     chartConfiguration = ChartConfiguration.topMileageConfiguration;
                 }
 
-                const totalPercentage: number = truckData
-                    .pagination
-                    .data
-                    .reduce((accumulator, item, indx) => {
-                        if (indx < takeNumber)
-                            return (accumulator += item[properties[0]]);
-                        return accumulator;
-                    }, 0);
-
-                const total: number = truckData
-                    .pagination
-                    .data
-                    .reduce((accumulator, item, indx) => {
-                        if (indx < takeNumber)
-                            return (accumulator += item[properties[1]]);
-                        return accumulator;
-                    }, 0);
+                const { totalPercentage, total } =
+                    truckData.pagination.data.reduce(
+                        (accumulator, item, indx) => {
+                            if (indx < takeNumber) {
+                                accumulator.totalPercentage += item[properties[0]];
+                                accumulator.total += item[properties[1]];
+                            }
+                            return accumulator;
+                        },
+                        { totalPercentage: 0, total: 0 }
+                    );
 
                 const allOther: number = truckData
                     .allOthers
@@ -895,8 +883,8 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                     topRatedData,
                     chartConfiguration,
                     null,
-                    this.mainColorsPallete?.
-                        map((color: TopRatedMainColorsPallete, index: number) => {
+                    this.mainColorsPalette?.
+                        map((color: TopRatedMainColorsPalette, index: number) => {
                             if (index < takeNumber) return color.code;
                         })
                 );
@@ -987,20 +975,17 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                     chartConfiguration = ChartConfiguration.topRevenueConfiguration;
                 }
 
-                const totalPercentage: number = brokerData
-                    .pagination
-                    .data
-                    .reduce((accumulator, item) => {
-                        return (accumulator += item[properties[0]]);
-                    }, 0);
-
-                const total: number = brokerData
-                    .pagination
-                    .data
-                    .reduce((accumulator, item) => {
-                        return (accumulator += item[properties[1]]);
-                    }, 0);
-
+                const { totalPercentage, total } =
+                    brokerData.pagination.data.reduce(
+                        (accumulator, item, indx) => {
+                            if (indx < takeNumber) {
+                                accumulator.totalPercentage += item[properties[0]];
+                                accumulator.total += item[properties[1]];
+                            }
+                            return accumulator;
+                        },
+                        { totalPercentage: 0, total: 0 }
+                    );
                 const allOther: number = brokerData
                     .allOthers
                     .reduce((accumulator, item) => {
@@ -1039,8 +1024,8 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                     topBrokers,
                     chartConfiguration,
                     null,
-                    this.mainColorsPallete?.
-                        map((color: TopRatedMainColorsPallete, index: number) => {
+                    this.mainColorsPalette?.
+                        map((color: TopRatedMainColorsPalette, index: number) => {
                             if (index < takeNumber) return color.code;
                         })
                 );
@@ -1112,23 +1097,17 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                 const takeNumber: number =
                     ChartHelper.takeDoughnutData(shipperData.pagination.count);
 
-                const totalPercentage: number = shipperData
-                    .pagination
-                    .data
-                    .reduce((accumulator, item, indx) => {
-                        if (indx < takeNumber)
-                            return (accumulator += item.loadPercentage);
-                        return accumulator;
-                    }, 0);
-
-                const total: number = shipperData
-                    .pagination
-                    .data
-                    .reduce((accumulator, item, indx) => {
-                        if (indx < takeNumber)
-                            return (accumulator += item.loadsCount);
-                        return accumulator;
-                    }, 0);
+                const { totalPercentage, total } =
+                    shipperData.pagination.data.reduce(
+                        (accumulator, item, indx) => {
+                            if (indx < takeNumber) {
+                                accumulator.totalPercentage += item.loadPercentage;
+                                accumulator.total += item.loadsCount;
+                            }
+                            return accumulator;
+                        },
+                        { totalPercentage: 0, total: 0 }
+                    );
 
                 const allOther: number = shipperData
                     .allOthers
@@ -1165,8 +1144,8 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                     topRatedData,
                     ChartConfiguration.topLoadConfiguration,
                     null,
-                    this.mainColorsPallete?.
-                        map((color: TopRatedMainColorsPallete, index: number) => {
+                    this.mainColorsPalette?.
+                        map((color: TopRatedMainColorsPalette, index: number) => {
                             if (index < takeNumber) return color.code;
                         })
                 );
@@ -1247,19 +1226,17 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                     chartConfiguration = ChartConfiguration.topLoadConfiguration;
                 }
 
-                const totalPercentage: number = ownerData
-                    .pagination
-                    .data
-                    .reduce((accumulator, item) => {
-                        return (accumulator += item[properties[0]]);
-                    }, 0);
-
-                const total: number = ownerData
-                    .pagination
-                    .data
-                    .reduce((accumulator, item) => {
-                        return (accumulator += item[properties[1]]);
-                    }, 0);
+                const { totalPercentage, total } =
+                    ownerData.pagination.data.reduce(
+                        (accumulator, item, indx) => {
+                            if (indx < takeNumber) {
+                                accumulator.totalPercentage += item[properties[0]];
+                                accumulator.total += item[properties[1]];
+                            }
+                            return accumulator;
+                        },
+                        { totalPercentage: 0, total: 0 }
+                    );
 
                 const allOther: number = ownerData
                     .allOthers
@@ -1298,8 +1275,8 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                     topRatedData,
                     chartConfiguration,
                     null,
-                    this.mainColorsPallete?.
-                        map((color: TopRatedMainColorsPallete, index: number) => {
+                    this.mainColorsPalette?.
+                        map((color: TopRatedMainColorsPalette, index: number) => {
                             if (index < takeNumber) return color.code;
                         })
                 );
@@ -1390,19 +1367,17 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                     chartConfiguration = ChartConfiguration.topVisitConfiguration;
                 }
 
-                const totalPercentage: number = repairShopData
-                    .pagination
-                    .data
-                    .reduce((accumulator, item) => {
-                        return (accumulator += item[properties[0]]);
-                    }, 0);
-
-                const total: number = repairShopData
-                    .pagination
-                    .data
-                    .reduce((accumulator, item) => {
-                        return (accumulator += item[properties[1]]);
-                    }, 0);
+                const { totalPercentage, total } =
+                    repairShopData.pagination.data.reduce(
+                        (accumulator, item, indx) => {
+                            if (indx < takeNumber) {
+                                accumulator.totalPercentage += item[properties[0]];
+                                accumulator.total += item[properties[1]];
+                            }
+                            return accumulator;
+                        },
+                        { totalPercentage: 0, total: 0 }
+                    );
 
                 const allOther: number = repairShopData
                     .allOther
@@ -1441,8 +1416,8 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                     topRatedData,
                     chartConfiguration,
                     null,
-                    this.mainColorsPallete?.
-                        map((color: TopRatedMainColorsPallete, index: number) => {
+                    this.mainColorsPalette?.
+                        map((color: TopRatedMainColorsPalette, index: number) => {
                             if (index < takeNumber) return color.code;
                         })
                 );
@@ -1536,24 +1511,17 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                     chartConfiguration = ChartConfiguration.topVisitConfiguration;
                 }
 
-
-                const totalPercentage: number = fuelStopData
-                    .pagination
-                    .data
-                    .reduce((accumulator, item, indx) => {
-                        if (indx < takeNumber)
-                            return (accumulator += item[properties[0]]);
-                        return accumulator;
-                    }, 0);
-
-                const total: number = fuelStopData
-                    .pagination
-                    .data
-                    .reduce((accumulator, item, indx) => {
-                        if (indx < takeNumber)
-                            return (accumulator += item[properties[1]]);
-                        return accumulator;
-                    }, 0);
+                const { totalPercentage, total } =
+                    fuelStopData.pagination.data.reduce(
+                        (accumulator, item, indx) => {
+                            if (indx < takeNumber) {
+                                accumulator.totalPercentage += item[properties[0]];
+                                accumulator.total += item[properties[1]];
+                            }
+                            return accumulator;
+                        },
+                        { totalPercentage: 0, total: 0 }
+                    );
 
                 const allOther: number = fuelStopData
                     .allOthers
@@ -1593,8 +1561,8 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                     topRatedData,
                     chartConfiguration,
                     null,
-                    this.mainColorsPallete?.
-                        map((color: TopRatedMainColorsPallete, index: number) => {
+                    this.mainColorsPalette?.
+                        map((color: TopRatedMainColorsPalette, index: number) => {
                             if (index < takeNumber) return color.code;
                         })
                 );
