@@ -35,7 +35,7 @@ import { DropdownListItem } from '@pages/dashboard/models/dropdown-list-item.mod
 import { TopRatedListItem } from '@pages/dashboard/pages/dashboard-top-rated/models/top-rated-list-item.model';
 import { CustomPeriodRange } from '@shared/models/custom-period-range.model';
 import {
-    TopRatedMainColorsPallete,
+    TopRatedMainColorsPalette,
     TopRatedSecondaryColorsPallete,
 } from '@pages/dashboard/models/colors-pallete.model';
 import {
@@ -116,7 +116,7 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
     public selectedDropdownWidthSubPeriod: DropdownListItem;
 
     // Colors
-    public mainColorsPallete: TopRatedMainColorsPallete[] = [];
+    public mainColorsPalette: TopRatedMainColorsPalette[] = [];
     public secondaryColorsPallete: TopRatedSecondaryColorsPallete[] = [];
 
     // Charts
@@ -465,7 +465,7 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
         this.selectedMainPeriod =
             DashboardTopRatedConstants.MAIN_PERIOD_DROPDOWN_DATA[5];
 
-        this.mainColorsPallete = DashboardColors.TOP_RATED_MAIN_COLORS_PALLETE;
+        this.mainColorsPalette = DashboardColors.TOP_RATED_MAIN_COLORS_PALLETE;
         this.secondaryColorsPallete =
             DashboardColors.TOP_RATED_SECONDARY_COLORS_PALLETE;
     }
@@ -704,8 +704,8 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                     topDrivers,
                     chartConfiguration,
                     null,
-                    this.mainColorsPallete?.
-                        map((color: TopRatedMainColorsPallete, index: number) => {
+                    this.mainColorsPalette?.
+                        map((color: TopRatedMainColorsPalette, index: number) => {
                             if (index < takeNumber) return color.code;
                         })
                 );
@@ -883,8 +883,8 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                     topRatedData,
                     chartConfiguration,
                     null,
-                    this.mainColorsPallete?.
-                        map((color: TopRatedMainColorsPallete, index: number) => {
+                    this.mainColorsPalette?.
+                        map((color: TopRatedMainColorsPalette, index: number) => {
                             if (index < takeNumber) return color.code;
                         })
                 );
@@ -1024,8 +1024,8 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                     topBrokers,
                     chartConfiguration,
                     null,
-                    this.mainColorsPallete?.
-                        map((color: TopRatedMainColorsPallete, index: number) => {
+                    this.mainColorsPalette?.
+                        map((color: TopRatedMainColorsPalette, index: number) => {
                             if (index < takeNumber) return color.code;
                         })
                 );
@@ -1144,8 +1144,8 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                     topRatedData,
                     ChartConfiguration.topLoadConfiguration,
                     null,
-                    this.mainColorsPallete?.
-                        map((color: TopRatedMainColorsPallete, index: number) => {
+                    this.mainColorsPalette?.
+                        map((color: TopRatedMainColorsPalette, index: number) => {
                             if (index < takeNumber) return color.code;
                         })
                 );
@@ -1275,8 +1275,8 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                     topRatedData,
                     chartConfiguration,
                     null,
-                    this.mainColorsPallete?.
-                        map((color: TopRatedMainColorsPallete, index: number) => {
+                    this.mainColorsPalette?.
+                        map((color: TopRatedMainColorsPalette, index: number) => {
                             if (index < takeNumber) return color.code;
                         })
                 );
@@ -1416,8 +1416,8 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                     topRatedData,
                     chartConfiguration,
                     null,
-                    this.mainColorsPallete?.
-                        map((color: TopRatedMainColorsPallete, index: number) => {
+                    this.mainColorsPalette?.
+                        map((color: TopRatedMainColorsPalette, index: number) => {
                             if (index < takeNumber) return color.code;
                         })
                 );
@@ -1561,8 +1561,8 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                     topRatedData,
                     chartConfiguration,
                     null,
-                    this.mainColorsPallete?.
-                        map((color: TopRatedMainColorsPallete, index: number) => {
+                    this.mainColorsPalette?.
+                        map((color: TopRatedMainColorsPalette, index: number) => {
                             if (index < takeNumber) return color.code;
                         })
                 );

@@ -1,9 +1,7 @@
 import {
     Component,
     OnInit,
-    ViewChild,
     OnDestroy,
-    ChangeDetectorRef,
 } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 
@@ -25,7 +23,10 @@ import { DashboardByStateConstants } from '@pages/dashboard/pages/dashboard-by-s
 import { DashboardSubperiodConstants } from '@pages/dashboard/utils/constants/dashboard-subperiod.constants';
 import { DashboardTopRatedConstants } from '@pages/dashboard/pages/dashboard-top-rated/utils/constants/dashboard-top-rated.constants';
 import { DashboardColors } from '@pages/dashboard/utils/constants/dashboard-colors.constants';
-import { DashboardByStateChartsConfiguration } from '@pages/dashboard/pages/dashboard-by-state/utils/constants';
+import {
+    DashboardByStateChartsConfiguration,
+    DashboardSvgRoutes
+} from '@pages/dashboard/pages/dashboard-by-state/utils/constants';
 
 // models
 import { ByStateListItem } from '@pages/dashboard/pages/dashboard-by-state/models/by-state-list-item.model';
@@ -38,7 +39,6 @@ import { IChartConfiguration } from 'ca-components/lib/components/ca-chart/model
 
 import {
     ByStateReportType,
-    IntervalLabelResponse,
     LoadStopType,
     SubintervalType,
     TimeInterval,
@@ -61,11 +61,11 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
     public isDisplayingPlaceholder: boolean = false;
     public isLoading: boolean = true;
 
-    // search
+    // Search
     public searchValue: string;
     public clearSearchValue: boolean = false;
 
-    // list
+    // List
     public byStateList: ByStateListItem[] = [];
     public selectedByStateList: ByStateListItem[] = [];
     public byStateMapList: MapListItem[] = [];
@@ -73,14 +73,14 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
 
     public byStateListLength: number = 0;
 
-    // show more
+    // Show more
     public isShowingMore: boolean = false;
 
-    // tabs
+    // Tabs
     public byStateTabs: DashboardTab[] = [];
     public currentActiveTab: DashboardTab;
 
-    // dropdowns
+    // Dropdowns
     public byStateDropdownList: DropdownItem[] = [];
 
     public mainPeriodDropdownList: DropdownListItem[] = [];
@@ -96,16 +96,18 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
 
     public selectedDropdownWidthSubPeriod: DropdownListItem;
 
-    // colors
-    public mainColorsPallete: ByStateColorsPallete[] = [];
+    // Colors
+    public mainColorsPalette: ByStateColorsPallete[] = [];
 
-    //chart
+    // Chart
     public pickUpByStateChartConfig: IChartConfiguration =
         DashboardByStateChartsConfiguration.PICK_BY_STATE_CHART_CONFIG;
 
+    // Assets
+    public DashboardSvgRoutes = DashboardSvgRoutes;
+
     constructor(
         private formBuilder: UntypedFormBuilder,
-        private changeDetectorRef: ChangeDetectorRef,
         private dashboardByStateService: DashboardByStateService,
         private dashboardService: DashboardService
     ) { }
@@ -131,24 +133,7 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
         item.name;
 
     public resetSelectedValues(): void {
-        // for (let i = 0; i < this.selectedByStateList.length; i++) {
-        //     this.barChart?.removeMultiBarData(this.selectedByStateList[i], true);
-        // }
-
         this.selectedByStateList = [];
-
-        // this.barChartValues = {
-        //     defaultBarValues: {
-        //         topRatedBarValues: [],
-        //         otherBarValues: [],
-        //     },
-        //     defaultBarPercentages: {
-        //         topRatedBarPercentage: [],
-        //         otherBarPercentage: [],
-        //     },
-        //     selectedBarValues: [],
-        //     selectedBarPercentages: [],
-        // };
 
         this.clearSearchValue = true;
     }
@@ -450,7 +435,7 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
         this.selectedMainPeriod =
             DashboardTopRatedConstants.MAIN_PERIOD_DROPDOWN_DATA[5];
 
-        this.mainColorsPallete = DashboardColors.BY_STATE_COLORS_PALLETE;
+        this.mainColorsPalette = DashboardColors.BY_STATE_COLORS_PALLETE;
     }
 
     private getOverallCompanyDuration(): void {

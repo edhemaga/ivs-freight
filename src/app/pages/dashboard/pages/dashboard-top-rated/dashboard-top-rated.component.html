@@ -181,7 +181,7 @@
                                 [ngStyle]="
                                     i <= 9 &&
                                     topRatedListItem.isSelected && {
-                                        background: mainColorsPallete[i].code,
+                                        background: mainColorsPalette[i].code,
                                     }
                                 "
                                 [ngClass]="{
@@ -245,8 +245,8 @@
                                                     i <= 4) ||
                                                 (topRatedList.length >= 30 &&
                                                     i <= 9)
-                                                    ? mainColorsPallete[i].code
-                                                    : mainColorsPallete[10]
+                                                    ? mainColorsPalette[i].code
+                                                    : mainColorsPalette[10]
                                                           .code,
                                         }"
                                     ></div>
