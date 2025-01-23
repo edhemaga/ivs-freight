@@ -78,7 +78,6 @@ import {
     CaModalComponent,
     CaUploadFilesComponent,
 } from 'ca-components';
-import { CaInputAddressWrapperComponent } from '@shared/components/ca-input-address-wrapper/ca-input-address-wrapper.component';
 
 // enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
@@ -112,6 +111,8 @@ import { SoloTeamSelectedOptions } from '@pages/driver/pages/driver-modals/drive
 import { AddUpdateDriverPayrollProperties } from '@pages/driver/pages/driver-modals/driver-modal/models/add-update-driver-payroll-properties.model';
 import { PayrollDefaultValues } from '@pages/driver/pages/driver-modals/driver-modal/models/payroll-default-values.model';
 import { DriverModalEditData } from '@pages/driver/pages/driver-modals/driver-modal/models/driver-modal-edit-data.model';
+import { AddressProperties } from '@shared/components/ta-input-address-dropdown/models/address-properties';
+import { AddressListResponse } from '@ca-shared/models/address-list-response.model';
 
 // pipes
 import { NameInitialsPipe } from '@shared/pipes/name-initials.pipe';
@@ -122,7 +123,6 @@ import { SharedSvgRoutes } from '@shared/utils/svg-routes';
 
 // Pipes
 import { FormatDatePipe } from '@shared/pipes';
-import { AddressListResponse } from '@ca-shared/models/address-list-response.model';
 
 @Component({
     selector: 'app-driver-modal',
@@ -163,7 +163,6 @@ import { AddressListResponse } from '@ca-shared/models/address-list-response.mod
         CaInputComponent,
         CaUploadFilesComponent,
         CaInputNoteComponent,
-        CaInputAddressWrapperComponent,
 
         // Pipes
         FormatDatePipe,
@@ -2346,7 +2345,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
             });
     }
 
-    public onAddressChange({ query, searchLayers, closedBorder }: any): void {
+    public onAddressChange({ query, searchLayers, closedBorder }: AddressProperties): void {
         this.addressService
             .getAddresses(query, searchLayers, closedBorder)
             .pipe(takeUntil(this.destroy$))
