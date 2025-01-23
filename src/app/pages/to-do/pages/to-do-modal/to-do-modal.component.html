@@ -137,12 +137,14 @@
                 [hasSmallDivider]="true"
                 (onActionEvent)="createComment()"
             >
+            @if(comments.length) {
                 <app-ta-user-review
-                    *ngIf="comments.length"
                     [reviewData]="comments"
                     (changeReviewsEvent)="changeCommentsEvent($event)"
                     [isNewReview]="comments[0].isNewReview"
                 ></app-ta-user-review>
+            }
+            
             </app-ta-custom-card>
             <div class="ta-card-body-overflow-none">
                 <app-ta-custom-card
