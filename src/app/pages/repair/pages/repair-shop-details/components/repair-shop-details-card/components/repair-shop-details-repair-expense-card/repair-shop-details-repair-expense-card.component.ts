@@ -137,15 +137,9 @@ export class RepairShopDetailsRepairExpenseCardComponent implements OnDestroy {
         this.cdRef.detectChanges();
     }
 
-    public chartHovered(isHovered: boolean): void {
-        // this.repairExpensesChart.hoveringStatus = isHovered;
-    }
+    public chartHovered(isHovered: boolean): void { }
 
-    public onTabChange(tab: Tabs): void {
-        /* const chartType = this.repairExpensesChart?.detailsTimePeriod(tab.name);
-
-      this.getRepairShopChartData(this._cardData?.id, chartType); */
-    }
+    public onTabChange(tab: Tabs): void { }
 
     ngOnDestroy(): void {
         this.destroy$.next();

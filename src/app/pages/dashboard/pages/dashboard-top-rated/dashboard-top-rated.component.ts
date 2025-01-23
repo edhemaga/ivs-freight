@@ -655,23 +655,17 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                     chartConfiguration = ChartConfiguration.topMileageConfiguration;
                 }
 
-                const totalPercentage: number = driverData
-                    .pagination
-                    .data
-                    .reduce((accumulator, item, indx) => {
-                        if (indx < takeNumber)
-                            return (accumulator += item[properties[0]]);
-                        return accumulator;
-                    }, 0);
-
-                const total: number = driverData
-                    .pagination
-                    .data
-                    .reduce((accumulator, item, indx) => {
-                        if (indx < takeNumber)
-                            return (accumulator += item[properties[1]]);
-                        return accumulator;
-                    }, 0);
+                const { totalPercentage, total } =
+                    driverData.pagination.data.reduce(
+                        (accumulator, item, indx) => {
+                            if (indx < takeNumber) {
+                                accumulator.totalPercentage += item[properties[0]];
+                                accumulator.total += item[properties[1]];
+                            }
+                            return accumulator;
+                        },
+                        { totalPercentage: 0, total: 0 }
+                    );
 
                 const allOther: number = driverData
                     .allOthers
@@ -839,23 +833,17 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                     chartConfiguration = ChartConfiguration.topMileageConfiguration;
                 }
 
-                const totalPercentage: number = truckData
-                    .pagination
-                    .data
-                    .reduce((accumulator, item, indx) => {
-                        if (indx < takeNumber)
-                            return (accumulator += item[properties[0]]);
-                        return accumulator;
-                    }, 0);
-
-                const total: number = truckData
-                    .pagination
-                    .data
-                    .reduce((accumulator, item, indx) => {
-                        if (indx < takeNumber)
-                            return (accumulator += item[properties[1]]);
-                        return accumulator;
-                    }, 0);
+                const { totalPercentage, total } =
+                    truckData.pagination.data.reduce(
+                        (accumulator, item, indx) => {
+                            if (indx < takeNumber) {
+                                accumulator.totalPercentage += item[properties[0]];
+                                accumulator.total += item[properties[1]];
+                            }
+                            return accumulator;
+                        },
+                        { totalPercentage: 0, total: 0 }
+                    );
 
                 const allOther: number = truckData
                     .allOthers
@@ -987,20 +975,17 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                     chartConfiguration = ChartConfiguration.topRevenueConfiguration;
                 }
 
-                const totalPercentage: number = brokerData
-                    .pagination
-                    .data
-                    .reduce((accumulator, item) => {
-                        return (accumulator += item[properties[0]]);
-                    }, 0);
-
-                const total: number = brokerData
-                    .pagination
-                    .data
-                    .reduce((accumulator, item) => {
-                        return (accumulator += item[properties[1]]);
-                    }, 0);
-
+                const { totalPercentage, total } =
+                    brokerData.pagination.data.reduce(
+                        (accumulator, item, indx) => {
+                            if (indx < takeNumber) {
+                                accumulator.totalPercentage += item[properties[0]];
+                                accumulator.total += item[properties[1]];
+                            }
+                            return accumulator;
+                        },
+                        { totalPercentage: 0, total: 0 }
+                    );
                 const allOther: number = brokerData
                     .allOthers
                     .reduce((accumulator, item) => {
@@ -1112,23 +1097,17 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                 const takeNumber: number =
                     ChartHelper.takeDoughnutData(shipperData.pagination.count);
 
-                const totalPercentage: number = shipperData
-                    .pagination
-                    .data
-                    .reduce((accumulator, item, indx) => {
-                        if (indx < takeNumber)
-                            return (accumulator += item.loadPercentage);
-                        return accumulator;
-                    }, 0);
-
-                const total: number = shipperData
-                    .pagination
-                    .data
-                    .reduce((accumulator, item, indx) => {
-                        if (indx < takeNumber)
-                            return (accumulator += item.loadsCount);
-                        return accumulator;
-                    }, 0);
+                const { totalPercentage, total } =
+                    shipperData.pagination.data.reduce(
+                        (accumulator, item, indx) => {
+                            if (indx < takeNumber) {
+                                accumulator.totalPercentage += item.loadPercentage;
+                                accumulator.total += item.loadsCount;
+                            }
+                            return accumulator;
+                        },
+                        { totalPercentage: 0, total: 0 }
+                    );
 
                 const allOther: number = shipperData
                     .allOthers
@@ -1247,19 +1226,17 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                     chartConfiguration = ChartConfiguration.topLoadConfiguration;
                 }
 
-                const totalPercentage: number = ownerData
-                    .pagination
-                    .data
-                    .reduce((accumulator, item) => {
-                        return (accumulator += item[properties[0]]);
-                    }, 0);
-
-                const total: number = ownerData
-                    .pagination
-                    .data
-                    .reduce((accumulator, item) => {
-                        return (accumulator += item[properties[1]]);
-                    }, 0);
+                const { totalPercentage, total } =
+                    ownerData.pagination.data.reduce(
+                        (accumulator, item, indx) => {
+                            if (indx < takeNumber) {
+                                accumulator.totalPercentage += item[properties[0]];
+                                accumulator.total += item[properties[1]];
+                            }
+                            return accumulator;
+                        },
+                        { totalPercentage: 0, total: 0 }
+                    );
 
                 const allOther: number = ownerData
                     .allOthers
@@ -1390,19 +1367,17 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                     chartConfiguration = ChartConfiguration.topVisitConfiguration;
                 }
 
-                const totalPercentage: number = repairShopData
-                    .pagination
-                    .data
-                    .reduce((accumulator, item) => {
-                        return (accumulator += item[properties[0]]);
-                    }, 0);
-
-                const total: number = repairShopData
-                    .pagination
-                    .data
-                    .reduce((accumulator, item) => {
-                        return (accumulator += item[properties[1]]);
-                    }, 0);
+                const { totalPercentage, total } =
+                    repairShopData.pagination.data.reduce(
+                        (accumulator, item, indx) => {
+                            if (indx < takeNumber) {
+                                accumulator.totalPercentage += item[properties[0]];
+                                accumulator.total += item[properties[1]];
+                            }
+                            return accumulator;
+                        },
+                        { totalPercentage: 0, total: 0 }
+                    );
 
                 const allOther: number = repairShopData
                     .allOther
@@ -1536,24 +1511,17 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                     chartConfiguration = ChartConfiguration.topVisitConfiguration;
                 }
 
-
-                const totalPercentage: number = fuelStopData
-                    .pagination
-                    .data
-                    .reduce((accumulator, item, indx) => {
-                        if (indx < takeNumber)
-                            return (accumulator += item[properties[0]]);
-                        return accumulator;
-                    }, 0);
-
-                const total: number = fuelStopData
-                    .pagination
-                    .data
-                    .reduce((accumulator, item, indx) => {
-                        if (indx < takeNumber)
-                            return (accumulator += item[properties[1]]);
-                        return accumulator;
-                    }, 0);
+                const { totalPercentage, total } =
+                    fuelStopData.pagination.data.reduce(
+                        (accumulator, item, indx) => {
+                            if (indx < takeNumber) {
+                                accumulator.totalPercentage += item[properties[0]];
+                                accumulator.total += item[properties[1]];
+                            }
+                            return accumulator;
+                        },
+                        { totalPercentage: 0, total: 0 }
+                    );
 
                 const allOther: number = fuelStopData
                     .allOthers
