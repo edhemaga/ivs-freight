@@ -1042,24 +1042,25 @@
 
                                                 @if (row.isIntegratedFuelTransaction) {
                                                     <svg-icon
-                                                        [src]="'assets/svg/common/fuel/ic_transaction_integrated.svg'"
+                                                        [src]="tableBodySvgRoutes.fuelIntegratedTransactionInvoiceSvgRoute"
                                                     ></svg-icon>
                                                 }
                                             </div>
 
                                             <!-- Hide LTL and FTL icons for now  -->
-                                            <!-- <svg-icon
-                                                *ngIf="row[column.field].type"
-                                                [src]="
-                                                    row[column.field].type === 'LTL'
-                                                        ? 'assets/svg/truckassist-table/load-ltl.svg'
-                                                        : 'assets/svg/truckassist-table/load-flt.svg'
-                                                "
-                                                [svgStyle]="{
-                                                    'width.px': '14',
-                                                    'height.px': '14'
-                                                }"
-                                            ></svg-icon> -->
+                                            <!-- @if (row[column.field].type) { -->
+                                                <!-- <svg-icon
+                                                    [src]="
+                                                        row[column.field].type === 'LTL'
+                                                            ? tableBodySvgRoutes.loadLtl
+                                                            : tableBodySvgRoutes.loadFtl
+                                                    "
+                                                    [svgStyle]="{
+                                                        'width.px': '14',
+                                                        'height.px': '14'
+                                                    }"
+                                                ></svg-icon> -->
+                                            <!-- } -->
                                         </div>
                                     }
 
