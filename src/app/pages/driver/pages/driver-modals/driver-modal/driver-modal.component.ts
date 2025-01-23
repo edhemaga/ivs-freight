@@ -78,6 +78,7 @@ import {
     CaModalComponent,
     CaUploadFilesComponent,
 } from 'ca-components';
+import { CaInputAddressWrapperComponent } from '@shared/components/ca-input-address-wrapper/ca-input-address-wrapper.component';
 
 // enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
@@ -101,6 +102,7 @@ import {
     GetDriverModalResponse,
     DriverDetailsOffDutyLocationResponse,
     PerMileEntity,
+    AddressResponse,
 } from 'appcoretruckassist';
 import { DropZoneConfig } from '@shared/components/ta-upload-files/models/dropzone-config.model';
 import { Tabs } from '@shared/models/tabs.model';
@@ -120,6 +122,7 @@ import { SharedSvgRoutes } from '@shared/utils/svg-routes';
 
 // Pipes
 import { FormatDatePipe } from '@shared/pipes';
+import { AddressListResponse } from '@ca-shared/models/address-list-response.model';
 
 @Component({
     selector: 'app-driver-modal',
@@ -160,6 +163,7 @@ import { FormatDatePipe } from '@shared/pipes';
         CaInputComponent,
         CaUploadFilesComponent,
         CaInputNoteComponent,
+        CaInputAddressWrapperComponent,
 
         // Pipes
         FormatDatePipe,
@@ -244,8 +248,8 @@ export class DriverModalComponent implements OnInit, OnDestroy {
 
     // enums
     public modalTableTypeEnum = ModalTableTypeEnum;
-    public addressList;
-    public addressData;
+    public addressList: AddressListResponse;
+    public addressData: AddressResponse;
     public taModalActionEnums = TaModalActionEnums;
     public svgRoutes = SharedSvgRoutes;
 
@@ -2342,23 +2346,18 @@ export class DriverModalComponent implements OnInit, OnDestroy {
             });
     }
 
-    onAddressChange(event) {
-        console.log(event, 'eeeeeeeeeeeeeee');
-        const { query, searchLayers, closedBorder } = event;
+    public onAddressChange({ query, searchLayers, closedBorder }: any): void {
         this.addressService
             .getAddresses(query, searchLayers, closedBorder)
             .pipe(takeUntil(this.destroy$))
-            .subscribe((res) => {
-                console.log(res, 'in app');
-                this.addressList = res;
-            });
+            .subscribe((res) => (this.addressList = res));
     }
 
-    getAddressData(address: string) {
-        this.addressService.getAddressInfo(address).pipe(takeUntil(this.destroy$)).subscribe((res)=>{
-            console.log(res, 'reesss')
-            this.addressData = res;
-        })
+    public getAddressData(address: string): void {
+        this.addressService
+            .getAddressInfo(address)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((res) => (this.addressData = res));
     }
 
     ngOnDestroy(): void {
