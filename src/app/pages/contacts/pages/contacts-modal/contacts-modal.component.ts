@@ -34,7 +34,6 @@ import {
     CaUploadFilesComponent,
 } from 'ca-components';
 import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
-import { TaInputAddressDropdownComponent } from '@shared/components/ta-input-address-dropdown/ta-input-address-dropdown.component';
 
 // validations
 import {
@@ -49,6 +48,7 @@ import { TaInputService } from '@shared/services/ta-input.service';
 import { ModalService } from '@shared/services/modal.service';
 import { ContactsService } from '@shared/services/contacts.service';
 import { FormService } from '@shared/services/form.service';
+import { AddressService } from '@shared/services/address.service';
 
 // enums
 import { ContactsModalStringEnum } from '@pages/contacts/pages/contacts-modal/enums/contacts-modal-string.enum';
@@ -61,6 +61,7 @@ import { ContactModalConfig } from '@pages/contacts/pages/contacts-modal/utils/c
 // models
 import {
     AddressEntity,
+    AddressResponse,
     CompanyContactLabelResponse,
     ContactColorResponse,
     ContactEmailResponse,
@@ -72,6 +73,8 @@ import {
     UpdateCompanyContactCommand,
 } from 'appcoretruckassist';
 import { EditData } from '@shared/models/edit-data.model';
+import { AddressListResponse } from '@ca-shared/models/address-list-response.model';
+import { AddressProperties } from '@shared/components/ta-input-address-dropdown/models/address-properties';
 
 // utils
 import { MethodsGlobalHelper } from '@shared/utils/helpers/methods-global.helper';
@@ -102,7 +105,6 @@ import { MethodsGlobalHelper } from '@shared/utils/helpers/methods-global.helper
         CaInputComponent,
         CaInputDropdownComponent,
         TaAppTooltipV2Component,
-        TaInputAddressDropdownComponent,
     ],
 })
 export class ContactsModalComponent implements OnInit, OnDestroy {
@@ -144,6 +146,9 @@ export class ContactsModalComponent implements OnInit, OnDestroy {
     public modalTableTypeEnum = ModalTableTypeEnum;
     public taModalActionEnums = ContactsModalStringEnum;
 
+    public addressList: AddressListResponse;
+    public addressData: AddressResponse;
+
     constructor(
         private ngbActiveModal: NgbActiveModal,
 
@@ -157,7 +162,8 @@ export class ContactsModalComponent implements OnInit, OnDestroy {
         private inputService: TaInputService,
         private modalService: ModalService,
         private contactService: ContactsService,
-        private formService: FormService
+        private formService: FormService,
+        private addressService: AddressService,
     ) {}
 
     ngOnInit() {
@@ -682,6 +688,20 @@ export class ContactsModalComponent implements OnInit, OnDestroy {
 
         if (close) this.ngbActiveModal.close();
     }
+
+    public onAddressChange({ query, searchLayers, closedBorder }: AddressProperties): void {
+            this.addressService
+                .getAddresses(query, searchLayers, closedBorder)
+                .pipe(takeUntil(this.destroy$))
+                .subscribe((res) => (this.addressList = res));
+        }
+    
+        public getAddressData(address: string): void {
+            this.addressService
+                .getAddressInfo(address)
+                .pipe(takeUntil(this.destroy$))
+                .subscribe((res) => (this.addressData = res));
+        }
 
     ngOnDestroy(): void {
         this.destroy$.next();
