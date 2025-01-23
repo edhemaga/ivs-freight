@@ -50,9 +50,7 @@
                             row.actionAnimation === 'multiple-activate',
                         'delete-animation': row.actionAnimation === 'delete',
                         'multiple-delete-animation':
-                            row.actionAnimation === 'delete-multiple',
-                        'fuel-integrated-transaction':
-                            row.isIntegratedFuelTransaction,
+                            row.actionAnimation === 'delete-multiple'
                     }"
                 >
                     <!-- Table Row -->
@@ -1009,52 +1007,61 @@
 
                                     <!-- INVOICE COLUMN -->
 
-                                    <div
-                                        class="td-content"
-                                        *ngIf="column.ngTemplate === 'invoice'"
-                                        [ngStyle]="{
-                                            width: column.width + 'px',
-                                            'min-width.px': column?.minWidth
-                                                ? column.minWidth
-                                                : 'unset',
-                                        }"
-                                        ngbTooltip
-                                    >
+                                    @if (column.ngTemplate === 'invoice') {
                                         <div
-                                            class="invoice-text"
+                                            class="td-content"
                                             [ngStyle]="{
-                                                width: column.width - 21 + 'px',
+                                                width: column.width + 'px',
+                                                'min-width.px': column?.minWidth
+                                                    ? column.minWidth
+                                                    : 'unset',
                                             }"
-                                            (click)="goToDetails(column, row)"
-                                            #op="ngbPopover"
-                                            [ngbPopover]="optionsPopover"
-                                            [placement]="'bottom-right'"
-                                            [autoClose]="'outside'"
-                                            popoverClass="toolbar-options-popover"
-                                            triggers="manual"
-                                            (hidden)="otionsPopupOppen = false"
-                                            mainTooltip="View Detail"
-                                            [tooltipBackground]="'#424242'"
-                                            [tooltipColor]="'#ffff'"
-                                            position="bottom"
+                                            ngbTooltip
                                         >
-                                            {{ row[column.field].invoice }}
-                                        </div>
+                                            <div
+                                                class="invoice-text"
+                                                [ngStyle]="{
+                                                    width: column.width - 21 + 'px',
+                                                }"
+                                                (click)="goToDetails(column, row)"
+                                                #op="ngbPopover"
+                                                [ngbPopover]="optionsPopover"
+                                                [placement]="'bottom-right'"
+                                                [autoClose]="'outside'"
+                                                popoverClass="toolbar-options-popover"
+                                                triggers="manual"
+                                                (hidden)="otionsPopupOppen = false"
+                                                mainTooltip="View Detail"
+                                                [tooltipBackground]="'#424242'"
+                                                [tooltipColor]="'#ffff'"
+                                                position="bottom"
+                                            >
+                                                <span>
+                                                    {{ row[column.field].invoice }}
+                                                </span>
 
-                                        <!-- Hide LTL and FTL icons for now  -->
-                                        <!-- <svg-icon
-                                            *ngIf="row[column.field].type"
-                                            [src]="
-                                                row[column.field].type === 'LTL'
-                                                    ? 'assets/svg/truckassist-table/load-ltl.svg'
-                                                    : 'assets/svg/truckassist-table/load-flt.svg'
-                                            "
-                                            [svgStyle]="{
-                                                'width.px': '14',
-                                                'height.px': '14'
-                                            }"
-                                        ></svg-icon> -->
-                                    </div>
+                                                @if (row.isIntegratedFuelTransaction) {
+                                                    <svg-icon
+                                                        [src]="'assets/svg/common/fuel/ic_transaction_integrated.svg'"
+                                                    ></svg-icon>
+                                                }
+                                            </div>
+
+                                            <!-- Hide LTL and FTL icons for now  -->
+                                            <!-- <svg-icon
+                                                *ngIf="row[column.field].type"
+                                                [src]="
+                                                    row[column.field].type === 'LTL'
+                                                        ? 'assets/svg/truckassist-table/load-ltl.svg'
+                                                        : 'assets/svg/truckassist-table/load-flt.svg'
+                                                "
+                                                [svgStyle]="{
+                                                    'width.px': '14',
+                                                    'height.px': '14'
+                                                }"
+                                            ></svg-icon> -->
+                                        </div>
+                                    }
 
                                     <!-- NAME LINK COLUMN -->
 
