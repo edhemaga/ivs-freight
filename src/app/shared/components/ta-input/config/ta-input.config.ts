@@ -51,6 +51,7 @@ export interface ITaInput {
     hideDangerMark?: boolean;
     hideDropdownArrow?: boolean;
     errorInsideInput?: boolean; 
+    requiredLabel?: boolean;
     removeInput?: boolean;
     readOnly?: boolean;
     thousandSeparator?: boolean; // type of input must be 'text'

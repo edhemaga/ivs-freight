@@ -14,6 +14,9 @@ import { Subject, takeUntil } from 'rxjs';
 import { AccountModalComponent } from '@pages/account/pages/account-modal/account-modal.component';
 import { ConfirmationModalComponent } from '@shared/components/ta-shared-modals/confirmation-modal/confirmation-modal.component';
 
+// base classes
+import { AccountDropdownMenuActionsBase } from '@pages/account/base-classes';
+
 // services
 import { ModalService } from '@shared/services/modal.service';
 import { TruckassistTableService } from '@shared/services/truckassist-table.service';
@@ -34,25 +37,7 @@ import { MethodsGlobalHelper } from '@shared/utils/helpers/methods-global.helper
 import { TableStringEnum } from '@shared/enums/table-string.enum';
 import { AccountStringEnum } from '@pages/account/enums/account-string.enum';
 import { TableActionsStringEnum } from '@shared/enums/table-actions-string.enum';
-
-// models
-import {
-    CompanyAccountLabelResponse,
-    GetCompanyAccountListResponse,
-    UpdateCompanyAccountCommand,
-} from 'appcoretruckassist';
-import { AccountTableToolbarAction } from '@pages/account/pages/account-table/models/account-table-toolbard-action.model';
-import { AccountTableBodyAction } from '@pages/account/pages/account-table/models/account-table-body-action.model';
-import { AccountTableHeadAction } from '@pages/account/pages/account-table/models/account-table-head-action.model';
-import { AccountCardData } from '@pages/account/utils/constants/account-card-data.constants';
-import { CardRows } from '@shared/models/card-models/card-rows.model';
-import {
-    CardDetails,
-    DropdownItem,
-} from '@shared/models/card-models/card-table-data.model';
-import { AccountResponse } from '@pages/account/pages/account-table/models/account-response.model';
-import { TableBodyColumns } from '@shared/components/ta-table/ta-table-body/models/table-body-columns.model';
-import { AccountFilter } from '@pages/account/pages/account-table/models/account-filter.model';
+import { DropdownMenuStringEnum } from '@shared/enums';
 
 // helpers
 import { DropdownMenuContentHelper } from '@shared/utils/helpers';
@@ -60,55 +45,77 @@ import { DropdownMenuContentHelper } from '@shared/utils/helpers';
 // constants
 import { AccountFilterConstants } from '@pages/account/pages/account-table/utils/constants/account-filter.constants';
 
+// models
+import { GetCompanyAccountListResponse } from 'appcoretruckassist';
+import { AccountTableToolbarAction } from '@pages/account/pages/account-table/models/account-table-toolbard-action.model';
+import { AccountTableHeadAction } from '@pages/account/pages/account-table/models/account-table-head-action.model';
+import { AccountCardData } from '@pages/account/utils/constants/account-card-data.constants';
+import { CardRows } from '@shared/models/card-models/card-rows.model';
+import { CardDetails } from '@shared/models/card-models/card-table-data.model';
+import { AccountResponse } from '@pages/account/pages/account-table/models/account-response.model';
+import { TableBodyColumns } from '@shared/components/ta-table/ta-table-body/models/table-body-columns.model';
+import { AccountFilter } from '@pages/account/pages/account-table/models/account-filter.model';
+import { DropdownMenuItem } from '@ca-shared/components/ca-dropdown-menu/models';
+
 @Component({
     selector: 'app-account-table',
     templateUrl: './account-table.component.html',
     styleUrls: ['./account-table.component.scss'],
 })
-export class AccountTableComponent implements OnInit, AfterViewInit, OnDestroy {
-    private destroy$ = new Subject<void>();
+export class AccountTableComponent
+    extends AccountDropdownMenuActionsBase
+    implements OnInit, AfterViewInit, OnDestroy
+{
+    public destroy$ = new Subject<void>();
 
-    //Table config
-    public tableOptions: any = {};
-    public tableData: any[] = [];
-    //leave this two any for now
-    public viewData: AccountResponse[] = [];
-    public columns: TableBodyColumns[] = [];
-    public selectedTab: string = TableActionsStringEnum.ACTIVE;
-    public activeViewMode: string = TableActionsStringEnum.LIST;
     public resizeObserver: ResizeObserver;
+    public activeViewMode: string = TableActionsStringEnum.LIST;
 
-    //Accounts
+    public selectedTab: string = TableActionsStringEnum.ACTIVE;
+
     public accounts: AccountState[];
 
-    //Filter
-    public backFilterQuery: AccountFilter = {
-        ...AccountFilterConstants.accountFilterQuery,
-    };
+    // table
+    public tableOptions: any = {};
+    public tableData: any[] = [];
+    public viewData: AccountResponse[] = [];
+    public columns: TableBodyColumns[] = [];
 
-    // Data to display from model Broker
-    public displayRowsFront: CardRows[] =
-        AccountCardData.DISPLAY_ROWS_FRONT_ACTIVE;
-
-    public displayRowsBack: CardRows[] =
-        AccountCardData.DISPLAY_ROWS_FRONT_ACTIVE;
-
-    //Card config
+    // cards
     public cardTitle: string = AccountCardData.CARD_TITLE;
     public page: string = AccountCardData.PAGE;
     public rows: number = AccountCardData.ROWS;
 
+    public displayRowsFront: CardRows[] =
+        AccountCardData.DISPLAY_ROWS_FRONT_ACTIVE;
+    public displayRowsBack: CardRows[] =
+        AccountCardData.DISPLAY_ROWS_FRONT_ACTIVE;
+
+    // filters
+    public backFilterQuery: AccountFilter = {
+        ...AccountFilterConstants.accountFilterQuery,
+    };
+
     constructor(
-        private modalService: ModalService,
+        @Inject(DOCUMENT) protected documentRef: Document,
+
+        // clipboard
+        protected clipboard: Clipboard,
+
+        // services
+        protected modalService: ModalService,
+        protected accountService: AccountService,
+
         private tableService: TruckassistTableService,
-        private accountQuery: AccountQuery,
-        private accountService: AccountService,
-        private clipboard: Clipboard,
         private confiramtionService: ConfirmationService,
-        private accountCardModalQuery: accountCardModalQuery,
         private caSearchMultipleStatesService: CaSearchMultipleStatesService,
-        @Inject(DOCUMENT) private readonly documentRef: Document
-    ) {}
+
+        // store
+        private accountCardModalQuery: accountCardModalQuery,
+        private accountQuery: AccountQuery
+    ) {
+        super(documentRef, clipboard, modalService, accountService);
+    }
 
     ngOnInit(): void {
         this.sendAccountData();
@@ -126,6 +133,12 @@ export class AccountTableComponent implements OnInit, AfterViewInit, OnDestroy {
         this.accountCurrentActionAnimation();
 
         this.accountCurrentDeleteSelectedRows();
+    }
+
+    ngAfterViewInit(): void {
+        setTimeout(() => {
+            this.observTableContainer();
+        }, 10);
     }
 
     private accountResetColumns(): void {
@@ -303,19 +316,12 @@ export class AccountTableComponent implements OnInit, AfterViewInit, OnDestroy {
                         {
                             data: null,
                             array: mappedRes,
-                            template: TableStringEnum.USER_1,
+                            template: DropdownMenuStringEnum.ACCOUNT,
                             type: TableStringEnum.MULTIPLE_DELETE,
-                            svg: true,
                         }
                     );
                 }
             });
-    }
-
-    ngAfterViewInit(): void {
-        setTimeout(() => {
-            this.observTableContainer();
-        }, 10);
     }
 
     private observTableContainer(): void {
@@ -456,14 +462,11 @@ export class AccountTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 password: data?.password ? data.password : '',
                 hidemCharacters: this.getHidenCharacters(data),
             },
-            tableDropdownContent: {
-                hasContent: true,
-                content: this.getAccountDropdownContent(data?.url),
-            },
+            tableDropdownContent: this.getAccountDropdownContent(data?.url),
         };
     }
 
-    private getAccountDropdownContent(url: string): DropdownItem[] {
+    private getAccountDropdownContent(url: string): DropdownMenuItem[] {
         return DropdownMenuContentHelper.getAccountDropdownContent(url);
     }
 
@@ -477,7 +480,6 @@ export class AccountTableComponent implements OnInit, AfterViewInit, OnDestroy {
         return caracters;
     }
 
-    // Account Back Filter
     private accountBackFilter(
         filter: {
             labelId: number | undefined;
@@ -551,90 +553,6 @@ export class AccountTableComponent implements OnInit, AfterViewInit, OnDestroy {
         }
     }
 
-    public onTableBodyActions(event: AccountTableBodyAction): void {
-        switch (event.type) {
-            case TableActionsStringEnum.SHOW_MORE:
-                this.backFilterQuery.pageIndex++;
-                this.accountBackFilter(this.backFilterQuery, true);
-                break;
-            case AccountStringEnum.EDIT_ACCOUNT:
-                this.modalService.openModal(
-                    AccountModalComponent,
-                    { size: TableActionsStringEnum.SMALL },
-                    {
-                        ...event,
-                        type: TableActionsStringEnum.EDIT,
-                    }
-                );
-                break;
-            case TableActionsStringEnum.GO_TO_LINK:
-                if (event.data?.url) {
-                    const url = !event.data.url.startsWith('https://')
-                        ? 'https://' + event.data.url
-                        : event.data.url;
-
-                    this.documentRef.defaultView.open(url, '_blank');
-                }
-                break;
-            case TableActionsStringEnum.COPY_PASSWORD:
-                this.clipboard.copy(event.data.password);
-                break;
-            case TableActionsStringEnum.COPY_USERNAME:
-                this.clipboard.copy(event.data.username);
-                break;
-            case AccountStringEnum.DELETE_ACCOUNT:
-                this.modalService.openModal(
-                    ConfirmationModalComponent,
-                    { size: TableStringEnum.SMALL },
-                    {
-                        ...event,
-                        template: TableStringEnum.USER_1,
-                        type: TableStringEnum.DELETE,
-                        svg: true,
-                    }
-                );
-                break;
-            case TableActionsStringEnum.LABLE_CHANGE:
-                this.saveAcountLabel(event.data);
-                break;
-            case TableActionsStringEnum.UPDATE_LABLE:
-                this.updateAccountLabel(event);
-                break;
-            default:
-                break;
-        }
-    }
-
-    private updateAccountLabel(event: AccountTableBodyAction): void {
-        const companyAcountData = this.viewData.find(
-            (account: AccountResponse) => account.id === event.id
-        );
-        const newdata: UpdateCompanyAccountCommand = {
-            id: companyAcountData.id ?? null,
-            name: companyAcountData.name ?? null,
-            username: companyAcountData.username ?? null,
-            password: companyAcountData.password ?? null,
-            url: companyAcountData.url ?? null,
-            companyAccountLabelId: event.data ? event.data.id : null,
-            note: companyAcountData.note ?? null,
-        };
-        this.accountService
-            .updateCompanyAccount(newdata)
-            .pipe(takeUntil(this.destroy$))
-            .subscribe();
-    }
-
-    private saveAcountLabel(data: CompanyAccountLabelResponse): void {
-        this.accountService
-            .updateCompanyAccountLabel({
-                id: data.id,
-                name: data.name,
-                colorId: data.colorId,
-            })
-            .pipe(takeUntil(this.destroy$))
-            .subscribe();
-    }
-
     public saveValueNote(event: { value: string; id: number }): void {
         this.viewData.map((item: CardDetails) => {
             if (item.id === event.id) {
@@ -659,9 +577,11 @@ export class AccountTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     switch (res.type) {
                         case TableStringEnum.DELETE:
                             this.deleteAccountList([res.id]);
+
                             break;
                         case TableStringEnum.MULTIPLE_DELETE:
                             this.deleteAccountList(res.array);
+
                             break;
                         default:
                             break;
@@ -722,10 +642,17 @@ export class AccountTableComponent implements OnInit, AfterViewInit, OnDestroy {
             });
     }
 
+    public handleShowMoreAction(): void {
+        this.backFilterQuery.pageIndex++;
+
+        this.accountBackFilter(this.backFilterQuery, true);
+    }
+
     ngOnDestroy(): void {
         this.tableService.sendActionAnimation({});
 
         this.resizeObserver.disconnect();
+
         this.destroy$.next();
         this.destroy$.complete();
     }

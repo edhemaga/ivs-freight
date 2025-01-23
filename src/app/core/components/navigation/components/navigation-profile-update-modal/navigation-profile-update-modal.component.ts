@@ -7,6 +7,8 @@ import {
     ReactiveFormsModule,
 } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { NgbActiveModal, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
+import { AngularSvgIconModule } from 'angular-svg-icon';
 
 import { Subject, takeUntil } from 'rxjs';
 
@@ -20,9 +22,6 @@ import {
 } from '@shared/components/ta-input/validators/ta-input.regex-validations';
 import { phoneFaxRegex } from '@shared/components/ta-input/validators/ta-input.regex-validations';
 
-// animations
-import { tabsModalAnimation } from '@shared/animations/tabs-modal.animation';
-
 // services
 import { TaInputService } from '@shared/services/ta-input.service';
 import { ModalService } from '@shared/services/modal.service';
@@ -30,13 +29,16 @@ import { UserProfileUpdateService } from '@shared/services/user-profile-update.s
 import { FormService } from '@shared/services/form.service';
 
 // components
-import { TaModalComponent } from '@shared/components/ta-modal/ta-modal.component';
-import { TaTabSwitchComponent } from '@shared/components/ta-tab-switch/ta-tab-switch.component';
-import { TaInputComponent } from '@shared/components/ta-input/ta-input.component';
 import { TaInputAddressDropdownComponent } from '@shared/components/ta-input-address-dropdown/ta-input-address-dropdown.component';
 import { TaCheckboxCardComponent } from '@shared/components/ta-checkbox-card/ta-checkbox-card.component';
 import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-custom-card.component';
-import { CaUploadFilesComponent } from 'ca-components';
+import {
+    CaInputComponent,
+    CaModalButtonComponent,
+    CaModalComponent,
+    CaUploadFilesComponent,
+} from 'ca-components';
+import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
 
 // models
 import {
@@ -48,13 +50,21 @@ import {
 
 // utils
 import { MethodsGlobalHelper } from '@shared/utils/helpers/methods-global.helper';
+
+// Const
 import { NavigationDataConstants } from '../../utils/constants/navigation-data.constants';
+
+// Enums
+import { TaModalActionEnums } from '@shared/components/ta-modal/enums';
+import { ModalButtonType } from '@shared/enums';
+
+// Svg routes
+import { SharedSvgRoutes } from '@shared/utils/svg-routes';
 
 @Component({
     selector: 'app-navigation-profile-update-modal',
     templateUrl: './navigation-profile-update-modal.component.html',
     styleUrls: ['./navigation-profile-update-modal.component.scss'],
-    animations: [tabsModalAnimation('animationTabsModal')],
     providers: [FormService, ModalService],
     standalone: true,
     imports: [
@@ -62,14 +72,18 @@ import { NavigationDataConstants } from '../../utils/constants/navigation-data.c
         CommonModule,
         FormsModule,
         ReactiveFormsModule,
+        AngularSvgIconModule,
+        NgbTooltipModule,
 
         // Modal
-        TaModalComponent,
-        TaTabSwitchComponent,
-        TaInputComponent,
+        CaModalComponent,
+        CaInputComponent,
+        CaModalButtonComponent,
         TaInputAddressDropdownComponent,
         TaCheckboxCardComponent,
         TaCustomCardComponent,
+        TaAppTooltipV2Component,
+
         // components
         CaUploadFilesComponent,
     ],
@@ -83,28 +97,9 @@ export class NavigationProfileUpdateModalComponent
 
     private user: SignInResponse;
 
-    public selectedTab: number = 1;
-
     public profileUserForm: UntypedFormGroup;
 
     public disableCardAnimation: boolean = false;
-
-    public tabs: any[] = [
-        {
-            id: 1,
-            name: 'Basic',
-            checked: true,
-        },
-        {
-            id: 2,
-            name: 'Additional',
-        },
-    ];
-
-    public animationObject = {
-        value: this.selectedTab,
-        params: { height: '0px' },
-    };
 
     public selectedAddress: AddressEntity = null;
     public userPasswordTyping: boolean = false;
@@ -113,13 +108,18 @@ export class NavigationProfileUpdateModalComponent
     public loadingOldPassword: boolean = false;
 
     public isFormDirty: boolean = false;
+    public activeAction: TaModalActionEnums;
+    public taModalActionEnums = TaModalActionEnums;
+    public svgRoutes = SharedSvgRoutes;
+    public modalButtonType = ModalButtonType;
+    public displayName: string;
 
     constructor(
         private formBuilder: UntypedFormBuilder,
         private inputService: TaInputService,
         private userProfileUpdateService: UserProfileUpdateService,
-        private modalService: ModalService,
-        private formService: FormService
+        private formService: FormService,
+        private ngbActiveModal: NgbActiveModal
     ) {}
 
     ngOnInit() {
@@ -154,18 +154,9 @@ export class NavigationProfileUpdateModalComponent
         );
     }
 
-    public tabChange(event: any): void {
-        this.selectedTab = event.id;
-        let dotAnimation = document.querySelector('.animation-two-tabs');
-
-        this.animationObject = {
-            value: this.selectedTab,
-            params: { height: `${dotAnimation.getClientRects()[0].height}px` },
-        };
-    }
-
-    public onModalAction(data: { action: string; bool: boolean }): void {
-        if (data.action === 'close') {
+    public onModalAction(action: string): void {
+        if (action === TaModalActionEnums.CLOSE) {
+            this.ngbActiveModal.close();
             return;
         }
 
@@ -174,13 +165,9 @@ export class NavigationProfileUpdateModalComponent
             return;
         }
 
-        if (data.action === 'save') {
+        if (action === TaModalActionEnums.SAVE) {
+            this.activeAction = TaModalActionEnums.SAVE;
             this.updateUserProfile();
-            this.modalService.setModalSpinner({
-                action: null,
-                status: true,
-                close: false,
-            });
         }
     }
 
@@ -332,6 +319,8 @@ export class NavigationProfileUpdateModalComponent
                         /*  avatar: res.avatar ? res.avatar : null, */
                     });
                     this.selectedAddress = res.address;
+                    this.displayName = `${res.firstName} ${res.lastName}`;
+
                     setTimeout(() => {
                         this.startFormChanges();
                         this.disableCardAnimation = false;
@@ -372,18 +361,11 @@ export class NavigationProfileUpdateModalComponent
                     };
                     this.userProfileUpdateService.updateUserProfile(true);
                     localStorage.setItem('user', JSON.stringify(newUser));
-                    this.modalService.setModalSpinner({
-                        action: null,
-                        status: true,
-                        close: true,
-                    });
+
+                    this.ngbActiveModal.close();
                 },
                 error: () => {
-                    this.modalService.setModalSpinner({
-                        action: null,
-                        status: false,
-                        close: false,
-                    });
+                    this.activeAction = null;
                 },
             });
     }

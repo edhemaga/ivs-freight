@@ -138,21 +138,26 @@ export class ContactsModalComponent implements OnInit, OnDestroy {
     public contactEmails: ContactEmailResponse[] = [];
     public updatedContactEmails: ContactEmailResponse[] = [];
     public contactModalConfig = ContactModalConfig;
-    // enums
-    public modalTableTypeEnum = ModalTableTypeEnum;
 
     private isUploadInProgress: boolean;
+
+    public modalTableTypeEnum = ModalTableTypeEnum;
     public taModalActionEnums = ContactsModalStringEnum;
 
     constructor(
+        private ngbActiveModal: NgbActiveModal,
+
+        // form
         private formBuilder: UntypedFormBuilder,
+
+        // ref
         private changeDetector: ChangeDetectorRef,
+
+        // services
         private inputService: TaInputService,
         private modalService: ModalService,
         private contactService: ContactsService,
-        private formService: FormService,
-        private ngbActiveModal: NgbActiveModal,
-        
+        private formService: FormService
     ) {}
 
     ngOnInit() {
@@ -412,21 +417,21 @@ export class ContactsModalComponent implements OnInit, OnDestroy {
         isUpdate: boolean
     ): CreateCompanyContactCommand | UpdateCompanyContactCommand {
         const { addressUnit, ...form } = this.contactForm.value;
-    
+
         const updatedAddress = this.selectedAddress
             ? { ...this.selectedAddress, addressUnit }
             : null;
-    
+
         const contactPhones = this.contactPhones.map((contactPhone, index) => ({
             ...contactPhone,
             primary: !index,
         }));
-    
+
         const contactEmails = this.contactEmails.map((contactEmail, index) => ({
             ...contactEmail,
             primary: !index,
         }));
-    
+
         const companyContactUsers = this.selectedSharedDepartment.map(
             (department) => ({
                 departmentId: department.id,
@@ -435,7 +440,7 @@ export class ContactsModalComponent implements OnInit, OnDestroy {
                 ),
             })
         );
-    
+
         const data = {
             ...form,
             address: updatedAddress?.address ? updatedAddress : null,
@@ -446,22 +451,26 @@ export class ContactsModalComponent implements OnInit, OnDestroy {
             contactEmails,
             companyContactUsers,
         };
-    
-        if (isUpdate && id !== null)  data.id = id;
-    
+
+        if (isUpdate && id !== null) data.id = id;
+
         return data;
     }
-    
+
     private saveCompanyContact(
         id: number | null = null,
         isUpdate: boolean = false
     ): void {
         const newData = this.prepareCompanyContactData(id, isUpdate);
-    
+
         const saveOperation = isUpdate
-            ? this.contactService.updateCompanyContact(newData as UpdateCompanyContactCommand)
-            : this.contactService.addCompanyContact(newData as CreateCompanyContactCommand);
-    
+            ? this.contactService.updateCompanyContact(
+                  newData as UpdateCompanyContactCommand
+              )
+            : this.contactService.addCompanyContact(
+                  newData as CreateCompanyContactCommand
+              );
+
         saveOperation.pipe(takeUntil(this.destroy$)).subscribe({
             next: () => {
                 this.setModalSpinner(null, isUpdate, true, true);
@@ -671,7 +680,7 @@ export class ContactsModalComponent implements OnInit, OnDestroy {
 
         if (enableSaving) this.enableSaving();
 
-        if(close) this.ngbActiveModal.close();
+        if (close) this.ngbActiveModal.close();
     }
 
     ngOnDestroy(): void {

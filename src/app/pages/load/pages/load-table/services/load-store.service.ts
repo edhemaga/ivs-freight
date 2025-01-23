@@ -17,6 +17,7 @@ import { ITableData } from '@shared/models/table-data.model';
 import { Column, ICurrentSearchTableData, ITableColummn, ITableOptions } from '@shared/models';
 import { CreateCommentCommand, CreateLoadTemplateCommand, LoadListResponse, LoadStatusType, RevertLoadStatusCommand, UpdateLoadStatusCommand } from 'appcoretruckassist';
 import { Load } from '@pages/load/models';
+import { ConfirmationActivation } from '@shared/components/ta-shared-modals/confirmation-activation-modal/models';
 
 // selectors
 import {
@@ -69,30 +70,32 @@ export class LoadStoreService {
         select(activeTableDataSelector)
     );
 
-    public dispatchLoadList(apiParam: IGetLoadListParam, isShowMore?: boolean, onSearch?: ICurrentSearchTableData): void {
+    public dispatchLoadList(apiParam: IGetLoadListParam, showMore?: boolean, onSearch?: ICurrentSearchTableData): void {
         this.store.dispatch({
             type: LoadStoreConstants.ACTION_LOAD_TABLE_COMPONENT_LOAD_LIST,
             apiParam,
-            isShowMore,
+            showMore,
             onSearch
         });
     }
 
-    public dispatchLoadTemplateList(apiParam: IGetLoadTemplateParam): void {
+    public dispatchLoadTemplateList(apiParam: IGetLoadTemplateParam, showMore?: boolean, onSearch?: ICurrentSearchTableData): void {
         this.store.dispatch({
             type: LoadStoreConstants.ACTION_LOAD_TABLE_COMPONENT_LOAD_TEMPLATES,
-            apiParam
+            apiParam,
+            showMore,
+            onSearch
         });
     }
 
     public dispatchGetList(
         apiParam: IGetLoadListParam | IGetLoadTemplateParam,
         selectedTab: eLoadStatusType,
-        isShowMore?: boolean
+        showMore?: boolean
     ): void {
         if (selectedTab === eLoadStatusType.Template)
-            this.dispatchLoadTemplateList(apiParam);
-        else this.dispatchLoadList(apiParam, isShowMore);
+            this.dispatchLoadTemplateList(apiParam, showMore);
+        else this.dispatchLoadList(apiParam, showMore);
     }
 
     public dispatchGetLoadStatusFilter(apiParam: LoadStatusType): void {
@@ -123,6 +126,13 @@ export class LoadStoreService {
         });
     }
 
+    public dispatchUpdateloadStatusConfirmation(confirmation: ConfirmationActivation): void {
+        this.store.dispatch({
+            type: LoadStoreConstants.ACTION_UPDATE_LOAD_STATUS,
+            confirmation
+        });
+    }
+
     public dispatchUpdateLoadStatusSignalR(response: LoadListResponse): void {
         this.store.dispatch({
             type: LoadStoreConstants.ACTION_UPDATE_LOAD_STATUS_SIGNALR,
@@ -137,11 +147,11 @@ export class LoadStoreService {
         });
     }
 
-    public dispatchUpdateOrRevertLoadStatus(apiParam: UpdateLoadStatusCommand | RevertLoadStatusCommand, isRevert: boolean): void {
+    public dispatchUpdateOrRevertLoadStatus(param: UpdateLoadStatusCommand | RevertLoadStatusCommand, isRevert: boolean): void {
         if (isRevert)
-            this.dispatchRevertLoadStatus(apiParam);
+            this.dispatchRevertLoadStatus(param);
         else
-            this.dispatchUpdateLoadStatus(apiParam);
+            this.dispatchUpdateLoadStatus(param);
     }
 
     public dispatchSaveValueNote(entityId: number, value: string): void {
@@ -174,6 +184,13 @@ export class LoadStoreService {
         });
     }
 
+    public dispatchDeleteLoadOrTemplateById(id: number, selectedTab: eLoadStatusType): void {
+        if (selectedTab === eLoadStatusType.Template)
+            this.dispatchDeleteLoadTemplateById(id);
+        else
+            this.dispatchDeleteLoadById(id);
+    }
+
     public dispatchDeleteBulkLoadTemplates(ids: number[]): void {
         this.store.dispatch({
             type: LoadStoreConstants.ACTION_DELETE_BULK_LOAD_TEMPLATE,
@@ -186,6 +203,13 @@ export class LoadStoreService {
             type: LoadStoreConstants.ACTION_DELETE_BULK_LOAD,
             apiParam: ids
         });
+    }
+
+    public dispatchBulkDeleteBulkLoadsOrTemplates(ids: number[], selectedTab: eLoadStatusType): void {
+        if (selectedTab === eLoadStatusType.Template)
+            this.dispatchDeleteBulkLoadTemplates(ids);
+        else
+            this.dispatchDeleteBulkLoads(ids);
     }
 
     public dsipatchCanDeleteSelectedDataRows(canDeleteSelectedDataRows: boolean, ids: number[]): void {

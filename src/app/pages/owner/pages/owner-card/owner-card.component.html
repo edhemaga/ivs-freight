@@ -11,7 +11,7 @@
                     'body-active':
                         isCardFlippedCheckInCards.includes(i) ||
                         isAllCardsFlipp,
-                    'body-checked': card.isSelected
+                    'body-checked': card.isSelected,
                 }"
             >
                 <!-- Left side of the card -->
@@ -93,7 +93,7 @@
                                             marginTop:
                                                 cardRow.title === 'Fleet'
                                                     ? '3px'
-                                                    : 0
+                                                    : 0,
                                         }"
                                     >
                                         <ng-container
@@ -118,70 +118,15 @@
                                                 cardRow.title == 'Owner Type'
                                             "
                                         >
-                                            {{ card['ownerType']['name'] ?? '/' }}
+                                            {{
+                                                card['ownerType']['name'] ?? '/'
+                                            }}
                                         </ng-container>
                                     </div>
                                 </div>
                             </div>
                         </ng-container>
                     </div>
-
-                    <!--<div
-                        class="flipped"
-                        [ngClass]="{
-                            'card-body-content':
-                                !isCardFlippedCheckInCards.includes(i) &&
-                                !isAllCardsFlipp
-                        }"
-                    >
-
-                        <ng-container
-                            *ngFor="
-                                let rowsFront of cardsFront;
-                                trackBy: trackCard
-                            "
-                        >
-                            <ng-container
-                                *ngFor="
-                                    let row of rowsFront[i];
-                                    trackBy: trackCard
-                                "
-                            >
-                                <div class="one-row">
-                                    <div class="item-body">
-                                        <div class="top-item-body">
-                                            {{ row.title }}
-                                        </div>
-
-                                        <div
-                                            class="bottom-item-body d-flex align-items-center"
-                                            [ngStyle]="{
-                                                marginTop:
-                                                    row.title === 'Fleet'
-                                                        ? '3px'
-                                                        : 0
-                                            }"
-                                        >
-                                            <ng-container
-                                                *ngIf="row.title === 'Fleet'"
-                                            >
-                                                <app-ta-input-dropdown-table
-                                                    [data]="card"
-                                                    [type]="'owner'"
-                                                ></app-ta-input-dropdown-table>
-                                            </ng-container>
-
-                                            <ng-container
-                                                *ngIf="row.title !== 'Fleet'"
-                                            >
-                                                {{ row.key }}
-                                            </ng-container>
-                                        </div>
-                                    </div>
-                                </div>
-                            </ng-container>
-                        </ng-container>
-                    </div> -->
 
                     <!-- Card body Back -->
 
@@ -190,7 +135,7 @@
                         [ngClass]="{
                             'card-body-content':
                                 isCardFlippedCheckInCards.includes(i) ||
-                                isAllCardsFlipp
+                                isAllCardsFlipp,
                         }"
                     >
                         <ng-container
@@ -253,12 +198,17 @@
 
                 <div class="card-body-right">
                     <div class="top-side">
-                        <!-- Open dropdown element-->
+                        <!-- Dropdown Menu-->
 
-                        <app-ta-table-card-dropdown-actions
-                            [card]="card"
-                            (bodyActions)="onCardActions($event)"
-                        ></app-ta-table-card-dropdown-actions>
+                        <ca-dropdown-menu
+                            [type]="'dots-menu-type'"
+                            [placement]="'right-top'"
+                            [options]="card.tableDropdownContent"
+                            (dropdownOptionEmitter)="
+                                handleToggleDropdownMenuActions($event, card)
+                            "
+                        >
+                        </ca-dropdown-menu>
 
                         <!-- Note element -->
 
@@ -295,7 +245,7 @@
                                         isCardFlippedCheckInCards.includes(i) ||
                                         isAllCardsFlipp,
                                     'svg-position':
-                                        !isCardFlippedCheckInCards.includes(i)
+                                        !isCardFlippedCheckInCards.includes(i),
                                 }"
                                 customClass="mt-2"
                             >
