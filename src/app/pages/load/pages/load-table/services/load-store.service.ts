@@ -28,7 +28,7 @@ import {
     tableDataSelector,
     tableOptionsSelector,
     viewDataSelector,
-} from '@pages/load/pages/load-table/store/selectors/load.selector';
+} from '@pages/load/store/selectors/load.selector';
 
 // constants
 import { LoadStoreConstants } from '@pages/load/pages/load-table/utils/constants/index';
