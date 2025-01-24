@@ -143,7 +143,7 @@
                     >
                         <div class="row first-row last-row">
                             <div class="col-10">
-                                <app-ta-input-address-dropdown
+                                <app-ca-input-address-dropdown
                                     formControlName="physicalAddress"
                                     [inputConfig]="{
                                         name: 'Address',
@@ -164,7 +164,21 @@
                                             'physical-address'
                                         )
                                     "
-                                ></app-ta-input-address-dropdown>
+                                    [receivedAddressList]="addressList"
+                                    [receivedAddressData]="addressData"
+                                    (sentAddressData)="
+                                        onAddressChange(
+                                            $event,
+                                            'physical-address'
+                                        )
+                                    "
+                                    (sentAddressValue)="
+                                        getAddressData(
+                                            $event,
+                                            'physical-address'
+                                        )
+                                    "
+                                ></app-ca-input-address-dropdown>
                             </div>
                             <div class="col-2">
                                 <app-ca-input
@@ -207,7 +221,7 @@
                                 ></app-ca-input>
                             </div>
                             <div class="col-8">
-                                <app-ta-input-address-dropdown
+                                <app-ca-input-address-dropdown
                                     formControlName="physicalPoBoxCity"
                                     [inputConfig]="{
                                         name: 'Address',
@@ -228,7 +242,18 @@
                                             'physical-pobox'
                                         )
                                     "
-                                ></app-ta-input-address-dropdown>
+                                    [receivedAddressList]="addressListPoBox"
+                                    [receivedAddressData]="addressDataPoBox"
+                                    (sentAddressData)="
+                                        onAddressChange(
+                                            $event,
+                                            'physical-pobox'
+                                        )
+                                    "
+                                    (sentAddressValue)="
+                                        getAddressData($event, 'physical-pobox')
+                                    "
+                                ></app-ca-input-address-dropdown>
                             </div>
                         </div>
                     </div>
@@ -265,7 +290,7 @@
                         >
                             <div class="row first-row last-row">
                                 <div class="col-10">
-                                    <app-ta-input-address-dropdown
+                                    <app-ca-input-address-dropdown
                                         formControlName="billingAddress"
                                         [inputConfig]="{
                                             name: 'Address',
@@ -286,7 +311,21 @@
                                                 'billing-address'
                                             )
                                         "
-                                    ></app-ta-input-address-dropdown>
+                                        [receivedAddressList]="addressListBilling"
+                                        [receivedAddressData]="addressDataBilling"
+                                        (sentAddressData)="
+                                            onAddressChange(
+                                                $event,
+                                                'billing-address'
+                                            )
+                                        "
+                                        (sentAddressValue)="
+                                            getAddressData(
+                                                $event,
+                                                'billing-address'
+                                            )
+                                        "
+                                    ></app-ca-input-address-dropdown>
                                 </div>
                                 <div class="col-2">
                                     <app-ca-input
@@ -327,7 +366,7 @@
                                     ></app-ca-input>
                                 </div>
                                 <div class="col-8">
-                                    <app-ta-input-address-dropdown
+                                    <app-ca-input-address-dropdown
                                         formControlName="billingPoBoxCity"
                                         [inputConfig]="{
                                             name: 'Address',
@@ -349,7 +388,21 @@
                                                 'billing-pobox'
                                             )
                                         "
-                                    ></app-ta-input-address-dropdown>
+                                        [receivedAddressList]="addressListBillingPoBox"
+                                        [receivedAddressData]="addressDataBillingPoBox"
+                                        (sentAddressData)="
+                                            onAddressChange(
+                                                $event,
+                                                'billing-pobox'
+                                            )
+                                        "
+                                        (sentAddressValue)="
+                                            getAddressData(
+                                                $event,
+                                                'billing-pobox'
+                                            )
+                                        "
+                                    ></app-ca-input-address-dropdown>
                                 </div>
                             </div>
                         </div>
@@ -567,7 +620,7 @@
             </div>
         </form>
     </div>
-</app-ca-modal> 
+</app-ca-modal>
 
 <ng-template #rightModalContent>
     @if (isEditMode) {
@@ -623,7 +676,6 @@
                         (click)="onModalAction(taModalActionEnums.DELETE)"
                         [type]="modalButtonType.SECONDARY_NEGATIVE"
                     >
-                        
                     </app-ca-modal-button>
                     <app-ca-modal-button
                         [type]="modalButtonType.SECONDARY_NEUTRAL"
@@ -631,14 +683,14 @@
                         class="mr-12"
                         text="Move to DNU"
                         (click)="onModalAction(taModalActionEnums.MOVE_TO_DNU)"
-                    > 
+                    >
                     </app-ca-modal-button>
                     <app-ca-modal-button
                         [type]="modalButtonType.SECONDARY_NEUTRAL"
                         [size]="modalButtonSize.SMALL"
                         text="Move to BFB"
                         (click)="onModalAction(taModalActionEnums.MOVE_TO_BFB)"
-                    > 
+                    >
                     </app-ca-modal-button>
                 </div>
                 <app-ca-modal-button
@@ -648,7 +700,6 @@
                     (click)="onModalAction(taModalActionEnums.SAVE)"
                     [type]="modalButtonType.PRIMARY_POSITIVE"
                 >
-                    
                 </app-ca-modal-button>
             </div>
         } @else {
@@ -662,7 +713,6 @@
                 [type]="modalButtonType.SECONDARY_POSITIVE"
                 (click)="onModalAction(taModalActionEnums.SAVE_AND_ADD_NEW)"
             >
-                
             </app-ca-modal-button>
             <app-ca-modal-button
                 [isValid]="isModalValidToSubmit"

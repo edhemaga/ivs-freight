@@ -163,7 +163,7 @@ export class ContactsModalComponent implements OnInit, OnDestroy {
         private modalService: ModalService,
         private contactService: ContactsService,
         private formService: FormService,
-        private addressService: AddressService,
+        private addressService: AddressService
     ) {}
 
     ngOnInit() {
@@ -689,19 +689,23 @@ export class ContactsModalComponent implements OnInit, OnDestroy {
         if (close) this.ngbActiveModal.close();
     }
 
-    public onAddressChange({ query, searchLayers, closedBorder }: AddressProperties): void {
-            this.addressService
-                .getAddresses(query, searchLayers, closedBorder)
-                .pipe(takeUntil(this.destroy$))
-                .subscribe((res) => (this.addressList = res));
-        }
-    
-        public getAddressData(address: string): void {
-            this.addressService
-                .getAddressInfo(address)
-                .pipe(takeUntil(this.destroy$))
-                .subscribe((res) => (this.addressData = res));
-        }
+    public onAddressChange({
+        query,
+        searchLayers,
+        closedBorder,
+    }: AddressProperties): void {
+        this.addressService
+            .getAddresses(query, searchLayers, closedBorder)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((res) => (this.addressList = res));
+    }
+
+    public getAddressData(address: string): void {
+        this.addressService
+            .getAddressInfo(address)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((res) => (this.addressData = res));
+    }
 
     ngOnDestroy(): void {
         this.destroy$.next();
