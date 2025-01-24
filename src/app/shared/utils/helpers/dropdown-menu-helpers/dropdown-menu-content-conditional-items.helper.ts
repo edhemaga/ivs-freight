@@ -59,6 +59,18 @@ export class DropdownMenuContentConditionalItemsHelper {
         ];
     }
 
+    // fuel transaction
+    static getFuelTransactionModifierItems(
+        isAutomaticTransaction: boolean
+    ): Partial<DropdownMenuItem>[] {
+        return [
+            {
+                title: DropdownMenuStringEnum.DELETE,
+                isDisabled: isAutomaticTransaction,
+            },
+        ];
+    }
+
     // repair
     static getRepairModifierItems(
         isTruckRepair: boolean

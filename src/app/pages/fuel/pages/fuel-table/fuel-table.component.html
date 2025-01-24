@@ -81,7 +81,7 @@
                     [address]="latlong.address"
                     [rating]="{
                         up: latlong?.upRatingCount,
-                        down: latlong?.downRatingCount
+                        down: latlong?.downRatingCount,
                     }"
                     [type]="'fuelStop'"
                     (bodyActions)="onTableBodyActions($event)"
@@ -90,19 +90,10 @@
                         display:
                             locationFilterOn && latlong?.isShown == false
                                 ? 'none'
-                                : 'block'
+                                : 'block',
                     }"
                 ></app-ta-map-list-card>
             </app-ta-map-list>
-
-            <!-- <app-ta-maps
-                #mapsComponent
-                [_viewData]="[]"
-                [mapType]="'fuelStop'"
-                (callDropDownAction)="onTableBodyActions($event)"
-                (updateMapList)="updateMapList($event)"
-                (selectMarker)="selectItem($event)"
-            ></app-ta-maps> -->
         </div>
     </ng-container>
 </div>

@@ -45,6 +45,9 @@ export enum DropdownMenuStringEnum {
     RESET_PASSWORD = 'Reset Password',
     RESEND_INVITATION = 'Resend Invitation',
     INVITATION_SENT = 'Invitation Sent',
+    ALL_TRANSACTIONS = 'All Transactions',
+    SUGGEST_EDIT = 'Suggest Edit',
+    ADD_TRANSACTION = 'Add Transaction',
 
     // types
     EDIT_LOAD_TYPE = 'edit-load',
@@ -91,6 +94,9 @@ export enum DropdownMenuStringEnum {
     RESET_PASSWORD_TYPE = 'reset-password',
     RESEND_INVITATION_TYPE = 'resend-invitation',
     INVITATION_SENT_TYPE = 'invitation-sent',
+    ALL_TRANSACTIONS_TYPE = 'all-transactions',
+    SUGGEST_EDIT_TYPE = 'suggest-edit',
+    ADD_TRANSACTION_TYPE = 'add-transaction',
 
     // table types
     ACCOUNT = 'account',

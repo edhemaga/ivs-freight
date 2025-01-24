@@ -57,7 +57,7 @@ import {
 } from 'appcoretruckassist';
 import { FuelTransactionListResponse } from 'appcoretruckassist';
 import { TableColumnConfig } from '@shared/models/table-models/table-column-config.model';
-import { DropdownItem } from '@shared/models/card-models/card-table-data.model';
+import { DropdownMenuItem } from '@ca-shared/components/ca-dropdown-menu/models';
 import { IFuelTableData } from '@pages/fuel/pages/fuel-table/models/fuel-table-data.model';
 import { AvatarColors } from '@shared/models';
 import { SortTypes } from '@shared/models/sort-types.model';
@@ -95,7 +95,6 @@ import { DropdownMenuContentHelper } from '@shared/utils/helpers';
 export class FuelTableComponent implements OnInit, AfterViewInit, OnDestroy {
     @ViewChild('mapsComponent', { static: false }) public mapsComponent: any;
 
-    public fuelTableData: any[] = [];
     public tableOptions: any = {};
     public tableData: any[] = [];
     public viewData: any[] = [];
@@ -586,7 +585,8 @@ export class FuelTableComponent implements OnInit, AfterViewInit, OnDestroy {
             this.viewData = [];
         }
 
-        this.fuelTableData = this.viewData;
+        console.log('td', td);
+        console.log(' this.viewData', this.viewData);
     }
 
     private mapFuelTransactionsData(data: FuelTransactionResponse) {
@@ -604,6 +604,7 @@ export class FuelTableComponent implements OnInit, AfterViewInit, OnDestroy {
             gallon,
             pricePerGallon,
         } = data || {};
+
         const { avatarFile, firstName, lastName, id } = driver || {};
         const { truckNumber } = truck || {};
         const { cardNumber } = fuelCard || {};
@@ -687,10 +688,7 @@ export class FuelTableComponent implements OnInit, AfterViewInit, OnDestroy {
             ),
             isIntegratedFuelTransaction:
                 fuelTransactionTypeId !== eFuelTransactionType.Manual,
-            tableDropdownContent: {
-                hasContent: true,
-                content: this.getFuelTransactionDropdownContent(false),
-            },
+            tableDropdownContent: this.getFuelTransactionDropdownContent(false),
         };
     }
 
@@ -784,24 +782,32 @@ export class FuelTableComponent implements OnInit, AfterViewInit, OnDestroy {
                       TableStringEnum.DATE_FORMAT
                   )
                 : null,
-            tableDropdownContent: {
-                hasContent: true,
-                content: this.getFuelStopDropdownContent(),
-            },
+            tableDropdownContent: this.getFuelStopDropdownContent(
+                false,
+                favourite,
+                isClosed
+            ),
         };
     }
 
     private getFuelTransactionDropdownContent(
         isAutomaticTransaction: boolean
-    ): DropdownItem[] {
+    ): DropdownMenuItem[] {
         return DropdownMenuContentHelper.getFuelTransactionDropdownContent(
             isAutomaticTransaction
         );
     }
 
-    private getFuelStopDropdownContent(): DropdownItem[] {
-        // TODO
-        return DropdownMenuContentHelper.getFuelStopDropdownContent();
+    private getFuelStopDropdownContent(
+        isCentralised: boolean,
+        isPinned: boolean,
+        isOpenBusiness: boolean
+    ): DropdownMenuItem[] {
+        return DropdownMenuContentHelper.getFuelStopDropdownContent(
+            isCentralised,
+            isPinned,
+            isOpenBusiness
+        );
     }
 
     onToolBarAction(event: any) {

@@ -108,6 +108,95 @@ export class DropdownMenuContentHelper {
         return [sharedItems[0], ...conditionalItems, sharedItems[1]];
     }
 
+    // fuel transaction
+    static getFuelTransactionDropdownContent(
+        isAutomaticTransaction: boolean
+    ): DropdownMenuItem[] {
+        // modifier items
+        const modifierItems =
+            DropdownMenuContentConditionalItemsHelper.getFuelTransactionModifierItems(
+                isAutomaticTransaction
+            );
+
+        // requested items
+        const requestedConditionalItems = [
+            DropdownMenuStringEnum.ALL_TRANSACTIONS,
+        ];
+
+        const requestedSharedItems = [
+            DropdownMenuStringEnum.EDIT,
+            DropdownMenuStringEnum.SHARE,
+            DropdownMenuStringEnum.PRINT,
+            DropdownMenuStringEnum.DELETE,
+        ];
+
+        // items
+        const conditionalItems =
+            DropdownMenuContentConditionalItemsHelper.getConditionalItems(
+                requestedConditionalItems,
+                false
+            );
+
+        const sharedItems =
+            DropdownMenuContentConditionalItemsHelper.getConditionalItems(
+                requestedSharedItems,
+                true,
+                modifierItems
+            );
+
+        return [sharedItems[0], ...conditionalItems, ...sharedItems.slice(1)];
+    }
+
+    // fuel stop
+    static getFuelStopDropdownContent(
+        isCentralised: boolean,
+        isPinned: boolean,
+        isOpenBusiness: boolean
+    ): DropdownMenuItem[] {
+        /*  // modifier items
+         const modifierItems =
+         DropdownMenuContentConditionalItemsHelper.getFuelTransactionModifierItems(
+             isAutomaticTransaction
+         ); */
+
+        // requested items
+        const requestedConditionalItems = [
+            isCentralised && DropdownMenuStringEnum.SUGGEST_EDIT,
+            DropdownMenuStringEnum.ADD_TRANSACTION,
+        ];
+
+        const requestedSharedItems = [
+            !isCentralised && DropdownMenuStringEnum.EDIT,
+            DropdownMenuStringEnum.VIEW_DETAILS,
+            isPinned
+                ? DropdownMenuStringEnum.UNMARK_FAVORITE
+                : DropdownMenuStringEnum.MARK_AS_FAVORITE,
+            DropdownMenuStringEnum.SHARE,
+            DropdownMenuStringEnum.PRINT,
+            isOpenBusiness
+                ? DropdownMenuStringEnum.CLOSE_BUSINESS
+                : DropdownMenuStringEnum.OPEN_BUSINESS,
+            DropdownMenuStringEnum.DELETE,
+        ];
+
+        // items
+        const conditionalItems =
+            DropdownMenuContentConditionalItemsHelper.getConditionalItems(
+                requestedConditionalItems,
+                false /* ,
+             modifierItems */
+            );
+
+        const sharedItems =
+            DropdownMenuContentConditionalItemsHelper.getConditionalItems(
+                requestedSharedItems,
+                true /* ,
+             modifierItems */
+            );
+
+        return [sharedItems[0], ...conditionalItems, ...sharedItems.slice(1)];
+    }
+
     // pm
     static getPMDropdownContent(): DropdownMenuItem[] {
         // requested items
@@ -802,89 +891,6 @@ export class DropdownMenuContentHelper {
                 svgClass: TableStringEnum.DELETE,
             },
         ];
-    }
-
-    // fuel transaction
-    static getFuelTransactionDropdownContent(
-        isAutomaticTransaction: boolean
-    ): any[] {
-        return [
-            {
-                title: TableStringEnum.EDIT_2,
-                name: TableStringEnum.EDIT,
-                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Edit.svg',
-                svgStyle: {
-                    width: 18,
-                    height: 18,
-                },
-                hasBorder: true,
-                svgClass: TableStringEnum.REGULAR,
-            },
-            {
-                title: TableStringEnum.VIEW_DETAILS_2,
-                name: TableStringEnum.VIEW_DETAILS,
-                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Information.svg',
-                svgStyle: {
-                    width: 18,
-                    height: 18,
-                },
-                svgClass: TableStringEnum.REGULAR,
-                tableListDropdownContentStyle: {
-                    'margin-bottom.px': 4,
-                },
-            },
-            {
-                title: 'All Transactions',
-                name: 'all-transactions',
-                svgUrl: 'assets/svg/common/ic_truck.svg',
-                svgStyle: {
-                    width: 18,
-                    height: 18,
-                },
-                svgClass: TableStringEnum.REGULAR,
-                hasBorder: true,
-            },
-            // {
-            //     title: TableStringEnum.SHARE_2,
-            //     name: TableStringEnum.SHARE,
-            //     svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Share.svg',
-            //     svgStyle: {
-            //         width: 18,
-            //         height: 18,
-            //     },
-            //     svgClass: TableStringEnum.REGULAR,
-            //     tableListDropdownContentStyle: {
-            //         'margin-bottom.px': 4,
-            //     },
-            // },
-            // {
-            //     title: TableStringEnum.PRINT_2,
-            //     name: TableStringEnum.PRINT,
-            //     svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Print.svg',
-            //     svgStyle: {
-            //         width: 18,
-            //         height: 18,
-            //     },
-            //     svgClass: TableStringEnum.REGULAR,
-            //     hasBorder: true,
-            // },
-            {
-                title: TableStringEnum.DELETE_2,
-                name: TableStringEnum.DELETE_ITEM,
-                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Delete.svg',
-                svgStyle: {
-                    width: 18,
-                    height: 18,
-                },
-                svgClass: TableStringEnum.DELETE,
-                isDisabled: isAutomaticTransaction,
-            },
-        ];
-    }
-
-    // fuel stop
-    static getFuelStopDropdownContent(): any[] {
-        return [];
     }
 
     // broker

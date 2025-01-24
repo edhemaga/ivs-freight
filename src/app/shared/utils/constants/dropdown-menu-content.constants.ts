@@ -228,6 +228,28 @@ export class DropdownMenuContentConstants {
             hasBorder: true,
         },
 
+        // fuel
+        [DropdownMenuStringEnum.ALL_TRANSACTIONS]: {
+            title: DropdownMenuStringEnum.ALL_TRANSACTIONS,
+            type: DropdownMenuStringEnum.ALL_TRANSACTIONS_TYPE,
+            svgUrl: 'assets/svg/common/ic_truck.svg',
+            svgClass: DropdownMenuStringEnum.REGULAR_SVG_CLASS,
+            hasBorder: true,
+        },
+        [DropdownMenuStringEnum.SUGGEST_EDIT]: {
+            title: DropdownMenuStringEnum.SUGGEST_EDIT,
+            type: DropdownMenuStringEnum.SUGGEST_EDIT_TYPE,
+            svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Edit.svg',
+            svgClass: DropdownMenuStringEnum.REGULAR_SVG_CLASS,
+            hasBorder: true,
+        },
+        [DropdownMenuStringEnum.ADD_TRANSACTION]: {
+            title: DropdownMenuStringEnum.ADD_TRANSACTION,
+            type: DropdownMenuStringEnum.ADD_TRANSACTION_TYPE,
+            svgUrl: 'assets/svg/common/ic_plus.svg',
+            svgClass: DropdownMenuStringEnum.ACTIVATE_SVG_CLASS,
+        },
+
         // pm
         [DropdownMenuStringEnum.CONFIGURE]: {
             title: DropdownMenuStringEnum.CONFIGURE,
