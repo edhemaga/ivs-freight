@@ -12,7 +12,7 @@ import { ModalService } from '@shared/services/modal.service';
 import { TruckassistTableService } from '@shared/services/truckassist-table.service';
 
 // store
-import * as LoadActions from '@pages/load/store/actions/load.action';
+import * as LoadActions from '@pages/load/state/actions/load.action';
 
 // enums
 import { eLoadStatusType } from '@pages/load/pages/load-table/enums/index';

@@ -14,7 +14,7 @@ import {
 } from '@angular/forms';
 
 // store
-import { LoadMinimalListQuery } from '@pages/load/state/load-details-state/load-minimal-list-state/load-details-minimal.query';
+import { LoadMinimalListQuery } from '@pages/load/state_old/load-details-state/load-minimal-list-state/load-details-minimal.query';
 
 // services
 import { DetailsPageService } from '@shared/services/details-page.service';
