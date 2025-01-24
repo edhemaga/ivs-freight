@@ -1853,7 +1853,6 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
         { query, searchLayers, closedBorder }: AddressProperties,
         addressListType: string
     ): void {
-        //leave this any for now
         this.addressService
             .getAddresses(query, searchLayers, closedBorder)
             .pipe(takeUntil(this.destroy$))
