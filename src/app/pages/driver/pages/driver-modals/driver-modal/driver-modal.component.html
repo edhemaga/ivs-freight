@@ -4,7 +4,7 @@
     [leftHeaderTemplate]="leftModalContent"
     [footerTemplate]="footerTemplate"
     [customClass]="'modal-container-M'"
-    > 
+>
     <div class="new-modal" origin>
         <!-- Tabs -->
 
@@ -128,7 +128,7 @@
 
                         <div class="row last-row">
                             <div class="col-10">
-                                <app-ta-input-address-dropdown
+                                <app-ca-input-address-dropdown
                                     formControlName="address"
                                     [inputConfig]="{
                                         name: 'Address',
@@ -143,8 +143,12 @@
                                     }"
                                     [placeholderType]="'longAddress'"
                                     [activeAddress]="selectedAddress"
+                                    [receivedAddressList]="addressList"
+                                    [receivedAddressData]="addressData"
                                     (selectedAddress)="onHandleAddress($event)"
-                                ></app-ta-input-address-dropdown>
+                                    (sentAddressData)="onAddressChange($event)"
+                                    (sentAddressValue)="getAddressData($event)"
+                                ></app-ca-input-address-dropdown>
                             </div>
 
                             <div class="col-2">
@@ -1299,7 +1303,6 @@
             </div>
         </form>
     </div>
-
 </app-ca-modal>
 
 <ng-template #rightModalContent>
@@ -1338,7 +1341,7 @@
 <ng-template #leftModalContent>
     @if (driverFullName) {
         <div class="payroll-number text-color-white text-size-14 ta-font-bold">
-            {{ driverFullName}}
+            {{ driverFullName }}
         </div>
     }
 </ng-template>
@@ -1365,7 +1368,11 @@
                 <button
                     class="modal-save-btn ta-font-bold"
                     (click)="onModalAction(taModalActionEnums.SAVE)"
-                    [class.valid]="driverForm.valid && isFormDirty && isEachOffDutyLocationRowValid"
+                    [class.valid]="
+                        driverForm.valid &&
+                        isFormDirty &&
+                        isEachOffDutyLocationRowValid
+                    "
                 >
                     Save Changes
                 </button>
@@ -1373,7 +1380,11 @@
         } @else {
             <button
                 class="ta-font-bold modal-save-btn modal-save-btn-add-new mr-12"
-                [class.valid]="driverForm.valid && isFormDirty && isEachOffDutyLocationRowValid"
+                [class.valid]="
+                    driverForm.valid &&
+                    isFormDirty &&
+                    isEachOffDutyLocationRowValid
+                "
                 (click)="onModalAction(taModalActionEnums.SAVE_AND_ADD_NEW)"
             >
                 Save and Add New
@@ -1381,7 +1392,11 @@
             <button
                 class="modal-save-btn ta-font-bold"
                 (click)="onModalAction(taModalActionEnums.SAVE)"
-                [class.valid]="driverForm.valid && isFormDirty && isEachOffDutyLocationRowValid"
+                [class.valid]="
+                    driverForm.valid &&
+                    isFormDirty &&
+                    isEachOffDutyLocationRowValid
+                "
             >
                 Save
             </button>
