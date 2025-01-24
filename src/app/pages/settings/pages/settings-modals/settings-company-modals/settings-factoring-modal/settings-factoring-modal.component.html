@@ -1,138 +1,219 @@
-<app-ta-modal
+<app-ca-modal
     [modalTitle]="
         editData?.type !== 'edit'
-            ? 'New Factoring Company'
+            ? 'Add Factoring Company'
             : 'Edit Factoring Company'
     "
-    [editData]="editData"
-    [editName]="editData?.id"
-    [isModalValid]="factoringForm.valid && isFormDirty"
-    [isBluredNotice]="isBluredNotice"
-    (action)="onModalAction($event)"
+    [rightHeaderTemplate]="rightModalContent"
+    [leftHeaderTemplate]="leftModalContent"
+    [footerTemplate]="footerTemplate"
 >
-    <form
-        origin
-        [formGroup]="factoringForm"
-        class="form-container form-container-without-mb"
-    >
-        <div class="row">
-            <div class="col-12">
-                <app-ta-input
-                    formControlName="name"
-                    [inputConfig]="{
-                        name: 'name',
-                        type: 'text',
-                        label: 'Company Name',
-                        isRequired: true,
-                        textTransform: 'uppercase',
-                        autoFocus: editData?.type !== 'edit'
-                    }"
-                    (blurInput)="onCompanyNameInputBlur()"
-                ></app-ta-input>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-5">
-                <app-ta-input
-                    formControlName="phone"
-                    [inputConfig]="{
-                        name: 'phone',
-                        type: 'text',
-                        label: 'Phone',
-                        placeholderIcon: 'phone',
-                        mask: '(000) 000-0000',
-                        maxLength: 14
-                    }"
-                ></app-ta-input>
-            </div>
-            <div class="col-7">
-                <app-ta-input
-                    formControlName="email"
-                    [inputConfig]="{
-                        name: 'email',
-                        type: 'text',
-                        label: 'Email',
-                        placeholderIcon: 'email',
-                        minLength: 5,
-                        maxLength: 64,
-                        textTransform: 'lowercase'
-                    }"
-                ></app-ta-input>
-            </div>
-        </div>
-        <div class="row last-row">
-            <div class="col-10">
-                <app-ta-input-address-dropdown
-                    formControlName="address"
-                    [inputConfig]="{
-                        name: 'address',
-                        type: 'text',
-                        label: 'Address, City, State Zip',
-                        placeholderIcon: 'address',
-                        textTransform: 'capitalize',
-                        dropdownWidthClass: 'w-col-376',
-                        minLength: 6,
-                        maxLength: 256
-                    }"
-                    [placeholderType]="'longAddress'"
-                    [activeAddress]="selectedAddress"
-                    (selectedAddress)="onHandleAddress($event)"
-                ></app-ta-input-address-dropdown>
-            </div>
-            <div class="col-2">
-                <app-ta-input
-                    formControlName="addressUnit"
-                    [inputConfig]="{
-                        name: 'addressUnit',
-                        type: 'text',
-                        label: 'Unit #',
-                        textTransform: 'uppercase',
-                        minLength: 1,
-                        maxLength: 10
-                    }"
-                ></app-ta-input>
-            </div>
-        </div>
-        <app-ta-custom-card
-            [cardName]="'Notice of Assignment'"
-            [disableAnimation]="disableCardAnimation"
-            [disabledCard]="
-                (factoringForm.get('name')?.invalid || 
-                factoringForm.get('name').value === 'null') &&
-                factoringForm.get('noticeOfAssigment').invalid
-            "
-            [isCardOpen]="
-                factoringForm.get('noticeOfAssigment').value &&
-                factoringForm.get('noticeOfAssigment').value !== 'null' &&
-                !isInitialCompanyNameSet
-                    ? true
-                    : false
-            "
+    <div class="new-modal" origin>
+        <div class="divider divider--dark divider--small"></div>
+        <form
+            [formGroup]="factoringForm"
+            class="form-container form-container-without-mb"
         >
-            <div class="wisywygholder">
-                <app-ta-notice-of-asignment
-                    formControlName="noticeOfAssigment"
-                    #noticeOfAssignment
-                    [settings]="wysiwigSettings"
-                    [sidebarWidth]="1000"
-                    (noticeFocus)="onNoticeFocus($event)"
-                ></app-ta-notice-of-asignment>
+            <div class="row">
+                <div class="col-12">
+                    <app-ca-input
+                        formControlName="name"
+                        [inputConfig]="{
+                            name: 'name',
+                            type: 'text',
+                            label: 'Company Name',
+                            isRequired: true,
+                            textTransform: 'uppercase',
+                            autoFocus: editData?.type !== 'edit',
+                        }"
+                        (blurInput)="onCompanyNameInputBlur()"
+                    ></app-ca-input>
+                </div>
             </div>
-        </app-ta-custom-card>
-        <app-ta-input-note
-            formControlName="note"
-            [isVisibleNote]="
-                factoringForm.get('note').value &&
-                factoringForm.get('note').value !== 'null'
-                    ? factoringForm.get('note').value
-                    : false
-            "
-            [note]="
-                factoringForm.get('note').value &&
-                factoringForm.get('note').value !== 'null'
-                    ? factoringForm.get('note').value
-                    : ''
-            "
-        ></app-ta-input-note>
-    </form>
-</app-ta-modal>
+            <div class="row">
+                <div class="col-5">
+                    <app-ca-input
+                        formControlName="phone"
+                        [inputConfig]="{
+                            name: 'phone',
+                            type: 'text',
+                            label: 'Phone',
+                            placeholderIcon: 'phone',
+                            mask: '(000) 000-0000',
+                            maxLength: 14,
+                        }"
+                    ></app-ca-input>
+                </div>
+                <div class="col-7">
+                    <app-ca-input
+                        formControlName="email"
+                        [inputConfig]="{
+                            name: 'email',
+                            type: 'text',
+                            label: 'Email',
+                            placeholderIcon: 'email',
+                            minLength: 5,
+                            maxLength: 64,
+                            textTransform: 'lowercase',
+                        }"
+                    ></app-ca-input>
+                </div>
+            </div>
+            <div class="row last-row">
+                <div class="col-10">
+                    <app-ta-input-address-dropdown
+                        formControlName="address"
+                        [inputConfig]="{
+                            name: 'address',
+                            type: 'text',
+                            label: 'Address, City, State Zip',
+                            placeholderIcon: 'address',
+                            textTransform: 'capitalize',
+                            dropdownWidthClass: 'w-col-376',
+                            minLength: 6,
+                            maxLength: 256,
+                        }"
+                        [placeholderType]="'longAddress'"
+                        [activeAddress]="selectedAddress"
+                        (selectedAddress)="onHandleAddress($event)"
+                    ></app-ta-input-address-dropdown>
+                </div>
+                <div class="col-2">
+                    <app-ca-input
+                        formControlName="addressUnit"
+                        [inputConfig]="{
+                            name: 'addressUnit',
+                            type: 'text',
+                            label: 'Unit #',
+                            textTransform: 'uppercase',
+                            minLength: 1,
+                            maxLength: 10,
+                        }"
+                    ></app-ca-input>
+                </div>
+            </div>
+            <app-ta-custom-card
+                [cardName]="'Notice of Assignment'"
+                [disableAnimation]="disableCardAnimation"
+                [disabledCard]="
+                    (factoringForm.get('name')?.invalid ||
+                        factoringForm.get('name').value === 'null') &&
+                    factoringForm.get('noticeOfAssigment').invalid
+                "
+                [isCardOpen]="
+                    factoringForm.get('noticeOfAssigment').value &&
+                    factoringForm.get('noticeOfAssigment').value !== 'null' &&
+                    !isInitialCompanyNameSet
+                        ? true
+                        : false
+                "
+                [hasSmallDivider]="true"
+                [hasDarkDivider]="true"
+            >
+                <div class="wisywygholder">
+                    <app-ta-notice-of-asignment
+                        formControlName="noticeOfAssigment"
+                        #noticeOfAssignment
+                        [settings]="wysiwigSettings"
+                        [sidebarWidth]="1000"
+                        (noticeFocus)="onNoticeFocus($event)"
+                    ></app-ta-notice-of-asignment>
+                </div>
+            </app-ta-custom-card>
+
+            <div class="divider divider--dark divider--small"></div>
+
+            <app-ca-input-note
+                formControlName="note"
+                [isVisibleNote]="
+                    factoringForm.get('note').value &&
+                    factoringForm.get('note').value !== 'null'
+                        ? factoringForm.get('note').value
+                        : false
+                "
+                [note]="
+                    factoringForm.get('note').value &&
+                    factoringForm.get('note').value !== 'null'
+                        ? factoringForm.get('note').value
+                        : ''
+                "
+            ></app-ca-input-note>
+        </form>
+    </div>
+</app-ca-modal>
+
+<ng-template #rightModalContent>
+    @if (editData?.type === 'edit') {
+        <div
+            ngbTooltip
+            mainTooltip="Added    {{
+                company?.createdAt | formatDateP
+            }} <br> Edited    {{ company?.updatedAt | formatDateP }}"
+            tooltipBackground="#424242"
+            position="bottom"
+            class="modal-date-logo"
+        >
+            <svg-icon
+                [src]="svgRoutes.DATE_ICON"
+                class="modal-buttons"
+            ></svg-icon>
+        </div>
+        <div class="modal-date-border"></div>
+    }
+    <div
+        class="d-flex justify-content-center align-items-center modal-close-container"
+        ngbTooltip
+        mainTooltip="Cancel"
+        tooltipBackground="#424242"
+        position="bottom"
+        (click)="onModalAction(taModalActionEnums.CLOSE)"
+    >
+        <svg-icon
+            class="modal-close svg-size-14 svg-fill-muted modal-buttons"
+            [src]="svgRoutes.CLOSE_ICON"
+        ></svg-icon>
+    </div>
+</ng-template>
+
+<ng-template #leftModalContent>
+    @if (factoringForm.get('name').value) {
+        <div class="payroll-number text-color-white text-size-14 ta-font-bold">
+            {{ factoringForm.get('name').value }}
+        </div>
+    }
+</ng-template>
+
+<ng-template #footerTemplate>
+    <div class="modal-footer modal-footer-payroll">
+        <div class="divider divider--dark divider--small m-0"></div>
+        @if (editData.type === 'edit') {
+            <div class="d-flex justify-content-between w-full">
+                <div>
+                    <app-ca-modal-button
+                        text="Delete"
+                        [size]="modalButtonSize.SMALL"
+                        (click)="onModalAction(taModalActionEnums.DELETE)"
+                        [type]="modalButtonType.SECONDARY_NEGATIVE"
+                    ></app-ca-modal-button>
+                </div>
+                <app-ca-modal-button
+                    text="Save Changes"
+                    [isValid]="factoringForm.valid && isFormDirty"
+                    (click)="onModalAction(taModalActionEnums.SAVE)"
+                    [isSpinnerShown]="activeAction === taModalActionEnums.SAVE"
+                    [type]="modalButtonType.PRIMARY_POSITIVE"
+                >
+                </app-ca-modal-button>
+            </div>
+        } @else {
+            <app-ca-modal-button
+                text="Save"
+                [isValid]="factoringForm.valid && isFormDirty"
+                (click)="onModalAction(taModalActionEnums.SAVE)"
+                [isSpinnerShown]="activeAction === taModalActionEnums.SAVE"
+                [type]="modalButtonType.PRIMARY_POSITIVE"
+            >
+            </app-ca-modal-button>
+        }
+    </div>
+</ng-template>
