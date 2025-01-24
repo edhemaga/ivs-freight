@@ -22,10 +22,13 @@
             [columns]="columns"
             [options]="tableOptions"
             [selectedTab]="selectedTab"
-            (bodyActions)="onTableBodyActions($event)"
+            (tableBodyActions)="
+                handleDropdownMenuActions($event, dropdownMenuStringEnum.USER)
+            "
             [tableData]="tableData"
         ></app-ta-table-body>
     </ng-container>
+
     <ng-container *ngIf="activeViewMode === 'Card'">
         <div class="elements">
             <app-user-card

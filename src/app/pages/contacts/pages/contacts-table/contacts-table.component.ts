@@ -33,6 +33,7 @@ import { DropdownMenuContentHelper } from '@shared/utils/helpers';
 // enums
 import { ContactsStringEnum } from '@pages/contacts/enums/contacts-string.enum';
 import { TableStringEnum } from '@shared/enums/table-string.enum';
+import { DropdownMenuStringEnum } from '@shared/enums';
 
 // constants
 import { ContactsCardData } from '@pages/contacts/utils/constants/contacts-card-data.constants';
@@ -63,6 +64,8 @@ export class ContactsTableComponent
     implements OnInit, AfterViewInit, OnDestroy
 {
     public destroy$ = new Subject<void>();
+
+    public dropdownMenuStringEnum = DropdownMenuStringEnum;
 
     public resizeObserver: ResizeObserver;
     public activeViewMode: string = TableStringEnum.LIST;

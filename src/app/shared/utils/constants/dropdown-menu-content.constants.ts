@@ -152,6 +152,26 @@ export class DropdownMenuContentConstants {
             svgUrl: '/assets/svg/common/confirm-circle_white.svg',
             svgClass: DropdownMenuStringEnum.OPEN_BUSINESS_SVG_CLASS,
         },
+        [DropdownMenuStringEnum.SEND_MESSAGE]: {
+            title: DropdownMenuStringEnum.SEND_MESSAGE,
+            type: DropdownMenuStringEnum.SEND_MESSAGE_TYPE,
+            svgUrl: 'assets/svg/chat/direct-message-icon.svg',
+            svgClass: DropdownMenuStringEnum.REGULAR_SVG_CLASS,
+        },
+        [DropdownMenuStringEnum.RESEND_INVITATION]: {
+            title: DropdownMenuStringEnum.RESEND_INVITATION,
+            type: DropdownMenuStringEnum.RESEND_INVITATION_TYPE,
+            svgUrl: 'assets/svg/common/ic_resend-invitation.svg',
+            svgClass: DropdownMenuStringEnum.REGULAR_SVG_CLASS,
+            hasBorder: true,
+        },
+        [DropdownMenuStringEnum.INVITATION_SENT]: {
+            title: DropdownMenuStringEnum.INVITATION_SENT,
+            type: DropdownMenuStringEnum.INVITATION_SENT_TYPE,
+            svgUrl: 'assets/svg/applicant/confirm-circle.svg',
+            svgClass: DropdownMenuStringEnum.OPEN_BUSINESS_SVG_CLASS,
+            hasBorder: true,
+        },
     };
 
     // conditional items
@@ -249,12 +269,6 @@ export class DropdownMenuContentConstants {
         },
 
         // driver
-        [DropdownMenuStringEnum.SEND_MESSAGE]: {
-            title: DropdownMenuStringEnum.SEND_MESSAGE,
-            type: DropdownMenuStringEnum.SEND_MESSAGE_TYPE,
-            svgUrl: 'assets/svg/chat/direct-message-icon.svg',
-            svgClass: DropdownMenuStringEnum.REGULAR_SVG_CLASS,
-        },
         [DropdownMenuStringEnum.ADD_NEW_DRIVER]: {
             title: DropdownMenuStringEnum.ADD_NEW,
             type: DropdownMenuStringEnum.ADD_NEW_TYPE,
@@ -273,6 +287,14 @@ export class DropdownMenuContentConstants {
                     DropdownMenuStringEnum.REQUEST
                 ],
             hasBorder: true,
+        },
+
+        // user
+        [DropdownMenuStringEnum.RESET_PASSWORD]: {
+            title: DropdownMenuStringEnum.RESET_PASSWORD,
+            type: DropdownMenuStringEnum.RESET_PASSWORD_TYPE,
+            svgUrl: 'assets/svg/common/ic_password.svg',
+            svgClass: DropdownMenuStringEnum.REGULAR_SVG_CLASS,
         },
 
         // payroll

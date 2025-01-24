@@ -19,6 +19,7 @@ import {
     TableCardBodyActions,
 } from '@shared/models';
 import { PMTrailerUnitResponse, PMTruckUnitResponse } from 'appcoretruckassist';
+import { UserModalComponent } from '@pages/user/pages/user-modal/user-modal.component';
 
 export class DropdownMenuActionsHelper {
     static createDropdownMenuActionsEmitEvent<T extends { id?: number }>(
@@ -48,6 +49,7 @@ export class DropdownMenuActionsHelper {
             [DropdownMenuStringEnum.OWNER]: OwnerModalComponent,
             [DropdownMenuStringEnum.REPAIR]: RepairOrderModalComponent,
             [DropdownMenuStringEnum.REPAIR_SHOP]: RepairShopModalComponent,
+            [DropdownMenuStringEnum.USER]: UserModalComponent,
         };
 
         return modalComponentMap[tableType];

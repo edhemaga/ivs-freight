@@ -85,6 +85,8 @@ export class PmTableComponent
 {
     private destroy$ = new Subject<void>();
 
+    public dropdownMenuStringEnum = DropdownMenuStringEnum;
+
     private resizeObserver: ResizeObserver;
     public activeViewMode: string = TableStringEnum.LIST;
 

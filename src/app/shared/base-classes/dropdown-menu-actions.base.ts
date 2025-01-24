@@ -34,9 +34,6 @@ export abstract class DropdownMenuActionsBase {
         event: TableCardBodyActions<T>,
         tableType: string
     ): void {
-        console.log('event', event);
-        console.log('tableType', tableType);
-
         const { id, data, type } = event;
 
         switch (type) {
@@ -62,6 +59,10 @@ export abstract class DropdownMenuActionsBase {
                 break;
             case DropdownMenuStringEnum.PRINT_TYPE:
                 this.handlePrintAction();
+
+                break;
+            case DropdownMenuStringEnum.SEND_MESSAGE_TYPE:
+                this.handleSendMessageAction();
 
                 break;
             case DropdownMenuStringEnum.ADD_REPAIR_BILL_TYPE:
@@ -104,6 +105,7 @@ export abstract class DropdownMenuActionsBase {
             {
                 ...event,
                 template: tableType,
+                image: true,
             }
         );
     }
@@ -120,6 +122,8 @@ export abstract class DropdownMenuActionsBase {
     private handleShareAction(): void {}
 
     private handlePrintAction(): void {}
+
+    private handleSendMessageAction(): void {}
 
     private handleAddRepairBillAction(
         data: PMTruckUnitResponse | PMTrailerUnitResponse | RepairShopResponse,

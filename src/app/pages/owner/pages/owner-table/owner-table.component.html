@@ -22,7 +22,9 @@
             [columns]="columns"
             [options]="tableOptions"
             [selectedTab]="selectedTab"
-            (tableBodyActions)="handleDropdownMenuActions($event, 'owner')"
+            (tableBodyActions)="
+                handleDropdownMenuActions($event, dropdownMenuStringEnum.OWNER)
+            "
             (saveValueNote)="saveValueNote($event)"
             [tableData]="tableData"
         ></app-ta-table-body>

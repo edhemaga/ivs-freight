@@ -27,7 +27,9 @@
             (tableBodyActions)="
                 handleDropdownMenuActions(
                     $event,
-                    selectedTab !== 'repair_shop' ? 'repair' : 'repair-shop'
+                    selectedTab !== 'repair_shop'
+                        ? dropdownMenuStringEnum.REPAIR
+                        : dropdownMenuStringEnum.REPAIR_SHOP
                 )
             "
         ></app-ta-table-body>

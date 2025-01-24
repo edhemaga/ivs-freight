@@ -125,6 +125,59 @@ export class DropdownMenuContentConditionalItemsHelper {
         ];
     }
 
+    // user
+    static getUserModifierItems(
+        isActiveUser: boolean,
+        isOwnerUser: boolean,
+        isUserStatusInvited: boolean,
+        isUserStatusExpired: boolean,
+        isInvitationSent: boolean
+    ): Partial<DropdownMenuItem>[] {
+        return [
+            {
+                title: DropdownMenuStringEnum.EDIT,
+                isDisabled: !isActiveUser,
+            },
+            {
+                title: DropdownMenuStringEnum.SEND_MESSAGE,
+                isDisabled:
+                    isUserStatusInvited ||
+                    isUserStatusExpired ||
+                    isInvitationSent ||
+                    !isActiveUser,
+            },
+            {
+                title: DropdownMenuStringEnum.RESET_PASSWORD,
+                isDisabled:
+                    isUserStatusInvited ||
+                    isUserStatusExpired ||
+                    isInvitationSent ||
+                    !isActiveUser,
+            },
+            {
+                title: DropdownMenuStringEnum.RESEND_INVITATION,
+                isDisabled:
+                    !isUserStatusExpired || !isActiveUser || isOwnerUser,
+            },
+            {
+                title: DropdownMenuStringEnum.INVITATION_SENT,
+                isDisabled: isInvitationSent,
+            },
+            {
+                title: DropdownMenuStringEnum.DEACTIVATE,
+                isDisabled:
+                    isUserStatusInvited ||
+                    isUserStatusExpired ||
+                    isInvitationSent ||
+                    isOwnerUser,
+            },
+            {
+                title: DropdownMenuStringEnum.DELETE,
+                isDisabled: isOwnerUser,
+            },
+        ];
+    }
+
     // driver
     static getDriverModifierItems(
         isActiveDriver: boolean
@@ -134,10 +187,10 @@ export class DropdownMenuContentConditionalItemsHelper {
                 title: DropdownMenuStringEnum.EDIT,
                 isDisabled: !isActiveDriver,
             },
-            {
+            /*  {
                 title: DropdownMenuStringEnum.SEND_MESSAGE,
                 isDisabled: !isActiveDriver,
-            },
+            }, */
             {
                 title: DropdownMenuStringEnum.ADD_NEW,
                 isDisabled: !isActiveDriver,

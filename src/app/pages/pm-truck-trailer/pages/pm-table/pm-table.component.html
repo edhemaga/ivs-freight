@@ -22,7 +22,9 @@
             [columns]="columns"
             [options]="tableOptions"
             [selectedTab]="selectedTab"
-            (tableBodyActions)="handleDropdownMenuActions($event, 'pm')"
+            (tableBodyActions)="
+                handleDropdownMenuActions($event, dropdownMenuStringEnum.PM)
+            "
             [tableData]="tableData"
         ></app-ta-table-body>
     </ng-container>

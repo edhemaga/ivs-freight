@@ -68,6 +68,8 @@ export class AccountTableComponent
 {
     public destroy$ = new Subject<void>();
 
+    public dropdownMenuStringEnum = DropdownMenuStringEnum;
+
     public resizeObserver: ResizeObserver;
     public activeViewMode: string = TableActionsStringEnum.LIST;
 

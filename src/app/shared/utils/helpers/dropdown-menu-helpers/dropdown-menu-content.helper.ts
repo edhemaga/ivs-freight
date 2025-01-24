@@ -463,7 +463,7 @@ export class DropdownMenuContentHelper {
 
         // requested items
         const requestedConditionalItems = [
-            DropdownMenuStringEnum.SEND_MESSAGE,
+            /*      DropdownMenuStringEnum.SEND_MESSAGE, */
             DropdownMenuStringEnum.ADD_NEW_DRIVER,
             DropdownMenuStringEnum.REQUEST,
         ];
@@ -1231,95 +1231,63 @@ export class DropdownMenuContentHelper {
         selectedTab: string,
         userStatus: string,
         isInvitationSent: boolean
-    ): any[] {
+    ): DropdownMenuItem[] {
+        const isActiveUser = selectedTab === DropdownMenuStringEnum.ACTIVE;
+        const isOwnerUser = userStatus === TableStringEnum.OWNER;
+
+        const isUserStatusInvited =
+            userStatus === DropdownMenuStringEnum.INVITED;
+        const isUserStatusExpired =
+            userStatus === DropdownMenuStringEnum.EXPIRED;
+
+        // modifier items
+        const modifierItems =
+            DropdownMenuContentConditionalItemsHelper.getUserModifierItems(
+                isActiveUser,
+                isOwnerUser,
+                isUserStatusInvited,
+                isUserStatusExpired,
+                isInvitationSent
+            );
+
+        // requested items
+        const requestedConditionalItems = [
+            DropdownMenuStringEnum.RESET_PASSWORD,
+        ];
+
+        const requestedSharedItems = [
+            DropdownMenuStringEnum.EDIT,
+            DropdownMenuStringEnum.SEND_MESSAGE,
+            isInvitationSent
+                ? DropdownMenuStringEnum.INVITATION_SENT
+                : DropdownMenuStringEnum.RESEND_INVITATION,
+            DropdownMenuStringEnum.SHARE,
+            DropdownMenuStringEnum.PRINT,
+            isActiveUser
+                ? DropdownMenuStringEnum.DEACTIVATE
+                : DropdownMenuStringEnum.ACTIVATE,
+            DropdownMenuStringEnum.DELETE,
+        ];
+
+        // items
+        const conditionalItems =
+            DropdownMenuContentConditionalItemsHelper.getConditionalItems(
+                requestedConditionalItems,
+                false,
+                modifierItems
+            );
+
+        const sharedItems =
+            DropdownMenuContentConditionalItemsHelper.getConditionalItems(
+                requestedSharedItems,
+                true,
+                modifierItems
+            );
+
         return [
-            {
-                title: TableStringEnum.EDIT_2,
-                name: TableStringEnum.EDIT,
-                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Edit.svg',
-                svgStyle: {
-                    width: 18,
-                    height: 18,
-                },
-                svgClass: TableStringEnum.REGULAR,
-                hasBorder: true,
-                isDisabled: selectedTab === TableStringEnum.INACTIVE,
-            },
-            {
-                title: 'Reset Password',
-                name: TableStringEnum.RESET_PASSWORD,
-                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Password.svg',
-                svgStyle: {
-                    width: 18,
-                    height: 18,
-                },
-                tableListDropdownContentStyle: {
-                    'margin-bottom.px': 4,
-                },
-                svgClass: TableStringEnum.REGULAR,
-                isDisabled:
-                    userStatus === TableStringEnum.EXPIRED ||
-                    userStatus === TableStringEnum.INVITED ||
-                    selectedTab === TableStringEnum.INACTIVE,
-            },
-            {
-                title: isInvitationSent
-                    ? 'Invitation Sent'
-                    : 'Resend Invitation',
-                name: TableStringEnum.RESEND_INVITATION,
-                svgUrl: isInvitationSent
-                    ? 'assets/svg/applicant/confirm-circle.svg'
-                    : 'assets/svg/truckassist-table/new-list-dropdown/Email - Invitation.svg',
-                svgStyle: {
-                    width: 18,
-                    height: 18,
-                },
-                svgClass: isInvitationSent
-                    ? TableStringEnum.OPEN_BUSINESS_2
-                    : TableStringEnum.REGULAR,
-                isDisabled:
-                    (userStatus !== TableStringEnum.EXPIRED &&
-                        userStatus !== TableStringEnum.INVITED) ||
-                    isInvitationSent,
-                hasBorder: true,
-            },
-            {
-                title:
-                    selectedTab === TableStringEnum.ACTIVE
-                        ? TableStringEnum.DEACTIVATE_2
-                        : TableStringEnum.ACTIVATE_2,
-                name:
-                    selectedTab === TableStringEnum.ACTIVE
-                        ? TableStringEnum.DEACTIVATE
-                        : TableStringEnum.ACTIVATE,
-                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Deactivate.svg',
-                svgStyle: {
-                    width: 18,
-                    height: 18,
-                },
-                tableListDropdownContentStyle: {
-                    'margin-bottom.px': 4,
-                },
-                svgClass:
-                    selectedTab === TableStringEnum.INACTIVE
-                        ? TableStringEnum.ACTIVATE
-                        : TableStringEnum.REGULAR,
-                isDisabled:
-                    userStatus === TableStringEnum.EXPIRED ||
-                    userStatus === TableStringEnum.INVITED ||
-                    userStatus === TableStringEnum.OWNER,
-            },
-            {
-                title: TableStringEnum.DELETE_2,
-                name: TableStringEnum.DELETE,
-                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Delete.svg',
-                svgStyle: {
-                    width: 18,
-                    height: 18,
-                },
-                isDisabled: userStatus === TableStringEnum.OWNER,
-                svgClass: TableStringEnum.DELETE,
-            },
+            ...sharedItems.slice(0, 2),
+            ...conditionalItems,
+            ...sharedItems.slice(2),
         ];
     }
 
