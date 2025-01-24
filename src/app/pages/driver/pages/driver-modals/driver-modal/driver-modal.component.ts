@@ -64,7 +64,6 @@ import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta
 import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-custom-card.component';
 import { TaTabSwitchComponent } from '@shared/components/ta-tab-switch/ta-tab-switch.component';
 import { ConfirmationModalComponent } from '@shared/components/ta-shared-modals/confirmation-modal/confirmation-modal.component';
-import { TaInputAddressDropdownComponent } from '@shared/components/ta-input-address-dropdown/ta-input-address-dropdown.component';
 import { TaCheckboxComponent } from '@shared/components/ta-checkbox/ta-checkbox.component';
 import { TaNgxSliderComponent } from '@shared/components/ta-ngx-slider/ta-ngx-slider.component';
 import { TaCheckboxCardComponent } from '@shared/components/ta-checkbox-card/ta-checkbox-card.component';
@@ -72,6 +71,7 @@ import { TaModalTableComponent } from '@shared/components/ta-modal-table/ta-moda
 import { OwnerModalComponent } from '@pages/owner/pages/owner-modal/owner-modal.component';
 import { ConfirmationActivationModalComponent } from '@shared/components/ta-shared-modals/confirmation-activation-modal/confirmation-activation-modal.component';
 import {
+    CaInputAddressDropdownComponent,
     CaInputComponent,
     CaInputDropdownComponent,
     CaInputNoteComponent,
@@ -101,6 +101,7 @@ import {
     GetDriverModalResponse,
     DriverDetailsOffDutyLocationResponse,
     PerMileEntity,
+    AddressResponse,
 } from 'appcoretruckassist';
 import { DropZoneConfig } from '@shared/components/ta-upload-files/models/dropzone-config.model';
 import { Tabs } from '@shared/models/tabs.model';
@@ -110,9 +111,12 @@ import { SoloTeamSelectedOptions } from '@pages/driver/pages/driver-modals/drive
 import { AddUpdateDriverPayrollProperties } from '@pages/driver/pages/driver-modals/driver-modal/models/add-update-driver-payroll-properties.model';
 import { PayrollDefaultValues } from '@pages/driver/pages/driver-modals/driver-modal/models/payroll-default-values.model';
 import { DriverModalEditData } from '@pages/driver/pages/driver-modals/driver-modal/models/driver-modal-edit-data.model';
+import { AddressProperties } from '@shared/components/ta-input-address-dropdown/models/address-properties';
+import { AddressListResponse } from '@ca-shared/models/address-list-response.model';
 
 // pipes
 import { NameInitialsPipe } from '@shared/pipes/name-initials.pipe';
+import { AddressService } from '@shared/services/address.service';
 
 // Svg routes
 import { SharedSvgRoutes } from '@shared/utils/svg-routes';
@@ -147,7 +151,7 @@ import { FormatDatePipe } from '@shared/pipes';
         TaAppTooltipV2Component,
         CaModalComponent,
         TaTabSwitchComponent,
-        TaInputAddressDropdownComponent,
+        CaInputAddressDropdownComponent,
         TaCustomCardComponent,
         TaCheckboxComponent,
         TaNgxSliderComponent,
@@ -243,6 +247,8 @@ export class DriverModalComponent implements OnInit, OnDestroy {
 
     // enums
     public modalTableTypeEnum = ModalTableTypeEnum;
+    public addressList: AddressListResponse;
+    public addressData: AddressResponse;
     public taModalActionEnums = TaModalActionEnums;
     public svgRoutes = SharedSvgRoutes;
 
@@ -259,6 +265,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
         private tagsService: EditTagsService,
         private confirmationActivationService: ConfirmationActivationService,
         private confirmationService: ConfirmationService,
+        private addressService: AddressService,
 
         // bootstrap
         private ngbActiveModal: NgbActiveModal,
@@ -2336,6 +2343,20 @@ export class DriverModalComponent implements OnInit, OnDestroy {
                     this.updateTags();
                 },
             });
+    }
+
+    public onAddressChange({ query, searchLayers, closedBorder }: AddressProperties): void {
+        this.addressService
+            .getAddresses(query, searchLayers, closedBorder)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((res) => (this.addressList = res));
+    }
+
+    public getAddressData(address: string): void {
+        this.addressService
+            .getAddressInfo(address)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((res) => (this.addressData = res));
     }
 
     ngOnDestroy(): void {
