@@ -48,111 +48,92 @@
         </div>
 
         @if (isNavigationHovered && isModalPanelOpen) {
-            <div class="modal-nav-content">
-                <p class="modal-nav-header ta-font-extra-bold top-header">
-                    GENERAL <span></span>
-                </p>
-                <div class="modal-nav-routes first-modal">
-                    @for (
-                        item of generalNavigationData;
-                        track item.id;
-                        let odd = $odd
-                    ) {
-                        <p
-                            class="ta-font-medium modal-item"
-                            (click)="onAction(item)"
-                        >
-                            @if (odd) {
+            <ng-container
+                [ngTemplateOutlet]="modalNavContentTemplate"
+                [ngTemplateOutletContext]="{
+                    title: 'GENERAL',
+                    items: generalNavigationData,
+                    isTopHeader: true,
+                }"
+            />
+
+            <ng-container
+                [ngTemplateOutlet]="modalNavContentTemplate"
+                [ngTemplateOutletContext]="{
+                    title: 'TOOLS',
+                    items: toolsNavigationData,
+                }"
+            />
+
+            <ng-container
+                [ngTemplateOutlet]="modalNavContentTemplate"
+                [ngTemplateOutletContext]="{
+                    title: 'REPAIR',
+                    items: repairNavigationData,
+                }"
+            />
+
+            <ng-container
+                [ngTemplateOutlet]="modalNavContentTemplate"
+                [ngTemplateOutletContext]="{
+                    title: 'FUEL',
+                    items: fuelNavigationData,
+                }"
+            />
+
+            <ng-container
+                [ngTemplateOutlet]="modalNavContentTemplate"
+                [ngTemplateOutletContext]="{
+                    title: 'SAFETY',
+                    items: safetyNavigationData,
+                }"
+            />
+
+            <ng-container
+                [ngTemplateOutlet]="modalNavContentTemplate"
+                [ngTemplateOutletContext]="{
+                    title: 'ACCOUNTING',
+                    items: accountingNavigationData,
+                }"
+            />
+
+            <ng-container
+                [ngTemplateOutlet]="modalNavContentTemplate"
+                [ngTemplateOutletContext]="{
+                    title: 'REQUEST',
+                    items: requestNavigationData,
+                }"
+            />
+
+            <ng-template
+                #modalNavContentTemplate
+                let-title="title"
+                let-items="items"
+                let-isTopHeader="isTopHeader"
+            >
+                <div class="modal-nav-content">
+                    <p
+                        class="modal-nav-header ta-font-extra-bold"
+                        [ngClass]="{
+                            'top-header': isTopHeader,
+                        }"
+                    >
+                        {{ title }} <span></span>
+                    </p>
+                    <div class="modal-nav-routes first-modal">
+                        @for (item of items; track item.id) {
+                            <p
+                                class="ta-font-medium modal-item"
+                                (click)="onAction(item)"
+                            >
                                 <span>
                                     {{ item.name }}
                                 </span>
-                            } @else {
-                                <span>
-                                    {{ item.name }}
-                                </span>
-                            }
-                        </p>
-                    }
+                            </p>
+                        }
+                    </div>
                 </div>
-            </div>
-
-            <div class="modal-nav-content">
-                <p class="modal-nav-header ta-font-extra-bold">
-                    TOOLS <span></span>
-                </p>
-                <div class="modal-nav-routes">
-                    @for (item of toolsNavigationData; track item.id) {
-                        <p class="ta-font-regular" (click)="onAction(item)">
-                            {{ item.name }}
-                        </p>
-                    }
-                </div>
-            </div>
-
-            <div class="modal-nav-content">
-                <p class="modal-nav-header ta-font-extra-bold">
-                    REPAIR <span></span>
-                </p>
-                <div class="modal-nav-routes">
-                    @for (item of repairNavigationData; track item.id) {
-                        <p class="ta-font-regular" (click)="onAction(item)">
-                            {{ item.name }}
-                        </p>
-                    }
-                </div>
-            </div>
-
-            <div class="modal-nav-content">
-                <p class="modal-nav-header ta-font-extra-bold">
-                    FUEL <span></span>
-                </p>
-                <div class="modal-nav-routes">
-                    @for (item of fuelNavigationData; track item.id) {
-                        <p class="ta-font-regular" (click)="onAction(item)">
-                            {{ item.name }}
-                        </p>
-                    }
-                </div>
-            </div>
-
-            <div class="modal-nav-content">
-                <p class="modal-nav-header ta-font-extra-bold">
-                    SAFETY <span></span>
-                </p>
-                <div class="modal-nav-routes">
-                    @for (item of safetyNavigationData; track item.id) {
-                        <p class="ta-font-regular" (click)="onAction(item)">
-                            {{ item.name }}
-                        </p>
-                    }
-                </div>
-            </div>
-
-            <div class="modal-nav-content">
-                <p class="modal-nav-header ta-font-extra-bold">
-                    ACCOUNTING <span></span>
-                </p>
-                <div class="modal-nav-routes">
-                    @for (item of accountingNavigationData; track item.id) {
-                        <p class="ta-font-regular" (click)="onAction(item)">
-                            {{ item.name }}
-                        </p>
-                    }
-                </div>
-            </div>
-
-            <div class="modal-nav-content">
-                <p class="modal-nav-header ta-font-extra-bold">
-                    REQUEST <span></span>
-                </p>
-                <div class="modal-nav-routes">
-                    @for (item of requestNavigationData; track item.id) {
-                        <p class="ta-font-regular" (click)="onAction(item)">
-                            {{ item.name }}
-                        </p>
-                    }
-                </div>
-            </div>
+            </ng-template>
         }
     </div>
 </div>
