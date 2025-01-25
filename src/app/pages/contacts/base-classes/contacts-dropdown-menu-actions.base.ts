@@ -51,6 +51,10 @@ export abstract class ContactsDropdownMenuActionsBase extends DropdownMenuAction
                 this.handleUpdateLabelAction(id, labelId);
 
                 break;
+            case DropdownMenuStringEnum.DELETE_TYPE:
+                this.handleContactDeleteAction(event, tableType);
+
+                break;
             default:
                 // call the parent class method to handle shared cases
                 super.handleSharedDropdownMenuActions(event, tableType);
@@ -92,5 +96,17 @@ export abstract class ContactsDropdownMenuActionsBase extends DropdownMenuAction
             .updateCompanyContact(newdata)
             .pipe(takeUntil(this.destroy$))
             .subscribe();
+    }
+
+    private handleContactDeleteAction<T extends CompanyContactResponse>(
+        event: TableCardBodyActions<T>,
+        tableType: string
+    ): void {
+        const adjustedEvent = {
+            ...event,
+            svg: true,
+        };
+
+        super.handleSharedDropdownMenuActions(adjustedEvent, tableType);
     }
 }

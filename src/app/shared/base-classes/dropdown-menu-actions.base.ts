@@ -8,7 +8,6 @@ import { ConfirmationActivationModalComponent } from '@shared/components/ta-shar
 
 // enums
 import { DropdownMenuStringEnum, TableStringEnum } from '@shared/enums';
-import { ConfirmationActivationStringEnum } from '@shared/components/ta-shared-modals/confirmation-activation-modal/enums/confirmation-activation-string.enum';
 
 // helpers
 import { DropdownMenuActionsHelper } from '@shared/utils/helpers/dropdown-menu-helpers';
@@ -105,7 +104,6 @@ export abstract class DropdownMenuActionsBase {
             {
                 ...event,
                 template: tableType,
-                image: true,
             }
         );
     }
@@ -156,29 +154,21 @@ export abstract class DropdownMenuActionsBase {
         );
     }
 
-    private handleOpenCloseBusinessAction<T extends RepairShopResponse>(
+    private handleOpenCloseBusinessAction<T extends { status?: number }>(
         event: TableCardBodyActions<T>
     ): void {
         const {
-            data: { status, name, address },
+            data: { status },
         } = event;
 
-        const adjustedEvent = {
-            ...event,
-            type: !!status ? TableStringEnum.CLOSE : TableStringEnum.OPEN,
-            template: TableStringEnum.INFO,
-            subType: TableStringEnum.REPAIR_SHOP,
-            subTypeStatus: TableStringEnum.BUSINESS,
-            tableType: ConfirmationActivationStringEnum.REPAIR_SHOP_TEXT,
-            modalTitle: name,
-            modalSecondTitle: address.address,
-        };
+        const type = status ? TableStringEnum.CLOSE : TableStringEnum.OPEN;
 
         this.modalService.openModal(
             ConfirmationActivationModalComponent,
             { size: TableStringEnum.SMALL },
             {
-                ...adjustedEvent,
+                ...event,
+                type,
             }
         );
     }

@@ -125,8 +125,8 @@ export abstract class UserDropdownMenuActionsBase extends DropdownMenuActionsBas
                 template: TableStringEnum.USER,
                 subType: TableStringEnum.USER,
                 type: !!deactivatedAt
-                    ? DropdownMenuStringEnum.ACTIVATE
-                    : DropdownMenuStringEnum.DEACTIVATE,
+                    ? DropdownMenuStringEnum.ACTIVATE_TYPE
+                    : DropdownMenuStringEnum.DEACTIVATE_TYPE,
                 tableType,
             }
         );

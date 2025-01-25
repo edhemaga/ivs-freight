@@ -54,6 +54,9 @@ export abstract class OwnerDropdownMenuActionsBase extends DropdownMenuActionsBa
         });
     }
 }
+
+// TODO V2
+
 /* this.modalService.openModal(
                 ConfirmationModalComponent,
                 { size: TableStringEnum.SMALL },
