@@ -67,14 +67,14 @@ export class DashboardPerformanceComponent implements OnInit, OnDestroy {
     private selectedPerformanceDataCount: number = 0;
     private maxPerformanceDataItemsSelected = 10;
 
-    // tabs
+    // Tabs
     public performanceTabs: DashboardTab[] = [];
     public currentActiveTab: DashboardTab;
 
     private selectedCustomPeriodRange: CustomPeriodRange;
     public clearCustomPeriodRangeValue: boolean = false;
 
-    // dropdown
+    // Dropdown
     public subPeriodDropdownList: DropdownListItem[] = [];
     public selectedSubPeriod: DropdownListItem;
     public selectedDropdownWidthSubPeriod: DropdownListItem;
@@ -82,10 +82,10 @@ export class DashboardPerformanceComponent implements OnInit, OnDestroy {
 
     private overallCompanyDuration: number;
 
-    // colors
+    // Colors
     public linePerformanceDataColors: LinePerformanceColorsPallete[] = [];
 
-    // charts
+    // Charts
     public linePerformanceChartConfig: IChartConfiguration =
         DashboardPerformanceChartsConfiguration.LINE_CHART_PERFORMANCE_CONFIG;
     public barPerformanceChartConfig: IChartConfiguration =
@@ -95,6 +95,9 @@ export class DashboardPerformanceComponent implements OnInit, OnDestroy {
     public intervalTooltipLabel: string[] = [];
 
     private originalLinePerformanceChartConfig: IChartConfiguration;
+
+    // Assets
+    public dashboardPerformanceIconRoutes = DashboardPerformanceIconRoutes;
 
     constructor(
         private formBuilder: UntypedFormBuilder,

@@ -55,13 +55,17 @@ import {
 } from '@shared/components/ta-input/validators/ta-input.regex-validations';
 
 // constants
-import { RepairOrderConfig, RepairOrderConstants } from '@pages/repair/pages/repair-modals/repair-order-modal/utils/constants';
+import {
+    RepairOrderConfig,
+    RepairOrderConstants,
+} from '@pages/repair/pages/repair-modals/repair-order-modal/utils/constants';
 
 // enums
 import { RepairOrderModalStringEnum } from '@pages/repair/pages/repair-modals/repair-order-modal/enums';
 import { TableStringEnum } from '@shared/enums/table-string.enum';
 import { ModalTableTypeEnum } from '@shared/enums/modal-table-type.enum';
 import { TaModalActionEnums } from '@shared/components/ta-modal/enums';
+import { DropdownMenuStringEnum } from '@shared/enums';
 
 // components
 import { RepairShopModalComponent } from '@pages/repair/pages/repair-modals/repair-shop-modal/repair-shop-modal.component';
@@ -140,7 +144,7 @@ import { SharedSvgRoutes } from '@shared/utils/svg-routes';
         // Pipe
         ActiveItemsPipe,
         FormatPhonePipe,
-        FormatDatePipe
+        FormatDatePipe,
     ],
 })
 export class RepairOrderModalComponent implements OnInit, OnDestroy {
@@ -218,7 +222,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
     public svgRoutes = SharedSvgRoutes;
     public taModalActionEnums = TaModalActionEnums;
 
-    // Const 
+    // Const
     public RepairOrderConfig = RepairOrderConfig;
 
     constructor(
@@ -335,11 +339,14 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
 
         if (
             !this.editData?.data ||
-            this.editData?.type === TableStringEnum.ADD_BILL
+            this.editData?.type === DropdownMenuStringEnum.ADD_REPAIR_BILL_SHOP
         ) {
             this.onTabChange(this.unitTabs[isTrailer ? 1 : 0]);
 
-            if (this.editData?.type === TableStringEnum.ADD_BILL) {
+            if (
+                this.editData?.type ===
+                DropdownMenuStringEnum.ADD_REPAIR_BILL_SHOP
+            ) {
                 this.selectedRepairShop = { id: this.editData?.data?.id };
 
                 this.getRepairShopById();
@@ -349,7 +356,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
         if (this.editData?.preSelectedUnit)
             setTimeout(() => {
                 this.loadPreSelected();
-            }, 2000);
+            }, 1000);
     }
 
     private checkIsFinishOrder(): void {
@@ -765,7 +772,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
     public addRepairItemOnInit(): void {
         if (
             !this.editData?.data ||
-            this.editData.type === TableStringEnum.ADD_BILL
+            this.editData.type === DropdownMenuStringEnum.ADD_REPAIR_BILL_SHOP
         )
             setTimeout(() => {
                 this.addRepairItem();
@@ -1580,10 +1587,9 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
             selectedUnit,
             RepairOrderModalStringEnum.REPAIR_UNIT
         );
+
         this.repairOrderForm.patchValue({
-            unit: selectedUnit?.truckNumber
-                ? selectedUnit.truckNumber
-                : selectedUnit?.trailerNumber,
+            unit: selectedUnit?.truckNumber ?? selectedUnit?.trailerNumber,
         });
     }
 

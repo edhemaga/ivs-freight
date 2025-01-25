@@ -16,6 +16,8 @@ import {
     ViewEncapsulation,
 } from '@angular/core';
 
+import { AngularSvgIconModule } from 'angular-svg-icon';
+
 import { skip, Subject, takeUntil, tap } from 'rxjs';
 
 // services
@@ -24,6 +26,8 @@ import { ModalService } from '@shared/services/modal.service';
 import { TrailerService } from '@shared/services/trailer.service';
 import { VinDecoderService } from '@shared/services/vin-decoder.service';
 import { FormService } from '@shared/services/form.service';
+import { ConfirmationActivationService } from '@shared/components/ta-shared-modals/confirmation-activation-modal/services/confirmation-activation.service';
+import { ConfirmationService } from '@shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
 
 // animations
 import { tabsModalAnimation } from '@shared/animations/tabs-modal.animation';
@@ -45,20 +49,25 @@ import {
 // components
 import { OwnerModalComponent } from '@pages/owner/pages/owner-modal/owner-modal.component';
 import { RepairOrderModalComponent } from '@pages/repair/pages/repair-modals/repair-order-modal/repair-order-modal.component';
-import { TaModalComponent } from '@shared/components/ta-modal/ta-modal.component';
 import { TaTabSwitchComponent } from '@shared/components/ta-tab-switch/ta-tab-switch.component';
 import { TaCheckboxCardComponent } from '@shared/components/ta-checkbox-card/ta-checkbox-card.component';
 import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-custom-card.component';
 import { TaUploadFilesComponent } from '@shared/components/ta-upload-files/ta-upload-files.component';
-import { TaInputNoteComponent } from '@shared/components/ta-input-note/ta-input-note.component';
 import { TaCheckboxComponent } from '@shared/components/ta-checkbox/ta-checkbox.component';
-import { CaInputComponent, CaInputDropdownComponent } from 'ca-components';
+import {
+    CaInputComponent,
+    CaInputDropdownComponent,
+    CaInputNoteComponent,
+    CaModalComponent,
+} from 'ca-components';
+import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
+import { ConfirmationActivationModalComponent } from '@shared/components/ta-shared-modals/confirmation-activation-modal/confirmation-activation-modal.component';
 
 // helpers
 import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calculations.helper';
 
 // bootstrap
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbActiveModal, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 
 // models
 import { GetTrailerModalResponse, VinDecodeResponse } from 'appcoretruckassist';
@@ -68,6 +77,16 @@ import { TrailerModalConfig } from '@pages/trailer/pages/trailer-modal/utils/con
 // Enums
 import { TrailerFormFieldEnum } from '@pages/trailer/pages/trailer-modal/enums';
 import { TableStringEnum } from '@shared/enums/table-string.enum';
+import { ActionTypesEnum } from '@pages/repair/pages/repair-modals/repair-shop-modal/enums';
+import { TaModalActionEnums } from '@shared/components/ta-modal/enums';
+import { ContactsModalStringEnum } from '@pages/contacts/pages/contacts-modal/enums';
+
+// Pipes
+import { FormatDatePipe } from '@shared/pipes';
+
+// Svg routes
+import { SharedSvgRoutes } from '@shared/utils/svg-routes';
+import { ConfirmationModalComponent } from '@shared/components/ta-shared-modals/confirmation-modal/confirmation-modal.component';
 
 @Component({
     selector: 'app-trailer-modal',
@@ -82,17 +101,23 @@ import { TableStringEnum } from '@shared/enums/table-string.enum';
         CommonModule,
         FormsModule,
         ReactiveFormsModule,
+        AngularSvgIconModule,
+        NgbTooltipModule,
 
         // components
-        TaModalComponent,
+        CaModalComponent,
         TaTabSwitchComponent,
         TaCheckboxCardComponent,
         TaCustomCardComponent,
         TaUploadFilesComponent,
-        TaInputNoteComponent,
+        CaInputNoteComponent,
         TaCheckboxComponent,
         CaInputComponent,
         CaInputDropdownComponent,
+        TaAppTooltipV2Component,
+
+        // Pipes
+        FormatDatePipe,
     ],
 })
 export class TrailerModalComponent implements OnInit, OnDestroy {
@@ -152,6 +177,9 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
     public addNewAfterSave: boolean = false;
 
     private storedfhwaExpValue: any = null;
+    public svgRoutes = SharedSvgRoutes;
+    public actionTypesEnum = ActionTypesEnum;
+    public taModalActionEnums = TaModalActionEnums;
 
     constructor(
         private formBuilder: UntypedFormBuilder,
@@ -160,7 +188,9 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
         private modalService: ModalService,
         private ngbActiveModal: NgbActiveModal,
         private vinDecoderService: VinDecoderService,
-        private formService: FormService
+        private formService: FormService,
+        private confirmationService: ConfirmationService,
+        private confirmationActivationService: ConfirmationActivationService
     ) {}
 
     get volumenTrailers(): string[] {
@@ -275,6 +305,25 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
         this.getTrailerDropdowns();
         this.isCompanyOwned();
         this.vinDecoder();
+        this.confirmationActivationSubscribe();
+        this.confirmationDeactivationSubscribe();
+    }
+
+    private confirmationDeactivationSubscribe(): void {
+        this.confirmationActivationService.getConfirmationActivationData$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe(() => {
+                this.ngbActiveModal?.close();
+            });
+    }
+
+    private confirmationActivationSubscribe(): void {
+        this.confirmationService.confirmationData$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((res) => {
+                if (res.action !== TableStringEnum.CLOSE)
+                    this.ngbActiveModal?.close();
+            });
     }
 
     private createForm() {
@@ -345,8 +394,8 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
         );
     }
 
-    public onModalAction(data: { action: string; bool: boolean }): void {
-        if (data.action === 'close') {
+    public onModalAction(action: string): void {
+        if (action === TaModalActionEnums.CLOSE) {
             if (this.editData?.canOpenModal) {
                 switch (this.editData?.key) {
                     case 'repair-modal': {
@@ -364,75 +413,78 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
                         break;
                     }
                 }
+            } else {
+                this.ngbActiveModal.close();
             }
             return;
         } else {
-            if (data.action === 'deactivate' && this.editData) {
-                this.trailerModalService
-                    .changeTrailerStatus(
-                        this.editData.id,
-                        this.editData.tabSelected
-                    )
-                    .pipe(takeUntil(this.destroy$))
-                    .subscribe({
-                        next: (res: HttpResponseBase) => {
-                            if (res.status === 200 || res.status === 204) {
-                                this.trailerStatus = !this.trailerStatus;
-
-                                this.modalService.changeModalStatus({
-                                    name: 'deactivate',
-                                    status: this.trailerStatus,
-                                });
-                            }
-                        },
-                        error: () => {},
-                    });
+            if (action === TaModalActionEnums.DEACTIVATE && this.editData) {
+                this.modalService.openModal(
+                    ConfirmationActivationModalComponent,
+                    { size: TableStringEnum.SMALL },
+                    {
+                        ...this.trailerForm.value,
+                        array: [
+                            {
+                                ...this.editData.data,
+                                data: {
+                                    ...this.trailerForm.value.value,
+                                    number: this.trailerForm.value
+                                        .trailerNumber,
+                                    avatar: `assets/svg/common/trailer/${this.editData.data?.trailerType?.logoName}`,
+                                },
+                                modalTitle:
+                                    this.trailerForm.value.trailerNumber,
+                                modalSecondTitle: this.trailerForm.value.vin,
+                            },
+                        ],
+                        template: TableStringEnum.TRAILER_2,
+                        subType: TableStringEnum.TRAILERS,
+                        type: TableStringEnum.DEACTIVATE,
+                        tableType: TableStringEnum.TRAILER_2,
+                        modalTitle:
+                            ' Unit ' + this.trailerForm.value.trailerNumber,
+                        modalSecondTitle: this.trailerForm.value.vin,
+                        svg: true,
+                    }
+                );
             }
             // Save And Add New
-            else if (data.action === 'save and add new') {
+            else if (action === TaModalActionEnums.SAVE_AND_ADD_NEW) {
                 if (this.trailerForm.invalid || !this.isFormDirty) {
                     this.inputService.markInvalid(this.trailerForm);
                     return;
                 }
                 this.addTrailer();
-                this.modalService.setModalSpinner({
-                    action: 'save and add new',
-                    status: true,
-                    close: false,
-                });
                 this.addNewAfterSave = true;
             } else {
                 // Save & Update
-                if (data.action === 'save') {
+                if (action === TaModalActionEnums.SAVE) {
                     if (this.trailerForm.invalid || !this.isFormDirty) {
                         this.inputService.markInvalid(this.trailerForm);
                         return;
                     }
                     if (this.editData?.id) {
                         this.updateTrailer(this.editData.id);
-                        this.modalService.setModalSpinner({
-                            action: null,
-                            status: true,
-                            close: false,
-                        });
                     } else {
                         this.addTrailer();
-                        this.modalService.setModalSpinner({
-                            action: null,
-                            status: true,
-                            close: false,
-                        });
                     }
                 }
 
                 // Delete
-                if (data.action === 'delete' && this.editData) {
-                    this.deleteTrailerById(this.editData.id);
-                    this.modalService.setModalSpinner({
-                        action: 'delete',
-                        status: true,
-                        close: false,
-                    });
+                if (action === TaModalActionEnums.DELETE && this.editData) {
+                    if (this.editData) {
+                        this.modalService.openModal(
+                            ConfirmationModalComponent,
+                            { size: TableStringEnum.SMALL },
+                            {
+                                ...this.editData,
+                                template: TableStringEnum.TRAILER_2,
+                                type: TableStringEnum.DELETE,
+                                svg: true,
+                            }
+                        );
+                    }
                 }
             }
         }
@@ -602,74 +654,16 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
                         }
                     }
 
+                    this.ngbActiveModal.close();
                     if (this.addNewAfterSave) {
-                        this.formService.resetForm(this.trailerForm);
-
-                        this.selectedTrailerType = null;
-                        this.selectedTrailerMake = null;
-                        this.selectedColor = null;
-                        this.selectedTrailerLength = null;
-                        this.selectedOwner = null;
-                        this.selectedSuspension = null;
-                        this.selectedTireSize = null;
-                        this.selectedDoorType = null;
-                        this.selectedReeferType = null;
-                        this.isLiftgate = false;
-                        this.tabChange({ id: 1 });
-
-                        this.trailerForm
-                            .get('fhwaExp')
-                            .patchValue(this.storedfhwaExpValue);
-
-                        this.trailerForm.get('companyOwned').patchValue(true);
-                        this.inputService.changeValidators(
-                            this.trailerForm.get('ownerId'),
-                            false
-                        );
-
-                        this.documents = [];
-                        this.filesForDelete = [];
-                        this.fileModified = false;
-
-                        this.modalService.setModalSpinner({
-                            action: 'save and add new',
-                            status: false,
-                            close: false,
-                        });
-                        this.addNewAfterSave = false;
-                    } else {
-                        this.modalService.setModalSpinner({
-                            action: null,
-                            status: true,
-                            close: true,
+                        this.modalService.openModal(TrailerModalComponent, {
+                            size: ContactsModalStringEnum.SMALL,
                         });
                     }
                 },
                 error: () => {
                     this.modalService.setModalSpinner({
                         action: null,
-                        status: false,
-                        close: false,
-                    });
-                },
-            });
-    }
-
-    private deleteTrailerById(id: number): void {
-        this.trailerModalService
-            .deleteTrailerById(id, this.editData.tabSelected)
-            .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: () => {
-                    this.modalService.setModalSpinner({
-                        action: 'delete',
-                        status: true,
-                        close: true,
-                    });
-                },
-                error: () => {
-                    this.modalService.setModalSpinner({
-                        action: 'delete',
                         status: false,
                         close: false,
                     });

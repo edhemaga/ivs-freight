@@ -547,7 +547,7 @@
 
             &.active {
                 opacity: 1;
-                overflow: hidden;
+                overflow: visible;
                 transition: height 0.3s ease-in-out, opacity 0.3s ease-in-out;
                 height: 100%;
             }

@@ -8,4 +8,5 @@ export interface TruckDetailsConfig {
     length?: number;
     status?: boolean;
     isExpired?: boolean;
+    businessOpen?: boolean;
 }

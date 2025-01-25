@@ -17,5 +17,6 @@ export interface LoadTemplateListResponse {
     pendingCount?: number;
     activeCount?: number;
     closedCount?: number;
+    templateCount?: number;
 }
 
