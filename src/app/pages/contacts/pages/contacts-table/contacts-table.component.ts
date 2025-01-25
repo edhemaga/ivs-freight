@@ -81,10 +81,6 @@ export class ContactsTableComponent
     public columns: TableColumnConfig[] = [];
 
     // cards
-    public cardTitle: string = ContactsCardData.cardTitle;
-    public page: string = ContactsCardData.page;
-    public rows: number = ContactsCardData.rows;
-
     public sendDataToCardsFront: CardRows[] =
         ContactsCardData.displayRowsFrontContacts;
     public sendDataToCardsBack: CardRows[] =

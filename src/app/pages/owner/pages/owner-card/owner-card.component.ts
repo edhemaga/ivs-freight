@@ -44,11 +44,8 @@ export class OwnerCardComponent
     }
 
     // card body endpoints
-    @Input() cardTitle: string;
-    @Input() rows: number[];
     @Input() displayRowsFront: CardRows[];
     @Input() displayRowsBack: CardRows[];
-    @Input() cardTitleLink: string;
 
     @Output() saveValueNote: EventEmitter<{ value: string; id: number }> =
         new EventEmitter<{ value: string; id: number }>();

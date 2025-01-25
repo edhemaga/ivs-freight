@@ -85,10 +85,6 @@ export class OwnerTableComponent
     public columns: TableColumnConfig[] = [];
 
     // cards
-    public cardTitle: string = OwnerConfiguration.cardTitle;
-    public page: string = OwnerConfiguration.page;
-    public rows: number = OwnerConfiguration.rows;
-
     public sendDataToCardsFront: CardRows[];
     public sendDataToCardsBack: CardRows[];
 
@@ -541,8 +537,6 @@ export class OwnerTableComponent
 
                     const filteredCardRowsBack = res.back_side.filter(Boolean);
 
-                    this.cardTitle = TableStringEnum.NAME;
-
                     this.displayRowsFront = filteredCardRowsFront;
 
                     this.displayRowsBack = filteredCardRowsBack;
@@ -559,8 +553,6 @@ export class OwnerTableComponent
                         res.front_side.filter(Boolean);
 
                     const filteredCardRowsBack = res.back_side.filter(Boolean);
-
-                    this.cardTitle = TableStringEnum.NAME;
 
                     this.displayRowsFront = filteredCardRowsFront;
 

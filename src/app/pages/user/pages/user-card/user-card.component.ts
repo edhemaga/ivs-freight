@@ -38,11 +38,8 @@ export class UserCardComponent
     }
 
     // card body endpoints
-    @Input() cardTitle: string;
-    @Input() rows: number[];
     @Input() displayRowsFront: CardRows[];
     @Input() displayRowsBack: CardRows[];
-    @Input() cardTitleLink: string;
 
     public destroy$ = new Subject<void>();
 

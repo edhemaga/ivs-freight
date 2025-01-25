@@ -106,10 +106,6 @@ export class PmTableComponent
     // cards
     public displayRows$: Observable<any>;
 
-    public cardTitle: string = PmCardDataConfigConstants.CARD_TITLE;
-    public page: string = PmCardDataConfigConstants.PAGE;
-    public rows: number = PmCardDataConfigConstants.ROWS;
-
     public displayRowsFront: CardRows[] =
         PmCardDataConfigConstants.DISPLAY_ROWS_FRONT_ACTIVE;
     public displayRowsBack: CardRows[] =

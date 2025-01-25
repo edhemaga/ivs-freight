@@ -137,10 +137,6 @@ export class RepairTableComponent
     public columns: TableColumnConfig[] = [];
 
     // cards
-    public cardTitle: string = TableStringEnum.TRUCK_TRUCK_NUMBER;
-    public page: string = RepairCardConfigConstants.page;
-    public rows: number = RepairCardConfigConstants.rows;
-
     public displayRows$: Observable<any>;
 
     public sendDataToCardsFront: CardRows[];
@@ -1217,24 +1213,18 @@ export class RepairTableComponent
     public updateCardView(): void {
         switch (this.selectedTab) {
             case TableStringEnum.ACTIVE:
-                this.cardTitle = TableStringEnum.INVOICE;
-
                 this.displayRows$ = this.store.pipe(
                     select(selectActiveTabCards)
                 );
 
                 break;
             case TableStringEnum.INACTIVE:
-                this.cardTitle = TableStringEnum.INVOICE;
-
                 this.displayRows$ = this.store.pipe(
                     select(selectInactiveTabCards)
                 );
 
                 break;
             case TableStringEnum.REPAIR_SHOP:
-                this.cardTitle = TableStringEnum.NAME;
-
                 this.displayRows$ = this.store.pipe(
                     select(selectRepairShopTabCards)
                 );

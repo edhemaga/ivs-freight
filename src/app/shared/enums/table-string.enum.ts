@@ -301,7 +301,6 @@ export enum TableStringEnum {
     REPAIR_TRUCK = 'REPAIR_TRUCK',
     REPAIR_TRAILER = 'REPAIR_TRAILER',
     REPAIR_TABLE_VIEW = 'Repair-table-view',
-    TRUCK_TRUCK_NUMBER = 'truck.truckNumber',
     TRAILER_TRAILER_NUMBER = 'trailer.trailerNumber',
     NAME = 'name',
     SERVICE_TYPES = 'serviceTypes',

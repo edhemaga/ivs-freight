@@ -33,12 +33,8 @@
         <div class="elements">
             <app-user-card
                 [viewData]="viewData"
-                [rows]="rows"
-                [cardTitle]="cardTitle"
                 [displayRowsFront]="(displayRows$ | async).displayRowsFront"
                 [displayRowsBack]="(displayRows$ | async).displayRowsBack"
-                [page]="page"
-                [selectedTab]="selectedTab"
             ></app-user-card>
         </div>
     </ng-container>

@@ -52,7 +52,6 @@ import { ActivityTimePipe } from '@shared/pipes/activity-time.pipe';
 // constants
 import { UserTableConfig } from '@pages/user/pages/user-table/utils/constants/user-table-config.constants';
 import { UserTableConfiguration } from '@pages/user/pages/user-table/utils/constants';
-import { DisplayUserConfiguration } from '@pages/user/utils/constants/user-card-data.constants';
 
 // enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
@@ -99,10 +98,6 @@ export class UserTableComponent
     public columns: TableColumnConfig[];
 
     // cards
-    public cardTitle: string = DisplayUserConfiguration.cardTitle;
-    public page: string = DisplayUserConfiguration.page;
-    public rows: number = DisplayUserConfiguration.rows;
-
     public displayRowsFront: CardRows[] =
         UserTableConfiguration.displayRowsActiveFront;
     public displayRowsBack: CardRows[] =
@@ -947,16 +942,18 @@ export class UserTableComponent
                 this.displayRows$ = this.store.pipe(
                     select(selectActiveTabCards)
                 );
-                break;
 
+                break;
             case TableStringEnum.INACTIVE:
                 this.displayRows$ = this.store.pipe(
                     select(selectInactiveTabCards)
                 );
+
                 break;
             default:
                 break;
         }
+
         this.userCardsModalService.updateTab(this.selectedTab);
     }
 

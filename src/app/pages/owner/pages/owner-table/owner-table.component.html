@@ -29,14 +29,12 @@
             [tableData]="tableData"
         ></app-ta-table-body>
     </ng-container>
+
     <ng-container *ngIf="activeViewMode === 'Card'">
         <app-owner-card
             [viewData]="viewData"
-            [rows]="rows"
-            [cardTitle]="cardTitle"
             [displayRowsFront]="displayRowsFront"
             [displayRowsBack]="displayRowsBack"
-            [page]="page"
             (saveValueNote)="saveValueNote($event)"
         >
         </app-owner-card>

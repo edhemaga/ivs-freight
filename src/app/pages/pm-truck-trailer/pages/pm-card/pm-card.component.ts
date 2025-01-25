@@ -39,11 +39,8 @@ export class PmCardComponent
     @Input() selectedTab: string;
 
     // card body endpoints
-    @Input() cardTitle: string;
-    @Input() rows: number[];
     @Input() displayRowsFront: CardRows[];
     @Input() displayRowsBack: CardRows[];
-    @Input() cardTitleLink: string;
 
     private destroy$ = new Subject<void>();
 
