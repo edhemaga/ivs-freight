@@ -71,6 +71,34 @@ export class DropdownMenuContentConditionalItemsHelper {
         ];
     }
 
+    // fuel stop
+    static getFuelStopModifierItems(
+        isOpenBusiness: boolean
+    ): Partial<DropdownMenuItem>[] {
+        return [
+            {
+                title: DropdownMenuStringEnum.EDIT,
+                isDisabled: !isOpenBusiness,
+            },
+            {
+                title: DropdownMenuStringEnum.SUGGEST_EDIT,
+                isDisabled: !isOpenBusiness,
+            },
+            {
+                title: DropdownMenuStringEnum.ADD_TRANSACTION,
+                isDisabled: !isOpenBusiness,
+            },
+            {
+                title: DropdownMenuStringEnum.MARK_AS_FAVORITE,
+                isDisabled: !isOpenBusiness,
+            },
+            {
+                title: DropdownMenuStringEnum.UNMARK_FAVORITE,
+                isDisabled: !isOpenBusiness,
+            },
+        ];
+    }
+
     // repair
     static getRepairModifierItems(
         isTruckRepair: boolean

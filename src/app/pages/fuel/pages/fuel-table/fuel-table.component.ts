@@ -584,9 +584,6 @@ export class FuelTableComponent implements OnInit, AfterViewInit, OnDestroy {
         } else {
             this.viewData = [];
         }
-
-        console.log('td', td);
-        console.log(' this.viewData', this.viewData);
     }
 
     private mapFuelTransactionsData(data: FuelTransactionResponse) {
@@ -783,9 +780,9 @@ export class FuelTableComponent implements OnInit, AfterViewInit, OnDestroy {
                   )
                 : null,
             tableDropdownContent: this.getFuelStopDropdownContent(
-                false,
+                true,
                 favourite,
-                isClosed
+                !isClosed
             ),
         };
     }

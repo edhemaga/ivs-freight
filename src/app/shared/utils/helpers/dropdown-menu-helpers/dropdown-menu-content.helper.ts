@@ -153,20 +153,21 @@ export class DropdownMenuContentHelper {
         isPinned: boolean,
         isOpenBusiness: boolean
     ): DropdownMenuItem[] {
-        /*  // modifier items
-         const modifierItems =
-         DropdownMenuContentConditionalItemsHelper.getFuelTransactionModifierItems(
-             isAutomaticTransaction
-         ); */
+        // modifier items
+        const modifierItems =
+            DropdownMenuContentConditionalItemsHelper.getFuelStopModifierItems(
+                isOpenBusiness
+            );
 
         // requested items
         const requestedConditionalItems = [
-            isCentralised && DropdownMenuStringEnum.SUGGEST_EDIT,
             DropdownMenuStringEnum.ADD_TRANSACTION,
         ];
 
         const requestedSharedItems = [
-            !isCentralised && DropdownMenuStringEnum.EDIT,
+            isCentralised
+                ? DropdownMenuStringEnum.SUGGEST_EDIT
+                : DropdownMenuStringEnum.EDIT,
             DropdownMenuStringEnum.VIEW_DETAILS,
             isPinned
                 ? DropdownMenuStringEnum.UNMARK_FAVORITE
@@ -183,18 +184,22 @@ export class DropdownMenuContentHelper {
         const conditionalItems =
             DropdownMenuContentConditionalItemsHelper.getConditionalItems(
                 requestedConditionalItems,
-                false /* ,
-             modifierItems */
+                false,
+                modifierItems
             );
 
         const sharedItems =
             DropdownMenuContentConditionalItemsHelper.getConditionalItems(
                 requestedSharedItems,
-                true /* ,
-             modifierItems */
+                true,
+                modifierItems
             );
 
-        return [sharedItems[0], ...conditionalItems, ...sharedItems.slice(1)];
+        return [
+            ...sharedItems.slice(0, 2),
+            ...conditionalItems,
+            ...sharedItems.slice(2),
+        ];
     }
 
     // pm
