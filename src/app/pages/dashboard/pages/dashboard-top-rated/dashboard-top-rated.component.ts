@@ -415,7 +415,7 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
 
         topRatedListItem.isSelected = false;
 
-        this.topRatedList = DashboardArrayHelper.sorPartOfArray(
+        this.topRatedList = DashboardArrayHelper.sortPartOfArray(
             this.topRatedList
         );
 

@@ -8,7 +8,7 @@ import { DashboardStringHelper } from '@pages/dashboard/utils/helpers/dashboard-
 
 // enums
 import { DashboardStringEnum } from '@pages/dashboard/enums/dashboard-string.enum';
-import { CurrencyValuesEnum } from '@pages/dashboard/enums';
+import { PerformanceCurrencyValuesEnum } from '@pages/dashboard/pages/dashboard-performance/enums';
 
 // models
 import { DropdownListItem } from '@pages/dashboard/models/dropdown-list-item.model';
@@ -133,14 +133,14 @@ export class DashboardHelper {
     static setChartDateTitle(
         startText: string,
         endText: string
-    ): { chartTitle: string } {
+    ): string {
         const titleStart =
             DashboardStringHelper.capitalizeFirstLetter(startText);
         const titleEnd = DashboardStringHelper.capitalizeFirstLetter(endText);
 
         const chartTitle = `${titleStart} - ${titleEnd}`;
 
-        return { chartTitle };
+        return chartTitle ;
     }
 
     static highlightPartOfString(
@@ -195,6 +195,6 @@ export class DashboardHelper {
     }
 
     static isCurrency(key: string): boolean {
-        return Object.values(CurrencyValuesEnum).includes(key.toUpperCase() as CurrencyValuesEnum);
+        return Object.values(PerformanceCurrencyValuesEnum).includes(key.toUpperCase() as PerformanceCurrencyValuesEnum);
     }
 }

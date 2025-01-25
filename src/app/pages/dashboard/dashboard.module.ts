@@ -12,9 +12,14 @@ import { ClickOutsideCustomRangeDirective } from '@pages/dashboard/directives/cl
 
 // pipes
 import { ThousandFormatterPipe } from '@pages/dashboard/pipes/thousand-formater.pipe';
+import { ConditionalMoneyFilterPipe } from '@pages/dashboard/pipes/conditional-money-filter.pipe';
+import { CustomSubperiodWidthPipe } from '@pages/dashboard/pipes/custom-subperiod-width.pipe';
+import { showMorePipe } from '@pages/dashboard/pipes/show-more.pipe';
+import { DropdownClassPipe } from '@pages/dashboard/pipes/dropdown-class.pipe';
 import { SetTrendIconPipe } from '@pages/dashboard/pages/dashboard-performance/pipes/set-trend-icon.pipe';
 import { SetTrendLabelPipe } from '@pages/dashboard/pages/dashboard-performance/pipes/set-trend-label.pipe';
-import { CustomSubperiodWidthPipe } from '@pages/dashboard/pipes/custom-subperiod-width.pipe';
+import { TextColorPipe } from '@pages/dashboard/pages/dashboard-by-state/pipes/text-color.pipe';
+
 
 // components
 import { DashboardComponent } from '@pages/dashboard/pages/dashboard/dashboard.component';
@@ -34,6 +39,7 @@ import { TaCustomPeriodRangeComponent } from '@shared/components/ta-custom-perio
 import { TaSearchV2Component } from '@shared/components/ta-search-v2/ta-search-v2.component';
 import { TaSpinnerComponent } from '@shared/components/ta-spinner/ta-spinner.component';
 import { CaChartComponent, CaMapComponent, CaChartManagerComponent } from 'ca-components';
+
 
 @NgModule({
     declarations: [
@@ -65,6 +71,10 @@ import { CaChartComponent, CaMapComponent, CaChartManagerComponent } from 'ca-co
         SetTrendIconPipe,
         SetTrendLabelPipe,
         CustomSubperiodWidthPipe,
+        TextColorPipe,
+        DropdownClassPipe,
+        ConditionalMoneyFilterPipe,
+        showMorePipe,
 
         // components
         TaTabSwitchComponent,
