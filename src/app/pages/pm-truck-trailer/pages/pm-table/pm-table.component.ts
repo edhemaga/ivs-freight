@@ -144,7 +144,7 @@ export class PmTableComponent
         private thousandToShortFormatPipe: ThousandToShortFormatPipe,
         private datePipe: DatePipe
     ) {
-        super(modalService);
+        super();
     }
 
     ngOnInit(): void {

@@ -120,7 +120,7 @@ export class ContactsTableComponent
         // pipes
         private nameInitialsPipe: NameInitialsPipe
     ) {
-        super(modalService, contactsService);
+        super();
     }
 
     ngOnInit(): void {

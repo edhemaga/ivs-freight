@@ -1,4 +1,3 @@
-import { Optional, SkipSelf } from '@angular/core';
 import { Router } from '@angular/router';
 
 // components
@@ -24,10 +23,13 @@ import {
 } from 'appcoretruckassist';
 
 export abstract class DropdownMenuActionsBase {
-    constructor(
-        protected modalService: ModalService,
-        @Optional() @SkipSelf() protected router?: Router
-    ) {}
+    // router
+    protected router: Router;
+
+    // services
+    protected abstract modalService: ModalService;
+
+    constructor() {}
 
     protected handleSharedDropdownMenuActions<T>(
         event: TableCardBodyActions<T>,

@@ -141,7 +141,7 @@ export class UserTableComponent
         private activityTimePipe: ActivityTimePipe,
         private thousandSeparator: ThousandSeparatorPipe
     ) {
-        super(modalService, userService);
+        super();
     }
 
     ngOnInit(): void {

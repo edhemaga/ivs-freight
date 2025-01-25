@@ -1,12 +1,9 @@
-import { Router } from '@angular/router';
-
 import { Subject, takeUntil } from 'rxjs';
 
 // base classes
 import { DropdownMenuActionsBase } from '@shared/base-classes';
 
 // services
-import { ModalService } from '@shared/services/modal.service';
 import { RepairService } from '@shared/services/repair.service';
 
 // enums
@@ -25,14 +22,11 @@ export abstract class RepairDropdownMenuActionsBase extends DropdownMenuActionsB
     protected abstract destroy$: Subject<void>;
     protected abstract viewData: MappedRepairShop[] | CardDetails[];
 
-    constructor(
-        protected router: Router,
+    // services
+    protected abstract repairService: RepairService;
 
-        // services
-        protected modalService: ModalService,
-        protected repairService: RepairService
-    ) {
-        super(modalService, router);
+    constructor() {
+        super();
     }
 
     protected handleDropdownMenuActions<T extends RepairResponse>(

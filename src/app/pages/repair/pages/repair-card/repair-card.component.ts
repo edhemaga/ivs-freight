@@ -20,14 +20,15 @@ import { NgbPopover } from '@ng-bootstrap/ng-bootstrap';
 
 // services
 import { TruckassistTableService } from '@shared/services/truckassist-table.service';
-import { ModalService } from '@shared/services/modal.service';
 import { RepairService } from '@shared/services/repair.service';
+import { ModalService } from '@shared/services/modal.service';
 
 // enums
 import { DropdownMenuStringEnum, TableStringEnum } from '@shared/enums';
 
 // helpers
 import { CardHelper } from '@shared/utils/helpers/card-helper';
+import { DropdownMenuActionsHelper } from '@shared/utils/helpers/dropdown-menu-helpers';
 
 // models
 import { CardDetails } from '@shared/models/card-models/card-table-data.model';
@@ -37,7 +38,6 @@ import {
     MappedRepairShop,
 } from '@pages/repair/pages/repair-table/models';
 import { DropdownMenuOptionEmit } from '@ca-shared/components/ca-dropdown-menu/models';
-import { DropdownMenuActionsHelper } from '@shared/utils/helpers/dropdown-menu-helpers';
 
 @Component({
     selector: 'app-repair-card',
@@ -96,7 +96,7 @@ export class RepairCardComponent
         // helpers
         private cardHelper: CardHelper
     ) {
-        super(router, modalService, repairService);
+        super();
     }
 
     ngOnInit() {
@@ -140,7 +140,7 @@ export class RepairCardComponent
 
             const pmItemsIndexArray = [];
 
-            items.forEach(
+            items?.forEach(
                 (item, index) =>
                     (item?.pmTruck || item?.pmTrailer) &&
                     pmItemsIndexArray.push(index)

@@ -1,5 +1,3 @@
-import { DOCUMENT } from '@angular/common';
-import { Inject } from '@angular/core';
 import { Clipboard } from '@angular/cdk/clipboard';
 
 import { Subject, takeUntil } from 'rxjs';
@@ -8,7 +6,6 @@ import { Subject, takeUntil } from 'rxjs';
 import { DropdownMenuActionsBase } from '@shared/base-classes';
 
 // services
-import { ModalService } from '@shared/services/modal.service';
 import { AccountService } from '@pages/account/services/account.service';
 
 // enums
@@ -29,17 +26,17 @@ export abstract class AccountDropdownMenuActionsBase extends DropdownMenuActions
     protected abstract destroy$: Subject<void>;
     protected abstract viewData: AccountResponse[];
 
-    constructor(
-        @Inject(DOCUMENT) protected documentRef: Document,
+    // document ref
+    protected abstract documentRef: Document;
 
-        // clipboard
-        protected clipboard: Clipboard,
+    // clipboard
+    protected abstract clipboard: Clipboard;
 
-        // services
-        protected modalService: ModalService,
-        protected accountService: AccountService
-    ) {
-        super(modalService);
+    // services
+    protected abstract accountService: AccountService;
+
+    constructor() {
+        super();
     }
 
     protected handleDropdownMenuActions<T extends AccountResponse>(

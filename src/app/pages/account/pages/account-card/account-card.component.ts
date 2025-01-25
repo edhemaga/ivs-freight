@@ -22,8 +22,8 @@ import { DropdownMenuActionsHelper } from '@shared/utils/helpers/dropdown-menu-h
 
 // services
 import { TruckassistTableService } from '@shared/services/truckassist-table.service';
-import { ModalService } from '@shared/services/modal.service';
 import { AccountService } from '@pages/account/services/account.service';
+import { ModalService } from '@shared/services/modal.service';
 
 // enums
 import { DropdownMenuStringEnum } from '@shared/enums';
@@ -90,7 +90,7 @@ export class AccountCardComponent
         // helpers
         private cardHelper: CardHelper
     ) {
-        super(documentRef, clipboard, modalService, accountService);
+        super();
     }
 
     ngOnInit(): void {

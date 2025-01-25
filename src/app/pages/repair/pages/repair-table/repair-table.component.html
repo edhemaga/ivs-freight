@@ -105,7 +105,6 @@
                         [type]="'repairShop'"
                         [sortCategory]="activeSortType"
                         [locationFilterOn]="locationFilterOn"
-                        (bodyActions)="onTableBodyActions($event)"
                         [ngStyle]="{
                             display:
                                 locationFilterOn && latlong?.isShown == false

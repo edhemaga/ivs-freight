@@ -127,7 +127,7 @@ export class OwnerTableComponent
         // pipes
         private phonePipe: FormatPhonePipe
     ) {
-        super(modalService);
+        super();
     }
 
     ngOnInit(): void {

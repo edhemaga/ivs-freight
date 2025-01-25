@@ -5,9 +5,6 @@ import { DropdownMenuActionsBase } from '@shared/base-classes';
 import { TruckModalComponent } from '@pages/truck/pages/truck-modal/truck-modal.component';
 import { TrailerModalComponent } from '@pages/trailer/pages/trailer-modal/trailer-modal.component';
 
-// services
-import { ModalService } from '@shared/services/modal.service';
-
 // enums
 import { DropdownMenuStringEnum, TableStringEnum } from '@shared/enums';
 
@@ -16,11 +13,8 @@ import { TableCardBodyActions } from '@shared/models';
 import { OwnerResponse } from 'appcoretruckassist';
 
 export abstract class OwnerDropdownMenuActionsBase extends DropdownMenuActionsBase {
-    constructor(
-        // services
-        protected modalService: ModalService
-    ) {
-        super(modalService);
+    constructor() {
+        super();
     }
 
     protected handleDropdownMenuActions<T extends OwnerResponse>(

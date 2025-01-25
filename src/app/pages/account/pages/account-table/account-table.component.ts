@@ -116,7 +116,7 @@ export class AccountTableComponent
         private accountCardModalQuery: accountCardModalQuery,
         private accountQuery: AccountQuery
     ) {
-        super(documentRef, clipboard, modalService, accountService);
+        super();
     }
 
     ngOnInit(): void {

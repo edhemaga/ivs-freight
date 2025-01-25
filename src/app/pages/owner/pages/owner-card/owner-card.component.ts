@@ -69,7 +69,7 @@ export class OwnerCardComponent
         // helpers
         private cardHelper: CardHelper
     ) {
-        super(modalService);
+        super();
     }
 
     ngOnInit() {

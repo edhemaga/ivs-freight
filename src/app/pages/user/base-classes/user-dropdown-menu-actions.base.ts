@@ -7,7 +7,6 @@ import { DropdownMenuActionsBase } from '@shared/base-classes';
 import { ConfirmationActivationModalComponent } from '@shared/components/ta-shared-modals/confirmation-activation-modal/confirmation-activation-modal.component';
 
 // services
-import { ModalService } from '@shared/services/modal.service';
 import { UserService } from '@pages/user/services/user.service';
 
 // enums
@@ -21,12 +20,11 @@ export abstract class UserDropdownMenuActionsBase extends DropdownMenuActionsBas
     protected abstract destroy$: Subject<void>;
     protected abstract viewData: CompanyUserResponse[];
 
-    constructor(
-        // services
-        protected modalService: ModalService,
-        protected userService: UserService
-    ) {
-        super(modalService);
+    // services
+    protected abstract userService: UserService;
+
+    constructor() {
+        super();
     }
 
     protected handleDropdownMenuActions<T extends CompanyUserResponse>(

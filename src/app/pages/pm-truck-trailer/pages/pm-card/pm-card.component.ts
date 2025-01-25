@@ -61,7 +61,7 @@ export class PmCardComponent
         // helpers
         private cardHelper: CardHelper
     ) {
-        super(modalService);
+        super();
     }
 
     ngOnInit() {
