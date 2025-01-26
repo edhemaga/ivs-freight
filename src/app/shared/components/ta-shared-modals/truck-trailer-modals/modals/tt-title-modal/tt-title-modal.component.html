@@ -89,7 +89,7 @@
             <div class="ta-card-body-overflow-none">
                 <app-ta-custom-card
                     [cardName]="'Document'"
-                    [disableAnimation]="disableCardAnimation"
+                    [disableAnimation]="isCardAnimationDisabled"
                     [hasCounter]="documents.length ? documents.length : 0"
                     [isCardOpen]="!!documents.length"
                     [hasDarkDivider]="true"

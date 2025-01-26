@@ -1,6 +1,6 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable, Type } from '@angular/core';
-import { Observable } from 'rxjs'; 
+import { Observable } from 'rxjs';
 
 // Models
 import {
@@ -561,7 +561,7 @@ export class PayrollService {
         action:
             | ConfirmationModalStringEnum.DELETE_DEDUCTION
             | ConfirmationModalStringEnum.DELETE_CREDIT
-            | ConfirmationModalStringEnum.DELETE_FUEL
+            | ConfirmationModalStringEnum.DELETE_FUEL_TRANSACTION
             | ConfirmationModalStringEnum.DELETE_BONUS,
         id: number,
         data: PayrollDeleteModal,
@@ -587,25 +587,33 @@ export class PayrollService {
                 svg: true,
                 modalHeaderTitle,
                 extras,
-                subType
+                subType,
             }
         );
     }
-    public saveAndAddNew(component: Type<any>, preselectedDriver: boolean, driverId: number, ngbActiveModal: NgbActiveModal): void {
+
+    public saveAndAddNew(
+        component: Type<any>,
+        preselectedDriver: boolean,
+        driverId: number,
+        ngbActiveModal: NgbActiveModal
+    ): void {
         ngbActiveModal.close();
         this.modalService.openModal(
             component,
             {
                 size: ContactsModalStringEnum.SMALL,
             },
-            preselectedDriver ? {
-                data: {
-                    driverId: preselectedDriver ? driverId : null,
-                },
-                creditType: preselectedDriver
-                    ? PayrollCreditType.Driver
-                    : null,
-            } : undefined
+            preselectedDriver
+                ? {
+                      data: {
+                          driverId: preselectedDriver ? driverId : null,
+                      },
+                      creditType: preselectedDriver
+                          ? PayrollCreditType.Driver
+                          : null,
+                  }
+                : undefined
         );
     }
 }

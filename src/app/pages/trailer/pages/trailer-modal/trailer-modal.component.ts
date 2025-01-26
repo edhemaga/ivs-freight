@@ -78,7 +78,7 @@ import { TrailerModalConfig } from '@pages/trailer/pages/trailer-modal/utils/con
 import { TrailerFormFieldEnum } from '@pages/trailer/pages/trailer-modal/enums';
 import { TableStringEnum } from '@shared/enums/table-string.enum';
 import { ActionTypesEnum } from '@pages/repair/pages/repair-modals/repair-shop-modal/enums';
-import { TaModalActionEnums } from '@shared/components/ta-modal/enums';
+import { TaModalActionEnum } from '@shared/components/ta-modal/enums';
 import { ContactsModalStringEnum } from '@pages/contacts/pages/contacts-modal/enums';
 
 // Pipes
@@ -179,7 +179,7 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
     private storedfhwaExpValue: any = null;
     public svgRoutes = SharedSvgRoutes;
     public actionTypesEnum = ActionTypesEnum;
-    public taModalActionEnums = TaModalActionEnums;
+    public taModalActionEnums = TaModalActionEnum;
 
     constructor(
         private formBuilder: UntypedFormBuilder,
@@ -395,7 +395,7 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
     }
 
     public onModalAction(action: string): void {
-        if (action === TaModalActionEnums.CLOSE) {
+        if (action === TaModalActionEnum.CLOSE) {
             if (this.editData?.canOpenModal) {
                 switch (this.editData?.key) {
                     case 'repair-modal': {
@@ -418,7 +418,7 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
             }
             return;
         } else {
-            if (action === TaModalActionEnums.DEACTIVATE && this.editData) {
+            if (action === TaModalActionEnum.DEACTIVATE && this.editData) {
                 this.modalService.openModal(
                     ConfirmationActivationModalComponent,
                     { size: TableStringEnum.SMALL },
@@ -450,7 +450,7 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
                 );
             }
             // Save And Add New
-            else if (action === TaModalActionEnums.SAVE_AND_ADD_NEW) {
+            else if (action === TaModalActionEnum.SAVE_AND_ADD_NEW) {
                 if (this.trailerForm.invalid || !this.isFormDirty) {
                     this.inputService.markInvalid(this.trailerForm);
                     return;
@@ -459,7 +459,7 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
                 this.addNewAfterSave = true;
             } else {
                 // Save & Update
-                if (action === TaModalActionEnums.SAVE) {
+                if (action === TaModalActionEnum.SAVE) {
                     if (this.trailerForm.invalid || !this.isFormDirty) {
                         this.inputService.markInvalid(this.trailerForm);
                         return;
@@ -472,7 +472,7 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
                 }
 
                 // Delete
-                if (action === TaModalActionEnums.DELETE && this.editData) {
+                if (action === TaModalActionEnum.DELETE && this.editData) {
                     if (this.editData) {
                         this.modalService.openModal(
                             ConfirmationModalComponent,

@@ -22,14 +22,14 @@
             [columns]="columns"
             [options]="tableOptions"
             [selectedTab]="selectedTab"
+            [tableData]="tableData"
+            (saveValueNote)="saveValueNote($event)"
             (tableBodyActions)="
                 handleDropdownMenuActions(
                     $event,
                     dropdownMenuStringEnum.ACCOUNT
                 )
             "
-            [tableData]="tableData"
-            (saveValueNote)="saveValueNote($event)"
         ></app-ta-table-body>
     </ng-container>
 

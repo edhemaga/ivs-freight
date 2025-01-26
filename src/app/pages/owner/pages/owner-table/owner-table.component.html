@@ -22,11 +22,11 @@
             [columns]="columns"
             [options]="tableOptions"
             [selectedTab]="selectedTab"
+            [tableData]="tableData"
+            (saveValueNote)="saveValueNote($event)"
             (tableBodyActions)="
                 handleDropdownMenuActions($event, dropdownMenuStringEnum.OWNER)
             "
-            (saveValueNote)="saveValueNote($event)"
-            [tableData]="tableData"
         ></app-ta-table-body>
     </ng-container>
 

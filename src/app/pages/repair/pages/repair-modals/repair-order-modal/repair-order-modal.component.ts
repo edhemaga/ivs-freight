@@ -64,7 +64,7 @@ import {
 import { RepairOrderModalStringEnum } from '@pages/repair/pages/repair-modals/repair-order-modal/enums';
 import { TableStringEnum } from '@shared/enums/table-string.enum';
 import { ModalTableTypeEnum } from '@shared/enums/modal-table-type.enum';
-import { TaModalActionEnums } from '@shared/components/ta-modal/enums';
+import { TaModalActionEnum } from '@shared/components/ta-modal/enums';
 import { DropdownMenuStringEnum } from '@shared/enums';
 
 // components
@@ -220,7 +220,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
     // enums
     public modalTableTypeEnum = ModalTableTypeEnum;
     public svgRoutes = SharedSvgRoutes;
-    public taModalActionEnums = TaModalActionEnums;
+    public taModalActionEnums = TaModalActionEnum;
 
     // Const
     public RepairOrderConfig = RepairOrderConfig;
@@ -380,10 +380,10 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
 
     public onModalAction(action: string): void {
         switch (action) {
-            case TaModalActionEnums.CLOSE:
+            case TaModalActionEnum.CLOSE:
                 this.ngbActiveModal.close();
                 break;
-            case TaModalActionEnums.SAVE_AND_ADD_NEW:
+            case TaModalActionEnum.SAVE_AND_ADD_NEW:
                 if (this.repairOrderForm.invalid || !this.isFormDirty) {
                     this.inputService.markInvalid(this.repairOrderForm);
 
@@ -401,7 +401,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
                 this.isAddNewAfterSave = true;
 
                 break;
-            case TaModalActionEnums.SAVE:
+            case TaModalActionEnum.SAVE:
                 if (this.repairOrderForm.invalid || !this.isFormDirty) {
                     this.inputService.markInvalid(this.repairOrderForm);
 
@@ -423,12 +423,12 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
                 });
 
                 break;
-            case TaModalActionEnums.DELETE:
+            case TaModalActionEnum.DELETE:
                 if (this.editData.data)
                     this.deleteRepair(this.editData.data.id);
 
                 break;
-            case TaModalActionEnums.FINISH_ORDER:
+            case TaModalActionEnum.FINISH_ORDER:
                 this.setIsFinishOrderData();
 
                 break;

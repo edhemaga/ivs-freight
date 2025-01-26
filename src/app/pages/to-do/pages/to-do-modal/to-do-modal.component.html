@@ -124,11 +124,9 @@
                 [hasScrollBody]="comments.length > 4"
                 [disabledCard]="editData?.type !== 'edit'"
                 [hasActionSvg]="
-                    editData?.type === 'edit'
-                        ? svgRoutes.PLUS_ICON
-                        : ''
+                    editData?.type === 'edit' ? svgRoutes.PLUS_ICON : ''
                 "
-                [disableAnimation]="disableCardAnimation"
+                [disableAnimation]="isCardAnimationDisabled"
                 [animationMarginParams]="{
                     marginTop: '10px',
                     marginBottom: '12px',
@@ -137,20 +135,19 @@
                 [hasSmallDivider]="true"
                 (onActionEvent)="createComment()"
             >
-            @if(comments.length) {
-                <app-ta-user-review
-                    [reviewData]="comments"
-                    (changeReviewsEvent)="changeCommentsEvent($event)"
-                    [isNewReview]="comments[0].isNewReview"
-                ></app-ta-user-review>
-            }
-            
+                @if (comments.length) {
+                    <app-ta-user-review
+                        [reviewData]="comments"
+                        (changeReviewsEvent)="changeCommentsEvent($event)"
+                        [isNewReview]="comments[0].isNewReview"
+                    ></app-ta-user-review>
+                }
             </app-ta-custom-card>
             <div class="ta-card-body-overflow-none">
                 <app-ta-custom-card
                     [hasCounter]="documents.length ? documents.length : 0"
                     [cardName]="'Document'"
-                    [disableAnimation]="disableCardAnimation"
+                    [disableAnimation]="isCardAnimationDisabled"
                     [isCardOpen]="!!documents.length"
                     [hasDarkDivider]="true"
                     [hasSmallDivider]="true"
@@ -220,7 +217,7 @@
                         (click)="onModalAction(taModalActionEnums.DELETE)"
                         [type]="modalButtonType.SECONDARY_NEGATIVE"
                     >
-                    </app-ca-modal-button> 
+                    </app-ca-modal-button>
                 </div>
                 <app-ca-modal-button
                     text="Save Changes"
@@ -231,7 +228,7 @@
                 >
                 </app-ca-modal-button>
             </div>
-        } @else { 
+        } @else {
             <app-ca-modal-button
                 class="mr-12"
                 [isValid]="taskForm.valid && isFormDirty"

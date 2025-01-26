@@ -71,7 +71,7 @@ export class RepairCardComponent
     public isCardFlippedCheckInCards: number[] = [];
     public isAllCardsFlipp: boolean = false;
 
-    public elementWidth: number;
+    public dropdownElementWidth: number;
 
     get viewData() {
         return this._viewData;
@@ -177,7 +177,7 @@ export class RepairCardComponent
                 const width = parentElement.offsetWidth;
 
                 this.ngZone.run(() => {
-                    this.elementWidth = width;
+                    this.dropdownElementWidth = width;
                 });
             });
 

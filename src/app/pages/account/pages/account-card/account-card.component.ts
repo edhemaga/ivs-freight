@@ -1,11 +1,14 @@
 import {
     Component,
+    ElementRef,
     EventEmitter,
     Inject,
     Input,
+    NgZone,
     OnDestroy,
     OnInit,
     Output,
+    ViewChild,
 } from '@angular/core';
 import { FormControl, UntypedFormArray } from '@angular/forms';
 import { Clipboard } from '@angular/cdk/clipboard';
@@ -46,6 +49,9 @@ export class AccountCardComponent
     extends AccountDropdownMenuActionsBase
     implements OnInit, OnDestroy
 {
+    @ViewChild('parentElement', { read: ElementRef })
+    private cardBodyElement!: ElementRef;
+
     @Input() set viewData(value: CardDetails[]) {
         this._viewData = value;
     }
@@ -68,12 +74,17 @@ export class AccountCardComponent
 
     public selectedContactLabel: CompanyAccountLabelResponse[] = [];
 
+    public dropdownElementWidth: number;
+
     get viewData() {
         return this._viewData;
     }
 
     constructor(
         @Inject(DOCUMENT) protected readonly documentRef: Document,
+
+        // zone
+        private ngZone: NgZone,
 
         // clipboard
         protected clipboard: Clipboard,
@@ -94,6 +105,10 @@ export class AccountCardComponent
         this.flipAllCards();
 
         this._viewData.length && this.labelDropdown();
+    }
+
+    ngAfterViewInit(): void {
+        this.windowResizeUpdateDescriptionDropdown();
     }
 
     public trackCard(item: number): number {
@@ -142,6 +157,23 @@ export class AccountCardComponent
         });
     }
 
+    public windowResizeUpdateDescriptionDropdown(): void {
+        if (this.cardBodyElement) {
+            const parentElement = this.cardBodyElement
+                .nativeElement as HTMLElement;
+
+            const resizeObserver = new ResizeObserver(() => {
+                const width = parentElement.offsetWidth;
+
+                this.ngZone.run(() => {
+                    this.dropdownElementWidth = width;
+                });
+            });
+
+            resizeObserver.observe(parentElement);
+        }
+    }
+
     public handleToggleDropdownMenuActions(
         event: DropdownMenuOptionEmit,
         cardData: AccountResponse
@@ -160,11 +192,7 @@ export class AccountCardComponent
         );
     }
 
-    public handleShowMoreAction(): void {
-        /*    this.backFilterQuery.pageIndex++;
-
-        this.accountBackFilter(this.backFilterQuery, true); */
-    }
+    public handleShowMoreAction(): void {}
 
     ngOnDestroy(): void {
         this.destroy$.next();

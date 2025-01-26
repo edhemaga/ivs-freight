@@ -42,7 +42,7 @@ import { FormService } from '@shared/services/form.service';
 
 //  Enums
 import { ModalButtonType, ModalButtonSize } from '@shared/enums';
-import { TaModalActionEnums } from '@shared/components/ta-modal/enums';
+import { TaModalActionEnum } from '@shared/components/ta-modal/enums';
 
 // Svg routes
 import { SharedSvgRoutes } from '@shared/utils/svg-routes';
@@ -114,7 +114,7 @@ export class TodoModalComponent implements OnInit, OnDestroy {
 
     public addNewAfterSave: boolean = false;
 
-    public disableCardAnimation: boolean = false;
+    public isCardAnimationDisabled: boolean = false;
 
     private destroy$ = new Subject<void>();
     public svgRoutes = SharedSvgRoutes;
@@ -122,7 +122,7 @@ export class TodoModalComponent implements OnInit, OnDestroy {
 
     public modalButtonType = ModalButtonType;
     public modalButtonSize = ModalButtonSize;
-    public taModalActionEnums = TaModalActionEnums;
+    public taModalActionEnums = TaModalActionEnum;
     public data: TodoResponse;
 
     constructor(
@@ -166,11 +166,11 @@ export class TodoModalComponent implements OnInit, OnDestroy {
     public onModalAction(action: string) {
         this.activeAction = action;
         switch (action) {
-            case TaModalActionEnums.CLOSE: {
+            case TaModalActionEnum.CLOSE: {
                 this.ngbActiveModal.close();
                 break;
             }
-            case TaModalActionEnums.SAVE_AND_ADD_NEW: {
+            case TaModalActionEnum.SAVE_AND_ADD_NEW: {
                 if (this.taskForm.invalid || !this.isFormDirty) {
                     this.inputService.markInvalid(this.taskForm);
                     return;
@@ -179,7 +179,7 @@ export class TodoModalComponent implements OnInit, OnDestroy {
                 this.addNewAfterSave = true;
                 break;
             }
-            case TaModalActionEnums.SAVE: {
+            case TaModalActionEnum.SAVE: {
                 if (this.taskForm.invalid || !this.isFormDirty) {
                     this.inputService.markInvalid(this.taskForm);
                     return;
@@ -191,7 +191,7 @@ export class TodoModalComponent implements OnInit, OnDestroy {
                 }
                 break;
             }
-            case TaModalActionEnums.DELETE: {
+            case TaModalActionEnum.DELETE: {
                 this.deleteTaskById(this.editData.id);
                 this.modalService.setModalSpinner({
                     action: 'delete',
@@ -459,7 +459,7 @@ export class TodoModalComponent implements OnInit, OnDestroy {
                     this.documents = res.files ? (res.files as any) : [];
                     setTimeout(() => {
                         this.startFormChanges();
-                        this.disableCardAnimation = false;
+                        this.isCardAnimationDisabled = false;
                     }, 1000);
                 },
                 error: () => {},
@@ -483,7 +483,7 @@ export class TodoModalComponent implements OnInit, OnDestroy {
                     this.resCompanyUsers = [...this.showCompanyUsers];
 
                     if (this.editData?.type === 'edit') {
-                        this.disableCardAnimation = true;
+                        this.isCardAnimationDisabled = true;
                         this.editTask(this.editData.id);
                     } else {
                         this.startFormChanges();

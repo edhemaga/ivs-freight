@@ -58,7 +58,7 @@ import { ArrayStatus } from '@shared/components/ta-filter/models/array-status.mo
 
 // enums
 import { LoadModalStringEnum } from '@pages/load/pages/load-modal/enums';
-import { TaModalActionEnums } from './enums';
+import { TaModalActionEnum } from './enums';
 import { ToolbarFilterStringEnum } from '@shared/components/ta-filter/enums/toolbar-filter-string.enum';
 
 // directive
@@ -458,11 +458,11 @@ export class TaModalComponent implements OnInit, OnDestroy {
             this.runFormValidation.emit(true);
 
         switch (action) {
-            case TaModalActionEnums.SAVE: {
+            case TaModalActionEnum.SAVE: {
                 this.action.emit({ action: action, bool: false });
                 break;
             }
-            case TaModalActionEnums.SAVE_AND_ADD_NEW: {
+            case TaModalActionEnum.SAVE_AND_ADD_NEW: {
                 this.action.emit({ action: action, bool: false });
                 break;
             }
@@ -504,7 +504,7 @@ export class TaModalComponent implements OnInit, OnDestroy {
                 this.confirmationAction.emit(this.confirmationData);
                 break;
             }
-            case TaModalActionEnums.DELETE: {
+            case TaModalActionEnum.DELETE: {
                 this.action.emit({ action: action, bool: false });
                 this.confirmationAction.emit(this.confirmationData);
                 break;
@@ -545,11 +545,11 @@ export class TaModalComponent implements OnInit, OnDestroy {
                 this.confirmationAction.emit(this.confirmationData);
                 break;
             }
-            case TaModalActionEnums.CONVERT_TO_TEMPLATE: {
+            case TaModalActionEnum.CONVERT_TO_TEMPLATE: {
                 this.action.emit({ action: action, bool: false });
                 break;
             }
-            case TaModalActionEnums.CONVERT_TO_LOAD: {
+            case TaModalActionEnum.CONVERT_TO_LOAD: {
                 this.action.emit({ action: action, bool: false });
                 break;
             }

@@ -6,6 +6,9 @@ import { ContactsModalComponent } from '@pages/contacts/pages/contacts-modal/con
 import { OwnerModalComponent } from '@pages/owner/pages/owner-modal/owner-modal.component';
 import { RepairOrderModalComponent } from '@pages/repair/pages/repair-modals/repair-order-modal/repair-order-modal.component';
 import { RepairShopModalComponent } from '@pages/repair/pages/repair-modals/repair-shop-modal/repair-shop-modal.component';
+import { UserModalComponent } from '@pages/user/pages/user-modal/user-modal.component';
+import { FuelPurchaseModalComponent } from '@pages/fuel/pages/fuel-modals/fuel-purchase-modal/fuel-purchase-modal.component';
+import { FuelStopModalComponent } from '@pages/fuel/pages/fuel-modals/fuel-stop-modal/fuel-stop-modal.component';
 
 // enums
 import { DropdownMenuStringEnum, TableStringEnum } from '@shared/enums';
@@ -19,7 +22,6 @@ import {
     TableCardBodyActions,
 } from '@shared/models';
 import { PMTrailerUnitResponse, PMTruckUnitResponse } from 'appcoretruckassist';
-import { UserModalComponent } from '@pages/user/pages/user-modal/user-modal.component';
 
 export class DropdownMenuActionsHelper {
     static createDropdownMenuActionsEmitEvent<T extends { id?: number }>(
@@ -50,6 +52,9 @@ export class DropdownMenuActionsHelper {
             [DropdownMenuStringEnum.REPAIR]: RepairOrderModalComponent,
             [DropdownMenuStringEnum.REPAIR_SHOP]: RepairShopModalComponent,
             [DropdownMenuStringEnum.USER]: UserModalComponent,
+            [DropdownMenuStringEnum.FUEL_TRANSACTION]:
+                FuelPurchaseModalComponent,
+            [DropdownMenuStringEnum.FUEL_STOP]: FuelStopModalComponent,
         };
 
         return modalComponentMap[tableType];
@@ -70,7 +75,9 @@ export class DropdownMenuActionsHelper {
         const adjustedTableType =
             tableType === DropdownMenuStringEnum.REPAIR_SHOP
                 ? DropdownMenuStringEnum.REPAIR
-                : tableType;
+                : tableType === DropdownMenuStringEnum.FUEL_STOP
+                  ? DropdownMenuStringEnum.FUEL
+                  : tableType;
 
         const link = `/list/${adjustedTableType}/${id}/details`;
 

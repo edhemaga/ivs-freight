@@ -25,7 +25,7 @@
                         label: 'Company Name',
                         isRequired: true,
                         textTransform: 'uppercase',
-                        autoFocus: editData?.type !== 'edit'
+                        autoFocus: editData?.type !== 'edit',
                     }"
                     (blurInput)="onCompanyNameInputBlur()"
                 ></app-ta-input>
@@ -41,7 +41,7 @@
                         label: 'Phone',
                         placeholderIcon: 'phone',
                         mask: '(000) 000-0000',
-                        maxLength: 14
+                        maxLength: 14,
                     }"
                 ></app-ta-input>
             </div>
@@ -55,7 +55,7 @@
                         placeholderIcon: 'email',
                         minLength: 5,
                         maxLength: 64,
-                        textTransform: 'lowercase'
+                        textTransform: 'lowercase',
                     }"
                 ></app-ta-input>
             </div>
@@ -72,7 +72,7 @@
                         textTransform: 'capitalize',
                         dropdownWidthClass: 'w-col-376',
                         minLength: 6,
-                        maxLength: 256
+                        maxLength: 256,
                     }"
                     [placeholderType]="'longAddress'"
                     [activeAddress]="selectedAddress"
@@ -88,17 +88,17 @@
                         label: 'Unit #',
                         textTransform: 'uppercase',
                         minLength: 1,
-                        maxLength: 10
+                        maxLength: 10,
                     }"
                 ></app-ta-input>
             </div>
         </div>
         <app-ta-custom-card
             [cardName]="'Notice of Assignment'"
-            [disableAnimation]="disableCardAnimation"
+            [disableAnimation]="isCardAnimationDisabled"
             [disabledCard]="
-                (factoringForm.get('name')?.invalid || 
-                factoringForm.get('name').value === 'null') &&
+                (factoringForm.get('name')?.invalid ||
+                    factoringForm.get('name').value === 'null') &&
                 factoringForm.get('noticeOfAssigment').invalid
             "
             [isCardOpen]="

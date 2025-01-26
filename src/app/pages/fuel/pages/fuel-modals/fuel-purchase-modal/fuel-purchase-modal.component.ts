@@ -12,9 +12,10 @@ import {
     UntypedFormGroup,
     Validators,
 } from '@angular/forms';
+
 import { Subject, takeUntil, switchMap, of } from 'rxjs';
 
-//Services
+// services
 import { TaInputService } from '@shared/services/ta-input.service';
 import { ModalService } from '@shared/services/modal.service';
 import { FormService } from '@shared/services/form.service';
@@ -24,7 +25,7 @@ import { PayrollService } from '@pages/accounting/pages/payroll/services/payroll
 import { ConfirmationService } from '@shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
 import { ConfirmationActivationService } from '@shared/components/ta-shared-modals/confirmation-activation-modal/services/confirmation-activation.service';
 
-//Components
+// components
 import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
 import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-custom-card.component';
 import { TaUploadFilesComponent } from '@shared/components/ta-upload-files/ta-upload-files.component';
@@ -37,15 +38,15 @@ import {
 } from 'ca-components';
 import { TaInputDropdownComponent } from '@shared/components/ta-input-dropdown/ta-input-dropdown.component';
 
-//Modules
+// modules
 import { CommonModule } from '@angular/common';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 import { NgbActiveModal, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 
-// Svg routes
+// svg routes
 import { SharedSvgRoutes } from '@shared/utils/svg-routes';
 
-//Models
+// models
 import {
     FuelTransactionResponse,
     GetModalFuelStopFranchiseResponse,
@@ -54,36 +55,36 @@ import {
     FuelStopFranchiseResponse,
     TruckMinimalListResponse,
     EnumValue,
-    RepairItemResponse,
+    FuelItemResponse,
 } from 'appcoretruckassist';
-import { FuelTruckType } from '@pages/fuel/pages/fuel-modals/fuel-purchase-modal/models/fuel-truck-type.model';
+import { FuelTruckType } from '@pages/fuel/pages/fuel-modals/fuel-purchase-modal/models';
 import { RepairSubtotal } from '@pages/repair/pages/repair-modals/repair-order-modal/models';
 
-//Pipes
+// pipes
 import { SumArraysPipe } from '@shared/pipes/sum-arrays.pipe';
 import { FormatDatePipe } from '@shared/pipes';
 
-//Enums
-import { FuelDataOptionsStringEnum } from '@pages/fuel/enums/fuel-data-options-string.enum';
-import { FuelDropdownOptionsStringEnum } from '@pages/fuel/pages/fuel-modals/fuel-purchase-modal/enums/fuel-dropdown-optioins-string.enum';
-import { FuelValuesStringEnum } from '@pages/fuel/pages/fuel-modals/fuel-purchase-modal/enums/fuel-values-string.enum';
-import { TaModalActionEnums } from '@shared/components/ta-modal/enums';
+// enums
+import { FuelDataOptionsStringEnum } from '@pages/fuel/enums';
+import { FuelDropdownOptionsStringEnum } from '@pages/fuel/pages/fuel-modals/fuel-purchase-modal/enums';
+import { FuelValuesStringEnum } from '@pages/fuel/pages/fuel-modals/fuel-purchase-modal/enums';
+import { TaModalActionEnum } from '@shared/components/ta-modal/enums';
 import { ModalTableTypeEnum } from '@shared/enums/modal-table-type.enum';
-import { TableStringEnum } from '@shared/enums';
+import { DropdownMenuStringEnum, TableStringEnum } from '@shared/enums';
 import { ContactsModalStringEnum } from '@pages/contacts/pages/contacts-modal/enums';
 import { ConfirmationModalStringEnum } from '@shared/components/ta-shared-modals/confirmation-modal/enums/confirmation-modal-string.enum';
 
-//Validations
+// validations
 import { fullNameValidation } from '@shared/components/ta-input/validators/ta-input.regex-validations';
 
-//Methods
+// helpers
 import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calculations.helper';
 
-// Moment
+// mMoment
 import moment from 'moment';
 
-//Configs
-import { FuelPurchaseConfig } from '@pages/fuel/pages/fuel-modals/fuel-purchase-modal/utils';
+// configs
+import { FuelPurchaseConfig } from '@pages/fuel/pages/fuel-modals/fuel-purchase-modal/utils/configs';
 
 @Component({
     selector: 'app-fuel-purchase-modal',
@@ -93,14 +94,14 @@ import { FuelPurchaseConfig } from '@pages/fuel/pages/fuel-modals/fuel-purchase-
     encapsulation: ViewEncapsulation.None,
     standalone: true,
     imports: [
-        // Module
+        // modules
         CommonModule,
         FormsModule,
         ReactiveFormsModule,
         AngularSvgIconModule,
         NgbTooltipModule,
 
-        // Component
+        // components
         TaAppTooltipV2Component,
         CaModalComponent,
         CaInputComponent,
@@ -111,58 +112,65 @@ import { FuelPurchaseConfig } from '@pages/fuel/pages/fuel-modals/fuel-purchase-
         TaCopyComponent,
         TaInputDropdownComponent,
 
-        // Pipes
+        // pipes
         FormatDatePipe,
     ],
 })
 export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
     @Input() editData: any;
+
+    private destroy$ = new Subject<void>();
+
     public modalTableTypeEnum = ModalTableTypeEnum;
 
     public fuelForm: UntypedFormGroup;
 
+    public fuelFormConfig = FuelPurchaseConfig;
+
+    public isFormDirty: boolean;
+    public isCardAnimationDisabled: boolean = false;
+
     public truckType: FuelTruckType[] = [];
-    public fuelStops: any[] = []; //leave any for now
+    public trailerId: number;
+
+    public fuelStops: any[] = [];
+
+    public fuelTransactionType: EnumValue;
+    public fuelTransactionName: string;
 
     public selectedTruckType: FuelTruckType;
     public selectedTrailerType: FuelTruckType;
-    public selectedFuelStop: any = null; //leave any for now
+    public selectedFuelStop: any;
     public selectedDispatchHistory: FuelDispatchHistoryResponse;
 
-    public fuelItemsDropdown: Array<EnumValue> | null = [];
-    public fuelItemsCounter: number = 0;
-    public subtotal: { value: number; reorderingNumber: number }[] = [];
+    public fuelItemsDropdown: EnumValue[] = [];
 
-    public documents: any[] = []; //leave any for now
+    public documents: any[] = [];
 
-    public fuelTransactionType: EnumValue = null;
+    // items
+    public isFuelRowCreated: boolean = false;
+    public isEachFuelRowValid: boolean = true;
 
-    public isFormDirty: boolean;
+    public fuelItems: FuelItemResponse[] = [];
+    public updatedFuelItems: FuelItemResponse[] = [];
 
-    public fuelTransactionName: string = null;
-
-    public disableCardAnimation: boolean = false;
-
-    public isRepairBillRowCreated: boolean = false;
-
-    public isEachRepairRowValid: boolean = true;
-    public updatedRepairItems: RepairItemResponse[] = [];
-    public fuelItems: RepairItemResponse[] = [];
     public total: number = 0;
 
-    private destroy$ = new Subject<void>();
-    public trailerId: number;
     public svgRoutes = SharedSvgRoutes;
-    public taModalActionEnums = TaModalActionEnums;
-    public fuelFormConfig = FuelPurchaseConfig;
+    public taModalActionEnums = TaModalActionEnum;
+
     constructor(
         private formBuilder: UntypedFormBuilder,
+
+        // modules
+        private ngbActiveModal: NgbActiveModal,
+
+        // services
         private inputService: TaInputService,
         private modalService: ModalService,
         private formService: FormService,
         private fuelService: FuelService,
         private truckService: TruckService,
-        private ngbActiveModal: NgbActiveModal,
         private payrollService: PayrollService,
         private confirmationService: ConfirmationService,
         private confirmationActivationService: ConfirmationActivationService
@@ -170,11 +178,17 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
         this.createForm();
+
         this.getModalDropdowns();
+
         this.getFuelTransactionFranchises();
+
         this.getTruckList();
+
         this.getDriverTrailerBySelectedTruck();
+
         this.confirmationActivationSubscribe();
+
         this.confirmationDeactivationSubscribe();
     }
 
@@ -214,16 +228,18 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
 
     public onModalAction(action: string): void {
         switch (action) {
-            case TaModalActionEnums.CLOSE:
+            case TaModalActionEnum.CLOSE:
                 this.ngbActiveModal.close();
-                break;
 
-            case TaModalActionEnums.SAVE_AND_ADD_NEW:
-            case TaModalActionEnums.SAVE:
+                break;
+            case TaModalActionEnum.SAVE_AND_ADD_NEW:
+            case TaModalActionEnum.SAVE:
                 if (this.fuelForm.invalid || !this.isFormDirty) {
                     this.inputService.markInvalid(this.fuelForm);
+
                     return;
                 }
+
                 if (
                     this.editData &&
                     !this.editData?.isShortModal &&
@@ -234,16 +250,14 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
                         ? this.updateFuelEFS(this.editData.id)
                         : this.updateFuel(this.editData.id);
                 } else {
-                    this.addFuel(
-                        action === TaModalActionEnums.SAVE_AND_ADD_NEW
-                    );
+                    this.addFuel(action === TaModalActionEnum.SAVE_AND_ADD_NEW);
                 }
-                break;
 
-            case TaModalActionEnums.DELETE:
+                break;
+            case TaModalActionEnum.DELETE:
                 this.payrollService.raiseDeleteModal(
                     TableStringEnum.FUEL_1,
-                    ConfirmationModalStringEnum.DELETE_FUEL,
+                    ConfirmationModalStringEnum.DELETE_FUEL_TRANSACTION,
                     this.editData.data.id,
                     {
                         title: this.editData.data.loadInvoice.invoice,
@@ -252,8 +266,10 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
                         label: this.editData.data.truck?.truckNumber,
                         id: this.editData.id,
                     },
+
                     TableStringEnum.FUEL_1
                 );
+
                 break;
             default:
                 break;
@@ -261,31 +277,32 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
     }
 
     public onSelectDropDown(event: any, action: string, index?: number): void {
-        //leave any for now
         switch (action) {
             case FuelDropdownOptionsStringEnum.TRUCK:
                 this.selectedTruckType = event;
+
                 this.getDriverTrailerBySelectedTruck(
                     FuelValuesStringEnum.TRUCK_ID
                 );
+
                 break;
             case FuelDropdownOptionsStringEnum.FUEL:
                 this.selectedFuelStop = event;
+
                 break;
             default:
                 break;
         }
     }
 
-    public onFilesEvent(event: any) {
-        //leave any for now
+    public onFilesEvent(event: any): void {
         this.documents = event.files;
     }
 
-    private updateFuel(id: number) {
+    private updateFuel(id: number): void {
         const { ...form } = this.fuelForm.value;
+
         const newData: any = {
-            //leave any for now
             id: id,
             truckId: this.selectedTruckType.id,
             trailerId: this.selectedTrailerType
@@ -329,7 +346,6 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
 
     private updateFuelEFS(id: number): void {
         const newData: any = {
-            //leave any for now
             id: id,
             truckId: this.selectedTruckType.id,
             trailerId: this.selectedTrailerType
@@ -360,7 +376,6 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
         const { ...form } = this.fuelForm.value;
 
         const newData: any = {
-            //leave any for now
             driverId: this.selectedDispatchHistory
                 ? this.selectedDispatchHistory.driverId
                 : null,
@@ -385,6 +400,7 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
             filesForDeleteIds: [],
             payrollOwnerId: this.editData?.payrollOwnerId,
         };
+
         this.fuelService
             .addFuelTransaction(newData)
             .pipe(takeUntil(this.destroy$))
@@ -466,13 +482,11 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
 
                     this.documents = res.files;
 
-                    this.updatedRepairItems = res.fuelItems.map(
-                        (repairItem) => {
-                            return {
-                                ...repairItem,
-                            };
-                        }
-                    );
+                    this.updatedFuelItems = res.fuelItems.map((repairItem) => {
+                        return {
+                            ...repairItem,
+                        };
+                    });
 
                     this.getDriverTrailerBySelectedTruck(
                         FuelValuesStringEnum.TRUCK_ID
@@ -515,10 +529,10 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
 
                     setTimeout(() => {
                         this.startFormChanges();
-                        this.disableCardAnimation = false;
+
+                        this.isCardAnimationDisabled = false;
                     }, 1000);
                 },
-                error: () => {},
             });
     }
 
@@ -533,21 +547,27 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
                     if (
                         this.editData?.type === FuelDataOptionsStringEnum.EDIT
                     ) {
-                        this.disableCardAnimation = true;
+                        this.isCardAnimationDisabled = true;
+
                         this.getFuelById(this.editData.id);
                     } else {
+                        if (
+                            this.editData?.type ===
+                            DropdownMenuStringEnum.ADD_TRANSACTION_TYPE
+                        )
+                            this.getFuelStopById(this.editData?.data?.id);
+
+                        this.addFuelItem();
+
                         this.startFormChanges();
-                        this.addRepairItem();
                     }
                 },
-                error: () => {},
             });
     }
 
     private getDriverTrailerBySelectedTruck(
         formControlName: string = FuelValuesStringEnum.TRANSACTION_DATE
     ): any {
-        //leave any for now
         this.fuelForm
             .get(formControlName)
             .valueChanges.pipe(
@@ -563,9 +583,11 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
                         const date = this.fuelForm.get(
                             FuelValuesStringEnum.TRANSACTION_DATE
                         ).value;
+
                         const time = this.fuelForm.get(
                             FuelValuesStringEnum.TRANSACTION_TIME
                         ).value;
+
                         return this.fuelService.getDriverBySelectedTruckAndDate(
                             this.selectedTruckType.id,
                             moment.utc(new Date(date + ' ' + time)).format()
@@ -578,15 +600,19 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
             .subscribe((res: FuelDispatchHistoryResponse | null) => {
                 if (res) {
                     this.selectedDispatchHistory = res;
+
                     this.fuelForm
                         .get(FuelValuesStringEnum.DRIVER_FULL_NAME)
                         .patchValue(
                             res.firstName?.concat(' ', res.lastName) ?? null
                         );
+
                     this.fuelForm
                         .get(FuelValuesStringEnum.TRAILER_ID)
                         .patchValue(res.trailerNumber);
+
                     this.trailerId = res.trailerId;
+
                     this.selectedTrailerType = {
                         id: res.trailerId,
                         number: res.trailerNumber,
@@ -629,7 +655,6 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
                             ) === i
                     );
                 },
-                error: () => {},
             });
     }
 
@@ -638,7 +663,6 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
     }
 
     public getFuelStoresByFranchiseId(franchise: any): void {
-        //leave any for now
         this.fuelService
             .getFuelTransactionStoresByFranchiseId(franchise.id)
             .pipe(takeUntil(this.destroy$))
@@ -647,6 +671,7 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
                     const fuelStop = this.fuelStops.find(
                         (item) => item.id === franchise.id
                     );
+
                     fuelStop.stores = res.fuelStopStores.map((item) => {
                         return {
                             id: item.id,
@@ -658,7 +683,51 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
                         };
                     });
                 },
-                error: () => {},
+            });
+    }
+
+    private getFuelStopById(id: number): void {
+        this.fuelService
+            .getFuelStopById(id)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe({
+                next: (fuelStop) => {
+                    const {
+                        id,
+                        businessName,
+                        address,
+                        store,
+                        fuelStopFranchise,
+                    } = fuelStop;
+
+                    if (!fuelStopFranchise) {
+                        this.selectedFuelStop = {
+                            id,
+                            name: businessName,
+                            businessName,
+                            fuelStopFranchise: null,
+                            address,
+                            fullAddress: address.address,
+                            isFranchise: false,
+                        };
+                    } else {
+                        this.selectedFuelStop = {
+                            storeId: id,
+                            name: store,
+                            businessName,
+                            fuelStopFranchise,
+                            address,
+                            fullAddress: address.address,
+                            isFranchise: true,
+                        };
+                    }
+
+                    this.fuelForm.patchValue({
+                        fuelStopStoreId: fuelStopFranchise
+                            ? store
+                            : businessName,
+                    });
+                },
             });
     }
 
@@ -681,6 +750,7 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
                             };
                         }),
                     ];
+
                     this.truckType = this.truckType.filter(
                         (v, i, a) => a.findIndex((v2) => v2.id === v.id) === i
                     );
@@ -689,15 +759,16 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
                         const truck = this.truckType.find(
                             (t) => t.id === this.editData.truckId
                         );
+
                         this.onSelectDropDown(truck, 'truck');
                     }
                 },
-                error: () => {},
             });
     }
 
     private startFormChanges(): void {
         this.formService.checkFormChange(this.fuelForm);
+
         this.formService.formValueChange$
             .pipe(takeUntil(this.destroy$))
             .subscribe((isFormChange: boolean) => {
@@ -709,30 +780,31 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
         return MethodsCalculationsHelper.convertDateToTimeFromBackend(date);
     }
 
-    public addRepairItem(): void {
-        if (!this.isEachRepairRowValid) return;
+    public addFuelItem(): void {
+        if (!this.isEachFuelRowValid) return;
 
-        this.isRepairBillRowCreated = true;
+        this.isFuelRowCreated = true;
 
         setTimeout(() => {
-            this.isRepairBillRowCreated = false;
+            this.isFuelRowCreated = false;
         }, 400);
     }
 
     public handleModalTableValueEmit(
-        modalTableDataValue: RepairItemResponse[]
+        modalTableDataValue: FuelItemResponse[]
     ): void {
         this.fuelItems = modalTableDataValue;
+
         this.getTotalCostValueEmit(modalTableDataValue as any);
     }
 
     public handleModalTableValidStatusEmit(
         isEachRepairItemsRowValid: boolean
     ): void {
-        this.isEachRepairRowValid = isEachRepairItemsRowValid;
+        this.isEachFuelRowValid = isEachRepairItemsRowValid;
     }
 
-    public getTotalCostValueEmit(event: RepairItemResponse[]): void {
+    public getTotalCostValueEmit(event: FuelItemResponse[]): void {
         let total = 0;
 
         event.forEach((item: RepairSubtotal) => {
@@ -743,7 +815,7 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
     }
 
     private mapDocuments(): Blob[] {
-        let documents: Blob[] = [];
+        const documents: Blob[] = [];
 
         this.documents?.forEach((item) => {
             if (item.realFile) documents.push(item.realFile);

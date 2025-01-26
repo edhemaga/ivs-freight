@@ -23,7 +23,7 @@
                 [isCardOpen]="newPMs.length > 0"
                 [hasScrollBody]="newPMs.length > 18"
                 [disabledCard]="!newPMs.length"
-                [disableAnimation]="disableCardAnimation"
+                [disableAnimation]="isCardAnimationDisabled"
                 (onActionEvent)="addPMs()"
             >
                 <app-ta-modal-table

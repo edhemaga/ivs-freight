@@ -27,7 +27,7 @@
             (tableBodyActions)="
                 handleDropdownMenuActions(
                     $event,
-                    selectedTab !== 'repair_shop'
+                    selectedTab !== tableStringEnum.REPAIR_SHOP
                         ? dropdownMenuStringEnum.REPAIR
                         : dropdownMenuStringEnum.REPAIR_SHOP
                 )
@@ -100,14 +100,6 @@
                         [address]="latlong.address"
                         [rating]="latlong?.tableRaiting"
                         [type]="'repairShop'"
-                        [sortCategory]="activeSortType"
-                        [locationFilterOn]="locationFilterOn"
-                        [ngStyle]="{
-                            display:
-                                locationFilterOn && latlong?.isShown == false
-                                    ? 'none'
-                                    : 'block',
-                        }"
                     ></app-ta-map-list-card>
                 </ng-container>
             </app-ta-map-list>

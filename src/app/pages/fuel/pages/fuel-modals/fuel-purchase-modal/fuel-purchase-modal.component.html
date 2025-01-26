@@ -28,7 +28,9 @@
                     <div class="col-6">
                         <app-ca-input
                             formControlName="fuelCard"
-                            [inputConfig]="fuelFormConfig.FUEL_CARD_INPUT_CONFIG"
+                            [inputConfig]="
+                                fuelFormConfig.FUEL_CARD_INPUT_CONFIG
+                            "
                         ></app-ca-input>
                     </div>
                 </div>
@@ -40,12 +42,22 @@
                 ></app-ca-input>
                 <app-ca-input
                     formControlName="transactionDate"
-                    [inputConfig]="fuelFormConfig.getTransactionDate(editData?.type,fuelTransactionType?.name)"
+                    [inputConfig]="
+                        fuelFormConfig.getTransactionDate(
+                            editData?.type,
+                            fuelTransactionType?.name
+                        )
+                    "
                 ></app-ca-input>
                 <!-- Time Picker -->
                 <app-ca-input
                     formControlName="transactionTime"
-                    [inputConfig]="fuelFormConfig.getTransactionTime(editData?.type,fuelTransactionType?.name)"
+                    [inputConfig]="
+                        fuelFormConfig.getTransactionTime(
+                            editData?.type,
+                            fuelTransactionType?.name
+                        )
+                    "
                 ></app-ca-input>
             </div>
             <div
@@ -59,7 +71,12 @@
                 <app-ca-input-dropdown
                     formControlName="truckId"
                     [template]="'svgtext-template'"
-                    [inputConfig]="fuelFormConfig.getTruckInputConfig(selectedTruckType, fuelForm.get('trailerId').value)"  
+                    [inputConfig]="
+                        fuelFormConfig.getTruckInputConfig(
+                            selectedTruckType,
+                            fuelForm.get('trailerId').value
+                        )
+                    "
                     [options]="truckType"
                     [activeItem]="selectedTruckType"
                     (selectedItem)="onSelectDropDown($event, 'truck')"
@@ -70,7 +87,11 @@
                         formControlName="trailerId"
                         [template]="'svgtext-template'"
                         [activeItem]="selectedTrailerType"
-                        [inputConfig]="fuelFormConfig.getTrailerInputConfig(selectedTrailerType?.logoName)"
+                        [inputConfig]="
+                            fuelFormConfig.getTrailerInputConfig(
+                                selectedTrailerType?.logoName
+                            )
+                        "
                     ></app-ca-input-dropdown>
                 }
 
@@ -193,28 +214,28 @@
 
             <app-ta-custom-card
                 [cardName]="'Item'"
-                [disableAnimation]="disableCardAnimation"
+                [disableAnimation]="isCardAnimationDisabled"
                 [hasActionSvg]="true"
                 [hasArrow]="false"
                 [hasScrollBody]="
-                    (editData?.data && updatedRepairItems?.length > 10) ||
+                    (editData?.data && updatedFuelItems?.length > 10) ||
                     fuelItems?.length > 10
                 "
                 [isCardOpen]="true"
                 [disabledCard]="
-                    (editData?.data && !updatedRepairItems?.length) ||
+                    (editData?.data && !updatedFuelItems?.length) ||
                     !fuelItems?.length
                 "
                 [hasCounter]="
-                    (editData?.data && updatedRepairItems?.length) ||
+                    (editData?.data && updatedFuelItems?.length) ||
                     fuelItems?.length
                 "
-                (onActionEvent)="addRepairItem()"
+                (onActionEvent)="addFuelItem()"
             >
                 <app-ta-modal-table
                     [tableType]="modalTableTypeEnum.REPAIR_BILL"
-                    [isNewRowCreated]="isRepairBillRowCreated"
-                    [modalTableData]="updatedRepairItems"
+                    [isNewRowCreated]="isFuelRowCreated"
+                    [modalTableData]="updatedFuelItems"
                     [isFuelTable]="true"
                     [fuelItemsDropdown]="fuelItemsDropdown"
                     (modalTableValueEmitter)="handleModalTableValueEmit($event)"
@@ -242,7 +263,7 @@
                 <app-ta-custom-card
                     [hasCounter]="documents.length ? documents.length : 0"
                     [cardName]="'Document'"
-                    [disableAnimation]="disableCardAnimation"
+                    [disableAnimation]="isCardAnimationDisabled"
                     [isCardOpen]="!!documents.length"
                 >
                     <app-ta-upload-files
@@ -316,7 +337,7 @@
                         fuelForm.valid &&
                         isFormDirty &&
                         fuelItems.length &&
-                        isEachRepairRowValid
+                        isEachFuelRowValid
                     "
                 >
                     Save Changes
@@ -329,7 +350,7 @@
                     fuelForm.valid &&
                     isFormDirty &&
                     fuelItems.length &&
-                    isEachRepairRowValid
+                    isEachFuelRowValid
                 "
                 (click)="onModalAction(taModalActionEnums.SAVE_AND_ADD_NEW)"
             >
@@ -342,7 +363,7 @@
                     fuelForm.valid &&
                     isFormDirty &&
                     fuelItems.length &&
-                    isEachRepairRowValid
+                    isEachFuelRowValid
                 "
             >
                 Save

@@ -124,6 +124,7 @@ export class RepairTableComponent
     public destroy$ = new Subject<void>();
 
     public dropdownMenuStringEnum = DropdownMenuStringEnum;
+    public tableStringEnum = TableStringEnum;
 
     public resizeObserver: ResizeObserver;
     public activeViewMode: string = TableStringEnum.LIST;

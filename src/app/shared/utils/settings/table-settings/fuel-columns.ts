@@ -1,6 +1,3 @@
-// svg routes
-import { AccountingFuelColumnSvgRoutes } from '@shared/utils/svg-routes';
-
 export function getFuelTransactionColumnDefinition() {
     return [
         {
@@ -42,11 +39,11 @@ export function getFuelTransactionColumnDefinition() {
             progress: null,
             hoverTemplate: null,
             filterable: true,
-            disabled: false,
+            disabled: true,
             export: true,
             resizable: true,
             link: {
-                routerLinkStart: '/dashboard',
+                doesNotHaveRout: true,
             },
         },
         {
@@ -395,7 +392,8 @@ export function getFuelStopColumnDefinition() {
             export: true,
             resizable: true,
             link: {
-                routerLinkStart: '/dashboard',
+                routerLinkStart: '/list/fuel/',
+                routerLinkEnd: '/details',
             },
         },
         {
@@ -631,7 +629,7 @@ export function getFuelStopColumnDefinition() {
             headIconStyle: {
                 width: 16,
                 height: 16,
-                imgPath: AccountingFuelColumnSvgRoutes.ICON_NOTE,
+                imgPath: 'assets/svg/truckassist-table/note/Note.svg',
             },
         },
         {

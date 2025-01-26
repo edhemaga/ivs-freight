@@ -59,7 +59,7 @@ import {
 } from 'appcoretruckassist';
 import { PmUpdateTruckUnitListCommand } from '@pages/pm-truck-trailer/models/pm-update-truck-unit-list-command.model';
 import { PMTableData } from '@pages/pm-truck-trailer/pages/pm-table/models/pm-table-data.model';
-import { TaModalActionEnums } from '@shared/components/ta-modal/enums';
+import { TaModalActionEnum } from '@shared/components/ta-modal/enums';
 
 @Component({
     selector: 'app-pm-modal',
@@ -93,7 +93,7 @@ export class PmModalComponent implements OnInit, OnDestroy {
 
     public isFormDirty: boolean;
 
-    public disableCardAnimation: boolean = false;
+    public isCardAnimationDisabled: boolean = false;
 
     public pmTableData: PMTableData[] = [];
 
@@ -108,7 +108,7 @@ export class PmModalComponent implements OnInit, OnDestroy {
     // enums
     public modalTableTypeEnum = ModalTableTypeEnum;
     public modalButtonType = ModalButtonType;
-    public taModalActionEnums = TaModalActionEnums;
+    public taModalActionEnums = TaModalActionEnum;
     public TableStringEnum = TableStringEnum;
     public activeAction: string;
 
@@ -133,7 +133,7 @@ export class PmModalComponent implements OnInit, OnDestroy {
         this.createForm();
 
         if (this.editData?.action?.includes(TableStringEnum.UNIT_PM)) {
-            this.disableCardAnimation = true;
+            this.isCardAnimationDisabled = true;
         }
 
         this.getPMList();
@@ -821,7 +821,7 @@ export class PmModalComponent implements OnInit, OnDestroy {
             }
 
             setTimeout(() => {
-                this.disableCardAnimation = false;
+                this.isCardAnimationDisabled = false;
             }, 1000);
         }
     }

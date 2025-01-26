@@ -64,7 +64,7 @@ import { ConfirmationService } from '@shared/components/ta-shared-modals/confirm
 
 // Pipes
 import { FormatDatePipe } from '@shared/pipes';
-import { TaModalActionEnums } from '@shared/components/ta-modal/enums';
+import { TaModalActionEnum } from '@shared/components/ta-modal/enums';
 
 // Svg routes
 import { SharedSvgRoutes } from '@shared/utils/svg-routes';
@@ -145,7 +145,7 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
 
     public isFormDirty: boolean;
     public svgRoutes = SharedSvgRoutes;
-    public taModalActionEnums = TaModalActionEnums;
+    public taModalActionEnums = TaModalActionEnum;
     public ownerModalConfig = OwnerModalConfig;
 
     public uploadOptionsConstants = ContactsModalConstants.UPLOAD_OPTIONS;
@@ -219,7 +219,7 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
 
     public onModalAction(action: string): void {
         switch (action) {
-            case TaModalActionEnums.CLOSE: {
+            case TaModalActionEnum.CLOSE: {
                 if (this.editData?.canOpenModal) {
                     switch (this.editData?.key) {
                         case 'truck-modal': {
@@ -256,7 +256,7 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
                 this.ngbActiveModal.close();
                 break;
             }
-            case TaModalActionEnums.SAVE_AND_ADD_NEW: {
+            case TaModalActionEnum.SAVE_AND_ADD_NEW: {
                 if (this.ownerForm.invalid || !this.isFormDirty) {
                     this.inputService.markInvalid(this.ownerForm);
                     return;
@@ -265,7 +265,7 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
                 this.addOwner();
                 break;
             }
-            case TaModalActionEnums.SAVE: {
+            case TaModalActionEnum.SAVE: {
                 if (this.ownerForm.invalid || !this.isFormDirty) {
                     this.inputService.markInvalid(this.ownerForm);
                     return;
@@ -278,7 +278,7 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
 
                 break;
             }
-            case TaModalActionEnums.DELETE:
+            case TaModalActionEnum.DELETE:
                 if (this.editData) {
                     this.modalService.openModal(
                         ConfirmationModalComponent,

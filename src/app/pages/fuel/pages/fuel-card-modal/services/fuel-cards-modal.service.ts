@@ -1,17 +1,17 @@
 import { BehaviorSubject, Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
 
-// Models
+// models
 import { CardsModalData } from '@shared/components/ta-shared-modals/cards-modal/models/cards-modal-data.model';
 
-//Store
+// store
 import { Store } from '@ngrx/store';
 import {
     setActiveTabCards,
     setInactiveTabCards,
 } from '@pages/fuel/pages/fuel-card-modal/state';
 
-//Enums
+// enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
 import { CardsModalStringEnum } from '@shared/components/ta-shared-modals/cards-modal/enums/cards-modal-string.enum';
 
@@ -43,15 +43,15 @@ export class FuelCardsModalService {
                 return item.inputItem.title && data.numberOfRows >= index + 1
                     ? item.inputItem
                     : !item.inputItem.title && data.numberOfRows >= index + 1
-                    ? { title: CardsModalStringEnum.EMPTY, key: '' }
-                    : null;
+                      ? { title: CardsModalStringEnum.EMPTY, key: '' }
+                      : null;
             }),
             back_side: data.back_side.map((item, index) => {
                 return item.inputItem.title && data.numberOfRows >= index + 1
                     ? item.inputItem
                     : !item.inputItem.title && data.numberOfRows >= index + 1
-                    ? { title: CardsModalStringEnum.EMPTY, key: '' }
-                    : null;
+                      ? { title: CardsModalStringEnum.EMPTY, key: '' }
+                      : null;
             }),
         };
 

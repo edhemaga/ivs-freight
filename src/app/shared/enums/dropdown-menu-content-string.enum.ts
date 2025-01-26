@@ -107,6 +107,8 @@ export enum DropdownMenuStringEnum {
     REPAIR_SHOP = 'repair-shop',
     DRIVER = 'driver',
     USER = 'user',
+    FUEL_TRANSACTION = 'fuel-transaction',
+    FUEL_STOP = 'fuel-stop',
 
     // svg classes
     REGULAR_SVG_CLASS = 'regular',
@@ -130,4 +132,5 @@ export enum DropdownMenuStringEnum {
     ORDER = 'Order',
     INVITED = 'Invited',
     EXPIRED = 'Expired',
+    FUEL = 'fuel',
 }

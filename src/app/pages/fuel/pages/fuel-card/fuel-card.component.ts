@@ -2,35 +2,43 @@ import {
     AfterViewInit,
     Component,
     ElementRef,
-    EventEmitter,
     Input,
     NgZone,
     OnDestroy,
     OnInit,
-    Output,
-    QueryList,
-    Renderer2,
     ViewChild,
-    ViewChildren,
 } from '@angular/core';
+import { Router } from '@angular/router';
+
 import { Subject, takeUntil } from 'rxjs';
+
+// base classes
+import { FuelDropdownMenuActionsBase } from '@pages/fuel/base-classes';
+
+// modules
+import { NgbPopover } from '@ng-bootstrap/ng-bootstrap';
+
+// helpers
+import { CardHelper } from '@shared/utils/helpers/card-helper';
+import { DropdownMenuActionsHelper } from '@shared/utils/helpers/dropdown-menu-helpers';
+
+// enums
+import { DropdownMenuStringEnum, TableStringEnum } from '@shared/enums';
+
+// services
+import { TruckassistTableService } from '@shared/services/truckassist-table.service';
+import { ModalService } from '@shared/services/modal.service';
+import { FuelService } from '@shared/services/fuel.service';
+
+// svg routes
+import { FuelCardSvgRoutes } from '@pages/fuel/pages/fuel-card/utils/svg-routes';
 
 // models
 import { CardRows } from '@shared/models/card-models/card-rows.model';
 import { CardDetails } from '@shared/models/card-models/card-table-data.model';
-import { CardDataResult } from '@shared/models/card-models/card-data-result.model';
-import { SendDataCard } from '@shared/models/card-models/send-data-card.model';
 import { MappedRepair } from '@pages/repair/pages/repair-table/models';
-
-// helpers
-import { CardHelper } from '@shared/utils/helpers/card-helper';
-
-// services
-import { TruckassistTableService } from '@shared/services/truckassist-table.service';
-import { NgbPopover } from '@ng-bootstrap/ng-bootstrap';
-
-// utils
-import { FuelCardSvgRoutes } from '@pages/fuel/pages/fuel-card/utils/svg-routes/fuel-card-svg-routes';
+import { DropdownMenuOptionEmit } from '@ca-shared/components/ca-dropdown-menu/models';
+import { FuelStopResponse, FuelTransactionResponse } from 'appcoretruckassist';
 
 @Component({
     selector: 'app-fuel-card',
@@ -38,49 +46,52 @@ import { FuelCardSvgRoutes } from '@pages/fuel/pages/fuel-card/utils/svg-routes/
     styleUrls: ['./fuel-card.component.scss'],
     providers: [CardHelper],
 })
-export class FuelCardComponent implements OnInit, AfterViewInit, OnDestroy {
+export class FuelCardComponent
+    extends FuelDropdownMenuActionsBase
+    implements OnInit, AfterViewInit, OnDestroy
+{
     @ViewChild('parentElement', { read: ElementRef })
     private cardBodyElement!: ElementRef;
-
-    @ViewChildren('itemsRepair', { read: ElementRef })
-    public itemsContainers!: QueryList<ElementRef>;
-
-    @Output() bodyActions: EventEmitter<SendDataCard> = new EventEmitter();
 
     @Input() set viewData(value: CardDetails[]) {
         this._viewData = value;
     }
 
-    // Card body endpoints
-    @Input() cardTitle: string;
-    @Input() rows: number[];
-    @Input() displayRowsFront: CardRows[];
-    @Input() displayRowsBack: CardRows[];
-    @Input() cardTitleLink: string;
     @Input() selectedTab: string;
 
-    public isCardFlippedCheckInCards: number[] = [];
+    // card body endpoints
+    @Input() displayRowsFront: CardRows[];
+    @Input() displayRowsBack: CardRows[];
+
+    public destroy$ = new Subject<void>();
+
     public _viewData: CardDetails[];
-    public cardsFront: CardDataResult[][][] = [];
-    public cardsBack: CardDataResult[][][] = [];
+
+    public isCardFlippedCheckInCards: number[] = [];
     public isAllCardsFlipp: boolean;
 
-    public elementWidth: number;
+    public dropdownElementWidth: number;
 
-    public fuelImageRoutes = FuelCardSvgRoutes;
-
-    private destroy$ = new Subject<void>();
+    public fuelCardSvgRoutes = FuelCardSvgRoutes;
 
     constructor(
+        // zone
         private ngZone: NgZone,
-        private renderer: Renderer2,
+
+        // router
+        protected router: Router,
 
         // services
+        protected modalService: ModalService,
+        protected fuelService: FuelService,
+
         private tableService: TruckassistTableService,
 
         // helpers
         private cardHelper: CardHelper
-    ) {}
+    ) {
+        super();
+    }
 
     ngOnInit() {
         this.flipAllCards();
@@ -88,33 +99,14 @@ export class FuelCardComponent implements OnInit, AfterViewInit, OnDestroy {
 
     ngAfterViewInit(): void {
         this.windowResizeUpdateDescriptionDropdown();
-
-        this.windownResizeUpdateCountNumberInCards();
     }
 
-    public windownResizeUpdateCountNumberInCards(): void {
-        if (this.cardBodyElement) {
-            const parentElement = this.cardBodyElement
-                .nativeElement as HTMLElement;
+    public trackCard(item: number): number {
+        return item;
+    }
 
-            const resizeObserver = new ResizeObserver((entries) => {
-                for (const entry of entries) {
-                    const { width } = entry.contentRect;
-                    if (width) {
-                        this.itemsContainers.forEach(
-                            (containerRef: ElementRef) => {
-                                this.cardHelper.calculateItemsToFit(
-                                    containerRef.nativeElement,
-                                    this.renderer
-                                );
-                            }
-                        );
-                    }
-                }
-            });
-
-            resizeObserver.observe(parentElement);
-        }
+    public flipCard(index: number): void {
+        this.isCardFlippedCheckInCards = this.cardHelper.flipCard(index);
     }
 
     public flipAllCards(): void {
@@ -128,7 +120,6 @@ export class FuelCardComponent implements OnInit, AfterViewInit, OnDestroy {
             });
     }
 
-    // When checkbox is selected
     public onCheckboxSelect(index: number, card: CardDetails): void {
         this._viewData[index].isSelected = !this._viewData[index].isSelected;
 
@@ -137,20 +128,6 @@ export class FuelCardComponent implements OnInit, AfterViewInit, OnDestroy {
         this.tableService.sendRowsSelected(checkedCard);
     }
 
-    // Flip card based on card index
-    public flipCard(index: number): void {
-        this.isCardFlippedCheckInCards = this.cardHelper.flipCard(index);
-    }
-
-    public trackCard(item: number): number {
-        return item;
-    }
-
-    public onCardActions(event: SendDataCard): void {
-        this.bodyActions.emit(event);
-    }
-
-    // Description
     public onShowDescriptionDropdown(
         popover: NgbPopover,
         card: MappedRepair
@@ -167,7 +144,6 @@ export class FuelCardComponent implements OnInit, AfterViewInit, OnDestroy {
             : popover.open({ data: fuelItemsData });
     }
 
-    // On window resize update width of description popup
     public windowResizeUpdateDescriptionDropdown(): void {
         if (this.cardBodyElement) {
             const parentElement = this.cardBodyElement
@@ -177,13 +153,35 @@ export class FuelCardComponent implements OnInit, AfterViewInit, OnDestroy {
                 const width = parentElement.offsetWidth;
 
                 this.ngZone.run(() => {
-                    this.elementWidth = width;
+                    this.dropdownElementWidth = width;
                 });
             });
 
             resizeObserver.observe(parentElement);
         }
     }
+
+    public handleToggleDropdownMenuActions(
+        event: DropdownMenuOptionEmit,
+        cardData: FuelTransactionResponse | FuelStopResponse
+    ): void {
+        const { type } = event;
+
+        const emitEvent =
+            DropdownMenuActionsHelper.createDropdownMenuActionsEmitEvent(
+                type,
+                cardData
+            );
+
+        this.handleDropdownMenuActions(
+            emitEvent,
+            this.selectedTab === TableStringEnum.FUEL_STOP
+                ? DropdownMenuStringEnum.FUEL_STOP
+                : DropdownMenuStringEnum.FUEL_TRANSACTION
+        );
+    }
+
+    public handleShowMoreAction(): void {}
 
     ngOnDestroy() {
         this.destroy$.next();

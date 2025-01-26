@@ -68,7 +68,12 @@ import { TaUserReviewComponent } from '@shared/components/ta-user-review/ta-user
 import { ConfirmationModalComponent } from '@shared/components/ta-shared-modals/confirmation-modal/confirmation-modal.component';
 import { ConfirmationMoveModalComponent } from '@shared/components/ta-shared-modals/confirmation-move-modal/confirmation-move-modal.component';
 import { TaModalTableComponent } from '@shared/components/ta-modal-table/ta-modal-table.component';
-import { CaInputComponent, CaInputDropdownComponent, CaModalButtonComponent, CaModalComponent } from 'ca-components';
+import {
+    CaInputComponent,
+    CaInputDropdownComponent,
+    CaModalButtonComponent,
+    CaModalComponent,
+} from 'ca-components';
 
 // enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
@@ -76,7 +81,7 @@ import { ConfirmationModalStringEnum } from '@shared/components/ta-shared-modals
 import { BrokerModalStringEnum } from '@pages/customer/pages/broker-modal/enums/';
 import { ModalTableTypeEnum } from '@shared/enums/modal-table-type.enum';
 import { ModalButtonSize, ModalButtonType } from '@shared/enums';
-import { TaModalActionEnums } from '@shared/components/ta-modal/enums';
+import { TaModalActionEnum } from '@shared/components/ta-modal/enums';
 
 // constants
 import { BrokerModalConstants } from '@pages/customer/pages/broker-modal/utils/constants/';
@@ -139,7 +144,7 @@ import { BrokerContactExtended } from '@pages/customer/pages/broker-modal/models
         CaModalButtonComponent,
 
         // Pipes
-        FormatDatePipe
+        FormatDatePipe,
     ],
 })
 export class BrokerModalComponent implements OnInit, OnDestroy {
@@ -209,14 +214,14 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
     public isNewContactAdded: boolean = false;
     public isEachContactRowValid: boolean = true;
 
-    public taModalActionEnums = TaModalActionEnums;
-    
+    public taModalActionEnums = TaModalActionEnum;
+
     public svgRoutes = SharedSvgRoutes;
     public activeAction: string;
 
     public modalButtonType = ModalButtonType;
     public modalButtonSize = ModalButtonSize;
-    
+
     constructor(
         // modal
         private ngbActiveModal: NgbActiveModal,
@@ -572,13 +577,13 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
         this.activeAction = action;
 
         if (
-            action === TaModalActionEnums.MOVE_TO_BFB ||
-            action === TaModalActionEnums.MOVE_TO_DNU
+            action === TaModalActionEnum.MOVE_TO_BFB ||
+            action === TaModalActionEnum.MOVE_TO_DNU
         ) {
             this.selectedDnuOrBfb = action;
 
             // DNU
-            if (action === TaModalActionEnums.MOVE_TO_DNU && this.editData) {
+            if (action === TaModalActionEnum.MOVE_TO_DNU && this.editData) {
                 const mappedEvent = {
                     id: this.editData?.id,
                     data: this?.editData?.data,
@@ -604,7 +609,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
                 );
             }
             // BFB
-            if (action === TaModalActionEnums.MOVE_TO_BFB && this.editData) {
+            if (action === TaModalActionEnum.MOVE_TO_BFB && this.editData) {
                 const mappedEvent = {
                     id: this.editData?.id,
                     data: this?.editData?.data,
@@ -630,7 +635,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
                 );
             }
         } else {
-            if (action === TaModalActionEnums.CLOSE) {
+            if (action === TaModalActionEnum.CLOSE) {
                 if (this.editData?.canOpenModal) {
                     if (this.editData?.key === 'load-modal')
                         this.modalService.setProjectionModal({
@@ -650,7 +655,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
                 return;
             }
             // Save And Add New
-            else if (action === TaModalActionEnums.SAVE_AND_ADD_NEW) {
+            else if (action === TaModalActionEnum.SAVE_AND_ADD_NEW) {
                 if (this.brokerForm.invalid || !this.isFormDirty) {
                     this.inputService.markInvalid(this.brokerForm);
 
@@ -663,7 +668,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
                 this.isAddNewAfterSave = true;
             } else {
                 // Save & Update
-                if (action === TaModalActionEnums.SAVE) {
+                if (action === TaModalActionEnum.SAVE) {
                     if (this.brokerForm.invalid || !this.isFormDirty) {
                         this.inputService.markInvalid(this.brokerForm);
 
@@ -679,7 +684,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
                     }
                 }
                 // Delete
-                if (action === TaModalActionEnums.DELETE && this.editData) {
+                if (action === TaModalActionEnum.DELETE && this.editData) {
                     this.modalService.openModal(
                         ConfirmationModalComponent,
                         { size: TableStringEnum.DELETE },
@@ -908,38 +913,38 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
                             ? this.selectedPhysicalAddress.address
                             : null
                         : this.selectedBillingAddress
-                        ? this.selectedBillingAddress.address
-                        : null,
+                          ? this.selectedBillingAddress.address
+                          : null,
                     city: this.brokerForm.get('isCheckedBillingAddress').value
                         ? this.selectedPhysicalAddress
                             ? this.selectedPhysicalAddress.city
                             : null
                         : this.selectedBillingAddress
-                        ? this.selectedBillingAddress.city
-                        : null,
+                          ? this.selectedBillingAddress.city
+                          : null,
                     state: this.brokerForm.get('isCheckedBillingAddress').value
                         ? this.selectedPhysicalAddress
                             ? this.selectedPhysicalAddress.state
                             : null
                         : this.selectedBillingAddress
-                        ? this.selectedBillingAddress.state
-                        : null,
+                          ? this.selectedBillingAddress.state
+                          : null,
                     country: this.brokerForm.get('isCheckedBillingAddress')
                         .value
                         ? this.selectedPhysicalAddress
                             ? this.selectedPhysicalAddress.country
                             : null
                         : this.selectedBillingAddress
-                        ? this.selectedBillingAddress.country
-                        : null,
+                          ? this.selectedBillingAddress.country
+                          : null,
                     zipCode: this.brokerForm.get('isCheckedBillingAddress')
                         .value
                         ? this.selectedPhysicalAddress
                             ? this.selectedPhysicalAddress.zipCode
                             : null
                         : this.selectedBillingAddress
-                        ? this.selectedBillingAddress.zipCode
-                        : null,
+                          ? this.selectedBillingAddress.zipCode
+                          : null,
                     stateShortName: this.brokerForm.get(
                         'isCheckedBillingAddress'
                     ).value
@@ -947,23 +952,23 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
                             ? this.selectedPhysicalAddress.stateShortName
                             : null
                         : this.selectedBillingAddress
-                        ? this.selectedBillingAddress.stateShortName
-                        : null,
+                          ? this.selectedBillingAddress.stateShortName
+                          : null,
                     street: this.brokerForm.get('isCheckedBillingAddress').value
                         ? this.selectedPhysicalAddress
                             ? this.selectedPhysicalAddress.street
                             : null
                         : this.selectedBillingAddress
-                        ? this.selectedBillingAddress.street
-                        : null,
+                          ? this.selectedBillingAddress.street
+                          : null,
                     streetNumber: this.brokerForm.get('isCheckedBillingAddress')
                         .value
                         ? this.selectedPhysicalAddress
                             ? this.selectedPhysicalAddress.streetNumber
                             : null
                         : this.selectedBillingAddress
-                        ? this.selectedBillingAddress.streetNumber
-                        : null,
+                          ? this.selectedBillingAddress.streetNumber
+                          : null,
                     addressUnit: this.brokerForm.get('isCheckedBillingAddress')
                         .value
                         ? this.brokerForm.get('physicalAddressUnit').value
@@ -997,23 +1002,23 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
                             ? this.selectedPhysicalPoBox.city
                             : null
                         : this.selectedBillingPoBox
-                        ? this.selectedBillingPoBox.city
-                        : null,
+                          ? this.selectedBillingPoBox.city
+                          : null,
                     state: this.brokerForm.get('isCheckedBillingAddress').value
                         ? this.selectedPhysicalPoBox
                             ? this.selectedPhysicalPoBox.state
                             : null
                         : this.selectedBillingPoBox
-                        ? this.selectedBillingPoBox.state
-                        : null,
+                          ? this.selectedBillingPoBox.state
+                          : null,
                     zipCode: this.brokerForm.get('isCheckedBillingAddress')
                         .value
                         ? this.selectedPhysicalPoBox
                             ? this.selectedPhysicalPoBox.zipCode
                             : null
                         : this.selectedBillingPoBox
-                        ? this.selectedBillingPoBox.zipCode
-                        : null,
+                          ? this.selectedBillingPoBox.zipCode
+                          : null,
                     poBox: this.brokerForm.get('isCheckedBillingAddress').value
                         ? this.selectedPhysicalPoBox
                             ? this.brokerForm.get(
@@ -1088,38 +1093,38 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
                             ? this.selectedPhysicalAddress.address
                             : null
                         : this.selectedBillingAddress
-                        ? this.selectedBillingAddress.address
-                        : null,
+                          ? this.selectedBillingAddress.address
+                          : null,
                     city: this.brokerForm.get('isCheckedBillingAddress').value
                         ? this.selectedPhysicalAddress
                             ? this.selectedPhysicalAddress.city
                             : null
                         : this.selectedBillingAddress
-                        ? this.selectedBillingAddress.city
-                        : null,
+                          ? this.selectedBillingAddress.city
+                          : null,
                     state: this.brokerForm.get('isCheckedBillingAddress').value
                         ? this.selectedPhysicalAddress
                             ? this.selectedPhysicalAddress.state
                             : null
                         : this.selectedBillingAddress
-                        ? this.selectedBillingAddress.state
-                        : null,
+                          ? this.selectedBillingAddress.state
+                          : null,
                     country: this.brokerForm.get('isCheckedBillingAddress')
                         .value
                         ? this.selectedPhysicalAddress
                             ? this.selectedPhysicalAddress.country
                             : null
                         : this.selectedBillingAddress
-                        ? this.selectedBillingAddress.country
-                        : null,
+                          ? this.selectedBillingAddress.country
+                          : null,
                     zipCode: this.brokerForm.get('isCheckedBillingAddress')
                         .value
                         ? this.selectedPhysicalAddress
                             ? this.selectedPhysicalAddress.zipCode
                             : null
                         : this.selectedBillingAddress
-                        ? this.selectedBillingAddress.zipCode
-                        : null,
+                          ? this.selectedBillingAddress.zipCode
+                          : null,
                     stateShortName: this.brokerForm.get(
                         'isCheckedBillingAddress'
                     ).value
@@ -1127,23 +1132,23 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
                             ? this.selectedPhysicalAddress.stateShortName
                             : null
                         : this.selectedBillingAddress
-                        ? this.selectedBillingAddress.stateShortName
-                        : null,
+                          ? this.selectedBillingAddress.stateShortName
+                          : null,
                     street: this.brokerForm.get('isCheckedBillingAddress').value
                         ? this.selectedPhysicalAddress
                             ? this.selectedPhysicalAddress.street
                             : null
                         : this.selectedBillingAddress
-                        ? this.selectedBillingAddress.street
-                        : null,
+                          ? this.selectedBillingAddress.street
+                          : null,
                     streetNumber: this.brokerForm.get('isCheckedBillingAddress')
                         .value
                         ? this.selectedPhysicalAddress
                             ? this.selectedPhysicalAddress.streetNumber
                             : null
                         : this.selectedBillingAddress
-                        ? this.selectedBillingAddress.streetNumber
-                        : null,
+                          ? this.selectedBillingAddress.streetNumber
+                          : null,
                     addressUnit: this.brokerForm.get('isCheckedBillingAddress')
                         .value
                         ? this.brokerForm.get('physicalAddressUnit').value
@@ -1158,23 +1163,23 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
                             ? this.selectedPhysicalPoBox.city
                             : null
                         : this.selectedBillingPoBox
-                        ? this.selectedBillingPoBox.city
-                        : null,
+                          ? this.selectedBillingPoBox.city
+                          : null,
                     state: this.brokerForm.get('isCheckedBillingAddress').value
                         ? this.selectedPhysicalPoBox
                             ? this.selectedPhysicalPoBox.state
                             : null
                         : this.selectedBillingPoBox
-                        ? this.selectedBillingPoBox.state
-                        : null,
+                          ? this.selectedBillingPoBox.state
+                          : null,
                     zipCode: this.brokerForm.get('isCheckedBillingAddress')
                         .value
                         ? this.selectedPhysicalPoBox
                             ? this.selectedPhysicalPoBox.zipCode
                             : null
                         : this.selectedBillingPoBox
-                        ? this.selectedBillingPoBox.zipCode
-                        : null,
+                          ? this.selectedBillingPoBox.zipCode
+                          : null,
                     poBox: this.brokerForm.get('isCheckedBillingAddress').value
                         ? this.selectedPhysicalPoBox
                             ? this.brokerForm.get(
@@ -1528,8 +1533,8 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
                                     this.editData?.openedTab === 'Additional'
                                         ? 2
                                         : this.editData?.openedTab === 'Review'
-                                        ? 3
-                                        : 1,
+                                          ? 3
+                                          : 1,
                             });
 
                             this.isCardAnimationDisabled = true;
@@ -1586,10 +1591,10 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
 
                     this.ngbActiveModal.close();
                     if (this.isAddNewAfterSave) {
-                        this.modalService.openModal(BrokerModalComponent, {})
-                    } 
+                        this.modalService.openModal(BrokerModalComponent, {});
+                    }
                 },
-                error: () => this.activeAction = null
+                error: () => (this.activeAction = null),
             });
     }
 
@@ -1648,9 +1653,9 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
                                 break;
                             }
                         }
-                    } else   this.ngbActiveModal.close();
+                    } else this.ngbActiveModal.close();
                 },
-                error: () => this.activeAction = null,
+                error: () => (this.activeAction = null),
             });
     }
 

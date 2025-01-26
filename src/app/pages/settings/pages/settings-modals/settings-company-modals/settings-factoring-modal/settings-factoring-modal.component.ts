@@ -77,7 +77,7 @@ export class SettingsFactoringModalComponent implements OnInit, OnDestroy {
 
     public isFormDirty: boolean;
 
-    public disableCardAnimation: boolean = false;
+    public isCardAnimationDisabled: boolean = false;
 
     public isBluredNotice: boolean = true;
 
@@ -111,7 +111,7 @@ export class SettingsFactoringModalComponent implements OnInit, OnDestroy {
     ngOnInit(): void {
         this.createForm();
         if (this.editData.type === 'edit') {
-            this.disableCardAnimation = true;
+            this.isCardAnimationDisabled = true;
             this.editFactoringCompany(this.editData.company);
         } else {
             this.startFormChanges();
@@ -263,7 +263,7 @@ export class SettingsFactoringModalComponent implements OnInit, OnDestroy {
 
         setTimeout(() => {
             this.startFormChanges();
-            this.disableCardAnimation = false;
+            this.isCardAnimationDisabled = false;
         }, 1000);
     }
 
@@ -273,16 +273,26 @@ export class SettingsFactoringModalComponent implements OnInit, OnDestroy {
 
     public onCompanyNameInputBlur(): void {
         if (
-            this.isInitialCompanyNameSet && 
-            this.editData.type === 'new' && 
+            this.isInitialCompanyNameSet &&
+            this.editData.type === 'new' &&
             this.factoringForm.get('name').value
         ) {
-            const noticeOfAssignmentBaseText: string = this.constants.NOTICE_OF_ASSIGNMENT_TEXT_BASE
-                .replace('{{CompanyName}}', this.factoringForm.get('name').value);
-    
-            this.factoringForm.get('noticeOfAssigment').setValue(noticeOfAssignmentBaseText);
+            const noticeOfAssignmentBaseText: string =
+                this.constants.NOTICE_OF_ASSIGNMENT_TEXT_BASE.replace(
+                    '{{CompanyName}}',
+                    this.factoringForm.get('name').value
+                );
 
-            this.nameInputBlurTimeoutCleaner = setTimeout(() => this.isInitialCompanyNameSet = !this.isInitialCompanyNameSet, 100);
+            this.factoringForm
+                .get('noticeOfAssigment')
+                .setValue(noticeOfAssignmentBaseText);
+
+            this.nameInputBlurTimeoutCleaner = setTimeout(
+                () =>
+                    (this.isInitialCompanyNameSet =
+                        !this.isInitialCompanyNameSet),
+                100
+            );
         }
     }
 

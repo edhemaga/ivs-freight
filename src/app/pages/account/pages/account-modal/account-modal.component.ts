@@ -61,7 +61,7 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
 import { FormatDatePipe } from '@shared/pipes';
 
 // Enums
-import { TaModalActionEnums } from '@shared/components/ta-modal/enums';
+import { TaModalActionEnum } from '@shared/components/ta-modal/enums';
 import { TableStringEnum } from '@shared/enums';
 import { ContactsModalStringEnum } from '@pages/contacts/pages/contacts-modal/enums';
 
@@ -171,30 +171,27 @@ export class AccountModalComponent implements OnInit, OnDestroy {
 
     public onModalAction(action: string): void {
         switch (action) {
-            case TaModalActionEnums.CLOSE:
+            case TaModalActionEnum.CLOSE:
                 this.ngbActiveModal.close();
                 break;
 
-            case TaModalActionEnums.SAVE_AND_ADD_NEW:
+            case TaModalActionEnum.SAVE_AND_ADD_NEW:
                 if (this.accountForm.invalid || !this.isFormDirty) {
                     this.inputService.markInvalid(this.accountForm);
                     return;
                 }
-                this.setModalSpinner(
-                    TaModalActionEnums.SAVE_AND_ADD_NEW,
-                    false
-                );
+                this.setModalSpinner(TaModalActionEnum.SAVE_AND_ADD_NEW, false);
                 this.addCompanyAccount();
                 this.addNewAfterSave = true;
                 break;
 
-            case TaModalActionEnums.SAVE:
+            case TaModalActionEnum.SAVE:
                 if (this.accountForm.invalid || !this.isFormDirty) {
                     this.inputService.markInvalid(this.accountForm);
                     return;
                 }
 
-                this.setModalSpinner(TaModalActionEnums.SAVE, false);
+                this.setModalSpinner(TaModalActionEnum.SAVE, false);
 
                 if (this.editData) {
                     this.updateCompanyAccount(this.editData.id);
@@ -203,7 +200,7 @@ export class AccountModalComponent implements OnInit, OnDestroy {
                 }
                 break;
 
-            case TaModalActionEnums.DELETE:
+            case TaModalActionEnum.DELETE:
                 if (this.editData) {
                     this.modalService.openModal(
                         ConfirmationModalComponent,

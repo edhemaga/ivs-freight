@@ -80,7 +80,7 @@ import { TruckModalConstants } from '@pages/truck/pages/truck-modal/const';
 // Pipes
 import { FormatDatePipe } from '@shared/pipes';
 import { SharedSvgRoutes } from '@shared/utils/svg-routes';
-import { TaModalActionEnums } from '@shared/components/ta-modal/enums';
+import { TaModalActionEnum } from '@shared/components/ta-modal/enums';
 import { ConfirmationModalComponent } from '@shared/components/ta-shared-modals/confirmation-modal/confirmation-modal.component';
 import { TableStringEnum } from '@shared/enums';
 import { ConfirmationActivationModalComponent } from '@shared/components/ta-shared-modals/confirmation-activation-modal/confirmation-activation-modal.component';
@@ -200,7 +200,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
 
     public svgRoutes = SharedSvgRoutes;
     private destroy$ = new Subject<void>();
-    public taModalActionEnums = TaModalActionEnums;
+    public taModalActionEnums = TaModalActionEnum;
 
     constructor(
         private formBuilder: UntypedFormBuilder,
@@ -327,7 +327,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
 
     public onModalAction(action: string): void {
         switch (action) {
-            case TaModalActionEnums.CLOSE:
+            case TaModalActionEnum.CLOSE:
                 if (this.editData?.canOpenModal) {
                     switch (this.editData?.key) {
                         case 'repair-modal':
@@ -351,7 +351,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
                 }
                 break;
 
-            case TaModalActionEnums.DEACTIVATE:
+            case TaModalActionEnum.DEACTIVATE:
                 this.modalService.openModal(
                     ConfirmationActivationModalComponent,
                     { size: TableStringEnum.SMALL },
@@ -380,7 +380,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
                 );
                 break;
 
-            case TaModalActionEnums.SAVE_AND_ADD_NEW:
+            case TaModalActionEnum.SAVE_AND_ADD_NEW:
                 if (this.truckForm.invalid || !this.isFormDirty) {
                     this.inputService.markInvalid(this.truckForm);
                     return;
@@ -389,7 +389,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
                 this.addNewAfterSave = true;
                 break;
 
-            case TaModalActionEnums.SAVE:
+            case TaModalActionEnum.SAVE:
                 if (this.truckForm.invalid || !this.isFormDirty) {
                     this.inputService.markInvalid(this.truckForm);
                     return;
@@ -401,7 +401,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
                 }
                 break;
 
-            case TaModalActionEnums.DELETE:
+            case TaModalActionEnum.DELETE:
                 if (this.editData) {
                     this.modalService.openModal(
                         ConfirmationModalComponent,
