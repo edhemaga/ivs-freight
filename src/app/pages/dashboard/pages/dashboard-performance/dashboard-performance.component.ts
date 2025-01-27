@@ -59,8 +59,6 @@ export class DashboardPerformanceComponent implements OnInit, OnDestroy {
 
     public isLoading: boolean = false;
 
-    public dashboardPerformanceIconRoutes = DashboardPerformanceIconRoutes.icCircleDefaultLoad;
-
     public performanceForm: UntypedFormGroup;
     public performanceData: PerformanceDataItem[] = [];
 

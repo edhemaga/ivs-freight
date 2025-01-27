@@ -1,11 +1,14 @@
+//modals
 import { IChartConfiguration } from '@ca-shared/components/ca-chart/models';
+
+//enums
 import {
     ChartImagesStringEnum,
     ChartTypesStringEnum,
 } from 'ca-components/lib/components/ca-chart/enums';
 
 export class DashboardByStateChartsConfiguration {
-    public static By_STATE_CHART_CONFIG: IChartConfiguration = {
+    public static BY_STATE_CHART_CONFIG: IChartConfiguration = {
         chartType: ChartTypesStringEnum.BAR,
         chartData: {
             labels: [],

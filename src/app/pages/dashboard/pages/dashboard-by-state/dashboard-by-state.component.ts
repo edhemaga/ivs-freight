@@ -1,8 +1,4 @@
-import {
-    Component,
-    OnInit,
-    OnDestroy,
-} from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 
 import { Observable, Subject, takeUntil, tap } from 'rxjs';
@@ -20,20 +16,26 @@ import { DashboardHelper } from '@pages/dashboard/utils/helpers/dashboard.helper
 import { DashboardArrayHelper } from '@pages/dashboard/utils/helpers/dashboard-array-helper';
 
 // constants
-import { DashboardByStateConstants } from '@pages/dashboard/pages/dashboard-by-state/utils/constants/dashboard-by-state.constants';
 import { DashboardSubperiodConstants } from '@pages/dashboard/utils/constants/dashboard-subperiod.constants';
 import { DashboardTopRatedConstants } from '@pages/dashboard/pages/dashboard-top-rated/utils/constants/dashboard-top-rated.constants';
 import { DashboardColors } from '@pages/dashboard/utils/constants/dashboard-colors.constants';
-import { DashboardByStateChartsConfiguration } from '@pages/dashboard/pages/dashboard-by-state/utils/constants';
+import {
+    DashboardByStateChartDatasetConfiguration,
+    DashboardByStateChartsConfiguration,
+    DashboardByStateConstants,
+} from '@pages/dashboard/pages/dashboard-by-state/utils/constants';
+import { DashboardConstants } from '@pages/dashboard/utils/constants';
 
 // models
 import { DropdownItem } from '@shared/models/dropdown-item.model';
 import { DashboardTab } from '@pages/dashboard/models/dashboard-tab.model';
 import { DropdownListItem } from '@pages/dashboard/models/dropdown-list-item.model';
-import { DashboardConstants } from '@pages/dashboard/utils/constants';
 import { ByStateColorsPallete } from '@pages/dashboard/models/colors-pallete.model';
 import { CustomPeriodRange } from '@shared/models/custom-period-range.model';
-import { IBaseDataset, IChartConfiguration } from 'ca-components/lib/components/ca-chart/models';
+import {
+    IBaseDataset,
+    IChartConfiguration,
+} from 'ca-components/lib/components/ca-chart/models';
 
 import {
     ByStateReportType,
@@ -50,8 +52,9 @@ import {
     ByStateResponse,
     ByStateWithLoadStopApiArguments,
     MapListItem,
-} from './models';
-import { DashboardByStateSvgRoutes } from './utils/svg-routes';
+} from '@pages/dashboard/pages/dashboard-by-state/models';
+
+import { DashboardByStateSvgRoutes } from '@pages/dashboard/pages/dashboard-by-state/utils/svg-routes';
 
 @Component({
     selector: 'app-dashboard-pickup-by-state',
@@ -101,27 +104,27 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
     private overallCompanyDuration: number;
 
     public selectedDropdownWidthSubPeriod: DropdownListItem;
-    
+
     // svg Routes
     public svgRoutes = DashboardByStateSvgRoutes;
 
     //chart
     public byStateBarChartConfig: IChartConfiguration =
-        DashboardByStateChartsConfiguration.By_STATE_CHART_CONFIG;
+        DashboardByStateChartsConfiguration.BY_STATE_CHART_CONFIG;
 
-    public byStateBarChartTitle: string =
-            DashboardConstants.STRING_EMPTY;
-    
+    private byStateChartDatasetConfig =
+        DashboardByStateChartDatasetConfiguration.BY_STATE_CHART_DATASET_CONFIG;
+
+    public byStateBarChartTitle: string = DashboardConstants.STRING_EMPTY;
+
     public intervalTooltipLabel: string[] = [];
 
     get topCategory(): string {
         const lenght = this.byStateList.length;
-        if(lenght <= 10)
-            return DashboardConstants.BAR_CHART_LABEL_TOP_3
-        else if (lenght > 10 && lenght <= 30) 
-            return DashboardConstants.BAR_CHART_LABEL_TOP_5
-        else 
-            return DashboardConstants.BAR_CHART_LABEL_TOP_10
+        if (lenght <= 10) return DashboardConstants.BAR_CHART_LABEL_TOP_3;
+        else if (lenght > 10 && lenght <= 30)
+            return DashboardConstants.BAR_CHART_LABEL_TOP_5;
+        else return DashboardConstants.BAR_CHART_LABEL_TOP_10;
     }
 
     constructor(
@@ -523,149 +526,11 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
 
         this.resetSelectedValues();
 
-        const byStateConfig = {
-            [DashboardStringEnum.PICKUP]: {
-                serviceMethod:
-                    this.dashboardByStateService.getPickupByState.bind(
-                        this.dashboardByStateService
-                    ),
-                dataTransform: (pickup, index) => ({
-                    id: index + 1,
-                    state: pickup.stateShortName,
-                    value:
-                        selectedTab === DashboardStringEnum.COUNT
-                            ? pickup.count.toString()
-                            : pickup.revenue.toString(),
-                    percent:
-                        selectedTab === DashboardStringEnum.COUNT
-                            ? pickup.countPercentage.toString()
-                            : pickup.revenuePercentage.toString(),
-                    isSelected: false,
-                    selectedColor: null,
-                }),
-            },
-            [DashboardStringEnum.DELIVERY]: {
-                serviceMethod:
-                    this.dashboardByStateService.getDeliveryByState.bind(
-                        this.dashboardByStateService
-                    ),
-                dataTransform: (delivery, index) => ({
-                    id: index + 1,
-                    state: delivery.stateShortName,
-                    value:
-                        selectedTab === DashboardStringEnum.COUNT
-                            ? delivery.count.toString()
-                            : delivery.revenue.toString(),
-                    percent:
-                        selectedTab === DashboardStringEnum.COUNT
-                            ? delivery.countPercentage.toString()
-                            : delivery.revenuePercentage.toString(),
-                    isSelected: false,
-                    selectedColor: null,
-                }),
-            },
-            [DashboardStringEnum.ROADSIDE]: {
-                serviceMethod:
-                    this.dashboardByStateService.getRoadsideByState.bind(
-                        this.dashboardByStateService
-                    ),
-                dataTransform: (rodeside, index) => ({
-                    id: index + 1,
-                    state: rodeside.stateShortName,
-                    value:
-                        selectedTab === DashboardStringEnum.COUNT
-                            ? rodeside.count.toString()
-                            : rodeside.severityWeight.toString(),
-                    percent:
-                        selectedTab === DashboardStringEnum.COUNT
-                            ? rodeside.countPercentage.toString()
-                            : rodeside.severityWeightPercentage.toString(),
-                    isSelected: false,
-                    selectedColor: null,
-                }),
-            },
-            [DashboardStringEnum.VIOLATION_2]: {
-                serviceMethod:
-                    this.dashboardByStateService.getViolationByState.bind(
-                        this.dashboardByStateService
-                    ),
-                dataTransform: (violation, index) => ({
-                    id: index + 1,
-                    state: violation.stateShortName,
-                    value:
-                        selectedTab === DashboardStringEnum.COUNT
-                            ? violation.count.toString()
-                            : violation.severityWeight.toString(),
-                    percent:
-                        selectedTab === DashboardStringEnum.COUNT
-                            ? violation.countPercentage.toString()
-                            : violation.severityWeightPercentage.toString(),
-                    isSelected: false,
-                    selectedColor: null,
-                }),
-            },
-            [DashboardStringEnum.ACCIDENT_2]: {
-                serviceMethod:
-                    this.dashboardByStateService.getAccidentByState.bind(
-                        this.dashboardByStateService
-                    ),
-                dataTransform: (accident, index) => ({
-                    id: index + 1,
-                    state: accident.stateShortName,
-                    value:
-                        selectedTab === DashboardStringEnum.COUNT
-                            ? accident.count.toString()
-                            : accident.severityWeight.toString(),
-                    percent:
-                        selectedTab === DashboardStringEnum.COUNT
-                            ? accident.countPercentage.toString()
-                            : accident.severityWeightPercentage.toString(),
-                    isSelected: false,
-                    selectedColor: null,
-                }),
-            },
-            [DashboardStringEnum.REPAIR]: {
-                serviceMethod:
-                    this.dashboardByStateService.getRepairByState.bind(
-                        this.dashboardByStateService
-                    ),
-                dataTransform: (repair, index) => ({
-                    id: index + 1,
-                    state: repair.stateShortName,
-                    value:
-                        selectedTab === DashboardStringEnum.COUNT
-                            ? repair.count.toString()
-                            : repair.cost.toString(),
-                    percent:
-                        selectedTab === DashboardStringEnum.COUNT
-                            ? repair.countPercentage.toString()
-                            : repair.costPercentage.toString(),
-                    isSelected: false,
-                    selectedColor: null,
-                }),
-            },
-            [DashboardStringEnum.FUEL]: {
-                serviceMethod: this.dashboardByStateService.getFuelByState.bind(
-                    this.dashboardByStateService
-                ),
-                dataTransform: (fuel, index) => ({
-                    id: index + 1,
-                    state: fuel.stateShortName,
-                    value:
-                        selectedTab === DashboardStringEnum.GALLON
-                            ? fuel.gallon.toString()
-                            : fuel.cost.toString(),
-                    percent:
-                        selectedTab === DashboardStringEnum.GALLON
-                            ? fuel.gallonPercentage.toString()
-                            : fuel.costPercentage.toString(),
-                    isSelected: false,
-                    selectedColor: null,
-                }),
-            },
-        };
-
-        const config = byStateConfig[this.byStateTitle];
+        const config = DashboardHelper.selectByStateConfiguration(
+            this.dashboardByStateService,
+            selectedTab,
+            this.byStateTitle
+        );
 
         if (config) {
             this.getDataByState(
@@ -700,7 +565,8 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
             )
             .subscribe((responseData) => {
                 this.byStateList = responseData.pagination.data.map(
-                    (response, index) => dataTransform(response, index, selectedTab)
+                    (response, index) =>
+                        dataTransform(response, index, selectedTab)
                 );
                 this.byStateListBeforeSearch = [...this.byStateList];
                 this.byStateListLength = responseData.pagination.count;
@@ -721,59 +587,71 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
                     (item) => item.label || DashboardConstants.STRING_EMPTY
                 );
 
-                const byStateBarChartData = this.setByStateBarChartData(responseData.topTen, responseData.others, selectedTab);
+                const byStateBarChartData = this.setByStateBarChartData(
+                    responseData.topTen,
+                    responseData.others,
+                    selectedTab
+                );
 
                 this.byStateBarChartConfig = {
                     ...this.byStateBarChartConfig,
                     chartData: {
                         labels: byStatechartLables,
                         datasets: byStateBarChartData,
-                    }
+                    },
                 };
             });
     }
 
-    private setByStateBarChartData(topPicks: ByStateIntervalResponse[], otherPicks: ByStateIntervalResponse[], selectedTab: ByStateReportType): IBaseDataset[] {
-        const barChartDataSetConfig = {
-            type: ChartTypesStringEnum.BAR,
-            barPercentage: 0.9,
-            categoryPercentage: 0.5,
-            minBarLength: 0.5,
-            borderRadius: {
-                topLeft: 2,
-                topRight: 2,
-                bottomLeft: 0,
-                bottomRight: 0,
-            },
-        }
+    private setByStateBarChartData(
+        topPicks: ByStateIntervalResponse[],
+        otherPicks: ByStateIntervalResponse[],
+        selectedTab: ByStateReportType
+    ): IBaseDataset[] { 
         const topPicksDataset = {
-            ...barChartDataSetConfig,
+            ...this.byStateChartDatasetConfig,
             label: this.topCategory,
-            data: topPicks.map((item) => this.getValueBySelectedTab(item, selectedTab)),
+            data: topPicks.map((item) =>
+                this.getValueBySelectedTab(item, selectedTab)
+            ),
             order: 1,
-            backgroundColor: DashboardColors.BAR_PERFORMANCE_COLORS_PALLETE[0].color,
-            hoverBackgroundColor: DashboardColors.BAR_PERFORMANCE_COLORS_PALLETE[0].color,
-            hoverBorderColor: DashboardColors.BAR_PERFORMANCE_COLORS_PALLETE[0].color,
-            borderColor: DashboardColors.BAR_PERFORMANCE_COLORS_PALLETE[0].color,
+            backgroundColor:
+                DashboardColors.BAR_PERFORMANCE_COLORS_PALLETE[0].color,
+            hoverBackgroundColor:
+                DashboardColors.BAR_PERFORMANCE_COLORS_PALLETE[0].color,
+            hoverBorderColor:
+                DashboardColors.BAR_PERFORMANCE_COLORS_PALLETE[0].color,
+            borderColor:
+                DashboardColors.BAR_PERFORMANCE_COLORS_PALLETE[0].color,
         };
 
         const othersDataset = {
-            ...barChartDataSetConfig,
+            ...this.byStateChartDatasetConfig,
             label: DashboardConstants.BAR_CHART_LABEL_ALL_OTHERS,
-            data: otherPicks.map((item) => this.getValueBySelectedTab(item, selectedTab)),
+            data: otherPicks.map((item) =>
+                this.getValueBySelectedTab(item, selectedTab)
+            ),
             order: 2,
-            backgroundColor: DashboardColors.BAR_PERFORMANCE_COLORS_PALLETE[1].color,
-            hoverBackgroundColor: DashboardColors.BAR_PERFORMANCE_COLORS_PALLETE[1].color,
-            hoverBorderColor: DashboardColors.BAR_PERFORMANCE_COLORS_PALLETE[1].color,
-            borderColor: DashboardColors.BAR_PERFORMANCE_COLORS_PALLETE[1].color,
+            backgroundColor:
+                DashboardColors.BAR_PERFORMANCE_COLORS_PALLETE[1].color,
+            hoverBackgroundColor:
+                DashboardColors.BAR_PERFORMANCE_COLORS_PALLETE[1].color,
+            hoverBorderColor:
+                DashboardColors.BAR_PERFORMANCE_COLORS_PALLETE[1].color,
+            borderColor:
+                DashboardColors.BAR_PERFORMANCE_COLORS_PALLETE[1].color,
         };
 
         return [topPicksDataset, othersDataset];
     }
 
-    private getValueBySelectedTab(intervalResponse: ByStateIntervalResponse, selectedTab: ByStateReportType): number {
-        const propertyKey = DashboardByStateConstants.BY_STATE_REPORT_TYPE_MAP[selectedTab];
-        if(propertyKey in intervalResponse) {
+    private getValueBySelectedTab(
+        intervalResponse: ByStateIntervalResponse,
+        selectedTab: ByStateReportType
+    ): number {
+        const propertyKey =
+            DashboardByStateConstants.BY_STATE_REPORT_TYPE_MAP[selectedTab];
+        if (propertyKey in intervalResponse) {
             return intervalResponse[propertyKey] ?? 0;
         }
         return 0;

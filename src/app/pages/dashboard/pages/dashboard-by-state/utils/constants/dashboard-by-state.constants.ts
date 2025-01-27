@@ -1,7 +1,6 @@
 import { DashboardTab } from '@pages/dashboard/models/dashboard-tab.model';
 import { DropdownItem } from '@shared/models/dropdown-item.model';
 import { ByStateReportType } from 'appcoretruckassist';
-import { ByStateIntervalResponse } from '../../models';
 
 export class DashboardByStateConstants {
     static BY_STATE_DROPDOWN_DATA: DropdownItem[] = [
