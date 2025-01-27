@@ -22,14 +22,18 @@
                     <div class="col-6">
                         <app-ca-input
                             formControlName="efsAccount"
-                            [inputConfig]="fuelFormConfig.EFS_INPUT_CONFIG"
+                            invoiceInputConfig
+                            [inputConfig]="
+                                'efsInputConfig' | fuelPurchaseModalInputConfig
+                            "
                         ></app-ca-input>
                     </div>
                     <div class="col-6">
                         <app-ca-input
                             formControlName="fuelCard"
                             [inputConfig]="
-                                fuelFormConfig.FUEL_CARD_INPUT_CONFIG
+                                'fuelCardInputConfig'
+                                    | fuelPurchaseModalInputConfig
                             "
                         ></app-ca-input>
                     </div>
@@ -38,25 +42,27 @@
             <div class="d-grid row-columns row-columns-3">
                 <app-ca-input
                     formControlName="invoice"
-                    [inputConfig]="fuelFormConfig.INVOICE_INPUT_CONFIG"
+                    [inputConfig]="
+                        'invoiceInputConfig' | fuelPurchaseModalInputConfig
+                    "
                 ></app-ca-input>
                 <app-ca-input
                     formControlName="transactionDate"
                     [inputConfig]="
-                        fuelFormConfig.getTransactionDate(
-                            editData?.type,
-                            fuelTransactionType?.name
-                        )
+                        'transactionDateInputConfig'
+                            | fuelPurchaseModalInputConfig
+                                : editData?.type
+                                : fuelTransactionType?.name
                     "
                 ></app-ca-input>
                 <!-- Time Picker -->
                 <app-ca-input
                     formControlName="transactionTime"
                     [inputConfig]="
-                        fuelFormConfig.getTransactionTime(
-                            editData?.type,
-                            fuelTransactionType?.name
-                        )
+                        'transactionTimeInputConfig'
+                            | fuelPurchaseModalInputConfig
+                                : editData?.type
+                                : fuelTransactionType?.name
                     "
                 ></app-ca-input>
             </div>
@@ -72,10 +78,10 @@
                     formControlName="truckId"
                     [template]="'svgtext-template'"
                     [inputConfig]="
-                        fuelFormConfig.getTruckInputConfig(
-                            selectedTruckType,
-                            fuelForm.get('trailerId').value
-                        )
+                        'truckInputConfig'
+                            | fuelPurchaseModalInputConfig
+                                : selectedTruckType
+                                : fuelForm.get('trailerId').value
                     "
                     [options]="truckType"
                     [activeItem]="selectedTruckType"
@@ -88,16 +94,18 @@
                         [template]="'svgtext-template'"
                         [activeItem]="selectedTrailerType"
                         [inputConfig]="
-                            fuelFormConfig.getTrailerInputConfig(
-                                selectedTrailerType?.logoName
-                            )
+                            'trailerInputConfig'
+                                | fuelPurchaseModalInputConfig
+                                    : selectedTrailerType?.logoName
                         "
                     ></app-ca-input-dropdown>
                 }
 
                 <app-ca-input
                     formControlName="driverFullName"
-                    [inputConfig]="fuelFormConfig.DRIVER_NAME_INPUT_CONFIG"
+                    [inputConfig]="
+                        'driverInputConfig' | fuelPurchaseModalInputConfig
+                    "
                 ></app-ca-input>
             </div>
             <div class="row last-row">

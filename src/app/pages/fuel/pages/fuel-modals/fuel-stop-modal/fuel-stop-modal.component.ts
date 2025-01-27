@@ -28,6 +28,7 @@ import { FuelService } from '@shared/services/fuel.service';
 // models
 import { AddressEntity } from 'appcoretruckassist';
 import { FuelStopResponse, GetFuelStopModalResponse } from 'appcoretruckassist';
+import { FileEvent } from '@shared/models';
 
 // cmponents
 import { TaModalComponent } from '@shared/components/ta-modal/ta-modal.component';
@@ -232,7 +233,7 @@ export class FuelStopModalComponent implements OnInit, OnDestroy {
         this.getModalDropdowns(pageIndex, 25);
     }
 
-    public onFilesEvent(event: any): void {
+    public onFilesEvent(event: FileEvent): void {
         this.documents = event.files;
 
         switch (event.action) {

@@ -34,8 +34,6 @@ export abstract class FuelDropdownMenuActionsBase extends DropdownMenuActionsBas
     protected handleDropdownMenuActions<
         T extends FuelTransactionResponse | FuelStopResponse,
     >(event: TableCardBodyActions<T>, tableType: string): void {
-        console.log('event', event);
-        console.log('tableType', tableType);
         const { id, data, type } = event;
 
         switch (type) {

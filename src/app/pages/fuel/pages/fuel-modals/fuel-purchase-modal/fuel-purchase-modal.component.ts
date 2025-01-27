@@ -52,17 +52,21 @@ import {
     GetModalFuelStopFranchiseResponse,
     GetFuelModalResponse,
     FuelDispatchHistoryResponse,
-    FuelStopFranchiseResponse,
     TruckMinimalListResponse,
     EnumValue,
     FuelItemResponse,
 } from 'appcoretruckassist';
-import { FuelTruckType } from '@pages/fuel/pages/fuel-modals/fuel-purchase-modal/models';
+import {
+    ExtendedFuelStopResponse,
+    FuelTruckType,
+} from '@pages/fuel/pages/fuel-modals/fuel-purchase-modal/models';
 import { RepairSubtotal } from '@pages/repair/pages/repair-modals/repair-order-modal/models';
+import { FileEvent } from '@shared/models';
 
 // pipes
 import { SumArraysPipe } from '@shared/pipes/sum-arrays.pipe';
 import { FormatDatePipe } from '@shared/pipes';
+import { FuelPurchaseModalInputConfigPipe } from '@pages/fuel/pages/fuel-modals/fuel-purchase-modal/pipes';
 
 // enums
 import { FuelDataOptionsStringEnum } from '@pages/fuel/enums';
@@ -114,6 +118,7 @@ import { FuelPurchaseConfig } from '@pages/fuel/pages/fuel-modals/fuel-purchase-
 
         // pipes
         FormatDatePipe,
+        FuelPurchaseModalInputConfigPipe,
     ],
 })
 export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
@@ -133,14 +138,14 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
     public truckType: FuelTruckType[] = [];
     public trailerId: number;
 
-    public fuelStops: any[] = [];
+    public fuelStops: ExtendedFuelStopResponse[] = [];
 
     public fuelTransactionType: EnumValue;
     public fuelTransactionName: string;
 
     public selectedTruckType: FuelTruckType;
     public selectedTrailerType: FuelTruckType;
-    public selectedFuelStop: any;
+    public selectedFuelStop: ExtendedFuelStopResponse;
     public selectedDispatchHistory: FuelDispatchHistoryResponse;
 
     public fuelItemsDropdown: EnumValue[] = [];
@@ -295,7 +300,7 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
         }
     }
 
-    public onFilesEvent(event: any): void {
+    public onFilesEvent(event: FileEvent): void {
         this.documents = event.files;
     }
 
@@ -482,11 +487,7 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
 
                     this.documents = res.files;
 
-                    this.updatedFuelItems = res.fuelItems.map((repairItem) => {
-                        return {
-                            ...repairItem,
-                        };
-                    });
+                    this.updatedFuelItems = res.fuelItems;
 
                     this.getDriverTrailerBySelectedTruck(
                         FuelValuesStringEnum.TRUCK_ID
@@ -648,6 +649,7 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
                             };
                         }),
                     ];
+
                     this.fuelStops = this.fuelStops.filter(
                         (v, i, a) =>
                             a.findIndex(
@@ -667,7 +669,7 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
             .getFuelTransactionStoresByFranchiseId(franchise.id)
             .pipe(takeUntil(this.destroy$))
             .subscribe({
-                next: (res: FuelStopFranchiseResponse) => {
+                next: (res) => {
                     const fuelStop = this.fuelStops.find(
                         (item) => item.id === franchise.id
                     );
