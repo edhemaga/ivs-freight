@@ -87,9 +87,6 @@ import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calcula
 // mMoment
 import moment from 'moment';
 
-// configs
-import { FuelPurchaseConfig } from '@pages/fuel/pages/fuel-modals/fuel-purchase-modal/utils/configs';
-
 @Component({
     selector: 'app-fuel-purchase-modal',
     templateUrl: './fuel-purchase-modal.component.html',
@@ -129,8 +126,6 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
     public modalTableTypeEnum = ModalTableTypeEnum;
 
     public fuelForm: UntypedFormGroup;
-
-    public fuelFormConfig = FuelPurchaseConfig;
 
     public isFormDirty: boolean;
     public isCardAnimationDisabled: boolean = false;
