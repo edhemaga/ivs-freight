@@ -5,7 +5,7 @@ import { createReducer, on } from '@ngrx/store';
 import { ILoadState } from '@pages/load/pages/load-table/models/load-state.model';
 
 // actions
-import * as LoadActions from '@pages/load/pages/load-table/store/actions/load.action';
+import * as LoadActions from '@pages/load/state/actions/load.action';
 
 // enums
 import { eActiveViewMode, eLoadStatusType } from '@pages/load/pages/load-table/enums/index';
