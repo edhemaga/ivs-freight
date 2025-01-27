@@ -69,13 +69,18 @@
                 ></app-ca-input>
             </div>
             <div class="d-grid gap-12 d-grid-address mb-32">
-                <app-ta-input-address-dropdown
+                <app-ca-input-address-dropdown
                     formControlName="address"
                     [inputConfig]="ownerModalConfig.ADDRESS_INPUT_CONFIG"
                     [placeholderType]="'longAddress'"
                     [activeAddress]="selectedAddress"
                     (selectedAddress)="onHandleAddress($event)"
-                ></app-ta-input-address-dropdown>
+                    [receivedAddressList]="addressList"
+                    [receivedAddressData]="addressData"
+                    (selectedAddress)="onHandleAddress($event)"
+                    (sentAddressData)="onAddressChange($event)"
+                    (sentAddressValue)="getAddressData($event)"
+                ></app-ca-input-address-dropdown>
                 <app-ca-input
                     formControlName="addressUnit"
                     [inputConfig]="ownerModalConfig.ADDRESS_UNIT_INPUT_CONFIG"
@@ -121,13 +126,13 @@
                     [cardName]="'Document'"
                     [isCardOpen]="!!documents.length"
                 >
-                <app-ta-upload-files
-                [files]="documents"
-                [size]="'small'"
-                (onFileEvent)="onFilesEvent($event)"
-                [customClassName]="'modals'"
-                [showDropzone]="true"
-            ></app-ta-upload-files>
+                    <app-ta-upload-files
+                        [files]="documents"
+                        [size]="'small'"
+                        (onFileEvent)="onFilesEvent($event)"
+                        [customClassName]="'modals'"
+                        [showDropzone]="true"
+                    ></app-ta-upload-files>
                 </app-ta-custom-card>
             </div>
             <div class="divider"></div>
