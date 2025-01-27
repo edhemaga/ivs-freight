@@ -521,7 +521,6 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     public setRevenueLegendOnHover(index: number | null): void {
-        console.log(index);
         const {
             hasHighlightedBackground,
             title
