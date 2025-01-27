@@ -27,7 +27,9 @@
             (tableBodyActions)="
                 handleDropdownMenuActions(
                     $event,
-                    selectedTab !== 'repair_shop' ? 'repair' : 'repair-shop'
+                    selectedTab !== tableStringEnum.REPAIR_SHOP
+                        ? dropdownMenuStringEnum.REPAIR
+                        : dropdownMenuStringEnum.REPAIR_SHOP
                 )
             "
         ></app-ta-table-body>
@@ -37,11 +39,9 @@
         <div class="elements">
             <app-repair-card
                 [viewData]="viewData"
-                [rows]="rows"
-                [cardTitle]="cardTitle"
+                [selectedTab]="selectedTab"
                 [displayRowsFront]="(displayRows$ | async).displayRowsFront"
                 [displayRowsBack]="(displayRows$ | async).displayRowsBack"
-                [page]="page"
             >
             </app-repair-card>
 
@@ -100,15 +100,6 @@
                         [address]="latlong.address"
                         [rating]="latlong?.tableRaiting"
                         [type]="'repairShop'"
-                        [sortCategory]="activeSortType"
-                        [locationFilterOn]="locationFilterOn"
-                        (bodyActions)="onTableBodyActions($event)"
-                        [ngStyle]="{
-                            display:
-                                locationFilterOn && latlong?.isShown == false
-                                    ? 'none'
-                                    : 'block',
-                        }"
                     ></app-ta-map-list-card>
                 </ng-container>
             </app-ta-map-list>

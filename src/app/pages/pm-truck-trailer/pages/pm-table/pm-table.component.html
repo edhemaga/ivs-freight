@@ -22,8 +22,10 @@
             [columns]="columns"
             [options]="tableOptions"
             [selectedTab]="selectedTab"
-            (tableBodyActions)="handleDropdownMenuActions($event, 'pm')"
             [tableData]="tableData"
+            (tableBodyActions)="
+                handleDropdownMenuActions($event, dropdownMenuStringEnum.PM)
+            "
         ></app-ta-table-body>
     </ng-container>
 
@@ -31,11 +33,9 @@
         <div class="elements">
             <app-pm-card
                 [viewData]="viewData"
-                [rows]="rows"
-                [cardTitle]="cardTitle"
+                [selectedTab]="selectedTab"
                 [displayRowsFront]="(displayRows$ | async).displayRowsFront"
                 [displayRowsBack]="(displayRows$ | async).displayRowsBack"
-                [page]="page"
             >
             </app-pm-card>
 

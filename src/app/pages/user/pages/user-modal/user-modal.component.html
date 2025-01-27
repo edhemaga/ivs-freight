@@ -103,7 +103,9 @@
                             <div class="col-5" [class.col-7]="!isPhoneExtExist">
                                 <app-ca-input-dropdown
                                     formControlName="companyOfficeId"
-                                    [inputConfig]="userModalConfig.companyOfficeInputConfig"
+                                    [inputConfig]="
+                                        userModalConfig.companyOfficeInputConfig
+                                    "
                                     [canAddNew]="true"
                                     [canOpenModal]="true"
                                     [options]="offices"
@@ -206,7 +208,7 @@
                         <app-ta-custom-card
                             [cardName]="'Personal Details'"
                             [isCardOpen]="true"
-                            [disableAnimation]="disableCardAnimation"
+                            [disableAnimation]="isCardAnimationDisabled"
                             [animationMarginParams]="{
                                 marginTop: '18px',
                                 marginBottom: '22px',

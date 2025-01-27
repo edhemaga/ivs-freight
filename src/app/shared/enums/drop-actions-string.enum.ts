@@ -43,6 +43,7 @@ export enum DropActionsStringEnum {
     COMPANY_TERMINAL = 'Company Terminal',
     TEMPLATE = 'template',
     TEMPLATES = 'templates',
+    FUEL = 'fuel',
 
     // Delete titles
     DELETE_MEDICAL_TITLE = 'Delete Medical',
@@ -64,6 +65,8 @@ export enum DropActionsStringEnum {
     DELETE_PARKING = 'delete-parking',
     DELETE_OFFICE = 'delete-office',
     DELETE_TERMINAL = 'delete-terminal',
+    DELETE_FUEL_TRANSACTION = 'delete-fuel-transaction',
+    DELETE_FUEL_STOP = 'delete-fuel-stop',
 
     // Edit actions
     EDIT_LICENCE = 'edit-licence',
@@ -100,6 +103,6 @@ export enum DropActionsStringEnum {
     SMALL = 'small',
     LARGE = 'large',
 
-    FUEL = 'fuel',
-    FUEL_TEXT = 'fuel transaction'
+    FUEL_TRANSACTION_TEXT = 'fuel transaction',
+    FUEL_STOP_TEXT = 'fuel stop',
 }

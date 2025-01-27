@@ -90,7 +90,7 @@ export class TtTitleModalComponent implements OnInit, OnDestroy {
 
     public isFormDirty: boolean = false;
 
-    public disableCardAnimation: boolean = false;
+    public isCardAnimationDisabled: boolean = false;
 
     private destroy$ = new Subject<void>();
 
@@ -301,7 +301,7 @@ export class TtTitleModalComponent implements OnInit, OnDestroy {
                     };
                     this.documents = res.files;
                     setTimeout(() => {
-                        this.disableCardAnimation = false;
+                        this.isCardAnimationDisabled = false;
                     }, 1000);
                 },
                 error: () => {},
@@ -331,7 +331,7 @@ export class TtTitleModalComponent implements OnInit, OnDestroy {
                     });
 
                     if (this.editData.type === 'edit-title') {
-                        this.disableCardAnimation = true;
+                        this.isCardAnimationDisabled = true;
                         this.editTitleById(this.editData.file_id);
                     }
 

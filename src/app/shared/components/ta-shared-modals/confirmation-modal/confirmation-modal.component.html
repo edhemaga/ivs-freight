@@ -159,13 +159,39 @@
                     "
                 >
                     <ng-container [ngSwitch]="editData?.template">
-                        <!-- Fuel -->
+                        <!-- Fuel Transaction  -->
 
-                        <ng-container *ngSwitchCase="'fuel stop'">
+                        <ng-container *ngSwitchCase="'fuel-transaction'">
+                            <div class="confirmation-info">
+                                <p
+                                    class="m-0 ta-font-bold text-size-16 text-color-black"
+                                >
+                                    Unit
+                                    {{ editData?.data?.tableTruckNumber }} - ${{
+                                        editData?.data.total
+                                    }}
+                                </p>
+                                <div class="confirmation-text-holder d-flex">
+                                    <p
+                                        class="m-0 ta-font-medium text-size-14 text-color-grey"
+                                    >
+                                        {{
+                                            editData?.data?.tableTransactionDate
+                                        }}
+                                    </p>
+                                </div>
+                            </div>
+                        </ng-container>
+
+                        <!-- Fuel Stop -->
+
+                        <ng-container *ngSwitchCase="'fuel-stop'">
                             <div
                                 class="d-flex flex-column justify-content-center confirmation-body-content"
                             >
-                                <p class="m-0 ta-font-bold text-1">
+                                <p
+                                    class="m-0 ta-font-bold text-size-16 text-color-black"
+                                >
                                     {{ editData.data.businessName }}
                                     {{
                                         editData.data.store
@@ -174,7 +200,9 @@
                                     }}
                                 </p>
 
-                                <p class="m-0 ta-font-medium text-2">
+                                <p
+                                    class="m-0 ta-font-medium text-size-14 text-color-grey"
+                                >
                                     {{ editData.data.address.state }},
                                     {{ editData.data.address.stateShortName }}
                                 </p>
@@ -357,6 +385,8 @@
                             </div>
                         </ng-container>
 
+                        <!-- Company -->
+
                         <ng-container
                             *ngSwitchCase="
                                 [
@@ -398,6 +428,8 @@
                                 </p>
                             </div>
                         </ng-container>
+
+                        <!-- Truck Additional -->
 
                         <ng-container *ngSwitchCase="'registration'">
                             <div
@@ -514,7 +546,8 @@
                                 </div>
                             </div>
                         </ng-container>
-                        <!-- void -->
+
+                        <!-- Void -->
 
                         <ng-container *ngSwitchCase="'void'">
                             <div
@@ -1160,6 +1193,54 @@
                     <!---------------------------------------------- Different templates for body --------------------------------------------->
 
                     <ng-container [ngSwitch]="editData?.template">
+                        <!-- Fuel Transaction  -->
+
+                        <ng-container *ngSwitchCase="'fuel transaction'">
+                            <div class="confirmation-info">
+                                <p
+                                    class="m-0 ta-font-bold text-size-16 text-color-black"
+                                >
+                                    Unit
+                                    {{ item?.data?.tableTruckNumber }} - ${{
+                                        item?.data.total
+                                    }}
+                                </p>
+                                <div class="confirmation-text-holder d-flex">
+                                    <p
+                                        class="m-0 ta-font-medium text-size-14 text-color-grey"
+                                    >
+                                        {{ item?.data?.tableTransactionDate }}
+                                    </p>
+                                </div>
+                            </div>
+                        </ng-container>
+
+                        <!-- Fuel Stop -->
+
+                        <ng-container *ngSwitchCase="'fuel stop'">
+                            <div
+                                class="d-flex flex-column justify-content-center confirmation-body-content"
+                            >
+                                <p
+                                    class="m-0 ta-font-bold text-size-16 text-color-black"
+                                >
+                                    {{ item.data.businessName }}
+                                    {{
+                                        item.data.store
+                                            ? '- ' + item.data.store
+                                            : ''
+                                    }}
+                                </p>
+
+                                <p
+                                    class="m-0 ta-font-medium text-size-14 text-color-grey"
+                                >
+                                    {{ item.data.address.state }},
+                                    {{ item.data.address.stateShortName }}
+                                </p>
+                            </div>
+                        </ng-container>
+
                         <!-- Contact -->
 
                         <ng-container *ngSwitchCase="'contact'">
@@ -1310,25 +1391,6 @@
                                             : item?.data?.vin
                                     }}
                                 </p>
-                            </div>
-                        </ng-container>
-
-                        <!-- Fuel Transaction  -->
-
-                        <ng-container *ngSwitchCase="fuel; transaction">
-                            <div class="confirmation-info">
-                                <p class="m-0 confirmation-text-1">
-                                    Unit {{ item?.data?.tableTruckNumber }} -
-                                    ${{ item?.data.total }}
-                                </p>
-                                <div class="confirmation-text-holder d-flex">
-                                    <p class="m-0 confirmation-text-2">
-                                        {{ item?.data?.date }}
-                                    </p>
-                                    <p class="m-0 confirmation-text-2">
-                                        {{ item?.data?.time }}
-                                    </p>
-                                </div>
                             </div>
                         </ng-container>
 

@@ -108,7 +108,7 @@ export class DriverMvrModalComponent implements OnInit, OnDestroy {
     public modalButtonType = ModalButtonType;
     public modalButtonSize = ModalButtonSize;
     public activeAction!: string;
-    public taModalActionEnums = DriverMVrModalStringEnum;
+    public taModalActionEnum = DriverMVrModalStringEnum;
 
     constructor(
         private formBuilder: UntypedFormBuilder,

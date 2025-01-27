@@ -85,6 +85,8 @@ export class PmTableComponent
 {
     private destroy$ = new Subject<void>();
 
+    public dropdownMenuStringEnum = DropdownMenuStringEnum;
+
     private resizeObserver: ResizeObserver;
     public activeViewMode: string = TableStringEnum.LIST;
 
@@ -103,10 +105,6 @@ export class PmTableComponent
 
     // cards
     public displayRows$: Observable<any>;
-
-    public cardTitle: string = PmCardDataConfigConstants.CARD_TITLE;
-    public page: string = PmCardDataConfigConstants.PAGE;
-    public rows: number = PmCardDataConfigConstants.ROWS;
 
     public displayRowsFront: CardRows[] =
         PmCardDataConfigConstants.DISPLAY_ROWS_FRONT_ACTIVE;
@@ -142,7 +140,7 @@ export class PmTableComponent
         private thousandToShortFormatPipe: ThousandToShortFormatPipe,
         private datePipe: DatePipe
     ) {
-        super(modalService);
+        super();
     }
 
     ngOnInit(): void {

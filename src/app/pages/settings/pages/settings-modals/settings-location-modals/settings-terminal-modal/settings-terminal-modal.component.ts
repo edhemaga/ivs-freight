@@ -64,7 +64,7 @@ import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta
 import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calculations.helper';
 
 // Enums
-import { TaModalActionEnums } from '@shared/components/ta-modal/enums';
+import { TaModalActionEnum } from '@shared/components/ta-modal/enums';
 import { SettingsFormEnum } from '@pages/settings/pages/settings-modals/enums';
 import {
     DropActionsStringEnum,
@@ -193,7 +193,7 @@ export class SettingsTerminalModalComponent implements OnInit, OnDestroy {
         SettingsTerminalConfig.getFullParkingSlotConfig();
 
     public svgRoutes = SettingsLocationSvgRoutes;
-    public taModalActionEnums = TaModalActionEnums;
+    public taModalActionEnum = TaModalActionEnum;
     public svgRoutesCommon = SharedSvgRoutes;
     public modalButtonType = ModalButtonType;
     public activeAction!: string;
@@ -299,11 +299,11 @@ export class SettingsTerminalModalComponent implements OnInit, OnDestroy {
     public onModalAction(action: string): void {
         this.activeAction = action;
         switch (action) {
-            case TaModalActionEnums.CLOSE: {
+            case TaModalActionEnum.CLOSE: {
                 this.ngbActiveModal.close();
                 break;
             }
-            case TaModalActionEnums.SAVE: {
+            case TaModalActionEnum.SAVE: {
                 if (this.terminalForm.invalid || !this.isFormDirty) {
                     this.inputService.markInvalid(this.terminalForm);
                     return;
@@ -315,7 +315,7 @@ export class SettingsTerminalModalComponent implements OnInit, OnDestroy {
                 }
                 break;
             }
-            case TaModalActionEnums.SAVE_AND_ADD_NEW: {
+            case TaModalActionEnum.SAVE_AND_ADD_NEW: {
                 if (this.terminalForm.invalid || !this.isFormDirty) {
                     this.inputService.markInvalid(this.terminalForm);
                     return;
@@ -324,7 +324,7 @@ export class SettingsTerminalModalComponent implements OnInit, OnDestroy {
                 this.addTerminal(true);
                 break;
             }
-            case TaModalActionEnums.DELETE: {
+            case TaModalActionEnum.DELETE: {
                 this.deleteTerminalById();
                 break;
             }

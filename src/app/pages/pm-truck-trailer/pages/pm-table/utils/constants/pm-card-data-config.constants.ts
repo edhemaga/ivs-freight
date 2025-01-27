@@ -1,14 +1,7 @@
 import { CardRows } from '@shared/models/card-models/card-rows.model';
 
 export class PmCardDataConfigConstants {
-    static ROWS: number = 4;
-
-    static PAGE: string = 'PM';
-
-    static CARD_TITLE: string = 'textUnit';
-
-    // Data for active front
-    static DISPLAY_ROWS_FRONT_ACTIVE: CardRows[] = [    
+    static DISPLAY_ROWS_FRONT_ACTIVE: CardRows[] = [
         {
             title: 'Oil & Filter',
             field: 'oilFilter',
@@ -35,7 +28,6 @@ export class PmCardDataConfigConstants {
         },
     ];
 
-    // Data for active back
     static DISPLAY_ROWS_BACK_ACTIVE: CardRows[] = [
         {
             title: 'Make',
@@ -55,7 +47,6 @@ export class PmCardDataConfigConstants {
         },
     ];
 
-    // Data for inactive front
     static DISPLAY_ROWS_FRONT_INACTIVE: CardRows[] = [
         {
             title: 'General',
@@ -83,7 +74,6 @@ export class PmCardDataConfigConstants {
         },
     ];
 
-    // Data for inactive back
     static DISPLAY_ROWS_BACK_INACTIVE: CardRows[] = [
         {
             title: 'Make',
