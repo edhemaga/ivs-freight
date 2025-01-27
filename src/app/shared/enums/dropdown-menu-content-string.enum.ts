@@ -42,6 +42,12 @@ export enum DropdownMenuStringEnum {
     WRITE_REVIEW = 'Write Review',
     CLOSE_BUSINESS = 'Close Business',
     OPEN_BUSINESS = 'Open Business',
+    RESET_PASSWORD = 'Reset Password',
+    RESEND_INVITATION = 'Resend Invitation',
+    INVITATION_SENT = 'Invitation Sent',
+    ALL_TRANSACTIONS = 'All Transactions',
+    SUGGEST_EDIT = 'Suggest Edit',
+    ADD_TRANSACTION = 'Add Transaction',
 
     // types
     EDIT_LOAD_TYPE = 'edit-load',
@@ -85,6 +91,12 @@ export enum DropdownMenuStringEnum {
     WRITE_REVIEW_TYPE = 'write-review',
     CLOSE_BUSINESS_TYPE = 'close-business',
     OPEN_BUSINESS_TYPE = 'open-business',
+    RESET_PASSWORD_TYPE = 'reset-password',
+    RESEND_INVITATION_TYPE = 'resend-invitation',
+    INVITATION_SENT_TYPE = 'invitation-sent',
+    ALL_TRANSACTIONS_TYPE = 'all-transactions',
+    SUGGEST_EDIT_TYPE = 'suggest-edit',
+    ADD_TRANSACTION_TYPE = 'add-transaction',
 
     // table types
     ACCOUNT = 'account',
@@ -94,6 +106,9 @@ export enum DropdownMenuStringEnum {
     REPAIR = 'repair',
     REPAIR_SHOP = 'repair-shop',
     DRIVER = 'driver',
+    USER = 'user',
+    FUEL_TRANSACTION = 'fuel-transaction',
+    FUEL_STOP = 'fuel-stop',
 
     // svg classes
     REGULAR_SVG_CLASS = 'regular',
@@ -115,4 +130,7 @@ export enum DropdownMenuStringEnum {
     CREATE_LABEL = 'create-label',
     UPDATE_LABEL = 'update-label',
     ORDER = 'Order',
+    INVITED = 'Invited',
+    EXPIRED = 'Expired',
+    FUEL = 'fuel',
 }

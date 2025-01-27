@@ -197,24 +197,6 @@ export class TableDropdownComponentConstants {
         { name: 'Total Cost', id: 7, sortName: 'cost' },
     ];
 
-    static FUEL_PRICE_COLORS: string[] = [
-        '#4CAF4F',
-        '#8AC34A',
-        '#FEC107',
-        '#FF9800',
-        '#EF5350',
-        '#919191',
-    ];
-
-    static FUEL_PRICE_HOVER_COLORS: string[] = [
-        '#43A047',
-        '#7CB242',
-        '#FFB300',
-        '#FB8C00',
-        '#F34235',
-        '#6C6C6C',
-    ];
-
     static OWNER_BACKFILTER_QUERY: OwnerBackFilterQuery = {
         active: 1,
         companyOwnerId: null,

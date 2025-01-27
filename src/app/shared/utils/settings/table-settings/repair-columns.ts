@@ -1,4 +1,3 @@
-// REPAIRS TRUCK COLUMN DEFINITION
 export function getRepairTruckAndTrailerColumnDefinition() {
     return [
         {
@@ -587,7 +586,6 @@ export function getRepairTruckAndTrailerColumnDefinition() {
     ];
 }
 
-// REPAIRS SHOP COLUMN DEFINITION
 export function getRepairShopColumnDefinition() {
     return [
         {

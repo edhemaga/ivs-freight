@@ -1,11 +1,6 @@
 import { CardRows } from '@shared/models/card-models/card-rows.model';
 
 export class RepairCardConfigConstants {
-    static rows: number = 4;
-
-    static page: string = 'Repair';
-
-    // Data for Truck front
     static displayRowsFrontTruck: CardRows[] = [
         {
             title: 'Issued',
@@ -25,16 +20,15 @@ export class RepairCardConfigConstants {
         {
             title: 'Repair Shop',
             key: 'repairShop',
-            secondKey: 'name'
+            secondKey: 'name',
         },
     ];
 
-    // Data for Truck back
     static displayRowsBackTruck: CardRows[] = [
         {
             title: 'Repair Shop',
             key: 'repairShop',
-            secondKey: 'name'
+            secondKey: 'name',
         },
 
         {
@@ -53,7 +47,6 @@ export class RepairCardConfigConstants {
         },
     ];
 
-    // Data for Trailer front
     static displayRowsFrontTrailer: CardRows[] = [
         {
             title: 'Issued',
@@ -73,16 +66,15 @@ export class RepairCardConfigConstants {
         {
             title: 'Repair Shop',
             key: 'repairShop',
-            secondKey: 'name'
+            secondKey: 'name',
         },
     ];
 
-    // Data for Trailer back
     static displayRowsBackTrailer: CardRows[] = [
         {
             title: 'Repair Shop',
             key: 'repairShop',
-            secondKey: 'name'
+            secondKey: 'name',
         },
 
         {
@@ -101,7 +93,6 @@ export class RepairCardConfigConstants {
         },
     ];
 
-    // Data for repair-shop front
     static displayRowsFrontRepairShop: CardRows[] = [
         {
             title: 'Phone',
@@ -124,7 +115,6 @@ export class RepairCardConfigConstants {
         },
     ];
 
-    // Data for repair-shop back
     static displayRowsBackRepairShop: CardRows[] = [
         {
             title: 'Bill',

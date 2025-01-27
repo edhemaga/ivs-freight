@@ -88,7 +88,7 @@ import { TableStringEnum } from '@shared/enums/table-string.enum';
 import { ConfirmationModalStringEnum } from '@shared/components/ta-shared-modals/confirmation-modal/enums/confirmation-modal-string.enum';
 import { ModalTableTypeEnum } from '@shared/enums/modal-table-type.enum';
 import { ModalButtonSize, ModalButtonType } from '@shared/enums';
-import { TaModalActionEnums } from '@shared/components/ta-modal/enums';
+import { TaModalActionEnum } from '@shared/components/ta-modal/enums';
 
 // svg routes
 import { SharedSvgRoutes } from '@shared/utils/svg-routes';
@@ -210,7 +210,7 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
     public reviews: any[] = [];
     public previousReviews: any[] = [];
 
-    public taModalActionEnums = TaModalActionEnums;
+    public taModalActionEnum = TaModalActionEnum;
 
     public activeAction: string;
     public modalButtonType = ModalButtonType;
@@ -345,7 +345,7 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
     public onModalAction(action: string): void {
         this.activeAction = action;
 
-        if (action === TaModalActionEnums.CLOSE) {
+        if (action === TaModalActionEnum.CLOSE) {
             switch (this.editData?.key) {
                 case 'load-modal': {
                     this.modalService.setProjectionModal({
@@ -369,14 +369,14 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
             return;
         }
         // Save And Add New
-        else if (action === TaModalActionEnums.SAVE_AND_ADD_NEW) {
+        else if (action === TaModalActionEnum.SAVE_AND_ADD_NEW) {
             if (this.shipperForm.invalid || !this.isFormDirty) {
                 this.inputService.markInvalid(this.shipperForm);
                 return;
             }
             this.addShipper(true);
             this.addNewAfterSave = true;
-        } else if (action === TaModalActionEnums.CLOSE_BUSINESS) {
+        } else if (action === TaModalActionEnum.CLOSE_BUSINESS) {
             const mappedEvent = {
                 type: this.editData.data.status
                     ? TableStringEnum.CLOSE
@@ -402,7 +402,7 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
             );
         } else {
             // Save & Update
-            if (action === TaModalActionEnums.SAVE) {
+            if (action === TaModalActionEnum.SAVE) {
                 if (this.shipperForm.invalid || !this.isFormDirty) {
                     this.inputService.markInvalid(this.shipperForm);
                     return;
@@ -414,7 +414,7 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
                 }
             }
             // Delete
-            if (action === TaModalActionEnums.DELETE && this.editData) {
+            if (action === TaModalActionEnum.DELETE && this.editData) {
                 this.modalService.openModal(
                     ConfirmationModalComponent,
                     { size: TableStringEnum.DELETE },

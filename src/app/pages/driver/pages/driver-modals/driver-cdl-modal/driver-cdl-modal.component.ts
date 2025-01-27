@@ -89,7 +89,7 @@ import { FormatDatePipe } from '@shared/pipes';
         CaInputNoteComponent,
         CaModalButtonComponent,
 
-        FormatDatePipe
+        FormatDatePipe,
     ],
 })
 export class DriverCdlModalComponent implements OnInit, OnDestroy {
@@ -125,7 +125,7 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
     public filesForDelete: any[] = [];
     public isFileModified: boolean = false;
 
-    public taModalActionEnums = DriverCdlModalStringEnum;
+    public taModalActionEnum = DriverCdlModalStringEnum;
     public svgRoutes = SharedSvgRoutes;
     public modalButtonType = ModalButtonType;
     public modalButtonSize = ModalButtonSize;

@@ -115,7 +115,7 @@ export class DriverDrugAlcoholTestModalComponent implements OnInit, OnDestroy {
     public modalButtonType = ModalButtonType;
     public modalButtonSize = ModalButtonSize;
     public activeAction!: string;
-    public taModalActionEnums = DriverDrugAlcoholTestModalStringEnum;
+    public taModalActionEnum = DriverDrugAlcoholTestModalStringEnum;
 
     constructor(
         private formBuilder: UntypedFormBuilder,

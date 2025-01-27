@@ -22,8 +22,15 @@
             [columns]="columns"
             [options]="tableOptions"
             [selectedTab]="selectedTab"
-            (bodyActions)="onTableBodyActions($event)"
             [tableData]="tableData"
+            (tableBodyActions)="
+                handleDropdownMenuActions(
+                    $event,
+                    selectedTab !== tableStringEnum.FUEL_STOP
+                        ? dropdownMenuStringEnum.FUEL_TRANSACTION
+                        : dropdownMenuStringEnum.FUEL_STOP
+                )
+            "
         ></app-ta-table-body>
     </ng-container>
 
@@ -31,13 +38,9 @@
         <div class="elements">
             <app-fuel-card
                 [viewData]="viewData"
-                [rows]="rows"
-                [cardTitle]="cardTitle"
+                [selectedTab]="selectedTab"
                 [displayRowsFront]="(displayRows$ | async).displayRowsFront"
                 [displayRowsBack]="(displayRows$ | async).displayRowsBack"
-                [page]="page"
-                [selectedTab]="selectedTab"
-                (bodyActions)="onTableBodyActions($event)"
             ></app-fuel-card>
 
             <ng-container *ngIf="viewData?.length">
@@ -52,7 +55,7 @@
                     <ng-container *ngIf="viewData?.length < tableDataLength">
                         <div
                             class="show-more ta-font-bold text-color-black w-fit-content align-items-center d-flex justify-content-between"
-                            (click)="onShowMore()"
+                            (click)="handleShowMoreAction()"
                         >
                             SHOW MORE
                         </div>
@@ -81,28 +84,12 @@
                     [address]="latlong.address"
                     [rating]="{
                         up: latlong?.upRatingCount,
-                        down: latlong?.downRatingCount
+                        down: latlong?.downRatingCount,
                     }"
                     [type]="'fuelStop'"
-                    (bodyActions)="onTableBodyActions($event)"
                     (clickedMarker)="selectItem($event)"
-                    [ngStyle]="{
-                        display:
-                            locationFilterOn && latlong?.isShown == false
-                                ? 'none'
-                                : 'block'
-                    }"
                 ></app-ta-map-list-card>
             </app-ta-map-list>
-
-            <!-- <app-ta-maps
-                #mapsComponent
-                [_viewData]="[]"
-                [mapType]="'fuelStop'"
-                (callDropDownAction)="onTableBodyActions($event)"
-                (updateMapList)="updateMapList($event)"
-                (selectMarker)="selectItem($event)"
-            ></app-ta-maps> -->
         </div>
     </ng-container>
 </div>

@@ -1,12 +1,6 @@
 import { CardRows } from '@shared/models/card-models/card-rows.model';
 
 export class ContactsCardData {
-    static rows: number = 4;
-
-    static page: string = 'Contact';
-
-    static cardTitle: string = 'name';
-
     static displayRowsFrontContacts: CardRows[] = [
         {
             title: 'Company',

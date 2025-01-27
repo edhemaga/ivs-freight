@@ -83,7 +83,7 @@ import {
 import { TableStringEnum } from '@shared/enums/table-string.enum';
 import { DriverModalStringEnum } from '@pages/driver/pages/driver-modals/driver-modal/enums/driver-modal-string.enum';
 import { ModalTableTypeEnum } from '@shared/enums/modal-table-type.enum';
-import { TaModalActionEnums } from '@shared/components/ta-modal/enums';
+import { TaModalActionEnum } from '@shared/components/ta-modal/enums';
 
 // constants
 import { DriverModalConstants } from '@pages/driver/pages/driver-modals/driver-modal/utils/constants/driver-modal.constants';
@@ -249,7 +249,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
     public modalTableTypeEnum = ModalTableTypeEnum;
     public addressList: AddressListResponse;
     public addressData: AddressResponse;
-    public taModalActionEnums = TaModalActionEnums;
+    public taModalActionEnum = TaModalActionEnum;
     public svgRoutes = SharedSvgRoutes;
 
     constructor(
@@ -513,12 +513,12 @@ export class DriverModalComponent implements OnInit, OnDestroy {
     }
 
     public onModalAction(action: string): void {
-        if (action === TaModalActionEnums.CLOSE) {
+        if (action === TaModalActionEnum.CLOSE) {
             this.ngbActiveModal.close();
             return;
         }
 
-        if (action === TaModalActionEnums.DEACTIVATE) {
+        if (action === TaModalActionEnum.DEACTIVATE) {
             const mappedEvent = {
                 ...this.editData,
                 data: {
@@ -547,7 +547,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
             );
         }
         // save and add new
-        else if (action === TaModalActionEnums.SAVE_AND_ADD_NEW) {
+        else if (action === TaModalActionEnum.SAVE_AND_ADD_NEW) {
             if (this.driverForm.invalid || !this.isFormDirty) {
                 this.inputService.markInvalid(this.driverForm);
 
@@ -558,7 +558,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
             this.isAddNewAfterSave = true;
         }
         // save or update and close
-        else if (action === TaModalActionEnums.SAVE) {
+        else if (action === TaModalActionEnum.SAVE) {
             if (this.driverForm.invalid || !this.isFormDirty) {
                 this.inputService.markInvalid(this.driverForm);
 
@@ -570,7 +570,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
             else this.addDriver();
         }
         // delete
-        else if (action === TaModalActionEnums.DELETE && this.editData?.id) {
+        else if (action === TaModalActionEnum.DELETE && this.editData?.id) {
             const mappedEvent = {
                 ...this.editData,
                 data: {
@@ -2345,7 +2345,11 @@ export class DriverModalComponent implements OnInit, OnDestroy {
             });
     }
 
-    public onAddressChange({ query, searchLayers, closedBorder }: AddressProperties): void {
+    public onAddressChange({
+        query,
+        searchLayers,
+        closedBorder,
+    }: AddressProperties): void {
         this.addressService
             .getAddresses(query, searchLayers, closedBorder)
             .pipe(takeUntil(this.destroy$))

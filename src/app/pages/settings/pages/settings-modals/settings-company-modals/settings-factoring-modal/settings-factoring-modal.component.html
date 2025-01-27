@@ -94,7 +94,7 @@
             </div>
             <app-ta-custom-card
                 [cardName]="'Notice of Assignment'"
-                [disableAnimation]="disableCardAnimation"
+                [disableAnimation]="isCardAnimationDisabled"
                 [disabledCard]="
                     (factoringForm.get('name')?.invalid ||
                         factoringForm.get('name').value === 'null') &&
@@ -166,7 +166,7 @@
         mainTooltip="Cancel"
         tooltipBackground="#424242"
         position="bottom"
-        (click)="onModalAction(taModalActionEnums.CLOSE)"
+        (click)="onModalAction(taModalActionEnum.CLOSE)"
     >
         <svg-icon
             class="modal-close svg-size-14 svg-fill-muted modal-buttons"
@@ -192,15 +192,15 @@
                     <app-ca-modal-button
                         text="Delete"
                         [size]="modalButtonSize.SMALL"
-                        (click)="onModalAction(taModalActionEnums.DELETE)"
+                        (click)="onModalAction(taModalActionEnum.DELETE)"
                         [type]="modalButtonType.SECONDARY_NEGATIVE"
                     ></app-ca-modal-button>
                 </div>
                 <app-ca-modal-button
                     text="Save Changes"
                     [isValid]="factoringForm.valid && isFormDirty"
-                    (click)="onModalAction(taModalActionEnums.SAVE)"
-                    [isSpinnerShown]="activeAction === taModalActionEnums.SAVE"
+                    (click)="onModalAction(taModalActionEnum.SAVE)"
+                    [isSpinnerShown]="activeAction === taModalActionEnum.SAVE"
                     [type]="modalButtonType.PRIMARY_POSITIVE"
                 >
                 </app-ca-modal-button>
@@ -209,8 +209,8 @@
             <app-ca-modal-button
                 text="Save"
                 [isValid]="factoringForm.valid && isFormDirty"
-                (click)="onModalAction(taModalActionEnums.SAVE)"
-                [isSpinnerShown]="activeAction === taModalActionEnums.SAVE"
+                (click)="onModalAction(taModalActionEnum.SAVE)"
+                [isSpinnerShown]="activeAction === taModalActionEnum.SAVE"
                 [type]="modalButtonType.PRIMARY_POSITIVE"
             >
             </app-ca-modal-button>

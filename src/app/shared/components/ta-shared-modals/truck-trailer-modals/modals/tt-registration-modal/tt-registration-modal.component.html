@@ -110,7 +110,7 @@
             <div class="ta-card-body-overflow-none">
                 <app-ta-custom-card
                     [cardName]="'Document'"
-                    [disableAnimation]="disableCardAnimation"
+                    [disableAnimation]="isCardAnimationDisabled"
                     [hasCounter]="documents.length ? documents.length : 0"
                     [isCardOpen]="!!documents.length"
                     [hasDarkDivider]="true"
@@ -126,7 +126,7 @@
             </div>
 
             <div class="divider divider--dark divider--small"></div>
-            
+
             <app-ca-input-note
                 [isVisibleNote]="
                     registrationForm.get('note').value &&
@@ -179,16 +179,20 @@
 </ng-template>
 
 <ng-template #leftModalContent>
-        <div class="payroll-number text-color-white text-size-14 ta-font-bold">
-            {{ 
-                editData?.modal === 'trailer'
-                    ? 'Trailer ' + editData?.payload?.trailerNumber
-                    : 'Truck ' + editData?.payload?.truckNumber }}
-        </div>
+    <div class="payroll-number text-color-white text-size-14 ta-font-bold">
+        {{
+            editData?.modal === 'trailer'
+                ? 'Trailer ' + editData?.payload?.trailerNumber
+                : 'Truck ' + editData?.payload?.truckNumber
+        }}
+    </div>
 </ng-template>
 
 <ng-template #footerTemplate>
-    <div class="modal-footer modal-footer-payroll" [class.justify-content-between]="isEditMode">
+    <div
+        class="modal-footer modal-footer-payroll"
+        [class.justify-content-between]="isEditMode"
+    >
         <div class="divider divider--dark divider--small"></div>
         @if (editData.type === 'edit-registration') {
             <div class="d-flex justify-content-between w-full">
@@ -219,4 +223,4 @@
             </button>
         }
     </div>
-</ng-template> 
+</ng-template>

@@ -23,7 +23,7 @@
                 [isCardOpen]="newPMs.length > 0"
                 [hasScrollBody]="newPMs.length > 18"
                 [disabledCard]="!newPMs.length"
-                [disableAnimation]="disableCardAnimation"
+                [disableAnimation]="isCardAnimationDisabled"
                 (onActionEvent)="addPMs()"
             >
                 <app-ta-modal-table
@@ -79,7 +79,7 @@
             text="Save Changes"
             [isValid]="isFormDirty && isFormValid"
             (click)="onModalAction({ action: TableStringEnum.SAVE })"
-            [isSpinnerShown]="activeAction === taModalActionEnums.SAVE"
+            [isSpinnerShown]="activeAction === taModalActionEnum.SAVE"
             [type]="modalButtonType.PRIMARY_POSITIVE"
         >
         </app-ca-modal-button>
