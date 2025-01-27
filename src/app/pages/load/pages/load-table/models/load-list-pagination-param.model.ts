@@ -9,6 +9,7 @@ export interface IGetLoadListParam {
     dispatchId?: number,
     brokerId?: number,
     shipperId?: number,
+    loadIds?: Array<number>,
     loadId?: number,
     dateFrom?: string,
     dateTo?: string,

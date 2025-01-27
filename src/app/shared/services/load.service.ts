@@ -33,6 +33,8 @@ import {
     CreateCommentCommand,
     CommentService,
     CommentResponse,
+    LoadTemplateResponseCreateGenericWithUploadsResponse,
+    LoadListDtoCreateGenericWithUploadsResponse,
 } from 'appcoretruckassist';
 import {
     Comment,
@@ -112,6 +114,7 @@ export class LoadService {
             _params.brokerId,
             _params.shipperId,
             _params.loadId,
+            _params.loadIds,
             _params.dateFrom,
             _params.dateTo,
             _params.revenueFrom,
@@ -223,7 +226,7 @@ export class LoadService {
 
     public updateLoadTemplate(
         data: CreateLoadTemplateCommand
-    ): Observable<CreateResponse> {
+    ): Observable<LoadTemplateResponseCreateGenericWithUploadsResponse> {
         return this.loadService.apiLoadTemplatePut(data);
     }
 
@@ -347,7 +350,7 @@ export class LoadService {
         return this.loadService.apiLoadPut();
     }
 
-    public apiUpdateLoadTemplate(data: CreateLoadTemplateCommand): Observable<CreateResponse> {
+    public apiUpdateLoadTemplate(data: CreateLoadTemplateCommand): Observable<LoadTemplateResponseCreateGenericWithUploadsResponse> {
         return this.loadService.apiLoadTemplatePut(data);
     }
 
@@ -356,12 +359,12 @@ export class LoadService {
         return this.commentService.apiCommentPost(param);
     }
 
-    public apiCreateLoad(data: Load): Observable<CreateResponse> {
+    public apiCreateLoad(data: Load): Observable<LoadListDtoCreateGenericWithUploadsResponse> {
         this.formDataService.extractFormDataFromFunction(data);
         return this.loadService.apiLoadPost();
     }
 
-    public apiCreateLoadTemplate(param: CreateLoadTemplateCommand): Observable<CreateResponse> {
+    public apiCreateLoadTemplate(param: CreateLoadTemplateCommand): Observable<LoadTemplateResponseCreateGenericWithUploadsResponse> {
         this.formDataService.extractFormDataFromFunction(param);
         return this.loadService.apiLoadTemplatePost(param);
     }

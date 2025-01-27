@@ -9,11 +9,10 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { TimeSpan } from './timeSpan';
 
 
 export interface BrokerPaymentHistoryChartResponse { 
-    averagePayPeriod?: TimeSpan;
+    averagePayPeriod?: string | null;
     payTerm?: number | null;
     day?: number | null;
     month?: number | null;

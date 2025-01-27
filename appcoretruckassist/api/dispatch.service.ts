@@ -12,7 +12,9 @@
 /* tslint:disable:no-unused-variable member-ordering */
 
 import { Inject, Injectable, Optional }                      from '@angular/core';
-import { HttpClient, HttpHeaders, HttpParams, HttpResponse, HttpEvent, HttpParameterCodec, HttpContext }       from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams,
+         HttpResponse, HttpEvent, HttpParameterCodec, HttpContext 
+        }       from '@angular/common/http';
 import { CustomHttpParameterCodec }                          from '../encoder';
 import { Observable }                                        from 'rxjs';
 
@@ -44,6 +46,8 @@ import { DispatchModalResponse } from '../model/dispatchModalResponse';
 import { DispatchPossibleStatusResponse } from '../model/dispatchPossibleStatusResponse';
 // @ts-ignore
 import { DispatchResponse } from '../model/dispatchResponse';
+// @ts-ignore
+import { DispatchStatusResponse } from '../model/dispatchStatusResponse';
 // @ts-ignore
 import { DriversForDispatchHistoryModalResponse } from '../model/driversForDispatchHistoryModalResponse';
 // @ts-ignore
@@ -1788,9 +1792,9 @@ export class DispatchService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiDispatchPut(updateDispatchCommand?: UpdateDispatchCommand, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any>;
-    public apiDispatchPut(updateDispatchCommand?: UpdateDispatchCommand, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<any>>;
-    public apiDispatchPut(updateDispatchCommand?: UpdateDispatchCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<any>>;
+    public apiDispatchPut(updateDispatchCommand?: UpdateDispatchCommand, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<DispatchStatusResponse>;
+    public apiDispatchPut(updateDispatchCommand?: UpdateDispatchCommand, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<DispatchStatusResponse>>;
+    public apiDispatchPut(updateDispatchCommand?: UpdateDispatchCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<DispatchStatusResponse>>;
     public apiDispatchPut(updateDispatchCommand?: UpdateDispatchCommand, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
         let localVarQueryParameters = new HttpParams({encoder: this.encoder});
@@ -1853,7 +1857,7 @@ export class DispatchService {
         }
 
         let localVarPath = `/api/dispatch`;
-        return this.httpClient.request<any>('put', `${this.configuration.basePath}${localVarPath}`,
+        return this.httpClient.request<DispatchStatusResponse>('put', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 body: updateDispatchCommand,
@@ -2040,9 +2044,9 @@ export class DispatchService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiDispatchStatusRevertPatch(revertDispatchStatusCommand?: RevertDispatchStatusCommand, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any>;
-    public apiDispatchStatusRevertPatch(revertDispatchStatusCommand?: RevertDispatchStatusCommand, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<any>>;
-    public apiDispatchStatusRevertPatch(revertDispatchStatusCommand?: RevertDispatchStatusCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<any>>;
+    public apiDispatchStatusRevertPatch(revertDispatchStatusCommand?: RevertDispatchStatusCommand, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<DispatchStatusResponse>;
+    public apiDispatchStatusRevertPatch(revertDispatchStatusCommand?: RevertDispatchStatusCommand, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<DispatchStatusResponse>>;
+    public apiDispatchStatusRevertPatch(revertDispatchStatusCommand?: RevertDispatchStatusCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<DispatchStatusResponse>>;
     public apiDispatchStatusRevertPatch(revertDispatchStatusCommand?: RevertDispatchStatusCommand, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
         let localVarQueryParameters = new HttpParams({encoder: this.encoder});
@@ -2105,7 +2109,7 @@ export class DispatchService {
         }
 
         let localVarPath = `/api/dispatch/status/revert`;
-        return this.httpClient.request<any>('patch', `${this.configuration.basePath}${localVarPath}`,
+        return this.httpClient.request<DispatchStatusResponse>('patch', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 body: revertDispatchStatusCommand,
