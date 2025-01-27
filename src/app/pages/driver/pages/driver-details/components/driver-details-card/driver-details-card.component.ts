@@ -191,10 +191,19 @@ export class DriverDetailsCardComponent
         this.driverLegendHighlightedBackground = hasHighlightedBackground;
         this.driverLegendTitle = title;
 
+        if (index === null || index === undefined) {
+            this.driverLegendConfig = ChartLegendConfiguration
+                .driverLegendConfiguration(this.driverChartData);
+            return;
+        }
+
+        const dataForLegend = index >= 0 ?
+            this.driverChartData.
+                getDriverPayrollChartResponse[index] :
+            this.driverChartData
 
         this.driverLegendConfig = ChartLegendConfiguration
-            .driverLegendConfiguration(this.driverChartData.
-                getDriverPayrollChartResponse[index]);
+            .driverLegendConfiguration(dataForLegend);
     }
 
     private createForm(): void {

@@ -936,13 +936,15 @@
                 [customClass]="'detailsPadding'"
             >
                 <div class="charts-template perfomance">
-                    <app-ta-tab-switch
-                        [type]="'type2-modal-popup'"
-                        (switchClicked)="changeTabFuel($event)"
-                        [tabs]="fuelConsumptionChartTabs"
-                    >
-                    </app-ta-tab-switch>
-                    <ng-container *ngIf="fuelConsumptionChartConfig?.chartData">
+                    @if (!fuelConsumptionLegendHighlightedBackground) {
+                        <app-ta-tab-switch
+                            [type]="'type2-modal-popup'"
+                            (switchClicked)="changeTabFuel($event)"
+                            [tabs]="fuelConsumptionChartTabs"
+                        >
+                        </app-ta-tab-switch>
+                    }
+                    @if (fuelConsumptionChartConfig?.chartData) {
                         <app-ca-chart
                             [chartConfig]="fuelConsumptionChartConfig"
                             [legendData]="{
@@ -956,7 +958,7 @@
                             "
                         >
                         </app-ca-chart>
-                    </ng-container>
+                    }
                 </div>
             </app-ta-custom-card>
 
@@ -978,7 +980,7 @@
                         >
                         </app-ta-tab-switch>
                     }
-                    <ng-container *ngIf="revenueChartConfig?.chartData">
+                    @if (revenueChartConfig?.chartData) {
                         <app-ca-chart
                             [chartConfig]="revenueChartConfig"
                             [legendData]="{
@@ -990,7 +992,7 @@
                             (hoveredIndex)="setRevenueLegendOnHover($event)"
                         >
                         </app-ca-chart>
-                    </ng-container>
+                    }
                 </div>
             </app-ta-custom-card>
             <!--------Perfomance--------->
@@ -1004,15 +1006,15 @@
                         <app-ta-tab-switch
                             [type]="'type2-modal-popup'"
                             (switchClicked)="changeTabExpenses($event)"
-                            [tabs]="expensesChartChartTabs"
+                            [tabs]="expensesChartTabs"
                         >
                         </app-ta-tab-switch>
                     }
-                    <ng-container *ngIf="expensesChartConfig?.chartData">
+                    @if (expensesChartConfig?.chartData) {
                         <app-ca-chart
                             [chartConfig]="expensesChartConfig"
                             [legendData]="{
-                                data: expensesChartChartLegend,
+                                data: expensesChartLegend,
                                 hasHighlightedBackground:
                                     expensesLegendHighlightedBackground,
                                 title: expensesLegendTitle,
@@ -1023,7 +1025,7 @@
                         >
                             >
                         </app-ca-chart>
-                    </ng-container>
+                    }
                 </div>
             </app-ta-custom-card>
             <!--------Owner History--------->

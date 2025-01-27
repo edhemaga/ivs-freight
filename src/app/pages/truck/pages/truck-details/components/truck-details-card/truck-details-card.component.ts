@@ -311,6 +311,7 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
     public identity(index: number, _: any): number {
         return index;
     }
+
     public getTruckDropdown(): void {
         this.truckDropDowns = this.truckMinimalListQuery
             .getAll()
@@ -455,43 +456,97 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
         this.getRevenue(event.id);
     }
 
-    public setFuelConsumptionLegendOnHover(index: number): void {
-        if (index === null) {
-            this.fuelConsumptionLegendHighlightedBackground = false;
-            this.fuelConsumptionLegendTitle = '';
+    public setFuelConsumptionLegendOnHover(index: number | null): void {
+
+        const {
+            hasHighlightedBackground,
+            title
+        } =
+            ChartHelper.setChartLegend(
+                index,
+                this.fuelConsumptionChartConfig.chartData.labels
+            );
+
+        this.fuelConsumptionLegendHighlightedBackground = hasHighlightedBackground;
+        this.fuelConsumptionLegendTitle = title;
+
+        if (index === null || index === undefined) {
+            this.fuelConsumptionChartLegend = ChartLegendConfiguration
+                .truckFuelConsumptionConfiguration(this.fuelConsumptionChartData);
+            return;
         }
-        else {
-            this.fuelConsumptionLegendHighlightedBackground = true;
-            this.fuelConsumptionLegendTitle = this.fuelConsumptionChartConfig.chartData.labels[index];
+
+        if (index === null || index === undefined) {
+            this.fuelConsumptionChartLegend = ChartLegendConfiguration
+                .truckFuelConsumptionConfiguration(this.fuelConsumptionChartData);
+            return;
         }
+
+        const dataForLegend = index >= 0 ?
+            this.fuelConsumptionChartData?.
+                truckFuelConsumptionCharts[index] :
+            this.fuelConsumptionChartData;
+
         this.fuelConsumptionChartLegend = ChartLegendConfiguration
-            .truckExpensesConfiguration(this.fuelConsumptionChartData.
-                truckFuelConsumptionCharts[index]);
+            .truckFuelConsumptionConfiguration(dataForLegend);
     }
 
-    public setRevenueLegendOnHover(index: number): void {
-        if (index === null) {
-            this.revenueLegendHighlightedBackground = false;
-            this.revenueLegendTitle = '';
-        }
-        else {
-            this.revenueLegendHighlightedBackground = true;
-            this.revenueLegendTitle = this.revenueChartConfig.chartData.labels[index];
-        }
-        this.revenueChartLegend = ChartLegendConfiguration
-            .truckRevenueConfiguration(this.revenueChartData.truckRevenueCharts[index]);
-    }
+    public setExpensesRevenueLegendOnHover(index: number | null): void {
+        const {
+            hasHighlightedBackground,
+            title
+        } =
+            ChartHelper.setChartLegend(
+                index,
+                this.expensesChartConfig.chartData.labels
+            );
 
-    public setExpensesLegendOnHover(index: number): void {
-        if (index === null) {
-            this.expensesLegendHighlightedBackground = false;
-            this.expensesLegendTitle = '';
+        this.expensesLegendHighlightedBackground = hasHighlightedBackground;
+        this.expensesLegendTitle = title;
+
+        if (index === null || index === undefined) {
+            this.expensesChartLegend = ChartLegendConfiguration
+                .truckExpensesConfiguration(
+                    this.expensesChartData
+                );
+            return;
         }
-        else {
-            this.expensesLegendHighlightedBackground = true;
-            this.expensesLegendTitle = this.expensesChartConfig.chartData.labels[index];
-        }
+
+        const dataForLegend = index >= 0 ?
+            this.expensesChartData?.truckExpensesCharts[index] :
+            this.expensesChartData
+
         this.expensesChartLegend = ChartLegendConfiguration
-            .truckExpensesConfiguration(this.expensesChartData.truckExpensesCharts[index]);
+            .truckExpensesConfiguration(dataForLegend);
+    }
+
+    public setRevenueLegendOnHover(index: number | null): void {
+        console.log(index);
+        const {
+            hasHighlightedBackground,
+            title
+        } =
+            ChartHelper.setChartLegend(
+                index,
+                this.revenueChartConfig.chartData.labels
+            );
+        this.revenueLegendHighlightedBackground = hasHighlightedBackground;
+        this.revenueLegendTitle = title;
+
+        if (index === null || index === undefined) {
+            this.revenueChartLegend = ChartLegendConfiguration
+                .truckRevenueConfiguration(
+                    this.revenueChartData
+                );
+            return;
+        }
+
+        const dataForLegend = index >= 0 ?
+            this.revenueChartData?.
+                truckRevenueCharts[index] :
+            this.revenueChartData;
+
+        this.revenueChartLegend = ChartLegendConfiguration
+            .truckRevenueConfiguration(dataForLegend);
     }
 }

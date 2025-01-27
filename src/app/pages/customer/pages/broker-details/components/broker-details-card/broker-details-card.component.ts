@@ -281,13 +281,27 @@ export class BrokerDetailsCardComponent
             hasHighlightedBackground,
             title
         } =
-            ChartHelper.setChartLegend(index, this.mileageChartConfig.chartData.labels);
+            ChartHelper.setChartLegend(
+                index,
+                this.mileageChartConfig.chartData.labels
+            );
 
         this.mileageLegendHighlightedBackground = hasHighlightedBackground;
         this.mileageLegendTitle = title;
 
-        this.mileageChartLegendData =
-            ChartLegendConfiguration.mileageLegendConfiguration(this.mileageChartData.brokerMileageRateChartResponse[index]);
+        if (index === null || index === undefined) {
+            this.mileageChartLegendData = ChartLegendConfiguration
+                .mileageLegendConfiguration(this.mileageChartData);
+            return;
+        }
+
+        const dataForLegend = index >= 0 ?
+            this.mileageChartData?.
+                brokerMileageRateChartResponse[index] :
+            this.mileageChartData
+
+        this.mileageChartLegendData = ChartLegendConfiguration
+            .mileageLegendConfiguration(dataForLegend);
     }
 
     public setInvoiceLegendOnHover(index: number): void {
@@ -296,12 +310,28 @@ export class BrokerDetailsCardComponent
             hasHighlightedBackground,
             title
         } =
-            ChartHelper.setChartLegend(index, this.invoiceChartConfig.chartData.labels);
+            ChartHelper.setChartLegend(
+                index,
+                this.invoiceChartConfig.chartData.labels
+            );
 
         this.invoiceLegendHighlightedBackground = hasHighlightedBackground;
         this.invoiceLegendTitle = title;
 
-        this.invoiceChartLegend = ChartLegendConfiguration.invoiceChartLegendConfiguration(this.invoiceChartData.brokerPaidInvoiceChartResponse[index])
+        if (index === null || index === undefined) {
+            this.invoiceChartLegend = ChartLegendConfiguration
+                .invoiceChartLegendConfiguration(
+                    this.invoiceChartData);
+            return;
+        }
+
+        const dataForLegend = index >= 0 ?
+            this.invoiceChartData?.
+                brokerPaidInvoiceChartResponse[index] :
+            this.invoiceChartData
+
+        this.invoiceChartLegend = ChartLegendConfiguration
+            .invoiceChartLegendConfiguration(dataForLegend);
     }
 
     public setPaymentHistoryLegendOnHover(index: number): void {
@@ -309,12 +339,27 @@ export class BrokerDetailsCardComponent
             hasHighlightedBackground,
             title
         } =
-            ChartHelper.setChartLegend(index, this.paymentChartConfig.chartData.labels);
+            ChartHelper.setChartLegend(
+                index,
+                this.paymentChartConfig.chartData.labels
+            );
 
         this.paymentLegendHighlightedBackground = hasHighlightedBackground;
         this.paymentLegendTitle = title;
 
-        this.paymentChartLegendData = ChartLegendConfiguration.brokerPaymentHistory(this.paymentChartData.brokerPaymentHistoryChartResponse[index]);
+        if (index === null || index === undefined) {
+            this.paymentChartLegendData = ChartLegendConfiguration
+                .brokerPaymentHistory(this.paymentChartData);
+            return;
+        }
+
+        const dataForLegend = index >= 0 ?
+            this.paymentChartData?.
+                brokerPaymentHistoryChartResponse[index] :
+            this.paymentChartData
+
+        this.paymentChartLegendData = ChartLegendConfiguration
+            .brokerPaymentHistory(dataForLegend);
     }
 
     public tabsButton(): void {

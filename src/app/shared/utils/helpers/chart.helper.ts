@@ -151,17 +151,21 @@ export class ChartHelper {
             const day = item['day'] as number;
             const month = item['month'] as number;
             const year = item['year'] as number;
-
             if (
                 timeFilter === 1 ||
                 timeFilter === 2 ||
                 timeFilter === 3 ||
-                timeFilter === 6 ||
                 !timeFilter
             )
                 return `${day} ${ChartConstants.MONTH_NAMES_SHORT[month - 1]}`;
             else if (timeFilter === 4 || timeFilter === 5)
                 return month === 1 ? `${year}` : ChartConstants.MONTH_NAMES_SHORT[month - 1];
+            else if (timeFilter === 6) {
+                const label = month !== null ?
+                    `${ChartConstants.MONTH_NAMES_SHORT[month - 1]} ${year}` :
+                    `${year}`
+                return label;
+            }
             return '';
         });
     }
@@ -262,16 +266,11 @@ export class ChartHelper {
         hasHighlightedBackground: boolean,
         title: string
     } {
-        if (index < 0)
-            return {
-                hasHighlightedBackground: false,
-                title: ''
-            }
 
         let hasHighlightedBackground: boolean = false;
         let title: string;
 
-        if (index === null) {
+        if (index === null || index < 0) {
             hasHighlightedBackground = false;
             title = '';
         }

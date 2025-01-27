@@ -160,9 +160,11 @@
                         ></app-dashboard-data-placeholder>
                     }
                     @if (!isDisplayingPlaceholder) {
-                        @for {
-                            byStateListItem of byStateList; let i = $index;
+                        @for (
+                            byStateListItem of byStateList;
+                            let i = $index;
                             track trackByIdentity.id
+                        ) {
                             <div
                                 class="d-flex align-items-center justify-content-between by-state-item"
                                 placement="bottom"
