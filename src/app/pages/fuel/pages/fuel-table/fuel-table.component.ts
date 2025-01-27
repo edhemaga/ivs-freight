@@ -674,7 +674,7 @@ export class FuelTableComponent implements OnInit, AfterViewInit, OnDestroy {
             tableDescriptionDropTotal,
             tableGallon: gallon,
             tablePPG: pricePerGallon,
-            tableTotal: tableDescriptionDropTotal,
+            tableCost: tableDescriptionDropTotal,
             tableAttachments: files,
             fileCount: files ? files.length : 0,
             tableAdded: this.datePipe.transform(
