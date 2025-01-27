@@ -40,6 +40,7 @@ import { TaInputService } from '@shared/services/ta-input.service';
 import { ModalService } from '@shared/services/modal.service';
 import { ConfirmationService } from '@shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
 import { ConfirmationMoveService } from '@shared/components/ta-shared-modals/confirmation-move-modal/services/confirmation-move.service';
+import { AddressService } from '@shared/services/address.service';
 
 // Validators
 import {
@@ -73,6 +74,7 @@ import {
     CaInputDropdownComponent,
     CaModalButtonComponent,
     CaModalComponent,
+    CaInputAddressDropdownComponent,
 } from 'ca-components';
 
 // enums
@@ -106,10 +108,13 @@ import {
     UpdateReviewCommand,
     EnumValue,
     DepartmentResponse,
+    AddressListResponse,
+    AddressResponse,
 } from 'appcoretruckassist';
 import { AnimationOptions } from '@shared/models/animation-options.model';
 import { Tabs } from '@shared/models/tabs.model';
 import { BrokerContactExtended } from '@pages/customer/pages/broker-modal/models/';
+import { AddressProperties } from '@shared/components/ta-input-address-dropdown/models/address-properties';
 
 @Component({
     selector: 'app-broker-modal',
@@ -142,6 +147,7 @@ import { BrokerContactExtended } from '@pages/customer/pages/broker-modal/models
         CaInputComponent,
         CaInputDropdownComponent,
         CaModalButtonComponent,
+        CaInputAddressDropdownComponent,
 
         // Pipes
         FormatDatePipe,
@@ -214,13 +220,22 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
     public isNewContactAdded: boolean = false;
     public isEachContactRowValid: boolean = true;
 
-    public taModalActionEnums = TaModalActionEnum;
+    public taModalActionEnum = TaModalActionEnum;
 
     public svgRoutes = SharedSvgRoutes;
     public activeAction: string;
 
     public modalButtonType = ModalButtonType;
     public modalButtonSize = ModalButtonSize;
+
+    public addressList: AddressListResponse;
+    public addressListBilling: AddressListResponse;
+    public addressListPoBox: AddressListResponse;
+    public addressListBillingPoBox: AddressListResponse;
+    public addressData: AddressResponse;
+    public addressDataBilling: AddressResponse;
+    public addressDataPoBox: AddressResponse;
+    public addressDataBillingPoBox: AddressResponse;
 
     constructor(
         // modal
@@ -240,7 +255,8 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
         private taLikeDislikeService: TaLikeDislikeService,
         private formService: FormService,
         private confirmationService: ConfirmationService,
-        private confirmationMoveService: ConfirmationMoveService
+        private confirmationMoveService: ConfirmationMoveService,
+        private addressService: AddressService
     ) {}
 
     ngOnInit() {
@@ -1831,6 +1847,69 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
             status: status,
             close: close,
         });
+    }
+
+    public onAddressChange(
+        { query, searchLayers, closedBorder }: AddressProperties,
+        addressListType: string
+    ): void {
+        this.addressService
+            .getAddresses(query, searchLayers, closedBorder)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((res) => this.updateAddressList(res, addressListType));
+    }
+
+    public getAddressData(address: string, addressDataType: string): void {
+        this.addressService
+            .getAddressInfo(address)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((res) => this.updateAddressData(res, addressDataType));
+    }
+
+    private updateAddressList(data: AddressListResponse, action: string) {
+        switch (action) {
+            case BrokerModalStringEnum.PHYSICAL_ADDRESS_2:
+                this.addressList = data;
+                break;
+
+            case BrokerModalStringEnum.PHYSICAL_PO_BOX_2:
+                this.addressListPoBox = data;
+                break;
+
+            case BrokerModalStringEnum.BILLING_ADDRESS:
+                this.addressListBilling = data;
+                break;
+
+            case BrokerModalStringEnum.BILLING_PO_BOX:
+                this.addressListBillingPoBox = data;
+                break;
+
+            default:
+                break;
+        }
+    }
+
+    private updateAddressData(data: AddressResponse, action: string) {
+        switch (action) {
+            case BrokerModalStringEnum.PHYSICAL_ADDRESS_2:
+                this.addressData = data;
+                break;
+
+            case BrokerModalStringEnum.PHYSICAL_PO_BOX_2:
+                this.addressDataPoBox = data;
+                break;
+
+            case BrokerModalStringEnum.BILLING_ADDRESS:
+                this.addressDataBilling = data;
+                break;
+
+            case BrokerModalStringEnum.BILLING_PO_BOX:
+                this.addressDataBillingPoBox = data;
+                break;
+
+            default:
+                break;
+        }
     }
 
     ngOnDestroy(): void {

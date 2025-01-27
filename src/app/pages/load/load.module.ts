@@ -28,7 +28,7 @@ import { LoadStatusColorPipe } from '@shared/pipes/load-status-color.pipe';
 
 // store
 import { StoreModule } from '@ngrx/store';
-import { loadReducer } from '@pages/load/pages/load-table/store/reducers/load.reducer';
+import { loadReducer } from '@pages/load/state/reducers/load.reducer';
 import { loadCardModalReducer } from '@pages/load/pages/load-card-modal/state/load-card-modal.reducer';
 
 @NgModule({
