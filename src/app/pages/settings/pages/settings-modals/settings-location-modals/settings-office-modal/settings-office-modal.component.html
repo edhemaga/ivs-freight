@@ -224,7 +224,7 @@
         mainTooltip="Cancel"
         tooltipBackground="#424242"
         position="bottom"
-        (click)="onModalAction(taModalActionEnums.CLOSE)"
+        (click)="onModalAction(taModalActionEnum.CLOSE)"
     >
         <svg-icon
             class="modal-close svg-size-14 svg-fill-muted modal-buttons"
@@ -247,7 +247,7 @@
                 <app-ca-modal-button
                     text="Delete"
                     size="Small"
-                    (click)="onModalAction(taModalActionEnums.DELETE)"
+                    (click)="onModalAction(taModalActionEnum.DELETE)"
                     [type]="modalButtonType.SECONDARY_NEGATIVE"
                 >
                 </app-ca-modal-button>
@@ -255,8 +255,8 @@
                     text="Save Changes"
                     [isValid]="officeForm.valid && isFormDirty"
                     [type]="modalButtonType.PRIMARY_POSITIVE"
-                    [isSpinnerShown]="activeAction === taModalActionEnums.SAVE"
-                    (click)="onModalAction(taModalActionEnums.SAVE)"
+                    [isSpinnerShown]="activeAction === taModalActionEnum.SAVE"
+                    (click)="onModalAction(taModalActionEnum.SAVE)"
                 >
                 </app-ca-modal-button>
             </div>
@@ -264,9 +264,9 @@
             <app-ca-modal-button
                 text=" Save and Add New"
                 [isValid]="officeForm.valid && isFormDirty"
-                (click)="onModalAction(taModalActionEnums.SAVE_AND_ADD_NEW)"
+                (click)="onModalAction(taModalActionEnum.SAVE_AND_ADD_NEW)"
                 [isSpinnerShown]="
-                    activeAction === taModalActionEnums.SAVE_AND_ADD_NEW
+                    activeAction === taModalActionEnum.SAVE_AND_ADD_NEW
                 "
                 [type]="modalButtonType.SECONDARY_POSITIVE"
             >
@@ -274,8 +274,8 @@
             <app-ca-modal-button
                 text="Save"
                 [isValid]="officeForm.valid && isFormDirty"
-                (click)="onModalAction(taModalActionEnums.SAVE)"
-                [isSpinnerShown]="activeAction === taModalActionEnums.SAVE"
+                (click)="onModalAction(taModalActionEnum.SAVE)"
+                [isSpinnerShown]="activeAction === taModalActionEnum.SAVE"
                 [type]="modalButtonType.PRIMARY_POSITIVE"
             >
             </app-ca-modal-button>

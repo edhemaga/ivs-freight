@@ -162,7 +162,7 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
     public total: number = 0;
 
     public svgRoutes = SharedSvgRoutes;
-    public taModalActionEnums = TaModalActionEnum;
+    public taModalActionEnum = TaModalActionEnum;
 
     constructor(
         private formBuilder: UntypedFormBuilder,

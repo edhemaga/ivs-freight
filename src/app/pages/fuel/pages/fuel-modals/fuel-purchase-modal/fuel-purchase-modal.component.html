@@ -318,7 +318,7 @@
         mainTooltip="Cancel"
         tooltipBackground="#424242"
         position="bottom"
-        (click)="onModalAction(taModalActionEnums.CLOSE)"
+        (click)="onModalAction(taModalActionEnum.CLOSE)"
     >
         <svg-icon
             class="modal-close svg-size-14 svg-fill-muted modal-buttons"
@@ -334,13 +334,13 @@
             <div class="d-flex justify-content-between w-full">
                 <button
                     class="modal-delete-btn ta-font-bold mr-12 valid"
-                    (click)="onModalAction(taModalActionEnums.DELETE)"
+                    (click)="onModalAction(taModalActionEnum.DELETE)"
                 >
                     Delete
                 </button>
                 <button
                     class="modal-save-btn ta-font-bold"
-                    (click)="onModalAction(taModalActionEnums.SAVE)"
+                    (click)="onModalAction(taModalActionEnum.SAVE)"
                     [class.valid]="
                         fuelForm.valid &&
                         isFormDirty &&
@@ -360,13 +360,13 @@
                     fuelItems.length &&
                     isEachFuelRowValid
                 "
-                (click)="onModalAction(taModalActionEnums.SAVE_AND_ADD_NEW)"
+                (click)="onModalAction(taModalActionEnum.SAVE_AND_ADD_NEW)"
             >
                 Save and Add New
             </button>
             <button
                 class="modal-save-btn ta-font-bold"
-                (click)="onModalAction(taModalActionEnums.SAVE)"
+                (click)="onModalAction(taModalActionEnum.SAVE)"
                 [class.valid]="
                     fuelForm.valid &&
                     isFormDirty &&

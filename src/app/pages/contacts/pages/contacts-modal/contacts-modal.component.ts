@@ -144,7 +144,7 @@ export class ContactsModalComponent implements OnInit, OnDestroy {
     private isUploadInProgress: boolean;
 
     public modalTableTypeEnum = ModalTableTypeEnum;
-    public taModalActionEnums = ContactsModalStringEnum;
+    public taModalActionEnum = ContactsModalStringEnum;
 
     public addressList: AddressListResponse;
     public addressData: AddressResponse;

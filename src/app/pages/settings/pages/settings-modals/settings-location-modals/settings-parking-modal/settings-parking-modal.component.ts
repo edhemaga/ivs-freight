@@ -202,7 +202,7 @@ export class SettingsParkingModalComponent implements OnInit, OnDestroy {
     public fullParkingSlotConfig: ITaInput =
         SettingsParkingConfig.getFullParkingSlotConfig();
 
-    public taModalActionEnums = TaModalActionEnum;
+    public taModalActionEnum = TaModalActionEnum;
     public svgRoutes = SharedSvgRoutes;
     public modalButtonType = ModalButtonType;
     public activeAction!: string;

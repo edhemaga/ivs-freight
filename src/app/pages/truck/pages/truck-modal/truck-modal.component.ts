@@ -200,7 +200,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
 
     public svgRoutes = SharedSvgRoutes;
     private destroy$ = new Subject<void>();
-    public taModalActionEnums = TaModalActionEnum;
+    public taModalActionEnum = TaModalActionEnum;
 
     constructor(
         private formBuilder: UntypedFormBuilder,

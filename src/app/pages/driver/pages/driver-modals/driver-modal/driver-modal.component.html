@@ -1329,7 +1329,7 @@
         mainTooltip="Cancel"
         tooltipBackground="#424242"
         position="bottom"
-        (click)="onModalAction(taModalActionEnums.CLOSE)"
+        (click)="onModalAction(taModalActionEnum.CLOSE)"
     >
         <svg-icon
             class="modal-close svg-size-14 svg-fill-muted modal-buttons"
@@ -1354,20 +1354,20 @@
                 <div>
                     <button
                         class="modal-delete-btn ta-font-bold mr-12 valid"
-                        (click)="onModalAction(taModalActionEnums.DELETE)"
+                        (click)="onModalAction(taModalActionEnum.DELETE)"
                     >
                         Delete
                     </button>
                     <button
                         class="modal-convert-to-template-btn ta-font-bold"
-                        (click)="onModalAction(taModalActionEnums.DEACTIVATE)"
+                        (click)="onModalAction(taModalActionEnum.DEACTIVATE)"
                     >
                         Deactivate
                     </button>
                 </div>
                 <button
                     class="modal-save-btn ta-font-bold"
-                    (click)="onModalAction(taModalActionEnums.SAVE)"
+                    (click)="onModalAction(taModalActionEnum.SAVE)"
                     [class.valid]="
                         driverForm.valid &&
                         isFormDirty &&
@@ -1385,13 +1385,13 @@
                     isFormDirty &&
                     isEachOffDutyLocationRowValid
                 "
-                (click)="onModalAction(taModalActionEnums.SAVE_AND_ADD_NEW)"
+                (click)="onModalAction(taModalActionEnum.SAVE_AND_ADD_NEW)"
             >
                 Save and Add New
             </button>
             <button
                 class="modal-save-btn ta-font-bold"
-                (click)="onModalAction(taModalActionEnums.SAVE)"
+                (click)="onModalAction(taModalActionEnum.SAVE)"
                 [class.valid]="
                     driverForm.valid &&
                     isFormDirty &&

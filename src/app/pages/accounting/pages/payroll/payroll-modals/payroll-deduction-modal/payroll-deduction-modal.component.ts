@@ -56,7 +56,7 @@ import { ConfirmationModalStringEnum } from '@shared/components/ta-shared-modals
 })
 export class PayrollDeductionModalComponent implements OnInit {
     public payrollCreditForm: FormGroup;
-    public taModalActionEnums = TaModalActionEnum;
+    public taModalActionEnum = TaModalActionEnum;
     private destroy$ = new Subject<void>();
     @Input() editData: PayrollModal;
     public deduction: PayrollDeductionResponse;

@@ -108,7 +108,7 @@ export class PmModalComponent implements OnInit, OnDestroy {
     // enums
     public modalTableTypeEnum = ModalTableTypeEnum;
     public modalButtonType = ModalButtonType;
-    public taModalActionEnums = TaModalActionEnum;
+    public taModalActionEnum = TaModalActionEnum;
     public TableStringEnum = TableStringEnum;
     public activeAction: string;
 

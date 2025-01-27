@@ -122,7 +122,7 @@ export class TodoModalComponent implements OnInit, OnDestroy {
 
     public modalButtonType = ModalButtonType;
     public modalButtonSize = ModalButtonSize;
-    public taModalActionEnums = TaModalActionEnum;
+    public taModalActionEnum = TaModalActionEnum;
     public data: TodoResponse;
 
     constructor(

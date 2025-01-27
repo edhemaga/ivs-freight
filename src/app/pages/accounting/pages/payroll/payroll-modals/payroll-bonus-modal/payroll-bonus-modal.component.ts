@@ -49,7 +49,7 @@ import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calcula
 })
 export class PayrollBonusModalComponent implements OnInit {
     public payrollCreditForm: FormGroup;
-    public taModalActionEnums = TaModalActionEnum;
+    public taModalActionEnum = TaModalActionEnum;
     private preselectedDriver: boolean;
 
     @Input() editData: PayrollModal;

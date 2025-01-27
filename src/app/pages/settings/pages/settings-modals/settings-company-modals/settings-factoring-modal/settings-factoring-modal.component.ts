@@ -18,7 +18,10 @@ import { ModalService } from '@shared/services/modal.service';
 import { FormService } from '@shared/services/form.service';
 
 // models
-import { FactoringCompany, UpdateFactoringCompanyCommand } from 'appcoretruckassist';
+import {
+    FactoringCompany,
+    UpdateFactoringCompanyCommand,
+} from 'appcoretruckassist';
 
 // validators
 import {
@@ -49,7 +52,7 @@ import { SettingsFactoringModalConstants } from '@pages/settings/pages/settings-
 import { SharedSvgRoutes } from '@shared/utils/svg-routes';
 
 // Enums
-import { TaModalActionEnums } from '@shared/components/ta-modal/enums';
+import { TaModalActionEnum } from '@shared/components/ta-modal/enums';
 import { ModalButtonType, ModalButtonSize } from '@shared/enums';
 
 // Pipes
@@ -118,7 +121,7 @@ export class SettingsFactoringModalComponent implements OnInit, OnDestroy {
         textLists: false,
     };
     public svgRoutes = SharedSvgRoutes;
-    public taModalActionEnums = TaModalActionEnums;
+    public taModalActionEnum = TaModalActionEnum;
     public activeAction: string;
     public modalButtonType = ModalButtonType;
     public modalButtonSize = ModalButtonSize;
@@ -170,10 +173,10 @@ export class SettingsFactoringModalComponent implements OnInit, OnDestroy {
         this.activeAction = action;
 
         switch (action) {
-            case TaModalActionEnums.CLOSE:
+            case TaModalActionEnum.CLOSE:
                 this.ngbActiveModal.close();
                 break;
-            case TaModalActionEnums.SAVE: {
+            case TaModalActionEnum.SAVE: {
                 // If Form not valid
                 if (this.factoringForm.invalid || !this.isFormDirty) {
                     this.inputService.markInvalid(this.factoringForm);
@@ -184,7 +187,7 @@ export class SettingsFactoringModalComponent implements OnInit, OnDestroy {
 
                 break;
             }
-            case TaModalActionEnums.DELETE: {
+            case TaModalActionEnum.DELETE: {
                 this.deleteFactoringCompanyById();
 
                 break;
@@ -243,7 +246,7 @@ export class SettingsFactoringModalComponent implements OnInit, OnDestroy {
 
     private editFactoringCompany(company: any) {
         this.company = company;
-        
+
         this.factoringForm.patchValue({
             name: company.factoringCompany.name,
             phone: company.factoringCompany.phone,

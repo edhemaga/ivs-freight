@@ -210,7 +210,7 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
     public reviews: any[] = [];
     public previousReviews: any[] = [];
 
-    public taModalActionEnums = TaModalActionEnum;
+    public taModalActionEnum = TaModalActionEnum;
 
     public activeAction: string;
     public modalButtonType = ModalButtonType;

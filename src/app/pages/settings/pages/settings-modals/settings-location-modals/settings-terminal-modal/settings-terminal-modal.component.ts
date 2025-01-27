@@ -193,7 +193,7 @@ export class SettingsTerminalModalComponent implements OnInit, OnDestroy {
         SettingsTerminalConfig.getFullParkingSlotConfig();
 
     public svgRoutes = SettingsLocationSvgRoutes;
-    public taModalActionEnums = TaModalActionEnum;
+    public taModalActionEnum = TaModalActionEnum;
     public svgRoutesCommon = SharedSvgRoutes;
     public modalButtonType = ModalButtonType;
     public activeAction!: string;

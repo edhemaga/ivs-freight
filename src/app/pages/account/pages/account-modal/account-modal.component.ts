@@ -119,7 +119,7 @@ export class AccountModalComponent implements OnInit, OnDestroy {
 
     private destroy$ = new Subject<void>();
     public accountModalConfig = AccountModalConfig;
-    public taModalActionEnums = ContactsModalStringEnum;
+    public taModalActionEnum = ContactsModalStringEnum;
     public svgRoutes = SharedSvgRoutes;
     public activeAction: ModalActionType = null;
 

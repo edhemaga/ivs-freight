@@ -201,7 +201,7 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
 
     public departmentOptions: DepartmentResponse[] = [];
 
-    public taModalActionEnums = TaModalActionEnum;
+    public taModalActionEnum = TaModalActionEnum;
     public svgRoutes = SharedSvgRoutes;
     public modalButtonType = ModalButtonType;
     public activeAction!: string;

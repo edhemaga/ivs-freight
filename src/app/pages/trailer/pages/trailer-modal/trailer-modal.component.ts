@@ -179,7 +179,7 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
     private storedfhwaExpValue: any = null;
     public svgRoutes = SharedSvgRoutes;
     public actionTypesEnum = ActionTypesEnum;
-    public taModalActionEnums = TaModalActionEnum;
+    public taModalActionEnum = TaModalActionEnum;
 
     constructor(
         private formBuilder: UntypedFormBuilder,

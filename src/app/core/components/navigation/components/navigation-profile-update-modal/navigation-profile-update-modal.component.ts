@@ -109,7 +109,7 @@ export class NavigationProfileUpdateModalComponent
 
     public isFormDirty: boolean = false;
     public activeAction: TaModalActionEnum;
-    public taModalActionEnums = TaModalActionEnum;
+    public taModalActionEnum = TaModalActionEnum;
     public svgRoutes = SharedSvgRoutes;
     public modalButtonType = ModalButtonType;
     public displayName: string;

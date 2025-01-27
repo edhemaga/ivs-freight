@@ -220,7 +220,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
     // enums
     public modalTableTypeEnum = ModalTableTypeEnum;
     public svgRoutes = SharedSvgRoutes;
-    public taModalActionEnums = TaModalActionEnum;
+    public taModalActionEnum = TaModalActionEnum;
 
     // Const
     public RepairOrderConfig = RepairOrderConfig;

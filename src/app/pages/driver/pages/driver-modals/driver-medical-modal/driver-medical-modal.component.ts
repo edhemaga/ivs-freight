@@ -100,7 +100,7 @@ export class DriverMedicalModalComponent implements OnInit, OnDestroy {
     public modalButtonType = ModalButtonType;
     public modalButtonSize = ModalButtonSize;
     public activeAction!: string;
-    public taModalActionEnums = DriverMedicalModalStringEnum;
+    public taModalActionEnum = DriverMedicalModalStringEnum;
 
     constructor(
         private formBuilder: UntypedFormBuilder,

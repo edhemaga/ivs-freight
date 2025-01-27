@@ -249,7 +249,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
     public modalTableTypeEnum = ModalTableTypeEnum;
     public addressList: AddressListResponse;
     public addressData: AddressResponse;
-    public taModalActionEnums = TaModalActionEnum;
+    public taModalActionEnum = TaModalActionEnum;
     public svgRoutes = SharedSvgRoutes;
 
     constructor(

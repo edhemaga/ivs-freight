@@ -60,7 +60,7 @@ export class PayrollCreditBonusComponent implements OnInit {
     @Input() editData: PayrollModal;
 
     // Utils
-    public taModalActionEnums = TaModalActionEnum;
+    public taModalActionEnum = TaModalActionEnum;
 
     private destroy$ = new Subject<void>();
 

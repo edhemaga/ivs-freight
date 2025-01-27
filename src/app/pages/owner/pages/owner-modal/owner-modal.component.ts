@@ -152,7 +152,7 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
 
     public isFormDirty: boolean;
     public svgRoutes = SharedSvgRoutes;
-    public taModalActionEnums = TaModalActionEnum;
+    public taModalActionEnum = TaModalActionEnum;
     public ownerModalConfig = OwnerModalConfig;
 
     public uploadOptionsConstants = ContactsModalConstants.UPLOAD_OPTIONS;
