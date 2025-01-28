@@ -124,11 +124,9 @@
                 [hasScrollBody]="comments.length > 4"
                 [disabledCard]="editData?.type !== 'edit'"
                 [hasActionSvg]="
-                    editData?.type === 'edit'
-                        ? svgRoutes.PLUS_ICON
-                        : ''
+                    editData?.type === 'edit' ? svgRoutes.PLUS_ICON : ''
                 "
-                [disableAnimation]="disableCardAnimation"
+                [disableAnimation]="isCardAnimationDisabled"
                 [animationMarginParams]="{
                     marginTop: '10px',
                     marginBottom: '12px',
@@ -137,20 +135,19 @@
                 [hasSmallDivider]="true"
                 (onActionEvent)="createComment()"
             >
-            @if(comments.length) {
-                <app-ta-user-review
-                    [reviewData]="comments"
-                    (changeReviewsEvent)="changeCommentsEvent($event)"
-                    [isNewReview]="comments[0].isNewReview"
-                ></app-ta-user-review>
-            }
-            
+                @if (comments.length) {
+                    <app-ta-user-review
+                        [reviewData]="comments"
+                        (changeReviewsEvent)="changeCommentsEvent($event)"
+                        [isNewReview]="comments[0].isNewReview"
+                    ></app-ta-user-review>
+                }
             </app-ta-custom-card>
             <div class="ta-card-body-overflow-none">
                 <app-ta-custom-card
                     [hasCounter]="documents.length ? documents.length : 0"
                     [cardName]="'Document'"
-                    [disableAnimation]="disableCardAnimation"
+                    [disableAnimation]="isCardAnimationDisabled"
                     [isCardOpen]="!!documents.length"
                     [hasDarkDivider]="true"
                     [hasSmallDivider]="true"
@@ -190,7 +187,7 @@
         mainTooltip="Cancel"
         tooltipBackground="#424242"
         position="bottom"
-        (click)="onModalAction(taModalActionEnums.CLOSE)"
+        (click)="onModalAction(taModalActionEnum.CLOSE)"
     >
         <svg-icon
             class="modal-close svg-size-14 svg-fill-muted modal-buttons"
@@ -217,38 +214,38 @@
                         class="mr-12"
                         text="Delete"
                         [size]="modalButtonSize.SMALL"
-                        (click)="onModalAction(taModalActionEnums.DELETE)"
+                        (click)="onModalAction(taModalActionEnum.DELETE)"
                         [type]="modalButtonType.SECONDARY_NEGATIVE"
                     >
-                    </app-ca-modal-button> 
+                    </app-ca-modal-button>
                 </div>
                 <app-ca-modal-button
                     text="Save Changes"
                     [isValid]="taskForm.valid && isFormDirty"
-                    (click)="onModalAction(taModalActionEnums.SAVE)"
-                    [isSpinnerShown]="activeAction === taModalActionEnums.SAVE"
+                    (click)="onModalAction(taModalActionEnum.SAVE)"
+                    [isSpinnerShown]="activeAction === taModalActionEnum.SAVE"
                     [type]="modalButtonType.PRIMARY_POSITIVE"
                 >
                 </app-ca-modal-button>
             </div>
-        } @else { 
+        } @else {
             <app-ca-modal-button
                 class="mr-12"
                 [isValid]="taskForm.valid && isFormDirty"
                 [text]="'Save and Add New'"
                 [isSpinnerShown]="
-                    activeAction === taModalActionEnums.SAVE_AND_ADD_NEW
+                    activeAction === taModalActionEnum.SAVE_AND_ADD_NEW
                 "
                 [type]="modalButtonType.SECONDARY_POSITIVE"
-                (click)="onModalAction(taModalActionEnums.SAVE_AND_ADD_NEW)"
+                (click)="onModalAction(taModalActionEnum.SAVE_AND_ADD_NEW)"
             >
             </app-ca-modal-button>
             <app-ca-modal-button
                 [isValid]="taskForm.valid && isFormDirty"
                 [text]="'Save'"
-                [isSpinnerShown]="activeAction === taModalActionEnums.SAVE"
+                [isSpinnerShown]="activeAction === taModalActionEnum.SAVE"
                 [type]="modalButtonType.PRIMARY_POSITIVE"
-                (click)="onModalAction(taModalActionEnums.SAVE)"
+                (click)="onModalAction(taModalActionEnum.SAVE)"
             >
             </app-ca-modal-button>
         }

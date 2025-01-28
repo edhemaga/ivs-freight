@@ -36,12 +36,11 @@ export class PmCardComponent
         this._viewData = value;
     }
 
+    @Input() selectedTab: string;
+
     // card body endpoints
-    @Input() cardTitle: string;
-    @Input() rows: number[];
     @Input() displayRowsFront: CardRows[];
     @Input() displayRowsBack: CardRows[];
-    @Input() cardTitleLink: string;
 
     private destroy$ = new Subject<void>();
 
@@ -59,7 +58,7 @@ export class PmCardComponent
         // helpers
         private cardHelper: CardHelper
     ) {
-        super(modalService);
+        super();
     }
 
     ngOnInit() {

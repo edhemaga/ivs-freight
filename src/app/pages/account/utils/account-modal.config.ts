@@ -6,7 +6,8 @@ export class AccountModalConfig {
             type: 'text',
             label: 'Account Name',
             isRequired: true,
-            maxLength: 23,
+            maxLength: 64,
+            minLength: 2,
             textTransform: 'capitalize',
             autoFocus: !isEditMode,
         };

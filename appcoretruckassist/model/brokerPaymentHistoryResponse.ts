@@ -10,11 +10,10 @@
  * Do not edit the class manually.
  */
 import { BrokerPaymentHistoryChartResponse } from './brokerPaymentHistoryChartResponse';
-import { TimeSpan } from './timeSpan';
 
 
 export interface BrokerPaymentHistoryResponse { 
-    averagePayPeriod?: TimeSpan;
+    averagePayPeriod?: string | null;
     payTerm?: number | null;
     brokerPaymentHistoryChartResponse?: Array<BrokerPaymentHistoryChartResponse> | null;
 }

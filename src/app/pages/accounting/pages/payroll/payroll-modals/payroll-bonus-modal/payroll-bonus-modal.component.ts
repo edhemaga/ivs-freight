@@ -18,9 +18,7 @@ import {
     PayrollActionType,
     PayrollModal,
 } from '@pages/accounting/pages/payroll/state/models';
-import {
-    CreatePayrollBonusCommand,
-} from 'appcoretruckassist';
+import { CreatePayrollBonusCommand } from 'appcoretruckassist';
 
 // Services
 import { PayrollBonusService } from '@pages/accounting/pages/payroll/payroll-modals/payroll-bonus-modal/services/payroll-bonus.service';
@@ -28,7 +26,7 @@ import { PayrollService } from '@pages/accounting/pages/payroll/services/payroll
 
 // Enums
 import { PayrollStringEnum } from '@pages/accounting/pages/payroll/state/enums';
-import { TaModalActionEnums } from '@shared/components/ta-modal/enums';
+import { TaModalActionEnum } from '@shared/components/ta-modal/enums';
 import { ConfirmationModalStringEnum } from '@shared/components/ta-shared-modals/confirmation-modal/enums/confirmation-modal-string.enum';
 import { TableStringEnum } from '@shared/enums/table-string.enum';
 
@@ -51,7 +49,7 @@ import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calcula
 })
 export class PayrollBonusModalComponent implements OnInit {
     public payrollCreditForm: FormGroup;
-    public taModalActionEnums = TaModalActionEnums;
+    public taModalActionEnum = TaModalActionEnum;
     private preselectedDriver: boolean;
 
     @Input() editData: PayrollModal;
@@ -134,24 +132,29 @@ export class PayrollBonusModalComponent implements OnInit {
 
     public saveBonus(action: PayrollActionType): void {
         const addNew =
-            action === TaModalActionEnums.SAVE ||
-            action === TaModalActionEnums.SAVE_AND_ADD_NEW;
+            action === TaModalActionEnum.SAVE ||
+            action === TaModalActionEnum.SAVE_AND_ADD_NEW;
         const data = this.generateCreditModel();
 
         if (addNew) {
             this.payrollBonusService.addPayrollBonus(data).subscribe(() => {
-                if (action === TaModalActionEnums.SAVE_AND_ADD_NEW) {
-                    this.payrollService.saveAndAddNew(PayrollBonusModalComponent, this.preselectedDriver, data.driverId, this.ngbActiveModal);
+                if (action === TaModalActionEnum.SAVE_AND_ADD_NEW) {
+                    this.payrollService.saveAndAddNew(
+                        PayrollBonusModalComponent,
+                        this.preselectedDriver,
+                        data.driverId,
+                        this.ngbActiveModal
+                    );
                 } else {
                     this.onCloseModal();
                 }
             });
-        } else if (action === TaModalActionEnums.UPDATE) {
+        } else if (action === TaModalActionEnum.UPDATE) {
             this.payrollBonusService
                 .updatePayrollBonus({ ...data, id: this.editData.data.id })
                 .pipe(takeUntil(this.destroy$))
                 .subscribe(() => this.onCloseModal());
-        } else if (action === TaModalActionEnums.DELETE) {
+        } else if (action === TaModalActionEnum.DELETE) {
             const label = this.editData.data.driver
                 ? `${this.editData.data.driver.firstName} ${this.editData.data.driver.lastName}`
                 : this.editData.data.truck.owner;

@@ -57,13 +57,18 @@
             <!-- Address -->
             <div class="row last-row">
                 <div class="col-10">
-                    <app-ta-input-address-dropdown
+                    <app-ca-input-address-dropdown
                         formControlName="address"
                         [inputConfig]="contactModalConfig.ADDRESS_INPUT_CONFIG"
                         [placeholderType]="'longAddress'"
                         [activeAddress]="selectedAddress"
                         (selectedAddress)="onHandleAddress($event)"
-                    ></app-ta-input-address-dropdown>
+                        [receivedAddressList]="addressList"
+                        [receivedAddressData]="addressData"
+                        (selectedAddress)="onHandleAddress($event)"
+                        (sentAddressData)="onAddressChange($event)"
+                        (sentAddressValue)="getAddressData($event)"
+                    ></app-ca-input-address-dropdown>
                 </div>
 
                 <div class="col-2">
@@ -234,7 +239,7 @@
         <ng-container *ngIf="editData?.data?.name; else showCreateButtons">
             <button
                 class="modal-save-btn ta-font-bold"
-                (click)="onModalAction(taModalActionEnums.SAVE)"
+                (click)="onModalAction(taModalActionEnum.SAVE)"
                 [class.valid]="
                     contactForm.valid &&
                     isFormDirty &&
@@ -255,13 +260,13 @@
                     isEachPhoneRowValid &&
                     isEachEmailRowValid
                 "
-                (click)="onModalAction(taModalActionEnums.SAVE_AND_ADD_NEW)"
+                (click)="onModalAction(taModalActionEnum.SAVE_AND_ADD_NEW)"
             >
                 Save and Add New
             </button>
             <button
                 class="modal-save-btn ta-font-bold"
-                (click)="onModalAction(taModalActionEnums.SAVE)"
+                (click)="onModalAction(taModalActionEnum.SAVE)"
                 [class.valid]="
                     contactForm.valid &&
                     isFormDirty &&
@@ -282,7 +287,7 @@
         mainTooltip="Cancel"
         tooltipBackground="#424242"
         position="bottom"
-        (click)="onModalAction(taModalActionEnums.CLOSE)"
+        (click)="onModalAction(taModalActionEnum.CLOSE)"
     >
         <svg-icon
             class="modal-close svg-size-14 svg-fill-muted modal-buttons"

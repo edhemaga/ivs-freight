@@ -157,7 +157,7 @@ export class UserModalComponent implements OnInit, OnDestroy {
     public allowPairCommissionBase: boolean = false;
     public userFullName: string = null;
     public userStatus: boolean = true;
-    public disableCardAnimation: boolean = false;
+    public isCardAnimationDisabled: boolean = false;
     private destroy$ = new Subject<void>();
     public isEmailCheckCompleted: boolean;
     public currentUserStatus: string;
@@ -940,7 +940,7 @@ export class UserModalComponent implements OnInit, OnDestroy {
                     this.isPhoneExtExist = !!res.extensionPhone;
                     setTimeout(() => {
                         this.startFormChanges();
-                        this.disableCardAnimation = false;
+                        this.isCardAnimationDisabled = false;
                     }, 1000);
                 },
                 error: () => {},
@@ -960,7 +960,7 @@ export class UserModalComponent implements OnInit, OnDestroy {
                     this.heleperForDispatchers = res.dispatcherResponses;
 
                     if (this.editData?.id) {
-                        this.disableCardAnimation = true;
+                        this.isCardAnimationDisabled = true;
                         this.getUserById(this.editData.id);
                     }
                     if (this.editData?.data && !this.editData?.id) {

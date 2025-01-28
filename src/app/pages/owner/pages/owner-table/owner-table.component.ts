@@ -29,6 +29,7 @@ import { OwnerCardModalQuery } from '@pages/owner/pages/owner-card-modal/state/o
 
 // enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
+import { DropdownMenuStringEnum } from '@shared/enums';
 
 // pipes
 import { FormatPhonePipe } from '@shared/pipes/format-phone.pipe';
@@ -67,6 +68,8 @@ export class OwnerTableComponent
 {
     private destroy$ = new Subject<void>();
 
+    public dropdownMenuStringEnum = DropdownMenuStringEnum;
+
     public resizeObserver: ResizeObserver;
     public activeViewMode: string = TableStringEnum.LIST;
 
@@ -82,10 +85,6 @@ export class OwnerTableComponent
     public columns: TableColumnConfig[] = [];
 
     // cards
-    public cardTitle: string = OwnerConfiguration.cardTitle;
-    public page: string = OwnerConfiguration.page;
-    public rows: number = OwnerConfiguration.rows;
-
     public sendDataToCardsFront: CardRows[];
     public sendDataToCardsBack: CardRows[];
 
@@ -124,7 +123,7 @@ export class OwnerTableComponent
         // pipes
         private phonePipe: FormatPhonePipe
     ) {
-        super(modalService);
+        super();
     }
 
     ngOnInit(): void {
@@ -538,8 +537,6 @@ export class OwnerTableComponent
 
                     const filteredCardRowsBack = res.back_side.filter(Boolean);
 
-                    this.cardTitle = TableStringEnum.NAME;
-
                     this.displayRowsFront = filteredCardRowsFront;
 
                     this.displayRowsBack = filteredCardRowsBack;
@@ -556,8 +553,6 @@ export class OwnerTableComponent
                         res.front_side.filter(Boolean);
 
                     const filteredCardRowsBack = res.back_side.filter(Boolean);
-
-                    this.cardTitle = TableStringEnum.NAME;
 
                     this.displayRowsFront = filteredCardRowsFront;
 

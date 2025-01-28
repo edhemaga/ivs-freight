@@ -15,45 +15,46 @@ import {
     FormGroup,
     FormArray,
 } from '@angular/forms';
+
 import { Observable, Subject, Subscription, first, takeUntil } from 'rxjs';
 
-// Enums
+// enums
 import { CardsModalStringEnum } from '@shared/components/ta-shared-modals/cards-modal/enums/cards-modal-string.enum';
 import { TableStringEnum } from '@shared/enums/table-string.enum';
 
-// Services
+// services
 import { ModalService } from '@shared/services/modal.service';
 import { FormService } from '@shared/services/form.service';
-import { FuelCardsModalService } from '@pages/fuel/pages/fuel-card-modal/services/fuel-cards-modal.service';
+import { FuelCardsModalService } from '@pages/fuel/pages/fuel-card-modal/services';
 
-// Components
+// components
 import { ModalInputFormComponent } from '@shared/components/ta-shared-modals/cards-modal/components/modal-input-form.component';
 import { TaCheckboxComponent } from '@shared/components/ta-checkbox/ta-checkbox.component';
 import { CaModalComponent } from 'ca-components';
 import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
 
-// Helpers
+// helpers
 import { CompareObjectsModal } from '@shared/components/ta-shared-modals/cards-modal/utils/helpers/cards-modal.helper';
 
-// Models
+// models
 import { CardRows } from '@shared/models/card-models/card-rows.model';
 import { CardsModalData } from '@shared/components/ta-shared-modals/cards-modal/models/cards-modal-data.model';
 
-// Constants
+// constants
 import {
     FuelCardsModalConfig,
     FuelCardsModalData,
 } from '@pages/fuel/pages/fuel-card-modal/utils/constants';
 
-//Store
+// store
 import { Store } from '@ngrx/store';
 import { selectActiveModalTabs } from '@pages/fuel/pages/fuel-card-modal/state/fuel-card-modal.selectors';
 
-//Pipes
+// pipes
 import { NgForLengthFilterPipe } from '@shared/pipes/ng-for-length-filter.pipe';
 import { NumberOrdinalPipe } from '@shared/pipes/number-ordinal.pipe';
 
-// SVG ROUTES
+// svg routes
 import { SharedSvgRoutes } from '@shared/utils/svg-routes';
 
 @Component({
@@ -114,7 +115,7 @@ export class FuelCardModalComponent implements OnInit, OnDestroy {
         private modalService: FuelCardsModalService,
         //Store
         private store: Store,
-        
+
         private activeModal: NgbActiveModal
     ) {}
 
@@ -349,7 +350,7 @@ export class FuelCardModalComponent implements OnInit, OnDestroy {
         );
     }
 
-    private compareDataInStoreAndDefaultData(): void {        
+    private compareDataInStoreAndDefaultData(): void {
         const isFrontSidesEqual = CompareObjectsModal.areArraysOfObjectsEqual(
             this.tabSelected === TableStringEnum.ACTIVE
                 ? FuelCardsModalConfig.displayRowsFrontActive

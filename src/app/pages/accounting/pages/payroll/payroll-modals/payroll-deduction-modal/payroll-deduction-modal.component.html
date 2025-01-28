@@ -23,7 +23,7 @@
                     <div>
                         <button
                             class="modal-delete-btn ta-font-bold mr-12"
-                            (click)="saveDeduction(taModalActionEnums.DELETE)"
+                            (click)="saveDeduction(taModalActionEnum.DELETE)"
                             [class.valid]="payrollCreditForm?.valid"
                         >
                             Delete
@@ -32,7 +32,7 @@
                             class="modal-convert-to-template-btn ta-font-bold"
                             (click)="
                                 saveDeduction(
-                                    taModalActionEnums.MOVE_TO_THIS_PERIOD
+                                    taModalActionEnum.MOVE_TO_THIS_PERIOD
                                 )
                             "
                         >
@@ -41,7 +41,7 @@
                     </div>
                     <button
                         class="modal-save-btn ta-font-bold"
-                        (click)="saveDeduction(taModalActionEnums.UPDATE)"
+                        (click)="saveDeduction(taModalActionEnum.UPDATE)"
                         [class.valid]="payrollCreditForm?.valid"
                     >
                         Save Changes
@@ -51,13 +51,13 @@
                 <button
                     class="ta-font-bold modal-save-btn modal-save-btn-add-new mr-12"
                     [class.valid]="payrollCreditForm?.valid"
-                    (click)="saveDeduction(taModalActionEnums.SAVE_AND_ADD_NEW)"
+                    (click)="saveDeduction(taModalActionEnum.SAVE_AND_ADD_NEW)"
                 >
                     Save and Add New
                 </button>
                 <button
                     class="modal-save-btn ta-font-bold"
-                    (click)="saveDeduction(taModalActionEnums.SAVE)"
+                    (click)="saveDeduction(taModalActionEnum.SAVE)"
                     [class.valid]="payrollCreditForm?.valid"
                 >
                     Save

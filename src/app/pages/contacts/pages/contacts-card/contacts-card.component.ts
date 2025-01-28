@@ -11,8 +11,8 @@ import { DropdownMenuActionsHelper } from '@shared/utils/helpers/dropdown-menu-h
 
 // services
 import { TruckassistTableService } from '@shared/services/truckassist-table.service';
-import { ModalService } from '@shared/services/modal.service';
 import { ContactsService } from '@shared/services/contacts.service';
+import { ModalService } from '@shared/services/modal.service';
 
 // enums
 import { DropdownMenuStringEnum } from '@shared/enums';
@@ -38,11 +38,8 @@ export class ContactsCardComponent
     }
 
     // card body endpoints
-    @Input() cardTitle: string;
-    @Input() rows: number[];
     @Input() displayRowsFront: CardRows[];
     @Input() displayRowsBack: CardRows[];
-    @Input() cardTitleLink: string;
 
     public destroy$ = new Subject<void>();
 
@@ -65,7 +62,7 @@ export class ContactsCardComponent
         // helpers
         private cardHelper: CardHelper
     ) {
-        super(modalService, contactsService);
+        super();
     }
 
     ngOnInit() {

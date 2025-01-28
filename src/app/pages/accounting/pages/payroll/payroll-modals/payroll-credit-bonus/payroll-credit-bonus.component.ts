@@ -32,7 +32,7 @@ import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calcula
 
 // Enums
 import { PayrollStringEnum } from '@pages/accounting/pages/payroll/state/enums';
-import { TaModalActionEnums } from '@shared/components/ta-modal/enums';
+import { TaModalActionEnum } from '@shared/components/ta-modal/enums';
 
 // Components
 import { PayrollBaseModalComponent } from '@pages/accounting/pages/payroll/payroll-modals/payroll-base-modal/payroll-base-modal.component';
@@ -60,7 +60,7 @@ export class PayrollCreditBonusComponent implements OnInit {
     @Input() editData: PayrollModal;
 
     // Utils
-    public taModalActionEnums = TaModalActionEnums;
+    public taModalActionEnum = TaModalActionEnum;
 
     private destroy$ = new Subject<void>();
 
@@ -85,7 +85,7 @@ export class PayrollCreditBonusComponent implements OnInit {
     private createForm(): void {
         const data = this.editData ? this.editData.data : {};
         this.getCredit();
-        
+
         const creditType =
             this.editData?.creditType || PayrollCreditType.Driver;
 
@@ -93,7 +93,8 @@ export class PayrollCreditBonusComponent implements OnInit {
             [PayrollStringEnum.DRIVER_ID]: [data?.driverId ?? null],
             [PayrollStringEnum.TRUCK_ID]: [data?.truckId ?? null],
             [PayrollStringEnum.DATE]: [
-                MethodsCalculationsHelper.convertDateFromBackend(data.date) ?? new Date(),
+                MethodsCalculationsHelper.convertDateFromBackend(data.date) ??
+                    new Date(),
                 Validators.required,
             ],
             [PayrollStringEnum.DESCRIPTION]: [
@@ -141,17 +142,22 @@ export class PayrollCreditBonusComponent implements OnInit {
 
     public saveCredit(action: PayrollActionType): void {
         const addNew =
-            action === TaModalActionEnums.SAVE ||
-            action === TaModalActionEnums.SAVE_AND_ADD_NEW;
+            action === TaModalActionEnum.SAVE ||
+            action === TaModalActionEnum.SAVE_AND_ADD_NEW;
 
         if (addNew) {
             // Don't clear if we have preselected driver or truck
             const data = this.generateCreditModel();
 
             this.payrolCreditService.addPayrollCredit(data).subscribe(() => {
-                if (action === TaModalActionEnums.SAVE_AND_ADD_NEW) {
-                    if (this.isDropdownEnabled) {                    
-                        this.payrollInternalService.saveAndAddNew(PayrollCreditBonusComponent, this.preselectedDriver, data.driverId, this.ngbActiveModal);
+                if (action === TaModalActionEnum.SAVE_AND_ADD_NEW) {
+                    if (this.isDropdownEnabled) {
+                        this.payrollInternalService.saveAndAddNew(
+                            PayrollCreditBonusComponent,
+                            this.preselectedDriver,
+                            data.driverId,
+                            this.ngbActiveModal
+                        );
                     } else {
                         this.payrollCreditForm
                             .get(PayrollStringEnum.DATE)
@@ -167,7 +173,7 @@ export class PayrollCreditBonusComponent implements OnInit {
                     this.onCloseModal();
                 }
             });
-        } else if (action === TaModalActionEnums.UPDATE) {
+        } else if (action === TaModalActionEnum.UPDATE) {
             const data = this.generateCreditModel();
             this.payrolCreditService
                 .updatePayrollCredit({ ...data, id: this.editData.data.id })
@@ -175,15 +181,17 @@ export class PayrollCreditBonusComponent implements OnInit {
                 .subscribe((response) => {
                     this.onCloseModal();
                 });
-        } else if (action === TaModalActionEnums.MOVE_TO_THIS_PERIOD) {
+        } else if (action === TaModalActionEnum.MOVE_TO_THIS_PERIOD) {
             this.payrolCreditService
                 .movePayrollCredit(this.editData.data.id)
                 .pipe(takeUntil(this.destroy$))
                 .subscribe((response) => {
                     this.onCloseModal();
                 });
-        } else if (action === TaModalActionEnums.DELETE) {
-            const label = this.credit.driver ? `${this.credit.driver.firstName} ${this.credit.driver.lastName}` : this.credit.truck.owner;
+        } else if (action === TaModalActionEnum.DELETE) {
+            const label = this.credit.driver
+                ? `${this.credit.driver.firstName} ${this.credit.driver.lastName}`
+                : this.credit.truck.owner;
             this.payrollInternalService.raiseDeleteModal(
                 TableStringEnum.CREDIT,
                 ConfirmationModalStringEnum.DELETE_CREDIT,
@@ -193,7 +201,7 @@ export class PayrollCreditBonusComponent implements OnInit {
                     subtitle: this.credit.amount,
                     date: this.credit.date,
                     label: `${label}`,
-                    id: this.credit.id
+                    id: this.credit.id,
                 }
             );
         }

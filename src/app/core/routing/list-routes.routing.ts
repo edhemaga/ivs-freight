@@ -15,7 +15,7 @@ import {
 } from '@pages/repair/resolvers';
 import { PmTrailerResolver } from '@pages/pm-truck-trailer/resolvers/pm-trailer.resolver';
 import { PmTruckResolver } from '@pages/pm-truck-trailer/resolvers/pm-truck.resolver';
-import { FuelResolver } from '@pages/fuel/resolvers/fuel.resolver';
+import { FuelResolver } from '@pages/fuel/resolvers';
 import { OwnerActiveResolver } from '@pages/owner/resolvers/owner-active.resolver';
 import { OwnerInactiveResolver } from '@pages/owner/resolvers/owner-inactive.resolver';
 import { AccountResolver } from '@pages/account/resolvers/account.resolver';
