@@ -317,13 +317,6 @@ export class TrailerDetailsCardComponent
         this.fuelConsumptionLegendHighlightedBackground = hasHighlightedBackground;
         this.fuelConsumptionLegendTitle = title;
 
-        if (index === null || index === undefined) {
-            this.fuelConsumptionChartLegend = ChartLegendConfiguration
-                .trailerFuelConsumptionConfiguration
-                (this.fuelConsumptionChartData);
-            return;
-        }
-
         const dataForLegend =
             (isNaN(index) || index < 0) ?
                 this.fuelConsumptionChartData :

@@ -280,12 +280,6 @@ export class ShipperDetailsCardComponent
         this.payrollLegendHighlightedBackground = hasHighlightedBackground;
         this.payrollLegendTitle = title;
 
-        if (index === null || index === undefined) {
-            this.payrollChartLegend = ChartLegendConfiguration
-                .shipperAverageWaitingTimeConfiguration(this.payrollChartData)
-            return;
-        }
-
         const dataForLegend =
             (isNaN(index) || index < 0) ?
                 this.payrollChartData :

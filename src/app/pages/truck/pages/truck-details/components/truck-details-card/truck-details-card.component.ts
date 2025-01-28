@@ -526,14 +526,6 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
         this.revenueLegendHighlightedBackground = hasHighlightedBackground;
         this.revenueLegendTitle = title;
 
-        if (index === null || index === undefined) {
-            this.revenueChartLegend = ChartLegendConfiguration
-                .truckRevenueConfiguration(
-                    this.revenueChartData
-                );
-            return;
-        }
-
         const dataForLegend =
             (isNaN(index) || index < 0) ?
                 this.revenueChartData :

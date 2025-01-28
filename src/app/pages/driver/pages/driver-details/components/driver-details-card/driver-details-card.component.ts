@@ -191,12 +191,6 @@ export class DriverDetailsCardComponent
         this.driverLegendHighlightedBackground = hasHighlightedBackground;
         this.driverLegendTitle = title;
 
-        if (index === null || index === undefined) {
-            this.driverLegendConfig = ChartLegendConfiguration
-                .driverLegendConfiguration(this.driverChartData);
-            return;
-        }
-
         const dataForLegend =
             (isNaN(index) || index < 0) ?
                 this.driverChartData :

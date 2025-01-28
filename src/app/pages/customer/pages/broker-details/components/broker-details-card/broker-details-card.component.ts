@@ -289,12 +289,6 @@ export class BrokerDetailsCardComponent
         this.mileageLegendHighlightedBackground = hasHighlightedBackground;
         this.mileageLegendTitle = title;
 
-        if (index === null || index === undefined) {
-            this.mileageChartLegendData = ChartLegendConfiguration
-                .mileageLegendConfiguration(this.mileageChartData);
-            return;
-        }
-
         const dataForLegend =
             (isNaN(index) || index < 0) ?
                 this.mileageChartData :
@@ -319,13 +313,6 @@ export class BrokerDetailsCardComponent
         this.invoiceLegendHighlightedBackground = hasHighlightedBackground;
         this.invoiceLegendTitle = title;
 
-        if (index === null || index === undefined) {
-            this.invoiceChartLegend = ChartLegendConfiguration
-                .invoiceChartLegendConfiguration(
-                    this.invoiceChartData);
-            return;
-        }
-
         const dataForLegend =
             (isNaN(index) || index < 0) ?
                 this.invoiceChartData :
@@ -348,12 +335,6 @@ export class BrokerDetailsCardComponent
 
         this.paymentLegendHighlightedBackground = hasHighlightedBackground;
         this.paymentLegendTitle = title;
-
-        if (index === null || index === undefined) {
-            this.paymentChartLegendData = ChartLegendConfiguration
-                .brokerPaymentHistory(this.paymentChartData);
-            return;
-        }
 
         const dataForLegend =
             (isNaN(index) || index < 0) ?
