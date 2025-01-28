@@ -156,7 +156,7 @@ export class SettingsRepairShopComponent
     private processOfficeData(data: RepairShopListDto[]): RepairShopListDto[] {
         return data.map((office) => {
             const groupedContacts = office.contacts.reduce((acc, contact) => {
-                const departmentName = contact.departmentName;
+                const departmentName = contact?.department?.name;
 
                 if (departmentName) {
                     if (!acc[departmentName]) {

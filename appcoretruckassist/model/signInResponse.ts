@@ -11,6 +11,7 @@
  */
 import { FileResponse } from './fileResponse';
 import { CompanyShortResponse } from './companyShortResponse';
+import { EnumValue } from './enumValue';
 
 
 export interface SignInResponse { 
@@ -25,5 +26,6 @@ export interface SignInResponse {
     companies?: Array<CompanyShortResponse> | null;
     refreshToken?: string | null;
     areSettingsUpdated?: boolean | null;
+    colorFlag?: EnumValue;
 }
 

@@ -2,21 +2,23 @@ import { Pipe, PipeTransform } from '@angular/core';
 
 // models
 import { ITaInput } from '@shared/components/ta-input/config/ta-input.config';
-import { FuelTruckType } from '@pages/fuel/pages/fuel-modals/fuel-purchase-modal/models';
+import { FuelPurchaseModalConfigPipeArgs } from '@pages/fuel/pages/fuel-modals/fuel-purchase-modal/models';
 
 @Pipe({
     standalone: true,
     name: 'fuelPurchaseModalInputConfig',
 })
 export class FuelPurchaseModalInputConfigPipe implements PipeTransform {
-    transform(
-        configType: string,
-        editDataType?: string,
-        fuelTransactionTypeName?: string,
-        selectedTruckType?: FuelTruckType,
-        trailerId?: number,
-        logoName?: string
-    ): ITaInput {
+    transform(args: FuelPurchaseModalConfigPipeArgs): ITaInput {
+        const {
+            configType,
+            editDataType,
+            fuelTransactionTypeName,
+            selectedTruckType,
+            trailerId,
+            logoName,
+        } = args;
+
         let inputConfig: ITaInput;
 
         switch (configType) {

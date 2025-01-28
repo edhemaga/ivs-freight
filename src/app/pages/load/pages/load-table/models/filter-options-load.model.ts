@@ -8,6 +8,7 @@ export interface FilterOptionsLoad {
     brokerId: number;
     shipperId: number;
     loadId?: number;
+    loadIds?: Array<number>;
     dateFrom: string;
     dateTo: string;
     revenueFrom: number;
