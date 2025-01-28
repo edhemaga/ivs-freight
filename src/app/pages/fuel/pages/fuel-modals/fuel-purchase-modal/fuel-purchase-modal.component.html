@@ -24,7 +24,8 @@
                             formControlName="efsAccount"
                             invoiceInputConfig
                             [inputConfig]="
-                                'efsInputConfig' | fuelPurchaseModalInputConfig
+                                { configType: 'efsInputConfig' }
+                                    | fuelPurchaseModalInputConfig
                             "
                         ></app-ca-input>
                     </div>
@@ -32,7 +33,7 @@
                         <app-ca-input
                             formControlName="fuelCard"
                             [inputConfig]="
-                                'fuelCardInputConfig'
+                                { configType: 'fuelCardInputConfig' }
                                     | fuelPurchaseModalInputConfig
                             "
                         ></app-ca-input>
@@ -43,26 +44,29 @@
                 <app-ca-input
                     formControlName="invoice"
                     [inputConfig]="
-                        'invoiceInputConfig' | fuelPurchaseModalInputConfig
+                        { configType: 'invoiceInputConfig' }
+                            | fuelPurchaseModalInputConfig
                     "
                 ></app-ca-input>
                 <app-ca-input
                     formControlName="transactionDate"
                     [inputConfig]="
-                        'transactionDateInputConfig'
-                            | fuelPurchaseModalInputConfig
-                                : editData?.type
-                                : fuelTransactionType?.name
+                        {
+                            configType: 'transactionDateInputConfig',
+                            editDataType: editData?.type,
+                            fuelTransactionTypeName: fuelTransactionType?.name,
+                        } | fuelPurchaseModalInputConfig
                     "
                 ></app-ca-input>
                 <!-- Time Picker -->
                 <app-ca-input
                     formControlName="transactionTime"
                     [inputConfig]="
-                        'transactionTimeInputConfig'
-                            | fuelPurchaseModalInputConfig
-                                : editData?.type
-                                : fuelTransactionType?.name
+                        {
+                            configType: 'transactionTimeInputConfig',
+                            editDataType: editData?.type,
+                            fuelTransactionTypeName: fuelTransactionType?.name,
+                        } | fuelPurchaseModalInputConfig
                     "
                 ></app-ca-input>
             </div>
@@ -78,10 +82,11 @@
                     formControlName="truckId"
                     [template]="'svgtext-template'"
                     [inputConfig]="
-                        'truckInputConfig'
-                            | fuelPurchaseModalInputConfig
-                                : selectedTruckType
-                                : fuelForm.get('trailerId').value
+                        {
+                            configType: 'truckInputConfig',
+                            selectedTruckType,
+                            trailerId: fuelForm.get('trailerId').value,
+                        } | fuelPurchaseModalInputConfig
                     "
                     [options]="truckType"
                     [activeItem]="selectedTruckType"
@@ -94,9 +99,10 @@
                         [template]="'svgtext-template'"
                         [activeItem]="selectedTrailerType"
                         [inputConfig]="
-                            'trailerInputConfig'
-                                | fuelPurchaseModalInputConfig
-                                    : selectedTrailerType?.logoName
+                            {
+                                configType: 'trailerInputConfig',
+                                logoName: selectedTrailerType?.logoName,
+                            } | fuelPurchaseModalInputConfig
                         "
                     ></app-ca-input-dropdown>
                 }
@@ -104,7 +110,8 @@
                 <app-ca-input
                     formControlName="driverFullName"
                     [inputConfig]="
-                        'driverInputConfig' | fuelPurchaseModalInputConfig
+                        { configType: 'driverInputConfig' }
+                            | fuelPurchaseModalInputConfig
                     "
                 ></app-ca-input>
             </div>

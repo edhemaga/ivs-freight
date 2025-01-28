@@ -50,7 +50,7 @@
                             row.actionAnimation === 'multiple-activate',
                         'delete-animation': row.actionAnimation === 'delete',
                         'multiple-delete-animation':
-                            row.actionAnimation === 'delete-multiple'
+                            row.actionAnimation === 'delete-multiple',
                     }"
                 >
                     <!-- Table Row -->
@@ -1021,35 +1021,49 @@
                                             <div
                                                 class="invoice-text"
                                                 [ngStyle]="{
-                                                    width: column.width - 21 + 'px',
+                                                    width:
+                                                        column.width -
+                                                        21 +
+                                                        'px',
                                                 }"
-                                                (click)="goToDetails(column, row)"
+                                                (click)="
+                                                    goToDetails(column, row)
+                                                "
                                                 #op="ngbPopover"
                                                 [ngbPopover]="optionsPopover"
                                                 [placement]="'bottom-right'"
                                                 [autoClose]="'outside'"
                                                 popoverClass="toolbar-options-popover"
                                                 triggers="manual"
-                                                (hidden)="otionsPopupOppen = false"
+                                                (hidden)="
+                                                    otionsPopupOppen = false
+                                                "
                                                 mainTooltip="View Detail"
                                                 [tooltipBackground]="'#424242'"
                                                 [tooltipColor]="'#ffff'"
                                                 position="bottom"
                                             >
                                                 <span>
-                                                    {{ row[column.field].invoice }}
+                                                    {{
+                                                        row[column.field]
+                                                            ?.invoice
+                                                    }}
                                                 </span>
 
-                                                @if (row.isIntegratedFuelTransaction) {
+                                                @if (
+                                                    row.isIntegratedFuelTransaction
+                                                ) {
                                                     <svg-icon
-                                                        [src]="tableBodySvgRoutes.fuelIntegratedTransactionInvoiceSvgRoute"
+                                                        [src]="
+                                                            tableBodySvgRoutes.fuelIntegratedTransactionInvoiceSvgRoute
+                                                        "
                                                     ></svg-icon>
                                                 }
                                             </div>
 
                                             <!-- Hide LTL and FTL icons for now  -->
                                             <!-- @if (row[column.field].type) { -->
-                                                <!-- <svg-icon
+                                            <!-- <svg-icon
                                                     [src]="
                                                         row[column.field].type === 'LTL'
                                                             ? tableBodySvgRoutes.loadLtl
