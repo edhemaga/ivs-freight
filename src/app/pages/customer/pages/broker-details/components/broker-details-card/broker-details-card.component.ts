@@ -295,10 +295,11 @@ export class BrokerDetailsCardComponent
             return;
         }
 
-        const dataForLegend = index >= 0 ?
-            this.mileageChartData?.
-                brokerMileageRateChartResponse[index] :
-            this.mileageChartData
+        const dataForLegend =
+            (isNaN(index) || index < 0) ?
+                this.mileageChartData :
+                this.mileageChartData?.
+                    brokerMileageRateChartResponse[index];
 
         this.mileageChartLegendData = ChartLegendConfiguration
             .mileageLegendConfiguration(dataForLegend);
@@ -325,10 +326,11 @@ export class BrokerDetailsCardComponent
             return;
         }
 
-        const dataForLegend = index >= 0 ?
-            this.invoiceChartData?.
-                brokerPaidInvoiceChartResponse[index] :
-            this.invoiceChartData
+        const dataForLegend =
+            (isNaN(index) || index < 0) ?
+                this.invoiceChartData :
+                this.invoiceChartData?.
+                    brokerPaidInvoiceChartResponse[index]
 
         this.invoiceChartLegend = ChartLegendConfiguration
             .invoiceChartLegendConfiguration(dataForLegend);
@@ -353,10 +355,11 @@ export class BrokerDetailsCardComponent
             return;
         }
 
-        const dataForLegend = index >= 0 ?
-            this.paymentChartData?.
-                brokerPaymentHistoryChartResponse[index] :
-            this.paymentChartData
+        const dataForLegend =
+            (isNaN(index) || index < 0) ?
+                this.paymentChartData :
+                this.paymentChartData?.
+                    brokerPaymentHistoryChartResponse[index]
 
         this.paymentChartLegendData = ChartLegendConfiguration
             .brokerPaymentHistory(dataForLegend);

@@ -403,11 +403,6 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
         );
     }
 
-    public handleHoverSelected(
-        index: number,
-        removeHover: boolean = false
-    ): void { }
-
     private getConstantData(): void {
         this.byStateDropdownList = JSON.parse(
             JSON.stringify(DashboardByStateConstants.BY_STATE_DROPDOWN_DATA)

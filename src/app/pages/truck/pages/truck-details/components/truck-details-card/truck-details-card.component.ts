@@ -464,31 +464,23 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
         } =
             ChartHelper.setChartLegend(
                 index,
-                this.fuelConsumptionChartConfig.chartData.labels
+                this.fuelConsumptionChartConfig?.
+                    chartData?.
+                    labels
             );
 
         this.fuelConsumptionLegendHighlightedBackground = hasHighlightedBackground;
         this.fuelConsumptionLegendTitle = title;
 
-        if (index === null || index === undefined) {
-            this.fuelConsumptionChartLegend = ChartLegendConfiguration
-                .truckFuelConsumptionConfiguration(this.fuelConsumptionChartData);
-            return;
-        }
+        const dataForLegend =
+            (isNaN(index) || index < 0) ?
+                this.fuelConsumptionChartData :
+                this.fuelConsumptionChartData?.
+                    truckFuelConsumptionCharts[index];
 
-        if (index === null || index === undefined) {
-            this.fuelConsumptionChartLegend = ChartLegendConfiguration
-                .truckFuelConsumptionConfiguration(this.fuelConsumptionChartData);
-            return;
-        }
-
-        const dataForLegend = index >= 0 ?
-            this.fuelConsumptionChartData?.
-                truckFuelConsumptionCharts[index] :
-            this.fuelConsumptionChartData;
-
-        this.fuelConsumptionChartLegend = ChartLegendConfiguration
-            .truckFuelConsumptionConfiguration(dataForLegend);
+        this.fuelConsumptionChartLegend =
+            ChartLegendConfiguration
+                .truckFuelConsumptionConfiguration(dataForLegend);
     }
 
     public setExpensesRevenueLegendOnHover(index: number | null): void {
@@ -512,9 +504,11 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
             return;
         }
 
-        const dataForLegend = index >= 0 ?
-            this.expensesChartData?.truckExpensesCharts[index] :
-            this.expensesChartData
+        const dataForLegend =
+            (isNaN(index) || index < 0) ?
+                this.expensesChartData :
+                this.expensesChartData?.
+                    truckExpensesCharts[index];
 
         this.expensesChartLegend = ChartLegendConfiguration
             .truckExpensesConfiguration(dataForLegend);
@@ -540,10 +534,11 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
             return;
         }
 
-        const dataForLegend = index >= 0 ?
-            this.revenueChartData?.
-                truckRevenueCharts[index] :
-            this.revenueChartData;
+        const dataForLegend =
+            (isNaN(index) || index < 0) ?
+                this.revenueChartData :
+                this.revenueChartData?.
+                    truckRevenueCharts[index];
 
         this.revenueChartLegend = ChartLegendConfiguration
             .truckRevenueConfiguration(dataForLegend);

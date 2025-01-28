@@ -197,10 +197,11 @@ export class DriverDetailsCardComponent
             return;
         }
 
-        const dataForLegend = index >= 0 ?
-            this.driverChartData.
-                getDriverPayrollChartResponse[index] :
-            this.driverChartData
+        const dataForLegend =
+            (isNaN(index) || index < 0) ?
+                this.driverChartData :
+                this.driverChartData.
+                    getDriverPayrollChartResponse[index]
 
         this.driverLegendConfig = ChartLegendConfiguration
             .driverLegendConfiguration(dataForLegend);

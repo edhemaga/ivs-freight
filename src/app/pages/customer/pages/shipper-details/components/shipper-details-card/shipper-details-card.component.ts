@@ -286,10 +286,11 @@ export class ShipperDetailsCardComponent
             return;
         }
 
-        const dataForLegend = index >= 0 ?
-            this.payrollChartData?.
-                shipperAverageWaitingTimeChartResponse[index] :
-            this.payrollChartData
+        const dataForLegend =
+            (isNaN(index) || index < 0) ?
+                this.payrollChartData :
+                this.payrollChartData?.
+                    shipperAverageWaitingTimeChartResponse[index]
 
         this.payrollChartLegend = ChartLegendConfiguration
             .shipperAverageWaitingTimeConfiguration(dataForLegend);

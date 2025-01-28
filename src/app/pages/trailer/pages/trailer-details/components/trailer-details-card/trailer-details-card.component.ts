@@ -324,10 +324,11 @@ export class TrailerDetailsCardComponent
             return;
         }
 
-        const dataForLegend = index >= 0 ?
-            this.fuelConsumptionChartData?.
-                trailerFuelConsumptionCharts[index] :
-            this.fuelConsumptionChartData;
+        const dataForLegend =
+            (isNaN(index) || index < 0) ?
+                this.fuelConsumptionChartData :
+                this.fuelConsumptionChartData?.
+                    trailerFuelConsumptionCharts[index];
 
         this.fuelConsumptionChartLegend = ChartLegendConfiguration
             .trailerFuelConsumptionConfiguration(dataForLegend);
