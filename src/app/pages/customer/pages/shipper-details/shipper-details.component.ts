@@ -517,6 +517,7 @@ export class ShipperDetailsComponent implements OnInit, OnDestroy {
                 filter.brokerId,
                 filter.shipperId,
                 filter.loadId,
+                filter.loadIds,
                 filter.dateFrom,
                 filter.dateTo,
                 filter.revenueFrom,

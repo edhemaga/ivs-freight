@@ -320,14 +320,12 @@ export class LoadEffect {
                 const { apiParam } = action || {};
 
                 return this.loadService.apiCreateLoadTemplate(apiParam).pipe(
-                    exhaustMap((createResponse) => {
-                        const { id } = createResponse || {};
+                    map((createResponse) => {
+                        const { data } = createResponse || {};
 
-                        return this.loadService.apiGetLoadTemplateById(id).pipe(
-                            map((getResponse) => LoadActions.createLoadTemplateSuccess({ loadTemplate: getResponse })),
-                            catchError((error) => of(LoadActions.createLoadTemplateError({ error })))
-                        )
-                    })
+                        return LoadActions.createLoadTemplateSuccess({ loadTemplate: data })
+                    }),
+                    catchError((error) => of(LoadActions.createLoadTemplateError({ error })))
                 )
             })
         )
@@ -389,14 +387,12 @@ export class LoadEffect {
                 const { apiParam } = action || {};
 
                 return this.loadService.apiUpdateLoadTemplate(apiParam).pipe(
-                    exhaustMap((updateResponse) => {
-                        const { id } = updateResponse || {};
+                    map((updateResponse) => {
+                        const { data } = updateResponse || {};
 
-                        return this.loadService.apiGetLoadTemplateById(id).pipe(
-                            map((getResponse) => LoadActions.updateLoadTemplateSuccess({ loadTemplate: getResponse })),
-                            catchError((error) => of(LoadActions.updateLoadTemplateError({ error })))
-                        )
-                    })
+                        return LoadActions.updateLoadTemplateSuccess({ loadTemplate: data })
+                    }),
+                    catchError((error) => of(LoadActions.updateLoadTemplateError({ error })))
                 )
             })
         )

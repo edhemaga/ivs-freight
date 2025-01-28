@@ -7,7 +7,6 @@ import {
     BehaviorSubject,
     tap,
     Observable,
-    takeUntil,
 } from 'rxjs';
 
 // Store
@@ -29,10 +28,10 @@ import {
     UpdateDispatchCommand,
     DispatchPossibleStatusResponse,
     DriversForDispatchHistoryModalResponse,
-    RevertDispatchStatusCommand,
     UpdateDispatchHistoryCommand,
     DispatchGroupedLoadsResponse,
     DispatchHistoryTruckLastLocationResponse,
+    DispatchStatusResponse,
 } from 'appcoretruckassist';
 import { GetDispatchHistoryData } from '@pages/dispatch/pages/dispatch/components/dispatch-table/models';
 
@@ -130,7 +129,7 @@ export class DispatcherService {
 
     public revertDispatchStatus(
         id: number
-    ): Observable<RevertDispatchStatusCommand> {
+    ): Observable<DispatchStatusResponse> {
         return this.dispatchService.apiDispatchStatusRevertPatch({ id });
     }
 
