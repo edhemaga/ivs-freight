@@ -606,7 +606,7 @@ export class FuelTableComponent
             avatarImg: driver?.avatarFile?.url ?? null,
             avatarIsHoverEffect: FuelTableConstants.AVATAR_IS_HOVER_EFFECT,
             isSelected: false,
-            tableTruckNumber: truck.truckNumber,
+            tableTruckNumber: truck?.truckNumber,
             tableDriverName: driverFullName,
             tableDropdownComponentConstantsCardNumber:
                 fuelCard?.cardNumber ?? null,
