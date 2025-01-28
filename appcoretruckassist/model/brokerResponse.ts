@@ -33,8 +33,8 @@ export interface BrokerResponse {
     availableCredit?: number | null;
     percentage?: number | null;
     payTerm?: EnumValue;
-    latitude?: number;
-    longitude?: number;
+    latitude?: number | null;
+    longitude?: number | null;
     upCount?: number;
     downCount?: number;
     commentCount?: number;
@@ -59,6 +59,7 @@ export interface BrokerResponse {
     revenue?: number | null;
     createdAt?: string;
     updatedAt?: string;
+    dateMoved?: string | null;
     fileCount?: number | null;
 }
 

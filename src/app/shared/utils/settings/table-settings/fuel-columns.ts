@@ -269,8 +269,8 @@ export function getFuelTransactionColumnDefinition() {
         },
         {
             ngTemplate: 'total',
-            title: 'Total',
-            field: 'tableTotal',
+            title: 'Cost',
+            field: 'tableCost',
             name: 'Total Cost',
             sortName: 'total',
             groupName: 'Item Detail ',

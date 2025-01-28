@@ -12,7 +12,9 @@
 /* tslint:disable:no-unused-variable member-ordering */
 
 import { Inject, Injectable, Optional }                      from '@angular/core';
-import { HttpClient, HttpHeaders, HttpParams, HttpResponse, HttpEvent, HttpParameterCodec, HttpContext }       from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams,
+         HttpResponse, HttpEvent, HttpParameterCodec, HttpContext 
+        }       from '@angular/common/http';
 import { CustomHttpParameterCodec }                          from '../encoder';
 import { Observable }                                        from 'rxjs';
 
@@ -1165,101 +1167,6 @@ export class BrokerService {
     }
 
     /**
-     * @param brokerXls 
-     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
-     * @param reportProgress flag to report request and response progress.
-     */
-    public apiBrokerImportPost(brokerXls?: Blob, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<object>;
-    public apiBrokerImportPost(brokerXls?: Blob, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<object>>;
-    public apiBrokerImportPost(brokerXls?: Blob, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<object>>;
-    public apiBrokerImportPost(brokerXls?: Blob, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
-
-        let localVarQueryParameters = new HttpParams({encoder: this.encoder});
-
-        let localVarHeaders = this.defaultHeaders;
-
-        let localVarCredential: string | undefined;
-        // authentication (ApiKeyInQueryParams) required
-        localVarCredential = this.configuration.lookupCredential('ApiKeyInQueryParams');
-        if (localVarCredential) {
-            localVarQueryParameters = localVarQueryParameters.set('ApiKey', localVarCredential);
-        }
-
-        // authentication (bearer) required
-        localVarCredential = this.configuration.lookupCredential('bearer');
-        if (localVarCredential) {
-            localVarHeaders = localVarHeaders.set('Authorization', 'Bearer ' + localVarCredential);
-        }
-
-        let localVarHttpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
-        if (localVarHttpHeaderAcceptSelected === undefined) {
-            // to determine the Accept header
-            const httpHeaderAccepts: string[] = [
-                'text/plain',
-                'application/json',
-                'text/json'
-            ];
-            localVarHttpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-        }
-        if (localVarHttpHeaderAcceptSelected !== undefined) {
-            localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
-        }
-
-        let localVarHttpContext: HttpContext | undefined = options && options.context;
-        if (localVarHttpContext === undefined) {
-            localVarHttpContext = new HttpContext();
-        }
-
-        // to determine the Content-Type header
-        const consumes: string[] = [
-            'multipart/form-data'
-        ];
-
-        const canConsumeForm = this.canConsumeForm(consumes);
-
-        let localVarFormParams: { append(param: string, value: any): any; };
-        let localVarUseForm = false;
-        let localVarConvertFormParamsToString = false;
-        // use FormData to transmit files using content-type "multipart/form-data"
-        // see https://stackoverflow.com/questions/4007969/application-x-www-form-urlencoded-or-multipart-form-data
-        localVarUseForm = canConsumeForm;
-        if (localVarUseForm) {
-            localVarFormParams = new FormData();
-        } else {
-            localVarFormParams = new HttpParams({encoder: this.encoder});
-        }
-
-        if (brokerXls !== undefined) {
-            localVarFormParams = localVarFormParams.append('BrokerXls', <any>brokerXls) as any || localVarFormParams;
-        }
-
-        let responseType_: 'text' | 'json' | 'blob' = 'json';
-        if (localVarHttpHeaderAcceptSelected) {
-            if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
-                responseType_ = 'text';
-            } else if (this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)) {
-                responseType_ = 'json';
-            } else {
-                responseType_ = 'blob';
-            }
-        }
-
-        let localVarPath = `/api/broker/import`;
-        return this.httpClient.request<object>('post', `${this.configuration.basePath}${localVarPath}`,
-            {
-                context: localVarHttpContext,
-                body: localVarConvertFormParamsToString ? localVarFormParams.toString() : localVarFormParams,
-                params: localVarQueryParameters,
-                responseType: <any>responseType_,
-                withCredentials: this.configuration.withCredentials,
-                headers: localVarHeaders,
-                observe: observe,
-                reportProgress: reportProgress
-            }
-        );
-    }
-
-    /**
      * @param id 
      * @param isPaid 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
@@ -1695,6 +1602,7 @@ export class BrokerService {
      * @param brokerId 
      * @param shipperId 
      * @param loadId 
+     * @param loadIds 
      * @param dateFrom 
      * @param dateTo 
      * @param revenueFrom 
@@ -1724,10 +1632,10 @@ export class BrokerService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiBrokerLoadsGet(loadType?: number, statusType?: number, status?: Array<number>, dispatcherIds?: Array<number>, dispatcherId?: number, dispatchId?: number, brokerId?: number, shipperId?: number, loadId?: number, dateFrom?: string, dateTo?: string, revenueFrom?: number, revenueTo?: number, truckId?: number, driverId?: number, rateFrom?: number, rateTo?: number, paidFrom?: number, paidTo?: number, dueFrom?: number, dueTo?: number, pickup?: boolean, delivery?: boolean, longitude?: number, latitude?: number, distance?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, sortOrder?: SortOrder, sortBy?: LoadSortBy, search?: string, search1?: string, search2?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<BrokerLoadsResponse>;
-    public apiBrokerLoadsGet(loadType?: number, statusType?: number, status?: Array<number>, dispatcherIds?: Array<number>, dispatcherId?: number, dispatchId?: number, brokerId?: number, shipperId?: number, loadId?: number, dateFrom?: string, dateTo?: string, revenueFrom?: number, revenueTo?: number, truckId?: number, driverId?: number, rateFrom?: number, rateTo?: number, paidFrom?: number, paidTo?: number, dueFrom?: number, dueTo?: number, pickup?: boolean, delivery?: boolean, longitude?: number, latitude?: number, distance?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, sortOrder?: SortOrder, sortBy?: LoadSortBy, search?: string, search1?: string, search2?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<BrokerLoadsResponse>>;
-    public apiBrokerLoadsGet(loadType?: number, statusType?: number, status?: Array<number>, dispatcherIds?: Array<number>, dispatcherId?: number, dispatchId?: number, brokerId?: number, shipperId?: number, loadId?: number, dateFrom?: string, dateTo?: string, revenueFrom?: number, revenueTo?: number, truckId?: number, driverId?: number, rateFrom?: number, rateTo?: number, paidFrom?: number, paidTo?: number, dueFrom?: number, dueTo?: number, pickup?: boolean, delivery?: boolean, longitude?: number, latitude?: number, distance?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, sortOrder?: SortOrder, sortBy?: LoadSortBy, search?: string, search1?: string, search2?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<BrokerLoadsResponse>>;
-    public apiBrokerLoadsGet(loadType?: number, statusType?: number, status?: Array<number>, dispatcherIds?: Array<number>, dispatcherId?: number, dispatchId?: number, brokerId?: number, shipperId?: number, loadId?: number, dateFrom?: string, dateTo?: string, revenueFrom?: number, revenueTo?: number, truckId?: number, driverId?: number, rateFrom?: number, rateTo?: number, paidFrom?: number, paidTo?: number, dueFrom?: number, dueTo?: number, pickup?: boolean, delivery?: boolean, longitude?: number, latitude?: number, distance?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, sortOrder?: SortOrder, sortBy?: LoadSortBy, search?: string, search1?: string, search2?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
+    public apiBrokerLoadsGet(loadType?: number, statusType?: number, status?: Array<number>, dispatcherIds?: Array<number>, dispatcherId?: number, dispatchId?: number, brokerId?: number, shipperId?: number, loadId?: number, loadIds?: Array<number>, dateFrom?: string, dateTo?: string, revenueFrom?: number, revenueTo?: number, truckId?: number, driverId?: number, rateFrom?: number, rateTo?: number, paidFrom?: number, paidTo?: number, dueFrom?: number, dueTo?: number, pickup?: boolean, delivery?: boolean, longitude?: number, latitude?: number, distance?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, sortOrder?: SortOrder, sortBy?: LoadSortBy, search?: string, search1?: string, search2?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<BrokerLoadsResponse>;
+    public apiBrokerLoadsGet(loadType?: number, statusType?: number, status?: Array<number>, dispatcherIds?: Array<number>, dispatcherId?: number, dispatchId?: number, brokerId?: number, shipperId?: number, loadId?: number, loadIds?: Array<number>, dateFrom?: string, dateTo?: string, revenueFrom?: number, revenueTo?: number, truckId?: number, driverId?: number, rateFrom?: number, rateTo?: number, paidFrom?: number, paidTo?: number, dueFrom?: number, dueTo?: number, pickup?: boolean, delivery?: boolean, longitude?: number, latitude?: number, distance?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, sortOrder?: SortOrder, sortBy?: LoadSortBy, search?: string, search1?: string, search2?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<BrokerLoadsResponse>>;
+    public apiBrokerLoadsGet(loadType?: number, statusType?: number, status?: Array<number>, dispatcherIds?: Array<number>, dispatcherId?: number, dispatchId?: number, brokerId?: number, shipperId?: number, loadId?: number, loadIds?: Array<number>, dateFrom?: string, dateTo?: string, revenueFrom?: number, revenueTo?: number, truckId?: number, driverId?: number, rateFrom?: number, rateTo?: number, paidFrom?: number, paidTo?: number, dueFrom?: number, dueTo?: number, pickup?: boolean, delivery?: boolean, longitude?: number, latitude?: number, distance?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, sortOrder?: SortOrder, sortBy?: LoadSortBy, search?: string, search1?: string, search2?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<BrokerLoadsResponse>>;
+    public apiBrokerLoadsGet(loadType?: number, statusType?: number, status?: Array<number>, dispatcherIds?: Array<number>, dispatcherId?: number, dispatchId?: number, brokerId?: number, shipperId?: number, loadId?: number, loadIds?: Array<number>, dateFrom?: string, dateTo?: string, revenueFrom?: number, revenueTo?: number, truckId?: number, driverId?: number, rateFrom?: number, rateTo?: number, paidFrom?: number, paidTo?: number, dueFrom?: number, dueTo?: number, pickup?: boolean, delivery?: boolean, longitude?: number, latitude?: number, distance?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, sortOrder?: SortOrder, sortBy?: LoadSortBy, search?: string, search1?: string, search2?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
         let localVarQueryParameters = new HttpParams({encoder: this.encoder});
         if (loadType !== undefined && loadType !== null) {
@@ -1769,6 +1677,12 @@ export class BrokerService {
         if (loadId !== undefined && loadId !== null) {
           localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
             <any>loadId, 'LoadId');
+        }
+        if (loadIds) {
+            loadIds.forEach((element) => {
+                localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+                  <any>element, 'LoadIds');
+            })
         }
         if (dateFrom !== undefined && dateFrom !== null) {
           localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
