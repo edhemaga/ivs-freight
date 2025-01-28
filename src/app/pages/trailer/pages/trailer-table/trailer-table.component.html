@@ -22,7 +22,12 @@
             [columns]="columns"
             [options]="tableOptions"
             [selectedTab]="selectedTab"
-            (bodyActions)="onTableBodyActions($event)"
+            (tableBodyActions)="
+                handleDropdownMenuActions(
+                    $event,
+                    dropdownMenuStringEnum.TRAILER
+                )
+            "
             [tableData]="tableData"
             (saveValueNote)="saveValueNote($event)"
         ></app-ta-table-body>
@@ -56,7 +61,7 @@
                     >
                         <div
                             class="show-more ta-font-bold w-fit-content align-items-center d-flex justify-content-between"
-                            (click)="onShowMore()"
+                            (click)="handleShowMoreAction()"
                         >
                             SHOW MORE
                         </div>

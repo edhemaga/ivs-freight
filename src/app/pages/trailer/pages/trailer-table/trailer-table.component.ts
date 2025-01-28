@@ -1,7 +1,6 @@
-import { DatePipe } from '@angular/common';
-import { Observable, skip, Subject, takeUntil } from 'rxjs';
 import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { Observable, skip, Subject, takeUntil } from 'rxjs';
 
 // components
 import { TtFhwaInspectionModalComponent } from '@shared/components/ta-shared-modals/truck-trailer-modals/modals/tt-fhwa-inspection-modal/tt-fhwa-inspection-modal.component';
@@ -10,6 +9,12 @@ import { ConfirmationModalComponent } from '@shared/components/ta-shared-modals/
 import { TrailerModalComponent } from '@pages/trailer/pages/trailer-modal/trailer-modal.component';
 import { ConfirmationActivationModalComponent } from '@shared/components/ta-shared-modals/confirmation-activation-modal/confirmation-activation-modal.component';
 import { TtTitleModalComponent } from '@shared/components/ta-shared-modals/truck-trailer-modals/modals/tt-title-modal/tt-title-modal.component';
+
+// base classes
+import { TrailerDropdownMenuActionsBase } from '@pages/trailer/base-classes';
+
+// settings
+import { getTrailerColumnDefinition } from '@shared/utils/settings/table-settings/trailer-columns';
 
 // services
 import { ConfirmationService } from '@shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
@@ -37,26 +42,24 @@ import {
 } from '@pages/trailer/pages/trailer-card-modal/state/trailer-card-modal.selectors';
 
 // pipes
+import { DatePipe } from '@angular/common';
 import { ThousandSeparatorPipe } from '@shared/pipes/thousand-separator.pipe';
-
-// helpers
-import { DataFilterHelper } from '@shared/utils/helpers/data-filter.helper';
-import { DropdownMenuContentHelper } from '@shared/utils/helpers';
-
-// animations
-import { MethodsGlobalHelper } from '@shared/utils/helpers/methods-global.helper';
-
-// constants
-import { TableDropdownComponentConstants } from '@shared/utils/constants/table-dropdown-component.constants';
-import { TrailerCardsModalConfig } from '@pages/trailer/pages/trailer-card-modal/utils/constants/trailer-cards-modal.config';
-
-// configuration
-import { TrailerCardDataConstants } from '@pages/trailer/pages/trailer-table/utils/constants/trailer-card-data.constants';
 
 // enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
 import { TrailerNameStringEnum } from '@shared/enums/trailer-name-string.enum';
 import { TooltipColorsStringEnum } from '@shared/enums/tooltip-colors-string.enum';
+import { DropdownMenuStringEnum } from '@shared/enums';
+
+// constants
+import { TableDropdownComponentConstants } from '@shared/utils/constants/table-dropdown-component.constants';
+import { TrailerCardsModalConfig } from '@pages/trailer/pages/trailer-card-modal/utils/constants/trailer-cards-modal.config';
+import { TrailerCardDataConstants } from '@pages/trailer/pages/trailer-table/utils/constants/trailer-card-data.constants';
+
+// helpers
+import { DataFilterHelper } from '@shared/utils/helpers/data-filter.helper';
+import { DropdownMenuContentHelper } from '@shared/utils/helpers';
+import { MethodsGlobalHelper } from '@shared/utils/helpers/methods-global.helper';
 
 // models
 import { TrailerListResponse } from 'appcoretruckassist';
@@ -67,7 +70,7 @@ import {
 import { TrailerMapped } from '@pages/trailer/pages/trailer-table/models/trailer-mapped.model';
 import { CardRows } from '@shared/models/card-models/card-rows.model';
 import { TableToolbarActions } from '@shared/models/table-models/table-toolbar-actions.model';
-import { getTrailerColumnDefinition } from '@shared/utils/settings/table-settings/trailer-columns';
+
 import { TrailerBackFilterQueryInterface } from '@pages/trailer/pages/trailer-table/models/trailer-back-filter-query.model';
 import { CardTableData } from '@shared/models/table-models/card-table-data.model';
 import { TableColumnConfig } from '@shared/models/table-models/table-column-config.model';
@@ -78,23 +81,37 @@ import { TableColumnConfig } from '@shared/models/table-models/table-column-conf
     styleUrls: ['./trailer-table.component.scss'],
     providers: [ThousandSeparatorPipe],
 })
-export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
+export class TrailerTableComponent
+    extends TrailerDropdownMenuActionsBase
+    implements OnInit, AfterViewInit, OnDestroy
+{
     private destroy$ = new Subject<void>();
+
+    public dropdownMenuStringEnum = DropdownMenuStringEnum;
+
+    public resizeObserver: ResizeObserver;
+    public activeViewMode: string = TableStringEnum.LIST;
+
+    public selectedTab: TableStringEnum | string = TableStringEnum.ACTIVE;
+
+    public trailerActive: TrailerActiveState[] = [];
+    public trailerInactive: TrailerInactiveState[] = [];
+
     public trailerData: any[] = [];
-    public tableOptions;
+
+    public inactiveTabClicked: boolean = false;
+    public activeTableData: string;
+
+    // table
+    public tableOptions: any = {};
     public tableData: any[] = [];
     public viewData: any[] = [];
     public columns: TableColumnConfig[] = [];
-    public selectedTab: TableStringEnum | string = TableStringEnum.ACTIVE;
-    public activeViewMode: string = TableStringEnum.LIST;
-    public resizeObserver: ResizeObserver;
-    public inactiveTabClicked: boolean = false;
-    public trailerActive: TrailerActiveState[] = [];
-    public trailerInactive: TrailerInactiveState[] = [];
-    public activeTableData: string;
-    public backFilterQuery: TrailerBackFilterQueryInterface = JSON.parse(
-        JSON.stringify(TableDropdownComponentConstants.BACK_FILTER_QUERY)
-    );
+
+    // cards
+    public cardTitle: string = TrailerCardDataConstants.cardTitle;
+    public page: string = TrailerCardDataConstants.page;
+    public rows: number = TrailerCardDataConstants.rows;
 
     //Data to display from model Truck Active
     public displayRowsFront: CardRows[] =
@@ -112,19 +129,20 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
     public displayRowsBackInactive: CardRows[] =
         TrailerCardDataConstants.displayRowsBackInactive;
 
-    public cardTitle: string = TrailerCardDataConstants.cardTitle;
-    public page: string = TrailerCardDataConstants.page;
-    public rows: number = TrailerCardDataConstants.rows;
-
     public sendDataToCardsFront: CardRows[];
     public sendDataToCardsBack: CardRows[];
 
     public displayRows$: Observable<any>; //leave this as any for now
 
+    // filters
+    public backFilterQuery: TrailerBackFilterQueryInterface = JSON.parse(
+        JSON.stringify(TableDropdownComponentConstants.BACK_FILTER_QUERY)
+    );
+
     constructor(
-        private router: Router,
+        protected router: Router,
         //Services
-        private modalService: ModalService,
+        protected modalService: ModalService,
         private tableService: TruckassistTableService,
         private trailerService: TrailerService,
         private confirmationService: ConfirmationService,
@@ -143,7 +161,9 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
         //Pipes
         public datePipe: DatePipe,
         private thousandSeparator: ThousandSeparatorPipe
-    ) {}
+    ) {
+        super();
+    }
 
     ngOnInit(): void {
         this.sendTrailerData();
@@ -701,10 +721,7 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 : null,
             tableAttachments: files ? files : [],
             fileCount: fileCount,
-            tableDropdownContent: {
-                hasContent: true,
-                content: this.getTrailerDropdownContent(),
-            },
+            tableDropdownContent: this.getTrailerDropdownContent(),
             createdAt,
             updatedAt,
         };
@@ -1135,6 +1152,14 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
         };
 
         this.trailerService.updateNote(noteData);
+    }
+
+    public handleShowMoreAction(): void {
+        this.backFilterQuery.active =
+            this.selectedTab === DropdownMenuStringEnum.ACTIVE ? 1 : 0;
+        this.backFilterQuery.pageIndex++;
+
+        this.trailerBackFilter(this.backFilterQuery, true);
     }
 
     ngOnDestroy(): void {

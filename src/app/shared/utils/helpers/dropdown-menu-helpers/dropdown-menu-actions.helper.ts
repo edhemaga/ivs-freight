@@ -22,6 +22,8 @@ import {
     TableCardBodyActions,
 } from '@shared/models';
 import { PMTrailerUnitResponse, PMTruckUnitResponse } from 'appcoretruckassist';
+import { TruckModalComponent } from '@pages/truck/pages/truck-modal/truck-modal.component';
+import { TrailerModalComponent } from '@pages/trailer/pages/trailer-modal/trailer-modal.component';
 
 export class DropdownMenuActionsHelper {
     static createDropdownMenuActionsEmitEvent<T extends { id?: number }>(
@@ -55,6 +57,8 @@ export class DropdownMenuActionsHelper {
             [DropdownMenuStringEnum.FUEL_TRANSACTION]:
                 FuelPurchaseModalComponent,
             [DropdownMenuStringEnum.FUEL_STOP]: FuelStopModalComponent,
+            [DropdownMenuStringEnum.TRUCK]: TruckModalComponent,
+            [DropdownMenuStringEnum.TRAILER]: TrailerModalComponent,
         };
 
         return modalComponentMap[tableType];

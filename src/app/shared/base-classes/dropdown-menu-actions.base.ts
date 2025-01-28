@@ -21,6 +21,9 @@ import {
     PMTruckUnitResponse,
     RepairShopResponse,
 } from 'appcoretruckassist';
+import { TtRegistrationModalComponent } from '@shared/components/ta-shared-modals/truck-trailer-modals/modals/tt-registration-modal/tt-registration-modal.component';
+import { TtFhwaInspectionModalComponent } from '@shared/components/ta-shared-modals/truck-trailer-modals/modals/tt-fhwa-inspection-modal/tt-fhwa-inspection-modal.component';
+import { TtTitleModalComponent } from '@shared/components/ta-shared-modals/truck-trailer-modals/modals/tt-title-modal/tt-title-modal.component';
 
 export abstract class DropdownMenuActionsBase {
     // router
@@ -73,6 +76,23 @@ export abstract class DropdownMenuActionsBase {
             case DropdownMenuStringEnum.OPEN_BUSINESS_TYPE:
             case DropdownMenuStringEnum.CLOSE_BUSINESS_TYPE:
                 this.handleOpenCloseBusinessAction(event);
+
+                break;
+            case DropdownMenuStringEnum.ACTIVATE_TYPE:
+            case DropdownMenuStringEnum.DEACTIVATE_TYPE:
+                this.handleActivateDeactivateAction(event);
+
+                break;
+            case DropdownMenuStringEnum.REGISTRATION_TYPE:
+                this.handleAddRegistrationAction(event);
+
+                break;
+            case DropdownMenuStringEnum.FHWA_INSPECTION_TYPE:
+                this.handleAddInspectionAction(event);
+
+                break;
+            case DropdownMenuStringEnum.TITLE_TYPE:
+                this.handleAddTitleAction(event);
 
                 break;
             default:
@@ -171,6 +191,50 @@ export abstract class DropdownMenuActionsBase {
             {
                 ...event,
                 type,
+            }
+        );
+    }
+
+    private handleActivateDeactivateAction<T>(
+        event: TableCardBodyActions<T>
+    ): void {
+        this.modalService.openModal(
+            ConfirmationActivationModalComponent,
+            { size: DropdownMenuStringEnum.SMALL },
+            {
+                ...event,
+            }
+        );
+    }
+
+    private handleAddRegistrationAction<T>(
+        event: TableCardBodyActions<T>
+    ): void {
+        this.modalService.openModal(
+            TtRegistrationModalComponent,
+            { size: DropdownMenuStringEnum.SMALL },
+            {
+                ...event,
+            }
+        );
+    }
+
+    private handleAddInspectionAction<T>(event: TableCardBodyActions<T>): void {
+        this.modalService.openModal(
+            TtFhwaInspectionModalComponent,
+            { size: DropdownMenuStringEnum.SMALL },
+            {
+                ...event,
+            }
+        );
+    }
+
+    private handleAddTitleAction<T>(event: TableCardBodyActions<T>): void {
+        this.modalService.openModal(
+            TtTitleModalComponent,
+            { size: DropdownMenuStringEnum.SMALL },
+            {
+                ...event,
             }
         );
     }

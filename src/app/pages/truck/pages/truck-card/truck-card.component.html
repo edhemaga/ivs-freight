@@ -11,7 +11,7 @@
                     'body-active':
                         isCardFlippedCheckInCards.includes(i) ||
                         isAllCardsFlipp,
-                    'body-checked': card.isSelected
+                    'body-checked': card.isSelected,
                 }"
             >
                 <!-- Left side of the card -->
@@ -175,11 +175,11 @@
                                     >
                                         <ng-container
                                             *ngIf="
-                                        !card[cardRow.key]?.[
-                                            cardRow.secondKey
-                                        ];
-                                        else progressBar
-                                    "
+                                                !card[cardRow.key]?.[
+                                                    cardRow.secondKey
+                                                ];
+                                                else progressBar
+                                            "
                                             >/</ng-container
                                         >
                                         <ng-template #progressBar>
@@ -202,7 +202,11 @@
                                         *ngIf="cardRow.title === 'Color'"
                                     >
                                         <ng-container
-                                            *ngIf="card?.[cardRow.key]?.[cardRow.secondKey]"
+                                            *ngIf="
+                                                card?.[cardRow.key]?.[
+                                                    cardRow.secondKey
+                                                ]
+                                            "
                                         >
                                             <span
                                                 class="color-circle"
@@ -213,9 +217,11 @@
                                                 "
                                             ></span>
                                         </ng-container>
-                                        <span
-                                            >{{ card?.[cardRow.key]?.[cardRow.thirdKey] ?? '/' }}</span
-                                        >
+                                        <span>{{
+                                            card?.[cardRow.key]?.[
+                                                cardRow.thirdKey
+                                            ] ?? '/'
+                                        }}</span>
                                     </ng-container>
 
                                     <ng-container
@@ -239,15 +245,19 @@
                                             >
                                                 <app-ta-state-image-text
                                                     [stateAbbreviation]="
-                                                card?.[cardRow.key]
-                                                "
+                                                        card?.[cardRow.key]
+                                                    "
                                                 >
                                                 </app-ta-state-image-text>
                                                 <span class="small-muted"
                                                     >•</span
                                                 >
                                                 <span class="small-muted">
-                                                    {{ card?.[cardRow.secondKey] }}</span
+                                                    {{
+                                                        card?.[
+                                                            cardRow.secondKey
+                                                        ]
+                                                    }}</span
                                                 >
                                             </div>
                                         </ng-template>
@@ -258,7 +268,7 @@
                                     >
                                         <svg-icon
                                             [ngStyle]="{
-                                                'margin-right': '4px'
+                                                'margin-right': '4px',
                                             }"
                                             [src]="
                                                 '
@@ -274,8 +284,7 @@
                                     >
                                         <ng-container
                                             *ngIf="
-                                                !card.tableFeatures
-                                                    ?.length;
+                                                !card.tableFeatures?.length;
                                                 else features
                                             "
                                             >/</ng-container
@@ -306,7 +315,7 @@
                                                             "
                                                             [svgStyle]="{
                                                                 'width.px': 18,
-                                                                'height.px': 18
+                                                                'height.px': 18,
                                                             }"
                                                         ></svg-icon>
                                                     </div>
@@ -333,7 +342,7 @@
                                             cardRow.title !== 'Features'
                                         "
                                     >
-                                        {{ card | cardValue : cardRow }}
+                                        {{ card | cardValue: cardRow }}
                                     </ng-container>
                                 </div>
                             </div>
@@ -345,12 +354,17 @@
 
                 <div class="card-body-right">
                     <div class="top-side">
-                        <!-- Open dropdown element-->
+                        <!-- Dropdown Menu-->
 
-                        <app-ta-table-card-dropdown-actions
-                            [card]="card"
-                            (bodyActions)="onCardActions($event)"
-                        ></app-ta-table-card-dropdown-actions>
+                        <ca-dropdown-menu
+                            [type]="'dots-menu-type'"
+                            [placement]="'right-top'"
+                            [options]="card.tableDropdownContent"
+                            (dropdownOptionEmitter)="
+                                handleToggleDropdownMenuActions($event, card)
+                            "
+                        >
+                        </ca-dropdown-menu>
 
                         <!-- Note element -->
 
@@ -376,7 +390,7 @@
                                     [src]="truckCardImageRoutes.attachment"
                                     [svgStyle]="{
                                         'width.px': '18',
-                                        'height.px': '18'
+                                        'height.px': '18',
                                     }"
                                 ></svg-icon>
                                 <div class="file_count">
@@ -403,7 +417,7 @@
                                         isCardFlippedCheckInCards.includes(i) ||
                                         isAllCardsFlipp,
                                     'svg-position':
-                                        !isCardFlippedCheckInCards.includes(i)
+                                        !isCardFlippedCheckInCards.includes(i),
                                 }"
                                 customClass="mt-2"
                             >

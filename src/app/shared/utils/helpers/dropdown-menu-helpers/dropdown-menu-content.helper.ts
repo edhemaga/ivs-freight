@@ -318,95 +318,49 @@ export class DropdownMenuContentHelper {
         return [...sharedItems];
     }
 
-    /////////////////////////////////////////////////////////////////////////////////
-
     // truck
-    static getTruckDropdownContent(status: number, selectedTab: string): any[] {
+    static getTruckDropdownContent(selectedTab: string): DropdownMenuItem[] {
+        const isActiveTruck = selectedTab === DropdownMenuStringEnum.ACTIVE;
+
+        // modifier items
+        const modifierItems =
+            DropdownMenuContentConditionalItemsHelper.getTruckTrailerModifierItems(
+                isActiveTruck
+            );
+
+        // requested items
+        const requestedConditionalItems = [
+            DropdownMenuStringEnum.ADD_NEW_TRUCK_TRAILER,
+        ];
+
+        const requestedSharedItems = [
+            DropdownMenuStringEnum.EDIT,
+            DropdownMenuStringEnum.VIEW_DETAILS,
+            isActiveTruck
+                ? DropdownMenuStringEnum.DEACTIVATE
+                : DropdownMenuStringEnum.ACTIVATE,
+            DropdownMenuStringEnum.DELETE,
+        ];
+
+        // items
+        const conditionalItems =
+            DropdownMenuContentConditionalItemsHelper.getConditionalItems(
+                requestedConditionalItems,
+                false,
+                modifierItems
+            );
+
+        const sharedItems =
+            DropdownMenuContentConditionalItemsHelper.getConditionalItems(
+                requestedSharedItems,
+                true,
+                modifierItems
+            );
+
         return [
-            {
-                title: TableStringEnum.EDIT_2,
-                name: TableStringEnum.EDIT_TRUCK,
-                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Edit.svg',
-                svgStyle: {
-                    width: 18,
-                    height: 18,
-                },
-                hasBorder: true,
-                svgClass: TableStringEnum.REGULAR,
-                isDisabled: !status,
-            },
-            {
-                title: TableStringEnum.VIEW_DETAILS_2,
-                name: TableStringEnum.VIEW_DETAILS,
-                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Information.svg',
-                svgStyle: {
-                    width: 18,
-                    height: 18,
-                },
-                svgClass: TableStringEnum.REGULAR,
-                tableListDropdownContentStyle: {
-                    'margin-bottom.px': 4,
-                },
-            },
-            {
-                title: TableStringEnum.ADD_NEW_2,
-                name: TableStringEnum.ADD_NEW,
-                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Show More.svg',
-                svgStyle: {
-                    width: 15,
-                    height: 15,
-                },
-                svgClass: TableStringEnum.REGULAR,
-                isDropdown: true,
-                insideDropdownContent: [
-                    {
-                        title: TableStringEnum.REGISTRATION,
-                        name: TableStringEnum.ADD_REGISTRATION,
-                    },
-                    {
-                        title: TableStringEnum.INSPECTION,
-                        name: TableStringEnum.ADD_INSPECTION,
-                    },
-                    {
-                        title: TableStringEnum.TITLE,
-                        name: TableStringEnum.ADD_REPAIR,
-                    },
-                ],
-                hasBorder: true,
-                isDisabled: !status,
-            },
-            {
-                title:
-                    selectedTab === TableStringEnum.ACTIVE
-                        ? TableStringEnum.DEACTIVATE_2
-                        : TableStringEnum.ACTIVATE_2,
-                name: TableStringEnum.ACTIVATE_ITEM,
-                svgUrl:
-                    selectedTab === TableStringEnum.ACTIVE
-                        ? 'assets/svg/truckassist-table/new-list-dropdown/Deactivate.svg'
-                        : '/assets/svg/common/confirm-circle_white.svg',
-                svgStyle: {
-                    width: 18,
-                    height: 18,
-                },
-                svgClass:
-                    selectedTab === TableStringEnum.ACTIVE
-                        ? TableStringEnum.REGULAR
-                        : TableStringEnum.OPEN_BUSINESS_2,
-                tableListDropdownContentStyle: {
-                    'margin-bottom.px': 4,
-                },
-            },
-            {
-                title: TableStringEnum.DELETE_2,
-                name: TableStringEnum.DELETE_ITEM,
-                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Delete.svg',
-                svgStyle: {
-                    width: 18,
-                    height: 18,
-                },
-                svgClass: TableStringEnum.DELETE,
-            },
+            ...sharedItems.slice(0, 2),
+            ...conditionalItems,
+            ...sharedItems.slice(2),
         ];
     }
 
@@ -454,96 +408,9 @@ export class DropdownMenuContentHelper {
             ...conditionalItems,
             ...sharedItems.slice(2),
         ];
-
-        /*  return [
-            {
-                title: TableStringEnum.EDIT_2,
-                name: TableStringEnum.EDIT_TRAILER,
-                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Edit.svg',
-                svgStyle: {
-                    width: 18,
-                    height: 18,
-                },
-                hasBorder: true,
-                svgClass: TableStringEnum.REGULAR,
-                isDisabled: !status,
-            },
-            {
-                title: TableStringEnum.VIEW_DETAILS_2,
-                name: TableStringEnum.VIEW_DETAILS,
-                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Information.svg',
-                svgStyle: {
-                    width: 18,
-                    height: 18,
-                },
-                svgClass: TableStringEnum.REGULAR,
-                tableListDropdownContentStyle: {
-                    'margin-bottom.px': 4,
-                },
-            },
-            {
-                title: TableStringEnum.ADD_NEW_2,
-                name: TableStringEnum.ADD_NEW,
-                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Show More.svg',
-                svgStyle: {
-                    width: 15,
-                    height: 15,
-                },
-                svgClass: TableStringEnum.REGULAR,
-                isDropdown: true,
-                insideDropdownContent: [
-                    {
-                        title: TableStringEnum.ADD_REGISTRATION_2,
-                        name: TableStringEnum.ADD_REGISTRATION,
-                    },
-
-                    {
-                        title: TableStringEnum.ADD_INSPECTION_2,
-                        name: TableStringEnum.ADD_INSPECTION,
-                    },
-
-                    {
-                        title: TableStringEnum.TITLE,
-                        name: TableStringEnum.ADD_TITLE,
-                    },
-                ],
-                hasBorder: true,
-                isDisabled: !status,
-            },
-            {
-                title:
-                    selectedTab === TableStringEnum.ACTIVE
-                        ? TableStringEnum.DEACTIVATE_2
-                        : TableStringEnum.ACTIVATE_2,
-                name: TableStringEnum.ACTIVATE_ITEM,
-                svgUrl:
-                    selectedTab === TableStringEnum.ACTIVE
-                        ? 'assets/svg/truckassist-table/new-list-dropdown/Deactivate.svg'
-                        : '/assets/svg/common/confirm-circle_white.svg',
-                svgStyle: {
-                    width: 18,
-                    height: 18,
-                },
-                svgClass:
-                    selectedTab === TableStringEnum.ACTIVE
-                        ? TableStringEnum.REGULAR
-                        : TableStringEnum.OPEN_BUSINESS_2,
-                tableListDropdownContentStyle: {
-                    'margin-bottom.px': 4,
-                },
-            },
-            {
-                title: TableStringEnum.DELETE_2,
-                name: TableStringEnum.DELETE_ITEM,
-                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Delete.svg',
-                svgStyle: {
-                    width: 18,
-                    height: 18,
-                },
-                svgClass: TableStringEnum.DELETE,
-            },
-        ]; */
     }
+
+    /////////////////////////////////////////////////////////////////////////////////
 
     // driver
     static getDriverDropdownContent(selectedTab: string): DropdownMenuItem[] {

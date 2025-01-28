@@ -154,9 +154,6 @@ export enum TableStringEnum {
     SHARE = 'share',
     SHARE_2 = 'Share',
 
-    ADD_REPAIR = 'add-repair',
-    ADD_REPAIR_2 = 'Add Repair',
-
     MARGIN_BOTTOM = 'margin-bottom.px',
 
     // Customer

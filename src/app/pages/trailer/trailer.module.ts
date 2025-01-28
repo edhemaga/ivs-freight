@@ -26,6 +26,7 @@ import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta
 import { TrailerCardComponent } from '@pages/trailer/pages/trailer-card/trailer-card.component';
 import { TaStateImageTextComponent } from '@shared/components/ta-state-image-text/ta-state-image-text.component';
 import { TaProfileImagesComponent } from '@shared/components/ta-profile-images/ta-profile-images.component';
+import { CaDropdownMenuComponent } from 'ca-components';
 
 // store
 import { StoreModule } from '@ngrx/store';
@@ -50,6 +51,7 @@ import { trailerCardModalReducer } from '@pages/trailer/pages/trailer-card-modal
         TaProgresBarComponent,
         TaStateImageTextComponent,
         TaProfileImagesComponent,
+        CaDropdownMenuComponent,
 
         // pipes
         ThousandSeparatorPipe,

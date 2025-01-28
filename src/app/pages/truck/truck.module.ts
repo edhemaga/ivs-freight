@@ -1,12 +1,12 @@
 import { NgModule } from '@angular/core';
 import { CommonModule, DatePipe } from '@angular/common';
 
-// Modules
+// modules
 import { TruckRoutingModule } from '@pages/truck/truck-routing.module';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
-// Components
+// components
 import { TruckTableComponent } from '@pages/truck/pages/truck-table/truck-table.component';
 import { TruckCardComponent } from '@pages/truck/pages/truck-card/truck-card.component';
 
@@ -19,13 +19,14 @@ import { TaTableCardDropdownActionsComponent } from '@shared/components/ta-table
 import { TaProgresBarComponent } from '@shared/components/ta-progres-bar/ta-progres-bar.component';
 import { TaTabSwitchComponent } from '@shared/components/ta-tab-switch/ta-tab-switch.component';
 
-// Pipes
+// pipes
 import { FlipCardsPipe } from '@shared/pipes/flip-cards.pipe';
 import { ThousandSeparatorPipe } from '@shared/pipes/thousand-separator.pipe';
 import { FormatDatePipe } from '@shared/pipes/format-date.pipe';
 import { CardValuePipe } from '@shared/pipes/card-value.pipe';
+import { CaDropdownMenuComponent } from 'ca-components';
 
-//Store
+// store
 import { StoreModule } from '@ngrx/store';
 import { truckCardModalReducer } from '@pages/truck/pages/truck-card-modal/state/truck-card-modal.reducer';
 
@@ -44,9 +45,9 @@ import { truckCardModalReducer } from '@pages/truck/pages/truck-card-modal/state
         TaTableBodyComponent,
         TaTableHeadComponent,
         TaNoteComponent,
-        TaTableCardDropdownActionsComponent,
         TaProgresBarComponent,
         TaTabSwitchComponent,
+        CaDropdownMenuComponent,
 
         //pipes
         ThousandSeparatorPipe,
@@ -58,4 +59,4 @@ import { truckCardModalReducer } from '@pages/truck/pages/truck-card-modal/state
         StoreModule.forFeature('truckCardData', truckCardModalReducer),
     ],
 })
-export class TruckModule { }
+export class TruckModule {}
