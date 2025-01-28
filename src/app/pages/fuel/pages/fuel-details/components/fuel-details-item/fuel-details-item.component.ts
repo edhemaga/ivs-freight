@@ -776,17 +776,25 @@ export class FuelDetailsItemComponent implements OnInit {
     }
 
     public setFuelLegendOnHover(index: number): void {
-        if (index === null) {
-            this.fuelLegendHighlightedBackground = false;
-            this.fuelLegendTitle = '';
-        }
-        else {
-            this.fuelLegendHighlightedBackground = true;
-            this.fuelLegendTitle = this.fuelChartConfig.chartData.labels[index];
-        }
+        const {
+            hasHighlightedBackground,
+            title
+        } =
+            ChartHelper.setChartLegend(
+                index,
+                this.fuelChartConfig.chartData.labels
+            );
+        this.fuelLegendHighlightedBackground = hasHighlightedBackground;
+        this.fuelLegendTitle = title;
+
+        const dataForLegend =
+            (isNaN(index) || index < 0) ?
+                this.fuelChartData :
+                this.fuelChartData?.
+                    fuelStopExpensesChartResponse[index];
+
         this.fuelChartLegend = ChartLegendConfiguration
-            .fuelExpensesLegend(this.fuelChartData.
-                fuelStopExpensesChartResponse[index]);
+            .fuelExpensesLegend(dataForLegend);
     }
 
     ngOnDestroy(): void {

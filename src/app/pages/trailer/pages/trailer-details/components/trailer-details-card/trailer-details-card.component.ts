@@ -304,18 +304,27 @@ export class TrailerDetailsCardComponent
             })
     }
 
-    public setFuelConsumptionLegendOnHover(index: number): void {
-        if (index === null) {
-            this.fuelConsumptionLegendHighlightedBackground = false;
-            this.fuelConsumptionLegendTitle = '';
-        }
-        else {
-            this.fuelConsumptionLegendHighlightedBackground = true;
-            this.fuelConsumptionLegendTitle = this.fuelConsumptionChartConfig.chartData.labels[index];
-        }
+    public setFuelConsumptionLegendOnHover(index: number | null): void {
+        const {
+            hasHighlightedBackground,
+            title
+        } =
+            ChartHelper.setChartLegend(
+                index,
+                this.fuelConsumptionChartConfig.chartData.labels
+            );
+
+        this.fuelConsumptionLegendHighlightedBackground = hasHighlightedBackground;
+        this.fuelConsumptionLegendTitle = title;
+
+        const dataForLegend =
+            (isNaN(index) || index < 0) ?
+                this.fuelConsumptionChartData :
+                this.fuelConsumptionChartData?.
+                    trailerFuelConsumptionCharts[index];
+
         this.fuelConsumptionChartLegend = ChartLegendConfiguration
-            .trailerFuelConsumptionConfiguration(this.fuelConsumptionChartData.
-                trailerFuelConsumptionCharts[index]);
+            .trailerFuelConsumptionConfiguration(dataForLegend);
     }
 
     public changeFuelConsumptionTab(event: TabOptions): void {

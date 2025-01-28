@@ -40,7 +40,7 @@ export class ChartConfiguration {
             color: '#6692F1',
         },
         {
-            value: ChartValueLabelEnum.EARNINGS,
+            maxValue: ChartValueLabelEnum.EARNINGS,
             type: ChartTypesStringEnum.BAR,
             color: '#FBC88B',
         }

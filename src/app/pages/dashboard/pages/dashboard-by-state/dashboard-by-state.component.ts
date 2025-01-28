@@ -401,24 +401,6 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
         this.selectedByStateList = this.selectedByStateList.filter(
             (byStateItem) => byStateItem.id !== byStateListItem.id
         );
-
-        // this.setBarChartData(
-        //     this.selectedByStateList,
-        //     byStateListItemIndex,
-        //     true,
-        //     byStateListItem
-        // );
-    }
-
-    public handleHoverSelected(
-        index: number,
-        removeHover: boolean = false
-    ): void {
-        // if (!removeHover) {
-        //     this.barChart?.hoverBarChart(this.selectedByStateList[index]);
-        // } else {
-        //     this.barChart?.hoverBarChart(null);
-        // }
     }
 
     private getConstantData(): void {
@@ -658,17 +640,6 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
                 DashboardHelper.setByStateListColorRange(this.byStateList);
 
                 this.setMapByState(this.byStateList);
-
-                // chart
-                // this.setBarChartDateTitle(
-                //     deliveryData.intervalLabels[0].tooltipLabel,
-                //     deliveryData.intervalLabels[deliveryData.topTen.length - 1]
-                //         .tooltipLabel
-                // );
-
-                // this.setBarChartLabels(deliveryData.intervalLabels);
-
-                // this.setChartData();
             });
     }
 
@@ -732,17 +703,6 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
                 DashboardHelper.setByStateListColorRange(this.byStateList);
 
                 this.setMapByState(this.byStateList);
-
-                // chart
-                // this.setBarChartDateTitle(
-                //     roadsideData.intervalLabels[0].tooltipLabel,
-                //     roadsideData.intervalLabels[roadsideData.topTen.length - 1]
-                //         .tooltipLabel
-                // );
-
-                // this.setBarChartLabels(roadsideData.intervalLabels);
-
-                // this.setChartData();
             });
     }
 
@@ -993,14 +953,10 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
 
                 this.byStateListLength = fuelData.pagination.count;
 
-                // intervals
-
                 // colors range & map
                 DashboardHelper.setByStateListColorRange(this.byStateList);
 
                 this.setMapByState(this.byStateList);
-
-                // chart
             });
     }
 

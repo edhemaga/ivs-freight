@@ -266,22 +266,28 @@ export class ShipperDetailsCardComponent
             });
     }
 
-    public setPayrollLegendOnHover(index: number): void {
+    public setPayrollLegendOnHover(index: number | null): void {
 
         const {
             hasHighlightedBackground,
             title
         } =
-            ChartHelper.setChartLegend(index, this.payrollChartConfig.chartData.labels);
+            ChartHelper.setChartLegend
+                (index,
+                    this.payrollChartConfig.chartData.labels
+                );
 
         this.payrollLegendHighlightedBackground = hasHighlightedBackground;
         this.payrollLegendTitle = title;
 
+        const dataForLegend =
+            (isNaN(index) || index < 0) ?
+                this.payrollChartData :
+                this.payrollChartData?.
+                    shipperAverageWaitingTimeChartResponse[index]
+
         this.payrollChartLegend = ChartLegendConfiguration
-            .truckRevenueConfiguration(
-                this.payrollChartData
-                    .shipperAverageWaitingTimeChartResponse[index]
-            );
+            .shipperAverageWaitingTimeConfiguration(dataForLegend);
     }
 
     ngOnDestroy(): void {
