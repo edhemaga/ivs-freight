@@ -322,7 +322,7 @@ export abstract class PayrollReportBaseComponent<
                     this.payrollService
                         .raiseDeleteModal(
                             TableStringEnum.FUEL_1,
-                            ConfirmationModalStringEnum.DELETE_FUEL,
+                            ConfirmationModalStringEnum.DELETE_FUEL_TRANSACTION,
                             item.data.id,
                             {
                                 title: item.data.description,

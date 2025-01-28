@@ -35,7 +35,7 @@
                 <app-ta-custom-card
                     [hasCounter]="documents.length ? documents.length : 0"
                     [cardName]="'Document'"
-                    [disableAnimation]="disableCardAnimation"
+                    [disableAnimation]="isCardAnimationDisabled"
                     [isCardOpen]="!!documents.length"
                     [hasDarkDivider]="true"
                     [hasSmallDivider]="true"

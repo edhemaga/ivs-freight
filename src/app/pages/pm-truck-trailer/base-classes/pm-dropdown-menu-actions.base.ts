@@ -4,9 +4,6 @@ import { DropdownMenuActionsBase } from '@shared/base-classes';
 // components
 import { PmModalComponent } from '@pages/pm-truck-trailer/pages/pm-modal/pm-modal.component';
 
-// services
-import { ModalService } from '@shared/services/modal.service';
-
 // enums
 import { DropdownMenuStringEnum, TableStringEnum } from '@shared/enums';
 
@@ -18,11 +15,8 @@ import { TableCardBodyActions } from '@shared/models';
 import { PMTrailerUnitResponse, PMTruckUnitResponse } from 'appcoretruckassist';
 
 export abstract class PmDropdownMenuActionsBase extends DropdownMenuActionsBase {
-    constructor(
-        // services
-        protected modalService: ModalService
-    ) {
-        super(modalService);
+    constructor() {
+        super();
     }
 
     protected handleDropdownMenuActions<

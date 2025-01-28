@@ -4,7 +4,6 @@ import { Subject, takeUntil } from 'rxjs';
 import { DropdownMenuActionsBase } from '@shared/base-classes';
 
 // services
-import { ModalService } from '@shared/services/modal.service';
 import { ContactsService } from '@shared/services/contacts.service';
 
 // enums
@@ -22,12 +21,11 @@ export abstract class ContactsDropdownMenuActionsBase extends DropdownMenuAction
     protected abstract destroy$: Subject<void>;
     protected abstract viewData: CompanyContactResponse[];
 
-    constructor(
-        // services
-        protected modalService: ModalService,
-        protected contactsService: ContactsService
-    ) {
-        super(modalService);
+    // services
+    protected abstract contactsService: ContactsService;
+
+    constructor() {
+        super();
     }
 
     protected handleDropdownMenuActions<T extends CompanyContactResponse>(
@@ -49,6 +47,10 @@ export abstract class ContactsDropdownMenuActionsBase extends DropdownMenuAction
                 const { id: labelId } = data;
 
                 this.handleUpdateLabelAction(id, labelId);
+
+                break;
+            case DropdownMenuStringEnum.DELETE_TYPE:
+                this.handleContactDeleteAction(event, tableType);
 
                 break;
             default:
@@ -92,5 +94,17 @@ export abstract class ContactsDropdownMenuActionsBase extends DropdownMenuAction
             .updateCompanyContact(newdata)
             .pipe(takeUntil(this.destroy$))
             .subscribe();
+    }
+
+    private handleContactDeleteAction<T extends CompanyContactResponse>(
+        event: TableCardBodyActions<T>,
+        tableType: string
+    ): void {
+        const adjustedEvent = {
+            ...event,
+            svg: true,
+        };
+
+        super.handleSharedDropdownMenuActions(adjustedEvent, tableType);
     }
 }

@@ -59,7 +59,6 @@ import { TaUserReviewComponent } from '@shared/components/ta-user-review/ta-user
 import { LoadModalComponent } from '@pages/load/pages/load-modal/load-modal.component';
 import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
 import { TaTabSwitchComponent } from '@shared/components/ta-tab-switch/ta-tab-switch.component';
-import { TaInputAddressDropdownComponent } from '@shared/components/ta-input-address-dropdown/ta-input-address-dropdown.component';
 import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-custom-card.component';
 import { TaCheckboxComponent } from '@shared/components/ta-checkbox/ta-checkbox.component';
 import { TaUploadFilesComponent } from '@shared/components/ta-upload-files/ta-upload-files.component';
@@ -67,6 +66,7 @@ import { TaInputNoteComponent } from '@shared/components/ta-input-note/ta-input-
 import { ConfirmationModalComponent } from '@shared/components/ta-shared-modals/confirmation-modal/confirmation-modal.component';
 import { TaModalTableComponent } from '@shared/components/ta-modal-table/ta-modal-table.component';
 import {
+    CaInputAddressDropdownComponent,
     CaInputComponent,
     CaModalButtonComponent,
     CaModalComponent,
@@ -88,7 +88,7 @@ import { TableStringEnum } from '@shared/enums/table-string.enum';
 import { ConfirmationModalStringEnum } from '@shared/components/ta-shared-modals/confirmation-modal/enums/confirmation-modal-string.enum';
 import { ModalTableTypeEnum } from '@shared/enums/modal-table-type.enum';
 import { ModalButtonSize, ModalButtonType } from '@shared/enums';
-import { TaModalActionEnums } from '@shared/components/ta-modal/enums';
+import { TaModalActionEnum } from '@shared/components/ta-modal/enums';
 
 // svg routes
 import { SharedSvgRoutes } from '@shared/utils/svg-routes';
@@ -107,10 +107,13 @@ import {
     ShipperResponse,
     ReviewResponse,
     DepartmentResponse,
+    AddressListResponse,
+    AddressResponse,
 } from 'appcoretruckassist';
 import { ReviewComment } from '@shared/models/review-comment.model';
 import { Tabs } from '@shared/models/tabs.model';
 import { ShipperContactExtended } from '@pages/customer/pages/shipper-modal/models';
+import { AddressProperties } from '@shared/components/ta-input-address-dropdown/models/address-properties';
 
 @Component({
     selector: 'app-shipper-modal',
@@ -132,7 +135,7 @@ import { ShipperContactExtended } from '@pages/customer/pages/shipper-modal/mode
         TaAppTooltipV2Component,
         CaModalComponent,
         TaTabSwitchComponent,
-        TaInputAddressDropdownComponent,
+        CaInputAddressDropdownComponent,
         TaCustomCardComponent,
         TaCheckboxComponent,
         TaUploadFilesComponent,
@@ -207,11 +210,14 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
     public reviews: any[] = [];
     public previousReviews: any[] = [];
 
-    public taModalActionEnums = TaModalActionEnums;
+    public taModalActionEnum = TaModalActionEnum;
 
     public activeAction: string;
     public modalButtonType = ModalButtonType;
     public modalButtonSize = ModalButtonSize;
+
+    public addressList: AddressListResponse;
+    public addressData: AddressResponse;
 
     constructor(
         private formBuilder: UntypedFormBuilder,
@@ -339,7 +345,7 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
     public onModalAction(action: string): void {
         this.activeAction = action;
 
-        if (action === TaModalActionEnums.CLOSE) {
+        if (action === TaModalActionEnum.CLOSE) {
             switch (this.editData?.key) {
                 case 'load-modal': {
                     this.modalService.setProjectionModal({
@@ -363,14 +369,14 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
             return;
         }
         // Save And Add New
-        else if (action === TaModalActionEnums.SAVE_AND_ADD_NEW) {
+        else if (action === TaModalActionEnum.SAVE_AND_ADD_NEW) {
             if (this.shipperForm.invalid || !this.isFormDirty) {
                 this.inputService.markInvalid(this.shipperForm);
                 return;
             }
             this.addShipper(true);
             this.addNewAfterSave = true;
-        } else if (action === TaModalActionEnums.CLOSE_BUSINESS) {
+        } else if (action === TaModalActionEnum.CLOSE_BUSINESS) {
             const mappedEvent = {
                 type: this.editData.data.status
                     ? TableStringEnum.CLOSE
@@ -396,7 +402,7 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
             );
         } else {
             // Save & Update
-            if (action === TaModalActionEnums.SAVE) {
+            if (action === TaModalActionEnum.SAVE) {
                 if (this.shipperForm.invalid || !this.isFormDirty) {
                     this.inputService.markInvalid(this.shipperForm);
                     return;
@@ -408,7 +414,7 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
                 }
             }
             // Delete
-            if (action === TaModalActionEnums.DELETE && this.editData) {
+            if (action === TaModalActionEnum.DELETE && this.editData) {
                 this.modalService.openModal(
                     ConfirmationModalComponent,
                     { size: TableStringEnum.DELETE },
@@ -1331,6 +1337,24 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
 
     get getCountryStateInputConfig(): ITaInput {
         return ShipperModalConfig.getCountryStateInputConfig();
+    }
+
+    public onAddressChange({
+        query,
+        searchLayers,
+        closedBorder,
+    }: AddressProperties): void {
+        this.addressService
+            .getAddresses(query, searchLayers, closedBorder)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((res) => (this.addressList = res));
+    }
+
+    public getAddressData(address: string): void {
+        this.addressService
+            .getAddressInfo(address)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((res) => (this.addressData = res));
     }
 
     ngOnDestroy(): void {

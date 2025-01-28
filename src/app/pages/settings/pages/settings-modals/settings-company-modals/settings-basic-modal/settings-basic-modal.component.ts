@@ -138,7 +138,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
     public isFormDirty: boolean = false;
     public isSetupCompany: boolean = false;
 
-    public disableCardAnimation: boolean = false;
+    public isCardAnimationDisabled: boolean = false;
     public svgRoutes = SettingsModalSvgRoutes;
 
     // tabs
@@ -327,7 +327,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
                 this.onSamePerMileCheck();
             }
 
-            this.disableCardAnimation = true;
+            this.isCardAnimationDisabled = true;
 
             this.formService.checkFormChange(this.companyForm);
 
@@ -625,7 +625,10 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
                 data?.extensionPhone ? data?.extensionPhone : null,
                 [...phoneExtension],
             ],
-            email: [data?.email ? data?.email : null, [Validators.required, emailValidation]],
+            email: [
+                data?.email ? data?.email : null,
+                [Validators.required, emailValidation],
+            ],
         });
     }
 
@@ -1449,7 +1452,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
         this.onFleetTypeCheck(selectedFleetTypeTab);
 
         setTimeout(() => {
-            this.disableCardAnimation = false;
+            this.isCardAnimationDisabled = false;
         }, 1000);
     }
 
@@ -2313,7 +2316,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
         }
 
         setTimeout(() => {
-            this.disableCardAnimation = false;
+            this.isCardAnimationDisabled = false;
         }, 1000);
     }
 

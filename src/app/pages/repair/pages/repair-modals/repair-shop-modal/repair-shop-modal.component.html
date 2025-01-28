@@ -522,7 +522,7 @@
                                 marginBottom: '22px',
                             }"
                             [cardName]="'Bank Account'"
-                            [disableAnimation]="disableCardAnimation"
+                            [disableAnimation]="isCardAnimationDisabled"
                             [hasBodyData]="true"
                             [isCardOpen]="true"
                             [disabledCard]="true"
@@ -804,7 +804,7 @@
                     >
                         <app-ta-custom-card
                             [cardName]="'Rating & Review'"
-                            [disableAnimation]="disableCardAnimation"
+                            [disableAnimation]="isCardAnimationDisabled"
                             [disableMultipleReviews]="isOneMoreReviewDisabled"
                             [hasActionSvg]="repairShopModalSvgRoutes.plusIcon"
                             [hasArrow]="false"

@@ -41,7 +41,6 @@ import { RepairService } from '@shared/services/repair.service';
 import { ConfirmationService } from '@shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
 import { TruckassistTableService } from '@shared/services/truckassist-table.service';
 import { ModalService } from '@shared/services/modal.service';
-import { ReviewsRatingService } from '@shared/services/reviews-rating.service';
 import { MapsService } from '@shared/services/maps.service';
 import { RepairCardsModalService } from '@pages/repair/pages/repair-card-modal/services/repair-cards-modal.service';
 import { ConfirmationActivationService } from '@shared/components/ta-shared-modals/confirmation-activation-modal/services/confirmation-activation.service';
@@ -124,6 +123,9 @@ export class RepairTableComponent
 
     public destroy$ = new Subject<void>();
 
+    public dropdownMenuStringEnum = DropdownMenuStringEnum;
+    public tableStringEnum = TableStringEnum;
+
     public resizeObserver: ResizeObserver;
     public activeViewMode: string = TableStringEnum.LIST;
 
@@ -136,11 +138,7 @@ export class RepairTableComponent
     public columns: TableColumnConfig[] = [];
 
     // cards
-    public cardTitle: string = TableStringEnum.TRUCK_TRUCK_NUMBER;
-    public page: string = RepairCardConfigConstants.page;
-    public rows: number = RepairCardConfigConstants.rows;
-
-    public displayRows$: Observable<any>; //leave this as any for now
+    public displayRows$: Observable<any>;
 
     public sendDataToCardsFront: CardRows[];
     public sendDataToCardsBack: CardRows[];
@@ -220,7 +218,6 @@ export class RepairTableComponent
         protected repairService: RepairService,
 
         private tableService: TruckassistTableService,
-        private reviewRatingService: ReviewsRatingService,
         private mapsService: MapsService,
         private confirmationService: ConfirmationService,
         private repairCardsModalService: RepairCardsModalService,
@@ -242,7 +239,7 @@ export class RepairTableComponent
         private thousandSeparator: ThousandSeparatorPipe,
         private dispatchColorFinderPipe: DispatchColorFinderPipe
     ) {
-        super(router, modalService, repairService);
+        super();
     }
 
     ngOnInit(): void {
@@ -1217,24 +1214,18 @@ export class RepairTableComponent
     public updateCardView(): void {
         switch (this.selectedTab) {
             case TableStringEnum.ACTIVE:
-                this.cardTitle = TableStringEnum.INVOICE;
-
                 this.displayRows$ = this.store.pipe(
                     select(selectActiveTabCards)
                 );
 
                 break;
             case TableStringEnum.INACTIVE:
-                this.cardTitle = TableStringEnum.INVOICE;
-
                 this.displayRows$ = this.store.pipe(
                     select(selectInactiveTabCards)
                 );
 
                 break;
             case TableStringEnum.REPAIR_SHOP:
-                this.cardTitle = TableStringEnum.NAME;
-
                 this.displayRows$ = this.store.pipe(
                     select(selectRepairShopTabCards)
                 );

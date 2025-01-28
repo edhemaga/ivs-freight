@@ -35,13 +35,13 @@ import {
 import { TruckModalComponent } from '@pages/truck/pages/truck-modal/truck-modal.component';
 import { TrailerModalComponent } from '@pages/trailer/pages/trailer-modal/trailer-modal.component';
 import { TaTabSwitchComponent } from '@shared/components/ta-tab-switch/ta-tab-switch.component';
-import { TaInputAddressDropdownComponent } from '@shared/components/ta-input-address-dropdown/ta-input-address-dropdown.component';
 import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-custom-card.component';
 import {
     CaInputComponent,
     CaInputDropdownComponent,
     CaInputNoteComponent,
     CaModalComponent,
+    CaInputAddressDropdownComponent,
 } from 'ca-components';
 import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
 import { TaUploadFilesComponent } from '@shared/components/ta-upload-files/ta-upload-files.component';
@@ -52,7 +52,9 @@ import {
     OwnerResponse,
     AddressEntity,
     CreateResponse,
+    AddressResponse,
 } from 'appcoretruckassist';
+import { AddressListResponse } from '@ca-shared/models/address-list-response.model';
 
 //Services
 import { TaInputService } from '@shared/services/ta-input.service';
@@ -61,10 +63,11 @@ import { OwnerService } from '@pages/owner/services/owner.service';
 import { BankVerificationService } from '@shared/services/bank-verification.service';
 import { FormService } from '@shared/services/form.service';
 import { ConfirmationService } from '@shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
+import { AddressService } from '@shared/services/address.service';
 
 // Pipes
 import { FormatDatePipe } from '@shared/pipes';
-import { TaModalActionEnums } from '@shared/components/ta-modal/enums';
+import { TaModalActionEnum } from '@shared/components/ta-modal/enums';
 
 // Svg routes
 import { SharedSvgRoutes } from '@shared/utils/svg-routes';
@@ -77,6 +80,7 @@ import { TableStringEnum } from '@shared/enums';
 // Config
 import { OwnerModalConfig } from '@pages/owner/pages/owner-modal/utils/consts';
 import { ContactsModalConstants } from '@pages/contacts/pages/contacts-modal/utils/constants/contacts-modal.constants';
+import { AddressProperties } from '@shared/components/ta-input-address-dropdown/models/address-properties';
 
 @Component({
     selector: 'app-owner-modal',
@@ -98,7 +102,7 @@ import { ContactsModalConstants } from '@pages/contacts/pages/contacts-modal/uti
         TaTabSwitchComponent,
         CaInputComponent,
         CaInputDropdownComponent,
-        TaInputAddressDropdownComponent,
+        CaInputAddressDropdownComponent,
         TaCustomCardComponent,
         CaInputNoteComponent,
         TaUploadFilesComponent,
@@ -141,11 +145,14 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
     public longitude: number;
     public latitude: number;
 
+    public addressList: AddressListResponse;
+    public addressData: AddressResponse;
+
     private destroy$ = new Subject<void>();
 
     public isFormDirty: boolean;
     public svgRoutes = SharedSvgRoutes;
-    public taModalActionEnums = TaModalActionEnums;
+    public taModalActionEnum = TaModalActionEnum;
     public ownerModalConfig = OwnerModalConfig;
 
     public uploadOptionsConstants = ContactsModalConstants.UPLOAD_OPTIONS;
@@ -157,7 +164,8 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
         private bankVerificationService: BankVerificationService,
         private formService: FormService,
         private ngbActiveModal: NgbActiveModal,
-        private confirmationService: ConfirmationService
+        private confirmationService: ConfirmationService,
+        private addressService: AddressService
     ) {}
 
     ngOnInit() {
@@ -219,7 +227,7 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
 
     public onModalAction(action: string): void {
         switch (action) {
-            case TaModalActionEnums.CLOSE: {
+            case TaModalActionEnum.CLOSE: {
                 if (this.editData?.canOpenModal) {
                     switch (this.editData?.key) {
                         case 'truck-modal': {
@@ -256,7 +264,7 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
                 this.ngbActiveModal.close();
                 break;
             }
-            case TaModalActionEnums.SAVE_AND_ADD_NEW: {
+            case TaModalActionEnum.SAVE_AND_ADD_NEW: {
                 if (this.ownerForm.invalid || !this.isFormDirty) {
                     this.inputService.markInvalid(this.ownerForm);
                     return;
@@ -265,7 +273,7 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
                 this.addOwner();
                 break;
             }
-            case TaModalActionEnums.SAVE: {
+            case TaModalActionEnum.SAVE: {
                 if (this.ownerForm.invalid || !this.isFormDirty) {
                     this.inputService.markInvalid(this.ownerForm);
                     return;
@@ -278,7 +286,7 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
 
                 break;
             }
-            case TaModalActionEnums.DELETE:
+            case TaModalActionEnum.DELETE:
                 if (this.editData) {
                     this.modalService.openModal(
                         ConfirmationModalComponent,
@@ -640,6 +648,24 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
             .subscribe((isFormChange: boolean) => {
                 this.isFormDirty = isFormChange;
             });
+    }
+
+    public onAddressChange({
+        query,
+        searchLayers,
+        closedBorder,
+    }: AddressProperties): void {
+        this.addressService
+            .getAddresses(query, searchLayers, closedBorder)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((res) => (this.addressList = res));
+    }
+
+    public getAddressData(address: string): void {
+        this.addressService
+            .getAddressInfo(address)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((res) => (this.addressData = res));
     }
 
     ngOnDestroy(): void {

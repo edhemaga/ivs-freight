@@ -114,7 +114,9 @@
                                             *ngIf="cardRow.title === 'Label'"
                                         >
                                             <div
-                                                [style.width.px]="elementWidth"
+                                                [style.width.px]="
+                                                    dropdownElementWidth
+                                                "
                                             >
                                                 <app-ta-input-dropdown-label
                                                     [formControl]="
@@ -129,7 +131,7 @@
                                                         dropdownLabel: true,
                                                         dropdownWidthClass:
                                                             'w-col-' +
-                                                            elementWidth,
+                                                            dropdownElementWidth,
                                                         textTransform:
                                                             'lowercase',
                                                         minLength: 1,

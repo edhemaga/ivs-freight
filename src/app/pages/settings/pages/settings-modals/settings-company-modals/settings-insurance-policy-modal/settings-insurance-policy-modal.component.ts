@@ -118,7 +118,7 @@ export class SettingsInsurancePolicyModalComponent
 
     public isFormDirty: boolean;
 
-    public disableCardAnimation: boolean = false;
+    public isCardAnimationDisabled: boolean = false;
 
     constructor(
         private formBuilder: UntypedFormBuilder,
@@ -436,7 +436,7 @@ export class SettingsInsurancePolicyModalComponent
                     this.ratings = res.ratings;
 
                     if (this.editData.type === 'edit') {
-                        this.disableCardAnimation = true;
+                        this.isCardAnimationDisabled = true;
                         this.editInsurancePolicyById(this.editData.company);
                     } else {
                         this.startFormChanges();
@@ -1258,7 +1258,7 @@ export class SettingsInsurancePolicyModalComponent
         }
         setTimeout(() => {
             this.startFormChanges();
-            this.disableCardAnimation = false;
+            this.isCardAnimationDisabled = false;
         }, 1000);
     }
 
