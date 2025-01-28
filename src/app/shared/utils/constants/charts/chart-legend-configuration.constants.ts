@@ -186,14 +186,14 @@ export class ChartLegendConfiguration {
             [
                 {
                     name: 'Avg. Pickup Time',
-                    value: data?.avgPickupTime?.totalMinutes || 0,
+                    value: Number(data?.avgPickupTime) || 0,
                     // Since 'background' property is set with color, linear gradient can be used as well
                     color: '#86C9C3',
                     unit: 'days',
                 },
                 {
                     name: 'Avg. Delivery Time',
-                    value: data?.avgDeliveryTime?.totalMinutes || 0,
+                    value: Number(data?.avgDeliveryTime) || 0,
                     color: '#ED9292',
                     isLineIndicator: true,
                     unit: 'days',
