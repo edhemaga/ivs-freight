@@ -606,7 +606,7 @@ export class FuelTableComponent
             avatarImg: driver?.avatarFile?.url ?? null,
             avatarIsHoverEffect: FuelTableConstants.AVATAR_IS_HOVER_EFFECT,
             isSelected: false,
-            tableTruckNumber: truck.truckNumber,
+            tableTruckNumber: truck?.truckNumber,
             tableDriverName: driverFullName,
             tableDropdownComponentConstantsCardNumber:
                 fuelCard?.cardNumber ?? null,
@@ -646,7 +646,7 @@ export class FuelTableComponent
             tableDescriptionDropTotal,
             tableGallon: gallon,
             tablePPG: pricePerGallon,
-            tableTotal: tableDescriptionDropTotal,
+            tableCost: tableDescriptionDropTotal,
             tableAttachments: files,
             fileCount: files ? files.length : 0,
             tableAdded: this.datePipe.transform(
@@ -685,7 +685,7 @@ export class FuelTableComponent
                     ? `$${lowestPricePerGallon}`
                     : `$${lowestPricePerGallon} - $${highestPricePerGallon}`
                 : TableStringEnum.EMPTY_STRING_PLACEHOLDER;
-        const tableExpense = totalCost
+        const tableCost = totalCost
             ? `$${totalCost}`
             : FuelTableConstants.NO_EXPENSE;
 
@@ -714,7 +714,7 @@ export class FuelTableComponent
             tableUsed: used ?? TableStringEnum.EMPTY_STRING_PLACEHOLDER,
             tableLastUsed: lastUsed ?? TableStringEnum.EMPTY_STRING_PLACEHOLDER,
             tablePriceRange: tablePriceRange,
-            tableExpense: tableExpense,
+            tableCost,
             tableProgressRangeStart:
                 lowestPricePerGallon ??
                 TableStringEnum.EMPTY_STRING_PLACEHOLDER,
