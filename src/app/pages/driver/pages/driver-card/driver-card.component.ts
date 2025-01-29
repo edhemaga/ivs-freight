@@ -46,7 +46,7 @@ export class DriverCardComponent
     @Input() displayRowsFront: CardRows[];
     @Input() displayRowsBack: CardRows[];
 
-    private destroy$ = new Subject<void>();
+    protected destroy$ = new Subject<void>();
 
     public _viewData: CardDetails[];
 

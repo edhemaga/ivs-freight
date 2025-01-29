@@ -1,4 +1,4 @@
-import { tap } from 'rxjs';
+import { Subject, takeUntil, tap } from 'rxjs';
 
 // base classes
 import { DropdownMenuActionsBase } from '@shared/base-classes';
@@ -20,6 +20,8 @@ import { TableCardBodyActions } from '@shared/models';
 import { DriverResponse } from 'appcoretruckassist';
 
 export abstract class DriverDropdownMenuActionsBase extends DropdownMenuActionsBase {
+    protected abstract destroy$: Subject<void>;
+
     // services
     protected abstract driverService: DriverService;
 
@@ -85,6 +87,7 @@ export abstract class DriverDropdownMenuActionsBase extends DropdownMenuActionsB
         this.driverService
             .getDriverById(id)
             .pipe(
+                takeUntil(this.destroy$),
                 tap((driver: DriverResponse) => {
                     const editData = {
                         data: {
