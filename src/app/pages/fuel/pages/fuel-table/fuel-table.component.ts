@@ -329,14 +329,11 @@ export class FuelTableComponent
             .deleteFuelStopList(ids)
             .pipe(takeUntil(this.destroy$))
             .subscribe(() => {
-                this.viewData = this.viewData.map((stop) => {
-                    ids.map((id) => {
-                        if (stop.id === id)
-                            stop.actionAnimation =
-                                TableStringEnum.DELETE_MULTIPLE;
-                    });
+                ids.forEach((id) => {
+                    const stop = this.viewData.find((stop) => stop.id === id);
 
-                    return stop;
+                    if (stop)
+                        stop.actionAnimation = TableStringEnum.DELETE_MULTIPLE;
                 });
 
                 this.updateDataCount();
