@@ -11,7 +11,7 @@
                     'body-active':
                         isCardFlippedCheckInCards.includes(i) ||
                         isAllCardsFlipp,
-                    'body-checked': card.isSelected
+                    'body-checked': card.isSelected,
                 }"
             >
                 <!-- Left side of the card -->
@@ -101,7 +101,12 @@
                                 class="title"
                                 (click)="
                                     tabSelected !== 'applicants'
-                                        ? goToDetailsPage(card.id)
+                                        ? goToDetailsPage(
+                                              card,
+                                              '/list/driver/' +
+                                                  card.id +
+                                                  '/details'
+                                          )
                                         : ''
                                 "
                             >
@@ -212,7 +217,7 @@
                                             cardRow.title !== 'MVR Exp.'
                                         "
                                     >
-                                        {{ card | cardValue : cardRow }}
+                                        {{ card | cardValue: cardRow }}
                                     </ng-container>
                                 </div>
                             </div>
@@ -224,12 +229,16 @@
 
                 <div class="card-body-right">
                     <div class="top-side">
-                        <!-- Open dropdown element-->
-
-                        <app-ta-table-card-dropdown-actions
-                            [card]="card"
-                            (bodyActions)="onCardActions($event)"
-                        ></app-ta-table-card-dropdown-actions>
+                        <!-- Dropdown Menu -->
+                        <ca-dropdown-menu
+                            [type]="'dots-menu-type'"
+                            [placement]="'right-top'"
+                            [options]="card.tableDropdownContent"
+                            (dropdownOptionEmitter)="
+                                handleToggleDropdownMenuActions($event, card)
+                            "
+                        >
+                        </ca-dropdown-menu>
 
                         <!-- Note element -->
 
@@ -259,7 +268,7 @@
                                     [src]="driverImageRoutes.attachment"
                                     [svgStyle]="{
                                         'width.px': '18',
-                                        'height.px': '18'
+                                        'height.px': '18',
                                     }"
                                 ></svg-icon>
                                 <div class="file_count">
@@ -334,7 +343,7 @@
                                         isCardFlippedCheckInCards.includes(i) ||
                                         isAllCardsFlipp,
                                     'svg-position':
-                                        !isCardFlippedCheckInCards.includes(i)
+                                        !isCardFlippedCheckInCards.includes(i),
                                 }"
                                 customClass="mt-2"
                             >

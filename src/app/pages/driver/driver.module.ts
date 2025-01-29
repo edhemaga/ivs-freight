@@ -26,6 +26,7 @@ import { TaProgressExpirationComponent } from '@shared/components/ta-progress-ex
 import { TaNoteComponent } from '@shared/components/ta-note/ta-note.component';
 import { TaTableCardDropdownActionsComponent } from '@shared/components/ta-table-card-dropdown-actions/ta-table-card-dropdown-actions.component';
 import { TaProgresBarComponent } from '@shared/components/ta-progres-bar/ta-progres-bar.component';
+import { CaDropdownMenuComponent } from 'ca-components';
 
 // pipes
 import { FormatDatePipe } from '@shared/pipes/format-date.pipe';
@@ -64,6 +65,7 @@ import { driverCardModalReducer } from '@pages/driver/pages/driver-card-modal/st
         TaNoteComponent,
         TaTableCardDropdownActionsComponent,
         TaProgresBarComponent,
+        CaDropdownMenuComponent,
 
         // pipes
         FormatDatePipe,
@@ -73,4 +75,4 @@ import { driverCardModalReducer } from '@pages/driver/pages/driver-card-modal/st
         StoreModule.forFeature('driverCardData', driverCardModalReducer),
     ],
 })
-export class DriverModule { }
+export class DriverModule {}

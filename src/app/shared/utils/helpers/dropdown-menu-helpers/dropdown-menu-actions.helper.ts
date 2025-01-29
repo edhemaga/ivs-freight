@@ -24,6 +24,7 @@ import {
 import { PMTrailerUnitResponse, PMTruckUnitResponse } from 'appcoretruckassist';
 import { TruckModalComponent } from '@pages/truck/pages/truck-modal/truck-modal.component';
 import { TrailerModalComponent } from '@pages/trailer/pages/trailer-modal/trailer-modal.component';
+import { DriverModalComponent } from '@pages/driver/pages/driver-modals/driver-modal/driver-modal.component';
 
 export class DropdownMenuActionsHelper {
     static createDropdownMenuActionsEmitEvent<T extends { id?: number }>(
@@ -59,6 +60,7 @@ export class DropdownMenuActionsHelper {
             [DropdownMenuStringEnum.FUEL_STOP]: FuelStopModalComponent,
             [DropdownMenuStringEnum.TRUCK]: TruckModalComponent,
             [DropdownMenuStringEnum.TRAILER]: TrailerModalComponent,
+            [DropdownMenuStringEnum.DRIVER]: DriverModalComponent,
         };
 
         return modalComponentMap[tableType];

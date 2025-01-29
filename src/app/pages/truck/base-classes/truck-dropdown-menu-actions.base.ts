@@ -17,12 +17,8 @@ export abstract class TruckDropdownMenuActionsBase extends DropdownMenuActionsBa
         event: TableCardBodyActions<T>,
         tableType: string
     ) {
-        const {
-            data: { status },
-            type,
-        } = event;
-
-        const tabSelected = status
+        const { type } = event;
+        const tabSelected = event.data?.status
             ? TableStringEnum.ACTIVE
             : TableStringEnum.INACTIVE;
 
