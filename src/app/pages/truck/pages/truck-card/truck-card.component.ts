@@ -42,7 +42,6 @@ export class TruckCardComponent
     }
 
     // card body endpoints
-    @Input() cardTitle: string;
     @Input() displayRowsFront: CardRows[];
     @Input() displayRowsBack: CardRows[];
 
@@ -59,9 +58,10 @@ export class TruckCardComponent
         protected router: Router,
 
         // services
+        protected modalService: ModalService,
+
         private tableService: TruckassistTableService,
         private detailsDataService: DetailsDataService,
-        protected modalService: ModalService,
 
         // helpers
         private cardHelper: CardHelper

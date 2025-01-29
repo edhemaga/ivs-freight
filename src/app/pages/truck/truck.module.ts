@@ -15,7 +15,6 @@ import { TaTableToolbarComponent } from '@shared/components/ta-table/ta-table-to
 import { TaTableBodyComponent } from '@shared/components/ta-table/ta-table-body/ta-table-body.component';
 import { TaTableHeadComponent } from '@shared/components/ta-table/ta-table-head/ta-table-head.component';
 import { TaNoteComponent } from '@shared/components/ta-note/ta-note.component';
-import { TaTableCardDropdownActionsComponent } from '@shared/components/ta-table-card-dropdown-actions/ta-table-card-dropdown-actions.component';
 import { TaProgresBarComponent } from '@shared/components/ta-progres-bar/ta-progres-bar.component';
 import { TaTabSwitchComponent } from '@shared/components/ta-tab-switch/ta-tab-switch.component';
 

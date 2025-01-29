@@ -28,17 +28,15 @@
             [tableData]="tableData"
         ></app-ta-table-body>
     </ng-container>
+
     <!-- Cards -->
 
     <ng-container *ngIf="activeViewMode === 'Card'">
         <div class="elements">
             <app-truck-card
                 [viewData]="viewData"
-                [rows]="rows"
-                [cardTitle]="cardTitle"
                 [displayRowsFront]="(displayRows$ | async).displayRowsFront"
                 [displayRowsBack]="(displayRows$ | async).displayRowsBack"
-                [page]="page"
             >
             </app-truck-card>
             <!-- Show More -->

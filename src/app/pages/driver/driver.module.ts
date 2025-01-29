@@ -24,7 +24,6 @@ import { TaCommonCardComponent } from '@shared/components/ta-common-card/ta-comm
 import { TaCounterComponent } from '@shared/components/ta-counter/ta-counter.component';
 import { TaProgressExpirationComponent } from '@shared/components/ta-progress-expiration/ta-progress-expiration.component';
 import { TaNoteComponent } from '@shared/components/ta-note/ta-note.component';
-import { TaTableCardDropdownActionsComponent } from '@shared/components/ta-table-card-dropdown-actions/ta-table-card-dropdown-actions.component';
 import { TaProgresBarComponent } from '@shared/components/ta-progres-bar/ta-progres-bar.component';
 import { CaDropdownMenuComponent } from 'ca-components';
 
@@ -63,7 +62,6 @@ import { driverCardModalReducer } from '@pages/driver/pages/driver-card-modal/st
         TaProgressExpirationComponent,
         TaCounterComponent,
         TaNoteComponent,
-        TaTableCardDropdownActionsComponent,
         TaProgresBarComponent,
         CaDropdownMenuComponent,
 

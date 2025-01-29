@@ -32,16 +32,13 @@
             (saveValueNote)="saveValueNote($event)"
         ></app-ta-table-body>
     </ng-container>
+
     <ng-container *ngIf="activeViewMode === 'Card'">
         <div class="elements">
             <app-trailer-card
                 [viewData]="viewData"
-                [rows]="rows"
-                [cardTitle]="cardTitle"
                 [displayRowsFront]="(displayRows$ | async).displayRowsFront"
                 [displayRowsBack]="(displayRows$ | async).displayRowsBack"
-                [page]="page"
-                [selectedTab]="selectedTab"
                 (saveValueNote)="saveValueNote($event)"
             >
             </app-trailer-card>

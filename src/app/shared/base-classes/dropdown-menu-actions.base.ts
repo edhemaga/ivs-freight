@@ -21,9 +21,6 @@ import {
     PMTruckUnitResponse,
     RepairShopResponse,
 } from 'appcoretruckassist';
-import { TtRegistrationModalComponent } from '@shared/components/ta-shared-modals/truck-trailer-modals/modals/tt-registration-modal/tt-registration-modal.component';
-import { TtFhwaInspectionModalComponent } from '@shared/components/ta-shared-modals/truck-trailer-modals/modals/tt-fhwa-inspection-modal/tt-fhwa-inspection-modal.component';
-import { TtTitleModalComponent } from '@shared/components/ta-shared-modals/truck-trailer-modals/modals/tt-title-modal/tt-title-modal.component';
 
 export abstract class DropdownMenuActionsBase {
     // router
@@ -84,15 +81,9 @@ export abstract class DropdownMenuActionsBase {
 
                 break;
             case DropdownMenuStringEnum.REGISTRATION_TYPE:
-                this.handleAddRegistrationAction(event);
-
-                break;
             case DropdownMenuStringEnum.FHWA_INSPECTION_TYPE:
-                this.handleAddInspectionAction(event);
-
-                break;
             case DropdownMenuStringEnum.TITLE_TYPE:
-                this.handleAddTitleAction(event);
+                this.handleTruckTrailerAddActions(event);
 
                 break;
             default:
@@ -207,31 +198,18 @@ export abstract class DropdownMenuActionsBase {
         );
     }
 
-    private handleAddRegistrationAction<T>(
+    private handleTruckTrailerAddActions<T>(
         event: TableCardBodyActions<T>
     ): void {
-        this.modalService.openModal(
-            TtRegistrationModalComponent,
-            { size: DropdownMenuStringEnum.SMALL },
-            {
-                ...event,
-            }
-        );
-    }
+        const { type } = event;
 
-    private handleAddInspectionAction<T>(event: TableCardBodyActions<T>): void {
-        this.modalService.openModal(
-            TtFhwaInspectionModalComponent,
-            { size: DropdownMenuStringEnum.SMALL },
-            {
-                ...event,
-            }
-        );
-    }
+        const addAdditionalModalComponent =
+            DropdownMenuActionsHelper.getAddTruckTrailerAdditionalModalComponent(
+                type
+            );
 
-    private handleAddTitleAction<T>(event: TableCardBodyActions<T>): void {
         this.modalService.openModal(
-            TtTitleModalComponent,
+            addAdditionalModalComponent,
             { size: DropdownMenuStringEnum.SMALL },
             {
                 ...event,

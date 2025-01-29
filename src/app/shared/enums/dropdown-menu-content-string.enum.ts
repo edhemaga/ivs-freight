@@ -137,7 +137,6 @@ export enum DropdownMenuStringEnum {
     INVITED = 'Invited',
     EXPIRED = 'Expired',
     FUEL = 'fuel',
-    DRIVER_1 = 'Driver',
 
     // sizes
     SMALL = 'small',

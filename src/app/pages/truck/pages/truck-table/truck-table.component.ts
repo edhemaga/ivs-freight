@@ -103,10 +103,6 @@ export class TruckTableComponent
     public columns: TableColumnConfig[] = [];
 
     // cards
-    public cardTitle: string = TruckCardDataConstants.cardTitle;
-    public page: string = TruckCardDataConstants.page;
-    public rows: number = TruckCardDataConstants.rows;
-
     public displayRowsFront: CardRows[] =
         TruckCardDataConstants.displayRowsFrontActive;
     public displayRowsBack: CardRows[] =

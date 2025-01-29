@@ -23,10 +23,7 @@
             [options]="tableOptions"
             [selectedTab]="selectedTab"
             (tableBodyActions)="
-                handleDropdownMenuActions(
-                    $event,
-                    dropdownMenuStringEnum.DRIVER
-                )
+                handleDropdownMenuActions($event, dropdownMenuStringEnum.DRIVER)
             "
             [tableData]="tableData"
         ></app-ta-table-body>
@@ -36,11 +33,8 @@
         <div class="elements">
             <app-driver-card
                 [viewData]="viewData"
-                [rows]="rows"
-                [cardTitle]="cardTitle"
                 [displayRowsFront]="(displayRows$ | async).displayRowsFront"
                 [displayRowsBack]="(displayRows$ | async).displayRowsBack"
-                [page]="page"
             ></app-driver-card>
 
             <!-- Show More -->

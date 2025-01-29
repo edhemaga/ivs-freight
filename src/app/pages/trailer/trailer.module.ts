@@ -18,7 +18,6 @@ import { CardValuePipe } from '@shared/pipes/card-value.pipe';
 import { TrailerTableComponent } from '@pages/trailer/pages/trailer-table/trailer-table.component';
 import { TaNoteComponent } from '@shared/components/ta-note/ta-note.component';
 import { TaProgresBarComponent } from '@shared/components/ta-progres-bar/ta-progres-bar.component';
-import { TaTableCardDropdownActionsComponent } from '@shared/components/ta-table-card-dropdown-actions/ta-table-card-dropdown-actions.component';
 import { TaTableBodyComponent } from '@shared/components/ta-table/ta-table-body/ta-table-body.component';
 import { TaTableHeadComponent } from '@shared/components/ta-table/ta-table-head/ta-table-head.component';
 import { TaTableToolbarComponent } from '@shared/components/ta-table/ta-table-toolbar/ta-table-toolbar.component';
@@ -47,7 +46,6 @@ import { trailerCardModalReducer } from '@pages/trailer/pages/trailer-card-modal
         TaTableBodyComponent,
         TaTableHeadComponent,
         TaNoteComponent,
-        TaTableCardDropdownActionsComponent,
         TaProgresBarComponent,
         TaStateImageTextComponent,
         TaProfileImagesComponent,

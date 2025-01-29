@@ -6,7 +6,7 @@ import { DropdownMenuStringEnum, TableStringEnum } from '@shared/enums';
 
 // models
 import { TableCardBodyActions } from '@shared/models';
-import { TrailerMapped } from '../pages/trailer-table/models/trailer-mapped.model';
+import { TrailerMapped } from '@pages/trailer/pages/trailer-table/models/trailer-mapped.model';
 
 export abstract class TrailerDropdownMenuActionsBase extends DropdownMenuActionsBase {
     constructor() {

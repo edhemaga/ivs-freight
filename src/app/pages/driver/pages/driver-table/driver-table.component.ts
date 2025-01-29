@@ -1,6 +1,7 @@
 import { Component, OnDestroy, OnInit, AfterViewInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { forkJoin, map, Observable, Subject, takeUntil, tap } from 'rxjs';
+
+import { forkJoin, map, Observable, Subject, takeUntil } from 'rxjs';
 
 // components
 import { DriverModalComponent } from '@pages/driver/pages/driver-modals/driver-modal/driver-modal.component';
@@ -9,7 +10,7 @@ import { ApplicantModalComponent } from '@pages/applicant/pages/applicant-modal/
 import { ConfirmationActivationModalComponent } from '@shared/components/ta-shared-modals/confirmation-activation-modal/confirmation-activation-modal.component';
 
 // base classes
-import { DriverDropdownMenuActionsBase } from '@pages/driver/base-classes/driver-dropdown-menu-actions.base';
+import { DriverDropdownMenuActionsBase } from '@pages/driver/base-classes';
 
 // settings
 import { getDriverApplicantColumnsDefinition } from '@shared/utils/settings/table-settings/driver-applicant-columns';
@@ -90,7 +91,7 @@ export class DriverTableComponent
     extends DriverDropdownMenuActionsBase
     implements OnInit, AfterViewInit, OnDestroy
 {
-    protected destroy$ = new Subject<void>();
+    public destroy$ = new Subject<void>();
 
     public dropdownMenuStringEnum = DropdownMenuStringEnum;
 
@@ -98,6 +99,7 @@ export class DriverTableComponent
     public activeViewMode: string = TableStringEnum.LIST;
 
     public selectedTab: string = TableStringEnum.ACTIVE;
+    public applicantTabActive: boolean = false;
 
     public driversActive: DriverState[] = [];
     public driversInactive: DriversInactiveState[] = [];
@@ -115,12 +117,6 @@ export class DriverTableComponent
     public columns: GridColumn[] = [];
 
     // cards
-    public cardTitle: string = DriverTableConfiguration.cardTitle;
-    public page: string = DriverTableConfiguration.page;
-    public rows: number = DriverTableConfiguration.rows;
-
-    public applicantTabActive: boolean = false;
-
     public displayRowsFront: CardRows[] =
         DriverTableConfiguration.displayRowsActiveFront;
     public displayRowsBack: CardRows[] =
@@ -139,7 +135,7 @@ export class DriverTableComponent
 
     public sendDataToCardsFront: CardRows[];
     public sendDataToCardsBack: CardRows[];
-    public displayRows$: Observable<any>; //leave this as any for now
+    public displayRows$: Observable<any>;
 
     // filters
     public driverBackFilterQuery: FilterOptionDriver = JSON.parse(
@@ -150,11 +146,12 @@ export class DriverTableComponent
         protected router: Router,
 
         // services
+        protected modalService: ModalService,
+        protected driverService: DriverService,
+
         private addressService: AddressService,
         private applicantService: ApplicantService,
-        protected modalService: ModalService,
         private tableService: TruckassistTableService,
-        protected driverService: DriverService,
         private confirmationService: ConfirmationService,
         private confirmationActivationService: ConfirmationActivationService,
         private driverCardsModalService: DriverCardsModalService,
@@ -240,6 +237,7 @@ export class DriverTableComponent
                         const driverIds = res.array.map((driver) => {
                             return driver.id;
                         });
+
                         this.changeDriverStatusList(driverIds);
 
                         break;
@@ -775,17 +773,17 @@ export class DriverTableComponent
             case TableStringEnum.INACTIVE:
                 this.sendDataToCardsFront = this.displayRowsFront;
                 this.sendDataToCardsBack = this.displayRowsBack;
-                break;
 
+                break;
             case TableStringEnum.APPLICANTS:
-                this.cardTitle = TableStringEnum.NAME;
                 this.sendDataToCardsFront = this.displayRowsFrontApplicants;
                 this.sendDataToCardsBack = this.displayRowsBackApplicants;
-                break;
 
+                break;
             default:
                 this.sendDataToCardsFront = this.displayRowsFront;
                 this.sendDataToCardsBack = this.displayRowsBack;
+
                 break;
         }
     }
@@ -1385,137 +1383,6 @@ export class DriverTableComponent
             }
         }
     }
-
-    // public onTableBodyActions(event: any): void {
-    //     const mappedEvent = {
-    //         ...event,
-    //         data: {
-    //             ...event.data,
-    //             name: event.data?.fullName,
-    //         },
-    //     };
-
-    //     if (event.type === TableStringEnum.SHOW_MORE) {
-    //         if (this.selectedTab === TableStringEnum.APPLICANTS) {
-    //             this.applicantBackFilterQuery.applicantSpecParamsPageIndex++;
-
-    //             this.applicantBackFilter(this.applicantBackFilterQuery, true);
-    //         } else {
-    //             this.driverBackFilterQuery.active =
-    //                 this.selectedTab === TableStringEnum.ACTIVE ? 1 : 0;
-    //             this.driverBackFilterQuery.pageIndex++;
-    //             this.driverBackFilter(this.driverBackFilterQuery, true);
-    //         }
-    //     } else if (event.type === TableStringEnum.EDIT) {
-    //         if (this.selectedTab === TableStringEnum.APPLICANTS) {
-    //             this.modalService.openModal(
-    //                 ApplicantModalComponent,
-    //                 {
-    //                     size: TableStringEnum.SMALL,
-    //                 },
-    //                 {
-    //                     id: 1,
-    //                     type: TableStringEnum.EDIT,
-    //                 }
-    //             );
-    //         } else {
-    //             this.getDriverById(event.id);
-    //         }
-    //     } else if (event.type === TableStringEnum.NEW_LICENCE) {
-    //         this.modalService.openModal(
-    //             DriverCdlModalComponent,
-    //             { size: TableStringEnum.SMALL },
-    //             { ...event, tableActiveTab: this.selectedTab }
-    //         );
-    //     } else if (event.type === TableStringEnum.VIEW_DETAILS) {
-    //         this.router.navigate([`/list/driver/${event.id}/details`]);
-    //     } else if (event.type === TableStringEnum.NEW_MEDICAL) {
-    //         this.modalService.openModal(
-    //             DriverMedicalModalComponent,
-    //             {
-    //                 size: TableStringEnum.SMALL,
-    //             },
-    //             { ...event, tableActiveTab: this.selectedTab }
-    //         );
-    //     } else if (event.type === TableStringEnum.NEW_MVR) {
-    //         this.modalService.openModal(
-    //             DriverMvrModalComponent,
-    //             { size: TableStringEnum.SMALL },
-    //             { ...event, tableActiveTab: this.selectedTab }
-    //         );
-    //     } else if (event.type === TableStringEnum.NEW_DRUG) {
-    //         this.modalService.openModal(
-    //             DriverDrugAlcoholTestModalComponent,
-    //             {
-    //                 size: TableStringEnum.SMALL,
-    //             },
-    //             { ...event, tableActiveTab: this.selectedTab }
-    //         );
-    //     } else if (event.type === TableStringEnum.ACTIVATE_ITEM) {
-    //         this.modalService.openModal(
-    //             ConfirmationActivationModalComponent,
-    //             { size: TableStringEnum.SMALL },
-    //             {
-    //                 ...mappedEvent,
-    //                 subType: TableStringEnum.DRIVER_1,
-    //                 type:
-    //                     event.data.status === 1
-    //                         ? TableStringEnum.DEACTIVATE
-    //                         : TableStringEnum.ACTIVATE,
-    //                 template: TableStringEnum.DRIVER_1,
-    //                 tableType: TableStringEnum.DRIVER,
-    //             }
-    //         );
-    //     } else if (event.type === TableStringEnum.DELETE_ITEM) {
-    //         this.modalService.openModal(
-    //             ConfirmationModalComponent,
-    //             { size: TableStringEnum.SMALL },
-    //             {
-    //                 ...mappedEvent,
-    //                 template: TableStringEnum.DRIVER,
-    //                 type: TableStringEnum.DELETE,
-    //                 image: true,
-    //             }
-    //         );
-    //     }
-    // }
-
-    // private getDriverById(id: number): void {
-    //     this.driverService
-    //         .getDriverById(id)
-    //         .pipe(
-    //             takeUntil(this.destroy$),
-    //             tap((driver) => {
-    //                 const selectedDriver = this.viewData.find(
-    //                     (driver) => driver.id === id
-    //                 );
-
-    //                 const editData = {
-    //                     data: {
-    //                         ...driver,
-    //                         avatarImg: selectedDriver.avatarImg,
-    //                         avatarColor: selectedDriver.avatarColor,
-    //                         textShortName: selectedDriver.textShortName,
-    //                         name: selectedDriver.fullName,
-    //                         tableDOB: selectedDriver.tableDOB,
-    //                     },
-    //                     type: TableStringEnum.EDIT,
-    //                     id,
-    //                     disableButton: true,
-    //                 };
-
-    //                 this.modalService.openModal(
-    //                     DriverModalComponent,
-    //                     { size: TableStringEnum.MEDIUM },
-    //                     {
-    //                         ...editData,
-    //                         isDeactivateOnly: true,
-    //                     }
-    //                 );
-    //             })
-    //         )
-    //         .subscribe();
-    // }
 
     // Get Tab Table Data For Selected Tab
     public getSelectedTabTableData(): void {
