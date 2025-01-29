@@ -556,7 +556,7 @@ export function getFuelStopColumnDefinition() {
         {
             ngTemplate: 'text',
             title: 'Expense',
-            field: 'tableExpense',
+            field: 'tableCost',
             name: 'Expense',
             sortName: 'cost',
             hidden: false,
