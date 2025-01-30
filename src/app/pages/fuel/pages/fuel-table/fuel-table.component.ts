@@ -789,7 +789,7 @@ export class FuelTableComponent
                     ? `$${lowestPricePerGallon}`
                     : `$${lowestPricePerGallon} - $${highestPricePerGallon}`
                 : TableStringEnum.EMPTY_STRING_PLACEHOLDER;
-        const tableExpense = totalCost
+        const tableCost = totalCost
             ? `$${totalCost}`
             : FuelTableConstants.NO_EXPENSE;
 
@@ -818,7 +818,7 @@ export class FuelTableComponent
             tableUsed: used ?? TableStringEnum.EMPTY_STRING_PLACEHOLDER,
             tableLastUsed: lastUsed ?? TableStringEnum.EMPTY_STRING_PLACEHOLDER,
             tablePriceRange: tablePriceRange,
-            tableExpense: tableExpense,
+            tableCost,
             tableProgressRangeStart:
                 lowestPricePerGallon ??
                 TableStringEnum.EMPTY_STRING_PLACEHOLDER,
