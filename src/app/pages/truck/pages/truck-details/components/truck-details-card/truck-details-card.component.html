@@ -1,24 +1,26 @@
-<div *ngIf="truck" class="cards-item-wrapper-1">
-    <app-ta-details-header-card
-        [ngClass]="{
-            disabedPreviousArrow: truckIndex == 0,
-            disableNextArrow: truckIndex == truck_list.length - 1,
-        }"
-        [cardDetailsDate]="truck.createdAt | formatDateP"
-        [tooltipNext]="truckIndex == truck_list.length - 1 ? '' : 'Next Truck'"
-        [tooltipPrevious]="truckIndex == 0 ? '' : 'Previous Truck'"
-        [searchInputName]="'Search Truck'"
-        [options]="truckDropDowns"
-        [currentName]="truck?.truckNumber"
-        [deactivate]="!truck?.status"
-        [owner]="!truck?.companyOwned"
-        [ownerName]="truck?.owner?.name"
-        [cardDetailsDateTerminated]="truck?.updatedAt | formatDateP"
-        [sortOptions]="'active-drivers'"
-        (selectValue)="onSelectedTruck($event)"
-        (changeEvent)="onChangeTruck($event)"
-    >
-        <ng-container>
+@if (truck) {
+    <div class="cards-item-wrapper-1">
+        <app-ta-details-header-card
+            [ngClass]="{
+                disabedPreviousArrow: truckIndex == 0,
+                disableNextArrow: truckIndex == truck_list.length - 1,
+            }"
+            [cardDetailsDate]="truck.createdAt | formatDateP"
+            [tooltipNext]="
+                truckIndex == truck_list.length - 1 ? '' : 'Next Truck'
+            "
+            [tooltipPrevious]="truckIndex == 0 ? '' : 'Previous Truck'"
+            [searchInputName]="'Search Truck'"
+            [options]="truckDropDowns"
+            [currentName]="truck?.truckNumber"
+            [deactivate]="!truck?.status"
+            [owner]="!truck?.companyOwned"
+            [ownerName]="truck?.owner?.name"
+            [cardDetailsDateTerminated]="truck?.updatedAt | formatDateP"
+            [sortOptions]="'active-drivers'"
+            (selectValue)="onSelectedTruck($event)"
+            (changeEvent)="onChangeTruck($event)"
+        >
             <div class="truck-details-wrapper">
                 <div class="details-header-avatar">
                     <div
@@ -52,62 +54,67 @@
                 </div>
                 <div class="details-header-data">
                     <div class="details-header-data-item">
-                        <div
-                            *ngIf="truck.color"
-                            class="light-green"
-                            [class.whiteColorCode]="
-                                truck?.color?.code == '#F9F9F9'
-                            "
-                        >
-                            <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                width="18"
-                                height="18"
-                                viewBox="0 0 18 18"
+                        @if (truck.color) {
+                            <div
+                                class="light-green"
+                                [class.whiteColorCode]="
+                                    truck?.color?.code == '#F9F9F9'
+                                "
                             >
-                                <g transform="translate(-725 -247)">
-                                    <rect
-                                        width="18"
-                                        height="18"
-                                        transform="translate(725 247)"
-                                        fill="none"
-                                    />
-                                    <path
-                                        d="M16,16.365c0-2.42,3.382-7.593,4.989-9.912a1,1,0,0,1,1.66,0c1.607,2.319,4.989,7.492,4.989,9.912a5.819,5.819,0,1,1-11.638,0Zm3.174,0a.529.529,0,0,0-1.058,0,3.708,3.708,0,0,0,3.7,3.733.529.529,0,1,0,0-1.058A2.651,2.651,0,0,1,19.174,16.365Z"
-                                        transform="translate(712.181 241.886)"
-                                        [attr.fill]="truck.color.code"
-                                    />
-                                </g>
-                            </svg>
-                        </div>
-                        <p *ngIf="truck.color" class="vin-text header-text">
-                            {{ truck?.color.name }}
-                        </p>
-                        <div *ngIf="!truck.color" class="light-green">
-                            <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                width="18"
-                                height="18"
-                                viewBox="0 0 18 18"
-                            >
-                                <g transform="translate(-725 -247)">
-                                    <rect
-                                        width="18"
-                                        height="18"
-                                        transform="translate(725 247)"
-                                        fill="none"
-                                    />
-                                    <path
-                                        d="M16,16.365c0-2.42,3.382-7.593,4.989-9.912a1,1,0,0,1,1.66,0c1.607,2.319,4.989,7.492,4.989,9.912a5.819,5.819,0,1,1-11.638,0Zm3.174,0a.529.529,0,0,0-1.058,0,3.708,3.708,0,0,0,3.7,3.733.529.529,0,1,0,0-1.058A2.651,2.651,0,0,1,19.174,16.365Z"
-                                        transform="translate(712.181 241.886)"
-                                        [attr.fill]="'#919191'"
-                                    />
-                                </g>
-                            </svg>
-                        </div>
-                        <p *ngIf="!truck.color" class="vin-text header-text">
-                            No Color
-                        </p>
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    width="18"
+                                    height="18"
+                                    viewBox="0 0 18 18"
+                                >
+                                    <g transform="translate(-725 -247)">
+                                        <rect
+                                            width="18"
+                                            height="18"
+                                            transform="translate(725 247)"
+                                            fill="none"
+                                        />
+                                        <path
+                                            d="M16,16.365c0-2.42,3.382-7.593,4.989-9.912a1,1,0,0,1,1.66,0c1.607,2.319,4.989,7.492,4.989,9.912a5.819,5.819,0,1,1-11.638,0Zm3.174,0a.529.529,0,0,0-1.058,0,3.708,3.708,0,0,0,3.7,3.733.529.529,0,1,0,0-1.058A2.651,2.651,0,0,1,19.174,16.365Z"
+                                            transform="translate(712.181 241.886)"
+                                            [attr.fill]="truck.color.code"
+                                        />
+                                    </g>
+                                </svg>
+                            </div>
+                        }
+                        @if (truck.color) {
+                            <p class="vin-text header-text">
+                                {{ truck?.color.name }}
+                            </p>
+                        }
+                        @if (!truck.color) {
+                            <div class="light-green">
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    width="18"
+                                    height="18"
+                                    viewBox="0 0 18 18"
+                                >
+                                    <g transform="translate(-725 -247)">
+                                        <rect
+                                            width="18"
+                                            height="18"
+                                            transform="translate(725 247)"
+                                            fill="none"
+                                        />
+                                        <path
+                                            d="M16,16.365c0-2.42,3.382-7.593,4.989-9.912a1,1,0,0,1,1.66,0c1.607,2.319,4.989,7.492,4.989,9.912a5.819,5.819,0,1,1-11.638,0Zm3.174,0a.529.529,0,0,0-1.058,0,3.708,3.708,0,0,0,3.7,3.733.529.529,0,1,0,0-1.058A2.651,2.651,0,0,1,19.174,16.365Z"
+                                            transform="translate(712.181 241.886)"
+                                            [attr.fill]="'#919191'"
+                                        />
+                                    </g>
+                                </svg>
+                            </div>
+                        }
+                        @if (!truck.color) {
+                            <p class="vin-text header-text">No Color</p>
+                        }
                         <svg-icon
                             [ngClass]="{
                                 'date-details-svg': truck?.color?.code,
@@ -134,719 +141,693 @@
                     </div>
                 </div>
             </div>
-        </ng-container>
-    </app-ta-details-header-card>
-    <div
-        class="wrapper-additional-cards"
-        [ngClass]="{ 'bind-height': !templateCard }"
-    >
-        <div class="details-cards">
-            <!--------Assinged to--------->
-            <app-ta-custom-card
-                [bodyTemplate]="'card'"
-                [hasDivider]="false"
-                [cardName]="'Assigned To'"
-                [tooltipName]="'Dispatch History'"
-                [hasHeaderSvg]="'assets/svg/common/ic_half_time.svg'"
-                [isCardOpen]="true"
-                [customClass]="'detailsPadding'"
-                [animationMarginParams]="{
-                    marginTop: '0px',
-                    marginBottom: '10px',
-                }"
-            >
-                <div class="assign-to">
-                    <div
-                        class="assign-to-item first"
-                        *ngIf="truck?.assignedTo?.trailer?.id"
-                    >
-                        <svg-icon
-                            class="assign-to-vehicle backImage"
-                            [src]="
-                                'assets/svg/common/trailers/' +
-                                truck.assignedTo.trailer.trailerType.logoName
-                            "
-                        ></svg-icon>
-                        <p class="assign-to-value">
-                            {{ truck.assignedTo.trailer.trailerNumber }}
-                        </p>
-                    </div>
-                    <div
-                        class="assign-to-item"
-                        *ngIf="!truck?.assignedTo?.trailer?.id"
-                    >
-                        <p class="assign-to-value inactive-assign-to-value">
-                            No Trailer
-                        </p>
-                    </div>
-                    <div
-                        class="assign-to-item"
-                        *ngIf="truck?.assignedTo?.driver?.id"
-                    >
-                        <ng-container
-                            *ngIf="
-                                !truck.assignedTo?.driver?.avatarFile?.url;
-                                else avatarImage
-                            "
-                        >
-                            <p>
-                                {{
-                                    truck.assignedTo.driver.firstName[0] +
-                                        truck.assignedTo.driver.lastName[0]
-                                }}
-                            </p>
-                        </ng-container>
-                        <ng-template #avatarImage>
-                            <img
-                                class="driverAvatarImg"
-                                [src]="truck.assignedTo.driver.avatarFile.url"
-                                alt="driver-image"
-                            />
-                        </ng-template>
-                        <p class="assign-to-value">
-                            {{ truck.assignedTo.driver.firstName }}
-                            {{ truck.assignedTo.driver.lastName }}
-                        </p>
-                    </div>
-                    <div
-                        class="assign-to-item"
-                        *ngIf="!truck?.assignedTo?.driver?.id"
-                    >
-                        <p class="assign-to-value inactive-assign-to-value">
-                            No Driver
-                        </p>
-                    </div>
-                </div>
-            </app-ta-custom-card>
-
-            <!--------Additonal Details--------->
-            <app-ta-custom-card
-                [bodyTemplate]="'card'"
-                [isCardOpen]="true"
-                [cardName]="'Additional Details'"
-                [customClass]="'detailsPadding'"
-                [animationMarginParams]="{
-                    marginTop: '0px',
-                    marginBottom: '10px',
-                }"
-            >
-                <div class="common-template">
-                    <div
-                        *ngIf="truck.truckGrossWeight?.name"
-                        class="common-template-item"
-                    >
-                        <div class="common-template-item-name">
-                            Gross Weight
-                        </div>
-                        <div class="common-template-item-value">
-                            <app-ta-copy
-                                [copyValue]="truck?.truckGrossWeight?.name"
-                                [textColor]="'#2f2f2f'"
-                            >
-                            </app-ta-copy>
-                        </div>
-                    </div>
-                    <div
-                        *ngIf="truck?.emptyWeight"
-                        class="common-template-item"
-                    >
-                        <div class="common-template-item-name">
-                            Empty Weight
-                        </div>
-                        <div class="common-template-item-value">
-                            <app-ta-copy
-                                [copyValue]="
-                                    (truck?.emptyWeight | thousandSeparator) +
-                                    ' Ibs'
-                                "
-                                [textColor]="'#2f2f2f'"
-                            >
-                            </app-ta-copy>
-                        </div>
-                    </div>
-                    <div
-                        *ngIf="truck?.truckEngineModel?.name"
-                        class="common-template-item"
-                    >
-                        <div class="common-template-item-name">
-                            Engine Model
-                        </div>
-                        <div class="common-template-item-value">
-                            <app-ta-copy
-                                [copyValue]="truck?.truckEngineModel.name"
-                                [textColor]="'#2f2f2f'"
-                            >
-                            </app-ta-copy>
-                        </div>
-                    </div>
-                    <div
-                        *ngIf="truck?.engineOilType?.name"
-                        class="common-template-item"
-                    >
-                        <div class="common-template-item-name">
-                            Engine Oil Type
-                        </div>
-                        <div class="common-template-item-value">
-                            <app-ta-copy
-                                [copyValue]="truck?.engineOilType?.name"
-                                [textColor]="'#2f2f2f'"
-                            >
-                            </app-ta-copy>
-                        </div>
-                    </div>
-                    <div
-                        *ngIf="truck?.apUnit?.name"
-                        class="common-template-item"
-                    >
-                        <div class="common-template-item-name">Ap Unit</div>
-                        <div class="common-template-item-value">
-                            <app-ta-copy
-                                [copyValue]="truck?.apUnit?.name"
-                                [textColor]="'#2f2f2f'"
-                            >
-                            </app-ta-copy>
-                        </div>
-                    </div>
-
-                    <div
-                        *ngIf="truck?.transmissionModel"
-                        class="common-template-item"
-                    >
-                        <div class="common-template-item-name">
-                            Transmission Model
-                        </div>
-                        <div class="common-template-item-value">
-                            <app-ta-copy
-                                [copyValue]="truck?.transmissionModel"
-                                [textColor]="'#2f2f2f'"
-                            >
-                            </app-ta-copy>
-                        </div>
-                    </div>
-
-                    <div
-                        *ngIf="truck?.fuelTankSize"
-                        class="common-template-item"
-                    >
-                        <div class="common-template-item-name">
-                            Fuel Tank Size
-                        </div>
-                        <div class="common-template-item-value">
-                            <app-ta-copy
-                                [copyValue]="truck?.fuelTankSize"
-                                [textColor]="'#2f2f2f'"
-                            >
-                            </app-ta-copy>
-                        </div>
-                    </div>
-                    <div *ngIf="truck?.axles" class="common-template-item">
-                        <div class="common-template-item-name">Axle</div>
-                        <div class="common-template-item-value">
-                            <app-ta-copy
-                                [copyValue]="truck?.axles"
-                                [textColor]="'#2f2f2f'"
-                            >
-                            </app-ta-copy>
-                        </div>
-                    </div>
-                    <div
-                        *ngIf="truck?.brakes?.name"
-                        class="common-template-item"
-                    >
-                        <div class="common-template-item-name">Brakes</div>
-                        <div class="common-template-item-value">
-                            <app-ta-copy
-                                [copyValue]="truck?.brakes?.name"
-                                [textColor]="'#2f2f2f'"
-                            >
-                            </app-ta-copy>
-                        </div>
-                    </div>
-                    <div
-                        *ngIf="truck?.tireSize?.name"
-                        class="common-template-item"
-                    >
-                        <div class="common-template-item-name">Tire size</div>
-                        <div class="common-template-item-value">
-                            <app-ta-copy
-                                [copyValue]="truck?.tireSize.name"
-                                [textColor]="'#2f2f2f'"
-                            >
-                            </app-ta-copy>
-                        </div>
-                    </div>
-
-                    <div
-                        *ngIf="truck?.frontWheels?.name"
-                        class="common-template-item"
-                    >
-                        <div class="common-template-item-name">
-                            Front Wheels
-                        </div>
-                        <div class="common-template-item-value">
-                            <app-ta-copy
-                                [copyValue]="truck?.frontWheels?.name"
-                                [textColor]="'#2f2f2f'"
-                            >
-                            </app-ta-copy>
-                        </div>
-                    </div>
-                    <div
-                        *ngIf="truck?.rearWheels?.name"
-                        class="common-template-item"
-                    >
-                        <div class="common-template-item-name">Rear Wheels</div>
-                        <div class="common-template-item-value">
-                            <app-ta-copy
-                                [copyValue]="truck?.rearWheels?.name"
-                                [textColor]="'#2f2f2f'"
-                            >
-                            </app-ta-copy>
-                        </div>
-                    </div>
-                    <div
-                        *ngIf="truck?.shifter?.name"
-                        class="common-template-item"
-                    >
-                        <div class="common-template-item-name">Shifter</div>
-                        <div class="common-template-item-value">
-                            <app-ta-copy
-                                [copyValue]="truck?.shifter?.name"
-                                [textColor]="'#2f2f2f'"
-                            >
-                            </app-ta-copy>
-                        </div>
-                    </div>
-                    <div
-                        *ngIf="truck?.gearRatio?.name"
-                        class="common-template-item"
-                    >
-                        <div class="common-template-item-name">Gear Ratio</div>
-                        <div class="common-template-item-value">
-                            <app-ta-copy
-                                [copyValue]="truck?.gearRatio?.name"
-                                [textColor]="'#2f2f2f'"
-                            >
-                            </app-ta-copy>
-                        </div>
-                    </div>
-                    <div *ngIf="truck?.mileage" class="common-template-item">
-                        <div class="common-template-item-name">
-                            Starting Mileage
-                        </div>
-                        <div class="common-template-item-value">
-                            <app-ta-copy
-                                [copyValue]="
-                                    (truck?.mileage | thousandSeparator) + 'mi'
-                                "
-                                [textColor]="'#2f2f2f'"
-                            >
-                            </app-ta-copy>
-                        </div>
-                    </div>
-
-                    <div
-                        *ngIf="truck?.tollTransponder?.name"
-                        class="common-template-item"
-                    >
-                        <div class="common-template-item-name">
-                            Toll Transponder
-                        </div>
-                        <div class="common-template-item-value">
-                            <app-ta-copy
-                                [copyValue]="truck?.tollTransponder?.name"
-                                [textColor]="'#2f2f2f'"
-                            >
-                            </app-ta-copy>
-                        </div>
-                    </div>
-
-                    <div
-                        *ngIf="truck?.tollTransponderDeviceNo"
-                        class="common-template-item"
-                    >
-                        <div class="common-template-item-name">
-                            Toll Device ID
-                        </div>
-                        <div class="common-template-item-value">
-                            <app-ta-copy
-                                [copyValue]="truck?.tollTransponderDeviceNo"
-                                [textColor]="'#2f2f2f'"
-                            >
-                            </app-ta-copy>
-                        </div>
-                    </div>
-                    <div
-                        *ngIf="truck?.insurancePolicy"
-                        class="common-template-item"
-                    >
-                        <div class="common-template-item-name">
-                            Insurance Policy
-                        </div>
-                        <div class="common-template-item-value">
-                            <app-ta-copy
-                                [copyValue]="truck?.insurancePolicy"
-                                [textColor]="'#2f2f2f'"
-                            >
-                            </app-ta-copy>
-                        </div>
-                    </div>
-
-                    <div *ngIf="truck?.fhwaExp" class="common-template-item">
-                        <div class="common-template-item-name">
-                            FHWA Expiration
-                        </div>
-                        <div class="common-template-item-value">
-                            <app-ta-copy
-                                [copyValue]="truck?.fhwaExp + ' months'"
-                                [textColor]="'#2f2f2f'"
-                            >
-                            </app-ta-copy>
-                        </div>
-                    </div>
-                    <div
-                        *ngIf="truck?.purchaseDate"
-                        class="common-template-item"
-                    >
-                        <div class="common-template-item-name">
-                            Purchase Date
-                        </div>
-                        <div class="common-template-item-value">
-                            <app-ta-copy
-                                [copyValue]="truck?.purchaseDate | formatDateP"
-                                [textColor]="'#2f2f2f'"
-                            >
-                            </app-ta-copy>
-                        </div>
-                    </div>
-                    <div
-                        *ngIf="truck?.purchasePrice"
-                        class="common-template-item"
-                    >
-                        <div class="common-template-item-name">
-                            Purchase Price
-                        </div>
-                        <div class="common-template-item-value">
-                            <app-ta-copy
-                                [copyValue]="
-                                    '$' +
-                                    (truck?.purchasePrice | thousandSeparator)
-                                "
-                                [textColor]="'#2f2f2f'"
-                            >
-                            </app-ta-copy>
-                        </div>
-                    </div>
-                </div>
-            </app-ta-custom-card>
-            <app-ta-custom-card
-                [isCardOpen]="false"
-                [tooltipName]="'View in Modal'"
-                [cardName]="'Features'"
-                [bodyTemplate]="'card'"
-                [hasHeaderSvg]="'assets/svg/common/arrow_top_right.svg'"
-                [hasCounter]="featureNumber"
-                [customClass]="'detailsPadding'"
-                [animationMarginParams]="{
-                    marginTop: '0px',
-                    marginBottom: '10px',
-                }"
-            >
-                <div class="feature">
-                    <div class="feature-row d-flex">
-                        <div class="feature-item">
-                            <svg-icon
-                                class="icons-details"
-                                [ngClass]="{
-                                    'hide-feature': !truck.doubleBunk,
-                                }"
-                                src="assets/svg/common/double-bunk.svg"
-                            ></svg-icon>
-                            <p
-                                [ngClass]="{
-                                    'hide-feature': !truck.doubleBunk,
-                                }"
-                            >
-                                Double Bunk
-                            </p>
-                        </div>
-
-                        <div class="feature-item">
-                            <svg-icon
-                                class="icons-details"
-                                [ngClass]="{
-                                    'hide-feature': !truck.refrigerator,
-                                }"
-                                src="assets/svg/common/refrigerator.svg"
-                            ></svg-icon>
-                            <p
-                                [ngClass]="{
-                                    'hide-feature': !truck.refrigerator,
-                                }"
-                            >
-                                Refrigerator
-                            </p>
-                        </div>
-
-                        <div class="feature-item">
-                            <svg-icon
-                                class="icons-details"
-                                [ngClass]="{
-                                    'hide-feature': !truck.blower,
-                                }"
-                                src="assets/svg/common/blower.svg"
-                            ></svg-icon>
-                            <p
-                                [ngClass]="{
-                                    'hide-feature': !truck.blower,
-                                }"
-                            >
-                                Blower
-                            </p>
-                        </div>
-
-                        <div class="feature-item">
-                            <svg-icon
-                                class="icons-details"
-                                [ngClass]="{
-                                    'hide-feature': !truck.pto,
-                                }"
-                                src="assets/svg/common/pto.svg"
-                            ></svg-icon>
-                            <p
-                                [ngClass]="{
-                                    'hide-feature': !truck.pto,
-                                }"
-                            >
-                                Pto
-                            </p>
-                        </div>
-                    </div>
-
-                    <div class="feature-row d-flex">
-                        <div class="feature-item">
-                            <svg-icon
-                                class="icons-details"
-                                [ngClass]="{
-                                    'hide-feature': !truck.dashCam,
-                                }"
-                                src="assets/svg/common/dash-cam.svg"
-                            ></svg-icon>
-                            <p
-                                [ngClass]="{
-                                    'hide-feature': !truck.dashCam,
-                                }"
-                            >
-                                DashCam
-                            </p>
-                        </div>
-
-                        <div class="feature-item">
-                            <svg-icon
-                                class="icons-details"
-                                [ngClass]="{
-                                    'hide-feature': !truck.headacheRack,
-                                }"
-                                src="assets/svg/common/headache-rack.svg"
-                            ></svg-icon>
-                            <p
-                                [ngClass]="{
-                                    'hide-feature': !truck.headacheRack,
-                                }"
-                            >
-                                Headache Rack
-                            </p>
-                        </div>
-
-                        <div class="feature-item">
-                            <svg-icon
-                                class="icons-details"
-                                [ngClass]="{
-                                    'hide-feature': !truck.dcInverter,
-                                }"
-                                src="assets/svg/common/dc-Inverter.svg"
-                            ></svg-icon>
-                            <p
-                                [ngClass]="{
-                                    'hide-feature': !truck.dcInverter,
-                                }"
-                            >
-                                DC Inverter
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </app-ta-custom-card>
-            <!--------Owner--------->
-            <app-ta-custom-card
-                [cardName]="
-                    ownerCardOpened ? 'Owner' : 'Owner ' + truck.owner.name
-                "
-                [bodyTemplate]="'card'"
-                [isCardOpen]="true"
-                [customClass]="'detailsPadding'"
-                [animationMarginParams]="{
-                    marginTop: '0px',
-                    marginBottom: '10px',
-                }"
-                (onOpenCard)="onOpenCloseCard($event)"
-            >
-                <div class="common-template">
-                    <div class="common-template-item">
-                        <div class="common-template-item-name">Company</div>
-                        <div class="common-template-item-value size18">
-                            {{ truck.owner.name }}
-                        </div>
-                    </div>
-                    <div class="common-template-item">
-                        <div class="common-template-item-name">Commission</div>
-                        <div class="common-template-item-value size18">
-                            {{ truck.commission }}%
-                        </div>
-                    </div>
-                </div>
-                <div class="wrapper-owner">
-                    <div class="owner-items">
-                        <svg-icon
-                            class="icons-details"
-                            src="assets/svg/common/ic_phone.svg"
-                        ></svg-icon>
-
-                        <app-ta-copy
-                            [copyValue]="truck?.owner?.phone"
-                            [textColor]="'#2f2f2f'"
-                        >
-                        </app-ta-copy>
-                    </div>
-                    <div class="owner-items">
-                        <svg-icon
-                            class="icons-details"
-                            src="assets/svg/common/ic_email.svg"
-                        ></svg-icon>
-                        <app-ta-copy
-                            [copyValue]="truck?.owner?.email"
-                            [textColor]="'#2f2f2f'"
-                        >
-                        </app-ta-copy>
-                    </div>
-                    <div class="owner-items">
-                        <svg-icon
-                            src="assets/svg/common/ic_address.svg"
-                        ></svg-icon>
-                        <p class="information-value">
-                            <app-ta-copy
-                                [copyValue]="truck?.owner?.address?.address"
-                                [textColor]="'#2f2f2f'"
-                            ></app-ta-copy>
-                        </p>
-                    </div>
-                </div>
-            </app-ta-custom-card>
-            <app-ta-custom-card
-                [isCardOpen]="false"
-                [tooltipName]="'View in Modal'"
-                [cardName]="'Owner History'"
-                [bodyTemplate]="'card'"
-                [hasHeaderSvg]="'assets/svg/common/arrow_top_right.svg'"
-                [customClass]="'detailsPadding'"
-                [animationMarginParams]="{
-                    marginTop: '0px',
-                    marginBottom: '10px',
-                }"
-            >
-                <ng-container *ngIf="isWideScreen; else narrowScreenContent">
-                    <div class="owner-history-container">
-                        <div class="status-container">
-                            <div class="status-header">
-                                <ng-container
-                                    *ngFor="let item of ownerHistoryHeader"
-                                >
-                                    <div class="status-item">
-                                        <p class="p-status">{{ item.label }}</p>
-                                    </div>
-                                </ng-container>
+        </app-ta-details-header-card>
+        <div
+            class="wrapper-additional-cards"
+            [ngClass]="{ 'bind-height': !templateCard }"
+        >
+            <div class="details-cards">
+                <!--------Assinged to--------->
+                <app-ta-custom-card
+                    [bodyTemplate]="'card'"
+                    [hasDivider]="false"
+                    [cardName]="'Assigned To'"
+                    [tooltipName]="'Dispatch History'"
+                    [hasHeaderSvg]="'assets/svg/common/ic_half_time.svg'"
+                    [isCardOpen]="true"
+                    [customClass]="'detailsPadding'"
+                    [animationMarginParams]="{
+                        marginTop: '0px',
+                        marginBottom: '10px',
+                    }"
+                >
+                    <div class="assign-to">
+                        @if (truck?.assignedTo?.trailer?.id) {
+                            <div class="assign-to-item first">
+                                <svg-icon
+                                    class="assign-to-vehicle backImage"
+                                    [src]="
+                                        'assets/svg/common/trailers/' +
+                                        truck.assignedTo.trailer.trailerType
+                                            .logoName
+                                    "
+                                ></svg-icon>
+                                <p class="assign-to-value">
+                                    {{ truck.assignedTo.trailer.trailerNumber }}
+                                </p>
                             </div>
-                            <div class="truck-card-line"></div>
-                            <ng-container
-                                *ngFor="
-                                    let owHist of truck.ownerHistories
-                                        | keyvalue: sortKeys;
-                                    trackBy: identity
-                                "
-                            >
-                                <div class="status-items">
-                                    <div class="item-wrapper">
-                                        <p class="employment">
-                                            {{ owHist.value.name }}
-                                        </p>
+                        }
+                        @if (!truck?.assignedTo?.trailer?.id) {
+                            <div class="assign-to-item">
+                                <p
+                                    class="assign-to-value inactive-assign-to-value"
+                                >
+                                    No Trailer
+                                </p>
+                            </div>
+                        }
+                        @if (truck?.assignedTo?.driver?.id) {
+                            <div class="assign-to-item">
+                                @if (
+                                    !truck.assignedTo?.driver?.avatarFile?.url
+                                ) {
+                                    <p>
+                                        {{
+                                            truck.assignedTo.driver
+                                                .firstName[0] +
+                                                truck.assignedTo.driver
+                                                    .lastName[0]
+                                        }}
+                                    </p>
+                                } @else {
+                                    <img
+                                        class="driverAvatarImg"
+                                        [src]="
+                                            truck.assignedTo.driver.avatarFile
+                                                .url
+                                        "
+                                        alt="driver-image"
+                                    />
+                                }
 
-                                        <p class="date-from-to">
-                                            {{
-                                                owHist.value.startDate
-                                                    | formatDateP
-                                            }}
-                                            -
-                                            <ng-container
-                                                *ngIf="owHist.value.endDate"
-                                            >
-                                                <span>{{
-                                                    owHist.value.endDate
+                                <p class="assign-to-value">
+                                    {{ truck.assignedTo.driver.firstName }}
+                                    {{ truck.assignedTo.driver.lastName }}
+                                </p>
+                            </div>
+                        }
+                        @if (!truck?.assignedTo?.driver?.id) {
+                            <div class="assign-to-item">
+                                <p
+                                    class="assign-to-value inactive-assign-to-value"
+                                >
+                                    No Driver
+                                </p>
+                            </div>
+                        }
+                    </div>
+                </app-ta-custom-card>
+
+                <!--------Additonal Details--------->
+                <app-ta-custom-card
+                    [bodyTemplate]="'card'"
+                    [isCardOpen]="true"
+                    [cardName]="'Additional Details'"
+                    [customClass]="'detailsPadding'"
+                    [animationMarginParams]="{
+                        marginTop: '0px',
+                        marginBottom: '10px',
+                    }"
+                >
+                    <div class="common-template">
+                        @if (truck.truckGrossWeight?.name) {
+                            <div class="common-template-item">
+                                <div class="common-template-item-name">
+                                    Gross Weight
+                                </div>
+                                <div class="common-template-item-value">
+                                    <app-ta-copy
+                                        [copyValue]="
+                                            truck?.truckGrossWeight?.name
+                                        "
+                                        [textColor]="'#2f2f2f'"
+                                    >
+                                    </app-ta-copy>
+                                </div>
+                            </div>
+                        }
+                        @if (truck?.emptyWeight) {
+                            <div class="common-template-item">
+                                <div class="common-template-item-name">
+                                    Empty Weight
+                                </div>
+                                <div class="common-template-item-value">
+                                    <app-ta-copy
+                                        [copyValue]="
+                                            (truck?.emptyWeight
+                                                | thousandSeparator) + ' Ibs'
+                                        "
+                                        [textColor]="'#2f2f2f'"
+                                    >
+                                    </app-ta-copy>
+                                </div>
+                            </div>
+                        }
+                        @if (truck?.truckEngineModel?.name) {
+                            <div class="common-template-item">
+                                <div class="common-template-item-name">
+                                    Engine Model
+                                </div>
+                                <div class="common-template-item-value">
+                                    <app-ta-copy
+                                        [copyValue]="
+                                            truck?.truckEngineModel.name
+                                        "
+                                        [textColor]="'#2f2f2f'"
+                                    >
+                                    </app-ta-copy>
+                                </div>
+                            </div>
+                        }
+                        @if (truck?.engineOilType?.name) {
+                            <div class="common-template-item">
+                                <div class="common-template-item-name">
+                                    Engine Oil Type
+                                </div>
+                                <div class="common-template-item-value">
+                                    <app-ta-copy
+                                        [copyValue]="truck?.engineOilType?.name"
+                                        [textColor]="'#2f2f2f'"
+                                    >
+                                    </app-ta-copy>
+                                </div>
+                            </div>
+                        }
+                        @if (truck?.apUnit?.name) {
+                            <div class="common-template-item">
+                                <div class="common-template-item-name">
+                                    Ap Unit
+                                </div>
+                                <div class="common-template-item-value">
+                                    <app-ta-copy
+                                        [copyValue]="truck?.apUnit?.name"
+                                        [textColor]="'#2f2f2f'"
+                                    >
+                                    </app-ta-copy>
+                                </div>
+                            </div>
+                        }
+                        @if (truck?.transmissionModel) {
+                            <div class="common-template-item">
+                                <div class="common-template-item-name">
+                                    Transmission Model
+                                </div>
+                                <div class="common-template-item-value">
+                                    <app-ta-copy
+                                        [copyValue]="truck?.transmissionModel"
+                                        [textColor]="'#2f2f2f'"
+                                    >
+                                    </app-ta-copy>
+                                </div>
+                            </div>
+                        }
+                        @if (truck?.fuelTankSize) {
+                            <div class="common-template-item">
+                                <div class="common-template-item-name">
+                                    Fuel Tank Size
+                                </div>
+                                <div class="common-template-item-value">
+                                    <app-ta-copy
+                                        [copyValue]="truck?.fuelTankSize"
+                                        [textColor]="'#2f2f2f'"
+                                    >
+                                    </app-ta-copy>
+                                </div>
+                            </div>
+                        }
+                        @if (truck?.axles) {
+                            <div class="common-template-item">
+                                <div class="common-template-item-name">
+                                    Axle
+                                </div>
+                                <div class="common-template-item-value">
+                                    <app-ta-copy
+                                        [copyValue]="truck?.axles"
+                                        [textColor]="'#2f2f2f'"
+                                    >
+                                    </app-ta-copy>
+                                </div>
+                            </div>
+                        }
+                        @if (truck?.brakes?.name) {
+                            <div class="common-template-item">
+                                <div class="common-template-item-name">
+                                    Brakes
+                                </div>
+                                <div class="common-template-item-value">
+                                    <app-ta-copy
+                                        [copyValue]="truck?.brakes?.name"
+                                        [textColor]="'#2f2f2f'"
+                                    >
+                                    </app-ta-copy>
+                                </div>
+                            </div>
+                        }
+                        @if (truck?.tireSize?.name) {
+                            <div class="common-template-item">
+                                <div class="common-template-item-name">
+                                    Tire size
+                                </div>
+                                <div class="common-template-item-value">
+                                    <app-ta-copy
+                                        [copyValue]="truck?.tireSize.name"
+                                        [textColor]="'#2f2f2f'"
+                                    >
+                                    </app-ta-copy>
+                                </div>
+                            </div>
+                        }
+                        @if (truck?.frontWheels?.name) {
+                            <div class="common-template-item">
+                                <div class="common-template-item-name">
+                                    Front Wheels
+                                </div>
+                                <div class="common-template-item-value">
+                                    <app-ta-copy
+                                        [copyValue]="truck?.frontWheels?.name"
+                                        [textColor]="'#2f2f2f'"
+                                    >
+                                    </app-ta-copy>
+                                </div>
+                            </div>
+                        }
+                        @if (truck?.rearWheels?.name) {
+                            <div class="common-template-item">
+                                <div class="common-template-item-name">
+                                    Rear Wheels
+                                </div>
+                                <div class="common-template-item-value">
+                                    <app-ta-copy
+                                        [copyValue]="truck?.rearWheels?.name"
+                                        [textColor]="'#2f2f2f'"
+                                    >
+                                    </app-ta-copy>
+                                </div>
+                            </div>
+                        }
+                        @if (truck?.shifter?.name) {
+                            <div class="common-template-item">
+                                <div class="common-template-item-name">
+                                    Shifter
+                                </div>
+                                <div class="common-template-item-value">
+                                    <app-ta-copy
+                                        [copyValue]="truck?.shifter?.name"
+                                        [textColor]="'#2f2f2f'"
+                                    >
+                                    </app-ta-copy>
+                                </div>
+                            </div>
+                        }
+                        @if (truck?.gearRatio?.name) {
+                            <div class="common-template-item">
+                                <div class="common-template-item-name">
+                                    Gear Ratio
+                                </div>
+                                <div class="common-template-item-value">
+                                    <app-ta-copy
+                                        [copyValue]="truck?.gearRatio?.name"
+                                        [textColor]="'#2f2f2f'"
+                                    >
+                                    </app-ta-copy>
+                                </div>
+                            </div>
+                        }
+                        @if (truck?.mileage) {
+                            <div class="common-template-item">
+                                <div class="common-template-item-name">
+                                    Starting Mileage
+                                </div>
+                                <div class="common-template-item-value">
+                                    <app-ta-copy
+                                        [copyValue]="
+                                            (truck?.mileage
+                                                | thousandSeparator) + 'mi'
+                                        "
+                                        [textColor]="'#2f2f2f'"
+                                    >
+                                    </app-ta-copy>
+                                </div>
+                            </div>
+                        }
+                        @if (truck?.tollTransponder?.name) {
+                            <div class="common-template-item">
+                                <div class="common-template-item-name">
+                                    Toll Transponder
+                                </div>
+                                <div class="common-template-item-value">
+                                    <app-ta-copy
+                                        [copyValue]="
+                                            truck?.tollTransponder?.name
+                                        "
+                                        [textColor]="'#2f2f2f'"
+                                    >
+                                    </app-ta-copy>
+                                </div>
+                            </div>
+                        }
+
+                        @if (truck?.tollTransponderDeviceNo) {
+                            <div class="common-template-item">
+                                <div class="common-template-item-name">
+                                    Toll Device ID
+                                </div>
+                                <div class="common-template-item-value">
+                                    <app-ta-copy
+                                        [copyValue]="
+                                            truck?.tollTransponderDeviceNo
+                                        "
+                                        [textColor]="'#2f2f2f'"
+                                    >
+                                    </app-ta-copy>
+                                </div>
+                            </div>
+                        }
+
+                        @if (truck?.insurancePolicy) {
+                            <div class="common-template-item">
+                                <div class="common-template-item-name">
+                                    Insurance Policy
+                                </div>
+                                <div class="common-template-item-value">
+                                    <app-ta-copy
+                                        [copyValue]="truck?.insurancePolicy"
+                                        [textColor]="'#2f2f2f'"
+                                    >
+                                    </app-ta-copy>
+                                </div>
+                            </div>
+                        }
+
+                        @if (truck?.fhwaExp) {
+                            <div class="common-template-item">
+                                <div class="common-template-item-name">
+                                    FHWA Expiration
+                                </div>
+                                <div class="common-template-item-value">
+                                    <app-ta-copy
+                                        [copyValue]="truck?.fhwaExp + ' months'"
+                                        [textColor]="'#2f2f2f'"
+                                    >
+                                    </app-ta-copy>
+                                </div>
+                            </div>
+                        }
+                        @if (truck?.purchaseDate) {
+                            <div class="common-template-item">
+                                <div class="common-template-item-name">
+                                    Purchase Date
+                                </div>
+                                <div class="common-template-item-value">
+                                    <app-ta-copy
+                                        [copyValue]="
+                                            truck?.purchaseDate | formatDateP
+                                        "
+                                        [textColor]="'#2f2f2f'"
+                                    >
+                                    </app-ta-copy>
+                                </div>
+                            </div>
+                        }
+                        @if (truck?.purchasePrice) {
+                            <div class="common-template-item">
+                                <div class="common-template-item-name">
+                                    Purchase Price
+                                </div>
+                                <div class="common-template-item-value">
+                                    <app-ta-copy
+                                        [copyValue]="
+                                            '$' +
+                                            (truck?.purchasePrice
+                                                | thousandSeparator)
+                                        "
+                                        [textColor]="'#2f2f2f'"
+                                    >
+                                    </app-ta-copy>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </app-ta-custom-card>
+                <app-ta-custom-card
+                    [isCardOpen]="false"
+                    [tooltipName]="'View in Modal'"
+                    [cardName]="'Features'"
+                    [bodyTemplate]="'card'"
+                    [hasHeaderSvg]="'assets/svg/common/arrow_top_right.svg'"
+                    [hasCounter]="featureNumber"
+                    [customClass]="'detailsPadding'"
+                    [animationMarginParams]="{
+                        marginTop: '0px',
+                        marginBottom: '10px',
+                    }"
+                >
+                    <div class="feature">
+                        <div class="feature-row d-flex">
+                            <div class="feature-item">
+                                <svg-icon
+                                    class="icons-details"
+                                    [ngClass]="{
+                                        'hide-feature': !truck.doubleBunk,
+                                    }"
+                                    src="assets/svg/common/double-bunk.svg"
+                                ></svg-icon>
+                                <p
+                                    [ngClass]="{
+                                        'hide-feature': !truck.doubleBunk,
+                                    }"
+                                >
+                                    Double Bunk
+                                </p>
+                            </div>
+
+                            <div class="feature-item">
+                                <svg-icon
+                                    class="icons-details"
+                                    [ngClass]="{
+                                        'hide-feature': !truck.refrigerator,
+                                    }"
+                                    src="assets/svg/common/refrigerator.svg"
+                                ></svg-icon>
+                                <p
+                                    [ngClass]="{
+                                        'hide-feature': !truck.refrigerator,
+                                    }"
+                                >
+                                    Refrigerator
+                                </p>
+                            </div>
+
+                            <div class="feature-item">
+                                <svg-icon
+                                    class="icons-details"
+                                    [ngClass]="{
+                                        'hide-feature': !truck.blower,
+                                    }"
+                                    src="assets/svg/common/blower.svg"
+                                ></svg-icon>
+                                <p
+                                    [ngClass]="{
+                                        'hide-feature': !truck.blower,
+                                    }"
+                                >
+                                    Blower
+                                </p>
+                            </div>
+
+                            <div class="feature-item">
+                                <svg-icon
+                                    class="icons-details"
+                                    [ngClass]="{
+                                        'hide-feature': !truck.pto,
+                                    }"
+                                    src="assets/svg/common/pto.svg"
+                                ></svg-icon>
+                                <p
+                                    [ngClass]="{
+                                        'hide-feature': !truck.pto,
+                                    }"
+                                >
+                                    Pto
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="feature-row d-flex">
+                            <div class="feature-item">
+                                <svg-icon
+                                    class="icons-details"
+                                    [ngClass]="{
+                                        'hide-feature': !truck.dashCam,
+                                    }"
+                                    src="assets/svg/common/dash-cam.svg"
+                                ></svg-icon>
+                                <p
+                                    [ngClass]="{
+                                        'hide-feature': !truck.dashCam,
+                                    }"
+                                >
+                                    DashCam
+                                </p>
+                            </div>
+
+                            <div class="feature-item">
+                                <svg-icon
+                                    class="icons-details"
+                                    [ngClass]="{
+                                        'hide-feature': !truck.headacheRack,
+                                    }"
+                                    src="assets/svg/common/headache-rack.svg"
+                                ></svg-icon>
+                                <p
+                                    [ngClass]="{
+                                        'hide-feature': !truck.headacheRack,
+                                    }"
+                                >
+                                    Headache Rack
+                                </p>
+                            </div>
+
+                            <div class="feature-item">
+                                <svg-icon
+                                    class="icons-details"
+                                    [ngClass]="{
+                                        'hide-feature': !truck.dcInverter,
+                                    }"
+                                    src="assets/svg/common/dc-Inverter.svg"
+                                ></svg-icon>
+                                <p
+                                    [ngClass]="{
+                                        'hide-feature': !truck.dcInverter,
+                                    }"
+                                >
+                                    DC Inverter
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </app-ta-custom-card>
+                <!--------Owner--------->
+                <app-ta-custom-card
+                    [cardName]="
+                        ownerCardOpened ? 'Owner' : 'Owner ' + truck.owner.name
+                    "
+                    [bodyTemplate]="'card'"
+                    [isCardOpen]="true"
+                    [customClass]="'detailsPadding'"
+                    [animationMarginParams]="{
+                        marginTop: '0px',
+                        marginBottom: '10px',
+                    }"
+                    (onOpenCard)="onOpenCloseCard($event)"
+                >
+                    <div class="common-template">
+                        <div class="common-template-item">
+                            <div class="common-template-item-name">Company</div>
+                            <div class="common-template-item-value size18">
+                                {{ truck.owner.name }}
+                            </div>
+                        </div>
+                        <div class="common-template-item">
+                            <div class="common-template-item-name">
+                                Commission
+                            </div>
+                            <div class="common-template-item-value size18">
+                                {{ truck.commission }}%
+                            </div>
+                        </div>
+                    </div>
+                    <div class="wrapper-owner">
+                        <div class="owner-items">
+                            <svg-icon
+                                class="icons-details"
+                                src="assets/svg/common/ic_phone.svg"
+                            ></svg-icon>
+
+                            <app-ta-copy
+                                [copyValue]="truck?.owner?.phone"
+                                [textColor]="'#2f2f2f'"
+                            >
+                            </app-ta-copy>
+                        </div>
+                        <div class="owner-items">
+                            <svg-icon
+                                class="icons-details"
+                                src="assets/svg/common/ic_email.svg"
+                            ></svg-icon>
+                            <app-ta-copy
+                                [copyValue]="truck?.owner?.email"
+                                [textColor]="'#2f2f2f'"
+                            >
+                            </app-ta-copy>
+                        </div>
+                        <div class="owner-items">
+                            <svg-icon
+                                src="assets/svg/common/ic_address.svg"
+                            ></svg-icon>
+                            <p class="information-value">
+                                <app-ta-copy
+                                    [copyValue]="truck?.owner?.address?.address"
+                                    [textColor]="'#2f2f2f'"
+                                ></app-ta-copy>
+                            </p>
+                        </div>
+                    </div>
+                </app-ta-custom-card>
+                <app-ta-custom-card
+                    [isCardOpen]="false"
+                    [tooltipName]="'View in Modal'"
+                    [cardName]="'Owner History'"
+                    [bodyTemplate]="'card'"
+                    [hasHeaderSvg]="'assets/svg/common/arrow_top_right.svg'"
+                    [customClass]="'detailsPadding'"
+                    [animationMarginParams]="{
+                        marginTop: '0px',
+                        marginBottom: '10px',
+                    }"
+                >
+                    @if (isWideScreen) {
+                        <div class="owner-history-container">
+                            <div class="status-container">
+                                <div class="status-header">
+                                    @for (
+                                        item of ownerHistoryHeader;
+                                        let index = $index;
+                                        track item.label
+                                    ) {
+                                        <div class="status-item">
+                                            <p class="p-status">
+                                                {{ item.label }}
+                                            </p>
+                                        </div>
+                                    }
+                                </div>
+                                <div class="truck-card-line"></div>
+
+                                @for (
+                                    owHist of truck.ownerHistories
+                                        | keyvalue: sortKeys;
+                                    let index = $index;
+                                    track owHist.id
+                                ) {
+                                    <div class="status-items">
+                                        <div class="item-wrapper">
+                                            <p class="employment">
+                                                {{ owHist.value.name }}
+                                            </p>
+
+                                            <p class="date-from-to">
+                                                {{
+                                                    owHist.value.startDate
                                                         | formatDateP
-                                                }}</span>
-                                            </ng-container>
-                                            <ng-container
-                                                *ngIf="!owHist.value.endDate"
-                                            >
-                                                <span>Today</span>
-                                            </ng-container>
-                                        </p>
-                                        <p class="duration">
-                                            <ng-container
-                                                *ngIf="
+                                                }}
+                                                -
+                                                @if (owHist.value.endDate) {
+                                                    <span>{{
+                                                        owHist.value.endDate
+                                                            | formatDateP
+                                                    }}</span>
+                                                }
+
+                                                @if (!owHist.value.endDate) {
+                                                    <span>Today</span>
+                                                }
+                                            </p>
+                                            <p class="duration">
+                                                @if (
                                                     owHist?.value.duration
                                                         ?.Years
-                                                "
-                                            >
-                                                <span>
-                                                    {{
-                                                        owHist.value.duration
-                                                            .Years
-                                                    }}
-                                                    y
-                                                </span>
-                                            </ng-container>
-                                            <span>
-                                                {{ owHist.value.duration.Days }}
-                                                d
-                                            </span>
-                                        </p>
-                                    </div>
-                                    <div class="truck-card-line"></div>
-                                </div>
-                            </ng-container>
-                        </div>
-                    </div>
-                </ng-container>
-                <ng-template #narrowScreenContent>
-                    <div class="owner-history-container">
-                        <div class="status-container">
-                            <ng-container
-                                *ngFor="
-                                    let owHist of truck.ownerHistories
-                                        | keyvalue: sortKeys;
-                                    trackBy: identity
-                                "
-                            >
-                                <div class="status-items">
-                                    <div
-                                        class="item-wrapper d-flex justify-content-start"
-                                    >
-                                        <div>
-                                            <div class="item-wrapper-first-row">
-                                                <p class="employment">
-                                                    {{ owHist.value.name }}
-                                                </p>
-                                                <p class="duration">
+                                                ) {
                                                     <span>
                                                         {{
                                                             owHist.value
@@ -854,510 +835,634 @@
                                                         }}
                                                         y
                                                     </span>
-                                                    <span>
-                                                        {{
-                                                            owHist.value
-                                                                .duration.Days
-                                                        }}
-                                                        d
-                                                    </span>
-                                                </p>
-                                            </div>
-                                            <p class="date-from-to">
-                                                {{
-                                                    owHist.value.startDate
-                                                        | formatDateP
-                                                }}
-                                                -
-                                                <ng-container
-                                                    *ngIf="owHist.value.endDate"
-                                                >
-                                                    <span>{{
-                                                        owHist.value.endDate
-                                                            | formatDateP
-                                                    }}</span>
-                                                </ng-container>
+                                                }
 
-                                                <ng-container
-                                                    *ngIf="
-                                                        !owHist.value.endDate
-                                                    "
-                                                >
-                                                    <span>Today</span>
-                                                </ng-container>
+                                                <span>
+                                                    {{
+                                                        owHist.value.duration
+                                                            .Days
+                                                    }}
+                                                    d
+                                                </span>
                                             </p>
                                         </div>
+                                        <div class="truck-card-line"></div>
                                     </div>
-                                    <div class="item-wrapper-line"></div>
-                                </div>
-                            </ng-container>
+                                }
+                            </div>
                         </div>
-                    </div>
-                </ng-template>
-            </app-ta-custom-card>
-            <app-ta-custom-card
-                [tooltipName]="'View in Modal'"
-                [bodyTemplate]="'card'"
-                [cardName]="'Performance'"
-                [isCardOpen]="true"
-                [hasHeaderSvg]="'assets/svg/common/arrow_top_right.svg'"
-                [customClass]="'detailsPadding'"
-            >
-                <div class="charts-template perfomance">
-                    <div>
-                        <app-ta-tab-switch
-                            [type]="'type2-modal-popup'"
-                            (switchClicked)="changeTabPerfomance($event)"
-                            [tabs]="performanceTabs"
-                        >
-                        </app-ta-tab-switch>
-                    </div>
-                    <div
-                        class="chart-template-performance d-flex justify-content-start"
-                    >
-                        <div class="first">
-                            <p>Mileage</p>
-                            <p class="main">{{ performance?.fuelCost }} mi</p>
+                    } @else {
+                        <div class="owner-history-container">
+                            <div class="status-container">
+                                @for (
+                                    owHist of truck.ownerHistories
+                                        | keyvalue: sortKeys;
+                                    let index = $index;
+                                    track owHist.id
+                                ) {
+                                    <div class="status-items">
+                                        <div
+                                            class="item-wrapper d-flex justify-content-start"
+                                        >
+                                            <div>
+                                                <div
+                                                    class="item-wrapper-first-row"
+                                                >
+                                                    <p class="employment">
+                                                        {{ owHist.value.name }}
+                                                    </p>
+                                                    <p class="duration">
+                                                        <span>
+                                                            {{
+                                                                owHist.value
+                                                                    .duration
+                                                                    .Years
+                                                            }}
+                                                            y
+                                                        </span>
+                                                        <span>
+                                                            {{
+                                                                owHist.value
+                                                                    .duration
+                                                                    .Days
+                                                            }}
+                                                            d
+                                                        </span>
+                                                    </p>
+                                                </div>
+                                                <p class="date-from-to">
+                                                    {{
+                                                        owHist.value.startDate
+                                                            | formatDateP
+                                                    }}
+                                                    -
+                                                    @if (owHist.value.endDate) {
+                                                        <span>{{
+                                                            owHist.value.endDate
+                                                                | formatDateP
+                                                        }}</span>
+                                                    }
+                                                    @if (
+                                                        !owHist.value.endDate
+                                                    ) {
+                                                        <span>Today</span>
+                                                    }
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <div class="item-wrapper-line"></div>
+                                    </div>
+                                }
+                            </div>
                         </div>
-                        <div class="second">
-                            <p>Fuel Cost</p>
-                            <p class="main">$ {{ performance?.miles }}</p>
-                        </div>
-                    </div>
-                </div>
-            </app-ta-custom-card>
-            <!--------Fuel Consumption--------->
-            <app-ta-custom-card
-                [tooltipName]="'View in Modal'"
-                [bodyTemplate]="'card'"
-                [cardName]="'Fuel Consumption'"
-                [isCardOpen]="true"
-                [hasHeaderSvg]="'assets/svg/common/arrow_top_right.svg'"
-                [customClass]="'detailsPadding'"
-            >
-                <div class="charts-template perfomance">
-                    @if (!fuelConsumptionLegendHighlightedBackground) {
-                        <app-ta-tab-switch
-                            [type]="'type2-modal-popup'"
-                            (switchClicked)="changeTabFuel($event)"
-                            [tabs]="fuelConsumptionChartTabs"
-                        >
-                        </app-ta-tab-switch>
                     }
-                    @if (fuelConsumptionChartConfig?.chartData) {
-                        <app-ca-chart
-                            [chartConfig]="fuelConsumptionChartConfig"
-                            [legendData]="{
-                                data: fuelConsumptionChartLegend,
-                                hasHighlightedBackground:
-                                    fuelConsumptionLegendHighlightedBackground,
-                                title: fuelConsumptionLegendTitle,
-                            }"
-                            (hoveredIndex)="
-                                setFuelConsumptionLegendOnHover($event)
-                            "
-                        >
-                        </app-ca-chart>
-                    }
-                </div>
-            </app-ta-custom-card>
-
-            <!--------Revenue--------->
-            <app-ta-custom-card
-                [tooltipName]="'View in Modal'"
-                [cardName]="'Revenue'"
-                [bodyTemplate]="'card'"
-                [hasHeaderSvg]="'assets/svg/common/arrow_top_right.svg'"
-                [isCardOpen]="true"
-                [customClass]="'detailsPadding'"
-            >
-                <div class="charts-template perfomance">
-                    @if (!revenueLegendHighlightedBackground) {
-                        <app-ta-tab-switch
-                            [type]="'type2-modal-popup'"
-                            (switchClicked)="changeTabRevenue($event)"
-                            [tabs]="revenueChartTabs"
-                        >
-                        </app-ta-tab-switch>
-                    }
-                    @if (revenueChartConfig?.chartData) {
-                        <app-ca-chart
-                            [chartConfig]="revenueChartConfig"
-                            [legendData]="{
-                                data: revenueChartLegend,
-                                hasHighlightedBackground:
-                                    revenueLegendHighlightedBackground,
-                                title: revenueLegendTitle,
-                            }"
-                            (hoveredIndex)="setRevenueLegendOnHover($event)"
-                        >
-                        </app-ca-chart>
-                    }
-                </div>
-            </app-ta-custom-card>
-            <!--------Perfomance--------->
-            <app-ta-custom-card
-                [cardName]="'Expenses'"
-                [bodyTemplate]="'card'"
-                [isCardOpen]="true"
-            >
-                <div class="charts-template perfomance">
-                    @if (!expensesLegendHighlightedBackground) {
-                        <app-ta-tab-switch
-                            [type]="'type2-modal-popup'"
-                            (switchClicked)="changeTabExpenses($event)"
-                            [tabs]="expensesChartTabs"
-                        >
-                        </app-ta-tab-switch>
-                    }
-                    @if (expensesChartConfig?.chartData) {
-                        <app-ca-chart
-                            [chartConfig]="expensesChartConfig"
-                            [legendData]="{
-                                data: expensesChartLegend,
-                                hasHighlightedBackground:
-                                    expensesLegendHighlightedBackground,
-                                title: expensesLegendTitle,
-                            }"
-                            (hoveredIndex)="
-                                setExpensesRevenueLegendOnHover($event)
-                            "
-                        >
+                </app-ta-custom-card>
+                <app-ta-custom-card
+                    [tooltipName]="'View in Modal'"
+                    [bodyTemplate]="'card'"
+                    [cardName]="'Performance'"
+                    [isCardOpen]="true"
+                    [hasHeaderSvg]="'assets/svg/common/arrow_top_right.svg'"
+                    [customClass]="'detailsPadding'"
+                >
+                    <div class="charts-template perfomance">
+                        <div>
+                            <app-ta-tab-switch
+                                [type]="'type2-modal-popup'"
+                                (switchClicked)="changeTabPerfomance($event)"
+                                [tabs]="performanceTabs"
                             >
-                        </app-ca-chart>
-                    }
-                </div>
-            </app-ta-custom-card>
-            <!--------Owner History--------->
+                            </app-ta-tab-switch>
+                        </div>
+                        <div
+                            class="chart-template-performance d-flex justify-content-start"
+                        >
+                            <div class="first">
+                                <p>Mileage</p>
+                                <p class="main">
+                                    {{ performance?.fuelCost }} mi
+                                </p>
+                            </div>
+                            <div class="second">
+                                <p>Fuel Cost</p>
+                                <p class="main">$ {{ performance?.miles }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </app-ta-custom-card>
+                <!--------Fuel Consumption--------->
+                <app-ta-custom-card
+                    [tooltipName]="'View in Modal'"
+                    [bodyTemplate]="'card'"
+                    [cardName]="'Fuel Consumption'"
+                    [isCardOpen]="true"
+                    [hasHeaderSvg]="'assets/svg/common/arrow_top_right.svg'"
+                    [customClass]="'detailsPadding'"
+                >
+                    <div class="charts-template perfomance">
+                        @if (!fuelConsumptionLegendHighlightedBackground) {
+                            <app-ta-tab-switch
+                                [type]="'type2-modal-popup'"
+                                (switchClicked)="changeTabFuel($event)"
+                                [tabs]="fuelConsumptionChartTabs"
+                            >
+                            </app-ta-tab-switch>
+                        }
+                        @if (fuelConsumptionChartConfig?.chartData) {
+                            <app-ca-chart
+                                [chartConfig]="fuelConsumptionChartConfig"
+                                [legendData]="{
+                                    data: fuelConsumptionChartLegend,
+                                    hasHighlightedBackground:
+                                        fuelConsumptionLegendHighlightedBackground,
+                                    title: fuelConsumptionLegendTitle,
+                                }"
+                                (hoveredIndex)="
+                                    setFuelConsumptionLegendOnHover($event)
+                                "
+                            >
+                            </app-ca-chart>
+                        }
+                    </div>
+                </app-ta-custom-card>
 
-            <app-ta-custom-card
-                *ngIf="truck?.files.length"
-                [cardName]="'Document'"
-                [isCardOpen]="false"
-                [hasCounter]="truck?.files?.length ? truck?.files.length : 0"
-                [bodyTemplate]="'card'"
-                [customClass]="'detailsPadding'"
-            >
-                <div
-                    class="card_files_holder"
-                    [class.active]="truck?.files?.length > 1"
+                <!--------Revenue--------->
+                <app-ta-custom-card
+                    [tooltipName]="'View in Modal'"
+                    [cardName]="'Revenue'"
+                    [bodyTemplate]="'card'"
+                    [hasHeaderSvg]="'assets/svg/common/arrow_top_right.svg'"
+                    [isCardOpen]="true"
+                    [customClass]="'detailsPadding'"
                 >
-                    <app-ta-upload-files
-                        [files]="truck?.files"
-                        [customClassName]="'driver-card-pdf'"
-                        [hasCarouselBottomTabs]="true"
-                        [type]="'details'"
-                        [slideWidth]="428"
-                        [reviewMode]="'REVIEW_MODE'"
-                    ></app-ta-upload-files>
+                    <div class="charts-template perfomance">
+                        @if (!revenueLegendHighlightedBackground) {
+                            <app-ta-tab-switch
+                                [type]="'type2-modal-popup'"
+                                (switchClicked)="changeTabRevenue($event)"
+                                [tabs]="revenueChartTabs"
+                            >
+                            </app-ta-tab-switch>
+                        }
+                        @if (revenueChartConfig?.chartData) {
+                            <app-ca-chart
+                                [chartConfig]="revenueChartConfig"
+                                [legendData]="{
+                                    data: revenueChartLegend,
+                                    hasHighlightedBackground:
+                                        revenueLegendHighlightedBackground,
+                                    title: revenueLegendTitle,
+                                }"
+                                (hoveredIndex)="setRevenueLegendOnHover($event)"
+                            >
+                            </app-ca-chart>
+                        }
+                    </div>
+                </app-ta-custom-card>
+                <!--------Perfomance--------->
+                <app-ta-custom-card
+                    [cardName]="'Expenses'"
+                    [bodyTemplate]="'card'"
+                    [isCardOpen]="true"
+                >
+                    <div class="charts-template perfomance">
+                        @if (!expensesLegendHighlightedBackground) {
+                            <app-ta-tab-switch
+                                [type]="'type2-modal-popup'"
+                                (switchClicked)="changeTabExpenses($event)"
+                                [tabs]="expensesChartTabs"
+                            >
+                            </app-ta-tab-switch>
+                        }
+                        @if (expensesChartConfig?.chartData) {
+                            <app-ca-chart
+                                [chartConfig]="expensesChartConfig"
+                                [legendData]="{
+                                    data: expensesChartLegend,
+                                    hasHighlightedBackground:
+                                        expensesLegendHighlightedBackground,
+                                    title: expensesLegendTitle,
+                                }"
+                                (hoveredIndex)="
+                                    setExpensesRevenueLegendOnHover($event)
+                                "
+                            >
+                                >
+                            </app-ca-chart>
+                        }
+                    </div>
+                </app-ta-custom-card>
+                <!--------Owner History--------->
+
+                @if (truck?.files.length) {
+                    <app-ta-custom-card
+                        [cardName]="'Document'"
+                        [isCardOpen]="false"
+                        [hasCounter]="
+                            truck?.files?.length ? truck?.files.length : 0
+                        "
+                        [bodyTemplate]="'card'"
+                        [customClass]="'detailsPadding'"
+                    >
+                        <div
+                            class="card_files_holder"
+                            [class.active]="truck?.files?.length > 1"
+                        >
+                            <app-ta-upload-files
+                                [files]="truck?.files"
+                                [customClassName]="'driver-card-pdf'"
+                                [hasCarouselBottomTabs]="true"
+                                [type]="'details'"
+                                [slideWidth]="428"
+                                [reviewMode]="'REVIEW_MODE'"
+                            ></app-ta-upload-files>
+                        </div>
+                    </app-ta-custom-card>
+                }
+                <!--------Note--------->
+                <div class="divider"></div>
+                <div class="note-cards">
+                    <app-ta-input-note
+                        [formControl]="noteControl"
+                        [note]="truck.note"
+                        [blankNote]="truck?.note ? true : false"
+                        [isVisibleDivider]="false"
+                        [isVisibleNote]="true"
+                        [isVisibleArrow]="true"
+                        [minRows]="1"
+                        [placeholder]="'Write something.'"
+                        [noteType]="'details-card'"
+                        [entityId]="truck.id"
+                        [entityType]="'Truck'"
+                    >
+                    </app-ta-input-note>
                 </div>
-            </app-ta-custom-card>
-            <!--------Note--------->
-            <div class="divider"></div>
-            <div class="note-cards">
-                <app-ta-input-note
-                    [formControl]="noteControl"
-                    [note]="truck.note"
-                    [blankNote]="truck?.note ? true : false"
-                    [isVisibleDivider]="false"
-                    [isVisibleNote]="true"
-                    [isVisibleArrow]="true"
-                    [minRows]="1"
-                    [placeholder]="'Write something.'"
-                    [noteType]="'details-card'"
-                    [entityId]="truck.id"
-                    [entityType]="'Truck'"
-                >
-                </app-ta-input-note>
             </div>
-        </div>
-        <div *ngIf="templateCard">
-            <div class="custom-card-single">
-                <app-ta-custom-card
-                    [cardName]="'Registration'"
-                    [isCardOpen]="false"
-                    [hasDivider]="false"
-                    [bodyTemplate]="'card'"
-                    [customClass]="'detailsPadding'"
-                    [hasCounter]="
-                        truck?.registrations?.length
-                            ? truck.registrations.length
-                            : 0
-                    "
-                    [hasPlusHeader]="true"
-                >
-                    <div
-                        *ngFor="
-                            let reg of truck?.registrations;
-                            let i = index;
-                            trackBy: identity
-                        "
-                    >
-                        <app-ta-common-card
-                            [cardDocumentCounter]="
-                                reg?.files?.length ? reg?.files?.length : 0
+            @if (templateCard) {
+                <div>
+                    <div class="custom-card-single">
+                        <app-ta-custom-card
+                            [cardName]="'Registration'"
+                            [isCardOpen]="false"
+                            [hasDivider]="false"
+                            [bodyTemplate]="'card'"
+                            [customClass]="'detailsPadding'"
+                            [hasCounter]="
+                                truck?.registrations?.length
+                                    ? truck.registrations.length
+                                    : 0
                             "
-                            (resizePage)="toggleResizePage(i, 'registration')"
-                            [cardNameCommon]="reg.licensePlate"
-                            [hasCopyIcon]="true"
-                            [options]="dataEdit"
-                            [expDateClose]="reg.expDate | formatDateP"
+                            [hasPlusHeader]="true"
                         >
-                            <div class="card-container">
-                                <div class="card-body-cdl">
-                                    <div class="card-row-endor">
-                                        <div class="card-item">
-                                            <div class="card-item-name">
-                                                State
-                                            </div>
-                                            <div class="card-item-value">
-                                                KV
-                                            </div>
-                                        </div>
-                                        <div class="card-item">
-                                            <div class="card-item-name">
-                                                Issued
-                                            </div>
-                                            <div class="card-item-value">
-                                                {{
-                                                    reg.issueDate | formatDateP
-                                                }}
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div
-                                        class="card-row-progress"
-                                        [ngClass]="{
-                                            'second-progress':
-                                                toggler[i + 'registration'],
-                                        }"
+                            @for (
+                                reg of truck?.registrations;
+                                let i = $index;
+                                track reg.id
+                            ) {
+                                <div>
+                                    <app-ta-common-card
+                                        [cardDocumentCounter]="
+                                            reg?.files?.length
+                                                ? reg?.files?.length
+                                                : 0
+                                        "
+                                        (resizePage)="
+                                            toggleResizePage(i, 'registration')
+                                        "
+                                        [cardNameCommon]="reg.licensePlate"
+                                        [hasCopyIcon]="true"
+                                        [options]="dataEdit"
+                                        [expDateClose]="
+                                            reg.expDate | formatDateP
+                                        "
                                     >
-                                        <div
-                                            class="card-details-progress-container"
-                                        >
-                                            <app-ta-progress-expiration
-                                                [expireDate]="
-                                                    reg.expDate | formatDateP
-                                                "
-                                                [startDate]="
-                                                    reg.issueDate | formatDateP
-                                                "
-                                                [expiresSettings]="'details'"
-                                                [darkText]="true"
-                                            >
-                                            </app-ta-progress-expiration>
+                                        <div class="card-container">
+                                            <div class="card-body-cdl">
+                                                <div class="card-row-endor">
+                                                    <div class="card-item">
+                                                        <div
+                                                            class="card-item-name"
+                                                        >
+                                                            State
+                                                        </div>
+                                                        <div
+                                                            class="card-item-value"
+                                                        >
+                                                            KV
+                                                        </div>
+                                                    </div>
+                                                    <div class="card-item">
+                                                        <div
+                                                            class="card-item-name"
+                                                        >
+                                                            Issued
+                                                        </div>
+                                                        <div
+                                                            class="card-item-value"
+                                                        >
+                                                            {{
+                                                                reg.issueDate
+                                                                    | formatDateP
+                                                            }}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div
+                                                    class="card-row-progress"
+                                                    [ngClass]="{
+                                                        'second-progress':
+                                                            toggler[
+                                                                i +
+                                                                    'registration'
+                                                            ],
+                                                    }"
+                                                >
+                                                    <div
+                                                        class="card-details-progress-container"
+                                                    >
+                                                        <app-ta-progress-expiration
+                                                            [expireDate]="
+                                                                reg.expDate
+                                                                    | formatDateP
+                                                            "
+                                                            [startDate]="
+                                                                reg.issueDate
+                                                                    | formatDateP
+                                                            "
+                                                            [expiresSettings]="
+                                                                'details'
+                                                            "
+                                                            [darkText]="true"
+                                                        >
+                                                        </app-ta-progress-expiration>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            @if (toggler[i + 'registration']) {
+                                                <div class="note-wrapper">
+                                                    <div class="divider"></div>
+                                                    <app-ta-input-note
+                                                        [formControl]="
+                                                            registrationNote
+                                                        "
+                                                        [isVisibleDivider]="
+                                                            false
+                                                        "
+                                                        [placeholder]="
+                                                            'Write something.'
+                                                        "
+                                                        [customClass]="
+                                                            'note-small'
+                                                        "
+                                                        [isVisibleArrow]="false"
+                                                        [minRows]="1"
+                                                        [isVisibleNote]="true"
+                                                        [noteType]="
+                                                            'details-card'
+                                                        "
+                                                        [entityId]="truck.id"
+                                                        [entityType]="'Truck'"
+                                                    ></app-ta-input-note>
+                                                </div>
+                                            }
                                         </div>
-                                    </div>
+                                    </app-ta-common-card>
                                 </div>
-                                <div
-                                    *ngIf="toggler[i + 'registration']"
-                                    class="note-wrapper"
-                                >
-                                    <div class="divider"></div>
-                                    <app-ta-input-note
-                                        [formControl]="registrationNote"
-                                        [isVisibleDivider]="false"
-                                        [placeholder]="'Write something.'"
-                                        [customClass]="'note-small'"
-                                        [isVisibleArrow]="false"
-                                        [minRows]="1"
-                                        [isVisibleNote]="true"
-                                        [noteType]="'details-card'"
-                                        [entityId]="truck.id"
-                                        [entityType]="'Truck'"
-                                    ></app-ta-input-note>
-                                </div>
-                            </div>
-                        </app-ta-common-card>
+                            }
+                        </app-ta-custom-card>
                     </div>
-                </app-ta-custom-card>
-            </div>
-            <div class="custom-card-single">
-                <app-ta-custom-card
-                    [cardName]="'FHWA Inspection'"
-                    [customClass]="'detailsPadding'"
-                    [isCardOpen]="false"
-                    [hasDivider]="false"
-                    [bodyTemplate]="'card'"
-                    [hasCounter]="
-                        truck?.inspections?.length
-                            ? truck.inspections.length
-                            : 0
-                    "
-                    [hasPlusHeader]="true"
-                >
-                    <div
-                        *ngFor="
-                            let fhwa of truck?.inspections;
-                            let i = index;
-                            trackBy: identity
-                        "
-                    >
-                        <app-ta-common-card
-                            [options]="dataEdit"
-                            [cardNameCommon]="fhwa.issueDate | formatDateP"
-                            [expDateClose]="'04/04/24' | formatDateP"
-                            (resizePage)="toggleResizePage(i, 'inspection')"
-                        >
-                            <div class="card-container">
-                                <div class="card-body-cdl">
-                                    <div
-                                        class="card-row-progress"
-                                        [ngClass]="{
-                                            'second-progress':
-                                                toggler[i + 'inspection'],
-                                        }"
-                                    >
-                                        <div
-                                            class="card-details-progress-container"
-                                        >
-                                            <app-ta-progress-expiration
-                                                [expireDate]="
-                                                    fhwa.expDate | formatDateP
-                                                "
-                                                [startDate]="
-                                                    fhwa.issueDate | formatDateP
-                                                "
-                                                [expiresSettings]="'details'"
-                                                [darkText]="true"
-                                            >
-                                            </app-ta-progress-expiration>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div
-                                    *ngIf="toggler[i + 'inspection']"
-                                    class="note-wrapper"
-                                >
-                                    <app-ta-input-note
-                                        [formControl]="fhwaNote"
-                                        [placeholder]="'Write something.'"
-                                        [customClass]="'note-small'"
-                                        [isVisibleArrow]="false"
-                                        [minRows]="1"
-                                        [isVisibleNote]="true"
-                                        [noteType]="'details-card'"
-                                        [entityId]="truck.id"
-                                        [entityType]="'Truck'"
-                                    ></app-ta-input-note>
-                                </div>
-                            </div>
-                        </app-ta-common-card>
-                    </div>
-                </app-ta-custom-card>
-            </div>
-            <div class="custom-card-single">
-                <app-ta-custom-card
-                    [cardName]="'Title'"
-                    [isCardOpen]="false"
-                    [hasDivider]="false"
-                    [bodyTemplate]="'card'"
-                    [customClass]="'detailsPadding'"
-                    [hasCounter]="
-                        truck?.titles?.length ? truck.titles.length : 0
-                    "
-                    [hasPlusHeader]="true"
-                >
-                    <div
-                        *ngFor="
-                            let title of truck?.titles;
-                            let i = index;
-                            trackBy: identity
-                        "
-                    >
-                        <app-ta-common-card
-                            [cardDocumentCounter]="
-                                title?.files?.length ? title?.files?.length : 0
+                    <div class="custom-card-single">
+                        <app-ta-custom-card
+                            [cardName]="'FHWA Inspection'"
+                            [customClass]="'detailsPadding'"
+                            [isCardOpen]="false"
+                            [hasDivider]="false"
+                            [bodyTemplate]="'card'"
+                            [hasCounter]="
+                                truck?.inspections?.length
+                                    ? truck.inspections.length
+                                    : 0
                             "
-                            (resizePage)="toggleResizePage(i, 'title')"
-                            [cardNameCommon]="title.number"
-                            [options]="dataEdit"
-                            [expDateClose]="'04/04/27' | formatDateP"
+                            [hasPlusHeader]="true"
                         >
-                            <div class="card-container">
-                                <div class="card-body-cdl">
-                                    <div class="card-row-endor">
-                                        <div class="card-item">
-                                            <div class="card-item-name">
-                                                State
-                                            </div>
-                                            <div class="card-item-value">
-                                                KV
-                                            </div>
-                                        </div>
-                                        <div class="card-item">
-                                            <div class="card-item-name">
-                                                Issued
-                                            </div>
-                                            <div class="card-item-value">
-                                                {{
-                                                    title.issueDate
-                                                        | formatDateP
-                                                }}
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div
-                                        class="card-row-progress"
-                                        [ngClass]="{
-                                            'second-progress':
-                                                toggler[i + 'title'],
-                                        }"
+                            @for (
+                                fhwa of truck?.inspections;
+                                let i = $index;
+                                track fhwa.id
+                            ) {
+                                <div>
+                                    <app-ta-common-card
+                                        [options]="dataEdit"
+                                        [cardNameCommon]="
+                                            fhwa.issueDate | formatDateP
+                                        "
+                                        [expDateClose]="
+                                            '04/04/24' | formatDateP
+                                        "
+                                        (resizePage)="
+                                            toggleResizePage(i, 'inspection')
+                                        "
                                     >
-                                        <div
-                                            class="card-details-progress-container"
-                                        >
-                                            <app-ta-progress-expiration
-                                                [expireDate]="
-                                                    title.issueDate
-                                                        | formatDateP
-                                                "
-                                                [startDate]="
-                                                    title.purchaseDate
-                                                        | formatDateP
-                                                "
-                                                [expiresSettings]="'details'"
-                                                [darkText]="true"
-                                            >
-                                            </app-ta-progress-expiration>
+                                        <div class="card-container">
+                                            <div class="card-body-cdl">
+                                                <div
+                                                    class="card-row-progress"
+                                                    [ngClass]="{
+                                                        'second-progress':
+                                                            toggler[
+                                                                i + 'inspection'
+                                                            ],
+                                                    }"
+                                                >
+                                                    <div
+                                                        class="card-details-progress-container"
+                                                    >
+                                                        <app-ta-progress-expiration
+                                                            [expireDate]="
+                                                                fhwa.expDate
+                                                                    | formatDateP
+                                                            "
+                                                            [startDate]="
+                                                                fhwa.issueDate
+                                                                    | formatDateP
+                                                            "
+                                                            [expiresSettings]="
+                                                                'details'
+                                                            "
+                                                            [darkText]="true"
+                                                        >
+                                                        </app-ta-progress-expiration>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            @if (toggler[i + 'inspection']) {
+                                                <div class="note-wrapper">
+                                                    <app-ta-input-note
+                                                        [formControl]="fhwaNote"
+                                                        [placeholder]="
+                                                            'Write something.'
+                                                        "
+                                                        [customClass]="
+                                                            'note-small'
+                                                        "
+                                                        [isVisibleArrow]="false"
+                                                        [minRows]="1"
+                                                        [isVisibleNote]="true"
+                                                        [noteType]="
+                                                            'details-card'
+                                                        "
+                                                        [entityId]="truck.id"
+                                                        [entityType]="'Truck'"
+                                                    ></app-ta-input-note>
+                                                </div>
+                                            }
                                         </div>
-                                    </div>
+                                    </app-ta-common-card>
                                 </div>
-                                <div
-                                    *ngIf="toggler[i + 'title']"
-                                    class="note-wrapper"
-                                >
-                                    <div class="divider"></div>
-                                    <app-ta-input-note
-                                        [formControl]="titleNote"
-                                        [placeholder]="'Write something.'"
-                                        [customClass]="'note-small'"
-                                        [isVisibleArrow]="false"
-                                        [minRows]="1"
-                                        [isVisibleDivider]="false"
-                                        [isVisibleNote]="true"
-                                        [noteType]="'details-card'"
-                                        [entityId]="truck.id"
-                                        [entityType]="'Truck'"
-                                    ></app-ta-input-note>
-                                </div>
-                            </div>
-                        </app-ta-common-card>
+                            }
+                        </app-ta-custom-card>
                     </div>
-                </app-ta-custom-card>
-            </div>
-            <div class="custom-card-single">
-                <app-ta-custom-card
-                    [cardName]="'Lease / Purchase'"
-                    [isCardOpen]="false"
-                    [hasDivider]="false"
-                    [bodyTemplate]="'card'"
-                    [hasCounter]="0"
-                    [hasPlusHeader]="true"
-                    [customClass]="'detailsPadding'"
-                >
-                </app-ta-custom-card>
-            </div>
+                    <div class="custom-card-single">
+                        <app-ta-custom-card
+                            [cardName]="'Title'"
+                            [isCardOpen]="false"
+                            [hasDivider]="false"
+                            [bodyTemplate]="'card'"
+                            [customClass]="'detailsPadding'"
+                            [hasCounter]="
+                                truck?.titles?.length ? truck.titles.length : 0
+                            "
+                            [hasPlusHeader]="true"
+                        >
+                            @for (
+                                title of truck?.titles;
+                                let i = $index;
+                                track title.id
+                            ) {
+                                <div>
+                                    <app-ta-common-card
+                                        [cardDocumentCounter]="
+                                            title?.files?.length
+                                                ? title?.files?.length
+                                                : 0
+                                        "
+                                        (resizePage)="
+                                            toggleResizePage(i, 'title')
+                                        "
+                                        [cardNameCommon]="title.number"
+                                        [options]="dataEdit"
+                                        [expDateClose]="
+                                            '04/04/27' | formatDateP
+                                        "
+                                    >
+                                        <div class="card-container">
+                                            <div class="card-body-cdl">
+                                                <div class="card-row-endor">
+                                                    <div class="card-item">
+                                                        <div
+                                                            class="card-item-name"
+                                                        >
+                                                            State
+                                                        </div>
+                                                        <div
+                                                            class="card-item-value"
+                                                        >
+                                                            KV
+                                                        </div>
+                                                    </div>
+                                                    <div class="card-item">
+                                                        <div
+                                                            class="card-item-name"
+                                                        >
+                                                            Issued
+                                                        </div>
+                                                        <div
+                                                            class="card-item-value"
+                                                        >
+                                                            {{
+                                                                title.issueDate
+                                                                    | formatDateP
+                                                            }}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div
+                                                    class="card-row-progress"
+                                                    [ngClass]="{
+                                                        'second-progress':
+                                                            toggler[
+                                                                i + 'title'
+                                                            ],
+                                                    }"
+                                                >
+                                                    <div
+                                                        class="card-details-progress-container"
+                                                    >
+                                                        <app-ta-progress-expiration
+                                                            [expireDate]="
+                                                                title.issueDate
+                                                                    | formatDateP
+                                                            "
+                                                            [startDate]="
+                                                                title.purchaseDate
+                                                                    | formatDateP
+                                                            "
+                                                            [expiresSettings]="
+                                                                'details'
+                                                            "
+                                                            [darkText]="true"
+                                                        >
+                                                        </app-ta-progress-expiration>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            @if (toggler[i + 'title']) {
+                                                <div class="note-wrapper">
+                                                    <div class="divider"></div>
+                                                    <app-ta-input-note
+                                                        [formControl]="
+                                                            titleNote
+                                                        "
+                                                        [placeholder]="
+                                                            'Write something.'
+                                                        "
+                                                        [customClass]="
+                                                            'note-small'
+                                                        "
+                                                        [isVisibleArrow]="false"
+                                                        [minRows]="1"
+                                                        [isVisibleDivider]="
+                                                            false
+                                                        "
+                                                        [isVisibleNote]="true"
+                                                        [noteType]="
+                                                            'details-card'
+                                                        "
+                                                        [entityId]="truck.id"
+                                                        [entityType]="'Truck'"
+                                                    ></app-ta-input-note>
+                                                </div>
+                                            }
+                                        </div>
+                                    </app-ta-common-card>
+                                </div>
+                            }
+                        </app-ta-custom-card>
+                    </div>
+                    <div class="custom-card-single">
+                        <app-ta-custom-card
+                            [cardName]="'Lease / Purchase'"
+                            [isCardOpen]="false"
+                            [hasDivider]="false"
+                            [bodyTemplate]="'card'"
+                            [hasCounter]="0"
+                            [hasPlusHeader]="true"
+                            [customClass]="'detailsPadding'"
+                        >
+                        </app-ta-custom-card>
+                    </div>
+                </div>
+            }
         </div>
     </div>
-</div>
+}

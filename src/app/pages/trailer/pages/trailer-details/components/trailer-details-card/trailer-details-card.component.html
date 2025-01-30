@@ -1,846 +1,925 @@
-<div *ngIf="trailer" class="cards-item-wrapper-1">
-    <app-ta-details-header-card
-        [ngClass]="{
-            disabedPreviousArrow: trailerIndex == 0,
-            disableNextArrow: trailerIndex == trailer_list.length - 1,
-        }"
-        [tooltipNext]="
-            trailerIndex == trailer_list.length - 1 ? '' : 'Next Trailer'
-        "
-        [tooltipPrevious]="trailerIndex == 0 ? '' : 'Previous Trailer'"
-        [cardDetailsDate]="trailer.createdAt | formatDateP"
-        [options]="trailerDropDowns"
-        [deactivate]="!trailer.status"
-        [sortOptions]="'active-drivers'"
-        [cardDetailsDateTerminated]="trailer.updatedAt | formatDateP"
-        [searchInputName]="'Search Trailer'"
-        [currentName]="trailer.trailerNumber"
-        (selectValue)="onSelectedTrailer($event)"
-        (changeEvent)="onChangeTrailer($event)"
-    >
-        <div class="truck-details-wrapper">
-            <div class="details-header-avatar">
-                <div class="svg-truck-wrapper">
-                    <svg-icon
-                        class="truck"
-                        src="{{
-                            'assets/svg/common/trailers/' +
-                                trailer?.trailerType?.logoName
-                        }}"
-                    >
-                    </svg-icon>
-                </div>
-
-                <div class="model-name">
-                    <div class="svg-wrapper">
+@if (trailer) {
+    <div class="cards-item-wrapper-1">
+        <app-ta-details-header-card
+            [ngClass]="{
+                disabedPreviousArrow: trailerIndex == 0,
+                disableNextArrow: trailerIndex == trailer_list.length - 1,
+            }"
+            [tooltipNext]="
+                trailerIndex == trailer_list.length - 1 ? '' : 'Next Trailer'
+            "
+            [tooltipPrevious]="trailerIndex == 0 ? '' : 'Previous Trailer'"
+            [cardDetailsDate]="trailer.createdAt | formatDateP"
+            [options]="trailerDropDowns"
+            [deactivate]="!trailer.status"
+            [sortOptions]="'active-drivers'"
+            [cardDetailsDateTerminated]="trailer.updatedAt | formatDateP"
+            [searchInputName]="'Search Trailer'"
+            [currentName]="trailer.trailerNumber"
+            (selectValue)="onSelectedTrailer($event)"
+            (changeEvent)="onChangeTrailer($event)"
+        >
+            <div class="truck-details-wrapper">
+                <div class="details-header-avatar">
+                    <div class="svg-truck-wrapper">
                         <svg-icon
-                            class="details-header-model"
+                            class="truck"
                             src="{{
-                                'assets/svg/common/trailermake/' +
-                                    trailer?.trailerMake?.logoName
+                                'assets/svg/common/trailers/' +
+                                    trailer?.trailerType?.logoName
                             }}"
                         >
                         </svg-icon>
                     </div>
-                    <p>{{ trailer.model }}</p>
+
+                    <div class="model-name">
+                        <div class="svg-wrapper">
+                            <svg-icon
+                                class="details-header-model"
+                                src="{{
+                                    'assets/svg/common/trailermake/' +
+                                        trailer?.trailerMake?.logoName
+                                }}"
+                            >
+                            </svg-icon>
+                        </div>
+                        <p>{{ trailer.model }}</p>
+                    </div>
                 </div>
-            </div>
-            <div class="details-header-data">
-                <div class="details-header-data-item second">
-                    <div *ngIf="trailer.color" class="light-green">
-                        <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            width="18"
-                            height="18"
-                            viewBox="0 0 18 18"
-                        >
-                            <g transform="translate(-725 -247)">
-                                <rect
+                <div class="details-header-data">
+                    <div class="details-header-data-item second">
+                        @if (trailer.color) {
+                            <div class="light-green">
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
                                     width="18"
                                     height="18"
-                                    transform="translate(725 247)"
-                                    fill="none"
-                                />
-                                <path
-                                    d="M16,16.365c0-2.42,3.382-7.593,4.989-9.912a1,1,0,0,1,1.66,0c1.607,2.319,4.989,7.492,4.989,9.912a5.819,5.819,0,1,1-11.638,0Zm3.174,0a.529.529,0,0,0-1.058,0,3.708,3.708,0,0,0,3.7,3.733.529.529,0,1,0,0-1.058A2.651,2.651,0,0,1,19.174,16.365Z"
-                                    transform="translate(712.181 241.886)"
-                                    [attr.fill]="trailer?.color.code"
-                                />
-                            </g>
-                        </svg>
-                    </div>
-                    <span *ngIf="trailer.color" class="vin-text">
-                        {{ trailer?.color.name }}
-                    </span>
-                    <svg-icon src="assets/svg/common/year-truck.svg"></svg-icon>
-                    <p class="vin-text date">{{ trailer.year }}</p>
-
-                    <div class="light-green">
+                                    viewBox="0 0 18 18"
+                                >
+                                    <g transform="translate(-725 -247)">
+                                        <rect
+                                            width="18"
+                                            height="18"
+                                            transform="translate(725 247)"
+                                            fill="none"
+                                        />
+                                        <path
+                                            d="M16,16.365c0-2.42,3.382-7.593,4.989-9.912a1,1,0,0,1,1.66,0c1.607,2.319,4.989,7.492,4.989,9.912a5.819,5.819,0,1,1-11.638,0Zm3.174,0a.529.529,0,0,0-1.058,0,3.708,3.708,0,0,0,3.7,3.733.529.529,0,1,0,0-1.058A2.651,2.651,0,0,1,19.174,16.365Z"
+                                            transform="translate(712.181 241.886)"
+                                            [attr.fill]="trailer?.color.code"
+                                        />
+                                    </g>
+                                </svg>
+                            </div>
+                        }
+                        @if (trailer.color) {
+                            <span class="vin-text">
+                                {{ trailer?.color.name }}
+                            </span>
+                        }
                         <svg-icon
-                            class="resize"
-                            src="assets/svg/common/ic_resize.svg"
+                            src="assets/svg/common/year-truck.svg"
                         ></svg-icon>
+                        <p class="vin-text date">{{ trailer.year }}</p>
+
+                        <div class="light-green">
+                            <svg-icon
+                                class="resize"
+                                src="assets/svg/common/ic_resize.svg"
+                            ></svg-icon>
+                        </div>
+                        <p class="vin-text">
+                            {{ trailer?.trailerLength?.name }}
+                        </p>
                     </div>
-                    <p class="vin-text">{{ trailer?.trailerLength?.name }}</p>
-                </div>
-                <div class="details-header-data-item second">
-                    <svg-icon
-                        class="icons-details"
-                        src="assets/svg/common/vin.svg"
-                    ></svg-icon>
-                    <app-ta-copy
-                        [textFontSize]="'18px'"
-                        [copyValue]="getLastSixChars(trailer?.vin)"
-                        [textColor]="'#2f2f2f'"
-                        [boldText]="true"
-                        [arrayText]="trailer?.vin.length > 6"
-                    >
-                    </app-ta-copy>
+                    <div class="details-header-data-item second">
+                        <svg-icon
+                            class="icons-details"
+                            src="assets/svg/common/vin.svg"
+                        ></svg-icon>
+                        <app-ta-copy
+                            [textFontSize]="'18px'"
+                            [copyValue]="getLastSixChars(trailer?.vin)"
+                            [textColor]="'#2f2f2f'"
+                            [boldText]="true"
+                            [arrayText]="trailer?.vin.length > 6"
+                        >
+                        </app-ta-copy>
+                    </div>
                 </div>
             </div>
-        </div>
-    </app-ta-details-header-card>
-    <div
-        class="wrapper-additional-cards"
-        [ngClass]="{ 'bind-height': !templateCard }"
-    >
-        <div class="details-cards trailer-details-card">
-            <!-- Assigned to -->
-            <app-ta-custom-card
-                [cardName]="'Assigned To'"
-                [hasDivider]="false"
-                [tooltipName]="'Dispatch History'"
-                [hasHeaderSvg]="'assets/svg/common/ic_half_time.svg'"
-                [customClass]="'detailsPadding'"
-                [isCardOpen]="true"
-                [bodyTemplate]="'card'"
-                [animationMarginParams]="{
-                    marginTop: '0px',
-                    marginBottom: '10px',
-                }"
-                class="first-custom-card"
-            >
-                <div class="assign-to">
-                    <div
-                        class="assign-to-item first"
-                        *ngIf="trailer?.assignedTo?.truck?.id"
-                    >
-                        <svg-icon
-                            class="assign-to-vehicle backImage"
-                            [src]="
-                                'assets/svg/common/trucks/' +
-                                trailer.assignedTo.truck.truckType.logoName
-                            "
-                        >
-                        </svg-icon>
-                        <p class="assignTo-value">
-                            {{ trailer.assignedTo.truck.truckNumber }}
-                        </p>
-                        <span
-                            tooltipBackground="#6c6c6c"
-                            ngbTooltip
-                            mainTooltip="View in Modal"
-                            position="top"
-                            class="semi-tooltip"
-                        >
-                            <svg-icon
-                                class="open-modal-icon"
-                                src="assets/svg/common/arrow_top_right.svg"
-                            ></svg-icon>
-                        </span>
-                    </div>
-                    <div
-                        class="assign-to-item second"
-                        *ngIf="!trailer?.assignedTo?.truck?.id"
-                    >
-                        <p
-                            class="assign-to-value no-truck inactive-assign-to-value"
-                        >
-                            No truck
-                        </p>
-                    </div>
-                    <div
-                        class="assign-to-item second"
-                        *ngIf="trailer?.assignedTo?.driver?.id"
-                    >
-                        <svg-icon class="assign-to-vehicle"></svg-icon>
+        </app-ta-details-header-card>
+        <div
+            class="wrapper-additional-cards"
+            [ngClass]="{ 'bind-height': !templateCard }"
+        >
+            <div class="details-cards trailer-details-card">
+                <!-- Assigned to -->
+                <app-ta-custom-card
+                    [cardName]="'Assigned To'"
+                    [hasDivider]="false"
+                    [tooltipName]="'Dispatch History'"
+                    [hasHeaderSvg]="'assets/svg/common/ic_half_time.svg'"
+                    [customClass]="'detailsPadding'"
+                    [isCardOpen]="true"
+                    [bodyTemplate]="'card'"
+                    [animationMarginParams]="{
+                        marginTop: '0px',
+                        marginBottom: '10px',
+                    }"
+                    class="first-custom-card"
+                >
+                    <div class="assign-to">
+                        @if (trailer?.assignedTo?.truck?.id) {
+                            <div class="assign-to-item first">
+                                <svg-icon
+                                    class="assign-to-vehicle backImage"
+                                    [src]="
+                                        'assets/svg/common/trucks/' +
+                                        trailer.assignedTo.truck.truckType
+                                            .logoName
+                                    "
+                                >
+                                </svg-icon>
+                                <p class="assignTo-value">
+                                    {{ trailer.assignedTo.truck.truckNumber }}
+                                </p>
+                                <span
+                                    tooltipBackground="#6c6c6c"
+                                    ngbTooltip
+                                    mainTooltip="View in Modal"
+                                    position="top"
+                                    class="semi-tooltip"
+                                >
+                                    <svg-icon
+                                        class="open-modal-icon"
+                                        src="assets/svg/common/arrow_top_right.svg"
+                                    ></svg-icon>
+                                </span>
+                            </div>
+                        }
+                        @if (!trailer?.assignedTo?.truck?.id) {
+                            <div class="assign-to-item second">
+                                <p
+                                    class="assign-to-value no-truck inactive-assign-to-value"
+                                >
+                                    No truck
+                                </p>
+                            </div>
+                        }
+                        @if (trailer?.assignedTo?.driver?.id) {
+                            <div class="assign-to-item second">
+                                <svg-icon class="assign-to-vehicle"></svg-icon>
+                                @if (
+                                    !trailer.assignedTo?.driver.avatarFile?.url
+                                ) {
+                                    <svg-icon
+                                        class="assign-to-vehicle"
+                                        src="assets/svg/common/user-image.svg"
+                                    ></svg-icon>
+                                }
+                                @if (
+                                    trailer.assignedTo?.driver.avatarFile?.url
+                                ) {
+                                    <img
+                                        class="driverAvatarImg"
+                                        [src]="
+                                            trailer.assignedTo?.driver
+                                                .avatarFile?.url
+                                        "
+                                        alt="driver-image"
+                                    />
+                                }
 
-                        <svg-icon
-                            *ngIf="!trailer.assignedTo?.driver.avatarFile?.url"
-                            class="assign-to-vehicle"
-                            src="assets/svg/common/user-image.svg"
-                        ></svg-icon>
-                        <img
-                            *ngIf="trailer.assignedTo?.driver.avatarFile?.url"
-                            class="driverAvatarImg"
-                            [src]="trailer.assignedTo?.driver.avatarFile?.url"
-                            alt="driver-image"
-                        />
-
-                        <p class="assignTo-value">
-                            {{ trailer?.assignedTo?.driver?.firstName }}
-                            {{ trailer?.assignedTo?.driver?.lastName }}
-                        </p>
-                        <span
-                            tooltipBackground="#6c6c6c"
-                            ngbTooltip
-                            mainTooltip="View in Modal"
-                            position="top"
-                            class="semi-tooltip"
-                        >
-                            <svg-icon
-                                class="open-modal-icon2"
-                                src="assets/svg/common/arrow_top_right.svg"
-                            ></svg-icon>
-                        </span>
+                                <p class="assignTo-value">
+                                    {{ trailer?.assignedTo?.driver?.firstName }}
+                                    {{ trailer?.assignedTo?.driver?.lastName }}
+                                </p>
+                                <span
+                                    tooltipBackground="#6c6c6c"
+                                    ngbTooltip
+                                    mainTooltip="View in Modal"
+                                    position="top"
+                                    class="semi-tooltip"
+                                >
+                                    <svg-icon
+                                        class="open-modal-icon2"
+                                        src="assets/svg/common/arrow_top_right.svg"
+                                    ></svg-icon>
+                                </span>
+                            </div>
+                        }
+                        @if (!trailer?.assignedTo?.driver?.id) {
+                            <div class="assign-to-item second">
+                                <p
+                                    class="assign-to-value no-truck inactive-assign-to-value"
+                                >
+                                    No Driver
+                                </p>
+                            </div>
+                        }
                     </div>
-                    <div
-                        class="assign-to-item second"
-                        *ngIf="!trailer?.assignedTo?.driver?.id"
-                    >
-                        <p
-                            class="assign-to-value no-truck inactive-assign-to-value"
-                        >
-                            No Driver
-                        </p>
-                    </div>
-                </div>
-            </app-ta-custom-card>
+                </app-ta-custom-card>
 
-            <!-- Additional info -->
-            <app-ta-custom-card
-                [cardName]="'Additional Details'"
-                [customClass]="'detailsPadding'"
-                [isCardOpen]="true"
-                [bodyTemplate]="'card'"
-                [animationMarginParams]="{
-                    marginTop: '0px',
-                    marginBottom: '10px',
-                }"
-            >
-                <div
-                    *ngIf="
+                <!-- Additional info -->
+                <app-ta-custom-card
+                    [cardName]="'Additional Details'"
+                    [customClass]="'detailsPadding'"
+                    [isCardOpen]="true"
+                    [bodyTemplate]="'card'"
+                    [animationMarginParams]="{
+                        marginTop: '0px',
+                        marginBottom: '10px',
+                    }"
+                >
+                    @if (
                         trailer?.emptyWeight ||
                         trailer?.mileage ||
                         trailer?.axles ||
                         trailer?.tireSize?.name ||
                         trailer?.reeferUnit?.name
-                    "
-                    class="common-template"
-                >
-                    <div
-                        *ngIf="trailer?.emptyWeight"
-                        class="common-template-item"
-                    >
-                        <div class="common-template-item-name">
-                            Empty Weight
-                        </div>
-                        <div class="common-template-item-value">
-                            <app-ta-copy
-                                [copyValue]="
-                                    (trailer.emptyWeight | thousandSeparator) +
-                                    'Ibs'
-                                "
-                                [textColor]="'#2f2f2f'"
-                            >
-                            </app-ta-copy>
-                        </div>
-                    </div>
-                    <div *ngIf="trailer?.mileage" class="common-template-item">
-                        <div class="common-template-item-name">Mileage</div>
-                        <div class="common-template-item-value">
-                            <app-ta-copy
-                                [copyValue]="
-                                    (trailer.mileage | thousandSeparator) + 'mi'
-                                "
-                                [textColor]="'#2f2f2f'"
-                            >
-                            </app-ta-copy>
-                        </div>
-                    </div>
-                    <div
-                        *ngIf="trailer?.reeferUnit?.name"
-                        class="common-template-item"
-                    >
-                        <div class="common-template-item-name">Reefer Unit</div>
-                        <div class="common-template-item-value">
-                            <app-ta-copy
-                                [copyValue]="trailer?.reeferUnit?.name"
-                                [textColor]="'#2f2f2f'"
-                            >
-                            </app-ta-copy>
-                        </div>
-                    </div>
-                    <div *ngIf="trailer?.axles" class="common-template-item">
-                        <div class="common-template-item-name">Axles</div>
-                        <div class="common-template-item-value">
-                            <app-ta-copy
-                                [copyValue]="trailer.axles"
-                                [textColor]="'#2f2f2f'"
-                            >
-                            </app-ta-copy>
-                        </div>
-                    </div>
-                    <div
-                        *ngIf="trailer?.tireSize?.name"
-                        class="common-template-item"
-                    >
-                        <div class="common-template-item-name">Tire Size</div>
-                        <div class="common-template-item-value">
-                            <app-ta-copy
-                                [copyValue]="trailer.tireSize.name"
-                                [textColor]="'#2f2f2f'"
-                            >
-                            </app-ta-copy>
-                        </div>
-                    </div>
-                    <div
-                        *ngIf="trailer?.suspension?.name"
-                        class="common-template-item"
-                    >
-                        <div class="common-template-item-name">Suspension</div>
-                        <div class="common-template-item-value">
-                            <app-ta-copy
-                                [copyValue]="trailer.suspension.name"
-                                [textColor]="'#2f2f2f'"
-                            >
-                            </app-ta-copy>
-                        </div>
-                    </div>
+                    ) {
+                        <div class="common-template">
+                            @if (trailer?.emptyWeight) {
+                                <div class="common-template-item">
+                                    <div class="common-template-item-name">
+                                        Empty Weight
+                                    </div>
+                                    <div class="common-template-item-value">
+                                        <app-ta-copy
+                                            [copyValue]="
+                                                (trailer.emptyWeight
+                                                    | thousandSeparator) + 'Ibs'
+                                            "
+                                            [textColor]="'#2f2f2f'"
+                                        >
+                                        </app-ta-copy>
+                                    </div>
+                                </div>
+                            }
+                            @if (trailer?.mileage) {
+                                <div class="common-template-item">
+                                    <div class="common-template-item-name">
+                                        Mileage
+                                    </div>
+                                    <div class="common-template-item-value">
+                                        <app-ta-copy
+                                            [copyValue]="
+                                                (trailer.mileage
+                                                    | thousandSeparator) + 'mi'
+                                            "
+                                            [textColor]="'#2f2f2f'"
+                                        >
+                                        </app-ta-copy>
+                                    </div>
+                                </div>
+                            }
+                            @if (trailer?.reeferUnit?.name) {
+                                <div class="common-template-item">
+                                    <div class="common-template-item-name">
+                                        Reefer Unit
+                                    </div>
+                                    <div class="common-template-item-value">
+                                        <app-ta-copy
+                                            [copyValue]="
+                                                trailer?.reeferUnit?.name
+                                            "
+                                            [textColor]="'#2f2f2f'"
+                                        >
+                                        </app-ta-copy>
+                                    </div>
+                                </div>
+                            }
+                            @if (trailer?.axles) {
+                                <div class="common-template-item">
+                                    <div class="common-template-item-name">
+                                        Axles
+                                    </div>
+                                    <div class="common-template-item-value">
+                                        <app-ta-copy
+                                            [copyValue]="trailer.axles"
+                                            [textColor]="'#2f2f2f'"
+                                        >
+                                        </app-ta-copy>
+                                    </div>
+                                </div>
+                            }
+                            @if (trailer?.tireSize?.name) {
+                                <div class="common-template-item">
+                                    <div class="common-template-item-name">
+                                        Tire Size
+                                    </div>
+                                    <div class="common-template-item-value">
+                                        <app-ta-copy
+                                            [copyValue]="trailer.tireSize.name"
+                                            [textColor]="'#2f2f2f'"
+                                        >
+                                        </app-ta-copy>
+                                    </div>
+                                </div>
+                            }
+                            @if (trailer?.suspension?.name) {
+                                <div class="common-template-item">
+                                    <div class="common-template-item-name">
+                                        Suspension
+                                    </div>
+                                    <div class="common-template-item-value">
+                                        <app-ta-copy
+                                            [copyValue]="
+                                                trailer.suspension.name
+                                            "
+                                            [textColor]="'#2f2f2f'"
+                                        >
+                                        </app-ta-copy>
+                                    </div>
+                                </div>
+                            }
 
-                    <div
-                        *ngIf="trailer?.insurancePolicy"
-                        class="common-template-item"
-                    >
-                        <div class="common-template-item-name">
-                            Insurance Policy
-                        </div>
-                        <div class="common-template-item-value">
-                            <app-ta-copy
-                                [copyValue]="trailer.insurancePolicy"
-                                [textColor]="'#2f2f2f'"
-                            >
-                            </app-ta-copy>
-                        </div>
-                    </div>
+                            @if (trailer?.insurancePolicy) {
+                                <div class="common-template-item">
+                                    <div class="common-template-item-name">
+                                        Insurance Policy
+                                    </div>
+                                    <div class="common-template-item-value">
+                                        <app-ta-copy
+                                            [copyValue]="
+                                                trailer.insurancePolicy
+                                            "
+                                            [textColor]="'#2f2f2f'"
+                                        >
+                                        </app-ta-copy>
+                                    </div>
+                                </div>
+                            }
+                            @if (trailer?.fhwaExp) {
+                                <div class="common-template-item">
+                                    <div class="common-template-item-name">
+                                        FHWA Expiration
+                                    </div>
+                                    <div class="common-template-item-value">
+                                        <app-ta-copy
+                                            [copyValue]="
+                                                trailer?.fhwaExp + ' months'
+                                            "
+                                            [textColor]="'#2f2f2f'"
+                                        >
+                                        </app-ta-copy>
+                                    </div>
+                                </div>
+                            }
+                            @if (trailer?.purchaseDate) {
+                                <div class="common-template-item">
+                                    <div class="common-template-item-name">
+                                        Purchase Date
+                                    </div>
+                                    <div class="common-template-item-value">
+                                        <app-ta-copy
+                                            [copyValue]="
+                                                trailer?.purchaseDate
+                                                    | formatDateP
+                                            "
+                                            [textColor]="'#2f2f2f'"
+                                        >
+                                        </app-ta-copy>
+                                    </div>
+                                </div>
+                            }
 
-                    <div *ngIf="trailer?.fhwaExp" class="common-template-item">
-                        <div class="common-template-item-name">
-                            FHWA Expiration
+                            @if (trailer?.purchasePrice) {
+                                <div class="common-template-item">
+                                    <div class="common-template-item-name">
+                                        Purchase Price
+                                    </div>
+                                    <div class="common-template-item-value">
+                                        <app-ta-copy
+                                            [copyValue]="
+                                                '$' +
+                                                (trailer?.purchasePrice
+                                                    | thousandSeparator)
+                                            "
+                                            [textColor]="'#2f2f2f'"
+                                        >
+                                        </app-ta-copy>
+                                    </div>
+                                </div>
+                            }
                         </div>
-                        <div class="common-template-item-value">
-                            <app-ta-copy
-                                [copyValue]="trailer?.fhwaExp + ' months'"
-                                [textColor]="'#2f2f2f'"
-                            >
-                            </app-ta-copy>
-                        </div>
-                    </div>
-                    <div
-                        *ngIf="trailer?.purchaseDate"
-                        class="common-template-item"
-                    >
-                        <div class="common-template-item-name">
-                            Purchase Date
-                        </div>
-                        <div class="common-template-item-value">
-                            <app-ta-copy
-                                [copyValue]="
-                                    trailer?.purchaseDate | formatDateP
-                                "
-                                [textColor]="'#2f2f2f'"
-                            >
-                            </app-ta-copy>
-                        </div>
-                    </div>
-                    <div
-                        *ngIf="trailer?.purchasePrice"
-                        class="common-template-item"
-                    >
-                        <div class="common-template-item-name">
-                            Purchase Price
-                        </div>
-                        <div class="common-template-item-value">
-                            <app-ta-copy
-                                [copyValue]="
-                                    '$' +
-                                    (trailer?.purchasePrice | thousandSeparator)
-                                "
-                                [textColor]="'#2f2f2f'"
-                            >
-                            </app-ta-copy>
-                        </div>
-                    </div>
-                </div>
-                <div
-                    class="no-data-driver-details"
-                    *ngIf="
+                    }
+                    @if (
                         !trailer?.emptyWeight &&
                         !trailer?.mileage &&
                         !trailer?.axles &&
                         !trailer?.tireSize?.name &&
                         !trailer?.reeferUnit?.name
-                    "
-                >
-                    No Additional Details
-                </div>
-            </app-ta-custom-card>
+                    ) {
+                        <div class="no-data-driver-details">
+                            No Additional Details
+                        </div>
+                    }
+                </app-ta-custom-card>
 
-            <!-- Owner -->
-            <app-ta-custom-card
-                [cardName]="
-                    ownerCardOpened ? 'Owner' : 'Owner ' + trailer.owner.name
-                "
-                [isCardOpen]="true"
-                [bodyTemplate]="'card'"
-                [customClass]="'detailsPadding'"
-                [animationMarginParams]="{
-                    marginTop: '0px',
-                    marginBottom: '10px',
-                }"
-                (onOpenCard)="onOpenCloseCard($event)"
-            >
-                <div class="owner-container">
-                    <div class="owner-items-name">
-                        <span class="firm-name">{{ trailer.owner.name }}</span>
-                    </div>
-                    <div class="wrapper-owner-items">
-                        <div class="owner-items">
-                            <svg-icon
-                                class="icons-details"
-                                src="assets/svg/common/ic_phone.svg"
-                            ></svg-icon>
-                            <app-ta-copy
-                                [copyValue]="trailer?.owner?.phone"
-                                [textColor]="'#2f2f2f'"
-                            >
-                            </app-ta-copy>
+                <!-- Owner -->
+                <app-ta-custom-card
+                    [cardName]="
+                        ownerCardOpened
+                            ? 'Owner'
+                            : 'Owner ' + trailer.owner.name
+                    "
+                    [isCardOpen]="true"
+                    [bodyTemplate]="'card'"
+                    [customClass]="'detailsPadding'"
+                    [animationMarginParams]="{
+                        marginTop: '0px',
+                        marginBottom: '10px',
+                    }"
+                    (onOpenCard)="onOpenCloseCard($event)"
+                >
+                    <div class="owner-container">
+                        <div class="owner-items-name">
+                            <span class="firm-name">{{
+                                trailer.owner.name
+                            }}</span>
                         </div>
-                        <div class="owner-items">
-                            <svg-icon
-                                class="icons-details"
-                                src="assets/svg/common/ic_email.svg"
-                            ></svg-icon>
-                            <app-ta-copy
-                                [copyValue]="trailer?.owner?.email"
-                                [textColor]="'#2f2f2f'"
-                            >
-                            </app-ta-copy>
-                        </div>
-                        <div class="owner-items">
-                            <svg-icon
-                                src="assets/svg/common/ic_address.svg"
-                            ></svg-icon>
-                            <p class="information-value">
+                        <div class="wrapper-owner-items">
+                            <div class="owner-items">
+                                <svg-icon
+                                    class="icons-details"
+                                    src="assets/svg/common/ic_phone.svg"
+                                ></svg-icon>
                                 <app-ta-copy
-                                    [copyValue]="
-                                        trailer?.owner?.address?.address
-                                    "
+                                    [copyValue]="trailer?.owner?.phone"
                                     [textColor]="'#2f2f2f'"
                                 >
                                 </app-ta-copy>
-                            </p>
+                            </div>
+                            <div class="owner-items">
+                                <svg-icon
+                                    class="icons-details"
+                                    src="assets/svg/common/ic_email.svg"
+                                ></svg-icon>
+                                <app-ta-copy
+                                    [copyValue]="trailer?.owner?.email"
+                                    [textColor]="'#2f2f2f'"
+                                >
+                                </app-ta-copy>
+                            </div>
+                            <div class="owner-items">
+                                <svg-icon
+                                    src="assets/svg/common/ic_address.svg"
+                                ></svg-icon>
+                                <p class="information-value">
+                                    <app-ta-copy
+                                        [copyValue]="
+                                            trailer?.owner?.address?.address
+                                        "
+                                        [textColor]="'#2f2f2f'"
+                                    >
+                                    </app-ta-copy>
+                                </p>
+                            </div>
                         </div>
                     </div>
-                </div>
-            </app-ta-custom-card>
+                </app-ta-custom-card>
 
-            <!-- Owner History -->
-            <app-ta-custom-card
-                [cardName]="'Owner History'"
-                [isCardOpen]="true"
-                [tooltipName]="'View in Modal'"
-                [bodyTemplate]="'card'"
-                [hasHeaderSvg]="'assets/svg/common/arrow_top_right.svg'"
-                [animationMarginParams]="{
-                    marginTop: '0px',
-                    marginBottom: '10px',
-                }"
-                [customClass]="'detailsPadding'"
-            >
-                <div class="owner-history-container"></div>
-            </app-ta-custom-card>
-            <ng-container *ngIf="trailer.trailerType.id === 9">
+                <!-- Owner History -->
                 <app-ta-custom-card
+                    [cardName]="'Owner History'"
+                    [isCardOpen]="true"
                     [tooltipName]="'View in Modal'"
                     [bodyTemplate]="'card'"
-                    [cardName]="'Fuel Consumption'"
-                    [isCardOpen]="true"
                     [hasHeaderSvg]="'assets/svg/common/arrow_top_right.svg'"
-                    class="item-cards"
+                    [animationMarginParams]="{
+                        marginTop: '0px',
+                        marginBottom: '10px',
+                    }"
                     [customClass]="'detailsPadding'"
                 >
-                    <div class="charts-template perfomance">
-                        @if (!fuelConsumptionLegendHighlightedBackground) {
-                            <app-ta-tab-switch
-                                [type]="'type2-modal-popup'"
-                                (switchClicked)="
-                                    changeFuelConsumptionTab($event)
-                                "
-                                [tabs]="fuelConsumptionTabs"
-                            >
-                            </app-ta-tab-switch>
-                        }
-                        <ng-container
-                            *ngIf="fuelConsumptionChartConfig?.chartData"
-                        >
-                            <app-ca-chart
-                                [chartConfig]="fuelConsumptionChartConfig"
-                                [legendData]="{
-                                    data: fuelConsumptionChartLegend,
-                                    hasHighlightedBackground:
-                                        fuelConsumptionLegendHighlightedBackground,
-                                    title: fuelConsumptionLegendTitle,
-                                }"
-                                (hoveredIndex)="
-                                    setFuelConsumptionLegendOnHover($event)
-                                "
-                            >
-                            </app-ca-chart>
-                        </ng-container>
-                    </div>
+                    <div class="owner-history-container"></div>
                 </app-ta-custom-card>
-            </ng-container>
+                @if (trailer.trailerType.id === 9) {
+                    <app-ta-custom-card
+                        [tooltipName]="'View in Modal'"
+                        [bodyTemplate]="'card'"
+                        [cardName]="'Fuel Consumption'"
+                        [isCardOpen]="true"
+                        [hasHeaderSvg]="'assets/svg/common/arrow_top_right.svg'"
+                        class="item-cards"
+                        [customClass]="'detailsPadding'"
+                    >
+                        <div class="charts-template perfomance">
+                            @if (!fuelConsumptionLegendHighlightedBackground) {
+                                <app-ta-tab-switch
+                                    [type]="'type2-modal-popup'"
+                                    (switchClicked)="
+                                        changeFuelConsumptionTab($event)
+                                    "
+                                    [tabs]="fuelConsumptionTabs"
+                                >
+                                </app-ta-tab-switch>
+                            }
+                            @if (fuelConsumptionChartConfig?.chartData) {
+                                <app-ca-chart
+                                    [chartConfig]="fuelConsumptionChartConfig"
+                                    [legendData]="{
+                                        data: fuelConsumptionChartLegend,
+                                        hasHighlightedBackground:
+                                            fuelConsumptionLegendHighlightedBackground,
+                                        title: fuelConsumptionLegendTitle,
+                                    }"
+                                    (hoveredIndex)="
+                                        setFuelConsumptionLegendOnHover($event)
+                                    "
+                                >
+                                </app-ca-chart>
+                            }
+                        </div>
+                    </app-ta-custom-card>
+                }
 
-            <app-ta-custom-card
-                *ngIf="trailer?.files.length"
-                [cardName]="'Document'"
-                [isCardOpen]="false"
-                [hasCounter]="
-                    trailer?.files?.length ? trailer?.files.length : 0
-                "
-                [bodyTemplate]="'card'"
-                [customClass]="'detailsPadding'"
-            >
-                <div
-                    class="card_files_holder"
-                    [class.active]="trailer?.files?.length > 1"
-                >
-                    <app-ta-upload-files
-                        [files]="trailer?.files"
-                        [customClassName]="'driver-card-pdf'"
-                        [hasCarouselBottomTabs]="true"
-                        [type]="'details'"
-                        [slideWidth]="428"
-                        [reviewMode]="'REVIEW_MODE'"
-                    ></app-ta-upload-files>
+                @if (trailer?.files.length) {
+                    <app-ta-custom-card
+                        [cardName]="'Document'"
+                        [isCardOpen]="false"
+                        [hasCounter]="
+                            trailer?.files?.length ? trailer?.files.length : 0
+                        "
+                        [bodyTemplate]="'card'"
+                        [customClass]="'detailsPadding'"
+                    >
+                        <div
+                            class="card_files_holder"
+                            [class.active]="trailer?.files?.length > 1"
+                        >
+                            <app-ta-upload-files
+                                [files]="trailer?.files"
+                                [customClassName]="'driver-card-pdf'"
+                                [hasCarouselBottomTabs]="true"
+                                [type]="'details'"
+                                [slideWidth]="428"
+                                [reviewMode]="'REVIEW_MODE'"
+                            ></app-ta-upload-files>
+                        </div>
+                    </app-ta-custom-card>
+                }
+                <!-- Note  -->
+                <div class="divider"></div>
+                <div class="note-cards">
+                    <app-ta-input-note
+                        [formControl]="note"
+                        [isVisibleDivider]="false"
+                        [isVisibleNote]="true"
+                        [isVisibleArrow]="true"
+                        [minRows]="1"
+                        [placeholder]="'Write something.'"
+                        [customClass]="'note-small'"
+                        [note]="trailer.note"
+                        [noteType]="'details-card'"
+                        [entityId]="trailer.id"
+                        [entityType]="'Trailer'"
+                    ></app-ta-input-note>
                 </div>
-            </app-ta-custom-card>
-            <!-- Note  -->
-            <div class="divider"></div>
-            <div class="note-cards">
-                <app-ta-input-note
-                    [formControl]="note"
-                    [isVisibleDivider]="false"
-                    [isVisibleNote]="true"
-                    [isVisibleArrow]="true"
-                    [minRows]="1"
-                    [placeholder]="'Write something.'"
-                    [customClass]="'note-small'"
-                    [note]="trailer.note"
-                    [noteType]="'details-card'"
-                    [entityId]="trailer.id"
-                    [entityType]="'Trailer'"
-                ></app-ta-input-note>
             </div>
-        </div>
-        <div *ngIf="templateCard">
-            <div class="custom-card-single">
-                <app-ta-custom-card
-                    [cardName]="'Registration'"
-                    [isCardOpen]="false"
-                    [hasDivider]="false"
-                    [bodyTemplate]="'card'"
-                    [hasCounter]="trailer.registrations.length"
-                    [hasPlusHeader]="true"
-                    [customClass]="'detailsPadding'"
-                >
-                    <div
-                        *ngFor="
-                            let reg of trailer.registrations;
-                            let i = index;
-                            trackBy: identity
-                        "
-                    >
-                        <app-ta-common-card
+            @if (templateCard) {
+                <div>
+                    <div class="custom-card-single">
+                        <app-ta-custom-card
+                            [cardName]="'Registration'"
+                            [isCardOpen]="false"
+                            [hasDivider]="false"
+                            [bodyTemplate]="'card'"
+                            [hasCounter]="trailer.registrations.length"
+                            [hasPlusHeader]="true"
+                            [customClass]="'detailsPadding'"
+                        >
+                            <div
+                                *ngFor="
+                                    let reg of trailer.registrations;
+                                    let i = index;
+                                    trackBy: identity
+                                "
+                            >
+                                <app-ta-common-card
+                                    [cardDocumentCounter]="1"
+                                    (resizePage)="
+                                        toggleResizePage(i, 'registration')
+                                    "
+                                    [cardNameCommon]="reg.licensePlate"
+                                    [hasCopyIcon]="true"
+                                    [options]="dataEdit"
+                                    [expDateClose]="reg.expDate | formatDateP"
+                                    [optionsId]="reg.id"
+                                >
+                                    <div class="cards-container">
+                                        <div class="card-body-cdl">
+                                            <div class="card-row-endor">
+                                                <div class="card-item">
+                                                    <div class="card-item-name">
+                                                        State
+                                                    </div>
+                                                    <div
+                                                        class="card-item-value"
+                                                    >
+                                                        KV
+                                                    </div>
+                                                </div>
+                                                <div class="card-item">
+                                                    <div class="card-item-name">
+                                                        Issued
+                                                    </div>
+                                                    <div
+                                                        class="card-item-value"
+                                                    >
+                                                        {{
+                                                            reg.issueDate
+                                                                | formatDateP
+                                                        }}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div
+                                                class="card-row-progress"
+                                                [ngClass]="{
+                                                    'second-progress':
+                                                        toggler[
+                                                            i + 'registration'
+                                                        ],
+                                                }"
+                                            >
+                                                <div
+                                                    class="card-details-progress-container"
+                                                >
+                                                    <app-ta-progress-expiration
+                                                        [expireDate]="
+                                                            reg.expDate
+                                                                | formatDateP
+                                                        "
+                                                        [startDate]="
+                                                            reg.issueDate
+                                                                | formatDateP
+                                                        "
+                                                        [expiresSettings]="
+                                                            'details'
+                                                        "
+                                                        [darkText]="true"
+                                                    >
+                                                    </app-ta-progress-expiration>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div
+                                            [@showHideCardBody]="
+                                                toggler[i + 'registration']
+                                                    ? 'true'
+                                                    : 'false'
+                                            "
+                                        >
+                                            <div class="divider"></div>
+                                            <div class="card-note">
+                                                <app-ta-input-note
+                                                    [formControl]="
+                                                        registrationNote
+                                                    "
+                                                    [isVisibleDivider]="false"
+                                                    [placeholder]="
+                                                        'Write something.'
+                                                    "
+                                                    [customClass]="'note-small'"
+                                                    [isVisibleArrow]="false"
+                                                    [minRows]="1"
+                                                    [isVisibleNote]="true"
+                                                    [noteType]="'details-card'"
+                                                    [entityId]="trailer.id"
+                                                    [entityType]="'Trailer'"
+                                                ></app-ta-input-note>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </app-ta-common-card>
+                            </div>
+                        </app-ta-custom-card>
+                    </div>
+
+                    <div class="custom-card-single">
+                        <app-ta-custom-card
+                            [cardName]="'FHWA Inspection'"
+                            [isCardOpen]="false"
+                            [hasDivider]="false"
+                            [bodyTemplate]="'card'"
                             [cardDocumentCounter]="1"
-                            (resizePage)="toggleResizePage(i, 'registration')"
-                            [cardNameCommon]="reg.licensePlate"
-                            [hasCopyIcon]="true"
-                            [options]="dataEdit"
-                            [expDateClose]="reg.expDate | formatDateP"
-                            [optionsId]="reg.id"
+                            [hasCounter]="trailer.inspections.length"
+                            [hasPlusHeader]="true"
+                            [customClass]="'detailsPadding'"
                         >
-                            <div class="cards-container">
-                                <div class="card-body-cdl">
-                                    <div class="card-row-endor">
-                                        <div class="card-item">
-                                            <div class="card-item-name">
-                                                State
-                                            </div>
-                                            <div class="card-item-value">
-                                                KV
-                                            </div>
-                                        </div>
-                                        <div class="card-item">
-                                            <div class="card-item-name">
-                                                Issued
-                                            </div>
-                                            <div class="card-item-value">
-                                                {{
-                                                    reg.issueDate | formatDateP
-                                                }}
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div
-                                        class="card-row-progress"
-                                        [ngClass]="{
-                                            'second-progress':
-                                                toggler[i + 'registration'],
-                                        }"
-                                    >
-                                        <div
-                                            class="card-details-progress-container"
-                                        >
-                                            <app-ta-progress-expiration
-                                                [expireDate]="
-                                                    reg.expDate | formatDateP
-                                                "
-                                                [startDate]="
-                                                    reg.issueDate | formatDateP
-                                                "
-                                                [expiresSettings]="'details'"
-                                                [darkText]="true"
-                                            >
-                                            </app-ta-progress-expiration>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div
-                                    [@showHideCardBody]="
-                                        toggler[i + 'registration']
-                                            ? 'true'
-                                            : 'false'
+                            <div
+                                *ngFor="
+                                    let fhwa of trailer.inspections;
+                                    let i = index;
+                                    trackBy: identity
+                                "
+                            >
+                                <app-ta-common-card
+                                    [options]="dataEdit"
+                                    [cardNameCommon]="
+                                        fhwa.issueDate | formatDateP
+                                    "
+                                    [optionsId]="fhwa.id"
+                                    (resizePage)="
+                                        toggleResizePage(i, 'inspection')
                                     "
                                 >
-                                    <div class="divider"></div>
-                                    <div class="card-note">
-                                        <app-ta-input-note
-                                            [formControl]="registrationNote"
-                                            [isVisibleDivider]="false"
-                                            [placeholder]="'Write something.'"
-                                            [customClass]="'note-small'"
-                                            [isVisibleArrow]="false"
-                                            [minRows]="1"
-                                            [isVisibleNote]="true"
-                                            [noteType]="'details-card'"
-                                            [entityId]="trailer.id"
-                                            [entityType]="'Trailer'"
-                                        ></app-ta-input-note>
-                                    </div>
-                                </div>
-                            </div>
-                        </app-ta-common-card>
-                    </div>
-                </app-ta-custom-card>
-            </div>
-
-            <div class="custom-card-single">
-                <app-ta-custom-card
-                    [cardName]="'FHWA Inspection'"
-                    [isCardOpen]="false"
-                    [hasDivider]="false"
-                    [bodyTemplate]="'card'"
-                    [cardDocumentCounter]="1"
-                    [hasCounter]="trailer.inspections.length"
-                    [hasPlusHeader]="true"
-                    [customClass]="'detailsPadding'"
-                >
-                    <div
-                        *ngFor="
-                            let fhwa of trailer.inspections;
-                            let i = index;
-                            trackBy: identity
-                        "
-                    >
-                        <app-ta-common-card
-                            [options]="dataEdit"
-                            [cardNameCommon]="fhwa.issueDate | formatDateP"
-                            [optionsId]="fhwa.id"
-                            (resizePage)="toggleResizePage(i, 'inspection')"
-                        >
-                            <div class="cards-container">
-                                <div class="card-body-cdl">
-                                    <div
-                                        class="card-row-progress"
-                                        [ngClass]="{
-                                            'second-progress':
-                                                toggler[i + 'inspection'],
-                                        }"
-                                    >
-                                        <div
-                                            class="card-details-progress-container"
-                                        >
-                                            <app-ta-progress-expiration
-                                                [expireDate]="
-                                                    fhwa.expDate | formatDateP
-                                                "
-                                                [startDate]="
-                                                    fhwa.issueDate | formatDateP
-                                                "
-                                                [expiresSettings]="'details'"
-                                                [darkText]="true"
+                                    <div class="cards-container">
+                                        <div class="card-body-cdl">
+                                            <div
+                                                class="card-row-progress"
+                                                [ngClass]="{
+                                                    'second-progress':
+                                                        toggler[
+                                                            i + 'inspection'
+                                                        ],
+                                                }"
                                             >
-                                            </app-ta-progress-expiration>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div
-                                    [@showHideCardBody]="
-                                        toggler[i + 'inspection']
-                                            ? 'true'
-                                            : 'false'
-                                    "
-                                >
-                                    <div class="divider"></div>
-                                    <div class="card-note">
-                                        <app-ta-input-note
-                                            [formControl]="inspectionNote"
-                                            [isVisibleDivider]="false"
-                                            [placeholder]="'Write something.'"
-                                            [customClass]="'note-small'"
-                                            [isVisibleArrow]="false"
-                                            [minRows]="1"
-                                            [isVisibleNote]="true"
-                                            [noteType]="'details-card'"
-                                            [entityId]="trailer.id"
-                                            [entityType]="'Trailer'"
-                                        ></app-ta-input-note>
-                                    </div>
-                                </div>
-                            </div>
-                        </app-ta-common-card>
-                    </div>
-                </app-ta-custom-card>
-            </div>
-
-            <div class="custom-card-single">
-                <app-ta-custom-card
-                    [cardName]="'Title'"
-                    [isCardOpen]="false"
-                    [hasDivider]="false"
-                    [bodyTemplate]="'card'"
-                    [hasCounter]="trailer.titles.length"
-                    [hasPlusHeader]="true"
-                    [customClass]="'detailsPadding'"
-                >
-                    <div
-                        *ngFor="
-                            let title of trailer.titles;
-                            let i = index;
-                            trackBy: identity
-                        "
-                    >
-                        <app-ta-common-card
-                            [cardDocumentCounter]="1"
-                            (resizePage)="toggleResizePage(i, 'title')"
-                            [cardNameCommon]="title.number"
-                            [options]="dataEdit"
-                            [optionsId]="title.id"
-                        >
-                            <div class="cards-container">
-                                <div class="card-body-cdl">
-                                    <div class="card-row-endor">
-                                        <div class="card-item">
-                                            <div class="card-item-name">
-                                                Purchased
-                                            </div>
-                                            <div class="card-item-value">
-                                                {{
-                                                    title.issueDate
-                                                        | formatDateP
-                                                }}
+                                                <div
+                                                    class="card-details-progress-container"
+                                                >
+                                                    <app-ta-progress-expiration
+                                                        [expireDate]="
+                                                            fhwa.expDate
+                                                                | formatDateP
+                                                        "
+                                                        [startDate]="
+                                                            fhwa.issueDate
+                                                                | formatDateP
+                                                        "
+                                                        [expiresSettings]="
+                                                            'details'
+                                                        "
+                                                        [darkText]="true"
+                                                    >
+                                                    </app-ta-progress-expiration>
+                                                </div>
                                             </div>
                                         </div>
-                                        <div class="card-item">
-                                            <div class="card-item-name">
-                                                Issued
-                                            </div>
-                                            <div class="card-item-value">
-                                                {{
-                                                    title.issueDate
-                                                        | formatDateP
-                                                }}
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div
-                                        class="card-row-progress"
-                                        [ngClass]="{
-                                            'second-progress':
-                                                toggler[i + 'title'],
-                                        }"
-                                    >
                                         <div
-                                            class="card-details-progress-container"
+                                            [@showHideCardBody]="
+                                                toggler[i + 'inspection']
+                                                    ? 'true'
+                                                    : 'false'
+                                            "
                                         >
-                                            <app-ta-progress-expiration
-                                                [expireDate]="
-                                                    title.issueDate
-                                                        | formatDateP
-                                                "
-                                                [startDate]="
-                                                    title.purchaseDate
-                                                        | formatDateP
-                                                "
-                                                [expiresSettings]="'details'"
-                                                [darkText]="true"
-                                            >
-                                            </app-ta-progress-expiration>
+                                            <div class="divider"></div>
+                                            <div class="card-note">
+                                                <app-ta-input-note
+                                                    [formControl]="
+                                                        inspectionNote
+                                                    "
+                                                    [isVisibleDivider]="false"
+                                                    [placeholder]="
+                                                        'Write something.'
+                                                    "
+                                                    [customClass]="'note-small'"
+                                                    [isVisibleArrow]="false"
+                                                    [minRows]="1"
+                                                    [isVisibleNote]="true"
+                                                    [noteType]="'details-card'"
+                                                    [entityId]="trailer.id"
+                                                    [entityType]="'Trailer'"
+                                                ></app-ta-input-note>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div
-                                    [@showHideCardBody]="
-                                        toggler[i + 'title'] ? 'true' : 'false'
-                                    "
-                                >
-                                    <div class="divider"></div>
-
-                                    <div class="card-note">
-                                        <app-ta-input-note
-                                            [formControl]="titleNote"
-                                            [placeholder]="'Write something.'"
-                                            [customClass]="'note-small'"
-                                            [isVisibleArrow]="false"
-                                            [minRows]="1"
-                                            [isVisibleDivider]="false"
-                                            [isVisibleNote]="true"
-                                            [noteType]="'details-card'"
-                                            [entityId]="trailer.id"
-                                            [entityType]="'Trailer'"
-                                        ></app-ta-input-note>
-                                    </div>
-                                </div>
+                                </app-ta-common-card>
                             </div>
-                        </app-ta-common-card>
+                        </app-ta-custom-card>
                     </div>
-                </app-ta-custom-card>
-            </div>
 
-            <div class="custom-card-single">
-                <app-ta-custom-card
-                    [cardName]="'Lease / Purchase'"
-                    [isCardOpen]="false"
-                    [hasDivider]="false"
-                    [bodyTemplate]="'card'"
-                    [hasCounter]="0"
-                    [hasPlusHeader]="true"
-                    [customClass]="'detailsPadding'"
-                >
-                </app-ta-custom-card>
-            </div>
+                    <div class="custom-card-single">
+                        <app-ta-custom-card
+                            [cardName]="'Title'"
+                            [isCardOpen]="false"
+                            [hasDivider]="false"
+                            [bodyTemplate]="'card'"
+                            [hasCounter]="trailer.titles.length"
+                            [hasPlusHeader]="true"
+                            [customClass]="'detailsPadding'"
+                        >
+                            <div
+                                *ngFor="
+                                    let title of trailer.titles;
+                                    let i = index;
+                                    trackBy: identity
+                                "
+                            >
+                                <app-ta-common-card
+                                    [cardDocumentCounter]="1"
+                                    (resizePage)="toggleResizePage(i, 'title')"
+                                    [cardNameCommon]="title.number"
+                                    [options]="dataEdit"
+                                    [optionsId]="title.id"
+                                >
+                                    <div class="cards-container">
+                                        <div class="card-body-cdl">
+                                            <div class="card-row-endor">
+                                                <div class="card-item">
+                                                    <div class="card-item-name">
+                                                        Purchased
+                                                    </div>
+                                                    <div
+                                                        class="card-item-value"
+                                                    >
+                                                        {{
+                                                            title.issueDate
+                                                                | formatDateP
+                                                        }}
+                                                    </div>
+                                                </div>
+                                                <div class="card-item">
+                                                    <div class="card-item-name">
+                                                        Issued
+                                                    </div>
+                                                    <div
+                                                        class="card-item-value"
+                                                    >
+                                                        {{
+                                                            title.issueDate
+                                                                | formatDateP
+                                                        }}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div
+                                                class="card-row-progress"
+                                                [ngClass]="{
+                                                    'second-progress':
+                                                        toggler[i + 'title'],
+                                                }"
+                                            >
+                                                <div
+                                                    class="card-details-progress-container"
+                                                >
+                                                    <app-ta-progress-expiration
+                                                        [expireDate]="
+                                                            title.issueDate
+                                                                | formatDateP
+                                                        "
+                                                        [startDate]="
+                                                            title.purchaseDate
+                                                                | formatDateP
+                                                        "
+                                                        [expiresSettings]="
+                                                            'details'
+                                                        "
+                                                        [darkText]="true"
+                                                    >
+                                                    </app-ta-progress-expiration>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div
+                                            [@showHideCardBody]="
+                                                toggler[i + 'title']
+                                                    ? 'true'
+                                                    : 'false'
+                                            "
+                                        >
+                                            <div class="divider"></div>
+
+                                            <div class="card-note">
+                                                <app-ta-input-note
+                                                    [formControl]="titleNote"
+                                                    [placeholder]="
+                                                        'Write something.'
+                                                    "
+                                                    [customClass]="'note-small'"
+                                                    [isVisibleArrow]="false"
+                                                    [minRows]="1"
+                                                    [isVisibleDivider]="false"
+                                                    [isVisibleNote]="true"
+                                                    [noteType]="'details-card'"
+                                                    [entityId]="trailer.id"
+                                                    [entityType]="'Trailer'"
+                                                ></app-ta-input-note>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </app-ta-common-card>
+                            </div>
+                        </app-ta-custom-card>
+                    </div>
+
+                    <div class="custom-card-single">
+                        <app-ta-custom-card
+                            [cardName]="'Lease / Purchase'"
+                            [isCardOpen]="false"
+                            [hasDivider]="false"
+                            [bodyTemplate]="'card'"
+                            [hasCounter]="0"
+                            [hasPlusHeader]="true"
+                            [customClass]="'detailsPadding'"
+                        >
+                        </app-ta-custom-card>
+                    </div>
+                </div>
+            }
         </div>
     </div>
-</div>
+}
