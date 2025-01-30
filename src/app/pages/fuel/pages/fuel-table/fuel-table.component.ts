@@ -402,6 +402,8 @@ export class FuelTableComponent
                     this.selectedTab === TableStringEnum.FUEL_TRANSACTION,
                 showIntegratedFuelTransactionsFilter:
                     this.selectedTab === TableStringEnum.FUEL_TRANSACTION,
+                showIncompleteFuelTransactionsFilter:
+                    this.selectedTab === this.tableStringEnum.FUEL_TRANSACTION,
                 viewModeOptions: this.getViewModeOptions(),
             },
             actions: [
@@ -460,7 +462,7 @@ export class FuelTableComponent
     }
 
     private sendFuelData(): void {
-        const { data, integratedFuelTransactionsCount, fuelStopClosedCount } =
+        const { data, integratedFuelTransactionsCount, incompleteFuelTransactionsCount, fuelStopClosedCount } =
             this.fuelData;
 
         this.initTableOptions();
@@ -478,6 +480,7 @@ export class FuelTableComponent
                 data: data,
                 gridNameTitle: TableStringEnum.FUEL,
                 integratedDataCount: integratedFuelTransactionsCount,
+                incompleteDataCount: incompleteFuelTransactionsCount,
                 tableConfiguration: TableStringEnum.FUEL_TRANSACTION,
                 isActive: this.selectedTab === TableStringEnum.FUEL_TRANSACTION,
                 gridColumns: this.getGridColumns(
@@ -576,6 +579,7 @@ export class FuelTableComponent
             invoice,
             gallon,
             pricePerGallon,
+            fuelTruckNumber
         } = data;
 
         const driverFullName = !!driver
@@ -606,7 +610,7 @@ export class FuelTableComponent
             avatarImg: driver?.avatarFile?.url ?? null,
             avatarIsHoverEffect: FuelTableConstants.AVATAR_IS_HOVER_EFFECT,
             isSelected: false,
-            tableTruckNumber: truck?.truckNumber,
+            tableTruckNumber: truck?.truckNumber ?? fuelTruckNumber,
             tableDriverName: driverFullName,
             tableDropdownComponentConstantsCardNumber:
                 fuelCard?.cardNumber ?? null,
@@ -659,6 +663,8 @@ export class FuelTableComponent
             ),
             isIntegratedFuelTransaction:
                 fuelTransactionType?.id !== eFuelTransactionType.Manual,
+            isIncompleteFuelTransaction:
+                truck === null,
             tableDropdownContent: this.getFuelTransactionDropdownContent(false),
         };
     }
@@ -793,7 +799,7 @@ export class FuelTableComponent
                 });
             }
         } else if (event.action === TableStringEnum.TAB_SELECTED) {
-            const { integratedFuelTransactionsCount, fuelStopClosedCount } =
+            const { integratedFuelTransactionsCount, fuelStopClosedCount, incompleteFuelTransactionsCount } =
                 this.fuelData;
 
             this.selectedTab = event.tabData.field;
@@ -802,6 +808,8 @@ export class FuelTableComponent
                 data: [],
                 integratedFuelTransactionsCount,
                 integratedFuelTransactionsFilterActive: false,
+                incompleteFuelTransactionsCount,
+                incompleteFuelTransactionsFilterActive: false,
                 fuelStopClosedCount,
                 fuelStopClosedFilterActive: false,
                 pageIndex: 0,
@@ -878,20 +886,24 @@ export class FuelTableComponent
         response: FuelTransactionListResponse | FuelStopListResponse
     ): void {
         const { data, pageIndex } = response?.pagination || {};
-        const { integrationFuelTransactionCount } = response;
+        const { integrationFuelTransactionCount, incompleteFuelTransactionCount } = response;
         const { fuelStopClosedCount } = <FuelStopListResponse>response;
         const integratedFuelTransactionsFilterActive =
             this.fuelData?.integratedFuelTransactionsFilterActive ?? false;
+        const incompleteFuelTransactionsFilterActive = 
+            this.fuelData?.incompleteFuelTransactionsFilterActive ?? false;
         const fuelStopClosedFilterActive =
             this.fuelData?.fuelStopClosedFilterActive ?? false;
 
         this.fuelData = {
             data,
             integratedFuelTransactionsCount: integrationFuelTransactionCount,
-            integratedFuelTransactionsFilterActive:
-                integratedFuelTransactionsFilterActive,
+            integratedFuelTransactionsFilterActive,
+            incompleteFuelTransactionsCount: 
+                incompleteFuelTransactionCount,
+            incompleteFuelTransactionsFilterActive,
             fuelStopClosedCount: fuelStopClosedCount,
-            fuelStopClosedFilterActive: fuelStopClosedFilterActive,
+            fuelStopClosedFilterActive,
             pageIndex,
         } as IFuelTableData;
     }
@@ -920,6 +932,7 @@ export class FuelTableComponent
                     null,
                     null,
                     this.fuelData.integratedFuelTransactionsFilterActive,
+                    this.fuelData.incompleteFuelTransactionsFilterActive,
                     this.fuelData.pageIndex,
                     FuelTableConstants.TABLE_PAGE_SIZE
                 )
@@ -994,21 +1007,32 @@ export class FuelTableComponent
             .pipe(takeUntil(this.destroy$))
             .pipe(
                 switchMap((currentFilter) => {
-                    this.fuelData.integratedFuelTransactionsFilterActive =
-                        currentFilter?.filterName ===
-                            TableStringEnum.FUEL_ARRAY &&
-                        currentFilter?.selectedFilter;
+                    if (currentFilter?.filterName === TableStringEnum.FUEL_ARRAY)
+                        this.fuelData.integratedFuelTransactionsFilterActive =
+                            currentFilter?.filterName ===
+                                TableStringEnum.FUEL_ARRAY &&
+                            currentFilter?.selectedFilter;
 
-                    this.fuelData.fuelStopClosedFilterActive =
-                        currentFilter?.filterName ===
-                            TableStringEnum.CLOSED_ARRAY &&
-                        currentFilter?.selectedFilter;
+                    if (currentFilter?.filterName === TableStringEnum.FUEL_INCOMPLETE_ARRAY)
+                        this.fuelData.incompleteFuelTransactionsFilterActive =
+                            currentFilter?.filterName ===
+                                this.tableStringEnum.FUEL_INCOMPLETE_ARRAY &&
+                            currentFilter?.selectedFilter;
+
+                    if (currentFilter?.filterName === TableStringEnum.CLOSED_ARRAY)
+                        this.fuelData.fuelStopClosedFilterActive =
+                            currentFilter?.filterName ===
+                                TableStringEnum.CLOSED_ARRAY &&
+                            currentFilter?.selectedFilter;
 
                     this.fuelData.pageIndex = 1;
 
                     if (
                         !!currentFilter &&
-                        currentFilter?.filterName === TableStringEnum.FUEL_ARRAY
+                        (
+                            currentFilter?.filterName === TableStringEnum.FUEL_ARRAY ||
+                            currentFilter?.filterName === TableStringEnum.FUEL_INCOMPLETE_ARRAY
+                        )
                     )
                         return this.fuelService.getFuelTransactionsList(
                             null,
@@ -1030,6 +1054,8 @@ export class FuelTableComponent
                             null,
                             this.fuelData
                                 ?.integratedFuelTransactionsFilterActive,
+                            this.fuelData
+                                ?.incompleteFuelTransactionsFilterActive,
                             this.fuelData.pageIndex,
                             FuelTableConstants.TABLE_PAGE_SIZE
                         );

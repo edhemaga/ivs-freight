@@ -11,6 +11,8 @@ export class FilterClassPipe implements PipeTransform {
             'load-filter-active': type === 'load-filter' && activeFilter,
             'fuel-filter': type === 'fuel-filter' && !activeFilter,
             'fuel-filter-active': type === 'fuel-filter' && activeFilter,
+            'fuel-filter-incomplete': type === 'fuel-filter-incomplete' && !activeFilter,
+            'fuel-filter-incomplete-active': type === 'fuel-filter-incomplete' && activeFilter,
             'repair-filter': type === 'repair-filter' && !activeFilter,
             'repair-filter-active': type === 'repair-filter' && activeFilter,
             'archive-filter':
