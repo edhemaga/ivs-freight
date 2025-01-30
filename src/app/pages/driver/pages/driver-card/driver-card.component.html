@@ -1,7 +1,5 @@
 <div class="cards-container">
-    <ng-container
-        *ngFor="let card of _viewData; let i = index; trackBy: trackCard"
-    >
+    @for (card of _viewData; let i = $index; track card.id) {
         <div class="custom-card">
             <!-- Card splited on left and right side -->
 
@@ -51,18 +49,15 @@
                         <div class="name d-flex ta-font-bold">
                             <!-- Driver Image -->
 
-                            <ng-container
-                                *ngIf="
-                                    card.avatarImg &&
-                                    selectedTab !== 'applicants'
-                                "
-                            >
+                            @if (
+                                card.avatarImg && selectedTab !== 'applicants'
+                            ) {
                                 <div class="image-holder">
                                     <img
                                         class="image-hover"
                                         [src]="card.avatarImg"
                                     />
-                                    <ng-container *ngIf="card.owner">
+                                    @if (card.owner) {
                                         <svg-icon
                                             class="is-owner"
                                             [src]="
@@ -70,18 +65,15 @@
                                             "
                                         >
                                         </svg-icon>
-                                    </ng-container>
+                                    }
                                 </div>
-                            </ng-container>
+                            }
 
                             <!-- Driver No Image -->
 
-                            <ng-container
-                                *ngIf="
-                                    !card.avatarImg &&
-                                    selectedTab !== 'applicants'
-                                "
-                            >
+                            @if (
+                                !card.avatarImg && selectedTab !== 'applicants'
+                            ) {
                                 <div class="image-holder">
                                     <span
                                         class="image-hover d-flex align-items-center justify-content-center ta-font-extra-bold"
@@ -93,7 +85,7 @@
                                         {{ card?.textShortName }}</span
                                     >
                                 </div>
-                            </ng-container>
+                            }
 
                             <!-- Title -->
 
@@ -151,46 +143,36 @@
                                     #parentElement
                                     class="bottom-item-body d-flex align-items-center"
                                 >
-                                    <ng-container
-                                        *ngIf="
-                                            cardRow.title ===
-                                            'Application Process'
-                                        "
-                                    >
-                                        <ng-container
-                                            *ngFor="
-                                                let applicantProgress of card.tableApplicantProgress;
-                                                trackBy: trackCard
-                                            "
-                                        >
+                                    @if (
+                                        cardRow.title === 'Application Process'
+                                    ) {
+                                        @for (
+                                            applicantProgress of card.tableApplicantProgress;
+                                            track applicantProgress.title
+                                        ) {
                                             {{
                                                 applicantProgress.title
                                                     | uppercase
                                             }}
-                                        </ng-container>
-                                    </ng-container>
+                                        }
+                                    }
 
                                     <!-- Driver Medical Progres Bar -->
 
-                                    <ng-container
-                                        *ngIf="
-                                            cardRow.title === 'CDL Exp.' ||
-                                            cardRow.title ===
-                                                'CDL Detail • Expiration' ||
-                                            cardRow.title === 'MVR Exp.' ||
-                                            cardRow.title === 'Medical Exp.'
-                                        "
-                                    >
-                                        <ng-container
-                                            *ngIf="
-                                                !card[cardRow.key]?.[
-                                                    cardRow.secondKey
-                                                ];
-                                                else progressBar
-                                            "
-                                            >/</ng-container
-                                        >
-                                        <ng-template #progressBar>
+                                    @if (
+                                        cardRow.title === 'CDL Exp.' ||
+                                        cardRow.title ===
+                                            'CDL Detail • Expiration' ||
+                                        cardRow.title === 'MVR Exp.' ||
+                                        cardRow.title === 'Medical Exp.'
+                                    ) {
+                                        @if (
+                                            !card[cardRow.key]?.[
+                                                cardRow.secondKey
+                                            ]
+                                        ) {
+                                            /
+                                        } @else {
                                             <app-ta-progres-bar
                                                 [percents]="
                                                     card[cardRow.key][
@@ -203,22 +185,20 @@
                                                     ]
                                                 "
                                             ></app-ta-progres-bar>
-                                        </ng-template>
-                                    </ng-container>
+                                        }
+                                    }
 
-                                    <ng-container
-                                        *ngIf="
-                                            cardRow.title !==
-                                                'Application Process' &&
-                                            cardRow.title !== 'CDL Exp.' &&
-                                            cardRow.title !==
-                                                'CDL Detail • Expiration' &&
-                                            cardRow.title !== 'Medical Exp.' &&
-                                            cardRow.title !== 'MVR Exp.'
-                                        "
-                                    >
+                                    @if (
+                                        cardRow.title !==
+                                            'Application Process' &&
+                                        cardRow.title !== 'CDL Exp.' &&
+                                        cardRow.title !==
+                                            'CDL Detail • Expiration' &&
+                                        cardRow.title !== 'Medical Exp.' &&
+                                        cardRow.title !== 'MVR Exp.'
+                                    ) {
                                         {{ card | cardValue: cardRow }}
-                                    </ng-container>
+                                    }
                                 </div>
                             </div>
                         </ng-container>
@@ -261,7 +241,7 @@
                             </app-ta-note>
                         </div>
 
-                        <ng-container *ngIf="card.fileCount">
+                        @if (card.fileCount) {
                             <div
                                 class="card-attachments-icon-container d-flex flex-column align-items-center"
                             >
@@ -276,9 +256,9 @@
                                     {{ card.fileCount }}
                                 </div>
                             </div>
-                        </ng-container>
+                        }
 
-                        <ng-container *ngIf="selectedTab === 'applicants'">
+                        @if (selectedTab === 'applicants') {
                             <!-- Favorite element -->
 
                             <div
@@ -324,8 +304,7 @@
                                     ></svg-icon>
                                 </span>
                             </div>
-                        </ng-container>
-
+                        }
                         <!-- Expand element -->
 
                         <div
@@ -357,5 +336,5 @@
                 </div>
             </div>
         </div>
-    </ng-container>
+    }
 </div>

@@ -38,6 +38,8 @@ export class DriverCardComponent
     extends DriverDropdownMenuActionsBase
     implements OnInit, OnDestroy
 {
+    @Input() selectedTab: string;
+    
     @Input() set viewData(value: CardDetails[]) {
         this._viewData = value;
     }

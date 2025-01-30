@@ -1029,6 +1029,7 @@ export class DriverTableComponent
 
     private mapApplicantsData(data: any): any {
         const {
+            id,
             name,
             doB,
             ssn,
@@ -1048,6 +1049,7 @@ export class DriverTableComponent
         } = data;
 
         return {
+            id,
             isSelected: false,
             name,
             tableDOB: doB

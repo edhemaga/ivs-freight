@@ -8,7 +8,7 @@
         [activeViewMode]="activeViewMode"
     ></app-ta-table-toolbar>
 
-    <ng-container *ngIf="activeViewMode === 'List'">
+    @if (activeViewMode === 'List') {
         <app-ta-table-head
             [options]="tableOptions"
             [viewData]="viewData"
@@ -27,11 +27,11 @@
             "
             [tableData]="tableData"
         ></app-ta-table-body>
-    </ng-container>
+    }
 
     <!-- Cards -->
 
-    <ng-container *ngIf="activeViewMode === 'Card'">
+    @if (activeViewMode === 'Card') {
         <div class="elements">
             <app-truck-card
                 [viewData]="viewData"
@@ -41,7 +41,7 @@
             </app-truck-card>
             <!-- Show More -->
 
-            <ng-container *ngIf="viewData.length">
+            @if (viewData.length) {
                 <div
                     class="show-more-container d-flex align-items-center justify-content-between"
                     [ngStyle]="{ 'width.px': tableWidth }"
@@ -50,18 +50,16 @@
                         {{ viewData.length }} OF
                         {{ activeTableData.length }}
                     </div>
-                    <ng-container
-                        *ngIf="viewData.length < activeTableData.length"
-                    >
+                    @if (viewData.length < activeTableData.length) {
                         <div
                             class="show-more ta-font-bold w-fit-content align-items-center d-flex justify-content-between"
                             (click)="handleShowMoreAction()"
                         >
                             SHOW MORE
                         </div>
-                    </ng-container>
+                    }
                 </div>
-            </ng-container>
+            }
         </div>
-    </ng-container>
+    }
 </div>
