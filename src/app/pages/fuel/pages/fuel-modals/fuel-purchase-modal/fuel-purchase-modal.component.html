@@ -22,13 +22,20 @@
                     <div class="col-6">
                         <app-ca-input
                             formControlName="efsAccount"
-                            [inputConfig]="fuelFormConfig.EFS_INPUT_CONFIG"
+                            invoiceInputConfig
+                            [inputConfig]="
+                                { configType: 'efsInputConfig' }
+                                    | fuelPurchaseModalInputConfig
+                            "
                         ></app-ca-input>
                     </div>
                     <div class="col-6">
                         <app-ca-input
                             formControlName="fuelCard"
-                            [inputConfig]="fuelFormConfig.FUEL_CARD_INPUT_CONFIG"
+                            [inputConfig]="
+                                { configType: 'fuelCardInputConfig' }
+                                    | fuelPurchaseModalInputConfig
+                            "
                         ></app-ca-input>
                     </div>
                 </div>
@@ -36,16 +43,31 @@
             <div class="d-grid row-columns row-columns-3">
                 <app-ca-input
                     formControlName="invoice"
-                    [inputConfig]="fuelFormConfig.INVOICE_INPUT_CONFIG"
+                    [inputConfig]="
+                        { configType: 'invoiceInputConfig' }
+                            | fuelPurchaseModalInputConfig
+                    "
                 ></app-ca-input>
                 <app-ca-input
                     formControlName="transactionDate"
-                    [inputConfig]="fuelFormConfig.getTransactionDate(editData?.type,fuelTransactionType?.name)"
+                    [inputConfig]="
+                        {
+                            configType: 'transactionDateInputConfig',
+                            editDataType: editData?.type,
+                            fuelTransactionTypeName: fuelTransactionType?.name,
+                        } | fuelPurchaseModalInputConfig
+                    "
                 ></app-ca-input>
                 <!-- Time Picker -->
                 <app-ca-input
                     formControlName="transactionTime"
-                    [inputConfig]="fuelFormConfig.getTransactionTime(editData?.type,fuelTransactionType?.name)"
+                    [inputConfig]="
+                        {
+                            configType: 'transactionTimeInputConfig',
+                            editDataType: editData?.type,
+                            fuelTransactionTypeName: fuelTransactionType?.name,
+                        } | fuelPurchaseModalInputConfig
+                    "
                 ></app-ca-input>
             </div>
             <div
@@ -59,7 +81,13 @@
                 <app-ca-input-dropdown
                     formControlName="truckId"
                     [template]="'svgtext-template'"
-                    [inputConfig]="fuelFormConfig.getTruckInputConfig(selectedTruckType, fuelForm.get('trailerId').value)"  
+                    [inputConfig]="
+                        {
+                            configType: 'truckInputConfig',
+                            selectedTruckType,
+                            trailerId: fuelForm.get('trailerId').value,
+                        } | fuelPurchaseModalInputConfig
+                    "
                     [options]="truckType"
                     [activeItem]="selectedTruckType"
                     (selectedItem)="onSelectDropDown($event, 'truck')"
@@ -70,13 +98,21 @@
                         formControlName="trailerId"
                         [template]="'svgtext-template'"
                         [activeItem]="selectedTrailerType"
-                        [inputConfig]="fuelFormConfig.getTrailerInputConfig(selectedTrailerType?.logoName)"
+                        [inputConfig]="
+                            {
+                                configType: 'trailerInputConfig',
+                                logoName: selectedTrailerType?.logoName,
+                            } | fuelPurchaseModalInputConfig
+                        "
                     ></app-ca-input-dropdown>
                 }
 
                 <app-ca-input
                     formControlName="driverFullName"
-                    [inputConfig]="fuelFormConfig.DRIVER_NAME_INPUT_CONFIG"
+                    [inputConfig]="
+                        { configType: 'driverInputConfig' }
+                            | fuelPurchaseModalInputConfig
+                    "
                 ></app-ca-input>
             </div>
             <div class="row last-row">
@@ -193,28 +229,28 @@
 
             <app-ta-custom-card
                 [cardName]="'Item'"
-                [disableAnimation]="disableCardAnimation"
+                [disableAnimation]="isCardAnimationDisabled"
                 [hasActionSvg]="true"
                 [hasArrow]="false"
                 [hasScrollBody]="
-                    (editData?.data && updatedRepairItems?.length > 10) ||
+                    (editData?.data && updatedFuelItems?.length > 10) ||
                     fuelItems?.length > 10
                 "
                 [isCardOpen]="true"
                 [disabledCard]="
-                    (editData?.data && !updatedRepairItems?.length) ||
+                    (editData?.data && !updatedFuelItems?.length) ||
                     !fuelItems?.length
                 "
                 [hasCounter]="
-                    (editData?.data && updatedRepairItems?.length) ||
+                    (editData?.data && updatedFuelItems?.length) ||
                     fuelItems?.length
                 "
-                (onActionEvent)="addRepairItem()"
+                (onActionEvent)="addFuelItem()"
             >
                 <app-ta-modal-table
                     [tableType]="modalTableTypeEnum.REPAIR_BILL"
-                    [isNewRowCreated]="isRepairBillRowCreated"
-                    [modalTableData]="updatedRepairItems"
+                    [isNewRowCreated]="isFuelRowCreated"
+                    [modalTableData]="updatedFuelItems"
                     [isFuelTable]="true"
                     [fuelItemsDropdown]="fuelItemsDropdown"
                     (modalTableValueEmitter)="handleModalTableValueEmit($event)"
@@ -242,7 +278,7 @@
                 <app-ta-custom-card
                     [hasCounter]="documents.length ? documents.length : 0"
                     [cardName]="'Document'"
-                    [disableAnimation]="disableCardAnimation"
+                    [disableAnimation]="isCardAnimationDisabled"
                     [isCardOpen]="!!documents.length"
                 >
                     <app-ta-upload-files
@@ -289,7 +325,7 @@
         mainTooltip="Cancel"
         tooltipBackground="#424242"
         position="bottom"
-        (click)="onModalAction(taModalActionEnums.CLOSE)"
+        (click)="onModalAction(taModalActionEnum.CLOSE)"
     >
         <svg-icon
             class="modal-close svg-size-14 svg-fill-muted modal-buttons"
@@ -305,18 +341,18 @@
             <div class="d-flex justify-content-between w-full">
                 <button
                     class="modal-delete-btn ta-font-bold mr-12 valid"
-                    (click)="onModalAction(taModalActionEnums.DELETE)"
+                    (click)="onModalAction(taModalActionEnum.DELETE)"
                 >
                     Delete
                 </button>
                 <button
                     class="modal-save-btn ta-font-bold"
-                    (click)="onModalAction(taModalActionEnums.SAVE)"
+                    (click)="onModalAction(taModalActionEnum.SAVE)"
                     [class.valid]="
                         fuelForm.valid &&
                         isFormDirty &&
                         fuelItems.length &&
-                        isEachRepairRowValid
+                        isEachFuelRowValid
                     "
                 >
                     Save Changes
@@ -329,20 +365,20 @@
                     fuelForm.valid &&
                     isFormDirty &&
                     fuelItems.length &&
-                    isEachRepairRowValid
+                    isEachFuelRowValid
                 "
-                (click)="onModalAction(taModalActionEnums.SAVE_AND_ADD_NEW)"
+                (click)="onModalAction(taModalActionEnum.SAVE_AND_ADD_NEW)"
             >
                 Save and Add New
             </button>
             <button
                 class="modal-save-btn ta-font-bold"
-                (click)="onModalAction(taModalActionEnums.SAVE)"
+                (click)="onModalAction(taModalActionEnum.SAVE)"
                 [class.valid]="
                     fuelForm.valid &&
                     isFormDirty &&
                     fuelItems.length &&
-                    isEachRepairRowValid
+                    isEachFuelRowValid
                 "
             >
                 Save

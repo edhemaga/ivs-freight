@@ -9,13 +9,12 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { TimeSpan } from './timeSpan';
 import { ShipperAverageWaitingTimeChartResponse } from './shipperAverageWaitingTimeChartResponse';
 
 
 export interface ShipperAverageWaitingTimeResponse { 
-    avgPickupTime?: TimeSpan;
-    avgDeliveryTime?: TimeSpan;
+    avgPickupTime?: string | null;
+    avgDeliveryTime?: string | null;
     shipperAverageWaitingTimeChartResponse?: Array<ShipperAverageWaitingTimeChartResponse> | null;
 }
 

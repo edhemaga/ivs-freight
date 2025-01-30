@@ -83,7 +83,7 @@ import { ConfirmationModalStringEnum } from '@shared/components/ta-shared-modals
 import { BrokerModalStringEnum } from '@pages/customer/pages/broker-modal/enums/';
 import { ModalTableTypeEnum } from '@shared/enums/modal-table-type.enum';
 import { ModalButtonSize, ModalButtonType } from '@shared/enums';
-import { TaModalActionEnums } from '@shared/components/ta-modal/enums';
+import { TaModalActionEnum } from '@shared/components/ta-modal/enums';
 
 // constants
 import { BrokerModalConstants } from '@pages/customer/pages/broker-modal/utils/constants/';
@@ -220,7 +220,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
     public isNewContactAdded: boolean = false;
     public isEachContactRowValid: boolean = true;
 
-    public taModalActionEnums = TaModalActionEnums;
+    public taModalActionEnum = TaModalActionEnum;
 
     public svgRoutes = SharedSvgRoutes;
     public activeAction: string;
@@ -593,13 +593,13 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
         this.activeAction = action;
 
         if (
-            action === TaModalActionEnums.MOVE_TO_BFB ||
-            action === TaModalActionEnums.MOVE_TO_DNU
+            action === TaModalActionEnum.MOVE_TO_BFB ||
+            action === TaModalActionEnum.MOVE_TO_DNU
         ) {
             this.selectedDnuOrBfb = action;
 
             // DNU
-            if (action === TaModalActionEnums.MOVE_TO_DNU && this.editData) {
+            if (action === TaModalActionEnum.MOVE_TO_DNU && this.editData) {
                 const mappedEvent = {
                     id: this.editData?.id,
                     data: this?.editData?.data,
@@ -625,7 +625,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
                 );
             }
             // BFB
-            if (action === TaModalActionEnums.MOVE_TO_BFB && this.editData) {
+            if (action === TaModalActionEnum.MOVE_TO_BFB && this.editData) {
                 const mappedEvent = {
                     id: this.editData?.id,
                     data: this?.editData?.data,
@@ -651,7 +651,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
                 );
             }
         } else {
-            if (action === TaModalActionEnums.CLOSE) {
+            if (action === TaModalActionEnum.CLOSE) {
                 if (this.editData?.canOpenModal) {
                     if (this.editData?.key === 'load-modal')
                         this.modalService.setProjectionModal({
@@ -671,7 +671,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
                 return;
             }
             // Save And Add New
-            else if (action === TaModalActionEnums.SAVE_AND_ADD_NEW) {
+            else if (action === TaModalActionEnum.SAVE_AND_ADD_NEW) {
                 if (this.brokerForm.invalid || !this.isFormDirty) {
                     this.inputService.markInvalid(this.brokerForm);
 
@@ -684,7 +684,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
                 this.isAddNewAfterSave = true;
             } else {
                 // Save & Update
-                if (action === TaModalActionEnums.SAVE) {
+                if (action === TaModalActionEnum.SAVE) {
                     if (this.brokerForm.invalid || !this.isFormDirty) {
                         this.inputService.markInvalid(this.brokerForm);
 
@@ -700,7 +700,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
                     }
                 }
                 // Delete
-                if (action === TaModalActionEnums.DELETE && this.editData) {
+                if (action === TaModalActionEnum.DELETE && this.editData) {
                     this.modalService.openModal(
                         ConfirmationModalComponent,
                         { size: TableStringEnum.DELETE },

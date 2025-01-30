@@ -1,58 +1,63 @@
 <ng-container *ngIf="formLoaded">
-<app-payroll-base-modal
-    [modalTitle]="!isEditMode ? 'Add Credit' : 'Edit Credit'"
-    [baseForm]="payrollCreditForm"
-    [footerTemplate]="footerContent"
-    [isDriverAndTruckTabs]="true"
-    [modalType]="'MODAL_CREDIT'"
-    [editData]="editData"
-></app-payroll-base-modal>
+    <app-payroll-base-modal
+        [modalTitle]="!isEditMode ? 'Add Credit' : 'Edit Credit'"
+        [baseForm]="payrollCreditForm"
+        [footerTemplate]="footerContent"
+        [isDriverAndTruckTabs]="true"
+        [modalType]="'MODAL_CREDIT'"
+        [editData]="editData"
+    ></app-payroll-base-modal>
 
-<!-- Modal footer template -->
-<ng-template #footerContent>
-    <div class="modal-footer modal-footer-payroll" [class.justify-content-between]="isEditMode">
-        <div class="divider divider--dark divider--small"></div>
-        <ng-container *ngIf="isEditMode; else showCreateButtons">
-            <div>
+    <!-- Modal footer template -->
+    <ng-template #footerContent>
+        <div
+            class="modal-footer modal-footer-payroll"
+            [class.justify-content-between]="isEditMode"
+        >
+            <div class="divider divider--dark divider--small"></div>
+            <ng-container *ngIf="isEditMode; else showCreateButtons">
+                <div>
+                    <button
+                        class="modal-delete-btn ta-font-bold mr-12"
+                        (click)="saveCredit(taModalActionEnum.DELETE)"
+                        [class.valid]="payrollCreditForm.valid"
+                    >
+                        Delete
+                    </button>
+                    <button
+                        class="modal-convert-to-template-btn ta-font-bold"
+                        (click)="
+                            saveCredit(taModalActionEnum.MOVE_TO_THIS_PERIOD)
+                        "
+                    >
+                        Move to This Period
+                    </button>
+                </div>
                 <button
-                    class="modal-delete-btn ta-font-bold mr-12"
-                    (click)="saveCredit(taModalActionEnums.DELETE)"
+                    class="modal-save-btn ta-font-bold"
+                    (click)="saveCredit(taModalActionEnum.UPDATE)"
                     [class.valid]="payrollCreditForm.valid"
                 >
-                    Delete
+                    Save Changes
+                </button>
+            </ng-container>
+
+            <ng-template #showCreateButtons>
+                <button
+                    class="ta-font-bold modal-save-btn modal-save-btn-add-new mr-12"
+                    [class.valid]="payrollCreditForm.valid"
+                    (click)="saveCredit(taModalActionEnum.SAVE_AND_ADD_NEW)"
+                >
+                    Save and Add New
                 </button>
                 <button
-                    class="modal-convert-to-template-btn ta-font-bold"
-                    (click)="saveCredit(taModalActionEnums.MOVE_TO_THIS_PERIOD)"
+                    class="modal-save-btn ta-font-bold"
+                    (click)="saveCredit(taModalActionEnum.SAVE)"
+                    [class.valid]="payrollCreditForm.valid"
                 >
-                    Move to This Period
+                    Save
                 </button>
-            </div>
-            <button
-                class="modal-save-btn ta-font-bold"
-                (click)="saveCredit(taModalActionEnums.UPDATE)"
-                [class.valid]="payrollCreditForm.valid"
-            >
-                Save Changes
-            </button>
-        </ng-container>
-
-        <ng-template #showCreateButtons>
-            <button
-                class="ta-font-bold modal-save-btn modal-save-btn-add-new mr-12"
-                [class.valid]="payrollCreditForm.valid"
-                (click)="saveCredit(taModalActionEnums.SAVE_AND_ADD_NEW)"
-            >
-                Save and Add New
-            </button>
-            <button
-                class="modal-save-btn ta-font-bold"
-                (click)="saveCredit(taModalActionEnums.SAVE)"
-                [class.valid]="payrollCreditForm.valid"
-            >
-                Save
-            </button>
-        </ng-template>
-    </div>
-</ng-template>
+            </ng-template>
+        </div>
+    </ng-template>
 </ng-container>

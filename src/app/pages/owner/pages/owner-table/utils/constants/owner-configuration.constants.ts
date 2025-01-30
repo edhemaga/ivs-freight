@@ -1,12 +1,5 @@
 import { CardRows } from '@shared/models/card-models/card-rows.model';
 export class OwnerConfiguration {
-    static rows: number = 4;
-
-    static page: string = 'Owner';
-
-    static cardTitle: string = 'name';
-
-    // Data for active front
     static displayRowsFrontActive: CardRows[] = [
         {
             title: 'SSN',
@@ -26,7 +19,6 @@ export class OwnerConfiguration {
         },
     ];
 
-    // Data for active back
     static displayRowsBackActive: CardRows[] = [
         {
             title: 'Type',

@@ -1,4 +1,4 @@
-import {  Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import {
     FormBuilder,
     FormGroup,
@@ -28,7 +28,7 @@ import { PayrollService } from '@pages/accounting/pages/payroll/services/payroll
 
 // Enums
 import { PayrollStringEnum } from '@pages/accounting/pages/payroll/state/enums';
-import { TaModalActionEnums } from '@shared/components/ta-modal/enums';
+import { TaModalActionEnum } from '@shared/components/ta-modal/enums';
 import { TableStringEnum } from '@shared/enums/table-string.enum';
 
 // Helpers
@@ -56,7 +56,7 @@ import { ConfirmationModalStringEnum } from '@shared/components/ta-shared-modals
 })
 export class PayrollDeductionModalComponent implements OnInit {
     public payrollCreditForm: FormGroup;
-    public taModalActionEnums = TaModalActionEnums;
+    public taModalActionEnum = TaModalActionEnum;
     private destroy$ = new Subject<void>();
     @Input() editData: PayrollModal;
     public deduction: PayrollDeductionResponse;
@@ -114,7 +114,8 @@ export class PayrollDeductionModalComponent implements OnInit {
             [PayrollStringEnum.SELECTED_TRUCK_ID]: [data?.truckId ?? null],
             [PayrollStringEnum.SELECTED_TYPE_ID]: [creditType],
             [PayrollStringEnum.DATE]: [
-                MethodsCalculationsHelper.convertDateFromBackend(data.date) ?? new Date(),
+                MethodsCalculationsHelper.convertDateFromBackend(data.date) ??
+                    new Date(),
                 Validators.required,
             ],
             [PayrollStringEnum.DESCRIPTION]: [
@@ -224,8 +225,8 @@ export class PayrollDeductionModalComponent implements OnInit {
 
     public saveDeduction(action: PayrollActionType): void {
         const addNew =
-            action === TaModalActionEnums.SAVE ||
-            action === TaModalActionEnums.SAVE_AND_ADD_NEW;
+            action === TaModalActionEnum.SAVE ||
+            action === TaModalActionEnum.SAVE_AND_ADD_NEW;
         const data = this.generateModel();
 
         if (addNew) {
@@ -233,28 +234,35 @@ export class PayrollDeductionModalComponent implements OnInit {
                 .addPayrollDeduction(data)
                 .pipe(takeUntil(this.destroy$))
                 .subscribe(() => {
-                    if (action === TaModalActionEnums.SAVE_AND_ADD_NEW) {
-                        this.payrollService.saveAndAddNew(PayrollDeductionModalComponent, this.preselectedDriver, data.driverId, this.ngbActiveModal);
+                    if (action === TaModalActionEnum.SAVE_AND_ADD_NEW) {
+                        this.payrollService.saveAndAddNew(
+                            PayrollDeductionModalComponent,
+                            this.preselectedDriver,
+                            data.driverId,
+                            this.ngbActiveModal
+                        );
                     } else {
                         this.onCloseModal();
                     }
                 });
-        } else if (action === TaModalActionEnums.UPDATE) {
+        } else if (action === TaModalActionEnum.UPDATE) {
             this.payrollDeductionService
                 .updatePayrollDeduction({ ...data, id: this.editData.data.id })
                 .pipe(takeUntil(this.destroy$))
                 .subscribe(() => {
                     this.onCloseModal();
                 });
-        } else if (action === TaModalActionEnums.MOVE_TO_THIS_PERIOD) {
+        } else if (action === TaModalActionEnum.MOVE_TO_THIS_PERIOD) {
             this.payrollDeductionService
                 .moveDeduction(this.editData.data.id)
                 .pipe(takeUntil(this.destroy$))
                 .subscribe(() => {
                     this.onCloseModal();
                 });
-        } else if (action === TaModalActionEnums.DELETE) {
-            const label = this.deduction.driver ? `${this.deduction.driver.firstName} ${this.deduction.driver.lastName}` : this.deduction.truck.owner;
+        } else if (action === TaModalActionEnum.DELETE) {
+            const label = this.deduction.driver
+                ? `${this.deduction.driver.firstName} ${this.deduction.driver.lastName}`
+                : this.deduction.truck.owner;
             this.payrollService.raiseDeleteModal(
                 TableStringEnum.DEDUCTION,
                 ConfirmationModalStringEnum.DELETE_DEDUCTION,
@@ -279,7 +287,7 @@ export class PayrollDeductionModalComponent implements OnInit {
     }
 
     public getPaymentString(): string {
-        if(this.deduction.limited) {
+        if (this.deduction.limited) {
             return `$${MethodsCalculationsHelper.convertNumberInThousandSep(
                 Number(this.deduction.limitedAmount.toFixed(2))
             )}`;

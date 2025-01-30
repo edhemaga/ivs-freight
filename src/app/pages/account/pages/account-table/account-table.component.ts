@@ -68,6 +68,8 @@ export class AccountTableComponent
 {
     public destroy$ = new Subject<void>();
 
+    public dropdownMenuStringEnum = DropdownMenuStringEnum;
+
     public resizeObserver: ResizeObserver;
     public activeViewMode: string = TableActionsStringEnum.LIST;
 
@@ -82,10 +84,6 @@ export class AccountTableComponent
     public columns: TableBodyColumns[] = [];
 
     // cards
-    public cardTitle: string = AccountCardData.CARD_TITLE;
-    public page: string = AccountCardData.PAGE;
-    public rows: number = AccountCardData.ROWS;
-
     public displayRowsFront: CardRows[] =
         AccountCardData.DISPLAY_ROWS_FRONT_ACTIVE;
     public displayRowsBack: CardRows[] =
@@ -114,7 +112,7 @@ export class AccountTableComponent
         private accountCardModalQuery: accountCardModalQuery,
         private accountQuery: AccountQuery
     ) {
-        super(documentRef, clipboard, modalService, accountService);
+        super();
     }
 
     ngOnInit(): void {
@@ -632,8 +630,6 @@ export class AccountTableComponent
                         res.front_side.filter(Boolean);
 
                     const filteredCardRowsBack = res.back_side.filter(Boolean);
-
-                    this.cardTitle = TableStringEnum.NAME;
 
                     this.displayRowsFront = filteredCardRowsFront;
 

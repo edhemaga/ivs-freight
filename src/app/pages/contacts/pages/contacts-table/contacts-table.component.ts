@@ -33,6 +33,7 @@ import { DropdownMenuContentHelper } from '@shared/utils/helpers';
 // enums
 import { ContactsStringEnum } from '@pages/contacts/enums/contacts-string.enum';
 import { TableStringEnum } from '@shared/enums/table-string.enum';
+import { DropdownMenuStringEnum } from '@shared/enums';
 
 // constants
 import { ContactsCardData } from '@pages/contacts/utils/constants/contacts-card-data.constants';
@@ -64,6 +65,8 @@ export class ContactsTableComponent
 {
     public destroy$ = new Subject<void>();
 
+    public dropdownMenuStringEnum = DropdownMenuStringEnum;
+
     public resizeObserver: ResizeObserver;
     public activeViewMode: string = TableStringEnum.LIST;
 
@@ -78,10 +81,6 @@ export class ContactsTableComponent
     public columns: TableColumnConfig[] = [];
 
     // cards
-    public cardTitle: string = ContactsCardData.cardTitle;
-    public page: string = ContactsCardData.page;
-    public rows: number = ContactsCardData.rows;
-
     public sendDataToCardsFront: CardRows[] =
         ContactsCardData.displayRowsFrontContacts;
     public sendDataToCardsBack: CardRows[] =
@@ -117,7 +116,7 @@ export class ContactsTableComponent
         // pipes
         private nameInitialsPipe: NameInitialsPipe
     ) {
-        super(modalService, contactsService);
+        super();
     }
 
     ngOnInit(): void {

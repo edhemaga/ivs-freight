@@ -59,7 +59,7 @@ import { MethodsGlobalHelper } from '@shared/utils/helpers/methods-global.helper
 import { NavigationDataConstants } from '../../utils/constants/navigation-data.constants';
 
 // Enums
-import { TaModalActionEnums } from '@shared/components/ta-modal/enums';
+import { TaModalActionEnum } from '@shared/components/ta-modal/enums';
 import { ModalButtonType } from '@shared/enums';
 
 // Svg routes
@@ -103,7 +103,7 @@ export class NavigationProfileUpdateModalComponent
 
     public profileUserForm: UntypedFormGroup;
 
-    public disableCardAnimation: boolean = false;
+    public isCardAnimationDisabled: boolean = false;
 
     public selectedAddress: AddressEntity = null;
     public userPasswordTyping: boolean = false;
@@ -112,8 +112,8 @@ export class NavigationProfileUpdateModalComponent
     public loadingOldPassword: boolean = false;
 
     public isFormDirty: boolean = false;
-    public activeAction: TaModalActionEnums;
-    public taModalActionEnums = TaModalActionEnums;
+    public activeAction: TaModalActionEnum;
+    public taModalActionEnum = TaModalActionEnum;
     public svgRoutes = SharedSvgRoutes;
     public modalButtonType = ModalButtonType;
     public displayName: string;
@@ -137,7 +137,7 @@ export class NavigationProfileUpdateModalComponent
 
         this.getUserById();
         this.changeCheckboxDetection();
-        this.disableCardAnimation = true;
+        this.isCardAnimationDisabled = true;
     }
 
     private createForm() {
@@ -164,7 +164,7 @@ export class NavigationProfileUpdateModalComponent
     }
 
     public onModalAction(action: string): void {
-        if (action === TaModalActionEnums.CLOSE) {
+        if (action === TaModalActionEnum.CLOSE) {
             this.ngbActiveModal.close();
             return;
         }
@@ -174,8 +174,8 @@ export class NavigationProfileUpdateModalComponent
             return;
         }
 
-        if (action === TaModalActionEnums.SAVE) {
-            this.activeAction = TaModalActionEnums.SAVE;
+        if (action === TaModalActionEnum.SAVE) {
+            this.activeAction = TaModalActionEnum.SAVE;
             this.updateUserProfile();
         }
     }
@@ -332,7 +332,7 @@ export class NavigationProfileUpdateModalComponent
 
                     setTimeout(() => {
                         this.startFormChanges();
-                        this.disableCardAnimation = false;
+                        this.isCardAnimationDisabled = false;
                     }, 1000);
                 },
                 error: () => {},

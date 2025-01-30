@@ -87,7 +87,7 @@ import {
     ModalButtonType,
     TableStringEnum,
 } from '@shared/enums';
-import { TaModalActionEnums } from '@shared/components/ta-modal/enums';
+import { TaModalActionEnum } from '@shared/components/ta-modal/enums';
 
 // Pipes
 import { FormatDatePipe } from '@shared/pipes';
@@ -201,7 +201,7 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
 
     public departmentOptions: DepartmentResponse[] = [];
 
-    public taModalActionEnums = TaModalActionEnums;
+    public taModalActionEnum = TaModalActionEnum;
     public svgRoutes = SharedSvgRoutes;
     public modalButtonType = ModalButtonType;
     public activeAction!: string;
@@ -276,13 +276,13 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
 
     public onModalAction(action: string): void {
         this.activeAction = action;
-        if (action === TaModalActionEnums.CLOSE) {
+        if (action === TaModalActionEnum.CLOSE) {
             this.handleModalClose();
-        } else if (action === TaModalActionEnums.SAVE) {
+        } else if (action === TaModalActionEnum.SAVE) {
             this.handleModalSave();
-        } else if (action === TaModalActionEnums.SAVE_AND_ADD_NEW) {
+        } else if (action === TaModalActionEnum.SAVE_AND_ADD_NEW) {
             this.handleModalSave(true);
-        } else if (action === TaModalActionEnums.DELETE) {
+        } else if (action === TaModalActionEnum.DELETE) {
             this.deleteCompanyOfficeById();
         }
     }

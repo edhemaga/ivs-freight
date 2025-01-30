@@ -1,4 +1,4 @@
-export enum TaModalActionEnums {
+export enum TaModalActionEnum {
     SAVE_AND_ADD_NEW = 'save and add new',
     SAVE = 'save',
     CLOSE = 'close',

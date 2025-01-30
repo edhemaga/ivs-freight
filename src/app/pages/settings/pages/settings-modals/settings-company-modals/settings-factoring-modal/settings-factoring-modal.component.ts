@@ -8,7 +8,7 @@ import {
 import { Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AngularSvgIconModule } from 'angular-svg-icon';
-
+import { NgbActiveModal, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { Subject, takeUntil } from 'rxjs';
 
 // services
@@ -18,7 +18,10 @@ import { ModalService } from '@shared/services/modal.service';
 import { FormService } from '@shared/services/form.service';
 
 // models
-import { UpdateFactoringCompanyCommand } from 'appcoretruckassist';
+import {
+    FactoringCompany,
+    UpdateFactoringCompanyCommand,
+} from 'appcoretruckassist';
 
 // validators
 import {
@@ -28,19 +31,32 @@ import {
 } from '@shared/components/ta-input/validators/ta-input.regex-validations';
 
 // components
-import { TaInputComponent } from '@shared/components/ta-input/ta-input.component';
-import { TaInputDropdownComponent } from '@shared/components/ta-input-dropdown/ta-input-dropdown.component';
-import { TaModalComponent } from '@shared/components/ta-modal/ta-modal.component';
 import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-custom-card.component';
 import { TaInputAddressDropdownComponent } from '@shared/components/ta-input-address-dropdown/ta-input-address-dropdown.component';
 import { TaNoticeOfAsignmentComponent } from '@shared/components/ta-notice-of-asignment/ta-notice-of-asignment.component';
-import { TaInputNoteComponent } from '@shared/components/ta-input-note/ta-input-note.component';
+import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
+import {
+    CaInputComponent,
+    CaInputNoteComponent,
+    CaModalButtonComponent,
+    CaModalComponent,
+} from 'ca-components';
 
 // models
 import { AddressEntity } from 'appcoretruckassist';
 
 // constants
 import { SettingsFactoringModalConstants } from '@pages/settings/pages/settings-modals/settings-company-modals/settings-factoring-modal/utils/constants/settings-factoring-modal.constants';
+
+// Svg Routes
+import { SharedSvgRoutes } from '@shared/utils/svg-routes';
+
+// Enums
+import { TaModalActionEnum } from '@shared/components/ta-modal/enums';
+import { ModalButtonType, ModalButtonSize } from '@shared/enums';
+
+// Pipes
+import { FormatDatePipe } from '@shared/pipes';
 
 @Component({
     selector: 'app-settings-factoring-modal',
@@ -54,15 +70,20 @@ import { SettingsFactoringModalConstants } from '@pages/settings/pages/settings-
         FormsModule,
         ReactiveFormsModule,
         AngularSvgIconModule,
+        NgbTooltipModule,
 
         // Component
-        TaInputComponent,
-        TaInputDropdownComponent,
-        TaModalComponent,
+        CaInputComponent,
+        CaModalComponent,
+        CaModalButtonComponent,
         TaNoticeOfAsignmentComponent,
-        TaInputNoteComponent,
+        CaInputNoteComponent,
         TaInputAddressDropdownComponent,
         TaCustomCardComponent,
+        TaAppTooltipV2Component,
+
+        // Pipes
+        FormatDatePipe,
     ],
 })
 export class SettingsFactoringModalComponent implements OnInit, OnDestroy {
@@ -77,7 +98,7 @@ export class SettingsFactoringModalComponent implements OnInit, OnDestroy {
 
     public isFormDirty: boolean;
 
-    public disableCardAnimation: boolean = false;
+    public isCardAnimationDisabled: boolean = false;
 
     public isBluredNotice: boolean = true;
 
@@ -99,19 +120,24 @@ export class SettingsFactoringModalComponent implements OnInit, OnDestroy {
         textIndent: false,
         textLists: false,
     };
-
+    public svgRoutes = SharedSvgRoutes;
+    public taModalActionEnum = TaModalActionEnum;
+    public activeAction: string;
+    public modalButtonType = ModalButtonType;
+    public modalButtonSize = ModalButtonSize;
+    public company: FactoringCompany;
     constructor(
         private formBuilder: UntypedFormBuilder,
         private inputService: TaInputService,
-        private modalService: ModalService,
         private settingsCompanyService: SettingsCompanyService,
-        private formService: FormService
+        private formService: FormService,
+        private ngbActiveModal: NgbActiveModal
     ) {}
 
     ngOnInit(): void {
         this.createForm();
         if (this.editData.type === 'edit') {
-            this.disableCardAnimation = true;
+            this.isCardAnimationDisabled = true;
             this.editFactoringCompany(this.editData.company);
         } else {
             this.startFormChanges();
@@ -143,12 +169,14 @@ export class SettingsFactoringModalComponent implements OnInit, OnDestroy {
         if (event.valid) this.selectedAddress = event.address;
     }
 
-    public onModalAction(data: { action: string; bool: boolean }) {
-        switch (data.action) {
-            case 'close': {
+    public onModalAction(action: string): void {
+        this.activeAction = action;
+
+        switch (action) {
+            case TaModalActionEnum.CLOSE:
+                this.ngbActiveModal.close();
                 break;
-            }
-            case 'save': {
+            case TaModalActionEnum.SAVE: {
                 // If Form not valid
                 if (this.factoringForm.invalid || !this.isFormDirty) {
                     this.inputService.markInvalid(this.factoringForm);
@@ -156,25 +184,16 @@ export class SettingsFactoringModalComponent implements OnInit, OnDestroy {
                 }
 
                 this.updateFactoringCompany(this.editData.company);
-                this.modalService.setModalSpinner({
-                    action: null,
-                    status: true,
-                    close: false,
-                });
 
                 break;
             }
-            case 'delete': {
+            case TaModalActionEnum.DELETE: {
                 this.deleteFactoringCompanyById();
-                this.modalService.setModalSpinner({
-                    action: 'delete',
-                    status: true,
-                    close: false,
-                });
 
                 break;
             }
             default: {
+                this.ngbActiveModal.close();
                 break;
             }
         }
@@ -207,19 +226,9 @@ export class SettingsFactoringModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
-                    this.modalService.setModalSpinner({
-                        action: null,
-                        status: true,
-                        close: true,
-                    });
+                    this.ngbActiveModal.close();
                 },
-                error: () => {
-                    this.modalService.setModalSpinner({
-                        action: null,
-                        status: false,
-                        close: false,
-                    });
-                },
+                error: () => (this.activeAction = null),
             });
     }
 
@@ -229,23 +238,15 @@ export class SettingsFactoringModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
-                    this.modalService.setModalSpinner({
-                        action: 'delete',
-                        status: true,
-                        close: true,
-                    });
+                    this.ngbActiveModal.close();
                 },
-                error: () => {
-                    this.modalService.setModalSpinner({
-                        action: 'delete',
-                        status: false,
-                        close: false,
-                    });
-                },
+                error: () => (this.activeAction = null),
             });
     }
 
     private editFactoringCompany(company: any) {
+        this.company = company;
+
         this.factoringForm.patchValue({
             name: company.factoringCompany.name,
             phone: company.factoringCompany.phone,
@@ -263,7 +264,7 @@ export class SettingsFactoringModalComponent implements OnInit, OnDestroy {
 
         setTimeout(() => {
             this.startFormChanges();
-            this.disableCardAnimation = false;
+            this.isCardAnimationDisabled = false;
         }, 1000);
     }
 
@@ -273,16 +274,26 @@ export class SettingsFactoringModalComponent implements OnInit, OnDestroy {
 
     public onCompanyNameInputBlur(): void {
         if (
-            this.isInitialCompanyNameSet && 
-            this.editData.type === 'new' && 
+            this.isInitialCompanyNameSet &&
+            this.editData.type === 'new' &&
             this.factoringForm.get('name').value
         ) {
-            const noticeOfAssignmentBaseText: string = this.constants.NOTICE_OF_ASSIGNMENT_TEXT_BASE
-                .replace('{{CompanyName}}', this.factoringForm.get('name').value);
-    
-            this.factoringForm.get('noticeOfAssigment').setValue(noticeOfAssignmentBaseText);
+            const noticeOfAssignmentBaseText: string =
+                this.constants.NOTICE_OF_ASSIGNMENT_TEXT_BASE.replace(
+                    '{{CompanyName}}',
+                    this.factoringForm.get('name').value
+                );
 
-            this.nameInputBlurTimeoutCleaner = setTimeout(() => this.isInitialCompanyNameSet = !this.isInitialCompanyNameSet, 100);
+            this.factoringForm
+                .get('noticeOfAssigment')
+                .setValue(noticeOfAssignmentBaseText);
+
+            this.nameInputBlurTimeoutCleaner = setTimeout(
+                () =>
+                    (this.isInitialCompanyNameSet =
+                        !this.isInitialCompanyNameSet),
+                100
+            );
         }
     }
 

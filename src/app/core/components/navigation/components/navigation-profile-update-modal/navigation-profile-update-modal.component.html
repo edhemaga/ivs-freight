@@ -208,7 +208,7 @@
 
                     <app-ta-custom-card
                         [cardName]="'Profile Picture'"
-                        [disableAnimation]="disableCardAnimation"
+                        [disableAnimation]="isCardAnimationDisabled"
                         [isCardOpen]="false"
                         [animationMarginParams]="{
                             marginTop: '0px',
@@ -254,7 +254,7 @@
         mainTooltip="Cancel"
         tooltipBackground="#424242"
         position="bottom"
-        (click)="onModalAction(taModalActionEnums.CLOSE)"
+        (click)="onModalAction(taModalActionEnum.CLOSE)"
     >
         <svg-icon
             class="modal-close svg-size-14 svg-fill-muted modal-buttons"
@@ -277,8 +277,8 @@
         <app-ca-modal-button
             text="Save Changes"
             [isValid]="profileUserForm.valid && isFormDirty"
-            (click)="onModalAction(taModalActionEnums.SAVE)"
-            [isSpinnerShown]="activeAction === taModalActionEnums.SAVE"
+            (click)="onModalAction(taModalActionEnum.SAVE)"
+            [isSpinnerShown]="activeAction === taModalActionEnum.SAVE"
             [type]="modalButtonType.PRIMARY_POSITIVE"
         >
         </app-ca-modal-button>

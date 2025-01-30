@@ -66,6 +66,7 @@ export class ConfirmationActivationModalComponent implements OnInit {
         // services
         private confirmationActivationService: ConfirmationActivationService
     ) {}
+
     ngOnInit(): void {
         if (
             this.editData.type === 'status' ||
@@ -73,7 +74,6 @@ export class ConfirmationActivationModalComponent implements OnInit {
         ) {
             this.locationFormBuild();
         }
-        console.log(this.editData);
     }
 
     public locationFormBuild(): void {
