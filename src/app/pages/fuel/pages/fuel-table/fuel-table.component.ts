@@ -68,6 +68,7 @@ import { TableStringEnum } from '@shared/enums/table-string.enum';
 import { eFuelTransactionType } from '@pages/fuel/pages/fuel-table/enums';
 import { DropActionsStringEnum, DropdownMenuStringEnum } from '@shared/enums';
 import { ConfirmationModalStringEnum } from '@shared/components/ta-shared-modals/confirmation-modal/enums/confirmation-modal-string.enum';
+import { ConfirmationActivationStringEnum } from '@shared/components/ta-shared-modals/confirmation-activation-modal/enums/confirmation-activation-string.enum';
 
 // models
 import {
@@ -81,7 +82,6 @@ import { DropdownMenuItem } from '@ca-shared/components/ca-dropdown-menu/models'
 import { IFuelTableData } from '@pages/fuel/pages/fuel-table/models/fuel-table-data.model';
 import { AvatarColors } from '@shared/models';
 import { SortTypes } from '@shared/models/sort-types.model';
-import { ConfirmationActivationStringEnum } from '@shared/components/ta-shared-modals/confirmation-activation-modal/enums/confirmation-activation-string.enum';
 
 @Component({
     selector: 'app-fuel-table',
