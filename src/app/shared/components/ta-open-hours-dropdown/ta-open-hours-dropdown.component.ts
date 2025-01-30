@@ -14,8 +14,14 @@ import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calcula
 // svg routes
 import { OpenHoursDropdownSvgRoutes } from '@shared/components/ta-open-hours-dropdown/utils/svg-routes';
 
+// enums
+import { OpenHoursDropdownStringEnum } from '@shared/components/ta-open-hours-dropdown/enums';
+
 // models
-import { RepairShopOpenHoursCommand } from 'appcoretruckassist';
+import {
+    OpenHoursTodayResponse,
+    RepairShopOpenHoursResponse,
+} from 'appcoretruckassist';
 
 @Component({
     selector: 'app-ta-open-hours-dropdown',
@@ -36,11 +42,12 @@ export class TaOpenHoursDropdownComponent {
     @Input() componentData: {
         rowId?: number;
         width?: number;
-        openHours: RepairShopOpenHoursCommand[];
-        openHoursToday: any; // w8 for back
+        openHours: RepairShopOpenHoursResponse[];
+        openHoursToday: OpenHoursTodayResponse;
     };
 
     public openHoursDropdownSvgRoutes = OpenHoursDropdownSvgRoutes;
+    public openHoursDropdownStringEnum = OpenHoursDropdownStringEnum;
 
     public openHoursDropdownActiveId: number = -1;
 
@@ -49,25 +56,23 @@ export class TaOpenHoursDropdownComponent {
     public onShowOpenHoursDropdown(popover: NgbPopover): void {
         let data = [];
 
-        this.componentData?.openHours?.forEach(
-            (dayOfWeek: RepairShopOpenHoursCommand) => {
-                const startTime =
-                    MethodsCalculationsHelper.convertTimeFromBackendBadFormat(
-                        dayOfWeek?.startTime
-                    );
-                const endTime =
-                    MethodsCalculationsHelper.convertTimeFromBackendBadFormat(
-                        dayOfWeek?.endTime
-                    );
+        this.componentData?.openHours?.forEach((dayOfWeek) => {
+            const startTime =
+                MethodsCalculationsHelper.convertTimeFromBackendBadFormat(
+                    dayOfWeek?.startTime
+                );
+            const endTime =
+                MethodsCalculationsHelper.convertTimeFromBackendBadFormat(
+                    dayOfWeek?.endTime
+                );
 
-                const workingHourItem = {
-                    workingDays: dayOfWeek?.dayOfWeek,
-                    workingHours: `${startTime} - ${endTime}`,
-                };
+            const workingHourItem = {
+                workingDays: dayOfWeek?.dayOfWeek,
+                workingHours: `${startTime} - ${endTime}`,
+            };
 
-                data = [...data, workingHourItem];
-            }
-        );
+            data = [...data, workingHourItem];
+        });
 
         if (popover.isOpen()) {
             popover.close();

@@ -17,32 +17,49 @@
     <div
         class="d-flex align-items-center open-hours-container"
         [ngClass]="{
-            active: openHoursDropdownActiveId === componentData?.rowId
+            active: openHoursDropdownActiveId === componentData?.rowId,
         }"
         ngbTooltip
         mainTooltip="Open Hours"
         tooltipBackground="#424242"
         tooltipColor="#ffff"
+        tooltipMarginTop="-6px"
         position="bottom"
     >
-        <ng-container>
-            <!-- w8 for back -->
-            <!-- *ngIf="!!row[column.field]?.openHoursToday?.id" -->
+        @if (
+            componentData?.openHoursToday?.status !==
+            openHoursDropdownStringEnum.CLOSED
+        ) {
             <svg-icon
                 class="open-hours-icon"
+                [ngClass]="{
+                    closing:
+                        componentData?.openHoursToday?.status ===
+                        openHoursDropdownStringEnum.CLOSING_SOON,
+                }"
                 [src]="openHoursDropdownSvgRoutes.circleRoute"
                 [svgStyle]="{
                     'width.px': 10,
-                    'height.px': 10
+                    'height.px': 10,
                 }"
             ></svg-icon>
-            <!-- w8 for back -->
-            <!-- [ngClass]="{closing: row[column.field]?.openHoursToday?.id === 2}" -->
-        </ng-container>
+        }
 
-        <p class="m-0 text-color-black text-size-14">Open Now</p>
-        <!-- w8 for back -->
-        <!-- [ngClass]="{'ta-font-semi-bold': !!row[column.field]?.openHoursToday?.id}" -->
+        <p
+            class="m-0 text-color-black text-size-14"
+            [ngClass]="{
+                'ta-font-semi-bold':
+                    componentData?.openHoursToday?.status !==
+                    openHoursDropdownStringEnum.CLOSED,
+            }"
+        >
+            {{
+                componentData?.openHoursToday?.status !==
+                openHoursDropdownStringEnum.CLOSED
+                    ? componentData?.openHoursToday?.status
+                    : 'Opens'
+            }}
+        </p>
     </div>
 </div>
 

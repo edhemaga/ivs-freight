@@ -1485,6 +1485,8 @@ export class RepairTableComponent
     }
 
     private mapShopData(repairShop: RepairShopListDto): MappedRepairShop {
+        console.log('repairShop', repairShop);
+
         const {
             address,
             shopServiceType,
@@ -1517,10 +1519,10 @@ export class RepairTableComponent
             tableAddress: address?.address,
             tableShopServiceType: shopServiceType?.name,
             tableShopServices: serviceTypes,
-            tableOpenHours: null /*  {
+            tableOpenHours: null /* {
                 openHours,
                 openHoursToday,
-            }, */,
+            } */,
             tableRepairCountBill: bill,
             tableRepairCountOrder: order,
             tableBankDetailsBankName: bankResponse?.name,
