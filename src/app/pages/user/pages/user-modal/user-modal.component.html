@@ -103,7 +103,9 @@
                             <div class="col-5" [class.col-7]="!isPhoneExtExist">
                                 <app-ca-input-dropdown
                                     formControlName="companyOfficeId"
-                                    [inputConfig]="userModalConfig.companyOfficeInputConfig"
+                                    [inputConfig]="
+                                        userModalConfig.companyOfficeInputConfig
+                                    "
                                     [canAddNew]="true"
                                     [canOpenModal]="true"
                                     [options]="offices"
@@ -243,7 +245,7 @@
                             </div>
                             <div class="row remove-bottom-margin">
                                 <div class="col-10">
-                                    <app-ta-input-address-dropdown
+                                    <app-ca-input-address-dropdown
                                         formControlName="address"
                                         [inputConfig]="{
                                             name: 'Address',
@@ -257,10 +259,18 @@
                                         }"
                                         [placeholderType]="'longAddress'"
                                         [activeAddress]="selectedAddress"
+                                        [receivedAddressList]="addressList"
+                                        [receivedAddressData]="addressData"
                                         (selectedAddress)="
                                             onHandleAddress($event)
                                         "
-                                    ></app-ta-input-address-dropdown>
+                                        (sentAddressData)="
+                                            onAddressChange($event)
+                                        "
+                                        (sentAddressValue)="
+                                            getAddressData($event)
+                                        "
+                                    ></app-ca-input-address-dropdown>
                                 </div>
                                 <div class="col-2">
                                     <app-ca-input

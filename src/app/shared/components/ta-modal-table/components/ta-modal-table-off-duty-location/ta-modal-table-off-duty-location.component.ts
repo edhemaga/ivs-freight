@@ -1,5 +1,12 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import {
+    Component,
+    EventEmitter,
+    Input,
+    OnDestroy,
+    Output,
+} from '@angular/core';
+import { Subject, takeUntil } from 'rxjs';
 import {
     ReactiveFormsModule,
     UntypedFormArray,
@@ -11,13 +18,15 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
 
 // components
 import { TaInputComponent } from '@shared/components/ta-input/ta-input.component';
-import { TaInputAddressDropdownComponent } from '@shared/components/ta-input-address-dropdown/ta-input-address-dropdown.component';
+import { CaInputAddressDropdownComponent } from 'ca-components';
 
 // enums
 import { TaModalTableStringEnum } from '@shared/components/ta-modal-table/enums/';
 
 // models
-import { AddressEntity } from 'appcoretruckassist';
+import { AddressEntity, AddressResponse } from 'appcoretruckassist';
+import { AddressProperties } from '@shared/components/ta-input-address-dropdown/models/address-properties';
+import { AddressListResponse } from '@ca-shared/models/address-list-response.model';
 
 // pipes
 import { TrackByPropertyPipe } from '@shared/pipes/track-by-property.pipe';
@@ -25,6 +34,9 @@ import { TaInputDropdownComponent } from '@shared/components/ta-input-dropdown/t
 
 // svg routes
 import { ModalTableSvgRoutes } from '@shared/components/ta-modal-table/utils/svg-routes';
+
+// services
+import { AddressService } from '@shared/services/address.service';
 
 @Component({
     selector: 'app-ta-modal-table-off-duty-location',
@@ -39,14 +51,14 @@ import { ModalTableSvgRoutes } from '@shared/components/ta-modal-table/utils/svg
 
         // components
         TaInputComponent,
-        TaInputAddressDropdownComponent,
+        CaInputAddressDropdownComponent,
         TaInputDropdownComponent,
 
         // pipes
         TrackByPropertyPipe,
     ],
 })
-export class TaModalTableOffDutyLocationComponent {
+export class TaModalTableOffDutyLocationComponent implements OnDestroy {
     @Input() modalTableForm: UntypedFormGroup;
     @Input() arrayName: TaModalTableStringEnum;
     @Input() isInputHoverRows: boolean[][];
@@ -69,11 +81,16 @@ export class TaModalTableOffDutyLocationComponent {
 
     public svgRoutes = ModalTableSvgRoutes;
 
+    public addressList: AddressListResponse;
+    public addressData: AddressResponse;
+
+    private destroy$ = new Subject<void>();
+
     get formArray() {
         return this.modalTableForm?.get(this.arrayName) as UntypedFormArray;
     }
 
-    constructor() {}
+    constructor(private addressService: AddressService) {}
 
     public emitDeleteFormArrayRowClick(index: number): void {
         this.deleteFormArrayRowClick.emit(index);
@@ -102,5 +119,28 @@ export class TaModalTableOffDutyLocationComponent {
             address,
             index,
         });
+    }
+
+    public onAddressChange({
+        query,
+        searchLayers,
+        closedBorder,
+    }: AddressProperties): void {
+        this.addressService
+            .getAddresses(query, searchLayers, closedBorder)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((res) => (this.addressList = res));
+    }
+
+    public getAddressData(address: string): void {
+        this.addressService
+            .getAddressInfo(address)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((res) => (this.addressData = res));
+    }
+
+    ngOnDestroy(): void {
+        this.destroy$.next();
+        this.destroy$.complete();
     }
 }
