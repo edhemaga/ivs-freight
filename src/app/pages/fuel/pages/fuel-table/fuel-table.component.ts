@@ -25,6 +25,7 @@ import {
 import { FuelPurchaseModalComponent } from '@pages/fuel/pages/fuel-modals/fuel-purchase-modal/fuel-purchase-modal.component';
 import { FuelStopModalComponent } from '@pages/fuel/pages/fuel-modals/fuel-stop-modal/fuel-stop-modal.component';
 import { ConfirmationModalComponent } from '@shared/components/ta-shared-modals/confirmation-modal/confirmation-modal.component';
+import { ConfirmationActivationModalComponent } from '@shared/components/ta-shared-modals/confirmation-activation-modal/confirmation-activation-modal.component';
 
 // services
 import { ModalService } from '@shared/services/modal.service';
@@ -32,6 +33,7 @@ import { TruckassistTableService } from '@shared/services/truckassist-table.serv
 import { ConfirmationService } from '@shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
 import { FuelService } from '@shared/services/fuel.service';
 import { FuelCardsModalService } from '@pages/fuel/pages/fuel-card-modal/services';
+import { ConfirmationActivationService } from '@shared/components/ta-shared-modals/confirmation-activation-modal/services/confirmation-activation.service';
 
 // constants
 import { TableDropdownComponentConstants } from '@shared/utils/constants/table-dropdown-component.constants';
@@ -79,6 +81,7 @@ import { DropdownMenuItem } from '@ca-shared/components/ca-dropdown-menu/models'
 import { IFuelTableData } from '@pages/fuel/pages/fuel-table/models/fuel-table-data.model';
 import { AvatarColors } from '@shared/models';
 import { SortTypes } from '@shared/models/sort-types.model';
+import { ConfirmationActivationStringEnum } from '@shared/components/ta-shared-modals/confirmation-activation-modal/enums/confirmation-activation-string.enum';
 
 @Component({
     selector: 'app-fuel-table',
@@ -139,6 +142,7 @@ export class FuelTableComponent
         private fuelCardsModalService: FuelCardsModalService,
         private confirmationService: ConfirmationService,
         private tableService: TruckassistTableService,
+        private confirmationActivationService: ConfirmationActivationService,
 
         // pipes
         private datePipe: DatePipe,
@@ -164,11 +168,17 @@ export class FuelTableComponent
 
         this.toggleColumns();
 
-        this.confirmationSubscribe();
-
         this.deleteSelectedRows();
 
+        this.openCloseBussinessSelectedRows();
+
         this.sorting();
+
+        this.rowsSelected();
+
+        this.confirmationSubscribe();
+
+        this.confirmationActivationSubscribe();
 
         this.setMapSortOptions();
     }
@@ -238,6 +248,27 @@ export class FuelTableComponent
             });
     }
 
+    private rowsSelected(): void {
+        this.tableService.currentRowsSelected
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((res) => {
+                if (res && this.selectedTab === TableStringEnum.FUEL_STOP) {
+                    let selectedClosedCount = 0;
+                    let selectedOpenCount = 0;
+
+                    res.forEach(({ tableData: { isClosed } }) =>
+                        isClosed ? selectedClosedCount++ : selectedOpenCount++
+                    );
+
+                    this.tableOptions.toolbarActions.showMoveToOpenList =
+                        selectedClosedCount && !selectedOpenCount;
+
+                    this.tableOptions.toolbarActions.showMoveToClosedList =
+                        selectedOpenCount && !selectedClosedCount;
+                }
+            });
+    }
+
     private deleteSelectedRows(): void {
         this.tableService.currentDeleteSelectedRows
             .pipe(takeUntil(this.destroy$))
@@ -272,6 +303,45 @@ export class FuelTableComponent
             });
     }
 
+    private openCloseBussinessSelectedRows(): void {
+        this.tableService.currentBussinessSelectedRows
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((res) => {
+                if (res?.length) {
+                    const mappedRes = res.map(({ tableData: fuelStop }) => {
+                        const { id, businessName, address, isClosed } =
+                            fuelStop;
+
+                        return {
+                            id,
+                            data: {
+                                status: +!isClosed,
+                            },
+                            modalTitle: businessName,
+                            modalSecondTitle: `${address.city}, ${address.stateShortName}`,
+                        };
+                    });
+
+                    this.modalService.openModal(
+                        ConfirmationActivationModalComponent,
+                        { size: TableStringEnum.SMALL },
+                        {
+                            data: null,
+                            array: mappedRes,
+                            template: DropdownMenuStringEnum.FUEL_STOP,
+                            subType: DropdownMenuStringEnum.FUEL_STOP,
+                            subTypeStatus: TableStringEnum.BUSINESS,
+                            tableType:
+                                ConfirmationActivationStringEnum.FUEL_STOP_TEXT,
+                            type: mappedRes[0].data.status
+                                ? TableStringEnum.CLOSE
+                                : TableStringEnum.OPEN,
+                        }
+                    );
+                }
+            });
+    }
+
     private confirmationSubscribe(): void {
         this.confirmationService.confirmationData$
             .pipe(takeUntil(this.destroy$))
@@ -290,6 +360,34 @@ export class FuelTableComponent
                             : this.deleteFuelStopList(ids);
                     }
                 },
+            });
+    }
+
+    private confirmationActivationSubscribe(): void {
+        this.confirmationActivationService.getConfirmationActivationData$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((res) => {
+                if (res) {
+                    const fuelStopIds = res?.array?.map(({ id }) => id) ?? [
+                        res.id,
+                    ];
+
+                    fuelStopIds.forEach((id) => this.updateFuelStopStatus(id));
+                }
+            });
+    }
+
+    public updateFuelStopStatus(fuelStopId: number): void {
+        this.fuelService
+            .updateFuelStopStatus(fuelStopId)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe(() => {
+                this.sendFuelData();
+
+                this.tableService.sendRowsSelected([]);
+                this.tableService.sendResetSelectedColumns(true);
+
+                this.tableService.sendResetSpecialFilters(true);
             });
     }
 
@@ -344,7 +442,7 @@ export class FuelTableComponent
                         this.viewData
                     );
 
-                    this.tableData[0].data = this.viewData;
+                    this.tableData[1].data = this.viewData;
                 }, 900);
 
                 this.tableService.sendRowsSelected([]);
@@ -395,10 +493,15 @@ export class FuelTableComponent
                     this.selectedTab === TableStringEnum.FUEL_STOP,
                 showMoneyFilter: true,
                 fuelMoneyFilter: true,
+                hideActivationButton: true,
                 showCategoryFuelFilter:
                     this.selectedTab === TableStringEnum.FUEL_TRANSACTION,
                 showIntegratedFuelTransactionsFilter:
                     this.selectedTab === TableStringEnum.FUEL_TRANSACTION,
+                showMoveToOpenList:
+                    this.selectedTab === TableStringEnum.FUEL_STOP,
+                showMoveToClosedList:
+                    this.selectedTab === TableStringEnum.FUEL_STOP,
                 viewModeOptions: this.getViewModeOptions(),
             },
             actions: [
@@ -583,6 +686,9 @@ export class FuelTableComponent
             ? `$${this.thousandSeparator.transform(total)}`
             : null;
 
+        const isIntegratedFuelTransaction =
+            fuelTransactionType?.id !== eFuelTransactionType.Manual;
+
         if (
             driver &&
             !driver?.avatarFile &&
@@ -654,9 +760,10 @@ export class FuelTableComponent
                 data.updatedAt,
                 TableStringEnum.DATE_FORMAT
             ),
-            isIntegratedFuelTransaction:
-                fuelTransactionType?.id !== eFuelTransactionType.Manual,
-            tableDropdownContent: this.getFuelTransactionDropdownContent(false),
+            isIntegratedFuelTransaction,
+            tableDropdownContent: this.getFuelTransactionDropdownContent(
+                isIntegratedFuelTransaction
+            ),
         };
     }
 
@@ -722,6 +829,7 @@ export class FuelTableComponent
                 pricePerGallon ?? TableStringEnum.EMPTY_STRING_PLACEHOLDER,
             tableFuelStopIsClosed: isClosed,
             isFavorite: favourite,
+            isFavoriteDisabled: isClosed,
             tableLocation: address
                 ? address.city +
                   TableStringEnum.COMA +
