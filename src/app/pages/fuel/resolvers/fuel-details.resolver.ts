@@ -11,7 +11,7 @@ import { FuelStopResponse } from 'appcoretruckassist';
 import { FuelService } from '@shared/services/fuel.service';
 
 // store
-import { FuelItemStore } from '@pages/fuel/state/fuel-details-state/fuel-details.store';
+import { FuelItemStore } from '@pages/fuel/state/fuel-details-state/fuel-details-item.store';
 
 @Injectable({
     providedIn: 'root',

@@ -9,4 +9,6 @@ export enum ConfirmationActivationStringEnum {
     BROKER_TEXT = 'broker',
     SHIPPER_TITLE = 'Shipper',
     SHIPPER_TEXT = 'shipper',
+    FUEL_STOP_TITLE = 'Fuel Stop',
+    FUEL_STOP_TEXT = 'fuel stop',
 }
