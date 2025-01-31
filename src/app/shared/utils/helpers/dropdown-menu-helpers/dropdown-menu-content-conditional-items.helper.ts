@@ -48,14 +48,6 @@ export class DropdownMenuContentConditionalItemsHelper {
                 title: DropdownMenuStringEnum.EDIT,
                 isDisabled: !isActiveOwner,
             },
-            {
-                title: DropdownMenuStringEnum.ADD_TRUCK,
-                isDisabled: !isActiveOwner,
-            },
-            {
-                title: DropdownMenuStringEnum.ADD_TRAILER,
-                isDisabled: !isActiveOwner,
-            },
         ];
     }
 
