@@ -57,7 +57,11 @@ import { AddressMixin } from '@shared/mixins/address/address.mixin';
     ],
 })
 export class TaModalTableOffDutyLocationComponent
-    extends AddressMixin(class {})
+    extends AddressMixin(
+        class {
+            addressService!: AddressService;
+        }
+    )
     implements OnDestroy
 {
     @Input() modalTableForm: UntypedFormGroup;
@@ -91,7 +95,7 @@ export class TaModalTableOffDutyLocationComponent
         return this.modalTableForm?.get(this.arrayName) as UntypedFormArray;
     }
 
-    constructor(private addressService: AddressService) {
+    constructor(public addressService: AddressService) {
         super();
     }
 
@@ -123,24 +127,6 @@ export class TaModalTableOffDutyLocationComponent
             index,
         });
     }
-
-    // public onAddressChange({
-    //     query,
-    //     searchLayers,
-    //     closedBorder,
-    // }: AddressProperties): void {
-    //     this.addressService
-    //         .getAddresses(query, searchLayers, closedBorder)
-    //         .pipe(takeUntil(this.destroy$))
-    //         .subscribe((res) => (this.addressList = res));
-    // }
-
-    // public getAddressData(address: string): void {
-    //     this.addressService
-    //         .getAddressInfo(address)
-    //         .pipe(takeUntil(this.destroy$))
-    //         .subscribe((res) => (this.addressData = res));
-    // }
 
     // Overide ngOnDestroy If you have any any OnDestroy logic related to this class only
     ngOnDestroy(): void {
