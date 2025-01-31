@@ -33,7 +33,7 @@ import {
     PayrollDriverFlatRateByIdResponse,
 } from 'appcoretruckassist';
 import { FlatRateLoadShortReponseWithRowType } from '@pages/accounting/pages/payroll/state/models';
-import { OptionsPopupContent } from 'ca-components/lib/components/ca-burger-menu/models/burger-menu.model';
+import { DropdownMenuItem } from '@ca-shared/components/ca-dropdown-menu/models';
 
 // Components
 import { PayrollProccessPaymentModalComponent } from '@pages/accounting/pages/payroll/payroll-modals/payroll-proccess-payment-modal/payroll-proccess-payment-modal.component';
@@ -46,9 +46,8 @@ import { TableStringEnum } from '@shared/enums/table-string.enum';
 // Classes
 import { PayrollReportBaseComponent } from '@pages/accounting/pages/payroll/components/reports/payroll-report.base';
 
-
-// Constants
-import { TableToolbarConstants } from '../constants/report.constants';
+// helpers
+import { PayrollReportHelper } from '@pages/accounting/pages/payroll/components/reports/payroll-report/utils/helpers';
 
 @Component({
     selector: 'app-driver-flat-rate-report',
@@ -67,8 +66,7 @@ export class DriverFlatRateReportComponent
     public creditType = PayrollCreditType.Driver;
     public payrollType = PayrollTypeEnum.FLAT_RATE;
 
-    public optionsPopupContent: OptionsPopupContent[] =
-    TableToolbarConstants.closedReportPayroll;
+    public dropdownMenuOptions: DropdownMenuItem[] = [];
 
     @Input() set reportId(report_id: string) {
         this._reportId = report_id;
@@ -81,11 +79,14 @@ export class DriverFlatRateReportComponent
 
     public _selectedTab: PayrollTablesStatus;
     @Input() set selectedTab(tab: PayrollTablesStatus) {
-        this.optionsPopupContent =
-            tab === PayrollTablesStatus.OPEN
-                ? TableToolbarConstants.openReportPayroll
-                : TableToolbarConstants.closedReportPayroll;
         this._selectedTab = tab;
+
+        this.dropdownMenuOptions =
+            PayrollReportHelper.getPayrollDropdownContent(
+                false,
+                this._selectedTab,
+                this.isEditLoadDropdownActionActive
+            );
     }
 
     public get selectedTab() {
@@ -266,7 +267,7 @@ export class DriverFlatRateReportComponent
                 this.getReportDataResults({
                     reportId: `${this.reportId}`,
                     selectedLoadIds: loadList,
-                    payrollOpenedTab: this.selectedTab
+                    payrollOpenedTab: this.selectedTab,
                 });
             }
         }
@@ -284,6 +285,25 @@ export class DriverFlatRateReportComponent
                       payrollOpenedTab: this.selectedTab,
                   }
         );
+    }
+
+    public getIsEditLoadDropdownActionActive(): void {
+        const loadDummyData = [
+            // w8 for slavisa
+            { id: 1, title: 'INV-162-23' },
+            { id: 2, title: 'INV-162-26' },
+            { id: 3, title: 'INV-162-28' },
+            { id: 4, title: 'INV-162-31' },
+            { id: 5, title: 'INV-162-33' },
+        ];
+
+        this.dropdownMenuOptions =
+            PayrollReportHelper.getPayrollDropdownContent(
+                false,
+                this._selectedTab,
+                this.isEditLoadDropdownActionActive,
+                loadDummyData
+            );
     }
 
     ngOnDestroy(): void {

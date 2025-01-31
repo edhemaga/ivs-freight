@@ -4,7 +4,7 @@ import { ChartTypesStringEnum } from "ca-components";
 
 // Models
 import { ChartTypeProperty } from "@shared/models";
-import { BrokerPaymentHistoryResponse } from "appcoretruckassist";
+import { IBrokerPaymentHistory } from "@pages/customer/pages/broker-details/models";
 
 export class ChartConfiguration {
     public static mileageRateConfiguration: ChartTypeProperty[] = [
@@ -22,7 +22,7 @@ export class ChartConfiguration {
             minValue: ChartValueLabelEnum.LOWEST_RARE
         }
     ];
-    public static paymentHistoryConfiguration = (data: BrokerPaymentHistoryResponse): ChartTypeProperty[] => [
+    public static paymentHistoryConfiguration = (data: IBrokerPaymentHistory): ChartTypeProperty[] => [
         {
             value: ChartValueLabelEnum.AVERAGE_PAY_PERIOD_DAYS,
             type: ChartTypesStringEnum.LINE,
@@ -40,7 +40,7 @@ export class ChartConfiguration {
             color: '#6692F1',
         },
         {
-            value: ChartValueLabelEnum.EARNINGS,
+            maxValue: ChartValueLabelEnum.EARNINGS,
             type: ChartTypesStringEnum.BAR,
             color: '#FBC88B',
         }
@@ -128,5 +128,51 @@ export class ChartConfiguration {
             type: ChartTypesStringEnum.LINE,
             color: '#6692F1',
         },
+    ];
+
+    public static topMileageConfiguration: ChartTypeProperty[] = [
+        {
+            type: ChartTypesStringEnum.DOUGHNUT,
+            value: ChartValueLabelEnum.MILEAGE_PERCENTAGE
+        }
+    ];
+
+    public static topRevenueConfiguration: ChartTypeProperty[] = [
+        {
+            type: ChartTypesStringEnum.DOUGHNUT,
+            value: ChartValueLabelEnum.REVENUE_PERCENTAGE
+        }
+    ];
+
+    public static topCostConfiguration: ChartTypeProperty[] = [
+        {
+            type: ChartTypesStringEnum.DOUGHNUT,
+            value: ChartValueLabelEnum.COST_PERCENTAGE
+        }
     ]
+
+    public static topVisitConfiguration: ChartTypeProperty[] = [
+        {
+            type: ChartTypesStringEnum.DOUGHNUT,
+            value: ChartValueLabelEnum.VISIT_PERCENTAGE
+        }
+    ];
+
+    public static topLoadConfiguration: ChartTypeProperty[] = [
+        {
+            type: ChartTypesStringEnum.DOUGHNUT,
+            value: ChartValueLabelEnum.LOAD_PERCENTAGE
+        }
+    ];
+
+    public static shipperAverageWaitingTimeConfiguration: ChartTypeProperty[] = [
+        {
+            type: ChartTypesStringEnum.BAR,
+            value: ChartValueLabelEnum.AVERAGE_PICKUP_TIME
+        },
+        {
+            type: ChartTypesStringEnum.BAR,
+            value: ChartValueLabelEnum.AVERAGE_DELIVERY_TIME
+        }
+    ];
 }

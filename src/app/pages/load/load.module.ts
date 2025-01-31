@@ -28,6 +28,7 @@ import { LoadStatusColorPipe } from '@shared/pipes/load-status-color.pipe';
 
 // store
 import { StoreModule } from '@ngrx/store';
+import { loadReducer } from '@pages/load/state/reducers/load.reducer';
 import { loadCardModalReducer } from '@pages/load/pages/load-card-modal/state/load-card-modal.reducer';
 
 @NgModule({
@@ -57,7 +58,9 @@ import { loadCardModalReducer } from '@pages/load/pages/load-card-modal/state/lo
         FormatCurrencyPipe,
         LoadStatusColorPipe,
 
+        // store
         StoreModule.forFeature('loadCardData', loadCardModalReducer),
+        StoreModule.forFeature('load', loadReducer),
     ],
 })
 export class LoadModule {}

@@ -18,6 +18,7 @@ import { NavigationDataConstants } from '@core/components/navigation/utils/const
 // services
 import { NavigationService } from '@core/components/navigation/services/navigation.service';
 import { ModalService } from '@shared/services/modal.service';
+import { LoadStoreService } from '@pages/load/pages/load-table/services/load-store.service';
 
 // components
 import { DriverModalComponent } from '@pages/driver/pages/driver-modals/driver-modal/driver-modal.component';
@@ -42,7 +43,6 @@ import { DriverDrugAlcoholTestModalComponent } from '@pages/driver/pages/driver-
 import { PayrollDeductionModalComponent } from '@pages/accounting/pages/payroll/payroll-modals/payroll-deduction-modal/payroll-deduction-modal.component';
 import { PayrollBonusModalComponent } from '@pages/accounting/pages/payroll/payroll-modals/payroll-bonus-modal/payroll-bonus-modal.component';
 import { PayrollCreditBonusComponent } from '@pages/accounting/pages/payroll/payroll-modals/payroll-credit-bonus/payroll-credit-bonus.component';
-import { LoadModalComponent } from '@pages/load/pages/load-modal/load-modal.component';
 import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
 
 @Component({
@@ -82,40 +82,47 @@ export class NavigationModalsComponent {
     public accountingNavigationData: NavigationModal[] =
         NavigationDataConstants.accountingNavigationData;
 
-    public changeTextHoverOnCloseModal: boolean = false;
-
     public addNew = NavigationDataConstants.title;
 
     public title: string = this.addNew;
 
-    public isAddNewHovered: boolean = false;
     public icons = NavigationDataConstants.icons;
+
+    public navigationDataConstants = NavigationDataConstants;
+    private isExpandButtonHovered: boolean = false;
 
     constructor(
         private modalService: ModalService,
-        private navigationService: NavigationService
+        private navigationService: NavigationService,
+        private loadStoreService: LoadStoreService
     ) {}
-    public OpenMainModal(openClose: boolean) {
+
+    public OpenMainModal(openClose: boolean): void {
         this.navigationService.onDropdownActivation({
             name: 'Modal Panel',
             type: openClose,
         });
+        this.title =
+            openClose && this.isExpandButtonHovered
+                ? NavigationDataConstants.close
+                : NavigationDataConstants.title;
     }
-    public changeText(text: boolean) {
-        text == true && text
-            ? (this.title = NavigationDataConstants.close)
-            : (this.title = this.addNew);
+
+    public changeText(text: string, expandBUttonHovered: boolean): void {
+        this.isExpandButtonHovered = expandBUttonHovered;
+        this.title = this.isModalPanelOpen
+            ? text
+            : NavigationDataConstants.title;
     }
-    public onAction(item: NavigationModal) {
+
+    public onAction(item: NavigationModal): void {
         this.openModal(item);
     }
 
-    private openModal(navItem: NavigationModal) {
+    private openModal(navItem: NavigationModal): void {
         switch (navItem.path) {
             case 'load': {
-                this.modalService.openModal(LoadModalComponent, {
-                    size: 'load',
-                });
+                this.loadStoreService.dispatchGetCreateLoadModalData();
                 break;
             }
             case 'driver': {
@@ -262,13 +269,5 @@ export class NavigationModalsComponent {
                 break;
             }
         }
-    }
-
-    public identity(index: number, item: NavigationModal): number {
-        return item.id;
-    }
-
-    public hoveredArrow(isHovered: boolean): void {
-        this.isAddNewHovered = isHovered;
     }
 }

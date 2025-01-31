@@ -1,4 +1,6 @@
 import { CommonModule } from '@angular/common';
+import { AngularSvgIconModule } from 'angular-svg-icon';
+import { NgbActiveModal, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import {
     Component,
     OnInit,
@@ -13,42 +15,47 @@ import {
     FormGroup,
     FormArray,
 } from '@angular/forms';
+
 import { Observable, Subject, Subscription, first, takeUntil } from 'rxjs';
 
-// Enums
+// enums
 import { CardsModalStringEnum } from '@shared/components/ta-shared-modals/cards-modal/enums/cards-modal-string.enum';
 import { TableStringEnum } from '@shared/enums/table-string.enum';
 
-// Services
+// services
 import { ModalService } from '@shared/services/modal.service';
 import { FormService } from '@shared/services/form.service';
-import { FuelCardsModalService } from '@pages/fuel/pages/fuel-card-modal/services/fuel-cards-modal.service';
+import { FuelCardsModalService } from '@pages/fuel/pages/fuel-card-modal/services';
 
-// Components
+// components
 import { ModalInputFormComponent } from '@shared/components/ta-shared-modals/cards-modal/components/modal-input-form.component';
 import { TaCheckboxComponent } from '@shared/components/ta-checkbox/ta-checkbox.component';
-import { TaModalComponent } from '@shared/components/ta-modal/ta-modal.component';
+import { CaModalComponent } from 'ca-components';
+import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
 
-// Helpers
+// helpers
 import { CompareObjectsModal } from '@shared/components/ta-shared-modals/cards-modal/utils/helpers/cards-modal.helper';
 
-// Models
+// models
 import { CardRows } from '@shared/models/card-models/card-rows.model';
 import { CardsModalData } from '@shared/components/ta-shared-modals/cards-modal/models/cards-modal-data.model';
 
-// Constants
+// constants
 import {
     FuelCardsModalConfig,
     FuelCardsModalData,
 } from '@pages/fuel/pages/fuel-card-modal/utils/constants';
 
-//Store
+// store
 import { Store } from '@ngrx/store';
 import { selectActiveModalTabs } from '@pages/fuel/pages/fuel-card-modal/state/fuel-card-modal.selectors';
 
-//Pipes
+// pipes
 import { NgForLengthFilterPipe } from '@shared/pipes/ng-for-length-filter.pipe';
 import { NumberOrdinalPipe } from '@shared/pipes/number-ordinal.pipe';
+
+// svg routes
+import { SharedSvgRoutes } from '@shared/utils/svg-routes';
 
 @Component({
     selector: 'app-fuel-card-modal',
@@ -62,11 +69,14 @@ import { NumberOrdinalPipe } from '@shared/pipes/number-ordinal.pipe';
         CommonModule,
         ReactiveFormsModule,
         FormsModule,
+        AngularSvgIconModule,
+        NgbTooltipModule,
 
         // components
-        TaModalComponent,
+        CaModalComponent,
         ModalInputFormComponent,
         TaCheckboxComponent,
+        TaAppTooltipV2Component,
 
         // pipes
         NgForLengthFilterPipe,
@@ -96,12 +106,17 @@ export class FuelCardModalComponent implements OnInit, OnDestroy {
     public rowValues: number[] = [3, 4, 5, 6];
     private destroy$ = new Subject<void>();
 
+    public svgRoutes = SharedSvgRoutes;
+    public cardsModalStringEnum = CardsModalStringEnum;
+
     constructor(
         private formBuilder: UntypedFormBuilder,
         private cdr: ChangeDetectorRef,
         private modalService: FuelCardsModalService,
         //Store
-        private store: Store
+        private store: Store,
+
+        private activeModal: NgbActiveModal
     ) {}
 
     ngOnInit(): void {
@@ -251,8 +266,8 @@ export class FuelCardModalComponent implements OnInit, OnDestroy {
             );
     }
 
-    public onActionModal(event): void {
-        switch (event.action) {
+    public onActionModal(action: string): void {
+        switch (action) {
             case CardsModalStringEnum.CARDS_MODAL:
                 this.updateStore();
                 break;
@@ -260,6 +275,7 @@ export class FuelCardModalComponent implements OnInit, OnDestroy {
                 this.resetToDefault();
                 break;
             default:
+                this.activeModal.close();
                 break;
         }
     }
@@ -274,6 +290,7 @@ export class FuelCardModalComponent implements OnInit, OnDestroy {
 
     private updateStore(): void {
         this.modalService.updateStore(this.cardsForm.value, this.tabSelected);
+        this.activeModal.close();
     }
 
     private resetToDefault(): void {
@@ -333,7 +350,7 @@ export class FuelCardModalComponent implements OnInit, OnDestroy {
         );
     }
 
-    private compareDataInStoreAndDefaultData(): void {        
+    private compareDataInStoreAndDefaultData(): void {
         const isFrontSidesEqual = CompareObjectsModal.areArraysOfObjectsEqual(
             this.tabSelected === TableStringEnum.ACTIVE
                 ? FuelCardsModalConfig.displayRowsFrontActive

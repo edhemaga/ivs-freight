@@ -2,11 +2,14 @@ import { Component, OnInit, AfterViewInit, OnDestroy } from '@angular/core';
 
 import { Subject, takeUntil } from 'rxjs';
 
+// base classes
+import { ContactsDropdownMenuActionsBase } from '@pages/contacts/base-classes';
+
 // components
 import { ContactsModalComponent } from '@pages/contacts/pages/contacts-modal/contacts-modal.component';
 import { ConfirmationModalComponent } from '@shared/components/ta-shared-modals/confirmation-modal/confirmation-modal.component';
 
-// service
+// services
 import { ModalService } from '@shared/services/modal.service';
 import { ContactsService } from '@shared/services/contacts.service';
 import { TruckassistTableService } from '@shared/services/truckassist-table.service';
@@ -25,33 +28,30 @@ import { MethodsGlobalHelper } from '@shared/utils/helpers/methods-global.helper
 import { getToolsContactsColumnDefinition } from '@shared/utils/settings/table-settings/contacts-columns';
 import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calculations.helper';
 import { AvatarColorsHelper } from '@shared/utils/helpers/avatar-colors.helper';
+import { DropdownMenuContentHelper } from '@shared/utils/helpers';
 
 // enums
 import { ContactsStringEnum } from '@pages/contacts/enums/contacts-string.enum';
 import { TableStringEnum } from '@shared/enums/table-string.enum';
+import { DropdownMenuStringEnum } from '@shared/enums';
 
 // constants
-import { TableDropdownComponentConstants } from '@shared/utils/constants/table-dropdown-component.constants';
-
-// data for cards
 import { ContactsCardData } from '@pages/contacts/utils/constants/contacts-card-data.constants';
-import { CardTableData } from '@shared/models/table-models/card-table-data.model';
 
 // models
 import {
-    CompanyAccountLabelResponse,
     CompanyContactResponse,
     GetCompanyContactListResponse,
-    UpdateCompanyContactCommand,
 } from 'appcoretruckassist';
 import { ContactsBackFilter } from '@pages/contacts/pages/contacts-table/models/contacts-back-filter.model';
 import { ContactsPhone } from '@pages/contacts/pages/contacts-table/models/contacts-phone.model';
 import { ContactsEmail } from '@pages/contacts/pages/contacts-table/models/contacts-email.model';
 import { ContactsTableToolbarAction } from '@pages/contacts/pages/contacts-table/models/contacts-table-toolbar-action.model';
-import { ContactsTableBodyAction } from '@pages/contacts/pages/contacts-table/models/contacts-table-body-action.model';
 import { ContactsTableHeadAction } from '@pages/contacts/pages/contacts-table/models/contacts-table-head-action.model';
 import { CardRows } from '@shared/models/card-models/card-rows.model';
-import { DropdownItem } from '@shared/models/card-models/card-table-data.model';
+import { DropdownMenuItem } from '@ca-shared/components/ca-dropdown-menu/models';
+import { TableColumnConfig } from '@shared/models';
+import { CardTableData } from '@shared/models/table-models/card-table-data.model';
 
 @Component({
     selector: 'app-contacts-table',
@@ -60,18 +60,33 @@ import { DropdownItem } from '@shared/models/card-models/card-table-data.model';
     providers: [NameInitialsPipe],
 })
 export class ContactsTableComponent
+    extends ContactsDropdownMenuActionsBase
     implements OnInit, AfterViewInit, OnDestroy
 {
-    private destroy$ = new Subject<void>();
+    public destroy$ = new Subject<void>();
 
+    public dropdownMenuStringEnum = DropdownMenuStringEnum;
+
+    public resizeObserver: ResizeObserver;
+    public activeViewMode: string = TableStringEnum.LIST;
+
+    public selectedTab: string = TableStringEnum.ACTIVE;
+
+    public contacts: ContactState[] = [];
+
+    // table
     public tableOptions: any = {};
     public tableData: any[] = [];
     public viewData: any[] = [];
-    public columns: any[] = [];
-    public selectedTab: string = TableStringEnum.ACTIVE;
-    public activeViewMode: string = TableStringEnum.LIST;
-    public resizeObserver: ResizeObserver;
-    public contacts: ContactState[] = [];
+    public columns: TableColumnConfig[] = [];
+
+    // cards
+    public sendDataToCardsFront: CardRows[] =
+        ContactsCardData.displayRowsFrontContacts;
+    public sendDataToCardsBack: CardRows[] =
+        ContactsCardData.displayRowsBackContacts;
+
+    // filters
     public backFilterQuery = {
         labelId: undefined,
         pageIndex: 1,
@@ -85,25 +100,24 @@ export class ContactsTableComponent
 
     public mapingIndex: number = 0;
 
-    public cardTitle: string = ContactsCardData.cardTitle;
-
-    public page: string = ContactsCardData.page;
-    public rows: number = ContactsCardData.rows;
-
-    public sendDataToCardsFront: CardRows[] =
-        ContactsCardData.displayRowsFrontContacts;
-    public sendDataToCardsBack: CardRows[] =
-        ContactsCardData.displayRowsBackContacts;
-
     constructor(
-        private modalService: ModalService,
+        // services
+        protected modalService: ModalService,
+        protected contactsService: ContactsService,
+
         private tableService: TruckassistTableService,
-        private contactQuery: ContactQuery,
-        private nameInitialsPipe: NameInitialsPipe,
-        private contactService: ContactsService,
+
         private confirmationService: ConfirmationService,
-        private caSearchMultipleStatesService: CaSearchMultipleStatesService
-    ) {}
+        private caSearchMultipleStatesService: CaSearchMultipleStatesService,
+
+        // store
+        private contactQuery: ContactQuery,
+
+        // pipes
+        private nameInitialsPipe: NameInitialsPipe
+    ) {
+        super();
+    }
 
     ngOnInit(): void {
         this.sendContactData();
@@ -333,14 +347,14 @@ export class ContactsTableComponent
     }
 
     private deleteContactById(contactId: number): void {
-        this.contactService
+        this.contactsService
             .deleteCompanyContactById(contactId)
             .pipe(takeUntil(this.destroy$))
             .subscribe();
     }
 
     private deleteContactList(contactIds: number[]): void {
-        this.contactService
+        this.contactsService
             .deleteAccountList(contactIds)
             .pipe(takeUntil(this.destroy$))
             .subscribe(() => {
@@ -371,8 +385,7 @@ export class ContactsTableComponent
             });
     }
 
-    // Responsive Observer
-    observTableContainer() {
+    public observTableContainer(): void {
         this.resizeObserver = new ResizeObserver((entries) => {
             entries.forEach((entry) => {
                 this.tableService.sendCurrentSetTableWidth(
@@ -386,7 +399,6 @@ export class ContactsTableComponent
         );
     }
 
-    // Table Options
     public initTableOptions(): void {
         this.tableOptions = {
             toolbarActions: {
@@ -406,7 +418,6 @@ export class ContactsTableComponent
         };
     }
 
-    // Send Contact Data
     private sendContactData(): void {
         const tableView = JSON.parse(
             localStorage.getItem(ContactsStringEnum.CONTACT_TABLE_VIEW)
@@ -443,17 +454,16 @@ export class ContactsTableComponent
         ];
 
         const td = this.tableData.find((t) => t.field === this.selectedTab);
+
         this.setContactData(td);
     }
 
-    // Get Contact Data From Store Or Via Api Call
-    getTabData() {
+    public getTabData() {
         this.contacts = this.contactQuery.getAll();
         return this.contacts?.length ? this.contacts : [];
     }
 
-    // Update Contact Count
-    updateDataCount() {
+    public updateDataCount() {
         const contactCount = JSON.parse(
             localStorage.getItem(ContactsStringEnum.CONTACT_TABLE_COUNT)
         );
@@ -465,8 +475,7 @@ export class ContactsTableComponent
         this.tableData = [...updatedTableData];
     }
 
-    // Get Columns Definition
-    getGridColumns(configType: string) {
+    public getGridColumns(configType: string) {
         const tableColumnsConfig = JSON.parse(
             localStorage.getItem(`table-${configType}-Configuration`)
         );
@@ -476,8 +485,7 @@ export class ContactsTableComponent
             : getToolsContactsColumnDefinition();
     }
 
-    // Set Countact Data
-    setContactData(tdata: CardTableData): void {
+    public setContactData(tdata: CardTableData): void {
         this.columns = tdata.gridColumns;
 
         if (tdata.data.length) {
@@ -492,7 +500,6 @@ export class ContactsTableComponent
         }
     }
 
-    // Map Contact Data
     public mapContactData(data: any, dontMapIndex?: boolean): void {
         if (!data?.avatarFile?.url && !dontMapIndex) {
             this.mapingIndex++;
@@ -523,22 +530,19 @@ export class ContactsTableComponent
             edited: MethodsCalculationsHelper.convertDateFromBackend(
                 data?.updatedAt
             ),
-            tableDropdownContent: {
-                hasContent: true,
-                content: this.getDropdownContactContent(),
-            },
+            tableDropdownContent: this.getContactDropdownContent(),
         };
     }
-    public getDropdownContactContent(): DropdownItem[] {
-        return TableDropdownComponentConstants.DROPDOWN_CONTACTS_CONTENT;
+
+    public getContactDropdownContent(): DropdownMenuItem[] {
+        return DropdownMenuContentHelper.getContactDropdownContent();
     }
 
-    // Contact Back Filter
     public contactBackFilter(
         filter: ContactsBackFilter,
         isShowMore?: boolean
     ): void {
-        this.contactService
+        this.contactsService
             .getContacts(
                 filter.labelId,
                 filter.pageIndex,
@@ -569,48 +573,6 @@ export class ContactsTableComponent
             });
     }
 
-    private saveContactLabel(data: CompanyAccountLabelResponse): void {
-        this.contactService
-            .updateCompanyContactLabel({
-                id: data.id,
-                name: data.name,
-                colorId: data.colorId,
-            })
-            .pipe(takeUntil(this.destroy$))
-            .subscribe();
-    }
-
-    private updateCompanyContactLabel(event: ContactsTableBodyAction): void {
-        // const companyContactData = this.viewData.find(
-        //     (e: CreateCompanyContactCommand) => e.id === event.id
-        // );
-
-        const newdata: UpdateCompanyContactCommand = {
-            // id: companyContactData.id ?? null,
-            // name: companyContactData.name ?? null,
-            // companyContactLabelId: event.data ? event.data.id : null,
-            // avatar: companyContactData.avatar ?? null,
-            // address: companyContactData.address ?? null,
-            // shared: companyContactData.shared ?? null,
-            // note: companyContactData.note ?? null,
-            // contactEmails: companyContactData.contactEmails
-            //     ? this.createContactEmails(companyContactData.contactEmails[0])
-            //     : null,
-            // contactPhones: companyContactData.contactPhones
-            //     ? this.createContactPhones(companyContactData.contactPhones[0])
-            //     : null,
-        };
-
-        this.contactService
-            .updateCompanyContact(
-                newdata
-                // companyContactData.colorRes,
-                // companyContactData.colorLabels
-            )
-            .pipe(takeUntil(this.destroy$))
-            .subscribe();
-    }
-
     public createContactPhones(element: ContactsPhone) {
         return [
             {
@@ -633,8 +595,8 @@ export class ContactsTableComponent
             },
         ];
     }
-    // On Toolbar Actions
-    onToolBarAction(event: ContactsTableToolbarAction) {
+
+    public onToolBarAction(event: ContactsTableToolbarAction) {
         if (event.action === TableStringEnum.OPEN_MODAL) {
             this.modalService.openModal(ContactsModalComponent, {
                 size: TableStringEnum.SMALL,
@@ -654,7 +616,6 @@ export class ContactsTableComponent
         }
     }
 
-    // On Head Actions
     public onTableHeadActions(event: ContactsTableHeadAction) {
         if (event.action === TableStringEnum.SORT) {
             if (event.direction) {
@@ -671,36 +632,10 @@ export class ContactsTableComponent
         }
     }
 
-    // On Body Actions
-    public onTableBodyActions(event: ContactsTableBodyAction): void {
-        if (event.type === TableStringEnum.SHOW_MORE) {
-            this.backFilterQuery.pageIndex++;
-            this.contactBackFilter(this.backFilterQuery, true);
-        } else if (event.type === ContactsStringEnum.EDIT_CONTACT) {
-            this.modalService.openModal(
-                ContactsModalComponent,
-                { size: TableStringEnum.SMALL },
-                {
-                    ...event,
-                    type: TableStringEnum.EDIT,
-                }
-            );
-        } else if (event.type === TableStringEnum.DELTETE_CONTACT) {
-            this.modalService.openModal(
-                ConfirmationModalComponent,
-                { size: TableStringEnum.SMALL },
-                {
-                    ...event,
-                    template: TableStringEnum.CONTACT,
-                    type: TableStringEnum.DELETE,
-                    svg: true,
-                }
-            );
-        } else if (event.type === TableStringEnum.UPDATE_LABEL) {
-            this.saveContactLabel(event.data);
-        } else if (event.type === TableStringEnum.UPDATE_LABEL) {
-            this.updateCompanyContactLabel(event);
-        }
+    public handleShowMoreAction(): void {
+        this.backFilterQuery.pageIndex++;
+
+        this.contactBackFilter(this.backFilterQuery, true);
     }
 
     ngOnDestroy(): void {

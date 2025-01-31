@@ -28,6 +28,7 @@ import { EventService } from './api/event.service';
 import { FileService } from './api/file.service';
 import { FuelService } from './api/fuel.service';
 import { GeolocationService } from './api/geolocation.service';
+import { ImportService } from './api/import.service';
 import { InspectionService } from './api/inspection.service';
 import { IntegrationService } from './api/integration.service';
 import { ListCounterService } from './api/listCounter.service';

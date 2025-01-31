@@ -15,6 +15,7 @@ export class FuelDetailsChartsConfiguration {
         noDataImage: ChartImagesStringEnum.CHART_NO_DATA_YELLOW,
         chartOptions: {},
         showTooltipBackground: false,
-        showXAxisLabels: true
+        showXAxisLabels: true,
+        hasVerticalDashedAnnotation: true
     };
 }

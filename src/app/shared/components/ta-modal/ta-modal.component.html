@@ -1,7 +1,7 @@
 <app-ta-custom-scrollbar
     [scrollBarOptions]="{
         showVerticalScrollBar: true,
-        showHorizontalScrollBar: false
+        showHorizontalScrollBar: false,
     }"
 >
     <div cdkDrag class="modal-container {{ customClass }}" ngBAutofocus>
@@ -22,7 +22,7 @@
                             class="modal-header-tab-change"
                             [ngClass]="{
                                 'modal-header-tab-change-reorder':
-                                    tabChangePosition === 'right'
+                                    tabChangePosition === 'right',
                             }"
                         >
                             <app-ta-tab-switch
@@ -83,7 +83,7 @@
                                     [searchType]="'tabel'"
                                     [toolbarSearch]="true"
                                     [selectedTabData]="{
-                                        gridNameTitle: modalTitle
+                                        gridNameTitle: modalTitle,
                                     }"
                                 ></app-ca-search-multiple-states>
                             </span>
@@ -132,7 +132,7 @@
                                 [src]="modalSvgRoutes.calendarRoute"
                                 [svgStyle]="{
                                     'width.px': '14',
-                                    'height.px': '16'
+                                    'height.px': '16',
                                 }"
                             ></svg-icon>
                         </div>
@@ -280,7 +280,7 @@
                             position="bottom"
                             class="d-flex align-items-center justify-content-center modal-header-load-map-button"
                             [ngClass]="{
-                                active: isAdditionalAssignLoadModalVisible
+                                active: isAdditionalAssignLoadModalVisible,
                             }"
                             (click)="toggleAdditionalPart('side-panel')"
                         >
@@ -302,8 +302,8 @@
                                     stepperCounter === 1
                                         ? '2'
                                         : stepperCounter === 2
-                                        ? '3'
-                                        : '1'
+                                          ? '3'
+                                          : '1'
                                 }}
                                 OF 3
                             </p>
@@ -316,8 +316,8 @@
                                             stepperCounter === 1
                                                 ? '66.66%'
                                                 : stepperCounter === 2
-                                                ? '100%'
-                                                : '33%'
+                                                  ? '100%'
+                                                  : '33%',
                                     }"
                                 ></div>
                             </div>
@@ -340,7 +340,7 @@
                                 [src]="modalSvgRoutes.closeRoute"
                                 [svgStyle]="{
                                     'width.px': '13',
-                                    'height.px': '13'
+                                    'height.px': '13',
                                 }"
                             ></svg-icon>
                         </div>
@@ -400,7 +400,7 @@
                             loadModalTemplate ||
                             mapSettingsModal ||
                             mapRouteModal
-                        )
+                        ),
                     }"
                 >
                     <!-- Footer Left Side -->
@@ -647,15 +647,15 @@
                                         isClickEnabledWhileFormInvalid ||
                                         isModalValid
                                             ? 'all'
-                                            : 'none'
+                                            : 'none',
                                 }"
                             >
                                 {{
                                     saveAddNewSpinnerVisibility
                                         ? 'Saving'
                                         : customTextSaveAndAddNew
-                                        ? customTextSaveAndAddNew
-                                        : 'Save and Add New'
+                                          ? customTextSaveAndAddNew
+                                          : 'Save and Add New'
                                 }}
                                 <ng-container
                                     *ngIf="saveAddNewSpinnerVisibility"
@@ -711,8 +711,8 @@
                                     setMapRouteSpinnerVisibility
                                         ? 'Saving'
                                         : editData.id
-                                        ? 'Save Changes'
-                                        : 'Save'
+                                          ? 'Save Changes'
+                                          : 'Save'
                                 }}
 
                                 <ng-container
@@ -794,7 +794,7 @@
                                         isClickEnabledWhileFormInvalid ||
                                         isModalValid
                                             ? 'all'
-                                            : 'none'
+                                            : 'none',
                                 }"
                             >
                                 {{
@@ -803,17 +803,21 @@
                                             ? 'Saving'
                                             : 'Save Changes'
                                         : applicantText
-                                        ? saveSpinnerVisibility
-                                            ? 'Inviting'
-                                            : 'Invite'
-                                        : saveSpinnerVisibility
-                                        ? 'Saving'
-                                        : editData?.type?.includes('edit') ||
-                                          editData?.type?.includes('payroll')
-                                        ? isFinishOrder
-                                            ? 'Finish'
-                                            : 'Save Changes'
-                                        : 'Save'
+                                          ? saveSpinnerVisibility
+                                              ? 'Inviting'
+                                              : 'Invite'
+                                          : saveSpinnerVisibility
+                                            ? 'Saving'
+                                            : editData?.type?.includes(
+                                                    'edit'
+                                                ) ||
+                                                editData?.type?.includes(
+                                                    'payroll'
+                                                )
+                                              ? isFinishOrder
+                                                  ? 'Finish'
+                                                  : 'Save Changes'
+                                              : 'Save'
                                 }}
 
                                 <ng-container *ngIf="saveSpinnerVisibility">
@@ -904,19 +908,23 @@
                             class="ta-font-bold modal-cancel-btn"
                             [ngClass]="{
                                 'active-cancel-btn': [
+                                    'fuel-stop',
                                     'fuel stop',
+                                    'fuel-transaction',
+                                    'fuel transaction',
                                     'contact',
                                     'reset modal',
                                     'user',
+                                    'account',
                                     'truck',
                                     'owner',
                                     'repair',
-                                    'repair_shop',
+                                    'repair-shop',
                                     'info',
                                     'repair-detail',
                                     'repair-review',
-                                    'broker',
-                                    'shipper',
+                                    'brokeper',
+                                    'shipr',
                                     'registration',
                                     'title',
                                     'inspection',
@@ -942,8 +950,8 @@
                                     'deduction',
                                     'credit',
                                     'fuel',
-                                    'bonus'
-                                ].includes(confirmationData?.template)
+                                    'bonus',
+                                ].includes(confirmationData?.template),
                             }"
                             type="button"
                         >
@@ -964,7 +972,7 @@
                                 'active-cancel-btn':
                                     ['cdl'].includes(
                                         confirmationData?.template
-                                    ) || confirmationData.type === 'status'
+                                    ) || confirmationData.type === 'status',
                             }"
                             type="button"
                         >
@@ -990,7 +998,7 @@
                                 'delete',
                                 'multiple delete',
                                 'reset',
-                                'void'
+                                'void',
                             ].includes(confirmationData?.type)
                         "
                     >
@@ -1012,9 +1020,9 @@
                                     'load',
                                     'comment',
                                     'delete-review',
-                                    'user'
+                                    'user',
                                 ].includes(confirmationData.template),
-                                'not-clickable': disableDelete
+                                'not-clickable': disableDelete,
                             }"
                         >
                             Yes
@@ -1152,7 +1160,7 @@
                                 'modal-blue-btn':
                                     confirmationData?.type === 'open',
                                 'modal-gray-btn':
-                                    confirmationData?.type !== 'open'
+                                    confirmationData?.type !== 'open',
                             }"
                             type="button"
                         >

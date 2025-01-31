@@ -7,7 +7,7 @@ import { Observable, of, catchError, tap } from 'rxjs';
 import { LoadService } from '@shared/services/load.service';
 
 // store
-import { LoadMinimalListStore } from '@pages/load/state/load-details-state/load-minimal-list-state/load-details-minimal.store';
+import { LoadMinimalListStore } from '@pages/load/state_old/load-details-state/load-minimal-list-state/load-details-minimal.store';
 
 // models
 import { LoadMinimalListResponse } from 'appcoretruckassist';

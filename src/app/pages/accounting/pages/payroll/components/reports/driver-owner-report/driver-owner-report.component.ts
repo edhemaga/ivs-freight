@@ -31,9 +31,8 @@ import {
 } from '@pages/accounting/pages/payroll/state/models';
 
 import { OwnerLoadShortReponseWithRowType } from '@pages/accounting/pages/payroll/state/models';
-import { OptionsPopupContent } from 'ca-components/lib/components/ca-burger-menu/models/burger-menu.model';
+import { DropdownMenuItem } from '@ca-shared/components/ca-dropdown-menu/models';
 
-// Components
 import { PayrollProccessPaymentModalComponent } from '@pages/accounting/pages/payroll/payroll-modals/payroll-proccess-payment-modal/payroll-proccess-payment-modal.component';
 import { PayrollPdfReportComponent } from '@pages/accounting/pages/payroll/payroll-modals/payroll-report/payroll-pdf-report.component';
 
@@ -45,8 +44,8 @@ import { DriverMVrModalStringEnum } from '@pages/driver/pages/driver-modals/driv
 // Classes
 import { PayrollReportBaseComponent } from '@pages/accounting/pages/payroll/components/reports/payroll-report.base';
 
-// Constants
-import { TableToolbarConstants } from '../constants/report.constants';
+// helpers
+import { PayrollReportHelper } from '@pages/accounting/pages/payroll/components/reports/payroll-report/utils/helpers';
 
 @Component({
     selector: 'app-driver-owner-report',
@@ -66,9 +65,6 @@ export class DriverOwnerReportComponent
         this.getReportDataResults();
     }
 
-    public optionsPopupContent: OptionsPopupContent[] =
-        TableToolbarConstants.closedReportPayroll;
-
     get reportId(): string {
         return super.reportId; // Call the base class getter
     }
@@ -77,13 +73,18 @@ export class DriverOwnerReportComponent
     public creditType = PayrollCreditType.Truck;
     public payrollType = PayrollTypeEnum.OWNER_COMMISSION;
 
+    public dropdownMenuOptions: DropdownMenuItem[] = [];
+
     public _selectedTab: PayrollTablesStatus;
     @Input() set selectedTab(tab: PayrollTablesStatus) {
-        this.optionsPopupContent =
-            tab === PayrollTablesStatus.OPEN
-                ? TableToolbarConstants.openReportPayroll
-                : TableToolbarConstants.closedReportPayroll;
         this._selectedTab = tab;
+
+        this.dropdownMenuOptions =
+            PayrollReportHelper.getPayrollDropdownContent(
+                false,
+                this._selectedTab,
+                this.isEditLoadDropdownActionActive
+            );
     }
 
     public get selectedTab() {
@@ -235,8 +236,6 @@ export class DriverOwnerReportComponent
         ];
     }
 
-
-
     public customSortPredicate = (
         index: number,
         data: CdkDrag<any>
@@ -311,6 +310,25 @@ export class DriverOwnerReportComponent
                 },
             }
         );
+    }
+
+    public getIsEditLoadDropdownActionActive(): void {
+        const loadDummyData = [
+            // w8 for slavisa
+            { id: 1, title: 'INV-162-23' },
+            { id: 2, title: 'INV-162-26' },
+            { id: 3, title: 'INV-162-28' },
+            { id: 4, title: 'INV-162-31' },
+            { id: 5, title: 'INV-162-33' },
+        ];
+
+        this.dropdownMenuOptions =
+            PayrollReportHelper.getPayrollDropdownContent(
+                false,
+                this._selectedTab,
+                this.isEditLoadDropdownActionActive,
+                loadDummyData
+            );
     }
 
     ngOnDestroy(): void {

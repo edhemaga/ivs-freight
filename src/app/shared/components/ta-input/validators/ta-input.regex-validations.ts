@@ -196,8 +196,8 @@ export const descriptionPayrollBonusValidation = [
 
 //---------------- Label
 export const labelValidation = [
-    Validators.minLength(1),
-    Validators.maxLength(32),
+    Validators.minLength(2),
+    Validators.maxLength(64),
 ];
 
 //---------------- dbaName
@@ -496,4 +496,6 @@ export const perStopValidation = [Validators.min(0), Validators.max(5000)];
 export const perLoadValidation = [Validators.min(0), Validators.max(50000)];
 
 //---------------- Email
-export const emailValidation = Validators.pattern(/^[a-z0-9!#$%&'*+/=?^_`{|}~@.-]{5,64}$/);
+export const emailValidation = Validators.pattern(
+    /^[a-z0-9!#$%&'*+/=?^_`{|}~@.-]{5,64}$/
+);

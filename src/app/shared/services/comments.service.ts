@@ -6,8 +6,8 @@ import { Observable, tap } from 'rxjs';
 import { LoadService } from '@shared/services/load.service';
 
 // store
-import { LoadDetailsListStore } from '@pages/load/state/load-details-state/load-details-list-state/load-details-list.store';
-import { LoadItemStore } from '@pages/load/state/load-details-state/load-details.store';
+import { LoadDetailsListStore } from '@pages/load/state_old/load-details-state/load-details-list-state/load-details-list.store';
+import { LoadItemStore } from '@pages/load/state_old/load-details-state/load-details.store';
 
 // models
 import {

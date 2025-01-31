@@ -79,7 +79,7 @@ export class ViolationModalComponent implements OnInit, OnDestroy {
 
     public violationForm: UntypedFormGroup;
 
-    public disableCardAnimation: boolean = false;
+    public isCardAnimationDisabled: boolean = false;
 
     public selectedTab: number = 1;
     public tabs: any[] = [
@@ -543,10 +543,10 @@ export class ViolationModalComponent implements OnInit, OnDestroy {
                                   )
                                 : null
                             : res.driver_DateOfBirth
-                            ? MethodsCalculationsHelper.convertDateFromBackend(
-                                  res.driver_DateOfBirth
-                              )
-                            : null,
+                              ? MethodsCalculationsHelper.convertDateFromBackend(
+                                    res.driver_DateOfBirth
+                                )
+                              : null,
                         // Co Driver
                         coDriverName: res.coDriver_FullName,
                         coDriverLicenceNumber: res.coDriver_LicenceNo,
@@ -696,7 +696,7 @@ export class ViolationModalComponent implements OnInit, OnDestroy {
                         );
                     }
                     setTimeout(() => {
-                        this.disableCardAnimation = false;
+                        this.isCardAnimationDisabled = false;
                     }, 1000);
                 },
                 error: () => {},
@@ -717,7 +717,7 @@ export class ViolationModalComponent implements OnInit, OnDestroy {
                     });
 
                     if (this.editData) {
-                        this.disableCardAnimation = true;
+                        this.isCardAnimationDisabled = true;
                         this.editViolationById(this.editData.id);
                     }
                 },

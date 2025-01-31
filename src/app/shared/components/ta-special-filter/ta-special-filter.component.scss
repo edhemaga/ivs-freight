@@ -557,6 +557,99 @@
         }
     }
 
+    &.fuel-filter-incomplete {
+        &:hover {
+            background-color: $bw2;
+
+            .main-icon-holder {
+                .filters-selected-value-holder {
+                    color: $ta-black !important;
+                }
+
+                svg-icon {
+                    svg {
+                        path {
+                            fill: $ta-red-11 !important;
+                        }
+                    }
+                }
+            }
+        }
+
+        &.zero-filter {
+            pointer-events: none;
+
+            .main-icon-holder {
+                .filters-selected-value-holder {
+                    color: $ta-light-grey-6 !important;
+                }
+
+                svg-icon {
+                    svg {
+                        path {
+                            fill: $ta-red-10 !important;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    &.fuel-filter-incomplete-active {
+        background-color: $bw6-2;
+
+        .main-icon-holder {
+            .filters-selected-value-holder {
+                color: $white !important;
+            }
+
+            svg-icon {
+                svg {
+                    path {
+                        fill: $special-filter-red !important;
+                    }
+                }
+            }
+        }
+
+        &:hover {
+            background-color: $ta-black;
+
+            .main-icon-holder {
+                .filters-selected-value-holder {
+                    color: $white !important;
+
+                    &.clear-filter-icon {
+                        height: 14px;
+                        width: 14px;
+
+                        svg {
+                            path {
+                                height: 14px;
+                                width: 14px;
+                                fill: $white !important;
+                            }
+                        }
+
+                        &:hover {
+                            .filter-active-colors {
+                                background-color: $white !important;
+                            }
+                        }
+                    }
+                }
+
+                svg-icon {
+                    svg {
+                        path {
+                            fill: $ta-red-11 !important;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     &.pickup-filter, &.delivery-filter {
         .main-icon-holder {
             svg-icon {

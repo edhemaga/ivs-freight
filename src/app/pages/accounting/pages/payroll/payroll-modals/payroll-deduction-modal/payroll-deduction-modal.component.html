@@ -1,137 +1,165 @@
-<ng-container *ngIf="formLoaded">
+@if (formLoaded) {
     <app-payroll-base-modal
-    [modalTitle]="!isEditMode ? 'Create Deduction' : 'Edit Deduction'"
-    [baseForm]="payrollCreditForm"
-    [modalType]="'MODAL_DEDUCTION'"
-    [footerTemplate]="footerTemplate"
-    [isDriverAndTruckTabs]="true"
-    [editData]="editData"
-></app-payroll-base-modal>
+        [modalTitle]="!isEditMode ? 'Create Deduction' : 'Edit Deduction'"
+        [baseForm]="payrollCreditForm"
+        [modalType]="'MODAL_DEDUCTION'"
+        [footerTemplate]="footerTemplate"
+        [isDriverAndTruckTabs]="true"
+        [editData]="editData"
+    ></app-payroll-base-modal>
 
-<ng-template #footerTemplate>
-    <div
-        class="modal-footer modal-footer-payroll"
-        [class.justify-content-between]="isEditMode"
-    >
-        <ng-container
-            [ngTemplateOutlet]="paymentHistoryTemplate"
-        ></ng-container>
+    <ng-template #footerTemplate>
+        <div
+            class="modal-footer modal-footer-payroll"
+            [class.justify-content-between]="isEditMode"
+        >
+            <ng-container
+                [ngTemplateOutlet]="paymentHistoryTemplate"
+            ></ng-container>
 
-        <div class="divider divider--dark divider--small"></div>
-        <ng-container *ngIf="isEditMode; else showCreateButtons">
-            <div class="mt-1 d-flex justify-content-between full-w">
-                <div >
+            <div class="divider divider--dark divider--small"></div>
+            @if (isEditMode) {
+                <div class="mt-1 d-flex justify-content-between full-w">
+                    <div>
+                        <button
+                            class="modal-delete-btn ta-font-bold mr-12"
+                            (click)="saveDeduction(taModalActionEnum.DELETE)"
+                            [class.valid]="payrollCreditForm?.valid"
+                        >
+                            Delete
+                        </button>
+                        <button
+                            class="modal-convert-to-template-btn ta-font-bold"
+                            (click)="
+                                saveDeduction(
+                                    taModalActionEnum.MOVE_TO_THIS_PERIOD
+                                )
+                            "
+                        >
+                            Move to This Period
+                        </button>
+                    </div>
                     <button
-                        class="modal-delete-btn ta-font-bold mr-12"
-                        (click)="saveDeduction(taModalActionEnums.DELETE)"
+                        class="modal-save-btn ta-font-bold"
+                        (click)="saveDeduction(taModalActionEnum.UPDATE)"
                         [class.valid]="payrollCreditForm?.valid"
                     >
-                        Delete
-                    </button>
-                    <button
-                        class="modal-convert-to-template-btn ta-font-bold"
-                        (click)="
-                            saveDeduction(taModalActionEnums.MOVE_TO_THIS_PERIOD)
-                        "
-                    >
-                        Move to This Period
+                        Save Changes
                     </button>
                 </div>
+            } @else {
+                <button
+                    class="ta-font-bold modal-save-btn modal-save-btn-add-new mr-12"
+                    [class.valid]="payrollCreditForm?.valid"
+                    (click)="saveDeduction(taModalActionEnum.SAVE_AND_ADD_NEW)"
+                >
+                    Save and Add New
+                </button>
                 <button
                     class="modal-save-btn ta-font-bold"
-                    (click)="saveDeduction(taModalActionEnums.UPDATE)"
+                    (click)="saveDeduction(taModalActionEnum.SAVE)"
                     [class.valid]="payrollCreditForm?.valid"
                 >
-                    Save Changes
+                    Save
                 </button>
-            </div>
-        </ng-container>
+            }
+        </div>
+    </ng-template>
 
-        <ng-template #showCreateButtons>
-            <button
-                class="ta-font-bold modal-save-btn modal-save-btn-add-new mr-12"
-                [class.valid]="payrollCreditForm?.valid"
-                (click)="saveDeduction(taModalActionEnums.SAVE_AND_ADD_NEW)"
+    <ng-template #paymentHistoryTemplate>
+        @if (isEditMode && deduction?.childPayrollDeductions?.length) {
+            <div class="divider divider--dark divider--small mb-0"></div>
+            <app-ta-custom-card
+                [cardName]="'Payment History'"
+                [hasCounter]="deduction?.childPayrollDeductions?.length"
+                [isCardOpen]="true"
+                [hasBodyData]="true"
+                [hasDivider]="false"
+                [hasDownload]="'assets/svg/common/ic_download.svg'"
+                [hasArrow]="false"
             >
-                Save and Add New
-            </button>
-            <button
-                class="modal-save-btn ta-font-bold"
-                (click)="saveDeduction(taModalActionEnums.SAVE)"
-                [class.valid]="payrollCreditForm?.valid"
-            >
-                Save
-            </button>
-        </ng-template>
-    </div>
-</ng-template>
+                <div class="payment-history-row d-grid">
+                    <div
+                        class="text-color-muted text-size-11 ta-font-bold text-center"
+                    >
+                        #
+                    </div>
+                    <div class="text-color-muted text-size-11 ta-font-bold">
+                        DATE
+                    </div>
+                    <div
+                        class="text-color-muted text-size-11 ta-font-bold text-right"
+                    >
+                        PAYMENT
+                    </div>
+                    <div
+                        class="text-color-muted text-size-11 ta-font-bold text-right"
+                    >
+                        {{ isLimited ? 'REMAINING' : 'SUBTOTAL' }}
+                    </div>
+                </div>
 
-<ng-template #paymentHistoryTemplate>
-    <ng-container *ngIf="isEditMode && deduction?.childPayrollDeductions?.length">
-        <div class="divider divider--dark divider--small mb-0"></div>
-        <app-ta-custom-card
-            [cardName]="'Payment History'"
-            [hasCounter]="deduction?.childPayrollDeductions?.length"
-            [isCardOpen]="true"
-            [hasBodyData]="true"
-            [hasDivider]="false"
-            [hasDownload]="'assets/svg/common/ic_download.svg'"
-            [hasArrow]="false"
-        >
-            <div class="payment-history-row d-grid">
                 <div
-                    class="text-color-muted text-size-11 ta-font-bold text-center"
+                    class="payment-history-row d-grid"
+                    *ngFor="
+                        let payments of deduction.childPayrollDeductions;
+                        let i = index
+                    "
                 >
-                    #
-                </div>
-                <div class="text-color-muted text-size-11 ta-font-bold">
-                    DATE
-                </div>
-                <div
-                    class="text-color-muted text-size-11 ta-font-bold text-right"
-                >
-                    PAYMENT
-                </div>
-                <div
-                    class="text-color-muted text-size-11 ta-font-bold text-right"
-                >
-                    {{isLimited ? 'REMAINING' : 'SUBTOTAL'}}
-                </div>
-            </div>
+                    <div
+                        class="text-color-muted text-size-14 ta-font-medium text-center"
+                        [ngClass]="{ 'text-color-blue-13': payments.isNext }"
+                    >
+                        {{ payments.currentRecurrance }}
+                    </div>
+                    <div
+                        class="ta-font-regular text-size-14"
+                        [ngClass]="
+                            payments.isNext
+                                ? 'text-color-muted'
+                                : 'text-color-black-2'
+                        "
+                    >
+                        {{ formatDate(payments.date) }}
 
-            <div
-                class="payment-history-row d-grid"
-                *ngFor="let payments of deduction.childPayrollDeductions; let i = index"
-            >
-                <div
-                    class="text-color-muted text-size-14 ta-font-medium text-center"
-                    [ngClass]="{'text-color-blue-13': payments.isNext}"
-                >
-                    {{ payments.currentRecurrance }}
+                        @if (payments.isNext) {
+                            <span
+                                [ngClass]="
+                                    payments.isLast
+                                        ? 'text-color-blue-13'
+                                        : 'text-color-muted'
+                                "
+                            >
+                                {{
+                                    payments.isLast
+                                        ? '- Last Payment'
+                                        : '- Next Payment'
+                                }}
+                            </span>
+                        }
+                    </div>
+                    <div
+                        class="ta-font-regular text-size-14 text-right"
+                        [ngClass]="
+                            payments.isNext
+                                ? 'text-color-muted'
+                                : 'text-color-black-2'
+                        "
+                    >
+                        {{ getPaymentString() }}
+                    </div>
+                    <div
+                        class="text-color-black-2 text-size-14 ta-font-semi-bold text-right"
+                        [ngClass]="
+                            payments.isNext
+                                ? 'text-color-light-grey-2'
+                                : 'text-color-black-2'
+                        "
+                    >
+                        {{ calculateRemainingPayment(i) }}
+                    </div>
                 </div>
-                <div class=" ta-font-regular text-size-14"
-                [ngClass]="payments.isNext? 'text-color-muted' : 'text-color-black-2'">
-                    {{ formatDate(payments.date)  }} <ng-container *ngIf="payments.isNext">
-                        <span  
-                        [ngClass]="payments.isLast? 'text-color-blue-13' : 'text-color-muted'">
-                            {{payments.isLast ? '- Last Payment' : '- Next Payment'}}
-                        </span>
-                    </ng-container>
-                </div>
-                <div
-                    class=" ta-font-regular text-size-14 text-right"
-                    [ngClass]="payments.isNext? 'text-color-muted' : 'text-color-black-2'"
-                >
-                    {{getPaymentString()}}
-                </div>
-                <div
-                    class="text-color-black-2 text-size-14 ta-font-semi-bold text-right"
-                    [ngClass]="payments.isNext? 'text-color-light-grey-2' : 'text-color-black-2'"
-                >
-                    {{calculateRemainingPayment(i)}}
-                </div>
-            </div>
-        </app-ta-custom-card>
-    </ng-container>
-</ng-template>
-</ng-container>
+            </app-ta-custom-card>
+        }
+    </ng-template>
+}

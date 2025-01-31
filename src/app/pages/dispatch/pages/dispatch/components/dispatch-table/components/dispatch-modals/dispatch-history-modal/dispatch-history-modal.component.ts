@@ -1,6 +1,8 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+
 import { Subject, takeUntil } from 'rxjs';
 
 // services
@@ -30,6 +32,9 @@ import {
 } from 'appcoretruckassist';
 import { ITaInput } from '@shared/components/ta-input/config/ta-input.config';
 import { CustomPeriodRange } from '@shared/models/custom-period-range.model';
+
+// Svg routes
+import { SharedSvgRoutes } from '@shared/utils/svg-routes';
 
 @Component({
     selector: 'app-dispatch-history-modal',
@@ -81,12 +86,14 @@ export class DispatchHistoryModalComponent implements OnInit, OnDestroy {
     public selectedDriver: EnumValue;
 
     public previousSelectedTime: EnumValue;
+    public svgRoutes = SharedSvgRoutes;
 
     constructor(
         private formBuilder: UntypedFormBuilder,
 
         // services
-        private dispatcherService: DispatcherService
+        private dispatcherService: DispatcherService,
+        public ngActive: NgbActiveModal
     ) {}
 
     ngOnInit(): void {

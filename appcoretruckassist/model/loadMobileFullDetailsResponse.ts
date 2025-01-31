@@ -19,6 +19,7 @@ import { BrokerShortMobileResponse } from './brokerShortMobileResponse';
 import { LoadRequirementsResponse } from './loadRequirementsResponse';
 import { LoadProgressResponse } from './loadProgressResponse';
 import { LoadStopShortResponse } from './loadStopShortResponse';
+import { MilesMobileResponse } from './milesMobileResponse';
 
 
 export interface LoadMobileFullDetailsResponse { 
@@ -28,13 +29,19 @@ export interface LoadMobileFullDetailsResponse {
     payType?: EnumValue;
     totalRate?: number | null;
     isInActivePayroll?: boolean;
+    weight?: number | null;
     closingPayrollDate?: string | null;
     loadDeliveryTime?: string | null;
+    assignedDate?: string | null;
     pickup?: LoadStopShortResponse;
     delivery?: LoadStopShortResponse;
     pickupCount?: number;
     deliveryCount?: number;
-    progress?: LoadProgressResponse;
+    miles?: MilesMobileResponse;
+    completedPercentage?: number;
+    pendingPercentage?: number | null;
+    closedPercentage?: number | null;
+    loadProgress?: LoadProgressResponse;
     statusType?: EnumValue;
     status?: LoadStatusResponse;
     lastStatusPassed?: { [key: string]: number; } | null;
@@ -42,11 +49,17 @@ export interface LoadMobileFullDetailsResponse {
     dispatch?: DispatchShortResponse;
     loadRequirements?: LoadRequirementsResponse;
     driverAssist?: string | null;
+    extraStopsCount?: number;
+    generalCommodity?: EnumValue;
     broker?: BrokerShortMobileResponse;
     stopsCount?: number;
     stops?: Array<LoadStopMobileResponse> | null;
     commentsCount?: number;
     comments?: Array<CommentResponse> | null;
+    est?: { [key: string]: number; } | null;
+    duration?: { [key: string]: number; } | null;
+    totalWait?: { [key: string]: number; } | null;
+    totalDriving?: { [key: string]: number; } | null;
     createdAt?: string;
     updatedAt?: string;
 }

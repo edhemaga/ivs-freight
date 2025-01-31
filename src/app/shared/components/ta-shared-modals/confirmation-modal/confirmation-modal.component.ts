@@ -98,7 +98,11 @@ export class ConfirmationModalComponent implements OnInit {
     }
 
     public onModalAction(data: Confirmation) {
-        if (this.editData.extras && data.type === TableStringEnum.DELETE) {
+        if (
+            this.editData.extras &&
+            data.type === TableStringEnum.DELETE &&
+            data.subType !== TableStringEnum.FUEL_1
+        ) {
             this.deletePayroll(data.extras.id, data.template);
             this.confirmationDataSubject.sendConfirmationData(data);
             return;
@@ -142,8 +146,8 @@ export class ConfirmationModalComponent implements OnInit {
             this.payrollBonusService
                 .deletePayrollBonusById(id)
                 .subscribe((response) => this.ngbActiveModal.close());
-        }else if (template === TableStringEnum.FUEL_1) {
-            this.fuelService 
+        } else if (template === TableStringEnum.FUEL_1) {
+            this.fuelService
                 .deleteFuelTransactionsList([id])
                 .subscribe((response) => this.ngbActiveModal.close());
         }

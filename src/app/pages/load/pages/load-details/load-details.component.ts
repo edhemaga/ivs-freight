@@ -18,13 +18,13 @@ import { ConfirmationModalComponent } from '@shared/components/ta-shared-modals/
 import { LoadModalComponent } from '@pages/load/pages/load-modal/load-modal.component';
 
 // store
-import { LoadDetailsListQuery } from '@pages/load/state/load-details-state/load-details-list-state/load-details-list.query';
-import { LoadMinimalListQuery } from '@pages/load/state/load-details-state/load-minimal-list-state/load-details-minimal.query';
+import { LoadDetailsListQuery } from '@pages/load/state_old/load-details-state/load-details-list-state/load-details-list.query';
+import { LoadMinimalListQuery } from '@pages/load/state_old/load-details-state/load-minimal-list-state/load-details-minimal.query';
 import {
     LoadMinimalListState,
     LoadMinimalListStore,
-} from '@pages/load/state/load-details-state/load-minimal-list-state/load-details-minimal.store';
-import { LoadItemStore } from '@pages/load/state/load-details-state/load-details.store';
+} from '@pages/load/state_old/load-details-state/load-minimal-list-state/load-details-minimal.store';
+import { LoadItemStore } from '@pages/load/state_old/load-details-state/load-details.store';
 
 // enums
 import { LoadDetailsStringEnum } from '@pages/load/pages/load-details/enums/load-details-string.enum';
@@ -317,7 +317,7 @@ export class LoadDetailsComponent implements OnInit, OnDestroy {
         }
 
         this.loadService
-            .deleteLoadById(id, loadStatus)
+            .deleteLoadById(id)
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {

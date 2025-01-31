@@ -3,73 +3,72 @@
     [ngClass]="{
         hide: !openCloseContainer,
         'hide-with-animation': !openCloseContainer && doAnimation,
-        show: openCloseContainer
+        show: openCloseContainer,
     }"
 >
-    <div
-        *ngFor="let item of subroute.route; trackBy: identity"
-        class="subroutes"
-        [routerLink]="item.route"
-        [ngClass]="{
-            'subroute-active': selectedSubRoute == item.name,
-            'pe-none': item.construction
-        }"
-        (click)="onSubrouteAction(item); subrouteIndex(index)"
-    >
-        <ng-container *ngIf="selectedSubRoute !== item.name && item.image">
-            <svg-icon
-                class="{{ class }}"
-                class="nav-item-img-active"
-                [src]="icons.common + item.image"
-                [ngClass]="{
-                    'nav-item-img': !item.construction,
-                    'route-clicked-svg':
-                        item.isRouteActive &&
-                        item.arrow &&
-                        closeDropdownOnNavClose &&
-                        !isSettingsPanelOpen &&
-                        !isUserPanelOpen,
-                    'nav-item-svg-active': selectedRoute === item.name,
-                    'route-not-active-svg':
-                        item.construction && navigationIsOpened,
-                    'route-closed-nav-svg-not-active':
-                        item.construction && !navigationIsOpened
-                }"
-            ></svg-icon>
-        </ng-container>
-
-        <ng-container *ngIf="selectedSubRoute === item.name">
-            <svg-icon
-                class="subroutes-active-checkpoint"
-                [src]="icons.confirm"
-            ></svg-icon>
-        </ng-container>
-        <p
-            class="subroutes-item ta-font-regular"
-            [ngClass]="{
-                'route-not-active': item.construction == true
-            }"
-        >
-            {{ item.name }}
-        </p>
+    @for (item of subroute.route; track item.name) {
         <div
-            ngbTooltip
-            mainContent
-            position="right"
-            tooltipBackground="#424242"
-            [mainTooltip]="'New Tab'"
-            tooltipColor="#ffff"
-            [tooltipMarginTop]="isLastChild ? '0' : '-9px'"
-            [tooltipMarginLeft]="isLastChild ? '20px' : '13px'"
-            tooltipTextAlign="right"
+            class="subroutes"
+            [routerLink]="item.route"
+            [ngClass]="{
+                'subroute-active': selectedSubRoute == item.name,
+                'pe-none': item.construction,
+            }"
+            (click)="onSubrouteAction(item); subrouteIndex(index)"
         >
-            <svg-icon
-                class="nav-item-arrow_top"
-                (click)="
-                    openLinkInNewWindow(item.route);
-                "
-                [src]="icons.newTab"
-            ></svg-icon>
+            @if (selectedSubRoute !== item.name && item.image) {
+                <svg-icon
+                    class="{{ class }}"
+                    class="nav-item-img-active"
+                    [src]="icons.common + item.image"
+                    [ngClass]="{
+                        'nav-item-img': !item.construction,
+                        'route-clicked-svg':
+                            item.isRouteActive &&
+                            item.arrow &&
+                            closeDropdownOnNavClose &&
+                            !isSettingsPanelOpen &&
+                            !isUserPanelOpen,
+                        'nav-item-svg-active': selectedRoute === item.name,
+                        'route-not-active-svg':
+                            item.construction && navigationIsOpened,
+                        'route-closed-nav-svg-not-active':
+                            item.construction && !navigationIsOpened,
+                    }"
+                ></svg-icon>
+            }
+
+            @if (selectedSubRoute === item.name) {
+                <svg-icon
+                    class="subroutes-active-checkpoint"
+                    [src]="icons.confirm"
+                ></svg-icon>
+            }
+            <p
+                class="subroutes-item ta-font-regular"
+                [ngClass]="{
+                    'route-not-active': item.construction == true,
+                }"
+            >
+                {{ item.name }}
+            </p>
+            <div
+                ngbTooltip
+                mainContent
+                position="right"
+                tooltipBackground="#424242"
+                [mainTooltip]="'New Tab'"
+                tooltipColor="#ffff"
+                [tooltipMarginTop]="isLastChild ? '0' : '-9px'"
+                [tooltipMarginLeft]="isLastChild ? '9px' : '2px'"
+                tooltipTextAlign="right"
+            >
+                <svg-icon
+                    class="nav-item-arrow_top"
+                    (click)="openLinkInNewWindow(item.route)"
+                    [src]="icons.newTab"
+                ></svg-icon>
+            </div>
         </div>
-    </div>
+    }
 </div>

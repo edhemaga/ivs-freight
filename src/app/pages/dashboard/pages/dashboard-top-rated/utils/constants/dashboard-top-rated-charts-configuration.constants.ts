@@ -5,15 +5,16 @@ import {
 
 export class DashboardTopRatedChartsConfiguration {
     static DOUGHNUT_CHART_CONFIG = {
-        chartType: ChartTypesStringEnum.LINE,
+        chartType: ChartTypesStringEnum.DOUGHNUT,
         chartData: {
             labels: [],
             datasets: [],
         },
-        height: 130,
+        height: 330,
         width: 100,
         noDataImage: ChartImagesStringEnum.CHART_NO_DATA_YELLOW,
         chartOptions: {},
+        showXAxisLabels: false
     };
 
     static BAR_CHART_CONFIG = {
@@ -22,7 +23,7 @@ export class DashboardTopRatedChartsConfiguration {
             labels: [],
             datasets: [],
         },
-        height: 190,
+        height: 260,
         width: 100,
         noDataImage: ChartImagesStringEnum.CHART_NO_DATA_MIXED,
         chartOptions: {},

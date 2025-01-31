@@ -1,4 +1,6 @@
 import { CommonModule } from '@angular/common';
+import { AngularSvgIconModule } from 'angular-svg-icon';
+import { NgbActiveModal, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import {
     Component,
     OnInit,
@@ -27,7 +29,8 @@ import { PMCardsModalService } from '@pages/pm-truck-trailer/pages/pm-card-modal
 // Components
 import { ModalInputFormComponent } from '@shared/components/ta-shared-modals/cards-modal/components/modal-input-form.component';
 import { TaCheckboxComponent } from '@shared/components/ta-checkbox/ta-checkbox.component';
-import { TaModalComponent } from '@shared/components/ta-modal/ta-modal.component';
+import { CaModalComponent } from 'ca-components';
+import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
 
 // Helpers
 import { CompareObjectsModal } from '@shared/components/ta-shared-modals/cards-modal/utils/helpers/cards-modal.helper';
@@ -50,6 +53,8 @@ import { selectActiveModalTabs } from '@pages/pm-truck-trailer/pages/pm-card-mod
 import { NgForLengthFilterPipe } from '@shared/pipes/ng-for-length-filter.pipe';
 import { NumberOrdinalPipe } from '@shared/pipes/number-ordinal.pipe';
 
+// SVG ROUTES
+import { SharedSvgRoutes } from '@shared/utils/svg-routes';
 @Component({
     selector: 'app-pm-card-modal',
     templateUrl: './pm-card-modal.component.html',
@@ -62,11 +67,14 @@ import { NumberOrdinalPipe } from '@shared/pipes/number-ordinal.pipe';
         CommonModule,
         ReactiveFormsModule,
         FormsModule,
+        AngularSvgIconModule,
+        NgbTooltipModule,
 
         // components
-        TaModalComponent,
+        CaModalComponent,
         ModalInputFormComponent,
         TaCheckboxComponent,
+        TaAppTooltipV2Component,
 
         // pipes
         NgForLengthFilterPipe,
@@ -96,12 +104,16 @@ export class PMCardModalComponent implements OnInit, OnDestroy {
     public rowValues: number[] = [3, 4, 5, 6];
     private destroy$ = new Subject<void>();
 
+    public svgRoutes = SharedSvgRoutes;
+    public cardsModalStringEnum = CardsModalStringEnum;
+
     constructor(
         private formBuilder: UntypedFormBuilder,
         private cdr: ChangeDetectorRef,
         private modalService: PMCardsModalService,
         //Store
-        private store: Store
+        private store: Store,
+        private activeModal: NgbActiveModal
     ) {}
 
     ngOnInit(): void {
@@ -251,8 +263,8 @@ export class PMCardModalComponent implements OnInit, OnDestroy {
             );
     }
 
-    public onActionModal(event): void {
-        switch (event.action) {
+    public onActionModal(action: string): void {
+        switch (action) {
             case CardsModalStringEnum.CARDS_MODAL:
                 this.updateStore();
                 break;
@@ -260,6 +272,7 @@ export class PMCardModalComponent implements OnInit, OnDestroy {
                 this.resetToDefault();
                 break;
             default:
+                this.activeModal.close();
                 break;
         }
     }
@@ -274,6 +287,7 @@ export class PMCardModalComponent implements OnInit, OnDestroy {
 
     private updateStore(): void {
         this.modalService.updateStore(this.cardsForm.value, this.tabSelected);
+        this.activeModal.close();
     }
 
     private resetToDefault(): void {

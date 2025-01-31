@@ -53,5 +53,6 @@ export interface BrokerByIdResponse {
     fileCount?: number | null;
     createdAt?: string;
     updatedAt?: string;
+    dateMoved?: string | null;
 }
 

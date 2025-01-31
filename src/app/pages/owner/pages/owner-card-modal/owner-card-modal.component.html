@@ -1,12 +1,11 @@
-<app-ta-modal
+<app-ca-modal
     [modalTitle]="'Columns'"
-    [cardsSecTitle]="'Owner | ' + tabSelected | titlecase"
-    isCardsModal="true"
-    (action)="onActionModal($event)"
-    [isModalValid]="hasFormChanged"
-    [isResetFormCards]="resetForm"
+    [rightHeaderTemplate]="rightModalContent"
+    [leftHeaderTemplate]="leftModalContent"
+    [footerTemplate]="footerTemplate"
 >
-    <div origin>
+    <div class="new-modal" origin>
+        <div class="divider divider--dark divider--small"></div>
         <!-- Number of rows -->
         <form [formGroup]="cardsForm">
             <div
@@ -123,7 +122,7 @@
                             [ngClass]="{
                                 'last-row':
                                     defaultCardsValues.numberOfRows === 4 ||
-                                    defaultCardsValues.numberOfRows === 3
+                                    defaultCardsValues.numberOfRows === 3,
                             }"
                         >
                             <ng-cotnainer
@@ -153,7 +152,7 @@
                                 class="modal-holder sec-row d-grid align-items-end"
                                 [ngClass]="{
                                     'last-row':
-                                        defaultCardsValues.numberOfRows === 4
+                                        defaultCardsValues.numberOfRows === 4,
                                 }"
                             >
                                 <ng-cotnainer
@@ -184,7 +183,7 @@
                                 [ngClass]="{
                                     'last-row':
                                         defaultCardsValues.numberOfRows === 5 ||
-                                        defaultCardsValues.numberOfRows === 6
+                                        defaultCardsValues.numberOfRows === 6,
                                 }"
                             >
                                 <ng-cotnainer
@@ -215,7 +214,7 @@
                                 class="modal-holder sec-row d-grid align-items-end"
                                 [ngClass]="{
                                     'last-row':
-                                        defaultCardsValues.numberOfRows === 6
+                                        defaultCardsValues.numberOfRows === 6,
                                 }"
                             >
                                 <ng-cotnainer
@@ -303,7 +302,7 @@
                                 [ngClass]="{
                                     'last-row':
                                         defaultCardsValues.numberOfRows === 4 ||
-                                        defaultCardsValues.numberOfRows === 3
+                                        defaultCardsValues.numberOfRows === 3,
                                 }"
                             >
                                 <ng-cotnainer
@@ -333,7 +332,7 @@
                                     [ngClass]="{
                                         'last-row':
                                             defaultCardsValues.numberOfRows ===
-                                            4
+                                            4,
                                     }"
                                 >
                                     <ng-cotnainer
@@ -349,7 +348,7 @@
                                         [dataCardModal]="cardsAllData"
                                         [defaultValue]="
                                             dataBack[3] || {
-                                                title: '4th'
+                                                title: '4th',
                                             }
                                         "
                                         formControlName="backSelectedTitle_3"
@@ -369,7 +368,7 @@
                                             defaultCardsValues.numberOfRows ===
                                                 5 ||
                                             defaultCardsValues.numberOfRows ===
-                                                6
+                                                6,
                                     }"
                                 >
                                     <ng-cotnainer
@@ -385,7 +384,7 @@
                                         [dataCardModal]="cardsAllData"
                                         [defaultValue]="
                                             dataBack[4] || {
-                                                title: '5th'
+                                                title: '5th',
                                             }
                                         "
                                         formControlName="backSelectedTitle_4"
@@ -403,7 +402,7 @@
                                     [ngClass]="{
                                         'last-row':
                                             defaultCardsValues.numberOfRows ===
-                                            6
+                                            6,
                                     }"
                                 >
                                     <ng-cotnainer
@@ -419,7 +418,7 @@
                                         [dataCardModal]="cardsAllData"
                                         [defaultValue]="
                                             dataBack[5] || {
-                                                title: '6th'
+                                                title: '6th',
                                             }
                                         "
                                         formControlName="backSelectedTitle_5"
@@ -434,4 +433,46 @@
             </div>
         </form>
     </div>
-</app-ta-modal>
+</app-ca-modal>
+
+<ng-template #rightModalContent>
+    <div
+        class="d-flex justify-content-center align-items-center modal-close-container"
+        ngbTooltip
+        mainTooltip="Cancel"
+        tooltipBackground="#424242"
+        position="bottom"
+        (click)="onActionModal(cardsModalStringEnum.CLOSE)"
+    >
+        <svg-icon
+            class="modal-close svg-size-14 svg-fill-muted modal-buttons"
+            [src]="svgRoutes.CLOSE_ICON"
+        ></svg-icon>
+    </div>
+</ng-template>
+<ng-template #leftModalContent>
+    <div class="payroll-number text-color-white text-size-14 ta-font-bold">
+        <span> {{ 'Owner | ' + tabSelected | titlecase }}</span>
+    </div>
+</ng-template>
+<ng-template #footerTemplate>
+    <div class="modal-footer modal-footer-payroll">
+        <div class="divider divider--dark divider--small"></div>
+        <div class="d-flex justify-content-between w-full">
+            <button
+                [class.modal-convert-to-template-btn]="hasFormChanged"
+                class="modal-save-btn ta-font-bold ta-font-bold pe-auto"
+                (click)="onActionModal(cardsModalStringEnum.RESET_TO_DEFAULT)"
+            >
+                Reset to Default
+            </button>
+            <button
+                [class.valid]="hasFormChanged"
+                class="modal-save-btn ta-font-bold"
+                (click)="onActionModal(cardsModalStringEnum.CARDS_MODAL)"
+            >
+                Save Changes
+            </button>
+        </div>
+    </div>
+</ng-template>

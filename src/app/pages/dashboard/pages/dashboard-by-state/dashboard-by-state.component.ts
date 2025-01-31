@@ -1,13 +1,7 @@
-import {
-    Component,
-    OnInit,
-    ViewChild,
-    OnDestroy,
-    ChangeDetectorRef,
-} from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 
-import { Subject, takeUntil, tap } from 'rxjs';
+import { Observable, Subject, takeUntil, tap } from 'rxjs';
 
 // services
 import { DashboardByStateService } from '@pages/dashboard/pages/dashboard-by-state/services/dashboard-by-state.service';
@@ -15,26 +9,33 @@ import { DashboardService } from '@pages/dashboard/services/dashboard.service';
 
 // enums
 import { DashboardStringEnum } from '@pages/dashboard/enums/dashboard-string.enum';
+import { ChartTypesStringEnum } from 'ca-components';
 
 // helpers
 import { DashboardHelper } from '@pages/dashboard/utils/helpers/dashboard.helper';
 import { DashboardArrayHelper } from '@pages/dashboard/utils/helpers/dashboard-array-helper';
 
 // constants
-import { DashboardByStateConstants } from '@pages/dashboard/pages/dashboard-by-state/utils/constants/dashboard-by-state.constants';
 import { DashboardSubperiodConstants } from '@pages/dashboard/utils/constants/dashboard-subperiod.constants';
 import { DashboardTopRatedConstants } from '@pages/dashboard/pages/dashboard-top-rated/utils/constants/dashboard-top-rated.constants';
 import { DashboardColors } from '@pages/dashboard/utils/constants/dashboard-colors.constants';
-import { DashboardByStateChartsConfiguration } from '@pages/dashboard/pages/dashboard-by-state/utils/constants';
+import {
+    DashboardByStateChartDatasetConfiguration,
+    DashboardByStateChartsConfiguration,
+    DashboardByStateConstants,
+} from '@pages/dashboard/pages/dashboard-by-state/utils/constants';
+import { DashboardConstants } from '@pages/dashboard/utils/constants';
 
 // models
-import { ByStateListItem } from '@pages/dashboard/pages/dashboard-by-state/models/by-state-list-item.model';
 import { DropdownItem } from '@shared/models/dropdown-item.model';
 import { DashboardTab } from '@pages/dashboard/models/dashboard-tab.model';
 import { DropdownListItem } from '@pages/dashboard/models/dropdown-list-item.model';
 import { ByStateColorsPallete } from '@pages/dashboard/models/colors-pallete.model';
 import { CustomPeriodRange } from '@shared/models/custom-period-range.model';
-import { IChartConfiguration } from 'ca-components/lib/components/ca-chart/models';
+import {
+    IBaseDataset,
+    IChartConfiguration,
+} from 'ca-components/lib/components/ca-chart/models';
 
 import {
     ByStateReportType,
@@ -43,9 +44,17 @@ import {
     SubintervalType,
     TimeInterval,
 } from 'appcoretruckassist';
-import { ByStateApiArguments } from '@pages/dashboard/pages/dashboard-by-state/models/by-state-api-arguments.model';
-import { ByStateWithLoadStopApiArguments } from '@pages/dashboard/pages/dashboard-by-state/models/by-state-with-load-stop-api-arguments.model';
-import { MapListItem } from '@pages/dashboard/pages/dashboard-by-state/models/map-list-item.model';
+
+import {
+    ByStateApiArguments,
+    ByStateIntervalResponse,
+    ByStateListItem,
+    ByStateResponse,
+    ByStateWithLoadStopApiArguments,
+    MapListItem,
+} from '@pages/dashboard/pages/dashboard-by-state/models';
+
+import { DashboardByStateSvgRoutes } from '@pages/dashboard/pages/dashboard-by-state/utils/svg-routes';
 
 @Component({
     selector: 'app-dashboard-pickup-by-state',
@@ -96,19 +105,33 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
 
     public selectedDropdownWidthSubPeriod: DropdownListItem;
 
-    // colors
-    public mainColorsPallete: ByStateColorsPallete[] = [];
+    // svg Routes
+    public svgRoutes = DashboardByStateSvgRoutes;
 
     //chart
-    public pickUpByStateChartConfig: IChartConfiguration =
-        DashboardByStateChartsConfiguration.PICK_BY_STATE_CHART_CONFIG;
+    public byStateBarChartConfig: IChartConfiguration =
+        DashboardByStateChartsConfiguration.BY_STATE_CHART_CONFIG;
+
+    private byStateChartDatasetConfig =
+        DashboardByStateChartDatasetConfiguration.BY_STATE_CHART_DATASET_CONFIG;
+
+    public byStateBarChartTitle: string = DashboardConstants.STRING_EMPTY;
+
+    public intervalTooltipLabel: string[] = [];
+
+    get topCategory(): string {
+        const lenght = this.byStateList.length;
+        if (lenght <= 10) return DashboardConstants.BAR_CHART_LABEL_TOP_3;
+        else if (lenght > 10 && lenght <= 30)
+            return DashboardConstants.BAR_CHART_LABEL_TOP_5;
+        else return DashboardConstants.BAR_CHART_LABEL_TOP_10;
+    }
 
     constructor(
         private formBuilder: UntypedFormBuilder,
-        private changeDetectorRef: ChangeDetectorRef,
         private dashboardByStateService: DashboardByStateService,
         private dashboardService: DashboardService
-    ) { }
+    ) {}
 
     ngOnInit(): void {
         this.createForm();
@@ -131,24 +154,7 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
         item.name;
 
     public resetSelectedValues(): void {
-        // for (let i = 0; i < this.selectedByStateList.length; i++) {
-        //     this.barChart?.removeMultiBarData(this.selectedByStateList[i], true);
-        // }
-
         this.selectedByStateList = [];
-
-        // this.barChartValues = {
-        //     defaultBarValues: {
-        //         topRatedBarValues: [],
-        //         otherBarValues: [],
-        //     },
-        //     defaultBarPercentages: {
-        //         topRatedBarPercentage: [],
-        //         otherBarPercentage: [],
-        //     },
-        //     selectedBarValues: [],
-        //     selectedBarPercentages: [],
-        // };
 
         this.clearSearchValue = true;
     }
@@ -368,17 +374,30 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
         }
     }
 
-    public handleAddSelectedClick(
+    public toggleItemSelection(
         byStateListItem: ByStateListItem,
         byStateListItemIndex: number
     ): void {
         const maxByStateItemsSelected = 5;
 
-        if (
-            byStateListItem.isSelected ||
-            this.selectedByStateList.length === maxByStateItemsSelected
-        )
+        if (byStateListItem.isSelected) {
+            this.byStateList.splice(byStateListItemIndex, 1);
+            this.byStateList.splice(byStateListItem.id - 1, 0, byStateListItem);
+
+            byStateListItem.isSelected = false;
+
+            this.byStateList = DashboardArrayHelper.sortPartOfArray(
+                this.byStateList
+            );
+
+            this.selectedByStateList = this.selectedByStateList.filter(
+                (byStateItem) => byStateItem.id !== byStateListItem.id
+            );
+
             return;
+        }
+
+        if (this.selectedByStateList.length === maxByStateItemsSelected) return;
 
         byStateListItem.isSelected = true;
 
@@ -393,47 +412,6 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
             0,
             byStateListItem
         );
-
-        //this.setBarChartData(this.selectedByStateList, byStateListItemIndex);
-    }
-
-    public handleRemoveSelectedClick(
-        event: Event,
-        byStateListItem: ByStateListItem,
-        byStateListItemIndex: number
-    ): void {
-        event.stopPropagation();
-
-        this.byStateList.splice(byStateListItemIndex, 1);
-        this.byStateList.splice(byStateListItem.id - 1, 0, byStateListItem);
-
-        byStateListItem.isSelected = false;
-
-        this.byStateList = DashboardArrayHelper.sorPartOfArray(
-            this.byStateList
-        );
-
-        this.selectedByStateList = this.selectedByStateList.filter(
-            (byStateItem) => byStateItem.id !== byStateListItem.id
-        );
-
-        // this.setBarChartData(
-        //     this.selectedByStateList,
-        //     byStateListItemIndex,
-        //     true,
-        //     byStateListItem
-        // );
-    }
-
-    public handleHoverSelected(
-        index: number,
-        removeHover: boolean = false
-    ): void {
-        // if (!removeHover) {
-        //     this.barChart?.hoverBarChart(this.selectedByStateList[index]);
-        // } else {
-        //     this.barChart?.hoverBarChart(null);
-        // }
     }
 
     private getConstantData(): void {
@@ -449,8 +427,6 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
 
         this.selectedMainPeriod =
             DashboardTopRatedConstants.MAIN_PERIOD_DROPDOWN_DATA[5];
-
-        this.mainColorsPallete = DashboardColors.BY_STATE_COLORS_PALLETE;
     }
 
     private getOverallCompanyDuration(): void {
@@ -484,539 +460,179 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
             this.selectedSubPeriod.name
         ) as SubintervalType;
 
-        const byStateArgumentsData = [
-            ...(this.byStateTitle === DashboardStringEnum.PICKUP ||
-                this.byStateTitle === DashboardStringEnum.DELIVERY
-                ? [loadStopType]
-                : []),
-            selectedTab,
-            null,
-            null,
-            null,
-            this.isShowingMore,
-            selectedMainPeriod,
-            customPeriodRange?.fromDate ?? null,
-            customPeriodRange?.toDate ?? null,
-            selectedSubPeriod,
-        ];
+        let byStateArgumentsData:
+            | ByStateApiArguments
+            | ByStateWithLoadStopApiArguments;
+
+        if (
+            this.byStateTitle === DashboardStringEnum.PICKUP ||
+            this.byStateTitle === DashboardStringEnum.DELIVERY
+        ) {
+            byStateArgumentsData = [
+                loadStopType,
+                selectedTab,
+                null,
+                null,
+                null,
+                this.isShowingMore,
+                selectedMainPeriod,
+                customPeriodRange?.fromDate ?? null,
+                customPeriodRange?.toDate ?? null,
+                selectedSubPeriod,
+            ] as ByStateWithLoadStopApiArguments;
+        } else {
+            byStateArgumentsData = [
+                selectedTab,
+                null,
+                null,
+                null,
+                this.isShowingMore,
+                selectedMainPeriod,
+                customPeriodRange?.fromDate ?? null,
+                customPeriodRange?.toDate ?? null,
+                selectedSubPeriod,
+            ] as ByStateApiArguments;
+        }
 
         this.isLoading = true;
 
         this.resetSelectedValues();
 
-        switch (this.byStateTitle) {
-            case DashboardStringEnum.PICKUP:
-                this.getPickupByStateListData(
-                    selectedTab,
-                    byStateArgumentsData as ByStateWithLoadStopApiArguments
-                );
-                break;
-            case DashboardStringEnum.DELIVERY:
-                this.getDeliveryByStateListData(
-                    selectedTab,
-                    byStateArgumentsData as ByStateWithLoadStopApiArguments
-                );
-                break;
-            case DashboardStringEnum.ROADSIDE:
-                this.getRoadsideByStateListData(
-                    selectedTab,
-                    byStateArgumentsData as ByStateApiArguments
-                );
-                break;
-            case DashboardStringEnum.VIOLATION_2:
-                this.getViolationByStateListData(
-                    selectedTab,
-                    byStateArgumentsData as ByStateApiArguments
-                );
-                break;
-            case DashboardStringEnum.ACCIDENT_2:
-                this.getAccidentByStateListData(
-                    selectedTab,
-                    byStateArgumentsData as ByStateApiArguments
-                );
-                break;
-            case DashboardStringEnum.REPAIR:
-                this.getRepairByStateListData(
-                    selectedTab,
-                    byStateArgumentsData as ByStateApiArguments
-                );
-                break;
-            case DashboardStringEnum.FUEL:
-                this.getFuelByStateListData(
-                    selectedTab,
-                    byStateArgumentsData as ByStateApiArguments
-                );
-                break;
-            default:
-                break;
+        const config = DashboardHelper.selectByStateConfiguration(
+            this.dashboardByStateService,
+            selectedTab,
+            this.byStateTitle
+        );
+
+        if (config) {
+            this.getDataByState(
+                selectedTab,
+                byStateArgumentsData,
+                config.serviceMethod,
+                config.dataTransform
+            );
         }
     }
 
-    private getPickupByStateListData(
+    private getDataByState(
         selectedTab: ByStateReportType,
-        byStateArgumentsData: ByStateWithLoadStopApiArguments
+        byStateArgumentsData:
+            | ByStateApiArguments
+            | ByStateWithLoadStopApiArguments,
+        serviceMethod: (
+            args: ByStateApiArguments | ByStateWithLoadStopApiArguments
+        ) => Observable<ByStateResponse>,
+        dataTransform: (
+            response: ByStateResponse,
+            index: number,
+            selectedTab: ByStateReportType
+        ) => ByStateListItem
     ): void {
-        this.dashboardByStateService
-            .getPickupByState(byStateArgumentsData)
+        this.isLoading = true;
+
+        serviceMethod(byStateArgumentsData)
             .pipe(
                 takeUntil(this.destroy$),
                 tap(() => (this.isLoading = false))
             )
-            .subscribe((pickupData) => {
-                // by state list and single selection data
-                this.byStateList = pickupData.pagination.data.map(
-                    (pickup, index) => {
-                        let filteredIntervalValues: number[] = [];
-                        let filteredIntervalPercentages: number[] = [];
+            .subscribe((responseData) => {
+                this.byStateList = responseData.pagination.data.map(
+                    (response, index) =>
+                        dataTransform(response, index, selectedTab)
+                );
+                this.byStateListBeforeSearch = [...this.byStateList];
+                this.byStateListLength = responseData.pagination.count;
 
-                        for (let i = 0; i < pickup.intervals.length; i++) {
-                            filteredIntervalValues = [
-                                ...filteredIntervalValues,
-                                selectedTab === DashboardStringEnum.COUNT
-                                    ? pickup.intervals[i].count
-                                    : pickup.intervals[i].revenue,
-                            ];
-                            filteredIntervalPercentages = [
-                                ...filteredIntervalPercentages,
-                                selectedTab === DashboardStringEnum.COUNT
-                                    ? pickup.intervals[i].countPercentage
-                                    : pickup.intervals[i].revenuePercentage,
-                            ];
-                        }
+                DashboardHelper.setByStateListColorRange(this.byStateList);
+                this.setMapByState(this.byStateList);
 
-                        return {
-                            id: index + 1,
-                            state: pickup.stateShortName,
-                            value:
-                                selectedTab === DashboardStringEnum.COUNT
-                                    ? pickup.count.toString()
-                                    : pickup.revenue.toString(),
-                            percent:
-                                selectedTab === DashboardStringEnum.COUNT
-                                    ? pickup.countPercentage.toString()
-                                    : pickup.revenuePercentage.toString(),
-                            isSelected: false,
-                            selectedColor: null,
-                        };
-                    }
+                //TODO: Bogdan - chart implementation
+
+                this.byStateBarChartTitle = DashboardHelper.setChartDateTitle(
+                    responseData.intervalLabels[0].tooltipLabel,
+                    responseData.intervalLabels[responseData.topTen.length - 1]
+                        .tooltipLabel
+                );
+                this.setToolTipLables(responseData.intervalLabels);
+
+                const byStatechartLables = responseData.intervalLabels.map(
+                    (item) => item.label || DashboardConstants.STRING_EMPTY
                 );
 
-                this.byStateListBeforeSearch = [...this.byStateList];
+                const byStateBarChartData = this.setByStateBarChartData(
+                    responseData.topTen,
+                    responseData.others,
+                    selectedTab
+                );
 
-                this.byStateListLength = pickupData.pagination.count;
-
-                // intervals
-
-                // colors range & map
-                DashboardHelper.setByStateListColorRange(this.byStateList);
-
-                this.setMapByState(this.byStateList);
+                this.byStateBarChartConfig = {
+                    ...this.byStateBarChartConfig,
+                    chartData: {
+                        labels: byStatechartLables,
+                        datasets: byStateBarChartData,
+                    },
+                };
             });
     }
 
-    private getDeliveryByStateListData(
-        selectedTab: ByStateReportType,
-        byStateArgumentsData: ByStateWithLoadStopApiArguments
-    ): void {
-        this.dashboardByStateService
-            .getDeliveryByState(byStateArgumentsData)
-            .pipe(
-                takeUntil(this.destroy$),
-                tap(() => (this.isLoading = false))
-            )
-            .subscribe((deliveryData) => {
-                // by state list and single selection data
-                this.byStateList = deliveryData.pagination.data.map(
-                    (delivery, index) => {
-                        let filteredIntervalValues: number[] = [];
-                        let filteredIntervalPercentages: number[] = [];
+    private setByStateBarChartData(
+        topPicks: ByStateIntervalResponse[],
+        otherPicks: ByStateIntervalResponse[],
+        selectedTab: ByStateReportType
+    ): IBaseDataset[] { 
+        const topPicksDataset = {
+            ...this.byStateChartDatasetConfig,
+            label: this.topCategory,
+            data: topPicks.map((item) =>
+                this.getValueBySelectedTab(item, selectedTab)
+            ),
+            order: 1,
+            backgroundColor:
+                DashboardColors.BAR_PERFORMANCE_COLORS_PALLETE[0].color,
+            hoverBackgroundColor:
+                DashboardColors.BAR_PERFORMANCE_COLORS_PALLETE[0].color,
+            hoverBorderColor:
+                DashboardColors.BAR_PERFORMANCE_COLORS_PALLETE[0].color,
+            borderColor:
+                DashboardColors.BAR_PERFORMANCE_COLORS_PALLETE[0].color,
+        };
 
-                        for (let i = 0; i < delivery.intervals.length; i++) {
-                            filteredIntervalValues = [
-                                ...filteredIntervalValues,
-                                selectedTab === DashboardStringEnum.COUNT
-                                    ? delivery.intervals[i].count
-                                    : delivery.intervals[i].revenue,
-                            ];
-                            filteredIntervalPercentages = [
-                                ...filteredIntervalPercentages,
-                                selectedTab === DashboardStringEnum.COUNT
-                                    ? delivery.intervals[i].countPercentage
-                                    : delivery.intervals[i].revenuePercentage,
-                            ];
-                        }
+        const othersDataset = {
+            ...this.byStateChartDatasetConfig,
+            label: DashboardConstants.BAR_CHART_LABEL_ALL_OTHERS,
+            data: otherPicks.map((item) =>
+                this.getValueBySelectedTab(item, selectedTab)
+            ),
+            order: 2,
+            backgroundColor:
+                DashboardColors.BAR_PERFORMANCE_COLORS_PALLETE[1].color,
+            hoverBackgroundColor:
+                DashboardColors.BAR_PERFORMANCE_COLORS_PALLETE[1].color,
+            hoverBorderColor:
+                DashboardColors.BAR_PERFORMANCE_COLORS_PALLETE[1].color,
+            borderColor:
+                DashboardColors.BAR_PERFORMANCE_COLORS_PALLETE[1].color,
+        };
 
-                        return {
-                            id: index + 1,
-                            state: delivery.stateShortName,
-                            value:
-                                selectedTab === DashboardStringEnum.COUNT
-                                    ? delivery.count.toString()
-                                    : delivery.revenue.toString(),
-                            percent:
-                                selectedTab === DashboardStringEnum.COUNT
-                                    ? delivery.countPercentage.toString()
-                                    : delivery.revenuePercentage.toString(),
-                            isSelected: false,
-                            selectedColor: null,
-                        };
-                    }
-                );
-
-                this.byStateListBeforeSearch = [...this.byStateList];
-
-                this.byStateListLength = deliveryData.pagination.count;
-
-                // intervals
-
-                // colors range & map
-                DashboardHelper.setByStateListColorRange(this.byStateList);
-
-                this.setMapByState(this.byStateList);
-
-                // chart
-                // this.setBarChartDateTitle(
-                //     deliveryData.intervalLabels[0].tooltipLabel,
-                //     deliveryData.intervalLabels[deliveryData.topTen.length - 1]
-                //         .tooltipLabel
-                // );
-
-                // this.setBarChartLabels(deliveryData.intervalLabels);
-
-                // this.setChartData();
-            });
+        return [topPicksDataset, othersDataset];
     }
 
-    private getRoadsideByStateListData(
-        selectedTab: ByStateReportType,
-        byStateArgumentsData: ByStateApiArguments
-    ): void {
-        this.dashboardByStateService
-            .getRoadsideByState(byStateArgumentsData)
-            .pipe(
-                takeUntil(this.destroy$),
-                tap(() => (this.isLoading = false))
-            )
-            .subscribe((roadsideData) => {
-                // by state list and single selection data
-                this.byStateList = roadsideData.pagination.data.map(
-                    (roadside, index) => {
-                        let filteredIntervalValues: number[] = [];
-                        let filteredIntervalPercentages: number[] = [];
-
-                        for (let i = 0; i < roadside.intervals.length; i++) {
-                            filteredIntervalValues = [
-                                ...filteredIntervalValues,
-                                selectedTab === DashboardStringEnum.COUNT
-                                    ? roadside.intervals[i].count
-                                    : roadside.intervals[i].severityWeight,
-                            ];
-                            filteredIntervalPercentages = [
-                                ...filteredIntervalPercentages,
-                                selectedTab === DashboardStringEnum.COUNT
-                                    ? roadside.intervals[i].countPercentage
-                                    : roadside.intervals[i]
-                                        .severityWeightPercentage,
-                            ];
-                        }
-
-                        return {
-                            id: index + 1,
-                            state: roadside.stateShortName,
-                            value:
-                                selectedTab === DashboardStringEnum.COUNT
-                                    ? roadside.count.toString()
-                                    : roadside.severityWeight.toString(),
-                            percent:
-                                selectedTab === DashboardStringEnum.COUNT
-                                    ? roadside.countPercentage.toString()
-                                    : roadside.severityWeightPercentage.toString(),
-                            isSelected: false,
-                            selectedColor: null,
-                        };
-                    }
-                );
-
-                this.byStateListBeforeSearch = [...this.byStateList];
-
-                this.byStateListLength = roadsideData.pagination.count;
-
-                // intervals
-
-                // colors range & map
-                DashboardHelper.setByStateListColorRange(this.byStateList);
-
-                this.setMapByState(this.byStateList);
-
-                // chart
-                // this.setBarChartDateTitle(
-                //     roadsideData.intervalLabels[0].tooltipLabel,
-                //     roadsideData.intervalLabels[roadsideData.topTen.length - 1]
-                //         .tooltipLabel
-                // );
-
-                // this.setBarChartLabels(roadsideData.intervalLabels);
-
-                // this.setChartData();
-            });
+    private getValueBySelectedTab(
+        intervalResponse: ByStateIntervalResponse,
+        selectedTab: ByStateReportType
+    ): number {
+        const propertyKey =
+            DashboardByStateConstants.BY_STATE_REPORT_TYPE_MAP[selectedTab];
+        if (propertyKey in intervalResponse) {
+            return intervalResponse[propertyKey] ?? 0;
+        }
+        return 0;
     }
 
-    private getViolationByStateListData(
-        selectedTab: ByStateReportType,
-        byStateArgumentsData: ByStateApiArguments
-    ): void {
-        this.dashboardByStateService
-            .getViolationByState(byStateArgumentsData)
-            .pipe(
-                takeUntil(this.destroy$),
-                tap(() => (this.isLoading = false))
-            )
-            .subscribe((violationData) => {
-                // by state list and single selection data
-                this.byStateList = violationData.pagination.data.map(
-                    (violation, index) => {
-                        let filteredIntervalValues: number[] = [];
-                        let filteredIntervalPercentages: number[] = [];
-
-                        for (let i = 0; i < violation.intervals.length; i++) {
-                            filteredIntervalValues = [
-                                ...filteredIntervalValues,
-                                selectedTab === DashboardStringEnum.COUNT
-                                    ? violation.intervals[i].count
-                                    : violation.intervals[i].severityWeight,
-                            ];
-                            filteredIntervalPercentages = [
-                                ...filteredIntervalPercentages,
-                                selectedTab === DashboardStringEnum.COUNT
-                                    ? violation.intervals[i].countPercentage
-                                    : violation.intervals[i]
-                                        .severityWeightPercentage,
-                            ];
-                        }
-
-                        return {
-                            id: index + 1,
-                            state: violation.stateShortName,
-                            value:
-                                selectedTab === DashboardStringEnum.COUNT
-                                    ? violation.count.toString()
-                                    : violation.severityWeight.toString(),
-                            percent:
-                                selectedTab === DashboardStringEnum.COUNT
-                                    ? violation.countPercentage.toString()
-                                    : violation.severityWeightPercentage.toString(),
-                            isSelected: false,
-                            selectedColor: null,
-                        };
-                    }
-                );
-
-                this.byStateListBeforeSearch = [...this.byStateList];
-
-                this.byStateListLength = violationData.pagination.count;
-
-                // intervals
-
-                // colors range & map
-                DashboardHelper.setByStateListColorRange(this.byStateList);
-
-                this.setMapByState(this.byStateList);
-
-                // chart
-            });
-    }
-
-    private getAccidentByStateListData(
-        selectedTab: ByStateReportType,
-        byStateArgumentsData: ByStateApiArguments
-    ): void {
-        this.dashboardByStateService
-            .getAccidentByState(byStateArgumentsData)
-            .pipe(
-                takeUntil(this.destroy$),
-                tap(() => (this.isLoading = false))
-            )
-            .subscribe((accidentData) => {
-                // by state list and single selection data
-                this.byStateList = accidentData.pagination.data.map(
-                    (accident, index) => {
-                        let filteredIntervalValues: number[] = [];
-                        let filteredIntervalPercentages: number[] = [];
-
-                        for (let i = 0; i < accident.intervals.length; i++) {
-                            filteredIntervalValues = [
-                                ...filteredIntervalValues,
-                                selectedTab === DashboardStringEnum.COUNT
-                                    ? accident.intervals[i].count
-                                    : accident.intervals[i].severityWeight,
-                            ];
-                            filteredIntervalPercentages = [
-                                ...filteredIntervalPercentages,
-                                selectedTab === DashboardStringEnum.COUNT
-                                    ? accident.intervals[i].countPercentage
-                                    : accident.intervals[i]
-                                        .severityWeightPercentage,
-                            ];
-                        }
-
-                        return {
-                            id: index + 1,
-                            state: accident.stateShortName,
-                            value:
-                                selectedTab === DashboardStringEnum.COUNT
-                                    ? accident.count.toString()
-                                    : accident.severityWeight.toString(),
-                            percent:
-                                selectedTab === DashboardStringEnum.COUNT
-                                    ? accident.countPercentage.toString()
-                                    : accident.severityWeightPercentage.toString(),
-                            isSelected: false,
-                            selectedColor: null,
-                        };
-                    }
-                );
-
-                this.byStateListBeforeSearch = [...this.byStateList];
-
-                this.byStateListLength = accidentData.pagination.count;
-
-                // intervals
-
-                // colors range & map
-                DashboardHelper.setByStateListColorRange(this.byStateList);
-
-                this.setMapByState(this.byStateList);
-
-                // chart
-            });
-    }
-
-    private getRepairByStateListData(
-        selectedTab: ByStateReportType,
-        byStateArgumentsData: ByStateApiArguments
-    ): void {
-        this.dashboardByStateService
-            .getRepairByState(byStateArgumentsData)
-            .pipe(
-                takeUntil(this.destroy$),
-                tap(() => (this.isLoading = false))
-            )
-            .subscribe((repairData) => {
-                // by state list and single selection data
-                this.byStateList = repairData.pagination.data.map(
-                    (repair, index) => {
-                        let filteredIntervalValues: number[] = [];
-                        let filteredIntervalPercentages: number[] = [];
-
-                        for (let i = 0; i < repair.intervals.length; i++) {
-                            filteredIntervalValues = [
-                                ...filteredIntervalValues,
-                                selectedTab === DashboardStringEnum.COUNT
-                                    ? repair.intervals[i].count
-                                    : repair.intervals[i].cost,
-                            ];
-                            filteredIntervalPercentages = [
-                                ...filteredIntervalPercentages,
-                                selectedTab === DashboardStringEnum.COUNT
-                                    ? repair.intervals[i].countPercentage
-                                    : repair.intervals[i].costPercentage,
-                            ];
-                        }
-
-                        return {
-                            id: index + 1,
-                            state: repair.stateShortName,
-                            value:
-                                selectedTab === DashboardStringEnum.COUNT
-                                    ? repair.count.toString()
-                                    : repair.cost.toString(),
-                            percent:
-                                selectedTab === DashboardStringEnum.COUNT
-                                    ? repair.countPercentage.toString()
-                                    : repair.costPercentage.toString(),
-                            isSelected: false,
-                            selectedColor: null,
-                        };
-                    }
-                );
-
-                this.byStateListBeforeSearch = [...this.byStateList];
-
-                this.byStateListLength = repairData.pagination.count;
-
-                // intervals
-
-                // colors range & map
-                DashboardHelper.setByStateListColorRange(this.byStateList);
-
-                this.setMapByState(this.byStateList);
-
-                // chart
-            });
-    }
-
-    private getFuelByStateListData(
-        selectedTab: ByStateReportType,
-        byStateArgumentsData: ByStateApiArguments
-    ): void {
-        this.dashboardByStateService
-            .getFuelByState(byStateArgumentsData)
-            .pipe(
-                takeUntil(this.destroy$),
-                tap(() => (this.isLoading = false))
-            )
-            .subscribe((fuelData) => {
-                // by state list and single selection data
-                this.byStateList = fuelData.pagination.data.map(
-                    (fuel, index) => {
-                        let filteredIntervalValues: number[] = [];
-                        let filteredIntervalPercentages: number[] = [];
-
-                        for (let i = 0; i < fuel.intervals.length; i++) {
-                            filteredIntervalValues = [
-                                ...filteredIntervalValues,
-                                selectedTab === DashboardStringEnum.GALLON
-                                    ? fuel.intervals[i].gallon
-                                    : fuel.intervals[i].cost,
-                            ];
-                            filteredIntervalPercentages = [
-                                ...filteredIntervalPercentages,
-                                selectedTab === DashboardStringEnum.GALLON
-                                    ? fuel.intervals[i].gallonPercentage
-                                    : fuel.intervals[i].costPercentage,
-                            ];
-                        }
-
-                        return {
-                            id: index + 1,
-                            state: fuel.stateShortName,
-                            value:
-                                selectedTab === DashboardStringEnum.GALLON
-                                    ? fuel.gallon.toString()
-                                    : fuel.cost.toString(),
-                            percent:
-                                selectedTab === DashboardStringEnum.GALLON
-                                    ? fuel.gallonPercentage.toString()
-                                    : fuel.costPercentage.toString(),
-                            isSelected: false,
-                            selectedColor: null,
-                        };
-                    }
-                );
-
-                this.byStateListBeforeSearch = [...this.byStateList];
-
-                this.byStateListLength = fuelData.pagination.count;
-
-                // intervals
-
-                // colors range & map
-                DashboardHelper.setByStateListColorRange(this.byStateList);
-
-                this.setMapByState(this.byStateList);
-
-                // chart
-            });
+    private setToolTipLables(intervalLabels: IntervalLabelResponse[]): void {
+        this.intervalTooltipLabel = intervalLabels.map(
+            (intervalLabel) => intervalLabel.tooltipLabel
+        );
     }
 
     private setCustomSubPeriodList(selectedDaysRange: number): void {

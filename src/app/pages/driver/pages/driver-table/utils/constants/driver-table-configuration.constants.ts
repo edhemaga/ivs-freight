@@ -1,13 +1,6 @@
 import { CardRows } from '@shared/models/card-models/card-rows.model';
 
 export class DriverTableConfiguration {
-    static rows: number = 4;
-
-    static page: string = 'Driver';
-
-    static cardTitle: string = 'fullName';
-
-    // Data for applicants front
     static displayRowsFrontApplicants: CardRows[] = [
         {
             title: 'Status',
@@ -32,7 +25,6 @@ export class DriverTableConfiguration {
         },
     ];
 
-    // Data for applicants back
     static displayRowsBackApplicants: CardRows[] = [
         {
             title: 'Date of Birth',
@@ -55,7 +47,6 @@ export class DriverTableConfiguration {
         },
     ];
 
-    // Data for active front
     static displayRowsActiveFront: CardRows[] = [
         {
             title: 'Phone No.',
@@ -77,7 +68,7 @@ export class DriverTableConfiguration {
             key: 'payType.name',
         },
     ];
-    // Data for active back
+
     static displayRowsActiveBack: CardRows[] = [
         {
             title: 'Hired',

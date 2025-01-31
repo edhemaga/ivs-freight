@@ -1,40 +1,43 @@
 import {
     Component,
+    ElementRef,
     EventEmitter,
     Inject,
     Input,
+    NgZone,
     OnDestroy,
     OnInit,
     Output,
+    ViewChild,
 } from '@angular/core';
 import { FormControl, UntypedFormArray } from '@angular/forms';
-import { Subject, takeUntil } from 'rxjs';
 import { Clipboard } from '@angular/cdk/clipboard';
 import { DOCUMENT } from '@angular/common';
+
+import { Subject, takeUntil } from 'rxjs';
+
+// base classes
+import { AccountDropdownMenuActionsBase } from '@pages/account/base-classes';
+
+// helpers
+import { CardHelper } from '@shared/utils/helpers/card-helper';
+import { DropdownMenuActionsHelper } from '@shared/utils/helpers/dropdown-menu-helpers';
+
+// services
+import { TruckassistTableService } from '@shared/services/truckassist-table.service';
+import { AccountService } from '@pages/account/services/account.service';
+import { ModalService } from '@shared/services/modal.service';
+
+// enums
+import { DropdownMenuStringEnum } from '@shared/enums';
 
 // models
 import { CardDetails } from '@shared/models/card-models/card-table-data.model';
 import { CardRows } from '@shared/models/card-models/card-rows.model';
 import { CompanyAccountLabelResponse } from 'appcoretruckassist';
-import { CardDataResult } from '@shared/models/card-models/card-data-result.model';
 import { TableBodyColorLabel } from '@shared/models/table-models/table-body-color-label.model';
-import { AccountData } from '@pages/account/pages/account-card/models/account-data.model';
-
-// helpers
-import { CardHelper } from '@shared/utils/helpers/card-helper';
-
-// services
-import { TruckassistTableService } from '@shared/services/truckassist-table.service';
-import { ModalService } from '@shared/services/modal.service';
-
-// components
-import { AccountModalComponent } from '@pages/account/pages/account-modal/account-modal.component';
-import { ConfirmationModalComponent } from '@shared/components/ta-shared-modals/confirmation-modal/confirmation-modal.component';
-
-// enums
-import { TableActionsStringEnum } from '@shared/enums/table-actions-string.enum';
-import { TableStringEnum } from '@shared/enums/table-string.enum';
-import { AccountStringEnum } from '@pages/account/enums/account-string.enum';
+import { AccountResponse } from '@pages/account/pages/account-table/models/account-response.model';
+import { DropdownMenuOptionEmit } from '@ca-shared/components/ca-dropdown-menu/models';
 
 @Component({
     selector: 'app-account-card',
@@ -42,47 +45,74 @@ import { AccountStringEnum } from '@pages/account/enums/account-string.enum';
     styleUrls: ['./account-card.component.scss'],
     providers: [CardHelper],
 })
-export class AccountCardComponent implements OnInit, OnDestroy {
-    @Output() saveValueNote: EventEmitter<{ value: string; id: number }> =
-        new EventEmitter<{ value: string; id: number }>();
+export class AccountCardComponent
+    extends AccountDropdownMenuActionsBase
+    implements OnInit, OnDestroy
+{
+    @ViewChild('parentElement', { read: ElementRef })
+    private cardBodyElement!: ElementRef;
 
     @Input() set viewData(value: CardDetails[]) {
         this._viewData = value;
     }
-    @Input() selectedTab: string;
 
-    // Card body endpoints
-    @Input() cardTitle: string;
-    @Input() rows: number[];
+    // card body endpoints
     @Input() displayRowsFront: CardRows[];
     @Input() displayRowsBack: CardRows[];
-    @Input() cardTitleLink: string;
 
-    public isCardFlippedCheckInCards: number[] = [];
-    public cardData: CardDetails;
-    public _viewData: CardDetails[];
-    public isAllCardsFlipp: boolean = false;
+    @Output() saveValueNote: EventEmitter<{ value: string; id: number }> =
+        new EventEmitter<{ value: string; id: number }>();
+
+    public destroy$ = new Subject<void>();
 
     public dropdownSelectionArray = new UntypedFormArray([]);
+
+    public _viewData: CardDetails[];
+
+    public isCardFlippedCheckInCards: number[] = [];
+    public isAllCardsFlipp: boolean = false;
+
     public selectedContactLabel: CompanyAccountLabelResponse[] = [];
 
-    public cardsFront: CardDataResult[][][] = [];
-    public cardsBack: CardDataResult[][][] = [];
+    public dropdownElementWidth: number;
 
-    private destroy$ = new Subject<void>();
+    get viewData() {
+        return this._viewData;
+    }
 
     constructor(
+        @Inject(DOCUMENT) protected readonly documentRef: Document,
+
+        // zone
+        private ngZone: NgZone,
+
+        // clipboard
+        protected clipboard: Clipboard,
+
+        // services
+        protected modalService: ModalService,
+        protected accountService: AccountService,
+
         private tableService: TruckassistTableService,
-        private cardHelper: CardHelper,
-        private modalService: ModalService,
-        private clipboard: Clipboard,
-        @Inject(DOCUMENT) private readonly documentRef: Document
-    ) {}
+
+        // helpers
+        private cardHelper: CardHelper
+    ) {
+        super();
+    }
 
     ngOnInit(): void {
         this.flipAllCards();
-        
+
         this._viewData.length && this.labelDropdown();
+    }
+
+    ngAfterViewInit(): void {
+        this.windowResizeUpdateDescriptionDropdown();
+    }
+
+    public trackCard(item: number): number {
+        return item;
     }
 
     public flipCard(index: number): void {
@@ -100,7 +130,6 @@ export class AccountCardComponent implements OnInit, OnDestroy {
             });
     }
 
-    // When checkbox is selected
     public onCheckboxSelect(index: number, card: CardDetails): void {
         this._viewData[index].isSelected = !this._viewData[index].isSelected;
 
@@ -112,6 +141,7 @@ export class AccountCardComponent implements OnInit, OnDestroy {
     public labelDropdown(): TableBodyColorLabel {
         for (let card of this._viewData) {
             this.dropdownSelectionArray.push(new FormControl());
+
             if (card.companyContactLabel) {
                 return card.companyContactLabel;
             } else if (card.companyAccountLabel) {
@@ -127,53 +157,42 @@ export class AccountCardComponent implements OnInit, OnDestroy {
         });
     }
 
-    public trackCard(item: number): number {
-        return item;
-    }
+    public windowResizeUpdateDescriptionDropdown(): void {
+        if (this.cardBodyElement) {
+            const parentElement = this.cardBodyElement
+                .nativeElement as HTMLElement;
 
-    public onCardActions(event: AccountData): void {
-        switch (event.type) {
-            case AccountStringEnum.EDIT_ACCOUNT:
-                this.modalService.openModal(
-                    AccountModalComponent,
-                    { size: TableActionsStringEnum.SMALL },
-                    {
-                        ...event,
-                        type: TableActionsStringEnum.EDIT,
-                    }
-                );
-                break;
-            case TableActionsStringEnum.GO_TO_LINK:
-                if (event.data?.url) {
-                    const url = !event.data.url.startsWith('https://')
-                        ? 'https://' + event.data.url
-                        : event.data.url;
+            const resizeObserver = new ResizeObserver(() => {
+                const width = parentElement.offsetWidth;
 
-                    this.documentRef.defaultView.open(url, '_blank');
-                }
-                break;
-            case TableActionsStringEnum.COPY_PASSWORD:
-                this.clipboard.copy(event.data.password);
-                break;
-            case TableActionsStringEnum.COPY_USERNAME:
-                this.clipboard.copy(event.data.username);
-                break;
-            case AccountStringEnum.DELETE_ACCOUNT:
-                this.modalService.openModal(
-                    ConfirmationModalComponent,
-                    { size: TableStringEnum.SMALL },
-                    {
-                        ...event,
-                        template: TableStringEnum.USER_1,
-                        type: TableStringEnum.DELETE,
-                        svg: true,
-                    }
-                );
-                break;
-            default:
-                break;
+                this.ngZone.run(() => {
+                    this.dropdownElementWidth = width;
+                });
+            });
+
+            resizeObserver.observe(parentElement);
         }
     }
+
+    public handleToggleDropdownMenuActions(
+        event: DropdownMenuOptionEmit,
+        cardData: AccountResponse
+    ): void {
+        const { type } = event;
+
+        const emitEvent =
+            DropdownMenuActionsHelper.createDropdownMenuActionsEmitEvent(
+                type,
+                cardData
+            );
+
+        this.handleDropdownMenuActions(
+            emitEvent,
+            DropdownMenuStringEnum.ACCOUNT
+        );
+    }
+
+    public handleShowMoreAction(): void {}
 
     ngOnDestroy(): void {
         this.destroy$.next();
