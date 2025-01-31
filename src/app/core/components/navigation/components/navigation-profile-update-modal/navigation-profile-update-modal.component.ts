@@ -10,7 +10,18 @@ import { CommonModule } from '@angular/common';
 import { NgbActiveModal, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 
-import { Subject, takeUntil } from 'rxjs';
+import {
+    Subject,
+    takeUntil,
+    map,
+    tap,
+    filter,
+    switchMap,
+    catchError,
+    of,
+    distinctUntilChanged,
+    debounceTime,
+} from 'rxjs';
 
 // validations
 import {
@@ -207,28 +218,36 @@ export class NavigationProfileUpdateModalComponent
         this.profileUserForm
             .get('oldPassword')
             .valueChanges.pipe(takeUntil(this.destroy$))
-            .subscribe((value) => {
-                this.userPasswordTyping = value?.toString().length >= 1;
-                if (value && value.length >= 8) {
-                    this.loadingOldPassword = true;
+            .pipe(
+                tap((value: string) => {
+                    this.userPasswordTyping = value?.toString().length >= 1;
+                }),
+                filter((value: string) => value && value.length >= 8),
+                debounceTime(300), // Debounce to avoid frequent API calls
+                distinctUntilChanged(), // Avoid duplicate calls for the same value
+                tap(() => (this.loadingOldPassword = true)), // Set loading state
+                switchMap((value: string) =>
                     this.userProfileUpdateService
                         .validateUserPassword({ password: value })
-                        .pipe(takeUntil(this.destroy$))
-                        .subscribe({
-                            next: (res: any) => {
-                                this.correctPassword = !!res.correctPassword;
+                        .pipe(
+                            catchError(() => {
                                 this.loadingOldPassword = false;
+                                return of({ correctPassword: false }); // Handle errors gracefully
+                            })
+                        )
+                ),
+                tap((res) => {
+                    this.correctPassword = !!res.correctPassword;
+                    this.loadingOldPassword = false;
 
-                                if (!this.correctPassword) {
-                                    this.profileUserForm
-                                        .get('oldPassword')
-                                        .setErrors({ invalid: true });
-                                }
-                            },
-                            error: () => {},
-                        });
-                }
-            });
+                    if (!this.correctPassword) {
+                        this.profileUserForm
+                            .get('oldPassword')
+                            .setErrors({ invalid: true });
+                    }
+                })
+            )
+            .subscribe();
 
         this.passwordsNotSame();
     }
