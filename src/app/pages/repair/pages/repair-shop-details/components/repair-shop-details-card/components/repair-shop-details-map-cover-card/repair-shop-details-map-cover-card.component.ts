@@ -117,6 +117,8 @@ export class RepairShopDetailsMapCoverCardComponent implements AfterViewInit {
     }
 
     public onOpenInMap(): void {
+        this.markerIconService.resetMarkersData();
+        
         this.mapsService.selectedMarker(this._cardData.id);
 
         const repairTableView = {
