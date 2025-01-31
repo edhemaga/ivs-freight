@@ -91,7 +91,7 @@ export class TaModalTableOffDutyLocationComponent
         return this.modalTableForm?.get(this.arrayName) as UntypedFormArray;
     }
 
-    constructor() {
+    constructor(private addressService: AddressService) {
         super();
     }
 
