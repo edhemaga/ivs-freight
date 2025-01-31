@@ -10,7 +10,7 @@ export class DashboardTopRatedChartsConfiguration {
             labels: [],
             datasets: [],
         },
-        height: 300,
+        height: 330,
         width: 100,
         noDataImage: ChartImagesStringEnum.CHART_NO_DATA_YELLOW,
         chartOptions: {},

@@ -1,7 +1,7 @@
 <div
     class="dashboard-by-state"
     [ngClass]="{
-        'd-flex flex-column': byStateList.length
+        'd-flex flex-column': byStateList.length,
     }"
 >
     <!-- Header -->
@@ -66,7 +66,7 @@
                         'dropdown-left-w-6':
                             selectedMainPeriod?.name === 'Custom',
                         'dropdown-left-w-7':
-                            selectedMainPeriod?.name === 'Quartal-to-Date'
+                            selectedMainPeriod?.name === 'Quartal-to-Date',
                     }"
                 >
                     <app-ta-input-dropdown
@@ -78,7 +78,7 @@
                             hideClear: true,
                             hideColorValidations: true,
                             isInputBackgroundRemoved: true,
-                            dropdownWidthClass: 'w-col-157'
+                            dropdownWidthClass: 'w-col-157',
                         }"
                         [options]="mainPeriodDropdownList"
                         [activeItem]="selectedMainPeriod"
@@ -108,7 +108,7 @@
                             hideClear: true,
                             hideColorValidations: true,
                             isInputBackgroundRemoved: true,
-                            dropdownWidthClass: 'w-col-157'
+                            dropdownWidthClass: 'w-col-157',
                         }"
                         [options]="subPeriodDropdownList"
                         [activeItem]="selectedSubPeriod"
@@ -121,399 +121,359 @@
         </div>
     </div>
 
-    <!-- Placeholder -->
-
-    <!-- <ng-container *ngIf="!byStateList.length">
-        <app-dashboard-data-placeholder></app-dashboard-data-placeholder>
-    </ng-container> -->
-
     <!-- Body-->
 
-    <!-- <ng-container *ngIf="byStateList.length"> -->
-        <div
-            class="d-flex flex-column justify-content-center dashboard-by-state-body"
-        >
-            <!-- Body Up -->
+    <div
+        class="d-flex flex-column justify-content-center dashboard-by-state-body"
+    >
+        <!-- Body Up -->
 
-            <div class="dashboard-by-state-body-up">
-                <!-- By State List -->
-
-                <div
-                    class="dashboard-by-state-body-up-list"
-                    [ngClass]="{
-                        'd-flex flex-column': !isDisplayingPlaceholder,
-                        'show-more': isShowingMore
-                    }"
-                >
-                    <ng-container *ngIf="isLoading">
-                        <app-dashboard-loading-placeholder
-                            [listPlaceholder]="true"
-                        ></app-dashboard-loading-placeholder>
-                    </ng-container>
-
-                    <ng-container *ngIf="!isLoading">
-                        <!-- Search -->
-
-                        <ng-container *ngIf="isShowingMore">
-                            <div class="dashboard-by-state-body-up-list-search">
-                                <app-ta-search-v2
-                                    [placeHolderText]="byStateTitle"
-                                    [clearSearchValue]="clearSearchValue"
-                                    (searchValueEmitter)="
-                                        handleSearchValue($event)
-                                    "
-                                ></app-ta-search-v2>
-                            </div>
-                        </ng-container>
-
-                        <!-- Placeholder -->
-
-                        <ng-container *ngIf="isDisplayingPlaceholder">
-                            <app-dashboard-data-placeholder
-                                [searchPlaceholder]="true"
-                            ></app-dashboard-data-placeholder>
-                        </ng-container>
-
-                        <!-- List -->
-
-                        <ng-container *ngIf="!isDisplayingPlaceholder">
-                            <ng-container
-                                *ngFor="
-                                    let byStateListItem of byStateList;
-                                    let i = index;
-                                    trackBy: trackByIdentity
-                                "
-                            >
-                                <div
-                                    class="d-flex align-items-center justify-content-between by-state-item"
-                                    placement="bottom"
-                                    [ngbTooltip]="
-                                        searchValue &&
-                                        selectedByStateList.length === 5 &&
-                                        '5 max selected'
-                                    "
-                                    [ngStyle]="
-                                        i <= 9 &&
-                                        byStateListItem.isSelected && {
-                                            background:
-                                                byStateListItem.selectedColor
-                                        }
-                                    "
-                                    [ngClass]="{
-                                        selected:
-                                            i <= 9 &&
-                                            byStateListItem.isSelected,
-                                        'not-selected':
-                                            selectedByStateList.length &&
-                                            !byStateListItem.isSelected
-                                    }"
-                                    (click)="
-                                        handleAddSelectedClick(
-                                            byStateListItem,
-                                            i
-                                        )
-                                    "
-                                    (mouseenter)="
-                                        (byStateListItem.isSelected ||
-                                            (!byStateListItem.isSelected &&
-                                                !selectedByStateList.length &&
-                                                searchValue)) &&
-                                            handleHoverSelected(i)
-                                    "
-                                    (mouseleave)="
-                                        (byStateListItem.isSelected ||
-                                            (!byStateListItem.isSelected &&
-                                                !selectedByStateList.length &&
-                                                searchValue)) &&
-                                            handleHoverSelected(i, true)
-                                    "
-                                >
-                                    <div
-                                        class="align-items-center by-state-item-left"
-                                    >
-                                        <div
-                                            class="d-flex align-items-center justify-content-center by-state-item-number-box"
-                                        >
-                                            <p
-                                                class="m-0 ta-font-semi-bold"
-                                                [ngStyle]="{
-                                                    color:
-                                                        ((byStateListItem.isSelected &&
-                                                            byStateListItem.selectedColor ===
-                                                                '#92B1F5') ||
-                                                            (byStateListItem.isSelected &&
-                                                                byStateListItem.selectedColor ===
-                                                                    '#BED0F9')) &&
-                                                        '#3B73ED'
-                                                }"
-                                            >
-                                                {{ i + 1 }}
-                                            </p>
-
-                                            <svg-icon
-                                                class="close-icon"
-                                                [src]="
-                                                    'assets/svg/applicant/close-x.svg'
-                                                "
-                                                [svgStyle]="{
-                                                    'width.px': 18,
-                                                    'height.px': 18
-                                                }"
-                                                (click)="
-                                                    handleRemoveSelectedClick(
-                                                        $event,
-                                                        byStateListItem,
-                                                        i
-                                                    )
-                                                "
-                                            ></svg-icon>
-                                        </div>
-
-                                        <div
-                                            class="d-flex align-items-center justify-content-center by-state-item-color-box"
-                                            [ngStyle]="{
-                                                background:
-                                                    byStateListItem.selectedColor
-                                            }"
-                                        ></div>
-
-                                        <div
-                                            class="d-flex align-items-center by-state-item-name-box"
-                                        >
-                                            <p
-                                                class="m-0 ta-font-extra-bold"
-                                                [ngStyle]="{
-                                                    color:
-                                                        ((byStateListItem.isSelected &&
-                                                            byStateListItem.selectedColor ===
-                                                                '#92B1F5') ||
-                                                            (byStateListItem.isSelected &&
-                                                                byStateListItem.selectedColor ===
-                                                                    '#BED0F9')) &&
-                                                        '#0B49D1'
-                                                }"
-                                                [innerHTML]="
-                                                    highlightSearchValue(
-                                                        byStateListItem.state,
-                                                        byStateListItem.isSelected
-                                                    )
-                                                "
-                                            ></p>
-                                        </div>
-                                    </div>
-
-                                    <div
-                                        class="d-flex align-items-center by-state-item-right"
-                                    >
-                                        <div
-                                            class="d-flex align-items-center by-state-item-first-tab-box"
-                                        >
-                                            <p class="m-0">
-                                                {{
-                                                    currentActiveTab.name ===
-                                                        'Revenue' ||
-                                                    currentActiveTab.name ===
-                                                        'Cost' ||
-                                                    currentActiveTab.name ===
-                                                        'Price'
-                                                        ? '$'
-                                                        : ''
-                                                }}
-                                            </p>
-                                            <p
-                                                class="m-0"
-                                                [ngStyle]="{
-                                                    color:
-                                                        ((byStateListItem.isSelected &&
-                                                            byStateListItem.selectedColor ===
-                                                                '#92B1F5') ||
-                                                            (byStateListItem.isSelected &&
-                                                                byStateListItem.selectedColor ===
-                                                                    '#BED0F9')) &&
-                                                        '#0B49D1'
-                                                }"
-                                            >
-                                                {{
-                                                    currentActiveTab.name ===
-                                                        'Revenue' ||
-                                                    currentActiveTab.name ===
-                                                        'Cost'
-                                                        ? (byStateListItem.value
-                                                          | addThousandSign)
-                                                        : byStateListItem.value
-                                                }}
-                                            </p>
-                                        </div>
-
-                                        <div
-                                            class="d-flex align-items-center justify-content-end by-state-item-second-tab-box"
-                                        >
-                                            <p
-                                                class="m-0 ta-font-semi-bold"
-                                                [ngStyle]="{
-                                                    color:
-                                                        ((byStateListItem.isSelected &&
-                                                            byStateListItem.selectedColor ===
-                                                                '#92B1F5') ||
-                                                            (byStateListItem.isSelected &&
-                                                                byStateListItem.selectedColor ===
-                                                                    '#BED0F9')) &&
-                                                        '#0B49D1'
-                                                }"
-                                            >
-                                                {{ byStateListItem.percent }}%
-                                            </p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </ng-container>
-                        </ng-container>
-
-                        <!-- Show More -->
-
-                        <ng-container *ngIf="!isDisplayingPlaceholder">
-                            <div
-                                class="d-flex align-items-center justify-content-between show-more-container"
-                            >
-                                <div
-                                    class="d-flex align-items-center show-more-container-left"
-                                >
-                                    <p class="m-0 ta-font-semi-bold">
-                                        {{
-                                            !isShowingMore &&
-                                            byStateList.length > 10
-                                                ? '10'
-                                                : byStateList.length
-                                        }}
-                                        OF {{ byStateListLength }}
-                                    </p>
-                                </div>
-
-                                <ng-container *ngIf="byStateListLength > 10">
-                                    <div
-                                        class="d-flex align-items-center show-more-container-right"
-                                    >
-                                        <button
-                                            type="button"
-                                            class="ta-font-bold show-more-btn"
-                                            (click)="handleShowMoreClick()"
-                                        >
-                                            {{
-                                                isShowingMore
-                                                    ? 'SHOW LESS'
-                                                    : 'SHOW MORE'
-                                            }}
-                                        </button>
-                                    </div>
-                                </ng-container>
-                            </div>
-                        </ng-container>
-                    </ng-container>
-                </div>
-
-                <!-- Border -->
-
-                <div class="dashboard-by-state-body-up-border"></div>
-
-                <!-- Map -->
-
-                <div
-                    class="d-flex justify-content-center align-items-center dashboard-by-state-body-up-map-container"
-                >
-                    <app-dashboard-state-tracking
-                        [selectedMapList]="byStateMapList"
-                        [selectedTab]="currentActiveTab.name"
-                    ></app-dashboard-state-tracking>
-
-                    <ng-container *ngIf="isDisplayingCustomPeriodRange">
-                        <div class="custom-period-range-container">
-                            <app-ta-custom-period-range
-                                [subPeriodDropdownList]="subPeriodDropdownList"
-                                [selectedSubPeriod]="selectedSubPeriod"
-                                (customPeriodRangeSubperiodEmitter)="
-                                    handleCustomPeriodRangeSubperiodEmit($event)
-                                "
-                                (customPeriodRangeValuesEmitter)="
-                                    handleSetCustomPeriodRangeClick($event)
-                                "
-                            ></app-ta-custom-period-range>
-                        </div>
-                    </ng-container>
-                </div>
-            </div>
-
-            <!-- Body Down -->
+        <div class="dashboard-by-state-body-up">
+            <!-- By State List -->
 
             <div
-                class="d-flex flex-column justify-content-center dashboard-by-state-body-down"
+                class="dashboard-by-state-body-up-list"
+                [ngClass]="{
+                    'd-flex flex-column': !isDisplayingPlaceholder,
+                    'show-more': isShowingMore,
+                }"
             >
-                <!-- Body Down Header -->
+                @if (isLoading) {
+                    <app-dashboard-loading-placeholder
+                        [listPlaceholder]="true"
+                    ></app-dashboard-loading-placeholder>
+                }
 
-                <div
-                    class="d-flex align-items-center justify-content-between dashboard-by-state-body-down-header"
-                >
-                    <div
-                        class="d-flex align-items-center dashboard-by-state-body-down-header-left"
-                    >
-                        <!-- <p class="m-0 ta-font-bold">{{ barChartDateTitle }}</p> -->
-                    </div>
+                @if (!isLoading) {
+                    @if (isShowingMore) {
+                        <div class="dashboard-by-state-body-up-list-search">
+                            <app-ta-search-v2
+                                [placeHolderText]="byStateTitle"
+                                [clearSearchValue]="clearSearchValue"
+                                (searchValueEmitter)="handleSearchValue($event)"
+                            ></app-ta-search-v2>
+                        </div>
+                    }
+                    @if (isDisplayingPlaceholder) {
+                        <app-dashboard-data-placeholder
+                            [searchPlaceholder]="true"
+                        ></app-dashboard-data-placeholder>
+                    }
+                    @if (!isDisplayingPlaceholder) {
+                        @for (
+                            byStateListItem of byStateList;
+                            let i = $index;
+                            track byStateListItem.id
+                        ) {
+                            <div
+                                class="d-flex align-items-center justify-content-between by-state-item"
+                                placement="bottom"
+                                [ngbTooltip]="
+                                    searchValue &&
+                                    selectedByStateList.length === 5 &&
+                                    '5 max selected'
+                                "
+                                [ngStyle]="
+                                    i <= 9 &&
+                                    byStateListItem.isSelected && {
+                                        background:
+                                            byStateListItem.selectedColor,
+                                    }
+                                "
+                                [ngClass]="{
+                                    selected:
+                                        i <= 9 && byStateListItem.isSelected,
+                                    'not-selected':
+                                        selectedByStateList.length &&
+                                        !byStateListItem.isSelected,
+                                }"
+                                (click)="
+                                    handleAddSelectedClick(byStateListItem, i)
+                                "
+                                (mouseenter)="
+                                    (byStateListItem.isSelected ||
+                                        (!byStateListItem.isSelected &&
+                                            !selectedByStateList.length &&
+                                            searchValue))
+                                "
+                                (mouseleave)="
+                                    (byStateListItem.isSelected ||
+                                        (!byStateListItem.isSelected &&
+                                            !selectedByStateList.length &&
+                                            searchValue))
+                                "
+                            >
+                                <div
+                                    class="align-items-center by-state-item-left"
+                                >
+                                    <div
+                                        class="d-flex align-items-center justify-content-center by-state-item-number-box"
+                                    >
+                                        <p
+                                            class="m-0 ta-font-semi-bold"
+                                            [ngStyle]="{
+                                                color:
+                                                    ((byStateListItem.isSelected &&
+                                                        byStateListItem.selectedColor ===
+                                                            '#92B1F5') ||
+                                                        (byStateListItem.isSelected &&
+                                                            byStateListItem.selectedColor ===
+                                                                '#BED0F9')) &&
+                                                    '#3B73ED',
+                                            }"
+                                        >
+                                            {{ i + 1 }}
+                                        </p>
 
-                    <ng-container *ngIf="!selectedByStateList.length">
+                                        <svg-icon
+                                            class="close-icon"
+                                            [src]="DashboardSvgRoutes.CLOSE_X"
+                                            [svgStyle]="{
+                                                'width.px': 18,
+                                                'height.px': 18,
+                                            }"
+                                            (click)="
+                                                handleRemoveSelectedClick(
+                                                    $event,
+                                                    byStateListItem,
+                                                    i
+                                                )
+                                            "
+                                        ></svg-icon>
+                                    </div>
+
+                                    <div
+                                        class="d-flex align-items-center justify-content-center by-state-item-color-box"
+                                        [ngStyle]="{
+                                            background:
+                                                byStateListItem.selectedColor,
+                                        }"
+                                    ></div>
+
+                                    <div
+                                        class="d-flex align-items-center by-state-item-name-box"
+                                    >
+                                        <p
+                                            class="m-0 ta-font-extra-bold"
+                                            [ngStyle]="{
+                                                color:
+                                                    ((byStateListItem.isSelected &&
+                                                        byStateListItem.selectedColor ===
+                                                            '#92B1F5') ||
+                                                        (byStateListItem.isSelected &&
+                                                            byStateListItem.selectedColor ===
+                                                                '#BED0F9')) &&
+                                                    '#0B49D1',
+                                            }"
+                                            [innerHTML]="
+                                                highlightSearchValue(
+                                                    byStateListItem.state,
+                                                    byStateListItem.isSelected
+                                                )
+                                            "
+                                        ></p>
+                                    </div>
+                                </div>
+
+                                <div
+                                    class="d-flex align-items-center by-state-item-right"
+                                >
+                                    <div
+                                        class="d-flex align-items-center by-state-item-first-tab-box"
+                                    >
+                                        <p class="m-0">
+                                            {{
+                                                currentActiveTab.name ===
+                                                    'Revenue' ||
+                                                currentActiveTab.name ===
+                                                    'Cost' ||
+                                                currentActiveTab.name ===
+                                                    'Price'
+                                                    ? '$'
+                                                    : ''
+                                            }}
+                                        </p>
+                                        <p
+                                            class="m-0"
+                                            [ngStyle]="{
+                                                color:
+                                                    ((byStateListItem.isSelected &&
+                                                        byStateListItem.selectedColor ===
+                                                            '#92B1F5') ||
+                                                        (byStateListItem.isSelected &&
+                                                            byStateListItem.selectedColor ===
+                                                                '#BED0F9')) &&
+                                                    '#0B49D1',
+                                            }"
+                                        >
+                                            {{
+                                                currentActiveTab.name ===
+                                                    'Revenue' ||
+                                                currentActiveTab.name === 'Cost'
+                                                    ? (byStateListItem.value
+                                                      | addThousandSign)
+                                                    : byStateListItem.value
+                                            }}
+                                        </p>
+                                    </div>
+
+                                    <div
+                                        class="d-flex align-items-center justify-content-end by-state-item-second-tab-box"
+                                    >
+                                        <p
+                                            class="m-0 ta-font-semi-bold"
+                                            [ngStyle]="{
+                                                color:
+                                                    ((byStateListItem.isSelected &&
+                                                        byStateListItem.selectedColor ===
+                                                            '#92B1F5') ||
+                                                        (byStateListItem.isSelected &&
+                                                            byStateListItem.selectedColor ===
+                                                                '#BED0F9')) &&
+                                                    '#0B49D1',
+                                            }"
+                                        >
+                                            {{ byStateListItem.percent }}%
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    }
+                    @if (!isDisplayingPlaceholder) {
                         <div
-                            class="d-flex align-items-center dashboard-by-state-body-down-header-right"
+                            class="d-flex align-items-center justify-content-between show-more-container"
                         >
-                            <div class="d-flex align-items-center">
-                                <svg-icon
-                                    class="round-icon round-icon-top-ten"
-                                    [src]="'assets/svg/common/round_blue.svg'"
-                                    [svgStyle]="{
-                                        'width.px': 10,
-                                        'height.px': 10
-                                    }"
-                                ></svg-icon>
-
+                            <div
+                                class="d-flex align-items-center show-more-container-left"
+                            >
                                 <p class="m-0 ta-font-semi-bold">
                                     {{
-                                        byStateList.length <= 10
-                                            ? 'Top 3'
-                                            : byStateList.length > 10 &&
-                                              byStateList.length <= 30
-                                            ? 'Top 5'
-                                            : 'Top 10'
+                                        !isShowingMore &&
+                                        byStateList.length > 10
+                                            ? '10'
+                                            : byStateList.length
                                     }}
+                                    OF {{ byStateListLength }}
                                 </p>
                             </div>
 
-                            <div class="d-flex align-items-center">
-                                <svg-icon
-                                    class="round-icon round-icon-all-others"
-                                    [src]="'assets/svg/common/round_blue.svg'"
-                                    [svgStyle]="{
-                                        'width.px': 10,
-                                        'height.px': 10
-                                    }"
-                                ></svg-icon>
-
-                                <p class="m-0 ta-font-semi-bold">All Others</p>
-                            </div>
+                            @if (byStateListLength > 10) {
+                                <div
+                                    class="d-flex align-items-center show-more-container-right"
+                                >
+                                    <button
+                                        type="button"
+                                        class="ta-font-bold show-more-btn"
+                                        (click)="handleShowMoreClick()"
+                                    >
+                                        {{
+                                            isShowingMore
+                                                ? 'SHOW LESS'
+                                                : 'SHOW MORE'
+                                        }}
+                                    </button>
+                                </div>
+                            }
                         </div>
-                    </ng-container>
-                </div>
+                    }
+                }
+            </div>
 
-                <!-- Bar Chart -->
+            <!-- Border -->
 
-                <div class="bar-chart-container">
-                    <!-- <ng-container *ngIf="barChartConfig"> -->
-                        <!-- <app-dashboard-data-placeholder
-                            [fullHeight]="true"
-                        ></app-dashboard-data-placeholder> -->
-                        <app-ca-chart
-                            [chartConfig]="pickUpByStateChartConfig"
-                        >
-                        </app-ca-chart>
-                    <!-- </ng-container> -->
-                </div>
+            <div class="dashboard-by-state-body-up-border"></div>
+
+            <!-- Map -->
+
+            <div
+                class="d-flex justify-content-center align-items-center dashboard-by-state-body-up-map-container"
+            >
+                <app-dashboard-state-tracking
+                    [selectedMapList]="byStateMapList"
+                    [selectedTab]="currentActiveTab.name"
+                ></app-dashboard-state-tracking>
+
+                @if (isDisplayingCustomPeriodRange) {
+                    <div class="custom-period-range-container">
+                        <app-ta-custom-period-range
+                            [subPeriodDropdownList]="subPeriodDropdownList"
+                            [selectedSubPeriod]="selectedSubPeriod"
+                            (customPeriodRangeSubperiodEmitter)="
+                                handleCustomPeriodRangeSubperiodEmit($event)
+                            "
+                            (customPeriodRangeValuesEmitter)="
+                                handleSetCustomPeriodRangeClick($event)
+                            "
+                        ></app-ta-custom-period-range>
+                    </div>
+                }
             </div>
         </div>
+
+        <!-- Body Down -->
+
+        <div
+            class="d-flex flex-column justify-content-center dashboard-by-state-body-down"
+        >
+            <!-- Body Down Header -->
+
+            <div
+                class="d-flex align-items-center justify-content-between dashboard-by-state-body-down-header"
+            >
+                <div
+                    class="d-flex align-items-center dashboard-by-state-body-down-header-left"
+                ></div>
+
+                @if (!selectedByStateList.length) {
+                    <div
+                        class="d-flex align-items-center dashboard-by-state-body-down-header-right"
+                    >
+                        <div class="d-flex align-items-center">
+                            <svg-icon
+                                class="round-icon round-icon-top-ten"
+                                [src]="DashboardSvgRoutes.ROUND_BLUE"
+                                [svgStyle]="{
+                                    'width.px': 10,
+                                    'height.px': 10,
+                                }"
+                            ></svg-icon>
+
+                            <p class="m-0 ta-font-semi-bold">
+                                {{
+                                    byStateList.length <= 10
+                                        ? 'Top 3'
+                                        : byStateList.length > 10 &&
+                                            byStateList.length <= 30
+                                          ? 'Top 5'
+                                          : 'Top 10'
+                                }}
+                            </p>
+                        </div>
+
+                        <div class="d-flex align-items-center">
+                            <svg-icon
+                                class="round-icon round-icon-all-others"
+                                [src]="DashboardSvgRoutes.ROUND_BLUE"
+                                [svgStyle]="{
+                                    'width.px': 10,
+                                    'height.px': 10,
+                                }"
+                            ></svg-icon>
+
+                            <p class="m-0 ta-font-semi-bold">All Others</p>
+                        </div>
+                    </div>
+                }
+            </div>
+
+            <!-- Bar Chart -->
+
+            <div class="bar-chart-container">
+                <app-ca-chart [chartConfig]="pickUpByStateChartConfig">
+                </app-ca-chart>
+            </div>
+        </div>
+    </div>
     <!-- </ng-container> -->
 </div>

@@ -98,6 +98,8 @@ export class TrailerDetailsCardComponent
     public fuelConsumptionChartConfig!: IChartConfiguration;
     public fuelConsumptionChartLegend!: ChartLegendConfiguration[];
     public fuelConsumptionTabs: Tabs[] = ChartHelper.generateTimeTabs();
+    public fuelConsumptionLegendTitle!: string;
+    public fuelConsumptionLegendHighlightedBackground!: boolean;
 
     constructor(
         private detailsPageDriverSer: DetailsPageService,
@@ -302,10 +304,27 @@ export class TrailerDetailsCardComponent
             })
     }
 
-    public setFuelConsumptionLegendOnHover(index: number): void {
+    public setFuelConsumptionLegendOnHover(index: number | null): void {
+        const {
+            hasHighlightedBackground,
+            title
+        } =
+            ChartHelper.setChartLegend(
+                index,
+                this.fuelConsumptionChartConfig.chartData.labels
+            );
+
+        this.fuelConsumptionLegendHighlightedBackground = hasHighlightedBackground;
+        this.fuelConsumptionLegendTitle = title;
+
+        const dataForLegend =
+            (isNaN(index) || index < 0) ?
+                this.fuelConsumptionChartData :
+                this.fuelConsumptionChartData?.
+                    trailerFuelConsumptionCharts[index];
+
         this.fuelConsumptionChartLegend = ChartLegendConfiguration
-            .trailerFuelConsumptionConfiguration(this.fuelConsumptionChartData.
-                trailerFuelConsumptionCharts[index]);
+            .trailerFuelConsumptionConfiguration(dataForLegend);
     }
 
     public changeFuelConsumptionTab(event: TabOptions): void {

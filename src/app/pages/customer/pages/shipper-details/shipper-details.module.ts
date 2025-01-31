@@ -65,4 +65,4 @@ import { FormatPhonePipe } from '@shared/pipes/format-phone.pipe';
     ],
     providers: [FormatDatePipe],
 })
-export class ShipperDetailsModule {}
+export class ShipperDetailsModule { }

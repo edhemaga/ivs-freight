@@ -395,7 +395,6 @@
             &-doughnut-chart-container {
                 position: relative;
                 z-index: 1;
-                margin-top: -15px;
 
                 /* Custom Period Container */
                 .custom-period-range-container {
@@ -468,12 +467,6 @@
                     }
                 }
             }
-
-            // .bar-chart-container {
-            //     margin: 0 -8px -6px -14px;
-
-            //     height: 200px; //this is only until we have charts
-            // }
         }
     }
 }
