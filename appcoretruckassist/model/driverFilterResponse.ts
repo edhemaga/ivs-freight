@@ -10,11 +10,13 @@
  * Do not edit the class manually.
  */
 import { FileResponse } from './fileResponse';
+import { EnumValue } from './enumValue';
 
 
 export interface DriverFilterResponse { 
     id?: number;
     driverFullName?: string | null;
     avatarFile?: FileResponse;
+    colorFlag?: EnumValue;
 }
 

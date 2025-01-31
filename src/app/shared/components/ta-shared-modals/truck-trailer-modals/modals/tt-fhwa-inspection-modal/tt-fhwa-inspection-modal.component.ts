@@ -84,7 +84,7 @@ export class TtFhwaInspectionModalComponent implements OnInit, OnDestroy {
 
     public isFormDirty: boolean;
 
-    public disableCardAnimation: boolean = false;
+    public isCardAnimationDisabled: boolean = false;
 
     private destroy$ = new Subject<void>();
     public svgRoutes = SharedSvgRoutes;
@@ -104,7 +104,7 @@ export class TtFhwaInspectionModalComponent implements OnInit, OnDestroy {
         this.createForm();
 
         if (this.editData.type === 'edit-inspection') {
-            this.disableCardAnimation = true;
+            this.isCardAnimationDisabled = true;
             this.editInspectionById();
         } else {
             this.startFormChanges();
@@ -191,7 +191,7 @@ export class TtFhwaInspectionModalComponent implements OnInit, OnDestroy {
                     });
                     this.documents = res.files;
                     setTimeout(() => {
-                        this.disableCardAnimation = false;
+                        this.isCardAnimationDisabled = false;
                         this.startFormChanges();
                     }, 1000);
                 },

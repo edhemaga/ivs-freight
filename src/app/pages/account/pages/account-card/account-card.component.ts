@@ -1,11 +1,14 @@
 import {
     Component,
+    ElementRef,
     EventEmitter,
     Inject,
     Input,
+    NgZone,
     OnDestroy,
     OnInit,
     Output,
+    ViewChild,
 } from '@angular/core';
 import { FormControl, UntypedFormArray } from '@angular/forms';
 import { Clipboard } from '@angular/cdk/clipboard';
@@ -22,8 +25,8 @@ import { DropdownMenuActionsHelper } from '@shared/utils/helpers/dropdown-menu-h
 
 // services
 import { TruckassistTableService } from '@shared/services/truckassist-table.service';
-import { ModalService } from '@shared/services/modal.service';
 import { AccountService } from '@pages/account/services/account.service';
+import { ModalService } from '@shared/services/modal.service';
 
 // enums
 import { DropdownMenuStringEnum } from '@shared/enums';
@@ -46,16 +49,16 @@ export class AccountCardComponent
     extends AccountDropdownMenuActionsBase
     implements OnInit, OnDestroy
 {
+    @ViewChild('parentElement', { read: ElementRef })
+    private cardBodyElement!: ElementRef;
+
     @Input() set viewData(value: CardDetails[]) {
         this._viewData = value;
     }
 
     // card body endpoints
-    @Input() cardTitle: string;
-    @Input() rows: number[];
     @Input() displayRowsFront: CardRows[];
     @Input() displayRowsBack: CardRows[];
-    @Input() cardTitleLink: string;
 
     @Output() saveValueNote: EventEmitter<{ value: string; id: number }> =
         new EventEmitter<{ value: string; id: number }>();
@@ -71,12 +74,17 @@ export class AccountCardComponent
 
     public selectedContactLabel: CompanyAccountLabelResponse[] = [];
 
+    public dropdownElementWidth: number;
+
     get viewData() {
         return this._viewData;
     }
 
     constructor(
         @Inject(DOCUMENT) protected readonly documentRef: Document,
+
+        // zone
+        private ngZone: NgZone,
 
         // clipboard
         protected clipboard: Clipboard,
@@ -90,13 +98,17 @@ export class AccountCardComponent
         // helpers
         private cardHelper: CardHelper
     ) {
-        super(documentRef, clipboard, modalService, accountService);
+        super();
     }
 
     ngOnInit(): void {
         this.flipAllCards();
 
         this._viewData.length && this.labelDropdown();
+    }
+
+    ngAfterViewInit(): void {
+        this.windowResizeUpdateDescriptionDropdown();
     }
 
     public trackCard(item: number): number {
@@ -129,6 +141,7 @@ export class AccountCardComponent
     public labelDropdown(): TableBodyColorLabel {
         for (let card of this._viewData) {
             this.dropdownSelectionArray.push(new FormControl());
+
             if (card.companyContactLabel) {
                 return card.companyContactLabel;
             } else if (card.companyAccountLabel) {
@@ -142,6 +155,23 @@ export class AccountCardComponent
             value: note,
             id: id,
         });
+    }
+
+    public windowResizeUpdateDescriptionDropdown(): void {
+        if (this.cardBodyElement) {
+            const parentElement = this.cardBodyElement
+                .nativeElement as HTMLElement;
+
+            const resizeObserver = new ResizeObserver(() => {
+                const width = parentElement.offsetWidth;
+
+                this.ngZone.run(() => {
+                    this.dropdownElementWidth = width;
+                });
+            });
+
+            resizeObserver.observe(parentElement);
+        }
     }
 
     public handleToggleDropdownMenuActions(
@@ -162,11 +192,7 @@ export class AccountCardComponent
         );
     }
 
-    public handleShowMoreAction(): void {
-        /*    this.backFilterQuery.pageIndex++;
-
-        this.accountBackFilter(this.backFilterQuery, true); */
-    }
+    public handleShowMoreAction(): void {}
 
     ngOnDestroy(): void {
         this.destroy$.next();

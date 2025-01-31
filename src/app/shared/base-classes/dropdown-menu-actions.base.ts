@@ -1,4 +1,3 @@
-import { Optional, SkipSelf } from '@angular/core';
 import { Router } from '@angular/router';
 
 // components
@@ -8,7 +7,6 @@ import { ConfirmationActivationModalComponent } from '@shared/components/ta-shar
 
 // enums
 import { DropdownMenuStringEnum, TableStringEnum } from '@shared/enums';
-import { ConfirmationActivationStringEnum } from '@shared/components/ta-shared-modals/confirmation-activation-modal/enums/confirmation-activation-string.enum';
 
 // helpers
 import { DropdownMenuActionsHelper } from '@shared/utils/helpers/dropdown-menu-helpers';
@@ -25,18 +23,18 @@ import {
 } from 'appcoretruckassist';
 
 export abstract class DropdownMenuActionsBase {
-    constructor(
-        protected modalService: ModalService,
-        @Optional() @SkipSelf() protected router?: Router
-    ) {}
+    // router
+    protected router: Router;
+
+    // services
+    protected abstract modalService: ModalService;
+
+    constructor() {}
 
     protected handleSharedDropdownMenuActions<T>(
         event: TableCardBodyActions<T>,
         tableType: string
     ): void {
-        console.log('event', event);
-        console.log('tableType', tableType);
-
         const { id, data, type } = event;
 
         switch (type) {
@@ -62,6 +60,10 @@ export abstract class DropdownMenuActionsBase {
                 break;
             case DropdownMenuStringEnum.PRINT_TYPE:
                 this.handlePrintAction();
+
+                break;
+            case DropdownMenuStringEnum.SEND_MESSAGE_TYPE:
+                this.handleSendMessageAction();
 
                 break;
             case DropdownMenuStringEnum.ADD_REPAIR_BILL_TYPE:
@@ -121,6 +123,8 @@ export abstract class DropdownMenuActionsBase {
 
     private handlePrintAction(): void {}
 
+    private handleSendMessageAction(): void {}
+
     private handleAddRepairBillAction(
         data: PMTruckUnitResponse | PMTrailerUnitResponse | RepairShopResponse,
         tableType: string
@@ -152,29 +156,21 @@ export abstract class DropdownMenuActionsBase {
         );
     }
 
-    private handleOpenCloseBusinessAction<T extends RepairShopResponse>(
+    private handleOpenCloseBusinessAction<T extends { status?: number }>(
         event: TableCardBodyActions<T>
     ): void {
         const {
-            data: { status, name, address },
+            data: { status },
         } = event;
 
-        const adjustedEvent = {
-            ...event,
-            type: !!status ? TableStringEnum.CLOSE : TableStringEnum.OPEN,
-            template: TableStringEnum.INFO,
-            subType: TableStringEnum.REPAIR_SHOP,
-            subTypeStatus: TableStringEnum.BUSINESS,
-            tableType: ConfirmationActivationStringEnum.REPAIR_SHOP_TEXT,
-            modalTitle: name,
-            modalSecondTitle: address.address,
-        };
+        const type = status ? TableStringEnum.CLOSE : TableStringEnum.OPEN;
 
         this.modalService.openModal(
             ConfirmationActivationModalComponent,
             { size: TableStringEnum.SMALL },
             {
-                ...adjustedEvent,
+                ...event,
+                type,
             }
         );
     }

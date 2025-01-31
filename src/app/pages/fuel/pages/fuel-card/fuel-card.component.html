@@ -11,7 +11,7 @@
                     'body-active':
                         isCardFlippedCheckInCards.includes(i) ||
                         isAllCardsFlipp,
-                    'body-checked': card.isSelected
+                    'body-checked': card.isSelected,
                 }"
             >
                 <!-- Left side of the card -->
@@ -32,7 +32,7 @@
                                     'rotate-svg':
                                         isCardFlippedCheckInCards.includes(i),
                                     'svg-position':
-                                        !isCardFlippedCheckInCards.includes(i)
+                                        !isCardFlippedCheckInCards.includes(i),
                                 }"
                             >
                                 <input
@@ -174,8 +174,8 @@
                                         {{
                                             cardRow.title === 'Last Visit'
                                                 ? (card
-                                                  | activityTime : 'activity')
-                                                : (card | cardValue : cardRow)
+                                                  | activityTime: 'activity')
+                                                : (card | cardValue: cardRow)
                                         }}
                                     </ng-container>
                                 </div>
@@ -188,12 +188,17 @@
 
                 <div class="card-body-right">
                     <div class="top-side">
-                        <!-- Open dropdown element-->
+                        <!-- Dropdown Menu-->
 
-                        <app-ta-table-card-dropdown-actions
-                            [card]="card"
-                            (bodyActions)="onCardActions($event)"
-                        ></app-ta-table-card-dropdown-actions>
+                        <ca-dropdown-menu
+                            [type]="'dots-menu-type'"
+                            [placement]="'right-top'"
+                            [options]="card.tableDropdownContent"
+                            (dropdownOptionEmitter)="
+                                handleToggleDropdownMenuActions($event, card)
+                            "
+                        >
+                        </ca-dropdown-menu>
 
                         <!-- Note element -->
 
@@ -218,10 +223,10 @@
                                 class="card-attachments-icon-container d-flex flex-column align-items-center"
                             >
                                 <svg-icon
-                                    [src]="fuelImageRoutes.attachment"
+                                    [src]="fuelCardSvgRoutes.attachment"
                                     [svgStyle]="{
                                         'width.px': '18',
-                                        'height.px': '18'
+                                        'height.px': '18',
                                     }"
                                 ></svg-icon>
                                 <div class="file_count">
@@ -248,7 +253,7 @@
                                         isCardFlippedCheckInCards.includes(i) ||
                                         isAllCardsFlipp,
                                     'svg-position':
-                                        !isCardFlippedCheckInCards.includes(i)
+                                        !isCardFlippedCheckInCards.includes(i),
                                 }"
                             >
                                 <svg-icon
@@ -268,7 +273,7 @@
 <ng-template #descriptionCardsPopover let-data="data">
     <div
         class="card-dropdown-container description-item-repair-bill-fuel-trans"
-        [style.width.px]="elementWidth"
+        [style.width.px]="dropdownElementWidth"
     >
         <!-- Header -->
 
@@ -297,7 +302,7 @@
         <div
             class="d-flex flex-column description-items"
             [ngClass]="{
-                'dropdown-scroll': data.descriptionItems.length >= 8
+                'dropdown-scroll': data.descriptionItems.length >= 8,
             }"
         >
             <ng-container
@@ -349,101 +354,3 @@
         </div>
     </div>
 </ng-template>
-
-<!-- <ng-template #descriptionCardsPopover let-data="data">
-    <div class="card-dropdown-container" [style.width.px]="291">
-        <div class="description-titles d-flex align-items-center">
-            <div
-                class="number-title ta-font-bold d-flex align-items-center justify-content-center"
-            >
-                #
-            </div>
-            <div class="dropdown-titles d-flex justify-content-between">
-                <ng-container *ngIf="data.isRepairOrder">
-                    <p
-                        class="dropdown-left m-0 ta-font-bold d-flex align-items-center"
-                    >
-                        DESCRIPTION
-                    </p>
-                    <p
-                        class="dropdown-right m-0 ta-font-bold d-flex align-items-center"
-                    >
-                        QTY
-                    </p>
-                </ng-container>
-                <ng-container *ngIf="!data.isRepairOrder">
-                    <p
-                        class="dropdown-left m-0 ta-font-bold d-flex align-items-center"
-                    >
-                        DESC • QTY • PRICE
-                    </p>
-                    <div class="dropdown-right">
-                        <p class="price-total-title ta-font-semi-bold m-0">
-                            {{ data.tableDescriptionDropTotal }}
-                        </p>
-                    </div>
-                </ng-container>
-            </div>
-        </div>
-        <div class="description-items">
-            <div class="description-item d-flex flex-column">
-                <ng-container
-                    *ngFor="
-                        let item of data.descriptionItems;
-                        let i = index;
-                        trackBy: trackCard
-                    "
-                >
-                    <div class="d-flex align-items-center item-description">
-                        <div
-                            class="item-index d-flex justify-content-center align-items-center"
-                        >
-                            {{ i + 1 }}
-                        </div>
-                        <ng-container *ngIf="item.pmDescription">
-                            <div class="pm-item">
-                                <svg-icon
-                                    [src]="
-                                        'assets/svg/common/repair-pm/' +
-                                        item.pmDescription.logoName
-                                    "
-                                    [svgStyle]="{
-                                        'width.px': '20',
-                                        'height.px': '20'
-                                    }"
-                                ></svg-icon>
-                            </div>
-                        </ng-container>
-                        <div
-                            class="items-holder d-flex justify-content-between"
-                        >
-                            <div class="left-description">
-                                <div class="item-title ta-font-medium">
-                                    {{ item.description }}
-                                </div>
-                                <div class="items-number-items-cost d-flex">
-                                    <div
-                                        class="number-of-items ta-font-regular"
-                                    >
-                                        {{ item.quantity }} X
-                                        {{ item.descriptionPrice }}
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div
-                                class="item-total-cost d-flex align-items-center"
-                                [ngClass]="{
-                                    'pm-style': item.pmDescription
-                                }"
-                            >
-                                {{ item.descriptionTotalPrice }}
-                            </div>
-                        </div>
-                    </div>
-                </ng-container>
-            </div>
-        </div>
-    </div>
-</ng-template>
- -->

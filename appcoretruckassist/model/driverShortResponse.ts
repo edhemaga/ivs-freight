@@ -31,6 +31,7 @@ export interface DriverShortResponse {
     avatarFile?: FileResponse;
     address?: AddressEntity;
     dateOfBirth?: string | null;
+    colorFlag?: EnumValue;
     bank?: BankResponse;
     account?: string | null;
     routing?: string | null;

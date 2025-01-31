@@ -69,13 +69,17 @@
                 ></app-ca-input>
             </div>
             <div class="d-grid gap-12 d-grid-address mb-32">
-                <app-ta-input-address-dropdown
+                <app-ca-input-address-dropdown
                     formControlName="address"
                     [inputConfig]="ownerModalConfig.ADDRESS_INPUT_CONFIG"
                     [placeholderType]="'longAddress'"
                     [activeAddress]="selectedAddress"
+                    [receivedAddressList]="addressList"
+                    [receivedAddressData]="addressData"
                     (selectedAddress)="onHandleAddress($event)"
-                ></app-ta-input-address-dropdown>
+                    (sentAddressData)="onAddressChange($event)"
+                    (sentAddressValue)="getAddressData($event)"
+                ></app-ca-input-address-dropdown>
                 <app-ca-input
                     formControlName="addressUnit"
                     [inputConfig]="ownerModalConfig.ADDRESS_UNIT_INPUT_CONFIG"
@@ -121,13 +125,13 @@
                     [cardName]="'Document'"
                     [isCardOpen]="!!documents.length"
                 >
-                <app-ta-upload-files
-                [files]="documents"
-                [size]="'small'"
-                (onFileEvent)="onFilesEvent($event)"
-                [customClassName]="'modals'"
-                [showDropzone]="true"
-            ></app-ta-upload-files>
+                    <app-ta-upload-files
+                        [files]="documents"
+                        [size]="'small'"
+                        (onFileEvent)="onFilesEvent($event)"
+                        [customClassName]="'modals'"
+                        [showDropzone]="true"
+                    ></app-ta-upload-files>
                 </app-ta-custom-card>
             </div>
             <div class="divider"></div>
@@ -166,14 +170,14 @@
                 <div>
                     <button
                         class="modal-delete-btn ta-font-bold mr-12 valid"
-                        (click)="onModalAction(taModalActionEnums.DELETE)"
+                        (click)="onModalAction(taModalActionEnum.DELETE)"
                     >
                         Delete
                     </button>
                 </div>
                 <button
                     class="modal-save-btn ta-font-bold"
-                    (click)="onModalAction(taModalActionEnums.SAVE)"
+                    (click)="onModalAction(taModalActionEnum.SAVE)"
                     [class.valid]="ownerForm.valid && isFormDirty"
                 >
                     Save Changes
@@ -183,13 +187,13 @@
             <button
                 class="ta-font-bold modal-save-btn modal-save-btn-add-new mr-12"
                 [class.valid]="ownerForm.valid && isFormDirty"
-                (click)="onModalAction(taModalActionEnums.SAVE_AND_ADD_NEW)"
+                (click)="onModalAction(taModalActionEnum.SAVE_AND_ADD_NEW)"
             >
                 Save and Add New
             </button>
             <button
                 class="modal-save-btn ta-font-bold"
-                (click)="onModalAction(taModalActionEnums.SAVE)"
+                (click)="onModalAction(taModalActionEnum.SAVE)"
                 [class.valid]="ownerForm.valid && isFormDirty"
             >
                 Save
@@ -222,7 +226,7 @@
         mainTooltip="Cancel"
         tooltipBackground="#424242"
         position="bottom"
-        (click)="onModalAction(taModalActionEnums.CLOSE)"
+        (click)="onModalAction(taModalActionEnum.CLOSE)"
     >
         <svg-icon
             class="modal-close svg-size-14 svg-fill-muted modal-buttons"

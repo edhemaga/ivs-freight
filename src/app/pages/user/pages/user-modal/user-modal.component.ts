@@ -41,6 +41,7 @@ import { UserService } from '@pages/user/services/user.service';
 import { BankVerificationService } from '@shared/services/bank-verification.service';
 import { ConfirmationActivationService } from '@shared/components/ta-shared-modals/confirmation-activation-modal/services/confirmation-activation.service';
 import { ConfirmationService } from '@shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
+import { AddressService } from '@shared/services/address.service';
 
 //Animation
 import { tabsModalAnimation } from '@shared/animations/tabs-modal.animation';
@@ -57,8 +58,11 @@ import {
     AddressEntity,
     CreateResponse,
     EnumValue,
+    AddressResponse,
 } from 'appcoretruckassist';
 import { Tabs } from '@shared/models/tabs.model';
+import { AddressProperties } from '@shared/components/ta-input-address-dropdown/models/address-properties';
+import { AddressListResponse } from '@ca-shared/models/address-list-response.model';
 
 //Components
 import { SettingsOfficeModalComponent } from '@pages/settings/pages/settings-modals/settings-location-modals/settings-office-modal/settings-office-modal.component';
@@ -76,7 +80,6 @@ import {
     CaInputDropdownComponent,
     CaInputAddressDropdownComponent,
 } from 'ca-components';
-import { TaInputAddressDropdownComponent } from '@shared/components/ta-input-address-dropdown/ta-input-address-dropdown.component';
 
 // enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
@@ -114,7 +117,6 @@ import { UserModalConfig } from '@pages/user/pages/user-modal/utils/constants';
         CaInputComponent,
         CaInputDropdownComponent,
         CaInputAddressDropdownComponent,
-        TaInputAddressDropdownComponent,
     ],
 })
 export class UserModalComponent implements OnInit, OnDestroy {
@@ -157,12 +159,14 @@ export class UserModalComponent implements OnInit, OnDestroy {
     public allowPairCommissionBase: boolean = false;
     public userFullName: string = null;
     public userStatus: boolean = true;
-    public disableCardAnimation: boolean = false;
+    public isCardAnimationDisabled: boolean = false;
     private destroy$ = new Subject<void>();
     public isEmailCheckCompleted: boolean;
     public currentUserStatus: string;
     public userModalSvgRoutes: UserModalSvgRoutes = UserModalSvgRoutes;
     public userModalConfig: UserModalConfig = UserModalConfig;
+    public addressList: AddressListResponse;
+    public addressData: AddressResponse;
 
     constructor(
         private formBuilder: UntypedFormBuilder,
@@ -175,7 +179,8 @@ export class UserModalComponent implements OnInit, OnDestroy {
         private bankVerificationService: BankVerificationService,
         private formService: FormService,
         private confirmationActivationService: ConfirmationActivationService,
-        private confirmationService: ConfirmationService
+        private confirmationService: ConfirmationService,
+        private addressService: AddressService
     ) {}
 
     ngOnInit() {
@@ -940,7 +945,7 @@ export class UserModalComponent implements OnInit, OnDestroy {
                     this.isPhoneExtExist = !!res.extensionPhone;
                     setTimeout(() => {
                         this.startFormChanges();
-                        this.disableCardAnimation = false;
+                        this.isCardAnimationDisabled = false;
                     }, 1000);
                 },
                 error: () => {},
@@ -960,7 +965,7 @@ export class UserModalComponent implements OnInit, OnDestroy {
                     this.heleperForDispatchers = res.dispatcherResponses;
 
                     if (this.editData?.id) {
-                        this.disableCardAnimation = true;
+                        this.isCardAnimationDisabled = true;
                         this.getUserById(this.editData.id);
                     }
                     if (this.editData?.data && !this.editData?.id) {
@@ -1118,6 +1123,24 @@ export class UserModalComponent implements OnInit, OnDestroy {
             .subscribe((isFormChange: boolean) => {
                 this.isFormDirty = isFormChange;
             });
+    }
+
+    public onAddressChange({
+        query,
+        searchLayers,
+        closedBorder,
+    }: AddressProperties): void {
+        this.addressService
+            .getAddresses(query, searchLayers, closedBorder)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((res) => (this.addressList = res));
+    }
+
+    public getAddressData(address: string): void {
+        this.addressService
+            .getAddressInfo(address)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((res) => (this.addressData = res));
     }
 
     ngOnDestroy(): void {

@@ -74,7 +74,7 @@
                     </div>
                     <div class="row last-row">
                         <div class="col-10">
-                            <app-ta-input-address-dropdown
+                            <app-ca-input-address-dropdown
                                 formControlName="address"
                                 [inputConfig]="{
                                     name: 'Address',
@@ -91,7 +91,11 @@
                                 [placeholderType]="'longAddress'"
                                 [activeAddress]="selectedAddress"
                                 (selectedAddress)="onHandleAddress($event)"
-                            ></app-ta-input-address-dropdown>
+                                [receivedAddressList]="addressList"
+                                [receivedAddressData]="addressData"
+                                (sentAddressData)="onAddressChange($event)"
+                                (sentAddressValue)="getAddressData($event)"
+                            ></app-ca-input-address-dropdown>
                         </div>
                         <div class="col-2">
                             <app-ca-input
@@ -204,7 +208,7 @@
 
                     <app-ta-custom-card
                         [cardName]="'Profile Picture'"
-                        [disableAnimation]="disableCardAnimation"
+                        [disableAnimation]="isCardAnimationDisabled"
                         [isCardOpen]="false"
                         [animationMarginParams]="{
                             marginTop: '0px',
@@ -250,7 +254,7 @@
         mainTooltip="Cancel"
         tooltipBackground="#424242"
         position="bottom"
-        (click)="onModalAction(taModalActionEnums.CLOSE)"
+        (click)="onModalAction(taModalActionEnum.CLOSE)"
     >
         <svg-icon
             class="modal-close svg-size-14 svg-fill-muted modal-buttons"
@@ -273,8 +277,8 @@
         <app-ca-modal-button
             text="Save Changes"
             [isValid]="profileUserForm.valid && isFormDirty"
-            (click)="onModalAction(taModalActionEnums.SAVE)"
-            [isSpinnerShown]="activeAction === taModalActionEnums.SAVE"
+            (click)="onModalAction(taModalActionEnum.SAVE)"
+            [isSpinnerShown]="activeAction === taModalActionEnum.SAVE"
             [type]="modalButtonType.PRIMARY_POSITIVE"
         >
         </app-ca-modal-button>

@@ -54,7 +54,7 @@ import { SumArraysPipe } from '@shared/pipes/sum-arrays.pipe';
 import { FormatDatePipe } from '@shared/pipes';
 
 // Enums
-import { TaModalActionEnums } from '@shared/components/ta-modal/enums';
+import { TaModalActionEnum } from '@shared/components/ta-modal/enums';
 import {
     ModalButtonType,
     TableStringEnum,
@@ -180,7 +180,7 @@ export class SettingsParkingModalComponent implements OnInit, OnDestroy {
     public isFinanceCardOpen: boolean = true;
     public isParkingCardOpen: boolean = true;
 
-    public disableCardAnimation: boolean = false;
+    public isCardAnimationDisabled: boolean = false;
 
     private destroy$ = new Subject<void>();
 
@@ -202,7 +202,7 @@ export class SettingsParkingModalComponent implements OnInit, OnDestroy {
     public fullParkingSlotConfig: ITaInput =
         SettingsParkingConfig.getFullParkingSlotConfig();
 
-    public taModalActionEnums = TaModalActionEnums;
+    public taModalActionEnum = TaModalActionEnum;
     public svgRoutes = SharedSvgRoutes;
     public modalButtonType = ModalButtonType;
     public activeAction!: string;
@@ -310,11 +310,11 @@ export class SettingsParkingModalComponent implements OnInit, OnDestroy {
         this.activeAction = action;
 
         switch (action) {
-            case TaModalActionEnums.CLOSE: {
+            case TaModalActionEnum.CLOSE: {
                 this.ngbActiveModal.close();
                 break;
             }
-            case TaModalActionEnums.SAVE: {
+            case TaModalActionEnum.SAVE: {
                 if (this.parkingForm.invalid || !this.isFormDirty) {
                     this.inputService.markInvalid(this.parkingForm);
                     return;
@@ -326,7 +326,7 @@ export class SettingsParkingModalComponent implements OnInit, OnDestroy {
                 }
                 break;
             }
-            case TaModalActionEnums.SAVE_AND_ADD_NEW: {
+            case TaModalActionEnum.SAVE_AND_ADD_NEW: {
                 if (this.parkingForm.invalid || !this.isFormDirty) {
                     this.inputService.markInvalid(this.parkingForm);
                     return;
@@ -335,7 +335,7 @@ export class SettingsParkingModalComponent implements OnInit, OnDestroy {
                 this.addParking(true);
                 break;
             }
-            case TaModalActionEnums.DELETE: {
+            case TaModalActionEnum.DELETE: {
                 this.deleteParkingById(this.editData.id);
 
                 break;
@@ -617,7 +617,7 @@ export class SettingsParkingModalComponent implements OnInit, OnDestroy {
 
                     setTimeout(() => {
                         this.startFormChanges();
-                        this.disableCardAnimation = false;
+                        this.isCardAnimationDisabled = false;
                     }, 1000);
                 },
                 error: () => (this.activeAction = null),
@@ -635,7 +635,7 @@ export class SettingsParkingModalComponent implements OnInit, OnDestroy {
                     this.weeklyDays = res.dayOfWeek;
 
                     if (this.editData?.type === 'edit') {
-                        this.disableCardAnimation = true;
+                        this.isCardAnimationDisabled = true;
                         this.editCompanyParkingById(this.editData.id);
                     } else {
                         this.startFormChanges();

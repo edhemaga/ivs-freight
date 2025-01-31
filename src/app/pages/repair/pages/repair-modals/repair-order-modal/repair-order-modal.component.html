@@ -451,7 +451,7 @@
         mainTooltip="Cancel"
         tooltipBackground="#424242"
         position="bottom"
-        (click)="onModalAction(taModalActionEnums.CLOSE)"
+        (click)="onModalAction(taModalActionEnum.CLOSE)"
     >
         <svg-icon
             class="modal-close svg-size-14 svg-fill-muted modal-buttons"
@@ -492,13 +492,13 @@
                 [class.valid]="
                     repairOrderForm.valid && isFormDirty && isEachRepairRowValid
                 "
-                (click)="onModalAction(taModalActionEnums.SAVE_AND_ADD_NEW)"
+                (click)="onModalAction(taModalActionEnum.SAVE_AND_ADD_NEW)"
             >
                 Save and Add New
             </button>
             <button
                 class="modal-save-btn ta-font-bold"
-                (click)="onModalAction(taModalActionEnums.SAVE)"
+                (click)="onModalAction(taModalActionEnum.SAVE)"
                 [class.valid]="
                     repairOrderForm.valid && isFormDirty && isEachRepairRowValid
                 "
@@ -510,7 +510,7 @@
                 @if (editData?.type?.includes('edit') && !isFinishOrder) {
                     <button
                         class="modal-delete-btn ta-font-bold mr-12"
-                        (click)="onModalAction(taModalActionEnums.DELETE)"
+                        (click)="onModalAction(taModalActionEnum.DELETE)"
                         [class.valid]="
                             repairOrderForm.valid &&
                             isFormDirty &&
@@ -524,7 +524,7 @@
                 @if (editData?.data?.repairType?.id === 2 && !isFinishOrder) {
                     <button
                         class="modal-convert-to-template-btn ta-font-bold"
-                        (click)="onModalAction(taModalActionEnums.FINISH_ORDER)"
+                        (click)="onModalAction(taModalActionEnum.FINISH_ORDER)"
                     >
                         Finish Order
                     </button>
@@ -532,7 +532,7 @@
             </div>
             <button
                 class="modal-save-btn ta-font-bold"
-                (click)="onModalAction(taModalActionEnums.SAVE)"
+                (click)="onModalAction(taModalActionEnum.SAVE)"
                 [class.valid]="
                     repairOrderForm.valid && isFormDirty && isEachRepairRowValid
                 "

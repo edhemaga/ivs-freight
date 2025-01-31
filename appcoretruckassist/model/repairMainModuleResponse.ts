@@ -9,6 +9,7 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { EnumValue } from './enumValue';
 
 
 export interface RepairMainModuleResponse { 
@@ -16,6 +17,10 @@ export interface RepairMainModuleResponse {
     truckRepairBills?: number;
     trailerRepairBills?: number;
     pm?: string | null;
-    pmMileage?: number | null;
+    mileage?: number | null;
+    diffMileage?: number | null;
+    percentage?: number | null;
+    status?: EnumValue;
+    pmInfoResponse?: string | null;
 }
 

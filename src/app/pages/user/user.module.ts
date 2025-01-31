@@ -1,6 +1,8 @@
 // modules
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+
+// modules
 import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 
@@ -15,7 +17,7 @@ import { TaTableBodyComponent } from '@shared/components/ta-table/ta-table-body/
 import { TaTableHeadComponent } from '@shared/components/ta-table/ta-table-head/ta-table-head.component';
 import { TaTableToolbarComponent } from '@shared/components/ta-table/ta-table-toolbar/ta-table-toolbar.component';
 import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
-import { TaTableCardDropdownActionsComponent } from '@shared/components/ta-table-card-dropdown-actions/ta-table-card-dropdown-actions.component';
+import { CaDropdownMenuComponent } from 'ca-components';
 
 // pipes
 import {
@@ -44,7 +46,7 @@ import { userCardModalReducer } from '@pages/user/pages/user-card-modal/state';
         TaTableHeadComponent,
         TaAppTooltipV2Component,
         TaNoteComponent,
-        TaTableCardDropdownActionsComponent,
+        CaDropdownMenuComponent,
 
         // pipes
         FormatDatePipe,

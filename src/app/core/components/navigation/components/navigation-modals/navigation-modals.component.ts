@@ -82,36 +82,44 @@ export class NavigationModalsComponent {
     public accountingNavigationData: NavigationModal[] =
         NavigationDataConstants.accountingNavigationData;
 
-    public changeTextHoverOnCloseModal: boolean = false;
-
     public addNew = NavigationDataConstants.title;
 
     public title: string = this.addNew;
 
-    public isAddNewHovered: boolean = false;
     public icons = NavigationDataConstants.icons;
+
+    public navigationDataConstants = NavigationDataConstants;
+    private isExpandButtonHovered: boolean = false;
 
     constructor(
         private modalService: ModalService,
         private navigationService: NavigationService,
         private loadStoreService: LoadStoreService
     ) {}
-    public OpenMainModal(openClose: boolean) {
+
+    public OpenMainModal(openClose: boolean): void {
         this.navigationService.onDropdownActivation({
             name: 'Modal Panel',
             type: openClose,
         });
+        this.title =
+            openClose && this.isExpandButtonHovered
+                ? NavigationDataConstants.close
+                : NavigationDataConstants.title;
     }
-    public changeText(text: boolean) {
-        text == true && text
-            ? (this.title = NavigationDataConstants.close)
-            : (this.title = this.addNew);
+
+    public changeText(text: string, expandBUttonHovered: boolean): void {
+        this.isExpandButtonHovered = expandBUttonHovered;
+        this.title = this.isModalPanelOpen
+            ? text
+            : NavigationDataConstants.title;
     }
-    public onAction(item: NavigationModal) {
+
+    public onAction(item: NavigationModal): void {
         this.openModal(item);
     }
 
-    private openModal(navItem: NavigationModal) {
+    private openModal(navItem: NavigationModal): void {
         switch (navItem.path) {
             case 'load': {
                 this.loadStoreService.dispatchGetCreateLoadModalData();
@@ -261,13 +269,5 @@ export class NavigationModalsComponent {
                 break;
             }
         }
-    }
-
-    public identity(index: number, item: NavigationModal): number {
-        return item.id;
-    }
-
-    public hoveredArrow(isHovered: boolean): void {
-        this.isAddNewHovered = isHovered;
     }
 }

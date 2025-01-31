@@ -127,7 +127,7 @@ export class AccidentModalComponent implements OnInit, OnDestroy {
 
     public accidentModalName: string = null;
 
-    public disableCardAnimation: boolean = false;
+    public isCardAnimationDisabled: boolean = false;
 
     constructor(
         private formBuilder: UntypedFormBuilder,
@@ -142,7 +142,7 @@ export class AccidentModalComponent implements OnInit, OnDestroy {
         this.getModalDropdowns();
 
         if (this.editData) {
-            this.disableCardAnimation = true;
+            this.isCardAnimationDisabled = true;
             this.editAccidentById(this.editData.id);
         } else {
             this.startFormChanges();
@@ -398,7 +398,7 @@ export class AccidentModalComponent implements OnInit, OnDestroy {
                     // ]
                     setTimeout(() => {
                         this.startFormChanges();
-                        this.disableCardAnimation = false;
+                        this.isCardAnimationDisabled = false;
                     }, 1000);
                 },
                 error: () => {},

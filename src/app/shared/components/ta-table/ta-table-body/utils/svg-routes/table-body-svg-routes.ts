@@ -7,4 +7,7 @@ export class TableBodySvgRoutes {
     static favoriteRoute: string = 'assets/svg/common/ic_star.svg';
     static brokerClosedRoute: string = 'assets/svg/common/ic_closed_broker.svg';
     static circleRoute: string = 'assets/svg/common/colors/ic_circle.svg';
+    static fuelIntegratedTransactionInvoiceSvgRoute: string = 'assets/svg/common/fuel/ic_transaction_integrated.svg';
+    static loadLtl: string = 'assets/svg/truckassist-table/load-ltl.svg';
+    static loadFtl: string = 'assets/svg/truckassist-table/load-flt.svg';
 }

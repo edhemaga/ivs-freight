@@ -1,11 +1,6 @@
 import { CardRows } from '@shared/models/card-models/card-rows.model';
 
 export class UserTableConfiguration {
-    static rows: number = 4;
-
-    static page: string = 'User';
-
-    // Data for active front
     static displayRowsActiveFront: CardRows[] = [
         {
             title: 'Phone No.',
@@ -27,7 +22,7 @@ export class UserTableConfiguration {
             key: 'payType.name',
         },
     ];
-    // Data for active back
+
     static displayRowsActiveBack: CardRows[] = [
         {
             title: 'Hired',

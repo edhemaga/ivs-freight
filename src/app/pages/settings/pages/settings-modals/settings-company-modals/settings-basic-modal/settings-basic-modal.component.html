@@ -3,10 +3,10 @@
         editData.type === 'new-division'
             ? 'Add Division Company'
             : editData.type === 'edit-division'
-            ? 'Division Company'
-            : this.editData?.type === 'edit-company-first-login'
-            ? 'Setup Company'
-            : 'Update Company'
+              ? 'Division Company'
+              : this.editData?.type === 'edit-company-first-login'
+                ? 'Setup Company'
+                : 'Update Company'
     "
     [editData]="editData"
     [editName]="editData?.company?.name || editData?.data?.name"
@@ -18,17 +18,17 @@
         !isSetupCompany
             ? companyForm.valid && isFormDirty
             : selectedTab === 1
-            ? companyForm.get('usDot').valid &&
-              companyForm.get('address').valid &&
-              companyForm.get('timeZone').valid &&
-              companyForm.get('currency').valid
-            : selectedTab === 2
-            ? companyForm.get('starting').valid &&
-              companyForm.get('mvrMonths').valid &&
-              companyForm.get('truckInspectionMonths').valid &&
-              companyForm.get('trailerInspectionMonths').valid
-            : companyForm.get('driveOwnerPayPeriod').valid &&
-              companyForm.get('driverOwnerEndingIn').valid
+              ? companyForm.get('usDot').valid &&
+                companyForm.get('address').valid &&
+                companyForm.get('timeZone').valid &&
+                companyForm.get('currency').valid
+              : selectedTab === 2
+                ? companyForm.get('starting').valid &&
+                  companyForm.get('mvrMonths').valid &&
+                  companyForm.get('truckInspectionMonths').valid &&
+                  companyForm.get('trailerInspectionMonths').valid
+                : companyForm.get('driveOwnerPayPeriod').valid &&
+                  companyForm.get('driverOwnerEndingIn').valid
     "
     [customClass]="'modal-container-M'"
     [dropZoneConfig]="dropZoneConfig"
@@ -87,7 +87,7 @@
                                             'edit-company'
                                         )
                                             ? true
-                                            : false
+                                            : false,
                                     }"
                                 ></app-ta-input>
                             </div>
@@ -106,7 +106,7 @@
                                         isRequired: true,
                                         textTransform: 'capitalize',
                                         minLength: 6,
-                                        maxLength: 8
+                                        maxLength: 8,
                                     }"
                                 ></app-ta-input>
                             </div>
@@ -123,7 +123,7 @@
                                                 'edit-company'
                                             ),
                                         mask: '00-0000000',
-                                        maxLength: 10
+                                        maxLength: 10,
                                     }"
                                 ></app-ta-input>
                             </div>
@@ -137,7 +137,7 @@
                                         label: 'MC/FF #',
                                         textTransform: 'capitalize',
                                         maxLength: 6,
-                                        minLength: 5
+                                        minLength: 5,
                                     }"
                                 ></app-ta-input>
                             </div>
@@ -155,7 +155,7 @@
                                         label: 'Phone',
                                         placeholderIcon: 'phone',
                                         mask: '(000) 000-0000',
-                                        maxLength: 14
+                                        maxLength: 14,
                                     }"
                                 ></app-ta-input>
                             </div>
@@ -178,7 +178,7 @@
                                         placeholderIcon: 'email',
                                         minLength: 5,
                                         maxLength: 64,
-                                        textTransform: 'lowercase'
+                                        textTransform: 'lowercase',
                                     }"
                                 ></app-ta-input>
                             </div>
@@ -195,7 +195,7 @@
                                         type: 'text',
                                         label: 'Fax',
                                         mask: '(000) 000-0000',
-                                        placeholderIcon: 'fax'
+                                        placeholderIcon: 'fax',
                                     }"
                                 ></app-ta-input>
                             </div>
@@ -209,7 +209,7 @@
                                         label: 'Hyperlink',
                                         minLength: 4,
                                         maxLength: 255,
-                                        placeholderIcon: 'hyperlink'
+                                        placeholderIcon: 'hyperlink',
                                     }"
                                 ></app-ta-input>
                             </div>
@@ -230,7 +230,7 @@
                                         textTransform: 'capitalize',
                                         dropdownWidthClass: 'w-col-510',
                                         minLength: 6,
-                                        maxLength: 256
+                                        maxLength: 256,
                                     }"
                                     [placeholderType]="'longAddress'"
                                     [activeAddress]="selectedAddress"
@@ -247,7 +247,7 @@
                                         label: 'Unit #',
                                         textTransform: 'uppercase',
                                         minLength: 1,
-                                        maxLength: 10
+                                        maxLength: 10,
                                     }"
                                 ></app-ta-input>
                             </div>
@@ -263,7 +263,7 @@
                                     type: 'text',
                                     label: 'IRP',
                                     minLength: 5,
-                                    maxLength: 5
+                                    maxLength: 5,
                                 }"
                             ></app-ta-input>
 
@@ -275,7 +275,7 @@
                                     label: 'IFTA',
                                     textTransform: 'uppercase',
                                     minLength: 13,
-                                    maxLength: 13
+                                    maxLength: 13,
                                 }"
                             ></app-ta-input>
 
@@ -286,7 +286,7 @@
                                     type: 'text',
                                     label: 'TOLL',
                                     minLength: 8,
-                                    maxLength: 8
+                                    maxLength: 8,
                                 }"
                             ></app-ta-input>
 
@@ -298,7 +298,7 @@
                                     label: 'SCAC',
                                     textTransform: 'uppercase',
                                     minLength: 2,
-                                    maxLength: 4
+                                    maxLength: 4,
                                 }"
                             ></app-ta-input>
                         </div>
@@ -308,7 +308,7 @@
                         <div
                             class="row"
                             [ngClass]="{
-                                'last-row': editData.type === 'new-division'
+                                'last-row': editData.type === 'new-division',
                             }"
                         >
                             <div class="col-8">
@@ -322,7 +322,7 @@
                                         label: 'Time Zone',
                                         isDropdown: true,
                                         isRequired: true,
-                                        dropdownWidthClass: 'w-col-403'
+                                        dropdownWidthClass: 'w-col-403',
                                     }"
                                     [options]="timeZones"
                                     [activeItem]="selectedTimeZone"
@@ -342,7 +342,7 @@
                                         label: 'Currency',
                                         isDropdown: true,
                                         isRequired: true,
-                                        dropdownWidthClass: 'w-col-201'
+                                        dropdownWidthClass: 'w-col-201',
                                     }"
                                     [options]="currencies"
                                     [activeItem]="selectedCurrency"
@@ -365,7 +365,7 @@
                                         type: 'text',
                                         label: 'Company Type',
                                         isDropdown: true,
-                                        dropdownWidthClass: 'w-col-296'
+                                        dropdownWidthClass: 'w-col-296',
                                     }"
                                     [options]="companyData"
                                     [activeItem]="selectedCompanyData"
@@ -385,7 +385,7 @@
                                         label: 'Date of Incorporation',
                                         isDropdown: true,
                                         placeholderIcon: 'date',
-                                        customClass: 'datetimeclass'
+                                        customClass: 'datetimeclass',
                                     }"
                                 ></app-ta-input>
                             </div>
@@ -395,7 +395,7 @@
                             [cardName]="'Logo'"
                             [isCardOpen]="true"
                             [hasDeleteAction]="displayDeleteAction"
-                            [disableAnimation]="disableCardAnimation"
+                            [disableAnimation]="isCardAnimationDisabled"
                             (onActionEvent)="handleDeleteClick($event)"
                         >
                             <app-ca-upload-files
@@ -403,7 +403,7 @@
                                     uploadOptionsConstants.isVisibleCropAndDrop
                                 "
                                 [files]="[
-                                    { url: editData?.company?.logoFile?.url }
+                                    { url: editData?.company?.logoFile?.url },
                                 ]"
                                 [slider]="uploadOptionsConstants.slider"
                                 [carouselConfig]="
@@ -456,7 +456,7 @@
                             [isCardOpen]="departmentContacts.length"
                             [hasScrollBody]="departmentContacts.length > 10"
                             [disabledCard]="!departmentContacts.length"
-                            [disableAnimation]="disableCardAnimation"
+                            [disableAnimation]="isCardAnimationDisabled"
                             (onActionEvent)="addDepartmentContacts($event)"
                         >
                             <ng-container *ngIf="departmentContacts.length">
@@ -499,7 +499,7 @@
                                                             'w-col-120',
                                                         hideErrorMessage: true,
                                                         blackInput: true,
-                                                        hideRequiredCheck: true
+                                                        hideRequiredCheck: true,
                                                     }"
                                                     [options]="departments"
                                                     [activeItem]="
@@ -523,7 +523,7 @@
                                                         name: 'Phone',
                                                         type: 'text',
                                                         mask: '(000) 000-0000',
-                                                        maxLength: 14
+                                                        maxLength: 14,
                                                     }"
                                                 ></app-ta-input>
                                                 <app-ta-input
@@ -536,7 +536,7 @@
                                                         type: 'text',
                                                         minLength: 1,
                                                         maxLength: 8,
-                                                        hideRequiredCheck: true
+                                                        hideRequiredCheck: true,
                                                     }"
                                                 ></app-ta-input>
                                                 <app-ta-input
@@ -548,7 +548,7 @@
                                                         minLength: 5,
                                                         maxLength: 64,
                                                         textTransform:
-                                                            'lowercase'
+                                                            'lowercase',
                                                     }"
                                                 ></app-ta-input>
                                                 <div
@@ -588,7 +588,7 @@
                             [isCardOpen]="bankAccounts.length"
                             [hasScrollBody]="bankAccounts.length > 10"
                             [disabledCard]="!bankAccounts.length"
-                            [disableAnimation]="disableCardAnimation"
+                            [disableAnimation]="isCardAnimationDisabled"
                             (onActionEvent)="addBankAccount($event)"
                         >
                             <ng-container *ngIf="bankAccounts.length">
@@ -630,7 +630,7 @@
                                                             'w-col-162',
                                                         hideErrorMessage: true,
                                                         blackInput: true,
-                                                        hideRequiredCheck: true
+                                                        hideRequiredCheck: true,
                                                     }"
                                                     [canAddNew]="true"
                                                     [options]="banks"
@@ -667,7 +667,7 @@
                                                                 ind
                                                             ],
                                                         minLength: 9,
-                                                        maxLength: 9, 
+                                                        maxLength: 9,
                                                     }"
                                                 ></app-ta-input>
 
@@ -738,7 +738,7 @@
                             [isCardOpen]="bankCards.length"
                             [hasScrollBody]="bankCards.length > 10"
                             [disabledCard]="!bankCards.length"
-                            [disableAnimation]="disableCardAnimation"
+                            [disableAnimation]="isCardAnimationDisabled"
                             (onActionEvent)="addBankCard($event)"
                         >
                             <ng-container *ngIf="bankCards.length">
@@ -788,7 +788,7 @@
                                                         blackInput: true,
                                                         isRequired: true,
                                                         minLength: 2,
-                                                        maxLength: 128
+                                                        maxLength: 128,
                                                     }"
                                                 ></app-ta-input>
 
@@ -815,7 +815,7 @@
                                                         minLength: 15,
                                                         hideErrorMessage: true,
                                                         isRequired: true,
-                                                        blackInput: true
+                                                        blackInput: true,
                                                     }"
                                                 ></app-ta-input>
 
@@ -833,7 +833,7 @@
                                                         minLength: 3,
                                                         hideErrorMessage: true,
                                                         blackInput: true,
-                                                        isRequired: true
+                                                        isRequired: true,
                                                     }"
                                                 ></app-ta-input>
                                                 <app-ta-input
@@ -849,7 +849,7 @@
                                                         customClass:
                                                             'datetimeclass',
                                                         expiredDateInvalid: true,
-                                                        hideErrorMessage: true
+                                                        hideErrorMessage: true,
                                                     }"
                                                 ></app-ta-input>
                                                 <div
@@ -894,7 +894,7 @@
                                             label: 'Prefix',
                                             textTransform: 'uppercase',
                                             minLength: 1,
-                                            maxLength: 4
+                                            maxLength: 4,
                                         }"
                                     ></app-ta-input>
 
@@ -906,7 +906,7 @@
                                             label: 'Starting No',
                                             isRequired: true,
                                             minLength: 1,
-                                            maxLength: 6
+                                            maxLength: 6,
                                         }"
                                     ></app-ta-input>
 
@@ -918,7 +918,7 @@
                                             label: 'Suffix',
                                             textTransform: 'uppercase',
                                             minLength: 1,
-                                            maxLength: 4
+                                            maxLength: 4,
                                         }"
                                     ></app-ta-input>
 
@@ -1002,7 +1002,7 @@
                                                     editData.type.includes(
                                                         'division'
                                                     ),
-                                                dropdownWidthClass: 'w-col-293'
+                                                dropdownWidthClass: 'w-col-293',
                                             }"
                                             [options]="payTermOptions"
                                             [activeItem]="selectedPayTerm"
@@ -1029,7 +1029,7 @@
                                                         'division'
                                                     ),
                                                 minLength: 4,
-                                                maxLength: 11
+                                                maxLength: 11,
                                             }"
                                         ></app-ta-input>
                                     </div>
@@ -1062,13 +1062,13 @@
                                                         type: 'months',
                                                         firstCommand: {
                                                             name: 'minus',
-                                                            svg: svgRoutes.iconDecrementSvgRoute
+                                                            svg: svgRoutes.iconDecrementSvgRoute,
                                                         },
                                                         secondCommand: {
                                                             name: 'plus',
-                                                            svg: svgRoutes.iconIncrementSvgRoute
-                                                        }
-                                                    }
+                                                            svg: svgRoutes.iconIncrementSvgRoute,
+                                                        },
+                                                    },
                                                 }"
                                             ></app-ta-input>
                                         </div>
@@ -1093,13 +1093,13 @@
                                                         type: 'months',
                                                         firstCommand: {
                                                             name: 'minus',
-                                                            svg: svgRoutes.iconDecrementSvgRoute
+                                                            svg: svgRoutes.iconDecrementSvgRoute,
                                                         },
                                                         secondCommand: {
                                                             name: 'plus',
-                                                            svg: svgRoutes.iconIncrementSvgRoute
-                                                        }
-                                                    }
+                                                            svg: svgRoutes.iconIncrementSvgRoute,
+                                                        },
+                                                    },
                                                 }"
                                             ></app-ta-input>
                                         </div>
@@ -1124,13 +1124,13 @@
                                                         type: 'months',
                                                         firstCommand: {
                                                             name: 'minus',
-                                                            svg: svgRoutes.iconDecrementSvgRoute
+                                                            svg: svgRoutes.iconDecrementSvgRoute,
                                                         },
                                                         secondCommand: {
                                                             name: 'plus',
-                                                            svg: svgRoutes.iconIncrementSvgRoute
-                                                        }
-                                                    }
+                                                            svg: svgRoutes.iconIncrementSvgRoute,
+                                                        },
+                                                    },
                                                 }"
                                             ></app-ta-input>
                                         </div>
@@ -1183,7 +1183,7 @@
                             [isCardOpen]="companyForm.get('useACHPayout').value"
                             [animationMarginParams]="{
                                 marginTop: '12px',
-                                marginBottom: '18px'
+                                marginBottom: '18px',
                             }"
                             [hasPricingButton]="
                                 companyForm.get('useACHPayout').value
@@ -1209,10 +1209,10 @@
                         <app-ta-custom-card
                             [cardName]="'Driver & Owner'"
                             [isCardOpen]="true"
-                            [disableAnimation]="disableCardAnimation"
+                            [disableAnimation]="isCardAnimationDisabled"
                             [animationMarginParams]="{
                                 marginTop: '18px',
-                                marginBottom: '22px'
+                                marginBottom: '22px',
                             }"
                         >
                             <!-- Pay Period, Ending In -->
@@ -1228,7 +1228,7 @@
                                             label: 'Pay Period',
                                             isDropdown: true,
                                             isRequired: true,
-                                            dropdownWidthClass: 'w-col-297'
+                                            dropdownWidthClass: 'w-col-297',
                                         }"
                                         [options]="payPeriods"
                                         [activeItem]="selectedDriverPayPeriod"
@@ -1254,7 +1254,7 @@
                                             isDisabled:
                                                 selectedDriverEndingIn?.id ===
                                                 null,
-                                            dropdownWidthClass: 'w-col-308'
+                                            dropdownWidthClass: 'w-col-308',
                                         }"
                                         [options]="endingIns"
                                         [activeItem]="selectedDriverEndingIn"
@@ -1295,7 +1295,7 @@
                                                     'Combined' &&
                                                 this.companyForm.get(
                                                     'loadedAndEmptySameRate'
-                                                ).value
+                                                ).value,
                                         }"
                                     >
                                         <ng-container
@@ -1321,7 +1321,7 @@
                                                 placeholderIcon: 'dollar',
                                                 min: 0,
                                                 max: 10,
-                                                maxLength: 4
+                                                maxLength: 4,
                                             }"
                                         ></app-ta-input>
 
@@ -1340,7 +1340,7 @@
                                                 placeholderIcon: 'dollar',
                                                 min: 0,
                                                 max: 10,
-                                                maxLength: 4
+                                                maxLength: 4,
                                             }"
                                         ></app-ta-input>
 
@@ -1359,7 +1359,7 @@
                                                 placeholderIcon: 'dollar',
                                                 min: 0,
                                                 max: 10,
-                                                maxLength: 4
+                                                maxLength: 4,
                                             }"
                                         ></app-ta-input>
 
@@ -1373,7 +1373,7 @@
                                                 placeholderIcon: 'dollar',
                                                 thousandSeparator: true,
                                                 min: 0,
-                                                max: 5000
+                                                max: 5000,
                                             }"
                                         ></app-ta-input>
 
@@ -1387,7 +1387,7 @@
                                                 placeholderIcon: 'dollar',
                                                 thousandSeparator: true,
                                                 min: 0,
-                                                max: 50000
+                                                max: 50000,
                                             }"
                                         ></app-ta-input>
                                     </div>
@@ -1417,7 +1417,7 @@
                                                     'Combined' &&
                                                 this.companyForm.get(
                                                     'loadedAndEmptySameRate'
-                                                ).value
+                                                ).value,
                                         }"
                                     >
                                         <ng-container
@@ -1443,7 +1443,7 @@
                                                 placeholderIcon: 'dollar',
                                                 min: 0,
                                                 max: 10,
-                                                maxLength: 4
+                                                maxLength: 4,
                                             }"
                                         ></app-ta-input>
 
@@ -1462,7 +1462,7 @@
                                                 placeholderIcon: 'dollar',
                                                 min: 0,
                                                 max: 10,
-                                                maxLength: 4
+                                                maxLength: 4,
                                             }"
                                         ></app-ta-input>
 
@@ -1481,7 +1481,7 @@
                                                 placeholderIcon: 'dollar',
                                                 min: 0,
                                                 max: 10,
-                                                maxLength: 4
+                                                maxLength: 4,
                                             }"
                                         ></app-ta-input>
 
@@ -1495,7 +1495,7 @@
                                                 placeholderIcon: 'dollar',
                                                 thousandSeparator: true,
                                                 min: 0,
-                                                max: 5000
+                                                max: 5000,
                                             }"
                                         ></app-ta-input>
 
@@ -1509,7 +1509,7 @@
                                                 placeholderIcon: 'dollar',
                                                 thousandSeparator: true,
                                                 min: 0,
-                                                max: 50000
+                                                max: 50000,
                                             }"
                                         ></app-ta-input>
                                     </div>
@@ -1651,10 +1651,10 @@
                         <app-ta-custom-card
                             [cardName]="'Accounting'"
                             [isCardOpen]="false"
-                            [disableAnimation]="disableCardAnimation"
+                            [disableAnimation]="isCardAnimationDisabled"
                             [animationMarginParams]="{
                                 marginTop: '18px',
-                                marginBottom: '22px'
+                                marginBottom: '22px',
                             }"
                         >
                             <div class="row row-no-mb">
@@ -1668,7 +1668,7 @@
                                             label: 'Pay Period',
                                             isDropdown: true,
                                             isRequired: true,
-                                            dropdownWidthClass: 'w-col-189'
+                                            dropdownWidthClass: 'w-col-189',
                                         }"
                                         [options]="payPeriods"
                                         [activeItem]="
@@ -1696,7 +1696,7 @@
                                             isDisabled:
                                                 selectedAccountingEndingIn?.id ===
                                                 null,
-                                            dropdownWidthClass: 'w-col-202'
+                                            dropdownWidthClass: 'w-col-202',
                                         }"
                                         [options]="endingIns"
                                         [activeItem]="
@@ -1722,7 +1722,7 @@
                                             placeholderIcon: 'dollar',
                                             thousandSeparator: true,
                                             minLength: 4,
-                                            maxLength: 10
+                                            maxLength: 10,
                                         }"
                                     ></app-ta-input>
                                 </div>
@@ -1734,10 +1734,10 @@
                         <app-ta-custom-card
                             [cardName]="'Company Owner'"
                             [isCardOpen]="false"
-                            [disableAnimation]="disableCardAnimation"
+                            [disableAnimation]="isCardAnimationDisabled"
                             [animationMarginParams]="{
                                 marginTop: '18px',
-                                marginBottom: '22px'
+                                marginBottom: '22px',
                             }"
                         >
                             <div class="row row-no-mb">
@@ -1751,7 +1751,7 @@
                                             label: 'Pay Period',
                                             isDropdown: true,
                                             isRequired: true,
-                                            dropdownWidthClass: 'w-col-189'
+                                            dropdownWidthClass: 'w-col-189',
                                         }"
                                         [options]="payPeriods"
                                         [activeItem]="selectedCompanyPayPeriod"
@@ -1777,7 +1777,7 @@
                                             isDisabled:
                                                 selectedCompanyEndingIn?.id ===
                                                 null,
-                                            dropdownWidthClass: 'w-col-202'
+                                            dropdownWidthClass: 'w-col-202',
                                         }"
                                         [options]="endingIns"
                                         [activeItem]="selectedCompanyEndingIn"
@@ -1801,7 +1801,7 @@
                                             placeholderIcon: 'dollar',
                                             thousandSeparator: true,
                                             minLength: 4,
-                                            maxLength: 10
+                                            maxLength: 10,
                                         }"
                                     ></app-ta-input>
                                 </div>
@@ -1813,10 +1813,10 @@
                         <app-ta-custom-card
                             [cardName]="'Dispatch'"
                             [isCardOpen]="false"
-                            [disableAnimation]="disableCardAnimation"
+                            [disableAnimation]="isCardAnimationDisabled"
                             [animationMarginParams]="{
                                 marginTop: '18px',
-                                marginBottom: '22px'
+                                marginBottom: '22px',
                             }"
                         >
                             <div class="row">
@@ -1830,7 +1830,7 @@
                                             label: 'Pay Period',
                                             isDropdown: true,
                                             isRequired: true,
-                                            dropdownWidthClass: 'w-col-297'
+                                            dropdownWidthClass: 'w-col-297',
                                         }"
                                         [options]="payPeriods"
                                         [activeItem]="selectedDispatchPayPeriod"
@@ -1856,7 +1856,7 @@
                                             isDisabled:
                                                 selectedDispatchEndingIn?.id ===
                                                 null,
-                                            dropdownWidthClass: 'w-col-308'
+                                            dropdownWidthClass: 'w-col-308',
                                         }"
                                         [options]="endingIns"
                                         [activeItem]="selectedDispatchEndingIn"
@@ -1882,7 +1882,7 @@
                                             placeholderIcon: 'dollar',
                                             thousandSeparator: true,
                                             minLength: 4,
-                                            maxLength: 10
+                                            maxLength: 10,
                                         }"
                                     ></app-ta-input>
                                 </div>
@@ -1916,10 +1916,10 @@
                         <app-ta-custom-card
                             [cardName]="'Manager'"
                             [isCardOpen]="false"
-                            [disableAnimation]="disableCardAnimation"
+                            [disableAnimation]="isCardAnimationDisabled"
                             [animationMarginParams]="{
                                 marginTop: '18px',
-                                marginBottom: '22px'
+                                marginBottom: '22px',
                             }"
                         >
                             <div class="row">
@@ -1933,7 +1933,7 @@
                                             label: 'Pay Period',
                                             isDropdown: true,
                                             isRequired: true,
-                                            dropdownWidthClass: 'w-col-297'
+                                            dropdownWidthClass: 'w-col-297',
                                         }"
                                         [options]="payPeriods"
                                         [activeItem]="selectedManagerPayPeriod"
@@ -1959,7 +1959,7 @@
                                             isDisabled:
                                                 selectedManagerEndingIn?.id ===
                                                 null,
-                                            dropdownWidthClass: 'w-col-308'
+                                            dropdownWidthClass: 'w-col-308',
                                         }"
                                         [options]="endingIns"
                                         [activeItem]="selectedManagerEndingIn"
@@ -1985,7 +1985,7 @@
                                             placeholderIcon: 'dollar',
                                             thousandSeparator: true,
                                             minLength: 4,
-                                            maxLength: 10
+                                            maxLength: 10,
                                         }"
                                     ></app-ta-input>
                                 </div>
@@ -2017,10 +2017,10 @@
                         <app-ta-custom-card
                             [cardName]="'Recruiting'"
                             [isCardOpen]="false"
-                            [disableAnimation]="disableCardAnimation"
+                            [disableAnimation]="isCardAnimationDisabled"
                             [animationMarginParams]="{
                                 marginTop: '18px',
-                                marginBottom: '22px'
+                                marginBottom: '22px',
                             }"
                         >
                             <div class="row row-no-mb">
@@ -2034,7 +2034,7 @@
                                             label: 'Pay Period',
                                             isDropdown: true,
                                             isRequired: true,
-                                            dropdownWidthClass: 'w-col-189'
+                                            dropdownWidthClass: 'w-col-189',
                                         }"
                                         [options]="payPeriods"
                                         [activeItem]="selectedRecPayPeriod"
@@ -2060,7 +2060,7 @@
                                             isDisabled:
                                                 selectedRecEndingIn?.id ===
                                                 null,
-                                            dropdownWidthClass: 'w-col-202'
+                                            dropdownWidthClass: 'w-col-202',
                                         }"
                                         [options]="endingIns"
                                         [activeItem]="selectedRecEndingIn"
@@ -2084,7 +2084,7 @@
                                             placeholderIcon: 'dollar',
                                             thousandSeparator: true,
                                             minLength: 4,
-                                            maxLength: 10
+                                            maxLength: 10,
                                         }"
                                     ></app-ta-input>
                                 </div>
@@ -2096,10 +2096,10 @@
                         <app-ta-custom-card
                             [cardName]="'Repair'"
                             [isCardOpen]="false"
-                            [disableAnimation]="disableCardAnimation"
+                            [disableAnimation]="isCardAnimationDisabled"
                             [animationMarginParams]="{
                                 marginTop: '18px',
-                                marginBottom: '22px'
+                                marginBottom: '22px',
                             }"
                         >
                             <div class="row row-no-mb">
@@ -2113,7 +2113,7 @@
                                             label: 'Pay Period',
                                             isDropdown: true,
                                             isRequired: true,
-                                            dropdownWidthClass: 'w-col-189'
+                                            dropdownWidthClass: 'w-col-189',
                                         }"
                                         [options]="payPeriods"
                                         [activeItem]="selectedRepairPayPeriod"
@@ -2139,7 +2139,7 @@
                                             isDisabled:
                                                 selectedRepairEndingIn?.id ===
                                                 null,
-                                            dropdownWidthClass: 'w-col-202'
+                                            dropdownWidthClass: 'w-col-202',
                                         }"
                                         [options]="endingIns"
                                         [activeItem]="selectedRepairEndingIn"
@@ -2163,7 +2163,7 @@
                                             placeholderIcon: 'dollar',
                                             thousandSeparator: true,
                                             minLength: 4,
-                                            maxLength: 10
+                                            maxLength: 10,
                                         }"
                                     ></app-ta-input>
                                 </div>
@@ -2175,10 +2175,10 @@
                         <app-ta-custom-card
                             [cardName]="'Safety'"
                             [isCardOpen]="false"
-                            [disableAnimation]="disableCardAnimation"
+                            [disableAnimation]="isCardAnimationDisabled"
                             [animationMarginParams]="{
                                 marginTop: '18px',
-                                marginBottom: '22px'
+                                marginBottom: '22px',
                             }"
                         >
                             <div class="row row-no-mb">
@@ -2192,7 +2192,7 @@
                                             label: 'Pay Period',
                                             isDropdown: true,
                                             isRequired: true,
-                                            dropdownWidthClass: 'w-col-189'
+                                            dropdownWidthClass: 'w-col-189',
                                         }"
                                         [options]="payPeriods"
                                         [activeItem]="selectedSafetyPayPeriod"
@@ -2218,7 +2218,7 @@
                                             isDisabled:
                                                 selectedSafetyEndingIn?.id ===
                                                 null,
-                                            dropdownWidthClass: 'w-col-202'
+                                            dropdownWidthClass: 'w-col-202',
                                         }"
                                         [options]="endingIns"
                                         [activeItem]="selectedSafetyEndingIn"
@@ -2242,7 +2242,7 @@
                                             placeholderIcon: 'dollar',
                                             thousandSeparator: true,
                                             minLength: 4,
-                                            maxLength: 10
+                                            maxLength: 10,
                                         }"
                                     ></app-ta-input>
                                 </div>
@@ -2254,10 +2254,10 @@
                         <app-ta-custom-card
                             [cardName]="'Other'"
                             [isCardOpen]="false"
-                            [disableAnimation]="disableCardAnimation"
+                            [disableAnimation]="isCardAnimationDisabled"
                             [animationMarginParams]="{
                                 marginTop: '18px',
-                                marginBottom: '22px'
+                                marginBottom: '22px',
                             }"
                         >
                             <div class="row row-no-mb">
@@ -2271,7 +2271,7 @@
                                             label: 'Pay Period',
                                             isDropdown: true,
                                             isRequired: true,
-                                            dropdownWidthClass: 'w-col-189'
+                                            dropdownWidthClass: 'w-col-189',
                                         }"
                                         [options]="payPeriods"
                                         [activeItem]="selectedOtherPayPeriod"
@@ -2297,7 +2297,7 @@
                                             isDisabled:
                                                 selectedOtherEndingIn?.id ===
                                                 null,
-                                            dropdownWidthClass: 'w-col-202'
+                                            dropdownWidthClass: 'w-col-202',
                                         }"
                                         [options]="endingIns"
                                         [activeItem]="selectedOtherEndingIn"
@@ -2321,7 +2321,7 @@
                                             placeholderIcon: 'dollar',
                                             thousandSeparator: true,
                                             minLength: 4,
-                                            maxLength: 10
+                                            maxLength: 10,
                                         }"
                                     ></app-ta-input>
                                 </div>

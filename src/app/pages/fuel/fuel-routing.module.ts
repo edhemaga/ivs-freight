@@ -3,7 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 
 // components
 import { FuelTableComponent } from '@pages/fuel/pages/fuel-table/fuel-table.component';
-import { FuelDetailsResolver } from '@pages/fuel/resolvers/fuel-details.resolver';
+import { FuelDetailsResolver } from '@pages/fuel/resolvers';
 
 const routes: Routes = [
     {

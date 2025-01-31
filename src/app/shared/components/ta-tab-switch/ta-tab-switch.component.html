@@ -1,5 +1,5 @@
 <div
-    class="tab-switch-holder {{ type }} {{customClass}}"
+    class="tab-switch-holder {{ type }} {{ customClass }}"
     [ngClass]="{ 'dashboard-height': dashboardHeight, disabled: isDisabled }"
     [ngStyle]="{ 'margin-top': isMarginTopDisabled ? 0 : '' }"
 >
@@ -19,12 +19,18 @@
     >
         >
         <div class="d-flex align-items-center tab-switch-text" mainContent>
-            <div
-                class="tab-switch-name"
-                [ngClass]="{ 'ta-font-bold tab-switch-name-big': isBold }"
-            >
-                {{ item.name }}
-            </div>
+            @if (item.tabTemplate) {
+                <ng-container
+                    *ngTemplateOutlet="item.tabTemplate"
+                ></ng-container>
+            } @else {
+                <div
+                    class="tab-switch-name"
+                    [ngClass]="{ 'ta-font-bold tab-switch-name-big': isBold }"
+                >
+                    {{ item.name }}
+                </div>
+            }
             <div class="tab-counter" *ngIf="item.counter">
                 <div class="counter-number">{{ item.counter }}</div>
             </div>
@@ -51,7 +57,7 @@
         class="slide-active-holder {{ type }}"
         [ngStyle]="{
             width: hoverStyle.width + 'px',
-            left: hoverStyle.x + 'px'
+            left: hoverStyle.x + 'px',
         }"
     ></div>
 </div>
