@@ -3217,6 +3217,32 @@
                                         </div>
                                     </ng-container>
 
+                                    <!-- OPEN HOURS COLUMN -->
+
+                                    @if (column.ngTemplate === 'open-hours') {
+                                        <div
+                                            class="td-content"
+                                            [ngStyle]="{
+                                                width: column.width + 'px',
+                                                'min-width.px':
+                                                    column?.minWidth ?? 'unset',
+                                            }"
+                                        >
+                                            <app-ta-open-hours-dropdown
+                                                [dropdownConfig]="{
+                                                    rowId: row?.id,
+                                                    width: column?.width,
+                                                    openHours:
+                                                        row[column.field]
+                                                            ?.openHours,
+                                                    openHoursToday:
+                                                        row[column.field]
+                                                            ?.openHoursToday,
+                                                }"
+                                            ></app-ta-open-hours-dropdown>
+                                        </div>
+                                    }
+
                                     <!-- PROGRESS RANGE COLUMN -->
 
                                     <ng-container
@@ -6054,11 +6080,7 @@
 
                                     <!-- OPEN HOURS COLUMN -->
 
-                                    <ng-container
-                                        *ngIf="
-                                            column.ngTemplate === 'open-hours'
-                                        "
-                                    >
+                                    @if (column.ngTemplate === 'open-hours') {
                                         <div
                                             class="td-content"
                                             [ngStyle]="{
@@ -6068,7 +6090,7 @@
                                             }"
                                         >
                                             <app-ta-open-hours-dropdown
-                                                [componentData]="{
+                                                [dropdownConfig]="{
                                                     rowId: row?.id,
                                                     width: column?.width,
                                                     openHours:
@@ -6080,7 +6102,7 @@
                                                 }"
                                             ></app-ta-open-hours-dropdown>
                                         </div>
-                                    </ng-container>
+                                    }
 
                                     <!-- PROGRESS RANGE COLUMN -->
 

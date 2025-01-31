@@ -1,5 +1,5 @@
 <div
-    [ngStyle]="{ 'width.px': componentData?.width ?? '100%' }"
+    [ngStyle]="{ 'width.px': dropdownConfig?.width ?? '100%' }"
     #openHoursPop="ngbPopover"
     [ngbPopover]="openHoursPopover"
     container="body"
@@ -8,7 +8,7 @@
     triggers="manual"
     [autoClose]="'outside'"
     (hidden)="
-        openHoursDropdownActiveId === componentData?.rowId
+        openHoursDropdownActiveId === dropdownConfig?.rowId
             ? (openHoursDropdownActiveId = -1)
             : {}
     "
@@ -17,7 +17,7 @@
     <div
         class="d-flex align-items-center open-hours-container"
         [ngClass]="{
-            active: openHoursDropdownActiveId === componentData?.rowId,
+            active: openHoursDropdownActiveId === dropdownConfig?.rowId,
         }"
         ngbTooltip
         mainTooltip="Open Hours"
@@ -27,14 +27,14 @@
         position="bottom"
     >
         @if (
-            componentData?.openHoursToday?.status !==
+            dropdownConfig?.openHoursToday?.status !==
             openHoursDropdownStringEnum.CLOSED
         ) {
             <svg-icon
                 class="open-hours-icon"
                 [ngClass]="{
                     closing:
-                        componentData?.openHoursToday?.status ===
+                        dropdownConfig?.openHoursToday?.status ===
                         openHoursDropdownStringEnum.CLOSING_SOON,
                 }"
                 [src]="openHoursDropdownSvgRoutes.circleRoute"
@@ -49,25 +49,30 @@
             class="m-0 text-color-black text-size-14"
             [ngClass]="{
                 'ta-font-semi-bold':
-                    componentData?.openHoursToday?.status !==
+                    dropdownConfig?.openHoursToday?.status !==
                     openHoursDropdownStringEnum.CLOSED,
             }"
         >
             {{
-                componentData?.openHoursToday?.status !==
+                dropdownConfig?.openHoursToday?.status !==
                 openHoursDropdownStringEnum.CLOSED
-                    ? componentData?.openHoursToday?.status
-                    : 'Opens'
+                    ? dropdownConfig?.openHoursToday?.status
+                    : dropdownConfig?.openHoursToday?.info
             }}
+
+            <!--  {{ // w8 for back
+                dropdownConfig?.openHoursToday?.status ===
+                openHoursDropdownStringEnum.CLOSING_SOON
+                    ? dropdownConfig?.openHoursToday?.info
+                    : ''
+            }} -->
         </p>
     </div>
 </div>
 
 <ng-template #openHoursPopover let-data="data">
     <div class="d-flex flex-column open-hours-dropdown">
-        <ng-container
-            *ngFor="let workingHourItem of data; trackBy: trackByIdentity"
-        >
+        @for (workingHourItem of data; track workingHourItem?.workingDays) {
             <div class="d-flex flex-column open-hours-dropdown-item">
                 <p class="m-0 ta-font-bold text-color-white-4 text-size-11">
                     {{ workingHourItem?.workingDays }}
@@ -77,6 +82,6 @@
                     {{ workingHourItem?.workingHours }}
                 </span>
             </div>
-        </ng-container>
+        }
     </div>
 </ng-template>

@@ -1519,10 +1519,10 @@ export class RepairTableComponent
             tableAddress: address?.address,
             tableShopServiceType: shopServiceType?.name,
             tableShopServices: serviceTypes,
-            tableOpenHours: null /* {
+            tableOpenHours: {
                 openHours,
                 openHoursToday,
-            } */,
+            },
             tableRepairCountBill: bill,
             tableRepairCountOrder: order,
             tableBankDetailsBankName: bankResponse?.name,
