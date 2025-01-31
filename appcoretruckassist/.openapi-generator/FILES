@@ -847,6 +847,7 @@ model/renewCdlCommand.ts
 model/reorderDispatchCommand.ts
 model/reorderDispatchLoadsCommand.ts
 model/reorderDispatchesCommand.ts
+model/reorderMilesStopsCommand.ts
 model/repairAutocompleteDescriptionResponse.ts
 model/repairByStateListResponse.ts
 model/repairByStateResponse.ts
