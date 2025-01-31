@@ -28,9 +28,7 @@ import { RepairShopResponse } from 'appcoretruckassist';
     ],
 })
 export class RepairShopDetailsOpenHoursCardComponent {
-    @Input() set cardData(data: RepairShopResponse) {
-        console.log('card data', data);
-    } // w8ing for back
+    @Input() set cardData(data: RepairShopResponse) {} // w8ing for back
 
     public repairShopDetailsSvgRoutes = RepairShopDetailsSvgRoutes;
 
