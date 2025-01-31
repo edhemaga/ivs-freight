@@ -103,7 +103,7 @@ import { AddressMixin } from '@shared/mixins/address/address.mixin';
     ],
 })
 export class NavigationProfileUpdateModalComponent
-    extends AddressMixin(class {})
+    extends AddressMixin(class { addressService!: AddressService; })
     implements OnInit, OnDestroy
 {
     public destroy$ = new Subject<void>();

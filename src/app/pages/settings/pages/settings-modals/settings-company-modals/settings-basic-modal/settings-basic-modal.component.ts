@@ -131,7 +131,7 @@ import { AddressMixin } from '@shared/mixins/address/address.mixin';
     ],
 })
 export class SettingsBasicModalComponent
-    extends AddressMixin(class {})
+    extends AddressMixin(class { addressService!: AddressService; })
     implements OnDestroy, OnInit
 {
     @Input() editData: EditData;

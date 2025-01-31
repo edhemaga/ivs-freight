@@ -47,7 +47,7 @@ import { AddressService } from '@shared/services/address.service';
     ],
 })
 export class TaModalTablePreviousAddressesComponent extends AddressMixin(
-    class {}
+    class { addressService!: AddressService; }
 ) {
     @Input() modalTableForm: UntypedFormGroup;
     @Input() arrayName: TaModalTableStringEnum;

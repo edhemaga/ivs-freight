@@ -56,7 +56,7 @@ import { AddressMixin } from '@shared/mixins/address/address.mixin';
     styleUrls: ['./confirmation-activation-modal.component.scss'],
 })
 export class ConfirmationActivationModalComponent
-    extends AddressMixin(class {})
+    extends AddressMixin(class { addressService!: AddressService; })
     implements OnInit
 {
     @Input() editData: ConfirmationActivation;

@@ -70,7 +70,7 @@ import { AddressMixin } from '@shared/mixins/address/address.mixin';
     ],
 })
 export class FuelStopModalComponent
-    extends AddressMixin(class {})
+    extends AddressMixin(class { addressService!: AddressService; })
     implements OnDestroy, OnInit
 {
     @Input() editData: any;
