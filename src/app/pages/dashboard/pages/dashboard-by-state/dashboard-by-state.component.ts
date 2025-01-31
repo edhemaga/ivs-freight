@@ -154,24 +154,7 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
         item.name;
 
     public resetSelectedValues(): void {
-        // for (let i = 0; i < this.selectedByStateList.length; i++) {
-        //     this.barChart?.removeMultiBarData(this.selectedByStateList[i], true);
-        // }
-
         this.selectedByStateList = [];
-
-        // this.barChartValues = {
-        //     defaultBarValues: {
-        //         topRatedBarValues: [],
-        //         otherBarValues: [],
-        //     },
-        //     defaultBarPercentages: {
-        //         topRatedBarPercentage: [],
-        //         otherBarPercentage: [],
-        //     },
-        //     selectedBarValues: [],
-        //     selectedBarPercentages: [],
-        // };
 
         this.clearSearchValue = true;
     }
@@ -429,17 +412,6 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
             0,
             byStateListItem
         );
-    }
-
-    public handleHoverSelected(
-        index: number,
-        removeHover: boolean = false
-    ): void {
-        // if (!removeHover) {
-        //     this.barChart?.hoverBarChart(this.selectedByStateList[index]);
-        // } else {
-        //     this.barChart?.hoverBarChart(null);
-        // }
     }
 
     private getConstantData(): void {
