@@ -112,17 +112,26 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
     public ownerCardOpened: boolean = true;
     public featureNumber: number = 0;
 
+    public fuelConsumptionChartData!: TruckFuelConsumptionResponse;
     public fuelConsumptionChartConfig!: IChartConfiguration;
     public fuelConsumptionChartLegend!: ChartLegendProperty[];
     public fuelConsumptionChartTabs: Tabs[] = ChartHelper.generateTimeTabs();
+    public fuelConsumptionLegendHighlightedBackground!: boolean;
+    public fuelConsumptionLegendTitle!: string;
 
+    public revenueChartData!: TruckRevenueResponse;
     public revenueChartConfig!: IChartConfiguration;
     public revenueChartLegend!: ChartLegendProperty[];
     public revenueChartTabs: Tabs[] = ChartHelper.generateTimeTabs();
+    public revenueLegendHighlightedBackground!: boolean;
+    public revenueLegendTitle!: string;
 
+    public expensesChartData!: TruckExpensesResponse;
     public expensesChartConfig!: IChartConfiguration;
-    public expensesChartChartLegend!: ChartLegendProperty[];
-    public expensesChartChartTabs: Tabs[] = ChartHelper.generateTimeTabs();
+    public expensesChartLegend!: ChartLegendProperty[];
+    public expensesChartTabs: Tabs[] = ChartHelper.generateTimeTabs();
+    public expensesLegendHighlightedBackground!: boolean;
+    public expensesLegendTitle!: string;
 
     public performance: TruckPerformanceResponse;
     public isWideScreen: boolean = false;
@@ -228,6 +237,7 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
                 if (timeFilter && this.fuelConsumptionChartTabs[timeFilter - 1])
                     this.fuelConsumptionChartTabs[timeFilter - 1].checked =
                         true;
+                this.fuelConsumptionChartData = response;
                 this.fuelConsumptionChartConfig = {
                     ...TruckDetailsChartsConfiguration.FUEL_CHART_CONFIG,
                     chartData:
@@ -251,6 +261,7 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
             .subscribe((response: TruckRevenueResponse) => {
                 if (timeFilter && this.revenueChartTabs[timeFilter - 1])
                     this.revenueChartTabs[timeFilter - 1].checked = true;
+                this.revenueChartData = response;
                 this.revenueChartConfig = {
                     ...TruckDetailsChartsConfiguration.REVENUE_CHART_CONFIG,
                     chartData:
@@ -272,8 +283,9 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
             .getExpenses(this.truck.id, timeFilter || 1)
             .pipe(takeUntil(this.destroy$))
             .subscribe((response: TruckExpensesResponse) => {
-                if (timeFilter && this.expensesChartChartTabs[timeFilter - 1])
-                    this.expensesChartChartTabs[timeFilter - 1].checked = true;
+                if (timeFilter && this.expensesChartLegend[timeFilter - 1])
+                    this.expensesChartTabs[timeFilter - 1].checked = true;
+                this.expensesChartData = response;
                 this.expensesChartConfig = {
                     ...TruckDetailsChartsConfiguration.EXPENSES_CHART_CONFIG,
                     chartData:
@@ -283,7 +295,7 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
                             timeFilter
                         ),
                 };
-                this.expensesChartChartLegend =
+                this.expensesChartLegend =
                     ChartLegendConfiguration.truckExpensesConfiguration(
                         response
                     );
@@ -299,6 +311,7 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
     public identity(index: number, _: any): number {
         return index;
     }
+
     public getTruckDropdown(): void {
         this.truckDropDowns = this.truckMinimalListQuery
             .getAll()
@@ -441,5 +454,85 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
 
     public changeTabRevenue(event: TabOptions): void {
         this.getRevenue(event.id);
+    }
+
+    public setFuelConsumptionLegendOnHover(index: number | null): void {
+
+        const {
+            hasHighlightedBackground,
+            title
+        } =
+            ChartHelper.setChartLegend(
+                index,
+                this.fuelConsumptionChartConfig?.
+                    chartData?.
+                    labels
+            );
+
+        this.fuelConsumptionLegendHighlightedBackground = hasHighlightedBackground;
+        this.fuelConsumptionLegendTitle = title;
+
+        const dataForLegend =
+            (isNaN(index) || index < 0) ?
+                this.fuelConsumptionChartData :
+                this.fuelConsumptionChartData?.
+                    truckFuelConsumptionCharts[index];
+
+        this.fuelConsumptionChartLegend =
+            ChartLegendConfiguration
+                .truckFuelConsumptionConfiguration(dataForLegend);
+    }
+
+    public setExpensesRevenueLegendOnHover(index: number | null): void {
+        const {
+            hasHighlightedBackground,
+            title
+        } =
+            ChartHelper.setChartLegend(
+                index,
+                this.expensesChartConfig.chartData.labels
+            );
+
+        this.expensesLegendHighlightedBackground = hasHighlightedBackground;
+        this.expensesLegendTitle = title;
+
+        if (index === null || index === undefined) {
+            this.expensesChartLegend = ChartLegendConfiguration
+                .truckExpensesConfiguration(
+                    this.expensesChartData
+                );
+            return;
+        }
+
+        const dataForLegend =
+            (isNaN(index) || index < 0) ?
+                this.expensesChartData :
+                this.expensesChartData?.
+                    truckExpensesCharts[index];
+
+        this.expensesChartLegend = ChartLegendConfiguration
+            .truckExpensesConfiguration(dataForLegend);
+    }
+
+    public setRevenueLegendOnHover(index: number | null): void {
+        const {
+            hasHighlightedBackground,
+            title
+        } =
+            ChartHelper.setChartLegend(
+                index,
+                this.revenueChartConfig.chartData.labels
+            );
+        this.revenueLegendHighlightedBackground = hasHighlightedBackground;
+        this.revenueLegendTitle = title;
+
+        const dataForLegend =
+            (isNaN(index) || index < 0) ?
+                this.revenueChartData :
+                this.revenueChartData?.
+                    truckRevenueCharts[index];
+
+        this.revenueChartLegend = ChartLegendConfiguration
+            .truckRevenueConfiguration(dataForLegend);
     }
 }

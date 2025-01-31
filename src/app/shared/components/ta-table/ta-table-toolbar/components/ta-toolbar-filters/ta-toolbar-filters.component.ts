@@ -468,6 +468,10 @@ export class TaToolbarFiltersComponent implements OnInit, OnChanges, OnDestroy {
         if (this.activeTableData?.closedArray)
             this.activeTableData.closedArray.selectedFilter =
                 data == TableStringEnum.CLOSED_ARRAY || false;
+        
+        if (this.activeTableData?.fuelIncompleteArray)
+            this.activeTableData.fuelIncompleteArray.selectedFilter = 
+                data == TableStringEnum.FUEL_INCOMPLETE_ARRAY || false;
 
         if (this.activeTableData?.driverArhivedArray)
             this.activeTableData.driverArhivedArray.selectedFilter =
@@ -514,6 +518,7 @@ export class TaToolbarFiltersComponent implements OnInit, OnChanges, OnDestroy {
                 this.customerFilter.selectedFilter = false;
             }
         }
+
         this.tableSevice.sendCurrentSetTableFilter(
             this.customerFilter?.filteredArray.length
                 ? this.customerFilter

@@ -2286,6 +2286,24 @@ table.truckassist-table-body-style {
                 }
             }
 
+            &:hover {
+                .columns-container {
+                    .not-pined-columns {
+                        .not-pined-td {
+                            .td-content {
+                                .column-text-svg-transaction-incomplete {
+                                    svg {
+                                        path {
+                                            fill: $ta-red-11 !important;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
             // Attachment, Media And Insurance Dropdown
             .attachemnt-dropdown,
             .media-dropdown,
@@ -2816,6 +2834,20 @@ table.truckassist-table-body-style {
                 width: 100% !important;
                 max-height: 1000px;
                 transition: max-height 0.25s ease-in-out;
+            }
+        }
+
+        tr, tr:hover {
+            .columns-container {
+                .not-pined-columns {
+                    .not-pined-td {
+                        .td-content {
+                            .column-text-red {
+                                color: $ta-red-11 !important;
+                            }
+                        }
+                    }
+                }
             }
         }
 
@@ -3456,4 +3488,8 @@ table.truckassist-table-body-style {
         right: -3px;
         bottom: -3px;
     }
+}
+
+.lh-1 {
+    line-height: 1px;
 }

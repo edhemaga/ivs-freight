@@ -51,11 +51,6 @@ export class RepairShopDetailsRepairExpenseCardComponent implements OnDestroy {
 
     public _cardData: RepairShopResponse;
 
-    /* TODO - set chart types */
-    // public barChartConfig: any;
-    // public barChartAxes: any;
-    // public barChartLegend: any[] = [];
-
     public repairExpensesChart: any;
 
     public repairCall: any;
@@ -142,15 +137,7 @@ export class RepairShopDetailsRepairExpenseCardComponent implements OnDestroy {
         this.cdRef.detectChanges();
     }
 
-    public chartHovered(isHovered: boolean): void {
-        // this.repairExpensesChart.hoveringStatus = isHovered;
-    }
-
-    public onTabChange(tab: Tabs): void {
-        /* const chartType = this.repairExpensesChart?.detailsTimePeriod(tab.name);
-
-      this.getRepairShopChartData(this._cardData?.id, chartType); */
-    }
+    public onTabChange(tab: Tabs): void { }
 
     ngOnDestroy(): void {
         this.destroy$.next();

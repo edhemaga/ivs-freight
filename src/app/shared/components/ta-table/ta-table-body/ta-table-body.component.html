@@ -779,22 +779,31 @@
                                                 'avatar-is-owner': row.isOwner,
                                             }"
                                         >
-                                            <ng-container
-                                                [ngTemplateOutlet]="
-                                                    avatarColumn
-                                                "
-                                                [ngTemplateOutletContext]="{
-                                                    row: row,
-                                                    column: column,
-                                                }"
-                                            ></ng-container>
+                                            <!-- @if (row.isIncompleteFuelTransaction && column.name === 'Driver') {
+                                                <svg-icon
+                                                    class="lh-1 mr-1 column-text-svg-transaction-incomplete"
+                                                    [src]="
+                                                        tableBodySvgRoutes.fuelIncompleteTransactionSvgRoute
+                                                    "
+                                                ></svg-icon>
+                                            } @else { -->
+                                                <ng-container
+                                                    [ngTemplateOutlet]="
+                                                        avatarColumn
+                                                    "
+                                                    [ngTemplateOutletContext]="{
+                                                        row: row,
+                                                        column: column,
+                                                    }"
+                                                ></ng-container>
 
-                                            <img
-                                                class="avatar-owner"
-                                                alt="avatar"
-                                                *ngIf="row.isOwner"
-                                                src="assets/svg/truckassist-table/owner-badge.svg"
-                                            />
+                                                <img
+                                                    class="avatar-owner"
+                                                    alt="avatar"
+                                                    *ngIf="row.isOwner"
+                                                    src="assets/svg/truckassist-table/owner-badge.svg"
+                                                />
+                                            <!-- } -->
                                         </div>
 
                                         <div
@@ -3762,29 +3771,39 @@
                                         }"
                                         class="td-content"
                                     >
-                                        <div
-                                            class="avatar-container"
-                                            [ngClass]="{
-                                                'avatar-is-owner': row.isOwner,
-                                            }"
-                                        >
-                                            <ng-container
-                                                [ngTemplateOutlet]="
-                                                    avatarColumn
+                                        <!-- @if (row.isIncompleteFuelTransaction && column.name === 'Driver') {
+                                            <svg-icon
+                                                class="lh-1 mr-1 column-text-svg-transaction-incomplete"
+                                                [src]="
+                                                    tableBodySvgRoutes.fuelIncompleteTransactionSvgRoute
                                                 "
-                                                [ngTemplateOutletContext]="{
-                                                    row: row,
-                                                    column: column,
+                                            ></svg-icon>
+                                        } @else { -->
+                                            <div
+                                                class="avatar-container"
+                                                [ngClass]="{
+                                                    'avatar-is-owner': row.isOwner,
                                                 }"
-                                            ></ng-container>
+                                            >
+                                                
+                                                <ng-container
+                                                    [ngTemplateOutlet]="
+                                                        avatarColumn
+                                                    "
+                                                    [ngTemplateOutletContext]="{
+                                                        row: row,
+                                                        column: column,
+                                                    }"
+                                                ></ng-container>
 
-                                            <img
-                                                class="avatar-owner"
-                                                alt="avatar"
-                                                *ngIf="row.isOwner"
-                                                src="assets/svg/truckassist-table/owner-badge.svg"
-                                            />
-                                        </div>
+                                                <img
+                                                    class="avatar-owner"
+                                                    alt="avatar"
+                                                    *ngIf="row.isOwner"
+                                                    src="assets/svg/truckassist-table/owner-badge.svg"
+                                                />
+                                            </div>
+                                        <!-- } -->
                                         <span
                                             (click)="goToDetails(column, row)"
                                             [ngClass]="{
@@ -5202,12 +5221,16 @@
                                                     column?.minWidth ?? 'unset',
                                             }"
                                         >
-                                            <ng-container
-                                                *ngIf="
-                                                    row[column.field] ===
-                                                    'Hazardous'
-                                                "
-                                            >
+                                            @if (row.isIncompleteFuelTransaction && column.name === 'Truck') {
+                                                <svg-icon
+                                                    class="lh-1 mr-1 column-text-svg-transaction-incomplete"
+                                                    [src]="
+                                                        tableBodySvgRoutes.fuelIncompleteTransactionSvgRoute
+                                                    "
+                                                ></svg-icon>
+                                            }
+                                            
+                                            @if (row[column.field] === 'Hazardous') {
                                                 <svg-icon
                                                     class="d-flex align-items-center"
                                                     [ngStyle]="{
@@ -5216,7 +5239,7 @@
                                                     src="assets/svg/common/ic_hazardous.svg"
                                                 >
                                                 </svg-icon>
-                                            </ng-container>
+                                            }
 
                                             <svg-icon
                                                 *ngIf="
@@ -5245,6 +5268,9 @@
                                                             'Unlimited',
                                                     'align-end':
                                                         column.isJustifyEnd,
+                                                    'column-text-red':
+                                                        row.isIncompleteFuelTransaction &&
+                                                        column.name === 'Truck'
                                                 }"
                                                 [innerHtml]="
                                                     row[column.field]

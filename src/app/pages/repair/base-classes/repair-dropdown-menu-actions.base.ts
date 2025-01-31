@@ -99,12 +99,6 @@ export abstract class RepairDropdownMenuActionsBase extends DropdownMenuActionsB
                 this.viewData.sort(
                     (a, b) => Number(b.isFavorite) - Number(a.isFavorite)
                 );
-
-                const favoritedRepairShop = this.viewData.find(
-                    (item) => item.id === repairShopId
-                );
-
-                this.updateMapItem(favoritedRepairShop);
             });
     }
 
@@ -127,7 +121,4 @@ export abstract class RepairDropdownMenuActionsBase extends DropdownMenuActionsB
 
         super.handleSharedDropdownMenuActions(adjustedEvent, tableType);
     }
-
-    // protected abstract - dependency
-    protected abstract updateMapItem<T>(repairShop?: T): void;
 }

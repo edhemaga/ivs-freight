@@ -2,12 +2,15 @@
 
 .legend {
     &-title {
-        margin: 4px auto;
+        margin: 6px;
+        height: 26px;
+        line-height: 26px;
         border-bottom: 1px solid $bw-9;
     }
     &-wrapper {
         width: 100%;
-        margin: 6px 6px auto 6px;
+        min-height: 46px;
+        padding: 4px 6px;
 
         .circle-indicator {
             height: 10px;
@@ -26,5 +29,5 @@
 
 .colored-background {
     background-color: $bw2;
-    padding: 4px 6px;
+    padding: 0;
 }
