@@ -77,8 +77,8 @@
                     [receivedAddressList]="addressList"
                     [receivedAddressData]="addressData"
                     (selectedAddress)="onHandleAddress($event)"
-                    (sentAddressData)="onAddressChange($event)"
-                    (sentAddressValue)="getAddressData($event)"
+                    (sentAddressData)="onAddressChange($event, addressService)"
+                    (sentAddressValue)="getAddressData($event, addressService)"
                 ></app-ca-input-address-dropdown>
                 <app-ca-input
                     formControlName="addressUnit"

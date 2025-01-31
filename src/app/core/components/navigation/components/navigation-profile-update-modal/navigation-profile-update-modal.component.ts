@@ -13,7 +13,6 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
 import {
     Subject,
     takeUntil,
-    map,
     tap,
     filter,
     switchMap,
@@ -48,20 +47,17 @@ import {
     CaModalButtonComponent,
     CaModalComponent,
     CaUploadFilesComponent,
-    CaInputAddressDropdownComponent
+    CaInputAddressDropdownComponent,
 } from 'ca-components';
 import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
 
 // models
 import {
     AddressEntity,
-    AddressResponse,
     SignInResponse,
     UpdateUserCommand,
     UserResponse,
 } from 'appcoretruckassist';
-import { AddressListResponse } from '@ca-shared/models/address-list-response.model';
-import { AddressProperties } from '@shared/components/ta-input-address-dropdown/models/address-properties';
 
 // utils
 import { MethodsGlobalHelper } from '@shared/utils/helpers/methods-global.helper';
@@ -75,6 +71,9 @@ import { ModalButtonType } from '@shared/enums';
 
 // Svg routes
 import { SharedSvgRoutes } from '@shared/utils/svg-routes';
+
+// mixin
+import { AddressMixin } from '@shared/mixins/address/address.mixin';
 
 @Component({
     selector: 'app-navigation-profile-update-modal',
@@ -104,9 +103,10 @@ import { SharedSvgRoutes } from '@shared/utils/svg-routes';
     ],
 })
 export class NavigationProfileUpdateModalComponent
+    extends AddressMixin(class {})
     implements OnInit, OnDestroy
 {
-    private destroy$ = new Subject<void>();
+    public destroy$ = new Subject<void>();
 
     public uploadOptionsConstants = NavigationDataConstants.UPLOAD_OPTIONS;
 
@@ -128,8 +128,6 @@ export class NavigationProfileUpdateModalComponent
     public svgRoutes = SharedSvgRoutes;
     public modalButtonType = ModalButtonType;
     public displayName: string;
-    public addressList: AddressListResponse;
-    public addressData: AddressResponse;
 
     constructor(
         private formBuilder: UntypedFormBuilder,
@@ -139,8 +137,10 @@ export class NavigationProfileUpdateModalComponent
         private inputService: TaInputService,
         private userProfileUpdateService: UserProfileUpdateService,
         private formService: FormService,
-        private addressService: AddressService
-    ) {}
+        public addressService: AddressService
+    ) {
+        super()
+    }
 
     ngOnInit() {
         this.createForm();
@@ -405,24 +405,6 @@ export class NavigationProfileUpdateModalComponent
             .subscribe((isFormChange: boolean) => {
                 this.isFormDirty = isFormChange;
             });
-    }
-
-    public onAddressChange({
-        query,
-        searchLayers,
-        closedBorder,
-    }: AddressProperties): void {
-        this.addressService
-            .getAddresses(query, searchLayers, closedBorder)
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((res) => (this.addressList = res));
-    }
-
-    public getAddressData(address: string): void {
-        this.addressService
-            .getAddressInfo(address)
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((res) => (this.addressData = res));
     }
 
     ngOnDestroy(): void {

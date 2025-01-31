@@ -118,7 +118,7 @@
         </div>
         <div class="row last-row">
             <div class="col-12">
-                <app-ta-input-address-dropdown
+                <app-ca-input-address-dropdown
                     formControlName="address"
                     [inputConfig]="{
                         name: 'Address',
@@ -138,7 +138,11 @@
                     [placeholderType]="'longAddress'"
                     [activeAddress]="selectedAddress"
                     (selectedAddress)="onHandleAddress($event)"
-                ></app-ta-input-address-dropdown>
+                    [receivedAddressList]="addressList"
+                    [receivedAddressData]="addressData"
+                    (sentAddressData)="onAddressChange($event, addressService)"
+                    (sentAddressValue)="getAddressData($event, addressService)"
+                ></app-ca-input-address-dropdown>
             </div>
         </div>
         <div class="ta-card-body-overflow-none">
