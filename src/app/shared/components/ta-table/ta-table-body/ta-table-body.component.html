@@ -5203,12 +5203,8 @@
                                                     "
                                                 ></svg-icon>
                                             }
-                                            <ng-container
-                                                *ngIf="
-                                                    row[column.field] ===
-                                                    'Hazardous'
-                                                "
-                                            >
+                                            
+                                            @if (row[column.field] === 'Hazardous') {
                                                 <svg-icon
                                                     class="d-flex align-items-center"
                                                     [ngStyle]="{
@@ -5217,7 +5213,7 @@
                                                     src="assets/svg/common/ic_hazardous.svg"
                                                 >
                                                 </svg-icon>
-                                            </ng-container>
+                                            }
 
                                             <svg-icon
                                                 *ngIf="
