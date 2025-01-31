@@ -47,12 +47,13 @@ import { TaInputService } from '@shared/services/ta-input.service';
 import { FormService } from '@shared/services/form.service';
 import { ConfirmationService } from '@shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
 import { DropDownService } from '@shared/services/drop-down.service';
+import { AddressService } from '@shared/services/address.service';
 
 // components
 import { TaTabSwitchComponent } from '@shared/components/ta-tab-switch/ta-tab-switch.component';
 import { TaCheckboxCardComponent } from '@shared/components/ta-checkbox-card/ta-checkbox-card.component';
-import { TaInputAddressDropdownComponent } from '@shared/components/ta-input-address-dropdown/ta-input-address-dropdown.component';
 import {
+    CaInputAddressDropdownComponent,
     CaInputComponent,
     CaInputDropdownComponent,
     CaModalButtonComponent,
@@ -85,6 +86,9 @@ import { FormatDatePipe } from '@shared/pipes';
 // Helpers
 import { DropActionNameHelper } from '@shared/utils/helpers';
 
+// mixin
+import { AddressMixin } from '@shared/mixins/address/address.mixin';
+
 @Component({
     selector: 'app-settings-terminal-modal',
     templateUrl: './settings-terminal-modal.component.html',
@@ -106,14 +110,17 @@ import { DropActionNameHelper } from '@shared/utils/helpers';
         CaModalComponent,
         TaTabSwitchComponent,
         TaCheckboxCardComponent,
-        TaInputAddressDropdownComponent,
+        CaInputAddressDropdownComponent,
         TaAppTooltipV2Component,
         CaModalButtonComponent,
         // Pipes
         FormatDatePipe,
     ],
 })
-export class SettingsTerminalModalComponent implements OnInit, OnDestroy {
+export class SettingsTerminalModalComponent
+    extends AddressMixin(class {})
+    implements OnInit, OnDestroy
+{
     @Input() editData: any;
 
     public terminalForm: UntypedFormGroup;
@@ -173,7 +180,7 @@ export class SettingsTerminalModalComponent implements OnInit, OnDestroy {
 
     public terminalName: string = null;
 
-    private destroy$ = new Subject<void>();
+    public destroy$ = new Subject<void>();
 
     public formConfig = SettingsTerminalConfig;
     public phoneConfig: ITaInput = SettingsTerminalConfig.getPhoneInputConfig();
@@ -207,8 +214,11 @@ export class SettingsTerminalModalComponent implements OnInit, OnDestroy {
         private formService: FormService,
         private ngbActiveModal: NgbActiveModal,
         public dropDownService: DropDownService,
-        private confirmationService: ConfirmationService
-    ) {}
+        private confirmationService: ConfirmationService,
+        public addressService: AddressService
+    ) {
+        super();
+    }
 
     ngOnInit() {
         this.createForm();

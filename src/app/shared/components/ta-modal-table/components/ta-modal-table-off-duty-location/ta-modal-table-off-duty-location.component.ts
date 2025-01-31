@@ -34,6 +34,8 @@ import { ModalTableSvgRoutes } from '@shared/components/ta-modal-table/utils/svg
 
 // services
 import { AddressService } from '@shared/services/address.service';
+
+// mixin
 import { AddressMixin } from '@shared/mixins/address/address.mixin';
 
 @Component({
@@ -82,16 +84,11 @@ export class TaModalTableOffDutyLocationComponent
 
     public svgRoutes = ModalTableSvgRoutes;
 
-    // public addressList: AddressListResponse;
-    // public addressData: AddressResponse;
-
-    //private destroy$ = new Subject<void>();
-
     get formArray() {
         return this.modalTableForm?.get(this.arrayName) as UntypedFormArray;
     }
 
-    constructor(private addressService: AddressService) {
+    constructor(public addressService: AddressService) {
         super();
     }
 
@@ -124,27 +121,7 @@ export class TaModalTableOffDutyLocationComponent
         });
     }
 
-    // public onAddressChange({
-    //     query,
-    //     searchLayers,
-    //     closedBorder,
-    // }: AddressProperties): void {
-    //     this.addressService
-    //         .getAddresses(query, searchLayers, closedBorder)
-    //         .pipe(takeUntil(this.destroy$))
-    //         .subscribe((res) => (this.addressList = res));
-    // }
-
-    // public getAddressData(address: string): void {
-    //     this.addressService
-    //         .getAddressInfo(address)
-    //         .pipe(takeUntil(this.destroy$))
-    //         .subscribe((res) => (this.addressData = res));
-    // }
-
-    // Overide ngOnDestroy If you have any any OnDestroy logic related to this class only
     ngOnDestroy(): void {
-        // Some cleaning code for this class only
         super.ngOnDestroy();
     }
 }

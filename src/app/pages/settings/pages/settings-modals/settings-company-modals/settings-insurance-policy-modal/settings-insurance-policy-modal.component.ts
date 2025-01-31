@@ -25,6 +25,7 @@ import { SettingsCompanyService } from '@pages/settings/services/settings-compan
 import { ModalService } from '@shared/services/modal.service';
 import { TaInputService } from '@shared/services/ta-input.service';
 import { FormService } from '@shared/services/form.service';
+import { AddressService } from '@shared/services/address.service';
 
 // validations
 import {
@@ -58,11 +59,14 @@ import { TaInputComponent } from '@shared/components/ta-input/ta-input.component
 import { TaInputDropdownComponent } from '@shared/components/ta-input-dropdown/ta-input-dropdown.component';
 import { TaModalComponent } from '@shared/components/ta-modal/ta-modal.component';
 import { TaInputNoteComponent } from '@shared/components/ta-input-note/ta-input-note.component';
-import { TaInputAddressDropdownComponent } from '@shared/components/ta-input-address-dropdown/ta-input-address-dropdown.component';
 import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-custom-card.component';
 import { TaCheckboxCardComponent } from '@shared/components/ta-checkbox-card/ta-checkbox-card.component';
 import { TaCheckboxComponent } from '@shared/components/ta-checkbox/ta-checkbox.component';
 import { TaUploadFilesComponent } from '@shared/components/ta-upload-files/ta-upload-files.component';
+import { CaInputAddressDropdownComponent } from 'ca-components';
+
+// mixin
+import { AddressMixin } from '@shared/mixins/address/address.mixin';
 
 @Component({
     selector: 'app-settings-insurance-policy-modal',
@@ -84,15 +88,16 @@ import { TaUploadFilesComponent } from '@shared/components/ta-upload-files/ta-up
         TaCheckboxComponent,
         TaModalComponent,
         TaInputNoteComponent,
-        TaInputAddressDropdownComponent,
+        CaInputAddressDropdownComponent,
         TaCustomCardComponent,
         TaUploadFilesComponent,
     ],
 })
 export class SettingsInsurancePolicyModalComponent
+    extends AddressMixin(class {})
     implements OnInit, OnDestroy
 {
-    private destroy$ = new Subject<void>();
+    public destroy$ = new Subject<void>();
     @Input() editData: any;
 
     public insurancePolicyForm: UntypedFormGroup;
@@ -125,8 +130,11 @@ export class SettingsInsurancePolicyModalComponent
         private inputService: TaInputService,
         private modalService: ModalService,
         private settingsCompanyService: SettingsCompanyService,
-        private formService: FormService
-    ) {}
+        private formService: FormService,
+        public addressService: AddressService,
+    ) {
+        super();
+    }
 
     ngOnInit(): void {
         this.createForm();

@@ -16,6 +16,7 @@ import { SettingsCompanyService } from '@pages/settings/services/settings-compan
 import { TaInputService } from '@shared/services/ta-input.service';
 import { ModalService } from '@shared/services/modal.service';
 import { FormService } from '@shared/services/form.service';
+import { AddressService } from '@shared/services/address.service';
 
 // models
 import {
@@ -32,7 +33,6 @@ import {
 
 // components
 import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-custom-card.component';
-import { TaInputAddressDropdownComponent } from '@shared/components/ta-input-address-dropdown/ta-input-address-dropdown.component';
 import { TaNoticeOfAsignmentComponent } from '@shared/components/ta-notice-of-asignment/ta-notice-of-asignment.component';
 import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
 import {
@@ -40,6 +40,7 @@ import {
     CaInputNoteComponent,
     CaModalButtonComponent,
     CaModalComponent,
+    CaInputAddressDropdownComponent
 } from 'ca-components';
 
 // models
@@ -57,6 +58,9 @@ import { ModalButtonType, ModalButtonSize } from '@shared/enums';
 
 // Pipes
 import { FormatDatePipe } from '@shared/pipes';
+
+// mixin
+import { AddressMixin } from '@shared/mixins/address/address.mixin';
 
 @Component({
     selector: 'app-settings-factoring-modal',
@@ -78,7 +82,7 @@ import { FormatDatePipe } from '@shared/pipes';
         CaModalButtonComponent,
         TaNoticeOfAsignmentComponent,
         CaInputNoteComponent,
-        TaInputAddressDropdownComponent,
+        CaInputAddressDropdownComponent,
         TaCustomCardComponent,
         TaAppTooltipV2Component,
 
@@ -86,8 +90,11 @@ import { FormatDatePipe } from '@shared/pipes';
         FormatDatePipe,
     ],
 })
-export class SettingsFactoringModalComponent implements OnInit, OnDestroy {
-    private destroy$ = new Subject<void>();
+export class SettingsFactoringModalComponent
+    extends AddressMixin(class {})
+    implements OnDestroy, OnInit
+{
+    public destroy$ = new Subject<void>();
     @ViewChild('noticeOfAssignment', { static: false })
     public noticeOfAssignment: any;
     @Input() editData: any;
@@ -128,11 +135,16 @@ export class SettingsFactoringModalComponent implements OnInit, OnDestroy {
     public company: FactoringCompany;
     constructor(
         private formBuilder: UntypedFormBuilder,
-        private inputService: TaInputService,
-        private settingsCompanyService: SettingsCompanyService,
+        private ngbActiveModal: NgbActiveModal,
+
+        // services
+        public addressService: AddressService,
         private formService: FormService,
-        private ngbActiveModal: NgbActiveModal
-    ) {}
+        private inputService: TaInputService,
+        private settingsCompanyService: SettingsCompanyService
+    ) {
+        super();
+    }
 
     ngOnInit(): void {
         this.createForm();

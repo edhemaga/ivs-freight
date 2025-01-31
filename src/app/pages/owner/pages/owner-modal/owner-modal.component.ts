@@ -52,9 +52,7 @@ import {
     OwnerResponse,
     AddressEntity,
     CreateResponse,
-    AddressResponse,
 } from 'appcoretruckassist';
-import { AddressListResponse } from '@ca-shared/models/address-list-response.model';
 
 //Services
 import { TaInputService } from '@shared/services/ta-input.service';
@@ -80,7 +78,9 @@ import { TableStringEnum } from '@shared/enums';
 // Config
 import { OwnerModalConfig } from '@pages/owner/pages/owner-modal/utils/consts';
 import { ContactsModalConstants } from '@pages/contacts/pages/contacts-modal/utils/constants/contacts-modal.constants';
-import { AddressProperties } from '@shared/components/ta-input-address-dropdown/models/address-properties';
+
+// mixin
+import { AddressMixin } from '@shared/mixins/address/address.mixin';
 
 @Component({
     selector: 'app-owner-modal',
@@ -112,7 +112,10 @@ import { AddressProperties } from '@shared/components/ta-input-address-dropdown/
         FormatDatePipe,
     ],
 })
-export class OwnerModalComponent implements OnInit, OnDestroy {
+export class OwnerModalComponent
+    extends AddressMixin(class {})
+    implements OnInit, OnDestroy
+{
     @Input() editData: any;
 
     public ownerForm: UntypedFormGroup;
@@ -145,10 +148,7 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
     public longitude: number;
     public latitude: number;
 
-    public addressList: AddressListResponse;
-    public addressData: AddressResponse;
-
-    private destroy$ = new Subject<void>();
+    public destroy$ = new Subject<void>();
 
     public isFormDirty: boolean;
     public svgRoutes = SharedSvgRoutes;
@@ -165,8 +165,10 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
         private formService: FormService,
         private ngbActiveModal: NgbActiveModal,
         private confirmationService: ConfirmationService,
-        private addressService: AddressService
-    ) {}
+        public addressService: AddressService
+    ) {
+        super();
+    }
 
     ngOnInit() {
         this.createForm();
@@ -648,24 +650,6 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
             .subscribe((isFormChange: boolean) => {
                 this.isFormDirty = isFormChange;
             });
-    }
-
-    public onAddressChange({
-        query,
-        searchLayers,
-        closedBorder,
-    }: AddressProperties): void {
-        this.addressService
-            .getAddresses(query, searchLayers, closedBorder)
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((res) => (this.addressList = res));
-    }
-
-    public getAddressData(address: string): void {
-        this.addressService
-            .getAddressInfo(address)
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((res) => (this.addressData = res));
     }
 
     ngOnDestroy(): void {
