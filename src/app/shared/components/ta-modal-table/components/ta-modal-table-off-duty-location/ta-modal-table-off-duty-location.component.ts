@@ -6,7 +6,6 @@ import {
     OnDestroy,
     Output,
 } from '@angular/core';
-import { Subject, takeUntil } from 'rxjs';
 import {
     ReactiveFormsModule,
     UntypedFormArray,
@@ -24,9 +23,7 @@ import { CaInputAddressDropdownComponent } from 'ca-components';
 import { TaModalTableStringEnum } from '@shared/components/ta-modal-table/enums/';
 
 // models
-import { AddressEntity, AddressResponse } from 'appcoretruckassist';
-import { AddressProperties } from '@shared/components/ta-input-address-dropdown/models/address-properties';
-import { AddressListResponse } from '@ca-shared/models/address-list-response.model';
+import { AddressEntity } from 'appcoretruckassist';
 
 // pipes
 import { TrackByPropertyPipe } from '@shared/pipes/track-by-property.pipe';
@@ -37,6 +34,7 @@ import { ModalTableSvgRoutes } from '@shared/components/ta-modal-table/utils/svg
 
 // services
 import { AddressService } from '@shared/services/address.service';
+import { AddressMixin } from '@shared/mixins/address/address.mixin';
 
 @Component({
     selector: 'app-ta-modal-table-off-duty-location',
@@ -58,7 +56,10 @@ import { AddressService } from '@shared/services/address.service';
         TrackByPropertyPipe,
     ],
 })
-export class TaModalTableOffDutyLocationComponent implements OnDestroy {
+export class TaModalTableOffDutyLocationComponent
+    extends AddressMixin(class {})
+    implements OnDestroy
+{
     @Input() modalTableForm: UntypedFormGroup;
     @Input() arrayName: TaModalTableStringEnum;
     @Input() isInputHoverRows: boolean[][];
@@ -81,16 +82,18 @@ export class TaModalTableOffDutyLocationComponent implements OnDestroy {
 
     public svgRoutes = ModalTableSvgRoutes;
 
-    public addressList: AddressListResponse;
-    public addressData: AddressResponse;
+    // public addressList: AddressListResponse;
+    // public addressData: AddressResponse;
 
-    private destroy$ = new Subject<void>();
+    //private destroy$ = new Subject<void>();
 
     get formArray() {
         return this.modalTableForm?.get(this.arrayName) as UntypedFormArray;
     }
 
-    constructor(private addressService: AddressService) {}
+    constructor() {
+        super();
+    }
 
     public emitDeleteFormArrayRowClick(index: number): void {
         this.deleteFormArrayRowClick.emit(index);
@@ -121,26 +124,27 @@ export class TaModalTableOffDutyLocationComponent implements OnDestroy {
         });
     }
 
-    public onAddressChange({
-        query,
-        searchLayers,
-        closedBorder,
-    }: AddressProperties): void {
-        this.addressService
-            .getAddresses(query, searchLayers, closedBorder)
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((res) => (this.addressList = res));
-    }
+    // public onAddressChange({
+    //     query,
+    //     searchLayers,
+    //     closedBorder,
+    // }: AddressProperties): void {
+    //     this.addressService
+    //         .getAddresses(query, searchLayers, closedBorder)
+    //         .pipe(takeUntil(this.destroy$))
+    //         .subscribe((res) => (this.addressList = res));
+    // }
 
-    public getAddressData(address: string): void {
-        this.addressService
-            .getAddressInfo(address)
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((res) => (this.addressData = res));
-    }
+    // public getAddressData(address: string): void {
+    //     this.addressService
+    //         .getAddressInfo(address)
+    //         .pipe(takeUntil(this.destroy$))
+    //         .subscribe((res) => (this.addressData = res));
+    // }
 
+    // Overide ngOnDestroy If you have any any OnDestroy logic related to this class only
     ngOnDestroy(): void {
-        this.destroy$.next();
-        this.destroy$.complete();
+        // Some cleaning code for this class only
+        super.ngOnDestroy();
     }
 }
