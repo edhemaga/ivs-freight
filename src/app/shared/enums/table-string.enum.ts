@@ -65,9 +65,6 @@ export enum TableStringEnum {
     ADD_NEW_2 = 'Add New',
     ADD_NEW_3 = 'ADD NEW',
 
-    SEND_MESSAGE = 'send-message',
-    SEND_MESSAGE_2 = 'Send Message',
-
     VIEW_DETAILS = 'view-details',
     VIEW_DETAILS_2 = 'View Details',
 
@@ -139,11 +136,7 @@ export enum TableStringEnum {
     //Load
     NAME_1 = 'name',
     LOAD_INVOICE = 'loadInvoice.invoice',
-    NEW_LICENCE = 'new-licence',
-    NEW_MEDICAL = 'new-medical',
-    NEW_MVR = 'new-mvr',
     CDL = 'CDL',
-    NEW_DRUG = 'new-drug',
     ACTIVATE_ITEM = 'activate-item',
     DELETE_ITEM = 'delete-item',
     LOAD_EXTRA_STOPS = ' EXTRA',
@@ -153,9 +146,6 @@ export enum TableStringEnum {
 
     SHARE = 'share',
     SHARE_2 = 'Share',
-
-    ADD_REPAIR = 'add-repair',
-    ADD_REPAIR_2 = 'Add Repair',
 
     MARGIN_BOTTOM = 'margin-bottom.px',
 
@@ -226,21 +216,6 @@ export enum TableStringEnum {
     SPH = 'SPH',
     HOS = 'HOS',
     TEST = 'TEST',
-
-    TEST_MVR = 'test-mvr',
-
-    TEST_DRUG_ALCOHOL = 'Test (Drug, Alcohol)',
-    TEST_DRUG = 'test-drug',
-
-    MEDICAL_EXAM = 'medical-exam',
-    MEDICAL_EXAM_2 = 'Medical-exam',
-    MEDICAL_EXAM_3 = 'Medical Exam',
-
-    BACKGROUND_CHECK = 'background-check',
-    BACKGROUND_CHECK_2 = 'Background-check',
-
-    REQUEST = 'Request',
-    ADD_TO_FAVORITES = 'add-to-favourites',
 
     SSN = 'Ssn',
     EMAIL = 'Email • ',
@@ -376,6 +351,7 @@ export enum TableStringEnum {
     FUEL_TABLE_VIEW = 'Fuel-table-view',
     ASC = 'asc',
     FUEL_TRANSACTION_FILTER_INTEGRATED = 'fuel-filter',
+    FUEL_TRANSACTION_FILTER_INCOMPLETE = 'fuel-filter-incomplete',
     FUEL_STOP_FILTER_CLOSED = 'closed-filter',
 
     // Contact
@@ -460,6 +436,7 @@ export enum TableStringEnum {
     REPAIR_ARRAY = 'repairArray',
     FUEL_ARRAY = 'fuelArray',
     CLOSED_ARRAY = 'closedArray',
+    FUEL_INCOMPLETE_ARRAY = 'fuelIncompleteArray',
     DRIVER_ARCHIVED_ARRAY = 'driverArhivedArray',
     DEACTIVATED_ARHIVED_ARRAY = 'deactivatedUserArray',
     DNU_FILTER = 'dnu-filter',

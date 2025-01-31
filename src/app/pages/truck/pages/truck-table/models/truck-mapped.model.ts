@@ -5,7 +5,7 @@ import { TruckOwner } from '@pages/truck/pages/truck-table/models/truck-owner.mo
 import { TruckRegistration } from '@pages/truck/pages/truck-table/models/truck-registration.model';
 import { TruckTitle } from '@pages/truck/pages/truck-table/models/truck-title.model';
 
-export interface Truck {
+export interface TruckMapped {
     id: number;
     companyId: number;
     divisinFlag: number;
@@ -49,4 +49,6 @@ export interface Truck {
     tableTitleData: TruckTitle;
     tableLeaseData: TruckLeasePurchase;
     isSelected: boolean;
+    tableVin: { boldText: string; regularText: string };
+    truckTypeIcon: string;
 }

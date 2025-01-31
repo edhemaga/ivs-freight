@@ -43,6 +43,8 @@ export class FuelDetailsItemComponent implements OnInit {
     public fuelChartData!: FuelStopExpensesResponse;
     public fuelChartConfig!: IChartConfiguration;
     public fuelChartLegend!: ChartLegendProperty[];
+    public fuelLegendTitle!: string;
+    public fuelLegendHighlightedBackground!: boolean;
 
     public fuelPriceColors: any[] = [
         '#4DB6A2',
@@ -52,7 +54,7 @@ export class FuelDetailsItemComponent implements OnInit {
         '#E57373',
         '#919191',
     ];
-    constructor(private fuelService: FuelService) {}
+    constructor(private fuelService: FuelService) { }
 
     ngOnInit(): void {
         this.initTableOptions();
@@ -188,6 +190,7 @@ export class FuelDetailsItemComponent implements OnInit {
         this.selectedTab = ev.id;
         this.getFuelExpenses(this.selectedTab);
     }
+
     public dummyDataRep() {
         this.dummyDataFuel = [
             {
@@ -773,9 +776,25 @@ export class FuelDetailsItemComponent implements OnInit {
     }
 
     public setFuelLegendOnHover(index: number): void {
-        this.fuelChartLegend = ChartLegendConfiguration.fuelExpensesLegend(
-            this.fuelChartData.fuelStopExpensesChartResponse[index]
-        );
+        const {
+            hasHighlightedBackground,
+            title
+        } =
+            ChartHelper.setChartLegend(
+                index,
+                this.fuelChartConfig.chartData.labels
+            );
+        this.fuelLegendHighlightedBackground = hasHighlightedBackground;
+        this.fuelLegendTitle = title;
+
+        const dataForLegend =
+            (isNaN(index) || index < 0) ?
+                this.fuelChartData :
+                this.fuelChartData?.
+                    fuelStopExpensesChartResponse[index];
+
+        this.fuelChartLegend = ChartLegendConfiguration
+            .fuelExpensesLegend(dataForLegend);
     }
 
     ngOnDestroy(): void {

@@ -56,4 +56,27 @@ export enum DashboardChartStringEnum {
 
     MMMM = 'MMMM',
     YYYY = 'YYYY',
+
+    LOAD_PERCENTAGE = 'loadPercentage',
+    LOAD = 'load',
+    OWNER_LOAD_PERCENTAGE = 'ownerLoadPercentage',
+    REVENUE_PERCENTAGE = 'revenuePercentage',
+    REVENUE = 'revenue',
+    OWNER_REVENUE_PERCENTAGE = 'ownerRevenuePercentage',
+    MILEAGE_PERCENTAGE = 'mileagePercentage',
+    MILEAGE = 'mileage',
+    DRIVER_MILEAGE = 'driverMileage',
+    DRIVER_REVENUE = 'driverRevenue',
+    TRUCK_MILEAGE = 'truckMileage',
+    TRUCK_REVENUE = 'truckRevenue',
+    BROKER_REVENUE = 'brokerRevenue',
+    BROKER_LOAD_COUNT = 'brokerLoadCount',
+    LOADS_COUNT = 'loadsCount',
+    COST_PERCENTAGE = 'costPercentage',
+    COST = 'cost',
+    COUNT_PERCENTAGE = 'countPercentage',
+    VISIT_PERCENTAGE = 'visitPercentage',
+    VISIT_COUNT = 'visitCount'
+
+
 }

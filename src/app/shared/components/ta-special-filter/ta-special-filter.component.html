@@ -12,18 +12,16 @@
             !hoverClose
                 ? dataArray?.filteredArray?.length > 0
                     ? activeFilter
-                        ? 'Close Filter'
+                        ? 'Remove Filter'
                         : filterTitle
                     : activeFilter
-                    ? 'Close Filter'
+                    ? 'Remove Filter'
                     : filterTitle
                 : 'Remove Filter'
         }}"
         position="bottom"
-        tooltipBackground="{{
-            activeFilter ? '#B7B7B7' : !hoverClose ? '#2F2F2F' : '#2F2F2F'
-        }}"
-        tooltipColor="{{ activeFilter ? '#2F2F2F' : '#FFFFFF' }}"
+        tooltipBackground="#424242"
+        tooltipColor="#FFFFFF"
         tooltipTextAlign="center"
         class="main-icon-holder d-flex justify-content-center align-items-center"
     >
@@ -41,22 +39,22 @@
                 dataArray?.filteredArray?.length ?? dataCount ?? 0
             }}
         </div>
-        <ng-container
-            *ngIf="dataArray?.filteredArray?.length > 0 && activeFilter"
-        >
+
+        @if (activeFilter) {
             <div
                 class="filters-selected-value-holder justify-content-center align-items-center clear-filter-icon ta-font-extra-bold"
                 [ngClass]="{
-                    'd-none': !activeFilter && !hoverFilter,
-                    'd-flex': activeFilter && hoverFilter
+                    'd-none': !hoverFilter,
+                    'd-flex': hoverFilter
                 }"
                 (mouseenter)="hoverClose = true"
                 (mouseleave)="hoverClose = false"
             >
                 <svg-icon
-                    src="assets/svg/common/ic_cancel_violation.svg"
+                    [src]="svgRoutes.ICON_CANCEL_VIOLATION_SVG_ROUTE"
                 ></svg-icon>
             </div>
-        </ng-container>
+        }
+
     </div>
 </div>

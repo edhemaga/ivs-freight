@@ -109,6 +109,8 @@ export enum DropdownMenuStringEnum {
     USER = 'user',
     FUEL_TRANSACTION = 'fuel-transaction',
     FUEL_STOP = 'fuel-stop',
+    TRUCK = 'truck',
+    TRAILER = 'trailer',
 
     // svg classes
     REGULAR_SVG_CLASS = 'regular',
@@ -123,6 +125,8 @@ export enum DropdownMenuStringEnum {
     ADD_REPAIR_BILL_TRUCK = 'add-repair-bill-truck',
     ADD_REPAIR_BILL_TRAILER = 'add-repair-bill-trailer',
     ADD_REPAIR_BILL_SHOP = 'add-repair-bill-shop',
+    CLOSE = 'close',
+    OPEN = 'open',
 
     // additional
     BLANK = '_blank',
@@ -133,4 +137,8 @@ export enum DropdownMenuStringEnum {
     INVITED = 'Invited',
     EXPIRED = 'Expired',
     FUEL = 'fuel',
+
+    // sizes
+    SMALL = 'small',
+    LARGE = 'large',
 }
