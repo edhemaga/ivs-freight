@@ -532,13 +532,25 @@
         <app-ta-special-filter
             [type]="tableStringEnum.FUEL_TRANSACTION_FILTER_INTEGRATED"
             [icon]="'ic_fuel_transaction'"
-            [filterTitle]="'Fuel Transaction'"
+            [filterTitle]="'Integrated Transactions'"
             [dataArray]="activeTableData.data"
             [dataCount]="activeTableData.integratedDataCount"
             (setFilter)="onSpecialFilter($event, tableStringEnum.FUEL_ARRAY)"
             [selectedFilter]="activeTableData?.fuelArray?.selectedFilter"
         ></app-ta-special-filter>
     </ng-container>
+
+    @if (options.toolbarActions.showIncompleteFuelTransactionsFilter) {
+        <app-ta-special-filter
+            [type]="tableStringEnum.FUEL_TRANSACTION_FILTER_INCOMPLETE"
+            [icon]="'ic_transaction_incomplete'"
+            [filterTitle]="'Incomplete Transactions'"
+            [dataArray]="activeTableData.data"
+            [dataCount]="activeTableData.incompleteDataCount"
+            (setFilter)="onSpecialFilter($event, tableStringEnum.FUEL_INCOMPLETE_ARRAY)"
+            [selectedFilter]="activeTableData?.fuelIncompleteArray?.selectedFilter"
+        ></app-ta-special-filter>
+    }
 
     <app-ta-special-filter
         *ngIf="options.toolbarActions.showRepairOrderFilter"

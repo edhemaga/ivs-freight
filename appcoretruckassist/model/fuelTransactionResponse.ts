@@ -27,6 +27,7 @@ export interface FuelTransactionResponse {
     fuelCard?: FuelCardShortResponse;
     fuelStopStore?: FuelStopShortResponse;
     transactionDate?: string;
+    fuelTruckNumber?: string | null;
     invoice?: string | null;
     apiTransactionId?: number | null;
     timezoneOffset?: number | null;

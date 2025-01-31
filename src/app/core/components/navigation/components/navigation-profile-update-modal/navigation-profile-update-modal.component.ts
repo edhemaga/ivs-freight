@@ -10,7 +10,18 @@ import { CommonModule } from '@angular/common';
 import { NgbActiveModal, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 
-import { Subject, takeUntil } from 'rxjs';
+import {
+    Subject,
+    takeUntil,
+    map,
+    tap,
+    filter,
+    switchMap,
+    catchError,
+    of,
+    distinctUntilChanged,
+    debounceTime,
+} from 'rxjs';
 
 // validations
 import {
@@ -27,9 +38,9 @@ import { TaInputService } from '@shared/services/ta-input.service';
 import { ModalService } from '@shared/services/modal.service';
 import { UserProfileUpdateService } from '@shared/services/user-profile-update.service';
 import { FormService } from '@shared/services/form.service';
+import { AddressService } from '@shared/services/address.service';
 
 // components
-import { TaInputAddressDropdownComponent } from '@shared/components/ta-input-address-dropdown/ta-input-address-dropdown.component';
 import { TaCheckboxCardComponent } from '@shared/components/ta-checkbox-card/ta-checkbox-card.component';
 import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-custom-card.component';
 import {
@@ -37,16 +48,20 @@ import {
     CaModalButtonComponent,
     CaModalComponent,
     CaUploadFilesComponent,
+    CaInputAddressDropdownComponent
 } from 'ca-components';
 import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
 
 // models
 import {
     AddressEntity,
+    AddressResponse,
     SignInResponse,
     UpdateUserCommand,
     UserResponse,
 } from 'appcoretruckassist';
+import { AddressListResponse } from '@ca-shared/models/address-list-response.model';
+import { AddressProperties } from '@shared/components/ta-input-address-dropdown/models/address-properties';
 
 // utils
 import { MethodsGlobalHelper } from '@shared/utils/helpers/methods-global.helper';
@@ -79,7 +94,7 @@ import { SharedSvgRoutes } from '@shared/utils/svg-routes';
         CaModalComponent,
         CaInputComponent,
         CaModalButtonComponent,
-        TaInputAddressDropdownComponent,
+        CaInputAddressDropdownComponent,
         TaCheckboxCardComponent,
         TaCustomCardComponent,
         TaAppTooltipV2Component,
@@ -113,13 +128,18 @@ export class NavigationProfileUpdateModalComponent
     public svgRoutes = SharedSvgRoutes;
     public modalButtonType = ModalButtonType;
     public displayName: string;
+    public addressList: AddressListResponse;
+    public addressData: AddressResponse;
 
     constructor(
         private formBuilder: UntypedFormBuilder,
+        private ngbActiveModal: NgbActiveModal,
+
+        // Services
         private inputService: TaInputService,
         private userProfileUpdateService: UserProfileUpdateService,
         private formService: FormService,
-        private ngbActiveModal: NgbActiveModal
+        private addressService: AddressService
     ) {}
 
     ngOnInit() {
@@ -207,28 +227,36 @@ export class NavigationProfileUpdateModalComponent
         this.profileUserForm
             .get('oldPassword')
             .valueChanges.pipe(takeUntil(this.destroy$))
-            .subscribe((value) => {
-                this.userPasswordTyping = value?.toString().length >= 1;
-                if (value && value.length >= 8) {
-                    this.loadingOldPassword = true;
+            .pipe(
+                tap((value: string) => {
+                    this.userPasswordTyping = value?.toString().length >= 1;
+                }),
+                filter((value: string) => value && value.length >= 8),
+                debounceTime(300), // Debounce to avoid frequent API calls
+                distinctUntilChanged(), // Avoid duplicate calls for the same value
+                tap(() => (this.loadingOldPassword = true)), // Set loading state
+                switchMap((value: string) =>
                     this.userProfileUpdateService
                         .validateUserPassword({ password: value })
-                        .pipe(takeUntil(this.destroy$))
-                        .subscribe({
-                            next: (res: any) => {
-                                this.correctPassword = !!res.correctPassword;
+                        .pipe(
+                            catchError(() => {
                                 this.loadingOldPassword = false;
+                                return of({ correctPassword: false }); // Handle errors gracefully
+                            })
+                        )
+                ),
+                tap((res) => {
+                    this.correctPassword = !!res.correctPassword;
+                    this.loadingOldPassword = false;
 
-                                if (!this.correctPassword) {
-                                    this.profileUserForm
-                                        .get('oldPassword')
-                                        .setErrors({ invalid: true });
-                                }
-                            },
-                            error: () => {},
-                        });
-                }
-            });
+                    if (!this.correctPassword) {
+                        this.profileUserForm
+                            .get('oldPassword')
+                            .setErrors({ invalid: true });
+                    }
+                })
+            )
+            .subscribe();
 
         this.passwordsNotSame();
     }
@@ -377,6 +405,24 @@ export class NavigationProfileUpdateModalComponent
             .subscribe((isFormChange: boolean) => {
                 this.isFormDirty = isFormChange;
             });
+    }
+
+    public onAddressChange({
+        query,
+        searchLayers,
+        closedBorder,
+    }: AddressProperties): void {
+        this.addressService
+            .getAddresses(query, searchLayers, closedBorder)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((res) => (this.addressList = res));
+    }
+
+    public getAddressData(address: string): void {
+        this.addressService
+            .getAddressInfo(address)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((res) => (this.addressData = res));
     }
 
     ngOnDestroy(): void {
