@@ -23,7 +23,7 @@ export class DashboardTopRatedChartsConfiguration {
             labels: [],
             datasets: [],
         },
-        height: 190,
+        height: 260,
         width: 100,
         noDataImage: ChartImagesStringEnum.CHART_NO_DATA_MIXED,
         chartOptions: {},

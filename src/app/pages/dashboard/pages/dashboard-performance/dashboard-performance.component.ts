@@ -670,12 +670,10 @@ export class DashboardPerformanceComponent implements OnInit, OnDestroy {
     }
 
     private setLineChartDateTitle(startInterval: string, endInterval: string) {
-        const { chartTitle } = DashboardHelper.setChartDateTitle(
+        this.lineChartTitle = DashboardHelper.setChartDateTitle(
             startInterval,
             endInterval
         );
-
-        this.lineChartTitle = chartTitle;
     }
 
     ngOnDestroy(): void {
