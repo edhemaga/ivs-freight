@@ -86,6 +86,7 @@ import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calcula
 
 // mMoment
 import moment from 'moment';
+import { eFuelTransactionType } from '../../fuel-table/enums';
 
 @Component({
     selector: 'app-fuel-purchase-modal',
@@ -158,6 +159,7 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
 
     public svgRoutes = SharedSvgRoutes;
     public taModalActionEnum = TaModalActionEnum;
+    public eFuelTransactionType = eFuelTransactionType;
 
     constructor(
         private formBuilder: UntypedFormBuilder,
@@ -431,58 +433,72 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
             .getFuelTransactionById(id)
             .pipe(takeUntil(this.destroy$))
             .subscribe({
-                next: (res: FuelTransactionResponse) => {
+                next: (response: FuelTransactionResponse) => {
+                    const {
+                        fuelCard,
+                        trailer,
+                        truck,
+                        invoice,
+                        driver,
+                        transactionDate,
+                        fuelStopStore,
+                        fuelItems,
+                        files,
+                        total,
+                        fuelTransactionType
+                    } = response;
+
                     this.fuelForm.patchValue({
                         efsAccount: null,
-                        fuelCard: res.fuelCard,
-                        truckId: res.truck ? res.truck.truckNumber : null,
-                        invoice: res.invoice,
-                        trailerId: res.trailer
-                            ? res.trailer.trailerNumber
+                        fuelCard: fuelCard?.cardNumber,
+                        truckId: truck ? truck.truckNumber : null,
+                        invoice: invoice,
+                        trailerId: trailer
+                            ? trailer.trailerNumber
                             : null,
-                        driverFullName: res.driver
-                            ? res.driver.firstName?.concat(
+                        driverFullName: driver
+                            ? driver.firstName?.concat(
                                   ' ',
-                                  res.driver.lastName
+                                  driver.lastName
                               )
                             : null,
                         transactionDate:
                             MethodsCalculationsHelper.convertDateFromBackend(
-                                res.transactionDate
+                                transactionDate
                             ),
                         transactionTime: this.getTransactionTime(
-                            res.transactionDate
+                            transactionDate
                         ),
-                        fuelStopStoreId: res.fuelStopStore
-                            ? res.fuelStopStore.fuelStopFranchise
-                                ? res.fuelStopStore.store
-                                : res.fuelStopStore.businessName
+                        fuelStopStoreId: fuelStopStore
+                            ? fuelStopStore.fuelStopFranchise
+                                ? fuelStopStore.store
+                                : fuelStopStore.businessName
                             : null,
-                        fuelItems: res.fuelItems,
-                        total: res.total,
+                        fuelItems,
+                        total,
                     });
 
                     this.selectedTruckType = {
-                        id: res.truck?.id,
-                        number: res.truck?.truckNumber,
-                        logoName: res.truck?.truckType.logoName,
-                        name: res.truck?.truckNumber,
+                        id: truck?.id,
+                        number: truck?.truckNumber,
+                        logoName: truck?.truckType.logoName,
+                        name: truck?.truckNumber,
                         folder: FuelValuesStringEnum.COMMON,
                         subFolder: FuelValuesStringEnum.TRUCKS,
                     };
 
                     this.selectedTrailerType = {
-                        id: res.trailer?.id,
-                        number: res.trailer?.trailerNumber,
-                        logoName: res.trailer?.trailerType.logoName,
-                        name: res.trailer?.trailerNumber,
+                        id: trailer?.id,
+                        number: trailer?.trailerNumber,
+                        logoName: trailer?.trailerType.logoName,
+                        name: trailer?.trailerNumber,
                         folder: FuelValuesStringEnum.COMMON,
                         subFolder: FuelValuesStringEnum.TRAILERS,
                     };
 
-                    this.documents = res.files;
+                    this.documents = files;
 
-                    this.updatedFuelItems = res.fuelItems;
+                    this.updatedFuelItems = fuelItems;
 
                     this.getDriverTrailerBySelectedTruck(
                         FuelValuesStringEnum.TRUCK_ID
@@ -490,37 +506,37 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
 
                     this.selectedDispatchHistory = {
                         ...this.selectedDispatchHistory,
-                        driverId: res.driver?.id,
+                        driverId: driver?.id,
                     };
 
-                    if (!res.fuelStopStore.fuelStopFranchise) {
+                    if (!fuelStopStore.fuelStopFranchise) {
                         this.selectedFuelStop = {
-                            id: res.fuelStopStore.id,
-                            name: res.fuelStopStore.businessName,
-                            businessName: res.fuelStopStore.businessName,
+                            id: fuelStopStore.id,
+                            name: fuelStopStore.businessName,
+                            businessName: fuelStopStore.businessName,
                             fuelStopFranchise: null,
-                            address: res.fuelStopStore.address,
-                            fullAddress: res.fuelStopStore.address.address,
+                            address: fuelStopStore.address,
+                            fullAddress: fuelStopStore.address.address,
                             isFranchise: false,
                         };
                     } else {
                         this.selectedFuelStop = {
-                            storeId: res.fuelStopStore.id,
-                            name: res.fuelStopStore.store,
+                            storeId: fuelStopStore.id,
+                            name: fuelStopStore.store,
                             businessName:
-                                res.fuelStopStore.fuelStopFranchise
+                                fuelStopStore.fuelStopFranchise
                                     .businessName,
                             fuelStopFranchise:
-                                res.fuelStopStore.fuelStopFranchise,
-                            address: res.fuelStopStore.address,
-                            fullAddress: res.fuelStopStore.address.address,
+                                fuelStopStore.fuelStopFranchise,
+                            address: fuelStopStore.address,
+                            fullAddress: fuelStopStore.address.address,
                             isFranchise: true,
                         };
                     }
 
-                    this.fuelTransactionType = res.fuelTransactionType;
-                    this.fuelTransactionName = res.truck
-                        ? res.truck.truckNumber
+                    this.fuelTransactionType = fuelTransactionType;
+                    this.fuelTransactionName = truck
+                        ? truck.truckNumber
                         : null;
 
                     setTimeout(() => {
@@ -570,7 +586,7 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
                 takeUntil(this.destroy$),
                 switchMap(() => {
                     if (
-                        this.selectedTruckType &&
+                        this.selectedTruckType?.id &&
                         this.fuelForm.get(FuelValuesStringEnum.TRANSACTION_DATE)
                             .value &&
                         this.fuelForm.get(FuelValuesStringEnum.TRANSACTION_TIME)
@@ -583,6 +599,8 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
                         const time = this.fuelForm.get(
                             FuelValuesStringEnum.TRANSACTION_TIME
                         ).value;
+
+                        console.log(this.selectedTruckType);
 
                         return this.fuelService.getDriverBySelectedTruckAndDate(
                             this.selectedTruckType.id,

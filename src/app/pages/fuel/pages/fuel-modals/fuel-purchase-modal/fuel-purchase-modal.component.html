@@ -107,13 +107,30 @@
                     ></app-ca-input-dropdown>
                 }
 
-                <app-ca-input
-                    formControlName="driverFullName"
-                    [inputConfig]="
-                        { configType: 'driverInputConfig' }
-                            | fuelPurchaseModalInputConfig
-                    "
-                ></app-ca-input>
+                @if (fuelTransactionType?.id === eFuelTransactionType.Manual) {
+                    <app-ca-input
+                        formControlName="driverFullName"
+                        [inputConfig]="
+                            { configType: driverInputConfig }
+                                | fuelPurchaseModalInputConfig
+                        "
+                    ></app-ca-input>
+                } @else {
+                    <!-- <app-ca-input-dropdown
+                        formControlName="driver"
+                        [template]="'svgtext-template'"
+                        [inputConfig]="
+                            {
+                                configType: 'truckInputConfig',
+                                selectedTruckType,
+                                trailerId: fuelForm.get('trailerId').value,
+                            } | fuelPurchaseModalInputConfig
+                        "
+                        [options]="truckType"
+                        [activeItem]="selectedTruckType"
+                        (selectedItem)="onSelectDropDown($event, 'driver')"
+                    ></app-ca-input-dropdown> -->
+                }
             </div>
             <div class="row last-row">
                 <div class="col-12">
