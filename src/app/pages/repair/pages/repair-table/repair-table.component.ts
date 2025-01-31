@@ -28,6 +28,7 @@ import {
     IMapSelectedMarkerData,
     SortColumn,
     MapMarkerIconHelper,
+    MapMarkerIconService,
 } from 'ca-components';
 
 // store
@@ -115,9 +116,6 @@ import { TableColumnConfig } from '@shared/models/table-models/table-column-conf
     providers: [ThousandSeparatorPipe, DispatchColorFinderPipe],
 })
 export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
-    @ViewChild('mapsComponent', { static: false })
-    public mapsComponent: CaMapComponent;
-
     private destroy$ = new Subject<void>();
 
     public viewData: any[] = [];
@@ -224,6 +222,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
         private repairCardsModalService: RepairCardsModalService,
         private confirmationActivationService: ConfirmationActivationService,
         private caSearchMultipleStatesService: CaSearchMultipleStatesService,
+        private markerIconService: MapMarkerIconService,
 
         // store
         private repairShopQuery: RepairShopQuery,
@@ -877,11 +876,12 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                 ? ((this.sendDataToCardsFront = this.displayRowsFrontTruck),
                   (this.sendDataToCardsBack = this.displayRowsBackTruck))
                 : this.selectedTab === TableStringEnum.INACTIVE
-                ? ((this.sendDataToCardsFront = this.displayRowsFrontTrailer),
-                  (this.sendDataToCardsBack = this.displayRowsBackTrailer))
-                : ((this.sendDataToCardsFront =
-                      this.displayRowsFrontRepairShop),
-                  (this.sendDataToCardsBack = this.displayRowsBackRepairShop));
+                  ? ((this.sendDataToCardsFront = this.displayRowsFrontTrailer),
+                    (this.sendDataToCardsBack = this.displayRowsBackTrailer))
+                  : ((this.sendDataToCardsFront =
+                        this.displayRowsFrontRepairShop),
+                    (this.sendDataToCardsBack =
+                        this.displayRowsBackRepairShop));
 
             // get Tab Table Data For Selected Tab
             this.getSelectedTabTableData();
@@ -1415,8 +1415,8 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                     event.type === TableStringEnum.ADD_CONTRACT
                         ? TableStringEnum.CONTRACT
                         : event.type === TableStringEnum.WRITE_REVIEW
-                        ? TableStringEnum.REVIEW
-                        : TableStringEnum.DETAILS;
+                          ? TableStringEnum.REVIEW
+                          : TableStringEnum.DETAILS;
 
                 this.modalService.openModal(
                     RepairShopModalComponent,
@@ -2042,6 +2042,12 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                                     item.position.lng === data.longitude
                             );
 
+                        const previousMarkerData = this.mapData.markers.find(
+                            (item2) =>
+                                item2.position.lat === data.latitude &&
+                                item2.position.lng === data.longitude
+                        );
+
                         let clusterInfoWindowContent = data.pagination?.data
                             ? {
                                   clusterData: [...data.pagination.data],
@@ -2061,45 +2067,49 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                             };
                         }
 
-                        const markerIcon =
-                            data?.count > 1
-                                ? MapMarkerIconHelper.getClusterMarker(
-                                      data?.count,
-                                      !!clusterInfoWindowContent?.selectedClusterItemData
-                                  )
-                                : MapMarkerIconHelper.getMapMarker(
-                                      data.favourite,
-                                      data.isClosed
-                                  );
+                        if (previousClusterData || previousMarkerData) {
+                            const newMarkerData = {
+                                ...(previousMarkerData || previousClusterData),
+                                infoWindowContent: clusterInfoWindowContent,
+                            };
 
-                        const markerData = {
-                            position: {
-                                lat: data.latitude,
-                                lng: data.longitude,
-                            },
-                            icon: {
-                                url: markerIcon,
-                                labelOrigin: new google.maps.Point(80, 15),
-                            },
-                            infoWindowContent: clusterInfoWindowContent,
-                            label: data.name
-                                ? {
-                                      text: data.name.toUpperCase(),
-                                      fontSize: '11px',
-                                      color: '#424242',
-                                      fontWeight: '500',
-                                  }
-                                : null,
-                            labelOrigin: { x: 90, y: 15 },
-                            options: {
-                                zIndex: index + 1,
-                                animation: google.maps.Animation.DROP,
-                            },
-                            data,
-                        };
+                            if (data.count > 1)
+                                clusterMarkers.push(newMarkerData);
+                            else markers.push(newMarkerData);
+                        } else {
+                            let markerData: IMapMarkers = {
+                                position: {
+                                    lat: data.latitude,
+                                    lng: data.longitude,
+                                },
+                                infoWindowContent: clusterInfoWindowContent,
+                                label: data.name,
+                                isFavorite: data.favourite,
+                                isClosed: data.isClosed,
+                                id: data.id,
+                                data,
+                            };
 
-                        if (data.count > 1) clusterMarkers.push(markerData);
-                        else markers.push(markerData);
+                            const markerIcon =
+                                data.count > 1
+                                    ? this.markerIconService.getClusterMarkerIcon(
+                                          markerData
+                                      )
+                                    : this.markerIconService.getMarkerIcon(
+                                          data.id,
+                                          data.name,
+                                          data.isClosed,
+                                          data.favourite
+                                      );
+
+                            markerData = {
+                                ...markerData,
+                                content: markerIcon,
+                            };
+
+                            if (data.count > 1) clusterMarkers.push(markerData);
+                            else markers.push(markerData);
+                        }
                     });
 
                     this.mapData = {

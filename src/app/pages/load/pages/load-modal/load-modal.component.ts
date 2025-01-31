@@ -163,7 +163,7 @@ import {
     MapOptionsConstants,
     IMapMarkers,
     IMapRoutePath,
-    MapMarkerIconHelper,
+    MapMarkerIconService,
 } from 'ca-components';
 
 @Component({
@@ -459,6 +459,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         private formService: FormService,
         private loadService: LoadService,
         private modalService: ModalService,
+        private markerIconService: MapMarkerIconService,
         private ngbActiveModal: NgbActiveModal,
         public financialCalculationPipe: FinancialCalculationPipe,
         private cdRef: ChangeDetectorRef
@@ -5481,20 +5482,22 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                 ? LoadModalStringEnum.DELIVERY
                 : null;
 
-            const routeMarker: IMapMarkers = {
+            const markerData = {
                 position: {
                     lat: loadStop.latitude,
                     lng: loadStop.longitude,
                 },
-                icon: {
-                    url: MapMarkerIconHelper.getRoutingMarkerIcon(
-                        loadStop.stopNumber ?? 0,
-                        stopType,
-                        false,
-                        true
-                    ),
-                    labelOrigin: new google.maps.Point(90, 15),
-                },
+            };
+
+            const routeMarker: IMapMarkers = {
+                ...markerData,
+                content: this.markerIconService.getRoutingMarkerIcon(
+                    markerData,
+                    loadStop.stopNumber ?? 0,
+                    stopType,
+                    false,
+                    true,
+                ),
             };
 
             routeMarkers.push(routeMarker);
