@@ -6,21 +6,26 @@ import { Router } from '@angular/router';
 import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-custom-card.component';
 import { TaTabSwitchComponent } from '@shared/components/ta-tab-switch/ta-tab-switch.component';
 import { TaUploadFilesComponent } from '@shared/components/ta-upload-files/ta-upload-files.component';
-import { CaMapComponent, ICaMapProps, MapMarkerIconHelper } from 'ca-components';
+import {
+    CaMapComponent,
+    ICaMapProps,
+    MapMarkerIconHelper,
+} from 'ca-components';
 
 // constants
 import { RepairShopDetailsCardConstants } from '@pages/repair/pages/repair-shop-details/components/repair-shop-details-card/utils/constants';
 import { RepairShopMapConfig } from '@pages/repair/pages/repair-table/utils/constants/repair-shop-map.config';
-
-// models
-import { RepairShopResponse } from 'appcoretruckassist';
-import { Tabs } from '@shared/models/tabs.model';
 
 // services
 import { MapsService } from '@shared/services/maps.service';
 
 // enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
+import { RepairShopDetailsStringEnum } from '@pages/repair/pages/repair-shop-details/enums';
+
+// models
+import { RepairShopResponse } from 'appcoretruckassist';
+import { Tabs } from '@shared/models/tabs.model';
 
 @Component({
     selector: 'app-repair-shop-details-map-cover-card',
@@ -50,7 +55,10 @@ export class RepairShopDetailsMapCoverCardComponent {
 
     public mapData: ICaMapProps = RepairShopMapConfig.repairShopMapConfig;
 
-    constructor(private router: Router, private mapsService: MapsService) {}
+    constructor(
+        private router: Router,
+        private mapsService: MapsService
+    ) {}
 
     private createMapCoverCardData(data: RepairShopResponse): void {
         this._cardData = data;
@@ -91,9 +99,11 @@ export class RepairShopDetailsMapCoverCardComponent {
             label: data.address?.address
                 ? {
                       text: data.address.address,
-                      fontSize: '11px',
-                      color: '#424242',
-                      fontWeight: '700',
+                      fontSize:
+                          RepairShopDetailsStringEnum.REPAIR_SHOP_DETAILS_MAP_FONT_SIZE,
+                      color: RepairShopDetailsStringEnum.REPAIR_SHOP_DETAILS_MAP_COLOR,
+                      fontWeight:
+                          RepairShopDetailsStringEnum.REPAIR_SHOP_DETAILS_MAP_FONT_WEIGHT,
                       isShowOnHover: true,
                   }
                 : null,
@@ -101,7 +111,7 @@ export class RepairShopDetailsMapCoverCardComponent {
             options: {
                 zIndex: 1,
                 animation: google.maps.Animation.DROP,
-                cursor: 'default',
+                cursor: RepairShopDetailsStringEnum.DEFAULT,
             },
             isLargeMarker: true,
             data,
@@ -128,6 +138,6 @@ export class RepairShopDetailsMapCoverCardComponent {
             JSON.stringify(repairTableView)
         );
 
-        this.router.navigate(['/list/repair']);
+        this.router.navigate([RepairShopDetailsStringEnum.REPAIR_LIST_ROUTE]);
     }
 }

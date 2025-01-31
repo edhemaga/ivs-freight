@@ -101,8 +101,6 @@ export class RepairShopDetailsItemRepairComponent implements OnInit {
         this.confirmationSubscribe();
     }
 
-    public trackByIdentity = (index: number): number => index;
-
     private confirmationSubscribe(): void {
         this.confirmationService.confirmationData$
             .pipe(takeUntil(this.destroy$))

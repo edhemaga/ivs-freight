@@ -609,6 +609,20 @@ export class RepairService {
         this.handleRepairShopUpdateStores(repairShopData);
     }
 
+    public deleteRepairShopContact(
+        repairShopContactId: number,
+        repairShopId: number
+    ): Observable<any> {
+        return this.repairShopService
+            .apiRepairshopContactIdDelete(repairShopContactId)
+            .pipe(
+                switchMap(() => this.getRepairShopById(repairShopId)),
+                tap((repairShop) =>
+                    this.handleRepairShopUpdateStores(repairShop)
+                )
+            );
+    }
+
     /* Store Actions */
 
     private handleRepairUpdateStores(repair: RepairResponse): void {

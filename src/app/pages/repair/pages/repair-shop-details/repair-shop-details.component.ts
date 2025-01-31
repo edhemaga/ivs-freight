@@ -143,10 +143,6 @@ export class RepairShopDetailsComponent implements OnInit, OnDestroy {
         this.handleRepairShopIdRouteChange();
     }
 
-    public trackByIdentity(_: number, item: RepairShopResponse): number {
-        return item.id;
-    }
-
     public isEmpty<T>(obj: Record<string, T>): boolean {
         return !Object.keys(obj).length;
     }
@@ -274,6 +270,8 @@ export class RepairShopDetailsComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: (res) => {
+                    console.log('res', res);
+
                     if (res?.type === RepairShopDetailsStringEnum.DELETE) {
                         if (
                             res?.template ===
@@ -284,6 +282,7 @@ export class RepairShopDetailsComponent implements OnInit, OnDestroy {
                             res?.template ===
                             RepairShopDetailsStringEnum.REPAIR_SHOP_CONTACT
                         ) {
+                            this.deleteRepairShopContact(res?.id);
                         } else {
                             this.deleteRepair(
                                 res?.data?.id,
@@ -612,10 +611,10 @@ export class RepairShopDetailsComponent implements OnInit, OnDestroy {
             type === RepairShopDetailsStringEnum.REPAIR
                 ? 0
                 : type === RepairShopDetailsStringEnum.VEHICLE
-                ? 1
-                : type === RepairShopDetailsStringEnum.REVIEW
-                ? 2
-                : 3;
+                  ? 1
+                  : type === RepairShopDetailsStringEnum.REVIEW
+                    ? 2
+                    : 3;
 
         this.searchConfig[index] = isSearch;
     }
@@ -655,6 +654,13 @@ export class RepairShopDetailsComponent implements OnInit, OnDestroy {
 
         this.repairService
             .deleteRepair(id, repairShopId, unitType)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe();
+    }
+
+    public deleteRepairShopContact(id: number): void {
+        this.repairService
+            .deleteRepairShopContact(id, this.repairShopId)
             .pipe(takeUntil(this.destroy$))
             .subscribe();
     }
