@@ -1,16 +1,20 @@
 import { Component, OnDestroy, OnInit, AfterViewInit } from '@angular/core';
-import { forkJoin, map, Observable, Subject, takeUntil, tap } from 'rxjs';
 import { Router } from '@angular/router';
+
+import { forkJoin, map, Observable, Subject, takeUntil } from 'rxjs';
 
 // components
 import { DriverModalComponent } from '@pages/driver/pages/driver-modals/driver-modal/driver-modal.component';
-import { DriverCdlModalComponent } from '@pages/driver/pages/driver-modals/driver-cdl-modal/driver-cdl-modal.component';
-import { DriverDrugAlcoholTestModalComponent } from '@pages/driver/pages/driver-modals/driver-drug-alcohol-test-modal/driver-drug-alcohol-test-modal.component';
-import { DriverMedicalModalComponent } from '@pages/driver/pages/driver-modals/driver-medical-modal/driver-medical-modal.component';
-import { DriverMvrModalComponent } from '@pages/driver/pages/driver-modals/driver-mvr-modal/driver-mvr-modal.component';
 import { ConfirmationModalComponent } from '@shared/components/ta-shared-modals/confirmation-modal/confirmation-modal.component';
 import { ApplicantModalComponent } from '@pages/applicant/pages/applicant-modal/applicant-modal.component';
 import { ConfirmationActivationModalComponent } from '@shared/components/ta-shared-modals/confirmation-activation-modal/confirmation-activation-modal.component';
+
+// base classes
+import { DriverDropdownMenuActionsBase } from '@pages/driver/base-classes';
+
+// settings
+import { getDriverApplicantColumnsDefinition } from '@shared/utils/settings/table-settings/driver-applicant-columns';
+import { getDriverColumnsDefinition } from '@shared/utils/settings/table-settings/driver-columns';
 
 // services
 import { ModalService } from '@shared/services/modal.service';
@@ -44,26 +48,23 @@ import {
 import { NameInitialsPipe } from '@shared/pipes/name-initials.pipe';
 import { ThousandSeparatorPipe } from '@shared/pipes/thousand-separator.pipe';
 
+// enums
+import { TableStringEnum } from '@shared/enums/table-string.enum';
+import { TruckNameStringEnum } from '@shared/enums/truck-name-string.enum';
+import { TooltipColorsStringEnum } from '@shared/enums/tooltip-colors-string.enum';
+import { TrailerNameStringEnum } from '@shared/enums/trailer-name-string.enum';
+import { DropdownMenuStringEnum } from '@shared/enums';
+
+// constants
+import { TableDropdownComponentConstants } from '@shared/utils/constants/table-dropdown-component.constants';
+import { DriverTableConfiguration } from '@pages/driver/pages/driver-table/utils/constants/driver-table-configuration.constants';
+
 // helpers
 import { MethodsGlobalHelper } from '@shared/utils/helpers/methods-global.helper';
 import { AvatarColorsHelper } from '@shared/utils/helpers/avatar-colors.helper';
 import { DataFilterHelper } from '@shared/utils/helpers/data-filter.helper';
 import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calculations.helper';
 import { DropdownMenuContentHelper } from '@shared/utils/helpers';
-
-// enums
-import { TableStringEnum } from '@shared/enums/table-string.enum';
-import { TruckNameStringEnum } from '@shared/enums/truck-name-string.enum';
-import { TooltipColorsStringEnum } from '@shared/enums/tooltip-colors-string.enum';
-import { TrailerNameStringEnum } from '@shared/enums/trailer-name-string.enum';
-
-// constants
-import { TableDropdownComponentConstants } from '@shared/utils/constants/table-dropdown-component.constants';
-import { DriverTableConfiguration } from '@pages/driver/pages/driver-table/utils/constants/driver-table-configuration.constants';
-
-// settings
-import { getDriverApplicantColumnsDefinition } from '@shared/utils/settings/table-settings/driver-applicant-columns';
-import { getDriverColumnsDefinition } from '@shared/utils/settings/table-settings/driver-columns';
 
 // models
 import {
@@ -86,67 +87,71 @@ import { TableToolbarActions } from '@shared/models/table-models/table-toolbar-a
     styleUrls: ['./driver-table.component.scss'],
     providers: [NameInitialsPipe, ThousandSeparatorPipe],
 })
-export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
-    private destroy$ = new Subject<void>();
+export class DriverTableComponent
+    extends DriverDropdownMenuActionsBase
+    implements OnInit, AfterViewInit, OnDestroy
+{
+    public destroy$ = new Subject<void>();
+
+    public dropdownMenuStringEnum = DropdownMenuStringEnum;
+
+    public resizeObserver: ResizeObserver;
+    public activeViewMode: string = TableStringEnum.LIST;
+
+    public selectedTab: string = TableStringEnum.ACTIVE;
+    public applicantTabActive: boolean = false;
+
+    public driversActive: DriverState[] = [];
+    public driversInactive: DriversInactiveState[] = [];
 
     public driverTableData: any[] = [];
+    public applicantData: ApplicantShortResponse[] = [];
 
+    public inactiveTabClicked: boolean = false;
+    public activeTableData: CardTableData;
+
+    // table
     public tableOptions: any = {};
     public tableData: any[] = [];
     public viewData: any[] = [];
     public columns: GridColumn[] = [];
-    public selectedTab: string = TableStringEnum.ACTIVE;
-    public activeViewMode: string = TableStringEnum.LIST;
-    public driversActive: DriverState[] = [];
-    public driversInactive: DriversInactiveState[] = [];
-    public applicantData: ApplicantShortResponse[] = [];
-    public inactiveTabClicked: boolean = false;
-    public applicantTabActive: boolean = false;
-    public activeTableData: CardTableData;
-    public driverBackFilterQuery: FilterOptionDriver = JSON.parse(
-        JSON.stringify(TableDropdownComponentConstants.DRIVER_BACK_FILTER)
-    );
 
-    public applicantBackFilterQuery: FilterOptionApplicant =
-        TableDropdownComponentConstants.APPLICANT_BACK_FILTER;
-    public resizeObserver: ResizeObserver;
-    public mapingIndex: number = 0;
-    public isSearching: boolean = false;
-    //Data to display from model Active & Inactive
+    // cards
     public displayRowsFront: CardRows[] =
         DriverTableConfiguration.displayRowsActiveFront;
     public displayRowsBack: CardRows[] =
         DriverTableConfiguration.displayRowsActiveBack;
-
-    //Data to display from model Applicants
     public displayRowsFrontApplicants: CardRows[] =
         DriverTableConfiguration.displayRowsFrontApplicants;
     public displayRowsBackApplicants: CardRows[] =
         DriverTableConfiguration.displayRowsBackApplicants;
+    public applicantBackFilterQuery: FilterOptionApplicant =
+        TableDropdownComponentConstants.APPLICANT_BACK_FILTER;
 
-    //Title
-    public cardTitle: string = DriverTableConfiguration.cardTitle;
-
-    // Page
-    public page: string = DriverTableConfiguration.page;
+    public mapingIndex: number = 0;
+    public isSearching: boolean = false;
 
     public activeTab: string;
-    //  Number of rows in card
-    public rows: number = DriverTableConfiguration.rows;
 
     public sendDataToCardsFront: CardRows[];
     public sendDataToCardsBack: CardRows[];
-    public displayRows$: Observable<any>; //leave this as any for now
+    public displayRows$: Observable<any>;
+
+    // filters
+    public driverBackFilterQuery: FilterOptionDriver = JSON.parse(
+        JSON.stringify(TableDropdownComponentConstants.DRIVER_BACK_FILTER)
+    );
 
     constructor(
-        private router: Router,
+        protected router: Router,
 
         // services
+        protected modalService: ModalService,
+        protected driverService: DriverService,
+
         private addressService: AddressService,
         private applicantService: ApplicantService,
-        private modalService: ModalService,
         private tableService: TruckassistTableService,
-        private driverService: DriverService,
         private confirmationService: ConfirmationService,
         private confirmationActivationService: ConfirmationActivationService,
         private driverCardsModalService: DriverCardsModalService,
@@ -163,7 +168,9 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
         // pipes
         private thousandSeparator: ThousandSeparatorPipe,
         private nameInitialsPipe: NameInitialsPipe
-    ) {}
+    ) {
+        super();
+    }
 
     ngOnInit(): void {
         this.sendDriverData();
@@ -230,6 +237,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
                         const driverIds = res.array.map((driver) => {
                             return driver.id;
                         });
+
                         this.changeDriverStatusList(driverIds);
 
                         break;
@@ -765,17 +773,17 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
             case TableStringEnum.INACTIVE:
                 this.sendDataToCardsFront = this.displayRowsFront;
                 this.sendDataToCardsBack = this.displayRowsBack;
-                break;
 
+                break;
             case TableStringEnum.APPLICANTS:
-                this.cardTitle = TableStringEnum.NAME;
                 this.sendDataToCardsFront = this.displayRowsFrontApplicants;
                 this.sendDataToCardsBack = this.displayRowsBackApplicants;
-                break;
 
+                break;
             default:
                 this.sendDataToCardsFront = this.displayRowsFront;
                 this.sendDataToCardsBack = this.displayRowsBack;
+
                 break;
         }
     }
@@ -1015,15 +1023,13 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 MethodsCalculationsHelper.convertDateFromBackend(updatedAt),
             tableAttachments: data?.files,
             fileCount: fileCount,
-            tableDropdownContent: {
-                hasContent: true,
-                content: this.getDriverDropdownContent(),
-            },
+            tableDropdownContent: this.getDriverDropdownContent(),
         };
     }
 
     private mapApplicantsData(data: any): any {
         const {
+            id,
             name,
             doB,
             ssn,
@@ -1043,6 +1049,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
         } = data;
 
         return {
+            id,
             isSelected: false,
             name,
             tableDOB: doB
@@ -1379,137 +1386,6 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
         }
     }
 
-    public onTableBodyActions(event: any): void {
-        const mappedEvent = {
-            ...event,
-            data: {
-                ...event.data,
-                name: event.data?.fullName,
-            },
-        };
-
-        if (event.type === TableStringEnum.SHOW_MORE) {
-            if (this.selectedTab === TableStringEnum.APPLICANTS) {
-                this.applicantBackFilterQuery.applicantSpecParamsPageIndex++;
-
-                this.applicantBackFilter(this.applicantBackFilterQuery, true);
-            } else {
-                this.driverBackFilterQuery.active =
-                    this.selectedTab === TableStringEnum.ACTIVE ? 1 : 0;
-                this.driverBackFilterQuery.pageIndex++;
-                this.driverBackFilter(this.driverBackFilterQuery, true);
-            }
-        } else if (event.type === TableStringEnum.EDIT) {
-            if (this.selectedTab === TableStringEnum.APPLICANTS) {
-                this.modalService.openModal(
-                    ApplicantModalComponent,
-                    {
-                        size: TableStringEnum.SMALL,
-                    },
-                    {
-                        id: 1,
-                        type: TableStringEnum.EDIT,
-                    }
-                );
-            } else {
-                this.getDriverById(event.id);
-            }
-        } else if (event.type === TableStringEnum.NEW_LICENCE) {
-            this.modalService.openModal(
-                DriverCdlModalComponent,
-                { size: TableStringEnum.SMALL },
-                { ...event, tableActiveTab: this.selectedTab }
-            );
-        } else if (event.type === TableStringEnum.VIEW_DETAILS) {
-            this.router.navigate([`/list/driver/${event.id}/details`]);
-        } else if (event.type === TableStringEnum.NEW_MEDICAL) {
-            this.modalService.openModal(
-                DriverMedicalModalComponent,
-                {
-                    size: TableStringEnum.SMALL,
-                },
-                { ...event, tableActiveTab: this.selectedTab }
-            );
-        } else if (event.type === TableStringEnum.NEW_MVR) {
-            this.modalService.openModal(
-                DriverMvrModalComponent,
-                { size: TableStringEnum.SMALL },
-                { ...event, tableActiveTab: this.selectedTab }
-            );
-        } else if (event.type === TableStringEnum.NEW_DRUG) {
-            this.modalService.openModal(
-                DriverDrugAlcoholTestModalComponent,
-                {
-                    size: TableStringEnum.SMALL,
-                },
-                { ...event, tableActiveTab: this.selectedTab }
-            );
-        } else if (event.type === TableStringEnum.ACTIVATE_ITEM) {
-            this.modalService.openModal(
-                ConfirmationActivationModalComponent,
-                { size: TableStringEnum.SMALL },
-                {
-                    ...mappedEvent,
-                    subType: TableStringEnum.DRIVER_1,
-                    type:
-                        event.data.status === 1
-                            ? TableStringEnum.DEACTIVATE
-                            : TableStringEnum.ACTIVATE,
-                    template: TableStringEnum.DRIVER_1,
-                    tableType: TableStringEnum.DRIVER,
-                }
-            );
-        } else if (event.type === TableStringEnum.DELETE_ITEM) {
-            this.modalService.openModal(
-                ConfirmationModalComponent,
-                { size: TableStringEnum.SMALL },
-                {
-                    ...mappedEvent,
-                    template: TableStringEnum.DRIVER,
-                    type: TableStringEnum.DELETE,
-                    image: true,
-                }
-            );
-        }
-    }
-
-    private getDriverById(id: number): void {
-        this.driverService
-            .getDriverById(id)
-            .pipe(
-                takeUntil(this.destroy$),
-                tap((driver) => {
-                    const selectedDriver = this.viewData.find(
-                        (driver) => driver.id === id
-                    );
-
-                    const editData = {
-                        data: {
-                            ...driver,
-                            avatarImg: selectedDriver.avatarImg,
-                            avatarColor: selectedDriver.avatarColor,
-                            textShortName: selectedDriver.textShortName,
-                            name: selectedDriver.fullName,
-                            tableDOB: selectedDriver.tableDOB,
-                        },
-                        type: TableStringEnum.EDIT,
-                        id,
-                        disableButton: true,
-                    };
-
-                    this.modalService.openModal(
-                        DriverModalComponent,
-                        { size: TableStringEnum.MEDIUM },
-                        {
-                            ...editData,
-                            isDeactivateOnly: true,
-                        }
-                    );
-                })
-            )
-            .subscribe();
-    }
-
     // Get Tab Table Data For Selected Tab
     public getSelectedTabTableData(): void {
         if (this.tableData?.length) {
@@ -1517,13 +1393,6 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 (tab) => tab.field === this.selectedTab
             );
         }
-    }
-
-    // Show More Data
-    public onShowMore(): void {
-        this.onTableBodyActions({
-            type: TableStringEnum.SHOW_MORE,
-        });
     }
 
     private changeDriverStatus(id: number): void {
@@ -1625,10 +1494,22 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
         this.driverCardsModalService.updateTab(this.selectedTab);
     }
 
+    public handleShowMoreAction(): void {
+        if (this.selectedTab === TableStringEnum.APPLICANTS) {
+            this.applicantBackFilterQuery.applicantSpecParamsPageIndex++;
+
+            this.applicantBackFilter(this.applicantBackFilterQuery, true);
+        } else {
+            this.driverBackFilterQuery.active =
+                this.selectedTab === TableStringEnum.ACTIVE ? 1 : 0;
+            this.driverBackFilterQuery.pageIndex++;
+            this.driverBackFilter(this.driverBackFilterQuery, true);
+        }
+    }
+
     ngOnDestroy(): void {
         this.destroy$.next();
         this.destroy$.complete();
-
         this.tableService.sendActionAnimation({});
         this.resizeObserver.disconnect();
     }

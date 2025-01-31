@@ -114,6 +114,8 @@ export class DriverDetailsCardComponent
     // Payroll chart card
     public driverChartData!: DriverPayrollResponse;
     public driverLegendConfig!: ChartLegendProperty[];
+    public driverLegendHighlightedBackground!: boolean;
+    public driverLegendTitle!: string;
     public barChartTabs: Tabs[] = ChartHelper.generateTimeTabs();
 
     // Note card
@@ -176,10 +178,27 @@ export class DriverDetailsCardComponent
             })
     }
 
-    public setDriverLegendOnHover(index: number): void {
+    public setDriverLegendOnHover(index: number | null): void {
+        const {
+            hasHighlightedBackground,
+            title
+        } =
+            ChartHelper.setChartLegend(index,
+                this.payrollChartConfig
+                    .chartData
+                    .labels);
+
+        this.driverLegendHighlightedBackground = hasHighlightedBackground;
+        this.driverLegendTitle = title;
+
+        const dataForLegend =
+            (isNaN(index) || index < 0) ?
+                this.driverChartData :
+                this.driverChartData.
+                    getDriverPayrollChartResponse[index]
+
         this.driverLegendConfig = ChartLegendConfiguration
-            .driverLegendConfiguration(this.driverChartData.
-                getDriverPayrollChartResponse[index]);
+            .driverLegendConfiguration(dataForLegend);
     }
 
     private createForm(): void {

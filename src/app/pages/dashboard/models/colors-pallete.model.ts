@@ -1,4 +1,4 @@
-export interface TopRatedMainColorsPallete {
+export interface TopRatedMainColorsPalette {
     color: string;
     code: string;
 }
@@ -17,4 +17,4 @@ export interface BarPerformanceColorsPallete {
     color: string;
 }
 
-export interface ByStateColorsPallete extends TopRatedSecondaryColorsPallete {}
+export interface ByStateColorsPallete extends TopRatedSecondaryColorsPallete { }

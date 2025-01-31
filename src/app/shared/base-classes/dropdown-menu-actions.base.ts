@@ -75,6 +75,17 @@ export abstract class DropdownMenuActionsBase {
                 this.handleOpenCloseBusinessAction(event);
 
                 break;
+            case DropdownMenuStringEnum.ACTIVATE_TYPE:
+            case DropdownMenuStringEnum.DEACTIVATE_TYPE:
+                this.handleActivateDeactivateAction(event);
+
+                break;
+            case DropdownMenuStringEnum.REGISTRATION_TYPE:
+            case DropdownMenuStringEnum.FHWA_INSPECTION_TYPE:
+            case DropdownMenuStringEnum.TITLE_TYPE:
+                this.handleTruckTrailerAddActions(event);
+
+                break;
             default:
                 break;
         }
@@ -171,6 +182,37 @@ export abstract class DropdownMenuActionsBase {
             {
                 ...event,
                 type,
+            }
+        );
+    }
+
+    private handleActivateDeactivateAction<T>(
+        event: TableCardBodyActions<T>
+    ): void {
+        this.modalService.openModal(
+            ConfirmationActivationModalComponent,
+            { size: DropdownMenuStringEnum.SMALL },
+            {
+                ...event,
+            }
+        );
+    }
+
+    private handleTruckTrailerAddActions<T>(
+        event: TableCardBodyActions<T>
+    ): void {
+        const { type } = event;
+
+        const addAdditionalModalComponent =
+            DropdownMenuActionsHelper.getAddTruckTrailerAdditionalModalComponent(
+                type
+            );
+
+        this.modalService.openModal(
+            addAdditionalModalComponent,
+            { size: DropdownMenuStringEnum.SMALL },
+            {
+                ...event,
             }
         );
     }

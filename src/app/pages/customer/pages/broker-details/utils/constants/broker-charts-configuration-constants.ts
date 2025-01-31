@@ -52,5 +52,6 @@ export class BrokerChartsConfiguration {
         chartOptions: {},
         showTooltipBackground: false,
         showXAxisLabels: true,
+        hasVerticalDashedAnnotation: true
     };
 }

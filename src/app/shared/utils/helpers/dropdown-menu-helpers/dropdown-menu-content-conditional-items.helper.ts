@@ -219,10 +219,10 @@ export class DropdownMenuContentConditionalItemsHelper {
                 title: DropdownMenuStringEnum.EDIT,
                 isDisabled: !isActiveDriver,
             },
-            /*  {
+            {
                 title: DropdownMenuStringEnum.SEND_MESSAGE,
                 isDisabled: !isActiveDriver,
-            }, */
+            },
             {
                 title: DropdownMenuStringEnum.ADD_NEW,
                 isDisabled: !isActiveDriver,

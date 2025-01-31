@@ -19,6 +19,9 @@ import { TableStringEnum } from '@shared/enums/table-string.enum';
 // Services
 import { TruckassistTableService } from '@shared/services/truckassist-table.service';
 
+// Svg Routes
+import { TaSpecialFilterSvgRoutes } from '@shared/components/ta-special-filter/utils/svg-routes';
+
 @Component({
     selector: 'app-ta-special-filter',
     standalone: true,
@@ -41,6 +44,7 @@ export class TaSpecialFilterComponent implements OnInit {
     public activeFilter: boolean = false;
     public hoverClose: boolean = false;
     public hoverFilter: boolean = false;
+    public svgRoutes = TaSpecialFilterSvgRoutes;
 
     @Input() type: string = TableStringEnum.USER_FILTER;
     @Input() icon: string = TableStringEnum.USER_1;
