@@ -24,15 +24,16 @@ import { ModalService } from '@shared/services/modal.service';
 import { SettingsLocationService } from '@pages/settings/pages/settings-location/services/settings-location.service';
 import { DropDownService } from '@shared/services/drop-down.service';
 import { ConfirmationService } from '@shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
+import { AddressService } from '@shared/services/address.service';
 
 // components
-import { TaInputAddressDropdownComponent } from '@shared/components/ta-input-address-dropdown/ta-input-address-dropdown.component';
 import { TaCheckboxCardComponent } from '@shared/components/ta-checkbox-card/ta-checkbox-card.component';
 import { TaTabSwitchComponent } from '@shared/components/ta-tab-switch/ta-tab-switch.component';
 import { UserModalComponent } from '@pages/user/pages/user-modal/user-modal.component';
 import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-custom-card.component';
 import { TaModalTableComponent } from '@shared/components/ta-modal-table/ta-modal-table.component';
 import {
+    CaInputAddressDropdownComponent,
     CaInputComponent,
     CaInputDropdownComponent,
     CaModalButtonComponent,
@@ -95,6 +96,9 @@ import { FormatDatePipe } from '@shared/pipes';
 // Helpers
 import { DropActionNameHelper } from '@shared/utils/helpers';
 
+// mixin
+import { AddressMixin } from '@shared/mixins/address/address.mixin';
+
 @Component({
     selector: 'app-settings-office-modal',
     templateUrl: './settings-office-modal.component.html',
@@ -116,7 +120,7 @@ import { DropActionNameHelper } from '@shared/utils/helpers';
         CaModalComponent,
         TaTabSwitchComponent,
         TaCheckboxCardComponent,
-        TaInputAddressDropdownComponent,
+        CaInputAddressDropdownComponent,
         TaCustomCardComponent,
         TaModalTableComponent,
         TaAppTooltipV2Component,
@@ -126,7 +130,10 @@ import { DropActionNameHelper } from '@shared/utils/helpers';
         FormatDatePipe,
     ],
 })
-export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
+export class SettingsOfficeModalComponent
+    extends AddressMixin(class {})
+    implements OnInit, OnDestroy
+{
     @Input() editData: any;
 
     public officeForm: UntypedFormGroup;
@@ -173,7 +180,7 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
 
     public dayOptions: EnumValue[];
 
-    private destroy$ = new Subject<void>();
+    public destroy$ = new Subject<void>();
 
     public formConfig = SettingsOfficeConfig;
 
@@ -220,8 +227,11 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
         private formService: FormService,
         private ngbActiveModal: NgbActiveModal,
         public dropDownService: DropDownService,
-        private confirmationService: ConfirmationService
-    ) {}
+        private confirmationService: ConfirmationService,
+        public addressService: AddressService
+    ) {
+        super();
+    }
 
     ngOnInit() {
         this.createForm();

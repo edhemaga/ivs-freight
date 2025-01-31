@@ -34,7 +34,6 @@ import { SelectCompanyComponent } from '@pages/website/components/website-sideba
 import { WebsiteUnderConstructionComponent } from '@pages/website/components/website-under-construction/website-under-construction.component';
 
 import { TaInputComponent } from '@shared/components/ta-input/ta-input.component';
-import { TaInputAddressDropdownComponent } from '@shared/components/ta-input-address-dropdown/ta-input-address-dropdown.component';
 import { TaCheckboxComponent } from '@shared/components/ta-checkbox/ta-checkbox.component';
 import { TaSpinnerComponent } from '@shared/components/ta-spinner/ta-spinner.component';
 
@@ -45,7 +44,7 @@ import { StoreModule } from '@ngrx/store';
 
 // ngrx reducers
 import { authReducer } from '@pages/website/state/auth.reducer';
-import { CaComponentsLibModule, CaProfileImageComponent } from 'ca-components';
+import { CaComponentsLibModule, CaInputAddressDropdownComponent, CaProfileImageComponent } from 'ca-components';
 
 @NgModule({
     declarations: [
@@ -72,7 +71,6 @@ import { CaComponentsLibModule, CaProfileImageComponent } from 'ca-components';
         RegisterUserHaveAccountHelperComponent,
         VerifyUserHelperComponent,
         SelectCompanyComponent,
-
         WebsiteUnderConstructionComponent,
     ],
     imports: [
@@ -85,10 +83,10 @@ import { CaComponentsLibModule, CaProfileImageComponent } from 'ca-components';
 
         // components
         TaInputComponent,
-        TaInputAddressDropdownComponent,
         TaCheckboxComponent,
         TaSpinnerComponent,
         CaProfileImageComponent,
+        CaInputAddressDropdownComponent,
 
        // CaComponentsLibModule,
         // ngrx effects

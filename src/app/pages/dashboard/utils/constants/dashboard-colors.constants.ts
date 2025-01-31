@@ -95,4 +95,9 @@ export class DashboardColors {
         { code: '#BED0F9' },
     ];
 
+    static COLOR_WHITE = '#FFFFFF';
+
+    static COLOR_BLACK = '#000000';
+
+    static COLOR_GRAY = '#919191';
 }

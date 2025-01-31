@@ -14,7 +14,6 @@ import { DispatchTableComponent } from '@pages/dispatch/pages/dispatch/component
 import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
 import { DispatchHistoryModalNoGroupComponent } from './pages/dispatch/components/dispatch-table/components/dispatch-modals/dispatch-history-modal/components/dispatch-history-modal-no-group/dispatch-history-modal-no-group.component';
 import { TaTableToolbarComponent } from '@shared/components/ta-table/ta-table-toolbar/ta-table-toolbar.component';
-import { TaInputAddressDropdownComponent } from '@shared/components/ta-input-address-dropdown/ta-input-address-dropdown.component';
 import { TaGpsProgressbarComponent } from '@shared/components/ta-gps-progressbar/ta-gps-progressbar.component';
 import { TaCustomPeriodRangeComponent } from '@shared/components/ta-custom-period-range/ta-custom-period-range.component';
 import { DispatchHistoryModalNoContentComponent } from './pages/dispatch/components/dispatch-table/components/dispatch-modals/dispatch-history-modal/components/dispatch-history-modal-no-content/dispatch-history-modal-no-content.component';
@@ -43,6 +42,7 @@ import { TaResizerComponent } from '@shared/components/ta-resizer/ta-resizer.com
 import { DispatchTableInfoComponent } from '@pages/dispatch/pages/dispatch/components/dispatch-table/components/dispatch-table-info/dispatch-table-info.component';
 import { DispatchTableStatusComponent } from '@pages/dispatch/pages/dispatch/components/dispatch-table/components/dispatch-table-status/dispatch-table-status.component';
 import {
+    CaInputAddressDropdownComponent,
     CaInputComponent,
     CaInputDropdownComponent,
     CaModalComponent,
@@ -126,7 +126,7 @@ import { ResizableDirective } from '@pages/dispatch/pages/dispatch/components/di
         // components
         TaAppTooltipV2Component,
         TaTableToolbarComponent,
-        TaInputAddressDropdownComponent,
+        CaInputAddressDropdownComponent,
         TaGpsProgressbarComponent,
         TaNoteComponent,
         TaPickupDeliveryComponent,

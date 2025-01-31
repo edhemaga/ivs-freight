@@ -101,7 +101,6 @@ import {
     GetDriverModalResponse,
     DriverDetailsOffDutyLocationResponse,
     PerMileEntity,
-    AddressResponse,
 } from 'appcoretruckassist';
 import { DropZoneConfig } from '@shared/components/ta-upload-files/models/dropzone-config.model';
 import { Tabs } from '@shared/models/tabs.model';
@@ -111,8 +110,6 @@ import { SoloTeamSelectedOptions } from '@pages/driver/pages/driver-modals/drive
 import { AddUpdateDriverPayrollProperties } from '@pages/driver/pages/driver-modals/driver-modal/models/add-update-driver-payroll-properties.model';
 import { PayrollDefaultValues } from '@pages/driver/pages/driver-modals/driver-modal/models/payroll-default-values.model';
 import { DriverModalEditData } from '@pages/driver/pages/driver-modals/driver-modal/models/driver-modal-edit-data.model';
-import { AddressProperties } from '@shared/components/ta-input-address-dropdown/models/address-properties';
-import { AddressListResponse } from '@ca-shared/models/address-list-response.model';
 
 // pipes
 import { NameInitialsPipe } from '@shared/pipes/name-initials.pipe';
@@ -123,6 +120,9 @@ import { SharedSvgRoutes } from '@shared/utils/svg-routes';
 
 // Pipes
 import { FormatDatePipe } from '@shared/pipes';
+
+// mixin
+import { AddressMixin } from '@shared/mixins/address/address.mixin';
 
 @Component({
     selector: 'app-driver-modal',
@@ -168,12 +168,15 @@ import { FormatDatePipe } from '@shared/pipes';
         FormatDatePipe,
     ],
 })
-export class DriverModalComponent implements OnInit, OnDestroy {
+export class DriverModalComponent 
+    extends AddressMixin(class {}) 
+    implements OnInit, OnDestroy 
+{
     @ViewChild(TaTabSwitchComponent) tabSwitch: TaTabSwitchComponent;
 
     @Input() editData: DriverModalEditData;
 
-    private destroy$ = new Subject<void>();
+    public destroy$ = new Subject<void>();
 
     public driverForm: UntypedFormGroup;
 
@@ -247,8 +250,6 @@ export class DriverModalComponent implements OnInit, OnDestroy {
 
     // enums
     public modalTableTypeEnum = ModalTableTypeEnum;
-    public addressList: AddressListResponse;
-    public addressData: AddressResponse;
     public taModalActionEnum = TaModalActionEnum;
     public svgRoutes = SharedSvgRoutes;
 
@@ -265,7 +266,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
         private tagsService: EditTagsService,
         private confirmationActivationService: ConfirmationActivationService,
         private confirmationService: ConfirmationService,
-        private addressService: AddressService,
+        public addressService: AddressService,
 
         // bootstrap
         private ngbActiveModal: NgbActiveModal,
@@ -275,7 +276,9 @@ export class DriverModalComponent implements OnInit, OnDestroy {
 
         // pipes
         private nameInitialsPipe: NameInitialsPipe
-    ) {}
+    ) {
+        super()
+    }
 
     ngOnInit(): void {
         this.createForm();
@@ -2343,24 +2346,6 @@ export class DriverModalComponent implements OnInit, OnDestroy {
                     this.updateTags();
                 },
             });
-    }
-
-    public onAddressChange({
-        query,
-        searchLayers,
-        closedBorder,
-    }: AddressProperties): void {
-        this.addressService
-            .getAddresses(query, searchLayers, closedBorder)
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((res) => (this.addressList = res));
-    }
-
-    public getAddressData(address: string): void {
-        this.addressService
-            .getAddressInfo(address)
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((res) => (this.addressData = res));
     }
 
     ngOnDestroy(): void {

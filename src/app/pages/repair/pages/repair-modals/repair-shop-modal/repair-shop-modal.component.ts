@@ -22,7 +22,6 @@ import { Subject, Subscription, forkJoin, of, takeUntil } from 'rxjs';
 // Models
 import { AddressEntity } from 'appcoretruckassist/model/addressEntity';
 import {
-    AddressResponse,
     BankResponse,
     CreateResponse,
     CreateReviewCommand,
@@ -45,7 +44,6 @@ import {
     RepairShopTabs,
     RepairShopModalService,
     DisplayServiceTab,
-    RepairShopModalAction,
     CreateShopModel,
     RepairShopContactExtended,
 } from '@pages/repair/pages/repair-modals/repair-shop-modal/models';
@@ -134,9 +132,10 @@ import { ContactsModalConstants } from '@pages/contacts/pages/contacts-modal/uti
 
 // Pipes
 import { FormatDatePipe } from '@shared/pipes';
-import { AddressListResponse } from '@ca-shared/models/address-list-response.model';
-import { AddressProperties } from '@shared/components/ta-input-address-dropdown/models/address-properties';
 import { AddressService } from '@shared/services/address.service';
+
+// mixin
+import { AddressMixin } from '@shared/mixins/address/address.mixin';
 
 @Component({
     selector: 'app-repair-shop-modal',
@@ -176,7 +175,10 @@ import { AddressService } from '@shared/services/address.service';
         FormatDatePipe,
     ],
 })
-export class RepairShopModalComponent implements OnInit, OnDestroy {
+export class RepairShopModalComponent
+    extends AddressMixin(class {})
+    implements OnInit, OnDestroy
+{
     // Enums
     public repairShopModalSvgRoutes = RepairShopModalSvgRoutes;
     public RepairShopModalStringEnum = RepairShopModalStringEnum;
@@ -213,7 +215,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
     public selectedAddress: AddressEntity;
 
     // Subject
-    private destroy$ = new Subject<void>();
+    public destroy$ = new Subject<void>();
 
     // Services and Types
     public services: RepairShopModalService[] = [];
@@ -269,9 +271,6 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
     public modalButtonType = ModalButtonType;
     public modalButtonSize = ModalButtonSize;
 
-    public addressList: AddressListResponse;
-    public addressData: AddressResponse;
-
     constructor(
         private formBuilder: UntypedFormBuilder,
 
@@ -289,8 +288,10 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
         private ngbActiveModal: NgbActiveModal,
         private confirmationActivationService: ConfirmationActivationService,
         private inputService: TaInputService,
-        private addressService: AddressService
-    ) {}
+        public addressService: AddressService
+    ) {
+        super();
+    }
 
     public get isModalValidToSubmit(): boolean {
         return (
@@ -611,7 +612,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
         }
 
         // Patch address
-        this.onAddressChange({
+        this.onAddressChangeInit({
             address: res.address,
             valid: true,
             longLat: {
@@ -674,7 +675,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
         });
     }
 
-    public onAddressChange(event: {
+    public onAddressChangeInit(event: {
         address: AddressEntity;
         valid: boolean;
         longLat: any;
@@ -1382,24 +1383,6 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
             .updateReview(review)
             .pipe(takeUntil(this.destroy$))
             .subscribe();
-    }
-
-    public onAddressChangeInit({
-        query,
-        searchLayers,
-        closedBorder,
-    }: AddressProperties): void {
-        this.addressService
-            .getAddresses(query, searchLayers, closedBorder)
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((res) => (this.addressList = res));
-    }
-
-    public getAddressData(address: string): void {
-        this.addressService
-            .getAddressInfo(address)
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((res) => (this.addressData = res));
     }
 
     ngOnDestroy(): void {
