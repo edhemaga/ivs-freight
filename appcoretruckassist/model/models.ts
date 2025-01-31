@@ -772,6 +772,7 @@ export * from './renewCdlCommand';
 export * from './reorderDispatchCommand';
 export * from './reorderDispatchLoadsCommand';
 export * from './reorderDispatchesCommand';
+export * from './reorderMilesStopsCommand';
 export * from './repairAutocompleteDescriptionResponse';
 export * from './repairByStateListResponse';
 export * from './repairByStateResponse';

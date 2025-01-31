@@ -3,7 +3,7 @@ import { QueryEntity } from '@datorama/akita';
 import {
     FuelItemState,
     FuelItemStore,
-} from '@pages/fuel/state/fuel-details-state/fuel-details.store';
+} from '@pages/fuel/state/fuel-details-state/fuel-details-item.store';
 
 @Injectable({ providedIn: 'root' })
 export class FuelDetailsQuery extends QueryEntity<FuelItemState> {

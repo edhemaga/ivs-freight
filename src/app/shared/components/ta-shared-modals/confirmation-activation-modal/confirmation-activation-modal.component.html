@@ -313,7 +313,9 @@
                                                     editData.template !==
                                                         'truck' &&
                                                     editData.template !==
-                                                        'trailer'
+                                                        'trailer' &&
+                                                    editData.template !==
+                                                        'fuel-stop'
                                                 "
                                                 [class.shorter-text]="
                                                     editData?.type === 'open'
@@ -450,7 +452,10 @@
                                             [class.limit-text]="
                                                 editData?.template !==
                                                     'truck' &&
-                                                editData?.template !== 'trailer'
+                                                editData?.template !==
+                                                    'trailer' &&
+                                                editData.template !==
+                                                    'fuel-stop'
                                             "
                                             [class.shorter-text]="
                                                 editData?.type === 'open'
