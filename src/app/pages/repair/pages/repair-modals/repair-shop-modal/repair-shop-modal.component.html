@@ -576,6 +576,8 @@
                                 [isCardOpen]="!!files?.length"
                                 [hasBodyData]="true"
                                 [hasDivider]="true"
+                                [hasSmallDivider]="true"
+                                [hasDarkDivider]="TRUE"
                                 [hasCounter]="files?.length"
                                 [animationMarginParams]="{
                                     marginTop: '0',
@@ -658,6 +660,9 @@
                                 ></app-ca-upload-files>
                             </app-ta-custom-card>
                         </div>
+
+                        <div class="divider divider--dark divider--small"></div>
+
                         <!-- Note -->
                         <app-ca-input-note
                             [isVisibleNote]="
@@ -895,7 +900,7 @@
 
 <ng-template #footerTemplate>
     <div class="modal-footer modal-footer-payroll">
-        <div class="divider"></div>
+        <div class="divider divider--dark divider--small"></div>
         @if (isEditMode) {
             <div class="d-flex justify-content-between w-full">
                 <div class="d-flex">

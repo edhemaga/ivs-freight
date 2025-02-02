@@ -6,13 +6,13 @@
         {{ _isCardOpen }}
     </div>
 
-    <ng-container *ngIf="hasDivider">
+    @if (hasDivider) {
         <div
             class="divider"
             [class.divider--dark]="hasDarkDivider"
             [class.divider--small]="hasSmallDivider"
         ></div>
-    </ng-container>
+    }
 
     <div
         [ngClass]="{
