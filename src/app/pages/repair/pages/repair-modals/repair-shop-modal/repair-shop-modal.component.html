@@ -117,7 +117,9 @@
                         <div class="row last-row repair-shop-address d-grid">
                             <div>
                                 <app-ca-input-address-dropdown
-                                    (selectedAddress)="onAddressChangeInit($event)"
+                                    (selectedAddress)="
+                                        onAddressChangeInit($event)
+                                    "
                                     [activeAddress]="selectedAddress"
                                     [inputConfig]="addressInputConfig"
                                     [placeholderType]="'longAddress'"
@@ -127,10 +129,7 @@
                                     [receivedAddressList]="addressList"
                                     [receivedAddressData]="addressData"
                                     (sentAddressData)="
-                                        onAddressChange(
-                                            $event,
-                                            addressService
-                                        )
+                                        onAddressChange($event, addressService)
                                     "
                                     (sentAddressValue)="
                                         getAddressData($event, addressService)
@@ -689,6 +688,7 @@
                             [hasScrollBody]="repairShopContacts?.length > 10"
                             [disabledCard]="!repairShopContacts?.length"
                             [hasScrollBodyXAxis]="true"
+                            [isContactsCard]="true"
                             [animationMarginParams]="{
                                 marginTop: '10px',
                                 marginBottom: '5px',

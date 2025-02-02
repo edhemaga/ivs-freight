@@ -7,13 +7,17 @@
     </div>
 
     <ng-container *ngIf="hasDivider">
-        <div class="divider" [class.divider--dark]="hasDarkDivider" [class.divider--small]="hasSmallDivider"></div>
+        <div
+            class="divider"
+            [class.divider--dark]="hasDarkDivider"
+            [class.divider--small]="hasSmallDivider"
+        ></div>
     </ng-container>
 
     <div
         [ngClass]="{
             'has-counter': hasCounter,
-            'width-xxl': isExtraLargeLayout
+            'width-xxl': isExtraLargeLayout,
         }"
         class="ta-card-header"
         [class.no-data]="!hasBodyData"
@@ -54,14 +58,14 @@
             <span
                 class="header-text"
                 [ngClass]="{
-                    'dropdown-card': isDropdownCard && !isDropdownModalCard
+                    'dropdown-card': isDropdownCard && !isDropdownModalCard,
                 }"
                 [ngStyle]="{
                     color: _isCardOpen
                         ? '#424242'
                         : headerLightColor && hasCounter === -1
-                        ? '#aaaaaa'
-                        : '#6C6C6C'
+                          ? '#aaaaaa'
+                          : '#6C6C6C',
                 }"
             >
                 {{ cardName }}
@@ -127,7 +131,7 @@
             class="header-actions"
             [ngClass]="{
                 'like-dislike-template': hasLikeDislike,
-                'hidden-add-new-action': disableMultipleReviews
+                'hidden-add-new-action': disableMultipleReviews,
             }"
         >
             <!-- Payroll status -->
@@ -276,7 +280,7 @@
                 src="assets/svg/truckassist-table/dropdown/content/delete.svg"
                 [svgStyle]="{
                     'width.px': 18,
-                    'height.px': 18
+                    'height.px': 18,
                 }"
                 (click)="onAction($event, 'delete')"
             ></svg-icon>
@@ -315,12 +319,15 @@
             scroll: hasScrollBody,
             'scroll-x-axis scrollable': hasScrollBodyXAxis && _isCardOpen,
             'department-contacts-x-axis': isDepartmentContactsCard,
+            'contacts-x-axis': isContactsCard,
             'scrollable-element overflow-auto': isInheritingParentSize,
-            'set-max-height': isInheritingParentSize
+            'set-max-height': isInheritingParentSize,
         }"
-        [ngStyle]="{ 
-             'max-height': isInheritingParentSize ? cardHeight - 40 + 'px' : 'auto',
-            }"
+        [ngStyle]="{
+            'max-height': isInheritingParentSize
+                ? cardHeight - 40 + 'px'
+                : 'auto',
+        }"
         [@.disabled]="disableAnimation"
     >
         <div
@@ -329,7 +336,7 @@
             [class.openedCardClass]="_isCardOpen"
             [@showHideCardBody]="{
                 value: _isCardOpen.toString(),
-                params: animationMarginParams
+                params: animationMarginParams,
             }"
             class="content-holder {{ customClass }}"
         >

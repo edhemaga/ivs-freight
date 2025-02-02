@@ -93,6 +93,7 @@ export class TaCustomCardComponent implements OnInit {
     @Input() isDropdownModalCard: boolean = false;
     @Input() isExtraLargeLayout: boolean = false;
     @Input() isDepartmentContactsCard: boolean = false;
+    @Input() isContactsCard: boolean = false;
 
     @Input() controlName: UntypedFormControl;
 
