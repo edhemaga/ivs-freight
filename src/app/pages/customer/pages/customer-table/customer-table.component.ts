@@ -41,6 +41,7 @@ import {
     IMapSelectedMarkerData,
     SortColumn,
     MapMarkerIconHelper,
+    MapMarkerIconService,
 } from 'ca-components';
 
 // store
@@ -116,9 +117,6 @@ import { ShipperMapDropdownHelper } from '@pages/customer/pages/customer-table/u
 export class CustomerTableComponent
     implements OnInit, AfterViewInit, OnDestroy
 {
-    @ViewChild('mapsComponent', { static: false })
-    public mapsComponent: CaMapComponent;
-
     private destroy$ = new Subject<void>();
 
     public viewData: any[] = [];
@@ -214,6 +212,7 @@ export class CustomerTableComponent
         private confirmationActivationService: ConfirmationActivationService,
         private customerCardsModalService: CustomerCardsModalService,
         private caSearchMultipleStatesService: CaSearchMultipleStatesService,
+        private markerIconService: MapMarkerIconService,
 
         // store
         private brokerQuery: BrokerQuery,
@@ -2494,6 +2493,12 @@ export class CustomerTableComponent
                                     item.position.lng === data.longitude
                             );
 
+                        const previousMarkerData = this.mapData.markers.find(
+                            (item2) =>
+                                item2.position.lat === data.latitude &&
+                                item2.position.lng === data.longitude
+                        );
+
                         let clusterInfoWindowContent = data.pagination?.data
                             ? {
                                   clusterData: [...data.pagination.data],
@@ -2513,45 +2518,49 @@ export class CustomerTableComponent
                             };
                         }
 
-                        const markerIcon =
-                            data?.count > 1
-                                ? MapMarkerIconHelper.getClusterMarker(
-                                      data?.count,
-                                      !!clusterInfoWindowContent?.selectedClusterItemData
-                                  )
-                                : MapMarkerIconHelper.getMapMarker(
-                                      data.favourite,
-                                      data.isClosed
-                                  );
+                        if (previousClusterData || previousMarkerData) {
+                            const newMarkerData = {
+                                ...(previousMarkerData || previousClusterData),
+                                infoWindowContent: clusterInfoWindowContent,
+                            };
 
-                        const markerData = {
-                            position: {
-                                lat: data.latitude,
-                                lng: data.longitude,
-                            },
-                            icon: {
-                                url: markerIcon,
-                                labelOrigin: new google.maps.Point(80, 15),
-                            },
-                            infoWindowContent: clusterInfoWindowContent,
-                            label: data.name
-                                ? {
-                                      text: data.name.toUpperCase(),
-                                      fontSize: '11px',
-                                      color: '#424242',
-                                      fontWeight: '500',
-                                  }
-                                : null,
-                            labelOrigin: { x: 90, y: 15 },
-                            options: {
-                                zIndex: index + 1,
-                                animation: google.maps.Animation.DROP,
-                            },
-                            data,
-                        };
+                            if (data.count > 1)
+                                clusterMarkers.push(newMarkerData);
+                            else markers.push(newMarkerData);
+                        } else {
+                            let markerData: IMapMarkers = {
+                                position: {
+                                    lat: data.latitude,
+                                    lng: data.longitude,
+                                },
+                                infoWindowContent: clusterInfoWindowContent,
+                                label: data.name,
+                                isFavorite: data.favourite,
+                                isClosed: data.isClosed,
+                                id: data.id,
+                                data,
+                            };
 
-                        if (data.count > 1) clusterMarkers.push(markerData);
-                        else markers.push(markerData);
+                            const markerIcon =
+                                data.count > 1
+                                    ? this.markerIconService.getClusterMarkerIcon(
+                                          markerData
+                                      )
+                                    : this.markerIconService.getMarkerIcon(
+                                          data.id,
+                                          data.name,
+                                          data.isClosed,
+                                          data.favourite
+                                      );
+
+                            markerData = {
+                                ...markerData,
+                                content: markerIcon,
+                            };
+
+                            if (data.count > 1) clusterMarkers.push(markerData);
+                            else markers.push(markerData);
+                        }
                     });
 
                     this.mapData = {

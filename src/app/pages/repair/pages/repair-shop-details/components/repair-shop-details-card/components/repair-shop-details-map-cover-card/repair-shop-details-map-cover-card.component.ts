@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { AfterViewInit, Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 
@@ -9,7 +9,8 @@ import { TaUploadFilesComponent } from '@shared/components/ta-upload-files/ta-up
 import {
     CaMapComponent,
     ICaMapProps,
-    MapMarkerIconHelper,
+    IMapMarkers,
+    MapMarkerIconService,
 } from 'ca-components';
 
 // constants
@@ -43,7 +44,7 @@ import { Tabs } from '@shared/models/tabs.model';
         CaMapComponent,
     ],
 })
-export class RepairShopDetailsMapCoverCardComponent {
+export class RepairShopDetailsMapCoverCardComponent implements AfterViewInit {
     @Input() set cardData(data: RepairShopResponse) {
         this.createMapCoverCardData(data);
     }
@@ -57,8 +58,15 @@ export class RepairShopDetailsMapCoverCardComponent {
 
     constructor(
         private router: Router,
-        private mapsService: MapsService
+
+        // services
+        private mapsService: MapsService,
+        private markerIconService: MapMarkerIconService
     ) {}
+
+    ngAfterViewInit(): void {
+        this.setMapData(this._cardData);
+    }
 
     private createMapCoverCardData(data: RepairShopResponse): void {
         this._cardData = data;
@@ -73,8 +81,6 @@ export class RepairShopDetailsMapCoverCardComponent {
                             : tab.disabled,
                 })
             );
-
-        this.setMapData(data);
     }
 
     public onTabChange(tab: Tabs): void {
@@ -82,38 +88,26 @@ export class RepairShopDetailsMapCoverCardComponent {
     }
 
     public setMapData(data: RepairShopResponse): void {
-        const markerData = {
+        const markerIcon = this.markerIconService.getMarkerIcon(
+            data.id,
+            data.address?.address,
+            !data.status,
+            data.pinned,
+            true
+        );
+
+        const markerData: IMapMarkers = {
             position: {
                 lat: data.latitude,
                 lng: data.longitude,
             },
-            icon: {
-                url: MapMarkerIconHelper.getMapMarker(
-                    data.pinned,
-                    !data.status
-                ),
-                labelOrigin: new google.maps.Point(95, 25),
-                scaledSize: new google.maps.Size(45, 50),
-            },
+            id: data.id,
             infoWindowContent: null,
-            label: data.address?.address
-                ? {
-                      text: data.address.address,
-                      fontSize:
-                          RepairShopDetailsStringEnum.REPAIR_SHOP_DETAILS_MAP_FONT_SIZE,
-                      color: RepairShopDetailsStringEnum.REPAIR_SHOP_DETAILS_MAP_COLOR,
-                      fontWeight:
-                          RepairShopDetailsStringEnum.REPAIR_SHOP_DETAILS_MAP_FONT_WEIGHT,
-                      isShowOnHover: true,
-                  }
-                : null,
-            labelOrigin: { x: 90, y: 15 },
-            options: {
-                zIndex: 1,
-                animation: google.maps.Animation.DROP,
-                cursor: RepairShopDetailsStringEnum.DEFAULT,
-            },
+            label: data.address?.address,
             isLargeMarker: true,
+            isShowLabelOnHover: true,
+            isClosed: !data.status,
+            content: markerIcon,
             data,
         };
 
@@ -126,6 +120,8 @@ export class RepairShopDetailsMapCoverCardComponent {
     }
 
     public onOpenInMap(): void {
+        this.markerIconService.resetMarkersData();
+
         this.mapsService.selectedMarker(this._cardData.id);
 
         const repairTableView = {

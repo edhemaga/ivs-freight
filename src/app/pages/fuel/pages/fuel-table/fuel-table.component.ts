@@ -684,11 +684,12 @@ export class FuelTableComponent
             gallon,
             pricePerGallon,
             fuelTruckNumber,
+            fuelCardHolderName
         } = data;
 
         const driverFullName = !!driver
             ? `${driver.firstName} ${driver.lastName}`
-            : null;
+            : fuelCardHolderName;
 
         const tableDescriptionDropTotal = total
             ? `$${this.thousandSeparator.transform(total)}`
@@ -769,7 +770,7 @@ export class FuelTableComponent
                 TableStringEnum.DATE_FORMAT
             ),
             isIntegratedFuelTransaction,
-            isIncompleteFuelTransaction: truck === null,
+            isIncompleteFuelTransaction: truck === null || driver === null,
             tableDropdownContent: this.getFuelTransactionDropdownContent(
                 isIntegratedFuelTransaction
             ),

@@ -779,14 +779,24 @@
                                                 'avatar-is-owner': row.isOwner,
                                             }"
                                         >
-                                            <!-- @if (row.isIncompleteFuelTransaction && column.name === 'Driver') {
-                                                <svg-icon
-                                                    class="lh-1 mr-1 column-text-svg-transaction-incomplete"
-                                                    [src]="
-                                                        tableBodySvgRoutes.fuelIncompleteTransactionSvgRoute
-                                                    "
-                                                ></svg-icon>
-                                            } @else { -->
+                                            @if (row.isIncompleteFuelTransaction && column.name === 'Driver') {
+                                                <div
+                                                    mainTooltip="Driver not Linked"
+                                                    mainContent
+                                                    ngbTooltip
+                                                    tooltipBackground="#424242"
+                                                    tooltipColor="#FFFFFF"
+                                                    position="bottom"
+                                                    tooltipTextAlign="center"
+                                                >
+                                                    <svg-icon
+                                                        class="lh-1 mr-1 column-text-svg-transaction-incomplete"
+                                                        [src]="
+                                                            tableBodySvgRoutes.fuelIncompleteTransactionSvgRoute
+                                                        "
+                                                    ></svg-icon>
+                                                </div>
+                                            } @else {
                                                 <ng-container
                                                     [ngTemplateOutlet]="
                                                         avatarColumn
@@ -803,39 +813,61 @@
                                                     *ngIf="row.isOwner"
                                                     src="assets/svg/truckassist-table/owner-badge.svg"
                                                 />
-                                            <!-- } -->
+                                            }
                                         </div>
 
-                                        <div
-                                            (click)="goToDetails(column, row)"
-                                            [ngClass]="{
-                                                'has-details-page':
-                                                    !column.link
-                                                        ?.doesNotHaveRout,
-                                            }"
-                                            class="table-avatar-name"
-                                            [innerHtml]="
-                                                row[column.field]
-                                                    ? (row[column.field]
-                                                      | tableHighlightSearchText
-                                                          : this
-                                                                .chipsForHighlight)
-                                                    : ''
-                                            "
-                                            #op="ngbPopover"
-                                            [ngbPopover]="optionsPopover"
-                                            [placement]="'bottom-right'"
-                                            [autoClose]="'outside'"
-                                            popoverClass="toolbar-options-popover"
-                                            triggers="manual"
-                                            (hidden)="optionsPopupOpen = false"
-                                            mainTooltip="View Detail"
-                                            [tooltipBackground]="'#424242'"
-                                            [tooltipColor]="'#ffff'"
-                                            position="bottom"
-                                        >
-                                            {{ row[column.field] }}
-                                        </div>
+                                        @if (row.isIncompleteFuelTransaction && column.name === 'Driver') {
+                                            <span
+                                                class="table-text column-text-red"
+                                                [ngClass]="{
+                                                    'ta-font-semi-bold':
+                                                        column.isTextBold ||
+                                                        row[column.field] ===
+                                                            'Unlimited',
+                                                    'align-end':
+                                                        column.isJustifyEnd,
+                                                }"
+                                                [innerHtml]="
+                                                    row[column.field]
+                                                        ? (row[column.field]
+                                                        | tableHighlightSearchText
+                                                            : this
+                                                                    .chipsForHighlight)
+                                                        : ''
+                                                "
+                                            ></span>
+                                        } @else {
+                                            <div
+                                                (click)="goToDetails(column, row)"
+                                                [ngClass]="{
+                                                    'has-details-page':
+                                                        !column.link
+                                                            ?.doesNotHaveRout,
+                                                }"
+                                                class="table-avatar-name"
+                                                [innerHtml]="
+                                                    row[column.field]
+                                                        ? (row[column.field]
+                                                        | tableHighlightSearchText
+                                                            : this
+                                                                    .chipsForHighlight)
+                                                        : ''
+                                                "
+                                                #op="ngbPopover"
+                                                [ngbPopover]="optionsPopover"
+                                                [placement]="'bottom-right'"
+                                                [autoClose]="'outside'"
+                                                popoverClass="toolbar-options-popover"
+                                                triggers="manual"
+                                                (hidden)="optionsPopupOpen = false"
+                                                mainTooltip="View Detail"
+                                                [tooltipBackground]="'#424242'"
+                                                [tooltipColor]="'#ffff'"
+                                                position="bottom"
+                                            >
+                                                {{ row[column.field] }}
+                                            </div>     
+                                        }
                                     </div>
 
                                     <!-- USER AVATAR COLUMN -->
@@ -3771,14 +3803,24 @@
                                         }"
                                         class="td-content"
                                     >
-                                        <!-- @if (row.isIncompleteFuelTransaction && column.name === 'Driver') {
-                                            <svg-icon
-                                                class="lh-1 mr-1 column-text-svg-transaction-incomplete"
-                                                [src]="
-                                                    tableBodySvgRoutes.fuelIncompleteTransactionSvgRoute
-                                                "
-                                            ></svg-icon>
-                                        } @else { -->
+                                        @if (row.isIncompleteFuelTransaction && column.name === 'Driver') {
+                                            <div
+                                                mainTooltip="Driver not Linked"
+                                                mainContent
+                                                ngbTooltip
+                                                tooltipBackground="#424242"
+                                                tooltipColor="#FFFFFF"
+                                                position="bottom"
+                                                tooltipTextAlign="center"
+                                            >
+                                                <svg-icon
+                                                    class="lh-1 mr-1 column-text-svg-transaction-incomplete"
+                                                    [src]="
+                                                        tableBodySvgRoutes.fuelIncompleteTransactionSvgRoute
+                                                    "
+                                                ></svg-icon>
+                                            </div>
+                                        } @else {
                                             <div
                                                 class="avatar-container"
                                                 [ngClass]="{
@@ -3803,24 +3845,48 @@
                                                     src="assets/svg/truckassist-table/owner-badge.svg"
                                                 />
                                             </div>
-                                        <!-- } -->
-                                        <span
-                                            (click)="goToDetails(column, row)"
-                                            [ngClass]="{
-                                                'has-details-page':
-                                                    !column.link
-                                                        ?.doesNotHaveRout,
-                                            }"
-                                            class="table-avatar-name"
-                                            [innerHtml]="
-                                                row[column.field]
-                                                    ? (row[column.field]
-                                                      | tableHighlightSearchText
-                                                          : this
-                                                                .chipsForHighlight)
-                                                    : ''
-                                            "
-                                        ></span>
+                                        }
+
+                                        @if (row.isIncompleteFuelTransaction && column.name === 'Driver') {
+                                            <span
+                                                class="table-text column-text-red"
+                                                [ngClass]="{
+                                                    'ta-font-semi-bold':
+                                                        column.isTextBold ||
+                                                        row[column.field] ===
+                                                            'Unlimited',
+                                                    'align-end':
+                                                        column.isJustifyEnd,
+                                                }"
+                                                [innerHtml]="
+                                                    row[column.field]
+                                                        ? (row[column.field]
+                                                        | tableHighlightSearchText
+                                                            : this
+                                                                    .chipsForHighlight)
+                                                        : ''
+                                                "
+                                            ></span>
+                                        } @else {
+                                            <span
+                                                (click)="goToDetails(column, row)"
+                                                [ngClass]="{
+                                                    'has-details-page':
+                                                        !column.link
+                                                            ?.doesNotHaveRout,
+                                                }"
+                                                class="table-avatar-name"
+                                                [innerHtml]="
+                                                    row[column.field]
+                                                        ? (row[column.field]
+                                                        | tableHighlightSearchText
+                                                            : this
+                                                                    .chipsForHighlight)
+                                                        : ''
+                                                "
+                                            ></span>
+                                        }
+                                        
                                     </div>
 
                                     <div

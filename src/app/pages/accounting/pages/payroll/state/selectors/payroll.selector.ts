@@ -76,18 +76,14 @@ export const selectPayrollReportMapData = createSelector(
             const nextLoadNumber = mapData[index]?.loadNumber;
             const routeMarker: IMapMarkers = {
                 position: { lat: loadStop.latitude, lng: loadStop.longitude },
-                icon: {
-                    url: MapMarkerIconHelper.getRoutingMarkerIcon(
-                        loadStop.orderInLoad ?? 0,
-                        loadStop.type.name.toLowerCase(),
-                        false,
-                        true
-                    ),
-                    labelOrigin: new google.maps.Point(90, 15),
-                },
-                label: loadStop.loadNumber && {
-                    text: loadStop.loadNumber,
-                },
+                content: MapMarkerIconHelper.getRoutingMarkerElement(
+                    loadStop.orderInLoad ?? 0,
+                    loadStop.type.name.toLowerCase(),
+                    false,
+                    true,
+                    loadStop.loadNumber,
+                ),
+                label: loadStop.loadNumber,
             };
 
             routeMarkers.push(routeMarker);
