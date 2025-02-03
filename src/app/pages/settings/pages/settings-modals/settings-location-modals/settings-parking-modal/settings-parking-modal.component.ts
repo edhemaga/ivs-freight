@@ -35,6 +35,7 @@ import { FormService } from '@shared/services/form.service';
 import { DispatcherService } from '@pages/dispatch/services/dispatcher.service';
 import { DropDownService } from '@shared/services/drop-down.service';
 import { ConfirmationService } from '@shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
+import { AddressService } from '@shared/services/address.service';
 
 // components
 import {
@@ -42,12 +43,12 @@ import {
     CaInputDropdownComponent,
     CaModalComponent,
     CaModalButtonComponent,
+    CaInputAddressDropdownComponent,
 } from 'ca-components';
 import { TaTabSwitchComponent } from '@shared/components/ta-tab-switch/ta-tab-switch.component';
 import { TaCheckboxCardComponent } from '@shared/components/ta-checkbox-card/ta-checkbox-card.component';
 import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-custom-card.component';
 import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
-import { TaInputAddressDropdownComponent } from '@shared/components/ta-input-address-dropdown/ta-input-address-dropdown.component';
 
 // pipes
 import { SumArraysPipe } from '@shared/pipes/sum-arrays.pipe';
@@ -87,6 +88,9 @@ import { SharedSvgRoutes } from '@shared/utils/svg-routes';
 // Helpers
 import { DropActionNameHelper } from '@shared/utils/helpers';
 
+// mixin
+import { AddressMixin } from '@shared/mixins/address/address.mixin';
+
 @Component({
     selector: 'app-settings-parking-modal',
     templateUrl: './settings-parking-modal.component.html',
@@ -108,7 +112,7 @@ import { DropActionNameHelper } from '@shared/utils/helpers';
         CaModalComponent,
         TaTabSwitchComponent,
         TaCheckboxCardComponent,
-        TaInputAddressDropdownComponent,
+        CaInputAddressDropdownComponent,
         TaCustomCardComponent,
         TaAppTooltipV2Component,
         CaModalButtonComponent,
@@ -120,7 +124,10 @@ import { DropActionNameHelper } from '@shared/utils/helpers';
         FormatDatePipe,
     ],
 })
-export class SettingsParkingModalComponent implements OnInit, OnDestroy {
+export class SettingsParkingModalComponent
+    extends AddressMixin(class { addressService!: AddressService; })
+    implements OnInit, OnDestroy
+{
     @Input() editData: any;
 
     public parkingForm: UntypedFormGroup;
@@ -182,7 +189,7 @@ export class SettingsParkingModalComponent implements OnInit, OnDestroy {
 
     public isCardAnimationDisabled: boolean = false;
 
-    private destroy$ = new Subject<void>();
+    public destroy$ = new Subject<void>();
 
     public formConfig = SettingsParkingConfig;
 
@@ -218,8 +225,11 @@ export class SettingsParkingModalComponent implements OnInit, OnDestroy {
 
         private ngbActiveModal: NgbActiveModal,
         public dropDownService: DropDownService,
-        private confirmationService: ConfirmationService
-    ) {}
+        private confirmationService: ConfirmationService,
+        public addressService: AddressService,
+    ) {
+        super();
+    }
 
     ngOnInit() {
         this.createForm();

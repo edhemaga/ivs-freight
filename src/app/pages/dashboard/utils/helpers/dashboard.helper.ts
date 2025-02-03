@@ -8,12 +8,17 @@ import { DashboardStringHelper } from '@pages/dashboard/utils/helpers/dashboard-
 
 // enums
 import { DashboardStringEnum } from '@pages/dashboard/enums/dashboard-string.enum';
-import { CurrencyValuesEnum } from '@pages/dashboard/enums';
+import { PerformanceCurrencyValuesEnum } from '@pages/dashboard/pages/dashboard-performance/enums';
+
+// service
+import { DashboardByStateService } from '@pages/dashboard/pages/dashboard-by-state/services/dashboard-by-state.service';
 
 // models
 import { DropdownListItem } from '@pages/dashboard/models/dropdown-list-item.model';
 import { FilteredSubperiod } from '@pages/dashboard/models/filtered-subperiod.model';
 import { ByStateListItem } from '@pages/dashboard/pages/dashboard-by-state/models/by-state-list-item.model';
+import { IStateConfiguration } from '@pages/dashboard/pages/dashboard-by-state/models';
+import { ByStateReportType } from 'appcoretruckassist';
 
 export class DashboardHelper {
     static ConvertMainPeriod(mainPeriod: string) {
@@ -130,17 +135,14 @@ export class DashboardHelper {
         return emptyLabelsArray;
     }
 
-    static setChartDateTitle(
-        startText: string,
-        endText: string
-    ): { chartTitle: string } {
+    static setChartDateTitle(startText: string, endText: string): string {
         const titleStart =
             DashboardStringHelper.capitalizeFirstLetter(startText);
         const titleEnd = DashboardStringHelper.capitalizeFirstLetter(endText);
 
         const chartTitle = `${titleStart} - ${titleEnd}`;
 
-        return { chartTitle };
+        return chartTitle;
     }
 
     static highlightPartOfString(
@@ -195,6 +197,152 @@ export class DashboardHelper {
     }
 
     static isCurrency(key: string): boolean {
-        return Object.values(CurrencyValuesEnum).includes(key.toUpperCase() as CurrencyValuesEnum);
+        return Object.values(PerformanceCurrencyValuesEnum).includes(
+            key.toUpperCase() as PerformanceCurrencyValuesEnum
+        );
+    }
+
+    static selectByStateConfiguration(
+        dashboardByStateService: DashboardByStateService,
+        selectedTab: ByStateReportType,
+        byStateTitle: string
+    ): IStateConfiguration {
+        const byStateConfig = {
+            [DashboardStringEnum.PICKUP]: {
+                serviceMethod: dashboardByStateService.getPickupByState.bind(
+                    dashboardByStateService
+                ),
+                dataTransform: (pickup, index) => ({
+                    id: index + 1,
+                    state: pickup.stateShortName,
+                    value:
+                        selectedTab === DashboardStringEnum.COUNT
+                            ? pickup.count.toString()
+                            : pickup.revenue.toString(),
+                    percent:
+                        selectedTab === DashboardStringEnum.COUNT
+                            ? pickup.countPercentage.toString()
+                            : pickup.revenuePercentage.toString(),
+                    isSelected: false,
+                    selectedColor: null,
+                }),
+            },
+            [DashboardStringEnum.DELIVERY]: {
+                serviceMethod: dashboardByStateService.getDeliveryByState.bind(
+                    dashboardByStateService
+                ),
+                dataTransform: (delivery, index) => ({
+                    id: index + 1,
+                    state: delivery.stateShortName,
+                    value:
+                        selectedTab === DashboardStringEnum.COUNT
+                            ? delivery.count.toString()
+                            : delivery.revenue.toString(),
+                    percent:
+                        selectedTab === DashboardStringEnum.COUNT
+                            ? delivery.countPercentage.toString()
+                            : delivery.revenuePercentage.toString(),
+                    isSelected: false,
+                    selectedColor: null,
+                }),
+            },
+            [DashboardStringEnum.ROADSIDE]: {
+                serviceMethod: dashboardByStateService.getRoadsideByState.bind(
+                    dashboardByStateService
+                ),
+                dataTransform: (rodeside, index) => ({
+                    id: index + 1,
+                    state: rodeside.stateShortName,
+                    value:
+                        selectedTab === DashboardStringEnum.COUNT
+                            ? rodeside.count.toString()
+                            : rodeside.severityWeight.toString(),
+                    percent:
+                        selectedTab === DashboardStringEnum.COUNT
+                            ? rodeside.countPercentage.toString()
+                            : rodeside.severityWeightPercentage.toString(),
+                    isSelected: false,
+                    selectedColor: null,
+                }),
+            },
+            [DashboardStringEnum.VIOLATION_2]: {
+                serviceMethod: dashboardByStateService.getViolationByState.bind(
+                    dashboardByStateService
+                ),
+                dataTransform: (violation, index) => ({
+                    id: index + 1,
+                    state: violation.stateShortName,
+                    value:
+                        selectedTab === DashboardStringEnum.COUNT
+                            ? violation.count.toString()
+                            : violation.severityWeight.toString(),
+                    percent:
+                        selectedTab === DashboardStringEnum.COUNT
+                            ? violation.countPercentage.toString()
+                            : violation.severityWeightPercentage.toString(),
+                    isSelected: false,
+                    selectedColor: null,
+                }),
+            },
+            [DashboardStringEnum.ACCIDENT_2]: {
+                serviceMethod: dashboardByStateService.getAccidentByState.bind(
+                    dashboardByStateService
+                ),
+                dataTransform: (accident, index) => ({
+                    id: index + 1,
+                    state: accident.stateShortName,
+                    value:
+                        selectedTab === DashboardStringEnum.COUNT
+                            ? accident.count.toString()
+                            : accident.severityWeight.toString(),
+                    percent:
+                        selectedTab === DashboardStringEnum.COUNT
+                            ? accident.countPercentage.toString()
+                            : accident.severityWeightPercentage.toString(),
+                    isSelected: false,
+                    selectedColor: null,
+                }),
+            },
+            [DashboardStringEnum.REPAIR]: {
+                serviceMethod: dashboardByStateService.getRepairByState.bind(
+                    dashboardByStateService
+                ),
+                dataTransform: (repair, index) => ({
+                    id: index + 1,
+                    state: repair.stateShortName,
+                    value:
+                        selectedTab === DashboardStringEnum.COUNT
+                            ? repair.count.toString()
+                            : repair.cost.toString(),
+                    percent:
+                        selectedTab === DashboardStringEnum.COUNT
+                            ? repair.countPercentage.toString()
+                            : repair.costPercentage.toString(),
+                    isSelected: false,
+                    selectedColor: null,
+                }),
+            },
+            [DashboardStringEnum.FUEL]: {
+                serviceMethod: dashboardByStateService.getFuelByState.bind(
+                    dashboardByStateService
+                ),
+                dataTransform: (fuel, index) => ({
+                    id: index + 1,
+                    state: fuel.stateShortName,
+                    value:
+                        selectedTab === DashboardStringEnum.GALLON
+                            ? fuel.gallon.toString()
+                            : fuel.cost.toString(),
+                    percent:
+                        selectedTab === DashboardStringEnum.GALLON
+                            ? fuel.gallonPercentage.toString()
+                            : fuel.costPercentage.toString(),
+                    isSelected: false,
+                    selectedColor: null,
+                }),
+            },
+        };
+
+        return byStateConfig[byStateTitle];
     }
 }
