@@ -47,8 +47,4 @@ export enum RepairShopDetailsStringEnum {
     VEHICLE = 'Vehicle',
     REVIEW = 'Review',
     CONTACT = 'Contact',
-
-    REPAIR_SHOP_DETAILS_MAP_FONT_SIZE = '11px',
-    REPAIR_SHOP_DETAILS_MAP_FONT_WEIGHT = '700',
-    REPAIR_SHOP_DETAILS_MAP_COLOR = '#424242',
 }
