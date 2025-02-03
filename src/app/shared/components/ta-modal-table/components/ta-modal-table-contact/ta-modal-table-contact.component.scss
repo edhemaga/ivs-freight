@@ -1,6 +1,9 @@
+@import 'src/theme/variables.scss';
+@import 'src/assets/scss/mixins.scss';
+
 .contact-table-container {
     .contact-item {
-        grid-template-columns: 130px 140px 80px 200px;
+        @include grid-template-columns($modalTableContact);
     }
 
     .contact-pinned {
