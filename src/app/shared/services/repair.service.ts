@@ -46,6 +46,9 @@ import {
 import { AddUpdateRepairProperties } from '@pages/repair/pages/repair-modals/repair-order-modal/models';
 import { CreateShopModel } from '@pages/repair/pages/repair-modals/repair-shop-modal/models';
 
+// Helpers
+import { getOrderAndSort } from '@shared/utils/helpers';
+
 @Injectable({
     providedIn: 'root',
 })
@@ -287,6 +290,8 @@ export class RepairService {
         search1: string = null,
         search2: string = null
     ): Observable<RepairShopNewListResponse> {
+        const sorting = getOrderAndSort(sort);
+
         return this.repairShopService.apiRepairshopListGet(
             active,
             pinned,
@@ -306,9 +311,9 @@ export class RepairService {
             pageIndex,
             pageSize,
             companyId,
-            sort,
-            sortOrder,
-            sortBy,
+            null,
+            sorting.order,
+            sorting.sortBy as RepairShopSortBy,
             search,
             search1,
             search2
