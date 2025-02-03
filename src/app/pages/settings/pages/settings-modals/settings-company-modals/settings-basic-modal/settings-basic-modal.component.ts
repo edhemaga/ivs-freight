@@ -9,19 +9,19 @@ import { Options } from '@angular-slider/ngx-slider';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
-import { debounceTime, distinctUntilChanged, Subject, takeUntil } from 'rxjs';
+import { debounceTime, distinctUntilChanged, Subject, takeUntil, switchMap } from 'rxjs';
 
-// modules
+// Modules
 import { AngularSvgIconModule } from 'angular-svg-icon';
 
-// services
+// Services
 import { SettingsCompanyService } from '@pages/settings/services/settings-company.service';
 import { ModalService } from '@shared/services/modal.service';
 import { BankVerificationService } from '@shared/services/bank-verification.service';
 import { TaInputService } from '@shared/services/ta-input.service';
 import { FormService } from '@shared/services/form.service';
 
-// components
+// Components
 import { DropZoneConfig } from '@shared/components/ta-upload-files/models/dropzone-config.model';
 import { TaInputComponent } from '@shared/components/ta-input/ta-input.component';
 import { TaInputDropdownComponent } from '@shared/components/ta-input-dropdown/ta-input-dropdown.component';
@@ -35,14 +35,14 @@ import { TaCheckboxComponent } from '@shared/components/ta-checkbox/ta-checkbox.
 import { TaNgxSliderComponent } from '@shared/components/ta-ngx-slider/ta-ngx-slider.component';
 import { CaUploadFilesComponent } from 'ca-components';
 
-// animations
+// Animations
 import { tabsModalAnimation } from '@shared/animations/tabs-modal.animation';
 
-// utils
+// Utils
 import { MethodsGlobalHelper } from '@shared/utils/helpers/methods-global.helper';
 import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calculations.helper';
 
-// validations
+// Validations
 import {
     accountBankValidation,
     addressUnitValidation,
@@ -75,14 +75,14 @@ import {
     emailValidation,
 } from '@shared/components/ta-input/validators/ta-input.regex-validations';
 
-// constants
+// Constants
 import { SettingsModalConstants } from '@pages/settings/pages/settings-company/utils/constants/settings-modal.constants';
 
-// enums
+// Enums
 import { SettingsModalEnum } from '@pages/settings/pages/settings-company/enums/settings-modal.enum';
 import { SettingsFormEnum } from '@pages/settings/pages/settings-modals/enums';
 
-// models
+// Models
 import {
     AddressEntity,
     CreateDivisionCompanyCommand,
@@ -91,13 +91,27 @@ import {
     UpdateDivisionCompanyCommand,
     BankResponse,
     EnumValue,
+    CompanyService,
+    LinkTokenResponse,
+    ExchangePublicTokenCommand,
+    AccessTokenResponse,
 } from 'appcoretruckassist';
 import { Tabs } from '@shared/models/tabs.model';
 import { EditData } from '@shared/models/edit-data.model';
 import { AnimationOptions } from '@shared/models/animation-options.model';
+import {
+    IPlaid,
+    IPlaidCreated,
+    IPlaidLinkOnEventMetadata,
+    IPlaidLinkOnExitMetadata,
+    IPlaidLinkOnSuccessMetadata
+} from '@shared/models';
 
-// svg routes
+// SVG routes
 import { SettingsModalSvgRoutes } from '@pages/settings/pages/settings-modals/settings-company-modals/settings-basic-modal/utils/svg-routes';
+
+// Plaid
+declare const Plaid: IPlaid;
 
 @Component({
     selector: 'app-settings-basic-modal',
@@ -216,10 +230,12 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
         private modalService: ModalService,
         private settingsCompanyService: SettingsCompanyService,
         private bankVerificationService: BankVerificationService,
-        private formService: FormService
-    ) {}
+        private formService: FormService,
+        // TODO test move to local service
+        private companyService: CompanyService
+    ) { }
 
-    ngOnInit(): void {
+    async ngOnInit(): Promise<void> {
         this.createForm();
 
         this.getModalDropdowns();
@@ -229,6 +245,53 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
         this.checkForCompany();
 
         this.validateCreditCards();
+
+        this.companyService
+            .apiCompanyPlaidLinkTokenGet()
+            .pipe(takeUntil(this.destroy$))
+            .subscribe(async (ltRes: LinkTokenResponse) => {
+
+                if (!ltRes?.link_token) return;
+
+                const plaid: IPlaidCreated =
+                    await Plaid.create({
+                        token: ltRes.link_token,
+                        onSuccess:
+                            (publicToken: string,
+                                metadata: IPlaidLinkOnSuccessMetadata) => {
+                                const publicTokenExchange: ExchangePublicTokenCommand = {
+                                    publicToken
+                                }
+                                if (!publicToken) return;
+                                this.companyService
+                                    .apiCompanyPlaidTokenExchangePost(
+                                        publicTokenExchange
+                                    ).
+                                    pipe(
+                                        takeUntil(this.destroy$),
+                                        switchMap((atRes: AccessTokenResponse) =>
+                                            this.companyService
+                                                .apiCompanyPlaidAuthGetPost(
+                                                    {
+                                                        accessToken: atRes.access_token
+                                                    })
+                                        ),
+                                        takeUntil(this.destroy$)
+                                    ).subscribe(() => {
+
+                                    });
+                            },
+                        onExit: (
+                            error: unknown,
+                            metadata: IPlaidLinkOnExitMetadata) => {
+                        },
+                        onEvent: (eventName: string,
+                            metadata: IPlaidLinkOnEventMetadata) => {
+                        },
+                        onLoad: () => { },
+                    });
+                plaid.open();
+            });
     }
 
     private getConstantData(): void {
@@ -687,7 +750,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
                         this.selectedBankAccountFormArray[index],
                     ];
                 },
-                error: () => {},
+                error: () => { },
             });
     }
 
@@ -1047,7 +1110,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
             .subscribe((bankCards) => {
                 const hasDuplicates =
                     bankCards.map((bankCard) => bankCard.card).length >
-                    new Set(bankCards.map((bankCard) => bankCard.card)).size
+                        new Set(bankCards.map((bankCard) => bankCard.card)).size
                         ? true
                         : false;
 
@@ -1352,8 +1415,8 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
             fleetType: additionalInfo?.fleetType,
             payTerm: additionalInfo?.payTerm
                 ? this.payTermOptions?.find(
-                      (payTerm) => payTerm.id === additionalInfo?.payTerm
-                  )?.name
+                    (payTerm) => payTerm.id === additionalInfo?.payTerm
+                )?.name
                 : null,
             customerCredit: additionalInfo?.customerCredit,
             mvrMonths: additionalInfo?.mvrMonths,
@@ -1432,8 +1495,8 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
                         cvc: card.cvc,
                         expireDate: card.expireDate
                             ? MethodsCalculationsHelper.convertDateFromBackend(
-                                  card.expireDate
-                              )
+                                card.expireDate
+                            )
                             : null,
                     })
                 );
@@ -1622,8 +1685,8 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
                 : null,
             dateOfIncorporation: dateOfIncorporation
                 ? MethodsCalculationsHelper.convertDateToBackend(
-                      dateOfIncorporation
-                  )
+                    dateOfIncorporation
+                )
                 : null,
             preferredLoadType:
                 this.companyForm.get(SettingsFormEnum.PREFERRED_LOAD_TYPE)
@@ -1655,8 +1718,8 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
             endingIn: this.selectedAccountingEndingIn?.id,
             defaultBase: accountingDefaultBase
                 ? MethodsCalculationsHelper.convertThousanSepInNumber(
-                      accountingDefaultBase
-                  )
+                    accountingDefaultBase
+                )
                 : null,
         };
 
@@ -1666,8 +1729,8 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
             endingIn: this.selectedDispatchEndingIn?.id,
             defaultBase: dispatchDefaultBase
                 ? MethodsCalculationsHelper.convertThousanSepInNumber(
-                      dispatchDefaultBase
-                  )
+                    dispatchDefaultBase
+                )
                 : null,
             defaultCommission: dispatchDefaultCommission,
         };
@@ -1678,8 +1741,8 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
             endingIn: this.selectedRecEndingIn?.id,
             defaultBase: recruitingDefaultBase
                 ? MethodsCalculationsHelper.convertThousanSepInNumber(
-                      recruitingDefaultBase
-                  )
+                    recruitingDefaultBase
+                )
                 : null,
         };
 
@@ -1689,8 +1752,8 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
             endingIn: this.selectedRepairEndingIn?.id,
             defaultBase: repairDefaultBase
                 ? MethodsCalculationsHelper.convertThousanSepInNumber(
-                      repairDefaultBase
-                  )
+                    repairDefaultBase
+                )
                 : null,
         };
 
@@ -1700,8 +1763,8 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
             endingIn: this.selectedSafetyEndingIn?.id,
             defaultBase: safetyDefaultBase
                 ? MethodsCalculationsHelper.convertThousanSepInNumber(
-                      safetyDefaultBase
-                  )
+                    safetyDefaultBase
+                )
                 : null,
         };
 
@@ -1711,8 +1774,8 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
             endingIn: this.selectedManagerEndingIn?.id,
             defaultBase: managerDefaultBase
                 ? MethodsCalculationsHelper.convertThousanSepInNumber(
-                      managerDefaultBase
-                  )
+                    managerDefaultBase
+                )
                 : null,
             defaultCommission: managerDefaultCommission,
         };
@@ -1724,8 +1787,8 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
             endingIn: this.selectedCompanyEndingIn?.id,
             defaultBase: companyOwnerDefaultBase
                 ? MethodsCalculationsHelper.convertThousanSepInNumber(
-                      companyOwnerDefaultBase
-                  )
+                    companyOwnerDefaultBase
+                )
                 : null,
         };
 
@@ -1735,8 +1798,8 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
             endingIn: this.selectedOtherEndingIn?.id,
             defaultBase: otherDefaultBase
                 ? MethodsCalculationsHelper.convertThousanSepInNumber(
-                      otherDefaultBase
-                  )
+                    otherDefaultBase
+                )
                 : null,
         };
 
@@ -1747,15 +1810,15 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
             solo: {
                 emptyMile: !loadedAndEmptySameRate
                     ? [SettingsModalEnum.SOLO, 'Combined'].includes(
-                          this.selectedFleetType
-                      )
+                        this.selectedFleetType
+                    )
                         ? parseFloat(soloEmptyMile)
                         : null
                     : null,
                 loadedMile: !loadedAndEmptySameRate
                     ? [SettingsModalEnum.SOLO, 'Combined'].includes(
-                          this.selectedFleetType
-                      )
+                        this.selectedFleetType
+                    )
                         ? parseFloat(soloLoadedMile)
                         : null
                     : null,
@@ -1764,8 +1827,8 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
                 )
                     ? soloPerStop
                         ? MethodsCalculationsHelper.convertThousanSepInNumber(
-                              soloPerStop
-                          )
+                            soloPerStop
+                        )
                         : null
                     : null,
             },
@@ -1783,8 +1846,8 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
                 perStop: ['Team', 'Combined'].includes(this.selectedFleetType)
                     ? teamPerStop
                         ? MethodsCalculationsHelper.convertThousanSepInNumber(
-                              teamPerStop
-                          )
+                            teamPerStop
+                        )
                         : null
                     : null,
             },
@@ -1806,13 +1869,13 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
                 : null,
             soloPerLoad: soloPerLoad
                 ? MethodsCalculationsHelper.convertThousanSepInNumber(
-                      soloPerLoad
-                  )
+                    soloPerLoad
+                )
                 : null,
             teamPerLoad: teamPerLoad
                 ? MethodsCalculationsHelper.convertThousanSepInNumber(
-                      teamPerLoad
-                  )
+                    teamPerLoad
+                )
                 : null,
             defaultSoloDriverCommission: [
                 SettingsModalEnum.SOLO,
@@ -1893,8 +1956,8 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
                 data.companyType?.id !== 0 ? data.companyType.name : null,
             dateOfIncorporation: data.dateOfIncorporation
                 ? MethodsCalculationsHelper.convertDateFromBackend(
-                      data.dateOfIncorporation
-                  )
+                    data.dateOfIncorporation
+                )
                 : null,
             logo: data.logo ?? null,
             //-------------------- Additional Tab
@@ -1913,8 +1976,8 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
             driverFlatRate: data.driverFlatRate,
             payTerm: data.additionalInfo?.payTerm
                 ? this.payTermOptions?.find(
-                      (payTerm) => payTerm.id === data.additionalInfo?.payTerm
-                  )?.name
+                    (payTerm) => payTerm.id === data.additionalInfo?.payTerm
+                )?.name
                 : null,
             customerCredit: data.additionalInfo.customerCredit,
             mvrMonths: data.additionalInfo.mvrMonths,
@@ -2000,8 +2063,8 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
                         cvc: card.cvc,
                         expireDate: card.expireDate
                             ? MethodsCalculationsHelper.convertDateFromBackend(
-                                  card.expireDate
-                              )
+                                card.expireDate
+                            )
                             : null,
                     })
                 );
@@ -2026,8 +2089,8 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
                             .patchValue(
                                 payroll.defaultBase
                                     ? MethodsCalculationsHelper.convertNumberInThousandSep(
-                                          payroll.defaultBase
-                                      )
+                                        payroll.defaultBase
+                                    )
                                     : null
                             );
 
@@ -2051,8 +2114,8 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
                             .patchValue(
                                 payroll.defaultBase
                                     ? MethodsCalculationsHelper.convertNumberInThousandSep(
-                                          payroll.defaultBase
-                                      )
+                                        payroll.defaultBase
+                                    )
                                     : null
                             );
                         this.companyForm
@@ -2078,8 +2141,8 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
                             .patchValue(
                                 payroll.defaultBase
                                     ? MethodsCalculationsHelper.convertNumberInThousandSep(
-                                          payroll.defaultBase
-                                      )
+                                        payroll.defaultBase
+                                    )
                                     : null
                             );
 
@@ -2102,8 +2165,8 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
                             .patchValue(
                                 payroll.defaultBase
                                     ? MethodsCalculationsHelper.convertNumberInThousandSep(
-                                          payroll.defaultBase
-                                      )
+                                        payroll.defaultBase
+                                    )
                                     : null
                             );
 
@@ -2126,8 +2189,8 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
                             .patchValue(
                                 payroll.defaultBase
                                     ? MethodsCalculationsHelper.convertNumberInThousandSep(
-                                          payroll.defaultBase
-                                      )
+                                        payroll.defaultBase
+                                    )
                                     : null
                             );
 
@@ -2150,8 +2213,8 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
                             .patchValue(
                                 payroll.defaultBase
                                     ? MethodsCalculationsHelper.convertNumberInThousandSep(
-                                          payroll.defaultBase
-                                      )
+                                        payroll.defaultBase
+                                    )
                                     : null
                             );
                         this.companyForm
@@ -2177,8 +2240,8 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
                             .patchValue(
                                 payroll.defaultBase
                                     ? MethodsCalculationsHelper.convertNumberInThousandSep(
-                                          payroll.defaultBase
-                                      )
+                                        payroll.defaultBase
+                                    )
                                     : null
                             );
 
@@ -2201,8 +2264,8 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
                             .patchValue(
                                 payroll.defaultBase
                                     ? MethodsCalculationsHelper.convertNumberInThousandSep(
-                                          payroll.defaultBase
-                                      )
+                                        payroll.defaultBase
+                                    )
                                     : null
                             );
 
@@ -2232,8 +2295,8 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
                             .patchValue(
                                 payroll.solo.perStop
                                     ? MethodsCalculationsHelper.convertNumberInThousandSep(
-                                          payroll.solo.perStop
-                                      )
+                                        payroll.solo.perStop
+                                    )
                                     : null
                             );
                         this.companyForm
@@ -2245,8 +2308,8 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
                             .patchValue(
                                 payroll.soloPerLoad
                                     ? MethodsCalculationsHelper.convertNumberInThousandSep(
-                                          payroll.soloPerLoad
-                                      )
+                                        payroll.soloPerLoad
+                                    )
                                     : null
                             );
 
@@ -2265,8 +2328,8 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
                             .patchValue(
                                 payroll.team.perStop
                                     ? MethodsCalculationsHelper.convertNumberInThousandSep(
-                                          payroll.team.perStop
-                                      )
+                                        payroll.team.perStop
+                                    )
                                     : null
                             );
 
@@ -2279,8 +2342,8 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
                             .patchValue(
                                 payroll.teamPerLoad
                                     ? MethodsCalculationsHelper.convertNumberInThousandSep(
-                                          payroll.teamPerLoad
-                                      )
+                                        payroll.teamPerLoad
+                                    )
                                     : null
                             );
 
