@@ -42,6 +42,7 @@ import {
     RepairShopListResponse,
     CreateWithUploadsResponse,
     RepairShopSortBy,
+    RepairSortBy,
 } from 'appcoretruckassist';
 import { AddUpdateRepairProperties } from '@pages/repair/pages/repair-modals/repair-order-modal/models';
 import { CreateShopModel } from '@pages/repair/pages/repair-modals/repair-shop-modal/models';
@@ -93,6 +94,8 @@ export class RepairService {
         search1?: string,
         search2?: string
     ): Observable<RepairListResponse> {
+        const sorting = getOrderAndSort(sort);
+        
         return this.repairService.apiRepairListGet(
             repairShopId,
             unitType,
@@ -110,9 +113,9 @@ export class RepairService {
             pageIndex,
             pageSize,
             companyId,
-            sort,
             null,
-            null,
+            sorting.order,
+            sorting.sortBy as RepairSortBy,
             search,
             search1,
             search2
