@@ -65,7 +65,11 @@ import { RepairOrderModalStringEnum } from '@pages/repair/pages/repair-modals/re
 import { TableStringEnum } from '@shared/enums/table-string.enum';
 import { ModalTableTypeEnum } from '@shared/enums/modal-table-type.enum';
 import { TaModalActionEnum } from '@shared/components/ta-modal/enums';
-import { DropdownMenuStringEnum } from '@shared/enums';
+import {
+    DropdownMenuStringEnum,
+    ModalButtonSize,
+    ModalButtonType,
+} from '@shared/enums';
 
 // components
 import { RepairShopModalComponent } from '@pages/repair/pages/repair-modals/repair-shop-modal/repair-shop-modal.component';
@@ -75,6 +79,7 @@ import {
     CaInputComponent,
     CaInputDropdownComponent,
     CaInputNoteComponent,
+    CaModalButtonComponent,
 } from 'ca-components';
 import { TaTabSwitchComponent } from '@shared/components/ta-tab-switch/ta-tab-switch.component';
 import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-custom-card.component';
@@ -140,6 +145,7 @@ import { SharedSvgRoutes } from '@shared/utils/svg-routes';
         TaCopyComponent,
         TaModalTableComponent,
         TaAppTooltipV2Component,
+        CaModalButtonComponent,
 
         // Pipe
         ActiveItemsPipe,
@@ -224,6 +230,9 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
 
     // Const
     public RepairOrderConfig = RepairOrderConfig;
+    public activeAction: string;
+    public modalButtonType = ModalButtonType;
+    public modalButtonSize = ModalButtonSize;
 
     constructor(
         private formBuilder: UntypedFormBuilder,
@@ -379,6 +388,8 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
     }
 
     public onModalAction(action: string): void {
+        this.activeAction = action;
+
         switch (action) {
             case TaModalActionEnum.CLOSE:
                 this.ngbActiveModal.close();
@@ -391,12 +402,6 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
                 }
 
                 this.addRepair();
-
-                this.modalService.setModalSpinner({
-                    action: RepairOrderModalStringEnum.SVE_AND_ADD_NEW,
-                    status: true,
-                    close: false,
-                });
 
                 this.isAddNewAfterSave = true;
 
@@ -415,12 +420,6 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
                 } else {
                     this.addRepair();
                 }
-
-                this.modalService.setModalSpinner({
-                    action: null,
-                    status: true,
-                    close: false,
-                });
 
                 break;
             case TaModalActionEnum.DELETE:
@@ -1260,12 +1259,6 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
             .subscribe({
                 next: () => {
                     if (this.isAddNewAfterSave) {
-                        this.modalService.setModalSpinner({
-                            action: RepairOrderModalStringEnum.SVE_AND_ADD_NEW,
-                            status: false,
-                            close: false,
-                        });
-
                         this.ngbActiveModal.close();
 
                         this.modalService.openModal(
@@ -1280,20 +1273,10 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
 
                         this.isAddNewAfterSave = false;
                     } else {
-                        this.modalService.setModalSpinner({
-                            action: null,
-                            status: true,
-                            close: true,
-                        });
+                        this.ngbActiveModal.close();
                     }
                 },
-                error: () => {
-                    this.modalService.setModalSpinner({
-                        action: null,
-                        status: false,
-                        close: false,
-                    });
-                },
+                error: () => (this.activeAction = null),
             });
     }
 
@@ -1529,20 +1512,9 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
             .subscribe({
                 next: () => {
                     this.updateTags();
-
-                    this.modalService.setModalSpinner({
-                        action: null,
-                        status: true,
-                        close: true,
-                    });
+                    this.ngbActiveModal.close();
                 },
-                error: () => {
-                    this.modalService.setModalSpinner({
-                        action: null,
-                        status: false,
-                        close: false,
-                    });
-                },
+                error: () => (this.activeAction = null),
             });
     }
 
