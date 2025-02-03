@@ -88,8 +88,6 @@ export class ShipperDetailsMapCoverCardComponent implements AfterViewInit {
             true
         );
 
-        console.log('markerIcon', markerIcon);
-
         const markerData: IMapMarkers = {
             position: {
                 lat: data.latitude,

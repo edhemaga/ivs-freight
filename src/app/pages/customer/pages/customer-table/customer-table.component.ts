@@ -2541,9 +2541,6 @@ export class CustomerTableComponent
                                 data,
                             };
 
-                            console.log('data', data);
-                            console.log('markerData', markerData);
-
                             const markerIcon =
                                 data.count > 1
                                     ? this.markerIconService.getClusterMarkerIcon(
