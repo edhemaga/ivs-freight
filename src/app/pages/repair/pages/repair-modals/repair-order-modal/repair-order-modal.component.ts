@@ -68,6 +68,7 @@ import { TaModalActionEnum } from '@shared/components/ta-modal/enums';
 import {
     DropdownMenuStringEnum,
     ModalButtonSize,
+    ModalButtonText,
     ModalButtonType,
 } from '@shared/enums';
 
@@ -160,6 +161,8 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
 
     private destroy$ = new Subject<void>();
 
+    public activeAction: string;
+    
     public repairOrderForm: UntypedFormGroup;
     public isFormDirty: boolean = false;
 
@@ -225,14 +228,14 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
 
     // enums
     public modalTableTypeEnum = ModalTableTypeEnum;
+    public modalButtonType = ModalButtonType;
+    public modalButtonSize = ModalButtonSize;
+    public modalButtonText = ModalButtonText;
     public svgRoutes = SharedSvgRoutes;
     public taModalActionEnum = TaModalActionEnum;
 
     // Const
     public RepairOrderConfig = RepairOrderConfig;
-    public activeAction: string;
-    public modalButtonType = ModalButtonType;
-    public modalButtonSize = ModalButtonSize;
 
     constructor(
         private formBuilder: UntypedFormBuilder,

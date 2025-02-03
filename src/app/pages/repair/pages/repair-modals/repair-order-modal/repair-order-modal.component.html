@@ -479,21 +479,18 @@
 </ng-template>
 
 <ng-template #footerTemplate>
-    @let isFormValid = repairOrderForm.valid && isFormDirty && isEachRepairRowValid;
+    @let isFormValid =
+        repairOrderForm.valid && isFormDirty && isEachRepairRowValid;
 
     <div
         class="modal-footer modal-footer-payroll"
-        [ngClass]="
-            isEditMode
-                ? 'd-flex justify-content-between'
-                : ''
-        "
+        [ngClass]="isEditMode ? 'd-flex justify-content-between' : ''"
     >
         <div class="divider"></div>
         @if (!isEditMode) {
             <app-ca-modal-button
                 class="mr-12"
-                text="Save and Add New"
+                [text]="modalButtonText.SAVE_AND_ADD_NEW"
                 [isValid]="isFormValid"
                 [isSpinnerShown]="
                     activeAction === taModalActionEnum.SAVE_AND_ADD_NEW
@@ -504,18 +501,18 @@
             </app-ca-modal-button>
             <app-ca-modal-button
                 [isValid]="isFormValid"
-                text="Save"
+                [text]="modalButtonText.SAVE"
                 [isSpinnerShown]="activeAction === taModalActionEnum.SAVE"
                 [type]="modalButtonType.PRIMARY_POSITIVE"
                 (click)="onModalAction(taModalActionEnum.SAVE)"
             >
-            </app-ca-modal-button> 
+            </app-ca-modal-button>
         } @else {
             <div class="d-flex">
                 @if (isEditMode && !isFinishOrder) {
                     <app-ca-modal-button
                         class="mr-12"
-                        text="Delete"
+                        [text]="modalButtonText.DELETE"
                         [size]="modalButtonSize.SMALL"
                         (click)="onModalAction(taModalActionEnum.DELETE)"
                         [type]="modalButtonType.SECONDARY_NEGATIVE"
@@ -524,22 +521,22 @@
                 }
 
                 @if (editData?.data?.repairType?.id === 2 && !isFinishOrder) {
-                    <button
-                        class="modal-convert-to-template-btn ta-font-bold"
+                    <app-ca-modal-button
+                        [text]="modalButtonText.FINISH_ORDER"
+                        [type]="modalButtonType.SECONDARY_NEUTRAL"
                         (click)="onModalAction(taModalActionEnum.FINISH_ORDER)"
                     >
-                        Finish Order
-                    </button>
+                    </app-ca-modal-button>
                 }
             </div>
             <app-ca-modal-button
                 [isValid]="isFormValid"
-                text="Save Changes"
+                [text]="modalButtonText.SAVE_CHANGES"
                 [isSpinnerShown]="activeAction === taModalActionEnum.SAVE"
                 [type]="modalButtonType.PRIMARY_POSITIVE"
                 (click)="onModalAction(taModalActionEnum.SAVE)"
             >
-            </app-ca-modal-button> 
+            </app-ca-modal-button>
         }
     </div>
 </ng-template>
