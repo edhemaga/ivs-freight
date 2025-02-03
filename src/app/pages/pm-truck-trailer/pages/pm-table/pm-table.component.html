@@ -22,8 +22,10 @@
             [columns]="columns"
             [options]="tableOptions"
             [selectedTab]="selectedTab"
-            (bodyActions)="onTableBodyActions($event)"
             [tableData]="tableData"
+            (tableBodyActions)="
+                handleDropdownMenuActions($event, dropdownMenuStringEnum.PM)
+            "
         ></app-ta-table-body>
     </ng-container>
 
@@ -31,12 +33,9 @@
         <div class="elements">
             <app-pm-card
                 [viewData]="viewData"
-                [rows]="rows"
-                [cardTitle]="cardTitle"
+                [selectedTab]="selectedTab"
                 [displayRowsFront]="(displayRows$ | async).displayRowsFront"
                 [displayRowsBack]="(displayRows$ | async).displayRowsBack"
-                [page]="page"
-                [selectedTab]="selectedTab"
             >
             </app-pm-card>
 
@@ -52,7 +51,7 @@
                     <ng-container *ngIf="viewData?.length < tableDataLength">
                         <div
                             class="show-more ta-font-bold text-color-black w-fit-content align-items-center d-flex justify-content-between"
-                            (click)="onShowMore()"
+                            (click)="handleShowMoreAction()"
                         >
                             SHOW MORE
                         </div>

@@ -1,6 +1,13 @@
 import { DatePipe } from '@angular/common';
 import { Component, OnInit, AfterViewInit, OnDestroy } from '@angular/core';
+
 import { Observable, Subject, takeUntil } from 'rxjs';
+
+// base classes
+import { UserDropdownMenuActionsBase } from '@pages/user/base-classes';
+
+// settings
+import { getUsersColumnDefinition } from '@shared/utils/settings/table-settings/users-columns';
 
 // services
 import { TruckassistTableService } from '@shared/services/truckassist-table.service';
@@ -17,10 +24,10 @@ import { UserModalComponent } from '@pages/user/pages/user-modal/user-modal.comp
 import { ConfirmationActivationModalComponent } from '@shared/components/ta-shared-modals/confirmation-activation-modal/confirmation-activation-modal.component';
 
 // helpers
-import { getUsersColumnDefinition } from '@shared/utils/settings/table-settings/users-columns';
 import { MethodsGlobalHelper } from '@shared/utils/helpers/methods-global.helper';
 import { DataFilterHelper } from '@shared/utils/helpers/data-filter.helper';
 import { AvatarColorsHelper } from '@shared/utils/helpers/avatar-colors.helper';
+import { DropdownMenuContentHelper } from '@shared/utils/helpers';
 
 // store
 import { UserActiveQuery } from '@pages/user/state/user-active-state/user-active.query';
@@ -43,19 +50,19 @@ import { NameInitialsPipe } from '@shared/pipes/name-initials.pipe';
 import { ActivityTimePipe } from '@shared/pipes/activity-time.pipe';
 
 // constants
-import { UserConstants } from '@pages/user/utils/constants/user.constants';
 import { UserTableConfig } from '@pages/user/pages/user-table/utils/constants/user-table-config.constants';
 import { UserTableConfiguration } from '@pages/user/pages/user-table/utils/constants';
-import { DisplayUserConfiguration } from '@pages/user/utils/constants/user-card-data.constants';
 
 // enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
+import { DropdownMenuStringEnum } from '@shared/enums';
 
 // models
-import { DropdownItem } from '@shared/models/card-models/card-table-data.model';
 import { CardRows } from '@shared/models/card-models/card-rows.model';
 import { CompanyUserResponse } from 'appcoretruckassist';
 import { UserTableData } from '@pages/user/pages/user-table/models';
+import { DropdownMenuItem } from '@ca-shared/components/ca-dropdown-menu/models';
+import { TableColumnConfig } from '@shared/models';
 
 @Component({
     selector: 'app-user-table',
@@ -68,41 +75,49 @@ import { UserTableData } from '@pages/user/pages/user-table/models';
         ActivityTimePipe,
     ],
 })
-export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
-    private destroy$ = new Subject<void>();
+export class UserTableComponent
+    extends UserDropdownMenuActionsBase
+    implements OnInit, AfterViewInit, OnDestroy
+{
+    public destroy$ = new Subject<void>();
 
-    public tableOptions: any; //leave this any for now
-    public tableData: any[]; //leave this any for now
-    public viewData: any[]; //leave this any for now
-    public columns: any[]; //leave this any for now
-    public selectedTab = TableStringEnum.ACTIVE;
-    public activeViewMode: string = TableStringEnum.LIST;
+    public dropdownMenuStringEnum = DropdownMenuStringEnum;
+
     public resizeObserver: ResizeObserver;
-    public mapingIndex: number = 0;
+    public activeViewMode: string = TableStringEnum.LIST;
+
+    public selectedTab = TableStringEnum.ACTIVE;
+
     public usersActive: UserActiveState[];
     public usersInactive: UserInactiveState[];
 
-    public inactiveTabClicked: boolean = false;
+    // table
+    public tableOptions: any;
+    public tableData: any[];
+    public viewData: any[];
+    public columns: TableColumnConfig[];
 
-    //Data to display from model
+    // cards
     public displayRowsFront: CardRows[] =
         UserTableConfiguration.displayRowsActiveFront;
     public displayRowsBack: CardRows[] =
         UserTableConfiguration.displayRowsActiveBack;
-    public page: string = DisplayUserConfiguration.page;
 
-    public rows: number = DisplayUserConfiguration.rows;
+    public displayRows$: Observable<any>;
 
-    public cardTitle: string = DisplayUserConfiguration.cardTitle;
-
+    // filters
     public backFilterQuery = UserTableConfig.BACK_FILTER_QUERY;
-    public displayRows$: Observable<any>; //leave this as any for now
+
+    public mapingIndex: number = 0;
+    public inactiveTabClicked: boolean = false;
 
     constructor(
-        // service
-        private modalService: ModalService,
+        // services
+        protected modalService: ModalService,
+        protected userService: UserService,
+
         private tableService: TruckassistTableService,
-        private userService: UserService,
+
         private confirmationService: ConfirmationService,
         private caSearchMultipleStatesService: CaSearchMultipleStatesService,
         private userCardsModalService: UserCardsModalService,
@@ -114,15 +129,16 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
         private usersInactiveStore: UserInactiveStore,
         private store: Store,
 
-        // pipe
+        // pipes
         private phoneFormater: FormatPhonePipe,
         private nameInitialsPipe: NameInitialsPipe,
-        public datePipe: DatePipe,
-        public activityTimePipe: ActivityTimePipe,
+        private datePipe: DatePipe,
+        private activityTimePipe: ActivityTimePipe,
         private thousandSeparator: ThousandSeparatorPipe
-    ) {}
+    ) {
+        super();
+    }
 
-    // ---------------------------  NgOnInit ----------------------------------
     ngOnInit(): void {
         this.sendUserData();
 
@@ -140,7 +156,7 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
         this.currentDeleteSelectedRows();
 
-        this.confirmationData();
+        this.confirmationSubscribe();
 
         this.confirmationActivationSubscribe();
     }
@@ -151,7 +167,7 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
         }, 10);
     }
 
-    private confirmationData(): void {
+    private confirmationSubscribe(): void {
         this.confirmationService.confirmationData$
             .pipe(takeUntil(this.destroy$))
             .subscribe({
@@ -568,13 +584,13 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
             tableTableDept: data?.department?.name
                 ? data.department.name
                 : data?.department
-                ? data?.department
-                : '',
+                  ? data?.department
+                  : '',
             tableTableOffice: data?.companyOffice?.name
                 ? data.companyOffice.name
                 : data?.companyOffice
-                ? data?.companyOffice
-                : '',
+                  ? data?.companyOffice
+                  : '',
             tableTablePhone: data?.phone
                 ? this.phoneFormater.transform(data.phone)
                 : '',
@@ -622,23 +638,22 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 ? TableStringEnum.FORM_TYPE_1
                 : TableStringEnum.W_2,
             // User Dropdown Action Set Up
-            tableDropdownContent: {
-                hasContent: true,
-                content: this.getDropdownContent(data, isInvitationSent),
-            },
+            tableDropdownContent: this.getUserDropdownContent(
+                data.userStatus,
+                isInvitationSent
+            ),
         };
     }
 
-    public getDropdownContent(
-        data: CompanyUserResponse,
-        isInvitationSent?: boolean
-    ): DropdownItem[] {
-        const dropdownContent = UserConstants.getUserTableDropdown(
-            data,
+    public getUserDropdownContent(
+        userStatus: string,
+        isInvitationSent: boolean
+    ): DropdownMenuItem[] {
+        return DropdownMenuContentHelper.getUserDropdownContent(
             this.selectedTab,
+            userStatus,
             isInvitationSent
         );
-        return dropdownContent;
     }
 
     // User Back Filter Query
@@ -888,97 +903,6 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
         }
     }
 
-    // On Body Actions
-    public onTableBodyActions(event: any): void {
-        const confirmationModalData = {
-            ...event,
-            data: {
-                ...event.data,
-                name: event.data?.firstName,
-            },
-        };
-
-        // Edit
-        if (event.type === TableStringEnum.EDIT) {
-            this.modalService.openModal(
-                UserModalComponent,
-                { size: TableStringEnum.SMALL },
-                {
-                    ...event,
-                    type: TableStringEnum.EDIT,
-                    disableButton:
-                        event.data?.userStatus !== TableStringEnum.OWNER &&
-                        event.data?.userStatus !== TableStringEnum.EXPIRED &&
-                        event.data?.userStatus !== TableStringEnum.INVITED,
-                    isDeactivateOnly: true,
-                }
-            );
-        }
-        // Show More (Pagination)
-        else if (event.type === TableStringEnum.SHOW_MORE) {
-            this.backFilterQuery.pageIndex++;
-
-            this.userBackFilter(this.backFilterQuery, true);
-        }
-        // Activate Or Deactivate User
-        else if (
-            event.type === TableStringEnum.DEACTIVATE ||
-            event.type === TableStringEnum.ACTIVATE
-        ) {
-            this.modalService.openModal(
-                ConfirmationActivationModalComponent,
-                { size: TableStringEnum.SMALL },
-                {
-                    ...confirmationModalData,
-                    template: TableStringEnum.USER,
-                    subType: TableStringEnum.USER,
-                    type:
-                        this.selectedTab === TableStringEnum.ACTIVE
-                            ? TableStringEnum.DEACTIVATE
-                            : TableStringEnum.ACTIVATE,
-                    tableType: TableStringEnum.USER_1,
-                }
-            );
-        }
-        // User Reset Password
-        else if (event.type === TableStringEnum.RESET_PASSWORD) {
-            this.userService
-                .userResetPassword(event.data.email)
-                .pipe(takeUntil(this.destroy$))
-                .subscribe(() => {});
-        }
-        // User Resend Ivitation
-        else if (event.type === TableStringEnum.RESEND_INVITATION) {
-            this.userService
-                .userResendIvitation(event.data.id)
-                .pipe(takeUntil(this.destroy$))
-                .subscribe(() => {
-                    this.viewData = this.viewData.map(
-                        (data: CompanyUserResponse) => {
-                            return this.mapUserData(
-                                data,
-                                true,
-                                event.data.id === data.id ? true : false
-                            );
-                        }
-                    );
-                });
-        }
-        // User Delete
-        else if (event.type === TableStringEnum.DELETE) {
-            this.modalService.openModal(
-                ConfirmationModalComponent,
-                { size: TableStringEnum.SMALL },
-                {
-                    ...confirmationModalData,
-                    template: TableStringEnum.USER_1,
-                    type: TableStringEnum.DELETE,
-                    image: true,
-                }
-            );
-        }
-    }
-
     // Delete Multiple Users
     private multipleDeleteUsers(users: any): void {
         this.userService
@@ -1018,16 +942,18 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 this.displayRows$ = this.store.pipe(
                     select(selectActiveTabCards)
                 );
-                break;
 
+                break;
             case TableStringEnum.INACTIVE:
                 this.displayRows$ = this.store.pipe(
                     select(selectInactiveTabCards)
                 );
+
                 break;
             default:
                 break;
         }
+
         this.userCardsModalService.updateTab(this.selectedTab);
     }
 
@@ -1094,12 +1020,14 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
             });
     }
 
-    // ---------------------------  NgOnDestroy ----------------------------------
+    public handleShowMoreAction(): void {
+        this.backFilterQuery.pageIndex++;
+
+        this.userBackFilter(this.backFilterQuery, true);
+    }
+
     ngOnDestroy(): void {
         this.tableService.sendActionAnimation({});
-        // this.resizeObserver.unobserve(
-        //     document.querySelector('.table-container')
-        // );
         this.resizeObserver.disconnect();
         this.destroy$.next();
         this.destroy$.complete();

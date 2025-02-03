@@ -1,20 +1,23 @@
-import { Observable, of, tap } from 'rxjs';
 import { Injectable } from '@angular/core';
 
+import { Observable, tap } from 'rxjs';
+
 // models
-import { FuelStopExpensesResponse, FuelStopResponse, SortOrder } from 'appcoretruckassist';
 import {
     FuelService as FuelBackendService,
+    FuelStopExpensesResponse,
+    FuelStopResponse,
+    SortOrder,
     FuelStopListResponse,
+    GetFuelStopModalResponse,
+    CreateResponse,
+    GetFuelModalResponse,
+    FuelDispatchHistoryResponse,
     FuelTransactionListResponse,
+    FuelStopFranchiseResponse,
+    FuelTransactionResponse,
+    GetModalFuelStopFranchiseResponse,
 } from 'appcoretruckassist';
-import { GetFuelStopModalResponse } from 'appcoretruckassist';
-import { CreateResponse } from 'appcoretruckassist';
-import { GetFuelModalResponse } from 'appcoretruckassist';
-import { FuelDispatchHistoryResponse } from 'appcoretruckassist';
-import { FuelStopFranchiseResponse } from 'appcoretruckassist';
-import { FuelTransactionResponse } from 'appcoretruckassist';
-import { ClusterResponse } from 'appcoretruckassist';
 
 // services
 import { FormDataService } from '@shared/services/form-data.service';
@@ -30,12 +33,13 @@ import { TableStringEnum } from '@shared/enums/table-string.enum';
 })
 export class FuelService {
     constructor(
+        // services
         private fuelService: FuelBackendService,
-        private fuelStore: FuelStore,
-        private formDataService: FormDataService
-    ) { }
+        private formDataService: FormDataService,
 
-    // **************** FUEL TRANSACTION ****************
+        // store
+        private fuelStore: FuelStore
+    ) {}
 
     set updateStoreFuelTransactionsList(data: FuelTransactionListResponse) {
         this.fuelStore.update((store) => {
@@ -55,11 +59,13 @@ export class FuelService {
         });
     }
 
+    /* Fuel Transaction */
+
     public getFuelTransactionsList(
-        fuelTransactionSpecParamsFuelStopStoreIds?: Array<number>,
-        fuelTransactionSpecParamsTruckIds?: Array<number>,
-        fuelTransactionSpecParamsCategoryIds?: Array<number>,
-        fuelTransactionSpecParamsCardIds?: Array<number>,
+        fuelTransactionSpecParamsFuelStopStoreIds?: number[],
+        fuelTransactionSpecParamsTruckIds?: number[],
+        fuelTransactionSpecParamsCategoryIds?: number[],
+        fuelTransactionSpecParamsCardIds?: number[],
         fuelTransactionSpecParamsDateFrom?: any,
         fuelTransactionSpecParamsDateTo?: string,
         fuelTransactionSpecParamsLong?: any,
@@ -74,6 +80,7 @@ export class FuelService {
         fuelTransactionSpecParamsTruckId?: number,
         fuelTransactionSpecParamsDriverId?: number,
         fuelTransactionSpecParams?: boolean,
+        fuelTransactionSpecParamsIsIncomplete?: boolean,
         fuelTransactionSpecParamsPageIndex?: number,
         fuelTransactionSpecParamsPageSize?: any,
         fuelTransactionSpecParamsCompanyId?: number,
@@ -103,6 +110,7 @@ export class FuelService {
             fuelTransactionSpecParamsTruckId,
             fuelTransactionSpecParamsDriverId,
             fuelTransactionSpecParams,
+            fuelTransactionSpecParamsIsIncomplete,
             fuelTransactionSpecParamsPageIndex,
             fuelTransactionSpecParamsPageSize,
             fuelTransactionSpecParamsCompanyId,
@@ -122,7 +130,7 @@ export class FuelService {
     public getFuelTransactionFranchises(
         pageIndex: number,
         pageSize: number
-    ): Observable<any> {
+    ): Observable<GetModalFuelStopFranchiseResponse> {
         return this.fuelService.apiFuelTransactionModalFuelstopfranchiseGet(
             pageIndex,
             pageSize
@@ -142,34 +150,67 @@ export class FuelService {
         return this.fuelService.apiFuelDispatchhistoryGet(truckId, date);
     }
 
-    public addFuelTransaction(data: any): Observable<CreateResponse> {
-        this.formDataService.extractFormDataFromFunction(data);
-        return this.fuelService.apiFuelTransactionPost();
-    }
-
-    public updateFuelTransaction(data: any): Observable<CreateResponse> {
-        this.formDataService.extractFormDataFromFunction(data);
-        return this.fuelService.apiFuelTransactionPut();
-    }
-
-    public updateFuelTransactionEFS(data: any): Observable<CreateResponse> {
-        this.formDataService.extractFormDataFromFunction(data);
-        return this.fuelService.apiFuelEfsTransactionPut();
-    }
-
-    // **************** FUEL STOP ****************
-
     public getFuelTransactionById(
         id: number
     ): Observable<FuelTransactionResponse> {
         return this.fuelService.apiFuelTransactionIdGet(id);
     }
 
-    // Get Fuel Stops
+    public addFuelTransaction<T>(data: T): Observable<CreateResponse> {
+        this.formDataService.extractFormDataFromFunction(data);
+
+        return this.fuelService.apiFuelTransactionPost();
+    }
+
+    public updateFuelTransaction<T>(data: T): Observable<CreateResponse> {
+        this.formDataService.extractFormDataFromFunction(data);
+
+        return this.fuelService.apiFuelTransactionPut();
+    }
+
+    public updateFuelTransactionEFS<T>(data: T): Observable<CreateResponse> {
+        this.formDataService.extractFormDataFromFunction(data);
+
+        return this.fuelService.apiFuelEfsTransactionPut();
+    }
+
+    public deleteFuelTransactionsList(ids: number[]): Observable<void> {
+        return this.fuelService.apiFuelTransactionListDelete(ids).pipe(
+            tap(() => {
+                ids.forEach((id) => {
+                    this.fuelStore.update((store) => ({
+                        fuelTransactions: {
+                            ...store.fuelTransactions,
+                            pagination: {
+                                ...store.fuelTransactions.pagination,
+                                data: store.fuelTransactions.pagination.data.filter(
+                                    (transaction) => transaction.id !== id
+                                ),
+                            },
+                        },
+                    }));
+                });
+
+                const tableCount = JSON.parse(
+                    localStorage.getItem(TableStringEnum.FUEL_TABLE_COUNT)
+                );
+
+                tableCount.fuelTransactions -= ids.length;
+
+                localStorage.setItem(
+                    TableStringEnum.FUEL_TABLE_COUNT,
+                    JSON.stringify(tableCount)
+                );
+            })
+        );
+    }
+
+    /* Fuel Stop */
+
     public getFuelStopsList(
-        truckIds?: Array<number>,
-        categoryIds?: Array<number>,
-        franchiseIds?: Array<number>,
+        truckIds?: number[],
+        categoryIds?: number[],
+        franchiseIds?: number[],
         dateFrom?: any,
         dateTo?: string,
         _long?: any,
@@ -218,49 +259,108 @@ export class FuelService {
         );
     }
 
-    public getFuelStopById(fuelId: number): Observable<FuelStopResponse> {
-        return this.fuelService.apiFuelFuelstopIdGet(fuelId);
-    }
-
-    public deleteFuelStopById(fuelStopId: number): Observable<object> {
-        return this.fuelService.apiFuelFuelstopIdDelete(fuelStopId).pipe(
-            tap(() => {
-                this.fuelStore.update((store) => ({
-                    fuelStops: store.fuelStops.filter(
-                        (stop: FuelStopResponse) => stop.id !== fuelStopId
-                    ),
-                }));
-            })
-        );
-    }
-
-    public deleteFuelStopList(fuelStopIds: number[]) {
-        return this.fuelService
-            .apiFuelFuelstopListDelete(fuelStopIds)
-            .pipe(tap(() => { }));
-    }
-
-    public addFuelStop(data: any): Observable<CreateResponse> {
-        this.formDataService.extractFormDataFromFunction(data);
-        return this.fuelService.apiFuelFuelstopPost();
-    }
-
-    // For table method
-    public updateFuelStopShortest(data: any): Observable<object> {
-        return this.fuelService.apiFuelFuelstopPut(data);
-    }
-
-    // For modal method
-    public updateFuelStop(data: any): Observable<object> {
-        this.formDataService.extractFormDataFromFunction(data);
-        return this.fuelService.apiFuelFuelstopUpdatePut();
-    }
-
     public getFuelStopModalDropdowns(
         pageIndex: number = 1,
         pageSize: number = 25
     ): Observable<GetFuelStopModalResponse> {
         return this.fuelService.apiFuelFuelstopModalGet(pageIndex, pageSize);
+    }
+
+    public getFuelExpenses(
+        id: number,
+        timeFilter?: number
+    ): Observable<FuelStopExpensesResponse> {
+        return this.fuelService.apiFuelExpensesGet(id, timeFilter);
+    }
+
+    public getFuelStopById(id: number): Observable<FuelStopResponse> {
+        return this.fuelService.apiFuelFuelstopIdGet(id);
+    }
+
+    public addFuelStop<T>(data: T): Observable<CreateResponse> {
+        this.formDataService.extractFormDataFromFunction(data);
+
+        return this.fuelService.apiFuelFuelstopPost();
+    }
+
+    public updateFuelStop<T>(data: T): Observable<object> {
+        this.formDataService.extractFormDataFromFunction(data);
+
+        return this.fuelService.apiFuelFuelstopUpdatePut();
+    }
+
+    public updateFuelStopFavorite(
+        id: number,
+        isPinned: boolean
+    ): Observable<object> {
+        return this.fuelService.apiFuelFuelstopPut(id, isPinned).pipe(
+            tap(() => {
+                this.fuelStore.update((store) => ({
+                    fuelStops: {
+                        ...store.fuelStops,
+                        pagination: {
+                            ...store.fuelStops.pagination,
+                            data: store.fuelStops.pagination.data.map((stop) =>
+                                stop.id === id
+                                    ? { ...stop, favourite: isPinned }
+                                    : stop
+                            ),
+                        },
+                    },
+                }));
+            })
+        );
+    }
+
+    public updateFuelStopStatus(id: number): Observable<void> {
+        return this.fuelService.apiFuelFuelstopStatusIdPut(id).pipe(
+            tap(() => {
+                this.fuelStore.update((store) => ({
+                    fuelStops: {
+                        ...store.fuelStops,
+                        pagination: {
+                            ...store.fuelStops.pagination,
+                            data: store.fuelStops.pagination.data.map((stop) =>
+                                stop.id === id
+                                    ? { ...stop, isClosed: !stop.isClosed }
+                                    : stop
+                            ),
+                        },
+                    },
+                }));
+            })
+        );
+    }
+
+    public deleteFuelStopList(ids: number[]): Observable<void> {
+        return this.fuelService.apiFuelFuelstopListDelete(ids).pipe(
+            tap(() => {
+                ids.forEach((id) => {
+                    this.fuelStore.update((store) => ({
+                        fuelStops: {
+                            ...store.fuelStops,
+                            pagination: {
+                                ...store.fuelStops.pagination,
+                                data: store.fuelStops.pagination.data.filter(
+                                    (transaction) => transaction.id !== id
+                                ),
+                            },
+                        },
+                    }));
+                });
+
+                const tableCount = JSON.parse(
+                    localStorage.getItem(TableStringEnum.FUEL_TABLE_COUNT)
+                );
+
+                tableCount.fuelStops -= ids.length;
+
+                localStorage.setItem(
+                    TableStringEnum.FUEL_TABLE_COUNT,
+                    JSON.stringify(tableCount)
+                );
+            })
+        );
     }
 
     public checkFuelStopAddress(
@@ -289,166 +389,17 @@ export class FuelService {
         );
     }
 
-    public checkFuelStopPhone(data: string): Observable<boolean> {
-        return this.fuelService.apiFuelFuelstopCheckPhonePhoneGet(data);
+    public checkFuelStopPhone(phone: string): Observable<boolean> {
+        return this.fuelService.apiFuelFuelstopCheckPhonePhoneGet(phone);
     }
 
     public checkFuelStopFranchise(
-        franchiseId: number,
+        id: number,
         store: string
     ): Observable<boolean> {
         return this.fuelService.apiFuelFuelstopCheckStoreFranchiseIdStoreGet(
-            franchiseId,
+            id,
             store
         );
-    }
-
-    // Map Clusters
-
-    public getFuelStopClusters(
-        northEastLatitude?: number,
-        northEastLongitude?: number,
-        southWestLatitude?: number,
-        southWestLongitude?: number,
-        zoomLevel?: number,
-        addedNew?: boolean,
-        shipperLong?: number,
-        shipperLat?: number,
-        shipperDistance?: number,
-        shipperStates?: Array<string>,
-        categoryIds?: Array<number>,
-        _long?: number,
-        lat?: number,
-        distance?: number,
-        costFrom?: number,
-        costTo?: number,
-        lastFrom?: number,
-        lastTo?: number,
-        ppgFrom?: number,
-        ppgTo?: number,
-        pageIndex?: number,
-        pageSize?: number,
-        companyId?: number,
-        sort?: string,
-        search?: string,
-        search1?: string,
-        search2?: string
-    ): Observable<Array<ClusterResponse>> {
-        return of(null); /* this.fuelService.apiFuelClustersGet(
-            northEastLatitude,
-            northEastLongitude,
-            southWestLatitude,
-            southWestLongitude,
-            zoomLevel,
-            addedNew,
-            shipperLong,
-            shipperLat,
-            shipperDistance,
-            shipperStates,
-            categoryIds,
-            _long,
-            lat,
-            distance,
-            costFrom,
-            costTo,
-            lastFrom,
-            lastTo,
-            ppgFrom,
-            ppgTo,
-            pageIndex,
-            pageSize,
-            companyId,
-            sort,
-            null,
-            null,
-            search,
-            search1,
-            search2
-        ); */
-    }
-
-    public getFuelStopMapList(
-        northEastLatitude?: number,
-        northEastLongitude?: number,
-        southWestLatitude?: number,
-        southWestLongitude?: number,
-        _long?: number,
-        lat?: number,
-        distance?: number,
-        lastFrom?: number,
-        lastTo?: number,
-        costFrom?: number,
-        costTo?: number,
-        ppgFrom?: number,
-        ppgTo?: number,
-        pageIndex?: number,
-        pageSize?: number,
-        companyId?: number,
-        sort?: string,
-        search?: string,
-        search1?: string,
-        search2?: string
-    ) {
-        return this.fuelService.apiFuelListmapGet(
-            northEastLatitude,
-            northEastLongitude,
-            southWestLatitude,
-            southWestLongitude,
-            _long,
-            lat,
-            distance,
-            lastFrom,
-            lastTo,
-            costFrom,
-            costTo,
-            ppgFrom,
-            ppgTo,
-            pageIndex,
-            pageSize,
-            companyId,
-            sort,
-            null,
-            null,
-            search,
-            search1,
-            search2
-        );
-    }
-
-    public deleteFuelTransactionsList(ids: number[]): Observable<void> {
-        return this.fuelService.apiFuelTransactionListDelete(ids).pipe(
-            tap(() => {
-                ids.forEach((id) => {
-                    this.fuelStore.update((store) => ({
-                        fuelTransactions: Array.isArray(store?.fuelTransactions)
-                            ? store.fuelTransactions.filter(
-                                  (transaction: FuelTransactionResponse) =>
-                                      transaction.id !== id
-                              )
-                            : [],
-                        fuelStops: Array.isArray(store?.fuelStops)
-                            ? store.fuelStops.filter(
-                                  (stop: FuelStopResponse) => stop.id !== id
-                              )
-                            : [],
-                    }));
-                });
-
-                let tableCount = JSON.parse(
-                    localStorage.getItem(TableStringEnum.FUEL_TABLE_COUNT)
-                );
-                tableCount.fuelTransactions =
-                    this.fuelStore.getValue().fuelTransactions.length;
-
-                localStorage.setItem(
-                    TableStringEnum.FUEL_TABLE_COUNT,
-                    JSON.stringify(tableCount)
-                );
-            })
-        );
-    }
-
-    public getFuelExpensesGet(id: number, timeFilter?: number): Observable<FuelStopExpensesResponse> {
-        return this.fuelService.apiFuelExpensesGet(id, timeFilter);
     }
 }

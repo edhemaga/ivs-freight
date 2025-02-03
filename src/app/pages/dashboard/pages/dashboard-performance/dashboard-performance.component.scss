@@ -381,59 +381,49 @@
             }
         }
 
-        /* Line Chart */
-        &-line-chart-container {
-            // remove while we don't have charts margin-bottom: -42px;
-
-            .line-chart-container {
-                height: 200px; //this is until we have charts
-            }
-
-            .line-chart-header {
-                margin-bottom: 12px;
-
-                p {
-                    font-size: 18px;
-                    line-height: 22px;
-                    color: $ta-light-grey-2;
-                }
-
-                &-right {
-                    div:first-child {
-                        margin-right: 22px;
-                    }
-
-                    p {
-                        font-size: 14px;
-                    }
-
-                    .circle-icon {
-                        margin-right: 8px;
-                        line-height: 0;
-
-                        &-price {
-                            svg {
-                                rect {
-                                    fill: $ta-light-grey-2;
-                                }
-                            }
-                        }
-
-                        &-rate {
-                            svg {
-                                rect {
-                                    fill: $bw-9;
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
         .bar-chart-container {
             border-top: 1px solid $bw-9;
             padding-top: 10px;
+        }
+
+        .chart-header {
+            font-family: 'Montserrat';
+            color: $ta-light-grey-2;
+
+            &-title {
+                font-size: 18px;
+                font-weight: 700;
+            }
+
+            &-legend {
+                font-size: 14px;
+                font-weight: 600;
+
+                div:first-child {
+                    margin-right: 22px;
+                }
+
+                .circle-icon {
+                    margin-right: 8px;
+                    line-height: 0;
+
+                    &-price {
+                        svg {
+                            rect {
+                                fill: $ta-light-grey-2;
+                            }
+                        }
+                    }
+
+                    &-rate {
+                        svg {
+                            rect {
+                                fill: $bw-9;
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
 }

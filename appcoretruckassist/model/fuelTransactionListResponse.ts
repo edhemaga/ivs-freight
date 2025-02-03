@@ -16,6 +16,7 @@ export interface FuelTransactionListResponse {
     pagination?: FuelTransactionResponsePagination;
     fuelTransactionCount?: number;
     integrationFuelTransactionCount?: number;
+    incompleteFuelTransactionCount?: number;
     fuelStopCount?: number;
     fuelCardCount?: number;
 }

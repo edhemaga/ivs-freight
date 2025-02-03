@@ -535,7 +535,9 @@
             height: 0;
             opacity: 0;
             overflow: hidden;
-            transition: height 0.3s ease-in-out, opacity 0.3s ease-in-out;
+            transition:
+                height 0.3s ease-in-out,
+                opacity 0.3s ease-in-out;
             will-change: height, opacity;
 
             &.innactive {
@@ -547,8 +549,10 @@
 
             &.active {
                 opacity: 1;
-                overflow: hidden;
-                transition: height 0.3s ease-in-out, opacity 0.3s ease-in-out;
+                overflow: visible;
+                transition:
+                    height 0.3s ease-in-out,
+                    opacity 0.3s ease-in-out;
                 height: 100%;
             }
 

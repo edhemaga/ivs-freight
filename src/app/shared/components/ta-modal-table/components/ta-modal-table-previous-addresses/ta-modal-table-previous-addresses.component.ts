@@ -12,7 +12,7 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
 // components
 import { TaInputComponent } from '@shared/components/ta-input/ta-input.component';
 import { TaInputDropdownComponent } from '@shared/components/ta-input-dropdown/ta-input-dropdown.component';
-import { TaInputAddressDropdownComponent } from '@shared/components/ta-input-address-dropdown/ta-input-address-dropdown.component';
+import { CaInputAddressDropdownComponent } from 'ca-components';
 
 // enums
 import { TaModalTableStringEnum } from '@shared/components/ta-modal-table/enums/';
@@ -22,6 +22,12 @@ import { AddressEntity } from 'appcoretruckassist';
 
 // svg routes
 import { ModalTableSvgRoutes } from '@shared/components/ta-modal-table/utils/svg-routes';
+
+// mixin
+import { AddressMixin } from '@shared/mixins/address/address.mixin';
+
+// services
+import { AddressService } from '@shared/services/address.service';
 
 @Component({
     selector: 'app-ta-modal-table-previous-addresses',
@@ -37,10 +43,12 @@ import { ModalTableSvgRoutes } from '@shared/components/ta-modal-table/utils/svg
         // components
         TaInputComponent,
         TaInputDropdownComponent,
-        TaInputAddressDropdownComponent,
+        CaInputAddressDropdownComponent,
     ],
 })
-export class TaModalTablePreviousAddressesComponent {
+export class TaModalTablePreviousAddressesComponent extends AddressMixin(
+    class { addressService!: AddressService; }
+) {
     @Input() modalTableForm: UntypedFormGroup;
     @Input() arrayName: TaModalTableStringEnum;
     @Input() isInputHoverRows: boolean[][];
@@ -67,7 +75,9 @@ export class TaModalTablePreviousAddressesComponent {
         return this.modalTableForm?.get(this.arrayName) as UntypedFormArray;
     }
 
-    constructor() {}
+    constructor(public addressService: AddressService) {
+        super();
+    }
 
     public emitDeleteFormArrayRowClick(index: number): void {
         this.deleteFormArrayRowClick.emit(index);

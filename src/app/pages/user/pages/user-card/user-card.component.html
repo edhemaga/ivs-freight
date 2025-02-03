@@ -11,7 +11,7 @@
                     'body-active':
                         isCardFlippedCheckInCards.includes(i) ||
                         isAllCardsFlipp,
-                    'body-checked': card.isSelected
+                    'body-checked': card.isSelected,
                 }"
             >
                 <!-- Left side of the card -->
@@ -32,7 +32,7 @@
                                     'rotate-svg':
                                         isCardFlippedCheckInCards.includes(i),
                                     'svg-position':
-                                        !isCardFlippedCheckInCards.includes(i)
+                                        !isCardFlippedCheckInCards.includes(i),
                                 }"
                             >
                                 <input
@@ -122,7 +122,9 @@
                                         *ngIf="cardRow.type === 'money'"
                                     >
                                         {{
-                                            card?.[cardRow.key]?.[cardRow.secondKey] | formatCurrency
+                                            card?.[cardRow.key]?.[
+                                                cardRow.secondKey
+                                            ] | formatCurrency
                                         }}
                                     </ng-container>
 
@@ -132,13 +134,13 @@
                                         <ng-container
                                             *ngIf="
                                                 cardRow.title === 'Activity' &&
-                                                (card | cardValue : cardRow) ===
+                                                (card | cardValue: cardRow) ===
                                                     'Online'
                                             "
                                         >
                                             <div class="online-icon"></div>
                                         </ng-container>
-                                        {{ card | cardValue : cardRow }}
+                                        {{ card | cardValue: cardRow }}
                                     </ng-container>
                                 </div>
                             </div>
@@ -150,12 +152,17 @@
 
                 <div class="card-body-right">
                     <div class="top-side">
-                        <!-- Open dropdown element-->
+                        <!-- Dropdown Menu-->
 
-                        <app-ta-table-card-dropdown-actions
-                            [card]="card"
-                            (bodyActions)="onCardActions($event)"
-                        ></app-ta-table-card-dropdown-actions>
+                        <ca-dropdown-menu
+                            [type]="'dots-menu-type'"
+                            [placement]="'right-top'"
+                            [options]="card.tableDropdownContent"
+                            (dropdownOptionEmitter)="
+                                handleToggleDropdownMenuActions($event, card)
+                            "
+                        >
+                        </ca-dropdown-menu>
 
                         <!-- Note element -->
 
@@ -191,7 +198,7 @@
                                         isCardFlippedCheckInCards.includes(i) ||
                                         isAllCardsFlipp,
                                     'svg-position':
-                                        !isCardFlippedCheckInCards.includes(i)
+                                        !isCardFlippedCheckInCards.includes(i),
                                 }"
                             >
                                 <svg-icon

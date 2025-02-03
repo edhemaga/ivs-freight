@@ -34,6 +34,10 @@ import { ConfirmationModalStringEnum } from '@shared/components/ta-shared-modals
 import { ConfirmationMoveStringEnum } from '@shared/components/ta-shared-modals/confirmation-move-modal/enums/confirmation-move-string.enum';
 import { ConfirmationActivationStringEnum } from '@shared/components/ta-shared-modals/confirmation-activation-modal/enums/confirmation-activation-string.enum';
 import { DropActionsStringEnum } from '@shared/enums/drop-actions-string.enum';
+import { DropdownMenuStringEnum } from '@shared/enums';
+
+// nideks
+
 import { RepairShopResponse } from 'appcoretruckassist';
 
 @Injectable({
@@ -910,7 +914,7 @@ export class DropDownService {
                         ...dataObject,
                         id: event.id,
                     },
-                    type: TableStringEnum.ADD_BILL,
+                    type: DropdownMenuStringEnum.ADD_REPAIR_BILL_SHOP,
                 };
 
                 this.modalService.openModal(

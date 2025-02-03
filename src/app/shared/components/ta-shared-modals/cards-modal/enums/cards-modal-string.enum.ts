@@ -36,4 +36,5 @@ export enum CardsModalStringEnum {
     BACK_SELECTED_3 = 'backSelectedTitle_3',
     BACK_SELECTED_4 = 'backSelectedTitle_4',
     BACK_SELECTED_5 = 'backSelectedTitle_5',
+    CLOSE = 'CLOSE'
 }

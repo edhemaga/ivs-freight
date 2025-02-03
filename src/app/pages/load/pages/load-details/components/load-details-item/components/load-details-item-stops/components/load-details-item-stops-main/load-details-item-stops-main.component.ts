@@ -1,6 +1,5 @@
 import {
     Component,
-    ElementRef,
     Input,
     OnChanges,
     OnDestroy,
@@ -21,7 +20,7 @@ import {
     ICaMapProps,
     IMapMarkers,
     IMapRoutePath,
-    MapMarkerIconHelper,
+    MapMarkerIconService,
     MapOptionsConstants,
 } from 'ca-components';
 
@@ -91,10 +90,12 @@ export class LoadDetailsItemStopsMainComponent implements OnChanges, OnDestroy {
     // map
     public mapData: ICaMapProps = MapOptionsConstants.defaultMapConfig;
 
-    constructor() {}
+    constructor(private markerIconService: MapMarkerIconService) {}
 
     ngAfterViewInit(): void {
         this.addScrollEventListeners();
+
+        this.getMapData();
     }
 
     ngOnChanges(changes: SimpleChanges): void {
@@ -141,8 +142,6 @@ export class LoadDetailsItemStopsMainComponent implements OnChanges, OnDestroy {
                 items: this.getLoadStopItemsData(stop),
             };
         });
-
-        this.getMapData();
     }
 
     private getLoadStopItemsData(stop: LoadStopResponse): LoadStopItem[] {
@@ -270,8 +269,8 @@ export class LoadDetailsItemStopsMainComponent implements OnChanges, OnDestroy {
                     stopColor: route.pickup
                         ? LoadDetailsItemStringEnum.COLOR_2
                         : route.delivery
-                        ? LoadDetailsItemStringEnum.COLOR_3
-                        : LoadDetailsItemStringEnum.COLOR_1,
+                          ? LoadDetailsItemStringEnum.COLOR_3
+                          : LoadDetailsItemStringEnum.COLOR_1,
                     stopNumber: route?.stopNumber?.toString(),
                     zIndex: 99 + index,
                 };
@@ -320,20 +319,22 @@ export class LoadDetailsItemStopsMainComponent implements OnChanges, OnDestroy {
         const routePaths: IMapRoutePath[] = [];
 
         this.loadStopData.forEach((loadStop, index) => {
-            const routeMarker: IMapMarkers = {
+            const markerData = {
                 position: {
                     lat: loadStop.shipper.latitude,
                     lng: loadStop.shipper.longitude,
                 },
-                icon: {
-                    url: MapMarkerIconHelper.getRoutingMarkerIcon(
-                        loadStop.stopLoadOrder ?? 0,
-                        loadStop.stopType.name.toLowerCase(),
-                        false,
-                        true
-                    ),
-                    labelOrigin: new google.maps.Point(90, 15),
-                },
+            };
+
+            const routeMarker: IMapMarkers = {
+                ...markerData,
+                content: this.markerIconService.getRoutingMarkerIcon(
+                    markerData,
+                    loadStop.stopLoadOrder ?? 0,
+                    loadStop.stopType.name.toLowerCase(),
+                    false,
+                    true,
+                ),
             };
 
             routeMarkers.push(routeMarker);

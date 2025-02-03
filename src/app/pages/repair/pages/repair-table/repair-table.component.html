@@ -24,21 +24,24 @@
             [selectedTab]="selectedTab"
             [tableData]="tableData"
             [actionTemplate]="actionTemplate"
-            (bodyActions)="onTableBodyActions($event)"
+            (tableBodyActions)="
+                handleDropdownMenuActions(
+                    $event,
+                    selectedTab !== tableStringEnum.REPAIR_SHOP
+                        ? dropdownMenuStringEnum.REPAIR
+                        : dropdownMenuStringEnum.REPAIR_SHOP
+                )
+            "
         ></app-ta-table-body>
     </ng-container>
 
     <ng-container *ngIf="activeViewMode === 'Card'">
         <div class="elements">
             <app-repair-card
-                (bodyActions)="onTableBodyActions($event)"
                 [viewData]="viewData"
-                [rows]="rows"
-                [cardTitle]="cardTitle"
+                [selectedTab]="selectedTab"
                 [displayRowsFront]="(displayRows$ | async).displayRowsFront"
                 [displayRowsBack]="(displayRows$ | async).displayRowsBack"
-                [page]="page"
-                [selectedTab]="selectedTab"
             >
             </app-repair-card>
 
@@ -59,7 +62,7 @@
                     >
                         <div
                             class="show-more ta-font-bold w-fit-content align-items-center d-flex justify-content-between"
-                            (click)="onShowMore()"
+                            (click)="handleShowMoreAction()"
                         >
                             SHOW MORE
                         </div>
@@ -97,21 +100,11 @@
                         [address]="latlong.address"
                         [rating]="latlong?.tableRaiting"
                         [type]="'repairShop'"
-                        [sortCategory]="activeSortType"
-                        [locationFilterOn]="locationFilterOn"
-                        (bodyActions)="onTableBodyActions($event)"
-                        [ngStyle]="{
-                            display:
-                                locationFilterOn && latlong?.isShown == false
-                                    ? 'none'
-                                    : 'block'
-                        }"
                     ></app-ta-map-list-card>
                 </ng-container>
             </app-ta-map-list>
 
             <app-ca-map
-                #mapsComponent
                 [data]="mapData"
                 (clusterMarkerClick)="onClusterMarkerClick($event)"
                 (clusterListScrollEvent)="onClusterListScroll($event)"

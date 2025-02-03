@@ -258,7 +258,7 @@ export class NavigationDataConstants {
         },
         {
             id: 9,
-            name: 'Statistic',
+            name: 'Statistics',
             image: 'ic_statistic.svg',
             route: 'statistic' /* /statistic/load -> Bilo je pre. Pravi problem load tabeli, nakon reloada, pokusava da vodi ka ovoj ruti, posto ne postoji prebaci se na dashboard */,
             isRouteActive: false,
@@ -275,7 +275,7 @@ export class NavigationDataConstants {
         },
         {
             id: 11,
-            name: 'Telematic',
+            name: 'Telematics',
             image: 'ic_gps.svg',
             route: '/telematic',
             isRouteActive: false,

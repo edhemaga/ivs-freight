@@ -403,6 +403,7 @@ export class TruckDetailsComponent implements OnInit, OnDestroy {
                 ),
                 status: data?.status == 0 ? true : false,
                 isExpired: this.check(data.registrations),
+                businessOpen: true,
             },
             {
                 id: 2,
@@ -414,6 +415,7 @@ export class TruckDetailsComponent implements OnInit, OnDestroy {
                 ),
                 status: data?.status == 0 ? true : false,
                 isExpired: this.check(data.inspections),
+                businessOpen: true,
             },
             {
                 id: 3,
@@ -423,6 +425,7 @@ export class TruckDetailsComponent implements OnInit, OnDestroy {
                 data: TruckSortByDateHelper.sortObjectsByExpDate(data.titles),
                 status: data?.status == 0 ? true : false,
                 isExpired: this.check(data.titles),
+                businessOpen: true,
             },
         ];
         this.truckId = data?.id ? data.id : null;

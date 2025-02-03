@@ -16,6 +16,9 @@ import {
 
 import { Subject, switchMap, takeUntil } from 'rxjs';
 
+// Modules
+import { NgbActiveModal, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
+
 // services
 import { TaInputService } from '@shared/services/ta-input.service';
 import { AccountService } from '@pages/account/services/account.service';
@@ -31,10 +34,14 @@ import {
 } from '@shared/components/ta-input/validators/ta-input.regex-validations';
 
 // components
-import { TaModalComponent } from '@shared/components/ta-modal/ta-modal.component';
-import { TaInputComponent } from '@shared/components/ta-input/ta-input.component';
 import { TaInputDropdownLabelComponent } from '@shared/components/ta-input-dropdown-label/ta-input-dropdown-label.component';
-import { TaInputNoteComponent } from '@shared/components/ta-input-note/ta-input-note.component';
+import {
+    CaInputComponent,
+    CaInputNoteComponent,
+    CaModalComponent,
+} from 'ca-components';
+import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
+import { ConfirmationModalComponent } from '@shared/components/ta-shared-modals/confirmation-modal/confirmation-modal.component';
 
 // models
 import {
@@ -45,6 +52,27 @@ import {
     CreateResponse,
     UpdateCompanyAccountCommand,
 } from 'appcoretruckassist';
+
+// Config
+import { AccountModalConfig } from '@pages/account/utils/account-modal.config';
+import { AngularSvgIconModule } from 'angular-svg-icon';
+
+// Pipes
+import { FormatDatePipe } from '@shared/pipes';
+
+// Enums
+import { TaModalActionEnum } from '@shared/components/ta-modal/enums';
+import { TableStringEnum } from '@shared/enums';
+import { ContactsModalStringEnum } from '@pages/contacts/pages/contacts-modal/enums';
+
+// Services
+import { ConfirmationService } from '@shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
+
+// Svg routes
+import { SharedSvgRoutes } from '@shared/utils/svg-routes';
+
+// Types
+import { ModalActionType } from '@shared/types';
 
 @Component({
     selector: 'app-account-modal',
@@ -58,12 +86,18 @@ import {
         CommonModule,
         FormsModule,
         ReactiveFormsModule,
+        AngularSvgIconModule,
+        NgbTooltipModule,
 
         // components
-        TaModalComponent,
-        TaInputComponent,
+        CaModalComponent,
+        CaInputComponent,
         TaInputDropdownLabelComponent,
-        TaInputNoteComponent,
+        CaInputNoteComponent,
+        TaAppTooltipV2Component,
+
+        // Pipes
+        FormatDatePipe,
     ],
 })
 export class AccountModalComponent implements OnInit, OnDestroy {
@@ -84,19 +118,35 @@ export class AccountModalComponent implements OnInit, OnDestroy {
     public disabledFormValidation: boolean = false;
 
     private destroy$ = new Subject<void>();
+    public accountModalConfig = AccountModalConfig;
+    public taModalActionEnum = ContactsModalStringEnum;
+    public svgRoutes = SharedSvgRoutes;
+    public activeAction: ModalActionType = null;
 
     constructor(
         private formBuilder: UntypedFormBuilder,
         private inputService: TaInputService,
         private modalService: ModalService,
         private accountService: AccountService,
-        private formService: FormService
+        private formService: FormService,
+        private ngbActiveModal: NgbActiveModal,
+        private confirmationService: ConfirmationService
     ) {}
 
     ngOnInit() {
         this.createForm();
         this.companyAccountModal();
         this.companyAccountColorLabels();
+        this.confirmationActivationSubscribe();
+    }
+
+    private confirmationActivationSubscribe(): void {
+        this.confirmationService.confirmationData$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((res) => {
+                if (res.action !== TableStringEnum.CLOSE)
+                    this.ngbActiveModal?.close();
+            });
     }
 
     private createForm(): void {
@@ -119,62 +169,54 @@ export class AccountModalComponent implements OnInit, OnDestroy {
         );
     }
 
-    public onModalAction(data: { action: string; bool: boolean }) {
-        switch (data.action) {
-            case 'close': {
+    public onModalAction(action: string): void {
+        switch (action) {
+            case TaModalActionEnum.CLOSE:
+                this.ngbActiveModal.close();
                 break;
-            }
-            case 'save and add new': {
+
+            case TaModalActionEnum.SAVE_AND_ADD_NEW:
                 if (this.accountForm.invalid || !this.isFormDirty) {
                     this.inputService.markInvalid(this.accountForm);
                     return;
                 }
+                this.setModalSpinner(TaModalActionEnum.SAVE_AND_ADD_NEW, false);
                 this.addCompanyAccount();
-                this.modalService.setModalSpinner({
-                    action: 'save and add new',
-                    status: true,
-                    close: false,
-                });
                 this.addNewAfterSave = true;
                 break;
-            }
-            case 'save': {
-                // If Form not valid
+
+            case TaModalActionEnum.SAVE:
                 if (this.accountForm.invalid || !this.isFormDirty) {
                     this.inputService.markInvalid(this.accountForm);
                     return;
                 }
+
+                this.setModalSpinner(TaModalActionEnum.SAVE, false);
+
                 if (this.editData) {
                     this.updateCompanyAccount(this.editData.id);
-                    this.modalService.setModalSpinner({
-                        action: null,
-                        status: true,
-                        close: false,
-                    });
                 } else {
                     this.addCompanyAccount();
-                    this.modalService.setModalSpinner({
-                        action: null,
-                        status: true,
-                        close: false,
-                    });
                 }
                 break;
-            }
-            case 'delete': {
+
+            case TaModalActionEnum.DELETE:
                 if (this.editData) {
-                    this.deleteCompanyAccountById(this.editData.id);
-                    this.modalService.setModalSpinner({
-                        action: 'delete',
-                        status: true,
-                        close: false,
-                    });
+                    this.modalService.openModal(
+                        ConfirmationModalComponent,
+                        { size: TableStringEnum.SMALL },
+                        {
+                            ...this.editData,
+                            template: TableStringEnum.USER_1,
+                            type: TableStringEnum.DELETE,
+                            svg: true,
+                        }
+                    );
                 }
                 break;
-            }
-            default: {
+
+            default:
                 break;
-            }
         }
     }
 
@@ -247,32 +289,18 @@ export class AccountModalComponent implements OnInit, OnDestroy {
             .subscribe({
                 next: () => {
                     if (this.addNewAfterSave) {
-                        this.formService.resetForm(this.accountForm);
-
-                        this.selectedAccountColor = null;
-                        this.selectedAccountLabel = null;
+                        this.ngbActiveModal.close();
+                        this.modalService.openModal(AccountModalComponent, {
+                            size: ContactsModalStringEnum.SMALL,
+                        });
 
                         this.addNewAfterSave = false;
-
-                        this.modalService.setModalSpinner({
-                            action: 'save and add new',
-                            status: false,
-                            close: false,
-                        });
                     } else {
-                        this.modalService.setModalSpinner({
-                            action: null,
-                            status: true,
-                            close: true,
-                        });
+                        this.setModalSpinner(null, true);
                     }
                 },
                 error: () => {
-                    this.modalService.setModalSpinner({
-                        action: null,
-                        status: false,
-                        close: false,
-                    });
+                    this.setModalSpinner(null, false);
                 },
             });
     }
@@ -292,40 +320,10 @@ export class AccountModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
-                    this.modalService.setModalSpinner({
-                        action: null,
-                        status: true,
-                        close: true,
-                    });
+                    this.setModalSpinner(null, true);
                 },
                 error: () => {
-                    this.modalService.setModalSpinner({
-                        action: null,
-                        status: false,
-                        close: false,
-                    });
-                },
-            });
-    }
-
-    public deleteCompanyAccountById(id: number): void {
-        this.accountService
-            .deleteCompanyAccountById(id)
-            .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: () => {
-                    this.modalService.setModalSpinner({
-                        action: 'delete',
-                        status: true,
-                        close: true,
-                    });
-                },
-                error: () => {
-                    this.modalService.setModalSpinner({
-                        action: 'delete',
-                        status: false,
-                        close: false,
-                    });
+                    this.setModalSpinner(null, false);
                 },
             });
     }
@@ -431,6 +429,11 @@ export class AccountModalComponent implements OnInit, OnDestroy {
             .subscribe((isFormChange: boolean) => {
                 this.isFormDirty = isFormChange;
             });
+    }
+
+    private setModalSpinner(action: ModalActionType, close: boolean): void {
+        this.activeAction = action;
+        if (close) this.ngbActiveModal.close();
     }
 
     ngOnDestroy(): void {

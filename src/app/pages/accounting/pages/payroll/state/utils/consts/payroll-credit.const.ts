@@ -124,6 +124,7 @@ export class PayrollCreditConst {
             placeholderText: 'payments',
             thousandSeparator: true,
             isDisabled,
+            isRequired: !isDisabled,
             commands: {
                 active: true,
                 type: 'increment-decrement',

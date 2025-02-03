@@ -41,6 +41,7 @@ import { UserService } from '@pages/user/services/user.service';
 import { BankVerificationService } from '@shared/services/bank-verification.service';
 import { ConfirmationActivationService } from '@shared/components/ta-shared-modals/confirmation-activation-modal/services/confirmation-activation.service';
 import { ConfirmationService } from '@shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
+import { AddressService } from '@shared/services/address.service';
 
 //Animation
 import { tabsModalAnimation } from '@shared/animations/tabs-modal.animation';
@@ -65,15 +66,17 @@ import { SettingsOfficeModalComponent } from '@pages/settings/pages/settings-mod
 import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
 import { TaModalComponent } from '@shared/components/ta-modal/ta-modal.component';
 import { TaTabSwitchComponent } from '@shared/components/ta-tab-switch/ta-tab-switch.component';
-import { TaInputComponent } from '@shared/components/ta-input/ta-input.component';
-import { TaInputAddressDropdownComponent } from '@shared/components/ta-input-address-dropdown/ta-input-address-dropdown.component';
 import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-custom-card.component';
 import { TaCheckboxCardComponent } from '@shared/components/ta-checkbox-card/ta-checkbox-card.component';
 import { TaNgxSliderComponent } from '@shared/components/ta-ngx-slider/ta-ngx-slider.component';
 import { TaInputNoteComponent } from '@shared/components/ta-input-note/ta-input-note.component';
-import { TaInputDropdownComponent } from '@shared/components/ta-input-dropdown/ta-input-dropdown.component';
 import { ConfirmationModalComponent } from '@shared/components/ta-shared-modals/confirmation-modal/confirmation-modal.component';
 import { ConfirmationActivationModalComponent } from '@shared/components/ta-shared-modals/confirmation-activation-modal/confirmation-activation-modal.component';
+import {
+    CaInputComponent,
+    CaInputDropdownComponent,
+    CaInputAddressDropdownComponent,
+} from 'ca-components';
 
 // enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
@@ -84,6 +87,7 @@ import { UserModalSvgRoutes } from '@pages/user/pages/user-modal/utils/svg-route
 
 // config
 import { UserModalConfig } from '@pages/user/pages/user-modal/utils/constants';
+import { AddressMixin } from '@shared/mixins/address/address.mixin';
 
 @Component({
     selector: 'app-user-modal',
@@ -104,16 +108,19 @@ import { UserModalConfig } from '@pages/user/pages/user-modal/utils/constants';
         TaAppTooltipV2Component,
         TaModalComponent,
         TaTabSwitchComponent,
-        TaInputComponent,
-        TaInputAddressDropdownComponent,
         TaCustomCardComponent,
         TaCheckboxCardComponent,
         TaNgxSliderComponent,
         TaInputNoteComponent,
-        TaInputDropdownComponent,
+        CaInputComponent,
+        CaInputDropdownComponent,
+        CaInputAddressDropdownComponent,
     ],
 })
-export class UserModalComponent implements OnInit, OnDestroy {
+export class UserModalComponent
+    extends AddressMixin(class { addressService!: AddressService; })
+    implements OnDestroy, OnInit
+{
     @Input() editData: any;
     public userForm: UntypedFormGroup;
     public selectedTab: number = 1;
@@ -153,11 +160,12 @@ export class UserModalComponent implements OnInit, OnDestroy {
     public allowPairCommissionBase: boolean = false;
     public userFullName: string = null;
     public userStatus: boolean = true;
-    public disableCardAnimation: boolean = false;
-    private destroy$ = new Subject<void>();
+    public isCardAnimationDisabled: boolean = false;
+    public destroy$ = new Subject<void>();
     public isEmailCheckCompleted: boolean;
     public currentUserStatus: string;
     public userModalSvgRoutes: UserModalSvgRoutes = UserModalSvgRoutes;
+    public userModalConfig: UserModalConfig = UserModalConfig;
 
     constructor(
         private formBuilder: UntypedFormBuilder,
@@ -170,8 +178,11 @@ export class UserModalComponent implements OnInit, OnDestroy {
         private bankVerificationService: BankVerificationService,
         private formService: FormService,
         private confirmationActivationService: ConfirmationActivationService,
-        private confirmationService: ConfirmationService
-    ) {}
+        private confirmationService: ConfirmationService,
+        public addressService: AddressService
+    ) {
+        super();
+    }
 
     ngOnInit() {
         this.createForm();
@@ -209,7 +220,7 @@ export class UserModalComponent implements OnInit, OnDestroy {
         };
 
         switch (data.action) {
-            case TableStringEnum.SAVE: {
+            case TableStringEnum.SAVE:
                 if (this.userForm.invalid || !this.isFormDirty) {
                     this.inputService.markInvalid(this.userForm);
                     return;
@@ -230,7 +241,6 @@ export class UserModalComponent implements OnInit, OnDestroy {
                     });
                 }
                 break;
-            }
             case TableStringEnum.DEACTIVATE:
                 this.modalService.openModal(
                     ConfirmationActivationModalComponent,
@@ -936,7 +946,7 @@ export class UserModalComponent implements OnInit, OnDestroy {
                     this.isPhoneExtExist = !!res.extensionPhone;
                     setTimeout(() => {
                         this.startFormChanges();
-                        this.disableCardAnimation = false;
+                        this.isCardAnimationDisabled = false;
                     }, 1000);
                 },
                 error: () => {},
@@ -956,7 +966,7 @@ export class UserModalComponent implements OnInit, OnDestroy {
                     this.heleperForDispatchers = res.dispatcherResponses;
 
                     if (this.editData?.id) {
-                        this.disableCardAnimation = true;
+                        this.isCardAnimationDisabled = true;
                         this.getUserById(this.editData.id);
                     }
                     if (this.editData?.data && !this.editData?.id) {

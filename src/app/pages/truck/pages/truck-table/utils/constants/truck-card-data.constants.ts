@@ -1,13 +1,6 @@
 import { CardRows } from '@shared/models/card-models/card-rows.model';
 
 export class TruckCardDataConstants {
-    static rows: number = 4;
-
-    static page: string = 'Truck';
-
-    static cardTitle: string = 'truckNumber';
-
-    // Data for active trucks front
     static displayRowsFrontActive: CardRows[] = [
         {
             title: 'VIN No.',
@@ -28,7 +21,6 @@ export class TruckCardDataConstants {
         },
     ];
 
-    // Data for active trucks back
     static displayRowsBackActive: CardRows[] = [
         {
             title: 'Owner',
@@ -50,7 +42,6 @@ export class TruckCardDataConstants {
         },
     ];
 
-    // Data for inactive trucks
     static displayRowsFrontInactive: CardRows[] = [
         {
             title: 'VIN No.',
@@ -71,7 +62,6 @@ export class TruckCardDataConstants {
         },
     ];
 
-    // Data for shipper
     static displayRowsBackInactive: CardRows[] = [
         {
             title: 'Type',

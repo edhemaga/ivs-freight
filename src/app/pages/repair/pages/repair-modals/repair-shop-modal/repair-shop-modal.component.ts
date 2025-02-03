@@ -44,7 +44,6 @@ import {
     RepairShopTabs,
     RepairShopModalService,
     DisplayServiceTab,
-    RepairShopModalAction,
     CreateShopModel,
     RepairShopContactExtended,
 } from '@pages/repair/pages/repair-modals/repair-shop-modal/models';
@@ -81,17 +80,20 @@ import { RepairShopConfig } from '@pages/repair/pages/repair-modals/repair-shop-
 import { tabsModalAnimation } from '@shared/animations/tabs-modal.animation';
 
 // Components
-import { TaModalComponent } from '@shared/components/ta-modal/ta-modal.component';
 import { TaTabSwitchComponent } from '@shared/components/ta-tab-switch/ta-tab-switch.component';
-import { TaInputComponent } from '@shared/components/ta-input/ta-input.component';
 import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
-import { TaInputAddressDropdownComponent } from '@shared/components/ta-input-address-dropdown/ta-input-address-dropdown.component';
 import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-custom-card.component';
-import { TaInputDropdownComponent } from '@shared/components/ta-input-dropdown/ta-input-dropdown.component';
-import { TaInputNoteComponent } from '@shared/components/ta-input-note/ta-input-note.component';
 import { TaModalTableComponent } from '@shared/components/ta-modal-table/ta-modal-table.component';
 import { TaCheckboxComponent } from '@shared/components/ta-checkbox/ta-checkbox.component';
-import { CaUploadFilesComponent } from 'ca-components';
+import {
+    CaInputComponent,
+    CaInputDropdownComponent,
+    CaInputNoteComponent,
+    CaModalButtonComponent,
+    CaModalComponent,
+    CaUploadFilesComponent,
+    CaInputAddressDropdownComponent,
+} from 'ca-components';
 import { TaUserReviewComponent } from '@shared/components/ta-user-review/ta-user-review.component';
 import { ConfirmationActivationModalComponent } from '@shared/components/ta-shared-modals/confirmation-activation-modal/confirmation-activation-modal.component';
 import { TaCheckboxCardComponent } from '@shared/components/ta-checkbox-card/ta-checkbox-card.component';
@@ -99,11 +101,15 @@ import { ConfirmationModalComponent } from '@shared/components/ta-shared-modals/
 
 // Modules
 import { AngularSvgIconModule } from 'angular-svg-icon';
-import { NgbActiveModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbActiveModal, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 
 // Enums
 import { ModalTableTypeEnum } from '@shared/enums/modal-table-type.enum';
-import { TableStringEnum } from '@shared/enums/table-string.enum';
+import {
+    ModalButtonSize,
+    ModalButtonType,
+    TableStringEnum,
+} from '@shared/enums';
 import { ConfirmationActivationStringEnum } from '@shared/components/ta-shared-modals/confirmation-activation-modal/enums/confirmation-activation-string.enum';
 import {
     ActionTypesEnum,
@@ -117,11 +123,19 @@ import { RepairShopConstants } from '@pages/repair/pages/repair-modals/repair-sh
 
 // SVG Routes
 import { RepairShopModalSvgRoutes } from '@pages/repair/pages/repair-modals/repair-shop-modal/utils/svg-routes';
+import { SharedSvgRoutes } from '@shared/utils/svg-routes';
 
 // Types
 import { OpenedTab } from '@pages/repair/pages/repair-modals/repair-shop-modal/types';
 import { ITaInput } from '@shared/components/ta-input/config/ta-input.config';
 import { ContactsModalConstants } from '@pages/contacts/pages/contacts-modal/utils/constants/contacts-modal.constants';
+
+// Pipes
+import { FormatDatePipe } from '@shared/pipes';
+import { AddressService } from '@shared/services/address.service';
+
+// mixin
+import { AddressMixin } from '@shared/mixins/address/address.mixin';
 
 @Component({
     selector: 'app-repair-shop-modal',
@@ -138,25 +152,37 @@ import { ContactsModalConstants } from '@pages/contacts/pages/contacts-modal/uti
         FormsModule,
         ReactiveFormsModule,
         AngularSvgIconModule,
-        NgbModule,
+        NgbTooltipModule,
 
         // Component
         TaAppTooltipV2Component,
-        TaModalComponent,
+        CaModalComponent,
+        CaModalButtonComponent,
         TaTabSwitchComponent,
-        TaInputComponent,
+        CaInputComponent,
         TaCustomCardComponent,
-        TaInputDropdownComponent,
-        TaInputAddressDropdownComponent,
-        TaInputNoteComponent,
+        CaInputDropdownComponent,
+        CaInputAddressDropdownComponent,
+        CaInputNoteComponent,
         TaCheckboxComponent,
         CaUploadFilesComponent,
         TaModalTableComponent,
         TaUserReviewComponent,
         TaCheckboxCardComponent,
+        TaAppTooltipV2Component,
+
+        // Pipes
+        FormatDatePipe,
     ],
 })
-export class RepairShopModalComponent implements OnInit, OnDestroy {
+export class RepairShopModalComponent
+    extends AddressMixin(
+        class {
+            addressService!: AddressService;
+        }
+    )
+    implements OnInit, OnDestroy
+{
     // Enums
     public repairShopModalSvgRoutes = RepairShopModalSvgRoutes;
     public RepairShopModalStringEnum = RepairShopModalStringEnum;
@@ -193,7 +219,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
     public selectedAddress: AddressEntity;
 
     // Subject
-    private destroy$ = new Subject<void>();
+    public destroy$ = new Subject<void>();
 
     // Services and Types
     public services: RepairShopModalService[] = [];
@@ -240,6 +266,15 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
     private repairShop: RepairShopResponse;
     public isCompanyRelated: boolean = false;
     public isFormDirty: boolean = false;
+
+    public actionTypesEnum = ActionTypesEnum;
+
+    public svgRoutes = SharedSvgRoutes;
+    public activeAction: string;
+
+    public modalButtonType = ModalButtonType;
+    public modalButtonSize = ModalButtonSize;
+
     constructor(
         private formBuilder: UntypedFormBuilder,
 
@@ -256,8 +291,11 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
         private confirmationService: ConfirmationService,
         private ngbActiveModal: NgbActiveModal,
         private confirmationActivationService: ConfirmationActivationService,
-        private inputService: TaInputService
-    ) {}
+        private inputService: TaInputService,
+        public addressService: AddressService
+    ) {
+        super();
+    }
 
     public get isModalValidToSubmit(): boolean {
         return (
@@ -578,7 +616,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
         }
 
         // Patch address
-        this.onAddressChange({
+        this.onAddressChangeInit({
             address: res.address,
             valid: true,
             longLat: {
@@ -641,7 +679,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
         });
     }
 
-    public onAddressChange(event: {
+    public onAddressChangeInit(event: {
         address: AddressEntity;
         valid: boolean;
         longLat: any;
@@ -933,17 +971,6 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
 
     public onFilesEvent(event): void {
         this.files = event;
-
-        // switch (event.action) {
-        //     case FileActionEvent.ADD:
-        //         this.updateFilesField(event.files);
-        //         break;
-        //     case FileActionEvent.DELETE:
-        //         this.handleDeleteEvent(event);
-        //         break;
-        //     default:
-        //         console.warn(`Unhandled file event action: ${event.action}`);
-        // }
     }
 
     private updateFilesField(files: any[]): void {
@@ -961,11 +988,18 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
         }
     }
 
-    public onModalAction(data: RepairShopModalAction): void {
-        if (data.action === ActionTypesEnum.DELETE) {
+    public onModalAction(data: string): void {
+        this.activeAction = data;
+
+        if (data === ActionTypesEnum.CLOSE) {
+            this.ngbActiveModal.close();
+        }
+
+        if (data === ActionTypesEnum.DELETE) {
             this.showDeleteBusinessModal();
         }
-        if (data.action === ActionTypesEnum.CLOSE_BUSINESS) {
+
+        if (data === ActionTypesEnum.CLOSE_BUSINESS) {
             this.showCloseBusinessModal();
         }
 
@@ -975,12 +1009,12 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
         }
 
         this.isRequestInProgress = true;
-        if (data.action === ActionTypesEnum.SAVE_AND_ADD_NEW) {
+        if (data === ActionTypesEnum.SAVE_AND_ADD_NEW) {
             this.addNewRepairShop(true);
             return;
         }
 
-        if (data.action === ActionTypesEnum.SAVE) {
+        if (data === ActionTypesEnum.SAVE) {
             if (this.isEditMode) {
                 this.updateRepairShop(this.editData.id);
             } else {
@@ -1087,7 +1121,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
             if (openHour.isWorkingDay) {
                 openHour.shifts.forEach((shift: any) => {
                     formattedOpenHours.push({
-                        // isWorkingDay: openHour.isWorkingDay,
+                        isWorking: openHour.isWorkingDay,
                         dayOfWeek: openHour.dayOfWeek,
                         startTime: shift.startTime,
                         endTime: shift.endTime,
@@ -1136,7 +1170,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
                           (item) => item.name === department
                       )?.id,
                       phone,
-                      extensionPhone: phoneExt,
+                      phoneExt: phoneExt,
                       email,
                   };
         });
@@ -1148,14 +1182,10 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
-                    if (addNewShop) {
-                        this.setModalSpinner(null, true, true, true);
-                    }
-
-                    this.setModalSpinner(null, false, !addNewShop);
+                    this.setModalSpinner(true, addNewShop);
                 },
                 error: () => {
-                    this.setModalSpinner(null, false, false);
+                    this.setModalSpinner(false, false);
                 },
             });
     }
@@ -1166,35 +1196,23 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
-                    this.setModalSpinner(null, true, true);
+                    this.setModalSpinner(true, false);
                 },
                 error: () => {
-                    this.setModalSpinner(null, false, false);
+                    this.setModalSpinner(false, false);
                 },
             });
     }
 
-    private setModalSpinner(
-        action:
-            | null
-            | ActionTypesEnum.SAVE_AND_ADD_NEW
-            | ActionTypesEnum.DELETE,
-        status: boolean,
-        close: boolean,
-        addNew?: boolean
-    ): void {
-        this.modalService.setModalSpinner({
-            action,
-            status,
-            close,
-        });
+    private setModalSpinner(close: boolean, addNew?: boolean): void {
+        if (close) this.ngbActiveModal.close();
 
-        if (addNew) {
-            this.modalService.openModal(RepairShopModalComponent, {});
-        }
+        if (addNew) this.modalService.openModal(RepairShopModalComponent, {});
 
         // Wait for modal to close to prevent click while closing it
         setTimeout(() => (this.isRequestInProgress = false), 400);
+
+        this.activeAction = null;
     }
 
     private showDeleteBusinessModal(): void {
@@ -1216,7 +1234,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
             { size: TableStringEnum.SMALL },
             {
                 ...mappedEvent,
-                template: TableStringEnum.REPAIR_SHOP,
+                template: TableStringEnum.REPAIR_SHOP_3,
                 type: TableStringEnum.DELETE,
             }
         );

@@ -115,6 +115,7 @@ $special-filter-purple-1: #7919d0;
 $special-filter-purple-2: #ab47bc;
 $special-filter-purple-3: #ab47bc20;
 $special-filter-orange: #ffa726;
+$special-filter-red: #e66767;
 
 // Applicant
 $confirm: #24c1a1;
@@ -149,8 +150,6 @@ $ta-blue-23: #536bc220;
 $ta-blue-24: #8785e8;
 $ta-blue-25: #e0eaf8;
 $ta-blue-26: #4dc5eb;
-$ta-blue-27: #68c3ff;
-$ta-blue-28: #415fc1;
 
 // $ta-blue-14: #0B49D1;
 $dark-blue-07: #5673aa70;
@@ -219,7 +218,6 @@ $ta-yellow-6: #cdb255;
 $ta-yellow-7: #f89b2e33;
 $ta-yellow-8: #daad4f;
 
-$ta-black-3: #1d1d1d;
 // Cards
 $ta-green: #56b4ac;
 $ta-green-1: #50ac25;
@@ -280,3 +278,6 @@ $ta-purple-2: #ba68c8;
         visibility: visible !important;
     }
 }
+
+// modal tables
+$modalTableContact: 186px 130px 140px 80px 200px;

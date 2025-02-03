@@ -21,6 +21,10 @@ export interface LoadStopMobileResponse {
     shipper?: ShipperShortMobileResponse;
     dateFrom?: string;
     dateTo?: string | null;
+    arrive?: string | null;
+    depart?: string | null;
+    wait?: { [key: string]: number; } | null;
+    driving?: { [key: string]: number; } | null;
     timeType?: EnumValue;
     milesType?: EnumValue;
     legMiles?: number | null;

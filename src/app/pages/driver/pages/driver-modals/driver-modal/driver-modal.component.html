@@ -1,21 +1,16 @@
-<app-ta-modal
+<app-ca-modal
     [modalTitle]="editData?.type !== 'edit' ? 'Add Driver' : 'Edit Driver'"
-    [editName]="driverFullName"
-    [editData]="editData"
-    [saveAndAddNew]="editData?.type !== 'edit'"
+    [rightHeaderTemplate]="rightModalContent"
+    [leftHeaderTemplate]="leftModalContent"
+    [footerTemplate]="footerTemplate"
     [customClass]="'modal-container-M'"
-    [isModalValid]="
-        driverForm.valid && isFormDirty && isEachOffDutyLocationRowValid
-    "
-    [isDeactivated]="false"
-    [isDeactivateOnly]="editData?.isDeactivateOnly"
-    (action)="onModalAction($event)"
 >
-    <div origin>
+    <div class="new-modal" origin>
         <!-- Tabs -->
 
         <app-ta-tab-switch
             [tabs]="mainTabs"
+            customClass="mt-0"
             [type]="'type1-modal-popup'"
             (switchClicked)="onTabChange($event)"
         >
@@ -27,7 +22,7 @@
             class="form-container"
             [ngClass]="{
                 'tab-2': selectedTabId === 2,
-                'form-container-without-mb': selectedTabId === 2
+                'form-container-without-mb': selectedTabId === 2,
             }"
             [formGroup]="driverForm"
         >
@@ -42,7 +37,7 @@
                         <!-- First Name, Last Name, DOB -->
 
                         <div class="driver-modal-first-row">
-                            <app-ta-input
+                            <app-ca-input
                                 formControlName="firstName"
                                 [inputConfig]="{
                                     name: 'First Name',
@@ -52,11 +47,11 @@
                                     textTransform: 'capitalize',
                                     minLength: 2,
                                     maxLength: 26,
-                                    autoFocus: editData?.type !== 'edit'
+                                    autoFocus: editData?.type !== 'edit',
                                 }"
-                            ></app-ta-input>
+                            ></app-ca-input>
 
-                            <app-ta-input
+                            <app-ca-input
                                 formControlName="lastName"
                                 [inputConfig]="{
                                     name: 'Last name',
@@ -65,11 +60,11 @@
                                     textTransform: 'capitalize',
                                     isRequired: true,
                                     minLength: 2,
-                                    maxLength: 26
+                                    maxLength: 26,
                                 }"
-                            ></app-ta-input>
+                            ></app-ca-input>
 
-                            <app-ta-input
+                            <app-ca-input
                                 formControlName="dateOfBirth"
                                 [inputConfig]="{
                                     name: 'datepicker',
@@ -78,15 +73,15 @@
                                     isDropdown: true,
                                     placeholderIcon: 'date',
                                     isRequired: true,
-                                    customClass: 'datetimeclass'
+                                    customClass: 'datetimeclass',
                                 }"
-                            ></app-ta-input>
+                            ></app-ca-input>
                         </div>
 
                         <!-- Phone, Email, SSN -->
 
                         <div class="driver-modal-second-row">
-                            <app-ta-input
+                            <app-ca-input
                                 formControlName="phone"
                                 [inputConfig]="{
                                     name: 'Phone',
@@ -95,11 +90,11 @@
                                     isRequired: true,
                                     placeholderIcon: 'phone',
                                     mask: '(000) 000-0000',
-                                    maxLength: 14
+                                    maxLength: 14,
                                 }"
-                            ></app-ta-input>
+                            ></app-ca-input>
 
-                            <app-ta-input
+                            <app-ca-input
                                 formControlName="email"
                                 [inputConfig]="{
                                     name: 'Email',
@@ -109,12 +104,12 @@
                                     placeholderIcon: 'email',
                                     minLength: 5,
                                     maxLength: 64,
-                                    textTransform: 'lowercase'
+                                    textTransform: 'lowercase',
                                 }"
                                 (blurInput)="validateEmail()"
-                            ></app-ta-input>
+                            ></app-ca-input>
 
-                            <app-ta-input
+                            <app-ca-input
                                 formControlName="ssn"
                                 [inputConfig]="{
                                     name: 'SSN',
@@ -122,18 +117,18 @@
                                     label: 'SSN',
                                     isRequired: true,
                                     mask: '000-00-0000',
-                                    maxLength: 11
+                                    maxLength: 11,
                                 }"
                                 (blurInput)="validateSsn()"
                                 (clear)="validateSsn($event, true)"
-                            ></app-ta-input>
+                            ></app-ca-input>
                         </div>
 
                         <!-- Address, Unit -->
 
                         <div class="row last-row">
                             <div class="col-10">
-                                <app-ta-input-address-dropdown
+                                <app-ca-input-address-dropdown
                                     formControlName="address"
                                     [inputConfig]="{
                                         name: 'Address',
@@ -144,16 +139,24 @@
                                         textTransform: 'capitalize',
                                         dropdownWidthClass: 'w-col-510',
                                         minLength: 6,
-                                        maxLength: 256
+                                        maxLength: 256,
                                     }"
                                     [placeholderType]="'longAddress'"
                                     [activeAddress]="selectedAddress"
+                                    [receivedAddressList]="addressList"
+                                    [receivedAddressData]="addressData"
                                     (selectedAddress)="onHandleAddress($event)"
-                                ></app-ta-input-address-dropdown>
+                                    (sentAddressData)="
+                                        onAddressChange($event)
+                                    "
+                                    (sentAddressValue)="
+                                        getAddressData($event)
+                                    "
+                                ></app-ca-input-address-dropdown>
                             </div>
 
                             <div class="col-2">
-                                <app-ta-input
+                                <app-ca-input
                                     formControlName="addressUnit"
                                     [inputConfig]="{
                                         name: 'address-unit',
@@ -161,9 +164,9 @@
                                         label: 'Unit #',
                                         textTransform: 'uppercase',
                                         minLength: 1,
-                                        maxLength: 10
+                                        maxLength: 10,
                                     }"
-                                ></app-ta-input>
+                                ></app-ca-input>
                             </div>
                         </div>
 
@@ -196,11 +199,11 @@
                                     [ngClass]="{
                                         'fade-checkbox-inputs':
                                             driverForm.get('ownerType')
-                                                .value === 'Company'
+                                                .value === 'Company',
                                     }"
                                 >
                                     <div class="row">
-                                        <app-ta-input-dropdown
+                                        <app-ca-input-dropdown
                                             formControlName="owner"
                                             [template]="
                                                 'double-column-template'
@@ -212,12 +215,12 @@
                                                 multipleLabel: {
                                                     labels: [
                                                         'Ein',
-                                                        'Company Name'
+                                                        'Company Name',
                                                     ],
                                                     customClass:
-                                                        'dropdown-double-column'
+                                                        'dropdown-double-column',
                                                 },
-                                                dropdownWidthClass: 'w-col-616'
+                                                dropdownWidthClass: 'w-col-616',
                                             }"
                                             [options]="ownersDropdownList"
                                             [activeItem]="selectedOwner"
@@ -229,7 +232,7 @@
                                                     'owner'
                                                 )
                                             "
-                                        ></app-ta-input-dropdown>
+                                        ></app-ca-input-dropdown>
                                     </div>
                                 </div>
                             </ng-container>
@@ -263,7 +266,7 @@
                             <div
                                 class="align-items-center custom-row-paytype-driver"
                                 [ngClass]="{
-                                    'not-combined': fleetType !== 'Combined'
+                                    'not-combined': fleetType !== 'Combined',
                                 }"
                             >
                                 <app-ta-checkbox
@@ -273,7 +276,7 @@
                                     [isUseCarrieraACHCheckBox]="true"
                                 ></app-ta-checkbox>
 
-                                <app-ta-input-dropdown
+                                <app-ca-input-dropdown
                                     formControlName="payType"
                                     [inputConfig]="{
                                         name: 'Input Dropdown',
@@ -286,14 +289,14 @@
                                             selectedPayType?.name !==
                                                 'Commission'
                                                 ? 'w-col-450'
-                                                : 'w-col-210'
+                                                : 'w-col-210',
                                     }"
                                     [options]="payTypeDropdownList"
                                     [activeItem]="selectedPayType"
                                     (selectedItem)="
                                         onSelectDropdown($event, 'paytype')
                                     "
-                                ></app-ta-input-dropdown>
+                                ></app-ca-input-dropdown>
 
                                 <ng-container *ngIf="fleetType === 'Combined'">
                                     <app-ta-checkbox
@@ -355,7 +358,7 @@
                                                     hasMilesSameRate,
                                                 'permile-fields-same-rate-combined':
                                                     fleetType === 'Combined' &&
-                                                    hasMilesSameRate
+                                                    hasMilesSameRate,
                                             }"
                                         >
                                             <ng-container
@@ -372,7 +375,7 @@
                                                     else perMileSolo
                                                 "
                                             >
-                                                <app-ta-input
+                                                <app-ca-input
                                                     formControlName="soloEmptyMile"
                                                     [inputConfig]="{
                                                         name: 'Per Mile',
@@ -389,11 +392,11 @@
                                                             ).value,
                                                         min: 0,
                                                         max: 10,
-                                                        maxLength: 4
+                                                        maxLength: 4,
                                                     }"
-                                                ></app-ta-input>
+                                                ></app-ca-input>
 
-                                                <app-ta-input
+                                                <app-ca-input
                                                     formControlName="soloLoadedMile"
                                                     [inputConfig]="{
                                                         name: 'Per Mile',
@@ -410,13 +413,13 @@
                                                             ).value,
                                                         min: 0,
                                                         max: 10,
-                                                        maxLength: 4
+                                                        maxLength: 4,
                                                     }"
-                                                ></app-ta-input>
+                                                ></app-ca-input>
                                             </ng-container>
 
                                             <ng-template #perMileSolo>
-                                                <app-ta-input
+                                                <app-ca-input
                                                     formControlName="perMileSolo"
                                                     [inputConfig]="{
                                                         name: 'Per Mile',
@@ -433,13 +436,13 @@
                                                             ).value,
                                                         min: 0,
                                                         max: 10,
-                                                        maxLength: 4
+                                                        maxLength: 4,
                                                     }"
                                                 >
-                                                </app-ta-input>
+                                                </app-ca-input>
                                             </ng-template>
 
-                                            <app-ta-input
+                                            <app-ca-input
                                                 formControlName="soloPerStop"
                                                 [inputConfig]="{
                                                     name: 'Per Stop',
@@ -454,9 +457,9 @@
                                                             'soloDriver'
                                                         ).value,
                                                     min: 0,
-                                                    max: 5000
+                                                    max: 5000,
                                                 }"
-                                            ></app-ta-input>
+                                            ></app-ca-input>
                                         </div>
                                     </ng-container>
 
@@ -483,7 +486,7 @@
                                                     hasMilesSameRate,
                                                 'permile-fields-same-rate-combined':
                                                     fleetType === 'Combined' &&
-                                                    hasMilesSameRate
+                                                    hasMilesSameRate,
                                             }"
                                         >
                                             <ng-container
@@ -500,7 +503,7 @@
                                                     else perMileTeam
                                                 "
                                             >
-                                                <app-ta-input
+                                                <app-ca-input
                                                     formControlName="teamEmptyMile"
                                                     [inputConfig]="{
                                                         name: 'Per Mile',
@@ -517,11 +520,11 @@
                                                             ).value,
                                                         min: 0,
                                                         max: 10,
-                                                        maxLength: 4
+                                                        maxLength: 4,
                                                     }"
-                                                ></app-ta-input>
+                                                ></app-ca-input>
 
-                                                <app-ta-input
+                                                <app-ca-input
                                                     formControlName="teamLoadedMile"
                                                     [inputConfig]="{
                                                         name: 'Per Mile',
@@ -538,13 +541,13 @@
                                                             ).value,
                                                         min: 0,
                                                         max: 10,
-                                                        maxLength: 4
+                                                        maxLength: 4,
                                                     }"
-                                                ></app-ta-input>
+                                                ></app-ca-input>
                                             </ng-container>
 
                                             <ng-template #perMileTeam>
-                                                <app-ta-input
+                                                <app-ca-input
                                                     formControlName="perMileTeam"
                                                     [inputConfig]="{
                                                         name: 'Per Mile',
@@ -561,13 +564,13 @@
                                                             ).value,
                                                         min: 0,
                                                         max: 10,
-                                                        maxLength: 4
+                                                        maxLength: 4,
                                                     }"
                                                 >
-                                                </app-ta-input>
+                                                </app-ca-input>
                                             </ng-template>
 
-                                            <app-ta-input
+                                            <app-ca-input
                                                 formControlName="teamPerStop"
                                                 [inputConfig]="{
                                                     name: 'Per Stop',
@@ -582,9 +585,9 @@
                                                             'teamDriver'
                                                         ).value,
                                                     min: 0,
-                                                    max: 5000
+                                                    max: 5000,
                                                 }"
-                                            ></app-ta-input>
+                                            ></app-ca-input>
                                         </div>
                                     </ng-container>
                                 </div>
@@ -724,10 +727,11 @@
                                             <div
                                                 [ngClass]="{
                                                     'col-6':
-                                                        fleetType === 'Combined'
+                                                        fleetType ===
+                                                        'Combined',
                                                 }"
                                             >
-                                                <app-ta-input
+                                                <app-ca-input
                                                     formControlName="flatRateSolo"
                                                     [inputConfig]="{
                                                         name: 'Flat Rate',
@@ -748,9 +752,9 @@
                                                                 'soloDriver'
                                                             ).value,
                                                         min: 0,
-                                                        max: 5000
+                                                        max: 5000,
                                                     }"
-                                                ></app-ta-input>
+                                                ></app-ca-input>
                                             </div>
                                         </ng-container>
 
@@ -766,10 +770,11 @@
                                             <div
                                                 [ngClass]="{
                                                     'col-6':
-                                                        fleetType === 'Combined'
+                                                        fleetType ===
+                                                        'Combined',
                                                 }"
                                             >
-                                                <app-ta-input
+                                                <app-ca-input
                                                     formControlName="flatRateTeam"
                                                     [inputConfig]="{
                                                         name: 'Flat Rate',
@@ -790,9 +795,9 @@
                                                                 'teamDriver'
                                                             ).value,
                                                         min: 0,
-                                                        max: 5000
+                                                        max: 5000,
                                                     }"
-                                                ></app-ta-input>
+                                                ></app-ca-input>
                                             </div>
                                         </ng-container>
                                     </div>
@@ -803,7 +808,7 @@
 
                             <div class="custom-bank-row custom-bank-row-driver">
                                 <div class="bank-field">
-                                    <app-ta-input-dropdown
+                                    <app-ca-input-dropdown
                                         formControlName="bankId"
                                         [template]="'svg-template'"
                                         [inputConfig]="{
@@ -817,7 +822,7 @@
                                             isRequired:
                                                 driverForm.get('useCarrieraAch')
                                                     .value,
-                                            dropdownWidthClass: 'w-col-184'
+                                            dropdownWidthClass: 'w-col-184',
                                         }"
                                         [canAddNew]="true"
                                         [options]="banksDropdownList"
@@ -826,11 +831,11 @@
                                             onSelectDropdown($event, 'bank')
                                         "
                                         (saveItem)="onSaveNewBank($event)"
-                                    ></app-ta-input-dropdown>
+                                    ></app-ca-input-dropdown>
                                 </div>
 
                                 <div class="bank-field">
-                                    <app-ta-input
+                                    <app-ca-input
                                         formControlName="routing"
                                         [inputConfig]="{
                                             name: 'routing-bank',
@@ -839,13 +844,13 @@
                                             isDisabled: !isBankSelected,
                                             isRequired: isBankSelected,
                                             minLength: 9,
-                                            maxLength: 9
+                                            maxLength: 9,
                                         }"
-                                    ></app-ta-input>
+                                    ></app-ca-input>
                                 </div>
 
                                 <div class="bank-field">
-                                    <app-ta-input
+                                    <app-ca-input
                                         formControlName="account"
                                         [inputConfig]="{
                                             name: 'account-bank',
@@ -854,9 +859,9 @@
                                             isDisabled: !isBankSelected,
                                             isRequired: isBankSelected,
                                             maxLength: 17,
-                                            minLength: 5
+                                            minLength: 5,
                                         }"
-                                    ></app-ta-input>
+                                    ></app-ca-input>
                                 </div>
                             </div>
 
@@ -913,7 +918,7 @@
                             [disableAnimation]="isCardAnimationDisabled"
                             [animationMarginParams]="{
                                 marginTop: '10px',
-                                marginBottom: '12px'
+                                marginBottom: '12px',
                             }"
                             (onActionEvent)="addOffDutyLocation($event)"
                         >
@@ -946,11 +951,11 @@
                             [disableAnimation]="isCardAnimationDisabled"
                             [animationMarginParams]="{
                                 marginTop: '18px',
-                                marginBottom: '22px'
+                                marginBottom: '22px',
                             }"
                         >
                             <div class="emergency-contact">
-                                <app-ta-input
+                                <app-ca-input
                                     formControlName="emergencyContactName"
                                     [inputConfig]="{
                                         name: 'Emergency Name',
@@ -958,11 +963,11 @@
                                         label: 'Name',
                                         textTransform: 'capitalize',
                                         minLength: 2,
-                                        maxLength: 24
+                                        maxLength: 24,
                                     }"
-                                ></app-ta-input>
+                                ></app-ca-input>
 
-                                <app-ta-input
+                                <app-ca-input
                                     formControlName="emergencyContactPhone"
                                     [inputConfig]="{
                                         name: 'Phone',
@@ -970,11 +975,11 @@
                                         label: 'Phone',
                                         placeholderIcon: 'phone',
                                         mask: '(000) 000-0000',
-                                        maxLength: 14
+                                        maxLength: 14,
                                     }"
-                                ></app-ta-input>
+                                ></app-ca-input>
 
-                                <app-ta-input
+                                <app-ca-input
                                     formControlName="emergencyContactRelationship"
                                     [inputConfig]="{
                                         name: 'Relationship',
@@ -982,9 +987,9 @@
                                         label: 'Relationship',
                                         textTransform: 'capitalize',
                                         minLength: 2,
-                                        maxLength: 24
+                                        maxLength: 24,
                                     }"
-                                ></app-ta-input>
+                                ></app-ca-input>
                             </div>
                         </app-ta-custom-card>
 
@@ -997,21 +1002,86 @@
                                 [disableAnimation]="isCardAnimationDisabled"
                                 [isCardOpen]="!!documents.length"
                             >
-                                <app-ta-upload-files
+                                <app-ca-upload-files
                                     [files]="documents"
+                                    [slider]="{
+                                        dontUseSlider: false,
+                                        hasCarouselBottomTabs: true,
+                                    }"
+                                    [carouselConfig]="{
+                                        files: documents,
+                                        customClass: 'medium',
+                                        customDetailsPageClass: 'modals',
+                                        hasCarouselBottomTabs: true,
+                                    }"
+                                    [hasCrop]="false"
+                                    [dropzoneConf]="[
+                                        {
+                                            template: 'documentsTemplate',
+                                            config: {
+                                                dropzone: {
+                                                    dropZoneType: 'files',
+                                                    multiple: true,
+                                                    globalDropZone: false,
+                                                    dropZonePages: 'tools_todo',
+                                                },
+                                                dropzoneOption: {
+                                                    customClassName:
+                                                        'documents-dropzone',
+                                                    size: 'medium',
+                                                    modalSize: 'lg',
+                                                    showDropzone: true,
+                                                    filesLength: 2,
+                                                    isRequired: true,
+                                                    dropzoneClose: false,
+                                                },
+                                            },
+                                        },
+                                    ]"
+                                    [dropzoneCustomWidth]="'603px'"
+                                    [isVisibleCropAndDrop]="true"
+                                    [review]="{
+                                        isReview: false,
+                                        reviewMode: 'FEEDBACK_MODE',
+                                        feedbackText: 'Sample feedback text',
+                                        categoryTag: 'General',
+                                    }"
+                                    [configFile]="{
+                                        id: 111,
+                                        customClassName: 'modals',
+                                        file: {
+                                            url: '',
+                                            incorrect: false,
+                                            lastHovered: false,
+                                            fileSize: 1200,
+                                            fileName: '',
+                                        },
+                                        hasTagsDropdown: true,
+                                        hasNumberOfPages: true,
+                                        activePage: 1,
+                                        type: 'modal',
+                                        hasLandscapeOption: false,
+                                        tagsOptions: [
+                                            {
+                                                tagName: 'HOS Agreement',
+                                                checked: false,
+                                            },
+                                            {
+                                                tagName: 'Unsafe Driving AGT',
+                                                checked: false,
+                                            },
+                                        ],
+                                    }"
                                     [size]="'medium'"
-                                    [showDropzone]="true"
-                                    [customClassName]="'modals'"
-                                    [hasTagsDropdown]="true"
-                                    [tags]="tags"
+                                    [slideWidth]="180"
                                     (onFileEvent)="onFilesEvent($event)"
-                                ></app-ta-upload-files>
+                                ></app-ca-upload-files>
                             </app-ta-custom-card>
                         </div>
 
                         <!-- Note -->
 
-                        <app-ta-input-note
+                        <app-ca-input-note
                             formControlName="note"
                             [isVisibleNote]="
                                 driverForm.get('note').value &&
@@ -1025,7 +1095,7 @@
                                     ? driverForm.get('note').value
                                     : ''
                             "
-                        ></app-ta-input-note>
+                        ></app-ca-input-note>
                     </div>
                 </ng-container>
 
@@ -1089,7 +1159,7 @@
                                 [disableAnimation]="isCardAnimationDisabled"
                                 [animationMarginParams]="{
                                     marginTop: '10px',
-                                    marginBottom: '12px'
+                                    marginBottom: '12px',
                                 }"
                                 (onActionEvent)="addFuelCard($event)"
                             >
@@ -1129,7 +1199,7 @@
                                         [customClass]="'medium'"
                                     ></app-ta-checkbox>
 
-                                    <app-ta-input
+                                    <app-ca-input
                                         formControlName="twicExpDate"
                                         [inputConfig]="{
                                             name: 'datepicker',
@@ -1141,11 +1211,11 @@
                                                 driverForm.get('twic').value,
                                             isDisabled:
                                                 !driverForm.get('twic').value,
-                                            customClass: 'datetimeclass'
+                                            customClass: 'datetimeclass',
                                         }"
-                                    ></app-ta-input>
+                                    ></app-ca-input>
 
-                                    <app-ta-input
+                                    <app-ca-input
                                         formControlName="mvrExpiration"
                                         [inputConfig]="{
                                             name: 'months',
@@ -1159,15 +1229,15 @@
                                                 type: 'months',
                                                 firstCommand: {
                                                     name: 'minus',
-                                                    svg: driverModalSvgRoutes.decrementSvgRoute
+                                                    svg: driverModalSvgRoutes.decrementSvgRoute,
                                                 },
                                                 secondCommand: {
                                                     name: 'plus',
-                                                    svg: driverModalSvgRoutes.incrementSvgRoute
-                                                }
-                                            }
+                                                    svg: driverModalSvgRoutes.incrementSvgRoute,
+                                                },
+                                            },
                                         }"
-                                    ></app-ta-input>
+                                    ></app-ca-input>
                                 </div>
                             </app-ta-custom-card>
                         </div>
@@ -1237,4 +1307,103 @@
             </div>
         </form>
     </div>
-</app-ta-modal>
+</app-ca-modal>
+
+<ng-template #rightModalContent>
+    @if (editData?.type === 'edit') {
+        <div
+            ngbTooltip
+            mainTooltip="Added    {{
+                editData?.data?.createdAt | formatDateP
+            }} <br> Edited    {{ editData?.data?.updatedAt | formatDateP }}"
+            tooltipBackground="#424242"
+            position="bottom"
+            class="modal-date-logo"
+        >
+            <svg-icon
+                [src]="svgRoutes.DATE_ICON"
+                class="modal-buttons"
+            ></svg-icon>
+        </div>
+        <div class="modal-date-border"></div>
+    }
+    <div
+        class="d-flex justify-content-center align-items-center modal-close-container"
+        ngbTooltip
+        mainTooltip="Cancel"
+        tooltipBackground="#424242"
+        position="bottom"
+        (click)="onModalAction(taModalActionEnum.CLOSE)"
+    >
+        <svg-icon
+            class="modal-close svg-size-14 svg-fill-muted modal-buttons"
+            [src]="svgRoutes.CLOSE_ICON"
+        ></svg-icon>
+    </div>
+</ng-template>
+
+<ng-template #leftModalContent>
+    @if (driverFullName) {
+        <div class="payroll-number text-color-white text-size-14 ta-font-bold">
+            {{ driverFullName }}
+        </div>
+    }
+</ng-template>
+
+<ng-template #footerTemplate>
+    <div class="modal-footer modal-footer-payroll">
+        <div class="divider"></div>
+        @if (editData?.type === 'edit') {
+            <div class="d-flex justify-content-between w-full">
+                <div>
+                    <button
+                        class="modal-delete-btn ta-font-bold mr-12 valid"
+                        (click)="onModalAction(taModalActionEnum.DELETE)"
+                    >
+                        Delete
+                    </button>
+                    <button
+                        class="modal-convert-to-template-btn ta-font-bold"
+                        (click)="onModalAction(taModalActionEnum.DEACTIVATE)"
+                    >
+                        Deactivate
+                    </button>
+                </div>
+                <button
+                    class="modal-save-btn ta-font-bold"
+                    (click)="onModalAction(taModalActionEnum.SAVE)"
+                    [class.valid]="
+                        driverForm.valid &&
+                        isFormDirty &&
+                        isEachOffDutyLocationRowValid
+                    "
+                >
+                    Save Changes
+                </button>
+            </div>
+        } @else {
+            <button
+                class="ta-font-bold modal-save-btn modal-save-btn-add-new mr-12"
+                [class.valid]="
+                    driverForm.valid &&
+                    isFormDirty &&
+                    isEachOffDutyLocationRowValid
+                "
+                (click)="onModalAction(taModalActionEnum.SAVE_AND_ADD_NEW)"
+            >
+                Save and Add New
+            </button>
+            <button
+                class="modal-save-btn ta-font-bold"
+                (click)="onModalAction(taModalActionEnum.SAVE)"
+                [class.valid]="
+                    driverForm.valid &&
+                    isFormDirty &&
+                    isEachOffDutyLocationRowValid
+                "
+            >
+                Save
+            </button>
+        }
+    </div>
+</ng-template>

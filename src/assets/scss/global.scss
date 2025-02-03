@@ -160,6 +160,7 @@ body {
 
 html {
     body {
+        app-ca-modal,
         app-ta-modal {
             .ta-custom-card {
                 .ta-card-body.scroll-x-axis {
@@ -370,6 +371,9 @@ app-load-modal {
 .mr-3 {
     margin-right: 6px;
 }
+.mr-12 {
+    margin-right: 12px !important;
+}
 .dispatch-load {
     .ta-custom-card .ta-card-header {
         height: 33px;
@@ -534,4 +538,25 @@ html ngb-modal-backdrop {
 
 .mb-12 {
     margin-bottom: 12px !important;
+}
+
+.modal-date-border {
+    height: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-right: 1px solid $ta-light-grey-6;
+}
+
+.modal-buttons {
+    width: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 30px;
+    cursor: pointer;
+}
+
+.payroll-number.text-color-white {
+    color: $white !important;
 }

@@ -7,10 +7,12 @@ import { FuelStopExpensesResponse } from 'appcoretruckassist';
 import { ChartLegendProperty, Tabs } from '@shared/models';
 import { IChartConfiguration } from 'ca-components/lib/components/ca-chart/models';
 
-
 // Const
 import { FuelDetailsChartsConfiguration } from '@pages/fuel/utils/constants';
-import { ChartConfiguration, ChartLegendConfiguration } from '@shared/utils/constants';
+import {
+    ChartConfiguration,
+    ChartLegendConfiguration,
+} from '@shared/utils/constants';
 
 // Services
 import { FuelService } from '@shared/services/fuel.service';
@@ -37,9 +39,12 @@ export class FuelDetailsItemComponent implements OnInit {
     public fuelDropdown: any;
     public storeDropdown: any;
 
-    // Charts 
+    // Charts
+    public fuelChartData!: FuelStopExpensesResponse;
     public fuelChartConfig!: IChartConfiguration;
     public fuelChartLegend!: ChartLegendProperty[];
+    public fuelLegendTitle!: string;
+    public fuelLegendHighlightedBackground!: boolean;
 
     public fuelPriceColors: any[] = [
         '#4DB6A2',
@@ -185,6 +190,7 @@ export class FuelDetailsItemComponent implements OnInit {
         this.selectedTab = ev.id;
         this.getFuelExpenses(this.selectedTab);
     }
+
     public dummyDataRep() {
         this.dummyDataFuel = [
             {
@@ -750,16 +756,45 @@ export class FuelDetailsItemComponent implements OnInit {
     }
 
     private getFuelExpenses(timeFilter?: number): void {
-        this.fuelService.getFuelExpensesGet(this.fuelData.id, timeFilter || 1).pipe(takeUntil(this.destroy$))
+        this.fuelService
+            .getFuelExpenses(this.fuelData.id, timeFilter || 1)
+            .pipe(takeUntil(this.destroy$))
             .subscribe((response: FuelStopExpensesResponse) => {
+                this.fuelChartData = response;
                 this.fuelChartConfig = {
                     ...FuelDetailsChartsConfiguration.FUEL_CHART_CONFIG,
-                    chartData: ChartHelper.generateDataByDateTime(response.fuelStopExpensesChartResponse,
+                    chartData: ChartHelper.generateDataByDateTime(
+                        this.fuelChartData.fuelStopExpensesChartResponse,
                         ChartConfiguration.fuelExpensesConfiguration
-                    )
-                }
-                this.fuelChartLegend = ChartLegendConfiguration.fuelExpensesLegend(response);
-            })
+                    ),
+                };
+                this.fuelChartLegend =
+                    ChartLegendConfiguration.fuelExpensesLegend(
+                        this.fuelChartData
+                    );
+            });
+    }
+
+    public setFuelLegendOnHover(index: number): void {
+        const {
+            hasHighlightedBackground,
+            title
+        } =
+            ChartHelper.setChartLegend(
+                index,
+                this.fuelChartConfig.chartData.labels
+            );
+        this.fuelLegendHighlightedBackground = hasHighlightedBackground;
+        this.fuelLegendTitle = title;
+
+        const dataForLegend =
+            (isNaN(index) || index < 0) ?
+                this.fuelChartData :
+                this.fuelChartData?.
+                    fuelStopExpensesChartResponse[index];
+
+        this.fuelChartLegend = ChartLegendConfiguration
+            .fuelExpensesLegend(dataForLegend);
     }
 
     ngOnDestroy(): void {

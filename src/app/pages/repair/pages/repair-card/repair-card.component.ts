@@ -2,39 +2,42 @@ import {
     AfterViewInit,
     Component,
     ElementRef,
-    EventEmitter,
     Input,
     NgZone,
     OnDestroy,
     OnInit,
-    Output,
-    QueryList,
-    Renderer2,
     ViewChild,
-    ViewChildren,
 } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { Subject, takeUntil } from 'rxjs';
 
+// base classes
+import { RepairDropdownMenuActionsBase } from '@pages/repair/base-classes';
+
 // modules
 import { NgbPopover } from '@ng-bootstrap/ng-bootstrap';
 
-// Models
-import { CardDetails } from '@shared/models/card-models/card-table-data.model';
-import { SendDataCard } from '@shared/models/card-models/send-data-card.model';
-import { CardRows } from '@shared/models/card-models/card-rows.model';
-import { CardDataResult } from '@shared/models/card-models/card-data-result.model';
-import { MappedRepair } from '@pages/repair/pages/repair-table/models';
-
-// Services
+// services
 import { TruckassistTableService } from '@shared/services/truckassist-table.service';
+import { RepairService } from '@shared/services/repair.service';
+import { ModalService } from '@shared/services/modal.service';
 
-// Enums
-import { TableStringEnum } from '@shared/enums/table-string.enum';
+// enums
+import { DropdownMenuStringEnum, TableStringEnum } from '@shared/enums';
 
-// Helpers
+// helpers
 import { CardHelper } from '@shared/utils/helpers/card-helper';
+import { DropdownMenuActionsHelper } from '@shared/utils/helpers/dropdown-menu-helpers';
+
+// models
+import { CardDetails } from '@shared/models/card-models/card-table-data.model';
+import { CardRows } from '@shared/models/card-models/card-rows.model';
+import {
+    MappedRepair,
+    MappedRepairShop,
+} from '@pages/repair/pages/repair-table/models';
+import { DropdownMenuOptionEmit } from '@ca-shared/components/ca-dropdown-menu/models';
 
 @Component({
     selector: 'app-repair-card',
@@ -42,53 +45,56 @@ import { CardHelper } from '@shared/utils/helpers/card-helper';
     styleUrls: ['./repair-card.component.scss'],
     providers: [CardHelper],
 })
-export class RepairCardComponent implements OnInit, AfterViewInit, OnDestroy {
+export class RepairCardComponent
+    extends RepairDropdownMenuActionsBase
+    implements OnInit, AfterViewInit, OnDestroy
+{
     @ViewChild('parentElement', { read: ElementRef })
     private cardBodyElement!: ElementRef;
 
-    @ViewChildren('itemsRepair', { read: ElementRef })
-    public itemsContainers!: QueryList<ElementRef>;
-
-    @Output() bodyActions: EventEmitter<SendDataCard> = new EventEmitter();
-
-    // All data
     @Input() set viewData(value: CardDetails[]) {
         this._viewData = value;
 
         this.getDescriptionSpecialStyleIndexes();
     }
 
-    // Card body endpoints
-    @Input() cardTitle: string;
-    @Input() rows: number[];
-    @Input() displayRowsFront: CardRows[];
-    @Input() displayRowsBack: CardRows[];
-    @Input() cardTitleLink: string;
     @Input() selectedTab: string;
 
-    public isCardFlippedCheckInCards: number[] = [];
+    // card body endpoints
+    @Input() displayRowsFront: CardRows[];
+    @Input() displayRowsBack: CardRows[];
+
+    public destroy$ = new Subject<void>();
+
     public _viewData: CardDetails[];
 
-    public elementWidth: number;
-
-    private destroy$ = new Subject<void>();
+    public isCardFlippedCheckInCards: number[] = [];
     public isAllCardsFlipp: boolean = false;
 
-    public cardsFront: CardDataResult[][][] = [];
-    public cardsBack: CardDataResult[][][] = [];
-    public titleArray: string[][] = [];
+    public dropdownElementWidth: number;
+
+    get viewData() {
+        return this._viewData;
+    }
 
     constructor(
+        // zone
         private ngZone: NgZone,
-        private renderer: Renderer2,
-        public router: Router,
 
-        // Services
+        // router
+        protected router: Router,
+
+        // services
+        protected modalService: ModalService,
+        protected repairService: RepairService,
+
         private tableService: TruckassistTableService,
 
-        // Helpers
+        // helpers
         private cardHelper: CardHelper
-    ) {}
+    ) {
+        super();
+    }
 
     ngOnInit() {
         this.flipAllCards();
@@ -96,8 +102,14 @@ export class RepairCardComponent implements OnInit, AfterViewInit, OnDestroy {
 
     ngAfterViewInit(): void {
         this.windowResizeUpdateDescriptionDropdown();
+    }
 
-        this.windownResizeUpdateCountNumberInCards();
+    public trackCard(item: number): number {
+        return item;
+    }
+
+    public flipCard(index: number): void {
+        this.isCardFlippedCheckInCards = this.cardHelper.flipCard(index);
     }
 
     public flipAllCards(): void {
@@ -111,7 +123,6 @@ export class RepairCardComponent implements OnInit, AfterViewInit, OnDestroy {
             });
     }
 
-    // When checkbox is selected
     public onCheckboxSelect(index: number, card: CardDetails): void {
         this._viewData[index].isSelected = !this._viewData[index].isSelected;
 
@@ -120,14 +131,13 @@ export class RepairCardComponent implements OnInit, AfterViewInit, OnDestroy {
         this.tableService.sendRowsSelected(checkedCard);
     }
 
-    // Description
     private getDescriptionSpecialStyleIndexes(): void {
         this._viewData = this._viewData.map((repair) => {
             const { items } = repair;
 
             const pmItemsIndexArray = [];
 
-            items.forEach(
+            items?.forEach(
                 (item, index) =>
                     (item?.pmTruck || item?.pmTrailer) &&
                     pmItemsIndexArray.push(index)
@@ -158,7 +168,6 @@ export class RepairCardComponent implements OnInit, AfterViewInit, OnDestroy {
             : popover.open({ data: repairItemsData });
     }
 
-    // On window resize update width of description popup
     public windowResizeUpdateDescriptionDropdown(): void {
         if (this.cardBodyElement) {
             const parentElement = this.cardBodyElement
@@ -168,7 +177,7 @@ export class RepairCardComponent implements OnInit, AfterViewInit, OnDestroy {
                 const width = parentElement.offsetWidth;
 
                 this.ngZone.run(() => {
-                    this.elementWidth = width;
+                    this.dropdownElementWidth = width;
                 });
             });
 
@@ -176,57 +185,29 @@ export class RepairCardComponent implements OnInit, AfterViewInit, OnDestroy {
         }
     }
 
-    // On window resize update items count in Repair page
-    public windownResizeUpdateCountNumberInCards(): void {
-        if (this.cardBodyElement) {
-            const parentElement = this.cardBodyElement
-                .nativeElement as HTMLElement;
+    public handleToggleDropdownMenuActions(
+        event: DropdownMenuOptionEmit,
+        cardData: MappedRepairShop
+    ): void {
+        const { type } = event;
 
-            const resizeObserver = new ResizeObserver((entries) => {
-                for (const entry of entries) {
-                    const { width } = entry.contentRect;
-                    if (width) {
-                        this.itemsContainers.forEach(
-                            (containerRef: ElementRef) => {
-                                this.cardHelper.calculateItemsToFit(
-                                    containerRef.nativeElement,
-                                    this.renderer
-                                );
-                            }
-                        );
-                    }
-                }
-            });
+        const emitEvent =
+            DropdownMenuActionsHelper.createDropdownMenuActionsEmitEvent(
+                type,
+                cardData
+            );
 
-            resizeObserver.observe(parentElement);
-        }
+        this.handleDropdownMenuActions(
+            emitEvent,
+            this.selectedTab === TableStringEnum.REPAIR_SHOP
+                ? DropdownMenuStringEnum.REPAIR_SHOP
+                : DropdownMenuStringEnum.REPAIR
+        );
     }
 
-    // Finish repair
-    public onFinishOrder(card: CardDetails): void {
-        this.bodyActions.emit({
-            data: card,
-            type: TableStringEnum.FINISH_ORDER,
-        });
-    }
+    public updateMapItem<T>(_: T): void {}
 
-    // Flip card based on card index
-    public flipCard(index: number): void {
-        this.isCardFlippedCheckInCards = this.cardHelper.flipCard(index);
-    }
-
-    public trackCard(item: number): number {
-        return item;
-    }
-
-    public onCardActions(event: SendDataCard): void {
-        this.bodyActions.emit(event);
-    }
-
-    public goToDetailsPage(card: CardDetails): void {
-        if (this.selectedTab === TableStringEnum.REPAIR_SHOP)
-            this.router.navigate([`/list/repair/${card.id}/details`]);
-    }
+    public handleShowMoreAction(): void {}
 
     ngOnDestroy() {
         this.destroy$.next();

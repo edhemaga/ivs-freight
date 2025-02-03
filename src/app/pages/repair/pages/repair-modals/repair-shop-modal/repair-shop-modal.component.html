@@ -1,768 +1,956 @@
-<app-ta-modal
-    (action)="onModalAction($event)"
+<app-ca-modal
     [modalTitle]="modalTitle"
-    [saveAndAddNew]="!isEditMode"
-    [isModalValid]="isModalValidToSubmit"
-    [editName]="tabTitle"
-    [specificCaseModalName]="isEditMode"
-    [editData]="editData"
-    [isEditDate]="!!editData"
-    [showCloseBusinessButton]="isEditMode"
-    [businessStatus]="businessStatus"
-    [isDisableButtonHidden]="true"
+    [rightHeaderTemplate]="rightModalContent"
+    [leftHeaderTemplate]="leftModalContent"
+    [footerTemplate]="footerTemplate"
 >
-    <ng-container origin *ngIf="repairShopForm">
-        <app-ta-tab-switch
-            (switchClicked)="tabChange($event)"
-            [tabs]="tabs"
-            [type]="'type1-modal-popup'"
-            [isBold]="true"
-        >
-        </app-ta-tab-switch>
-
-        <form
-            [formGroup]="repairShopForm"
-            [ngClass]="{
-                'tab-2 form-container-with-card-2': selectedTab === TableStringEnum.CONTACT,
-            }"
-            class="form-container"
-        >
-            <div
-                [@animationTabsModal]="animationObject"
-                [class]="animationTabClass"
+    @if (repairShopForm) {
+        <div class="new-modal" origin>
+            <app-ta-tab-switch
+                (switchClicked)="tabChange($event)"
+                [tabs]="tabs"
+                [type]="'type1-modal-popup'"
+                [isBold]="true"
             >
-                <!-- Details Tab -->
-                <!-- Use hidden so we don't reinitilaze every field once they are set,
-                 Also for contacts, all data is lost on tab change  -->
+            </app-ta-tab-switch>
+
+            <form
+                [formGroup]="repairShopForm"
+                [ngClass]="{
+                    'tab-2 form-container-with-card-2':
+                        selectedTab === TableStringEnum.CONTACT,
+                }"
+                class="form-container"
+            >
                 <div
-                    [hidden]="selectedTab !== TableStringEnum.DETAILS"
-                    class="m-tab"
+                    [@animationTabsModal]="animationObject"
+                    [class]="animationTabClass"
                 >
-                    <div class="row">
-                        <div [ngClass]="'col-11'">
-                            <app-ta-input
-                                [inputConfig]="nameInputConfig"
-                                [formControlName]="
-                                    RepairShopModalStringEnum.NAME
-                                "
-                            ></app-ta-input>
-                        </div>
-
-                        <div class="col-1">
-                            <div
-                                [mainTooltip]="favoriteLabel"
-                                ngbTooltip
-                                position="bottom"
-                                tooltipBackground="#424242"
-                            >
-                                <svg-icon
-                                    (click)="addShopToFavorite()"
-                                    [ngClass]="isFavorite ? 'svg-fill-blue-13 svg-hover-blue-15' : 'svg-fill-muted svg-hover-black'"
-                                    class="repair-shop__favorite c-pointer"
-                                    [src]="repairShopModalSvgRoutes.starIcon"
-                                ></svg-icon>
-                            </div>
-                        </div>
-                    </div>
-
+                    <!-- Details Tab -->
+                    <!-- Use hidden so we don't reinitilaze every field once they are set,
+                 Also for contacts, all data is lost on tab change  -->
                     <div
-                        [ngClass]="{ 'active-phone-ext': showPhoneExt }"
-                        class="phone-ext-email-small-modal phone-ext-email-small-modal-my-32"
+                        [hidden]="selectedTab !== TableStringEnum.DETAILS"
+                        class="m-tab"
                     >
-                        <div class="phone-extension">
-                            <div class="phone-field">
-                                <app-ta-input
-                                    [inputConfig]="phoneInputConfig"
+                        <div class="row">
+                            <div [ngClass]="'col-11'">
+                                <app-ca-input
+                                    [inputConfig]="nameInputConfig"
                                     [formControlName]="
-                                        RepairShopModalStringEnum.PHONE
+                                        RepairShopModalStringEnum.NAME
                                     "
-                                ></app-ta-input>
+                                ></app-ca-input>
                             </div>
-                            <div
-                                (click)="showPhoneExt = !showPhoneExt"
-                                *ngIf="!showPhoneExt"
-                                class="extension-field"
-                                mainTooltip="Add Extension"
-                                ngbTooltip
-                                position="top"
-                                tooltipBackground="#6c6c6c"
-                            >
-                                <svg-icon
-                                    [src]="repairShopModalSvgRoutes.plusIcon"
-                                    class="svg-size-16 svg-fill-muted"
-                                ></svg-icon>
-                            </div>
-                            <app-ta-input
-                                *ngIf="showPhoneExt"
-                                [inputConfig]="phoneExtInputConfig"
-                                [formControlName]="
-                                    RepairShopModalStringEnum.PHONE_EXT
-                                "
-                            ></app-ta-input>
-                        </div>
-                        <div class="email-field">
-                            <app-ta-input
-                                [inputConfig]="emailInputConfig"
-                                [formControlName]="
-                                    RepairShopModalStringEnum.EMAIL
-                                "
-                            ></app-ta-input>
-                        </div>
-                    </div>
 
-                    <div class="row last-row repair-shop-address d-grid">
-                        <div>
-                            <app-ta-input-address-dropdown
-                                (selectedAddress)="onAddressChange($event)"
-                                [activeAddress]="selectedAddress"
-                                [inputConfig]="addressInputConfig"
-                                [placeholderType]="'longAddress'"
-                                [formControlName]="
-                                    RepairShopModalStringEnum.ADDRESS
-                                "
-                            ></app-ta-input-address-dropdown>
-                        </div>
-                        <div>
-                            <app-ta-input
-                                [inputConfig]="addressUnitInputConfig"
-                                [formControlName]="
-                                    RepairShopModalStringEnum.ADDRESS_UNIT
-                                "
-                            ></app-ta-input>
-                        </div>
-                    </div>
-
-                    <ng-container *ngIf="isCompanyRelated">
-                    <app-ta-checkbox-card
-                        formControlName="companyOwned"
-                        [label]="'Company Owned'"
-                        [name]="'company-owned'"
-                        [hasArrow]="false"
-                        [withoutToggle]="true"
-                        [animationMarginParams]="{
-                            marginTop: '0px',
-                            marginBottom: '0px'
-                        }"
-                        [isCardOpen]="
-                            !repairShopForm.get(
-                                RepairShopModalStringEnum.COMPANY_OWNED
-                            ).value
-                        "
-                    >
-                        <ng-container body>
-                            <div class="row">
-                                <div class="col-4">
-                                    <app-ta-input-dropdown
-                                        [canAddNew]="true"
-                                        [inputConfig]="payPeriodConfig"
-                                        [options]="payPeriodsDropdown"
-                                        [template]="'svg-template'"
-                                        [formControlName]="
-                                            RepairShopModalStringEnum.PAY_PERIOD
+                            <div class="col-1">
+                                <div
+                                    [mainTooltip]="favoriteLabel"
+                                    ngbTooltip
+                                    position="bottom"
+                                    tooltipBackground="#424242"
+                                >
+                                    <svg-icon
+                                        (click)="addShopToFavorite()"
+                                        [ngClass]="
+                                            isFavorite
+                                                ? 'svg-fill-blue-13 svg-hover-blue-15'
+                                                : 'svg-fill-muted svg-hover-black'
                                         "
-                                        [canAddNew]="false"
-                                        [activeItem]="selectedPayPeriod"
-                                        (selectedItem)="
-                                            onPayPeriodSelect($event)
+                                        class="repair-shop__favorite c-pointer"
+                                        [src]="
+                                            repairShopModalSvgRoutes.starIcon
                                         "
-                                    ></app-ta-input-dropdown>
+                                    ></svg-icon>
                                 </div>
-                                <div class="col-4">
-                                    <ng-container
-                                        *ngIf="
-                                            isMonthlyPeriodSeleced;
-                                            else dayPeriod
+                            </div>
+                        </div>
+
+                        <div
+                            [ngClass]="{ 'active-phone-ext': showPhoneExt }"
+                            class="phone-ext-email-small-modal phone-ext-email-small-modal-my-32"
+                        >
+                            <div class="phone-extension">
+                                <div class="phone-field">
+                                    <app-ca-input
+                                        [inputConfig]="phoneInputConfig"
+                                        [formControlName]="
+                                            RepairShopModalStringEnum.PHONE
                                         "
+                                    ></app-ca-input>
+                                </div>
+                                @if (!showPhoneExt) {
+                                    <div
+                                        (click)="showPhoneExt = !showPhoneExt"
+                                        class="extension-field"
+                                        mainTooltip="Add Extension"
+                                        ngbTooltip
+                                        position="top"
+                                        tooltipBackground="#6c6c6c"
                                     >
-                                        <app-ta-input-dropdown
-                                            [canAddNew]="false"
-                                            [inputConfig]="payMonthlyConfig"
-                                            [options]="daysOfMonthDropdown"
-                                            [template]="'svg-template'"
-                                            [formControlName]="
-                                                RepairShopModalStringEnum.MONTHLY_DAYS
+                                        <svg-icon
+                                            [src]="
+                                                repairShopModalSvgRoutes.plusIcon
                                             "
-                                            [canAddNew]="false"
-                                            [activeItem]="selectedMonthlyDays"
-                                            (selectedItem)="
-                                                onMonthlyDaySelected($event)
-                                            "
-                                        ></app-ta-input-dropdown>
-                                    </ng-container>
-                                    <ng-template #dayPeriod>
-                                        <app-ta-input-dropdown
-                                            [canAddNew]="false"
-                                            [inputConfig]="payDayConfig"
-                                            [options]="daysOfWeekDropdown"
-                                            [template]="'svg-template'"
-                                            [formControlName]="
-                                                RepairShopModalStringEnum.WEEKLY_DAY
-                                            "
-                                            [activeItem]="selectedWeeklyDay"
-                                            (selectedItem)="
-                                                onWeeklyDaySelected($event)
-                                            "
-                                        ></app-ta-input-dropdown>
-                                    </ng-template>
-                                </div>
-                                <div class="col-4">
-                                    <app-ta-input
+                                            class="svg-size-16 svg-fill-muted"
+                                        ></svg-icon>
+                                    </div>
+                                } @else {
+                                    <app-ca-input
+                                        [inputConfig]="phoneExtInputConfig"
                                         [formControlName]="
-                                            RepairShopModalStringEnum.RENT
+                                            RepairShopModalStringEnum.PHONE_EXT
                                         "
-                                        [inputConfig]="rentInputConfig"
-                                    ></app-ta-input>
-                                </div>
+                                    ></app-ca-input>
+                                }
                             </div>
-                        </ng-container>
-                    </app-ta-checkbox-card>
-                </ng-container>
+                            <div class="email-field">
+                                <app-ca-input
+                                    [inputConfig]="emailInputConfig"
+                                    [formControlName]="
+                                        RepairShopModalStringEnum.EMAIL
+                                    "
+                                ></app-ca-input>
+                            </div>
+                        </div>
 
-                    <!-- Repair Shop Services -->
-                    <app-ta-custom-card
-                        [cardName]="'Service'"
-                        [hasCounter]="getServiceCounter"
-                        [isCardOpen]="true"
-                        [disabledCard]="true"
-                    >
-                        <div class="col-12 service-types">
-                            <ng-container
-                                *ngIf="
-                                    !!repairShopForm.get(
-                                        RepairShopModalStringEnum.SHOP_SERVICE_TYPE
+                        <div class="row last-row repair-shop-address d-grid">
+                            <div>
+                                <app-ca-input-address-dropdown
+                                    (selectedAddress)="
+                                        onAddressChangeInit($event)
+                                    "
+                                    [activeAddress]="selectedAddress"
+                                    [inputConfig]="addressInputConfig"
+                                    [placeholderType]="'longAddress'"
+                                    [formControlName]="
+                                        RepairShopModalStringEnum.ADDRESS
+                                    "
+                                    [receivedAddressList]="addressList"
+                                    [receivedAddressData]="addressData"
+                                    (sentAddressData)="
+                                        onAddressChange($event, addressService)
+                                    "
+                                    (sentAddressValue)="
+                                        getAddressData($event, addressService)
+                                    "
+                                ></app-ca-input-address-dropdown>
+                            </div>
+                            <div>
+                                <app-ca-input
+                                    [inputConfig]="addressUnitInputConfig"
+                                    [formControlName]="
+                                        RepairShopModalStringEnum.ADDRESS_UNIT
+                                    "
+                                ></app-ca-input>
+                            </div>
+                        </div>
+
+                        @if (isCompanyRelated) {
+                            <app-ta-checkbox-card
+                                formControlName="companyOwned"
+                                [label]="'Company Owned'"
+                                [name]="'company-owned'"
+                                [hasArrow]="false"
+                                [withoutToggle]="true"
+                                [animationMarginParams]="{
+                                    marginTop: '0px',
+                                    marginBottom: '0px',
+                                }"
+                                [isCardOpen]="
+                                    !repairShopForm.get(
+                                        RepairShopModalStringEnum.COMPANY_OWNED
                                     ).value
                                 "
                             >
-                                <app-ta-tab-switch
-                                    (switchClicked)="
-                                        repairTypeTabChange($event)
-                                    "
-                                    [tabs]="repairTypes"
-                                    [type]="'type2-modal-popup'"
-                                >
-                                </app-ta-tab-switch>
-                            </ng-container>
-                        </div>
-
-                        <div class="repair-shop-services">
-                            <div
-                                *ngFor="
-                                    let repair of services;
-                                    trackBy: identity
-                                "
-                                (click)="activeRepairService(repair)"
-                                [ngClass]="{ active: repair.active }"
-                                class="repair-shop-service d-flex align-items-center"
-                            >
-                                <ng-container
-                                    *ngIf="repair.svg.includes('.svg')"
-                                >
-                                    <svg-icon
-                                        src="{{ repair.svg }}"
-                                        class="d-flex svg-size-14"
-                                    ></svg-icon>
+                                <ng-container body>
+                                    <div class="row">
+                                        <div class="col-4">
+                                            <app-ca-input-dropdown
+                                                [canAddNew]="true"
+                                                [inputConfig]="payPeriodConfig"
+                                                [options]="payPeriodsDropdown"
+                                                [template]="'svg-template'"
+                                                [formControlName]="
+                                                    RepairShopModalStringEnum.PAY_PERIOD
+                                                "
+                                                [canAddNew]="false"
+                                                [activeItem]="selectedPayPeriod"
+                                                (selectedItem)="
+                                                    onPayPeriodSelect($event)
+                                                "
+                                            ></app-ca-input-dropdown>
+                                        </div>
+                                        <div class="col-4">
+                                            @if (isMonthlyPeriodSeleced) {
+                                                <app-ca-input-dropdown
+                                                    [canAddNew]="false"
+                                                    [inputConfig]="
+                                                        payMonthlyConfig
+                                                    "
+                                                    [options]="
+                                                        daysOfMonthDropdown
+                                                    "
+                                                    [template]="'svg-template'"
+                                                    [formControlName]="
+                                                        RepairShopModalStringEnum.MONTHLY_DAYS
+                                                    "
+                                                    [canAddNew]="false"
+                                                    [activeItem]="
+                                                        selectedMonthlyDays
+                                                    "
+                                                    (selectedItem)="
+                                                        onMonthlyDaySelected(
+                                                            $event
+                                                        )
+                                                    "
+                                                ></app-ca-input-dropdown>
+                                            } @else {
+                                                <app-ca-input-dropdown
+                                                    [canAddNew]="false"
+                                                    [inputConfig]="payDayConfig"
+                                                    [options]="
+                                                        daysOfWeekDropdown
+                                                    "
+                                                    [template]="'svg-template'"
+                                                    [formControlName]="
+                                                        RepairShopModalStringEnum.WEEKLY_DAY
+                                                    "
+                                                    [activeItem]="
+                                                        selectedWeeklyDay
+                                                    "
+                                                    (selectedItem)="
+                                                        onWeeklyDaySelected(
+                                                            $event
+                                                        )
+                                                    "
+                                                ></app-ca-input-dropdown>
+                                            }
+                                        </div>
+                                        <div class="col-4">
+                                            <app-ca-input
+                                                [formControlName]="
+                                                    RepairShopModalStringEnum.RENT
+                                                "
+                                                [inputConfig]="rentInputConfig"
+                                            ></app-ca-input>
+                                        </div>
+                                    </div>
                                 </ng-container>
+                            </app-ta-checkbox-card>
+                        }
 
-                                <p class="ta-font-bold text-uppercase">
-                                    {{ repair.serviceType }}
-                                </p>
-                            </div>
-                        </div>
-                    </app-ta-custom-card>
-
-                    <!-- Open Hours -->
-                    <app-ta-custom-card
-                        (onActionEvent)="toggle247WorkingHours($event)"
-                        [cardName]="'Work Hours'"
-                        [has24Hours]="true"
-                        [hasBodyData]="true"
-                        [is24Hours]="isOpenAllDay"
-                        [isCardOpen]="true"
-                        [disabledCard]="false"
-                        [hasArrow]="false"
-                    >
-                        <div
-                            class="repair-shop-services repair-shop-services-large"
+                        <!-- Repair Shop Services -->
+                        <app-ta-custom-card
+                            [cardName]="'Service'"
+                            [hasCounter]="getServiceCounter"
+                            [isCardOpen]="true"
+                            [disabledCard]="true"
                         >
-                            <ng-container
-                                *ngFor="
-                                    let openHour of openHours.controls;
-                                    let ind = index
-                                "
-                            >
-                                <ng-container
-                                    *ngIf="openHour.get('id').value !== 7"
-                                >
-                                    <div
-                                        (click)="toggleWorkingDay(ind)"
-                                        [ngClass]="{
-                                            active: openHour.get(
-                                                RepairShopModalStringEnum.IS_WORKING_DAY
-                                            ).value
-                                        }"
-                                        class="repair-shop-service d-flex align-items-center justify-content-center pl-0"
+                            <div class="col-12 service-types">
+                                @if (
+                                    !!repairShopForm.get(
+                                        RepairShopModalStringEnum.SHOP_SERVICE_TYPE
+                                    ).value
+                                ) {
+                                    <app-ta-tab-switch
+                                        (switchClicked)="
+                                            repairTypeTabChange($event)
+                                        "
+                                        [tabs]="repairTypes"
+                                        [type]="'type2-modal-popup'"
                                     >
+                                    </app-ta-tab-switch>
+                                }
+                            </div>
+
+                            <div class="repair-shop-services">
+                                @for (
+                                    repair of services;
+                                    track repair.serviceType
+                                ) {
+                                    <div
+                                        (click)="activeRepairService(repair)"
+                                        [ngClass]="{ active: repair.active }"
+                                        class="repair-shop-service d-flex align-items-center"
+                                    >
+                                        @if (repair.svg.includes('.svg')) {
+                                            <svg-icon
+                                                src="{{ repair.svg }}"
+                                                class="d-flex svg-size-14"
+                                            ></svg-icon>
+                                        }
+
                                         <p class="ta-font-bold text-uppercase">
-                                            {{
-                                                openHour
-                                                    .get(
-                                                        RepairShopModalStringEnum.DAY_OF_WEEK
-                                                    )
-                                                    .value.slice(0, 3)
-                                            }}
+                                            {{ repair.serviceType }}
                                         </p>
                                     </div>
-                                </ng-container>
-                            </ng-container>
-                        </div>
-                        <div class="timeline__card">
-                            <div
-                                class="timeline__card-range text-uppercase ta-font-bold"
-                            >
-                                Day
+                                }
                             </div>
-                            <div
-                                class="timeline__card-range text-uppercase ta-font-bold"
-                            >
-                                From <span class="text-color-red"> *</span>
-                            </div>
-                            <div
-                                class="timeline__card-range text-uppercase ta-font-bold"
-                            >
-                                To <span class="text-color-red"> *</span>
-                            </div>
-                            <div
-                                mainTooltip="Apply Monday to All"
-                                tooltipMarginTop="5px"
-                                ngbTooltip
-                                position="bottom"
-                                tooltipBackground="#424242"
-                                (click)="applyMondayToAllDays()"
-                            >
-                                <svg-icon
-                                    class="repair-shop-copy-icon svg-hover-black c-pointer svg-size-14"
-                                    [src]="repairShopModalSvgRoutes.copy"
-                                ></svg-icon>
-                            </div>
-                        </div>
+                        </app-ta-custom-card>
 
-                        <div
-                            [formArrayName]="
-                                RepairShopModalStringEnum.OPEN_HOURS
-                            "
+                        <!-- Open Hours -->
+                        <app-ta-custom-card
+                            (onActionEvent)="toggle247WorkingHours($event)"
+                            [cardName]="'Work Hours'"
+                            [has24Hours]="true"
+                            [hasBodyData]="true"
+                            [is24Hours]="isOpenAllDay"
+                            [isCardOpen]="true"
+                            [disabledCard]="false"
+                            [hasArrow]="false"
                         >
                             <div
-                                *ngFor="
-                                    let openHour of openHours.controls;
-                                    let ind = index
-                                "
-                                [formGroupName]="ind"
+                                class="repair-shop-services repair-shop-services-large"
                             >
-                                <ng-container
-                                    *ngIf="
-                                        !!openHour.get('isWorkingDay').value ||
-                                        openHour.get('id').value === 7
-                                    "
-                                >
-                                    <div
-                                        class="timeline__card timeline__card-inputs align-items-start"
-                                    >
-                                        <ng-container
-                                            *ngIf="
-                                                openHour.get('id').value !== 7;
-                                                else isHolidayRow
-                                            "
+                                @for (
+                                    openHour of openHours.controls;
+                                    let ind = $index;
+                                    track openHour.get(
+                                        RepairShopModalStringEnum.DAY_OF_WEEK
+                                    ).value
+                                ) {
+                                    @if (openHour.get('id').value !== 7) {
+                                        <div
+                                            (click)="toggleWorkingDay(ind)"
+                                            [ngClass]="{
+                                                active: openHour.get(
+                                                    RepairShopModalStringEnum.IS_WORKING_DAY
+                                                ).value,
+                                            }"
+                                            class="repair-shop-service d-flex align-items-center justify-content-center pl-0"
                                         >
-                                            <div
-                                                class="ta-font-medium text-color-black text-size-14 timeline__card-day-label d-flex align-items-center"
+                                            <p
+                                                class="ta-font-bold text-uppercase"
                                             >
                                                 {{
-                                                    openHour.get(
-                                                        RepairShopModalStringEnum.DAY_OF_WEEK
-                                                    ).value
+                                                    openHour
+                                                        .get(
+                                                            RepairShopModalStringEnum.DAY_OF_WEEK
+                                                        )
+                                                        .value.slice(0, 3)
                                                 }}
-                                            </div>
-                                        </ng-container>
-
-                                        <ng-template #isHolidayRow>
-                                            <app-ta-checkbox
-                                                [formControlName]="
-                                                    RepairShopModalStringEnum.IS_WORKING_DAY
-                                                "
-                                                [label]="'Holiday'"
-                                            ></app-ta-checkbox>
-                                        </ng-template>
-
-                                        <!-- Iterate over shifts array -->
-                                        <ng-container
-                                            *ngIf="
-                                                openHour.get('isWorkingDay')
-                                                    .value
-                                            "
-                                        >
-                                            <div formArrayName="shifts">
-                                                <div
-                                                    *ngFor="
-                                                        let shift of openHour.get(
-                                                            'shifts'
-                                                        ).controls;
-                                                        let shiftInd = index
-                                                    "
-                                                    [formGroupName]="shiftInd"
-                                                    class="timeline__card-shift-grid"
-                                                >
-                                                    <div
-                                                        class="d-flex flex-column"
-                                                    >
-                                                        <app-ta-input
-                                                            [inputConfig]="
-                                                                openHoursFormField
-                                                            "
-                                                            formControlName="startTime"
-                                                        ></app-ta-input>
-                                                    </div>
-                                                    <div
-                                                        class="d-flex flex-column"
-                                                    >
-                                                        <app-ta-input
-                                                            [inputConfig]="
-                                                                openHoursFormField
-                                                            "
-                                                            formControlName="endTime"
-                                                        ></app-ta-input>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div
-                                                class="d-flex align-items-end flex-column timeline__card-icon-plus c-pointer"
-                                            >
-                                                <ng-container
-                                                    *ngIf="
-                                                        openHour.get('shifts')
-                                                            .value.length === 1
-                                                    "
-                                                >
-                                                    <div
-                                                        mainTooltip="Split Shift"
-                                                        tooltipMarginTop="5px"
-                                                        ngbTooltip
-                                                        position="bottom"
-                                                        tooltipBackground="#424242"
-                                                    >
-                                                        <svg-icon
-                                                            [src]="
-                                                                repairShopModalSvgRoutes.plusIcon
-                                                            "
-                                                            [ngClass]="
-                                                                openHour.get(
-                                                                    'shifts'
-                                                                ).value.length >
-                                                                1
-                                                                    ? 'svg-fill-light-grey-6'
-                                                                    : 'svg-fill-muted svg-hover-black'
-                                                            "
-                                                            (click)="
-                                                                toggleDoubleWorkingTime(
-                                                                    ind
-                                                                )
-                                                            "
-                                                            class="svg-size-14"
-                                                        ></svg-icon>
-                                                    </div>
-                                                </ng-container>
-
-                                                <ng-container
-                                                    *ngIf="
-                                                        openHour.get('shifts')
-                                                            .value.length > 1
-                                                    "
-                                                >
-                                                    <div
-                                                        mainTooltip="Remove Shift"
-                                                        tooltipMarginTop="5px"
-                                                        ngbTooltip
-                                                        position="bottom"
-                                                        tooltipBackground="#424242"
-                                                        class="svg-fill-muted svg-hover-black"
-                                                    >
-                                                        <svg-icon
-                                                            [src]="
-                                                                repairShopModalSvgRoutes.minusIcon
-                                                            "
-                                                            (click)="
-                                                                toggleDoubleWorkingTime(
-                                                                    ind
-                                                                )
-                                                            "
-                                                            class="svg-size-14"
-                                                        ></svg-icon>
-                                                    </div>
-                                                </ng-container>
-                                            </div>
-                                        </ng-container>
-                                    </div>
-                                </ng-container>
-                            </div>
-                        </div>
-                    </app-ta-custom-card>
-
-                    <!-- Bank Account -->
-                    <app-ta-custom-card
-                        [animationMarginParams]="{
-                            marginTop: '18px',
-                            marginBottom: '22px'
-                        }"
-                        [cardName]="'Bank Account'"
-                        [disableAnimation]="disableCardAnimation"
-                        [hasBodyData]="true"
-                        [isCardOpen]="true"
-                        [disabledCard]="true"
-                    >
-                        <!-- This class are coming from form.scss -->
-                        <div
-                            class="custom-bank-row custom-bank-row-repair-shop"
-                        >
-                            <app-ta-input-dropdown
-                                (saveItem)="onSaveNewBank($event)"
-                                (selectedItem)="onBankSelected($event)"
-                                [activeItem]="selectedBank"
-                                [canAddNew]="true"
-                                [inputConfig]="bankInputConfig"
-                                [options]="banks"
-                                [template]="'svg-template'"
-                                [formControlName]="
-                                    RepairShopModalStringEnum.BANK_ID
-                                "
-                            ></app-ta-input-dropdown>
-
-                            <app-ta-input
-                                [inputConfig]="routingNumberInputConfig"
-                                [formControlName]="
-                                    RepairShopModalStringEnum.ROUTING
-                                "
-                            ></app-ta-input>
-
-                            <app-ta-input
-                                [inputConfig]="accountNumberInputConfig"
-                                [formControlName]="
-                                    RepairShopModalStringEnum.ACCOUNT
-                                "
-                            ></app-ta-input>
-                        </div>
-                    </app-ta-custom-card>
-
-                    <div class="ta-card-body-overflow-none">
-                        <app-ta-custom-card
-                            [cardName]="'Document'"
-                            [isCardOpen]="!!files?.length"
-                            [hasBodyData]="true"
-                            [hasDivider]="true"
-                            [hasCounter]="files?.length"
-                            [animationMarginParams]="{
-                                marginTop: '0',
-                                marginBottom: '0'
-                            }"
-                        >
-                        <!-- TODO: -->
-                            <app-ca-upload-files
-                            [files]="[]"
-                            [isVisibleCropAndDrop]="true"
-                            [slider]="{dontUseSlider: false, hasCarouselBottomTabs: true}"
-                            [carouselConfig]="{files: [], customClass: 'medium', customDetailsPageClass: 'modals', hasCarouselBottomTabs: true}"
-                            [hasCrop]="false"
-                            [dropzoneConf]="[{template: 'documentsTemplate', config: {dropzone: {dropZoneType: 'files', multiple: true, globalDropZone: false, dropZonePages: 'tools_todo'}, dropzoneOption: {customClassName: 'documents-dropzone', size: 'medium', modalSize: 'lg', showDropzone: true, filesLength: 2, isRequired: true, dropzoneClose: false}}}]"
-                            [review]="{isReview: false, reviewMode: 'FEEDBACK_MODE', feedbackText: 'Sample feedback text', categoryTag: 'General'}"
-                            [configFile]="{id: 111, customClassName: 'modals', file: {url: '', incorrect: false, lastHovered: false, fileSize: 1200, fileName: ''}, hasTagsDropdown: true, hasNumberOfPages: true, activePage: 1, type: 'modal', hasLandscapeOption: false, tagsOptions: [{tagName: 'HOS Agreement', checked: false}, {tagName: 'Unsafe Driving AGT', checked: false}]}"
-                            [size]="'medium'"
-                            [slideWidth]="180"
-                            (fileAdded)="fileAdded($event)"
-                            ></app-ca-upload-files>
-                        </app-ta-custom-card>
-                    </div>
-                    <!-- Note -->
-                    <app-ta-input-note
-                        [isVisibleNote]="
-                            repairShopForm.get(RepairShopModalStringEnum.NOTE)
-                                .value
-                        "
-                        [note]="
-                            repairShopForm.get(RepairShopModalStringEnum.NOTE)
-                                .value
-                        "
-                        [formControlName]="RepairShopModalStringEnum.NOTE"
-                    ></app-ta-input-note>
-                </div>
-
-                <div
-                    [hidden]="selectedTab !== TableStringEnum.CONTACT"
-                    class="m-tab"
-                    class="repair-shop-card"
-                >
-                    <app-ta-custom-card
-                        [cardName]="'Contact'"
-                        [hasCounter]="repairShopContacts?.length"
-                        [hasActionSvg]="true"
-                        [hasArrow]="false"
-                        [isCardOpen]="!!repairShopContacts?.length"
-                        [hasScrollBody]="repairShopContacts?.length > 10"
-                        [disabledCard]="!repairShopContacts?.length"
-                        [hasScrollBodyXAxis]="true"
-                        [animationMarginParams]="{
-                            marginTop: '10px',
-                            marginBottom: '5px'
-                        }"
-                        (onActionEvent)="addContact()"
-                    >
-                        <app-ta-modal-table
-                            [tableType]="modalTableTypeEnum.CONTACT"
-                            [modalTableData]="updatedRepairShopContacts"
-                            [dropdownData]="departments"
-                            [isNewRowCreated]="isNewContactAdded"
-                            (modalTableValueEmitter)="
-                                handleModalTableValueEmit($event)
-                            "
-                            (modalTableValidStatusEmitter)="
-                                handleModalTableValidStatusEmit($event)
-                            "
-                        >
-                        </app-ta-modal-table>
-                    </app-ta-custom-card>
-
-                    <app-ta-custom-card
-                    [animationMarginParams]="{
-                        marginTop: '0',
-                        marginBottom: '0'
-                    }"
-                    [cardName]="'Cover Photo'"
-                    [isCardOpen]="true"
-                    [hasArrow]="false"
-                >
-                    <app-ca-upload-files
-                        [isVisibleCropAndDrop]="true"
-                        [hasBlobUrl]="true"
-                        [files]="[
-                            { url: coverPhoto?.url }
-                        ]"
-                        [slider]="{
-                            dontUseSlider: false,
-                            hasCarouselBottomTabs: false
-                        }"
-                        [carouselConfig]="{
-                            files: [],
-                            customClass: 'medium',
-                            customDetailsPageClass: 'modals',
-                            hasCarouselBottomTabs: true
-                        }"
-                        [hasCrop]="true"
-                        [isRoundCrop]="false"
-                        [dropzoneConf]="[
-                            {
-                                template: 'imageCropTemplate',
-                                config: {
-                                    dropzone: {
-                                        dropZoneType: 'image',
-                                        multiple: true,
-                                        globalDropZone: false,
-                                        dropZonePages: 'cdl'
-                                    },
-                                    dropzoneOption: {
-                                        customClassName:
-                                            'documents-dropzone',
-                                        size: 'medium',
-                                        modalSize: 'lg',
-                                        showDropzone: true,
-                                        dropzoneClose: false
+                                            </p>
+                                        </div>
                                     }
                                 }
-                            }
-                        ]"
-                        [review]="{
-                            isReview: true,
-                            reviewMode: 'REVIEW_MODE',
-                            feedbackText: 'Sample feedback text',
-                            categoryTag: 'General'
-                        }"
-                        [configFile]="{
-                            id: 111,
-                            customClassName: 'modals',
-                            file: {
-                                url: '',
-                                incorrect: false,
-                                lastHovered: false,
-                                fileSize: 1200,
-                                fileName: ''
-                            },
-                            hasTagsDropdown: false,
-                            hasNumberOfPages: true,
-                            activePage: 1,
-                            tags: ['Example'],
-                            type: 'modal',
-                            hasLandscapeOption: false,
-                            tagsOptions: [
-                                {
-                                    tagName: 'HOS Agreement',
-                                    checked: false
-                                },
-                                {
-                                    tagName: 'Unsafe Driving AGT',
-                                    checked: false
+                            </div>
+
+                            <div class="timeline__card">
+                                <div
+                                    class="timeline__card-range text-uppercase ta-font-bold"
+                                >
+                                    Day
+                                </div>
+                                <div
+                                    class="timeline__card-range text-uppercase ta-font-bold"
+                                >
+                                    From <span class="text-color-red"> *</span>
+                                </div>
+                                <div
+                                    class="timeline__card-range text-uppercase ta-font-bold"
+                                >
+                                    To <span class="text-color-red"> *</span>
+                                </div>
+                                <div
+                                    mainTooltip="Apply Monday to All"
+                                    tooltipMarginTop="5px"
+                                    ngbTooltip
+                                    position="bottom"
+                                    tooltipBackground="#424242"
+                                    (click)="applyMondayToAllDays()"
+                                >
+                                    <svg-icon
+                                        class="repair-shop-copy-icon svg-hover-black c-pointer svg-size-14"
+                                        [src]="repairShopModalSvgRoutes.copy"
+                                    ></svg-icon>
+                                </div>
+                            </div>
+
+                            <div
+                                [formArrayName]="
+                                    RepairShopModalStringEnum.OPEN_HOURS
+                                "
+                            >
+                                @for (
+                                    openHour of openHours.controls;
+                                    let ind = $index;
+                                    track openHour.get(
+                                        RepairShopModalStringEnum.DAY_OF_WEEK
+                                    ).value
+                                ) {
+                                    <div [formGroupName]="ind">
+                                        @if (
+                                            !!openHour.get('isWorkingDay')
+                                                .value ||
+                                            openHour.get('id').value === 7
+                                        ) {
+                                            <div
+                                                class="timeline__card timeline__card-inputs align-items-start"
+                                            >
+                                                @if (
+                                                    openHour.get('id').value !==
+                                                    7
+                                                ) {
+                                                    <div
+                                                        class="ta-font-medium text-color-black text-size-14 timeline__card-day-label d-flex align-items-center"
+                                                    >
+                                                        {{
+                                                            openHour.get(
+                                                                RepairShopModalStringEnum.DAY_OF_WEEK
+                                                            ).value
+                                                        }}
+                                                    </div>
+                                                } @else {
+                                                    <app-ta-checkbox
+                                                        [formControlName]="
+                                                            RepairShopModalStringEnum.IS_WORKING_DAY
+                                                        "
+                                                        [label]="'Holiday'"
+                                                    ></app-ta-checkbox>
+                                                }
+                                                <!-- Iterate over shifts array -->
+                                                @if (
+                                                    openHour.get('isWorkingDay')
+                                                        .value
+                                                ) {
+                                                    <div formArrayName="shifts">
+                                                        @for (
+                                                            shift of openHour.get(
+                                                                'shifts'
+                                                            ).controls;
+                                                            let shiftInd = $index;
+                                                            track shift
+                                                        ) {
+                                                            <div
+                                                                [formGroupName]="
+                                                                    shiftInd
+                                                                "
+                                                                class="timeline__card-shift-grid"
+                                                            >
+                                                                <div
+                                                                    class="d-flex flex-column"
+                                                                >
+                                                                    <app-ca-input
+                                                                        [inputConfig]="
+                                                                            openHoursFormField
+                                                                        "
+                                                                        formControlName="startTime"
+                                                                    ></app-ca-input>
+                                                                </div>
+                                                                <div
+                                                                    class="d-flex flex-column"
+                                                                >
+                                                                    <app-ca-input
+                                                                        [inputConfig]="
+                                                                            openHoursFormField
+                                                                        "
+                                                                        formControlName="endTime"
+                                                                    ></app-ca-input>
+                                                                </div>
+                                                            </div>
+                                                        }
+                                                    </div>
+
+                                                    <div
+                                                        class="d-flex align-items-end flex-column timeline__card-icon-plus c-pointer"
+                                                    >
+                                                        @if (
+                                                            openHour.get(
+                                                                'shifts'
+                                                            ).value.length === 1
+                                                        ) {
+                                                            <div
+                                                                mainTooltip="Split Shift"
+                                                                tooltipMarginTop="5px"
+                                                                ngbTooltip
+                                                                position="bottom"
+                                                                tooltipBackground="#424242"
+                                                            >
+                                                                <svg-icon
+                                                                    [src]="
+                                                                        repairShopModalSvgRoutes.plusIcon
+                                                                    "
+                                                                    [ngClass]="
+                                                                        openHour.get(
+                                                                            'shifts'
+                                                                        ).value
+                                                                            .length >
+                                                                        1
+                                                                            ? 'svg-fill-light-grey-6'
+                                                                            : 'svg-fill-muted svg-hover-black'
+                                                                    "
+                                                                    (click)="
+                                                                        toggleDoubleWorkingTime(
+                                                                            ind
+                                                                        )
+                                                                    "
+                                                                    class="svg-size-14"
+                                                                ></svg-icon>
+                                                            </div>
+                                                        }
+
+                                                        @if (
+                                                            openHour.get(
+                                                                'shifts'
+                                                            ).value.length > 1
+                                                        ) {
+                                                            <div
+                                                                mainTooltip="Remove Shift"
+                                                                tooltipMarginTop="5px"
+                                                                ngbTooltip
+                                                                position="bottom"
+                                                                tooltipBackground="#424242"
+                                                                class="svg-fill-muted svg-hover-black"
+                                                            >
+                                                                <svg-icon
+                                                                    [src]="
+                                                                        repairShopModalSvgRoutes.minusIcon
+                                                                    "
+                                                                    (click)="
+                                                                        toggleDoubleWorkingTime(
+                                                                            ind
+                                                                        )
+                                                                    "
+                                                                    class="svg-size-14"
+                                                                ></svg-icon>
+                                                            </div>
+                                                        }
+                                                    </div>
+                                                }
+                                            </div>
+                                        }
+                                    </div>
                                 }
-                            ]
-                        }"
-                        [size]="'medium'"
-                        [slideWidth]="180"
-                        (onFileEvent)="onUploadCoverPhoto($event)"
-                    >
-                    </app-ca-upload-files>
-                </app-ta-custom-card>
+                            </div>
+                        </app-ta-custom-card>
 
+                        <!-- Bank Account -->
+                        <app-ta-custom-card
+                            [animationMarginParams]="{
+                                marginTop: '18px',
+                                marginBottom: '22px',
+                            }"
+                            [cardName]="'Bank Account'"
+                            [disableAnimation]="isCardAnimationDisabled"
+                            [hasBodyData]="true"
+                            [isCardOpen]="true"
+                            [disabledCard]="true"
+                        >
+                            <!-- This class are coming from form.scss -->
+                            <div
+                                class="custom-bank-row custom-bank-row-repair-shop"
+                            >
+                                <app-ca-input-dropdown
+                                    (saveItem)="onSaveNewBank($event)"
+                                    (selectedItem)="onBankSelected($event)"
+                                    [activeItem]="selectedBank"
+                                    [canAddNew]="true"
+                                    [inputConfig]="bankInputConfig"
+                                    [options]="banks"
+                                    [template]="'svg-template'"
+                                    [formControlName]="
+                                        RepairShopModalStringEnum.BANK_ID
+                                    "
+                                ></app-ca-input-dropdown>
 
-                    <ng-container *ngIf="!repairShopContacts?.length">
-                        <div class="no-review-repair-shop">
-                            <svg-icon
-                                class="no-review-svg"
-                                [src]="repairShopModalSvgRoutes.noContactIcon"
-                            ></svg-icon>
+                                <app-ca-input
+                                    [inputConfig]="routingNumberInputConfig"
+                                    [formControlName]="
+                                        RepairShopModalStringEnum.ROUTING
+                                    "
+                                ></app-ca-input>
+
+                                <app-ca-input
+                                    [inputConfig]="accountNumberInputConfig"
+                                    [formControlName]="
+                                        RepairShopModalStringEnum.ACCOUNT
+                                    "
+                                ></app-ca-input>
+                            </div>
+                        </app-ta-custom-card>
+
+                        <div class="ta-card-body-overflow-none">
+                            <app-ta-custom-card
+                                [cardName]="'Document'"
+                                [isCardOpen]="!!files?.length"
+                                [hasBodyData]="true"
+                                [hasDivider]="true"
+                                [hasSmallDivider]="true"
+                                [hasDarkDivider]="true"
+                                [hasCounter]="files?.length"
+                                [animationMarginParams]="{
+                                    marginTop: '0',
+                                    marginBottom: '0',
+                                }"
+                            >
+                                <!-- TODO: -->
+                                <app-ca-upload-files
+                                    [files]="[]"
+                                    [isVisibleCropAndDrop]="true"
+                                    [slider]="{
+                                        dontUseSlider: false,
+                                        hasCarouselBottomTabs: true,
+                                    }"
+                                    [carouselConfig]="{
+                                        files: [],
+                                        customClass: 'medium',
+                                        customDetailsPageClass: 'modals',
+                                        hasCarouselBottomTabs: true,
+                                    }"
+                                    [hasCrop]="false"
+                                    [dropzoneConf]="[
+                                        {
+                                            template: 'documentsTemplate',
+                                            config: {
+                                                dropzone: {
+                                                    dropZoneType: 'files',
+                                                    multiple: true,
+                                                    globalDropZone: false,
+                                                    dropZonePages: 'tools_todo',
+                                                },
+                                                dropzoneOption: {
+                                                    customClassName:
+                                                        'documents-dropzone',
+                                                    size: 'medium',
+                                                    modalSize: 'lg',
+                                                    showDropzone: true,
+                                                    filesLength: 2,
+                                                    isRequired: true,
+                                                    dropzoneClose: false,
+                                                },
+                                            },
+                                        },
+                                    ]"
+                                    [review]="{
+                                        isReview: false,
+                                        reviewMode: 'FEEDBACK_MODE',
+                                        feedbackText: 'Sample feedback text',
+                                        categoryTag: 'General',
+                                    }"
+                                    [configFile]="{
+                                        id: 111,
+                                        customClassName: 'modals',
+                                        file: {
+                                            url: '',
+                                            incorrect: false,
+                                            lastHovered: false,
+                                            fileSize: 1200,
+                                            fileName: '',
+                                        },
+                                        hasTagsDropdown: true,
+                                        hasNumberOfPages: true,
+                                        activePage: 1,
+                                        type: 'modal',
+                                        hasLandscapeOption: false,
+                                        tagsOptions: [
+                                            {
+                                                tagName: 'HOS Agreement',
+                                                checked: false,
+                                            },
+                                            {
+                                                tagName: 'Unsafe Driving AGT',
+                                                checked: false,
+                                            },
+                                        ],
+                                    }"
+                                    [size]="'medium'"
+                                    [slideWidth]="180"
+                                    (fileAdded)="fileAdded($event)"
+                                ></app-ca-upload-files>
+                            </app-ta-custom-card>
                         </div>
-                    </ng-container>
-                </div>
 
-                <div
-                    [hidden]="selectedTab !== TableStringEnum.REVIEW"
-                    class="m-tab"
-                    class="repair-shop-card"
+                        <div class="divider divider--dark divider--small"></div>
+
+                        <!-- Note -->
+                        <app-ca-input-note
+                            [isVisibleNote]="
+                                repairShopForm.get(
+                                    RepairShopModalStringEnum.NOTE
+                                ).value
+                            "
+                            [note]="
+                                repairShopForm.get(
+                                    RepairShopModalStringEnum.NOTE
+                                ).value
+                            "
+                            [formControlName]="RepairShopModalStringEnum.NOTE"
+                        ></app-ca-input-note>
+                    </div>
+
+                    <div
+                        [hidden]="selectedTab !== TableStringEnum.CONTACT"
+                        class="m-tab"
+                        class="repair-shop-card"
+                    >
+                        <app-ta-custom-card
+                            [cardName]="'Contact'"
+                            [hasCounter]="repairShopContacts?.length"
+                            [hasActionSvg]="true"
+                            [hasArrow]="false"
+                            [isCardOpen]="!!repairShopContacts?.length"
+                            [hasScrollBody]="repairShopContacts?.length > 10"
+                            [disabledCard]="!repairShopContacts?.length"
+                            [hasScrollBodyXAxis]="true"
+                            [animationMarginParams]="{
+                                marginTop: '10px',
+                                marginBottom: '5px',
+                            }"
+                            (onActionEvent)="addContact()"
+                        >
+                            <app-ta-modal-table
+                                [tableType]="modalTableTypeEnum.CONTACT"
+                                [modalTableData]="updatedRepairShopContacts"
+                                [dropdownData]="departments"
+                                [isNewRowCreated]="isNewContactAdded"
+                                (modalTableValueEmitter)="
+                                    handleModalTableValueEmit($event)
+                                "
+                                (modalTableValidStatusEmitter)="
+                                    handleModalTableValidStatusEmit($event)
+                                "
+                            >
+                            </app-ta-modal-table>
+                        </app-ta-custom-card>
+
+                        <app-ta-custom-card
+                            [animationMarginParams]="{
+                                marginTop: '0',
+                                marginBottom: '0',
+                            }"
+                            [cardName]="'Cover Photo'"
+                            [isCardOpen]="true"
+                            [hasArrow]="false"
+                        >
+                            <app-ca-upload-files
+                                [isVisibleCropAndDrop]="true"
+                                [hasBlobUrl]="true"
+                                [files]="[{ url: coverPhoto?.url }]"
+                                [slider]="{
+                                    dontUseSlider: false,
+                                    hasCarouselBottomTabs: false,
+                                }"
+                                [carouselConfig]="{
+                                    files: [],
+                                    customClass: 'medium',
+                                    customDetailsPageClass: 'modals',
+                                    hasCarouselBottomTabs: true,
+                                }"
+                                [hasCrop]="true"
+                                [isRoundCrop]="false"
+                                [dropzoneConf]="[
+                                    {
+                                        template: 'imageCropTemplate',
+                                        config: {
+                                            dropzone: {
+                                                dropZoneType: 'image',
+                                                multiple: true,
+                                                globalDropZone: false,
+                                                dropZonePages: 'cdl',
+                                            },
+                                            dropzoneOption: {
+                                                customClassName:
+                                                    'documents-dropzone',
+                                                size: 'medium',
+                                                modalSize: 'lg',
+                                                showDropzone: true,
+                                                dropzoneClose: false,
+                                            },
+                                        },
+                                    },
+                                ]"
+                                [review]="{
+                                    isReview: true,
+                                    reviewMode: 'REVIEW_MODE',
+                                    feedbackText: 'Sample feedback text',
+                                    categoryTag: 'General',
+                                }"
+                                [configFile]="{
+                                    id: 111,
+                                    customClassName: 'modals',
+                                    file: {
+                                        url: '',
+                                        incorrect: false,
+                                        lastHovered: false,
+                                        fileSize: 1200,
+                                        fileName: '',
+                                    },
+                                    hasTagsDropdown: false,
+                                    hasNumberOfPages: true,
+                                    activePage: 1,
+                                    tags: ['Example'],
+                                    type: 'modal',
+                                    hasLandscapeOption: false,
+                                    tagsOptions: [
+                                        {
+                                            tagName: 'HOS Agreement',
+                                            checked: false,
+                                        },
+                                        {
+                                            tagName: 'Unsafe Driving AGT',
+                                            checked: false,
+                                        },
+                                    ],
+                                }"
+                                [size]="'medium'"
+                                [slideWidth]="180"
+                                (onFileEvent)="onUploadCoverPhoto($event)"
+                            >
+                            </app-ca-upload-files>
+                        </app-ta-custom-card>
+
+                        @if (!repairShopContacts?.length) {
+                            <div class="no-review-repair-shop">
+                                <svg-icon
+                                    class="no-review-svg"
+                                    [src]="
+                                        repairShopModalSvgRoutes.noContactIcon
+                                    "
+                                ></svg-icon>
+                            </div>
+                        }
+                    </div>
+
+                    <div
+                        [hidden]="selectedTab !== TableStringEnum.REVIEW"
+                        class="m-tab"
+                        class="repair-shop-card"
+                    >
+                        <app-ta-custom-card
+                            [cardName]="'Rating & Review'"
+                            [disableAnimation]="isCardAnimationDisabled"
+                            [disableMultipleReviews]="isOneMoreReviewDisabled"
+                            [hasActionSvg]="repairShopModalSvgRoutes.plusIcon"
+                            [hasArrow]="false"
+                            [hasBodyData]="reviews.length"
+                            [hasCounter]="reviews.length"
+                            [hasLikeDislike]="true"
+                            [hasScrollBody]="reviews.length > 6"
+                            [isCardOpen]="true"
+                            (onActionEvent)="createReview()"
+                        >
+                            <app-ta-user-review
+                                [reviewData]="reviews"
+                                [isNewReview]="reviews[0]?.isNewReview"
+                                (changeReviewsEvent)="
+                                    changeReviewsEvent($event)
+                                "
+                            ></app-ta-user-review>
+                        </app-ta-custom-card>
+
+                        @if (!reviews.length) {
+                            <div class="no-review-repair-shop">
+                                <svg-icon
+                                    class="no-review-svg"
+                                    [src]="
+                                        repairShopModalSvgRoutes.noReviewsIcon
+                                    "
+                                ></svg-icon>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </form>
+        </div>
+    }
+</app-ca-modal>
+
+<ng-template #rightModalContent>
+    @if (isEditMode) {
+        <div
+            ngbTooltip
+            mainTooltip="Added    {{
+                editData?.data?.createdAt | formatDateP
+            }} <br> Edited    {{ editData?.data?.updatedAt | formatDateP }}"
+            tooltipBackground="#424242"
+            position="bottom"
+            class="modal-date-logo"
+        >
+            <svg-icon
+                [src]="svgRoutes.DATE_ICON"
+                class="modal-buttons"
+            ></svg-icon>
+        </div>
+        <div class="modal-date-border"></div>
+    }
+    <div
+        class="d-flex justify-content-center align-items-center modal-close-container"
+        ngbTooltip
+        mainTooltip="Cancel"
+        tooltipBackground="#424242"
+        position="bottom"
+        (click)="onModalAction(actionTypesEnum.CLOSE)"
+    >
+        <svg-icon
+            class="modal-close svg-size-14 svg-fill-muted modal-buttons"
+            [src]="svgRoutes.CLOSE_ICON"
+        ></svg-icon>
+    </div>
+</ng-template>
+
+<ng-template #leftModalContent>
+    @if (editData?.data?.truckNumber) {
+        <div class="payroll-number text-color-white text-size-14 ta-font-bold">
+            {{ editData?.data?.truckNumber }}
+        </div>
+    }
+</ng-template>
+
+<ng-template #footerTemplate>
+    <div class="modal-footer modal-footer-payroll">
+        <div class="divider divider--dark divider--small"></div>
+        @if (isEditMode) {
+            <div class="d-flex justify-content-between w-full">
+                <div class="d-flex">
+                    <app-ca-modal-button
+                        class="mr-12"
+                        text="Delete"
+                        [size]="modalButtonSize.SMALL"
+                        (click)="onModalAction(actionTypesEnum.DELETE)"
+                        [type]="modalButtonType.SECONDARY_NEGATIVE"
+                    >
+                    </app-ca-modal-button>
+                    <app-ca-modal-button
+                        [type]="modalButtonType.SECONDARY_NEUTRAL"
+                        [text]="
+                            businessStatus === 1
+                                ? 'Close Business'
+                                : 'Open Business'
+                        "
+                        (click)="onModalAction(actionTypesEnum.CLOSE_BUSINESS)"
+                    >
+                    </app-ca-modal-button>
+                </div>
+                <app-ca-modal-button
+                    [isValid]="isModalValidToSubmit"
+                    [isSpinnerShown]="activeAction === actionTypesEnum.SAVE"
+                    [text]="'Save Changes'"
+                    (click)="onModalAction(actionTypesEnum.SAVE)"
+                    [type]="modalButtonType.PRIMARY_POSITIVE"
                 >
-                    <app-ta-custom-card
-                        [cardName]="'Rating & Review'"
-                        [disableAnimation]="disableCardAnimation"
-                        [disableMultipleReviews]="isOneMoreReviewDisabled"
-                        [hasActionSvg]="repairShopModalSvgRoutes.plusIcon"
-                        [hasArrow]="false"
-                        [hasBodyData]="reviews.length"
-                        [hasCounter]="reviews.length"
-                        [hasLikeDislike]="true"
-                        [hasScrollBody]="reviews.length > 6"
-                        [isCardOpen]="true"
-                        (onActionEvent)="createReview()"
-                    >
-                        <app-ta-user-review
-                            [reviewData]="reviews"
-                            [isNewReview]="reviews[0]?.isNewReview"
-                            (changeReviewsEvent)="changeReviewsEvent($event)"
-                        ></app-ta-user-review>
-                    </app-ta-custom-card>
-
-                    <ng-container *ngIf="!reviews.length">
-                        <div class="no-review-repair-shop">
-                            <svg-icon
-                                class="no-review-svg"
-                                [src]="repairShopModalSvgRoutes.noReviewsIcon"
-                            ></svg-icon>
-                        </div>
-                    </ng-container>
-                </div>
+                </app-ca-modal-button>
             </div>
-        </form>
-    </ng-container>
-</app-ta-modal>
+        } @else {
+            <app-ca-modal-button
+                class="mr-12"
+                [isValid]="isModalValidToSubmit"
+                [text]="'Save and Add New'"
+                [isSpinnerShown]="
+                    activeAction === actionTypesEnum.SAVE_AND_ADD_NEW
+                "
+                [type]="modalButtonType.SECONDARY_POSITIVE"
+                (click)="onModalAction(actionTypesEnum.SAVE_AND_ADD_NEW)"
+            >
+            </app-ca-modal-button>
+            <app-ca-modal-button
+                [isValid]="isModalValidToSubmit"
+                [text]="'Save'"
+                [isSpinnerShown]="activeAction === actionTypesEnum.SAVE"
+                [type]="modalButtonType.PRIMARY_POSITIVE"
+                (click)="onModalAction(actionTypesEnum.SAVE)"
+            >
+            </app-ca-modal-button>
+        }
+    </div>
+</ng-template>

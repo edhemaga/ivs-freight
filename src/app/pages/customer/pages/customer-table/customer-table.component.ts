@@ -41,6 +41,7 @@ import {
     IMapSelectedMarkerData,
     SortColumn,
     MapMarkerIconHelper,
+    MapMarkerIconService,
 } from 'ca-components';
 
 // store
@@ -95,7 +96,7 @@ import { BrokerModalStringEnum } from '@pages/customer/pages/broker-modal/enums/
 import { CustomerTableStringEnum } from '@pages/customer/pages/customer-table/enums';
 
 // helpers
-import { DropdownContentHelper } from '@shared/utils/helpers/dropdown-content.helper';
+import { DropdownMenuContentHelper } from '@shared/utils/helpers';
 import { DataFilterHelper } from '@shared/utils/helpers/data-filter.helper';
 import {
     getBrokerColumnDefinition,
@@ -116,9 +117,6 @@ import { ShipperMapDropdownHelper } from '@pages/customer/pages/customer-table/u
 export class CustomerTableComponent
     implements OnInit, AfterViewInit, OnDestroy
 {
-    @ViewChild('mapsComponent', { static: false })
-    public mapsComponent: CaMapComponent;
-
     private destroy$ = new Subject<void>();
 
     public viewData: any[] = [];
@@ -214,6 +212,7 @@ export class CustomerTableComponent
         private confirmationActivationService: ConfirmationActivationService,
         private customerCardsModalService: CustomerCardsModalService,
         private caSearchMultipleStatesService: CaSearchMultipleStatesService,
+        private markerIconService: MapMarkerIconService,
 
         // store
         private brokerQuery: BrokerQuery,
@@ -655,15 +654,15 @@ export class CustomerTableComponent
                             res.filterName === TableStringEnum.BAN
                                 ? TableStringEnum.DNU_FILTER
                                 : res.filterName === TableStringEnum.DNU
-                                ? TableStringEnum.CLOSED_FILTER
-                                : TableStringEnum.BAN_FILTER;
+                                  ? TableStringEnum.CLOSED_FILTER
+                                  : TableStringEnum.BAN_FILTER;
 
                         const resetSecondFilter =
                             res.filterName === TableStringEnum.BAN
                                 ? TableStringEnum.CLOSED_FILTER
                                 : res.filterName === TableStringEnum.DNU
-                                ? TableStringEnum.BAN_FILTER
-                                : TableStringEnum.DNU_FILTER;
+                                  ? TableStringEnum.BAN_FILTER
+                                  : TableStringEnum.DNU_FILTER;
 
                         this.tableService.sendResetSpecialFilters(
                             true,
@@ -1583,7 +1582,11 @@ export class CustomerTableComponent
                 : null,
             tableDropdownContent: {
                 hasContent: true,
-                content: this.getDropdownBrokerContent(data),
+                content: this.getBrokerDropdownContent(
+                    data.status,
+                    data.ban,
+                    data.dnu
+                ),
             },
         };
     }
@@ -1615,8 +1618,8 @@ export class CustomerTableComponent
                       CustomerTableStringEnum.FROM_TO +
                       (data?.shippingTo ?? CustomerTableStringEnum.EMPTY_STRING)
                     : data?.shippingAppointment
-                    ? CustomerTableStringEnum.APPOINTMENT
-                    : null,
+                      ? CustomerTableStringEnum.APPOINTMENT
+                      : null,
             tableAvailableHoursReceiving:
                 data?.receivingFrom || data?.receivingTo
                     ? (data?.receivingFrom ??
@@ -1625,8 +1628,8 @@ export class CustomerTableComponent
                       (data?.receivingTo ??
                           CustomerTableStringEnum.EMPTY_STRING)
                     : data?.receivingAppointment
-                    ? CustomerTableStringEnum.APPOINTMENT
-                    : null,
+                      ? CustomerTableStringEnum.APPOINTMENT
+                      : null,
             reviews: data?.ratingReviews,
             tableRaiting: {
                 hasLiked: data?.currentCompanyUserRating === 1,
@@ -1653,41 +1656,25 @@ export class CustomerTableComponent
                 : null,
             tableDropdownContent: {
                 hasContent: true,
-                content: this.getDropdownShipperContent(data),
+                content: this.getShipperDropdownContent(data?.status),
             },
         };
     }
 
-    private getDropdownBrokerContent(data: BrokerResponse): DropdownItem[] {
-        const dropdownContent =
-            DropdownContentHelper.getDropdownBrokerContent(data);
-
-        dropdownContent.map((dropItem) => {
-            const firstDisableCondition =
-                dropItem.name === TableStringEnum.CREATE_LOAD &&
-                (data.ban || data.dnu);
-            const secondDisableCondition =
-                !data.status &&
-                [
-                    TableStringEnum.EDIT_CUSTOMER_OR_SHIPPER.toString(),
-                    TableStringEnum.CREATE_LOAD.toString(),
-                    TableStringEnum.ADD_CONTRACT.toString(),
-                    TableStringEnum.WRITE_REVIEW.toString(),
-                    TableStringEnum.MOVE_TO_BAN_LIST.toString(),
-                ].includes(dropItem.name);
-
-            if (firstDisableCondition || secondDisableCondition)
-                dropItem.mutedStyle = true;
-            else dropItem.mutedStyle = false;
-
-            return dropItem;
-        });
-
-        return dropdownContent;
+    private getBrokerDropdownContent(
+        status: number,
+        ban: boolean,
+        dnu: boolean
+    ): DropdownItem[] {
+        return DropdownMenuContentHelper.getBrokerDropdownContent(
+            status,
+            ban,
+            dnu
+        );
     }
 
-    private getDropdownShipperContent(data): DropdownItem[] {
-        return DropdownContentHelper.getDropdownShipperContent(data);
+    private getShipperDropdownContent(status: number): DropdownItem[] {
+        return DropdownMenuContentHelper.getShipperDropdownContent(status);
     }
 
     private updateDataCount(): void {
@@ -1952,8 +1939,8 @@ export class CustomerTableComponent
                             event.type === TableStringEnum.DELTETE_CONTACT
                                 ? TableStringEnum.ADDITIONAL
                                 : event.type === TableStringEnum.WRITE_REVIEW
-                                ? TableStringEnum.REVIEW
-                                : TableStringEnum.BASIC,
+                                  ? TableStringEnum.REVIEW
+                                  : TableStringEnum.BASIC,
                     }
                 );
             }
@@ -1971,8 +1958,8 @@ export class CustomerTableComponent
                             event.type === TableStringEnum.DELTETE_CONTACT
                                 ? TableStringEnum.ADDITIONAL
                                 : event.type === TableStringEnum.WRITE_REVIEW
-                                ? TableStringEnum.REVIEW
-                                : TableStringEnum.BASIC,
+                                  ? TableStringEnum.REVIEW
+                                  : TableStringEnum.BASIC,
                     }
                 );
             }
@@ -2506,6 +2493,12 @@ export class CustomerTableComponent
                                     item.position.lng === data.longitude
                             );
 
+                        const previousMarkerData = this.mapData.markers.find(
+                            (item2) =>
+                                item2.position.lat === data.latitude &&
+                                item2.position.lng === data.longitude
+                        );
+
                         let clusterInfoWindowContent = data.pagination?.data
                             ? {
                                   clusterData: [...data.pagination.data],
@@ -2525,45 +2518,49 @@ export class CustomerTableComponent
                             };
                         }
 
-                        const markerIcon =
-                            data?.count > 1
-                                ? MapMarkerIconHelper.getClusterMarker(
-                                      data?.count,
-                                      !!clusterInfoWindowContent?.selectedClusterItemData
-                                  )
-                                : MapMarkerIconHelper.getMapMarker(
-                                      data.favourite,
-                                      data.isClosed
-                                  );
+                        if (previousClusterData || previousMarkerData) {
+                            const newMarkerData = {
+                                ...(previousMarkerData || previousClusterData),
+                                infoWindowContent: clusterInfoWindowContent,
+                            };
 
-                        const markerData = {
-                            position: {
-                                lat: data.latitude,
-                                lng: data.longitude,
-                            },
-                            icon: {
-                                url: markerIcon,
-                                labelOrigin: new google.maps.Point(80, 15),
-                            },
-                            infoWindowContent: clusterInfoWindowContent,
-                            label: data.name
-                                ? {
-                                      text: data.name.toUpperCase(),
-                                      fontSize: '11px',
-                                      color: '#424242',
-                                      fontWeight: '500',
-                                  }
-                                : null,
-                            labelOrigin: { x: 90, y: 15 },
-                            options: {
-                                zIndex: index + 1,
-                                animation: google.maps.Animation.DROP,
-                            },
-                            data,
-                        };
+                            if (data.count > 1)
+                                clusterMarkers.push(newMarkerData);
+                            else markers.push(newMarkerData);
+                        } else {
+                            let markerData: IMapMarkers = {
+                                position: {
+                                    lat: data.latitude,
+                                    lng: data.longitude,
+                                },
+                                infoWindowContent: clusterInfoWindowContent,
+                                label: data.name,
+                                isFavorite: data.favourite,
+                                isClosed: data.isClosed,
+                                id: data.id,
+                                data,
+                            };
 
-                        if (data.count > 1) clusterMarkers.push(markerData);
-                        else markers.push(markerData);
+                            const markerIcon =
+                                data.count > 1
+                                    ? this.markerIconService.getClusterMarkerIcon(
+                                          markerData
+                                      )
+                                    : this.markerIconService.getMarkerIcon(
+                                          data.id,
+                                          data.name,
+                                          data.isClosed,
+                                          data.favourite
+                                      );
+
+                            markerData = {
+                                ...markerData,
+                                content: markerIcon,
+                            };
+
+                            if (data.count > 1) clusterMarkers.push(markerData);
+                            else markers.push(markerData);
+                        }
                     });
 
                     this.mapData = {

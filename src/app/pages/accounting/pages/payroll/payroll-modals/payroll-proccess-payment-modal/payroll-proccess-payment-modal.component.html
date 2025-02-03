@@ -55,11 +55,17 @@
 </ng-template>
 
 <ng-template #rightModalContent>
-    <div>
+    <div
+        class="d-flex justify-content-center align-items-center modal-close-container"
+        ngbTooltip
+        mainTooltip="Cancel"
+        tooltipBackground="#424242"
+        position="bottom"
+        (click)="onCloseModal()"
+    >
         <svg-icon
             class="modal-close svg-size-14 svg-fill-muted modal-buttons"
             [src]="svgRoutes.closeIcon"
-            (click)="onCloseModal()"
         ></svg-icon>
     </div>
 </ng-template>
@@ -71,7 +77,7 @@
                 [ngStyle]="{
                     'pointer-events':
                         modalData.selectedTab === 'open' ? 'all' : 'none',
-                    opacity: modalData.selectedTab === 'open' ? 1 : 0
+                    opacity: modalData.selectedTab === 'open' ? 1 : 0,
                 }"
                 class="ta-font-bold modal-save-btn flex-1 modal-default-button"
                 type="button"
@@ -87,7 +93,7 @@
             </button>
             <button
                 [ngStyle]="{
-                    'pointer-events': paymentForm.valid ? 'all' : 'none'
+                    'pointer-events': paymentForm.valid ? 'all' : 'none',
                 }"
                 (click)="closePayroll()"
                 class="ta-font-bold modal-save-btn flex-1 modal-deactivate-btn align"
@@ -112,7 +118,7 @@
 </ng-template>
 
 <ng-template #tabCustomTemplate>
-    <div class="custom_ahr_tab_template">
-        carrier<span>a.</span> <span class="ahc">ACH</span>
+    <div class="custom_ahr_tab_template text-size-11">
+        carrier<span>a.</span> <span class="ahc"> ACH</span>
     </div>
 </ng-template>

@@ -16,29 +16,27 @@
                 [dateChecked]="'5 days ago'"
             >
                 <div class="repair-information-wrapper">
-                    <div
-                        class="repair-information-item"
-                        *ngIf="fuel?.data?.phone"
-                    >
-                        <svg-icon
-                            class="repair-icon"
-                            src="assets/svg/common/ic_phone.svg"
-                        ></svg-icon>
-                        <p class="repair-value">{{ fuel?.data?.phone }}</p>
-                    </div>
+                    @if (fuel?.data?.phone) {
+                        <div class="repair-information-item">
+                            <svg-icon
+                                class="repair-icon"
+                                src="assets/svg/common/ic_phone.svg"
+                            ></svg-icon>
+                            <p class="repair-value">{{ fuel?.data?.phone }}</p>
+                        </div>
+                    }
 
-                    <div
-                        class="repair-information-item address-cont"
-                        *ngIf="fuel?.data?.address?.address"
-                    >
-                        <svg-icon
-                            class="repair-icon"
-                            src="assets/svg/common/ic_address.svg"
-                        ></svg-icon>
-                        <p class="repair-value">
-                            {{ fuel?.data?.address?.address }}
-                        </p>
-                    </div>
+                    @if (fuel?.data?.address?.address) {
+                        <div class="repair-information-item address-cont">
+                            <svg-icon
+                                class="repair-icon"
+                                src="assets/svg/common/ic_address.svg"
+                            ></svg-icon>
+                            <p class="repair-value">
+                                {{ fuel?.data?.address?.address }}
+                            </p>
+                        </div>
+                    }
                 </div>
             </app-ta-details-header-card>
             <div class="repair-cards">
@@ -49,7 +47,7 @@
                     [isCardOpen]="true"
                     [animationMarginParams]="{
                         marginTop: '0px',
-                        marginBottom: '10px'
+                        marginBottom: '10px',
                     }"
                     [customClass]="'detailsPadding'"
                 >
@@ -63,35 +61,35 @@
                                         class="fuel-price-level first-color"
                                         [ngStyle]="{
                                             'background-color':
-                                                fuelPriceColors[0]
+                                                fuelPriceColors[0],
                                         }"
                                     ></div>
                                     <div
                                         class="fuel-price-level"
                                         [ngStyle]="{
                                             'background-color':
-                                                fuelPriceColors[1]
+                                                fuelPriceColors[1],
                                         }"
                                     ></div>
                                     <div
                                         class="fuel-price-level"
                                         [ngStyle]="{
                                             'background-color':
-                                                fuelPriceColors[2]
+                                                fuelPriceColors[2],
                                         }"
                                     ></div>
                                     <div
                                         class="fuel-price-level"
                                         [ngStyle]="{
                                             'background-color':
-                                                fuelPriceColors[3]
+                                                fuelPriceColors[3],
                                         }"
                                     ></div>
                                     <div
                                         class="fuel-price-level last-color"
                                         [ngStyle]="{
                                             'background-color':
-                                                fuelPriceColors[4]
+                                                fuelPriceColors[4],
                                         }"
                                     ></div>
                                     <svg-icon
@@ -99,7 +97,7 @@
                                         src="assets/svg/common/ic_owner-status.svg"
                                         [svgStyle]="{
                                             'width.px': 22,
-                                            'height.px': 22
+                                            'height.px': 22,
                                         }"
                                     ></svg-icon>
                                 </div>
@@ -120,35 +118,35 @@
                                         class="fuel-price-level first-color"
                                         [ngStyle]="{
                                             'background-color':
-                                                fuelPriceColors[0]
+                                                fuelPriceColors[0],
                                         }"
                                     ></div>
                                     <div
                                         class="fuel-price-level"
                                         [ngStyle]="{
                                             'background-color':
-                                                fuelPriceColors[1]
+                                                fuelPriceColors[1],
                                         }"
                                     ></div>
                                     <div
                                         class="fuel-price-level"
                                         [ngStyle]="{
                                             'background-color':
-                                                fuelPriceColors[2]
+                                                fuelPriceColors[2],
                                         }"
                                     ></div>
                                     <div
                                         class="fuel-price-level"
                                         [ngStyle]="{
                                             'background-color':
-                                                fuelPriceColors[3]
+                                                fuelPriceColors[3],
                                         }"
                                     ></div>
                                     <div
                                         class="fuel-price-level last-color"
                                         [ngStyle]="{
                                             'background-color':
-                                                fuelPriceColors[4]
+                                                fuelPriceColors[4],
                                         }"
                                     ></div>
                                     <svg-icon
@@ -156,7 +154,7 @@
                                         src="assets/svg/common/ic_owner-status.svg"
                                         [svgStyle]="{
                                             'width.px': 22,
-                                            'height.px': 22
+                                            'height.px': 22,
                                         }"
                                     ></svg-icon>
                                 </div>
@@ -179,24 +177,32 @@
                     [isCardOpen]="true"
                     [animationMarginParams]="{
                         marginTop: '0px',
-                        marginBottom: '10px'
+                        marginBottom: '10px',
                     }"
                     [customClass]="'detailsPadding'"
                 >
                     <div class="charts-template perfomance">
-                        <app-ta-tab-switch
-                            [tabs]="tabsFuel"
-                            [type]="'type2-modal-popup'"
-                            (switchClicked)="changeTab($event)"
-                        >
-                            <ng-container *ngIf="fuelChartConfig?.chartData">
-                                <app-ta-chart-legend
-                                    [data]="fuelChartLegend"
-                                ></app-ta-chart-legend>
-                                <app-ca-chart [chartConfig]="fuelChartConfig">
-                                </app-ca-chart>
-                            </ng-container>
-                        </app-ta-tab-switch>
+                        @if (!fuelLegendHighlightedBackground) {
+                            <app-ta-tab-switch
+                                [tabs]="tabsFuel"
+                                [type]="'type2-modal-popup'"
+                                (switchClicked)="changeTab($event)"
+                            >
+                            </app-ta-tab-switch>
+                        }
+                        @if (fuelChartConfig?.chartData) {
+                            <app-ca-chart
+                                [chartConfig]="fuelChartConfig"
+                                [legendData]="{
+                                    data: fuelChartLegend,
+                                    hasHighlightedBackground:
+                                        fuelLegendHighlightedBackground,
+                                    title: fuelLegendTitle,
+                                }"
+                                (hoveredIndex)="setFuelLegendOnHover($event)"
+                            >
+                            </app-ca-chart>
+                        }
                     </div>
                 </app-ta-custom-card>
                 <div class="divider"></div>
@@ -231,7 +237,7 @@
                     <span
                         *ngFor="let dummy of dummyDataFuel; let i = index"
                         [ngClass]="{
-                            'blue-background': dummy.blue_back == true
+                            'blue-background': dummy.blue_back == true,
                         }"
                         class="fuel-items"
                     >
@@ -266,7 +272,8 @@
                                 <div
                                     class="dots-vertical"
                                     [ngClass]="{
-                                        'dots-top-fuel': dummy.blue_back == true
+                                        'dots-top-fuel':
+                                            dummy.blue_back == true,
                                     }"
                                 >
                                     <app-ta-details-dropdown
