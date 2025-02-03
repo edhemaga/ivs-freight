@@ -1,17 +1,13 @@
-import { LoadSortBy, RepairShopSortBy, RepairSortBy, SortOrder } from "appcoretruckassist";
-type SortBy = RepairSortBy | LoadSortBy | RepairShopSortBy;
+import { SortBy } from '@shared/types';
+import { SortOrder } from 'appcoretruckassist';
+
 export function getOrderAndSort(sortString: string): {
     sortBy: SortBy;
     order: SortOrder;
 } {
-    let order = null;
-    let sortBy = null;
-    if (sortString?.endsWith('Asc')) {
-        order = SortOrder.Ascending;
-        sortBy = sortString.replace(/Asc$/, '');
-    } else {
-        order = SortOrder.Descending;
-        sortBy = sortString?.replace(/Desc$/, '');
-    }
-    return { sortBy: sortBy, order };
+    const order = sortString?.endsWith('Asc')
+        ? SortOrder.Ascending
+        : SortOrder.Descending;
+    const sortBy = sortString?.replace(/(Asc|Desc)$/, '') as SortBy;
+    return { sortBy, order };
 }
