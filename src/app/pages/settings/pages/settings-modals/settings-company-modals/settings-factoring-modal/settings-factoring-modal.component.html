@@ -79,10 +79,10 @@
                         [receivedAddressList]="addressList"
                         [receivedAddressData]="addressData"
                         (sentAddressData)="
-                            onAddressChange($event, addressService)
+                            onAddressChange($event)
                         "
                         (sentAddressValue)="
-                            getAddressData($event, addressService)
+                            getAddressData($event)
                         "
                     ></app-ca-input-address-dropdown>
                 </div>

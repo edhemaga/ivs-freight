@@ -21,7 +21,7 @@ import { AddressService } from '@shared/services/address.service';
     styleUrls: ['./dispatch-table-last-location.component.scss'],
 })
 export class DispatchTableLastLocationComponentComponent extends AddressMixin(
-    class {}
+    class { addressService!: AddressService; }
 ) {
     @Input() set parkingList(value: DispatchBoardParking[]) {
         if (this.address) this.checkParkingLocation(value);

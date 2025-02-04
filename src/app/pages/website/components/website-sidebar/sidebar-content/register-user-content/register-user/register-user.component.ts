@@ -40,7 +40,7 @@ import { AddressMixin } from '@shared/mixins/address/address.mixin';
     styleUrls: ['./register-user.component.scss'],
 })
 export class RegisterUserComponent
-    extends AddressMixin(class {})
+    extends AddressMixin(class { addressService!: AddressService; })
     implements OnInit, OnDestroy
 {
     @ViewChild('inputAddress', { static: false }) public inputAddress: any;

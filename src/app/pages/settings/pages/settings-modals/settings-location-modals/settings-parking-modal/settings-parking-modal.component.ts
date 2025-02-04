@@ -125,7 +125,7 @@ import { AddressMixin } from '@shared/mixins/address/address.mixin';
     ],
 })
 export class SettingsParkingModalComponent
-    extends AddressMixin(class {})
+    extends AddressMixin(class { addressService!: AddressService; })
     implements OnInit, OnDestroy
 {
     @Input() editData: any;

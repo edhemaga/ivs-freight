@@ -34,8 +34,6 @@ import { ModalTableSvgRoutes } from '@shared/components/ta-modal-table/utils/svg
 
 // services
 import { AddressService } from '@shared/services/address.service';
-
-// mixin
 import { AddressMixin } from '@shared/mixins/address/address.mixin';
 
 @Component({
@@ -59,7 +57,11 @@ import { AddressMixin } from '@shared/mixins/address/address.mixin';
     ],
 })
 export class TaModalTableOffDutyLocationComponent
-    extends AddressMixin(class {})
+    extends AddressMixin(
+        class {
+            addressService!: AddressService;
+        }
+    )
     implements OnDestroy
 {
     @Input() modalTableForm: UntypedFormGroup;
@@ -83,6 +85,11 @@ export class TaModalTableOffDutyLocationComponent
     }> = new EventEmitter();
 
     public svgRoutes = ModalTableSvgRoutes;
+
+    // public addressList: AddressListResponse;
+    // public addressData: AddressResponse;
+
+    //private destroy$ = new Subject<void>();
 
     get formArray() {
         return this.modalTableForm?.get(this.arrayName) as UntypedFormArray;
@@ -121,7 +128,9 @@ export class TaModalTableOffDutyLocationComponent
         });
     }
 
+    // Overide ngOnDestroy If you have any any OnDestroy logic related to this class only
     ngOnDestroy(): void {
+        // Some cleaning code for this class only
         super.ngOnDestroy();
     }
 }

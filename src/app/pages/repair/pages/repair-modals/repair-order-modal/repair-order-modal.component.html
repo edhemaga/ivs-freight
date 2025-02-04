@@ -1,7 +1,9 @@
+@let isEditMode = editData?.type?.includes('edit');
+
 <app-ca-modal
     [customClass]="'modal-container-M'"
     [modalTitle]="
-        !editData?.type?.includes('edit')
+        !isEditMode
             ? 'Add Repair'
             : isFinishOrder
               ? 'Finish Order'
@@ -428,7 +430,7 @@
 </app-ca-modal>
 
 <ng-template #rightModalContent>
-    @if (editData?.type?.includes('edit')) {
+    @if (isEditMode) {
         <div
             ngbTooltip
             mainTooltip="Added    {{
@@ -467,7 +469,7 @@
         </div>
     }
 
-    @if (!editData?.type?.includes('edit')) {
+    @if (!isEditMode) {
         <app-ta-tab-switch
             (switchClicked)="onModalHeaderTabChange($event)"
             [tabs]="headerTabs"
@@ -477,68 +479,64 @@
 </ng-template>
 
 <ng-template #footerTemplate>
+    @let isFormValid =
+        repairOrderForm.valid && isFormDirty && isEachRepairRowValid;
+
     <div
         class="modal-footer modal-footer-payroll"
-        [ngClass]="
-            editData?.type?.includes('edit')
-                ? 'd-flex justify-content-between'
-                : ''
-        "
+        [ngClass]="isEditMode ? 'd-flex justify-content-between' : ''"
     >
         <div class="divider"></div>
-        @if (!editData?.type?.includes('edit')) {
-            <button
-                class="ta-font-bold modal-save-btn modal-save-btn-add-new mr-12"
-                [class.valid]="
-                    repairOrderForm.valid && isFormDirty && isEachRepairRowValid
+        @if (!isEditMode) {
+            <app-ca-modal-button
+                class="mr-12"
+                [text]="modalButtonText.SAVE_AND_ADD_NEW"
+                [isValid]="isFormValid"
+                [isSpinnerShown]="
+                    activeAction === taModalActionEnum.SAVE_AND_ADD_NEW
                 "
+                [type]="modalButtonType.SECONDARY_POSITIVE"
                 (click)="onModalAction(taModalActionEnum.SAVE_AND_ADD_NEW)"
             >
-                Save and Add New
-            </button>
-            <button
-                class="modal-save-btn ta-font-bold"
+            </app-ca-modal-button>
+            <app-ca-modal-button
+                [isValid]="isFormValid"
+                [text]="modalButtonText.SAVE"
+                [isSpinnerShown]="activeAction === taModalActionEnum.SAVE"
+                [type]="modalButtonType.PRIMARY_POSITIVE"
                 (click)="onModalAction(taModalActionEnum.SAVE)"
-                [class.valid]="
-                    repairOrderForm.valid && isFormDirty && isEachRepairRowValid
-                "
             >
-                Save
-            </button>
+            </app-ca-modal-button>
         } @else {
-            <div>
-                @if (editData?.type?.includes('edit') && !isFinishOrder) {
-                    <button
-                        class="modal-delete-btn ta-font-bold mr-12"
+            <div class="d-flex">
+                @if (isEditMode && !isFinishOrder) {
+                    <app-ca-modal-button
+                        class="mr-12"
+                        [text]="modalButtonText.DELETE"
+                        [size]="modalButtonSize.SMALL"
                         (click)="onModalAction(taModalActionEnum.DELETE)"
-                        [class.valid]="
-                            repairOrderForm.valid &&
-                            isFormDirty &&
-                            isEachRepairRowValid
-                        "
+                        [type]="modalButtonType.SECONDARY_NEGATIVE"
                     >
-                        Delete
-                    </button>
+                    </app-ca-modal-button>
                 }
 
                 @if (editData?.data?.repairType?.id === 2 && !isFinishOrder) {
-                    <button
-                        class="modal-convert-to-template-btn ta-font-bold"
+                    <app-ca-modal-button
+                        [text]="modalButtonText.FINISH_ORDER"
+                        [type]="modalButtonType.SECONDARY_NEUTRAL"
                         (click)="onModalAction(taModalActionEnum.FINISH_ORDER)"
                     >
-                        Finish Order
-                    </button>
+                    </app-ca-modal-button>
                 }
             </div>
-            <button
-                class="modal-save-btn ta-font-bold"
+            <app-ca-modal-button
+                [isValid]="isFormValid"
+                [text]="modalButtonText.SAVE_CHANGES"
+                [isSpinnerShown]="activeAction === taModalActionEnum.SAVE"
+                [type]="modalButtonType.PRIMARY_POSITIVE"
                 (click)="onModalAction(taModalActionEnum.SAVE)"
-                [class.valid]="
-                    repairOrderForm.valid && isFormDirty && isEachRepairRowValid
-                "
             >
-                Save Changes
-            </button>
+            </app-ca-modal-button>
         }
     </div>
 </ng-template>
