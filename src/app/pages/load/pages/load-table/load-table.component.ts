@@ -119,7 +119,7 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
     public displayRows$: Observable<any>; //leave this as any for now
     // TODO:
     public tableStringEnum = TableStringEnum;
-  public toolbarVariant = ToolbarVariant;
+    public toolbarVariant = ToolbarVariant;
     public tableViewData = [
         {
             name: 'List',

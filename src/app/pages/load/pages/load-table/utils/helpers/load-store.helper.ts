@@ -536,4 +536,8 @@ export class LoadStoreHelper {
 
         return stopOrder;
     }
+
+    public static mapDispatcherData(rowData: any) {
+        // TODO
+    }
 }

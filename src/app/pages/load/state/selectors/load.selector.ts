@@ -275,8 +275,7 @@ export const tableDataSelector = createSelector(
                 gridColumns:
                     tableClosedColumnsConfig ?? getLoadClosedColumnDefinition(),
             },
-        ];
-        console.log(tableData);
+        ]; 
         return tableData;
     }
 );

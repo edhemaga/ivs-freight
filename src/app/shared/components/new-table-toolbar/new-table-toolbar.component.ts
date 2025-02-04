@@ -11,8 +11,6 @@ import { Component, Input, TemplateRef } from '@angular/core';
 export class NewTableToolbarComponent {
     @Input() title: string;
     @Input() leftSide: TemplateRef<any>;
-    @Input() filters: TemplateRef<any>;
-    @Input() columnView: TemplateRef<any>;
     @Input() rightSide: TemplateRef<any>;
     constructor() {}
 }

@@ -6,9 +6,7 @@
     loadStoreService.activeViewMode$ | async, }; as store ) {
     <app-new-table-toolbar
         [title]="'Load'"
-        [leftSide]="leftSide"
-        [columnView]="columnView"
-        [filters]="filters"
+        [leftSide]="leftSide" 
     ></app-new-table-toolbar>
 
     @if (store?.activeViewMode === 'List') {
@@ -76,25 +74,25 @@
             [selectedTab]="selectedTab"
             [variant]="toolbarVariant.Large"
             (tabSelected)="
-                onToolBarAction({ action: tableStringEnum.TAB_SELECTED, mode: $event })
+                onToolBarAction({
+                    action: tableStringEnum.TAB_SELECTED,
+                    mode: $event
+                })
             "
         ></app-toolbar-tabs>
-    </ng-template>
-
-    <ng-template #columnView>
         <ng-container *ngTemplateOutlet="divider"></ng-container>
         <app-toolbar-tabs
             [data]="tableViewData"
             [selectedTab]="loadStoreService.activeViewMode$ | async"
             [variant]="toolbarVariant.Small"
             (tabSelected)="
-                onToolBarAction({ action: tableStringEnum.VIEW_MODE, mode: $event })
+                onToolBarAction({
+                    action: tableStringEnum.VIEW_MODE,
+                    mode: $event
+                })
             "
         ></app-toolbar-tabs>
         <ng-container *ngTemplateOutlet="divider"></ng-container>
-    </ng-template>
-
-    <ng-template #filters>
         <div class="d-flex gap-1 align-items-center">
             <app-ca-search-multiple-states
                 [searchType]="'tabel'"
@@ -153,7 +151,7 @@
             }
         </div>
     </ng-template>
-
+    
     <ng-template #divider>
         <div class="new-table--toolbar-divider">
             <div class="new-table--toolbar-divider-border"></div>
