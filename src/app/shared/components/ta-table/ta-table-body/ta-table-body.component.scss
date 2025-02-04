@@ -780,6 +780,22 @@ table.truckassist-table-body-style {
                                     }
                                 }
                             }
+
+                            .integrated-fuel-transaction {
+                                svg {
+                                    circle {
+                                        fill: $ta-green;
+                                    }
+                                }
+                            }
+
+                            .manual-fuel-transaction {
+                                svg {
+                                    circle {
+                                        fill: $ta-light-grey-6;
+                                    }
+                                }
+                            }
                         }
 
                         .has-details-page {
@@ -3488,6 +3504,10 @@ table.truckassist-table-body-style {
         right: -3px;
         bottom: -3px;
     }
+}
+
+.lh-0 {
+    line-height: 0px;
 }
 
 .lh-1 {

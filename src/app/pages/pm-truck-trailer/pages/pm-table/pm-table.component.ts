@@ -401,33 +401,6 @@ export class PmTableComponent
         }
     }
 
-    private setTrailerTooltipColor(trailerName: string): string {
-        switch (trailerName) {
-            case TrailerNameStringEnum.FLAT_BED:
-            case TrailerNameStringEnum.STEP_DECK:
-            case TrailerNameStringEnum.LOW_BOY_RGN:
-            case TrailerNameStringEnum.CHASSIS:
-            case TrailerNameStringEnum.CONESTOGA:
-            case TrailerNameStringEnum.SIDE_KIT:
-            case TrailerNameStringEnum.CONTAINER:
-                return TooltipColorsStringEnum.BLUE;
-            case TrailerNameStringEnum.DRY_VAN:
-            case TrailerNameStringEnum.REEFER:
-                return TooltipColorsStringEnum.YELLOW;
-            case TrailerNameStringEnum.END_DUMP:
-            case TrailerNameStringEnum.BOTTOM_DUMP:
-            case TrailerNameStringEnum.HOPPER:
-            case TrailerNameStringEnum.TANKER:
-            case TrailerNameStringEnum.PNEUMATIC_TANKER:
-                return TooltipColorsStringEnum.RED;
-            case TrailerNameStringEnum.CAR_HAULER:
-            case TrailerNameStringEnum.CAR_HAULER_STINGER:
-                return TooltipColorsStringEnum.LIGHT_GREEN;
-            default:
-                return;
-        }
-    }
-
     private getTableData(dataType: string): (PmTruck | PmTrailer)[] {
         if (dataType === TableStringEnum.TRUCK) {
             const truckUnits = this.pmTruckQuery.getAll();
@@ -591,7 +564,7 @@ export class PmTableComponent
         const trailer: PmTrailer = {
             tableTrailerTypeIcon: trailerUnit.trailer.trailerType.logoName,
             tableTrailerName: trailerUnit.trailer.trailerType.name,
-            tableTrailerColor: this.setTrailerTooltipColor(
+            tableTrailerColor: MethodsGlobalHelper.getTrailerTooltipColor(
                 trailerUnit.trailer.trailerType.name
             ),
             tableTrailerTypeClass: trailerUnit.trailer?.trailerType?.name
