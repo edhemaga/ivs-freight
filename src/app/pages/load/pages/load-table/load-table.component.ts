@@ -47,7 +47,7 @@ import { NameInitialsPipe } from '@shared/pipes/name-initials.pipe';
 import { TableDropdownComponentConstants } from '@shared/utils/constants/table-dropdown-component.constants';
 
 // Enums
-import { TableStringEnum, LoadStatusEnum } from '@shared/enums/index';
+import { TableStringEnum, LoadStatusEnum, ToolbarVariant } from '@shared/enums';
 import {
     eActiveViewMode,
     eLoadStatusType,
@@ -117,7 +117,9 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
     public sendDataToCardsFront: CardRows[];
     public sendDataToCardsBack: CardRows[];
     public displayRows$: Observable<any>; //leave this as any for now
-
+    // TODO:
+    public tableStringEnum = TableStringEnum;
+  public toolbarVariant = ToolbarVariant;
     public tableViewData = [
         {
             name: 'List',

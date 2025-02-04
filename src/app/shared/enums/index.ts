@@ -12,6 +12,7 @@ export * from './truck-trailer-icon.enum';
 export * from './dropdown-menu-content-string.enum';
 export * from './modal-button-type.enum';
 export * from './modal-button-size.enum';
+export * from './toolbar-variant.enum';
 
 // Charts
 export * from './chart/chart-value-label.enum';

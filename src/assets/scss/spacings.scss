@@ -1,0 +1,51 @@
+
+.mb-12 {
+    margin-bottom: 12px !important;
+}
+.mr-12 {
+    margin-right: 12px !important;
+}
+.m {
+    &-b {
+        &-2 {
+            margin-bottom: 2px;
+        }
+    }
+    &-t {
+        &-4 {
+            margin-top: 4px;
+        }
+    }
+    &-l {
+        &-4 {
+            margin-left: 4px;
+        }
+        &-auto {
+            margin-left: auto;
+        }
+    }
+}
+.p {
+    &-x {
+        &-4 {
+            padding-left: 4px;
+            padding-right: 4px;
+        }
+        &-8 {
+            padding-left: 8px;
+            padding-right: 8px;
+        }
+    }
+    &-y {
+        &-4 {
+            padding-bottom: 4px;
+            padding-top: 4px;
+        }
+    }
+    &-8 {
+        padding: 8px;
+    }
+}
+.w-full {
+    width: 100%;
+}

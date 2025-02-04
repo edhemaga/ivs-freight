@@ -1,0 +1,33 @@
+<div [ngClass]="variant === toolbarVariant.Large ? 'd-flex' : 'd-flex gap-1'">
+    <ng-container *ngFor="let item of data">
+        <div
+            class="c-pointer ta-font-extra-bold"
+            [ngClass]="{
+                'new-table--toolbar-action text-size-16 p-8 d-flex align-items-center':
+                    variant === toolbarVariant.Large,
+                'background-black text-color-white':
+                    variant === toolbarVariant.Large && selectedTab === item.title,
+                'text-color-dark-grey':
+                    variant === toolbarVariant.Large && selectedTab !== item.title,
+                'text-size-14 p-x-8 p-y-4': variant === toolbarVariant.Small,
+                'background-bw2 text-color-black':
+                    variant === toolbarVariant.Small && selectedTab === item.name,
+                'text-color-light-grey-2':
+                    variant === toolbarVariant.Small && selectedTab !== item.name
+            }"
+            (click)="onTabClick(variant === toolbarVariant.Large ? item.title! : item.name!)"
+        >
+            {{ variant === toolbarVariant.Large ? item.title : item.name }}
+            @if(variant === toolbarVariant.Large) {
+            <span
+                class="new-table--toolbar-action-counter m-l-4"
+                [class.new-table--toolbar-action-counter-light]="
+                    selectedTab === item.title
+                "
+            >
+                {{ item.length }}
+            </span>
+            }
+        </div>
+    </ng-container>
+</div>

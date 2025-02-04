@@ -22,6 +22,7 @@ import {
     CaFilterComponent,
     CaSearchMultipleStatesComponent,
 } from 'ca-components';
+import { ToolbarTabsComponent } from '@shared/components/new-table-toolbar/components/toolbar-tabs/toolbar-tabs.component';
 
 // pipes
 import { FormatDatePipe } from '@shared/pipes/format-date.pipe';
@@ -57,6 +58,7 @@ import { loadCardModalReducer } from '@pages/load/pages/load-card-modal/state/lo
         NewTableToolbarComponent,
         CaFilterComponent,
         CaSearchMultipleStatesComponent,
+        ToolbarTabsComponent,
 
         // pipes
         FormatDatePipe,
