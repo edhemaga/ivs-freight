@@ -13,7 +13,11 @@ import {
 // models
 import { ILoadState } from '@pages/load/pages/load-table/models/load-state.model';
 import { ITableData } from '@shared/models/table-data.model';
-import { ILoadGridItem, ILoadTemplateGridItem, LoadModel } from '@pages/load/pages/load-table/models/index';
+import {
+    ILoadGridItem,
+    ILoadTemplateGridItem,
+    LoadModel,
+} from '@pages/load/pages/load-table/models/index';
 import { ITableOptions } from '@shared/models';
 
 // enums
@@ -131,20 +135,25 @@ export const activeViewModeSelector = createSelector(loadState, (state) => {
     return eActiveViewMode[activeViewMode];
 });
 
-export const canDeleteSelectedDataRowsSelector = createSelector(loadState, (state) => {
-    const { canDeleteSelectedDataRows } = state || {};
+export const canDeleteSelectedDataRowsSelector = createSelector(
+    loadState,
+    (state) => {
+        const { canDeleteSelectedDataRows } = state || {};
 
-    return canDeleteSelectedDataRows;
-});
+        return canDeleteSelectedDataRows;
+    }
+);
 
-export const actionItemSelector = (props: { actionItemId: number }) => 
+export const actionItemSelector = (props: { actionItemId: number }) =>
     createSelector(loadState, (state) => {
         const { data, selectedTab } = state || {};
         const { actionItemId } = props || {};
 
         if (selectedTab === eLoadStatusType.Template)
-            return (<ILoadTemplateGridItem[]>data).find(_ => _.id === actionItemId);
-        else return (<ILoadGridItem[]>data).find(_ => _.id === actionItemId);
+            return (<ILoadTemplateGridItem[]>data).find(
+                (_) => _.id === actionItemId
+            );
+        else return (<ILoadGridItem[]>data).find((_) => _.id === actionItemId);
     });
 
 export const pendingCountSelector = createSelector(getSelector, (state) => {
@@ -267,7 +276,7 @@ export const tableDataSelector = createSelector(
                     tableClosedColumnsConfig ?? getLoadClosedColumnDefinition(),
             },
         ];
-
+        console.log(tableData);
         return tableData;
     }
 );
@@ -300,13 +309,16 @@ export const tableOptionsSelector = createSelector(
                 hideActivationButton: true,
                 showDispatcherFilter:
                     selectedTabKeyLower !== TableStringEnum.TEMPLATE,
-                showTimeFilter: selectedTabKeyLower !== TableStringEnum.TEMPLATE,
-                showStatusFilter: selectedTabKeyLower !== TableStringEnum.TEMPLATE,
-                showMoneyFilter: selectedTabKeyLower !== TableStringEnum.TEMPLATE,
+                showTimeFilter:
+                    selectedTabKeyLower !== TableStringEnum.TEMPLATE,
+                showStatusFilter:
+                    selectedTabKeyLower !== TableStringEnum.TEMPLATE,
+                showMoneyFilter:
+                    selectedTabKeyLower !== TableStringEnum.TEMPLATE,
                 loadMoneyFilter: true,
                 hideDeleteButton:
                     (selectedTabKeyLower !== TableStringEnum.TEMPLATE &&
-                    selectedTabKeyLower !== TableStringEnum.PENDING) ||
+                        selectedTabKeyLower !== TableStringEnum.PENDING) ||
                     !canDeleteSelectedDataRows,
                 viewModeOptions: [
                     {
@@ -330,12 +342,14 @@ export const activeTableDataSelector = createSelector(
     selectedTabSelector,
     viewDataSelector,
     (tableData, selectedTab, viewData) => {
-        const activeTableData = tableData?.find(_ => _.title === eLoadStatusType[selectedTab]);
+        const activeTableData = tableData?.find(
+            (_) => _.title === eLoadStatusType[selectedTab]
+        );
         const result = {
             ...activeTableData,
-            data: [...viewData]
+            data: [...viewData],
         };
-        
+
         return result;
     }
 );

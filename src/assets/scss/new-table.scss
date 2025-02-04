@@ -1,0 +1,182 @@
+@import 'src/theme/variables';
+
+.new-table {
+    width: calc(100% - 24px);
+
+    &--header {
+        margin-top: 17px !important;
+    }
+
+    &--toolbar {
+        height: 34px;
+        // Extract to radius
+        border-radius: 3px 0 0 3px;
+        width: 100%;
+
+        &-action {
+            // Extract to radius
+            border-radius: 3px;
+            line-height: 20px !important;
+
+            // TODO: Should this be component maybe
+            &-counter {
+                font-size: 11px;
+                line-height: 18px;
+                height: 18px;
+                min-width: 18px;
+                border-radius: 50px;
+                background: #919191;
+                color: #ffffff;
+                padding: 0px 5px;
+                transition: 0.25s;
+                text-align: center;
+
+                &-light {
+                    background: #ffffff !important;
+                    color: #424242 !important;
+                }
+            }
+        }
+
+        &-divider {
+            height: 34px;
+            background: #ffffff;
+            padding: 0 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 4px;
+            &-border {
+                width: 2px;
+                height: 18px;
+                border-radius: 1px;
+                background: #cccccc;
+            }
+        }
+    }
+
+    &--pinned-left {
+        position: sticky;
+        left: 0;
+        background-color: inherit;
+    }
+
+    &--pinned-right {
+        position: sticky;
+        right: 0;
+        background-color: inherit;
+    }
+
+    &--row {
+        width: fit-content;
+        height: 34px;
+
+        &-heading {
+            color: $bw6-2;
+
+            &-arrow path {
+                fill: currentColor;
+            }
+
+            &-sortable {
+                &:hover {
+                    color: $ta-black;
+
+                    .new-table--row-heading-arrow {
+                        display: flex !important;
+                    }
+                }
+            }
+            &-sorting-active {
+                color: $ta-blue-13;
+
+                &:hover {
+                    color: $ta-blue-15;
+                }
+            }
+
+            &-unlocked {
+                border-radius: 2px;
+                padding: 2px 4px;
+
+                &:hover {
+                    background-color: #eee;
+                    box-shadow: 0px 0px 4px 0px #00000033;
+                }
+            }
+        }
+    }
+}
+
+@import '/src/theme/variables.scss';
+.background {
+    &-white {
+        background: $white;
+    }
+    &-black {
+        background: $ta-black;
+    }
+    &-bw2 {
+        background-color: $bw2;
+    }
+    &-light-grey {
+        background-color: $ta-light-grey;
+    }
+}
+
+.br {
+    &-3 {
+        border-radius: 3px;
+    }
+}
+
+.mb-12 {
+    margin-bottom: 12px !important;
+}
+.mr-12 {
+    margin-right: 12px !important;
+}
+.m {
+    &-b {
+        &-2 {
+            margin-bottom: 2px;
+        }
+    }
+    &-t {
+        &-4 {
+            margin-top: 4px;
+        }
+    }
+    &-l {
+        &-4 {
+            margin-left: 4px;
+        }
+        &-auto {
+            margin-left: auto;
+        }
+    }
+}
+.p {
+    &-x {
+        &-4 {
+            padding-left: 4px;
+            padding-right: 4px;
+        }
+        &-8 {
+            padding-left: 8px;
+            padding-right: 8px;
+        }
+    }
+    &-y {
+        &-4 {
+            padding-bottom: 4px;
+            padding-top: 4px;
+        }
+    }
+    &-8 {
+        padding: 8px;
+    }
+}
+.w-full {
+    width: 100%;
+}

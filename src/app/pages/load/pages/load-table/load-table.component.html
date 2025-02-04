@@ -10,16 +10,12 @@
         };
         as store
     ) {
-        <app-ta-table-toolbar
-            #toolbarComponent
-            (toolBarAction)="onToolBarAction($event)"
-            [options]="store?.tableOptions"
-            [tableData]="store?.tableData"
-            [selectedTab]="selectedTab | lowercase"
-            [columns]="store?.columns"
-            [activeViewMode]="store?.activeViewMode"
-            listName="Load"
-        ></app-ta-table-toolbar>
+        <app-new-table-toolbar
+            [title]="'Load'"
+            [leftSide]="leftSide"
+            [columnView]="columnView"
+            [filters]="filters"
+        ></app-new-table-toolbar>
 
         @if (store?.activeViewMode === 'List') {
             <app-ta-table-head
@@ -83,5 +79,132 @@
                 </div>
             </div>
         }
+
+        <ng-template #leftSide>
+            <!-- gap-1 Check this, it is not matching current page but it is matching design -->
+            <!-- TODO: Maybe extract this into separete component  -->
+            <div class="d-flex">
+                <!-- <ng-container
+                    *ngFor="let header of store.tableData"
+                > -->
+                @for (header of store.tableData; track header.title) {
+                    <div
+                        class="new-table--toolbar-action text-size-16 p-8 d-flex align-items-center ta-font-extra-bold c-pointer"
+                        (click)="
+                            onToolBarAction({
+                                action: 'tab-selected',
+                                mode: header.title,
+                            })
+                        "
+                        [ngClass]="
+                            selectedTab === header.title
+                                ? 'text-color-white background-black'
+                                : 'text-color-dark-grey'
+                        "
+                    >
+                        {{ header.title }}
+                        <span
+                            class="new-table--toolbar-action-counter m-l-4"
+                            [class.new-table--toolbar-action-counter-light]="
+                                selectedTab === header.title
+                            "
+                            >{{ header.length }}</span
+                        >
+                    </div>
+                }
+            </div>
+        </ng-template>
+
+        <ng-template #columnView>
+            <ng-container *ngTemplateOutlet="divider"></ng-container>
+            <div class="d-flex gap-1">
+                <ng-container *ngFor="let view of tableViewData">
+                    <div
+                        [ngClass]="
+                            (loadStoreService.activeViewMode$ | async) ===
+                            view.name
+                                ? 'background-bw2 text-color-black'
+                                : 'text-color-light-grey-2'
+                        "
+                        class="text-size-14 p-x-8 p-y-4 ta-font-extra-bold c-pointer"
+                        (click)="
+                            onToolBarAction({
+                                action: 'view-mode',
+                                mode: view.name,
+                            })
+                        "
+                    >
+                        {{ view.name }}
+                    </div>
+                </ng-container>
+            </div>
+            <ng-container *ngTemplateOutlet="divider"></ng-container>
+        </ng-template>
+
+        <ng-template #filters>
+            <div class="d-flex gap-1 align-items-center">
+                <app-ca-search-multiple-states
+                    [searchType]="'tabel'"
+                    [selectedTabData]="store?.activeTableData"
+                    [toolbarSearch]="true"
+                ></app-ca-search-multiple-states>
+
+                <ng-container *ngTemplateOutlet="divider"></ng-container>
+
+                @if (selectedTab !== 'Template') {
+                    <app-ca-filter
+                        [type]="'timeFilter'"
+                        [icon]="'ic_time'"
+                        [filterTitle]="'Time Filter'"
+                        [timeSubType]="'past'"
+                        (setFilter)="setFilters($event)"
+                        (clearAll)="setFilters($event)"
+                    >
+                    </app-ca-filter>
+                    <app-ca-filter
+                        [type]="'dispatcherFilter'"
+                        [icon]="'user'"
+                        [searchState]="true"
+                        [filterTitle]="'Dispatcher Filter'"
+                        [defFilterHolder]="true"
+                        (setFilter)="setFilters($event)"
+                        (clearAll)="setFilters($event)"
+                    >
+                    </app-ca-filter>
+                    <!-- [unselectedUser]="
+                    loadService.loadDispatcherFilters$ | async
+                " -->
+                    <app-ca-filter
+                        [type]="'statusFilter'"
+                        [filterTitle]="'Status Filter'"
+                        [icon]="'broker-half-circle'"
+                        (setFilter)="setFilters($event)"
+                        (clearAll)="setFilters($event)"
+                    >
+                    </app-ca-filter>
+
+                    <!-- [loadStatusOptionsArray]="
+                    loadService.loadStatusFilter$ | async
+                " -->
+                    <app-ca-filter
+                        [type]="'moneyFilter'"
+                        [icon]="'dollar'"
+                        [filterTitle]="'Money Filter'"
+                        [subType]="'all'"
+                        [isMoneyFilter]="true"
+                        [isLoadType]="true"
+                        (setFilter)="setFilters($event)"
+                        (clearAll)="setFilters($event)"
+                    >
+                    </app-ca-filter>
+                }
+            </div>
+        </ng-template>
+
+        <ng-template #divider>
+            <div class="new-table--toolbar-divider">
+                <div class="new-table--toolbar-divider-border"></div>
+            </div>
+        </ng-template>
     }
 </div>

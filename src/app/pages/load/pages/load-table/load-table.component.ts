@@ -48,7 +48,11 @@ import { TableDropdownComponentConstants } from '@shared/utils/constants/table-d
 
 // Enums
 import { TableStringEnum, LoadStatusEnum } from '@shared/enums/index';
-import { eActiveViewMode, eLoadStatusType, LoadFilterStringEnum } from '@pages/load/pages/load-table/enums/index';
+import {
+    eActiveViewMode,
+    eLoadStatusType,
+    LoadFilterStringEnum,
+} from '@pages/load/pages/load-table/enums/index';
 
 // Components
 import { ConfirmationModalComponent } from '@shared/components/ta-shared-modals/confirmation-modal/confirmation-modal.component';
@@ -73,6 +77,26 @@ import { Router } from '@angular/router';
 // Helpers
 import { LoadTableHelper } from 'src/app/pages/load/pages/load-table/utils/helpers/load-table.helper';
 
+export interface IFilterAction {
+    action: string;
+    filterType: string;
+    type: string;
+    queryParams: any;
+}
+
+export interface ILoadStateFilters {
+    dateFrom?: string;
+    dateTo?: string;
+    rateFrom?: number;
+    rateTo?: number;
+    paidFrom?: number;
+    paidTo?: number;
+    dueFrom?: number;
+    dueTo?: number;
+    status?: number[];
+    dispatcherIds?: number[];
+}
+
 @Component({
     selector: 'app-load-table',
     templateUrl: './load-table.component.html',
@@ -94,6 +118,14 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
     public sendDataToCardsBack: CardRows[];
     public displayRows$: Observable<any>; //leave this as any for now
 
+    public tableViewData = [
+        {
+            name: 'List',
+        },
+        {
+            name: 'Card',
+        },
+    ];
     constructor(
         //services
         private tableService: TruckassistTableService,
@@ -136,85 +168,65 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
         }, 10);
     }
 
-    public setTableFilter(): void {
-        this.tableService.currentSetTableFilter
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((res) => {
-                const selectedtab: eLoadStatusType =
-                    eLoadStatusType[this.selectedTab];
-                const { ...params } = filter || {};
-
-                switch (res?.filterType) {
-                    case LoadFilterStringEnum.DISPATCHER_FILTER:
-                        this.filter = {
-                            ...params,
-                            dispatcherIds: res.queryParams ?? null,
-                        };
-
-                        break;
-                    case LoadFilterStringEnum.STATUS_FILTER:
-                        this.filter = {
-                            ...params,
-                            status: res.queryParams ?? null,
-                        };
-
-                        break;
-                    case LoadFilterStringEnum.TIME_FILTER:
-                        if (res.queryParams?.timeSelected) {
-                            const { fromDate, toDate } =
-                                RepairTableDateFormaterHelper.getDateRange(
-                                    res.queryParams?.timeSelected,
-                                    res.queryParams.year ?? null
-                                );
-
-                            this.filter = {
-                                ...params,
-                                dateTo: toDate,
-                                dateFrom: fromDate,
-                            };
-                        } else {
-                            this.filter = {
-                                ...params,
-                                dateTo: null,
-                                dateFrom: null,
-                            };
-                        }
-
-                        break;
-                    case LoadFilterStringEnum.MONEY_FILTER:
-                        this.filter = {
-                            ...params,
-                            rateFrom:
-                                res.queryParams?.moneyArray[0].from ?? null,
-                            rateTo: res.queryParams?.moneyArray[0].to ?? null,
-                            paidFrom:
-                                res.queryParams?.moneyArray[1].from ?? null,
-                            paidTo: res.queryParams?.moneyArray[1].to ?? null,
-                            dueFrom:
-                                res.queryParams?.moneyArray[2].from ?? null,
-                            dueTo: res.queryParams?.moneyArray[2].to ?? null,
-                        };
-
-                        break;
-                    case LoadFilterStringEnum.LOAD_TYPE_FILTER:
-                        this.filter = {
-                            ...params,
-                            loadType: res.queryParams?.loadType ?? null,
-                        };
-
-                        break;
-                    default:
-                        break;
+    private mapFilters(
+        res: IFilterAction,
+        currentFilters: ILoadStateFilters
+    ): ILoadStateFilters {
+        // TODO: Cover all clear cases, extract to helpers
+        switch (res.filterType) {
+            case LoadFilterStringEnum.TIME_FILTER: {
+                if (res.action === 'Clear') {
+                    return {
+                        ...currentFilters,
+                        dateFrom: null,
+                        dateTo: null,
+                    };
                 }
+                const { fromDate, toDate } =
+                    RepairTableDateFormaterHelper.getDateRange(
+                        res.queryParams?.timeSelected,
+                        res.queryParams.year ?? null
+                    );
+                return {
+                    ...currentFilters,
+                    dateFrom: fromDate,
+                    dateTo: toDate,
+                };
+            }
+            case LoadFilterStringEnum.MONEY_FILTER: {
+                const moneyArray = res.queryParams?.moneyArray ?? [];
+                return {
+                    ...currentFilters,
+                    rateFrom: moneyArray[0]?.from ?? null,
+                    rateTo: moneyArray[0]?.to ?? null,
+                    paidFrom: moneyArray[1]?.from ?? null,
+                    paidTo: moneyArray[1]?.to ?? null,
+                    dueFrom: moneyArray[2]?.from ?? null,
+                    dueTo: moneyArray[2]?.to ?? null,
+                };
+            }
+            case LoadFilterStringEnum.STATUS_FILTER:
+                return { ...currentFilters, status: res.queryParams as any };
+            case LoadFilterStringEnum.DISPATCHER_FILTER:
+                return {
+                    ...currentFilters,
+                    dispatcherIds: res.queryParams as any,
+                };
+            default:
+                return currentFilters;
+        }
+    }
 
-                this.loadStoreService.dispatchGetList(
-                    {
-                        ...this.filter,
-                        statusType: selectedtab,
-                    },
-                    selectedtab
-                );
-            });
+    public setFilters(filters: IFilterAction): void {
+        const selectedtab: eLoadStatusType = eLoadStatusType[this.selectedTab];
+
+        this.loadStoreService.dispatchGetList(
+            {
+                ...this.mapFilters(filters, this.filter),
+                statusType: selectedtab,
+            },
+            selectedtab
+        );
     }
 
     public onToolBarAction(event: TableToolbarActions): void {
@@ -223,9 +235,7 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
             this.loadStoreService.dispatchGetCreateLoadModalData();
         } else if (action === TableStringEnum.TAB_SELECTED) {
             const { ...params } = this.filter || {};
-            const { tabData } = event || {};
-            const { field } = tabData || {};
-            const selectedTab = LoadTableHelper.capitalizeFirstLetter(field);
+            const selectedTab = LoadTableHelper.capitalizeFirstLetter(mode);
 
             this.selectedTab = selectedTab;
             this.toolbarComponent?.flipCards(false);
@@ -263,7 +273,8 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
             if (direction) {
                 const statusType: number | null =
-                    eLoadStatusType[this.selectedTab] === eLoadStatusType.Template
+                    eLoadStatusType[this.selectedTab] ===
+                    eLoadStatusType.Template
                         ? null
                         : eLoadStatusType[this.selectedTab];
 
@@ -350,8 +361,6 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
         this.onTableUnlock();
         this.onResize();
         this.onSearch();
-
-        this.setTableFilter();
         this.getLoadStatusFilter();
     }
 
@@ -499,21 +508,27 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     } else {
                         const { id } = confirmationData || {};
 
-                        this.loadStoreService.dispatchDeleteLoadOrTemplateById(id, eLoadStatusType[this.selectedTab]);
+                        this.loadStoreService.dispatchDeleteLoadOrTemplateById(
+                            id,
+                            eLoadStatusType[this.selectedTab]
+                        );
                     }
                 } else if (type === TableStringEnum.MULTIPLE_DELETE) {
                     const { array } = confirmationData || {};
 
-                    this.loadStoreService.dispatchBulkDeleteBulkLoadsOrTemplates(array, eLoadStatusType[this.selectedTab])
+                    this.loadStoreService.dispatchBulkDeleteBulkLoadsOrTemplates(
+                        array,
+                        eLoadStatusType[this.selectedTab]
+                    );
                 }
             });
 
         this.confirmationActivationService.getConfirmationActivationData$
-            .pipe(
-                takeUntil(this.destroy$),
-            )
+            .pipe(takeUntil(this.destroy$))
             .subscribe((confirmationResponse) => {
-                this.loadStoreService.dispatchUpdateloadStatusConfirmation(confirmationResponse);
+                this.loadStoreService.dispatchUpdateloadStatusConfirmation(
+                    confirmationResponse
+                );
             });
     }
 
@@ -549,6 +564,7 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     private onSearch(): void {
+        // TODO: WHY NOT USE EMMITER?
         this.caSearchMultipleStatesService.currentSearchTableData
             .pipe(takeUntil(this.destroy$))
             .subscribe((event) => {
@@ -605,7 +621,9 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe((response) => {
                 if (response.length && !this.loadingPage) {
-                    const modalTitle = LoadTableHelper.composeDeleteModalTitle(this.selectedTab);
+                    const modalTitle = LoadTableHelper.composeDeleteModalTitle(
+                        this.selectedTab
+                    );
 
                     const mappedRes = response.map((item) => {
                         return {
@@ -636,7 +654,7 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 }
             });
     }
-    
+
     private observeTableContainer(): void {
         this.resizeObserver = new ResizeObserver((entries) => {
             entries.forEach((entry) => {
@@ -659,8 +677,7 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
         const { ...params } = this.filter || {};
         const { type } = event || {};
         const { id } = event || {};
-        const selectedTab: eLoadStatusType =
-            eLoadStatusType[this.selectedTab];
+        const selectedTab: eLoadStatusType = eLoadStatusType[this.selectedTab];
 
         if (type === TableStringEnum.SHOW_MORE) {
             this.filter = {
@@ -676,7 +693,9 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 true
             );
         } else if (type === TableStringEnum.DELETE) {
-            const modalTitle = LoadTableHelper.composeDeleteModalTitle(this.selectedTab);
+            const modalTitle = LoadTableHelper.composeDeleteModalTitle(
+                this.selectedTab
+            );
 
             this.modalService.openModal(
                 ConfirmationModalComponent,
