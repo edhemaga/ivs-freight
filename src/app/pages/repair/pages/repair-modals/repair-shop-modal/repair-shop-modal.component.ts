@@ -176,7 +176,11 @@ import { AddressMixin } from '@shared/mixins/address/address.mixin';
     ],
 })
 export class RepairShopModalComponent
-    extends AddressMixin(class { addressService!: AddressService; })
+    extends AddressMixin(
+        class {
+            addressService!: AddressService;
+        }
+    )
     implements OnInit, OnDestroy
 {
     // Enums
@@ -1166,7 +1170,7 @@ export class RepairShopModalComponent
                           (item) => item.name === department
                       )?.id,
                       phone,
-                      extensionPhone: phoneExt,
+                      phoneExt: phoneExt,
                       email,
                   };
         });
