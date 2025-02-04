@@ -201,8 +201,6 @@ export class RepairCardComponent
         );
     }
 
-    public updateMapItem<T>(_: T): void {}
-
     public handleShowMoreAction(): void {}
 
     ngOnDestroy() {

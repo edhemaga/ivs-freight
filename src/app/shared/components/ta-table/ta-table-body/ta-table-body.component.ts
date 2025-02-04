@@ -711,6 +711,7 @@ export class TaTableBodyComponent<
     // RAITING
     onLike(row: any) {
         this.detailsDataService.setNewData(row);
+
         this.tableBodyActions.emit({
             data: row,
             type: 'raiting',

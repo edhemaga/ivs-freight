@@ -166,10 +166,10 @@ export class RepairShopDetailsItemRepairComponent implements OnInit {
     }
 
     public handleActionClick(type: string, index?: number): void {
-        const repair = this._repairList[index];
-
         switch (type) {
             case RepairShopDetailsStringEnum.FINISH_ORDER:
+                const repair = this._repairList[index];
+
                 this.handleFinishOrderClick(repair);
 
                 break;
