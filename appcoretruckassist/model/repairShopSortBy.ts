@@ -11,17 +11,28 @@
  */
 
 
-export type RepairShopSortBy = 'Favorites' | 'Rating' | 'OpenNow' | 'Distance' | 'Order' | 'Cost' | 'Bill' | 'AddedDate' | 'EditedDate';
+export type RepairShopSortBy = 'Name' | 'Phone' | 'Email' | 'Address' | 'ServiceType' | 'OpenHours' | 'Bill' | 'Order' | 'Bank' | 'Routing' | 'Rating' | 'Contact' | 'Expenses' | 'UsedDate' | 'DeactivatedDate' | 'AddedDate' | 'EditedDate' | 'Cost' | 'Favorites' | 'Distance';
 
 export const RepairShopSortBy = {
-    Favorites: 'Favorites' as RepairShopSortBy,
-    Rating: 'Rating' as RepairShopSortBy,
-    OpenNow: 'OpenNow' as RepairShopSortBy,
-    Distance: 'Distance' as RepairShopSortBy,
-    Order: 'Order' as RepairShopSortBy,
-    Cost: 'Cost' as RepairShopSortBy,
+    Name: 'Name' as RepairShopSortBy,
+    Phone: 'Phone' as RepairShopSortBy,
+    Email: 'Email' as RepairShopSortBy,
+    Address: 'Address' as RepairShopSortBy,
+    ServiceType: 'ServiceType' as RepairShopSortBy,
+    OpenHours: 'OpenHours' as RepairShopSortBy,
     Bill: 'Bill' as RepairShopSortBy,
+    Order: 'Order' as RepairShopSortBy,
+    Bank: 'Bank' as RepairShopSortBy,
+    Routing: 'Routing' as RepairShopSortBy,
+    Rating: 'Rating' as RepairShopSortBy,
+    Contact: 'Contact' as RepairShopSortBy,
+    Expenses: 'Expenses' as RepairShopSortBy,
+    UsedDate: 'UsedDate' as RepairShopSortBy,
+    DeactivatedDate: 'DeactivatedDate' as RepairShopSortBy,
     AddedDate: 'AddedDate' as RepairShopSortBy,
-    EditedDate: 'EditedDate' as RepairShopSortBy
+    EditedDate: 'EditedDate' as RepairShopSortBy,
+    Cost: 'Cost' as RepairShopSortBy,
+    Favorites: 'Favorites' as RepairShopSortBy,
+    Distance: 'Distance' as RepairShopSortBy
 };
 
