@@ -95,6 +95,8 @@ import {
     LinkTokenResponse,
     ExchangePublicTokenCommand,
     AccessTokenResponse,
+    AccountDetailsResponse,
+    AchDetail,
 } from 'appcoretruckassist';
 import { Tabs } from '@shared/models/tabs.model';
 import { EditData } from '@shared/models/edit-data.model';
@@ -112,6 +114,7 @@ import { SettingsModalSvgRoutes } from '@pages/settings/pages/settings-modals/se
 
 // mixin
 import { AddressMixin } from '@shared/mixins/address/address.mixin';
+import { IBankAccount } from '@pages/settings/models';
 
 // Plaid
 declare const Plaid: IPlaid;
@@ -223,6 +226,9 @@ export class SettingsBasicModalComponent
     public selectedFleetType: string = null;
     public selectedPayTerm: EnumValue = null;
 
+    // Plaid bank verification
+    public isPlaidActive: boolean = false;
+
     // logo actions
     public displayDeleteAction: boolean = false;
     public displayUploadZone: boolean = false;
@@ -253,53 +259,6 @@ export class SettingsBasicModalComponent
         this.checkForCompany();
 
         this.validateCreditCards();
-
-        this.companyService
-            .apiCompanyPlaidLinkTokenGet()
-            .pipe(takeUntil(this.destroy$))
-            .subscribe(async (ltRes: LinkTokenResponse) => {
-
-                if (!ltRes?.link_token) return;
-
-                const plaid: IPlaidCreated =
-                    await Plaid.create({
-                        token: ltRes.link_token,
-                        onSuccess:
-                            (publicToken: string,
-                                metadata: IPlaidLinkOnSuccessMetadata) => {
-                                const publicTokenExchange: ExchangePublicTokenCommand = {
-                                    publicToken
-                                }
-                                if (!publicToken) return;
-                                this.companyService
-                                    .apiCompanyPlaidTokenExchangePost(
-                                        publicTokenExchange
-                                    ).
-                                    pipe(
-                                        takeUntil(this.destroy$),
-                                        switchMap((atRes: AccessTokenResponse) =>
-                                            this.companyService
-                                                .apiCompanyPlaidAuthGetPost(
-                                                    {
-                                                        accessToken: atRes.access_token
-                                                    })
-                                        ),
-                                        takeUntil(this.destroy$)
-                                    ).subscribe(() => {
-
-                                    });
-                            },
-                        onExit: (
-                            error: unknown,
-                            metadata: IPlaidLinkOnExitMetadata) => {
-                        },
-                        onEvent: (eventName: string,
-                            metadata: IPlaidLinkOnEventMetadata) => {
-                        },
-                        onLoad: () => { },
-                    });
-                plaid.open();
-            });
     }
 
     private getConstantData(): void {
@@ -703,7 +662,7 @@ export class SettingsBasicModalComponent
         });
     }
 
-    public addDepartmentContacts(event: { check: boolean; action: string }) {
+    public addDepartmentContacts(event: { check: boolean; action: string }): void {
         if (event.check && this.departmentContacts.valid) {
             const form = this.createDepartmentContacts();
             this.departmentContacts.push(form);
@@ -766,12 +725,7 @@ export class SettingsBasicModalComponent
         return this.companyForm.get('bankAccounts') as UntypedFormArray;
     }
 
-    private createBankAccount(data?: {
-        id: any;
-        bankId: any;
-        routing: any;
-        account: any;
-    }): UntypedFormGroup {
+    private createBankAccount(data?: IBankAccount): UntypedFormGroup {
         return this.formBuilder.group({
             id: [data?.id ? data.id : 0],
             bankId: [
@@ -792,6 +746,22 @@ export class SettingsBasicModalComponent
     public addBankAccount(event: { check: boolean; action: string }) {
         if (event.check && this.bankAccounts.valid)
             this.bankAccounts.push(this.createBankAccount());
+
+        this.bankAccounts?.
+            statusChanges?.
+            pipe(
+                debounceTime(1000),
+                takeUntil(this.destroy$))?.
+            subscribe(
+                () => {
+                    if (this.bankAccounts?.valid && !this.isPlaidActive) {
+                        const value: IBankAccount =
+                            this.bankAccounts.
+                                value[this.bankAccounts.value?.length - 1];
+                        this.checkBankAccountValidity(value);
+                    }
+                }
+            )
     }
 
     public removeBankAccount(id: number) {
@@ -808,14 +778,15 @@ export class SettingsBasicModalComponent
                 distinctUntilChanged(),
                 takeUntil(this.destroy$)
             )
-            .subscribe(async (value) => {
-                this.isBankSelectedFormArray[index] =
-                    await this.bankVerificationService.onSelectBank(
-                        value,
-                        this.bankAccounts.at(index).get('routing'),
-                        this.bankAccounts.at(index).get('account')
-                    );
-            });
+            .subscribe(
+                async (value) => {
+                    // this.isBankSelectedFormArray[index] =
+                    //     await this.bankVerificationService.onSelectBank(
+                    //         value,
+                    //         this.bankAccounts.at(index).get('routing'),
+                    //         this.bankAccounts.at(index).get('account')
+                    //     );
+                });
     }
 
     public get bankCards(): UntypedFormArray {
@@ -1178,13 +1149,12 @@ export class SettingsBasicModalComponent
 
     public onFleetTypeCheck(event: Tabs): void {
         this.fleetTypeTabs = this.fleetTypeTabs.map((item) => {
-            if (item.id === event.id) {
+            if (item.id === event.id)
                 this.companyForm
                     .get(SettingsFormEnum.FLEET_TYPE)
                     .patchValue(item.name);
 
-                this.selectedFleetType = item.name;
-            }
+            this.selectedFleetType = item.name;
 
             return {
                 ...item,
@@ -1204,46 +1174,44 @@ export class SettingsBasicModalComponent
                             this.selectedFleetType
                         )
                     ) {
-                        if (this.companyForm.get('soloLoadedMile').value) {
+                        if (this.companyForm.get('soloLoadedMile').value)
                             this.companyForm
                                 .get('perMileSolo')
                                 .patchValue(
                                     this.companyForm.get('soloLoadedMile').value
                                 );
-                        }
+
                     }
 
                     if (['Team', 'Combined'].includes(this.selectedFleetType)) {
-                        if (this.companyForm.get('teamLoadedMile').value) {
+                        if (this.companyForm.get('teamLoadedMile').value)
                             this.companyForm
                                 .get('perMileTeam')
                                 .patchValue(
                                     this.companyForm.get('teamLoadedMile').value
                                 );
-                        }
+
                     }
                 } else {
                     if (
                         [SettingsModalEnum.SOLO, 'Combined'].includes(
                             this.selectedFleetType
                         )
-                    ) {
-                        if (this.companyForm.get('perMileSolo').value) {
+                    )
+                        if (this.companyForm.get('perMileSolo').value)
                             this.companyForm
                                 .get('soloLoadedMile')
                                 .patchValue(
                                     this.companyForm.get('perMileSolo').value
                                 );
-                        }
-                    }
+
                     if (['Team', 'Combined'].includes(this.selectedFleetType)) {
-                        if (this.companyForm.get('perMileTeam').value) {
+                        if (this.companyForm.get('perMileTeam').value)
                             this.companyForm
                                 .get('teamLoadedMile')
                                 .patchValue(
                                     this.companyForm.get('perMileTeam').value
                                 );
-                        }
                     }
                 }
             });
@@ -2025,7 +1993,7 @@ export class SettingsBasicModalComponent
             (payTerm) => payTerm.id === data.additionalInfo?.payTerm
         );
 
-        if (data.departmentContacts.length) {
+        if (data.departmentContacts.length)
             for (const department of data.departmentContacts) {
                 this.departmentContacts.push(
                     this.createDepartmentContacts({
@@ -2039,9 +2007,8 @@ export class SettingsBasicModalComponent
 
                 this.selectedDepartmentFormArray.push(department.department);
             }
-        }
 
-        if (data.bankAccounts.length) {
+        if (data.bankAccounts.length)
             for (let index = 0; index < data.bankAccounts.length; index++) {
                 this.bankAccounts.push(
                     this.createBankAccount({
@@ -2059,7 +2026,6 @@ export class SettingsBasicModalComponent
                 );
                 this.onBankSelected(index);
             }
-        }
 
         if (data.bankCards.length) {
             for (const card of data.bankCards) {
@@ -2400,6 +2366,69 @@ export class SettingsBasicModalComponent
 
             this.displayDeleteAction = false;
         }
+    }
+
+    private checkBankAccountValidity(addedAccount: IBankAccount): void {
+        this.isPlaidActive = true;
+        this.companyService
+            .apiCompanyPlaidLinkTokenGet()
+            .pipe(takeUntil(this.destroy$))
+            .subscribe(async (res: LinkTokenResponse) => {
+
+                if (!res?.link_token) return;
+
+                const plaid: IPlaidCreated =
+                    await Plaid.create({
+                        token: res.link_token,
+                        onSuccess:
+                            (publicToken: string,
+                                metadata: IPlaidLinkOnSuccessMetadata) => {
+                                const publicTokenExchange: ExchangePublicTokenCommand = {
+                                    publicToken
+                                }
+                                if (!publicToken) return;
+
+                                this.companyService
+                                    .apiCompanyPlaidTokenExchangePost(
+                                        publicTokenExchange
+                                    ).
+                                    pipe(
+                                        takeUntil(this.destroy$),
+                                        switchMap((atRes: AccessTokenResponse) =>
+                                            this.companyService
+                                                .apiCompanyPlaidAuthGetPost(
+                                                    {
+                                                        accessToken: atRes?.access_token
+                                                    })
+                                        ),
+                                    ).subscribe((details: AccountDetailsResponse) => {
+                                        if (details.institution_name !== addedAccount.bankId) return;
+                                        const foundAccount: AchDetail =
+                                            details.account_detail.find(
+                                                detail =>
+                                                (
+                                                    detail.routing === addedAccount.routing &&
+                                                    detail.account === addedAccount.account
+                                                )
+                                            );
+
+                                        // TODO remove test data
+                                        // 1111222233330000
+                                        if (foundAccount) console.log('verified');
+                                    });
+                            },
+                        onExit: (
+                            error: unknown,
+                            metadata: IPlaidLinkOnExitMetadata) => {
+                            this.isPlaidActive = false;
+                        },
+                        onEvent: (eventName: string,
+                            metadata: IPlaidLinkOnEventMetadata) => {
+                        },
+                        onLoad: () => { },
+                    });
+                plaid.open();
+            });
     }
 
     ngOnDestroy(): void {
