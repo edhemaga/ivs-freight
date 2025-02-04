@@ -1,4 +1,7 @@
+// enums
 import { TooltipColorsStringEnum, TrailerNameStringEnum } from '@shared/enums';
+
+// models
 import { DepartmentResponse } from 'appcoretruckassist';
 
 export class MethodsGlobalHelper {
