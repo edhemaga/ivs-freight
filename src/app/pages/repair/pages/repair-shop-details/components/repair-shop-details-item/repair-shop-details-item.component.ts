@@ -29,13 +29,9 @@ import { DetailsConfig } from '@shared/models/details-config.model';
     ],
 })
 export class RepairShopDetailsItemComponent {
-    @Input() detailsConfig: DetailsConfig;
+    @Input() detailsConfig: DetailsConfig[];
     @Input() searchConfig: boolean[];
     @Input() searchValue?: string;
 
     constructor() {}
-
-    public trackByIdentity(_: number, item: DetailsConfig): number {
-        return item.id;
-    }
 }

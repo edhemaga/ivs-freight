@@ -179,6 +179,12 @@ export class DropdownMenuContentConstants {
             svgClass: DropdownMenuStringEnum.OPEN_BUSINESS_SVG_CLASS,
             hasBorder: true,
         },
+        [DropdownMenuStringEnum.EXPORT_BATCH]: {
+            title: DropdownMenuStringEnum.EXPORT_BATCH,
+            type: DropdownMenuStringEnum.EXPORT_BATH_TYPE,
+            svgUrl: 'assets/svg/common/ic_document.svg',
+            svgClass: DropdownMenuStringEnum.ACTIVATE_SVG_CLASS,
+        },
     };
 
     // conditional items
@@ -361,6 +367,23 @@ export class DropdownMenuContentConstants {
             svgClass: DropdownMenuStringEnum.REGULAR_SVG_CLASS,
             hasBorder: true,
             isSelectMenuTypeActionItem: true,
+        },
+
+        // load
+        [DropdownMenuStringEnum.CREATE_LOAD]: {
+            title: DropdownMenuStringEnum.CREATE_LOAD,
+            type: DropdownMenuStringEnum.CREATE_LOAD_TYPE,
+            svgUrl: 'assets/svg/common/ic_plus.svg',
+            svgClass: DropdownMenuStringEnum.ACTIVATE_SVG_CLASS,
+            hasBorder: true,
+        },
+
+        [DropdownMenuStringEnum.CREATE_TEMPLATE]: {
+            title: DropdownMenuStringEnum.CREATE_TEMPLATE,
+            type: DropdownMenuStringEnum.CREATE_TEMPLATE_TYPE,
+            svgUrl: 'assets/svg/common/load/ic_load_template_btn.svg',
+            svgClass: DropdownMenuStringEnum.ACTIVATE_SVG_CLASS,
+            hasBorder: true,
         },
     };
 }

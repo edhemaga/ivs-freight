@@ -1,4 +1,4 @@
-<ng-container *ngIf="_repairShop">
+@if (_repairShop) {
     <div class="cards-item-wrapper-1 repair-shop-details-card">
         <!-- Title Card -->
 
@@ -15,7 +15,7 @@
                 status: _repairShop?.status,
                 phone: _repairShop?.phone,
                 email: _repairShop?.email,
-                address: _repairShop?.address?.address
+                address: _repairShop?.address?.address,
             }"
             (cardValuesEmitter)="handleRepairShopDetailsTitleCardEmit($event)"
         >
@@ -30,7 +30,7 @@
                 <app-repair-shop-details-open-hours-card
                     [cardData]="{
                         openHours: _repairShop?.openHours,
-                        openHoursToday: _repairShop?.openHoursToday
+                        openHoursToday: _repairShop?.openHoursToday,
                     }"
                 ></app-repair-shop-details-open-hours-card>
 
@@ -39,7 +39,7 @@
                 <app-repair-shop-details-services-card
                     [cardData]="{
                         shopServiceType: _repairShop?.shopServiceType,
-                        serviceTypes: _repairShop?.serviceTypes
+                        serviceTypes: _repairShop?.serviceTypes,
                     }"
                 ></app-repair-shop-details-services-card>
 
@@ -49,7 +49,7 @@
                     [cardData]="{
                         bank: _repairShop?.bank,
                         routing: _repairShop?.routing,
-                        account: _repairShop?.account
+                        account: _repairShop?.account,
                     }"
                 ></app-repair-shop-details-bank-card>
 
@@ -76,7 +76,7 @@
                     [bodyTemplate]="'card'"
                     [animationMarginParams]="{
                         marginTop: '0px',
-                        marginBottom: '8px'
+                        marginBottom: '8px',
                     }"
                 >
                     <app-ta-upload-files
@@ -112,4 +112,4 @@
             </div>
         </div>
     </div>
-</ng-container>
+}

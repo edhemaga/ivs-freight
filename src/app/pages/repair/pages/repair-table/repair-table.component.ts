@@ -377,15 +377,15 @@ export class RepairTableComponent
             .subscribe((res) => {
                 if (res?.length) {
                     const mappedRes = res.map(({ tableData: repairShop }) => {
-                        const { id } = repairShop;
+                        const { id, name, address } = repairShop;
 
                         return {
                             id,
                             data: {
                                 ...repairShop,
                             },
-                            modalTitle: repairShop.name,
-                            modalSecondTitle: repairShop?.address?.address,
+                            modalTitle: name,
+                            modalSecondTitle: address?.address,
                         };
                     });
 
@@ -1513,10 +1513,10 @@ export class RepairTableComponent
             tableAddress: address?.address,
             tableShopServiceType: shopServiceType?.name,
             tableShopServices: serviceTypes,
-            tableOpenHours: null /*  {
+            tableOpenHours: {
                 openHours,
                 openHoursToday,
-            }, */,
+            },
             tableRepairCountBill: bill,
             tableRepairCountOrder: order,
             tableBankDetailsBankName: bankResponse?.name,

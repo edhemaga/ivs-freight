@@ -673,6 +673,7 @@ export class FuelTableComponent
         const {
             driver,
             truck,
+            trailer,
             fuelCard,
             fuelStopStore,
             transactionDate,
@@ -680,11 +681,10 @@ export class FuelTableComponent
             total,
             fuelTransactionType,
             files,
-            invoice,
             gallon,
             pricePerGallon,
             fuelTruckNumber,
-            fuelCardHolderName
+            fuelCardHolderName,
         } = data;
 
         const driverFullName = !!driver
@@ -698,6 +698,10 @@ export class FuelTableComponent
         const isIntegratedFuelTransaction =
             fuelTransactionType?.id !== eFuelTransactionType.Manual;
 
+        const tableType: string = !!fuelTransactionType
+            ? eFuelTransactionType[fuelTransactionType?.id]
+            : null;
+
         if (
             driver &&
             !driver?.avatarFile &&
@@ -708,7 +712,6 @@ export class FuelTableComponent
 
         return {
             ...data,
-            loadInvoice: { invoice },
             textDriverShortName:
                 this.nameInitialsPipe.transform(driverFullName),
             avatarColor:
@@ -719,13 +722,23 @@ export class FuelTableComponent
             avatarIsHoverEffect: FuelTableConstants.AVATAR_IS_HOVER_EFFECT,
             isSelected: false,
             tableTruckNumber: truck?.truckNumber ?? fuelTruckNumber,
+            tableTrailer: {
+                text: trailer?.trailerNumber,
+                type: trailer?.trailerType?.name,
+                color: MethodsGlobalHelper.getTrailerTooltipColor(
+                    trailer?.trailerType?.name
+                ),
+                hover: false,
+            },
             tableDriverName: driverFullName,
-            tableDropdownComponentConstantsCardNumber:
-                fuelCard?.cardNumber ?? null,
+            tableFuelCardNumber: fuelCard?.cardNumber ?? null,
+            tableType,
             tableTransactionDate: transactionDate
                 ? this.datePipe.transform(transactionDate, 'MM/dd/yy hh:mm a')
                 : null,
             tableFuelStopName: fuelStopStore?.businessName,
+            phone: fuelStopStore?.phone,
+            fax: fuelStopStore?.fax,
             tableLocation: fuelStopStore?.address
                 ? fuelStopStore?.address.city +
                   TableStringEnum.COMA +
@@ -841,17 +854,17 @@ export class FuelTableComponent
             isFavorite: favourite,
             isFavoriteDisabled: isClosed,
             tableLocation: address
-                ? address.city +
+                ? address?.city +
                   TableStringEnum.COMA +
-                  (address.stateShortName &&
-                  address.stateShortName !== TableStringEnum.NULL
-                      ? address.stateShortName +
-                        TableStringEnum.EMPTY_STRING_SPACE
-                      : TableStringEnum.EMPTY_STRING_PLACEHOLDER) +
-                  (address.zipCode && address.zipCode !== TableStringEnum.NULL
-                      ? address.zipCode
-                      : TableStringEnum.EMPTY_STRING_PLACEHOLDER)
-                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
+                  (address?.stateShortName &&
+                  address?.stateShortName !== TableStringEnum.NULL
+                      ? address?.stateShortName + null
+                      : null) +
+                  (address?.zipCode &&
+                  address?.zipCode !== TableStringEnum.NULL
+                      ? address?.zipCode
+                      : null)
+                : null,
             tableAdded: this.datePipe.transform(
                 data.createdAt,
                 TableStringEnum.DATE_FORMAT

@@ -6,16 +6,14 @@
     [disabledCard]="!_cardData?.activeServicesCount"
     [animationMarginParams]="{
         marginTop: '0px',
-        marginBottom: '8px'
+        marginBottom: '8px',
     }"
 >
     <div class="shop-details-services">
-        <ng-container
-            *ngFor="
-                let service of _cardData?.serviceTypes;
-                trackBy: trackByIdentity
-            "
-        >
+        @for (
+            service of _cardData?.serviceTypes;
+            track service.serviceType.id
+        ) {
             <div
                 class="d-flex align-items-center shop-details-services-item"
                 [ngClass]="{ active: service.active }"
@@ -24,7 +22,7 @@
                     class="shop-details-services-item-icon"
                     [svgStyle]="{
                         'width.px': 18,
-                        'height.px': 18
+                        'height.px': 18,
                     }"
                     [src]="
                         repairShopDetailsSvgRoutes.repairServicesRoute +
@@ -38,6 +36,6 @@
                     {{ service?.serviceType?.name }}
                 </p>
             </div>
-        </ng-container>
+        }
     </div>
 </app-ta-custom-card>

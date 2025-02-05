@@ -1,59 +1,51 @@
 <div class="repair-shop-details-item-container">
-    <ng-container
-        *ngFor="let repairShopItem of detailsConfig; trackBy: trackByIdentity"
-    >
-        <ng-container [ngSwitch]="repairShopItem.template">
+    @for (repairShopItem of detailsConfig; track repairShopItem.id) {
+        @switch (repairShopItem.template) {
             <!-- General -->
 
-            <ng-container *ngSwitchCase="'general'">
+            @case ('general') {
                 <app-repair-shop-details-card
                     [repairShop]="detailsConfig[0]?.data"
                 >
                 </app-repair-shop-details-card>
-            </ng-container>
+            }
 
             <!-- Repair  -->
 
-            <ng-container *ngSwitchCase="'repair'">
+            @case ('repair') {
                 <app-repair-shop-details-item-repair
                     [repairList]="detailsConfig[1]?.data?.repairList"
                     [searchConfig]="searchConfig"
                 >
                 </app-repair-shop-details-item-repair>
-            </ng-container>
+            }
 
             <!-- Vehicle -->
 
-            <ng-container *ngSwitchCase="'repaired-vehicle'">
+            @case ('repaired-vehicle') {
                 <app-repair-shop-details-item-repaired-vehicle
                     [repairedVehicleList]="
                         detailsConfig[2]?.data?.repairedVehicleList
                     "
                     [searchConfig]="searchConfig"
                 ></app-repair-shop-details-item-repaired-vehicle>
-            </ng-container>
+            }
 
             <!-- Contact & Review -->
 
-            <ng-container *ngSwitchCase="'contact-review'">
-                <ng-container
-                    *ngIf="
-                        repairShopItem?.multipleDetailsSelectDropdown[0]
-                            .isActive;
-                        else review
-                    "
-                >
+            @case ('contact-review') {
+                @if (
+                    repairShopItem?.multipleDetailsSelectDropdown[0].isActive
+                ) {
                     <app-repair-shop-details-item-contact
                         [viewData]="detailsConfig[3]?.data"
                         [searchConfig]="searchConfig"
                         [searchValue]="searchValue"
                     ></app-repair-shop-details-item-contact>
-                </ng-container>
-
-                <ng-template #review>
+                } @else {
                     <app-repair-shop-details-item-review></app-repair-shop-details-item-review>
-                </ng-template>
-            </ng-container>
-        </ng-container>
-    </ng-container>
+                }
+            }
+        }
+    }
 </div>
