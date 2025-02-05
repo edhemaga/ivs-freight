@@ -79,8 +79,9 @@ import {
 import { SettingsModalConstants } from '@pages/settings/pages/settings-company/utils/constants/settings-modal.constants';
 
 // Enums
-import { SettingsModalEnum } from '@pages/settings/pages/settings-company/enums/settings-modal.enum';
+import { ESettingsModalEnum } from '@pages/settings/pages/settings-company/enums/settings-modal.enum';
 import { SettingsFormEnum } from '@pages/settings/pages/settings-modals/enums';
+import { EBankAccountStatus, ESettingsFormControls } from '@pages/settings/enums';
 
 // Models
 import {
@@ -108,14 +109,13 @@ import {
     IPlaidLinkOnExitMetadata,
     IPlaidLinkOnSuccessMetadata
 } from '@shared/models';
+import { IBankAccount } from '@pages/settings/models';
 
 // SVG routes
 import { SettingsModalSvgRoutes } from '@pages/settings/pages/settings-modals/settings-company-modals/settings-basic-modal/utils/svg-routes';
 
-// mixin
+// Mixin
 import { AddressMixin } from '@shared/mixins/address/address.mixin';
-import { IBankAccount } from '@pages/settings/models';
-import { EBankAccountStatus } from '@pages/settings/enums';
 
 // Plaid
 declare const Plaid: IPlaid;
@@ -292,8 +292,8 @@ export class SettingsBasicModalComponent
     private checkForCompany(): void {
         setTimeout(() => {
             switch (this.editData.type) {
-                case SettingsModalEnum.NEW_DIVISION:
-                case SettingsModalEnum.EDIT_DIVISION:
+                case ESettingsModalEnum.NEW_DIVISION:
+                case ESettingsModalEnum.EDIT_DIVISION:
                     this.createDivisionForm();
 
                     const handleCompanyPreselectedValues = () => {
@@ -323,20 +323,20 @@ export class SettingsBasicModalComponent
                         });
                     };
 
-                    this.editData.type === SettingsModalEnum.NEW_DIVISION
+                    this.editData.type === ESettingsModalEnum.NEW_DIVISION
                         ? handleCompanyPreselectedValues()
                         : this.editCompanyDivision();
 
                     break;
-                case SettingsModalEnum.EDIT_COMPANY:
-                case SettingsModalEnum.PAYROLL_TAB:
+                case ESettingsModalEnum.EDIT_COMPANY:
+                case ESettingsModalEnum.PAYROLL_TAB:
                     this.editCompany(this.editData.company);
 
-                    if (this.editData.type === SettingsModalEnum.PAYROLL_TAB)
+                    if (this.editData.type === ESettingsModalEnum.PAYROLL_TAB)
                         this.tabChange({ id: 3 });
 
                     break;
-                case SettingsModalEnum.EDIT_COMPANY_FIRST_LOGIN:
+                case ESettingsModalEnum.EDIT_COMPANY_FIRST_LOGIN:
                     this.isSetupCompany = true;
 
                     this.settingsCompanyService
@@ -372,22 +372,22 @@ export class SettingsBasicModalComponent
 
     private createDivisionForm(): void {
         this.inputService.changeValidators(
-            this.companyForm.get(SettingsModalEnum.STARTING),
+            this.companyForm.get(ESettingsModalEnum.STARTING),
             false
         );
 
         this.inputService.changeValidators(
-            this.companyForm.get(SettingsModalEnum.MVR_MONTHS),
+            this.companyForm.get(ESettingsModalEnum.MVR_MONTHS),
             false
         );
 
         this.inputService.changeValidators(
-            this.companyForm.get(SettingsModalEnum.TRUCK_INSPECTION_MONTHS),
+            this.companyForm.get(ESettingsModalEnum.TRUCK_INSPECTION_MONTHS),
             false
         );
 
         this.inputService.changeValidators(
-            this.companyForm.get(SettingsModalEnum.TRAILER_INSPECTION_MONTHS),
+            this.companyForm.get(ESettingsModalEnum.TRAILER_INSPECTION_MONTHS),
             false
         );
     }
@@ -423,8 +423,8 @@ export class SettingsBasicModalComponent
             suffix: [null, suffixValidation],
             factorByDefault: [false],
             autoInvoicing: [false],
-            preferredLoadType: [SettingsModalEnum.FTL],
-            fleetType: [SettingsModalEnum.SOLO],
+            preferredLoadType: [ESettingsModalEnum.FTL],
+            fleetType: [ESettingsModalEnum.SOLO],
             hazMat: [false],
             payTerm: [null],
             customerCredit: [null, customerCreditValidation],
@@ -450,11 +450,11 @@ export class SettingsBasicModalComponent
             useACHPayout: [true],
             // driver & owner
             driveOwnerPayPeriod: [
-                SettingsModalEnum.WEEKLY,
+                ESettingsModalEnum.WEEKLY,
                 Validators.required,
             ],
             driverOwnerEndingIn: [
-                SettingsModalEnum.MONDAY,
+                ESettingsModalEnum.MONDAY,
                 Validators.required,
             ],
 
@@ -476,81 +476,81 @@ export class SettingsBasicModalComponent
             ownerDefaultCommission: [15],
             // accounting
             accountingPayPeriod: [
-                SettingsModalEnum.WEEKLY,
+                ESettingsModalEnum.WEEKLY,
                 Validators.required,
             ],
-            accountingEndingIn: [SettingsModalEnum.MONDAY, Validators.required],
+            accountingEndingIn: [ESettingsModalEnum.MONDAY, Validators.required],
             accountingDefaultBase: [null, defaultBaseValidation],
             // company owner
             companyOwnerPayPeriod: [
-                SettingsModalEnum.WEEKLY,
+                ESettingsModalEnum.WEEKLY,
                 Validators.required,
             ],
             companyOwnerEndingIn: [
-                SettingsModalEnum.MONDAY,
+                ESettingsModalEnum.MONDAY,
                 Validators.required,
             ],
             companyOwnerDefaultBase: [null, defaultBaseValidation],
             // dispatch
-            dispatchPayPeriod: [SettingsModalEnum.WEEKLY, Validators.required],
-            dispatchEndingIn: [SettingsModalEnum.MONDAY, Validators.required],
+            dispatchPayPeriod: [ESettingsModalEnum.WEEKLY, Validators.required],
+            dispatchEndingIn: [ESettingsModalEnum.MONDAY, Validators.required],
             dispatchDefaultBase: [null, defaultBaseValidation],
             dispatchDefaultCommission: [5],
             // manager
-            managerPayPeriod: [SettingsModalEnum.WEEKLY, Validators.required],
-            managerEndingIn: [SettingsModalEnum.MONDAY, Validators.required],
+            managerPayPeriod: [ESettingsModalEnum.WEEKLY, Validators.required],
+            managerEndingIn: [ESettingsModalEnum.MONDAY, Validators.required],
             managerDefaultBase: [null, defaultBaseValidation],
             managerDefaultCommission: [2.5],
             // recruiting
             recruitingPayPeriod: [
-                SettingsModalEnum.WEEKLY,
+                ESettingsModalEnum.WEEKLY,
                 Validators.required,
             ],
-            recruitingEndingIn: [SettingsModalEnum.MONDAY, Validators.required],
+            recruitingEndingIn: [ESettingsModalEnum.MONDAY, Validators.required],
             recruitingDefaultBase: [null, defaultBaseValidation],
             // repair
-            repairPayPeriod: [SettingsModalEnum.WEEKLY, Validators.required],
-            repairEndingIn: [SettingsModalEnum.MONDAY, Validators.required],
+            repairPayPeriod: [ESettingsModalEnum.WEEKLY, Validators.required],
+            repairEndingIn: [ESettingsModalEnum.MONDAY, Validators.required],
             repairDefaultBase: [null, defaultBaseValidation],
             // safety
-            safetyPayPeriod: [SettingsModalEnum.WEEKLY, Validators.required],
-            safetyEndingIn: [SettingsModalEnum.MONDAY, Validators.required],
+            safetyPayPeriod: [ESettingsModalEnum.WEEKLY, Validators.required],
+            safetyEndingIn: [ESettingsModalEnum.MONDAY, Validators.required],
             safetyDefaultBase: [null, defaultBaseValidation],
             // other
-            otherPayPeriod: [SettingsModalEnum.WEEKLY, Validators.required],
-            otherEndingIn: [SettingsModalEnum.MONDAY, Validators.required],
+            otherPayPeriod: [ESettingsModalEnum.WEEKLY, Validators.required],
+            otherEndingIn: [ESettingsModalEnum.MONDAY, Validators.required],
             otherDefaultBase: [null, defaultBaseValidation],
         });
 
         this.inputService.customInputValidator(
-            this.companyForm.get(SettingsModalEnum.EMAIL),
-            SettingsModalEnum.EMAIL,
+            this.companyForm.get(ESettingsModalEnum.EMAIL),
+            ESettingsModalEnum.EMAIL,
             this.destroy$
         );
 
         this.inputService.customInputValidator(
-            this.companyForm.get(SettingsModalEnum.WEB_URL),
-            SettingsModalEnum.URL,
+            this.companyForm.get(ESettingsModalEnum.WEB_URL),
+            ESettingsModalEnum.URL,
             this.destroy$
         );
 
         if (
             [
-                SettingsModalEnum.NEW_DIVISION as string,
-                SettingsModalEnum.EDIT_DIVISION,
+                ESettingsModalEnum.NEW_DIVISION as string,
+                ESettingsModalEnum.EDIT_DIVISION,
             ].includes(this.editData.type)
         )
             this.companyForm
-                .get(SettingsModalEnum.EMAIL)
+                .get(ESettingsModalEnum.EMAIL)
                 .setValidators(Validators.required);
     }
 
     public onModalAction(data: { action: string; bool: boolean }): void {
         switch (data.action) {
-            case SettingsModalEnum.CLOSE:
+            case ESettingsModalEnum.CLOSE:
                 break;
-            case SettingsModalEnum.SAVE:
-            case SettingsModalEnum.STEPPER_SAVE:
+            case ESettingsModalEnum.SAVE:
+            case ESettingsModalEnum.STEPPER_SAVE:
                 if (this.companyForm.invalid || !this.isFormDirty) {
                     this.inputService.markInvalid(this.companyForm);
 
@@ -559,9 +559,9 @@ export class SettingsBasicModalComponent
 
                 if (
                     this.editData.type.includes(
-                        SettingsModalEnum.EDIT_COMPANY
+                        ESettingsModalEnum.EDIT_COMPANY
                     ) ||
-                    this.editData.type.includes(SettingsModalEnum.PAYROLL_TAB)
+                    this.editData.type.includes(ESettingsModalEnum.PAYROLL_TAB)
                 ) {
                     this.updateCompany();
                     this.modalService.setModalSpinner({
@@ -570,7 +570,7 @@ export class SettingsBasicModalComponent
                         close: false,
                     });
                 } else {
-                    if (this.editData.type === SettingsModalEnum.NEW_DIVISION) {
+                    if (this.editData.type === ESettingsModalEnum.NEW_DIVISION) {
                         this.addCompanyDivision();
 
                         this.modalService.setModalSpinner({
@@ -640,7 +640,7 @@ export class SettingsBasicModalComponent
     }
 
     public get departmentContacts(): UntypedFormArray {
-        return this.companyForm.get('departmentContacts') as UntypedFormArray;
+        return this.companyForm.get(ESettingsFormControls.DEPARTMENT_CONTACTS) as UntypedFormArray;
     }
 
     private createDepartmentContacts(data?: {
@@ -681,8 +681,8 @@ export class SettingsBasicModalComponent
             this.departmentContacts.push(form);
 
             this.inputService.customInputValidator(
-                form.get(SettingsModalEnum.EMAIL),
-                SettingsModalEnum.EMAIL,
+                form.get(ESettingsModalEnum.EMAIL),
+                ESettingsModalEnum.EMAIL,
                 this.destroy$
             );
         }
@@ -703,7 +703,7 @@ export class SettingsBasicModalComponent
                 this.selectedDepartmentFormArray[index] = event;
                 break;
             }
-            case 'bankAccounts': {
+            case ESettingsFormControls.BANK_ACCOUNTS: {
                 this.selectedBankAccountFormArray[index] = event;
                 this.isBankSelectedFormArray[index] = true;
                 this.onBankSelected(index);
@@ -739,7 +739,7 @@ export class SettingsBasicModalComponent
     }
 
     public get bankAccounts(): UntypedFormArray {
-        return this.companyForm.get('bankAccounts') as UntypedFormArray;
+        return this.companyForm.get(ESettingsFormControls.BANK_ACCOUNTS) as UntypedFormArray;
     }
 
     private createBankAccount(data?: IBankAccount): UntypedFormGroup {
@@ -797,7 +797,7 @@ export class SettingsBasicModalComponent
     }
 
     public get bankCards(): UntypedFormArray {
-        return this.companyForm.get('bankCards') as UntypedFormArray;
+        return this.companyForm.get(ESettingsFormControls.BANK_CARDS) as UntypedFormArray;
     }
 
     private createBankCard(data?: {
@@ -854,7 +854,7 @@ export class SettingsBasicModalComponent
             case 'timezone':
                 this.selectedTimeZone = event;
                 break;
-            case SettingsModalEnum.CURRENCY:
+            case ESettingsModalEnum.CURRENCY:
                 this.selectedCurrency = event;
                 break;
             case 'driver-pay-period':
@@ -942,7 +942,7 @@ export class SettingsBasicModalComponent
             case 'company-data':
                 this.selectedCompanyData = event;
                 break;
-            case SettingsModalEnum.PAY_TERM:
+            case ESettingsModalEnum.PAY_TERM:
                 this.selectedPayTerm = event;
                 break;
             default:
@@ -974,93 +974,97 @@ export class SettingsBasicModalComponent
 
     private validateMiles(): void {
         this.companyForm
-            .get('soloEmptyMile')
-            .valueChanges.pipe(takeUntil(this.destroy$))
+            .get(ESettingsFormControls.SOLO_EMPTY_MILE)
+            .valueChanges.
+            pipe(takeUntil(this.destroy$))
             .subscribe((value) => {
                 if (value > 10) {
                     this.companyForm
-                        .get('soloEmptyMile')
+                        .get(ESettingsFormControls.SOLO_EMPTY_MILE)
                         .setErrors({ invalid: true });
                 } else {
-                    this.companyForm.get('soloEmptyMile').setErrors(null);
+                    this.companyForm.get(ESettingsFormControls.SOLO_EMPTY_MILE).setErrors(null);
                 }
             });
 
         this.companyForm
-            .get('soloLoadedMile')
+            .get(ESettingsFormControls.SOLO_LOADED_MILE)
+            .valueChanges.
+            pipe(takeUntil(this.destroy$))
+            .subscribe((value) => {
+                if (value > 10) {
+                    this.companyForm
+                        .get(ESettingsFormControls.SOLO_LOADED_MILE)
+                        .setErrors({ invalid: true });
+                } else {
+                    this.companyForm.get(ESettingsFormControls.SOLO_LOADED_MILE)?.
+                        setErrors(null);
+                    if (!this.companyForm.get(ESettingsFormControls.SOLO_EMPTY_MILE).value)
+                        this.companyForm.get(ESettingsFormControls.SOLO_EMPTY_MILE)?.
+                            patchValue(value);
+
+                }
+            });
+
+        this.companyForm
+            .get(ESettingsFormControls.PER_MILE_SOLO)
             .valueChanges.pipe(takeUntil(this.destroy$))
             .subscribe((value) => {
                 if (value > 10) {
                     this.companyForm
-                        .get('soloLoadedMile')
+                        .get(ESettingsFormControls.PER_MILE_SOLO)
                         .setErrors({ invalid: true });
                 } else {
-                    this.companyForm.get('soloLoadedMile').setErrors(null);
-                    if (!this.companyForm.get('soloEmptyMile').value) {
-                        this.companyForm.get('soloEmptyMile').patchValue(value);
+                    this.companyForm.get(ESettingsFormControls.PER_MILE_SOLO).setErrors(null);
+                }
+            });
+
+        this.companyForm
+            .get(ESettingsFormControls.TEAM_EMPTY_MILE)
+            .valueChanges.pipe(takeUntil(this.destroy$))
+            .subscribe((value) => {
+                if (value > 10) {
+                    this.companyForm
+                        .get(ESettingsFormControls.TEAM_EMPTY_MILE)
+                        .setErrors({ invalid: true });
+                } else {
+                    this.companyForm.get(ESettingsFormControls.TEAM_EMPTY_MILE).setErrors(null);
+                }
+            });
+
+        this.companyForm
+            .get(ESettingsFormControls.TEAM_LOADED_MILE)
+            .valueChanges.pipe(takeUntil(this.destroy$))
+            .subscribe((value) => {
+                if (value > 10) {
+                    this.companyForm
+                        .get(ESettingsFormControls.TEAM_LOADED_MILE)
+                        .setErrors({ invalid: true });
+                } else {
+                    this.companyForm.get(ESettingsFormControls.TEAM_LOADED_MILE).setErrors(null);
+                    if (this.companyForm.get(ESettingsFormControls.TEAM_EMPTY_MILE).value) {
+                        this.companyForm.get(ESettingsFormControls.TEAM_EMPTY_MILE).patchValue(value);
                     }
                 }
             });
 
         this.companyForm
-            .get('perMileSolo')
+            .get(ESettingsFormControls.PER_MILE_TEAM)
             .valueChanges.pipe(takeUntil(this.destroy$))
             .subscribe((value) => {
                 if (value > 10) {
                     this.companyForm
-                        .get('perMileSolo')
+                        .get(ESettingsFormControls.PER_MILE_TEAM)
                         .setErrors({ invalid: true });
                 } else {
-                    this.companyForm.get('perMileSolo').setErrors(null);
-                }
-            });
-
-        this.companyForm
-            .get('teamEmptyMile')
-            .valueChanges.pipe(takeUntil(this.destroy$))
-            .subscribe((value) => {
-                if (value > 10) {
-                    this.companyForm
-                        .get('teamEmptyMile')
-                        .setErrors({ invalid: true });
-                } else {
-                    this.companyForm.get('teamEmptyMile').setErrors(null);
-                }
-            });
-
-        this.companyForm
-            .get('teamLoadedMile')
-            .valueChanges.pipe(takeUntil(this.destroy$))
-            .subscribe((value) => {
-                if (value > 10) {
-                    this.companyForm
-                        .get('teamLoadedMile')
-                        .setErrors({ invalid: true });
-                } else {
-                    this.companyForm.get('teamLoadedMile').setErrors(null);
-                    if (this.companyForm.get('teamEmptyMile').value) {
-                        this.companyForm.get('teamEmptyMile').patchValue(value);
-                    }
-                }
-            });
-
-        this.companyForm
-            .get('perMileTeam')
-            .valueChanges.pipe(takeUntil(this.destroy$))
-            .subscribe((value) => {
-                if (value > 10) {
-                    this.companyForm
-                        .get('perMileTeam')
-                        .setErrors({ invalid: true });
-                } else {
-                    this.companyForm.get('perMileTeam').setErrors(null);
+                    this.companyForm.get(ESettingsFormControls.PER_MILE_TEAM).setErrors(null);
                 }
             });
     }
 
     private validateCreditCards(): void {
         this.companyForm
-            .get('bankCards')
+            .get(ESettingsFormControls.BANK_CARDS)
             .valueChanges.pipe(takeUntil(this.destroy$))
             .subscribe((bankCards) => {
                 const hasDuplicates =
@@ -1069,15 +1073,15 @@ export class SettingsBasicModalComponent
                         ? true
                         : false;
 
-                if (hasDuplicates) {
+                if (hasDuplicates)
                     this.companyForm
-                        .get('bankCards')
+                        .get(ESettingsFormControls.BANK_CARDS)
                         .setErrors({ invalid: true });
-                } else {
-                    this.companyForm.get('bankCards').setErrors(null);
-                }
+                else
+                    this.companyForm.get(ESettingsFormControls.BANK_CARDS).setErrors(null);
 
                 let cardTypes: string[] = [];
+
                 bankCards.map((card) => {
                     const cardType = bankCardTypeValidation(card.card);
                     cardTypes.push(cardType);
@@ -1088,16 +1092,16 @@ export class SettingsBasicModalComponent
 
     public onUploadImage(event: any) {
         const base64Data = MethodsGlobalHelper.getBase64DataFromEvent(event);
-        this.companyForm.get('logo').patchValue(base64Data);
-        this.companyForm.get('logo').setErrors(null);
+        this.companyForm.get(ESettingsFormControls.LOGO).patchValue(base64Data);
+        this.companyForm.get(ESettingsFormControls.LOGO).setErrors(null);
     }
 
     public onImageValidation(event: boolean): void {
         if (!event) {
-            this.companyForm.get('logo').setErrors({ invalid: true });
+            this.companyForm.get(ESettingsFormControls.LOGO).setErrors({ invalid: true });
         } else {
             this.inputService.changeValidators(
-                this.companyForm.get('logo'),
+                this.companyForm.get(ESettingsFormControls.LOGO),
                 false
             );
         }
@@ -1140,49 +1144,49 @@ export class SettingsBasicModalComponent
 
     private onSamePerMileCheck(): void {
         this.companyForm
-            .get('loadedAndEmptySameRate')
+            .get(ESettingsFormControls.LOADED_AND_EMPTY_SAME_RATE)
             .valueChanges.pipe(takeUntil(this.destroy$))
             .subscribe((val) => {
                 if (val) {
                     if (
-                        [SettingsModalEnum.SOLO, 'Combined'].includes(
+                        [ESettingsModalEnum.SOLO, ESettingsModalEnum.COMBINED as string].includes(
                             this.selectedFleetType
                         )
                     )
-                        if (this.companyForm.get('soloLoadedMile').value)
+                        if (this.companyForm.get(ESettingsFormControls.SOLO_LOADED_MILE).value)
                             this.companyForm
-                                .get('perMileSolo')
+                                .get(ESettingsFormControls.PER_MILE_SOLO)
                                 .patchValue(
-                                    this.companyForm.get('soloLoadedMile').value
+                                    this.companyForm.get(ESettingsFormControls.SOLO_LOADED_MILE).value
                                 );
 
-                    if (['Team', 'Combined'].includes(this.selectedFleetType))
-                        if (this.companyForm.get('teamLoadedMile').value)
+                    if (['Team', ESettingsModalEnum.COMBINED].includes(this.selectedFleetType))
+                        if (this.companyForm.get(ESettingsFormControls.TEAM_LOADED_MILE).value)
                             this.companyForm
-                                .get('perMileTeam')
+                                .get(ESettingsFormControls.PER_MILE_TEAM)
                                 .patchValue(
-                                    this.companyForm.get('teamLoadedMile').value
+                                    this.companyForm.get(ESettingsFormControls.TEAM_LOADED_MILE).value
                                 );
 
                 } else {
                     if (
-                        [SettingsModalEnum.SOLO, 'Combined'].includes(
+                        [ESettingsModalEnum.SOLO, ESettingsModalEnum.COMBINED as string].includes(
                             this.selectedFleetType
                         )
                     )
-                        if (this.companyForm.get('perMileSolo').value)
+                        if (this.companyForm.get(ESettingsFormControls.PER_MILE_SOLO).value)
                             this.companyForm
-                                .get('soloLoadedMile')
+                                .get(ESettingsFormControls.SOLO_LOADED_MILE)
                                 .patchValue(
-                                    this.companyForm.get('perMileSolo').value
+                                    this.companyForm.get(ESettingsFormControls.PER_MILE_SOLO).value
                                 );
 
-                    if (['Team', 'Combined'].includes(this.selectedFleetType)) {
-                        if (this.companyForm.get('perMileTeam').value)
+                    if (['Team', ESettingsModalEnum.COMBINED].includes(this.selectedFleetType)) {
+                        if (this.companyForm.get(ESettingsFormControls.PER_MILE_TEAM).value)
                             this.companyForm
-                                .get('teamLoadedMile')
+                                .get(ESettingsFormControls.TEAM_LOADED_MILE)
                                 .patchValue(
-                                    this.companyForm.get('perMileTeam').value
+                                    this.companyForm.get(ESettingsFormControls.PER_MILE_TEAM).value
                                 );
                     }
                 }
@@ -1217,7 +1221,7 @@ export class SettingsBasicModalComponent
 
                     if (
                         this.editData.type ===
-                        SettingsModalEnum.EDIT_COMPANY_FIRST_LOGIN
+                        ESettingsModalEnum.EDIT_COMPANY_FIRST_LOGIN
                     ) {
                         this.selectedDriverPayPeriod = payPeriods[0];
                         this.selectedDriverEndingIn = endingIns[0];
@@ -1328,7 +1332,7 @@ export class SettingsBasicModalComponent
         const { additionalInfo, ...company } = this.editData?.company;
 
         this.companyForm.patchValue({
-            // -------------------- Basic Tab
+            // Basic Tab
             name: company.name,
             usDot: company.usDot,
             ein: company.ein,
@@ -1640,7 +1644,7 @@ export class SettingsBasicModalComponent
                 : null,
             preferredLoadType:
                 this.companyForm.get(SettingsFormEnum.PREFERRED_LOAD_TYPE)
-                    .value === SettingsModalEnum.FTL
+                    .value === ESettingsModalEnum.FTL
                     ? 1
                     : 2,
         };
@@ -1750,26 +1754,30 @@ export class SettingsBasicModalComponent
                 : null,
         };
 
+
         const driverOwnerPayroll = {
             departmentId: 10,
             payPeriod: this.selectedDriverPayPeriod?.id,
             endingIn: this.selectedDriverEndingIn?.id,
             solo: {
                 emptyMile: !loadedAndEmptySameRate
-                    ? [SettingsModalEnum.SOLO, 'Combined'].includes(
+                    ? [ESettingsModalEnum.SOLO,
+                    ESettingsModalEnum.COMBINED as string].includes(
                         this.selectedFleetType
                     )
                         ? parseFloat(soloEmptyMile)
                         : null
                     : null,
                 loadedMile: !loadedAndEmptySameRate
-                    ? [SettingsModalEnum.SOLO, 'Combined'].includes(
+                    ? [ESettingsModalEnum.SOLO,
+                    ESettingsModalEnum.COMBINED as string].includes(
                         this.selectedFleetType
                     )
                         ? parseFloat(soloLoadedMile)
                         : null
                     : null,
-                perStop: [SettingsModalEnum.SOLO, 'Combined'].includes(
+                perStop: [ESettingsModalEnum.SOLO,
+                ESettingsModalEnum.COMBINED as string].includes(
                     this.selectedFleetType
                 )
                     ? soloPerStop
@@ -1781,16 +1789,16 @@ export class SettingsBasicModalComponent
             },
             team: {
                 emptyMile: !loadedAndEmptySameRate
-                    ? ['Team', 'Combined'].includes(this.selectedFleetType)
+                    ? ['Team', ESettingsModalEnum.COMBINED].includes(this.selectedFleetType)
                         ? parseFloat(teamEmptyMile)
                         : null
                     : null,
                 loadedMile: !loadedAndEmptySameRate
-                    ? ['Team', 'Combined'].includes(this.selectedFleetType)
+                    ? ['Team', ESettingsModalEnum.COMBINED].includes(this.selectedFleetType)
                         ? parseFloat(teamLoadedMile)
                         : null
                     : null,
-                perStop: ['Team', 'Combined'].includes(this.selectedFleetType)
+                perStop: ['Team', ESettingsModalEnum.COMBINED].includes(this.selectedFleetType)
                     ? teamPerStop
                         ? MethodsCalculationsHelper.convertThousandSepInNumber(
                             teamPerStop
@@ -1798,7 +1806,8 @@ export class SettingsBasicModalComponent
                         : null
                     : null,
             },
-            perMileSolo: [SettingsModalEnum.SOLO, 'Combined'].includes(
+            perMileSolo: [ESettingsModalEnum.SOLO,
+            ESettingsModalEnum.COMBINED as string].includes(
                 this.selectedFleetType
             )
                 ? loadedAndEmptySameRate
@@ -1807,7 +1816,7 @@ export class SettingsBasicModalComponent
                         : null
                     : null
                 : null,
-            perMileTeam: ['Team', 'Combined'].includes(this.selectedFleetType)
+            perMileTeam: ['Team', ESettingsModalEnum.COMBINED].includes(this.selectedFleetType)
                 ? loadedAndEmptySameRate
                     ? perMileTeam
                         ? parseFloat(perMileTeam)
@@ -1825,12 +1834,12 @@ export class SettingsBasicModalComponent
                 )
                 : null,
             defaultSoloDriverCommission: [
-                SettingsModalEnum.SOLO,
-                'Combined',
+                ESettingsModalEnum.SOLO,
+                ESettingsModalEnum.COMBINED as string,
             ].includes(this.selectedFleetType)
                 ? driverSoloDefaultCommission
                 : null,
-            defaultTeamDriverCommission: ['Team', 'Combined'].includes(
+            defaultTeamDriverCommission: ['Team', ESettingsModalEnum.COMBINED].includes(
                 this.selectedFleetType
             )
                 ? driverTeamDefaultCommission
@@ -1946,7 +1955,7 @@ export class SettingsBasicModalComponent
 
         this.onPrefferedLoadCheck({
             id:
-                data.additionalInfo.preferredLoadType === SettingsModalEnum.FTL
+                data.additionalInfo.preferredLoadType === ESettingsModalEnum.FTL
                     ? 1
                     : 2,
             name: data.additionalInfo.preferredLoadType,
@@ -2136,7 +2145,7 @@ export class SettingsBasicModalComponent
                     case 5: {
                         // Safety
                         this.companyForm
-                            .get('safetyPayPeriod')
+                            .get(ESettingsFormControls.SAFETY_PAY_PERIOD)
                             .patchValue(payroll.payPeriod.name);
 
                         this.companyForm
@@ -2234,23 +2243,23 @@ export class SettingsBasicModalComponent
                     }
                     case 10: {
                         this.companyForm
-                            .get('driveOwnerPayPeriod')
+                            .get(ESettingsFormControls.DRIVER_OWNER_PAY_PERIOD)
                             .patchValue(payroll.payPeriod.name);
 
                         this.companyForm
-                            .get('driverOwnerEndingIn')
+                            .get(ESettingsFormControls.DRIVER_OWNER_ENDING_IN)
                             .patchValue(payroll.endingIn.name);
 
                         this.companyForm
-                            .get('soloEmptyMile')
+                            .get(ESettingsFormControls.SOLO_EMPTY_MILE)
                             .patchValue(payroll.solo.emptyMile);
 
                         this.companyForm
-                            .get('soloLoadedMile')
+                            .get(ESettingsFormControls.SOLO_LOADED_MILE)
                             .patchValue(payroll.solo.loadedMile);
 
                         this.companyForm
-                            .get('soloPerStop')
+                            .get(ESettingsFormControls.SOLO_PER_STOP)
                             .patchValue(
                                 payroll.solo.perStop
                                     ? MethodsCalculationsHelper.convertNumberInThousandSep(
@@ -2259,7 +2268,7 @@ export class SettingsBasicModalComponent
                                     : null
                             );
                         this.companyForm
-                            .get('perMileSolo')
+                            .get(ESettingsFormControls.PER_MILE_SOLO)
                             .patchValue(payroll.perMileSolo);
 
                         this.companyForm
@@ -2273,17 +2282,17 @@ export class SettingsBasicModalComponent
                             );
 
                         this.companyForm
-                            .get('teamEmptyMile')
+                            .get(ESettingsFormControls.TEAM_EMPTY_MILE)
                             .patchValue(payroll.team.emptyMile);
 
                         this.companyForm
-                            .get('teamLoadedMile')
+                            .get(ESettingsFormControls.TEAM_LOADED_MILE)
                             .patchValue(payroll.team.loadedMile, {
                                 emitEvent: false,
                             });
 
                         this.companyForm
-                            .get('teamPerStop')
+                            .get(ESettingsFormControls.TEAM_PER_STOP)
                             .patchValue(
                                 payroll.team.perStop
                                     ? MethodsCalculationsHelper.convertNumberInThousandSep(
@@ -2293,7 +2302,7 @@ export class SettingsBasicModalComponent
                             );
 
                         this.companyForm
-                            .get('perMileTeam')
+                            .get(ESettingsFormControls.PER_MILE_TEAM)
                             .patchValue(payroll.perMileTeam);
 
                         this.companyForm
@@ -2307,19 +2316,19 @@ export class SettingsBasicModalComponent
                             );
 
                         this.companyForm
-                            .get('loadedAndEmptySameRate')
+                            .get(ESettingsFormControls.LOADED_AND_EMPTY_SAME_RATE)
                             .patchValue(payroll.loadedAndEmptySameRate);
 
                         this.companyForm
-                            .get('driverSoloDefaultCommission')
+                            .get(ESettingsFormControls.DRIVER_SOLO_DEFAULT_COMMISSION)
                             .patchValue(payroll.defaultSoloDriverCommission);
 
                         this.companyForm
-                            .get('driverTeamDefaultCommission')
+                            .get(ESettingsFormControls.DRIVER_TEAM_DEFAULT_COMMISSION)
                             .patchValue(payroll.defaultTeamDriverCommission);
 
                         this.companyForm
-                            .get('ownerDefaultCommission')
+                            .get(ESettingsFormControls.OWNER_DEFAULT_COMMISSION)
                             .patchValue(payroll.defaultOwnerCommission);
 
                         this.selectedDriverPayPeriod = payroll.payPeriod;
@@ -2333,7 +2342,7 @@ export class SettingsBasicModalComponent
             }
         }
 
-        if (this.companyForm.get('logo').value) {
+        if (this.companyForm.get(ESettingsFormControls.LOGO).value) {
             this.displayDeleteAction = true;
         }
 
@@ -2346,8 +2355,8 @@ export class SettingsBasicModalComponent
         if (event.action === 'delete') {
             this.displayUploadZone = true;
 
-            this.companyForm.get('logo').patchValue(null);
-            this.companyForm.get('logo').setErrors(null);
+            this.companyForm.get(ESettingsFormControls.LOGO).patchValue(null);
+            this.companyForm.get(ESettingsFormControls.LOGO).setErrors(null);
 
             this.displayDeleteAction = false;
         }
