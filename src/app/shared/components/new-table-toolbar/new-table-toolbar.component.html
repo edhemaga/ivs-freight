@@ -6,6 +6,21 @@
         <ng-container *ngTemplateOutlet="leftSide"></ng-container>
         <div class="m-l-auto">
             <ng-container *ngTemplateOutlet="rightSide"></ng-container>
+            @if (showPlusIcon) {
+                <div
+                    class="new-table--toolbar-plus-icon d-flex align-items-center justify-content-center c-pointer"
+                    (click)="onPlusClick.emit(true)"
+                >
+                    <svg-icon
+                        class="svg-fill-white"
+                        [svgStyle]="{
+                            'width.px': 17.78,
+                            'height.px': 17.78,
+                        }"
+                        [src]="plusIcon"
+                    ></svg-icon>
+                </div>
+            }
         </div>
     </div>
 </div>
