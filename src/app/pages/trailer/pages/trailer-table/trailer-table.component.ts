@@ -696,7 +696,7 @@ export class TrailerTableComponent
     }
 
     public getTrailerDropdownContent(): DropdownMenuItem[] {
-        return DropdownMenuContentHelper.getTrailerDropdownContent(
+        return DropdownMenuContentHelper.getTruckTrailerDropdownContent(
             this.selectedTab
         );
     }

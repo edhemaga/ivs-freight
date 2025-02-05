@@ -1,20 +1,33 @@
-import { DatePipe } from "@angular/common";
+import { DatePipe } from '@angular/common';
 
 // enums
-import { TableStringEnum, TooltipColorsStringEnum, TrailerNameStringEnum, TruckNameStringEnum } from "@shared/enums";
-import { LoadModalStopItemsStringEnum } from "@pages/load/enums";
-import { LoadModalStringEnum } from "@pages/load/pages/load-modal/enums";
+import {
+    TableStringEnum,
+    TooltipColorsStringEnum,
+    TruckNameStringEnum,
+} from '@shared/enums';
+import { LoadModalStopItemsStringEnum } from '@pages/load/enums';
+import { LoadModalStringEnum } from '@pages/load/pages/load-modal/enums';
 
 // helpers
-import { AvatarColorsHelper, DataFilterHelper, DropdownMenuContentHelper, LoadStatusHelper, MethodsGlobalHelper } from "@shared/utils/helpers";
-
+import {
+    AvatarColorsHelper,
+    DataFilterHelper,
+    DropdownMenuContentHelper,
+    LoadStatusHelper,
+    MethodsGlobalHelper,
+} from '@shared/utils/helpers';
 
 // models
-import { ILoadGridItem, IViewModelData, LoadModel } from "@pages/load/pages/load-table/models/index";
-import { Stop } from "@shared/models";
+import {
+    ILoadGridItem,
+    IViewModelData,
+    LoadModel,
+} from '@pages/load/pages/load-table/models/index';
+import { Stop } from '@shared/models';
 
 // pipes
-import { NameInitialsPipe, ThousandSeparatorPipe } from "@shared/pipes";
+import { NameInitialsPipe, ThousandSeparatorPipe } from '@shared/pipes';
 
 export class LoadStoreHelper {
     // #region mapLoadData
@@ -23,7 +36,8 @@ export class LoadStoreHelper {
         selectedTab: string
     ): IViewModelData {
         const nameInitialsPipe: NameInitialsPipe = new NameInitialsPipe();
-        const thousandSeparatorPipe: ThousandSeparatorPipe = new ThousandSeparatorPipe();
+        const thousandSeparatorPipe: ThousandSeparatorPipe =
+            new ThousandSeparatorPipe();
         const datePipe: DatePipe = new DatePipe('en-US');
         let commentsWithAvatarColor;
         if (data.comments) {
@@ -197,7 +211,9 @@ export class LoadStoreHelper {
             tableAssignedUnitTrailer: {
                 text: driver?.trailerNumber,
                 type: driver?.trailerType?.name,
-                color: MethodsGlobalHelper.getTrailerTooltipColor(driver?.trailerType?.name),
+                color: MethodsGlobalHelper.getTrailerTooltipColor(
+                    driver?.trailerType?.name
+                ),
                 hover: false,
             },
             tabelLength: loadRequirements?.trailerLength?.name
@@ -221,8 +237,7 @@ export class LoadStoreHelper {
                 ? billing?.payTermName
                 : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
             textDriver:
-                data?.driver?.firstName &&
-                data?.driver?.lastName
+                data?.driver?.firstName && data?.driver?.lastName
                     ? data?.driver?.firstName.charAt(0) +
                       TableStringEnum.DOT +
                       data?.driver?.lastName
@@ -240,10 +255,7 @@ export class LoadStoreHelper {
                 status: status?.statusValue?.name,
             },
             tableInvoice: invoicedDate
-                ? datePipe.transform(
-                      invoicedDate,
-                      TableStringEnum.DATE_FORMAT
-                  )
+                ? datePipe.transform(invoicedDate, TableStringEnum.DATE_FORMAT)
                 : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
             tablePaid: paidDate
                 ? datePipe.transform(paidDate, TableStringEnum.DATE_FORMAT)
@@ -270,32 +282,23 @@ export class LoadStoreHelper {
                 : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
 
             tableAdded: createdAt
-                ? datePipe.transform(
-                      createdAt,
-                      TableStringEnum.DATE_FORMAT
-                  )
+                ? datePipe.transform(createdAt, TableStringEnum.DATE_FORMAT)
                 : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
             tableEdited: updatedAt
-                ? datePipe.transform(
-                      updatedAt,
-                      TableStringEnum.DATE_FORMAT
-                  )
+                ? datePipe.transform(updatedAt, TableStringEnum.DATE_FORMAT)
                 : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
             tableAttachments: [],
             fileCount: fileCount,
-            tableDropdownContent: {
-                hasContent: true,
-                content: DropdownMenuContentHelper.getLoadDropdownContent(
-                    selectedTab
-                )
-            },
+            tableDropdownContent:
+                DropdownMenuContentHelper.getLoadDropdownContent(selectedTab),
         };
     }
     // #endregion
 
     // #region mapTemplateData
-    public static mapTemplateData(data: LoadModel, selectedTab: string): IViewModelData {
-        const thousandSeparator: ThousandSeparatorPipe = new ThousandSeparatorPipe();
+    public static mapTemplateData(data: LoadModel): IViewModelData {
+        const thousandSeparator: ThousandSeparatorPipe =
+            new ThousandSeparatorPipe();
         const datePipe: DatePipe = new DatePipe('en-US');
         const {
             id,
@@ -412,7 +415,9 @@ export class LoadStoreHelper {
             tableAssignedUnitTrailer: {
                 text: dispatch?.trailer?.trailerNumber,
                 type: dispatch?.trailer?.model,
-                color: MethodsGlobalHelper.getTrailerTooltipColor(dispatch?.trailer?.model),
+                color: MethodsGlobalHelper.getTrailerTooltipColor(
+                    dispatch?.trailer?.model
+                ),
                 hover: false,
             },
             tabelLength: loadRequirements?.trailerLength?.name
@@ -457,23 +462,13 @@ export class LoadStoreHelper {
                     : TableStringEnum.DOLLAR_SIGN + '0.00',
 
             tableAdded: createdAt
-                ? datePipe.transform(
-                      createdAt,
-                      TableStringEnum.DATE_FORMAT
-                  )
+                ? datePipe.transform(createdAt, TableStringEnum.DATE_FORMAT)
                 : null,
             tableEdited: updatedAt
-                ? datePipe.transform(
-                      updatedAt,
-                      TableStringEnum.DATE_FORMAT
-                  )
+                ? datePipe.transform(updatedAt, TableStringEnum.DATE_FORMAT)
                 : null,
-            tableDropdownContent: {
-                hasContent: true,
-                content: DropdownMenuContentHelper.getLoadDropdownContent(
-                    selectedTab
-                )
-            },
+            tableDropdownContent:
+                DropdownMenuContentHelper.getLoadTemplateDropdownContent(),
         };
     }
     // #endregion
