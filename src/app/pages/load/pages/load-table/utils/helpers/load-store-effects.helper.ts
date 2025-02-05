@@ -102,23 +102,6 @@ export class LoadStoreEffectsHelper {
         );
     }
 
-    public static getLoadStatusFilter(tableService: TruckassistTableService, dispatcherFilterResponse: DispatcherFilterResponse[], selectedTab: eLoadStatusType ): void {
-        const _options = dispatcherFilterResponse.map(_ => {
-            return {
-                ..._,
-                isSelected: false
-            }
-        });
-        const filterOptionsData = {
-            selectedTab: eLoadStatusType[selectedTab],
-            options: [..._options]
-        };
-
-        tableService.sendLoadStatusFilter(
-            filterOptionsData
-        );
-    }
-
     public static composeUpdateLoadStatusCommand(param: ConfirmationActivation): UpdateLoadStatusCommand {
         const { data, newLocation, id } = (param as any) || {};
         const { nameBack } = data || {};

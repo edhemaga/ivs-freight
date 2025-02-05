@@ -25,6 +25,7 @@ import {
     activeViewModeSelector,
     columnsSelector,
     getDispatcherListSelector,
+    getStatusListSelector,
     selectedTabSelector,
     tableDataSelector,
     tableOptionsSelector,
@@ -36,6 +37,7 @@ import { LoadStoreConstants } from '@pages/load/pages/load-table/utils/constants
 
 // enums
 import { eActiveViewMode, eLoadStatusType } from '@pages/load/pages/load-table/enums/index';
+import { DispatcherFilter } from '@shared/models/filters';
 
 @Injectable({
     providedIn: 'root',
@@ -71,8 +73,12 @@ export class LoadStoreService {
         select(activeTableDataSelector)
     );
 
-    public dispatcherList$: Observable<any> = this.store.pipe(
+    public dispatcherList$: Observable<DispatcherFilter[]> = this.store.pipe(
         select(getDispatcherListSelector)
+    );
+
+    public statusList$: Observable<DispatcherFilter[]> = this.store.pipe(
+        select(getStatusListSelector)
     );
 
     public dispatchLoadList(apiParam: IGetLoadListParam, showMore?: boolean, onSearch?: ICurrentSearchTableData): void {
@@ -86,6 +92,12 @@ export class LoadStoreService {
         this.store.dispatch({
             type: LoadStoreConstants.ACTION_GET_DISPATCHER_LIST,
             loadStatusType: apiParam.statusType
+        })
+
+        
+        this.store.dispatch({
+            type: LoadStoreConstants.ACTION_GET_LOAD_STATUS_FILTER,
+            apiParam
         })
     }
 

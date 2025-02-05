@@ -154,6 +154,7 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
     ngOnInit(): void {
         this.loadStoreService.dispatchLoadList({
             statusType: eLoadStatusType.Active,
+            loadStatusType: LoadFilterStringEnum.ACTIVE_2
         });
 
         this.dispatchHubService.connect();

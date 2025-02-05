@@ -189,7 +189,7 @@ export const getLoadStatusFilter = createAction(
 
 export const getLoadStatusFilterSuccess = createAction(
     LoadStoreConstants.ACTION_GET_LOAD_STATUS_FILTER_SUCCESS,
-    props<{ dispatcherFilter: DispatcherFilterResponse[] }>()
+    props<{ statusList: DispatcherFilterResponse[] }>()
 );
 
 export const getLoadStatusFilterError = createAction(

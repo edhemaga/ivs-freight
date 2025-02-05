@@ -232,13 +232,11 @@ export class LoadEffect {
         this.actions$.pipe(
             ofType(LoadActions.getLoadStatusFilter),
             exhaustMap((action) => {
-                const { apiParam, selectedTab } = action || {};
-
+                const { apiParam } = action || {}; 
                 return this.loadService.getLoadStatusFilter(apiParam).pipe(
-                    map((dispatcherFilter) => {
-                        LoadStoreEffectsHelper.getLoadStatusFilter(this.tableService, dispatcherFilter, selectedTab);
+                    map((statusList) => {
 
-                        return LoadActions.getLoadStatusFilterSuccess({ dispatcherFilter });
+                        return LoadActions.getLoadStatusFilterSuccess({ statusList });
                     }),
                     catchError((error) => of(LoadActions.getLoadStatusFilterError({ error })))
                 )

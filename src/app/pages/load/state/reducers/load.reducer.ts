@@ -28,7 +28,8 @@ export const initialState: ILoadState = {
     selectedTab: eLoadStatusType.Active,
     activeViewMode: eActiveViewMode.List,
 
-    dispatcherList: []
+    dispatcherList: [],
+    statusList: []
 };
 // #endregion
 
@@ -65,8 +66,13 @@ export const loadReducer = createReducer(
     on(LoadActions.getConvertToLoadTemplateModalDataError, (state) => ({ ...state })),
 
     on(LoadActions.getDispatcherList, (state) => ({ ...state })),
-    on(LoadActions.getDispatcherListSuccess, (state, { dispatcherList }) => ({ ...state, dispatcherList })),
+    on(LoadActions.getDispatcherListSuccess, (state, { dispatcherList }) => Functions.mapDispatcherSuccessResult(state, dispatcherList)),
     on(LoadActions.getDispatcherListError, (state) => ({ ...state })),
+
+    
+    on(LoadActions.getLoadStatusFilter, (state) => ({ ...state })),
+    on(LoadActions.getLoadStatusFilterSuccess, (state, {statusList}) => Functions.mapStatusFilterSuccessResult(state, statusList)),
+    on(LoadActions.getLoadStatusFilterError, (state) => ({ ...state })),
 // #endregion
 
 // #region CREATE

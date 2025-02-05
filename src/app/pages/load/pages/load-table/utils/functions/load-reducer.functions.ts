@@ -1,5 +1,5 @@
 // appcoretruckassist
-import { CommentResponse, LoadListDto, LoadListResponse, LoadModalResponse, LoadResponse, LoadStatus, LoadStatusResponse, LoadTemplateResponse, TableType } from "appcoretruckassist";
+import { CommentResponse, DispatcherFilterResponse, LoadListDto, LoadListResponse, LoadModalResponse, LoadResponse, LoadStatus, LoadStatusResponse, LoadTemplateResponse, TableType } from "appcoretruckassist";
 
 // models
 import { ICreateCommentMetadata, ILoadGridItem, ILoadState, ILoadTemplateGridItem } from "@pages/load/pages/load-table/models/index";
@@ -7,6 +7,7 @@ import { ITableColummn } from "@shared/models";
 
 // enums
 import { eLoadStatusType } from "@pages/load/pages/load-table/enums/index";
+import { FilterHelper } from "@shared/utils/helpers";
 
 export const getLoadsOrTemplatesPayloadSuccessResult = function(state: ILoadState, data: ILoadGridItem[] | ILoadTemplateGridItem[], templateCount: number, pendingCount: number, activeCount: number, closedCount: number, selectedTab: eLoadStatusType, showMore?: boolean): ILoadState {
     const { data: stateData } = state || {};
@@ -347,3 +348,23 @@ export const tableColumnResizeResult = function(state: ILoadState, columns: ITab
 
     return result;
 }
+
+export function mapDispatcherSuccessResult(state: ILoadState, dispatcherList: DispatcherFilterResponse[]): ILoadState {
+    const result: ILoadState = {
+        ...state,
+        dispatcherList: FilterHelper.dispatcherFilter(dispatcherList)
+    }
+
+    return result;
+}
+
+export function mapStatusFilterSuccessResult(state: ILoadState, statusList: any[]): ILoadState {
+    // backend time is not good? 
+    const result: ILoadState = {
+        ...state,
+        statusList
+    }
+
+    return result;
+}
+        

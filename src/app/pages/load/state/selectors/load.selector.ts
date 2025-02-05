@@ -364,3 +364,16 @@ export const getDispatcherListSelector = createSelector(
         return dispatcherList;
     }
 );
+
+export const statusListSelector = createSelector(loadState, (state) => {
+    const { statusList } = state || {};
+    
+    return statusList;
+});
+
+export const getStatusListSelector = createSelector(
+    statusListSelector,
+    (statusList) => {
+        return statusList;
+    }
+);

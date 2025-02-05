@@ -4,7 +4,8 @@
     async, viewData: loadStoreService.viewData$ | async, activeTableData:
     loadStoreService.activeTableData$ | async, activeViewMode:
     loadStoreService.activeViewMode$ | async, dispatcherList:
-    loadStoreService.dispatcherList$ | async }; as store ) {
+    loadStoreService.dispatcherList$ | async, statusList:
+    loadStoreService.statusList$ | async }; as store ) {
     <app-new-table-toolbar
         [title]="'Load'"
         [leftSide]="leftSide"
@@ -125,7 +126,6 @@
                 [unselectedUser]="store.dispatcherList"
             >
             </app-ca-filter>
-            {{store.dispatcherList | json}}
             <!-- -->
             <app-ca-filter
                 [type]="'statusFilter'"
@@ -133,12 +133,11 @@
                 [icon]="'broker-half-circle'"
                 (setFilter)="setFilters($event)"
                 (clearAll)="setFilters($event)"
+                [loadStatusOptionsArray]="store.statusList"
             >
             </app-ca-filter>
 
-            <!-- [loadStatusOptionsArray]="
-                    store.dispatcherList$ | async
-                " -->
+            <!-- -->
             <app-ca-filter
                 [type]="'moneyFilter'"
                 [icon]="'dollar'"
@@ -169,8 +168,6 @@
     <ng-template #divider>
         <div class="new-table--toolbar-divider">
             <div class="new-table--toolbar-divider-border"></div>
-
-            {{ store?.teo }}
         </div>
     </ng-template>
     }
