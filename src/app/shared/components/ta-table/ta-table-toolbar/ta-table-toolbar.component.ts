@@ -766,13 +766,13 @@ export class TaTableToolbarComponent implements OnInit, OnChanges, OnDestroy {
 
         this.timeOutToaggleColumn = setTimeout(() => {
             if (!column.isPined) {
-                this.columns.filter((item) => {
-                    if (column.title === item.title) {
-                        item.hidden = !item.hidden;
+                let _column = this.columns.find((item) => item.field === column.field);
+                let _columnGroup = this.columnsOptionsWithGroups.find((item) => item.field === column.field);
 
-                        this.setTableConfig(item, index);
-                    }
-                });
+                _column.hidden = !column.hidden;
+                _columnGroup.hidden = !column.hidden;
+
+                this.setTableConfig(column, index);
             }
         }, 10);
     }
@@ -861,7 +861,7 @@ export class TaTableToolbarComponent implements OnInit, OnChanges, OnDestroy {
         let newColumns = [...this.columns];
 
         newColumns = newColumns.map((newColumn) => {
-            if (newColumn.title === column.title) newColumn = column;
+            if (newColumn.field === column.field) newColumn = column;
 
             return newColumn;
         });

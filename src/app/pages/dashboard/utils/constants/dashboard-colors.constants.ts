@@ -2,12 +2,12 @@ import {
     BarPerformanceColorsPallete,
     ByStateColorsPallete,
     LinePerformanceColorsPallete,
-    TopRatedMainColorsPallete,
+    TopRatedMainColorsPalette,
     TopRatedSecondaryColorsPallete,
 } from '@pages/dashboard/models/colors-pallete.model';
 
 export class DashboardColors {
-    static TOP_RATED_MAIN_COLORS_PALLETE: TopRatedMainColorsPallete[] = [
+    public static TOP_RATED_MAIN_COLORS_PALLETE: TopRatedMainColorsPalette[] = [
         { color: 'light-blue', code: '#6692f1' },
         { color: 'orange', code: '#fab15c' },
         { color: 'red', code: '#e66767' },
@@ -21,7 +21,7 @@ export class DashboardColors {
         { color: 'grey', code: '#cccccc' },
     ];
 
-    static TOP_RATED_SECONDARY_COLORS_PALLETE: TopRatedSecondaryColorsPallete[] = [
+    public static TOP_RATED_SECONDARY_COLORS_PALLETE: TopRatedSecondaryColorsPallete[] = [
         { code: '#92b1f5' },
         { code: '#fbc88b' },
         { code: '#ed9292' },
@@ -83,8 +83,8 @@ export class DashboardColors {
     ];
 
     static BAR_PERFORMANCE_COLORS_PALLETE: BarPerformanceColorsPallete[] = [
-        {color: 'rgba(170, 170, 170, 1)' },
-        {color: 'rgba(218, 218, 218, 1)' }
+        { color: 'rgba(170, 170, 170, 1)' },
+        { color: 'rgba(218, 218, 218, 1)' }
     ];
 
     static BY_STATE_COLORS_PALLETE: ByStateColorsPallete[] = [
@@ -95,4 +95,9 @@ export class DashboardColors {
         { code: '#BED0F9' },
     ];
 
+    static COLOR_WHITE = '#FFFFFF';
+
+    static COLOR_BLACK = '#000000';
+
+    static COLOR_GRAY = '#919191';
 }

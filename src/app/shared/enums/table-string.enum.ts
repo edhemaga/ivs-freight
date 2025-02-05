@@ -351,6 +351,7 @@ export enum TableStringEnum {
     FUEL_TABLE_VIEW = 'Fuel-table-view',
     ASC = 'asc',
     FUEL_TRANSACTION_FILTER_INTEGRATED = 'fuel-filter',
+    FUEL_TRANSACTION_FILTER_INCOMPLETE = 'fuel-filter-incomplete',
     FUEL_STOP_FILTER_CLOSED = 'closed-filter',
 
     // Contact
@@ -435,6 +436,7 @@ export enum TableStringEnum {
     REPAIR_ARRAY = 'repairArray',
     FUEL_ARRAY = 'fuelArray',
     CLOSED_ARRAY = 'closedArray',
+    FUEL_INCOMPLETE_ARRAY = 'fuelIncompleteArray',
     DRIVER_ARCHIVED_ARRAY = 'driverArhivedArray',
     DEACTIVATED_ARHIVED_ARRAY = 'deactivatedUserArray',
     DNU_FILTER = 'dnu-filter',

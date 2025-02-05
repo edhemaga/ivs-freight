@@ -9,6 +9,7 @@ export enum RepairShopDetailsStringEnum {
 
     COMMON = 'common',
     MEDIUM = 'medium',
+    DEFAULT = 'default',
 
     ADD_NEW = 'ADD NEW',
 

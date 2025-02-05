@@ -107,13 +107,13 @@ import {
     ShipperResponse,
     ReviewResponse,
     DepartmentResponse,
-    AddressListResponse,
-    AddressResponse,
 } from 'appcoretruckassist';
 import { ReviewComment } from '@shared/models/review-comment.model';
 import { Tabs } from '@shared/models/tabs.model';
 import { ShipperContactExtended } from '@pages/customer/pages/shipper-modal/models';
-import { AddressProperties } from '@shared/components/ta-input-address-dropdown/models/address-properties';
+
+// mixing
+import { AddressMixin } from '@shared/mixins/address/address.mixin';
 
 @Component({
     selector: 'app-shipper-modal',
@@ -149,10 +149,13 @@ import { AddressProperties } from '@shared/components/ta-input-address-dropdown/
         FormatDatePipe,
     ],
 })
-export class ShipperModalComponent implements OnInit, OnDestroy {
+export class ShipperModalComponent
+    extends AddressMixin(class { addressService!: AddressService; })
+    implements OnInit, OnDestroy
+{
     @Input() editData;
 
-    private destroy$ = new Subject<void>();
+    public destroy$ = new Subject<void>();
 
     public shipperForm: UntypedFormGroup;
     public shipperName: string;
@@ -216,9 +219,6 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
     public modalButtonType = ModalButtonType;
     public modalButtonSize = ModalButtonSize;
 
-    public addressList: AddressListResponse;
-    public addressData: AddressResponse;
-
     constructor(
         private formBuilder: UntypedFormBuilder,
 
@@ -232,11 +232,13 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
         private taLikeDislikeService: TaLikeDislikeService,
         private reviewRatingService: ReviewsRatingService,
         private formService: FormService,
-        private addressService: AddressService,
+        public addressService: AddressService,
         private confirmationService: ConfirmationService,
         private confirmationActivationService: ConfirmationActivationService,
         private ngbActiveModal: NgbActiveModal
-    ) {}
+    ) {
+        super();
+    }
 
     ngOnInit() {
         this.createForm();
@@ -1337,24 +1339,6 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
 
     get getCountryStateInputConfig(): ITaInput {
         return ShipperModalConfig.getCountryStateInputConfig();
-    }
-
-    public onAddressChange({
-        query,
-        searchLayers,
-        closedBorder,
-    }: AddressProperties): void {
-        this.addressService
-            .getAddresses(query, searchLayers, closedBorder)
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((res) => (this.addressList = res));
-    }
-
-    public getAddressData(address: string): void {
-        this.addressService
-            .getAddressInfo(address)
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((res) => (this.addressData = res));
     }
 
     ngOnDestroy(): void {

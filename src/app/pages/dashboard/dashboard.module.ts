@@ -11,10 +11,17 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
 import { ClickOutsideCustomRangeDirective } from '@pages/dashboard/directives/click-outside-custom-range.directive';
 
 // pipes
-import { ThousandFormatterPipe } from '@pages/dashboard/pipes/thousand-formater.pipe';
+
 import { SetTrendIconPipe } from '@pages/dashboard/pages/dashboard-performance/pipes/set-trend-icon.pipe';
 import { SetTrendLabelPipe } from '@pages/dashboard/pages/dashboard-performance/pipes/set-trend-label.pipe';
-import { CustomSubperiodWidthPipe } from '@pages/dashboard/pipes/custom-subperiod-width.pipe';
+import { TextColorPipe } from '@pages/dashboard/pages/dashboard-by-state/pipes/text-color.pipe';
+import {
+    ConditionalMoneyFilterPipe,
+    CustomSubperiodWidthPipe,
+    DropdownClassPipe,
+    ShowMorePipe,
+    ThousandFormatterPipe,
+} from '@pages/dashboard/pipes';
 
 // components
 import { DashboardComponent } from '@pages/dashboard/pages/dashboard/dashboard.component';
@@ -33,7 +40,11 @@ import { TaInputDropdownComponent } from '@shared/components/ta-input-dropdown/t
 import { TaCustomPeriodRangeComponent } from '@shared/components/ta-custom-period-range/ta-custom-period-range.component';
 import { TaSearchV2Component } from '@shared/components/ta-search-v2/ta-search-v2.component';
 import { TaSpinnerComponent } from '@shared/components/ta-spinner/ta-spinner.component';
-import { CaChartComponent, CaMapComponent, CaChartManagerComponent } from 'ca-components';
+import {
+    CaChartComponent,
+    CaMapComponent,
+    CaChartManagerComponent,
+} from 'ca-components';
 
 @NgModule({
     declarations: [
@@ -65,6 +76,10 @@ import { CaChartComponent, CaMapComponent, CaChartManagerComponent } from 'ca-co
         SetTrendIconPipe,
         SetTrendLabelPipe,
         CustomSubperiodWidthPipe,
+        TextColorPipe,
+        DropdownClassPipe,
+        ConditionalMoneyFilterPipe,
+        ShowMorePipe,
 
         // components
         TaTabSwitchComponent,
@@ -73,8 +88,8 @@ import { CaChartComponent, CaMapComponent, CaChartManagerComponent } from 'ca-co
         TaSearchV2Component,
         TaSpinnerComponent,
         CaMapComponent,
-        CaChartComponent, 
-        CaChartManagerComponent
+        CaChartComponent,
+        CaChartManagerComponent,
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })

@@ -146,8 +146,12 @@
                                     [receivedAddressList]="addressList"
                                     [receivedAddressData]="addressData"
                                     (selectedAddress)="onHandleAddress($event)"
-                                    (sentAddressData)="onAddressChange($event)"
-                                    (sentAddressValue)="getAddressData($event)"
+                                    (sentAddressData)="
+                                        onAddressChange($event)
+                                    "
+                                    (sentAddressValue)="
+                                        getAddressData($event)
+                                    "
                                 ></app-ca-input-address-dropdown>
                             </div>
 

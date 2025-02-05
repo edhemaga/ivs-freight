@@ -166,7 +166,7 @@ export class DropdownMenuContentHelper {
 
         const requestedSharedItems = [
             isCentralised
-                ? DropdownMenuStringEnum.SUGGEST_EDIT
+                ? DropdownMenuStringEnum.EDIT /* DropdownMenuStringEnum.SUGGEST_EDIT */
                 : DropdownMenuStringEnum.EDIT,
             DropdownMenuStringEnum.VIEW_DETAILS,
             isPinned

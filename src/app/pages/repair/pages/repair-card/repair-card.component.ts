@@ -104,10 +104,6 @@ export class RepairCardComponent
         this.windowResizeUpdateDescriptionDropdown();
     }
 
-    public trackCard(item: number): number {
-        return item;
-    }
-
     public flipCard(index: number): void {
         this.isCardFlippedCheckInCards = this.cardHelper.flipCard(index);
     }
@@ -204,8 +200,6 @@ export class RepairCardComponent
                 : DropdownMenuStringEnum.REPAIR
         );
     }
-
-    public updateMapItem<T>(_: T): void {}
 
     public handleShowMoreAction(): void {}
 

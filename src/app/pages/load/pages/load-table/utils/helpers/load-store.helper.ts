@@ -11,12 +11,8 @@ import { LoadModalStopItemsStringEnum } from '@pages/load/enums';
 import { LoadModalStringEnum } from '@pages/load/pages/load-modal/enums';
 
 // helpers
-import {
-    AvatarColorsHelper,
-    DataFilterHelper,
-    DropdownMenuContentHelper,
-    LoadStatusHelper,
-} from '@shared/utils/helpers';
+import { AvatarColorsHelper, DataFilterHelper, DropdownMenuContentHelper, LoadStatusHelper, MethodsGlobalHelper } from "@shared/utils/helpers";
+
 
 // models
 import {
@@ -131,7 +127,7 @@ export class LoadStoreHelper {
             referenceNumber: loadDetails?.referenceNumber,
             textCommodity: loadDetails?.generalCommodityName,
             textWeight: loadDetails?.weight,
-            tableTrailerColor: this.setTrailerTooltipColor(
+            tableTrailerColor: MethodsGlobalHelper.getTrailerTooltipColor(
                 loadRequirements?.trailerType?.name
             ),
             tableTrailerName: loadRequirements?.trailerType?.name,
@@ -211,7 +207,7 @@ export class LoadStoreHelper {
             tableAssignedUnitTrailer: {
                 text: driver?.trailerNumber,
                 type: driver?.trailerType?.name,
-                color: this.setTrailerTooltipColor(driver?.trailerType?.name),
+                color: MethodsGlobalHelper.getTrailerTooltipColor(driver?.trailerType?.name),
                 hover: false,
             },
             tabelLength: loadRequirements?.trailerLength?.name
@@ -359,7 +355,7 @@ export class LoadStoreHelper {
             referenceNumber: referenceNumber,
             textCommodity: generalCommodity?.name,
             textWeight: weight,
-            tableTrailerColor: this.setTrailerTooltipColor(
+            tableTrailerColor: MethodsGlobalHelper.getTrailerTooltipColor(
                 loadRequirements?.trailerType?.name
             ),
             tableTrailerName: loadRequirements?.trailerType?.name,
@@ -413,7 +409,7 @@ export class LoadStoreHelper {
             tableAssignedUnitTrailer: {
                 text: dispatch?.trailer?.trailerNumber,
                 type: dispatch?.trailer?.model,
-                color: this.setTrailerTooltipColor(dispatch?.trailer?.model),
+                color: MethodsGlobalHelper.getTrailerTooltipColor(dispatch?.trailer?.model),
                 hover: false,
             },
             tabelLength: loadRequirements?.trailerLength?.name
@@ -468,33 +464,6 @@ export class LoadStoreHelper {
         };
     }
     // #endregion
-
-    private static setTrailerTooltipColor(trailerName: string): string {
-        switch (trailerName) {
-            case TrailerNameStringEnum.FLAT_BED:
-            case TrailerNameStringEnum.STEP_DECK:
-            case TrailerNameStringEnum.LOW_BOY_RGN:
-            case TrailerNameStringEnum.CHASSIS:
-            case TrailerNameStringEnum.CONESTOGA:
-            case TrailerNameStringEnum.SIDE_KIT:
-            case TrailerNameStringEnum.CONTAINER:
-                return TooltipColorsStringEnum.BLUE;
-            case TrailerNameStringEnum.DRY_VAN:
-            case TrailerNameStringEnum.REEFER:
-                return TooltipColorsStringEnum.YELLOW;
-            case TrailerNameStringEnum.END_DUMP:
-            case TrailerNameStringEnum.BOTTOM_DUMP:
-            case TrailerNameStringEnum.HOPPER:
-            case TrailerNameStringEnum.TANKER:
-            case TrailerNameStringEnum.PNEUMATIC_TANKER:
-                return TooltipColorsStringEnum.RED;
-            case TrailerNameStringEnum.CAR_HAULER:
-            case TrailerNameStringEnum.CAR_HAULER_STINGER:
-                return TooltipColorsStringEnum.LIGHT_GREEN;
-            default:
-                return;
-        }
-    }
 
     private static setTruckTooltipColor(truckName: string): string {
         switch (truckName) {

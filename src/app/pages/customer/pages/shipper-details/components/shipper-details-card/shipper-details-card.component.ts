@@ -5,7 +5,6 @@ import {
     OnChanges,
     SimpleChanges,
     ViewEncapsulation,
-    ViewChild,
     OnDestroy,
 } from '@angular/core';
 import { UntypedFormControl } from '@angular/forms';
@@ -23,17 +22,22 @@ import { ShipperService } from '@pages/customer/services';
 import { ModalService } from '@shared/services/modal.service';
 
 // Constants
-//import { ShipperDetailsChartsConfiguration } from '@pages/customer/pages/shipper-details/utils/constants/';
+import { ShipperDetailsChartsConfiguration } from '@pages/customer/pages/shipper-details/components/shipper-details-item/utils/constants';
+import { ChartConfiguration, ChartLegendConfiguration } from '@shared/utils/constants';
 
 // Components
 import { ShipperModalComponent } from '@pages/customer/pages/shipper-modal/shipper-modal.component';
 
 // Models
 import { IChartConfiguration } from 'ca-components/lib/components/ca-chart/models';
+import { ChartLegendProperty, Tabs } from '@shared/models';
+import { ShipperAverageWaitingTimeResponse } from 'appcoretruckassist';
 
 // Enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
-import { ShipperDetailsChartsConfiguration } from '../shipper-details-item/utils/constants';
+
+// Helpers
+import { ChartHelper, TimespanConvertHelper } from '@shared/utils/helpers';
 
 @Component({
     selector: 'app-shipper-details-card',
@@ -49,10 +53,18 @@ export class ShipperDetailsCardComponent
     public shipperDropdowns: any[] = [];
     public shipperList: any[] = this.shipperMinimalListQuery.getAll();
     public note: UntypedFormControl = new UntypedFormControl();
-    public shipperTabs: any[] = [];
-    public payrollChartConfig: IChartConfiguration = ShipperDetailsChartsConfiguration.PAYROLL_CHART_CONFIG;
+    public shipperTabs: Tabs[] = [];
+    public selectedTab: number;
 
-    public monthList: any[] = [
+    // Charts
+    public payrollChartData!: ShipperAverageWaitingTimeResponse;
+    public payrollChartConfig: IChartConfiguration;
+    public payrollChartLegend!: ChartLegendProperty[];
+    public payrollChartTabs: Tabs[] = ChartHelper.generateTimeTabs();
+    public payrollLegendHighlightedBackground!: boolean;
+    public payrollLegendTitle!: string;
+
+    public monthList: string[] = [
         'JAN',
         'FEB',
         'MAR',
@@ -97,7 +109,6 @@ export class ShipperDetailsCardComponent
         }
     }
     ngOnInit(): void {
-        this.tabsButton();
 
         let currentIndex = this.shipperList.findIndex(
             (shipper) => shipper.id === this.shipper.id
@@ -116,39 +127,6 @@ export class ShipperDetailsCardComponent
             });
     }
 
-    public tabsButton() {
-        this.shipperTabs = [
-            {
-                id: 223,
-                name: '1M',
-                checked: true,
-            },
-            {
-                name: '3M',
-                checked: false,
-            },
-            {
-                id: 412,
-                name: '6M',
-                checked: false,
-            },
-            {
-                id: 515,
-                name: '1Y',
-                checked: false,
-            },
-            {
-                id: 1210,
-                name: 'YTD',
-                checked: false,
-            },
-            {
-                id: 1011,
-                name: 'ALL',
-                checked: false,
-            },
-        ];
-    }
     public onSelectedShipper(event: any) {
         if (event && event.id !== this.shipper.id) {
             if (event.name === TableStringEnum.ADD_NEW_3) {
@@ -219,8 +197,8 @@ export class ShipperDetailsCardComponent
     }
 
     public changeShipperTabs(ev: any) {
-        //const chartType = this.stackedBarChart?.detailsTimePeriod(ev.name);
-        //this.getShipperChartData(this.shipper.id, chartType);
+        this.selectedTab = ev.id;
+        this.getShipperChartData(this.shipper.id, this.selectedTab);
     }
 
     public getShipperChartData(
@@ -240,48 +218,26 @@ export class ShipperDetailsCardComponent
         this.shipperService
             .getShipperChart(id, chartType)
             .pipe(takeUntil(this.destroy$))
-            .subscribe((item) => {
-                let avgPickupTime = this.convertTimeSpanToMinutes(
+            .subscribe((item: ShipperAverageWaitingTimeResponse) => {
+                let avgPickupTime = TimespanConvertHelper.convertTimeSpanToMinutes(
                     item.avgPickupTime
                 ),
-                    avgDeliveryTime = this.convertTimeSpanToMinutes(
+                    avgDeliveryTime = TimespanConvertHelper.convertTimeSpanToMinutes(
                         item.avgDeliveryTime
                     );
-                // this.stackedBarChartConfig.dataLabels = [];
-                // this.stackedBarChartConfig.chartValues = [
-                //     avgPickupTime,
-                //     avgDeliveryTime,
-                // ];
-                // this.stackedBarChartLegend[0].value = avgPickupTime;
-                // this.stackedBarChartLegend[1].value = avgDeliveryTime;
-                // let hasValue = false;
-                // this.stackedBarChartLegend.map((leg) => {
-                //     if (leg.value > 0) {
-                //         hasValue = true;
-                //     }
-                // });
-                // this.stackedBarChartConfig.hasValue = hasValue;
+
                 let milesPerGallon = [],
                     costPerGallon = [],
                     labels = [],
                     maxValue = 0;
-                // if (item?.shipperAverageWaitingTimeChartResponse?.length > 17) {
-                //     this.stackedBarChartConfig.dataProperties[0].defaultConfig.barThickness = 10;
-                //     this.stackedBarChartConfig.dataProperties[1].defaultConfig.barThickness = 10;
-                // } else {
-                //     this.stackedBarChartConfig.dataProperties[0].defaultConfig.barThickness = 18;
-                //     this.stackedBarChartConfig.dataProperties[1].defaultConfig.barThickness = 18;
-                // }
-                //this.stackedBarChart.toolTipData = [];
+
                 item.shipperAverageWaitingTimeChartResponse.map((data) => {
-                    let pickup = this.convertTimeSpanToMinutes(
+                    let pickup = TimespanConvertHelper.convertTimeSpanToMinutes(
                         data.avgPickupTime
                     );
-                    let delivery = this.convertTimeSpanToMinutes(
+                    let delivery = TimespanConvertHelper.convertTimeSpanToMinutes(
                         data.avgDeliveryTime
                     );
-
-                    //this.stackedBarChart.toolTipData.push(data);
 
                     if (delivery + pickup > maxValue) {
                         maxValue =
@@ -298,53 +254,40 @@ export class ShipperDetailsCardComponent
                     costPerGallon.push(delivery);
                 });
 
-                // this.stackedBarAxes['verticalLeftAxes']['maxValue'] =
-                //     maxValue / 2;
-                // this.stackedBarAxes['verticalLeftAxes']['minValue'] = -(
-                //     maxValue / 2
-                // );
-                // this.stackedBarChartConfig.dataLabels = labels;
-                // this.stackedBarChartConfig.dataProperties[0].defaultConfig.data =
-                //     milesPerGallon;
-                // this.stackedBarChartConfig.dataProperties[1].defaultConfig.data =
-                //     costPerGallon;
-                // this.stackedBarChart.chartDataCheck(
-                //     this.stackedBarChartConfig.chartValues
-                // );
-                // this.stackedBarChart.updateChartData(hideAnimation);
-                // this.stackedBarChart.saveValues = JSON.parse(
-                //     JSON.stringify(this.stackedBarChartLegend)
-                // );
-                // this.stackedBarChart.legendAttributes = JSON.parse(
-                //     JSON.stringify(this.stackedBarChartLegend)
-                // );
+                this.payrollChartData = item;
+                this.payrollChartConfig = {
+                    ...ShipperDetailsChartsConfiguration.PAYROLL_CHART_CONFIG,
+                    chartData: ChartHelper.generateDataByDateTime(this.
+                        payrollChartData.
+                        shipperAverageWaitingTimeChartResponse,
+                        ChartConfiguration.shipperAverageWaitingTimeConfiguration
+                    )
+                }
             });
-
-        //this.ref.detectChanges();
     }
 
-    convertTimeSpanToMinutes(timespan) {
-        if (!timespan) {
-            return 0;
-        }
-        let totalMinutes = 0;
-        let timeArr = JSON.stringify(timespan);
-        timeArr = JSON.parse(timeArr).split('.');
-        if (timeArr.length > 1) {
-            const days = Number(timeArr[0]);
-            let hoursAndMinutes = timeArr[1].split(':');
-            const hours = Number(hoursAndMinutes[0]) + days * 24;
-            const minutes = Number([hoursAndMinutes[1]]);
+    public setPayrollLegendOnHover(index: number | null): void {
 
-            totalMinutes = hours * 60 + minutes;
-        } else {
-            let hoursAndMinutes = timeArr[0].split(':');
-            const hours = Number(hoursAndMinutes[0]);
-            const minutes = Number([hoursAndMinutes[1]]);
-            totalMinutes = hours * 60 + minutes;
-        }
+        const {
+            hasHighlightedBackground,
+            title
+        } =
+            ChartHelper.setChartLegend
+                (index,
+                    this.payrollChartConfig.chartData.labels
+                );
 
-        return totalMinutes;
+        this.payrollLegendHighlightedBackground = hasHighlightedBackground;
+        this.payrollLegendTitle = title;
+
+        const dataForLegend =
+            (isNaN(index) || index < 0) ?
+                this.payrollChartData :
+                this.payrollChartData?.
+                    shipperAverageWaitingTimeChartResponse[index]
+
+        this.payrollChartLegend = ChartLegendConfiguration
+            .shipperAverageWaitingTimeConfiguration(dataForLegend);
     }
 
     ngOnDestroy(): void {
