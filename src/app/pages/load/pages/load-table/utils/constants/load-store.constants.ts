@@ -131,4 +131,7 @@ export class LoadStoreConstants {
     static ACTION_DELETE_BULK_LOAD_TEMPLATE_ERROR = `${ this.COMPONENT_NAME_KEY } Delete Bulk Load Template Error`;
 
     static ACTION_CAN_DELETE_SELECTED_DATA_ROWS = `${ this.COMPONENT_NAME_KEY } Can Delete Selected Data Rows`;
+    static ACTION_GET_DISPATCHER_LIST = `${ this.COMPONENT_NAME_KEY } Get Dispatcher List`;
+    static ACTION_GET_DISPATCHER_LIST_SUCCESS = `${ this.COMPONENT_NAME_KEY } Get Dispatcher List Success`;
+    static ACTION_GET_DISPATCHER_LIST_ERROR = `${ this.COMPONENT_NAME_KEY } Get Dispatcher List Error`;
 }

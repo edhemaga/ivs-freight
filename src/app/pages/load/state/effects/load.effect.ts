@@ -532,5 +532,23 @@ export class LoadEffect {
             })
         )
     );
+
+    public getDispatcherList$ = createEffect(() =>
+        this.actions$.pipe(
+            ofType(LoadActions.getDispatcherList),
+            exhaustMap((action) => {
+                const { loadStatusType } = action || {};
+                return this.loadService.getLoadDispatcherFilter(loadStatusType).pipe(
+                    map((dispatcherList) => {
+
+                        return LoadActions.getDispatcherListSuccess({ dispatcherList });
+                    }),
+                    catchError((error) =>
+                        of(LoadActions.getDispatcherListError({ error }))
+                    )
+                );
+            })
+        )
+    );
     // #endregion
 }

@@ -572,3 +572,20 @@ export const deleteBulkLoadError = createAction(
     props<{ error: Error }>()
 );
 // #endregion
+
+// #region getDispatcherList
+export const getDispatcherList = createAction(
+    LoadStoreConstants.ACTION_GET_DISPATCHER_LIST,
+    props<{  loadStatusType?: LoadStatusType }>()
+);
+
+export const getDispatcherListSuccess = createAction(
+    LoadStoreConstants.ACTION_GET_DISPATCHER_LIST_SUCCESS,
+    props<{  dispatcherList?: DispatcherFilterResponse[] }>()
+);
+
+export const getDispatcherListError = createAction(
+    LoadStoreConstants.ACTION_GET_DISPATCHER_LIST_ERROR,
+    props<{ error: Error }>()
+);
+// #endregion

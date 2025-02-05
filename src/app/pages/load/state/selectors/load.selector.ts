@@ -352,3 +352,15 @@ export const activeTableDataSelector = createSelector(
         return result;
     }
 );
+export const dispatcherListSelector = createSelector(loadState, (state) => {
+    const { dispatcherList } = state || {};
+    
+    return dispatcherList;
+});
+
+export const getDispatcherListSelector = createSelector(
+    dispatcherListSelector,
+    (dispatcherList) => {
+        return dispatcherList;
+    }
+);

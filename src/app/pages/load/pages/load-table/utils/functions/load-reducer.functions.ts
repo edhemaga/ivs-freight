@@ -267,8 +267,6 @@ export const initializeLoadGridItem = function(item: LoadResponse | LoadTemplate
 }
 
 export const getLoadModalDataSuccessResult = function(state: ILoadState, modal: LoadModalResponse, load?: LoadResponse): ILoadState {
-
-
     const result: ILoadState = {
         ...state
     }

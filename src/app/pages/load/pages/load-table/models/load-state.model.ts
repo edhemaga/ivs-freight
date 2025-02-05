@@ -1,6 +1,6 @@
 // models
 import { ILoadGridItem, ILoadTemplateGridItem } from "@pages/load/pages/load-table/models/index"
-import { LoadModalResponse } from "appcoretruckassist";
+import { DispatcherFilterResponse, LoadModalResponse } from "appcoretruckassist";
 
 // enums
 import { eActiveViewMode, eLoadStatusType } from "@pages/load/pages/load-table/enums/index"
@@ -17,5 +17,7 @@ export interface ILoadState {
 
     canDeleteSelectedDataRows: boolean,
     selectedTab: eLoadStatusType,
-    activeViewMode: eActiveViewMode
+    activeViewMode: eActiveViewMode, 
+
+    dispatcherList: DispatcherFilterResponse[];
 }

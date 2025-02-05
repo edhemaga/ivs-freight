@@ -3,10 +3,12 @@
     loadStoreService.tableData$ | async, columns: loadStoreService.columns$ |
     async, viewData: loadStoreService.viewData$ | async, activeTableData:
     loadStoreService.activeTableData$ | async, activeViewMode:
-    loadStoreService.activeViewMode$ | async, }; as store ) {
+    loadStoreService.activeViewMode$ | async, dispatcherList:
+    loadStoreService.dispatcherList$ | async }; as store ) {
     <app-new-table-toolbar
         [title]="'Load'"
-        [leftSide]="leftSide" 
+        [leftSide]="leftSide"
+        [rightSide]="rightSide"
     ></app-new-table-toolbar>
 
     @if (store?.activeViewMode === 'List') {
@@ -120,11 +122,11 @@
                 [defFilterHolder]="true"
                 (setFilter)="setFilters($event)"
                 (clearAll)="setFilters($event)"
+                [unselectedUser]="store.dispatcherList"
             >
             </app-ca-filter>
-            <!-- [unselectedUser]="
-                    loadService.loadDispatcherFilters$ | async
-                " -->
+            {{store.dispatcherList | json}}
+            <!-- -->
             <app-ca-filter
                 [type]="'statusFilter'"
                 [filterTitle]="'Status Filter'"
@@ -135,7 +137,7 @@
             </app-ca-filter>
 
             <!-- [loadStatusOptionsArray]="
-                    loadService.loadStatusFilter$ | async
+                    store.dispatcherList$ | async
                 " -->
             <app-ca-filter
                 [type]="'moneyFilter'"
@@ -151,10 +153,24 @@
             }
         </div>
     </ng-template>
-    
+
+    <ng-template #rightSide>
+        <div
+            (click)="
+                onToolBarAction({
+                    action: tableStringEnum.OPEN_MODAL
+                })
+            "
+        >
+            ADD
+        </div>
+    </ng-template>
+
     <ng-template #divider>
         <div class="new-table--toolbar-divider">
             <div class="new-table--toolbar-divider-border"></div>
+
+            {{ store?.teo }}
         </div>
     </ng-template>
     }

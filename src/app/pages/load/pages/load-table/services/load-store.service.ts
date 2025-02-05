@@ -24,6 +24,7 @@ import {
     activeTableDataSelector,
     activeViewModeSelector,
     columnsSelector,
+    getDispatcherListSelector,
     selectedTabSelector,
     tableDataSelector,
     tableOptionsSelector,
@@ -70,6 +71,10 @@ export class LoadStoreService {
         select(activeTableDataSelector)
     );
 
+    public dispatcherList$: Observable<any> = this.store.pipe(
+        select(getDispatcherListSelector)
+    );
+
     public dispatchLoadList(apiParam: IGetLoadListParam, showMore?: boolean, onSearch?: ICurrentSearchTableData): void {
         this.store.dispatch({
             type: LoadStoreConstants.ACTION_LOAD_TABLE_COMPONENT_LOAD_LIST,
@@ -77,6 +82,11 @@ export class LoadStoreService {
             showMore,
             onSearch
         });
+        
+        this.store.dispatch({
+            type: LoadStoreConstants.ACTION_GET_DISPATCHER_LIST,
+            loadStatusType: apiParam.statusType
+        })
     }
 
     public dispatchLoadTemplateList(apiParam: IGetLoadTemplateParam, showMore?: boolean, onSearch?: ICurrentSearchTableData): void {
