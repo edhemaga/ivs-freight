@@ -212,7 +212,7 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
         private pmService: PmService,
         private driverService: DriverService,
         private formService: FormService
-    ) {}
+    ) { }
 
     ngOnInit(): void {
         this.createForm();
@@ -251,7 +251,7 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
 
         if (
             changes.tableType?.currentValue ===
-                ModalTableTypeEnum.REPAIR_ORDER ||
+            ModalTableTypeEnum.REPAIR_ORDER ||
             changes.tableType?.currentValue === ModalTableTypeEnum.REPAIR_BILL
         ) {
             this.resetIsRepairBillTableForm();
@@ -633,8 +633,8 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
                         ...itemRow,
                         ...(this.isRepairBillTable &&
                             !this.isRepairOrderTable && {
-                                subtotal: this.subTotals[index]?.subtotal,
-                            }),
+                            subtotal: this.subTotals[index]?.subtotal,
+                        }),
                         pmTruck:
                             this.selectedTruckTrailerRepairPm[index]?.truckId &&
                             this.selectedTruckTrailerRepairPm[index],
@@ -1357,10 +1357,10 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
                                 ? item.qty
                                 : item.quantity;
                             const calculateSubtotal =
-                                MethodsCalculationsHelper.convertThousanSepInNumber(
+                                MethodsCalculationsHelper.convertThousandSepInNumber(
                                     quantity
                                 ) *
-                                MethodsCalculationsHelper.convertThousanSepInNumber(
+                                MethodsCalculationsHelper.convertThousandSepInNumber(
                                     item.price
                                 );
 

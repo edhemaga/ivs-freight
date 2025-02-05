@@ -118,7 +118,7 @@ export class PayrollBaseModalComponent implements OnInit {
         private ngbActiveModal: NgbActiveModal,
         private payrollFacadeService: PayrollFacadeService,
         private confirmationService: ConfirmationService
-    ) {}
+    ) { }
 
     ngOnInit() {
         this.initForm();
@@ -198,11 +198,11 @@ export class PayrollBaseModalComponent implements OnInit {
     }
 
     private calculateDeductionPayAmmount(): void {
-        const ammount = MethodsCalculationsHelper.convertThousanSepInNumber(
+        const ammount = MethodsCalculationsHelper.convertThousandSepInNumber(
             this.baseForm.get(PayrollStringEnum.AMOUNT).value
         );
         const numberOfPayments =
-            MethodsCalculationsHelper.convertThousanSepInNumber(
+            MethodsCalculationsHelper.convertThousandSepInNumber(
                 this.baseForm.get(PayrollStringEnum.LIMITED_NUMBER).value
             );
 
@@ -216,7 +216,7 @@ export class PayrollBaseModalComponent implements OnInit {
     }
 
     private getEmployeesDropdown(): void {
-        this.payrollBonusService.getPayrollBonusModal().subscribe((res) => {});
+        this.payrollBonusService.getPayrollBonusModal().subscribe((res) => { });
     }
 
     private driverAndTruckDropdowns(): void {
@@ -229,7 +229,7 @@ export class PayrollBaseModalComponent implements OnInit {
                     this.mapTrucks(res.trucks);
                     this.populateData();
                 },
-                error: () => {},
+                error: () => { },
             });
     }
 
@@ -320,25 +320,25 @@ export class PayrollBaseModalComponent implements OnInit {
             ...this.truckConfig,
             multipleInputValues: truck
                 ? {
-                      options: [
-                          {
-                              id: truck.id,
-                              value: truck.name,
-                              isImg: false,
-                              isSvg: true,
-                              folder: LoadModalStringEnum.COMMON,
-                              subFolder: LoadModalStringEnum.TRUCKS,
-                              logoName: truck?.logoName,
-                              logoType: truck?.logoType,
-                          },
+                    options: [
+                        {
+                            id: truck.id,
+                            value: truck.name,
+                            isImg: false,
+                            isSvg: true,
+                            folder: LoadModalStringEnum.COMMON,
+                            subFolder: LoadModalStringEnum.TRUCKS,
+                            logoName: truck?.logoName,
+                            logoType: truck?.logoType,
+                        },
 
-                          {
-                              value: `${truck.owner}`,
-                              logoName: null,
-                          },
-                      ],
-                      customClass: 'text-suffix',
-                  }
+                        {
+                            value: `${truck.owner}`,
+                            logoName: null,
+                        },
+                    ],
+                    customClass: 'text-suffix',
+                }
                 : null,
         };
     }

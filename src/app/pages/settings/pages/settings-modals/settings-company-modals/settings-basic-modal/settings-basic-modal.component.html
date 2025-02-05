@@ -236,12 +236,8 @@
                                     (selectedAddress)="onHandleAddress($event)"
                                     [receivedAddressList]="addressList"
                                     [receivedAddressData]="addressData"
-                                    (sentAddressData)="
-                                        onAddressChange($event)
-                                    "
-                                    (sentAddressValue)="
-                                        getAddressData($event)
-                                    "
+                                    (sentAddressData)="onAddressChange($event)"
+                                    (sentAddressValue)="getAddressData($event)"
                                 ></app-ca-input-address-dropdown>
                             </div>
 
@@ -609,7 +605,7 @@
                                     </div>
                                     <div class="common-fake-table-body">
                                         @for (
-                                            bankAccount of bankAccounts.controls;
+                                            bankAccount of bankAccounts.value;
                                             let ind = $index;
                                             track ind
                                         ) {
@@ -703,12 +699,19 @@
                                                         [src]="
                                                             svgRoutes.iconConfirmSvgRoute
                                                         "
+                                                        (click)="
+                                                            verifyBankAccount(
+                                                                ind
+                                                            )
+                                                        "
                                                     ></svg-icon>
 
                                                     <div
                                                         class="common-fake-table-status common-fake-table-status-pending"
                                                     >
-                                                        Pending
+                                                        {{
+                                                            bankAccount?.status
+                                                        }}
                                                     </div>
 
                                                     <div

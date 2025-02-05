@@ -53,7 +53,7 @@ export class MethodsCalculationsHelper {
                             arrayStops.forEach((item) => {
                                 if (
                                     parseInt(item) >
-                                        parseInt(doubleValues[0]) &&
+                                    parseInt(doubleValues[0]) &&
                                     parseInt(item) < parseInt(doubleValues[1])
                                 ) {
                                     arrayStops.pop();
@@ -157,7 +157,7 @@ export class MethodsCalculationsHelper {
     };
 
     //------------------------------- Convert thousand separator in number -------------------------------
-    static convertThousanSepInNumber = (value: string) => {
+    static convertThousandSepInNumber = (value: string) => {
         if (value) return parseFloat(value.toString().replace(/,/g, ''));
     };
 

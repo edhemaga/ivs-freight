@@ -119,8 +119,7 @@ import { AddressMixin } from '@shared/mixins/address/address.mixin';
 })
 export class UserModalComponent
     extends AddressMixin(class { addressService!: AddressService; })
-    implements OnDestroy, OnInit
-{
+    implements OnDestroy, OnInit {
     @Input() editData: any;
     public userForm: UntypedFormGroup;
     public selectedTab: number = 1;
@@ -304,7 +303,7 @@ export class UserModalComponent
                     };
                     this.labelsBank = [...this.labelsBank, this.selectedBank];
                 },
-                error: () => {},
+                error: () => { },
             });
     }
 
@@ -406,23 +405,23 @@ export class UserModalComponent
                             ? this.selectedPayment.id
                             : null,
                         salary: salary
-                            ? MethodsCalculationsHelper.convertThousanSepInNumber(
-                                  salary
-                              )
+                            ? MethodsCalculationsHelper.convertThousandSepInNumber(
+                                salary
+                            )
                             : null,
                         startDate: startDate
                             ? MethodsCalculationsHelper.convertDateToBackend(
-                                  startDate
-                              )
+                                startDate
+                            )
                             : null,
                         is1099: this.selectedW21099
                             ? this.selectedW21099.name === '1099'
                             : false,
                         bankId: this.selectedBank ? this.selectedBank.id : null,
                         base: base
-                            ? MethodsCalculationsHelper.convertThousanSepInNumber(
-                                  base
-                              )
+                            ? MethodsCalculationsHelper.convertThousandSepInNumber(
+                                base
+                            )
                             : null,
                         commission: commission ? parseFloat(commission) : null,
                     };
@@ -680,7 +679,7 @@ export class UserModalComponent
             includeInPayroll: includeInPayroll,
             paymentType: this.selectedPayment ? this.selectedPayment.id : null,
             salary: salary
-                ? MethodsCalculationsHelper.convertThousanSepInNumber(salary)
+                ? MethodsCalculationsHelper.convertThousandSepInNumber(salary)
                 : null,
             startDate: startDate
                 ? MethodsCalculationsHelper.convertDateToBackend(startDate)
@@ -690,7 +689,7 @@ export class UserModalComponent
                 : false,
             bankId: this.selectedBank ? this.selectedBank.id : null,
             base: base
-                ? MethodsCalculationsHelper.convertThousanSepInNumber(base)
+                ? MethodsCalculationsHelper.convertThousandSepInNumber(base)
                 : null,
             commission: commission ? parseFloat(commission) : null,
         };
@@ -743,7 +742,7 @@ export class UserModalComponent
             includeInPayroll: includeInPayroll,
             paymentType: this.selectedPayment ? this.selectedPayment.id : null,
             salary: salary
-                ? MethodsCalculationsHelper.convertThousanSepInNumber(salary)
+                ? MethodsCalculationsHelper.convertThousandSepInNumber(salary)
                 : null,
             startDate: startDate
                 ? MethodsCalculationsHelper.convertDateToBackend(startDate)
@@ -753,7 +752,7 @@ export class UserModalComponent
                 : false,
             bankId: this.selectedBank ? this.selectedBank.id : null,
             base: base
-                ? MethodsCalculationsHelper.convertThousanSepInNumber(base)
+                ? MethodsCalculationsHelper.convertThousandSepInNumber(base)
                 : null,
             commission: commission ? parseFloat(commission) : null,
         };
@@ -836,13 +835,13 @@ export class UserModalComponent
                             : null,
                         salary: res.salary
                             ? MethodsCalculationsHelper.convertNumberInThousandSep(
-                                  res.salary
-                              )
+                                res.salary
+                            )
                             : null,
                         startDate: res.startDate
                             ? MethodsCalculationsHelper.convertDateFromBackend(
-                                  res.startDate
-                              )
+                                res.startDate
+                            )
                             : null,
                         is1099: res.is1099,
                         bankId: res.bank ? res.bank.name : null,
@@ -850,8 +849,8 @@ export class UserModalComponent
                         accountNumber: res.accountNumber,
                         base: res.base
                             ? MethodsCalculationsHelper.convertNumberInThousandSep(
-                                  res.base
-                              )
+                                res.base
+                            )
                             : null,
                         commission: res.commission,
                         note: res.note,
@@ -949,7 +948,7 @@ export class UserModalComponent
                         this.isCardAnimationDisabled = false;
                     }, 1000);
                 },
-                error: () => {},
+                error: () => { },
             });
     }
 
@@ -981,8 +980,8 @@ export class UserModalComponent
                             personalEmail: this.editData.data.personalEmail,
                             departmentId: this.editData.data.departmentId
                                 ? this.departments[
-                                      this.editData.data.departmentId - 1
-                                  ].name
+                                    this.editData.data.departmentId - 1
+                                ].name
                                 : null,
                             companyOfficeId:
                                 this.editData.data.companyOfficeId ?? null,
@@ -1002,13 +1001,13 @@ export class UserModalComponent
                                 : null,
                             salary: this.editData.data.salary
                                 ? MethodsCalculationsHelper.convertNumberInThousandSep(
-                                      this.editData.data.salary
-                                  )
+                                    this.editData.data.salary
+                                )
                                 : null,
                             startDate: this.editData.data.startDate
                                 ? MethodsCalculationsHelper.convertDateFromBackend(
-                                      this.editData.data.startDate
-                                  )
+                                    this.editData.data.startDate
+                                )
                                 : null,
                             is1099: this.editData.data.is1099,
                             bankId: this.editData.data.bank
@@ -1018,8 +1017,8 @@ export class UserModalComponent
                             accountNumber: this.editData.data.accountNumber,
                             base: this.editData.data.base
                                 ? MethodsCalculationsHelper.convertNumberInThousandSep(
-                                      this.editData.data.base
-                                  )
+                                    this.editData.data.base
+                                )
                                 : null,
                             commission: this.editData.data.commission,
                             note: this.editData.data.note,
@@ -1028,7 +1027,7 @@ export class UserModalComponent
                         this.selectedAddress = this.editData.data.address;
                         this.selectedDepartment =
                             this.departments[
-                                this.editData.data.departmentId - 1
+                            this.editData.data.departmentId - 1
                             ];
                         this.selectedOffice = this.editData.data.companyOffice;
                         this.selectedUserType = this.editData.data.userType;
@@ -1113,7 +1112,7 @@ export class UserModalComponent
                         this.startFormChanges();
                     }
                 },
-                error: () => {},
+                error: () => { },
             });
     }
 

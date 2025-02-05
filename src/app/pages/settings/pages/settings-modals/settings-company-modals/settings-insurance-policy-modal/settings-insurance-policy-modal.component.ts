@@ -95,8 +95,7 @@ import { AddressMixin } from '@shared/mixins/address/address.mixin';
 })
 export class SettingsInsurancePolicyModalComponent
     extends AddressMixin(class { addressService!: AddressService; })
-    implements OnInit, OnDestroy
-{
+    implements OnInit, OnDestroy {
     public destroy$ = new Subject<void>();
     @Input() editData: any;
 
@@ -450,7 +449,7 @@ export class SettingsInsurancePolicyModalComponent
                         this.startFormChanges();
                     }
                 },
-                error: () => {},
+                error: () => { },
             });
     }
 
@@ -530,134 +529,134 @@ export class SettingsInsurancePolicyModalComponent
 
         const commLiablity = commericalGeneralLiability
             ? {
-                  isCommercialGeneralLiabillityChecked:
-                      commericalGeneralLiability,
-                  policy: commericalPolicy,
-                  insurerName: commericalInsurerName,
-                  rating: this.selectedCommericalRating
-                      ? this.selectedCommericalRating.id
-                      : null,
-                  eachOccurrence: commericalOccurrence
-                      ? MethodsCalculationsHelper.convertThousanSepInNumber(
-                            commericalOccurrence
-                        )
-                      : null,
-                  damageToRentedPremises: commericalDamage
-                      ? MethodsCalculationsHelper.convertThousanSepInNumber(
-                            commericalDamage
-                        )
-                      : null,
-                  personalAndAdvertisingInjury: commericalInj
-                      ? MethodsCalculationsHelper.convertThousanSepInNumber(
-                            commericalInj
-                        )
-                      : null,
-                  medicalExpanses: commericalMedical
-                      ? MethodsCalculationsHelper.convertThousanSepInNumber(
-                            commericalMedical
-                        )
-                      : null,
-                  generalAggregate: commericalGeneralAggregate
-                      ? MethodsCalculationsHelper.convertThousanSepInNumber(
-                            commericalGeneralAggregate
-                        )
-                      : null,
-                  productsCompOperAggregate: commericalProducts
-                      ? MethodsCalculationsHelper.convertThousanSepInNumber(
-                            commericalProducts
-                        )
-                      : null,
-              }
+                isCommercialGeneralLiabillityChecked:
+                    commericalGeneralLiability,
+                policy: commericalPolicy,
+                insurerName: commericalInsurerName,
+                rating: this.selectedCommericalRating
+                    ? this.selectedCommericalRating.id
+                    : null,
+                eachOccurrence: commericalOccurrence
+                    ? MethodsCalculationsHelper.convertThousandSepInNumber(
+                        commericalOccurrence
+                    )
+                    : null,
+                damageToRentedPremises: commericalDamage
+                    ? MethodsCalculationsHelper.convertThousandSepInNumber(
+                        commericalDamage
+                    )
+                    : null,
+                personalAndAdvertisingInjury: commericalInj
+                    ? MethodsCalculationsHelper.convertThousandSepInNumber(
+                        commericalInj
+                    )
+                    : null,
+                medicalExpanses: commericalMedical
+                    ? MethodsCalculationsHelper.convertThousandSepInNumber(
+                        commericalMedical
+                    )
+                    : null,
+                generalAggregate: commericalGeneralAggregate
+                    ? MethodsCalculationsHelper.convertThousandSepInNumber(
+                        commericalGeneralAggregate
+                    )
+                    : null,
+                productsCompOperAggregate: commericalProducts
+                    ? MethodsCalculationsHelper.convertThousandSepInNumber(
+                        commericalProducts
+                    )
+                    : null,
+            }
             : null;
 
         const autoLiability = automobileLiability
             ? {
-                  isAutomobileLiabillityChecked: automobileLiability,
-                  policy: automobilePolicy,
-                  insurerName: automobileInsurerName,
-                  rating: this.selectedAutomobileRating
-                      ? this.selectedAutomobileRating.id
-                      : null,
-                  bodilyInjuryAccident: automobileAccident
-                      ? MethodsCalculationsHelper.convertThousanSepInNumber(
-                            automobileAccident
-                        )
-                      : null,
-                  bodilyInjuryPerson: automobileInjuryPerson
-                      ? MethodsCalculationsHelper.convertThousanSepInNumber(
-                            automobileInjuryPerson
-                        )
-                      : null,
-                  combinedSingleLimit: automobileLimit
-                      ? MethodsCalculationsHelper.convertThousanSepInNumber(
-                            automobileLimit
-                        )
-                      : null,
-                  propertyDamage: automobileDamage
-                      ? MethodsCalculationsHelper.convertThousanSepInNumber(
-                            automobileDamage
-                        )
-                      : null,
-              }
+                isAutomobileLiabillityChecked: automobileLiability,
+                policy: automobilePolicy,
+                insurerName: automobileInsurerName,
+                rating: this.selectedAutomobileRating
+                    ? this.selectedAutomobileRating.id
+                    : null,
+                bodilyInjuryAccident: automobileAccident
+                    ? MethodsCalculationsHelper.convertThousandSepInNumber(
+                        automobileAccident
+                    )
+                    : null,
+                bodilyInjuryPerson: automobileInjuryPerson
+                    ? MethodsCalculationsHelper.convertThousandSepInNumber(
+                        automobileInjuryPerson
+                    )
+                    : null,
+                combinedSingleLimit: automobileLimit
+                    ? MethodsCalculationsHelper.convertThousandSepInNumber(
+                        automobileLimit
+                    )
+                    : null,
+                propertyDamage: automobileDamage
+                    ? MethodsCalculationsHelper.convertThousandSepInNumber(
+                        automobileDamage
+                    )
+                    : null,
+            }
             : null;
 
         const motTruckCargo = motorTruckCargo
             ? {
-                  isMotorTruckChecked: motorTruckCargo,
-                  isMotorTruckReeferChecked: motorTruckCargo,
-                  policy: motorPolicy,
-                  insurerName: motorInsurerName,
-                  rating: this.selectedMotorRating
-                      ? this.selectedMotorRating.id
-                      : null,
-                  singleConveyance: motorConveyance
-                      ? MethodsCalculationsHelper.convertThousanSepInNumber(
-                            motorConveyance
-                        )
-                      : null,
-                  deductable: motorDeductable
-                      ? MethodsCalculationsHelper.convertThousanSepInNumber(
-                            motorDeductable
-                        )
-                      : null,
-              }
+                isMotorTruckChecked: motorTruckCargo,
+                isMotorTruckReeferChecked: motorTruckCargo,
+                policy: motorPolicy,
+                insurerName: motorInsurerName,
+                rating: this.selectedMotorRating
+                    ? this.selectedMotorRating.id
+                    : null,
+                singleConveyance: motorConveyance
+                    ? MethodsCalculationsHelper.convertThousandSepInNumber(
+                        motorConveyance
+                    )
+                    : null,
+                deductable: motorDeductable
+                    ? MethodsCalculationsHelper.convertThousandSepInNumber(
+                        motorDeductable
+                    )
+                    : null,
+            }
             : null;
 
         const physDamage = physicalDamage
             ? {
-                  isPhysicalDamageChecked: physicalDamage,
-                  policy: physicalPolicy,
-                  insurerName: physicalInsurerName,
-                  rating: this.selectedPhysicalDamageRating
-                      ? this.selectedPhysicalDamageRating.id
-                      : null,
-                  comprehensiveAndCollision: physicalCollision
-                      ? MethodsCalculationsHelper.convertThousanSepInNumber(
-                            physicalCollision
-                        )
-                      : null,
-                  deductable: physicalDeductable
-                      ? MethodsCalculationsHelper.convertThousanSepInNumber(
-                            physicalDeductable
-                        )
-                      : null,
-              }
+                isPhysicalDamageChecked: physicalDamage,
+                policy: physicalPolicy,
+                insurerName: physicalInsurerName,
+                rating: this.selectedPhysicalDamageRating
+                    ? this.selectedPhysicalDamageRating.id
+                    : null,
+                comprehensiveAndCollision: physicalCollision
+                    ? MethodsCalculationsHelper.convertThousandSepInNumber(
+                        physicalCollision
+                    )
+                    : null,
+                deductable: physicalDeductable
+                    ? MethodsCalculationsHelper.convertThousandSepInNumber(
+                        physicalDeductable
+                    )
+                    : null,
+            }
             : null;
 
         const trailInterchange = trailerInterchange
             ? {
-                  isTrailerInterchangeChecked: trailerInterchange,
-                  policy: trailerPolicy,
-                  insurerName: trailerInsurerName,
-                  rating: this.selectedTrailerRating
-                      ? this.selectedTrailerRating.id
-                      : null,
-                  value: trailerValue
-                      ? MethodsCalculationsHelper.convertThousanSepInNumber(
-                            trailerValue
-                        )
-                      : null,
-              }
+                isTrailerInterchangeChecked: trailerInterchange,
+                policy: trailerPolicy,
+                insurerName: trailerInsurerName,
+                rating: this.selectedTrailerRating
+                    ? this.selectedTrailerRating.id
+                    : null,
+                value: trailerValue
+                    ? MethodsCalculationsHelper.convertThousandSepInNumber(
+                        trailerValue
+                    )
+                    : null,
+            }
             : null;
 
         let insurancePolicyAddons = [];
@@ -786,139 +785,139 @@ export class SettingsInsurancePolicyModalComponent
 
         const commLiablity = commericalGeneralLiability
             ? {
-                  id: this.idCommercial ? this.idCommercial : 0,
-                  isCommercialGeneralLiabillityChecked:
-                      commericalGeneralLiability,
-                  policy: commericalPolicy,
-                  insurerName: commericalInsurerName,
-                  rating: this.selectedCommericalRating
-                      ? this.selectedCommericalRating.id
-                      : null,
-                  eachOccurrence: commericalOccurrence
-                      ? MethodsCalculationsHelper.convertThousanSepInNumber(
-                            commericalOccurrence
-                        )
-                      : null,
-                  damageToRentedPremises: commericalDamage
-                      ? MethodsCalculationsHelper.convertThousanSepInNumber(
-                            commericalDamage
-                        )
-                      : null,
-                  personalAndAdvertisingInjury: commericalInj
-                      ? MethodsCalculationsHelper.convertThousanSepInNumber(
-                            commericalInj
-                        )
-                      : null,
-                  medicalExpanses: commericalMedical
-                      ? MethodsCalculationsHelper.convertThousanSepInNumber(
-                            commericalMedical
-                        )
-                      : null,
-                  generalAggregate: commericalGeneralAggregate
-                      ? MethodsCalculationsHelper.convertThousanSepInNumber(
-                            commericalGeneralAggregate
-                        )
-                      : null,
-                  productsCompOperAggregate: commericalProducts
-                      ? MethodsCalculationsHelper.convertThousanSepInNumber(
-                            commericalProducts
-                        )
-                      : null,
-              }
+                id: this.idCommercial ? this.idCommercial : 0,
+                isCommercialGeneralLiabillityChecked:
+                    commericalGeneralLiability,
+                policy: commericalPolicy,
+                insurerName: commericalInsurerName,
+                rating: this.selectedCommericalRating
+                    ? this.selectedCommericalRating.id
+                    : null,
+                eachOccurrence: commericalOccurrence
+                    ? MethodsCalculationsHelper.convertThousandSepInNumber(
+                        commericalOccurrence
+                    )
+                    : null,
+                damageToRentedPremises: commericalDamage
+                    ? MethodsCalculationsHelper.convertThousandSepInNumber(
+                        commericalDamage
+                    )
+                    : null,
+                personalAndAdvertisingInjury: commericalInj
+                    ? MethodsCalculationsHelper.convertThousandSepInNumber(
+                        commericalInj
+                    )
+                    : null,
+                medicalExpanses: commericalMedical
+                    ? MethodsCalculationsHelper.convertThousandSepInNumber(
+                        commericalMedical
+                    )
+                    : null,
+                generalAggregate: commericalGeneralAggregate
+                    ? MethodsCalculationsHelper.convertThousandSepInNumber(
+                        commericalGeneralAggregate
+                    )
+                    : null,
+                productsCompOperAggregate: commericalProducts
+                    ? MethodsCalculationsHelper.convertThousandSepInNumber(
+                        commericalProducts
+                    )
+                    : null,
+            }
             : null;
 
         const autoLiability = automobileLiability
             ? {
-                  id: this.idAutomobile ? this.idAutomobile : 0,
-                  isAutomobileLiabillityChecked: automobileLiability,
-                  policy: automobilePolicy,
-                  insurerName: automobileInsurerName,
-                  rating: this.selectedAutomobileRating
-                      ? this.selectedAutomobileRating.id
-                      : null,
-                  bodilyInjuryAccident: automobileAccident
-                      ? MethodsCalculationsHelper.convertThousanSepInNumber(
-                            automobileAccident
-                        )
-                      : null,
-                  bodilyInjuryPerson: automobileInjuryPerson
-                      ? MethodsCalculationsHelper.convertThousanSepInNumber(
-                            automobileInjuryPerson
-                        )
-                      : null,
-                  combinedSingleLimit: automobileLimit
-                      ? MethodsCalculationsHelper.convertThousanSepInNumber(
-                            automobileLimit
-                        )
-                      : null,
-                  propertyDamage: automobileDamage
-                      ? MethodsCalculationsHelper.convertThousanSepInNumber(
-                            automobileDamage
-                        )
-                      : null,
-              }
+                id: this.idAutomobile ? this.idAutomobile : 0,
+                isAutomobileLiabillityChecked: automobileLiability,
+                policy: automobilePolicy,
+                insurerName: automobileInsurerName,
+                rating: this.selectedAutomobileRating
+                    ? this.selectedAutomobileRating.id
+                    : null,
+                bodilyInjuryAccident: automobileAccident
+                    ? MethodsCalculationsHelper.convertThousandSepInNumber(
+                        automobileAccident
+                    )
+                    : null,
+                bodilyInjuryPerson: automobileInjuryPerson
+                    ? MethodsCalculationsHelper.convertThousandSepInNumber(
+                        automobileInjuryPerson
+                    )
+                    : null,
+                combinedSingleLimit: automobileLimit
+                    ? MethodsCalculationsHelper.convertThousandSepInNumber(
+                        automobileLimit
+                    )
+                    : null,
+                propertyDamage: automobileDamage
+                    ? MethodsCalculationsHelper.convertThousandSepInNumber(
+                        automobileDamage
+                    )
+                    : null,
+            }
             : null;
 
         const motTruckCargo = motorTruckCargo
             ? {
-                  id: this.idMotor ? this.idMotor : 0,
-                  isMotorTruckChecked: motorTruckCargo,
-                  isMotorTruckReeferChecked: motorTruckCargo,
-                  policy: motorPolicy,
-                  insurerName: motorInsurerName,
-                  rating: this.selectedMotorRating
-                      ? this.selectedMotorRating.id
-                      : null,
-                  singleConveyance: motorConveyance
-                      ? MethodsCalculationsHelper.convertThousanSepInNumber(
-                            motorConveyance
-                        )
-                      : null,
-                  deductable: motorDeductable
-                      ? MethodsCalculationsHelper.convertThousanSepInNumber(
-                            motorDeductable
-                        )
-                      : null,
-              }
+                id: this.idMotor ? this.idMotor : 0,
+                isMotorTruckChecked: motorTruckCargo,
+                isMotorTruckReeferChecked: motorTruckCargo,
+                policy: motorPolicy,
+                insurerName: motorInsurerName,
+                rating: this.selectedMotorRating
+                    ? this.selectedMotorRating.id
+                    : null,
+                singleConveyance: motorConveyance
+                    ? MethodsCalculationsHelper.convertThousandSepInNumber(
+                        motorConveyance
+                    )
+                    : null,
+                deductable: motorDeductable
+                    ? MethodsCalculationsHelper.convertThousandSepInNumber(
+                        motorDeductable
+                    )
+                    : null,
+            }
             : null;
 
         const physDamage = physicalDamage
             ? {
-                  id: this.idPhysicalDamage ? this.idPhysicalDamage : 0,
-                  isPhysicalDamageChecked: physicalDamage,
-                  policy: physicalPolicy,
-                  insurerName: physicalInsurerName,
-                  rating: this.selectedPhysicalDamageRating
-                      ? this.selectedPhysicalDamageRating.id
-                      : null,
-                  comprehensiveAndCollision: physicalCollision
-                      ? MethodsCalculationsHelper.convertThousanSepInNumber(
-                            physicalCollision
-                        )
-                      : null,
-                  deductable: physicalDeductable
-                      ? MethodsCalculationsHelper.convertThousanSepInNumber(
-                            physicalDeductable
-                        )
-                      : null,
-              }
+                id: this.idPhysicalDamage ? this.idPhysicalDamage : 0,
+                isPhysicalDamageChecked: physicalDamage,
+                policy: physicalPolicy,
+                insurerName: physicalInsurerName,
+                rating: this.selectedPhysicalDamageRating
+                    ? this.selectedPhysicalDamageRating.id
+                    : null,
+                comprehensiveAndCollision: physicalCollision
+                    ? MethodsCalculationsHelper.convertThousandSepInNumber(
+                        physicalCollision
+                    )
+                    : null,
+                deductable: physicalDeductable
+                    ? MethodsCalculationsHelper.convertThousandSepInNumber(
+                        physicalDeductable
+                    )
+                    : null,
+            }
             : null;
 
         const trailInterchange = trailerInterchange
             ? {
-                  id: this.idTrailerInterchange ? this.idTrailerInterchange : 0,
-                  isTrailerInterchangeChecked: trailerInterchange,
-                  policy: trailerPolicy,
-                  insurerName: trailerInsurerName,
-                  rating: this.selectedTrailerRating
-                      ? this.selectedTrailerRating.id
-                      : null,
-                  value: trailerValue
-                      ? MethodsCalculationsHelper.convertThousanSepInNumber(
-                            trailerValue
-                        )
-                      : null,
-              }
+                id: this.idTrailerInterchange ? this.idTrailerInterchange : 0,
+                isTrailerInterchangeChecked: trailerInterchange,
+                policy: trailerPolicy,
+                insurerName: trailerInsurerName,
+                rating: this.selectedTrailerRating
+                    ? this.selectedTrailerRating.id
+                    : null,
+                value: trailerValue
+                    ? MethodsCalculationsHelper.convertThousandSepInNumber(
+                        trailerValue
+                    )
+                    : null,
+            }
             : null;
 
         let insurancePolicyAddons = [];
@@ -1039,8 +1038,8 @@ export class SettingsInsurancePolicyModalComponent
                             .patchValue(
                                 insur.eachOccurrence
                                     ? MethodsCalculationsHelper.convertNumberInThousandSep(
-                                          insur.eachOccurrence
-                                      )
+                                        insur.eachOccurrence
+                                    )
                                     : null
                             );
                         this.insurancePolicyForm
@@ -1048,8 +1047,8 @@ export class SettingsInsurancePolicyModalComponent
                             .patchValue(
                                 insur.damageToRentedPremises
                                     ? MethodsCalculationsHelper.convertNumberInThousandSep(
-                                          insur.damageToRentedPremises
-                                      )
+                                        insur.damageToRentedPremises
+                                    )
                                     : null
                             );
                         this.insurancePolicyForm
@@ -1057,8 +1056,8 @@ export class SettingsInsurancePolicyModalComponent
                             .patchValue(
                                 insur.personalAndAdvertisingInjury
                                     ? MethodsCalculationsHelper.convertNumberInThousandSep(
-                                          insur.personalAndAdvertisingInjury
-                                      )
+                                        insur.personalAndAdvertisingInjury
+                                    )
                                     : null
                             );
                         this.insurancePolicyForm
@@ -1066,8 +1065,8 @@ export class SettingsInsurancePolicyModalComponent
                             .patchValue(
                                 insur.medicalExpanses
                                     ? MethodsCalculationsHelper.convertNumberInThousandSep(
-                                          insur.medicalExpanses
-                                      )
+                                        insur.medicalExpanses
+                                    )
                                     : null
                             );
                         this.insurancePolicyForm
@@ -1075,8 +1074,8 @@ export class SettingsInsurancePolicyModalComponent
                             .patchValue(
                                 insur.generalAggregate
                                     ? MethodsCalculationsHelper.convertNumberInThousandSep(
-                                          insur.generalAggregate
-                                      )
+                                        insur.generalAggregate
+                                    )
                                     : null
                             );
                         this.insurancePolicyForm
@@ -1084,8 +1083,8 @@ export class SettingsInsurancePolicyModalComponent
                             .patchValue(
                                 insur.productsCompOperAggregate
                                     ? MethodsCalculationsHelper.convertNumberInThousandSep(
-                                          insur.productsCompOperAggregate
-                                      )
+                                        insur.productsCompOperAggregate
+                                    )
                                     : null
                             );
 
@@ -1113,8 +1112,8 @@ export class SettingsInsurancePolicyModalComponent
                             .patchValue(
                                 insur.bodilyInjuryAccident
                                     ? MethodsCalculationsHelper.convertNumberInThousandSep(
-                                          insur.bodilyInjuryAccident
-                                      )
+                                        insur.bodilyInjuryAccident
+                                    )
                                     : null
                             );
                         this.insurancePolicyForm
@@ -1122,8 +1121,8 @@ export class SettingsInsurancePolicyModalComponent
                             .patchValue(
                                 insur.bodilyInjuryPerson
                                     ? MethodsCalculationsHelper.convertNumberInThousandSep(
-                                          insur.bodilyInjuryPerson
-                                      )
+                                        insur.bodilyInjuryPerson
+                                    )
                                     : null
                             );
                         this.insurancePolicyForm
@@ -1131,8 +1130,8 @@ export class SettingsInsurancePolicyModalComponent
                             .patchValue(
                                 insur.combinedSingleLimit
                                     ? MethodsCalculationsHelper.convertNumberInThousandSep(
-                                          insur.combinedSingleLimit
-                                      )
+                                        insur.combinedSingleLimit
+                                    )
                                     : null
                             );
                         this.insurancePolicyForm
@@ -1140,8 +1139,8 @@ export class SettingsInsurancePolicyModalComponent
                             .patchValue(
                                 insur.propertyDamage
                                     ? MethodsCalculationsHelper.convertNumberInThousandSep(
-                                          insur.propertyDamage
-                                      )
+                                        insur.propertyDamage
+                                    )
                                     : null
                             );
 
@@ -1173,8 +1172,8 @@ export class SettingsInsurancePolicyModalComponent
                             .patchValue(
                                 insur.singleConveyance
                                     ? MethodsCalculationsHelper.convertNumberInThousandSep(
-                                          insur.singleConveyance
-                                      )
+                                        insur.singleConveyance
+                                    )
                                     : null
                             );
                         this.insurancePolicyForm
@@ -1182,8 +1181,8 @@ export class SettingsInsurancePolicyModalComponent
                             .patchValue(
                                 insur.deductable
                                     ? MethodsCalculationsHelper.convertNumberInThousandSep(
-                                          insur.deductable
-                                      )
+                                        insur.deductable
+                                    )
                                     : null
                             );
 
@@ -1211,8 +1210,8 @@ export class SettingsInsurancePolicyModalComponent
                             .patchValue(
                                 insur.comprehensiveAndCollision
                                     ? MethodsCalculationsHelper.convertNumberInThousandSep(
-                                          insur.comprehensiveAndCollision
-                                      )
+                                        insur.comprehensiveAndCollision
+                                    )
                                     : null
                             );
                         this.insurancePolicyForm
@@ -1220,8 +1219,8 @@ export class SettingsInsurancePolicyModalComponent
                             .patchValue(
                                 insur.deductable
                                     ? MethodsCalculationsHelper.convertNumberInThousandSep(
-                                          insur.deductable
-                                      )
+                                        insur.deductable
+                                    )
                                     : null
                             );
 
@@ -1249,8 +1248,8 @@ export class SettingsInsurancePolicyModalComponent
                             .patchValue(
                                 insur.value
                                     ? MethodsCalculationsHelper.convertNumberInThousandSep(
-                                          insur.value
-                                      )
+                                        insur.value
+                                    )
                                     : null
                             );
 

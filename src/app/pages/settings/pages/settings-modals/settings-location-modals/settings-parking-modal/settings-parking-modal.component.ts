@@ -126,8 +126,7 @@ import { AddressMixin } from '@shared/mixins/address/address.mixin';
 })
 export class SettingsParkingModalComponent
     extends AddressMixin(class { addressService!: AddressService; })
-    implements OnInit, OnDestroy
-{
+    implements OnInit, OnDestroy {
     @Input() editData: any;
 
     public parkingForm: UntypedFormGroup;
@@ -280,11 +279,11 @@ export class SettingsParkingModalComponent
                 this.gateBtns = this.gateBtns.map((item) => {
                     event.name === 'No'
                         ? this.parkingForm
-                              .get(SettingsFormEnum.GATE)
-                              .patchValue(false)
+                            .get(SettingsFormEnum.GATE)
+                            .patchValue(false)
                         : this.parkingForm
-                              .get(SettingsFormEnum.GATE)
-                              .patchValue(true);
+                            .get(SettingsFormEnum.GATE)
+                            .patchValue(true);
 
                     return {
                         ...item,
@@ -297,11 +296,11 @@ export class SettingsParkingModalComponent
                 this.cameraBtns = this.cameraBtns.map((item) => {
                     event.name === 'No'
                         ? this.parkingForm
-                              .get(SettingsFormEnum.SECURITY_CAMERA)
-                              .patchValue(false)
+                            .get(SettingsFormEnum.SECURITY_CAMERA)
+                            .patchValue(false)
                         : this.parkingForm
-                              .get(SettingsFormEnum.SECURITY_CAMERA)
-                              .patchValue(true);
+                            .get(SettingsFormEnum.SECURITY_CAMERA)
+                            .patchValue(true);
 
                     return {
                         ...item,
@@ -427,7 +426,7 @@ export class SettingsParkingModalComponent
                 ? this.selectedAddress
                 : null,
             rent: rent
-                ? MethodsCalculationsHelper.convertThousanSepInNumber(rent)
+                ? MethodsCalculationsHelper.convertThousandSepInNumber(rent)
                 : null,
             payPeriod: this.selectedPayPeriod
                 ? this.selectedPayPeriod.id
@@ -448,8 +447,8 @@ export class SettingsParkingModalComponent
                 ? this.parkingSlots[0].value
                     ? this.parkingSlots[0].value
                     : 0 + this.parkingSlots[1].value
-                      ? this.parkingSlots[1].value
-                      : 0
+                        ? this.parkingSlots[1].value
+                        : 0
                 : 0,
             parkingSlotCount: this.parkingSlots.length
                 ? this.parkingSlots[0].value
@@ -489,7 +488,7 @@ export class SettingsParkingModalComponent
             ...form,
             address: updatedAddress?.address ? updatedAddress : null,
             rent: rent
-                ? MethodsCalculationsHelper.convertThousanSepInNumber(rent)
+                ? MethodsCalculationsHelper.convertThousandSepInNumber(rent)
                 : null,
             payPeriod: this.selectedPayPeriod
                 ? this.selectedPayPeriod.id
@@ -510,8 +509,8 @@ export class SettingsParkingModalComponent
                 ? this.parkingSlots[0].value
                     ? this.parkingSlots[0].value
                     : 0 + this.parkingSlots[1].value
-                      ? this.parkingSlots[1].value
-                      : 0
+                        ? this.parkingSlots[1].value
+                        : 0
                 : 0,
             parkingSlotCount: this.parkingSlots.length
                 ? this.parkingSlots[0].value
@@ -577,8 +576,8 @@ export class SettingsParkingModalComponent
                         securityCamera: res.securityCamera,
                         rent: res.rent
                             ? MethodsCalculationsHelper.convertNumberInThousandSep(
-                                  res.rent
-                              )
+                                res.rent
+                            )
                             : null,
                         payPeriod: res.payPeriod ? res.payPeriod.name : null,
                         monthlyDay: res.payPeriod?.name

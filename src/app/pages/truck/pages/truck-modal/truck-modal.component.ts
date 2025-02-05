@@ -213,7 +213,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
         private tagsService: EditTagsService,
         private confirmationService: ConfirmationService,
         private confirmationActivationService: ConfirmationActivationService
-    ) {}
+    ) { }
 
     ngOnInit() {
         this.createForm();
@@ -612,9 +612,9 @@ export class TruckModalComponent implements OnInit, OnDestroy {
                                         : null,
                                     fuelType: res.fuelType
                                         ? this.fuelTypes.find(
-                                              (item) =>
-                                                  item.name === res.fuelType
-                                          )?.name
+                                            (item) =>
+                                                item.name === res.fuelType
+                                        )?.name
                                         : null,
                                 });
                                 this.loadingVinDecoder = false;
@@ -625,7 +625,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
                                     (item) => item.name === res.fuelType
                                 );
                             },
-                            error: () => {},
+                            error: () => { },
                         });
                 }
             });
@@ -683,7 +683,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
                         this.startFormChanges();
                     }
                 },
-                error: () => {},
+                error: () => { },
             });
     }
 
@@ -712,21 +712,21 @@ export class TruckModalComponent implements OnInit, OnDestroy {
                         // Additional Tab
                         purchaseDate: res.purchaseDate
                             ? MethodsCalculationsHelper.convertDateFromBackend(
-                                  res.purchaseDate
-                              )
+                                res.purchaseDate
+                            )
                             : null,
                         purchasePrice: res.purchasePrice
                             ? MethodsCalculationsHelper.convertNumberInThousandSep(
-                                  res.purchasePrice
-                              )
+                                res.purchasePrice
+                            )
                             : null,
                         truckGrossWeightId: res.truckGrossWeight
                             ? res.truckGrossWeight.name
                             : null,
                         emptyWeight: res.emptyWeight
                             ? MethodsCalculationsHelper.convertNumberInThousandSep(
-                                  res.emptyWeight
-                              )
+                                res.emptyWeight
+                            )
                             : null,
                         truckEngineModelId: res.truckEngineModel
                             ? res.truckEngineModel.name
@@ -734,8 +734,8 @@ export class TruckModalComponent implements OnInit, OnDestroy {
                         tireSizeId: res.tireSize ? res.tireSize.name : null,
                         fuelTankSize: res.fuelTankSize
                             ? MethodsCalculationsHelper.convertNumberInThousandSep(
-                                  res.fuelTankSize
-                              )
+                                res.fuelTankSize
+                            )
                             : null,
                         brakes: res.brakes ? res.brakes.name : null,
                         frontWheels: res.frontWheels
@@ -743,8 +743,8 @@ export class TruckModalComponent implements OnInit, OnDestroy {
                             : null,
                         wheelBase: res.wheelBase
                             ? MethodsCalculationsHelper.convertNumberInThousandSep(
-                                  res.wheelBase
-                              )
+                                res.wheelBase
+                            )
                             : null,
                         rearWheels: res.rearWheels ? res.rearWheels.name : null,
                         transmissionModel: res.transmissionModel,
@@ -753,8 +753,8 @@ export class TruckModalComponent implements OnInit, OnDestroy {
                         insurancePolicy: res.insurancePolicy,
                         mileage: res.mileage
                             ? MethodsCalculationsHelper.convertNumberInThousandSep(
-                                  res.mileage
-                              )
+                                res.mileage
+                            )
                             : null,
                         fuelType: res.fuelType ? res.fuelType.name : null,
                         engineOilType: res.engineOilType
@@ -825,7 +825,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
 
                     this.startFormChanges();
                 },
-                error: () => {},
+                error: () => { },
             });
     }
 
@@ -993,38 +993,38 @@ export class TruckModalComponent implements OnInit, OnDestroy {
                 ? this.selectedFrontWheels.name
                 : null,
             wheelBase: this.truckForm.get('wheelBase').value
-                ? MethodsCalculationsHelper.convertThousanSepInNumber(
-                      this.truckForm.get('wheelBase').value
-                  )
+                ? MethodsCalculationsHelper.convertThousandSepInNumber(
+                    this.truckForm.get('wheelBase').value
+                )
                 : null,
             rearWheels: this.selectedRearWheels
                 ? this.selectedRearWheels.name
                 : null,
             fuelTankSize: this.truckForm.get('fuelTankSize').value
-                ? MethodsCalculationsHelper.convertThousanSepInNumber(
-                      this.truckForm.get('fuelTankSize').value
-                  )
+                ? MethodsCalculationsHelper.convertThousandSepInNumber(
+                    this.truckForm.get('fuelTankSize').value
+                )
                 : null,
             mileage: this.truckForm.get('mileage').value
-                ? MethodsCalculationsHelper.convertThousanSepInNumber(
-                      this.truckForm.get('mileage').value
-                  )
+                ? MethodsCalculationsHelper.convertThousandSepInNumber(
+                    this.truckForm.get('mileage').value
+                )
                 : null,
             axles: this.truckForm.get('axles').value
                 ? parseInt(this.truckForm.get('axles').value)
                 : null,
             emptyWeight: this.truckForm.get('emptyWeight').value
-                ? MethodsCalculationsHelper.convertThousanSepInNumber(
-                      this.truckForm.get('emptyWeight').value
-                  )
+                ? MethodsCalculationsHelper.convertThousandSepInNumber(
+                    this.truckForm.get('emptyWeight').value
+                )
                 : null,
             commission: this.truckForm.get('commission').value
                 ? parseFloat(
-                      this.truckForm
-                          .get('commission')
-                          .value.toString()
-                          .replace(/,/g, '')
-                  )
+                    this.truckForm
+                        .get('commission')
+                        .value.toString()
+                        .replace(/,/g, '')
+                )
                 : null,
             fuelType: this.isFuelTypeEnabled
                 ? this.selectedFuelType
@@ -1035,17 +1035,17 @@ export class TruckModalComponent implements OnInit, OnDestroy {
             purchaseDate: this.truckForm.get(TruckModalForm.COMPANY_OWNED).value
                 ? this.truckForm.get(TruckModalForm.PURCHASE_DATE).value
                     ? MethodsCalculationsHelper.convertDateToBackend(
-                          this.truckForm.get(TruckModalForm.PURCHASE_DATE).value
-                      )
+                        this.truckForm.get(TruckModalForm.PURCHASE_DATE).value
+                    )
                     : null
                 : null,
             purchasePrice: this.truckForm.get(TruckModalForm.COMPANY_OWNED)
                 .value
                 ? this.truckForm.get(TruckModalForm.PURCHASE_PRICE).value
-                    ? MethodsCalculationsHelper.convertThousanSepInNumber(
-                          this.truckForm.get(TruckModalForm.PURCHASE_PRICE)
-                              .value
-                      )
+                    ? MethodsCalculationsHelper.convertThousandSepInNumber(
+                        this.truckForm.get(TruckModalForm.PURCHASE_PRICE)
+                            .value
+                    )
                     : null
                 : null,
             files: documents,
@@ -1091,7 +1091,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
                         });
                     }
                 },
-                error: () => {},
+                error: () => { },
             });
     }
 
@@ -1138,8 +1138,8 @@ export class TruckModalComponent implements OnInit, OnDestroy {
             ownerId: this.truckForm.get(TruckModalForm.COMPANY_OWNED).value
                 ? null
                 : this.selectedOwner
-                  ? this.selectedOwner.id
-                  : null,
+                    ? this.selectedOwner.id
+                    : null,
             gearRatio: this.selectedGearRatio
                 ? this.selectedGearRatio.id
                 : null,
@@ -1155,38 +1155,38 @@ export class TruckModalComponent implements OnInit, OnDestroy {
                 ? this.selectedFrontWheels.name
                 : null,
             wheelBase: this.truckForm.get('wheelBase').value
-                ? MethodsCalculationsHelper.convertThousanSepInNumber(
-                      this.truckForm.get('wheelBase').value
-                  )
+                ? MethodsCalculationsHelper.convertThousandSepInNumber(
+                    this.truckForm.get('wheelBase').value
+                )
                 : null,
             rearWheels: this.selectedRearWheels
                 ? this.selectedRearWheels.name
                 : null,
             fuelTankSize: this.truckForm.get('fuelTankSize').value
-                ? MethodsCalculationsHelper.convertThousanSepInNumber(
-                      this.truckForm.get('fuelTankSize').value
-                  )
+                ? MethodsCalculationsHelper.convertThousandSepInNumber(
+                    this.truckForm.get('fuelTankSize').value
+                )
                 : null,
             mileage: this.truckForm.get('mileage').value
-                ? MethodsCalculationsHelper.convertThousanSepInNumber(
-                      this.truckForm.get('mileage').value
-                  )
+                ? MethodsCalculationsHelper.convertThousandSepInNumber(
+                    this.truckForm.get('mileage').value
+                )
                 : null,
             axles: this.truckForm.get('axles').value
                 ? parseInt(this.truckForm.get('axles').value)
                 : null,
             emptyWeight: this.truckForm.get('emptyWeight').value
-                ? MethodsCalculationsHelper.convertThousanSepInNumber(
-                      this.truckForm.get('emptyWeight').value
-                  )
+                ? MethodsCalculationsHelper.convertThousandSepInNumber(
+                    this.truckForm.get('emptyWeight').value
+                )
                 : null,
             commission: this.truckForm.get('commission').value
                 ? parseFloat(
-                      this.truckForm
-                          .get('commission')
-                          .value.toString()
-                          .replace(/,/g, '')
-                  )
+                    this.truckForm
+                        .get('commission')
+                        .value.toString()
+                        .replace(/,/g, '')
+                )
                 : null,
             fuelType: this.isFuelTypeEnabled
                 ? this.selectedFuelType
@@ -1201,17 +1201,17 @@ export class TruckModalComponent implements OnInit, OnDestroy {
             purchaseDate: this.truckForm.get(TruckModalForm.COMPANY_OWNED).value
                 ? this.truckForm.get(TruckModalForm.PURCHASE_DATE).value
                     ? MethodsCalculationsHelper.convertDateToBackend(
-                          this.truckForm.get(TruckModalForm.PURCHASE_DATE).value
-                      )
+                        this.truckForm.get(TruckModalForm.PURCHASE_DATE).value
+                    )
                     : null
                 : null,
             purchasePrice: this.truckForm.get(TruckModalForm.COMPANY_OWNED)
                 .value
                 ? this.truckForm.get(TruckModalForm.PURCHASE_PRICE).value
-                    ? MethodsCalculationsHelper.convertThousanSepInNumber(
-                          this.truckForm.get(TruckModalForm.PURCHASE_PRICE)
-                              .value
-                      )
+                    ? MethodsCalculationsHelper.convertThousandSepInNumber(
+                        this.truckForm.get(TruckModalForm.PURCHASE_PRICE)
+                            .value
+                    )
                     : null
                 : null,
             files: documents ? documents : this.truckForm.value.files,
@@ -1227,7 +1227,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
                     this.ngbActiveModal.close();
                     this.updateTags();
                 },
-                error: () => {},
+                error: () => { },
             });
     }
 
@@ -1239,7 +1239,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
                 next: () => {
                     this.ngbActiveModal.close();
                 },
-                error: () => {},
+                error: () => { },
             });
     }
 

@@ -100,7 +100,7 @@ export class PayrollProccessPaymentModalComponent implements OnDestroy {
         private inputService: TaInputService,
         private chDetRef: ChangeDetectorRef,
         private payrollFacadeService: PayrollFacadeService
-    ) {}
+    ) { }
 
     public inputConfig = inputConfig;
 
@@ -148,26 +148,26 @@ export class PayrollProccessPaymentModalComponent implements OnDestroy {
 
     private setAmmoutWatchers() {
         const ammount = this.paymentForm.get(PayrollStringEnum.AMOUNT);
-    
+
         // Manually handle the initial value
-        const initialValue = MethodsCalculationsHelper.convertThousanSepInNumber(ammount.value);
+        const initialValue = MethodsCalculationsHelper.convertThousandSepInNumber(ammount.value);
         this.handleAmountChange(initialValue);
-    
+
         ammount.valueChanges.subscribe((val) => {
-            const convertToNumber = MethodsCalculationsHelper.convertThousanSepInNumber(val);
+            const convertToNumber = MethodsCalculationsHelper.convertThousandSepInNumber(val);
             this.handleAmountChange(convertToNumber);
         });
     }
-    
+
     private handleAmountChange(convertToNumber: number) {
         const totalEarnings = this.modalData?.totalEarnings;
-    
+
         if (convertToNumber > totalEarnings) {
             this.paymentForm.get(PayrollStringEnum.AMOUNT).patchValue(totalEarnings, { emitEvent: false });
         }
         this.isPaidInFull = convertToNumber === totalEarnings;
     }
-    
+
 
     private subscribeToStore(): void {
         this.payrollFacadeService.selectPayrollReportStates$
@@ -244,9 +244,9 @@ export class PayrollProccessPaymentModalComponent implements OnDestroy {
             this.payrollFacadeService.closePayrollReport({
                 amount: isUnpaid
                     ? 0
-                    : MethodsCalculationsHelper.convertThousanSepInNumber(
-                          formData.amount
-                      ),
+                    : MethodsCalculationsHelper.convertThousandSepInNumber(
+                        formData.amount
+                    ),
                 reportId: this.modalData.id,
                 paymentType:
                     this.selectedTab === 2
@@ -259,7 +259,7 @@ export class PayrollProccessPaymentModalComponent implements OnDestroy {
         } else {
             this.payrollFacadeService.addPayrollClosedPayment(
                 {
-                    amount: MethodsCalculationsHelper.convertThousanSepInNumber(
+                    amount: MethodsCalculationsHelper.convertThousandSepInNumber(
                         formData.amount
                     ),
                     paymentType:
@@ -275,7 +275,7 @@ export class PayrollProccessPaymentModalComponent implements OnDestroy {
         }
     }
 
-    selectedItem(dd: any) {}
+    selectedItem(dd: any) { }
 
     get modalData(): IPayrollProccessPaymentModal {
         return this.editData.data as IPayrollProccessPaymentModal;

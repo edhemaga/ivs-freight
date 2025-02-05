@@ -181,8 +181,7 @@ export class RepairShopModalComponent
             addressService!: AddressService;
         }
     )
-    implements OnInit, OnDestroy
-{
+    implements OnInit, OnDestroy {
     // Enums
     public repairShopModalSvgRoutes = RepairShopModalSvgRoutes;
     public RepairShopModalStringEnum = RepairShopModalStringEnum;
@@ -714,15 +713,15 @@ export class RepairShopModalComponent
                         ...day,
                         shifts: matchingOpenHours.length
                             ? matchingOpenHours.map((openDay) => ({
-                                  startTime: openDay.startTime,
-                                  endTime: openDay.endTime,
-                              }))
+                                startTime: openDay.startTime,
+                                endTime: openDay.endTime,
+                            }))
                             : [
-                                  {
-                                      startTime: RepairShopConstants.startTime,
-                                      endTime: RepairShopConstants.endTime,
-                                  },
-                              ],
+                                {
+                                    startTime: RepairShopConstants.startTime,
+                                    endTime: RepairShopConstants.endTime,
+                                },
+                            ],
                     },
                     this.formBuilder,
                     matchingOpenHours.length > 0
@@ -901,7 +900,7 @@ export class RepairShopModalComponent
 
                     this.banks = [...this.banks, this.selectedBank];
                 },
-                error: () => {},
+                error: () => { },
             });
     }
 
@@ -1096,16 +1095,16 @@ export class RepairShopModalComponent
                 : null,
             companyOwned: this.isCompanyRelated
                 ? this.getFromFieldValue(
-                      RepairShopModalStringEnum.COMPANY_OWNED
-                  )
+                    RepairShopModalStringEnum.COMPANY_OWNED
+                )
                 : null,
             isCompanyRelated: this.isCompanyRelated,
             rent: !this.getFromFieldValue(
                 RepairShopModalStringEnum.COMPANY_OWNED
             )
-                ? MethodsCalculationsHelper.convertThousanSepInNumber(
-                      this.getFromFieldValue(RepairShopModalStringEnum.RENT)
-                  )
+                ? MethodsCalculationsHelper.convertThousandSepInNumber(
+                    this.getFromFieldValue(RepairShopModalStringEnum.RENT)
+                )
                 : null,
             cover: this.convertCoverDocumentForRequest(),
         };
@@ -1156,23 +1155,23 @@ export class RepairShopModalComponent
 
             return isFormPatch
                 ? {
-                      fullName,
-                      department: (department as DepartmentResponse).name,
-                      phone,
-                      phoneExt:
-                          phoneExt ?? RepairShopModalStringEnum.EMPTY_STRING,
-                      email,
-                  }
+                    fullName,
+                    department: (department as DepartmentResponse).name,
+                    phone,
+                    phoneExt:
+                        phoneExt ?? RepairShopModalStringEnum.EMPTY_STRING,
+                    email,
+                }
                 : {
-                      id: this.updatedRepairShopContacts[index]?.id,
-                      fullName,
-                      departmentId: this.departments.find(
-                          (item) => item.name === department
-                      )?.id,
-                      phone,
-                      phoneExt: phoneExt,
-                      email,
-                  };
+                    id: this.updatedRepairShopContacts[index]?.id,
+                    fullName,
+                    departmentId: this.departments.find(
+                        (item) => item.name === department
+                    )?.id,
+                    phone,
+                    phoneExt: phoneExt,
+                    email,
+                };
         });
     }
 
@@ -1363,7 +1362,7 @@ export class RepairShopModalComponent
 
                     this.isOneMoreReviewDisabled = true;
                 },
-                error: () => {},
+                error: () => { },
             });
     }
 

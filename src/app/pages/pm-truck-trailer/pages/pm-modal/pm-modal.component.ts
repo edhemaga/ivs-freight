@@ -127,7 +127,7 @@ export class PmModalComponent implements OnInit, OnDestroy {
         // change detector
         private changeDetector: ChangeDetectorRef,
         private ngbActiveModal: NgbActiveModal
-    ) {}
+    ) { }
 
     ngOnInit() {
         this.createForm();
@@ -395,7 +395,7 @@ export class PmModalComponent implements OnInit, OnDestroy {
                     );
                     this.changeDetector.detectChanges();
                 },
-                error: () => {},
+                error: () => { },
             });
     }
 
@@ -443,7 +443,7 @@ export class PmModalComponent implements OnInit, OnDestroy {
                         this.pmTableData
                     );
                 },
-                error: () => {},
+                error: () => { },
             });
     }
 
@@ -491,7 +491,7 @@ export class PmModalComponent implements OnInit, OnDestroy {
                         this.pmTableData
                     );
                 },
-                error: () => {},
+                error: () => { },
             });
     }
 
@@ -539,7 +539,7 @@ export class PmModalComponent implements OnInit, OnDestroy {
                         this.pmTableData
                     );
                 },
-                error: () => {},
+                error: () => { },
             });
     }
 
@@ -551,15 +551,15 @@ export class PmModalComponent implements OnInit, OnDestroy {
                         id: item.get(TableStringEnum.ID).value,
                         title: item.get(TableStringEnum.TITLE_2).value,
                         mileage:
-                            MethodsCalculationsHelper.convertThousanSepInNumber(
+                            MethodsCalculationsHelper.convertThousandSepInNumber(
                                 item.get(TableStringEnum.MILEAGE).value
                             ),
                         status:
                             index < 4
                                 ? PMStatus.Default
                                 : item.get(TableStringEnum.IS_CHECKED).value
-                                  ? PMStatus.Active
-                                  : PMStatus.Inactive,
+                                    ? PMStatus.Active
+                                    : PMStatus.Inactive,
                     };
                 }),
             ],
@@ -595,15 +595,15 @@ export class PmModalComponent implements OnInit, OnDestroy {
                     return {
                         id: item.get(TableStringEnum.ID).value,
                         title: item.get(TableStringEnum.TITLE_2).value,
-                        months: MethodsCalculationsHelper.convertThousanSepInNumber(
+                        months: MethodsCalculationsHelper.convertThousandSepInNumber(
                             item.get(TableStringEnum.MILEAGE).value
                         ),
                         status:
                             index < 1
                                 ? PMStatus.Default
                                 : item.get(TableStringEnum.IS_CHECKED).value
-                                  ? PMStatus.Active
-                                  : PMStatus.Inactive,
+                                    ? PMStatus.Active
+                                    : PMStatus.Inactive,
                     };
                 }),
             ],
@@ -642,30 +642,30 @@ export class PmModalComponent implements OnInit, OnDestroy {
                     return {
                         id: item.get(TableStringEnum.ID).value,
                         mileage:
-                            MethodsCalculationsHelper.convertThousanSepInNumber(
+                            MethodsCalculationsHelper.convertThousandSepInNumber(
                                 item.get(TableStringEnum.MILEAGE).value
                             ),
                         status:
                             index < 4
                                 ? PMStatus.Default
                                 : item.get(TableStringEnum.IS_CHECKED).value
-                                  ? PMStatus.Active
-                                  : PMStatus.Inactive,
+                                    ? PMStatus.Active
+                                    : PMStatus.Inactive,
                     };
                 }),
                 ...this.newPMs.controls.map((item, index) => {
                     return {
                         id: item.get(TableStringEnum.ID).value,
                         mileage:
-                            MethodsCalculationsHelper.convertThousanSepInNumber(
+                            MethodsCalculationsHelper.convertThousandSepInNumber(
                                 item.get(TableStringEnum.MILEAGE).value
                             ),
                         status:
                             index < 4
                                 ? PMStatus.Default
                                 : item.get(TableStringEnum.IS_CHECKED).value
-                                  ? PMStatus.Active
-                                  : PMStatus.Inactive,
+                                    ? PMStatus.Active
+                                    : PMStatus.Inactive,
                     };
                 }),
             ],
@@ -701,29 +701,29 @@ export class PmModalComponent implements OnInit, OnDestroy {
                 ...this.defaultPMs.controls.map((item, index) => {
                     return {
                         id: item.get(TableStringEnum.ID).value,
-                        months: MethodsCalculationsHelper.convertThousanSepInNumber(
+                        months: MethodsCalculationsHelper.convertThousandSepInNumber(
                             item.get(TableStringEnum.MILEAGE).value
                         ),
                         status:
                             index < 1
                                 ? PMStatus.Default
                                 : item.get(TableStringEnum.IS_CHECKED).value
-                                  ? PMStatus.Active
-                                  : PMStatus.Inactive,
+                                    ? PMStatus.Active
+                                    : PMStatus.Inactive,
                     };
                 }),
                 ...this.newPMs.controls.map((item, index) => {
                     return {
                         id: item.get(TableStringEnum.ID).value,
-                        months: MethodsCalculationsHelper.convertThousanSepInNumber(
+                        months: MethodsCalculationsHelper.convertThousandSepInNumber(
                             item.get(TableStringEnum.MILEAGE).value
                         ),
                         status:
                             index < 1
                                 ? PMStatus.Default
                                 : item.get(TableStringEnum.IS_CHECKED).value
-                                  ? PMStatus.Active
-                                  : PMStatus.Inactive,
+                                    ? PMStatus.Active
+                                    : PMStatus.Inactive,
                     };
                 }),
             ],
@@ -868,7 +868,7 @@ export class PmModalComponent implements OnInit, OnDestroy {
                 const defaultPmsIndex =
                     this.editData.header ===
                         TableStringEnum.TRUCK_PM_SETTINGS ||
-                    this.editData.header ===
+                        this.editData.header ===
                         TableStringEnum.CONFIGURE_TRUCK_PM_HEADER
                         ? 4
                         : 1;
@@ -883,8 +883,8 @@ export class PmModalComponent implements OnInit, OnDestroy {
                         existingPmIndex < defaultPmsIndex
                             ? PMStatus.Default
                             : pmItem.isChecked
-                              ? PMStatus.Active
-                              : PMStatus.Inactive,
+                                ? PMStatus.Active
+                                : PMStatus.Inactive,
                 });
             }
 

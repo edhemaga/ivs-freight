@@ -119,8 +119,7 @@ import { AddressMixin } from '@shared/mixins/address/address.mixin';
 })
 export class SettingsTerminalModalComponent
     extends AddressMixin(class { addressService!: AddressService; })
-    implements OnInit, OnDestroy
-{
+    implements OnInit, OnDestroy {
     @Input() editData: any;
 
     public terminalForm: UntypedFormGroup;
@@ -385,11 +384,11 @@ export class SettingsTerminalModalComponent
                 this.gateBtns = this.gateBtns.map((item) => {
                     event.name === 'No'
                         ? this.terminalForm
-                              .get(SettingsFormEnum.GATE)
-                              .patchValue(false)
+                            .get(SettingsFormEnum.GATE)
+                            .patchValue(false)
                         : this.terminalForm
-                              .get(SettingsFormEnum.GATE)
-                              .patchValue(true);
+                            .get(SettingsFormEnum.GATE)
+                            .patchValue(true);
 
                     return {
                         ...item,
@@ -402,11 +401,11 @@ export class SettingsTerminalModalComponent
                 this.cameraBtns = this.cameraBtns.map((item) => {
                     event.name === 'No'
                         ? this.terminalForm
-                              .get(SettingsFormEnum.SECURITY_CAMERA)
-                              .patchValue(false)
+                            .get(SettingsFormEnum.SECURITY_CAMERA)
+                            .patchValue(false)
                         : this.terminalForm
-                              .get(SettingsFormEnum.SECURITY_CAMERA)
-                              .patchValue(true);
+                            .get(SettingsFormEnum.SECURITY_CAMERA)
+                            .patchValue(true);
 
                     return {
                         ...item,
@@ -479,7 +478,7 @@ export class SettingsTerminalModalComponent
             ...form,
             address: { ...this.selectedAddress, addressUnit: addressUnit },
             rent: rent
-                ? MethodsCalculationsHelper.convertThousanSepInNumber(rent)
+                ? MethodsCalculationsHelper.convertThousandSepInNumber(rent)
                 : null,
             payPeriod: this.selectedPayPeriod
                 ? this.selectedPayPeriod.id
@@ -500,8 +499,8 @@ export class SettingsTerminalModalComponent
                 ? this.parkingSlots[0].value
                     ? this.parkingSlots[0].value
                     : 0 + this.parkingSlots[1].value
-                      ? this.parkingSlots[1].value
-                      : 0
+                        ? this.parkingSlots[1].value
+                        : 0
                 : 0,
             terminalParkingSlotCount: this.parkingSlots.length
                 ? this.parkingSlots[0].value
@@ -531,7 +530,7 @@ export class SettingsTerminalModalComponent
             ...form,
             address: { ...this.selectedAddress, addressUnit: addressUnit },
             rent: rent
-                ? MethodsCalculationsHelper.convertThousanSepInNumber(rent)
+                ? MethodsCalculationsHelper.convertThousandSepInNumber(rent)
                 : null,
             payPeriod: this.selectedPayPeriod
                 ? this.selectedPayPeriod.id
@@ -552,8 +551,8 @@ export class SettingsTerminalModalComponent
                 ? this.parkingSlots[0].value
                     ? this.parkingSlots[0].value
                     : 0 + this.parkingSlots[1].value
-                      ? this.parkingSlots[1].value
-                      : 0
+                        ? this.parkingSlots[1].value
+                        : 0
                 : 0,
             terminalParkingSlotCount: this.parkingSlots.length
                 ? this.parkingSlots[0].value
@@ -638,8 +637,8 @@ export class SettingsTerminalModalComponent
                         // Additional tab
                         rent: res.rent
                             ? MethodsCalculationsHelper.convertNumberInThousandSep(
-                                  res.rent
-                              )
+                                res.rent
+                            )
                             : null,
                         payPeriod: res.payPeriod ? res.payPeriod.name : null,
                         monthlyDay: res.payPeriod?.name
@@ -705,7 +704,7 @@ export class SettingsTerminalModalComponent
                         this.startFormChanges();
                     }, 1000);
                 },
-                error: () => {},
+                error: () => { },
             });
     }
 
@@ -725,7 +724,7 @@ export class SettingsTerminalModalComponent
                         this.startFormChanges();
                     }
                 },
-                error: () => {},
+                error: () => { },
             });
     }
 

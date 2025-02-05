@@ -174,7 +174,7 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
         private payrollService: PayrollService,
         private confirmationService: ConfirmationService,
         private confirmationActivationService: ConfirmationActivationService
-    ) {}
+    ) { }
 
     ngOnInit() {
         this.createForm();
@@ -246,7 +246,7 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
                     this.editData?.id
                 ) {
                     this.fuelTransactionType?.name !==
-                    FuelValuesStringEnum.MANUAL
+                        FuelValuesStringEnum.MANUAL
                         ? this.updateFuelEFS(this.editData.id)
                         : this.updateFuel(this.editData.id);
                 } else {
@@ -319,7 +319,7 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
                     form.transactionTime
                 ),
             invoice: this.fuelForm.get(FuelValuesStringEnum.INVOICE).value,
-            total: MethodsCalculationsHelper.convertThousanSepInNumber(
+            total: MethodsCalculationsHelper.convertThousandSepInNumber(
                 this.total as any
             ),
             fuelItems: this.fuelItems,
@@ -392,7 +392,7 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
                     form.transactionDate,
                     form.transactionTime
                 ),
-            total: MethodsCalculationsHelper.convertThousanSepInNumber(
+            total: MethodsCalculationsHelper.convertThousandSepInNumber(
                 this.total as any
             ),
             fuelItems: this.fuelItems,
@@ -442,9 +442,9 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
                             : null,
                         driverFullName: res.driver
                             ? res.driver.firstName?.concat(
-                                  ' ',
-                                  res.driver.lastName
-                              )
+                                ' ',
+                                res.driver.lastName
+                            )
                             : null,
                         transactionDate:
                             MethodsCalculationsHelper.convertDateFromBackend(

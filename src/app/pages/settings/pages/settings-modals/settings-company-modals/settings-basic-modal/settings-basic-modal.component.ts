@@ -115,6 +115,7 @@ import { SettingsModalSvgRoutes } from '@pages/settings/pages/settings-modals/se
 // mixin
 import { AddressMixin } from '@shared/mixins/address/address.mixin';
 import { IBankAccount } from '@pages/settings/models';
+import { EBankAccountStatus } from '@pages/settings/enums';
 
 // Plaid
 declare const Plaid: IPlaid;
@@ -227,7 +228,7 @@ export class SettingsBasicModalComponent
     public selectedPayTerm: EnumValue = null;
 
     // Plaid bank verification
-    public isPlaidActive: boolean = false;
+    public isPlaidAvailable: boolean = true;
 
     // logo actions
     public displayDeleteAction: boolean = false;
@@ -613,7 +614,10 @@ export class SettingsBasicModalComponent
         }
     }
 
-    public tabChange(event: any): void {
+    public tabChange(
+        event:
+            { id: number }
+    ): void {
         this.selectedTab = event.id;
         let dotAnimation = document.querySelector('.animation-three-tabs');
 
@@ -628,6 +632,11 @@ export class SettingsBasicModalComponent
                 checked: item.id === event.id,
             };
         });
+
+        if (this.selectedTab !== 2)
+            this.isPlaidAvailable = false;
+        else
+            this.isPlaidAvailable = true;
     }
 
     public get departmentContacts(): UntypedFormArray {
@@ -662,7 +671,11 @@ export class SettingsBasicModalComponent
         });
     }
 
-    public addDepartmentContacts(event: { check: boolean; action: string }): void {
+    public addDepartmentContacts(
+        event: {
+            check: boolean;
+            action: string
+        }): void {
         if (event.check && this.departmentContacts.valid) {
             const form = this.createDepartmentContacts();
             this.departmentContacts.push(form);
@@ -680,7 +693,11 @@ export class SettingsBasicModalComponent
         this.selectedDepartmentFormArray.splice(id, 1);
     }
 
-    public onSelectFakeTableData(event: any, index: number, action: string) {
+    public onSelectFakeTableData(
+        event: any,
+        index: number,
+        action: string
+    ): void {
         switch (action) {
             case 'department': {
                 this.selectedDepartmentFormArray[index] = event;
@@ -727,41 +744,38 @@ export class SettingsBasicModalComponent
 
     private createBankAccount(data?: IBankAccount): UntypedFormGroup {
         return this.formBuilder.group({
-            id: [data?.id ? data.id : 0],
+            id: [data?.id ?? 0],
             bankId: [
-                data?.bankId ? data.bankId : null,
+                data?.bankId ?? null,
                 [Validators.required, ...bankValidation],
             ],
             routing: [
-                data?.routing ? data.routing : null,
+                data?.routing ?? null,
                 [Validators.required, ...routingBankValidation],
             ],
             account: [
                 data?.account ? data.account : null,
                 [Validators.required, ...accountBankValidation],
             ],
+            status: [
+                data?.status ?? null
+            ]
         });
+    }
+
+    public verifyBankAccount(index: number): void {
+        if (this.bankAccounts?.valid && this.isPlaidAvailable) {
+            const value: IBankAccount =
+                this.bankAccounts.
+                    value[index];
+            this.checkBankAccountValidity(value);
+        }
+
     }
 
     public addBankAccount(event: { check: boolean; action: string }) {
         if (event.check && this.bankAccounts.valid)
             this.bankAccounts.push(this.createBankAccount());
-
-        this.bankAccounts?.
-            statusChanges?.
-            pipe(
-                debounceTime(1000),
-                takeUntil(this.destroy$))?.
-            subscribe(
-                () => {
-                    if (this.bankAccounts?.valid && !this.isPlaidActive) {
-                        const value: IBankAccount =
-                            this.bankAccounts.
-                                value[this.bankAccounts.value?.length - 1];
-                        this.checkBankAccountValidity(value);
-                    }
-                }
-            )
     }
 
     public removeBankAccount(id: number) {
@@ -778,15 +792,8 @@ export class SettingsBasicModalComponent
                 distinctUntilChanged(),
                 takeUntil(this.destroy$)
             )
-            .subscribe(
-                async (value) => {
-                    // this.isBankSelectedFormArray[index] =
-                    //     await this.bankVerificationService.onSelectBank(
-                    //         value,
-                    //         this.bankAccounts.at(index).get('routing'),
-                    //         this.bankAccounts.at(index).get('account')
-                    //     );
-                });
+            // TODO This needs to be refactored
+            .subscribe(async (value) => { });
     }
 
     public get bankCards(): UntypedFormArray {
@@ -846,71 +853,54 @@ export class SettingsBasicModalComponent
         switch (action) {
             case 'timezone':
                 this.selectedTimeZone = event;
-
                 break;
             case SettingsModalEnum.CURRENCY:
                 this.selectedCurrency = event;
-
                 break;
             case 'driver-pay-period':
                 this.selectedDriverPayPeriod = event;
-
                 this.selectedDriverEndingIn = this.setEndingInInputOptions(
                     event.name
                 );
-
                 break;
             case 'driver-ending-in':
                 this.selectedDriverEndingIn = event;
-
                 break;
             case 'accounting-pay-period':
                 this.selectedAccountingPayPeriod = event;
-
                 this.selectedAccountingEndingIn = this.setEndingInInputOptions(
                     event.name
                 );
-
                 break;
             case 'accounting-ending-in':
                 this.selectedAccountingEndingIn = event;
-
                 break;
             case 'companyOwner-pay-period':
                 this.selectedCompanyPayPeriod = event;
-
                 this.selectedCompanyEndingIn = this.setEndingInInputOptions(
                     event.name
                 );
-
                 break;
             case 'companyOwner-ending-in':
                 this.selectedCompanyEndingIn = event;
-
                 break;
             case 'dispatch-pay-period':
                 this.selectedDispatchPayPeriod = event;
-
                 this.selectedDispatchEndingIn = this.setEndingInInputOptions(
                     event.name
                 );
-
                 break;
             case 'dispatch-ending-in':
                 this.selectedDispatchEndingIn = event;
-
                 break;
             case 'manager-pay-period':
                 this.selectedManagerPayPeriod = event;
-
                 this.selectedManagerEndingIn = this.setEndingInInputOptions(
                     event.name
                 );
-
                 break;
             case 'manager-ending-in':
                 this.selectedManagerEndingIn = event;
-
                 break;
             case 'recruiting-pay-period':
                 this.selectedRecPayPeriod = event;
@@ -918,57 +908,43 @@ export class SettingsBasicModalComponent
                 this.selectedRecEndingIn = this.setEndingInInputOptions(
                     event.name
                 );
-
                 break;
             case 'recruiting-ending-in':
                 this.selectedRecEndingIn = event;
-
                 break;
             case 'repair-pay-period':
                 this.selectedRepairPayPeriod = event;
-
                 this.selectedRepairEndingIn = this.setEndingInInputOptions(
                     event.name
                 );
-
                 break;
             case 'repair-ending-in':
                 this.selectedRepairEndingIn = event;
-
                 break;
             case 'safety-pay-period':
                 this.selectedSafetyPayPeriod = event;
-
                 this.selectedSafetyEndingIn = this.setEndingInInputOptions(
                     event.name
                 );
-
                 break;
             case 'safety-ending-in':
                 this.selectedSafetyEndingIn = event;
-
                 break;
             case 'other-pay-period':
                 this.selectedOtherPayPeriod = event;
-
                 this.selectedOtherEndingIn = this.setEndingInInputOptions(
                     event.name
                 );
-
                 break;
             case 'other-ending-in':
                 this.selectedOtherEndingIn = event;
-
                 break;
             case 'company-data':
                 this.selectedCompanyData = event;
-
                 break;
             case SettingsModalEnum.PAY_TERM:
                 this.selectedPayTerm = event;
-
                 break;
-
             default:
                 break;
         }
@@ -1128,9 +1104,8 @@ export class SettingsBasicModalComponent
     }
 
     public onSaveLogoAction(event: any): void {
-        if (event) {
+        if (event)
             this.displayDeleteAction = true;
-        }
     }
 
     public onPrefferedLoadCheck(event: Tabs): void {
@@ -1173,7 +1148,7 @@ export class SettingsBasicModalComponent
                         [SettingsModalEnum.SOLO, 'Combined'].includes(
                             this.selectedFleetType
                         )
-                    ) {
+                    )
                         if (this.companyForm.get('soloLoadedMile').value)
                             this.companyForm
                                 .get('perMileSolo')
@@ -1181,9 +1156,7 @@ export class SettingsBasicModalComponent
                                     this.companyForm.get('soloLoadedMile').value
                                 );
 
-                    }
-
-                    if (['Team', 'Combined'].includes(this.selectedFleetType)) {
+                    if (['Team', 'Combined'].includes(this.selectedFleetType))
                         if (this.companyForm.get('teamLoadedMile').value)
                             this.companyForm
                                 .get('perMileTeam')
@@ -1191,7 +1164,6 @@ export class SettingsBasicModalComponent
                                     this.companyForm.get('teamLoadedMile').value
                                 );
 
-                    }
                 } else {
                     if (
                         [SettingsModalEnum.SOLO, 'Combined'].includes(
@@ -1317,22 +1289,19 @@ export class SettingsBasicModalComponent
             currency: this.selectedCurrency ? this.selectedCurrency.id : null,
         };
 
-        for (let index = 0; index < departmentContacts.length; index++) {
-            departmentContacts[index].departmentId =
-                this.selectedDepartmentFormArray[index].id;
-        }
+        departmentContacts.forEach((departmentContact, index: number) => {
+            departmentContact.departmentId = this.selectedDepartmentFormArray[index].id;
+        });
 
-        for (let index = 0; index < bankAccounts.length; index++) {
-            bankAccounts[index].bankId =
-                this.selectedBankAccountFormArray[index].id;
-        }
+        bankAccounts.forEach((bankAccount, index: number) => {
+            bankAccount.bankId = this.selectedBankAccountFormArray[index].id;
+        });
 
-        for (let index = 0; index < bankCards.length; index++) {
-            bankCards[index].expireDate =
-                MethodsCalculationsHelper.convertDateToBackend(
-                    bankCards[index].expireDate
-                );
-        }
+        bankCards.forEach((bankCard, index: number) => {
+            bankCard.expireDate = MethodsCalculationsHelper.convertDateToBackend(
+                bankCards[index].expireDate
+            );
+        });
 
         this.settingsCompanyService
             .addCompanyDivision({ ...newData })
@@ -1432,67 +1401,75 @@ export class SettingsBasicModalComponent
         }
 
         if (this.editData.company.bankAccounts.length) {
-            for (
-                let index = 0;
-                index < this.editData.company.bankAccounts.length;
-                index++
-            ) {
-                this.bankAccounts.push(
-                    this.createBankAccount({
-                        id: this.editData.company.bankAccounts[index].id,
-                        bankId: this.editData.company.bankAccounts[index].bank
-                            .name,
-                        routing:
-                            this.editData.company.bankAccounts[index].routing,
-                        account:
-                            this.editData.company.bankAccounts[index].account,
-                    })
-                );
+            this.editData.company.bankAccounts.forEach(
+                (bankAccount, index: number) => {
 
-                this.selectedBankAccountFormArray.push(
-                    this.editData.company.bankAccounts[index].bank
-                );
+                    const {
+                        id,
+                        routing,
+                        account,
+                        status
+                    } = bankAccount;
 
-                this.isBankSelectedFormArray.push(
-                    this.editData.company.bankAccounts[index].id ? true : false
-                );
+                    this.bankAccounts.push(
+                        this.createBankAccount({
+                            id,
+                            bankId: this.editData.company.bankAccounts[index].bank
+                                .name,
+                            routing,
+                            account,
+                            status: status ?
+                                EBankAccountStatus.VERIFIED :
+                                EBankAccountStatus.UNVERIFIED
+                        })
+                    );
 
-                this.onBankSelected(index);
+
+                    this.selectedBankAccountFormArray.push(
+                        this.editData.company.bankAccounts[index].bank
+                    );
+
+                    this.isBankSelectedFormArray.push(
+                        this.editData.company.bankAccounts[index].id ? true : false
+                    );
+
+                    this.onBankSelected(index);
+
+                });
+
+            if (this.editData.company.bankCards.length) {
+                for (const card of this.editData.company.bankCards) {
+                    this.bankCards.push(
+                        this.createBankCard({
+                            id: card.id,
+                            nickname: card.nickname,
+                            card: card.card,
+                            cvc: card.cvc,
+                            expireDate: card.expireDate
+                                ? MethodsCalculationsHelper.convertDateFromBackend(
+                                    card.expireDate
+                                )
+                                : null,
+                        })
+                    );
+                }
             }
+
+            // tabs
+            const selectedPrefferedLoadTypeTab = this.prefferedLoadTabs.find(
+                (tab) => tab.name === additionalInfo?.preferredLoadType
+            );
+            const selectedFleetTypeTab = this.fleetTypeTabs.find(
+                (tab) => tab.name === additionalInfo?.fleetType
+            );
+
+            this.onPrefferedLoadCheck(selectedPrefferedLoadTypeTab);
+            this.onFleetTypeCheck(selectedFleetTypeTab);
+
+            setTimeout(() => {
+                this.isCardAnimationDisabled = false;
+            }, 1000);
         }
-
-        if (this.editData.company.bankCards.length) {
-            for (const card of this.editData.company.bankCards) {
-                this.bankCards.push(
-                    this.createBankCard({
-                        id: card.id,
-                        nickname: card.nickname,
-                        card: card.card,
-                        cvc: card.cvc,
-                        expireDate: card.expireDate
-                            ? MethodsCalculationsHelper.convertDateFromBackend(
-                                card.expireDate
-                            )
-                            : null,
-                    })
-                );
-            }
-        }
-
-        // tabs
-        const selectedPrefferedLoadTypeTab = this.prefferedLoadTabs.find(
-            (tab) => tab.name === additionalInfo?.preferredLoadType
-        );
-        const selectedFleetTypeTab = this.fleetTypeTabs.find(
-            (tab) => tab.name === additionalInfo?.fleetType
-        );
-
-        this.onPrefferedLoadCheck(selectedPrefferedLoadTypeTab);
-        this.onFleetTypeCheck(selectedFleetTypeTab);
-
-        setTimeout(() => {
-            this.isCardAnimationDisabled = false;
-        }, 1000);
     }
 
     public updateCompanyDivision(id: number) {
@@ -1543,22 +1520,19 @@ export class SettingsBasicModalComponent
             currency: this.selectedCurrency ? this.selectedCurrency.id : null,
         };
 
-        for (let index = 0; index < departmentContacts.length; index++) {
-            departmentContacts[index].departmentId =
-                this.selectedDepartmentFormArray[index].id;
-        }
+        departmentContacts.forEach((departmentContact, index: number) => {
+            departmentContact.departmentId = this.selectedDepartmentFormArray[index].id;
+        });
 
-        for (let index = 0; index < bankAccounts.length; index++) {
-            bankAccounts[index].bankId =
-                this.selectedBankAccountFormArray[index].id;
-        }
+        bankAccounts.forEach((bankAccount, index: number) => {
+            bankAccount.bankId = this.selectedBankAccountFormArray[index].id;
+        });
 
-        for (let index = 0; index < bankCards.length; index++) {
-            bankCards[index].expireDate =
-                MethodsCalculationsHelper.convertDateToBackend(
-                    bankCards[index].expireDate
-                );
-        }
+        bankCards.forEach((bankCard, index: number) => {
+            bankCard.expireDate = MethodsCalculationsHelper.convertDateToBackend(
+                bankCards[index].expireDate
+            );
+        });
 
         this.settingsCompanyService
             .updateCompanyDivision({ ...newData })
@@ -1671,29 +1645,26 @@ export class SettingsBasicModalComponent
                     : 2,
         };
 
-        for (let index = 0; index < departmentContacts.length; index++) {
-            departmentContacts[index].departmentId =
-                this.selectedDepartmentFormArray[index].id;
-        }
+        departmentContacts.forEach((departmentContact, index: number) => {
+            departmentContact.departmentId = this.selectedDepartmentFormArray[index].id;
+        });
 
-        for (let index = 0; index < bankAccounts.length; index++) {
-            bankAccounts[index].bankId =
-                this.selectedBankAccountFormArray[index].id;
-        }
+        bankAccounts.forEach((bankAccount, index: number) => {
+            bankAccount.bankId = this.selectedBankAccountFormArray[index].id;
+        });
 
-        for (let index = 0; index < bankCards.length; index++) {
-            bankCards[index].expireDate =
-                MethodsCalculationsHelper.convertDateToBackend(
-                    bankCards[index].expireDate
-                );
-        }
+        bankCards.forEach((bankCard, index: number) => {
+            bankCard.expireDate = MethodsCalculationsHelper.convertDateToBackend(
+                bankCards[index].expireDate
+            );
+        });
 
         const accountingPayroll = {
             departmentId: 1,
             payPeriod: this.selectedAccountingPayPeriod?.id,
             endingIn: this.selectedAccountingEndingIn?.id,
             defaultBase: accountingDefaultBase
-                ? MethodsCalculationsHelper.convertThousanSepInNumber(
+                ? MethodsCalculationsHelper.convertThousandSepInNumber(
                     accountingDefaultBase
                 )
                 : null,
@@ -1704,7 +1675,7 @@ export class SettingsBasicModalComponent
             payPeriod: this.selectedDispatchPayPeriod?.id,
             endingIn: this.selectedDispatchEndingIn?.id,
             defaultBase: dispatchDefaultBase
-                ? MethodsCalculationsHelper.convertThousanSepInNumber(
+                ? MethodsCalculationsHelper.convertThousandSepInNumber(
                     dispatchDefaultBase
                 )
                 : null,
@@ -1716,7 +1687,7 @@ export class SettingsBasicModalComponent
             payPeriod: this.selectedRecPayPeriod?.id,
             endingIn: this.selectedRecEndingIn?.id,
             defaultBase: recruitingDefaultBase
-                ? MethodsCalculationsHelper.convertThousanSepInNumber(
+                ? MethodsCalculationsHelper.convertThousandSepInNumber(
                     recruitingDefaultBase
                 )
                 : null,
@@ -1727,7 +1698,7 @@ export class SettingsBasicModalComponent
             payPeriod: this.selectedRepairPayPeriod?.id,
             endingIn: this.selectedRepairEndingIn?.id,
             defaultBase: repairDefaultBase
-                ? MethodsCalculationsHelper.convertThousanSepInNumber(
+                ? MethodsCalculationsHelper.convertThousandSepInNumber(
                     repairDefaultBase
                 )
                 : null,
@@ -1738,7 +1709,7 @@ export class SettingsBasicModalComponent
             payPeriod: this.selectedSafetyPayPeriod?.id,
             endingIn: this.selectedSafetyEndingIn?.id,
             defaultBase: safetyDefaultBase
-                ? MethodsCalculationsHelper.convertThousanSepInNumber(
+                ? MethodsCalculationsHelper.convertThousandSepInNumber(
                     safetyDefaultBase
                 )
                 : null,
@@ -1749,7 +1720,7 @@ export class SettingsBasicModalComponent
             payPeriod: this.selectedManagerPayPeriod?.id,
             endingIn: this.selectedManagerEndingIn?.id,
             defaultBase: managerDefaultBase
-                ? MethodsCalculationsHelper.convertThousanSepInNumber(
+                ? MethodsCalculationsHelper.convertThousandSepInNumber(
                     managerDefaultBase
                 )
                 : null,
@@ -1762,7 +1733,7 @@ export class SettingsBasicModalComponent
             payPeriod: this.selectedCompanyPayPeriod?.id,
             endingIn: this.selectedCompanyEndingIn?.id,
             defaultBase: companyOwnerDefaultBase
-                ? MethodsCalculationsHelper.convertThousanSepInNumber(
+                ? MethodsCalculationsHelper.convertThousandSepInNumber(
                     companyOwnerDefaultBase
                 )
                 : null,
@@ -1773,7 +1744,7 @@ export class SettingsBasicModalComponent
             payPeriod: this.selectedOtherPayPeriod?.id,
             endingIn: this.selectedOtherEndingIn?.id,
             defaultBase: otherDefaultBase
-                ? MethodsCalculationsHelper.convertThousanSepInNumber(
+                ? MethodsCalculationsHelper.convertThousandSepInNumber(
                     otherDefaultBase
                 )
                 : null,
@@ -1802,7 +1773,7 @@ export class SettingsBasicModalComponent
                     this.selectedFleetType
                 )
                     ? soloPerStop
-                        ? MethodsCalculationsHelper.convertThousanSepInNumber(
+                        ? MethodsCalculationsHelper.convertThousandSepInNumber(
                             soloPerStop
                         )
                         : null
@@ -1821,7 +1792,7 @@ export class SettingsBasicModalComponent
                     : null,
                 perStop: ['Team', 'Combined'].includes(this.selectedFleetType)
                     ? teamPerStop
-                        ? MethodsCalculationsHelper.convertThousanSepInNumber(
+                        ? MethodsCalculationsHelper.convertThousandSepInNumber(
                             teamPerStop
                         )
                         : null
@@ -1844,12 +1815,12 @@ export class SettingsBasicModalComponent
                     : null
                 : null,
             soloPerLoad: soloPerLoad
-                ? MethodsCalculationsHelper.convertThousanSepInNumber(
+                ? MethodsCalculationsHelper.convertThousandSepInNumber(
                     soloPerLoad
                 )
                 : null,
             teamPerLoad: teamPerLoad
-                ? MethodsCalculationsHelper.convertThousanSepInNumber(
+                ? MethodsCalculationsHelper.convertThousandSepInNumber(
                     teamPerLoad
                 )
                 : null,
@@ -2008,24 +1979,39 @@ export class SettingsBasicModalComponent
                 this.selectedDepartmentFormArray.push(department.department);
             }
 
-        if (data.bankAccounts.length)
-            for (let index = 0; index < data.bankAccounts.length; index++) {
-                this.bankAccounts.push(
-                    this.createBankAccount({
-                        id: data.bankAccounts[index].id,
-                        bankId: data.bankAccounts[index].bank.name,
-                        routing: data.bankAccounts[index].routing,
-                        account: data.bankAccounts[index].account,
-                    })
-                );
-                this.selectedBankAccountFormArray.push(
-                    data.bankAccounts[index].bank
-                );
-                this.isBankSelectedFormArray.push(
-                    data.bankAccounts[index].id ? true : false
-                );
-                this.onBankSelected(index);
-            }
+        if (data.bankAccounts?.length)
+
+            data.
+                bankAccounts?.
+                forEach((bankAccount, index: number) => {
+                    const {
+                        id,
+                        routing,
+                        account,
+                        status
+                    } = bankAccount;
+
+                    this.bankAccounts.push(
+                        this.createBankAccount({
+                            id,
+                            bankId: bankAccount?.bank?.name,
+                            routing: routing,
+                            account: account,
+                            status: status === (0 || NaN) ?
+                                EBankAccountStatus.UNVERIFIED :
+                                EBankAccountStatus.VERIFIED
+                        })
+                    );
+                    console.log(this.bankAccounts.controls);
+                    this.selectedBankAccountFormArray.push(
+                        bankAccount.bank
+                    );
+                    this.isBankSelectedFormArray.push(
+                        id ? true : false
+                    );
+                    this.onBankSelected(index);
+                })
+
 
         if (data.bankCards.length) {
             for (const card of data.bankCards) {
@@ -2369,7 +2355,7 @@ export class SettingsBasicModalComponent
     }
 
     private checkBankAccountValidity(addedAccount: IBankAccount): void {
-        this.isPlaidActive = true;
+        this.isPlaidAvailable = false;
         this.companyService
             .apiCompanyPlaidLinkTokenGet()
             .pipe(takeUntil(this.destroy$))
@@ -2396,35 +2382,51 @@ export class SettingsBasicModalComponent
                                         takeUntil(this.destroy$),
                                         switchMap((atRes: AccessTokenResponse) =>
                                             this.companyService
-                                                .apiCompanyPlaidAuthGetPost(
-                                                    {
-                                                        accessToken: atRes?.access_token
-                                                    })
+                                                .apiCompanyPlaidAuthGetPost
+                                                ({
+                                                    accessToken: atRes?.access_token
+                                                })
                                         ),
-                                    ).subscribe((details: AccountDetailsResponse) => {
-                                        if (details.institution_name !== addedAccount.bankId) return;
+                                    ).
+                                    subscribe((details: AccountDetailsResponse) => {
+                                        if (details.institution_name !== addedAccount.bankId) {
+                                            addedAccount.status = EBankAccountStatus.UNVERIFIED
+                                            return
+                                        };
                                         const foundAccount: AchDetail =
-                                            details.account_detail.find(
-                                                detail =>
-                                                (
-                                                    detail.routing === addedAccount.routing &&
-                                                    detail.account === addedAccount.account
-                                                )
-                                            );
+                                            details.
+                                                account_detail.
+                                                find(
+                                                    detail =>
+                                                    (
+                                                        detail.routing === addedAccount.routing &&
+                                                        detail.account === addedAccount.account
+                                                    )
+                                                );
 
                                         // TODO remove test data
                                         // 1111222233330000
-                                        if (foundAccount) console.log('verified');
+                                        // 011401533
+
+                                        addedAccount.status =
+                                            foundAccount ?
+                                                EBankAccountStatus.VERIFIED :
+                                                EBankAccountStatus.UNVERIFIED;
+
+                                        console.log(addedAccount);
                                     });
+
                             },
                         onExit: (
                             error: unknown,
-                            metadata: IPlaidLinkOnExitMetadata) => {
-                            this.isPlaidActive = false;
+                            metadata: IPlaidLinkOnExitMetadata
+                        ) => {
+                            this.isPlaidAvailable = true;
                         },
-                        onEvent: (eventName: string,
-                            metadata: IPlaidLinkOnEventMetadata) => {
-                        },
+                        onEvent: (
+                            eventName: string,
+                            metadata: IPlaidLinkOnEventMetadata
+                        ) => { },
                         onLoad: () => { },
                     });
                 plaid.open();

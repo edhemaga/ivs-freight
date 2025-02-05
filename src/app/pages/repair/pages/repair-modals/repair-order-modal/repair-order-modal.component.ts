@@ -162,7 +162,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
 
     public activeAction: string;
-    
+
     public repairOrderForm: UntypedFormGroup;
     public isFormDirty: boolean = false;
 
@@ -255,7 +255,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
         private detailsDataService: DetailsDataService,
         private tagsService: EditTagsService,
         private confirmationService: ConfirmationService
-    ) {}
+    ) { }
 
     ngOnInit() {
         this.createForm();
@@ -610,19 +610,19 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
                 this.isResetSelectedPm = true;
 
                 this.unitTabs?.find((item) => item.checked).name ===
-                RepairOrderModalStringEnum.TRUCK
+                    RepairOrderModalStringEnum.TRUCK
                     ? this.getRepairDropdowns(
-                          this.selectedUnit?.id,
-                          null,
-                          RepairOrderModalStringEnum.TRUCKS,
-                          true
-                      )
+                        this.selectedUnit?.id,
+                        null,
+                        RepairOrderModalStringEnum.TRUCKS,
+                        true
+                    )
                     : this.getRepairDropdowns(
-                          null,
-                          this.selectedUnit?.id,
-                          RepairOrderModalStringEnum.TRAILERS,
-                          true
-                      );
+                        null,
+                        this.selectedUnit?.id,
+                        RepairOrderModalStringEnum.TRAILERS,
+                        true
+                    );
 
                 if (
                     this.repairOrderForm.get(RepairOrderModalStringEnum.DATE)
@@ -981,7 +981,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
 
                         this.selectedDriver =
                             this.driversDropdownList[
-                                this.driversDropdownList.length - 1
+                            this.driversDropdownList.length - 1
                             ];
 
                         this.isDriverSelected = true;
@@ -1237,9 +1237,9 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
                 trailerId: conditionaTrailerId,
                 driverId: this.selectedDriver?.id ?? null,
                 odometer: odometer
-                    ? MethodsCalculationsHelper.convertThousanSepInNumber(
-                          odometer
-                      )
+                    ? MethodsCalculationsHelper.convertThousandSepInNumber(
+                        odometer
+                    )
                     : null,
                 date: convertedDate,
                 invoice,
@@ -1339,13 +1339,13 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
         this.selectedUnit =
             unitType?.name === RepairOrderModalStringEnum.TRUCK
                 ? {
-                      ...truck,
-                      name: truck?.truckNumber,
-                  }
+                    ...truck,
+                    name: truck?.truckNumber,
+                }
                 : {
-                      ...trailer,
-                      name: trailer?.trailerNumber,
-                  };
+                    ...trailer,
+                    name: trailer?.trailerNumber,
+                };
 
         // repair Shop
         if (repairShop) {
@@ -1414,8 +1414,8 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
             unitType: unitType.name,
             driver: driver
                 ? driver?.firstName +
-                  RepairOrderModalStringEnum.EMPTY_SPACE_STRING +
-                  driver?.lastName
+                RepairOrderModalStringEnum.EMPTY_SPACE_STRING +
+                driver?.lastName
                 : null,
             odometer:
                 odometer &&
@@ -1490,9 +1490,9 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
                 trailerId: conditionaTrailerId,
                 driverId: this.selectedDriver?.id ?? null,
                 odometer: odometer
-                    ? MethodsCalculationsHelper.convertThousanSepInNumber(
-                          odometer
-                      )
+                    ? MethodsCalculationsHelper.convertThousandSepInNumber(
+                        odometer
+                    )
                     : null,
                 date: convertedDate,
                 invoice,
