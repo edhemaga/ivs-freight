@@ -471,14 +471,22 @@ export class RepairService {
         pageIndex?: number,
         pageSize?: number,
         companyId?: number,
-        sort?: string
+        sort?: string,
+        search?: string,
+        search1?: string,
+        search2?: string
     ): Observable<RepairedVehicleListResponse> {
         return this.repairShopService.apiRepairshopRepairedvehicleGet(
             repairShopId,
             pageIndex,
             pageSize,
             companyId,
-            sort
+            sort,
+            null,
+            null,
+            search,
+            search1,
+            search2
         );
     }
 
@@ -615,6 +623,20 @@ export class RepairService {
         repairShopData.ratingReviews = filteredRatingReviews;
 
         this.handleRepairShopUpdateStores(repairShopData);
+    }
+
+    public deleteRepairShopContact(
+        repairShopContactId: number,
+        repairShopId: number
+    ): Observable<any> {
+        return this.repairShopService
+            .apiRepairshopContactIdDelete(repairShopContactId)
+            .pipe(
+                switchMap(() => this.getRepairShopById(repairShopId)),
+                tap((repairShop) =>
+                    this.handleRepairShopUpdateStores(repairShop)
+                )
+            );
     }
 
     /* Store Actions */

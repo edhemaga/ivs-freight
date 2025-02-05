@@ -6,7 +6,7 @@
     [hasDivider]="false"
     [animationMarginParams]="{
         marginTop: '0px',
-        marginBottom: '8px'
+        marginBottom: '8px',
     }"
     (onOpenCard)="handleOpenHoursCardOpen($event)"
 >
@@ -38,12 +38,10 @@
         <!-- Main -->
 
         <div class="shop-details-working-hours-main">
-            <ng-container
-                *ngFor="
-                    let workingHoursItem of _cardData;
-                    trackBy: trackByIdentity
-                "
-            >
+            @for (
+                workingHoursItem of _cardData;
+                track workingHoursItem?.workingDays
+            ) {
                 <div class="d-flex flex-column justify-content-center">
                     <p class="m-0 ta-font-bold text-size-11 text-color-black">
                         {{ workingHoursItem?.workingDays }}
@@ -53,7 +51,7 @@
                         {{ workingHoursItem?.workingHours }}
                     </p>
                 </div>
-            </ng-container>
+            }
         </div>
     </div>
 </app-ta-custom-card>

@@ -44,10 +44,6 @@ export class RepairShopDetailsBankCardComponent {
 
     public isBankCardOpen: boolean = true;
 
-    public trackByIdentity(index: number): number {
-        return index;
-    }
-
     public handleBankCardOpen(isOpen: boolean): void {
         this.isBankCardOpen = isOpen;
     }

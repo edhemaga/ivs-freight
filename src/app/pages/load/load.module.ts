@@ -14,9 +14,9 @@ import { TaTableBodyComponent } from '@shared/components/ta-table/ta-table-body/
 import { TaTableHeadComponent } from '@shared/components/ta-table/ta-table-head/ta-table-head.component';
 import { TaInputDropdownTableComponent } from '@shared/components/ta-input-dropdown-table/ta-input-dropdown-table.component';
 import { TaNoteComponent } from '@shared/components/ta-note/ta-note.component';
-import { TaTableCardDropdownActionsComponent } from '@shared/components/ta-table-card-dropdown-actions/ta-table-card-dropdown-actions.component';
 import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
 import { TaProfileImagesComponent } from '@shared/components/ta-profile-images/ta-profile-images.component';
+import { CaDropdownMenuComponent } from 'ca-components';
 
 // pipes
 import { FormatDatePipe } from '@shared/pipes/format-date.pipe';
@@ -46,9 +46,9 @@ import { loadCardModalReducer } from '@pages/load/pages/load-card-modal/state/lo
         TaTableHeadComponent,
         TaInputDropdownTableComponent,
         TaNoteComponent,
-        TaTableCardDropdownActionsComponent,
         TaAppTooltipV2Component,
         TaProfileImagesComponent,
+        CaDropdownMenuComponent,
 
         // pipes
         FormatDatePipe,

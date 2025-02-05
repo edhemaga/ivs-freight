@@ -464,8 +464,6 @@ export enum TableStringEnum {
     SSN_2 = 'SSN',
     SSN_EIN = 'ssnEin',
     CHANGE = 'Change',
-    // Links
-    LOAD_DETAILS = '/list/load/',
 
     // reset modal
     RESET_MODAL_CONTACTS_TITLE = 'List | Contacts',

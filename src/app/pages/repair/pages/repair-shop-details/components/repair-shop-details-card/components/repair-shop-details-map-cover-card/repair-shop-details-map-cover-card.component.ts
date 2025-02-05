@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, Input, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 
@@ -17,15 +17,16 @@ import {
 import { RepairShopDetailsCardConstants } from '@pages/repair/pages/repair-shop-details/components/repair-shop-details-card/utils/constants';
 import { RepairShopMapConfig } from '@pages/repair/pages/repair-table/utils/constants/repair-shop-map.config';
 
-// models
-import { RepairShopResponse } from 'appcoretruckassist';
-import { Tabs } from '@shared/models/tabs.model';
-
 // services
 import { MapsService } from '@shared/services/maps.service';
 
 // enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
+import { RepairShopDetailsStringEnum } from '@pages/repair/pages/repair-shop-details/enums';
+
+// models
+import { RepairShopResponse } from 'appcoretruckassist';
+import { Tabs } from '@shared/models/tabs.model';
 
 @Component({
     selector: 'app-repair-shop-details-map-cover-card',
@@ -48,10 +49,6 @@ export class RepairShopDetailsMapCoverCardComponent implements AfterViewInit {
         this.createMapCoverCardData(data);
     }
 
-    ngAfterViewInit(): void {
-        this.setMapData(this._cardData);
-    }
-
     public _cardData: RepairShopResponse;
 
     public mapLocationCoverTabs: Tabs[] = [];
@@ -61,9 +58,15 @@ export class RepairShopDetailsMapCoverCardComponent implements AfterViewInit {
 
     constructor(
         private router: Router,
+
+        // services
         private mapsService: MapsService,
         private markerIconService: MapMarkerIconService
     ) {}
+
+    ngAfterViewInit(): void {
+        this.setMapData(this._cardData);
+    }
 
     private createMapCoverCardData(data: RepairShopResponse): void {
         this._cardData = data;
@@ -118,7 +121,7 @@ export class RepairShopDetailsMapCoverCardComponent implements AfterViewInit {
 
     public onOpenInMap(): void {
         this.markerIconService.resetMarkersData();
-        
+
         this.mapsService.selectedMarker(this._cardData.id);
 
         const repairTableView = {
@@ -131,6 +134,6 @@ export class RepairShopDetailsMapCoverCardComponent implements AfterViewInit {
             JSON.stringify(repairTableView)
         );
 
-        this.router.navigate(['/list/repair']);
+        this.router.navigate([RepairShopDetailsStringEnum.REPAIR_LIST_ROUTE]);
     }
 }
